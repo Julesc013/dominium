@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the deterministic dev-spec for engine/audio/.
 The audio layer is fully abstracted and backend-agnostic.
 The simulation does not produce waveforms — it emits audio events (start sound, stop sound, set volume).

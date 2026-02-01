@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SR-9 Status
 
 SR-9 performs the Setup cutover and legacy import path.

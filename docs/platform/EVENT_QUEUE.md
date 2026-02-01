@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Event Queue
 
 All platform/runtime events flow through a single FIFO queue and are consumed

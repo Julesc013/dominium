@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Importance Index
 
 The importance index is a content-level field used to prioritize inspection,

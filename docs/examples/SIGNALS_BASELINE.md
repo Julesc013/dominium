@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Signals Baseline (S0-LITE)
 
 This guide documents the symbolic, event-driven signal baseline. Signals are deterministic, constant-cost, and explainable with zero content packs.

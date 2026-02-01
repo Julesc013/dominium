@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -63,11 +68,11 @@ dom_posseg_q16 {
 
 ## 3. Stable ID hashing (string to u64)
 - Stable IDs are derived from UTF-8 strings (case-sensitive).
-- Hash algorithm: FNV-1a 64-bit (see `docs/SPEC_CONTAINER_TLV.md`).
+- Hash algorithm: FNV-1a 64-bit (see `docs/specs/SPEC_CONTAINER_TLV.md`).
 - Hash input is the exact UTF-8 byte sequence (no normalization).
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_REFERENCE_FRAMES.md`
-- `docs/SPEC_UNIVERSE_MODEL.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_REFERENCE_FRAMES.md`
+- `docs/specs/SPEC_UNIVERSE_MODEL.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`

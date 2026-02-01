@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UPS Runtime API (Engine)
 
 This document defines the engine-facing UPS runtime contract. It is normative

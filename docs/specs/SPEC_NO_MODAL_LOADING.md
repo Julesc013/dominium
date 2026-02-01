@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -55,7 +60,7 @@ scheduled or executed on that thread.
 - A stall watchdog MUST emit diagnostics for frames that exceed a configured
   threshold; repeated stalls are treated as contract failures.
 - Derived work pumping MUST obey the budgets defined in
-  `docs/SPEC_STREAMING_BUDGETS.md` and `docs/SPEC_PERF_BUDGETS.md`.
+  `docs/specs/SPEC_STREAMING_BUDGETS.md` and `docs/specs/SPEC_PERF_BUDGETS.md`.
 
 ## Test gates (required)
 The following tests are mandatory and MUST pass:
@@ -64,8 +69,8 @@ The following tests are mandatory and MUST pass:
 - `test_snapshot_isolation`
 
 ## Related specs
-- `docs/SPEC_STREAMING_BUDGETS.md`
-- `docs/SPEC_PERF_BUDGETS.md`
-- `docs/SPEC_PROFILING.md`
-- `docs/SPEC_FIDELITY_DEGRADATION.md`
+- `docs/specs/SPEC_STREAMING_BUDGETS.md`
+- `docs/specs/SPEC_PERF_BUDGETS.md`
+- `docs/specs/SPEC_PROFILING.md`
+- `docs/specs/SPEC_FIDELITY_DEGRADATION.md`
 - `docs/specs/SPEC_DETERMINISM.md`

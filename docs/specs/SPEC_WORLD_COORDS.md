@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -38,7 +43,7 @@ domains (terrain/fields/hydrology/climate) and for deterministic chunk mapping.
 It is **not** an engine-wide placement constraint.
 
 Arbitrary placement for BUILD/TRANS/STRUCT/DECOR is expressed via anchors and
-fixed-point poses (`dg_anchor` + `dg_pose`) per `docs/SPEC_POSE_AND_ANCHORS.md`.
+fixed-point poses (`dg_anchor` + `dg_pose`) per `docs/specs/SPEC_POSE_AND_ANCHORS.md`.
 Any mapping from anchor/pose world positions to tiles/chunks is a deterministic
 derived operation (quantization and chunk indexing), not an authoring truth.
 

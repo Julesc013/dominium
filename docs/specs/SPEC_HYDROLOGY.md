@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -54,4 +59,3 @@ Hydrology is a deterministic, fixed-point subsystem that simulates coarse surfac
 ## 5. Persistence
 - HYDRO stores per-chunk grid state under the hydrology subsystem save tag.
 - Hydrology state should be included in determinism hashing to ensure replay bit-identical results.
-

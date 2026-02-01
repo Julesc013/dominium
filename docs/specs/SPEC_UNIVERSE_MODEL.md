@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -33,11 +38,11 @@ deterministic, instance-scoped graph and does not imply any global directory.
 ## 1. Scope and storage
 - A universe exists within an **instance** context.
 - Universe data is stored and transferred via the universe bundle container
-  (`docs/SPEC_UNIVERSE_BUNDLE.md`).
+  (`docs/specs/SPEC_UNIVERSE_BUNDLE.md`).
 - Systems, bodies, frames, and topology bindings are stored in bundle chunks
   `SYSM`, `BODS`, `FRAM`, and `TOPB`.
 - Baseline cosmos/system anchors are authored in core data packs; see
-  `docs/SPEC_CORE_DATA.md` and `docs/SPEC_COSMO_CORE_DATA.md`.
+  `docs/specs/SPEC_CORE_DATA.md` and `docs/specs/SPEC_COSMO_CORE_DATA.md`.
 - There is no mutable global universe directory.
 
 ## 2. Core node types (graph)
@@ -55,9 +60,9 @@ Edges are explicit and typed (e.g., Galaxy->System, System->Body, Body->Surface,
 System->Vessel).
 
 Cosmos-lane nodes (Filament/Cluster/Galaxy/System) are logical-only and do not
-require physical coordinates. See `docs/SPEC_COSMO_LANE.md`.
+require physical coordinates. See `docs/specs/SPEC_COSMO_LANE.md`.
 Mechanics profiles define sim-affecting modifiers; astronomical labels and
-positions are non-sim (`docs/SPEC_MECHANICS_PROFILES.md`).
+positions are non-sim (`docs/specs/SPEC_MECHANICS_PROFILES.md`).
 
 ## 3. Stable IDs and ordering
 - Each node has a stable string ID (UTF-8, case-sensitive).
@@ -77,13 +82,13 @@ Universe identity binds to:
 Mismatches require explicit refusal by default.
 
 ## Related specs
-- `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_REFERENCE_FRAMES.md`
-- `docs/SPEC_SYSTEMS_BODIES.md`
-- `docs/SPEC_SURFACE_TOPOLOGY.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
-- `docs/SPEC_COSMO_LANE.md`
-- `docs/SPEC_LOGICAL_TRAVEL.md`
-- `docs/SPEC_CORE_DATA.md`
-- `docs/SPEC_COSMO_CORE_DATA.md`
-- `docs/SPEC_MECHANICS_PROFILES.md`
+- `docs/specs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_REFERENCE_FRAMES.md`
+- `docs/specs/SPEC_SYSTEMS_BODIES.md`
+- `docs/specs/SPEC_SURFACE_TOPOLOGY.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_COSMO_LANE.md`
+- `docs/specs/SPEC_LOGICAL_TRAVEL.md`
+- `docs/specs/SPEC_CORE_DATA.md`
+- `docs/specs/SPEC_COSMO_CORE_DATA.md`
+- `docs/specs/SPEC_MECHANICS_PROFILES.md`

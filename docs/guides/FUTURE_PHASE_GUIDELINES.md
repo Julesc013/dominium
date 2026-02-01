@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Future Phase Guidelines (LIFE/CIV Safe Extension)
 
 Status: active

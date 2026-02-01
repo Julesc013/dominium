@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Terrain Truth Model (TERRAIN0)
 
 Status: binding.

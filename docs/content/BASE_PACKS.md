@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Canonical Base Packs
 
 These packs are OPTIONAL and are provided only to demonstrate the architecture.

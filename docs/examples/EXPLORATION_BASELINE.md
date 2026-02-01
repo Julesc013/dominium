@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Exploration Baseline (W0)
 
 This example describes the minimal, data-defined exploration world that ships with the client

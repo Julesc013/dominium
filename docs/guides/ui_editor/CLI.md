@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium UI Editor CLI
 
 This document covers headless CLI usage for `dominium-ui-editor`. Any

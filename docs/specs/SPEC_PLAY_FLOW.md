@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -85,7 +90,7 @@ Headless mode runs the same phase machine without opening a window:
   relative to it; `DOMINIUM_HOME` is set when available.
 - The game refuses launcher mode runs if required roots are missing or invalid.
 - Refusals are written to `DOMINIUM_RUN_ROOT/refusal.tlv` if available; otherwise
-  stderr only. See `docs/SPEC_FS_CONTRACT.md`.
+  stderr only. See `docs/specs/SPEC_FS_CONTRACT.md`.
 
 ## 6. Refusal points
 Refusals can occur at:
@@ -113,6 +118,6 @@ Any phase -> SHUTDOWN (fatal error or explicit quit)
 ```
 
 ## 9. Related specs
-- `docs/SPEC_FS_CONTRACT.md`
-- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
-- `docs/SPEC_GAME_CLI.md`
+- `docs/specs/SPEC_FS_CONTRACT.md`
+- `docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/specs/SPEC_GAME_CLI.md`

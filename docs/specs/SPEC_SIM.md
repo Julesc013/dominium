@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -33,7 +38,7 @@ This repository currently contains two simulation orchestration layers:
 - **DSIM (`d_sim_*`)**: a legacy deterministic tick loop used to advance a world
   and call subsystem ticks in a fixed order.
 - **SIM scheduler (`dg_sched_*`)**: the refactor scheduler specified by
-  `docs/SPEC_SIM_SCHEDULER.md` (phase-ordered, delta-commit based).
+  `docs/specs/SPEC_SIM_SCHEDULER.md` (phase-ordered, delta-commit based).
 
 This spec describes DSIM’s contract and its relationship to the refactor
 scheduler.
@@ -58,13 +63,13 @@ spec below.
 
 ## SIM scheduler (refactor)
 Authoritative phase ordering, delta commit rules, and canonical ordering keys
-are specified in `docs/SPEC_SIM_SCHEDULER.md` and implemented under
+are specified in `docs/specs/SPEC_SIM_SCHEDULER.md` and implemented under
 `source/domino/sim/sched/**`.
 
 Refactor rule:
 - Any subsystem/module that participates in the refactor scheduler MUST obey
   the phase boundaries and delta-commit mutation rules from
-  `docs/SPEC_SIM_SCHEDULER.md` and `docs/SPEC_ACTIONS.md`.
+  `docs/specs/SPEC_SIM_SCHEDULER.md` and `docs/specs/SPEC_ACTIONS.md`.
 
 ## Forbidden behaviors (both)
 - Using wall-clock time, OS input, or thread timing as a simulation input.
@@ -74,6 +79,6 @@ Refactor rule:
   authoritative state.
 
 ## Related specs
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_ACTIONS.md`
 - `docs/specs/SPEC_DETERMINISM.md`

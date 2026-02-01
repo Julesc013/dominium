@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # TLV Job Journal (job_journal.tlv)
 
 Purpose: record job DAG execution progress for resume/rollback.

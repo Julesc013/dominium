@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -49,5 +54,5 @@ These levels are derived-only and may vary per renderer, but MUST obey the
 rules above.
 
 ## Related specs
-- `docs/SPEC_NO_MODAL_LOADING.md`
-- `docs/SPEC_STREAMING_BUDGETS.md`
+- `docs/specs/SPEC_NO_MODAL_LOADING.md`
+- `docs/specs/SPEC_STREAMING_BUDGETS.md`

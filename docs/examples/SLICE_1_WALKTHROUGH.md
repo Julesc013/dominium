@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SLICE-1 Walkthrough (CLI)
 
 This walkthrough uses the CLI shell to demonstrate survey, action, failure,

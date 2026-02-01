@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Artifact Store
 
 Doc Version: 1
@@ -33,7 +38,7 @@ Where:
 
 Unknown tags are skipped on read and preserved on re-encode.
 
-See `docs/SPEC_ARTIFACT_STORE.md`.
+See `docs/specs/SPEC_ARTIFACT_STORE.md`.
 
 ## Relationship to Instances
 
@@ -42,4 +47,3 @@ See `docs/SPEC_ARTIFACT_STORE.md`.
 - Offline launch is possible when all referenced artifacts are present and verified.
 
 See `docs/launcher/INSTANCE_MODEL.md` and `docs/launcher/SECURITY_AND_TRUST.md`.
-

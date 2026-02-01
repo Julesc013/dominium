@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Integration Hooks (APRX)
 
 This document enumerates the integration hooks required by the RepoX

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -78,4 +83,4 @@ and the setup CLI call into this layer instead of duplicating logic.
 
 ## Related specs
 - `docs/LAUNCHER_SETUP_OVERVIEW.md`
-- `docs/SPEC_FS_CONTRACT.md`
+- `docs/specs/SPEC_FS_CONTRACT.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # MMO Ops Acceptance (MMO-2)
 
 This roadmap slice anchors operational survivability work.
@@ -17,4 +22,3 @@ This roadmap slice anchors operational survivability work.
 - Recovery is deterministic and crash-only.
 - Rolling updates use checkpoint -> restart -> resync.
 - Lifecycle state and refusal rates are inspectable.
-

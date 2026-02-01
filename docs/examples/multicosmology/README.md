@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Multiple Cosmologies (Exemplar)
 
 Purpose: demonstrate contradictory cosmological models in different domains.

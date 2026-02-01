@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -147,4 +152,3 @@ The log is intended for `--print-selection` output and includes:
 - selected backend per subsystem
 - determinism grade, perf class, and priority
 - selection reason (`priority` vs `override`)
-

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UI Editor Ops Script Format (ops.json)
 
 This document defines the deterministic edit script format consumed by

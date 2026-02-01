@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for game/client/.
 This layer is the front-end application shell for Dominium:
 • Talks “upwards” to platform (window, input, OS integration).

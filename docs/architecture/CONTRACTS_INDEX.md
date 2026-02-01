@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Contracts Index (CONST0)
 
 
@@ -41,6 +46,7 @@ document is binding but still expected to grow or sharpen.
 
 
 | `docs/architecture/CANONICAL_SYSTEM_MAP.md` | FROZEN | Dependency direction and forbidden edges |
+| `docs/architecture/CANON_INDEX.md` | FROZEN | Canonical contract entry point |
 
 
 | `docs/architecture/REPO_NAV.md` | FROZEN | Where work belongs in the repo |
@@ -186,7 +192,6 @@ document is binding but still expected to grow or sharpen.
 | `docs/architecture/TERRAIN_MACRO_CAPSULE.md` | EVOLVING | Terrain macro capsule contract |
 
 
-| `docs/architecture/DISTRIBUTED_SIM_MODEL.md` | EVOLVING | Distributed simulation details |
 | `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md` | EVOLVING | SRZ-aware distributed execution model |
 | `docs/architecture/SRZ_MODEL.md` | EVOLVING | Simulation responsibility zones and verification |
 | `docs/architecture/EPISTEMICS_MODEL.md` | EVOLVING | Epistemic constraints and knowledge limits |
@@ -335,5 +340,3 @@ Contract enforcement lives under:
 
 
 - `tests/app/` (legacy and adjacent contract checks)
-
-

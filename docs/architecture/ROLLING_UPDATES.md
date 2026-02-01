@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Rolling Updates (MMO-2)
 
 Rolling updates are an operational capability layered on top of the
@@ -33,4 +38,3 @@ Capability gaps MUST produce explicit refusals.
 
 - `MMO2-ROLLING-004`: Mixed-version shards produce deterministic
   outcomes when capabilities overlap and explicit refusals otherwise.
-

@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Signal Model (SIGNAL0)
 
 Status: binding. Scope: signal fields, interfaces, and computation constraints.

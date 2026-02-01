@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -82,8 +87,8 @@ Each provider exposes:
 - Derived work (meshes, UI) must use derived job queues and never block.
 
 ## 6. Related specs
-- `docs/SPEC_ATMOSPHERE.md`
-- `docs/SPEC_REENTRY_THERMAL.md`
-- `docs/SPEC_WEATHER_CLIMATE_HOOKS.md`
-- `docs/SPEC_LANES_AND_BUBBLES.md`
-- `docs/SPEC_NO_MODAL_LOADING.md`
+- `docs/specs/SPEC_ATMOSPHERE.md`
+- `docs/specs/SPEC_REENTRY_THERMAL.md`
+- `docs/specs/SPEC_WEATHER_CLIMATE_HOOKS.md`
+- `docs/specs/SPEC_LANES_AND_BUBBLES.md`
+- `docs/specs/SPEC_NO_MODAL_LOADING.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the full deterministic dev-spec for engine/ecs/.
 This is one of the most critical directories in the entire engine.
 It defines how all entities, components, and systems exist and interact inside the deterministic simulation kernel.
@@ -289,4 +294,3 @@ engine/ecs/ provides a deterministic, archetype-based, POD-component, lane-aware
 • deterministic iteration
 • system registration and scheduling
 It binds simulation systems to data and ensures stable, cross-platform correctness.
-

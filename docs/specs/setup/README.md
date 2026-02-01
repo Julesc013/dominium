@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Documentation Index
 
 This directory is the authoritative reference for the Setup kernel/services/frontends refactor.
@@ -11,7 +16,7 @@ Setup is a long-lived, governed system with deterministic behavior and audited e
 - Doc lint: `scripts/setup/doc_lint.bat` or `scripts/setup/doc_lint.sh`
 
 ## Architecture and Rules
-- `docs/setup/INVARIANTS.md`: layering, prohibitions, required properties.
+- `docs/specs/setup/INVARIANTS.md`: layering, prohibitions, required properties.
 - `docs/setup/BUILD_RULES.md`: kernel purity rules and enforcement.
 - `docs/setup/SECURITY_MODEL.md`: trust boundaries and sandbox rules.
 - `docs/setup/DEFAULTS_AND_FLAGS.md`: default selection and build flags.
@@ -28,7 +33,7 @@ Setup is a long-lived, governed system with deterministic behavior and audited e
 
 ## Planning and Execution
 - `docs/setup/PLANNING_RULES.md`
-- `docs/setup/JOB_ENGINE.md`
+- `docs/specs/setup/JOB_ENGINE.md`
 - `docs/setup/TRANSACTIONS.md`
 - `docs/setup/RECOVERY_PLAYBOOK.md`
 - `docs/setup/FAILPOINTS.md`
@@ -38,7 +43,7 @@ Setup is a long-lived, governed system with deterministic behavior and audited e
 - `docs/setup/SERVICES_ERRORS.md`
 - `docs/setup/ERROR_TAXONOMY.md`
 - `docs/setup/SPLAT_REGISTRY.md`
-- `docs/setup/SPLAT_SELECTION_RULES.md`
+- `docs/specs/setup/SPLAT_SELECTION_RULES.md`
 
 ## Frontends and CLI
 - `docs/setup/FRONTEND_CONTRACT.md`
@@ -62,7 +67,7 @@ Setup is a long-lived, governed system with deterministic behavior and audited e
 - `docs/setup/TROUBLESHOOTING.md`
 - `docs/setup/REPRODUCIBLE_BUILDS.md`
 - `docs/setup/REPRODUCIBILITY_GUARANTEES.md`
-- `docs/setup/PARITY_LOCK_MATRIX.md`
+- `docs/specs/setup/PARITY_LOCK_MATRIX.md`
 - `docs/setup/ARCHIVAL_AND_HANDOFF.md`
 
 ## Roadmap
@@ -77,7 +82,7 @@ Setup is a long-lived, governed system with deterministic behavior and audited e
 - `docs/setup/STATE_EVOLUTION.md`
 - `docs/setup/SPLAT_LIFECYCLE.md`
 - `docs/setup/PARITY_WITH_LAUNCHER.md`
-- `docs/setup/PARITY_LOCK_MATRIX.md`
+- `docs/specs/setup/PARITY_LOCK_MATRIX.md`
 
 ## Deferred Work (Non-Binding)
 - `docs/setup/FUTURE_BACKLOG.md`
@@ -86,7 +91,7 @@ Setup is a long-lived, governed system with deterministic behavior and audited e
 ## Read-Only Status
 - `docs/setup/READ_ONLY_LOCK.md`
 - `docs/setup/SCHEMA_FREEZE_V1.md`
-- `docs/setup/PARITY_LOCK_MATRIX.md`
+- `docs/specs/setup/PARITY_LOCK_MATRIX.md`
 
 ## Handoff Snapshot
 - `docs/setup/HANDOFF_SNAPSHOT.md`

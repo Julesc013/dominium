@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Renderer Interface (DGFX)
 
 This document describes the renderer interface exposed by `dgfx_*`/`d_gfx_*`.

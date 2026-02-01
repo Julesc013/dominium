@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Tools UI Policy
 
 - Tools are CLI-first; TUI is optional (`--ui=tui` or `--tui`) and never

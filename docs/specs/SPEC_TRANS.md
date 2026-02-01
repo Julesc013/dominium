@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -40,7 +45,7 @@ of derived runtime artifacts used by SIM queries and by downstream consumers
 Applies to:
 - TRANS authoring models (alignments, section archetypes, attachments, junctions)
 - deterministic compilation (microsegments, frames, slotmaps, spatial indices)
-- anchor-based positioning for corridor surfaces (see `docs/SPEC_POSE_AND_ANCHORS.md`)
+- anchor-based positioning for corridor surfaces (see `docs/specs/SPEC_POSE_AND_ANCHORS.md`)
 
 This spec does not define gameplay semantics (logistics/economy/pathfinding). It
 defines structural, semantics-free primitives.
@@ -64,13 +69,13 @@ Compiled TRANS artifacts are derived caches and MUST be rebuildable:
 - slotmaps and surface catalogs for STRUCT/DECOR binding
 
 Compilation is deterministic, budgeted, and ordered canonically (see
-`docs/SPEC_SIM_SCHEDULER.md` and `docs/specs/SPEC_DETERMINISM.md`).
+`docs/specs/SPEC_SIM_SCHEDULER.md` and `docs/specs/SPEC_DETERMINISM.md`).
 
 ## Consumes
 - BUILD placement/edit intents expressed as `(dg_anchor, dg_pose)` plus TLV
-  parameters (see `docs/SPEC_PACKETS.md` and `docs/SPEC_POSE_AND_ANCHORS.md`)
+  parameters (see `docs/specs/SPEC_PACKETS.md` and `docs/specs/SPEC_POSE_AND_ANCHORS.md`)
 - STRUCT carrier artifacts emitted as parametric intent records (see
-  `docs/SPEC_TRANS_STRUCT_DECOR.md`)
+  `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`)
 - world frame graph evaluation through public frame/anchor APIs only (no
   internal struct peeking)
 
@@ -109,8 +114,8 @@ refactor TRANS corridor pipeline described in this spec.
 - any visualization or render geometry
 
 ## Related specs
-- `docs/SPEC_TRANS_STRUCT_DECOR.md`
-- `docs/SPEC_POSE_AND_ANCHORS.md`
-- `docs/SPEC_GRAPH_TOOLKIT.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`
+- `docs/specs/SPEC_POSE_AND_ANCHORS.md`
+- `docs/specs/SPEC_GRAPH_TOOLKIT.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
 - `docs/specs/SPEC_DETERMINISM.md`

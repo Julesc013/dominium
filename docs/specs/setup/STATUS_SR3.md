@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # STATUS_SR3
 
 - SR-3 adds SPLAT capability registry, deterministic selection rules, and selection audit evidence.

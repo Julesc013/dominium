@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Debugging Data (TOOLS-1)
 
 This guide shows how to validate, inspect, and debug data-only packs without changing code or mutating simulation state.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -82,7 +87,7 @@ Rules:
 ## 7. Factions and AI planners
 - Faction planners MAY read macro economy aggregates to schedule commands/events.
 - AI decisions MUST be deterministic and auditable.
-- See `docs/SPEC_FACTIONS.md` and `docs/SPEC_AI_DETERMINISM.md`.
+- See `docs/specs/SPEC_FACTIONS.md` and `docs/specs/SPEC_AI_DETERMINISM.md`.
 
 ## 8. Persistence
 Macro economy and events are sim-affecting and must be persisted:
@@ -92,10 +97,10 @@ Macro economy and events are sim-affecting and must be persisted:
   remains command-only.
 
 ## Related specs
-- `docs/SPEC_COSMO_LANE.md`
-- `docs/SPEC_SYSTEM_LOGISTICS.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
-- `docs/SPEC_FACTIONS.md`
-- `docs/SPEC_AI_DETERMINISM.md`
-- `docs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_COSMO_LANE.md`
+- `docs/specs/SPEC_SYSTEM_LOGISTICS.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_FACTIONS.md`
+- `docs/specs/SPEC_AI_DETERMINISM.md`
+- `docs/specs/SPEC_SPACETIME.md`
 - `docs/specs/SPEC_DETERMINISM.md`

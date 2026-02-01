@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UI Epistemic Boundary (EPIS0)
 
 UI, HUD, and tools MUST never see authoritative truth.

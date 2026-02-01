@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Forward Compatibility Rules
 
 This document is canonical for schema evolution. It defines how readers and

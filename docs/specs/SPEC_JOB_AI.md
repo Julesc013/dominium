@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -43,7 +48,7 @@ Applies to:
 - Agents (legacy): `d_agent_state` (`source/domino/ai/d_agent.h`)
 
 The refactor agent pipeline (`dg_agent_*`) is specified separately
-(`docs/SPEC_AGENT.md`) and is not interchangeable with the legacy `d_agent_*`
+(`docs/specs/SPEC_AGENT.md`) and is not interchangeable with the legacy `d_agent_*`
 IDs or storage.
 
 ## Canonical ordering and assignment
@@ -90,5 +95,5 @@ cap MUST apply deterministic truncation:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_JOBS.md`
-- `docs/SPEC_AGENT.md`
+- `docs/specs/SPEC_JOBS.md`
+- `docs/specs/SPEC_AGENT.md`

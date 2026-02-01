@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Handoff (Launcher)
 
 The launcher consumes Setup `installed_state.tlv` and imports legacy state when required.

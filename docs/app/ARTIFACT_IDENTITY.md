@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Artifact Identity
 
 This document defines build/version identity fields for all products.
@@ -30,4 +35,3 @@ This document defines build/version identity fields for all products.
 ## Mismatch behavior
 - Protocol or ABI mismatches are treated as hard errors in app-layer checks.
 - No silent fallback is permitted when an explicit renderer is requested.
-

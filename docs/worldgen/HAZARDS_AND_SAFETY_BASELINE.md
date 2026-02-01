@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Hazards and Safety Baseline (HAZARD0)
 
 Status: binding for T15 baseline.  

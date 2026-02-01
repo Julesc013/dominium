@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Fidelity Projection Implementation (SCALE2)
 
 This document defines the enforceable skeleton for fidelity projection.

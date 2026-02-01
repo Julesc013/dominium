@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -56,7 +61,7 @@ Outputs:
 
 Notes:
 - Segmented inputs are supported via a deterministic segment size defined by
-  the surface runtime (see `docs/SPEC_SURFACE_STREAMING.md`).
+  the surface runtime (see `docs/specs/SPEC_SURFACE_STREAMING.md`).
 
 ## 4. Sphere provider rules (v1)
 - Altitude = `|pos| - radius`.
@@ -74,8 +79,8 @@ Notes:
 - Unknown provider bindings must be preserved during bundle round-trips.
 
 ## Related specs
-- `docs/SPEC_SYSTEMS_BODIES.md`
-- `docs/SPEC_REFERENCE_FRAMES.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_SYSTEMS_BODIES.md`
+- `docs/specs/SPEC_REFERENCE_FRAMES.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_SURFACE_STREAMING.md`
+- `docs/specs/SPEC_SURFACE_STREAMING.md`

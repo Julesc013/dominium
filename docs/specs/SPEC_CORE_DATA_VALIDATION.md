@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -81,7 +86,7 @@ Other exit codes:
 - Hashes MUST use the canonical hash function specified in core specs.
 
 ## Related specs
-- `docs/SPEC_CORE_DATA.md`
-- `docs/SPEC_COSMO_CORE_DATA.md`
-- `docs/SPEC_MECHANICS_PROFILES.md`
-- `docs/SPEC_CORE_DATA_PIPELINE.md`
+- `docs/specs/SPEC_CORE_DATA.md`
+- `docs/specs/SPEC_COSMO_CORE_DATA.md`
+- `docs/specs/SPEC_MECHANICS_PROFILES.md`
+- `docs/specs/SPEC_CORE_DATA_PIPELINE.md`

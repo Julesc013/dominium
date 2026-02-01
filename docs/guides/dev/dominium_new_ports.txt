@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 Below is the full dev-spec for /ports/ — the directory containing alternative, experimental, legacy, or non-primary platform targets.
 Unlike /engine/platform, which holds production-grade cross-platform layers, /ports contains specialised glue code, build configurations, and shims for:
 • DOS

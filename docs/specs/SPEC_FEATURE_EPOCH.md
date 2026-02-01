@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -44,7 +49,7 @@ simulation behavior. They are separate from schema versions.
 
 ## 3. Affected formats
 The following containers carry `feature_epoch`:
-- Universe bundle (`docs/SPEC_UNIVERSE_BUNDLE.md`)
+- Universe bundle (`docs/specs/SPEC_UNIVERSE_BUNDLE.md`)
 - Save (`source/dominium/game/SPEC_SAVE.md`)
 - Replay (`source/dominium/game/SPEC_REPLAY.md`)
 
@@ -59,5 +64,5 @@ Implementations MUST expose deterministic helpers equivalent to:
 - Epoch changes represent broader compatibility shifts that may span multiple schemas.
 
 ## Related specs
-- `docs/SPEC_MIGRATIONS.md`
+- `docs/specs/SPEC_MIGRATIONS.md`
 - `docs/specs/SPEC_DETERMINISM.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -40,8 +45,8 @@ create value; it renders ledger amounts using deterministic rules.
 - Epistemic and governance integration.
 
 Out of scope:
-- Ledger implementation (see `docs/SPEC_LEDGER.md`).
-- Market clearing (see `docs/SPEC_MARKETS.md`).
+- Ledger implementation (see `docs/specs/SPEC_LEDGER.md`).
+- Market clearing (see `docs/specs/SPEC_MARKETS.md`).
 
 ## Definitions
 - Money standard: A renderer that expresses value in a named unit system.
@@ -81,7 +86,7 @@ Sim-affecting fields are explicitly enumerated and hashed.
 - Non-sim metadata (display_name, locale namesets) is excluded from sim digests.
 
 ## Resolution order
-Standards are resolved by context (see `docs/SPEC_STANDARD_RESOLUTION.md`):
+Standards are resolved by context (see `docs/specs/SPEC_STANDARD_RESOLUTION.md`):
 1. Explicit context
 2. Organization standard
 3. Jurisdiction standard
@@ -123,6 +128,6 @@ Future tests MUST include:
 - Unknown standard propagation.
 
 ## Related specs
-- `docs/SPEC_LEDGER.md`
-- `docs/SPEC_ASSETS_INSTRUMENTS.md`
-- `docs/SPEC_STANDARD_RESOLUTION.md`
+- `docs/specs/SPEC_LEDGER.md`
+- `docs/specs/SPEC_ASSETS_INSTRUMENTS.md`
+- `docs/specs/SPEC_STANDARD_RESOLUTION.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Audit Model (SR-4)
 
 Every kernel command emits `setup_audit.tlv` even on failure.

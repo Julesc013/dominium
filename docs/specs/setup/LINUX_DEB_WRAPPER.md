@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Linux DEB Wrapper (SR-7)
 
 The DEB wrapper is minimal. It does not run install logic in maintainer scripts.

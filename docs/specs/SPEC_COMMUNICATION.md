@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -207,9 +212,9 @@ Market quotes sent on cadence N ticks arrive later and decay deterministically.
 Newer quotes do not delete older records; both remain in belief stores.
 
 ## Integration references
-- Information model: `docs/SPEC_INFORMATION_MODEL.md`
-- Sensors: `docs/SPEC_SENSORS.md`
-- Effect fields: `docs/SPEC_EFFECT_FIELDS.md`
+- Information model: `docs/specs/SPEC_INFORMATION_MODEL.md`
+- Sensors: `docs/specs/SPEC_SENSORS.md`
+- Effect fields: `docs/specs/SPEC_EFFECT_FIELDS.md`
 
 ## Test and validation requirements (spec-only)
 Implementations must provide:

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -118,10 +123,10 @@ Smoke GUI for the game must:
 ## Related docs
 
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_DETERMINISM_GRADES.md`
-- `docs/SPEC_CAPABILITY_REGISTRY.md`
+- `docs/specs/SPEC_DETERMINISM_GRADES.md`
+- `docs/specs/SPEC_CAPABILITY_REGISTRY.md`
 - `docs/ci/BUILD_MATRIX.md`
-- `docs/SPEC_LAUNCHER_GUI.md`
+- `docs/specs/SPEC_LAUNCHER_GUI.md`
 
 ## DONE gate
 

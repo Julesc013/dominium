@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Tools Observability
 
 Tools reuse the read-only adapter and output formatting helpers.

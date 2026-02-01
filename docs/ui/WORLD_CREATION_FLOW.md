@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # World Creation Flow (P3)
 
 Status: binding for P3. Applies to CLI, TUI, and GUI.

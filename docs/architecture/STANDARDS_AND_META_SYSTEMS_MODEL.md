@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Standards and Meta-Systems Model (STD0)
 
 Status: binding.  

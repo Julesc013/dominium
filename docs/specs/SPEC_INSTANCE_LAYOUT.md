@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -67,7 +72,7 @@ Rules:
 - `config/config.tlv` stores per-instance launcher overrides (separate from the manifest).
 - `logs/launch_history.tlv` stores the last N launch attempts for recovery suggestions.
 
-See `docs/SPEC_LAUNCHER_PRELAUNCH_CONFIG.md` for configuration layering, safe mode, and recovery behavior.
+See `docs/specs/SPEC_LAUNCHER_PRELAUNCH_CONFIG.md` for configuration layering, safe mode, and recovery behavior.
 
 ## 2. Manifest (`manifest.tlv`) — reproducible lockfile
 

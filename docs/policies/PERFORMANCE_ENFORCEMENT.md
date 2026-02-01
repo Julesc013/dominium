@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Performance Enforcement Law (ENF0)
 
 This document defines non-negotiable performance law for the Dominium / Domino repository.

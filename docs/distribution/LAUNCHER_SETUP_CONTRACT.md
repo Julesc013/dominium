@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Launcher and Setup Contract (SHIP-0)
 
 Status: binding.

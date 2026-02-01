@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -179,7 +184,7 @@ Game (Dominium, C++98) MUST:
 - manage scheduling accordingly
 
 ## Relevance and fidelity interaction
-- Relevance requests refinement (see `docs/SPEC_FIDELITY_PROJECTION.md`).
+- Relevance requests refinement (see `docs/specs/SPEC_FIDELITY_PROJECTION.md`).
 - Loss of relevance triggers collapse.
 - Relevance interacts with:
   - time warp
@@ -230,9 +235,9 @@ Relevance: migrating region HOT/WARM during handoff.
 Fidelity: refined as needed, then collapsed deterministically.
 
 ## References
-- Fidelity projection: `docs/SPEC_FIDELITY_PROJECTION.md`
-- Provenance: `docs/SPEC_PROVENANCE.md`
-- Information model: `docs/SPEC_INFORMATION_MODEL.md`
+- Fidelity projection: `docs/specs/SPEC_FIDELITY_PROJECTION.md`
+- Provenance: `docs/specs/SPEC_PROVENANCE.md`
+- Information model: `docs/specs/SPEC_INFORMATION_MODEL.md`
 
 ## Test and validation requirements (spec-only)
 Implementations must provide:

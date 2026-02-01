@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -53,5 +58,5 @@ returns zero deltas and zero wind.
 - Weather changes never alter authoritative time or command ordering.
 
 ## 4. Related specs
-- `docs/SPEC_MEDIA_FRAMEWORK.md`
-- `docs/SPEC_ATMOSPHERE.md`
+- `docs/specs/SPEC_MEDIA_FRAMEWORK.md`
+- `docs/specs/SPEC_ATMOSPHERE.md`

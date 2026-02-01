@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Locklist (GOV0)
 
 Status: binding. Scope: mechanical locklist for frozen seams and reserved surfaces.

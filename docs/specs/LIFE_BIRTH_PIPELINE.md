@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # LIFE Birth Pipeline (LIFE3)
 
 This guide describes the deterministic birth pipeline, gestation scheduling,

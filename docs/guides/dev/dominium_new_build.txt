@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message defines the dev-spec for /build/ — the complete structure, constraints, and responsibilities for the Dominium build system.
 /build is not a place for source code, game logic, assets, or documentation.
 It is strictly:

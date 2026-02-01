@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -70,5 +75,5 @@ Backend submission and present operations MUST:
 - never stall the UI or render loop.
 
 ## 6. Related specs
-- `docs/SPEC_DGFX_IR_VERSIONING.md`
+- `docs/specs/SPEC_DGFX_IR_VERSIONING.md`
 - `docs/specs/SPEC_DETERMINISM.md`

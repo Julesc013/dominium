@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -77,7 +82,7 @@ Usage:
 
 ### Filesystem / launcher mode
 - The game resolves filesystem access via `DOMINIUM_RUN_ROOT` and/or
-  `DOMINIUM_HOME` per `docs/SPEC_FS_CONTRACT.md`.
+  `DOMINIUM_HOME` per `docs/specs/SPEC_FS_CONTRACT.md`.
 - `--handshake` enables launcher mode; absolute save/replay/load paths are
   rejected unless the dev override is enabled.
 - `--dev-allow-ad-hoc-paths=0|1` explicitly allows local standalone runs without
@@ -112,4 +117,3 @@ Launcher integration flags are accepted but not required:
 - `--capabilities`: prints a JSON document to stdout and exits `0`. No stderr output unless an internal error occurs.
 - `--introspect-json`: prints product info JSON to stdout and exits `0`. No stderr output unless an internal error occurs.
 - `--print-caps` / `--print-selection`: print human-readable capability/selection logs to stdout (selection errors to stderr) and exit `0` on success or `2` if selection fails.
-

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -100,7 +105,6 @@ Optional TLV fields:
 
 ## Related docs
 
-- `docs/SPEC_CONTAINER_TLV.md` (canonical TLV encoding rules)
-- `docs/SPEC_NETCODE.md` (session model overview)
-- `docs/SPEC_PACKETS.md` (deterministic packet taxonomy)
-
+- `docs/specs/SPEC_CONTAINER_TLV.md` (canonical TLV encoding rules)
+- `docs/specs/SPEC_NETCODE.md` (session model overview)
+- `docs/specs/SPEC_PACKETS.md` (deterministic packet taxonomy)

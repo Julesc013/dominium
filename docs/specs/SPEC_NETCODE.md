@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -123,4 +128,3 @@ Engine-only transport surface:
 - Product/platform provides sockets and calls `d_net_receive_packet(session, source_peer, data, size)` on inbound packets.
 
 Dominium currently implements a simple TCP transport in `source/dominium/game/dom_game_net.cpp`.
-

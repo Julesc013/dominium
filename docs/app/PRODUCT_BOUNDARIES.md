@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Product Boundaries
 
 This document summarizes the responsibilities and non-overlap between products.
@@ -27,4 +32,3 @@ This document summarizes the responsibilities and non-overlap between products.
 - CLI-first inspection/validation/replay utilities
 - Read-only by default; explicit write/elevation required if added later
 - No embedded content
-

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -46,7 +51,7 @@ Authority mode is fixed for the session lifetime.
 
 Cosmos-lane travel state is authoritative and must follow the selected
 authority mode for command/hash exchange and refusal behavior. See
-`docs/SPEC_COSMO_LANE.md` and `docs/SPEC_LOGICAL_TRAVEL.md`.
+`docs/specs/SPEC_COSMO_LANE.md` and `docs/specs/SPEC_LOGICAL_TRAVEL.md`.
 
 ## Session flags
 Session configuration carries launcher-provided flags and negotiation toggles:
@@ -61,7 +66,7 @@ Singleplayer uses the same code paths as networked play:
 - This enforces identical command and snapshot paths.
 
 ## QoS and assistance layer
-QoS negotiation is optional and non-sim; see `docs/SPEC_QOS_ASSISTANCE.md`.
+QoS negotiation is optional and non-sim; see `docs/specs/SPEC_QOS_ASSISTANCE.md`.
 SERVER_AUTH uses QoS to adjust snapshot cadence/detail and interest radius.
 LOCKSTEP uses QoS for diagnostics cadence only; authority never moves.
 
@@ -79,7 +84,7 @@ Session configuration MUST ensure:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_QOS_ASSISTANCE.md`
-- `docs/SPEC_COSMO_LANE.md`
-- `docs/SPEC_LOGICAL_TRAVEL.md`
+- `docs/specs/SPEC_QOS_ASSISTANCE.md`
+- `docs/specs/SPEC_COSMO_LANE.md`
+- `docs/specs/SPEC_LOGICAL_TRAVEL.md`
 - `source/dominium/game/SPEC_RUNTIME.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Lifecycle and Signals
 
 The platform runtime exposes explicit lifecycle helpers. Signal handlers only

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -50,7 +55,7 @@ All placement/edit requests MUST be expressed as:
 These fields MUST already be quantized before validation/commit. UI snapping is
 non-authoritative and MUST NOT live in BUILD logic.
 
-See `source/domino/build/d_build.h` and `docs/SPEC_POSE_AND_ANCHORS.md`.
+See `source/domino/build/d_build.h` and `docs/specs/SPEC_POSE_AND_ANCHORS.md`.
 
 ## Current implementation status (refactor pass)
 Implemented:
@@ -81,7 +86,7 @@ placement contract.
 - any preview geometry, snapped poses, and placement visualization state
 
 ## Related specs
-- `docs/SPEC_POSE_AND_ANCHORS.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_TRANS_STRUCT_DECOR.md`
+- `docs/specs/SPEC_POSE_AND_ANCHORS.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`
 - `docs/specs/SPEC_DETERMINISM.md`

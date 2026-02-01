@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Insurance and Accountability Baseline (RISK0)
 
 Status: binding for T16 baseline.  

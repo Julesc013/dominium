@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Interest Set Implementation Guide (SCALE1)
 
 This guide defines the required Interest Set implementation patterns for Dominium.

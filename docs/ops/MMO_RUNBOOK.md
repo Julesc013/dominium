@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # MMO Runbook (MMO-2)
 
 This runbook defines deterministic operational procedures for
@@ -72,4 +77,3 @@ At minimum, monitor:
 - cross-shard log backlog,
 - refusal codes over time,
 - shard states and capability masks.
-

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Client Renderer UI
 
 Client GUI rendering is backend-agnostic:

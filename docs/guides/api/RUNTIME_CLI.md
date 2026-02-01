@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Runtime CLI Contract
 
 Applies to runtime binaries such as `dom_main` (new entry), `dom_cli` (headless), and `dom_sdl` (UI placeholder). Runtimes remain functional when launched directly; launcher-specific flags are optional.

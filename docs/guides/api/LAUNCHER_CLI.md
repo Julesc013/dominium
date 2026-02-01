@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # dom_launcher CLI
 
 The launcher runs in CLI/TUI/GUI modes. CLI is the canonical entrypoint and is

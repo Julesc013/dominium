@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -66,4 +71,4 @@ DEPENDENCIES:
 `dfield` defines a low-level registry for world/environment fields. The
 deterministic cross-module field update/sampling contract (phase boundaries,
 budgets, and packetized field updates) is specified by
-`docs/SPEC_FIELDS_EVENTS.md`.
+`docs/specs/SPEC_FIELDS_EVENTS.md`.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CIV5 WAR2 — Engagement Resolution & Casualties
 
 Status: draft

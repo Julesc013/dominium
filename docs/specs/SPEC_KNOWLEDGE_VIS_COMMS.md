@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -56,11 +61,11 @@ Rules:
 Visibility is derived cache and MUST be deterministic:
 - fixed-point only (no floats)
 - canonical traversal order and tie-breaking
-- bounded per-tick work under budgets (see `docs/SPEC_SIM_SCHEDULER.md`)
+- bounded per-tick work under budgets (see `docs/specs/SPEC_SIM_SCHEDULER.md`)
 
 ## Communications routing
 Comms routing is deterministic and explicit:
-- messages are packetized (`docs/SPEC_PACKETS.md`)
+- messages are packetized (`docs/specs/SPEC_PACKETS.md`)
 - routing and fanout use canonical ordering
 - delivery does not depend on platform timing or network jitter
 
@@ -81,8 +86,7 @@ Comms routing is deterministic and explicit:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_FIELDS_EVENTS.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_LOD.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-
+- `docs/specs/SPEC_FIELDS_EVENTS.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_LOD.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`

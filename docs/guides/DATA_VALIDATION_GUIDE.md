@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Data Validation Guide (DATA1)
 
 This guide explains how to run validators and fix common failures.

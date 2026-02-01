@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -42,4 +47,3 @@ The vehicle subsystem stores vehicle instances and dispatches to registered vehi
   - `D_TLV_ENV_VOLUME`: local AABB in Q16.16 (min/max for x/y/z)
   - `D_TLV_ENV_EDGE`: connects local volumes (`A`,`B`), where `B=0` couples to exterior; includes `GAS_K` and `HEAT_K`
 - Created volumes are added to the ENV volume graph with `owner_vehicle_eid = vehicle_instance_id` and removed on destroy.
-

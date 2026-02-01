@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Known Blockers
 
 This document tracks blockers that cannot be fixed yet.

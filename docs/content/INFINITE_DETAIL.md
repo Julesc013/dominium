@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Infinite Detail
 
 Infinite detail is achieved through bounded refinement, not through unlimited

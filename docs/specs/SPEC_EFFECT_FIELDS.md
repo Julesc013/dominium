@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -177,7 +182,7 @@ allowed but must not alter authoritative quantities.
 
 ### Epistemic UI
 Effect outputs can gate or degrade perception. Unknown effects propagate as UNKNOWN.
-See `docs/SPEC_EPISTEMIC_GATING.md`.
+See `docs/specs/SPEC_EPISTEMIC_GATING.md`.
 
 ### Time warp
 Effect fields can gate or constrain warp by altering rates and constraints; they do

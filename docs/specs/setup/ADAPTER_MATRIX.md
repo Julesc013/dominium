@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Adapter Matrix (SR-7)
 
 | Adapter | OS Range | UI Modes | Operations | Ownership Model |

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # LIFE Remains & Salvage Guide (LIFE4)
 
 This document explains the deterministic, event-driven remains and salvage

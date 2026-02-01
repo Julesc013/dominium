@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Parity With Launcher
 
 Setup maintains contract parity with launcher invariants.
@@ -15,7 +20,7 @@ Setup maintains contract parity with launcher invariants.
 
 ## Documentation anchors
 These tests assert explicit markers in:
-- `docs/setup/INVARIANTS.md`
-- `docs/setup/SPLAT_SELECTION_RULES.md`
-- `docs/setup/JOB_ENGINE.md`
+- `docs/specs/setup/INVARIANTS.md`
+- `docs/specs/setup/SPLAT_SELECTION_RULES.md`
+- `docs/specs/setup/JOB_ENGINE.md`
 - `source/dominium/launcher/core/README_launcher_core.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup CLI JSON Schemas
 
 All CLI JSON output uses stable key ordering and contains no timestamps in deterministic mode.

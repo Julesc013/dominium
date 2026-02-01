@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CIV4 Multi-Scale Civilisation and Logistics
 
 This document defines CIV4 scale domains, transitions, and long-range logistics.

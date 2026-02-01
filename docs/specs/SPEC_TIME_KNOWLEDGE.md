@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -147,8 +152,8 @@ Clocks drifting apart:
 - Deterministic behavior across replay
 
 ## References
-- `docs/SPEC_STANDARDS_AND_RENDERERS.md`
-- `docs/SPEC_INFORMATION_MODEL.md`
-- `docs/SPEC_EPISTEMIC_GATING.md`
-- `docs/SPEC_TIME_STANDARDS.md`
-- `docs/SPEC_EFFECT_FIELDS.md`
+- `docs/specs/SPEC_STANDARDS_AND_RENDERERS.md`
+- `docs/specs/SPEC_INFORMATION_MODEL.md`
+- `docs/specs/SPEC_EPISTEMIC_GATING.md`
+- `docs/specs/SPEC_TIME_STANDARDS.md`
+- `docs/specs/SPEC_EFFECT_FIELDS.md`

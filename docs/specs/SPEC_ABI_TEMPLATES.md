@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -83,4 +88,3 @@ Where:
 - Do not pass C++ object pointers across boundaries.
 - If a platform-native handle must cross the boundary, it must be explicitly
   labeled as a **native handle** and exposed only via an optional extension.
-

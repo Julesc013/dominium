@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # PLAYER-2 Validation
 
 Scope: engine/ + game/ + docs/player for PLAYER-2 (player embodiment as agent).

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Determinism Gates (DET0)
 
 This document defines merge-blocking determinism gates.

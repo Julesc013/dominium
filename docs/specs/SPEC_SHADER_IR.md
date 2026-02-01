@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Shader IR Spec (Phase 1, High-Level) (REND0)
 
 Shader IR is the single authoring surface for rendering.

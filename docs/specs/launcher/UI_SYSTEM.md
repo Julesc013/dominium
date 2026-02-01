@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UI System
 
 Doc Version: 1
@@ -25,11 +30,10 @@ These must work in combinations including `--ui=null --gfx=null`.
 
 ## CLI and Profiles
 
-The exhaustive CLI surface is defined in `docs/SPEC_LAUNCHER_CLI.md`.
+The exhaustive CLI surface is defined in `docs/specs/SPEC_LAUNCHER_CLI.md`.
 
 Profiles constrain backend choices deterministically; the core records any overrides and the final selection in audit.
 
 See:
 - `docs/specs/launcher/ARCHITECTURE.md`
-- `docs/SPEC_LAUNCHER_PROFILES.md`
-
+- `docs/specs/SPEC_LAUNCHER_PROFILES.md`

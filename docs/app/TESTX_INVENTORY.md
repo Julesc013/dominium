@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # TESTX Inventory (APR0 Discovery)
 
 Short discovery summary for the APR0 platform/runtime and renderer work.

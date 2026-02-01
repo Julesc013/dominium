@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -85,7 +90,7 @@ Validation:
 - `axial_tilt_turns` must be in the range [0, 0.5] turns if present.
 
 ## 5. Logistics anchors (non-physical)
-- Logistics stations are defined in `docs/SPEC_SYSTEM_LOGISTICS.md` and are
+- Logistics stations are defined in `docs/specs/SPEC_SYSTEM_LOGISTICS.md` and are
   separate from body descriptors.
 - Station anchors reference `body_id` and `frame_id` but do not add physics.
 
@@ -96,9 +101,9 @@ Baseline content MUST include:
 - Body: Earth (kind `PLANET`)
 
 ## Related specs
-- `docs/SPEC_REFERENCE_FRAMES.md`
-- `docs/SPEC_SURFACE_TOPOLOGY.md`
-- `docs/SPEC_UNIVERSE_MODEL.md`
-- `docs/SPEC_SYSTEM_LOGISTICS.md`
-- `docs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_REFERENCE_FRAMES.md`
+- `docs/specs/SPEC_SURFACE_TOPOLOGY.md`
+- `docs/specs/SPEC_UNIVERSE_MODEL.md`
+- `docs/specs/SPEC_SYSTEM_LOGISTICS.md`
+- `docs/specs/SPEC_SPACETIME.md`
 - `docs/specs/SPEC_DETERMINISM.md`

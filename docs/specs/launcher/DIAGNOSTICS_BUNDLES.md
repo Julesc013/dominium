@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # DIAGNOSTICS_BUNDLES
 
 Launcher diagnostics bundles are deterministic, privacy-safe archives intended for support and CI.
@@ -44,4 +49,3 @@ dominium-launcher diag-bundle <instance_id> --out=<path> [--mode=default|extende
 - Stable ordering, stable timestamps (`SOURCE_DATE_EPOCH`, default 0).
 - No environment variables, usernames, machine names, or secrets by default.
 - Paths are relative and redacted; no absolute user paths.
-

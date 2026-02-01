@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Shard Lifecycle (MMO-2)
 
 Shard lifecycle states are authoritative, deterministic, and logged.
@@ -48,4 +53,3 @@ Lifecycle transitions are part of authoritative state:
 
 - `MMO2-LIFECYCLE-003`: Lifecycle transitions are deterministic,
   commit-boundary only, and replayable from checkpoints.
-

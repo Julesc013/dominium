@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the deterministic dev-spec for engine/net/.
 This layer defines all simulation-visible networking: lockstep protocol, message packing, channels, and replay hooks. It does not decide sockets, OS I/O, or encryption; those live in the platform layer.
 

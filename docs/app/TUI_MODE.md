@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # TUI Mode
 
 TUI is a runtime feature for client and tools. Tests remain CLI-only and do not

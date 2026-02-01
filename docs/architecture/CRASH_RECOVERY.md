@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Crash Recovery (MMO-2)
 
 Crash recovery follows a crash-only design:
@@ -44,4 +49,3 @@ Recovery ordering MUST be stable across thread counts and platforms.
   same authoritative state as uninterrupted simulation.
 - `MMO2-OPS-005`: Partial or incompatible recovery inputs refuse
   explicitly without corrupting state.
-

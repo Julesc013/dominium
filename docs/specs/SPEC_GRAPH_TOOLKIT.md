@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -66,7 +71,7 @@ Rules:
 - Dirty sets MUST iterate in canonical ascending ID order (no insertion-order
   dependence).
 - Rebuild work MUST be expressed as work items with stable keys and processed
-  under per-tick budgets (`docs/SPEC_SIM_SCHEDULER.md`).
+  under per-tick budgets (`docs/specs/SPEC_SIM_SCHEDULER.md`).
 - Carryover MUST preserve canonical ordering (no randomization).
 
 ## Boundary stitching
@@ -120,7 +125,7 @@ Rules:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_LOD.md`
-- `docs/SPEC_DOMAINS_FRAMES_PROP.md`
-- `docs/SPEC_TRANS_STRUCT_DECOR.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_LOD.md`
+- `docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`
+- `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`

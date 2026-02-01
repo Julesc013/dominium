@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -37,7 +42,7 @@ DEPENDENCIES:
 - Elements are addressed in a deterministic lattice coordinate system (chunk + local).
   This does not imply global grid-locked placement for other subsystems; aggregate
   placement (when applicable) is expressed via anchors/poses per
-  `docs/SPEC_POSE_AND_ANCHORS.md`.
+  `docs/specs/SPEC_POSE_AND_ANCHORS.md`.
 
 ## Aggregate
 - `Aggregate { AggregateId id, mobility, env, element_count, element_ids, mass, volume, drag_coeff, lift_coeff, buoyancy_factor }`.

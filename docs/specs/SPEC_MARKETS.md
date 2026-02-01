@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -40,7 +45,7 @@ quotes without continuous simulation. Markets are event-driven and bounded.
 - Quote production as InfoRecords.
 
 Out of scope:
-- Money standards (see `docs/SPEC_MONEY_STANDARDS.md`).
+- Money standards (see `docs/specs/SPEC_MONEY_STANDARDS.md`).
 - Contract mechanics beyond trade settlement.
 
 ## Definitions
@@ -158,7 +163,7 @@ Future tests MUST include:
 - No-clearing when market has no active orders.
 
 ## Related specs
-- `docs/SPEC_LEDGER.md`
-- `docs/SPEC_ASSETS_INSTRUMENTS.md`
-- `docs/SPEC_CONTRACTS.md`
-- `docs/SPEC_INFORMATION_MODEL.md`
+- `docs/specs/SPEC_LEDGER.md`
+- `docs/specs/SPEC_ASSETS_INSTRUMENTS.md`
+- `docs/specs/SPEC_CONTRACTS.md`
+- `docs/specs/SPEC_INFORMATION_MODEL.md`

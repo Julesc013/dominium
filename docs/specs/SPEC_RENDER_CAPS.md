@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # RenderCaps Specification (REND0)
 
 RenderCaps is the canonical capability contract. It is versioned and enforced.

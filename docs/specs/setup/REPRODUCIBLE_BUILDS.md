@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Reproducible Builds
 
 Setup artifacts and outputs are designed to be reproducible when deterministic mode is enabled.

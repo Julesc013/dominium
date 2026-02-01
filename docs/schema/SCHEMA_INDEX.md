@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Schema Index
 
 This index is canonical for schema files under `schema/`. It lists the core

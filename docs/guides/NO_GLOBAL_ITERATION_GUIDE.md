@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # No-Global-Iteration Guide (PERF2)
 
 This guide defines the only acceptable patterns for macro stepping and the

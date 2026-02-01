@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Pack System
 
 Doc Version: 1
@@ -44,4 +49,3 @@ The launcher validates that:
 - forbidden or conflicting combinations are refused
 
 The launcher must never silently change simulation-affecting content.
-

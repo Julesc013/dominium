@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SR-5 Status
 
 SR-5 implements execution: job DAG, journals, and transactions.

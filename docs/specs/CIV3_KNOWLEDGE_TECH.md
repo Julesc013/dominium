@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CIV3 Knowledge, Research, and Technology
 
 This document defines the CIV3 knowledge and technology substrate. Knowledge,

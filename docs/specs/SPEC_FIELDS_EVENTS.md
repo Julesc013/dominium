@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -121,7 +126,7 @@ such as:
 
 ## Forbidden behaviors
 - Implicit global dispatch based on pointer identity or hash iteration.
-- UI-driven state mutation (UI/tools emit intents only; see `docs/SPEC_ACTIONS.md`).
+- UI-driven state mutation (UI/tools emit intents only; see `docs/specs/SPEC_ACTIONS.md`).
 - Platform-dependent behavior in routing (thread timing, network timing).
 
 ## Source of truth vs derived cache
@@ -135,7 +140,7 @@ such as:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_KNOWLEDGE_VIS_COMMS.md`

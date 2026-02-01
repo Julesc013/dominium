@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Tool Editor Bootstrap — Done Checklist
 
 ## Build (pass/fail)

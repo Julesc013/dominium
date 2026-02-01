@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup2 IDE Workflows
 
 ## Visual Studio 2026 (Windows EXE frontend)

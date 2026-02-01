@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -40,7 +45,7 @@ and "no modal loading" guarantees without changing simulation semantics.
   never blocking or best-effort "fixups".
 
 ## Budget tiers
-Budgets are keyed by performance tier (see `docs/SPEC_TIERS.md`). Values are
+Budgets are keyed by performance tier (see `docs/specs/SPEC_TIERS.md`). Values are
 upper bounds; callers SHOULD treat `0` as "no limit configured".
 
 ### Baseline (2010-era)
@@ -89,8 +94,8 @@ upper bounds; callers SHOULD treat `0` as "no limit configured".
   presentation degradation and refusal policies.
 
 ## Related specs
-- `docs/SPEC_PROFILING.md`
-- `docs/SPEC_NO_MODAL_LOADING.md`
-- `docs/SPEC_STREAMING_BUDGETS.md`
-- `docs/SPEC_FIDELITY_DEGRADATION.md`
-- `docs/SPEC_TIERS.md`
+- `docs/specs/SPEC_PROFILING.md`
+- `docs/specs/SPEC_NO_MODAL_LOADING.md`
+- `docs/specs/SPEC_STREAMING_BUDGETS.md`
+- `docs/specs/SPEC_FIDELITY_DEGRADATION.md`
+- `docs/specs/SPEC_TIERS.md`

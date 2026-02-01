@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UX Overview (UX-1)
 
 The Dominium UX is CLI-first, deterministic, and presentation-only. All UI surfaces are thin projections of stable intents and read-only data.

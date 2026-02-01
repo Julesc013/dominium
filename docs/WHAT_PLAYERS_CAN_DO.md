@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # What Players Can Do
 
 Dominium is designed to support many styles of play. What you can do depends on the content packs you install, but you never need to learn the internals to enjoy it.

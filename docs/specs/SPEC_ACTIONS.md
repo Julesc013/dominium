@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -51,7 +56,7 @@ This spec also covers the semantic-free agent/controller substrate:
 
 1. **Intent**
    - External deterministic command input for tick `N`.
-   - Immutable and TLV-versioned (`docs/SPEC_PACKETS.md`).
+   - Immutable and TLV-versioned (`docs/specs/SPEC_PACKETS.md`).
 
 2. **Validation**
    - Deterministic, side-effect free read of the current authoritative state.
@@ -63,7 +68,7 @@ This spec also covers the semantic-free agent/controller substrate:
 
 4. **Delta**
    - The only mechanism that mutates authoritative simulation state.
-   - Applied at defined commit points in the scheduler (`docs/SPEC_SIM_SCHEDULER.md`).
+   - Applied at defined commit points in the scheduler (`docs/specs/SPEC_SIM_SCHEDULER.md`).
 
 ## Delta handler registry (authoritative dispatch)
 Delta application is performed via a deterministic handler registry:
@@ -108,6 +113,6 @@ Additional canonical orderings for the agent substrate:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_VM.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_VM.md`

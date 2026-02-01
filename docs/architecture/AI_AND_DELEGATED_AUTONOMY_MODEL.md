@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # AI and Delegated Autonomy Model (AIA0)
 
 Status: binding.  

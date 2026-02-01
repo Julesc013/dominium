@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Debug and Diagnostics Model (DIAG0)
 
 Status: binding.
@@ -48,4 +53,3 @@ Error:
 ## Privacy and redaction
 - Redaction may remove personal data but MUST NOT alter replays or saves.
 - Redaction actions MUST be logged and summarized.
-

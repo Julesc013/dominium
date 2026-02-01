@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Minecraft-Style Launcher UI Smoke Test
 
 This document describes the structure-only Minecraft-style launcher layout used

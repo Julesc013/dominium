@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Build Dist Output Specification
 
 This document defines the frozen, deterministic distribution layout used when

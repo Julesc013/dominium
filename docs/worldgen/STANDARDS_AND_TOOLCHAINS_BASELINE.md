@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Standards and Toolchains Baseline (STD0)
 
 Status: binding for T23 baseline.  

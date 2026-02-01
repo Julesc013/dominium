@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -153,4 +158,3 @@ Each launch attempt records (as audit reason strings):
 - Validation results (ok or explicit failure list)
 - Final outcome (success/crash/refusal/missing_artifact) and exit code
 - Last-known-good writeback result (ok/skipped/fail) with safe-mode confirmation status
-

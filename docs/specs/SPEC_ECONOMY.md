@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -36,4 +41,4 @@ DEPENDENCIES (Phase 1 overrides apply):
 Clarification:
 - "Best offer" queries MUST be bounded by market scope or indexed lookups; global
   scans are forbidden. All market access must be event-driven and interest-bounded
-  per `docs/SPEC_EVENT_DRIVEN_STEPPING.md` and `docs/NO_GLOBAL_ITERATION_GUIDE.md`.
+  per `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md` and `docs/NO_GLOBAL_ITERATION_GUIDE.md`.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SLICE-2 Acceptance
 
 SLICE-2 is complete when all items below are satisfied:

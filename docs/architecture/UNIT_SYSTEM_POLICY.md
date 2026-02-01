@@ -1,34 +1,95 @@
-# Unit System Policy (UNIT0)
-
-Status: binding.
-Scope: canonical units, fixed-point scaling, conversion, and overflow behavior.
-
-## Purpose
-Guarantee deterministic, portable unit handling across all systems.
-
-## Core rules
-- All quantities are fixed-point integers with explicit scale.
-- All unit identifiers are namespaced and stable.
-- Conversions are deterministic and rational (no floating point).
-- Unknown units MUST be refused or preserved, never guessed.
-- Schemas MUST include unit tags for unit-bearing fields.
-- Authoritative logic MUST NOT use floating point arithmetic.
-- Presentation layers may use floating point only for display.
-
-## Numeric policy (binding)
-- Quantities are stored as integers plus a declared unit scale.
-- Unit scales are powers of ten unless a schema explicitly declares otherwise.
-- Ordering, comparisons, and budgets operate on integer quantities.
-- Floating point values MUST be converted to fixed-point before admission.
-
-## Canonical units (initial)
-```units
-# unit_id, dimension, base_unit, scale, notes
-unit.time.act_tick, time, unit.time.act_tick, 1, authoritative ACT tick
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
+# Unit System Policy (UNIT0)
+
+
+
+
+
+Status: binding.
+
+
+Scope: canonical units, fixed-point scaling, conversion, and overflow behavior.
+
+
+
+
+
+## Purpose
+
+
+Guarantee deterministic, portable unit handling across all systems.
+
+
+
+
+
+## Core rules
+
+
+- All quantities are fixed-point integers with explicit scale.
+
+
+- All unit identifiers are namespaced and stable.
+
+
+- Conversions are deterministic and rational (no floating point).
+
+
+- Unknown units MUST be refused or preserved, never guessed.
+
+
+- Schemas MUST include unit tags for unit-bearing fields.
+
+
+- Authoritative logic MUST NOT use floating point arithmetic.
+
+
+- Presentation layers may use floating point only for display.
+
+
+
+
+
+## Numeric policy (binding)
+
+
+- Quantities are stored as integers plus a declared unit scale.
+
+
+- Unit scales are powers of ten unless a schema explicitly declares otherwise.
+
+
+- Ordering, comparisons, and budgets operate on integer quantities.
+
+
+- Floating point values MUST be converted to fixed-point before admission.
+
+
+
+
+
+## Canonical units (initial)
+
+
+```units
+
+
+# unit_id, dimension, base_unit, scale, notes
+
+
+unit.time.act_tick, time, unit.time.act_tick, 1, authoritative ACT tick
+
+
 unit.length.meter, length, unit.length.meter, 1000000, fixed-point micrometers
 unit.volume.m3, volume, unit.volume.m3, 1000000, fixed-point micro-cubic-meter
 unit.mass.kilogram, mass, unit.mass.kilogram, 1000000, fixed-point micro-kg
-unit.temperature.kelvin, temperature, unit.temperature.kelvin, 1000, fixed-point milli-kelvin
+unit.temperature.kelvin, temperature, unit.temperature.kelvin, 1000, fixed-point milli-kelvin
+
+
 unit.energy.joule, energy, unit.energy.joule, 1000, fixed-point milli-joule
 unit.data.symbol, data, unit.data.symbol, 1, symbolic data units
 unit.data.symbol_per_tick, data_rate, unit.data.symbol_per_tick, 1, symbolic data units per ACT tick
@@ -82,32 +143,88 @@ unit.resource.symbol, resource, unit.resource.symbol, 1, symbolic resource unit
 unit.logistics.decay_per_tick, logistics_rate, unit.logistics.decay_per_tick, 1, symbolic spoilage/decay per ACT tick
 unit.market.price, market_price, unit.market.price, 1, symbolic local price unit
 ```
-
-## Conversion rules
-- Convert only through base units.
-- Apply scale as integer multiplication/division with deterministic rounding.
-- Rounding rule: round toward zero.
-- If conversion would overflow, refuse.
-
-## Overflow behavior
-- Overflow is a refusal with REFUSE_INVALID_INTENT.
-- No silent saturation.
-
-## Tolerance annotations
-Tolerances must be explicit and unit-aware:
-- A tolerance MUST reference a tolerance identifier and a unit identifier.
-- Tolerance magnitudes are expressed in canonical fixed-point units.
-- If a tolerance is not declared, exact equality is required.
-- Tolerances MUST NOT be evaluated using floating point in authoritative code.
-
-Tolerance policy is defined in:
-- `docs/architecture/INVARIANTS_AND_TOLERANCES.md`
-
-## Enforcement
-- Unit tables are schema-validated and tested for consistency.
-- Unit ids are immutable; new units require new ids.
-
-## See also
-- `schema/measurement_artifact.schema`
-- `docs/architecture/REFUSAL_SEMANTICS.md`
-- `docs/architecture/NAMESPACING_RULES.md`
+
+
+
+## Conversion rules
+
+
+- Convert only through base units.
+
+
+- Apply scale as integer multiplication/division with deterministic rounding.
+
+
+- Rounding rule: round toward zero.
+
+
+- If conversion would overflow, refuse.
+
+
+
+
+
+## Overflow behavior
+
+
+- Overflow is a refusal with REFUSE_INVALID_INTENT.
+
+
+- No silent saturation.
+
+
+
+
+
+## Tolerance annotations
+
+
+Tolerances must be explicit and unit-aware:
+
+
+- A tolerance MUST reference a tolerance identifier and a unit identifier.
+
+
+- Tolerance magnitudes are expressed in canonical fixed-point units.
+
+
+- If a tolerance is not declared, exact equality is required.
+
+
+- Tolerances MUST NOT be evaluated using floating point in authoritative code.
+
+
+
+
+
+Tolerance policy is defined in:
+
+
+- `docs/architecture/INVARIANTS_AND_TOLERANCES.md`
+
+
+
+
+
+## Enforcement
+
+
+- Unit tables are schema-validated and tested for consistency.
+
+
+- Unit ids are immutable; new units require new ids.
+
+
+
+
+
+## See also
+
+
+- `schema/measurement_artifact.schema`
+
+
+- `docs/architecture/REFUSAL_SEMANTICS.md`
+
+
+- `docs/architecture/NAMESPACING_RULES.md`

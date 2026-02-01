@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # dom_setup CLI
 
 `dom_setup` prepares install roots and exposes OPS pass-through commands. It

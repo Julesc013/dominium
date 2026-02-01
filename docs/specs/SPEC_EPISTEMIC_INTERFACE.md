@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -200,11 +205,11 @@ disappear or show UNKNOWN.
 - "UI resolves conflicting sources silently."
 
 ## Integration points
-- `docs/SPEC_INFORMATION_MODEL.md`
-- `docs/SPEC_SENSORS.md`
-- `docs/SPEC_COMMUNICATION.md`
-- `docs/SPEC_TIME_KNOWLEDGE.md`
-- `docs/SPEC_EFFECT_FIELDS.md`
+- `docs/specs/SPEC_INFORMATION_MODEL.md`
+- `docs/specs/SPEC_SENSORS.md`
+- `docs/specs/SPEC_COMMUNICATION.md`
+- `docs/specs/SPEC_TIME_KNOWLEDGE.md`
+- `docs/specs/SPEC_EFFECT_FIELDS.md`
 
 ## Test and validation requirements (spec-only)
 Implementations must provide:

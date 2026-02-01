@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Steam Provider Adapter (SR-7)
 
 The Steam adapter is a thin provider that emits a Steam-owned request and invokes `dominium-setup`.

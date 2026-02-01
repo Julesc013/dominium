@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Construction Model
 
 This document defines construction as a process pipeline. It MUST be read

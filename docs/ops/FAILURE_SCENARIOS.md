@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Failure Scenarios (MMO-2)
 
 Failure handling MUST be explicit, deterministic, and auditable.
@@ -43,4 +48,3 @@ No silent drops or best-effort mutations are allowed.
 - Symptom: state change violates lifecycle transition rules.
 - Required behavior: refuse and log lifecycle refusal.
 - Refusal code: `REFUSE_SHARD_STATE`.
-

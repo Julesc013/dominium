@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Exploration Scaling Tests
 
 This guide describes the W1 exploration scaling fixtures and TestX checks.

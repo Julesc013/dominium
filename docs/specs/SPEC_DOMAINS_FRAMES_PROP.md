@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -64,7 +69,7 @@ Frames define coordinate contexts for poses and transforms.
 
 Invariants:
 - frame IDs MUST be stable and totally ordered
-- transforms MUST be fixed-point and quantized (see `docs/SPEC_POSE_AND_ANCHORS.md`)
+- transforms MUST be fixed-point and quantized (see `docs/specs/SPEC_POSE_AND_ANCHORS.md`)
 - frame graph updates MUST be deterministic and bounded
 - evaluation MUST traverse parent chains in a fixed, non-recursive order
 
@@ -84,7 +89,7 @@ Domains and propagators interact with the LOD ladder:
 - R0 is authoritative within domains
 - R1–R3 are derived caches updated by propagators under budget
 
-See `docs/SPEC_LOD.md`.
+See `docs/specs/SPEC_LOD.md`.
 
 ## Forbidden behaviors
 - Treating a global grid as authoritative placement truth or a required
@@ -105,7 +110,7 @@ See `docs/SPEC_LOD.md`.
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_LOD.md`
-- `docs/SPEC_GRAPH_TOOLKIT.md`
-- `docs/SPEC_POSE_AND_ANCHORS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_LOD.md`
+- `docs/specs/SPEC_GRAPH_TOOLKIT.md`
+- `docs/specs/SPEC_POSE_AND_ANCHORS.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SERVICES_ERRORS
 
 Service errors use `dss_error_t` with domain `DSS_DOMAIN_SERVICES`.

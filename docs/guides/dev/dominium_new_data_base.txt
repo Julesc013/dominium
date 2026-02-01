@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for /data/base/.
 /data/base is the canonical base content pack.
 If this pack is missing or invalid, the game cannot run.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 Below is the dev-spec for /scripts/, the repository’s meta-automation layer.
 This directory is not part of the deterministic runtime, the build system, or the packaging pipeline; it is the home of:
 • Repo maintenance tools

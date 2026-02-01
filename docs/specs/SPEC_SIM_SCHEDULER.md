@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -43,7 +48,7 @@ Does not define gameplay logic; it defines a deterministic execution framework.
 - Simulation progresses in integer ticks; tick `N` is globally comparable.
 - Phases are ordered and versioned; phase order MUST NOT depend on platform.
 - All authoritative state mutation MUST occur via deltas at defined commit
-  points (see `docs/SPEC_ACTIONS.md`).
+  points (see `docs/specs/SPEC_ACTIONS.md`).
 - All work is bounded per tick via deterministic budgets (work units, not time).
 
 ## Global tick phases (authoritative)
@@ -56,7 +61,7 @@ commit semantics.
 
 2. **PH_TOPOLOGY**
    - Budgeted incremental compilation and dirty rebuild triggers.
-   - Canonical graph rebuild scheduling (see `docs/SPEC_GRAPH_TOOLKIT.md`):
+   - Canonical graph rebuild scheduling (see `docs/specs/SPEC_GRAPH_TOOLKIT.md`):
      - dirty sets are converted into `dg_work_item` records keyed by `dg_order_key`
      - chunk-aligned graph partitions SHOULD use `dg_order_key.chunk_id` so per-chunk
        budgets can bound rebuild work deterministically
@@ -111,7 +116,7 @@ permitted in SIM scheduling.
 
 ## Delta commit rules
 - Deltas are the only authorized mechanism for mutating engine state
-  (`docs/SPEC_ACTIONS.md`).
+  (`docs/specs/SPEC_ACTIONS.md`).
 - The PH_COMMIT phase MUST apply deltas in a canonical total order.
 - Deltas MUST carry an explicit stable sort key (`dg_order_key` or an equivalent
   delta-specific key derived from packet headers + monotonic `seq`).
@@ -156,11 +161,11 @@ Fairness must be deterministic:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_FIELDS_EVENTS.md`
-- `docs/SPEC_LOD.md`
-- `docs/SPEC_DOMAINS_FRAMES_PROP.md`
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_FIELDS_EVENTS.md`
+- `docs/specs/SPEC_LOD.md`
+- `docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`
 
 ## Engine core eligibility
 

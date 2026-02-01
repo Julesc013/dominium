@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Trust, Reputation, and Legitimacy Model (TRUST0)
 
 Status: binding.  

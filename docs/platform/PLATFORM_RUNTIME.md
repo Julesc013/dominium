@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Platform Runtime Interface (DSYS)
 
 This document describes the platform/runtime interface exposed by `dsys_*`.

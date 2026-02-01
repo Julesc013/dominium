@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -99,7 +104,7 @@ Built-in model id:
     with the lowest `d_env_volume_id` (stable tie-break).
 - Budgeting:
   - Any integration into the refactor scheduler MUST express ENV work as bounded
-    work items under deterministic budgets (`docs/SPEC_SIM_SCHEDULER.md`).
+    work items under deterministic budgets (`docs/specs/SPEC_SIM_SCHEDULER.md`).
   - Legacy DSIM-era ticking may be unbudgeted, but MUST remain bounded by fixed
     table sizes and per-chunk caps.
 
@@ -128,7 +133,7 @@ Built-in model id:
 ## Note on “zones”
 `denv_zone_state` is ENV’s chunk-local zone/portal representation. It is not
 the same as the legacy `dzone` interior atmosphere registry in
-`include/domino/dzone.h` (see `docs/SPEC_ZONES.md`).
+`include/domino/dzone.h` (see `docs/specs/SPEC_ZONES.md`).
 
 ## Implementation pointers
 - `source/domino/env/d_env.h`, `source/domino/env/d_env_field.h`,
@@ -137,7 +142,7 @@ the same as the legacy `dzone` interior atmosphere registry in
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_FIELDS_EVENTS.md`
-- `docs/SPEC_DOMINO_SUBSYSTEMS.md`
-- `docs/SPEC_SIM.md`
-- `docs/SPEC_ZONES.md`
+- `docs/specs/SPEC_FIELDS_EVENTS.md`
+- `docs/specs/SPEC_DOMINO_SUBSYSTEMS.md`
+- `docs/specs/SPEC_SIM.md`
+- `docs/specs/SPEC_ZONES.md`

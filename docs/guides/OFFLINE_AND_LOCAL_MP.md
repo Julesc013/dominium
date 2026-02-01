@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Offline + Local Multiplayer Parity (MP0)
 
 This document defines the MP0 parity guarantees for LIFE and CIV systems across:

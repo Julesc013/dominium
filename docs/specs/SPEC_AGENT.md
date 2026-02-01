@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -34,7 +39,7 @@ It exists to prevent cross-layer mutation and nondeterministic “AI shortcuts�
 ## Scope
 Applies to:
 - the refactor agent data model (`dg_agent_*`) under `source/domino/agent/**`
-- agent/controller participation in the intent→delta pipeline (`docs/SPEC_ACTIONS.md`)
+- agent/controller participation in the intent→delta pipeline (`docs/specs/SPEC_ACTIONS.md`)
 - canonical ordering, budgeting, and replay/hash participation for agent work
 
 This repo also contains a legacy AI/agent implementation under
@@ -47,7 +52,7 @@ NOT be treated as the reference design for new deterministic agent work.
 The refactor AGENT layer owns:
 - agent records and component attachments (`source/domino/agent/dg_agent.h`)
 - agent component storage (`source/domino/agent/dg_agent_comp.h`)
-- deterministic LOD representation state (`dg_rep_state`; `docs/SPEC_LOD.md`)
+- deterministic LOD representation state (`dg_rep_state`; `docs/specs/SPEC_LOD.md`)
 
 ### Produces (derived outputs)
 - observations/events/messages as deterministic packets (derived cache)
@@ -56,7 +61,7 @@ The refactor AGENT layer owns:
 ### Consumes
 - authoritative world state via deterministic queries only
 - field samples/events/messages delivered at deterministic phase boundaries
-  (`docs/SPEC_FIELDS_EVENTS.md`, `docs/SPEC_SIM_SCHEDULER.md`)
+  (`docs/specs/SPEC_FIELDS_EVENTS.md`, `docs/specs/SPEC_SIM_SCHEDULER.md`)
 
 ### Must never do
 - mutate authoritative world state directly
@@ -67,7 +72,7 @@ The refactor AGENT layer owns:
 - Agent IDs are stable numeric IDs with a total order (`dg_agent_id`).
 - Any per-tick iteration over agents MUST use ascending stable IDs.
 - Tie-break rules for agent outputs are explicit and stable (see
-  `docs/SPEC_ACTIONS.md` for ordering keys).
+  `docs/specs/SPEC_ACTIONS.md` for ordering keys).
 - Any budgeting MUST be in deterministic work units (no wall-clock).
 
 ## Legacy AI/agent (`d_agent_*`) rules
@@ -92,7 +97,7 @@ Legacy `d_agent_*` code is permitted to exist as compatibility scaffolding, but:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_FIELDS_EVENTS.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_LOD.md`
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_FIELDS_EVENTS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_LOD.md`

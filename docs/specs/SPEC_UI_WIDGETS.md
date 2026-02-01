@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -130,6 +135,6 @@ enabled = true
 - Deterministic text outputs for identical snapshots.
 
 ## References
-- `docs/SPEC_EPISTEMIC_INTERFACE.md`
-- `docs/SPEC_UI_CAPABILITIES.md`
-- `docs/SPEC_INFORMATION_MODEL.md`
+- `docs/specs/SPEC_EPISTEMIC_INTERFACE.md`
+- `docs/specs/SPEC_UI_CAPABILITIES.md`
+- `docs/specs/SPEC_INFORMATION_MODEL.md`

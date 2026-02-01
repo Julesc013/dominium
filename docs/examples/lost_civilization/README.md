@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Lost Civilization and Archaeology (Exemplar)
 
 Purpose: demonstrate ruins, archaeology, and competing histories.

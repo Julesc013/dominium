@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Installed State Contract (Setup -> Launcher)
 
 `installed_state.tlv` is the deterministic, versioned record produced by setup

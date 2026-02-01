@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Client Out-Of-Game Scope (P3)
 
 Status: binding for P3. Applies to CLI, TUI, and GUI client shells.

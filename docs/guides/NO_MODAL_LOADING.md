@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # No-Modal-Loading Policy (PERF0)
 
 This document defines non-negotiable rules that forbid modal loading and blocking work

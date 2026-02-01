@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Release Readiness Checklist
 
 This checklist is the definitive gate for R-1..R-8 readiness. Scripts and CI

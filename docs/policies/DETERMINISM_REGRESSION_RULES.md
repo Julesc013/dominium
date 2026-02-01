@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Determinism regression rules (machine-checkable)
 
 This file defines deterministic-core guardrails intended to prevent silent

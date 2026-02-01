@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CAPS
 
 The launcher exposes a deterministic capability snapshot for bug reports and CI.
@@ -24,4 +29,3 @@ dominium-launcher caps --format=tlv|text [--out=<path>]
 - Selected backends (ordered, stable)
 
 The snapshot is produced from the Domino caps registry and selection API. Ordering is deterministic and does not depend on registration order.
-

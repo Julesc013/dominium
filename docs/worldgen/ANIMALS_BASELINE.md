@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Animals Baseline (ANIMALS6)
 
 Status: binding for T6 baseline.  

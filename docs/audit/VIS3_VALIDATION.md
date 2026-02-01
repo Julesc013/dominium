@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # VIS-3 Validation
 
 Scope: tools/ + docs/visualization + docs/tools for VIS-3 (observation and tooling views).

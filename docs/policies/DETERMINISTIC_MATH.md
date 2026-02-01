@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Deterministic Math Policy (DET1)
 
 This document defines the only allowed math for authoritative simulation paths.

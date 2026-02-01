@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Engine/Game Diagnostics
 
 Engine and game modules remain platform-agnostic and do not host UI layers.

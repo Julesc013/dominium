@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Recovery and Safe Mode
 
 Doc Version: 1
@@ -49,4 +54,3 @@ On startup (or before operations), the launcher performs best-effort staging rec
 All recovery actions are audited.
 
 See `docs/launcher/INSTANCE_MODEL.md` and `docs/launcher/DIAGNOSTICS_AND_SUPPORT.md`.
-

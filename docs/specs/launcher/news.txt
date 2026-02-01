@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 Dominium Dev Launcher
 ---------------------
 
@@ -6,4 +11,3 @@ This is a local-only placeholder news feed.
 - Schema-driven DUI UI (native/dgfx/null) is active.
 - Packs changes are staged; use Apply to commit.
 - Use Logs/Diagnostics to export a minimal diagnostics bundle.
-

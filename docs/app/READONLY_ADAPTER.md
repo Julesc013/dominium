@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Read-Only Adapter
 
 The read-only adapter isolates application code from engine/game headers and

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Performance Budgets (PERF0)
 
 This document defines hard performance targets and regression budgets.

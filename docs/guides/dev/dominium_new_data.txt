@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for /data (top-level game data subtree), not the engine or game code.
 /data holds all first-party content that is loaded as “data packs” on top of the deterministic engine:
 • Base game definitions

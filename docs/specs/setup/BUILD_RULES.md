@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # BUILD_RULES
 
 - Layer 0 (dsk_kernel) is OS-API-free and side-effect-free; it may only call services via vtables.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Content Library Overview (CONTENTLIB-0)
 
 This document describes the minimal, official, **optional** data packs shipped

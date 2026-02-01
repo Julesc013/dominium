@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -172,7 +177,7 @@ No silent resolution. No "truth picking."
 
 ### Effect fields
 Perception filters are effect fields that influence InfoRecord creation but never
-modify authoritative reality. See `docs/SPEC_EFFECT_FIELDS.md`.
+modify authoritative reality. See `docs/specs/SPEC_EFFECT_FIELDS.md`.
 
 ### Communication
 Comms channels transform InfoRecords deterministically and may degrade resolution
@@ -180,7 +185,7 @@ tiers or add latency. No RNG. No hidden synthesis.
 
 ### Epistemic UI
 UI must show uncertainty and conflicts explicitly and must not query authoritative
-world state directly. See `docs/SPEC_EPISTEMIC_GATING.md`.
+world state directly. See `docs/specs/SPEC_EPISTEMIC_GATING.md`.
 
 ### Command intent
 Commands may specify intent using belief data, but authoritative validation uses

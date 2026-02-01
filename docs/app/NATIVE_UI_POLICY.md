@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Native UI Policy
 
 Server, launcher, setup, and tools may use OS-native widgets in GUI mode, but

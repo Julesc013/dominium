@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -60,7 +65,7 @@ Applies to:
 - Owns any user-facing action mapping, UI state machines, and tool/editor input.
 - The only permitted way to affect deterministic simulation is to emit
   deterministic intents (`dg_pkt_intent`) into the SIM input stream
-  (`docs/SPEC_ACTIONS.md`, `docs/SPEC_PACKETS.md`).
+  (`docs/specs/SPEC_ACTIONS.md`, `docs/specs/SPEC_PACKETS.md`).
 
 ### Deterministic SIM layer
 - Location: `source/domino/sim/**`.
@@ -84,7 +89,7 @@ Applies to:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_DOMINO_AUDIO_UI_INPUT.md`
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_DOMINO_AUDIO_UI_INPUT.md`

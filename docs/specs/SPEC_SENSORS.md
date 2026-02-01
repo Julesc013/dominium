@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -174,8 +179,8 @@ Sensing is gameplay, not free omniscience.
 - Sensors auto-updating belief without events
 
 ## Integration points (mandatory)
-- Information model: `docs/SPEC_INFORMATION_MODEL.md`
-- Effect fields: `docs/SPEC_EFFECT_FIELDS.md`
+- Information model: `docs/specs/SPEC_INFORMATION_MODEL.md`
+- Effect fields: `docs/specs/SPEC_EFFECT_FIELDS.md`
 - Communication (future spec)
 - Epistemic UI layer
 - Command intent system

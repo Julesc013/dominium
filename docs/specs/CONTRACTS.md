@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Contracts (Public Header API Rules)
 
 This document defines the **API contract conventions** used by public headers in
@@ -8,7 +13,7 @@ referenced by per-symbol doc blocks to avoid repeating the same rules across hea
 ## Scope
 - Applies to declarations in public header trees that are consumed across
   translation units and/or module boundaries.
-- Does not replace subsystem specs under `docs/SPEC_*.md`; those specs remain
+- Does not replace subsystem specs under `docs/specs/SPEC_*.md`; those specs remain
   the canonical home for behavioral rules and invariants.
 
 ## Call Conventions
@@ -40,7 +45,7 @@ referenced by per-symbol doc blocks to avoid repeating the same rules across hea
 ## Data/ABI Rules
 - Public structs are **POD-only** across module boundaries (no C++ types, no STL).
 - If a struct is intended for cross-module ABI use, it must be **versioned and
-  size-stamped** as described in `docs/SPEC_ABI_TEMPLATES.md`.
+  size-stamped** as described in `docs/specs/SPEC_ABI_TEMPLATES.md`.
 - Do not rely on raw `memcmp()` of public structs for determinism or hashing
   unless the spec explicitly permits it (`docs/specs/SPEC_DETERMINISM.md`).
 

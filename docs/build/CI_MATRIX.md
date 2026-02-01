@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CI Matrix
 
 Dominium CI is split into two tiers: per-commit and scheduled canaries.

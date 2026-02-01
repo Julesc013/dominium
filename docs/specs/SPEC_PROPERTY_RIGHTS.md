@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -83,6 +88,6 @@ Future tests MUST include:
 - Provenance trace validation.
 
 ## Related specs
-- `docs/SPEC_LEDGER.md`
-- `docs/SPEC_CONTRACTS.md`
-- `docs/SPEC_PROVENANCE.md`
+- `docs/specs/SPEC_LEDGER.md`
+- `docs/specs/SPEC_CONTRACTS.md`
+- `docs/specs/SPEC_PROVENANCE.md`

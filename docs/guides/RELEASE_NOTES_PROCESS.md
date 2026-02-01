@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Release Notes + Tagging Process (Local, Offline)
 
 This project treats `scripts\build_codex_verify.bat` as the single “done gate”.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # TLV Transaction Journal (txn_journal.tlv)
 
 Purpose: record concrete file operations and their rollback inverses.

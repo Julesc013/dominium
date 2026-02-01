@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Headless and Zero-Pack Boot
 
 All products must boot and provide CLI-only functionality with zero packs
@@ -18,4 +23,3 @@ installed. No assets are embedded in executables.
 - Renderer backends are selected at runtime; explicit selection must fail if
   unavailable
 - Shader caches are optional and disposable; boot must not depend on caches
-

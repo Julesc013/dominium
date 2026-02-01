@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Installed-State Contract (Launcher)
 
 Note: This document describes the legacy DSU `installed_state.dsustate` used by

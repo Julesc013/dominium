@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Xcode Pre-build Script (UI Preview)
 
 Add a Run Script phase to `dominium-ui-preview-host-macos` with a command like:

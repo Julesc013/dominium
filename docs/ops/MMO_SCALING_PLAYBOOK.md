@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # MMO Scaling Playbook (OPS-SRZ)
 
 Status: EVOLVING.

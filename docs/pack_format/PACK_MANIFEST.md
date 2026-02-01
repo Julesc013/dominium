@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UPS Pack Manifest Format
 
 This document defines the canonical UPS pack manifest format. It MUST be read

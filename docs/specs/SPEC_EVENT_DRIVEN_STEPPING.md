@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -200,10 +205,10 @@ Fidelity remains macro until interest rises.
                              +----------- schedule ----------+
 
 ## References
-- Interest sets: `docs/SPEC_INTEREST_SETS.md`
-- Fidelity projection: `docs/SPEC_FIDELITY_PROJECTION.md`
-- Provenance: `docs/SPEC_PROVENANCE.md`
-- Time system: `docs/SPEC_TIME_CORE.md`
+- Interest sets: `docs/specs/SPEC_INTEREST_SETS.md`
+- Fidelity projection: `docs/specs/SPEC_FIDELITY_PROJECTION.md`
+- Provenance: `docs/specs/SPEC_PROVENANCE.md`
+- Time system: `docs/specs/SPEC_TIME_CORE.md`
 
 ## Test and validation requirements (spec-only)
 Implementations must provide:

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Compatibility Enforcement
 
 Compatibility checks are centralized in `dom_app_compat_check` and reused by

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UPS Fallback Matrix
 
 This matrix defines allowed fallback classes when capabilities are missing.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -40,8 +45,8 @@ contracts, and markets. Assets and instruments are data-defined and deterministi
 - Provenance and conservation rules.
 
 Out of scope:
-- Money formatting and standards (see `docs/SPEC_MONEY_STANDARDS.md`).
-- Market clearing (see `docs/SPEC_MARKETS.md`).
+- Money formatting and standards (see `docs/specs/SPEC_MONEY_STANDARDS.md`).
+- Market clearing (see `docs/specs/SPEC_MARKETS.md`).
 
 ## Definitions
 - Asset: A conserved unit of value or property identified by `asset_id`.
@@ -141,8 +146,8 @@ Future tests MUST include:
 - Deterministic ID hashing and ordering.
 
 ## Related specs
-- `docs/SPEC_LEDGER.md`
-- `docs/SPEC_CONTRACTS.md`
-- `docs/SPEC_MARKETS.md`
-- `docs/SPEC_MONEY_STANDARDS.md`
-- `docs/SPEC_PROVENANCE.md`
+- `docs/specs/SPEC_LEDGER.md`
+- `docs/specs/SPEC_CONTRACTS.md`
+- `docs/specs/SPEC_MARKETS.md`
+- `docs/specs/SPEC_MONEY_STANDARDS.md`
+- `docs/specs/SPEC_PROVENANCE.md`

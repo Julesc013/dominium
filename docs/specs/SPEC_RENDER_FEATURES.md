@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Render Feature Declaration Spec (REND0)
 
 Render features are declarative and validated.

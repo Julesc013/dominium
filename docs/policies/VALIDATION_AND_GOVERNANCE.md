@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Validation and Governance (GOV0)
 
 This document describes the unified governance validator and how it is used

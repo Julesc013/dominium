@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: docs/archive/architecture/DISTRIBUTED_SIM_MODEL.md
+Superseded By: none
+
 # Distributed Simulation Model (MMO-SRZ)
 
 Status: binding.
@@ -65,8 +70,6 @@ GPU/tensor use is allowed ONLY for:
 - No client-trusted outcomes without verification.
 
 ## See also
-
-- `docs/architecture/DISTRIBUTED_SIM_MODEL.md`
 - `docs/architecture/DISTRIBUTED_TIME_MODEL.md`
 - `docs/architecture/SRZ_MODEL.md`
 - `docs/architecture/SCALING_MODEL.md`
