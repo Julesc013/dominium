@@ -6,16 +6,16 @@ Superseded By: none
 # Post CLEAN-2 Status
 
 Date: 2026-02-01
-Verified Commit: f7009571
-Tag: canon-clean-2
+Verified Commit: 643a2332
+Tag: none (not created)
 
 Summary:
-- CLEAN-2 verification completed with full build and TestX coverage.
+- CLEAN-2 verification completed with full build and TestX coverage (verify-win-vs2026).
 - RepoX compliance confirmed with no violations.
-- Checkpoint determinism and recovery integrity verified.
+- Client/server smoke runs completed (headless).
 
 Known Warnings:
-- none
+- See `docs/architecture/KNOWN_WARNINGS.md`.
 
 Statement:
 “This repository state is canon-clean-2.
