@@ -18,6 +18,7 @@ add_library(domino_ui_ir STATIC
 
 target_include_directories(domino_ui_ir PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/tools/ui_shared/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -53,4 +54,6 @@ set_target_properties(domui_validate PROPERTIES
 )
 dist_set_role(domui_validate tools)
 
-add_subdirectory(tests)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+    add_subdirectory(tests)
+endif()
