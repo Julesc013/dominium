@@ -108,6 +108,72 @@
       }
     },
     {
+      "name": "dev-win-vs2026",
+      "displayName": "Dev Win VS 2026",
+      "inherits": "msvc-base",
+      "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_BUILD_TOOLS": "ON",
+        "DOM_BUILD_SETUP": "ON",
+        "DOM_BUILD_LAUNCHER": "ON",
+        "DOM_BUILD_GAME": "ON",
+        "DOM_BUILD_TESTS": "OFF",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
+      "name": "verify-win-vs2026",
+      "displayName": "Verify Win VS 2026 (C89/C++98)",
+      "inherits": "msvc-base",
+      "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_BUILD_TOOLS": "ON",
+        "DOM_BUILD_SETUP": "ON",
+        "DOM_BUILD_LAUNCHER": "ON",
+        "DOM_BUILD_GAME": "ON",
+        "DOM_BUILD_TESTS": "ON",
+        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD_REQUIRED": "ON",
+        "CMAKE_C_EXTENSIONS": "OFF",
+        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
+      "name": "release-win-vs2026",
+      "displayName": "Release Win VS 2026",
+      "inherits": "msvc-base",
+      "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Release",
+        "DOM_BUILD_TOOLS": "ON",
+        "DOM_BUILD_SETUP": "ON",
+        "DOM_BUILD_LAUNCHER": "ON",
+        "DOM_BUILD_GAME": "ON",
+        "DOM_BUILD_TESTS": "OFF",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
+      "name": "legacy-win-vs2015",
+      "displayName": "Legacy Win VS 2015",
+      "inherits": "msvc-base",
+      "generator": "Visual Studio 14 2015",
+      "binaryDir": "${sourceDir}/out/build/vs2015/${presetName}",
+      "architecture": "x64",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_BUILD_TOOLS": "ON",
+        "DOM_BUILD_SETUP": "ON",
+        "DOM_BUILD_LAUNCHER": "ON",
+        "DOM_BUILD_GAME": "ON"
+      }
+    },
+    {
       "name": "msvc-win32-dx9",
       "displayName": "MSVC Win32 + DX9 (Fallback)",
       "description": "Win32 platform fallback with DX9 renderer (SDL2 disabled).",
@@ -248,6 +314,38 @@
       "inherits": "macos-xcode-debug"
     },
     {
+      "name": "dev-macos-xcode",
+      "displayName": "Dev macOS Xcode",
+      "inherits": "macos-xcode-debug",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug"
+      }
+    },
+    {
+      "name": "verify-macos-xcode",
+      "displayName": "Verify macOS Xcode (C89/C++98)",
+      "inherits": "macos-xcode-debug",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_BUILD_TESTS": "ON",
+        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD_REQUIRED": "ON",
+        "CMAKE_C_EXTENSIONS": "OFF",
+        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF"
+      }
+    },
+    {
+      "name": "release-macos-xcode",
+      "displayName": "Release macOS Xcode",
+      "inherits": "macos-xcode-debug",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Release",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
       "name": "linux-debug",
       "displayName": "Linux GCC Debug",
       "generator": "Ninja",
@@ -318,6 +416,40 @@
       "name": "linux-dev",
       "displayName": "Linux Dev (Live UI Preview)",
       "inherits": "linux-debug"
+    },
+    {
+      "name": "dev-linux-gcc",
+      "displayName": "Dev Linux GCC",
+      "inherits": "linux-debug"
+    },
+    {
+      "name": "dev-linux-clang",
+      "displayName": "Dev Linux Clang",
+      "inherits": "linux-clang-debug"
+    },
+    {
+      "name": "verify-linux-gcc",
+      "displayName": "Verify Linux GCC (C89/C++98)",
+      "inherits": "linux-debug",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Debug",
+        "DOM_BUILD_TESTS": "ON",
+        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD_REQUIRED": "ON",
+        "CMAKE_C_EXTENSIONS": "OFF",
+        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF"
+      }
+    },
+    {
+      "name": "release-linux-gcc",
+      "displayName": "Release Linux GCC",
+      "inherits": "linux-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "DOM_BUILD_MODE": "Release"
+      }
     },
     {
       "name": "debug",
@@ -598,6 +730,26 @@
       "configuration": "Release"
     },
     {
+      "name": "dev-win-vs2026",
+      "configurePreset": "dev-win-vs2026",
+      "configuration": "Debug"
+    },
+    {
+      "name": "verify-win-vs2026",
+      "configurePreset": "verify-win-vs2026",
+      "configuration": "Debug"
+    },
+    {
+      "name": "release-win-vs2026",
+      "configurePreset": "release-win-vs2026",
+      "configuration": "Release"
+    },
+    {
+      "name": "legacy-win-vs2015",
+      "configurePreset": "legacy-win-vs2015",
+      "configuration": "Debug"
+    },
+    {
       "name": "msvc-debug",
       "configurePreset": "msvc-debug",
       "configuration": "Debug"
@@ -649,6 +801,21 @@
       ]
     },
     {
+      "name": "dev-macos-xcode",
+      "configurePreset": "dev-macos-xcode",
+      "configuration": "Debug"
+    },
+    {
+      "name": "verify-macos-xcode",
+      "configurePreset": "verify-macos-xcode",
+      "configuration": "Debug"
+    },
+    {
+      "name": "release-macos-xcode",
+      "configurePreset": "release-macos-xcode",
+      "configuration": "Release"
+    },
+    {
       "name": "linux-debug",
       "configurePreset": "linux-debug"
     },
@@ -666,6 +833,22 @@
       "targets": [
         "ui_preview_launcher_linux"
       ]
+    },
+    {
+      "name": "dev-linux-gcc",
+      "configurePreset": "dev-linux-gcc"
+    },
+    {
+      "name": "dev-linux-clang",
+      "configurePreset": "dev-linux-clang"
+    },
+    {
+      "name": "verify-linux-gcc",
+      "configurePreset": "verify-linux-gcc"
+    },
+    {
+      "name": "release-linux-gcc",
+      "configurePreset": "release-linux-gcc"
     },
     {
       "name": "msys2-debug",
@@ -724,6 +907,38 @@
       }
     },
     {
+      "name": "dev-win-vs2026",
+      "configurePreset": "dev-win-vs2026",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "verify-win-vs2026",
+      "configurePreset": "verify-win-vs2026",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "release-win-vs2026",
+      "configurePreset": "release-win-vs2026",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "legacy-win-vs2015",
+      "configurePreset": "legacy-win-vs2015",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "msvc-debug",
       "configurePreset": "msvc-debug",
       "configuration": "Debug",
@@ -756,8 +971,60 @@
       }
     },
     {
+      "name": "dev-macos-xcode",
+      "configurePreset": "dev-macos-xcode",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "verify-macos-xcode",
+      "configurePreset": "verify-macos-xcode",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "release-macos-xcode",
+      "configurePreset": "release-macos-xcode",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "linux-debug",
       "configurePreset": "linux-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "dev-linux-gcc",
+      "configurePreset": "dev-linux-gcc",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "dev-linux-clang",
+      "configurePreset": "dev-linux-clang",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "verify-linux-gcc",
+      "configurePreset": "verify-linux-gcc",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "release-linux-gcc",
+      "configurePreset": "release-linux-gcc",
       "output": {
         "outputOnFailure": true
       }

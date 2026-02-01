@@ -113,6 +113,80 @@ static void domui_widget_feature_key(domui_widget_type t, domui_string& out_key)
     }
 }
 
+static void domui_add_issue(std::vector<domui_validation_issue>& issues,
+                            int severity,
+                            domui_widget_id widget_id,
+                            const domui_string& feature_key,
+                            const domui_string& message);
+
+static bool domui_widget_is_interactive(domui_widget_type t)
+{
+    switch (t) {
+    case DOMUI_WIDGET_BUTTON:
+    case DOMUI_WIDGET_EDIT:
+    case DOMUI_WIDGET_LISTBOX:
+    case DOMUI_WIDGET_COMBOBOX:
+    case DOMUI_WIDGET_CHECKBOX:
+    case DOMUI_WIDGET_RADIO:
+    case DOMUI_WIDGET_TAB:
+    case DOMUI_WIDGET_TREEVIEW:
+    case DOMUI_WIDGET_LISTVIEW:
+    case DOMUI_WIDGET_SLIDER:
+    case DOMUI_WIDGET_TABS:
+    case DOMUI_WIDGET_TAB_PAGE:
+        return true;
+    default:
+        break;
+    }
+    return false;
+}
+
+static bool domui_props_has_string(const domui_props& props, const char* key)
+{
+    domui_value value;
+    if (!props.get(key, &value)) {
+        return false;
+    }
+    if (value.type != DOMUI_VALUE_STRING) {
+        return false;
+    }
+    return !value.v_string.empty();
+}
+
+static void domui_add_issue_missing_accessibility(std::vector<domui_validation_issue>& issues,
+                                                  domui_widget_id widget_id,
+                                                  const char* key)
+{
+    std::string msg = "validate: missing ";
+    msg += key;
+    domui_add_issue(issues, 0, widget_id, domui_string(key), domui_string(msg));
+}
+
+static void domui_validate_accessibility(const domui_doc* doc,
+                                         const std::vector<domui_widget_id>& widget_order,
+                                         std::vector<domui_validation_issue>& issues)
+{
+    size_t widx;
+    for (widx = 0u; widx < widget_order.size(); ++widx) {
+        const domui_widget* w = doc->find_by_id(widget_order[widx]);
+        if (!w) {
+            continue;
+        }
+        if (w->events.size() == 0u && !domui_widget_is_interactive(w->type)) {
+            continue;
+        }
+        if (!domui_props_has_string(w->props, "accessibility.name")) {
+            domui_add_issue_missing_accessibility(issues, w->id, "accessibility.name");
+        }
+        if (!domui_props_has_string(w->props, "accessibility.role")) {
+            domui_add_issue_missing_accessibility(issues, w->id, "accessibility.role");
+        }
+        if (!domui_props_has_string(w->props, "accessibility.description")) {
+            domui_add_issue_missing_accessibility(issues, w->id, "accessibility.description");
+        }
+    }
+}
+
 static bool domui_feature_for_property(domui_widget_type type, const domui_string& prop_key, domui_string& out_key)
 {
     if (type == DOMUI_WIDGET_LISTVIEW && domui_string_equal(prop_key, domui_string("listview.columns"))) {
@@ -270,6 +344,7 @@ bool domui_validate_doc(const domui_doc* doc, const domui_target_set* targets, d
     std::vector<domui_validation_issue> issues;
     std::vector<domui_backend_target> backend_targets;
     domui_target_set effective_targets;
+    std::vector<domui_widget_id> widget_order;
     size_t i;
 
     if (!doc) {
@@ -378,6 +453,8 @@ bool domui_validate_doc(const domui_doc* doc, const domui_target_set* targets, d
     }
 
     /* Validate widgets against targets. */
+    doc->canonical_widget_order(widget_order);
+    domui_validate_accessibility(doc, widget_order, issues);
     for (i = 0u; i < backend_targets.size(); ++i) {
         const domui_backend_caps* backend = domui_get_backend_caps(backend_targets[i].backend_id);
         size_t t;
@@ -386,14 +463,12 @@ bool domui_validate_doc(const domui_doc* doc, const domui_target_set* targets, d
         }
         for (t = 0u; t < backend_targets[i].tiers.size(); ++t) {
             const domui_tier_caps* tier = domui_get_tier_caps(backend, backend_targets[i].tiers[t]);
-            std::vector<domui_widget_id> widget_order;
             size_t widx;
 
             if (!tier) {
                 continue;
             }
 
-            doc->canonical_widget_order(widget_order);
             for (widx = 0u; widx < widget_order.size(); ++widx) {
                 const domui_widget* w = doc->find_by_id(widget_order[widx]);
                 domui_string feature_key;
