@@ -51,6 +51,8 @@ unit.morale.level, morale, unit.morale.level, 1, symbolic morale level (0..1)
 unit.morale.decay_per_tick, morale_rate, unit.morale.decay_per_tick, 1, morale decay per ACT tick
 unit.force.capacity, force_capacity, unit.force.capacity, 1, symbolic force capacity units
 unit.order.key, ordering, unit.order.key, 1, deterministic ordering key
+unit.count, count, unit.count, 1, unitless count of items
+unit.hash.value, hash, unit.hash.value, 1, deterministic hash token
 unit.weapon.rate_per_tick, weapon_rate, unit.weapon.rate_per_tick, 1, symbolic weapon rate per ACT tick
 unit.institution.enforcement_capacity, institution_capacity, unit.institution.enforcement_capacity, 1, symbolic enforcement capacity
 unit.institution.resource_budget, institution_budget, unit.institution.resource_budget, 1, symbolic enforcement/resource budget

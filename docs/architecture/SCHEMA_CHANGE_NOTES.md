@@ -55,3 +55,9 @@ Template:
   Change: add AI goal, delegation, and autonomy budget contracts for T24 baseline
   Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
   Migration: none (new schemas)
+
+- Date: 2026-02-01
+  Schema(s): schema/srz.zone.schema; schema/srz.assignment.schema; schema/srz.policy.schema; schema/process.log.schema; schema/process.hashchain.schema; schema/state.delta.schema
+  Change: add SRZ execution, verification, and proof contracts
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)

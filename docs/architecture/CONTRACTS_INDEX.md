@@ -168,6 +168,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/ops/LOGGING_MODEL.md` | EVOLVING | Server logging format and rotation |
 | `docs/ops/LONG_RUN_EXPECTATIONS.md` | EVOLVING | Long-run stability expectations |
 | `docs/ops/SERVER_OPERATIONS.md` | EVOLVING | Server CLI operations |
+| `docs/ops/MMO_SCALING_PLAYBOOK.md` | EVOLVING | SRZ scaling operations playbook |
 | `docs/dev/REPLAY_WORKFLOW.md` | EVOLVING | Replay-first workflow |
 | `docs/dev/TOOLS_GUIDE.md` | EVOLVING | Read-only tooling guide |
 | `docs/dev/REPLAY_DEBUGGING.md` | EVOLVING | Replay debugging process |
@@ -186,6 +187,10 @@ document is binding but still expected to grow or sharpen.
 
 
 | `docs/architecture/DISTRIBUTED_SIM_MODEL.md` | EVOLVING | Distributed simulation details |
+| `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md` | EVOLVING | SRZ-aware distributed execution model |
+| `docs/architecture/SRZ_MODEL.md` | EVOLVING | Simulation responsibility zones and verification |
+| `docs/architecture/EPISTEMICS_MODEL.md` | EVOLVING | Epistemic constraints and knowledge limits |
+| `docs/architecture/EPISTEMICS_AND_SCALED_MMO.md` | EVOLVING | Fog-of-war preservation at scale |
 
 
 | `docs/architecture/DISTRIBUTED_TIME_MODEL.md` | EVOLVING | Distributed time details |
