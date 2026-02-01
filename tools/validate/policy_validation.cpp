@@ -60,19 +60,19 @@ static void require_governance_ref(const ValidationContext& ctx,
 }
 
 void validate_policy_docs(const ValidationContext& ctx, ValidationReport& report) {
-    require_doc(ctx, report, "docs/LONG_TERM_SUPPORT_POLICY.md",
+    require_doc(ctx, report, "docs/policies/LONG_TERM_SUPPORT_POLICY.md",
                 "FINAL-API-001", "long-term support policy missing",
                 "abi notes");
-    require_doc(ctx, report, "docs/DEPRECATION_POLICY.md",
+    require_doc(ctx, report, "docs/policies/DEPRECATION_POLICY.md",
                 "FINAL-DOC-001", "deprecation policy missing",
                 "deprecation");
-    require_doc(ctx, report, "docs/COMPATIBILITY_PROMISES.md",
+    require_doc(ctx, report, "docs/policies/COMPATIBILITY_PROMISES.md",
                 "FINAL-COMPAT-001", "compatibility promises missing",
                 "schema major");
-    require_doc(ctx, report, "docs/FEATURE_EPOCH_POLICY.md",
+    require_doc(ctx, report, "docs/policies/FEATURE_EPOCH_POLICY.md",
                 "FINAL-EPOCH-001", "feature epoch policy missing",
                 "epoch bump");
-    require_doc(ctx, report, "docs/RENDER_BACKEND_LIFECYCLE.md",
+    require_doc(ctx, report, "docs/policies/RENDER_BACKEND_LIFECYCLE.md",
                 "FINAL-RENDER-001", "render backend lifecycle missing",
                 "deprecation");
 

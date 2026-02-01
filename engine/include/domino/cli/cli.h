@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_CLI_CLI_H_INCLUDED
 #define DOMINO_CLI_CLI_H_INCLUDED
@@ -88,25 +88,25 @@ typedef struct d_cli_args {
 /* Tokenize an argv array (does not copy strings; caller keeps argv alive). */
 int  d_cli_tokenize(int argc, const char** argv, d_cli_args* out_args);
 /* Purpose: Args dispose.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_cli_args_dispose(d_cli_args* args);
 
 /* Token helpers */
 const d_cli_token* d_cli_find_option(const d_cli_args* args, const char* key);
 /* Purpose: Get positional.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const d_cli_token* d_cli_get_positional(const d_cli_args* args, int index);
 /* Purpose: Count positionals.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  d_cli_count_positionals(const d_cli_args* args);
 /* Purpose: Match key.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  d_cli_match_key(const d_cli_token* tok, const char* key);
 
@@ -121,12 +121,12 @@ typedef struct d_cli_instance {
 } d_cli_instance;
 
 /* Purpose: Instance reset.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_cli_instance_reset(d_cli_instance* inst);
 /* Purpose: Extract instance.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  d_cli_extract_instance(const d_cli_args* args, d_cli_instance* inst);
 
@@ -156,11 +156,11 @@ typedef struct d_cli {
 } d_cli;
 
 /* Purpose: Init cli.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_cli_init(d_cli* cli, const char* program, const char* version);
 /* Purpose: Shutdown cli.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_cli_shutdown(d_cli* cli);
 
@@ -177,12 +177,12 @@ int  d_cli_dispatch(d_cli* cli, int argc, const char** argv);
 /* Accessors */
 const d_cli_instance* d_cli_get_instance(const d_cli* cli);
 /* Purpose: Get program.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const char*           d_cli_get_program(const d_cli* cli);
 /* Purpose: Get version.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const char*           d_cli_get_version(const d_cli* cli);

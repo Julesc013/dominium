@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (internal header).
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 /* World frame graph (C89).
  *
@@ -21,7 +21,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  * - Frame IDs are stable numeric identifiers (total order).
  * - Traversal is bounded and non-recursive (fixed maximum depth).
  *
- * See docs/SPEC_DOMAINS_FRAMES_PROP.md and docs/SPEC_POSE_AND_ANCHORS.md
+ * See docs/specs/SPEC_DOMAINS_FRAMES_PROP.md and docs/specs/SPEC_POSE_AND_ANCHORS.md
  */
 #ifndef D_WORLD_FRAME_H
 #define D_WORLD_FRAME_H

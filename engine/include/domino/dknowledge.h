@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_DKNOWLEDGE_H
 #define DOMINO_DKNOWLEDGE_H
@@ -53,22 +53,22 @@ typedef struct {
 } KnowledgeBase;
 
 /* Purpose: Create dknowledge.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Id value (0 is commonly used as the invalid/failure sentinel for `*Id` typedefs).
  */
 KnowledgeId    dknowledge_create(U32 capacity);
 /* Purpose: Get dknowledge.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 KnowledgeBase *dknowledge_get(KnowledgeId id);
 /* Purpose: Destroy dknowledge.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void           dknowledge_destroy(KnowledgeId id);
 
 /* Purpose: Observe dknowledge.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dknowledge_observe(KnowledgeId id,
                         const KnowledgeKey *key,
@@ -76,14 +76,14 @@ void dknowledge_observe(KnowledgeId id,
                         Q16_16 confidence);
 
 /* Purpose: Query dknowledge.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 const KnowledgeRecord *dknowledge_query(const KnowledgeBase *kb,
                                         const KnowledgeKey *key);
 
 /* Purpose: Mark tile visible.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void dknowledge_mark_tile_visible(KnowledgeId id,
                                   TileCoord x,

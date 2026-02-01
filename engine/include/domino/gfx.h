@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 /* Domino minimal graphics IR (C89). */
 #ifndef D_GFX_H
@@ -115,26 +115,26 @@ void d_gfx_shutdown(void);
 /* Allocate / reset command buffer for current frame. */
 d_gfx_cmd_buffer *d_gfx_cmd_buffer_begin(void);
 /* Purpose: Cmd buffer end.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void              d_gfx_cmd_buffer_end(d_gfx_cmd_buffer *buf);
 
 /* Append commands. These are helpers; you may also expose a raw append if needed. */
 void d_gfx_cmd_clear(d_gfx_cmd_buffer *buf, d_gfx_color color);
 /* Purpose: Cmd set viewport.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_gfx_cmd_set_viewport(d_gfx_cmd_buffer *buf, const d_gfx_viewport *vp);
 /* Purpose: Cmd set camera.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_gfx_cmd_set_camera(d_gfx_cmd_buffer *buf, const d_gfx_camera *cam);
 /* Purpose: Cmd draw rect.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_gfx_cmd_draw_rect(d_gfx_cmd_buffer *buf, const d_gfx_draw_rect_cmd *rect);
 /* Purpose: Cmd draw text.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void d_gfx_cmd_draw_text(d_gfx_cmd_buffer *buf, const d_gfx_draw_text_cmd *text);
 
@@ -147,18 +147,18 @@ void d_gfx_present(void);
 /* Optional helper: query current backbuffer size (soft backend only). */
 void d_gfx_get_surface_size(i32 *out_w, i32 *out_h);
 /* Purpose: Bind native surface/window to current renderer.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  d_gfx_bind_surface(void* native_window, i32 width, i32 height);
 /* Purpose: Resize render surface/backbuffer.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int  d_gfx_resize(i32 width, i32 height);
 /* Purpose: Get native window handle bound to renderer.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 void* d_gfx_get_native_window(void);
 
@@ -215,8 +215,8 @@ typedef struct dgfx_native_api_v1 {
 } dgfx_native_api_v1;
 
 /* Purpose: Api dgfx get ir.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 dgfx_result dgfx_get_ir_api(u32 requested_abi, dgfx_ir_api_v1* out);
 
@@ -312,38 +312,38 @@ typedef struct dgfx_desc_t {
 } dgfx_desc;
 
 /* Purpose: Init dgfx.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int               dgfx_init(const dgfx_desc *desc);
 /* Purpose: Shutdown dgfx.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void              dgfx_shutdown(void);
 /* Purpose: Frame dgfx begin.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void              dgfx_begin_frame(void);
 /* Purpose: Execute dgfx.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void              dgfx_execute(const dgfx_cmd_buffer *cmd);
 /* Purpose: Frame dgfx end.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void              dgfx_end_frame(void);
 /* Purpose: Buffer dgfx get frame cmd.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 dgfx_cmd_buffer  *dgfx_get_frame_cmd_buffer(void);
 /* Purpose: Reset dgfx cmd buffer.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void              dgfx_cmd_buffer_reset(dgfx_cmd_buffer *buf);
 /* Purpose: Emit dgfx cmd.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 int               dgfx_cmd_emit(dgfx_cmd_buffer *buf,
                                 u16 opcode,

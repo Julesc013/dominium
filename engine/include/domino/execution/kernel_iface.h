@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Determinism must be enforced by callers based on task class.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md`.
 */
 #ifndef DOMINO_EXECUTION_KERNEL_IFACE_H
 #define DOMINO_EXECUTION_KERNEL_IFACE_H

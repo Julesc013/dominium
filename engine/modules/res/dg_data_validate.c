@@ -9,7 +9,7 @@ THREADING MODEL: No internal synchronization; callers must serialize access unle
 ERROR MODEL: Validation report + result enum; no exceptions.
 DETERMINISM: Deterministic ordering and checks; no randomness or OS time.
 VERSIONING / ABI / DATA FORMAT NOTES: See schema/SCHEMA_VERSIONING.md.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #include <stdlib.h>
 #include <string.h>

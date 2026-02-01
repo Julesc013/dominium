@@ -7,13 +7,13 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (internal header).
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 /* Deterministic promotion/demotion planner for the representation ladder (C89).
  *
- * Algorithm (authoritative; see docs/SPEC_LOD.md):
+ * Algorithm (authoritative; see docs/specs/SPEC_LOD.md):
  *  1) Gather candidates from chunk-aligned indices (no unordered iteration).
  *  2) Compute deterministic interest score for each candidate (fixed-point).
  *  3) Determine desired rep state from score thresholds (engine defaults).

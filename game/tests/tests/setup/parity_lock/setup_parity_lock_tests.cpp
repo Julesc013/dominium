@@ -460,7 +460,7 @@ static int require_marker(const std::string &path, const char *marker) {
 }
 
 static int check_parity_lock_matrix(const std::string &repo_root) {
-    std::string path = join_path(repo_root, "docs/setup/PARITY_LOCK_MATRIX.md");
+    std::string path = join_path(repo_root, "docs/specs/setup/PARITY_LOCK_MATRIX.md");
     if (require_marker(path, "adapter=cli") != 0) return 1;
     if (require_marker(path, "adapter=tui") != 0) return 1;
     if (require_marker(path, "adapter=windows_exe") != 0) return 1;

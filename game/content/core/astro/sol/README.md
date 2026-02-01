@@ -14,5 +14,5 @@ Mechanics coverage:
   `data/core/mechanics/site_profiles.toml`.
 
 See:
-- `docs/SPEC_COSMO_CORE_DATA.md`
-- `docs/SPEC_MECHANICS_PROFILES.md`
+- `docs/specs/SPEC_COSMO_CORE_DATA.md`
+- `docs/specs/SPEC_MECHANICS_PROFILES.md`

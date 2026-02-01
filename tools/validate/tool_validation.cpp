@@ -48,7 +48,7 @@ void validate_tooling_inventory(const ValidationContext& ctx, ValidationReport& 
                       "TOOL0-VAL-001", "event timeline implementation missing");
     require_text_file(ctx, report, "tools/tests/tool0_inspection_tests.cpp",
                       "TOOL0-VAL-001", "tooling inspection tests missing");
-    require_text_file(ctx, report, "docs/TOOLING_OVERVIEW.md",
+    require_text_file(ctx, report, "docs/guides/TOOLING_OVERVIEW.md",
                       "TOOL0-VAL-001", "tooling overview documentation missing");
 }
 

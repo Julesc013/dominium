@@ -15,5 +15,5 @@ for the deterministic engine core (C89).
 - `frame/` frame graph / coordinate frames used by simulation.
 
 ## Specs
-See `docs/SPEC_DOMAINS_FRAMES_PROP.md`, `docs/SPEC_POSE_AND_ANCHORS.md`,
-and `docs/SPEC_DETERMINISM.md`.
+See `docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`, `docs/specs/SPEC_POSE_AND_ANCHORS.md`,
+and `docs/specs/SPEC_DETERMINISM.md`.

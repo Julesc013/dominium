@@ -5,5 +5,5 @@ compiled to TLV packs by `coredata_compile` and consumed by runtime as
 deterministic data.
 
 See:
-- `docs/SPEC_CORE_DATA.md`
-- `docs/SPEC_COSMO_CORE_DATA.md`
+- `docs/specs/SPEC_CORE_DATA.md`
+- `docs/specs/SPEC_COSMO_CORE_DATA.md`

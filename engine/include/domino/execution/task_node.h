@@ -7,8 +7,8 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` and EXEC0/EXEC0b/EXEC0c.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md`.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` and EXEC0/EXEC0b/EXEC0c.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md`.
 EXTENSION POINTS: Extend via public headers and relevant specs.
 */
 #ifndef DOMINO_EXECUTION_TASK_NODE_H

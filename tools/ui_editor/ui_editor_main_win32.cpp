@@ -9,7 +9,7 @@ THREADING MODEL: Single-threaded tool entry; no internal synchronization unless 
 ERROR MODEL: Process exit codes and console diagnostics; no exceptions.
 DETERMINISM: N/A (tooling/UI layer).
 VERSIONING / ABI / DATA FORMAT NOTES: N/A.
-EXTENSION POINTS: Extend via UI editor modules and schema tooling; see `docs/ui_editor/README.md`.
+EXTENSION POINTS: Extend via UI editor modules and schema tooling; see `docs/guides/ui_editor/README.md`.
 */
 // UI Editor implementation scaffold.
 #include <stdio.h>

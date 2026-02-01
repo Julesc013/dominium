@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_BASELINE_H
 #define DOMINO_BASELINE_H
@@ -36,8 +36,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
  * Thread-safety: N/A.
  *
  * See also:
- * - `docs/SPEC_LANGUAGE_BASELINES.md` (baseline visibility rules)
- * - `docs/SPEC_CORE.md#Types and ids` (engine base types)
+ * - `docs/specs/SPEC_LANGUAGE_BASELINES.md` (baseline visibility rules)
+ * - `docs/specs/SPEC_CORE.md#Types and ids` (engine base types)
  */
 
 /* Detect whether the build already provides fixed-width integer limits (stdint-like). */

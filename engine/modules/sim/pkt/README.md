@@ -12,5 +12,5 @@ TLV-versioned packet families used by deterministic simulation and lockstep.
 - No gameplay semantics; packets are generic carriers.
 
 ## Spec
-See `docs/SPEC_PACKETS.md` and `docs/SPEC_DETERMINISM.md`.
+See `docs/specs/SPEC_PACKETS.md` and `docs/specs/SPEC_DETERMINISM.md`.
 

@@ -5,8 +5,8 @@ Files under `/data/core` are compiled into deterministic TLV packs by
 `coredata_compile`; runtime code never reads these files directly.
 
 Authoring rules and sim-affecting boundaries are defined in:
-- `docs/SPEC_CORE_DATA.md`
-- `docs/SPEC_CORE_DATA_PIPELINE.md`
+- `docs/specs/SPEC_CORE_DATA.md`
+- `docs/specs/SPEC_CORE_DATA_PIPELINE.md`
 
 Consistency notes (v1):
 - `evidence_grade` marks confirmed vs candidate anchors; candidates must never

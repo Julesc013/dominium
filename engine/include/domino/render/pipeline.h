@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as nee
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
-EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` without cross-layer coupling.
+DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
 */
 #ifndef DOMINO_RENDER_PIPELINE_H_INCLUDED
 #define DOMINO_RENDER_PIPELINE_H_INCLUDED
@@ -58,51 +58,51 @@ typedef struct d_gfx_material {
 } d_gfx_material;
 
 /* Purpose: Default d gfx material.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
- * Returns: See `docs/CONTRACTS.md#Return Values / Errors`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
+ * Returns: See `docs/specs/CONTRACTS.md#Return Values / Errors`.
  */
 d_gfx_material d_gfx_material_default(void);
 
 /* Purpose: Create gfx pipeline.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 d_gfx_pipeline* d_gfx_pipeline_create(d_gfx_backend_type backend);
 /* Purpose: Destroy gfx pipeline.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            d_gfx_pipeline_destroy(d_gfx_pipeline* pipe);
 
 /* Purpose: Create gfx target.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 d_gfx_target*   d_gfx_target_create(d_gfx_pipeline* pipe, i32 width, i32 height);
 /* Purpose: Destroy gfx target.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            d_gfx_target_destroy(d_gfx_pipeline* pipe, d_gfx_target* target);
 
 /* Purpose: Create gfx pass.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  * Returns: Non-NULL on success; NULL on failure or when not found.
  */
 d_gfx_pass*     d_gfx_pass_create(d_gfx_pipeline* pipe, d_gfx_target* target);
 /* Purpose: Destroy gfx pass.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            d_gfx_pass_destroy(d_gfx_pipeline* pipe, d_gfx_pass* pass);
 
 /* Purpose: Begin d gfx pass.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            d_gfx_pass_begin(d_gfx_pass* pass);
 /* Purpose: End d gfx pass.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            d_gfx_pass_end(d_gfx_pass* pass);
 /* Purpose: Ir d gfx pass submit.
- * Parameters: See `docs/CONTRACTS.md#Parameters`.
+ * Parameters: See `docs/specs/CONTRACTS.md#Parameters`.
  */
 void            d_gfx_pass_submit_ir(d_gfx_pass* pass, const struct d_gfx_ir_command* cmds, u32 count);
 
