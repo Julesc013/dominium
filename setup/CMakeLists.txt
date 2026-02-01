@@ -45,6 +45,24 @@ set_target_properties(setup_gui PROPERTIES
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
+if(WIN32)
+    add_executable(setup_app_win32 WIN32
+        gui/setup_app_win32.cpp
+    )
+    target_link_libraries(setup_app_win32 PRIVATE
+        libs::appcore
+        shared_ui::win32
+    )
+    set_target_properties(setup_app_win32 PROPERTIES
+        OUTPUT_NAME "setup_app_win32"
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    if(MSVC)
+        target_compile_options(setup_app_win32 PRIVATE /W4 /WX)
+    endif()
+endif()
 add_executable(setup_tui
     tui/dsu_tui_stub.c
 )

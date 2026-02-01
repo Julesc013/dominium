@@ -53,6 +53,25 @@ set_target_properties(dominium-tools PROPERTIES
 add_executable(dom_tools ALIAS dominium-tools)
 dom_register_product(tools dominium-tools)
 
+if(WIN32)
+    add_executable(tools_app_win32 WIN32
+        gui/tools_app_win32.cpp
+    )
+    target_link_libraries(tools_app_win32 PRIVATE
+        libs::appcore
+        shared_ui::win32
+    )
+    set_target_properties(tools_app_win32 PROPERTIES
+        OUTPUT_NAME "tools_app_win32"
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    if(MSVC)
+        target_compile_options(tools_app_win32 PRIVATE /W4 /WX)
+    endif()
+endif()
+
 add_executable(dom_tool_artifactmeta
     artifactmeta/tool_artifactmeta.c
 )

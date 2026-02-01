@@ -25,3 +25,4 @@ target_include_directories(libs_netproto INTERFACE
 add_library(libs::netproto ALIAS libs_netproto)
 
 add_subdirectory(contracts)
+add_subdirectory(appcore)

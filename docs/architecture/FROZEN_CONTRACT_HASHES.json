@@ -14,7 +14,7 @@
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "710c2692041340dc13bd89d1c9b48d383a31f9ed0924380aa0acb8195e1055ce"
+      "sha256": "35d2a8ee2ad7e03027a09e69cd6b59ac2c0d060cd328e8efa59b48a567c1bff8"
     },
     {
       "path": "docs/architecture/REPO_NAV.md",
@@ -22,7 +22,7 @@
     },
     {
       "path": "docs/architecture/REPO_INTENT.md",
-      "sha256": "c555075dee5d00c0ebf384fb8963cbde6f36d8d01d29fb24199bbed3aeba002a"
+      "sha256": "abb327f5286b11e8688f92833884a975f3a735c93cee0d29e2f99ce2c1f48fd1"
     },
     {
       "path": "docs/architecture/ID_AND_NAMESPACE_RULES.md",

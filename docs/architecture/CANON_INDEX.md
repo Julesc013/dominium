@@ -14,6 +14,8 @@ If it is not listed here as CANONICAL, it is not binding.
 - `docs/architecture/ANTI_CHEAT_AND_INTEGRITY.md`
 - `docs/architecture/ANTI_CHEAT_AS_LAW.md`
 - `docs/architecture/ANTI_ENTROPY_RULES.md`
+- `docs/architecture/APP_CANON0.md`
+- `docs/architecture/APP_CANON1.md`
 - `docs/architecture/ARCH0_CONSTITUTION.md`
 - `docs/architecture/ARCHITECTURE.md`
 - `docs/architecture/ARCHITECTURE_LAYERS.md`
@@ -259,6 +261,7 @@ If it is not listed here as CANONICAL, it is not binding.
 
 ## DERIVED
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
+- `docs/architecture/APPLICATION_CONTRACTS.md`
 - `docs/architecture/HISTORY_AND_CIVILIZATION_MODEL.md`
 - `docs/architecture/KNOWN_WARNINGS.md`
 - `docs/architecture/POST_CLEAN_2_STATUS.md`

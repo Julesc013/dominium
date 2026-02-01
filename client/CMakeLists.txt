@@ -31,3 +31,22 @@ set_target_properties(dominium_client PROPERTIES
 )
 add_executable(dom_client ALIAS dominium_client)
 dom_register_product(client dominium_client)
+
+if(WIN32)
+    add_executable(client_app_win32 WIN32
+        gui/client_app_win32.cpp
+    )
+    target_link_libraries(client_app_win32 PRIVATE
+        libs::appcore
+        shared_ui::win32
+    )
+    set_target_properties(client_app_win32 PROPERTIES
+        OUTPUT_NAME "client_app_win32"
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    if(MSVC)
+        target_compile_options(client_app_win32 PRIVATE /W4 /WX)
+    endif()
+endif()

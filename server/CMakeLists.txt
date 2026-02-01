@@ -45,6 +45,25 @@ target_include_directories(dominium_server PRIVATE
 add_executable(dom_server ALIAS dominium_server)
 dom_register_product(server dominium_server)
 
+if(WIN32)
+    add_executable(server_app_win32 WIN32
+        gui/server_app_win32.cpp
+    )
+    target_link_libraries(server_app_win32 PRIVATE
+        libs::appcore
+        shared_ui::win32
+    )
+    set_target_properties(server_app_win32 PROPERTIES
+        OUTPUT_NAME "server_app_win32"
+        CXX_STANDARD 98
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    if(MSVC)
+        target_compile_options(server_app_win32 PRIVATE /W4 /WX)
+    endif()
+endif()
+
 if(DOM_BUILD_TESTS)
     add_executable(dominium_server_shard_tests
         tests/shard_api_tests.cpp
