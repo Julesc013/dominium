@@ -4,7 +4,7 @@ schema_version: 1.0.0
 stability: core
 
 PURPOSE:
-- Define SRZ execution assignments and authority tokens.
+- Define SRZ assignments that bind execution authority to executors.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -13,8 +13,8 @@ STABILITY GUARANTEES:
 - Identifiers are stable and MUST NOT be reused with new meaning.
 
 NON-SEMANTICS:
-- Assignments do NOT grant capabilities outside declared baselines.
-- Assignments do NOT alter simulation rules.
+- Assignments do NOT grant new capabilities or bypass law.
+- Expiry does NOT imply automatic renewal.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
@@ -40,12 +40,12 @@ record srz_assignment
     - assignment_id: id
     - srz_id: id
     - executor_ref: id
-    - authority_token: id
-    - capability_baseline_id: id
+    - authority_token_ref: id
+    - capability_baseline_ref: id
     - start_tick: quantity
     - expiry_tick: quantity
-    - unit_annotations: map
     - provenance: provenance
+    - unit_annotations: map
     - maturity: tag
     - extensions: map
   optional:
