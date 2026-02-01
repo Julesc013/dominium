@@ -11,6 +11,7 @@ def main() -> int:
     repo_root = os.path.abspath(args.repo_root)
 
     invariant_id = "INV-REPORT-COMPLIANCE"
+    canon_invariant = "INV-REPORT-CANON"
     script = os.path.join(repo_root, "scripts", "ci", "compliance_report.py")
     if not os.path.isfile(script):
         print("{}: missing compliance_report.py".format(invariant_id))
@@ -25,10 +26,22 @@ def main() -> int:
         return result.returncode
 
     output = result.stdout or ""
-    required = ["COMPLIANCE_REPORT", "build_number:", "schema_versions:", "invariants_enforced:"]
+    required = [
+        "COMPLIANCE_REPORT",
+        "build_number:",
+        "schema_versions:",
+        "invariants_enforced:",
+    ]
+    canon_required = ["CANON_COMPLIANCE_REPORT"]
     missing = [token for token in required if token not in output]
     if missing:
         print("{}: compliance report missing fields: {}".format(invariant_id, ", ".join(missing)))
+        if output:
+            print(output.strip())
+        return 1
+    missing_canon = [token for token in canon_required if token not in output]
+    if missing_canon:
+        print("{}: compliance report missing canon section: {}".format(canon_invariant, ", ".join(missing_canon)))
         if output:
             print(output.strip())
         return 1

@@ -67,6 +67,34 @@ def load_invariants(repo_root):
     return sorted(set(invariants))
 
 
+def load_canon_index(repo_root):
+    path = os.path.join(repo_root, "docs", "architecture", "CANON_INDEX.md")
+    if not os.path.isfile(path):
+        return None
+    canon = {"CANONICAL": [], "DERIVED": [], "HISTORICAL": []}
+    current = None
+    with open(path, "r", encoding="utf-8", errors="replace") as handle:
+        for raw in handle:
+            line = raw.strip()
+            if line == "## CANONICAL":
+                current = "CANONICAL"
+                continue
+            if line == "## DERIVED":
+                current = "DERIVED"
+                continue
+            if line == "## HISTORICAL":
+                current = "HISTORICAL"
+                continue
+            if line.startswith("## "):
+                current = None
+                continue
+            if current and line.startswith("-"):
+                match = re.search(r"`([^`]+)`", line)
+                if match:
+                    canon[current].append(match.group(1))
+    return canon
+
+
 def load_overrides(repo_root):
     path = os.path.join(repo_root, "docs", "architecture", "LOCKLIST_OVERRIDES.json")
     if not os.path.isfile(path):
@@ -109,6 +137,7 @@ def main() -> int:
     build_number = parse_build_number(repo_root)
     invariants = load_invariants(repo_root)
     active_overrides, expired_overrides = load_overrides(repo_root)
+    canon_index = load_canon_index(repo_root)
 
     schema_entries = []
     for path in iter_schema_files(repo_root):
@@ -141,6 +170,15 @@ def main() -> int:
     print("overrides_expired: {}".format(len(expired_overrides)))
     for entry in expired_overrides:
         print("  - {} {} expired {}".format(entry.get("id"), entry.get("invariant"), entry.get("expires")))
+
+    print("CANON_COMPLIANCE_REPORT")
+    if canon_index is None:
+        print("canon_index: missing")
+    else:
+        print("canon_index: docs/architecture/CANON_INDEX.md")
+        print("canon_docs: {}".format(len(canon_index.get("CANONICAL", []))))
+        print("derived_docs: {}".format(len(canon_index.get("DERIVED", []))))
+        print("historical_docs: {}".format(len(canon_index.get("HISTORICAL", []))))
 
     return 0
 

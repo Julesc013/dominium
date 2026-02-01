@@ -54,6 +54,7 @@ OVERRIDES_PATH = os.path.join("docs", "architecture", "LOCKLIST_OVERRIDES.json")
 FROZEN_SECTION = "## Frozen constitutional surfaces"
 NEXT_SECTION_PREFIX = "## "
 PATH_RE = re.compile(r"`([^`]+)`")
+DOC_REF_RE = re.compile(r"docs/[A-Za-z0-9_./-]+\.(?:md|txt)", re.IGNORECASE)
 
 ALLOWED_ARCHIVE_ROOTS = (
     "docs/archive",
@@ -61,6 +62,11 @@ ALLOWED_ARCHIVE_ROOTS = (
     "labs",
     "tmp",
 )
+
+CANON_INDEX_PATH = "docs/architecture/CANON_INDEX.md"
+DOCS_ROOT = "docs"
+DOC_EXTS = [".md", ".txt"]
+DOC_STATUS_VALUES = {"CANONICAL", "DERIVED", "HISTORICAL"}
 
 
 def repo_rel(repo_root, path):
@@ -255,6 +261,211 @@ def load_frozen_paths(repo_root):
         return []
     text = read_text(index_path) or ""
     return parse_frozen_paths(text)
+
+
+def load_canon_index(repo_root):
+    path = os.path.join(repo_root, CANON_INDEX_PATH)
+    if not os.path.isfile(path):
+        return None
+    text = read_text(path) or ""
+    canon = {"CANONICAL": set(), "DERIVED": set(), "HISTORICAL": set()}
+    current = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped == "## CANONICAL":
+            current = "CANONICAL"
+            continue
+        if stripped == "## DERIVED":
+            current = "DERIVED"
+            continue
+        if stripped == "## HISTORICAL":
+            current = "HISTORICAL"
+            continue
+        if stripped.startswith("## "):
+            current = None
+            continue
+        if current and stripped.startswith("-"):
+            match = PATH_RE.search(stripped)
+            if match:
+                canon[current].add(normalize_path(match.group(1)))
+    return canon
+
+
+def parse_doc_header(text):
+    if text is None:
+        return None
+    lines = text.splitlines()
+    if len(lines) < 4:
+        return None
+    if not (lines[0].startswith("Status:") and lines[1].startswith("Last Reviewed:")
+            and lines[2].startswith("Supersedes:") and lines[3].startswith("Superseded By:")):
+        return None
+    return {
+        "status": lines[0].split(":", 1)[1].strip(),
+        "reviewed": lines[1].split(":", 1)[1].strip(),
+        "supersedes": lines[2].split(":", 1)[1].strip(),
+        "superseded_by": lines[3].split(":", 1)[1].strip(),
+    }
+
+
+def extract_doc_refs(text):
+    refs = set()
+    if not text:
+        return refs
+    for match in DOC_REF_RE.finditer(text):
+        token = match.group(0).rstrip(").,;:'\"")
+        refs.add(normalize_path(token))
+    return refs
+
+
+def check_doc_headers(repo_root, canon_index):
+    invariant_id = "INV-DOC-STATUS-HEADER"
+    skip_header = is_override_active(repo_root, invariant_id)
+    skip_index = is_override_active(repo_root, "INV-CANON-INDEX")
+    skip_superseded = is_override_active(repo_root, "INV-CANON-NO-SUPERSEDED")
+    violations = []
+    docs_root = os.path.join(repo_root, DOCS_ROOT)
+    if not os.path.isdir(docs_root):
+        return [] if skip_header else ["{}: missing docs/ directory".format(invariant_id)]
+
+    canon = canon_index or {"CANONICAL": set(), "DERIVED": set(), "HISTORICAL": set()}
+    for path in iter_files([docs_root], DEFAULT_EXCLUDES, DOC_EXTS):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path)
+        header = parse_doc_header(text)
+        if header is None:
+            if not skip_header:
+                violations.append("{}: missing status header: {}".format(invariant_id, rel))
+            continue
+        status = header.get("status", "")
+        reviewed = header.get("reviewed", "")
+        superseded_by = header.get("superseded_by", "")
+        if status not in DOC_STATUS_VALUES:
+            if not skip_header:
+                violations.append("{}: invalid status '{}' in {}".format(invariant_id, status, rel))
+        if _parse_date(reviewed) is None:
+            if not skip_header:
+                violations.append("{}: invalid Last Reviewed date '{}' in {}".format(invariant_id, reviewed, rel))
+        if status == "CANONICAL" and superseded_by and superseded_by.lower() != "none":
+            if not skip_superseded:
+                violations.append("INV-CANON-NO-SUPERSEDED: canonical doc marked superseded: {}".format(rel))
+        if status == "HISTORICAL" and not rel.startswith("docs/archive/"):
+            if not skip_index:
+                violations.append("INV-CANON-INDEX: historical doc outside docs/archive: {}".format(rel))
+        if rel in canon.get("CANONICAL", set()) and status != "CANONICAL":
+            if not skip_index:
+                violations.append("INV-CANON-INDEX: canon index mismatch (expected CANONICAL): {}".format(rel))
+        if rel in canon.get("DERIVED", set()) and status != "DERIVED":
+            if not skip_index:
+                violations.append("INV-CANON-INDEX: canon index mismatch (expected DERIVED): {}".format(rel))
+        if rel in canon.get("HISTORICAL", set()) and status != "HISTORICAL":
+            if not skip_index:
+                violations.append("INV-CANON-INDEX: canon index mismatch (expected HISTORICAL): {}".format(rel))
+        if rel.startswith("docs/architecture/") and rel not in canon.get("CANONICAL", set()) and rel not in canon.get("DERIVED", set()):
+            if not skip_index:
+                violations.append("INV-CANON-INDEX: architecture doc missing from CANON_INDEX: {}".format(rel))
+        if rel.startswith("docs/archive/") and rel not in canon.get("HISTORICAL", set()):
+            if not skip_index:
+                violations.append("INV-CANON-INDEX: archive doc missing from CANON_INDEX: {}".format(rel))
+        if status == "CANONICAL" and rel not in canon.get("CANONICAL", set()):
+            if not skip_index:
+                violations.append("INV-CANON-INDEX: canonical doc not listed in CANON_INDEX: {}".format(rel))
+    return violations
+
+
+def check_canon_index_entries(repo_root, canon_index):
+    invariant_id = "INV-CANON-INDEX"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    if canon_index is None:
+        return ["{}: missing {}".format(invariant_id, CANON_INDEX_PATH)]
+    violations = []
+    for entries in canon_index.values():
+        for rel in entries:
+            if not os.path.isfile(os.path.join(repo_root, rel)):
+                violations.append("{}: listed doc missing: {}".format(invariant_id, rel))
+    return violations
+
+
+def check_doc_references(repo_root, canon_index):
+    if is_override_active(repo_root, "INV-CANON-NO-HIST-REF"):
+        return []
+    violations = []
+    canon = canon_index or {"CANONICAL": set(), "DERIVED": set(), "HISTORICAL": set()}
+    historical = canon.get("HISTORICAL", set())
+
+    for path in iter_files([os.path.join(repo_root, DOCS_ROOT)], DEFAULT_EXCLUDES, DOC_EXTS):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path) or ""
+        refs = extract_doc_refs(text)
+        for ref in refs:
+            if ref.startswith("docs/archive/") and not rel.startswith("docs/archive/"):
+                if rel != CANON_INDEX_PATH:
+                    violations.append("INV-CANON-NO-HIST-REF: archived doc referenced by {}".format(rel))
+            if rel != CANON_INDEX_PATH and rel in canon.get("CANONICAL", set()) and ref in historical:
+                violations.append("INV-CANON-NO-HIST-REF: canonical doc references historical: {} -> {}".format(rel, ref))
+    return violations
+
+
+def check_code_doc_references(repo_root, canon_index):
+    if is_override_active(repo_root, "INV-CANON-CODE-REF"):
+        return []
+    violations = []
+    canon = canon_index or {"CANONICAL": set(), "DERIVED": set(), "HISTORICAL": set()}
+    canonical = canon.get("CANONICAL", set())
+    code_roots = [
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "tools"),
+    ]
+    for path in iter_files(code_roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path) or ""
+        refs = extract_doc_refs(text)
+        for ref in refs:
+            if ref not in canonical:
+                violations.append("INV-CANON-CODE-REF: non-canonical doc referenced by code: {} -> {}".format(rel, ref))
+    return violations
+
+
+def check_schema_version_bumps(repo_root):
+    invariant_id = "INV-SCHEMA-VERSION-BUMP"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    violations = []
+    changed_files = get_changed_files(repo_root)
+    if changed_files is None:
+        return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    schema_files = [path for path in changed_files if path.startswith("schema/") and path.endswith(".schema")]
+    if not schema_files:
+        return []
+    baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
+    for rel in schema_files:
+        baseline_blob = run_git(["show", "{}:{}".format(baseline, rel)], repo_root)
+        if baseline_blob is None:
+            continue
+        diff = run_git(["diff", "--unified=0", "{}...HEAD".format(baseline), "--", rel], repo_root)
+        if diff is None:
+            violations.append("{}: unable to diff {}".format(invariant_id, rel))
+            continue
+        removed = re.search(r"^-schema_version:\\s*(.+)$", diff, re.MULTILINE)
+        added = re.search(r"^\\+schema_version:\\s*(.+)$", diff, re.MULTILINE)
+        if not (removed and added) or removed.group(1).strip() == added.group(1).strip():
+            violations.append("{}: schema_version not bumped for {}".format(invariant_id, rel))
+    return violations
+
+
+def check_compliance_report_canon(repo_root):
+    invariant_id = "INV-REPORT-CANON"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    path = os.path.join(repo_root, "scripts", "ci", "compliance_report.py")
+    text = read_text(path) or ""
+    if "CANON_COMPLIANCE_REPORT" not in text:
+        return ["{}: compliance_report.py missing canon section".format(invariant_id)]
+    return []
 
 
 def check_frozen_contract_modifications(repo_root, changed_files):
@@ -479,6 +690,13 @@ def main() -> int:
     violations.extend(check_raw_paths(repo_root))
     violations.extend(check_magic_numbers(repo_root))
     violations.extend(check_ambiguous_new_dirs(repo_root))
+    canon_index = load_canon_index(repo_root)
+    violations.extend(check_canon_index_entries(repo_root, canon_index))
+    violations.extend(check_doc_headers(repo_root, canon_index))
+    violations.extend(check_doc_references(repo_root, canon_index))
+    violations.extend(check_code_doc_references(repo_root, canon_index))
+    violations.extend(check_schema_version_bumps(repo_root))
+    violations.extend(check_compliance_report_canon(repo_root))
 
     if violations:
         for item in sorted(set(violations)):
