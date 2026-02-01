@@ -260,6 +260,7 @@ If it is not listed here as CANONICAL, it is not binding.
 ## DERIVED
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
 - `docs/architecture/HISTORY_AND_CIVILIZATION_MODEL.md`
+- `docs/architecture/POST_CLEAN_2_STATUS.md`
 - `docs/architecture/STANDARDS_AND_META_SYSTEMS_MODEL.md`
 
 ## HISTORICAL
