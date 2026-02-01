@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "generated_at": "2000-01-01T00:00:00Z",
+  "entries": [
+    {
+      "hash": "aaaaaaaaaaaa",
+      "scope": "engine",
+      "summary": "enforce deterministic order",
+      "subject": "engine: enforce deterministic order"
+    },
+    {
+      "hash": "bbbbbbbbbbbb",
+      "scope": "docs",
+      "summary": "add build matrix",
+      "subject": "docs: add build matrix"
+    },
+    {
+      "hash": "cccccccccccc",
+      "scope": "repox",
+      "summary": "generate changelog feed",
+      "subject": "repox: generate changelog feed"
+    },
+    {
+      "hash": "dddddddddddd",
+      "scope": "uncategorized",
+      "summary": "fix typo in comment",
+      "subject": "fix typo in comment"
+    },
+    {
+      "hash": "eeeeeeeeeeee",
+      "scope": "tools",
+      "summary": "add ui accessibility validator",
+      "subject": "tools: add ui accessibility validator"
+    }
+  ]
+}
