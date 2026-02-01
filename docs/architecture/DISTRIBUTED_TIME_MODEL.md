@@ -219,4 +219,4 @@ Replay MUST not require synchronized wall-clock capture.
 - `docs/architecture/CROSS_SHARD_LOG.md`
 
 
-- `docs/architecture/DISTRIBUTED_SIM_MODEL.md`
+- `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`

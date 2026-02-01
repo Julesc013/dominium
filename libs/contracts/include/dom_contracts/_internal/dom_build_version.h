@@ -15,6 +15,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_BUILD_VERSION_H
 
 #ifdef DOM_BUILD_VERSION_GENERATED
+#ifdef DOM_VERSION_SEMVER
+#undef DOM_VERSION_SEMVER
+#endif
 #include "dominium/build_version.generated.h"
 #endif
 

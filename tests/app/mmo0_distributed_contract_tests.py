@@ -10,7 +10,7 @@ FAMILIES = {
             "MMO0-OWNERSHIP-013",
         ],
         "files": {
-            "docs/architecture/DISTRIBUTED_SIM_MODEL.md": [
+            "docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md": [
                 "logically single",
                 "physically distributed",
                 "exactly one shard",
@@ -105,7 +105,7 @@ FAMILIES = {
                 "refuse live participation",
                 "no forked",
             ],
-            "docs/architecture/DISTRIBUTED_SIM_MODEL.md": [
+            "docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md": [
                 "distribution must not change outcomes",
                 "same deterministic code paths",
             ],

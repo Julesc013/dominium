@@ -9,28 +9,28 @@ typedef struct domui_action_key_entry {
 } domui_action_key_entry;
 
 static const domui_action_entry g_actions[] = {
-    { DOMUI_ACT_LAUNCHER_INSTANCES_DELETE_SELECTED, ui_launcher_ui_act_LAUNCHER_INSTANCES_DELETE_SELECTED, "launcher.instances.delete_selected" },
-    { DOMUI_ACT_LAUNCHER_INSTANCES_EDIT_SELECTED, ui_launcher_ui_act_LAUNCHER_INSTANCES_EDIT_SELECTED, "launcher.instances.edit_selected" },
-    { DOMUI_ACT_LAUNCHER_INSTANCES_PLAY_SELECTED, ui_launcher_ui_act_LAUNCHER_INSTANCES_PLAY_SELECTED, "launcher.instances.play_selected" },
-    { DOMUI_ACT_LAUNCHER_INSTANCES_SELECT, ui_launcher_ui_act_LAUNCHER_INSTANCES_SELECT, "launcher.instances.select" },
-    { DOMUI_ACT_LAUNCHER_NAV_INSTANCES, ui_launcher_ui_act_LAUNCHER_NAV_INSTANCES, "launcher.nav.instances" },
-    { DOMUI_ACT_LAUNCHER_NAV_MODS, ui_launcher_ui_act_LAUNCHER_NAV_MODS, "launcher.nav.mods" },
-    { DOMUI_ACT_LAUNCHER_NAV_PLAY, ui_launcher_ui_act_LAUNCHER_NAV_PLAY, "launcher.nav.play" },
-    { DOMUI_ACT_LAUNCHER_NAV_SETTINGS, ui_launcher_ui_act_LAUNCHER_NAV_SETTINGS, "launcher.nav.settings" },
-    { DOMUI_ACT_LAUNCHER_SETTINGS_APPLY, ui_launcher_ui_act_LAUNCHER_SETTINGS_APPLY, "launcher.settings.apply" }
+    { DOMUI_ACT_LAUNCHER_INSTANCES_DELETE_SELECTED, ui_launcher_ui_act_LAUNCHER_INSTANCES_DELETE_SELECTED, "tools.launcher.instances.delete_selected" },
+    { DOMUI_ACT_LAUNCHER_INSTANCES_EDIT_SELECTED, ui_launcher_ui_act_LAUNCHER_INSTANCES_EDIT_SELECTED, "tools.launcher.instances.edit_selected" },
+    { DOMUI_ACT_LAUNCHER_INSTANCES_PLAY_SELECTED, ui_launcher_ui_act_LAUNCHER_INSTANCES_PLAY_SELECTED, "tools.launcher.instances.play_selected" },
+    { DOMUI_ACT_LAUNCHER_INSTANCES_SELECT, ui_launcher_ui_act_LAUNCHER_INSTANCES_SELECT, "tools.launcher.instances.select" },
+    { DOMUI_ACT_LAUNCHER_NAV_INSTANCES, ui_launcher_ui_act_LAUNCHER_NAV_INSTANCES, "tools.launcher.nav.instances" },
+    { DOMUI_ACT_LAUNCHER_NAV_MODS, ui_launcher_ui_act_LAUNCHER_NAV_MODS, "tools.launcher.nav.mods" },
+    { DOMUI_ACT_LAUNCHER_NAV_PLAY, ui_launcher_ui_act_LAUNCHER_NAV_PLAY, "tools.launcher.nav.play" },
+    { DOMUI_ACT_LAUNCHER_NAV_SETTINGS, ui_launcher_ui_act_LAUNCHER_NAV_SETTINGS, "tools.launcher.nav.settings" },
+    { DOMUI_ACT_LAUNCHER_SETTINGS_APPLY, ui_launcher_ui_act_LAUNCHER_SETTINGS_APPLY, "tools.launcher.settings.apply" }
 };
 static const domui_u32 g_action_count = 9u;
 
 static const domui_action_key_entry g_action_keys[] = {
-    { "launcher.instances.delete_selected", DOMUI_ACT_LAUNCHER_INSTANCES_DELETE_SELECTED },
-    { "launcher.instances.edit_selected", DOMUI_ACT_LAUNCHER_INSTANCES_EDIT_SELECTED },
-    { "launcher.instances.play_selected", DOMUI_ACT_LAUNCHER_INSTANCES_PLAY_SELECTED },
-    { "launcher.instances.select", DOMUI_ACT_LAUNCHER_INSTANCES_SELECT },
-    { "launcher.nav.instances", DOMUI_ACT_LAUNCHER_NAV_INSTANCES },
-    { "launcher.nav.mods", DOMUI_ACT_LAUNCHER_NAV_MODS },
-    { "launcher.nav.play", DOMUI_ACT_LAUNCHER_NAV_PLAY },
-    { "launcher.nav.settings", DOMUI_ACT_LAUNCHER_NAV_SETTINGS },
-    { "launcher.settings.apply", DOMUI_ACT_LAUNCHER_SETTINGS_APPLY }
+    { "tools.launcher.instances.delete_selected", DOMUI_ACT_LAUNCHER_INSTANCES_DELETE_SELECTED },
+    { "tools.launcher.instances.edit_selected", DOMUI_ACT_LAUNCHER_INSTANCES_EDIT_SELECTED },
+    { "tools.launcher.instances.play_selected", DOMUI_ACT_LAUNCHER_INSTANCES_PLAY_SELECTED },
+    { "tools.launcher.instances.select", DOMUI_ACT_LAUNCHER_INSTANCES_SELECT },
+    { "tools.launcher.nav.instances", DOMUI_ACT_LAUNCHER_NAV_INSTANCES },
+    { "tools.launcher.nav.mods", DOMUI_ACT_LAUNCHER_NAV_MODS },
+    { "tools.launcher.nav.play", DOMUI_ACT_LAUNCHER_NAV_PLAY },
+    { "tools.launcher.nav.settings", DOMUI_ACT_LAUNCHER_NAV_SETTINGS },
+    { "tools.launcher.settings.apply", DOMUI_ACT_LAUNCHER_SETTINGS_APPLY }
 };
 static const domui_u32 g_action_key_count = 9u;
 

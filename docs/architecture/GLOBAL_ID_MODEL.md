@@ -243,7 +243,7 @@ assuming a single global counter.
 
 
 
-- `docs/architecture/DISTRIBUTED_SIM_MODEL.md`
+- `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`
 
 
 - `docs/architecture/CROSS_SHARD_LOG.md`

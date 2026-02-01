@@ -1231,6 +1231,19 @@ int setup_main(int argc, char** argv)
             cmd = "status";
         }
     }
+    if (cmd && strcmp(cmd, "prepare") == 0 && cmd_index >= 0) {
+        for (i = cmd_index + 1; i < argc; ++i) {
+            if (strncmp(argv[i], "--root=", 7) == 0) {
+                prepare_root = argv[i] + 7;
+                continue;
+            }
+            if (strcmp(argv[i], "--root") == 0 && i + 1 < argc) {
+                prepare_root = argv[i + 1];
+                i += 1;
+                continue;
+            }
+        }
+    }
     if (want_deterministic && want_interactive) {
         fprintf(stderr, "setup: --deterministic and --interactive are mutually exclusive\\n");
         return D_APP_EXIT_USAGE;
@@ -1261,7 +1274,8 @@ int setup_main(int argc, char** argv)
         return setup_run_tui(argc, argv);
     }
     if (ui_mode == DOM_APP_UI_GUI && !cmd && !want_build_info && !want_status) {
-        return setup_run_gui(argc, argv);
+        fprintf(stderr, "setup: gui not implemented\n");
+        return D_APP_EXIT_UNAVAILABLE;
     }
 
     setup_resolve_control_registry(control_registry_buf,

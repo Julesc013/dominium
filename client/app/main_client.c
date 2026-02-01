@@ -2996,9 +2996,9 @@ static int client_ui_execute_command(const char* cmd,
             }
         }
         if (args && args[0]) {
-            snprintf(new_cmd, sizeof(new_cmd), "new-world %s", args);
+            snprintf(new_cmd, sizeof(new_cmd), "new-world %s persist=1", args);
         } else {
-            snprintf(new_cmd, sizeof(new_cmd), "new-world");
+            snprintf(new_cmd, sizeof(new_cmd), "new-world persist=1");
         }
         create_status[0] = '\0';
         create_res = dom_client_shell_execute(shell,
@@ -3014,6 +3014,12 @@ static int client_ui_execute_command(const char* cmd,
                 } else {
                     snprintf(status, status_cap, "world_create=refused");
                 }
+            }
+            return create_res;
+        }
+        if (create_status[0] && strstr(create_status, "world_save=")) {
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "%s", create_status);
             }
             return create_res;
         }
@@ -3249,9 +3255,10 @@ static void client_ui_apply_action(client_ui_state* state,
                                   state->action_status,
                                   sizeof(state->action_status),
                                   0);
-        if (state->shell.world.active &&
-            strstr(state->action_status, "world_save=ok")) {
-            client_ui_refresh_worlds(state);
+        if (state->shell.world.active) {
+            if (strstr(state->action_status, "world_save=ok")) {
+                client_ui_refresh_worlds(state);
+            }
             state->screen = CLIENT_UI_WORLD_VIEW;
         }
         break;

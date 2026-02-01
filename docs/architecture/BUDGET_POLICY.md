@@ -43,6 +43,7 @@ Scaling and macro-time admission MUST use the following budget categories:
 
 
   - Meaning: maximum number of Tier-2 domains active at once.
+  - Also defines: max active tier-2 and max active tier-1 domain counts.
 
 
   - Policy fields: `active_domain_budget` (if non-zero) else `max_tier2_domains`.

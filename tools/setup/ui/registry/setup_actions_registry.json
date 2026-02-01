@@ -1,12 +1,12 @@
 {
   "next_id": 8,
   "actions": {
-    "setup.browse_path": 1,
-    "setup.nav.back": 2,
-    "setup.nav.cancel": 3,
-    "setup.nav.finish": 4,
-    "setup.nav.install": 5,
-    "setup.nav.next": 6,
-    "setup.options.changed": 7
+    "tools.setup.browse_path": 1,
+    "tools.setup.nav.back": 2,
+    "tools.setup.nav.cancel": 3,
+    "tools.setup.nav.finish": 4,
+    "tools.setup.nav.install": 5,
+    "tools.setup.nav.next": 6,
+    "tools.setup.options.changed": 7
   }
 }

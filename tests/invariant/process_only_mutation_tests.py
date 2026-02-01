@@ -18,6 +18,9 @@ ALLOWLIST_DIRS = (
     os.path.join("engine", "modules", "ecs"),
     os.path.join("engine", "modules", "execution"),
 )
+ALLOWLIST_FILES = (
+    os.path.join("engine", "include", "domino", "ecs", "ecs_storage_iface.h"),
+)
 
 MUTATION_TOKENS = (
     re.compile(r"\bapply_writes\s*\("),
@@ -35,6 +38,9 @@ def repo_rel(repo_root, path):
 def is_allowlisted(rel_path):
     for allow in ALLOWLIST_DIRS:
         if rel_path.startswith(allow.replace("\\", "/") + "/"):
+            return True
+    for allow in ALLOWLIST_FILES:
+        if rel_path == allow.replace("\\", "/"):
             return True
     return False
 

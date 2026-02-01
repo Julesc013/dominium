@@ -9,24 +9,24 @@ typedef struct domui_action_key_entry {
 } domui_action_key_entry;
 
 static const domui_action_entry g_actions[] = {
-    { DOMUI_ACT_SETUP_BROWSE_PATH, ui_setup_ui_act_SETUP_BROWSE_PATH, "setup.browse_path" },
-    { DOMUI_ACT_SETUP_NAV_BACK, ui_setup_ui_act_SETUP_NAV_BACK, "setup.nav.back" },
-    { DOMUI_ACT_SETUP_NAV_CANCEL, ui_setup_ui_act_SETUP_NAV_CANCEL, "setup.nav.cancel" },
-    { DOMUI_ACT_SETUP_NAV_FINISH, ui_setup_ui_act_SETUP_NAV_FINISH, "setup.nav.finish" },
-    { DOMUI_ACT_SETUP_NAV_INSTALL, ui_setup_ui_act_SETUP_NAV_INSTALL, "setup.nav.install" },
-    { DOMUI_ACT_SETUP_NAV_NEXT, ui_setup_ui_act_SETUP_NAV_NEXT, "setup.nav.next" },
-    { DOMUI_ACT_SETUP_OPTIONS_CHANGED, ui_setup_ui_act_SETUP_OPTIONS_CHANGED, "setup.options.changed" }
+    { DOMUI_ACT_SETUP_BROWSE_PATH, ui_setup_ui_act_SETUP_BROWSE_PATH, "tools.setup.browse_path" },
+    { DOMUI_ACT_SETUP_NAV_BACK, ui_setup_ui_act_SETUP_NAV_BACK, "tools.setup.nav.back" },
+    { DOMUI_ACT_SETUP_NAV_CANCEL, ui_setup_ui_act_SETUP_NAV_CANCEL, "tools.setup.nav.cancel" },
+    { DOMUI_ACT_SETUP_NAV_FINISH, ui_setup_ui_act_SETUP_NAV_FINISH, "tools.setup.nav.finish" },
+    { DOMUI_ACT_SETUP_NAV_INSTALL, ui_setup_ui_act_SETUP_NAV_INSTALL, "tools.setup.nav.install" },
+    { DOMUI_ACT_SETUP_NAV_NEXT, ui_setup_ui_act_SETUP_NAV_NEXT, "tools.setup.nav.next" },
+    { DOMUI_ACT_SETUP_OPTIONS_CHANGED, ui_setup_ui_act_SETUP_OPTIONS_CHANGED, "tools.setup.options.changed" }
 };
 static const domui_u32 g_action_count = 7u;
 
 static const domui_action_key_entry g_action_keys[] = {
-    { "setup.browse_path", DOMUI_ACT_SETUP_BROWSE_PATH },
-    { "setup.nav.back", DOMUI_ACT_SETUP_NAV_BACK },
-    { "setup.nav.cancel", DOMUI_ACT_SETUP_NAV_CANCEL },
-    { "setup.nav.finish", DOMUI_ACT_SETUP_NAV_FINISH },
-    { "setup.nav.install", DOMUI_ACT_SETUP_NAV_INSTALL },
-    { "setup.nav.next", DOMUI_ACT_SETUP_NAV_NEXT },
-    { "setup.options.changed", DOMUI_ACT_SETUP_OPTIONS_CHANGED }
+    { "tools.setup.browse_path", DOMUI_ACT_SETUP_BROWSE_PATH },
+    { "tools.setup.nav.back", DOMUI_ACT_SETUP_NAV_BACK },
+    { "tools.setup.nav.cancel", DOMUI_ACT_SETUP_NAV_CANCEL },
+    { "tools.setup.nav.finish", DOMUI_ACT_SETUP_NAV_FINISH },
+    { "tools.setup.nav.install", DOMUI_ACT_SETUP_NAV_INSTALL },
+    { "tools.setup.nav.next", DOMUI_ACT_SETUP_NAV_NEXT },
+    { "tools.setup.options.changed", DOMUI_ACT_SETUP_OPTIONS_CHANGED }
 };
 static const domui_u32 g_action_key_count = 7u;
 

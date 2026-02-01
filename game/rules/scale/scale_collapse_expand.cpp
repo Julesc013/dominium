@@ -627,6 +627,9 @@ static u64 dom_scale_capsule_id(u64 domain_id,
     hash = dom_scale_hash_u32(hash, domain_kind);
     hash = dom_scale_hash_i64(hash, tick);
     hash = dom_scale_hash_u32(hash, reason_code);
+    if (hash == 0u) {
+        hash = 1u;
+    }
     return hash;
 }
 
@@ -3743,7 +3746,7 @@ static int dom_scale_macro_execute_event(dom_scale_context* ctx,
     dom_scale_budget_consume_snapshot(ctx);
     memset(&blob, 0, sizeof(blob));
     dom_scale_capsule_data_init(&data);
-    if (!dom_macro_capsule_store_get_blob(ctx->world, schedule->capsule_id, &blob) ||
+    if (dom_macro_capsule_store_get_blob(ctx->world, schedule->capsule_id, &blob) != 0 ||
         !dom_scale_capsule_parse(blob.bytes, blob.byte_count, &data)) {
         dom_scale_emit_refusal(ctx,
                                slot->domain_id,
@@ -4494,7 +4497,7 @@ int dom_scale_expand_domain(dom_scale_context* ctx,
                                out_result);
         return 0;
     }
-    if (!dom_macro_capsule_store_get_blob(ctx->world, capsule_id, &blob)) {
+    if (dom_macro_capsule_store_get_blob(ctx->world, capsule_id, &blob) != 0) {
         dom_scale_emit_refusal(ctx,
                                0u,
                                0u,
@@ -4511,7 +4514,7 @@ int dom_scale_expand_domain(dom_scale_context* ctx,
                                              &macro_policy)) {
         return 0;
     }
-    if (!dom_macro_capsule_store_get_blob(ctx->world, capsule_id, &blob)) {
+    if (dom_macro_capsule_store_get_blob(ctx->world, capsule_id, &blob) != 0) {
         dom_scale_emit_refusal(ctx,
                                0u,
                                0u,

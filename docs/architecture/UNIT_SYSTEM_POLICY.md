@@ -87,7 +87,9 @@ unit.time.act_tick, time, unit.time.act_tick, 1, authoritative ACT tick
 unit.length.meter, length, unit.length.meter, 1000000, fixed-point micrometers
 unit.volume.m3, volume, unit.volume.m3, 1000000, fixed-point micro-cubic-meter
 unit.mass.kilogram, mass, unit.mass.kilogram, 1000000, fixed-point micro-kg
+unit.mass.kg, mass, unit.mass.kilogram, 1000000, alias of kilogram
 unit.temperature.kelvin, temperature, unit.temperature.kelvin, 1000, fixed-point milli-kelvin
+unit.temperature.relative, temperature_relative, unit.temperature.relative, 1, normalized relative temperature (0..1)
 
 
 unit.energy.joule, energy, unit.energy.joule, 1000, fixed-point milli-joule

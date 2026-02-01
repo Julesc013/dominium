@@ -10,6 +10,10 @@ RESPONSIBILITY: Deterministic MMO checkpoint capture, storage, and recovery.
 
 #include <string.h>
 
+enum {
+    DOM_CHECKPOINT_HASH_WORKERS = 1u
+};
+
 static u64 dom_checkpoint_hash_mix(u64 hash, u64 value)
 {
     u32 i;
@@ -157,12 +161,13 @@ static u64 dom_checkpoint_shard_hash(const dom_shard_checkpoint* shard,
 {
     u64 hash = 1469598103934665603ULL;
     u32 i;
+    (void)workers;
     if (!shard) {
         return hash;
     }
     hash = dom_checkpoint_hash_mix(hash, shard->shard_id);
     hash = dom_checkpoint_hash_mix(hash, (u64)tick);
-    hash = dom_checkpoint_hash_mix(hash, workers);
+    hash = dom_checkpoint_hash_mix(hash, DOM_CHECKPOINT_HASH_WORKERS);
     hash = dom_checkpoint_hash_mix(hash, shard->lifecycle_state);
     hash = dom_checkpoint_hash_mix(hash, shard->version_id);
     hash = dom_checkpoint_hash_mix(hash, shard->capability_mask);
@@ -179,6 +184,50 @@ static u64 dom_checkpoint_shard_hash(const dom_shard_checkpoint* shard,
     hash = dom_checkpoint_hash_mix(hash, shard->scale_event_count);
     hash = dom_checkpoint_hash_mix(hash, shard->scale_event_overflow);
     return hash;
+}
+
+static void dom_checkpoint_fixup_domain_pointers(dom_shard_checkpoint* shard)
+{
+    u32 i;
+    u32 res_off = 0u;
+    u32 node_off = 0u;
+    u32 edge_off = 0u;
+    u32 agent_off = 0u;
+    const u32 res_cap = (u32)(sizeof(shard->resource_entries) / sizeof(shard->resource_entries[0]));
+    const u32 node_cap = (u32)(sizeof(shard->network_nodes) / sizeof(shard->network_nodes[0]));
+    const u32 edge_cap = (u32)(sizeof(shard->network_edges) / sizeof(shard->network_edges[0]));
+    const u32 agent_cap = (u32)(sizeof(shard->agent_entries) / sizeof(shard->agent_entries[0]));
+
+    if (!shard) {
+        return;
+    }
+    if (shard->domain_count > DOM_SERVER_MAX_DOMAINS_PER_SHARD) {
+        shard->domain_count = DOM_SERVER_MAX_DOMAINS_PER_SHARD;
+    }
+
+    for (i = 0u; i < shard->domain_count; ++i) {
+        dom_scale_domain_slot* slot = &shard->domains[i];
+        if (slot->domain_kind == DOM_SCALE_DOMAIN_RESOURCES) {
+            const u32 count = slot->resources.count;
+            slot->resources.entries = &shard->resource_entries[res_off];
+            slot->resources.capacity = res_cap - res_off;
+            res_off += count;
+        } else if (slot->domain_kind == DOM_SCALE_DOMAIN_NETWORK) {
+            const u32 node_count = slot->network.node_count;
+            const u32 edge_count = slot->network.edge_count;
+            slot->network.nodes = &shard->network_nodes[node_off];
+            slot->network.node_capacity = node_cap - node_off;
+            slot->network.edges = &shard->network_edges[edge_off];
+            slot->network.edge_capacity = edge_cap - edge_off;
+            node_off += node_count;
+            edge_off += edge_count;
+        } else if (slot->domain_kind == DOM_SCALE_DOMAIN_AGENTS) {
+            const u32 count = slot->agents.count;
+            slot->agents.entries = &shard->agent_entries[agent_off];
+            slot->agents.capacity = agent_cap - agent_off;
+            agent_off += count;
+        }
+    }
 }
 
 static int dom_checkpoint_copy_domains(dom_shard_checkpoint* out,
@@ -270,7 +319,7 @@ static int dom_checkpoint_copy_domains(dom_shard_checkpoint* out,
         }
 
         out->capsule_ids[i] = dst->capsule_id;
-        out->domain_hashes[i] = dom_scale_domain_hash(dst, tick, shard->scale_ctx.worker_count);
+        out->domain_hashes[i] = dom_scale_domain_hash(dst, tick, DOM_CHECKPOINT_HASH_WORKERS);
     }
 
     for (; i < DOM_SERVER_MAX_DOMAINS_PER_SHARD; ++i) {
@@ -321,9 +370,9 @@ static int dom_checkpoint_restore_domains(dom_server_shard* shard,
             if (res_off + count > res_cap) {
                 return -2;
             }
-            if (count > 0u && src->resources.entries) {
+            if (count > 0u) {
                 memcpy(&shard->resource_entries[res_off],
-                       src->resources.entries,
+                       &chk->resource_entries[res_off],
                        sizeof(shard->resource_entries[0]) * (size_t)count);
             }
             dst->resources.entries = &shard->resource_entries[res_off];
@@ -336,14 +385,14 @@ static int dom_checkpoint_restore_domains(dom_server_shard* shard,
             if (node_off + node_count > node_cap || edge_off + edge_count > edge_cap) {
                 return -3;
             }
-            if (node_count > 0u && src->network.nodes) {
+            if (node_count > 0u) {
                 memcpy(&shard->network_nodes[node_off],
-                       src->network.nodes,
+                       &chk->network_nodes[node_off],
                        sizeof(shard->network_nodes[0]) * (size_t)node_count);
             }
-            if (edge_count > 0u && src->network.edges) {
+            if (edge_count > 0u) {
                 memcpy(&shard->network_edges[edge_off],
-                       src->network.edges,
+                       &chk->network_edges[edge_off],
                        sizeof(shard->network_edges[0]) * (size_t)edge_count);
             }
             dst->network.nodes = &shard->network_nodes[node_off];
@@ -359,9 +408,9 @@ static int dom_checkpoint_restore_domains(dom_server_shard* shard,
             if (agent_off + count > agent_cap) {
                 return -4;
             }
-            if (count > 0u && src->agents.entries) {
+            if (count > 0u) {
                 memcpy(&shard->agent_entries[agent_off],
-                       src->agents.entries,
+                       &chk->agent_entries[agent_off],
                        sizeof(shard->agent_entries[0]) * (size_t)count);
             }
             dst->agents.entries = &shard->agent_entries[agent_off];
@@ -373,7 +422,7 @@ static int dom_checkpoint_restore_domains(dom_server_shard* shard,
         }
 
         if (expected_hash != 0u) {
-            const u64 hash = dom_scale_domain_hash(dst, tick, shard->scale_ctx.worker_count);
+            const u64 hash = dom_scale_domain_hash(dst, tick, DOM_CHECKPOINT_HASH_WORKERS);
             if (hash != expected_hash) {
                 return -6;
             }
@@ -450,6 +499,9 @@ int dom_checkpoint_store_record(dom_checkpoint_store* store,
     for (i = 0u; i < DOM_SERVER_MAX_SHARDS; ++i) {
         dst->world_clones[i] = record->world_clones[i];
         record->world_clones[i] = (d_world*)0;
+    }
+    for (i = 0u; i < dst->manifest.shard_count && i < DOM_SERVER_MAX_SHARDS; ++i) {
+        dom_checkpoint_fixup_domain_pointers(&dst->shards[i]);
     }
 
     store->head += 1u;
