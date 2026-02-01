@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -106,7 +111,7 @@ Any future enforcement MUST be deterministic, budgeted, and ordered canonically.
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_SIM.md`
-- `docs/SPEC_DOMINO_SUBSYSTEMS.md`
-- `docs/SPEC_AGENT.md`
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_SIM.md`
+- `docs/specs/SPEC_DOMINO_SUBSYSTEMS.md`
+- `docs/specs/SPEC_AGENT.md`

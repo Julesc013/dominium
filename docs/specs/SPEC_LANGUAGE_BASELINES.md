@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -53,4 +58,3 @@ required for correctness, determinism, or ABI compatibility.
 The project does **not** support runtime switching like “compile as C89 vs C11”
 or selecting language standards at runtime. Language level is a **build-time**
 contract, and baseline headers must be compatible by construction.
-

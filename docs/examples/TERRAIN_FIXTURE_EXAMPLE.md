@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Terrain Fixture Example (TERRAIN1)
 
 This example shows the fixture and navigation scripts used by the terrain T1

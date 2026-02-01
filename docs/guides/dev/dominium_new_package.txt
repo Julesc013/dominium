@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 Below is the full dev-spec for /package/ — the directory responsible for creating installers, distributable archives, physical media images, retro formats, and launcher metadata for every supported platform.
 /package never contains engine/game logic.
 It contains instructions and layouts used by build scripts to assemble redistributables.

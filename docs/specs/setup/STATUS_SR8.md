@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SR-8 Status
 
 SR-8 adds the conformance suite, release gate, and CI entrypoints.

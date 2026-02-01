@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Education and Learning Baseline (KNS0)
 
 Status: binding for T18 baseline.  

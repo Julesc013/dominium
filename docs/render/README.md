@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Render Docs Index
 
 This index lists renderer interfaces and backend policy documents.

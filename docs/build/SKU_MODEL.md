@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SKU Model
 
 Dominium SKUs are declared build metadata used to describe product intent and constraints.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Commit Conventions
 
 This repository uses commit messages as the source of truth for:
@@ -118,4 +123,3 @@ Impact:
 Verification:
 - scripts\build_codex_verify.bat
 ```
-

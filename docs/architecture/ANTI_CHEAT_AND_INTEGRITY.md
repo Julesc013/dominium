@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Anti-Cheat and Integrity (OMNI2)
 
 Status: binding.

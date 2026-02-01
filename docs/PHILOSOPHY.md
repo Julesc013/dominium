@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium Philosophy
 
 Dominium is a simulation platform for living worlds. It is not a conventional “game engine” and it is not a single game. It is a long‑lived, deterministic system that lets different worlds emerge from data, rules, and processes without hardcoded outcomes.

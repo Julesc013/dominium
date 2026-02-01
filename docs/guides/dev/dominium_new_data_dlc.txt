@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for /data/dlc/.
 /data/dlc holds first-party DLC packs that extend /data/base without changing engine code or core formats.
 Each DLC is:

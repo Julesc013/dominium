@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Ecosystem Integration (Handshake, Tools, Selection Summary)
 
 Doc Version: 1
@@ -172,4 +177,3 @@ Invariants:
 See:
 - `docs/specs/launcher/ARCHITECTURE.md`
 - `docs/launcher/CLI.md`
-

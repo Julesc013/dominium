@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UI Modes
 
 All products accept `--ui=none|tui|gui`. The legacy `--tui` flag remains as an

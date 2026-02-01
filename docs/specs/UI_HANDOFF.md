@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UI Handoff Notes
 
 This repo now includes stub GUI/TUI entrypoints for launcher and setup so UI

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Interaction Baseline (I0)
 
 This guide documents the reversible, non-progressive interaction baseline. The client remains fully usable with zero content packs, and interactions are data-only, deterministic, and explainable.

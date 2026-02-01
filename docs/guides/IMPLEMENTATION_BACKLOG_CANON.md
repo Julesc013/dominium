@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Canon Implementation Backlog (P1 Audit)
 
 This file records P1 audit findings for canon alignment. Each entry lists a file
@@ -34,14 +39,14 @@ path, the finding, and the planned owner/phase.
 - `source/dominium/game/gui/runtime_display_gui.cpp`: displays `universe_path`. Owner: game UI (P8).
 - `source/dominium/game/gui/runtime_display_headless.cpp`: displays `universe_path`. Owner: game UI (P8).
 - `source/dominium/game/gui/runtime_display_tui.cpp`: displays `universe_path`. Owner: game UI (P8).
-- `docs/DATA_FORMATS.md`: legacy `universe_seed`/universe metadata fields. Owner: docs/spec alignment (P2).
+- `docs/specs/DATA_FORMATS.md`: legacy `universe_seed`/universe metadata fields. Owner: docs/spec alignment (P2).
 - `source/dominium/game/cli/dom_cli_main.cpp`: assigns `cfg.universe_seed`. Owner: game runtime scaffolding (P8).
 - `source/dominium/game/gui/dom_sdl/dom_sdl_stub.cpp`: assigns `cfg.universe_seed`. Owner: game runtime scaffolding (P8).
 
 ## Absolute-path allowances / contract mismatches
 - `include/dominium/_internal/dom_priv/dom_shared/manifest_install.h`: `InstallInfo.root_path` documented as absolute. Owner: Setup/launcher contract alignment (P10).
 - `docs/FORMATS/FORMAT_INSTALL_MANIFEST.md`: `root_path` documented as absolute. Owner: docs/spec alignment (P2/P10).
-- `docs/SPEC_GAME_CLI.md`: dev override permits absolute paths. Owner: CLI contract alignment (P2/P7).
+- `docs/specs/SPEC_GAME_CLI.md`: dev override permits absolute paths. Owner: CLI contract alignment (P2/P7).
 
 ## dt_s / float time in authoritative paths
 - `include/domino/sim.h`: `dom_sim_state` exposes `double dt_s` and `sim_time_s`. Owner: Domino sim core (P3).
@@ -56,10 +61,10 @@ path, the finding, and the planned owner/phase.
 - `source/dominium/game/rules/world.c`: sim step signature includes `double dt_s`. Owner: rules layer (P3/P8).
 - `include/domino/dnumeric.h`: `g_domino_dt_s` fixed dt for `DOMINO_DEFAULT_UPS` (30 Hz). Owner: numeric/timebase alignment (P3/P2).
 - `source/domino/dnumeric.c`: computes `g_domino_dt_s` from `DOMINO_DEFAULT_UPS` (30 Hz). Owner: numeric/timebase alignment (P3/P2).
-- `docs/SPEC_DOMINO_SIM.md`: documents `dt_s`/`sim_time_s` in sim state. Owner: spec alignment (P2).
+- `docs/specs/SPEC_DOMINO_SIM.md`: documents `dt_s`/`sim_time_s` in sim state. Owner: spec alignment (P2).
 - `docs/REPORT_GAME_ARCH_DECISIONS.md`: notes `dt_s = 1/ups` in core. Owner: spec alignment (P2).
-- `docs/SPEC_NUMERIC.md`: defines `g_domino_dt_s` and default 30 Hz. Owner: spec alignment (P2).
-- `docs/SPEC_DOMINIUM_RULES.md`: references `dt_s` values in runtime APIs. Owner: spec alignment (P2).
+- `docs/specs/SPEC_NUMERIC.md`: defines `g_domino_dt_s` and default 30 Hz. Owner: spec alignment (P2).
+- `docs/specs/SPEC_DOMINIUM_RULES.md`: references `dt_s` values in runtime APIs. Owner: spec alignment (P2).
 
 ## Wall-clock fields in handshake/contracts
 - `source/dominium/launcher/core/include/launcher_handshake.h`: `timestamp_wall_us` field in handshake. Owner: launcher handshake alignment (P7/P2).

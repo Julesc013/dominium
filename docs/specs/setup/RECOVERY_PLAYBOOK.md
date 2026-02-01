@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Recovery Playbook
 
 All recovery flows are driven by `job_journal.tlv` and `txn_journal.tlv`.

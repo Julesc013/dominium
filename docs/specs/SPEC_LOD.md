@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -61,7 +66,7 @@ Every representable instance implements:
 - `rep_invariants_check()` (debug-only, deterministic)
 
 Transitions MUST NOT occur mid-phase. Promotion/demotion runs at scheduler phase
-boundaries (see `docs/SPEC_SIM_SCHEDULER.md`).
+boundaries (see `docs/specs/SPEC_SIM_SCHEDULER.md`).
 
 ## Deterministic interest volumes
 Interest volumes are deterministic regions derived only from lockstep state.
@@ -116,5 +121,5 @@ Cadence decimation uses:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_DOMAINS_FRAMES_PROP.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`

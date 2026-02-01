@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup2 UI Contract Mapping (SR-7)
 
 This document ties UI controls to `install_request.tlv` fields. Keep IDs stable.

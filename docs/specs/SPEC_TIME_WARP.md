@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -168,7 +173,7 @@ ASCII diagram:
 - Replay determinism under warp
 
 ## References
-- `docs/SPEC_TIME_CORE.md`
-- `docs/SPEC_EVENT_DRIVEN_STEPPING.md`
-- `docs/SPEC_EFFECT_FIELDS.md`
-- `docs/SPEC_FIDELITY_PROJECTION.md`
+- `docs/specs/SPEC_TIME_CORE.md`
+- `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md`
+- `docs/specs/SPEC_EFFECT_FIELDS.md`
+- `docs/specs/SPEC_FIDELITY_PROJECTION.md`

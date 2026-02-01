@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Iteration Model
 
 This model defines how playtests are assembled and compared without adding gameplay rules.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -32,8 +37,8 @@ and instance registries are rebuilt on startup by scanning disk and are kept in
 sync as commands execute.
 
 This spec describes the `dom_core` command/query façade and its registries. It
-does not define the refactor SIM scheduler (`docs/SPEC_SIM_SCHEDULER.md`) or the
-packet/delta commit contract (`docs/SPEC_ACTIONS.md`).
+does not define the refactor SIM scheduler (`docs/specs/SPEC_SIM_SCHEDULER.md`) or the
+packet/delta commit contract (`docs/specs/SPEC_ACTIONS.md`).
 
 ## Boot sequence
 - `dom_core_create` zeroes state, seeds ids, then:
@@ -92,7 +97,7 @@ packet/delta commit contract (`docs/SPEC_ACTIONS.md`).
 - Determinism note: `ticks` is authoritative; `sim_time_s` and `dt_s` are
   non-authoritative telemetry and MUST NOT be used as inputs to deterministic
   simulation decisions. Deterministic simulation uses integer ticks and fixed-
-  point quantities (see `docs/specs/SPEC_DETERMINISM.md` and `docs/SPEC_NUMERIC.md`).
+  point quantities (see `docs/specs/SPEC_DETERMINISM.md` and `docs/specs/SPEC_NUMERIC.md`).
 - Dominium handoff: `dom_game_sim_step` is the single hook into the Dominium
   rules surface; it runs a fixed subsystem pipeline (`dom_world_sim_step`,
   `dom_constructions_sim_step`, `dom_actors_sim_step`, then stubbed networks

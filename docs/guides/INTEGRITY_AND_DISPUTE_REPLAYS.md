@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Integrity & Dispute Replays (DIST2)
 
 This guide defines deterministic integrity checkpoints, witness verification,

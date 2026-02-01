@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the deterministic dev-spec for engine/render/.
 This directory is the lowest-level, platform-agnostic rendering layer.
 It defines one abstract rendering API used by the engine and game, and multiple backend implementations:

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Packaging Defaults
 
 Setup is the default installer system for all new packaging outputs.

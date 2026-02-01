@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -36,7 +41,7 @@ for large-scale universe structure and travel.
 - Time is tick-based (`tick_index` + `ups`).
 - No blocking I/O in runtime queries or updates.
 - Cosmos anchors and edges are sourced from core data packs; see
-  `docs/SPEC_CORE_DATA.md` and `docs/SPEC_COSMO_CORE_DATA.md`.
+  `docs/specs/SPEC_CORE_DATA.md` and `docs/specs/SPEC_COSMO_CORE_DATA.md`.
 
 ## 2. Entity kinds
 Canonical entity kinds:
@@ -81,7 +86,7 @@ Travel edges are discrete links between entities with deterministic parameters:
 Edges are stored in deterministic order (by edge numeric ID ascending).
 
 ## 7. Transit mode (authoritative)
-Travel is an in-sim state (see `docs/SPEC_LOGICAL_TRAVEL.md`):
+Travel is an in-sim state (see `docs/specs/SPEC_LOGICAL_TRAVEL.md`):
 - Travel does not pause the sim.
 - Arrival occurs at `start_tick + duration_ticks`.
 - Arrival must be emitted deterministically.
@@ -90,27 +95,27 @@ Travel is an in-sim state (see `docs/SPEC_LOGICAL_TRAVEL.md`):
 - System-scale logistics are scheduled gameplay anchored to systems/bodies and
   remain non-physical.
 - Logistics MUST NOT introduce physics or alter cosmos graph topology.
-- See `docs/SPEC_SYSTEM_LOGISTICS.md` for authoritative logistics rules.
+- See `docs/specs/SPEC_SYSTEM_LOGISTICS.md` for authoritative logistics rules.
 
 ## 9. Macro economy and events (logical)
 - Galaxy/system aggregates and scheduled events operate above logistics and
   remain non-physical.
 - Macro events MUST NOT alter cosmos graph topology.
-- See `docs/SPEC_COSMO_ECONOMY_EVENTS.md` for authoritative rules.
+- See `docs/specs/SPEC_COSMO_ECONOMY_EVENTS.md` for authoritative rules.
 
 ## 10. Factions and AI planners (logical)
 - Factions operate at cosmos/logistics scales only; no physical simulation.
 - AI planners MUST emit explicit commands/events; no hidden mutations.
-- See `docs/SPEC_FACTIONS.md` and `docs/SPEC_AI_DETERMINISM.md`.
+- See `docs/specs/SPEC_FACTIONS.md` and `docs/specs/SPEC_AI_DETERMINISM.md`.
 
 ## Related specs
-- `docs/SPEC_LOGICAL_TRAVEL.md`
-- `docs/SPEC_UNIVERSE_MODEL.md`
-- `docs/SPEC_CORE_DATA.md`
-- `docs/SPEC_COSMO_CORE_DATA.md`
-- `docs/SPEC_SYSTEM_LOGISTICS.md`
-- `docs/SPEC_COSMO_ECONOMY_EVENTS.md`
-- `docs/SPEC_FACTIONS.md`
-- `docs/SPEC_AI_DETERMINISM.md`
-- `docs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_LOGICAL_TRAVEL.md`
+- `docs/specs/SPEC_UNIVERSE_MODEL.md`
+- `docs/specs/SPEC_CORE_DATA.md`
+- `docs/specs/SPEC_COSMO_CORE_DATA.md`
+- `docs/specs/SPEC_SYSTEM_LOGISTICS.md`
+- `docs/specs/SPEC_COSMO_ECONOMY_EVENTS.md`
+- `docs/specs/SPEC_FACTIONS.md`
+- `docs/specs/SPEC_AI_DETERMINISM.md`
+- `docs/specs/SPEC_SPACETIME.md`
 - `docs/specs/SPEC_DETERMINISM.md`

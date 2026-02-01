@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -53,4 +58,3 @@ The launcher can spawn multiple game processes:
 
 - Start a host (listen or dedicated).
 - Press **Connect To Host** multiple times to spawn multiple clients connecting to the same host/port.
-

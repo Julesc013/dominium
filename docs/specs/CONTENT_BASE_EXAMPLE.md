@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Base Pack Example (TLV sketch)
 
 Location on disk (relative to `DOMINIUM_HOME`): `repo/packs/base/00000001/pack.tlv`. The file is a flat list of TLV records; each record uses the schema id listed below and a payload of field TLVs (tags from `d_content_schema.h`). Unknown records are ignored by the loader.

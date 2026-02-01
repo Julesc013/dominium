@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # HUD Composition (UX-1)
 
 HUDs are declarative data layouts. They must never mutate simulation state and must be togglable without affecting outcomes.

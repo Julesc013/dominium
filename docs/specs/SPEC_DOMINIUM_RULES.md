@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -59,7 +64,7 @@ The Dominium rules layer exposes a small C89-friendly API that sits **behind** `
 - Determinism note: authoritative simulation time is the integer tick index. Any
   seconds-based `dt_s` values passed through product/runtime APIs are
   non-authoritative and MUST NOT be used for authoritative decisions unless
-  explicitly quantized into fixed-point per `docs/SPEC_NUMERIC.md`.
+  explicitly quantized into fixed-point per `docs/specs/SPEC_NUMERIC.md`.
 - `dom_game_sim_step` runs a deterministic sequence: world streaming (`dom_world_sim_step`), constructions/physics (`dom_constructions_sim_step`), actors/AI (`dom_actors_sim_step`), then stubbed network/economy/environment hooks.
 - Subsystems currently only maintain per-instance step counters to prove plumbing; gameplay solvers will replace these stubs later.
 

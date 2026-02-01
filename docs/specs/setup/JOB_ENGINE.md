@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Job Engine
 
 The job engine executes `install_plan.tlv` using a deterministic job DAG.

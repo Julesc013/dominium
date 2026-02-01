@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Providers
 
 This repo quarantines external ecosystem integrations behind small, stable provider ABIs so launcher/setup kernels remain platform-agnostic and deterministic.

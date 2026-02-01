@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -153,4 +158,3 @@ Rules:
 - Any enabled pack with non-empty `sim_flag` must be pinned to an artifact payload (must have `hash_bytes` in the instance manifest entry).
 - Launch is refused if dependency resolution fails (missing required packs, version mismatch, conflicts, cycles, or identity mismatches), ensuring sim-affecting packs cannot be implicitly missing or mismatched.
 - Because instance manifest hashing includes content entries (including artifact hashes), enabled sim-affecting packs contribute to the instance manifest hash.
-

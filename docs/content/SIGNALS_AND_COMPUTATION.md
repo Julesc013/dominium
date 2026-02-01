@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Signals and Computation (SIGNAL0)
 
 This document explains the data-first signal and computation model. It is not

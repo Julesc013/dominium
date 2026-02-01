@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -174,11 +179,11 @@ Negative (forbidden):
 - Applying leap seconds to ACT or BST.
 
 ## Related specs
-- docs/SPEC_STANDARDS_AND_RENDERERS.md
-- docs/SPEC_TIME_CORE.md
-- docs/SPEC_TIME_FRAMES.md
-- docs/SPEC_TIME_STANDARDS.md
-- docs/SPEC_INFORMATION_MODEL.md
-- docs/SPEC_EFFECT_FIELDS.md
-- docs/SPEC_SPACETIME.md
+- docs/specs/SPEC_STANDARDS_AND_RENDERERS.md
+- docs/specs/SPEC_TIME_CORE.md
+- docs/specs/SPEC_TIME_FRAMES.md
+- docs/specs/SPEC_TIME_STANDARDS.md
+- docs/specs/SPEC_INFORMATION_MODEL.md
+- docs/specs/SPEC_EFFECT_FIELDS.md
+- docs/specs/SPEC_SPACETIME.md
 - docs/specs/SPEC_DETERMINISM.md

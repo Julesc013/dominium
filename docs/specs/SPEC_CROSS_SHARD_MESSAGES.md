@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -119,12 +124,12 @@ During shard migration:
 - No mid-tick message handoff is permitted.
 
 ## Integration points (mandatory)
-- Event-driven stepping: `docs/SPEC_EVENT_DRIVEN_STEPPING.md`
-- Provenance: `docs/SPEC_PROVENANCE.md`
-- Fidelity projection: `docs/SPEC_FIDELITY_PROJECTION.md`
-- Command intent: `docs/SPEC_COMMAND_MODEL.md`
-- Communication model: `docs/SPEC_COMMUNICATION.md`
-- Time warp: `docs/SPEC_TIME_WARP.md`
+- Event-driven stepping: `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md`
+- Provenance: `docs/specs/SPEC_PROVENANCE.md`
+- Fidelity projection: `docs/specs/SPEC_FIDELITY_PROJECTION.md`
+- Command intent: `docs/specs/SPEC_COMMAND_MODEL.md`
+- Communication model: `docs/specs/SPEC_COMMUNICATION.md`
+- Time warp: `docs/specs/SPEC_TIME_WARP.md`
 
 ## Prohibitions (absolute)
 - Best-effort shard synchronization.

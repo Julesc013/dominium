@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for engine/physics/.
 This subsystem is not a real physics engine.
 It is a deterministic integer kinematics and constraint resolver used for:
@@ -306,4 +311,3 @@ It integrates cleanly with:
 • engine/spatial/* (read-only terrain/voxel/index data)
 • engine/sim/* (for lane IDs and world/surface IDs)
 • engine/ecs (but only via entity IDs, not direct access)
-

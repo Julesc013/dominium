@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Retro / Legacy Installers
 
 Dominium supports legacy targets with lightweight text installers instead of

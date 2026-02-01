@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Determinism Enforcement Law (ENF0)
 
 This document defines non-negotiable determinism law for the Dominium / Domino repository.

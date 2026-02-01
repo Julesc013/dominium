@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Rendering Canon & Enforcement (REND0)
 
 This document defines non-negotiable rendering architecture law.

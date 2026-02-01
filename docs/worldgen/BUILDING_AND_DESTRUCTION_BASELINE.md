@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Building & Destruction Baseline (STRUCTURES7)
 
 Status: binding for T7 baseline.  

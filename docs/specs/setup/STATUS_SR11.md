@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Status SR-11
 
 SR-11 performs the final parity lock and archival freeze for Setup.

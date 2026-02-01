@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # DEPRECATION_POLICY (FINAL0)
 
 Status: draft  
@@ -13,7 +18,7 @@ Define deterministic deprecation rules for APIs, schemas, and render backends.
 4) **Retire**: removal only after lifecycle doc update and migration notes.
 
 ## Render backends
-- Backends follow `docs/RENDER_BACKEND_LIFECYCLE.md`.
+- Backends follow `docs/policies/RENDER_BACKEND_LIFECYCLE.md`.
 - Removal requires explicit lifecycle update and compatibility notes.
 
 ## Schemas

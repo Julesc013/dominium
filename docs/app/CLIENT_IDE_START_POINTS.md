@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Client IDE Start Points
 
 These locations are intended as stable entry points for client-side game work

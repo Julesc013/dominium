@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -67,6 +72,6 @@ AI MUST NOT:
 - Deterministic ordering (by IDs and stable tie-break rules) is required.
 
 ## Related specs
-- `docs/SPEC_FACTIONS.md`
-- `docs/SPEC_AI_DECISION_TRACES.md`
+- `docs/specs/SPEC_FACTIONS.md`
+- `docs/specs/SPEC_AI_DECISION_TRACES.md`
 - `docs/specs/SPEC_DETERMINISM.md`

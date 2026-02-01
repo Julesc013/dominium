@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Frontend Contract
 
 Frontends are thin: they emit `install_request.tlv`, call the kernel, and report results.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -53,5 +58,5 @@ Each derived pump cycle MUST obey all applicable budgets:
 - Derived work completion order MUST NOT affect simulation hashes.
 
 ## Related specs
-- `docs/SPEC_NO_MODAL_LOADING.md`
-- `docs/SPEC_FIDELITY_DEGRADATION.md`
+- `docs/specs/SPEC_NO_MODAL_LOADING.md`
+- `docs/specs/SPEC_FIDELITY_DEGRADATION.md`

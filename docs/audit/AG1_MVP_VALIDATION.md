@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # AG-1 MVP Validation
 
 Scope: engine/ + game/ + docs/agents/ for AG-1 (intent, planning, knowledge, memory, failure).

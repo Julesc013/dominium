@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Ownership Model (SR-7)
 
 Ownership controls which system is responsible for install/remove actions.

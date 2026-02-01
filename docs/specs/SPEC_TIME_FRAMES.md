@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -73,11 +78,11 @@ Negative (forbidden):
 - Per-region local clocks.
 
 ## References
-- docs/SPEC_STANDARDS_AND_RENDERERS.md
-- docs/SPEC_TIME_CORE.md
-- docs/SPEC_CALENDARS.md
-- docs/SPEC_INFORMATION_MODEL.md
-- docs/SPEC_EFFECT_FIELDS.md
+- docs/specs/SPEC_STANDARDS_AND_RENDERERS.md
+- docs/specs/SPEC_TIME_CORE.md
+- docs/specs/SPEC_CALENDARS.md
+- docs/specs/SPEC_INFORMATION_MODEL.md
+- docs/specs/SPEC_EFFECT_FIELDS.md
 
 ## Test and validation requirements (spec-only)
 - Frame conversion determinism tests

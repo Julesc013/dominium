@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -129,7 +134,7 @@ Traversal MUST be bounded and non-recursive.
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_DOMAINS_FRAMES_PROP.md`
-- `docs/SPEC_TRANS_STRUCT_DECOR.md`
-- `docs/SPEC_GRAPH_TOOLKIT.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`
+- `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`
+- `docs/specs/SPEC_GRAPH_TOOLKIT.md`

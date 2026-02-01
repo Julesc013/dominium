@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Parity Lock Matrix (SR-11)
 
 This matrix is the authoritative parity map across frontends and adapters. Any divergence

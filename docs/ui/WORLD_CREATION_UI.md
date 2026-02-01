@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # World Creation UI
 
 The world creation UI is a thin shell over the template registry.

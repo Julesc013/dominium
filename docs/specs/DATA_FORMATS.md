@@ -1,6 +1,11 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium — Data Formats (Engine v0)
 
-All supported runtime targets are little-endian. Deterministic artifacts are integer/fixed-point-only; unknown sections are skipped, not rejected. For ABI-stable containers and explicit parsing rules, see `docs/SPEC_CONTAINER_TLV.md`.
+All supported runtime targets are little-endian. Deterministic artifacts are integer/fixed-point-only; unknown sections are skipped, not rejected. For ABI-stable containers and explicit parsing rules, see `docs/specs/SPEC_CONTAINER_TLV.md`.
 
 ## 1. Fixed-point encoding
 - `fix32` (Q16.16) is stored as signed 32-bit.
@@ -151,4 +156,4 @@ Known top-level tags:
 
 Notes:
 - This format is currently unversioned; forward/backward compatibility is not guaranteed.
-- ABI-stable containers should use `DTLV` (`docs/SPEC_CONTAINER_TLV.md`).
+- ABI-stable containers should use `DTLV` (`docs/specs/SPEC_CONTAINER_TLV.md`).

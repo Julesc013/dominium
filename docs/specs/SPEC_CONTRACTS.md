@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -39,8 +44,8 @@ ledger transactions at ACT ticks. Contracts are data-defined and event-driven.
 - Event-driven execution and ordering.
 
 Out of scope:
-- Market clearing (see `docs/SPEC_MARKETS.md`).
-- Money standards and formatting (see `docs/SPEC_MONEY_STANDARDS.md`).
+- Market clearing (see `docs/specs/SPEC_MARKETS.md`).
+- Money standards and formatting (see `docs/specs/SPEC_MONEY_STANDARDS.md`).
 
 ## Definitions
 - Contract: A deterministic state machine over obligations and schedules.
@@ -140,7 +145,7 @@ Future tests MUST include:
 - Replay equivalence of contract outcomes.
 
 ## Related specs
-- `docs/SPEC_LEDGER.md`
-- `docs/SPEC_ASSETS_INSTRUMENTS.md`
-- `docs/SPEC_MARKETS.md`
-- `docs/SPEC_EVENT_DRIVEN_STEPPING.md`
+- `docs/specs/SPEC_LEDGER.md`
+- `docs/specs/SPEC_ASSETS_INSTRUMENTS.md`
+- `docs/specs/SPEC_MARKETS.md`
+- `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md`

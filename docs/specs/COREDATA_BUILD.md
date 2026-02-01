@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # COREDATA_BUILD — coredata_compile usage
 
 This document describes how to compile `/data/core` authoring files into
@@ -48,5 +53,5 @@ a deterministic parser is available in-tree.
 - Unknown fields are refused unless explicitly declared non-sim metadata.
 
 See:
-- `docs/SPEC_CORE_DATA_PIPELINE.md`
-- `docs/SPEC_CORE_DATA.md`
+- `docs/specs/SPEC_CORE_DATA_PIPELINE.md`
+- `docs/specs/SPEC_CORE_DATA.md`

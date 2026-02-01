@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium Setup Gaps (Phase A)
 
 This document inventories current setup-related code and highlights gaps, stubs,

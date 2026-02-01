@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Wrong-Science Civilization (Exemplar)
 
 Purpose: demonstrate incorrect epistemic models and institutional enforcement.

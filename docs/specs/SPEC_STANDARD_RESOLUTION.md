@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -51,7 +56,7 @@ The resolver receives a context containing:
 - organization memberships and policies
 - jurisdiction(s) in scope
 - personal preferences
-- device/access constraints (see `docs/SPEC_EPISTEMIC_GATING.md`)
+- device/access constraints (see `docs/specs/SPEC_EPISTEMIC_GATING.md`)
 
 ## Deterministic resolution
 Resolution must be deterministic given the context:

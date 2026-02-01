@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Logistics and Markets Baseline (ECON0)
 
 Status: binding for T20 baseline.  

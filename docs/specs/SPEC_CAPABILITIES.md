@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -54,7 +59,7 @@ Rules:
 PERF_CAPS describe throughput/presentation characteristics only.
 
 Required fields (versioned TLV):
-- `tier_profile` (u32; see `docs/SPEC_TIERS.md`)
+- `tier_profile` (u32; see `docs/specs/SPEC_TIERS.md`)
 - `perf_flags` (u32)
 
 Rules:

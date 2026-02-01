@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -55,5 +60,5 @@ Transit state fields:
 - Updating with different tick batching MUST yield identical arrival behavior.
 
 ## Related specs
-- `docs/SPEC_COSMO_LANE.md`
+- `docs/specs/SPEC_COSMO_LANE.md`
 - `docs/specs/SPEC_DETERMINISM.md`

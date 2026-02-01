@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Client UI Layer
 
 The client GUI is renderer-driven and sits entirely in the application layer.

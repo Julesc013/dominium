@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Simulation Coverage Ladder (COVERAGE-0)
 
 Status: binding.

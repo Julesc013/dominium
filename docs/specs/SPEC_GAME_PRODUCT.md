@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -48,14 +53,14 @@ DEPENDENCIES:
 ## Universe selection (instance-scoped)
 - Universe selection is resolved within the active instance.
 - Launcher handshake may supply `universe_id`; mismatches must refuse by
-  default (`docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`).
+  default (`docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`).
 - Universe bundles are loaded via the portable container defined in
-  `docs/SPEC_UNIVERSE_BUNDLE.md` and must satisfy identity binding rules.
+  `docs/specs/SPEC_UNIVERSE_BUNDLE.md` and must satisfy identity binding rules.
 
 ## Main Loop
 - Fixed-timestep tick via `d_sim_step(sim, 1)`.
 - Net/replay integration must produce a deterministic command stream per tick;
-  the sim must never read platform input directly (see `docs/SPEC_ACTIONS.md` and
+  the sim must never read platform input directly (see `docs/specs/SPEC_ACTIONS.md` and
   `docs/specs/SPEC_DETERMINISM.md`).
 - Rendering (GUI/TUI): gather the shared `dgfx_cmd_buffer`, call `d_view_render`, layout/render DUI, then `dgfx_execute` + `dgfx_end_frame`.
 - Headless mode skips rendering but still advances simulation.
@@ -67,7 +72,7 @@ DEPENDENCIES:
 
 ## Universe bundle I/O (high-level)
 - Import/export of universe bundles uses relative paths resolved via the
-  filesystem contract (`docs/SPEC_FS_CONTRACT.md`).
+  filesystem contract (`docs/specs/SPEC_FS_CONTRACT.md`).
 - The game does not scan or infer install layouts.
 
 ## UI Shell

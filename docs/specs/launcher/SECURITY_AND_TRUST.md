@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Security and Trust
 
 Doc Version: 1
@@ -28,4 +33,3 @@ Packaging must not change runtime behavior.
 - Linux distribution is provided as portable archives (and optional AppDir-style layouts).
 
 See `docs/launcher/BUILD_AND_PACKAGING.md`.
-

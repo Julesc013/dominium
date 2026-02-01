@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SLICE-2 Walkthrough (CLI)
 
 This walkthrough demonstrates delegation, authority enforcement, shared

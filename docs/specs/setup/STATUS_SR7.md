@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SR-7 Status: Thin Platform Adapters
 
 SR-7 adds thin platform adapters that emit `install_request.tlv` and invoke the setup kernel via `dominium-setup`.

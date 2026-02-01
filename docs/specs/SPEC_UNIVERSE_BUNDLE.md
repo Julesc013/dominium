@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -32,7 +37,7 @@ skip-unknown format intended for archival and migration.
 
 ## 1. Container format
 - The universe bundle uses the DTLV container ABI (see
-  `docs/SPEC_CONTAINER_TLV.md`).
+  `docs/specs/SPEC_CONTAINER_TLV.md`).
 - Magic: `"DTLV"`, endian marker `0xFFFE`, header version `1`.
 - All integers are little-endian.
 
@@ -61,10 +66,10 @@ Chunk type IDs are ASCII fourcc values stored as `u32_le`:
 - `FORN` (v1): preserved foreign chunks (required; may be empty)
 
 Unknown chunk types must be skipped safely and preserved for round-trip.
-Logistics chunk formats are defined in `docs/SPEC_SYSTEM_LOGISTICS.md`.
+Logistics chunk formats are defined in `docs/specs/SPEC_SYSTEM_LOGISTICS.md`.
 
 ## 2.1 COSM chunk (cosmos graph container)
-The `COSM` chunk payload is a DTLV container (see `docs/SPEC_CONTAINER_TLV.md`)
+The `COSM` chunk payload is a DTLV container (see `docs/specs/SPEC_CONTAINER_TLV.md`)
 that stores the logical cosmos graph:
 - Required subchunks (v1): `SEED`, `ENTY`, `EDGE`, `FORN`.
 - Unknown COSM subchunks must be preserved by copying into `COSM/FORN`.
@@ -144,7 +149,7 @@ default (`IDENTITY_MISMATCH`).
 
 ## 6. Versioning and migrations
 - Unknown chunk versions must be refused or explicitly migrated.
-- Migration policy is defined in `docs/SPEC_MIGRATIONS.md`.
+- Migration policy is defined in `docs/specs/SPEC_MIGRATIONS.md`.
 
 ## 7. Tools and editors
 - Tools must validate launcher handshake and instance identity before opening bundles.
@@ -152,10 +157,10 @@ default (`IDENTITY_MISMATCH`).
 - Unknown chunks and `FORN` preservation requirements apply equally to tools.
 
 ## Related specs
-- `docs/SPEC_CONTAINER_TLV.md`
-- `docs/SPEC_UNIVERSE_MODEL.md`
-- `docs/SPEC_SYSTEM_LOGISTICS.md`
-- `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_MIGRATIONS.md`
-- `docs/SPEC_FS_CONTRACT.md`
-- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/specs/SPEC_CONTAINER_TLV.md`
+- `docs/specs/SPEC_UNIVERSE_MODEL.md`
+- `docs/specs/SPEC_SYSTEM_LOGISTICS.md`
+- `docs/specs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_MIGRATIONS.md`
+- `docs/specs/SPEC_FS_CONTRACT.md`
+- `docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`

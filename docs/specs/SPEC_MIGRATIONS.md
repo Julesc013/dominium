@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -68,6 +73,6 @@ Audit records are deterministic and must not contain absolute paths.
 - Missing migration paths are a refusal, not a best-effort fallback.
 
 ## Related specs
-- `docs/SPEC_CONTAINER_TLV.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_CONTAINER_TLV.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`
 - `docs/specs/SPEC_DETERMINISM.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -114,6 +119,6 @@ Notes:
 - Replay equivalence.
 
 ## References
-- `docs/SPEC_EPISTEMIC_INTERFACE.md`
-- `docs/SPEC_INFORMATION_MODEL.md`
-- `docs/SPEC_TIME_KNOWLEDGE.md`
+- `docs/specs/SPEC_EPISTEMIC_INTERFACE.md`
+- `docs/specs/SPEC_INFORMATION_MODEL.md`
+- `docs/specs/SPEC_TIME_KNOWLEDGE.md`

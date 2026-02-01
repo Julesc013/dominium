@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -30,8 +35,8 @@ DEPENDENCIES:
 This document defines the facade/backend architecture used for Domino/DOMinium subsystems (e.g. `dsys`, `dgfx`) and future modules (jobs, SIMD kernels, IO streaming).
 
 Related:
-- `docs/SPEC_LANGUAGE_BASELINES.md`
-- `docs/SPEC_ABI_TEMPLATES.md`
+- `docs/specs/SPEC_LANGUAGE_BASELINES.md`
+- `docs/specs/SPEC_ABI_TEMPLATES.md`
 
 ## Definitions
 
@@ -90,4 +95,3 @@ Header-only templates exist for:
 - Streaming IO: `include/domino/io.h`
 
 These templates are ABI-shape commitments only; they are not wired into runtime behavior until explicitly implemented and selected by later prompts.
-

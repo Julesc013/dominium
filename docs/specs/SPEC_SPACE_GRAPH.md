@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -44,4 +49,4 @@ DEPENDENCIES:
 ## Usage
 - Higher-level travel planners build on this graph for transfers, logistics, and missions.
 - Hazards encode radiation/trajectory risk; flags are reserved for explicit future expansion in versioned specs.
-- Pathfinding beyond direct-edge lookup is not implemented in this pass; any future algorithm must be deterministic and obey canonical ordering rules (`docs/SPEC_GRAPH_TOOLKIT.md`).
+- Pathfinding beyond direct-edge lookup is not implemented in this pass; any future algorithm must be deterministic and obey canonical ordering rules (`docs/specs/SPEC_GRAPH_TOOLKIT.md`).

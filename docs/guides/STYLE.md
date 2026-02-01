@@ -1,8 +1,13 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium — Code Style and Naming Rules
 
 This document defines repository-wide style and naming conventions. Determinism
 requirements are specified in `docs/specs/SPEC_DETERMINISM.md` and enforced by
-`docs/DETERMINISM_REGRESSION_RULES.md`.
+`docs/policies/DETERMINISM_REGRESSION_RULES.md`.
 
 ## Language levels (build-enforced)
 - C code that participates in deterministic simulation is C90 (`CMAKE_C_STANDARD 90`).

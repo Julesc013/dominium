@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Boundary Enforcement
 
 Dominium uses lightweight build-time guardrails to prevent layer leakage.

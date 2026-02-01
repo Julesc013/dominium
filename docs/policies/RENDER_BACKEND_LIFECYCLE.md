@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # RENDER_BACKEND_LIFECYCLE (FINAL0)
 
 Status: draft  

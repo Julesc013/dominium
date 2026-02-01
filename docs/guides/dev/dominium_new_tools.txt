@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for /tools/ — the non-runtime toolkit layer of the Dominium project.
 /tools contains editors, devkits, asset pipelines, validators, converters, generators, and debugging utilities.
 No code here runs in the simulation thread of the game runtime; these tools operate offline or in editor environments.

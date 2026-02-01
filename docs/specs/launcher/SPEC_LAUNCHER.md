@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -60,6 +65,6 @@ This launcher spec aligns with the multi-mode architecture described in `docs/LA
 - Mod/profile management stored alongside the launcher DB.
 
 ## Related specs
-- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
-- `docs/SPEC_FS_CONTRACT.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/specs/SPEC_FS_CONTRACT.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Failure and Maintenance
 
 This document defines failure as a first-class, process-driven outcome. It MUST

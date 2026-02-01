@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium Launcher CLI (Control Plane)
 
 Doc Version: 1

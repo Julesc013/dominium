@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # LONG_TERM_SUPPORT_POLICY (FINAL0)
 
 Status: draft  
@@ -14,7 +19,7 @@ for decades without relying on informal discipline.
 - ABI changes must include: reason, affected headers, and migration impact.
 
 ### Game rules
-- Game rules are versioned by feature epochs (see `docs/FEATURE_EPOCH_POLICY.md`).
+- Game rules are versioned by feature epochs (see `docs/policies/FEATURE_EPOCH_POLICY.md`).
 - Sim-affecting changes must bump the relevant epoch.
 
 ### Schemas
@@ -33,9 +38,9 @@ A breaking change includes:
 
 ## Required records
 Breaking changes MUST update:
-- `docs/COMPATIBILITY_PROMISES.md`
-- `docs/FEATURE_EPOCH_POLICY.md` (if sim-affecting)
-- `docs/RENDER_BACKEND_LIFECYCLE.md` (if backend lifecycle changes)
+- `docs/policies/COMPATIBILITY_PROMISES.md`
+- `docs/policies/FEATURE_EPOCH_POLICY.md` (if sim-affecting)
+- `docs/policies/RENDER_BACKEND_LIFECYCLE.md` (if backend lifecycle changes)
 - This document’s ABI notes section (engine ABI changes)
 
 ## Prohibitions

@@ -1,3 +1,20 @@
+Status: HISTORICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: docs/architecture/CANON_INDEX.md
+
+This document is archived.
+Reason: Superseded by docs/architecture/CANON_INDEX.md.
+Do not use for implementation.
+
+This document is archived.
+Reason: Superseded by docs/architecture/CANON_INDEX.md.
+Do not use for implementation.
+
+This document is archived.
+Reason: Superseded by unknown.
+Do not use for implementation.
+
 # ARCHIVED: COREDATA_CONSISTENCY_REPORT
 
 Archived: point-in-time data consistency report.
@@ -13,15 +30,15 @@ Status: draft
 Scope: Core data specs, compiler, validator, and pack format alignment.
 
 ## 1) Spec compliance matrix
-- `docs/SPEC_CORE_DATA.md`: aligned with `coredata_compile` TLV stream format and
+- `docs/specs/SPEC_CORE_DATA.md`: aligned with `coredata_compile` TLV stream format and
   implicit record schema version; sim vs non-sim hashing clarified.
-- `docs/SPEC_COSMO_CORE_DATA.md`: aligned with TLV record format and implicit
+- `docs/specs/SPEC_COSMO_CORE_DATA.md`: aligned with TLV record format and implicit
   record schema version.
-- `docs/SPEC_MECHANICS_PROFILES.md`: aligned with TLV record format and implicit
+- `docs/specs/SPEC_MECHANICS_PROFILES.md`: aligned with TLV record format and implicit
   record schema version.
-- `docs/SPEC_CORE_DATA_PIPELINE.md`: output layout and manifest behavior match
+- `docs/specs/SPEC_CORE_DATA_PIPELINE.md`: output layout and manifest behavior match
   `coredata_compile` implementation.
-- `docs/SPEC_CORE_DATA_VALIDATION.md`: validator behavior matches error taxonomy
+- `docs/specs/SPEC_CORE_DATA_VALIDATION.md`: validator behavior matches error taxonomy
   and refusal-first rules.
 - Region type enums (`belt`, `cloud`, `heliosphere`) are aligned across spec,
   schema constants, compiler mapping, and validator acceptance.

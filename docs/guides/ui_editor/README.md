@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UI Editor (Phase A)
 
 Phase A delivers a Windows-only Win32 UI Editor for authoring `ui_doc.tlv`.

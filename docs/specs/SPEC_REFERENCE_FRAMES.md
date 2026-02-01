@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -82,7 +87,7 @@ Baseline transforms:
   - Any unsupported transform returns `NOT_IMPLEMENTED`.
 
 ## Related specs
-- `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_ORBITS_TIMEWARP.md`
-- `docs/SPEC_UNIVERSE_MODEL.md`
+- `docs/specs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_ORBITS_TIMEWARP.md`
+- `docs/specs/SPEC_UNIVERSE_MODEL.md`
 - `docs/specs/SPEC_DETERMINISM.md`

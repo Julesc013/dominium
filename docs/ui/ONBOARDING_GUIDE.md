@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Onboarding Guide (UX-1)
 
 Onboarding must teach the system model, not hide it. Missing packs, refusals, and capability gaps are part of the user experience and must be explained clearly.

@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Checkpointing Model (MMO-2)
 
 A checkpoint is a committed, deterministic save container.
@@ -67,4 +72,3 @@ If snapshot budget is insufficient:
   deterministic, and sufficient for authoritative recovery.
 - `MMO2-LOG-006`: Checkpoints capture cross-shard log position and
   lifecycle log state needed to resume deterministically.
-

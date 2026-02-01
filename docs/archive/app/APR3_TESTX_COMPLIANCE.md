@@ -1,3 +1,20 @@
+Status: HISTORICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: docs/architecture/CANON_INDEX.md
+
+This document is archived.
+Reason: Superseded by docs/architecture/CANON_INDEX.md.
+Do not use for implementation.
+
+This document is archived.
+Reason: Superseded by docs/architecture/CANON_INDEX.md.
+Do not use for implementation.
+
+This document is archived.
+Reason: Superseded by unknown.
+Do not use for implementation.
+
 # ARCHIVED: APR3 TESTX Compliance
 
 Archived: point-in-time compliance snapshot.

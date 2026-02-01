@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CLI Canon (UX-1)
 
 CLI is the authoritative UX contract. Every player or operator action must be expressible as a CLI intent. TUI and GUI are pure projections that call the same intent APIs.

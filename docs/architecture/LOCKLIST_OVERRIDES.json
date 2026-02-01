@@ -11,6 +11,12 @@
       "invariant": "LOCKLIST.RENDERER_LAYER",
       "reason": "Implement capability-gated renderer backends/stubs with deterministic presentation-only behavior.",
       "expires": "2026-03-31"
+    },
+    {
+      "id": "OVR-2026-02-01-CLEAN2-HEADERS",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "CLEAN-2 status header insertion on frozen docs; no semantic content changes.",
+      "expires": "2026-02-15"
     }
   ]
 }

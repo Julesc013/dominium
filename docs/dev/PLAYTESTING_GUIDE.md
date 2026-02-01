@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Playtesting Guide (Slice-4 Harness)
 
 This guide explains how to run deterministic playtests using scenario and variant data, capture replays, and analyze results. It does not add gameplay rules.

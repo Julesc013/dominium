@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # DATA-2 Governance Overview
 
 Purpose: Provide optional, data-only governance packs so permissions, safety, enforcement, and anarchy emerge from the same process + authority framework. No engine/game code changes are required.

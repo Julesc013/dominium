@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for /mods/.
 /mods is the only place third-party and local gameplay/content modifications live.
 Engine, base game, DLC, and first-party packs must never live here.

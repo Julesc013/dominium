@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Worldgen Packs
 
 These packs are OPTIONAL. They define procedural baselines and optional

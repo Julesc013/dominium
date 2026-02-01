@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Transition Do-Not List
 
 These constraints prevent toolchain lock-in and interface rot.

@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Acceptance Checkpoints (CHK0)
 
 Status: binding.
@@ -65,4 +70,3 @@ Manual test (human):
 
 TestX (automated):
 - Placeholder: add interaction intent parity and refusal invariants.
-

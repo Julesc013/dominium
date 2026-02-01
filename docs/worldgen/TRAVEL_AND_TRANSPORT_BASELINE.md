@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Travel and Transport Baseline (TRAVEL0)
 
 Status: binding for T8 baseline.  

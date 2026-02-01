@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -61,5 +66,5 @@ Profiling MUST provide:
 - Profiling MUST NOT use wall-clock time for any authoritative decision.
 
 ## Related specs
-- `docs/SPEC_PERF_BUDGETS.md`
-- `docs/SPEC_NO_MODAL_LOADING.md`
+- `docs/specs/SPEC_PERF_BUDGETS.md`
+- `docs/specs/SPEC_NO_MODAL_LOADING.md`

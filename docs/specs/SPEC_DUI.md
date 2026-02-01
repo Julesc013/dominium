@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -30,9 +35,9 @@ DEPENDENCIES:
 This document defines the **DUI (Dominium UI)** system: a presentation-only facade that allows the Dominium launcher to run with **native OS widgets**, a **DGFX-rendered fallback**, or **null/headless** mode without changing launcher-core behavior.
 
 Related:
-- `docs/SPEC_FACADES_BACKENDS.md`
-- `docs/SPEC_CAPABILITY_REGISTRY.md`
-- `docs/SPEC_CONTAINER_TLV.md`
+- `docs/specs/SPEC_FACADES_BACKENDS.md`
+- `docs/specs/SPEC_CAPABILITY_REGISTRY.md`
+- `docs/specs/SPEC_CONTAINER_TLV.md`
 - `include/dui/dui_api_v1.h`
 - `include/dui/dui_schema_tlv.h`
 
@@ -179,4 +184,3 @@ All smoke tests must:
 - create a window/surface (or headless equivalent),
 - render a small schema (≥ 3 widgets),
 - pump events, request quit, observe a quit event, and exit cleanly.
-

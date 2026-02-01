@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -212,10 +217,10 @@ If no directives, maintain minimum survival policy.
 - undocumented heuristics
 
 ## Integration references
-- Command intent: `docs/SPEC_COMMAND_MODEL.md`
-- Information model: `docs/SPEC_INFORMATION_MODEL.md`
-- Effect fields: `docs/SPEC_EFFECT_FIELDS.md`
-- Fidelity projection (see `docs/SPEC_FIDELITY_DEGRADATION.md`; projection spec TBD)
+- Command intent: `docs/specs/SPEC_COMMAND_MODEL.md`
+- Information model: `docs/specs/SPEC_INFORMATION_MODEL.md`
+- Effect fields: `docs/specs/SPEC_EFFECT_FIELDS.md`
+- Fidelity projection (see `docs/specs/SPEC_FIDELITY_DEGRADATION.md`; projection spec TBD)
 
 ## Test and validation requirements (spec-only)
 Implementations must provide:

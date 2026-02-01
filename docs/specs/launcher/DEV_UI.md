@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dev UI (Schema‑Driven DUI Launcher)
 
 Doc Version: 2

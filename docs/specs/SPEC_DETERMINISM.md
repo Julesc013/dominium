@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -82,7 +87,7 @@ authoritative simulation.
 - SIM_CAPS are part of the identity digest and launcher handshake. Changes
   require migration or explicit refusal.
 - PERF_CAPS are negotiable and MAY change derived/presentation behavior only.
-- See `docs/SPEC_CAPABILITIES.md` for field definitions and hashing rules.
+- See `docs/specs/SPEC_CAPABILITIES.md` for field definitions and hashing rules.
 
 ## Supported invariants (enforced in code)
 Determinism paths MUST assume and enforce:
@@ -105,7 +110,7 @@ stimuli or authoritative state. Instead:
   cross-module stimulus channels in SIM.
 - Producers buffer events/messages/field-updates; delivery/application happens
   only at deterministic scheduler phase boundaries (see
-  `docs/SPEC_FIELDS_EVENTS.md` and `docs/SPEC_SIM_SCHEDULER.md`).
+  `docs/specs/SPEC_FIELDS_EVENTS.md` and `docs/specs/SPEC_SIM_SCHEDULER.md`).
 - Delivery/application/sampling work is bounded via deterministic budgets and
   carryover queues; no time-based scheduling is allowed.
 
@@ -164,7 +169,7 @@ arrays and sorted using canonical comparators before deterministic iteration.
 
 ### Canonical graph toolkit ordering
 Deterministic graph infrastructure (connectivity, adjacency, stitching, rebuild)
-MUST obey `docs/SPEC_GRAPH_TOOLKIT.md`:
+MUST obey `docs/specs/SPEC_GRAPH_TOOLKIT.md`:
 - per-node adjacency arrays sorted by `(neighbor_node_id, edge_id)` ascending
 - per-partition node lists sorted by `node_id` ascending
 - boundary stitching driven by stable endpoint keys and canonical edge creation order
@@ -288,7 +293,7 @@ DECOR authoring state and compilation MUST obey these additional constraints:
 - Decor tiles are chunk-aligned batches derived from instances and MUST be rebuildable under budget with deterministic carryover.
 
 ## Deterministic LOD / representation framework
-The engine-wide LOD framework (see `docs/SPEC_LOD.md`) is part of deterministic
+The engine-wide LOD framework (see `docs/specs/SPEC_LOD.md`) is part of deterministic
 simulation state evolution and MUST obey these additional constraints.
 
 ### Interest volumes are lockstep-only
@@ -368,29 +373,29 @@ Determinism paths MUST explicitly forbid:
 - deterministic allocator/RNG state
 
 **Derived cache (must be regenerable):**
-- LOD representations R1–R3 (see `docs/SPEC_LOD.md`)
-- knowledge/visibility/comms state (see `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`)
-- compiled/expanded graph adjacency caches (see `docs/SPEC_GRAPH_TOOLKIT.md`)
+- LOD representations R1–R3 (see `docs/specs/SPEC_LOD.md`)
+- knowledge/visibility/comms state (see `docs/specs/SPEC_KNOWLEDGE_VIS_COMMS.md`)
+- compiled/expanded graph adjacency caches (see `docs/specs/SPEC_GRAPH_TOOLKIT.md`)
 - TRANS microsegments/frames/slotmaps/spatial indices
 - any render/UI geometry or visualization state
 
 ## Related specs
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_DETERMINISM_GRADES.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_FIELDS_EVENTS.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_LOD.md`
-- `docs/SPEC_VM.md`
-- `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_MIGRATIONS.md`
-- `docs/SPEC_FEATURE_EPOCH.md`
-- `docs/SPEC_GRAPH_TOOLKIT.md`
-- `docs/SPEC_POSE_AND_ANCHORS.md`
-- `docs/SPEC_TRANS_STRUCT_DECOR.md`
-- `docs/SPEC_DOMAINS_FRAMES_PROP.md`
-- `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`
-- `docs/SPEC_TIERS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_DETERMINISM_GRADES.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_FIELDS_EVENTS.md`
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_LOD.md`
+- `docs/specs/SPEC_VM.md`
+- `docs/specs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_MIGRATIONS.md`
+- `docs/specs/SPEC_FEATURE_EPOCH.md`
+- `docs/specs/SPEC_GRAPH_TOOLKIT.md`
+- `docs/specs/SPEC_POSE_AND_ANCHORS.md`
+- `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`
+- `docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`
+- `docs/specs/SPEC_KNOWLEDGE_VIS_COMMS.md`
+- `docs/specs/SPEC_TIERS.md`
 
 ## Engine core eligibility
 

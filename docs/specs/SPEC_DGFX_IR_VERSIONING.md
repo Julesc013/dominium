@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -80,5 +85,5 @@ The IR command opcode values map to `d_gfx_opcode`:
 - Missing capability declarations MUST result in deterministic rejections.
 
 ## 7. Related specs
-- `docs/SPEC_BACKEND_CONFORMANCE.md`
+- `docs/specs/SPEC_BACKEND_CONFORMANCE.md`
 - `docs/specs/SPEC_DETERMINISM.md`

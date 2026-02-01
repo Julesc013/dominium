@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # OS Floor Policy
 
 OS floors are explicit build declarations. They are not inferred from compiler or language mode.

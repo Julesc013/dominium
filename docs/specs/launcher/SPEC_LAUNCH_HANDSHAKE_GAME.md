@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -60,11 +65,11 @@ handshake is a versioned TLV container and MUST NOT contain absolute paths.
 
 ## 4. Resolution behavior (game side)
 - The game resolves all filesystem access via `DOMINIUM_RUN_ROOT` and/or
-  `DOMINIUM_HOME` per `docs/SPEC_FS_CONTRACT.md`.
+  `DOMINIUM_HOME` per `docs/specs/SPEC_FS_CONTRACT.md`.
 - Handshake path refs are validated as relative and used only as tagged,
   reproducible references; they do not introduce new absolute roots.
 - Universe selection and bundle identity are validated per
-  `docs/SPEC_UNIVERSE_BUNDLE.md`.
+  `docs/specs/SPEC_UNIVERSE_BUNDLE.md`.
 
 ## 5. Identity digest (sim-bound)
 The handshake identity digest is computed from:
@@ -76,6 +81,6 @@ PERF_CAPS and other presentation metadata MUST NOT influence the identity
 digest.
 
 ## Related specs
-- `docs/SPEC_FS_CONTRACT.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
-- `docs/SPEC_TIERS.md`
+- `docs/specs/SPEC_FS_CONTRACT.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_TIERS.md`

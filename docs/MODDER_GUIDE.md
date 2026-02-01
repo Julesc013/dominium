@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Modder Guide
 
 Dominium is data‑first. Mods are content packs that extend reality through schemas and processes. You do not need to change code to add materials, parts, assemblies, laws, or worldgen anchors.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Windows Installers
 
 Windows installers are MSI-centric and wrap Setup Core via the canonical

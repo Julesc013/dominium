@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message defines the dev-spec for /tests/ — the entire deterministic verification and validation framework for Dominium.
 /tests is authoritative for correctness, stability, determinism, and regression control.
 Nothing in /tests is shipped with the normal runtime, but CI executes this directory aggressively.
@@ -231,4 +236,3 @@ Where required:
 • Replay tests ensuring deterministic stability across versions and platforms.
 • Perf tests ensuring that regressions are caught early.
 This directory is the backbone of correctness, determinism, regression stability, and long-term maintainability.
-

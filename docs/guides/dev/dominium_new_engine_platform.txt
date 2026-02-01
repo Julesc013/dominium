@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the deterministic dev-spec for engine/platform/.
 This is the only directory allowed to depend on OS APIs (Win32, POSIX, macOS, X11, Cocoa, ALSA, PulseAudio, CoreAudio, etc.).
 Everything here exists behind stable cross-platform interfaces.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Toolchain Model
 
 Dominium emits a toolchain descriptor for every build. It is a stable, app-layer view of the compiler/runtime environment without forcing a single vendor.

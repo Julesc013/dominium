@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -74,7 +79,7 @@ Identical behavior is mandatory across all OS/architecture pairs below. Tiers de
 | CPM80 / CPM86                | z80_8, x86_16                     | Tier 2 (retro)  | |
 
 Note: Performance tier profiles (`BASELINE`, `MODERN`, `SERVER`) are defined in
-`docs/SPEC_TIERS.md` and are separate from platform support tiers. They are
+`docs/specs/SPEC_TIERS.md` and are separate from platform support tiers. They are
 non-authoritative and must not affect determinism.
 
 ## Layering & Abstractions

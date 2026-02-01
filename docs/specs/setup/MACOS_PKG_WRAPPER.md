@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # macOS PKG Wrapper (SR-7)
 
 The PKG wrapper installs a minimal payload and invokes `dominium-setup` in `postinstall`.

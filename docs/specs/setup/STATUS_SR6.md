@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SR-6 Status
 
 SR-6 unifies frontends: CLI is authoritative and TUI is a thin wizard.

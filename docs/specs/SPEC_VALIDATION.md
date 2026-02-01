@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -53,7 +58,7 @@ After a world is created or loaded, subsystem validators run before simulation.
 Ordering:
 - Validators MUST run in a deterministic order. The legacy orchestration uses
   the subsystem registry iteration order (`d_subsystem_get_by_index(i)`; see
-  `docs/SPEC_DOMINO_SUBSYSTEMS.md`).
+  `docs/specs/SPEC_DOMINO_SUBSYSTEMS.md`).
 
 Rules:
 - Validators are pure reads of world state plus deterministic checks.
@@ -75,5 +80,5 @@ and compares **world hashes**:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_DOMINO_SUBSYSTEMS.md`
-- `docs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_DOMINO_SUBSYSTEMS.md`
+- `docs/specs/SPEC_PACKETS.md`

@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -160,7 +165,7 @@ TRANS/STRUCT/DECOR MUST forbid:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_GRAPH_TOOLKIT.md`
-- `docs/SPEC_POSE_AND_ANCHORS.md`
-- `docs/SPEC_DOMAINS_FRAMES_PROP.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_GRAPH_TOOLKIT.md`
+- `docs/specs/SPEC_POSE_AND_ANCHORS.md`
+- `docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`

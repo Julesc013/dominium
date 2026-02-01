@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -60,9 +65,9 @@ Applies to:
 
 ## Integration rules
 - VM results that affect authoritative state MUST be emitted as deltas
-  (`docs/SPEC_ACTIONS.md`).
+  (`docs/specs/SPEC_ACTIONS.md`).
 - VM execution is scheduled and budgeted by the SIM scheduler
-  (`docs/SPEC_SIM_SCHEDULER.md`).
+  (`docs/specs/SPEC_SIM_SCHEDULER.md`).
 
 ## Source of truth vs derived cache
 **Source of truth:**
@@ -74,7 +79,6 @@ Applies to:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_PACKETS.md`
-
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_PACKETS.md`

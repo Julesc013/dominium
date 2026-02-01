@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Localization Packs (UX-1)
 
 Localization is delivered as packs. Packs are optional and never affect simulation outcomes.

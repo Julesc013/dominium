@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # AG-2 MVP Completion
 
 Scope: engine/ + game/ + data/ + docs/agents for AG-2 (institutions, power, contracts, conflict, macro-history).

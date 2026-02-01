@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CORE_DATA_GUIDE — Authoring and Validation
 
 Status: draft  
@@ -6,10 +11,10 @@ Version: 1
 ## Purpose
 This guide explains how to author `/data/core` and validate it before compiling
 to TLV packs. The authoritative contracts live in:
-- `docs/SPEC_CORE_DATA.md`
-- `docs/SPEC_COSMO_CORE_DATA.md`
-- `docs/SPEC_MECHANICS_PROFILES.md`
-- `docs/SPEC_CORE_DATA_VALIDATION.md`
+- `docs/specs/SPEC_CORE_DATA.md`
+- `docs/specs/SPEC_COSMO_CORE_DATA.md`
+- `docs/specs/SPEC_MECHANICS_PROFILES.md`
+- `docs/specs/SPEC_CORE_DATA_VALIDATION.md`
 
 ## Workflow
 1) Author or update `/data/core/**` (TOML preferred).  

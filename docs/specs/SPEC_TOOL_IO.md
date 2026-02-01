@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -62,6 +67,6 @@ Tools must read and write data in a launcher-controlled, reproducible way.
   - instance/run identifiers when available
 
 ## Related specs
-- `docs/SPEC_TOOLS_AS_INSTANCES.md`
-- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
-- `docs/SPEC_FS_CONTRACT.md`
+- `docs/specs/SPEC_TOOLS_AS_INSTANCES.md`
+- `docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/specs/SPEC_FS_CONTRACT.md`

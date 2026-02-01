@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Build Output Guide
 
 This document summarizes where build artifacts are written. Dist layout details

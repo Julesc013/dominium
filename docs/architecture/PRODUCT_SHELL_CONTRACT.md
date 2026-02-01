@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Product Shell Contract (SHELL0)
 
 Status: binding.
@@ -201,4 +206,3 @@ Explicit exclusions (MUST NOT be required):
 
 ## Sentinel tags (do not remove)
 - SHELL-PARITY-CLI-CANON
-

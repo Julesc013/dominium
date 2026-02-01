@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -137,6 +142,6 @@ region types (e.g., `belt`, `cloud`, `heliosphere`) are valid for anchors but
 are not required in procedural maps.
 
 ## Related specs
-- `docs/SPEC_CORE_DATA.md`
-- `docs/SPEC_COSMO_LANE.md`
-- `docs/SPEC_MECHANICS_PROFILES.md`
+- `docs/specs/SPEC_CORE_DATA.md`
+- `docs/specs/SPEC_COSMO_LANE.md`
+- `docs/specs/SPEC_MECHANICS_PROFILES.md`

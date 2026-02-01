@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Launcher TUI (Keyboard‑Only Front‑End)
 
 Doc Version: 1
@@ -67,4 +72,3 @@ Used by CI and tests to ensure the TUI entrypoint can run without a terminal:
 - `docs/launcher/DEV_UI.md`
 - `docs/launcher/TESTING.md`
 - `docs/launcher/ECOSYSTEM_INTEGRATION.md`
-

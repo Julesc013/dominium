@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -70,7 +75,7 @@ When `--print-selection` is used, the runtime:
    - determinism grade and selection reason
 
 Profile kind affects which perf class is preferred (see
-`docs/SPEC_CAPABILITY_REGISTRY.md`).
+`docs/specs/SPEC_CAPABILITY_REGISTRY.md`).
 
 ## 4. Lockstep strict behavior
 
@@ -88,4 +93,3 @@ Inspect available backends and selection:
 dominium_game.exe --profile=compat --lockstep-strict=1 --print-selection
 dominium_game.exe --gfx=null --print-selection
 ```
-

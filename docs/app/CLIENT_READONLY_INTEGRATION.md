@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Client Read-Only Integration
 
 The client uses the app-layer read-only adapter for observability while keeping

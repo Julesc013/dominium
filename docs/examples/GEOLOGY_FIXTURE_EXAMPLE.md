@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Geology Fixture Example (GEOLOGY2)
 
 This example shows the fixture format used by geology tools and tests. These

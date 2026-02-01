@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -86,7 +91,7 @@ derived artifacts (meshes, textures) are ready.
   drive global physics.
 
 ## 6. Related specs
-- `docs/SPEC_SURFACE_TOPOLOGY.md`
-- `docs/SPEC_LANES_AND_BUBBLES.md`
-- `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_NO_MODAL_LOADING.md`
+- `docs/specs/SPEC_SURFACE_TOPOLOGY.md`
+- `docs/specs/SPEC_LANES_AND_BUBBLES.md`
+- `docs/specs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_NO_MODAL_LOADING.md`

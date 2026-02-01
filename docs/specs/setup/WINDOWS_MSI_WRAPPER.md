@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Windows MSI Wrapper (SR-7)
 
 The MSI wrapper is a thin shell. It must not implement install logic. It only collects UI choices and invokes `dominium-setup`.

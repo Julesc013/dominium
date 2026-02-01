@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Crafting Baseline (T10)
 
 Status: baseline, deterministic, process-only.

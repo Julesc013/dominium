@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Editor Backends
 
 Pure logic editing layers used by CLI/TUI/GUI tools. Each backend exposes a C API and a matching `dominium-tools` subcommand.

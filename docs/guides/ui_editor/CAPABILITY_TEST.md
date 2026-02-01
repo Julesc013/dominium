@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UI Capability Test (Minecraft-Structure)
 
 This is the pass/fail gate for the UI Editor toolchain and the Minecraft-structure

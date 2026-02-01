@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Format — `dominium_install.json`
 
 Install roots always contain this manifest. It is the single source of truth for install metadata and install mode. 

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium Launcher Architecture
 
 Doc Version: 2
@@ -100,7 +105,7 @@ Selection invariants:
 - Per-run audit may embed `selection_summary.tlv` bytes; when embedded, the bytes must match the file written in the run directory.
 - All refusals must be explicit and audited (no silent validation failures).
 
-See `docs/launcher/DIAGNOSTICS_AND_SUPPORT.md` and `docs/SPEC_LAUNCHER_CORE.md`.
+See `docs/launcher/DIAGNOSTICS_AND_SUPPORT.md` and `docs/specs/SPEC_LAUNCHER_CORE.md`.
 
 ## Run Directories (Per Launch Attempt)
 
@@ -141,8 +146,8 @@ All persisted state uses a versioned TLV root with a schema version tag and skip
 
 See:
 - `docs/launcher/INSTANCE_MODEL.md`
-- `docs/SPEC_CONTAINER_TLV.md`
-- `docs/DATA_FORMATS.md`
+- `docs/specs/SPEC_CONTAINER_TLV.md`
+- `docs/specs/DATA_FORMATS.md`
 
 ## Related Documents
 

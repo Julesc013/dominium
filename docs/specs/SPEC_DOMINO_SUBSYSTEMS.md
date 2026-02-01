@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -39,7 +44,7 @@ Applies to:
 - subsystem tag mapping (`source/domino/core/d_serialize_tags.h`)
 
 Does not define the refactor SIM scheduler phases and delta-commit semantics
-(`docs/SPEC_SIM_SCHEDULER.md`).
+(`docs/specs/SPEC_SIM_SCHEDULER.md`).
 
 ## Descriptor (`d_subsystem_desc`)
 File: `source/domino/core/d_subsystem.h`
@@ -60,7 +65,7 @@ Fields:
 - Registration happens at startup; duplicate ids are rejected.
 - The registry is a fixed-size table (`source/domino/core/d_subsystem.c`).
 - Iteration order is the registry index order:
-  - DSIM subsystem ticks run in this order (`docs/SPEC_SIM.md`).
+  - DSIM subsystem ticks run in this order (`docs/specs/SPEC_SIM.md`).
   - Save/load orchestration iterates in this order.
 
 Subsystem callbacks MUST NOT depend on:
@@ -91,5 +96,5 @@ Deterministic IO rule:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_SIM.md`
-- `docs/SPEC_VALIDATION.md`
+- `docs/specs/SPEC_SIM.md`
+- `docs/specs/SPEC_VALIDATION.md`

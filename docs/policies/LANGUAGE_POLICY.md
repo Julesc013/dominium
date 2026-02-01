@@ -1,8 +1,13 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium — Language Policy (Authoritative)
 
 This document defines mandatory language/toolchain constraints. Determinism
 behavioral requirements are specified in `docs/specs/SPEC_DETERMINISM.md` and guarded
-by `docs/DETERMINISM_REGRESSION_RULES.md`.
+by `docs/policies/DETERMINISM_REGRESSION_RULES.md`.
 
 ## 1. C90 rules (deterministic engine core)
 Applies to code that participates in deterministic simulation outcomes, replay,

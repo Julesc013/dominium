@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # LOGGING_EVENTS
 
 This document defines the structured event log schema used by launcher and setup. Events are emitted via `core_log` as deterministic TLV records (no free-form strings in kernel code).

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -145,7 +150,7 @@ DEPENDENCIES:
 
 ## TLV wire format v2 (ui_doc.tlv)
 ### Container header
-- DTLV container v1 (see `docs/SPEC_CONTAINER_TLV.md`).
+- DTLV container v1 (see `docs/specs/SPEC_CONTAINER_TLV.md`).
 - Header: magic `DTLV`, endian marker `0xFFFE` (LE), version `1`, directory entries.
 
 ### Top-level chunks (DTLV directory entries)

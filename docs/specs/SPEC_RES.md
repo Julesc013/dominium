@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -86,7 +91,7 @@ Rules:
   deterministic seed contexts (`seed_context`), never OS RNG.
 - Applying a delta MUST be deterministic and side-effect free outside RES.
 - Higher-level game logic MUST express RES mutations as deltas in SIM
-  (`docs/SPEC_ACTIONS.md`).
+  (`docs/specs/SPEC_ACTIONS.md`).
 
 ## Save/load framing
 - Subsystem id: `D_SUBSYS_RES` (`source/domino/core/d_subsystem.h`).
@@ -114,7 +119,7 @@ Rules:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_PACKETS.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_SIM.md`
-- `docs/SPEC_DOMINO_SUBSYSTEMS.md`
+- `docs/specs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_SIM.md`
+- `docs/specs/SPEC_DOMINO_SUBSYSTEMS.md`

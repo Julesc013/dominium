@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Realistic Earth (Exemplar)
 
 Purpose: demonstrate real-world overlays, scientific epistemics, and civic institutions.

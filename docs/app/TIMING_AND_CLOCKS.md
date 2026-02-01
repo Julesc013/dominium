@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Timing and Clock Domains
 
 This document defines clock domains and timing modes used by application

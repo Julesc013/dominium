@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -52,7 +57,7 @@ Authoring models are canonical sources of truth (see `source/domino/struct/model
 
 Authoritative rules:
 - All placement is via anchor + local pose; arbitrary orientation is allowed.
-- All fixed-point values MUST be quantized before commit (see `docs/SPEC_POSE_AND_ANCHORS.md`).
+- All fixed-point values MUST be quantized before commit (see `docs/specs/SPEC_POSE_AND_ANCHORS.md`).
 - No baked world-space mesh geometry is stored as truth.
 
 ## Produces (derived cache)
@@ -98,8 +103,8 @@ the authoritative placement model for the BUILD/TRANS/STRUCT/DECOR refactor.
 - any render/visualization geometry
 
 ## Related specs
-- `docs/SPEC_TRANS_STRUCT_DECOR.md`
-- `docs/SPEC_POSE_AND_ANCHORS.md`
-- `docs/SPEC_GRAPH_TOOLKIT.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`
+- `docs/specs/SPEC_POSE_AND_ANCHORS.md`
+- `docs/specs/SPEC_GRAPH_TOOLKIT.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
 - `docs/specs/SPEC_DETERMINISM.md`

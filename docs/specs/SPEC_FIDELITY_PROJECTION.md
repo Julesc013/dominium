@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -188,10 +193,10 @@ entities on the new shard.
 - "Fake" background simulation
 
 ## References
-- Information model: `docs/SPEC_INFORMATION_MODEL.md`
-- Command intent: `docs/SPEC_COMMAND_MODEL.md`
-- Effect fields: `docs/SPEC_EFFECT_FIELDS.md`
-- World source stack: `docs/SPEC_WORLD_SOURCE_STACK.md`
+- Information model: `docs/specs/SPEC_INFORMATION_MODEL.md`
+- Command intent: `docs/specs/SPEC_COMMAND_MODEL.md`
+- Effect fields: `docs/specs/SPEC_EFFECT_FIELDS.md`
+- World source stack: `docs/specs/SPEC_WORLD_SOURCE_STACK.md`
 
 ## Test and validation requirements (spec-only)
 Implementations must provide:

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Render Graph Spec (Phase 1, High-Level) (REND0)
 
 This document defines the high-level render graph contract.

@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Registry Pattern (Category B)
 
 This document defines the canonical registry pattern for open-world taxonomies.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Fluids and Containment Baseline (FLUIDS0)
 
 Status: binding for T13 baseline.  

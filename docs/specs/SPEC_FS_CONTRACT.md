@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -85,6 +90,6 @@ These codes are stable and intended for telemetry/audit:
 - Reject non-canonical paths that would normalize to a different string.
 
 ## Related specs
-- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
-- `docs/SPEC_GAME_PRODUCT.md`
+- `docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_GAME_PRODUCT.md`

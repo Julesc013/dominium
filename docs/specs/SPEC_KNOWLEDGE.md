@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -29,8 +34,8 @@ DEPENDENCIES (Phase 1 overrides apply):
 
 NOTE:
 This document is legacy and is superseded by:
-- `docs/SPEC_INFORMATION_MODEL.md`
-- `docs/SPEC_KNOWLEDGE_VIS_COMMS.md`
+- `docs/specs/SPEC_INFORMATION_MODEL.md`
+- `docs/specs/SPEC_KNOWLEDGE_VIS_COMMS.md`
 Any `dknowledge_*` naming here is a placeholder for game-layer derived cache
 functions. It MUST NOT imply engine ownership or authoritative state.
 

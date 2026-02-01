@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Schema Freeze v1
 
 This document freezes v1 schemas for Setup TLV contracts. Any change to the

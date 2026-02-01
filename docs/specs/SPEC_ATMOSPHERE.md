@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -65,6 +70,6 @@ Profiles must be validated before use:
 - Sampling is a pure function: same inputs, same outputs.
 
 ## 5. Related specs
-- `docs/SPEC_MEDIA_FRAMEWORK.md`
-- `docs/SPEC_REENTRY_THERMAL.md`
-- `docs/SPEC_LANES_AND_BUBBLES.md`
+- `docs/specs/SPEC_MEDIA_FRAMEWORK.md`
+- `docs/specs/SPEC_REENTRY_THERMAL.md`
+- `docs/specs/SPEC_LANES_AND_BUBBLES.md`

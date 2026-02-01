@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # TOOL UI GUIDELINES
 
 Tool UIs are read-only, non-authoritative views. They must operate on snapshots,

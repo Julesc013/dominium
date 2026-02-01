@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Runtime Loop Contract
 
 All product entrypoints follow the same loop phases when running an interactive

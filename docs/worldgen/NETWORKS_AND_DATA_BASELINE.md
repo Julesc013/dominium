@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Networks and Data Baseline (INFO0)
 
 Status: binding for T14 baseline.  

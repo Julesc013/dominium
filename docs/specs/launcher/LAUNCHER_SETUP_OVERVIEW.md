@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium — Launcher & Setup Overview
 
 This document summarizes how installs, the launcher, and runtimes fit together. It is an overview; detailed CLI contracts live under `docs/API/`.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for engine/ui/.
 UI here is engine-level, game-agnostic: widgets, layout, skins, and input plumbing.
 No Dominium-specific logic. No simulation logic. No platform APIs directly (go through engine/platform and engine/render).
@@ -399,4 +404,3 @@ Rules:
 • No GL/DX/SDL/OpenAL includes.
 • No long-lived allocations beyond static arrays and POD structs.
 • No “immediate mode GUI” macros that mix layout, input, and draw; keep retained model.
-

@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
 
 This message is the dev-spec for engine/pathfinding/.
 This layer is the deterministic routing kernel for:

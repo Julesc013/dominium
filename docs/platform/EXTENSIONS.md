@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Platform Extensions
 
 `dsys_query_extension(name, version)` returns a vtable pointer or NULL. Version

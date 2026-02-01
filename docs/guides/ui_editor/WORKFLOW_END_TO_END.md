@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UI Workflow End-to-End (Headless + GUI)
 
 This document captures the full UI workflow from discovery to build validation.

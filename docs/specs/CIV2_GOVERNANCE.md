@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CIV2 Governance, Legitimacy, and Jurisdictions
 
 This document defines the CIV2 governance substrate: jurisdictions, legitimacy,

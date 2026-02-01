@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Product Shell Overview
 
 Acceptance criteria live in `docs/architecture/PRODUCT_SHELL_CONTRACT.md`.

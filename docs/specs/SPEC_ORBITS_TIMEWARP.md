@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -86,6 +91,6 @@ Event queries are deterministic and purely analytic:
 - No floating-point in authoritative paths.
 
 ## Related specs
-- `docs/SPEC_REFERENCE_FRAMES.md`
-- `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_ORBITS.md`
+- `docs/specs/SPEC_REFERENCE_FRAMES.md`
+- `docs/specs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_ORBITS.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # SERVICES_FACADES
 
 All Layer 1 services are vtables with an opaque `ctx` pointer. No global state.

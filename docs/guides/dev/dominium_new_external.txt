@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message defines the dev-spec for /external/ — the authoritative structure and rules for vendored external libraries, headers, assets, and licences within Dominium.
 /external must behave as a hermetically controlled dependency depot.
 It ensures:

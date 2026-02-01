@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Change Protocol (ARCH0 Binding)
 
 This protocol is mandatory for any change that affects:

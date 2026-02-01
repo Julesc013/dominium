@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -29,7 +34,7 @@ DEPENDENCIES:
 
 This spec defines the legacy tile-anchored transport network registry used for
 early prototypes (`dtransport_*`). It is separate from the refactor TRANS
-transform/topology system (`docs/SPEC_TRANS.md`).
+transform/topology system (`docs/specs/SPEC_TRANS.md`).
 
 ## Scope
 Applies to:
@@ -51,7 +56,7 @@ subsystems (`docs/specs/SPEC_DETERMINISM.md`).
 - All tables are fixed-size arrays (bounded; no unbounded growth per tick).
 - Any iteration over nodes/edges MUST use ascending ID order.
 - Any future routing/pathfinding MUST obey canonical ordering rules from
-  `docs/SPEC_GRAPH_TOOLKIT.md` (no unordered traversal; explicit tie-breaks).
+  `docs/specs/SPEC_GRAPH_TOOLKIT.md` (no unordered traversal; explicit tie-breaks).
 
 ## API surface
 Implemented plumbing (`include/domino/dtransport.h`, `source/domino/dtransport.c`):
@@ -70,5 +75,5 @@ Implemented plumbing (`include/domino/dtransport.h`, `source/domino/dtransport.c
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_GRAPH_TOOLKIT.md`
-- `docs/SPEC_PACKETS.md`
+- `docs/specs/SPEC_GRAPH_TOOLKIT.md`
+- `docs/specs/SPEC_PACKETS.md`

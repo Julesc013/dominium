@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Accessibility Model (UX-1)
 
 Accessibility presets are data-only profiles that change presentation and input ergonomics. They must never alter simulation, authority, or outcomes.

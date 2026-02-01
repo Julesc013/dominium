@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Vegetation Baseline (VEGETATION5)
 
 Status: binding for T5 baseline.  

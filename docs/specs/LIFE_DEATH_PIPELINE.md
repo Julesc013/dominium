@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # LIFE Death Pipeline (LIFE2)
 
 This guide describes the deterministic death pipeline and estate scheduling

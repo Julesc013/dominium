@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # DATA-3 World Overview
 
 Purpose: Provide data-only world anchors, ecology, population, settlements, trade, and civilization stress so richer worlds can be described without code or era logic.

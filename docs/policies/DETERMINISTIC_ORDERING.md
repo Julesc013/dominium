@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Deterministic Ordering Policy (DET2)
 
 This document defines canonical ordering rules for authoritative simulation paths.

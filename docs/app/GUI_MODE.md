@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # GUI Mode
 
 GUI is an optional runtime layer. All TESTX paths remain CLI-only.

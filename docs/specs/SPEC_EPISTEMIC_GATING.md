@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -40,7 +45,7 @@ prevents silent assumptions.
 - A standard is usable only if the actor knows it.
 - Some standards require devices or authority to apply.
 - Lack of knowledge or access produces UNKNOWN, not defaults.
-- Gating applies before standard resolution (see `docs/SPEC_STANDARD_RESOLUTION.md`).
+- Gating applies before standard resolution (see `docs/specs/SPEC_STANDARD_RESOLUTION.md`).
 
 ## Knowledge requirements
 An actor must have explicit knowledge of:

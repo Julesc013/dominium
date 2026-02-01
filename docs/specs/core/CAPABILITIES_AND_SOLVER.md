@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CAPABILITIES_AND_SOLVER
 
 This document defines the typed capabilities model and deterministic solver

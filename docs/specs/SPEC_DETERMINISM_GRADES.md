@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -101,4 +106,3 @@ Replays that participate in determinism verification MUST record:
 At playback time, the runtime MUST be able to:
 - compare recorded selection signature vs the current selection
 - report mismatches clearly (tests and strict policy wiring land in later prompts)
-

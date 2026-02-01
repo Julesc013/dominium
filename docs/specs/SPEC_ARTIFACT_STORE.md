@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -85,4 +90,3 @@ Verification is deterministic:
 - validate content type matches the referencing manifest entry type
 
 No network fetch or signature verification is performed in this revision.
-

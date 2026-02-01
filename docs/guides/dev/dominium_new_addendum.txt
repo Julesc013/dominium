@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium V3 — Codegen Addendum (Renderer/Platform/Engine Split)
 
 This addendum **modifies and extends** previous V3 specs and directory contracts.  
@@ -322,4 +327,3 @@ o DX9 renderer backend (dom_render_dx9).
 o Vector-only 2D/3D drawing.
 o Everything else is secondary.
 This addendum is binding and overrides any earlier ambiguity in the V3 volumes about platform, rendering, or OS integration.
-

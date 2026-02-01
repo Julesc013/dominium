@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -37,7 +42,7 @@ Each construction instance includes:
 - `construction_type_id`: deterministic type id (u32).
 - `body_id`: owning celestial body id (u64).
 - `surface_chunk_key`: deterministic surface chunk key (see
-  `docs/SPEC_SURFACE_STREAMING.md`).
+  `docs/specs/SPEC_SURFACE_STREAMING.md`).
 - `local_position`: fixed-point meters in a local tangent frame anchored at the
   chunk origin.
 - `orientation`: axis-aligned rotation (0, 90, 180, 270 degrees), stored as a
@@ -87,7 +92,7 @@ Constructions are stored in:
 Unknown fields/chunks are skipped and preserved per container rules.
 
 ## 6. Related specs
-- `docs/SPEC_LANES_AND_BUBBLES.md`
-- `docs/SPEC_SURFACE_STREAMING.md`
-- `docs/SPEC_SURFACE_TOPOLOGY.md`
+- `docs/specs/SPEC_LANES_AND_BUBBLES.md`
+- `docs/specs/SPEC_SURFACE_STREAMING.md`
+- `docs/specs/SPEC_SURFACE_TOPOLOGY.md`
 - `docs/specs/SPEC_DETERMINISM.md`

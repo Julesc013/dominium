@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -135,13 +140,13 @@ Authority remains centralized and deterministic regardless of deployment topolog
 Handoff boundaries preserve determinism and replay equivalence.
 
 ## Integration with other systems (mandatory)
-- Event-driven stepping: `docs/SPEC_EVENT_DRIVEN_STEPPING.md`
-- Interest sets: `docs/SPEC_INTEREST_SETS.md`
-- Fidelity projection: `docs/SPEC_FIDELITY_PROJECTION.md`
-- Provenance: `docs/SPEC_PROVENANCE.md`
-- Communication model: `docs/SPEC_COMMUNICATION.md`
-- Command intent: `docs/SPEC_COMMAND_MODEL.md`
-- Time warp: `docs/SPEC_TIME_WARP.md`
+- Event-driven stepping: `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md`
+- Interest sets: `docs/specs/SPEC_INTEREST_SETS.md`
+- Fidelity projection: `docs/specs/SPEC_FIDELITY_PROJECTION.md`
+- Provenance: `docs/specs/SPEC_PROVENANCE.md`
+- Communication model: `docs/specs/SPEC_COMMUNICATION.md`
+- Command intent: `docs/specs/SPEC_COMMAND_MODEL.md`
+- Time warp: `docs/specs/SPEC_TIME_WARP.md`
 
 ## Prohibitions (absolute)
 - Best-effort shard synchronization.

@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CIV1 Cities, Infrastructure, and Production
 
 This document defines the CIV1 infrastructure layer: deterministic cities,

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Profiling Guide (PERF3)
 
 This guide defines the mandatory profiling contract and how to use it safely.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -34,9 +39,9 @@ simulation.
 ## 1. Scope
 - Tiers are **non-sim**: they MUST NOT change authoritative state, commands,
   or determinism hashes.
-- Tiers are negotiated via `PERF_CAPS` (see `docs/SPEC_CAPABILITIES.md`).
+- Tiers are negotiated via `PERF_CAPS` (see `docs/specs/SPEC_CAPABILITIES.md`).
 - Tiers are not part of identity digests; they are advisory and adjustable.
-- SIM_CAPS are separate and pinned; see `docs/SPEC_CAPABILITIES.md`.
+- SIM_CAPS are separate and pinned; see `docs/specs/SPEC_CAPABILITIES.md`.
 
 ## 2. Tier IDs (stable)
 Tier IDs are `u32` values:
@@ -59,7 +64,7 @@ Tier profiles MUST NOT:
 If no tier is supplied, runtime defaults to `BASELINE`.
 
 ## Related specs
-- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
-- `docs/SPEC_CAPABILITIES.md`
-- `docs/SPEC_QOS_ASSISTANCE.md`
+- `docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/specs/SPEC_CAPABILITIES.md`
+- `docs/specs/SPEC_QOS_ASSISTANCE.md`
 - `docs/specs/SPEC_DETERMINISM.md`

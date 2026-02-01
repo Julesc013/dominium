@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -58,7 +63,7 @@ Budget rules:
 Bubble contents:
 - Vessels inside the bubble.
 - Surface chunks, constructions, and derived data (see
-  `docs/SPEC_SURFACE_STREAMING.md`).
+  `docs/specs/SPEC_SURFACE_STREAMING.md`).
 - Construction placement/removal commands are accepted only while a matching
   bubble is active; otherwise they are refused.
 
@@ -94,7 +99,7 @@ lane deterministically:
   fidelity only.
 
 ## Related specs
-- `docs/SPEC_ORBITS_TIMEWARP.md`
-- `docs/SPEC_REFERENCE_FRAMES.md`
-- `docs/SPEC_SPACETIME.md`
-- `docs/SPEC_SURFACE_STREAMING.md`
+- `docs/specs/SPEC_ORBITS_TIMEWARP.md`
+- `docs/specs/SPEC_REFERENCE_FRAMES.md`
+- `docs/specs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_SURFACE_STREAMING.md`

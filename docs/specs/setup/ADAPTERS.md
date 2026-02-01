@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Setup Adapters (SR-7)
 
 Setup adapters are thin frontends. They only collect choices, emit `install_request.tlv`, and invoke the kernel (direct API or `dominium-setup`). They must not implement install logic.

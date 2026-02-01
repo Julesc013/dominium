@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -116,19 +121,19 @@ Logistics state is sim-affecting and MUST be persisted:
 ## 6. Macro economy linkage (v0)
 - Macro economy aggregates MAY influence production rates or availability but
   MUST NOT directly move inventory or bypass logistics rules.
-- See `docs/SPEC_COSMO_ECONOMY_EVENTS.md` for macro-level rules.
+- See `docs/specs/SPEC_COSMO_ECONOMY_EVENTS.md` for macro-level rules.
 
 ## 7. Factions and AI planners (v0)
 - Factions may create stations, routes, and transfers only through the same
   command pipeline as players.
 - AI planners MUST be deterministic, budgeted, and auditable.
-- See `docs/SPEC_FACTIONS.md` and `docs/SPEC_AI_DETERMINISM.md`.
+- See `docs/specs/SPEC_FACTIONS.md` and `docs/specs/SPEC_AI_DETERMINISM.md`.
 
 ## Related specs
-- `docs/SPEC_UNIVERSE_MODEL.md`
-- `docs/SPEC_COSMO_LANE.md`
-- `docs/SPEC_COSMO_ECONOMY_EVENTS.md`
-- `docs/SPEC_FACTIONS.md`
-- `docs/SPEC_AI_DETERMINISM.md`
-- `docs/SPEC_SPACETIME.md`
+- `docs/specs/SPEC_UNIVERSE_MODEL.md`
+- `docs/specs/SPEC_COSMO_LANE.md`
+- `docs/specs/SPEC_COSMO_ECONOMY_EVENTS.md`
+- `docs/specs/SPEC_FACTIONS.md`
+- `docs/specs/SPEC_AI_DETERMINISM.md`
+- `docs/specs/SPEC_SPACETIME.md`
 - `docs/specs/SPEC_DETERMINISM.md`

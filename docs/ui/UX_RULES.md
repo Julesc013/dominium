@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # UX Rules (UX-2)
 
 Status: binding.
@@ -23,4 +28,3 @@ Scope: global UX rules for CLI/TUI/GUI across setup, launcher, client, and tools
 - UX-REFUSAL-VISIBLE
 - UX-MISSING-CONTENT-EXPLAINED
 - UX-DEBUG-DISCOVERABLE
-

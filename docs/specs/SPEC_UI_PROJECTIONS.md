@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -172,8 +177,8 @@ Future tests MUST include:
 - Replay equivalence (projection changes do not affect sim).
 
 ## Related specs
-- `docs/SPEC_EPISTEMIC_INTERFACE.md`
-- `docs/SPEC_UI_CAPABILITIES.md`
-- `docs/SPEC_UI_WIDGETS.md`
-- `docs/SPEC_INFORMATION_MODEL.md`
-- `docs/SPEC_EFFECT_FIELDS.md`
+- `docs/specs/SPEC_EPISTEMIC_INTERFACE.md`
+- `docs/specs/SPEC_UI_CAPABILITIES.md`
+- `docs/specs/SPEC_UI_WIDGETS.md`
+- `docs/specs/SPEC_INFORMATION_MODEL.md`
+- `docs/specs/SPEC_EFFECT_FIELDS.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # TESTX Compliance (APR0)
 
 This document summarizes the CLI-focused TESTX checks added for APR0.

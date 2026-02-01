@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -158,7 +163,7 @@ machine-local runtime ID is required, a remap table MUST be provided:
 
 ## Related specs
 - `docs/specs/SPEC_DETERMINISM.md`
-- `docs/SPEC_ACTIONS.md`
-- `docs/SPEC_SIM_SCHEDULER.md`
-- `docs/SPEC_FIELDS_EVENTS.md`
-- `docs/SPEC_VM.md`
+- `docs/specs/SPEC_ACTIONS.md`
+- `docs/specs/SPEC_SIM_SCHEDULER.md`
+- `docs/specs/SPEC_FIELDS_EVENTS.md`
+- `docs/specs/SPEC_VM.md`

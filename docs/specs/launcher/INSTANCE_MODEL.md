@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Instance Model
 
 Doc Version: 1
@@ -26,7 +31,7 @@ Within `instances/<instance_id>/` (conceptual view):
 - `previous/` – archived snapshots (manifest + payload references) and prior states.
 - `staging/` – transaction working area (never treated as live state).
 
-The exact on-disk layout is defined by the instance layout spec: `docs/SPEC_INSTANCE_LAYOUT.md`.
+The exact on-disk layout is defined by the instance layout spec: `docs/specs/SPEC_INSTANCE_LAYOUT.md`.
 
 ## Manifest (Lockfile)
 
@@ -65,5 +70,4 @@ Two modes exist:
 
 Imports record provenance (source instance + manifest hash). Verification can be enforced, with safe mode allowing best-effort import when explicitly requested.
 
-See `docs/SPEC_LAUNCHER_PACKS.md` and `docs/launcher/RECOVERY_AND_SAFE_MODE.md`.
-
+See `docs/specs/SPEC_LAUNCHER_PACKS.md` and `docs/launcher/RECOVERY_AND_SAFE_MODE.md`.

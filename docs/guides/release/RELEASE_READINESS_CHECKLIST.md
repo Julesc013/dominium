@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Release Readiness Checklist (Setup + Launcher)
 
 Each checkbox maps an acceptance criterion to code, tests, and a verification command.

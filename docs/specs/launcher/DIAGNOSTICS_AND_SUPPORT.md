@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Diagnostics and Support
 
 Doc Version: 1
@@ -14,7 +19,7 @@ Every run emits an audit log containing:
 
 Audit output is versioned TLV and intended to be machine-readable. A text representation may also be produced for human inspection.
 
-See `docs/SPEC_LAUNCHER_CORE.md`.
+See `docs/specs/SPEC_LAUNCHER_CORE.md`.
 
 ## Per-Instance Logs
 

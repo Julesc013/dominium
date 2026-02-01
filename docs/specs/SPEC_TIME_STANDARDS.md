@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -73,7 +78,7 @@ ASCII diagram:
 - Pluto HKC-Pl, TNO HDTF
 - Galactic GEC, Universal UEF
 
-Calendar definitions live in `docs/SPEC_CALENDARS.md`.
+Calendar definitions live in `docs/specs/SPEC_CALENDARS.md`.
 
 ## Conflict handling
 Conflicts are expected and must be shown. If a higher-precedence standard is
@@ -87,11 +92,11 @@ Negative (forbidden):
 - Defaulting to a standard without provenance.
 
 ## References
-- docs/SPEC_STANDARDS_AND_RENDERERS.md
-- docs/SPEC_STANDARD_RESOLUTION.md
-- docs/SPEC_CALENDARS.md
-- docs/SPEC_INFORMATION_MODEL.md
-- docs/SPEC_EFFECT_FIELDS.md
+- docs/specs/SPEC_STANDARDS_AND_RENDERERS.md
+- docs/specs/SPEC_STANDARD_RESOLUTION.md
+- docs/specs/SPEC_CALENDARS.md
+- docs/specs/SPEC_INFORMATION_MODEL.md
+- docs/specs/SPEC_EFFECT_FIELDS.md
 
 ## Test and validation requirements (spec-only)
 - Conflicting standards resolution tests

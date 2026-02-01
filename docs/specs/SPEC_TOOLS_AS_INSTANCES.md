@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -42,7 +47,7 @@ handshake, identity, and path contracts as the game.
   - `instance_id`
   - `run_id`
   - `sim_caps`
-- Identity digest rules match `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`.
+- Identity digest rules match `docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`.
 - On mismatch, tools MUST refuse and emit a refusal report under `RUN_ROOT`.
 
 ## 3. Modes
@@ -64,7 +69,7 @@ handshake, identity, and path contracts as the game.
 - Tools MUST log any edit operations with deterministic, structured output.
 
 ## Related specs
-- `docs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
-- `docs/SPEC_FS_CONTRACT.md`
-- `docs/SPEC_TOOL_IO.md`
-- `docs/SPEC_UNIVERSE_BUNDLE.md`
+- `docs/specs/SPEC_LAUNCH_HANDSHAKE_GAME.md`
+- `docs/specs/SPEC_FS_CONTRACT.md`
+- `docs/specs/SPEC_TOOL_IO.md`
+- `docs/specs/SPEC_UNIVERSE_BUNDLE.md`

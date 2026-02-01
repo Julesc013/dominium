@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 This message is the dev-spec for /data/packs/.
 /data/packs provides first-party graphics, sound, and music packs, loaded like OpenTTD-style asset packs.
 They change how the game looks and sounds, but never how it simulates.

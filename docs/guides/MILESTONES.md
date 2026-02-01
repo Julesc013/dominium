@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Dominium — Milestones (Engine v0)
 
 ## v0 — Deterministic core bootstrap

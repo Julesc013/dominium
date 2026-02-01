@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # CIV0 Population Genesis (Cohorts, Households, Migration)
 
 This document describes the CIV0 population substrate: deterministic cohorts,
@@ -24,7 +29,7 @@ Population updates are processed only when due:
 - Migration flows are applied at arrival_act.
 - No subsystem may scan all cohorts or households each tick.
 
-This aligns with `docs/SPEC_EVENT_DRIVEN_STEPPING.md` and the macro due
+This aligns with `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md` and the macro due
 scheduler used by CIV0a survival.
 
 ## Determinism and ordering

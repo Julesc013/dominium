@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # JOB ENGINE (RESUMABLE JOBS)
 
 This document defines the resumable job model used by launcher and setup.

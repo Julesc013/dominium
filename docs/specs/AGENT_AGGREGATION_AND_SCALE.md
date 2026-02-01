@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # AGENT3 — Aggregation, Refinement, and Scale
 
 Status: draft

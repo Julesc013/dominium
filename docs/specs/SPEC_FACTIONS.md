@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -86,8 +91,8 @@ Chunks are versioned, skip-unknown, and included in identity digests where
 they affect authoritative behavior.
 
 ## Related specs
-- `docs/SPEC_COSMO_ECONOMY_EVENTS.md`
-- `docs/SPEC_SYSTEM_LOGISTICS.md`
-- `docs/SPEC_AI_DETERMINISM.md`
-- `docs/SPEC_AI_DECISION_TRACES.md`
+- `docs/specs/SPEC_COSMO_ECONOMY_EVENTS.md`
+- `docs/specs/SPEC_SYSTEM_LOGISTICS.md`
+- `docs/specs/SPEC_AI_DETERMINISM.md`
+- `docs/specs/SPEC_AI_DECISION_TRACES.md`
 - `docs/specs/SPEC_DETERMINISM.md`

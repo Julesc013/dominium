@@ -1,3 +1,8 @@
+Status: CANONICAL
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # VALIDATION_RULES
 
 Status: binding.
@@ -224,4 +229,48 @@ Overrides:
 - Scope: scripts/ci/compliance_report.py
 - Enforcement: `tests/contract/compliance_report_contracts.py`
 - Failure format: `INV-REPORT-COMPLIANCE: <reason>`
+- Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)
+
+## L) Canon & Docs
+
+## INV-CANON-INDEX — Canon index exists and is complete
+- Scope: docs/architecture/CANON_INDEX.md
+- Enforcement: RepoX rule + canon compliance report
+- Failure format: `INV-CANON-INDEX: <reason>`
+- Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)
+
+## INV-DOC-STATUS-HEADER — Docs status header required
+- Scope: docs/**
+- Enforcement: RepoX rule (header scan)
+- Failure format: `INV-DOC-STATUS-HEADER: <path>`
+- Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)
+
+## INV-CANON-NO-HIST-REF — Canonical docs must not reference historical docs
+- Scope: docs/architecture/** (canonical)
+- Enforcement: RepoX rule (reference scan)
+- Failure format: `INV-CANON-NO-HIST-REF: <path>`
+- Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)
+
+## INV-CANON-CODE-REF — Code references canonical docs only
+- Scope: engine/, game/, client/, server/, tools/
+- Enforcement: RepoX rule (doc reference scan)
+- Failure format: `INV-CANON-CODE-REF: <path>`
+- Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)
+
+## INV-CANON-NO-SUPERSEDED — Canonical docs must not be superseded
+- Scope: docs/architecture/** (canonical)
+- Enforcement: RepoX rule (header scan)
+- Failure format: `INV-CANON-NO-SUPERSEDED: <path>`
+- Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)
+
+## INV-SCHEMA-VERSION-BUMP — Schema changes require schema_version update
+- Scope: schema/**
+- Enforcement: RepoX rule (diff-based)
+- Failure format: `INV-SCHEMA-VERSION-BUMP: <path>`
+- Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)
+
+## INV-REPORT-CANON — Canon compliance report emitted
+- Scope: scripts/ci/compliance_report.py
+- Enforcement: RepoX rule + compliance report contract
+- Failure format: `INV-REPORT-CANON: <reason>`
 - Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)

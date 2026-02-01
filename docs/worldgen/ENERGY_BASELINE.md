@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Energy Baseline (ENERGY0)
 
 Status: binding for T11 baseline.  

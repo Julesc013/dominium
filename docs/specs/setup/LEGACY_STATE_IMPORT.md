@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Legacy State Import
 
 Setup can import legacy DSU installed state into `installed_state.tlv`.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -43,9 +48,9 @@ contracts, and markets. It does not model markets, currencies, or pricing.
 - Epistemic visibility constraints.
 
 Out of scope:
-- Currency formatting and standards (see `docs/SPEC_MONEY_STANDARDS.md`).
-- Market clearing (see `docs/SPEC_MARKETS.md`).
-- Instrument templates (see `docs/SPEC_ASSETS_INSTRUMENTS.md`).
+- Currency formatting and standards (see `docs/specs/SPEC_MONEY_STANDARDS.md`).
+- Market clearing (see `docs/specs/SPEC_MARKETS.md`).
+- Instrument templates (see `docs/specs/SPEC_ASSETS_INSTRUMENTS.md`).
 
 ## Definitions
 - Asset: A conserved unit defined by `asset_id`. Values are stored as scaled integers.
@@ -117,7 +122,7 @@ GAME (Dominium, C++98) MUST:
 ## Epistemic visibility
 Ledger state is authoritative but not universally visible:
 - Access to balances is governed by identity, authority, and device capability.
-- Balances and statements are InfoRecords for UI (see `docs/SPEC_INFORMATION_MODEL.md`).
+- Balances and statements are InfoRecords for UI (see `docs/specs/SPEC_INFORMATION_MODEL.md`).
 
 ## Diagram
 ```
@@ -155,8 +160,8 @@ Future tests MUST include:
 - Lot/provenance preservation on transfers.
 
 ## Related specs
-- `docs/SPEC_ASSETS_INSTRUMENTS.md`
-- `docs/SPEC_CONTRACTS.md`
-- `docs/SPEC_MARKETS.md`
-- `docs/SPEC_MONEY_STANDARDS.md`
-- `docs/SPEC_PROVENANCE.md`
+- `docs/specs/SPEC_ASSETS_INSTRUMENTS.md`
+- `docs/specs/SPEC_CONTRACTS.md`
+- `docs/specs/SPEC_MARKETS.md`
+- `docs/specs/SPEC_MONEY_STANDARDS.md`
+- `docs/specs/SPEC_PROVENANCE.md`

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Localization Model (UX-1)
 
 Localization is implemented strictly as content packs. Localization must never affect simulation or determinism. UI logs and intent streams use stable identifiers, not localized text.

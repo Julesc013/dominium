@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # IDE Live Editing (Preview Hosts)
 
 This document describes IDE-native live preview workflows for Dominium tools

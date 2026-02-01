@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Weather Baseline (WEATHER0)
 
 Status: binding for T4 baseline.  

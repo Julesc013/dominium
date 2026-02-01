@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -92,7 +97,7 @@ on canonical quantities and are independent of standards and renderers.
 ### Standard resolution context
 The situation in which a standard is chosen. It includes explicit documents, actor
 knowledge, organization membership, jurisdiction, device availability, and runtime
-policy. Resolution order is defined in `docs/SPEC_STANDARD_RESOLUTION.md`.
+policy. Resolution order is defined in `docs/specs/SPEC_STANDARD_RESOLUTION.md`.
 
 ### Epistemic gating
 A standard or renderer is usable only if the actor knows it and has required access
@@ -207,11 +212,11 @@ differs. The UI must show a conflict warning and the authoritative standard used
 for that document.
 
 ## Future domain references (non-exhaustive)
-- calendars and time standards (see `docs/SPEC_CALENDARS.md`)
-- currencies and economy (see `docs/SPEC_ECONOMY.md`)
-- unit systems (see `docs/SPEC_NUMERIC.md` for canonical storage constraints)
+- calendars and time standards (see `docs/specs/SPEC_CALENDARS.md`)
+- currencies and economy (see `docs/specs/SPEC_ECONOMY.md`)
+- unit systems (see `docs/specs/SPEC_NUMERIC.md` for canonical storage constraints)
 - legal and governance standards (future specs)
-- comms and identity naming (see `docs/SPEC_KNOWLEDGE.md`)
+- comms and identity naming (see `docs/specs/SPEC_KNOWLEDGE.md`)
 
 ## Test and validation requirements (spec-only)
 Implementations must provide:

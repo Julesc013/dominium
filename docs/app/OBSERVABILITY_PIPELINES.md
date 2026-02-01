@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 # Observability Pipelines
 
 APR4 adds read-only observability outputs for client and tools. All paths are

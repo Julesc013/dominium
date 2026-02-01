@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+
 --------------------------------
 OWNERSHIP & RESPONSIBILITY
 --------------------------------
@@ -84,7 +89,7 @@ Engine provides:
 - ACT storage and monotonic advancement
 - deterministic ACT arithmetic with explicit overflow behavior
 - pure frame conversion hooks (BST/GCT/CPT)
-- time event scheduling primitives (see `docs/SPEC_EVENT_DRIVEN_STEPPING.md`)
+- time event scheduling primitives (see `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md`)
 
 Engine does NOT provide:
 - calendars or formatting
@@ -126,12 +131,12 @@ Negative (forbidden):
 - Adjusting ACT for leap seconds.
 
 ## References
-- docs/SPEC_STANDARDS_AND_RENDERERS.md
-- docs/SPEC_TIME_FRAMES.md
-- docs/SPEC_CALENDARS.md
-- docs/SPEC_TIME_STANDARDS.md
-- docs/SPEC_INFORMATION_MODEL.md
-- docs/SPEC_EFFECT_FIELDS.md
+- docs/specs/SPEC_STANDARDS_AND_RENDERERS.md
+- docs/specs/SPEC_TIME_FRAMES.md
+- docs/specs/SPEC_CALENDARS.md
+- docs/specs/SPEC_TIME_STANDARDS.md
+- docs/specs/SPEC_INFORMATION_MODEL.md
+- docs/specs/SPEC_EFFECT_FIELDS.md
 
 ## Test and validation requirements (spec-only)
 - ACT monotonicity tests
