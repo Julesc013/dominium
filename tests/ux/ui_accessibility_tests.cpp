@@ -44,7 +44,6 @@ int main(void)
 
     button = doc.find_by_id(button_id);
     EXPECT(button != 0, "button lookup");
-    button->events.set("activate", "cmd.test");
 
     EXPECT(expect_validate(&doc, 0, "missing accessibility"), "validate missing accessibility");
 

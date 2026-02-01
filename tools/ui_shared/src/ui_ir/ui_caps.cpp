@@ -138,6 +138,14 @@ bool domui_tier_supports_widget(const domui_tier_caps* tier, domui_widget_type t
 
 bool domui_tier_supports_prop(const domui_tier_caps* tier, domui_widget_type type, const domui_string& prop_key)
 {
+    {
+        const std::string& key = prop_key.str();
+        const char* prefix = "accessibility.";
+        const size_t prefix_len = 14u;
+        if (key.size() >= prefix_len && key.compare(0, prefix_len, prefix) == 0) {
+            return true;
+        }
+    }
     const domui_widget_cap* cap = domui_find_widget_cap(tier, type);
     if (!cap) {
         return false;

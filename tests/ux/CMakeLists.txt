@@ -9,6 +9,7 @@ target_include_directories(ui_accessibility_tests PRIVATE
     ${CMAKE_SOURCE_DIR}
     ${DOMINIUM_ENGINE_INCLUDE_DIR}
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/libs/contracts/include
     ${CMAKE_SOURCE_DIR}/tools/ui_shared/src/ui_ir
 )
 target_link_libraries(ui_accessibility_tests PRIVATE domino_ui_ir)
