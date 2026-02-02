@@ -1,18 +1,18 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-02-02
 Supersedes: none
 Superseded By: none
 
 # Post CLEAN-2 Status
 
-Date: 2026-02-01
-Verified Commit: 643a2332
+Date: 2026-02-02
+Verified Commit: 0b064855
 Tag: none (not created)
 
 Summary:
 - CLEAN-2 verification completed with full build and TestX coverage (verify-win-vs2026).
 - RepoX compliance confirmed with no violations.
-- Client/server smoke runs completed (headless).
+- Client/server smoke runs completed (headless + inspect).
 
 Known Warnings:
 - See `docs/architecture/KNOWN_WARNINGS.md`.
