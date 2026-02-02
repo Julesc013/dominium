@@ -59,7 +59,9 @@ if(WIN32)
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
-    add_dependencies(server_app_win32 ui_bind_phase)
+    if(TARGET ui_bind_phase)
+        add_dependencies(server_app_win32 ui_bind_phase)
+    endif()
     if(MSVC)
         target_compile_options(server_app_win32 PRIVATE /W4 /WX)
     endif()
