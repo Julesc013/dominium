@@ -85,17 +85,21 @@ def check_gui_stub(repo_root, name, rel_path, registry_names, violations):
         violations.append("missing GUI stub: {}".format(rel_path))
         return
     text = read_text(abs_path)
-    if "command/command_registry.h" not in text:
-        violations.append("{}: missing command_registry include".format(rel_path))
+    if "ui_bind/ui_command_binding_table.h" not in text:
+        violations.append("{}: missing ui_command_binding_table include".format(rel_path))
     if "appcore_dispatch_command" not in text:
         violations.append("{}: missing appcore_dispatch_command call".format(rel_path))
+    if "appcore_ui_command_desc_for_action" not in text:
+        violations.append("{}: missing appcore_ui_command_desc_for_action call".format(rel_path))
+    if "appcore_command_find" in text:
+        violations.append("{}: forbidden appcore_command_find usage".format(rel_path))
     include_re = re.compile(r"#include\\s+\"([^\"]+)\"")
     for match in include_re.findall(text):
-        if match in ("command/command_registry.h", "dom_ui_win32/ui_win32.h"):
+        if match in ("ui_bind/ui_command_binding_table.h", "dom_ui_win32/ui_win32.h"):
             continue
         if match.startswith("domino/") or match.startswith("dominium/"):
             violations.append("{}: forbidden include '{}'".format(rel_path, match))
-    find_re = re.compile(r"appcore_command_find\\(\"([^\"]+)\"\\)")
+    find_re = re.compile(r"appcore_ui_command_desc_for_action\\(\"([^\"]+)\"\\)")
     for cmd_name in find_re.findall(text):
         if cmd_name not in registry_names:
             violations.append(

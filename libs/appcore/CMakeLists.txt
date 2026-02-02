@@ -9,6 +9,8 @@ add_library(appcore STATIC
     command/command_registry.c
     command/command_dispatch.c
     output/appcore_output.c
+    ui_bind/ui_command_binding_table.c
+    ui_bind/ui_accessibility_map.c
 )
 
 target_include_directories(appcore PUBLIC

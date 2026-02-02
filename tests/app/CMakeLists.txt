@@ -46,6 +46,13 @@ else()
     )
 endif()
 
+dom_add_testx(NAME app_ui_bind_phase
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/app_ui_bind_phase_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --tool $<TARGET_FILE:tool_ui_bind>
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME slice0_flow_contracts
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/slice0_flow_tests.py
         --client $<TARGET_FILE:dominium_client>

@@ -19,6 +19,12 @@ Template:
   Invariants: INV-...
   Migration: <required migration steps or "none">
 
+- Date: 2026-02-01
+  Schema(s): schema/ui/ui_node.schema; schema/ui/ui_layout.schema; schema/ui/ui_event.schema; schema/ui/ui_accessibility.schema; schema/ui/ui_string_key.schema
+  Change: add UI IR schema primitives for binding validation and localization
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schemas)
+
 - Date: 2026-01-31
   Schema(s): schema/knowledge.artifact.schema; schema/skill.profile.schema; schema/education.program.schema
   Change: add KNS0 knowledge, skill, and education contracts

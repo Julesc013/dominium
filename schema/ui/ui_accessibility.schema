@@ -1,0 +1,38 @@
+SCHEMA: ui_accessibility.schema
+schema_id: dominium.schema.ui.accessibility
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define accessibility metadata for UI elements.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Accessibility metadata is presentation-only and does NOT alter simulation state.
+
+CONVENTIONS:
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record ui_accessibility
+  required:
+    - name: tag
+    - role: tag
+    - description: tag
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - help_key: tag
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- ui_accessibility has no intrinsic numeric fields; unit_annotations MUST still be present.

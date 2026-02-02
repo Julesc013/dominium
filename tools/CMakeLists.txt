@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_subdirectory(ui_shared/src/ui_ir)
+add_subdirectory(ui_bind)
 
 add_library(tools_shared STATIC
     _shared/tools_shared_stub.c
@@ -67,6 +68,7 @@ if(WIN32)
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
+    add_dependencies(tools_app_win32 ui_bind_phase)
     if(MSVC)
         target_compile_options(tools_app_win32 PRIVATE /W4 /WX)
     endif()

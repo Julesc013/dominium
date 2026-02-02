@@ -6,7 +6,7 @@ Win32 server status UI shell (stub).
 #endif
 
 #include "dom_ui_win32/ui_win32.h"
-#include "command/command_registry.h"
+#include "ui_bind/ui_command_binding_table.h"
 
 int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmdline, int show)
 {
@@ -22,7 +22,7 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmdline, int show)
     domui_win32_set_dpi_scale(96u);
     domui_win32_load_ui_ir("server/ui");
 
-    cmd = appcore_command_find("version");
+    cmd = appcore_ui_command_desc_for_action("ops.server.status");
     (void)appcore_dispatch_command(cmd);
 
     return domui_win32_run_shell(L"Dominium Server");

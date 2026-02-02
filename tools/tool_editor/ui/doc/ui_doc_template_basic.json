@@ -126,6 +126,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "OK"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "OK"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.ui_doc_template_basic.button_ok"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "OK"
