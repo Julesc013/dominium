@@ -14,6 +14,7 @@ target_include_directories(dominium_app_runtime PUBLIC
 target_link_libraries(dominium_app_runtime PUBLIC
     domino_engine
     libs::contracts
+    libs::build_identity
 )
 set_target_properties(dominium_app_runtime PROPERTIES
     C_STANDARD 90

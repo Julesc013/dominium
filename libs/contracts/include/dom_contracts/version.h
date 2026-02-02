@@ -16,17 +16,41 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 
 #include "domino/version.h"
 
-#define DOMINIUM_CORE_VERSION     "0.0.0"
-#define DOMINIUM_GAME_VERSION     "0.0.0"
-#define DOMINIUM_LAUNCHER_VERSION "0.0.0"
-#define DOMINIUM_SETUP_VERSION    "0.0.0"
-#define DOMINIUM_TOOLS_VERSION    "0.0.0"
-#define DOMINIUM_SUITE_VERSION    DOMINIUM_GAME_VERSION
+#ifdef DOM_PRODUCT_VERSIONS_GENERATED
+#include "dominium/product_versions.generated.h"
+#endif
 
+#ifndef DOMINIUM_CORE_VERSION
+#define DOMINIUM_CORE_VERSION     "0.0.0"
+#endif
+#ifndef DOMINIUM_GAME_VERSION
+#define DOMINIUM_GAME_VERSION     "0.0.0"
+#endif
+#ifndef DOMINIUM_LAUNCHER_VERSION
+#define DOMINIUM_LAUNCHER_VERSION "0.0.0"
+#endif
+#ifndef DOMINIUM_SETUP_VERSION
+#define DOMINIUM_SETUP_VERSION    "0.0.0"
+#endif
+#ifndef DOMINIUM_TOOLS_VERSION
+#define DOMINIUM_TOOLS_VERSION    "0.0.0"
+#endif
+#ifndef DOMINIUM_SUITE_VERSION
+#define DOMINIUM_SUITE_VERSION    DOMINIUM_GAME_VERSION
+#endif
+
+#ifndef DOMINIUM_VERSION_MAJOR
 #define DOMINIUM_VERSION_MAJOR 0
+#endif
+#ifndef DOMINIUM_VERSION_MINOR
 #define DOMINIUM_VERSION_MINOR 0
+#endif
+#ifndef DOMINIUM_VERSION_PATCH
 #define DOMINIUM_VERSION_PATCH 0
+#endif
+#ifndef DOMINIUM_VERSION_SEMVER
 #define DOMINIUM_VERSION_SEMVER DOMINIUM_SUITE_VERSION
+#endif
 
 /* Legacy compatibility macros */
 #ifndef DOM_VERSION_SEMVER

@@ -43,6 +43,10 @@
 
 /* Build metadata */
 #define DOM_BUILD_ID                   "@DOM_BUILD_ID@"
+#define DOM_BUILD_KIND                 "@DOM_BUILD_KIND@"
+#define DOM_BUILD_BII                  "@DOM_BUILD_BII@"
+#define DOM_BUILD_GBN                  "@DOM_BUILD_GBN@"
+#define DOM_BUILD_TIMESTAMP            "@DOM_BUILD_TIMESTAMP@"
 #define DOM_GIT_HASH                   "@DOM_GIT_HASH@"
 #define DOM_TOOLCHAIN_ID               "@DOM_TOOLCHAIN_ID@"
 #define DOM_BUILD_SKU                  "@DOM_BUILD_SKU@"

@@ -3,6 +3,7 @@ Stub setup CLI entrypoint.
 */
 #include "dom_contracts/version.h"
 #include "dom_contracts/_internal/dom_build_version.h"
+#include "dom_build_identity/build_identity.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -336,42 +337,49 @@ static const char* setup_build_sku_value(const char* product_name)
 
 static void print_build_info(const char* product_name, const char* product_version)
 {
-    printf("product=%s\\n", product_name ? product_name : "");
-    printf("product_version=%s\\n", product_version ? product_version : "");
-    printf("sku=%s\\n", setup_build_sku_value(product_name));
-    printf("engine_version=%s\\n", DOMINO_VERSION_STRING);
-    printf("game_version=%s\\n", DOMINIUM_GAME_VERSION);
-    printf("build_number=%u\\n", (unsigned int)DOM_BUILD_NUMBER);
-    printf("build_id=%s\\n", DOM_BUILD_ID);
-    printf("git_hash=%s\\n", DOM_GIT_HASH);
-    printf("toolchain_id=%s\\n", DOM_TOOLCHAIN_ID);
-    printf("toolchain_family=%s\\n", DOM_TOOLCHAIN_FAMILY);
-    printf("toolchain_version=%s\\n", DOM_TOOLCHAIN_VERSION);
-    printf("toolchain_stdlib=%s\\n", DOM_TOOLCHAIN_STDLIB);
-    printf("toolchain_runtime=%s\\n", DOM_TOOLCHAIN_RUNTIME);
-    printf("toolchain_link=%s\\n", DOM_TOOLCHAIN_LINK);
-    printf("toolchain_target=%s\\n", DOM_TOOLCHAIN_TARGET);
-    printf("toolchain_os=%s\\n", DOM_TOOLCHAIN_OS);
-    printf("toolchain_arch=%s\\n", DOM_TOOLCHAIN_ARCH);
-    printf("toolchain_os_floor=%s\\n", DOM_TOOLCHAIN_OS_FLOOR);
-    printf("toolchain_config=%s\\n", DOM_TOOLCHAIN_CONFIG);
-    printf("protocol_law_targets=LAW_TARGETS@1.4.0\\n");
-    printf("protocol_control_caps=CONTROL_CAPS@1.0.0\\n");
-    printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\\n");
-    printf("abi_dom_build_info=%u\\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
-    printf("abi_dom_caps=%u\\n", (unsigned int)DOM_CAPS_ABI_VERSION);
-    printf("api_dsys=%u\\n", (unsigned int)DSYS_PROTOCOL_VERSION);
-    printf("platform_ext_window_ex_api=%u\\n", (unsigned int)DSYS_EXTENSION_WINDOW_EX_VERSION);
-    printf("platform_ext_error_api=%u\\n", (unsigned int)DSYS_EXTENSION_ERROR_VERSION);
-    printf("platform_ext_cliptext_api=%u\\n", (unsigned int)DSYS_EXTENSION_CLIPTEXT_VERSION);
-    printf("platform_ext_cursor_api=%u\\n", (unsigned int)DSYS_EXTENSION_CURSOR_VERSION);
-    printf("platform_ext_dragdrop_api=%u\\n", (unsigned int)DSYS_EXTENSION_DRAGDROP_VERSION);
-    printf("platform_ext_gamepad_api=%u\\n", (unsigned int)DSYS_EXTENSION_GAMEPAD_VERSION);
-    printf("platform_ext_power_api=%u\\n", (unsigned int)DSYS_EXTENSION_POWER_VERSION);
-    printf("platform_ext_text_input_api=%u\\n", (unsigned int)DSYS_EXTENSION_TEXT_INPUT_VERSION);
-    printf("platform_ext_window_mode_api=%u\\n", (unsigned int)DSYS_EXTENSION_WINDOW_MODE_VERSION);
-    printf("platform_ext_dpi_api=%u\\n", (unsigned int)DSYS_EXTENSION_DPI_VERSION);
-    printf("api_dgfx=%u\\n", (unsigned int)DGFX_PROTOCOL_VERSION);
+    dom_build_identity identity = dom_build_identity_get();
+    const char* git_commit = identity.git_commit ? identity.git_commit : DOM_GIT_HASH;
+    printf("product=%s\n", product_name ? product_name : "");
+    printf("product_version=%s\n", product_version ? product_version : "");
+    printf("sku=%s\n", setup_build_sku_value(product_name));
+    printf("engine_version=%s\n", DOMINO_VERSION_STRING);
+    printf("game_version=%s\n", DOMINIUM_GAME_VERSION);
+    printf("build_number=%u\n", (unsigned int)DOM_BUILD_NUMBER);
+    printf("build_id=%s\n", DOM_BUILD_ID);
+    printf("build_kind=%s\n", identity.build_kind ? identity.build_kind : "");
+    printf("build_bii=%s\n", identity.bii ? identity.bii : "");
+    printf("build_gbn=%s\n", identity.gbn ? identity.gbn : "");
+    printf("build_timestamp=%s\n", identity.build_timestamp ? identity.build_timestamp : "");
+    printf("git_hash=%s\n", git_commit ? git_commit : "");
+    printf("git_commit=%s\n", git_commit ? git_commit : "");
+    printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);
+    printf("toolchain_family=%s\n", DOM_TOOLCHAIN_FAMILY);
+    printf("toolchain_version=%s\n", DOM_TOOLCHAIN_VERSION);
+    printf("toolchain_stdlib=%s\n", DOM_TOOLCHAIN_STDLIB);
+    printf("toolchain_runtime=%s\n", DOM_TOOLCHAIN_RUNTIME);
+    printf("toolchain_link=%s\n", DOM_TOOLCHAIN_LINK);
+    printf("toolchain_target=%s\n", DOM_TOOLCHAIN_TARGET);
+    printf("toolchain_os=%s\n", DOM_TOOLCHAIN_OS);
+    printf("toolchain_arch=%s\n", DOM_TOOLCHAIN_ARCH);
+    printf("toolchain_os_floor=%s\n", DOM_TOOLCHAIN_OS_FLOOR);
+    printf("toolchain_config=%s\n", DOM_TOOLCHAIN_CONFIG);
+    printf("protocol_law_targets=LAW_TARGETS@1.4.0\n");
+    printf("protocol_control_caps=CONTROL_CAPS@1.0.0\n");
+    printf("protocol_authority_tokens=AUTHORITY_TOKEN@1.0.0\n");
+    printf("abi_dom_build_info=%u\n", (unsigned int)DOM_BUILD_INFO_ABI_VERSION);
+    printf("abi_dom_caps=%u\n", (unsigned int)DOM_CAPS_ABI_VERSION);
+    printf("api_dsys=%u\n", (unsigned int)DSYS_PROTOCOL_VERSION);
+    printf("platform_ext_window_ex_api=%u\n", (unsigned int)DSYS_EXTENSION_WINDOW_EX_VERSION);
+    printf("platform_ext_error_api=%u\n", (unsigned int)DSYS_EXTENSION_ERROR_VERSION);
+    printf("platform_ext_cliptext_api=%u\n", (unsigned int)DSYS_EXTENSION_CLIPTEXT_VERSION);
+    printf("platform_ext_cursor_api=%u\n", (unsigned int)DSYS_EXTENSION_CURSOR_VERSION);
+    printf("platform_ext_dragdrop_api=%u\n", (unsigned int)DSYS_EXTENSION_DRAGDROP_VERSION);
+    printf("platform_ext_gamepad_api=%u\n", (unsigned int)DSYS_EXTENSION_GAMEPAD_VERSION);
+    printf("platform_ext_power_api=%u\n", (unsigned int)DSYS_EXTENSION_POWER_VERSION);
+    printf("platform_ext_text_input_api=%u\n", (unsigned int)DSYS_EXTENSION_TEXT_INPUT_VERSION);
+    printf("platform_ext_window_mode_api=%u\n", (unsigned int)DSYS_EXTENSION_WINDOW_MODE_VERSION);
+    printf("platform_ext_dpi_api=%u\n", (unsigned int)DSYS_EXTENSION_DPI_VERSION);
+    printf("api_dgfx=%u\n", (unsigned int)DGFX_PROTOCOL_VERSION);
 }
 
 typedef struct setup_control_caps {

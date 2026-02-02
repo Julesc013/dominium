@@ -35,6 +35,22 @@ if(_dom_build_bump_lc STREQUAL "" OR _dom_build_bump_lc STREQUAL "0" OR
     set(_dom_do_bump 0)
 endif()
 
+if(NOT DEFINED DOM_BUILD_KIND)
+    set(DOM_BUILD_KIND "dev")
+endif()
+if(NOT DEFINED DOM_BUILD_BII)
+    set(DOM_BUILD_BII "unknown")
+endif()
+if(NOT DEFINED DOM_BUILD_GBN)
+    set(DOM_BUILD_GBN "none")
+endif()
+if(NOT DEFINED DOM_BUILD_ID)
+    set(DOM_BUILD_ID "${DOM_BUILD_KIND}.${DOM_BUILD_BII}")
+endif()
+if(NOT DEFINED DOM_BUILD_TIMESTAMP)
+    set(DOM_BUILD_TIMESTAMP "unknown")
+endif()
+
 # ---------------------------------------------------------------------------
 # Load and increment the persistent build number
 # ---------------------------------------------------------------------------
@@ -77,7 +93,7 @@ if(_semver_len GREATER 2)
     list(GET _semver_parts 2 DOM_SEMVER_PATCH)
 endif()
 
-set(DOM_VERSION_BUILD "${PROJECT_SEMVER}+build.${BUILD_NUMBER}")
+set(DOM_VERSION_BUILD "${PROJECT_SEMVER}+${DOM_BUILD_ID}")
 
 # ---------------------------------------------------------------------------
 # Emit generated header and plain-text build number
@@ -93,6 +109,11 @@ set(_header_contents "/* Auto-generated: do not edit manually. */
 #define DOM_VERSION_MINOR ${DOM_SEMVER_MINOR}
 #define DOM_VERSION_PATCH ${DOM_SEMVER_PATCH}
 #define DOM_BUILD_NUMBER ${BUILD_NUMBER}
+#define DOM_BUILD_KIND \"${DOM_BUILD_KIND}\"
+#define DOM_BUILD_BII \"${DOM_BUILD_BII}\"
+#define DOM_BUILD_GBN \"${DOM_BUILD_GBN}\"
+#define DOM_BUILD_ID \"${DOM_BUILD_ID}\"
+#define DOM_BUILD_TIMESTAMP \"${DOM_BUILD_TIMESTAMP}\"
 #define DOM_VERSION_SEMVER \"${PROJECT_SEMVER}\"
 #define DOM_VERSION_BUILD_STR \"${DOM_VERSION_BUILD}\"
 ")

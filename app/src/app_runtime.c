@@ -11,6 +11,7 @@ Shared app-layer runtime helpers.
 
 #include "dom_contracts/_internal/dom_build_version.h"
 #include "dom_contracts/version.h"
+#include "dom_build_identity/build_identity.h"
 #include "domino/build_info.h"
 #include "domino/caps.h"
 #include "domino/config_base.h"
@@ -606,6 +607,7 @@ void dom_app_print_build_info(const dom_app_build_info* info)
 {
     const char* product_name = info ? info->product_name : "";
     const char* product_version = info ? info->product_version : "";
+    dom_build_identity identity = dom_build_identity_get();
     printf("product=%s\n", product_name ? product_name : "");
     printf("product_version=%s\n", product_version ? product_version : "");
     printf("sku=%s\n", dom_app_build_sku_value(info));
@@ -613,7 +615,12 @@ void dom_app_print_build_info(const dom_app_build_info* info)
     printf("game_version=%s\n", DOMINIUM_GAME_VERSION);
     printf("build_number=%u\n", (unsigned int)DOM_BUILD_NUMBER);
     printf("build_id=%s\n", DOM_BUILD_ID);
+    printf("build_kind=%s\n", identity.build_kind ? identity.build_kind : "");
+    printf("build_bii=%s\n", identity.bii ? identity.bii : "");
+    printf("build_gbn=%s\n", identity.gbn ? identity.gbn : "");
+    printf("build_timestamp=%s\n", identity.build_timestamp ? identity.build_timestamp : "");
     printf("git_hash=%s\n", DOM_GIT_HASH);
+    printf("git_commit=%s\n", identity.git_commit ? identity.git_commit : "");
     printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);
     printf("toolchain_family=%s\n", DOM_TOOLCHAIN_FAMILY);
     printf("toolchain_version=%s\n", DOM_TOOLCHAIN_VERSION);
