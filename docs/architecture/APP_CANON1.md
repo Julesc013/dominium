@@ -1,9 +1,14 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-01-29
 Supersedes: none
 Superseded By: none
+STATUS: CANONICAL
+OWNER: architecture
+LAST_VERIFIED: 2026-01-29
 
 # Application Layer Canon (APP-CANON1)
+
+This document is the canonical representation of PROMPT APP-CANON1.
 
 This document extends APP-CANON0 without replacing it.
 

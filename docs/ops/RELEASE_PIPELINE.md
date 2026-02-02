@@ -36,7 +36,10 @@ Pipeline stages (canonical order)
    - smoke run in clean environment
 
 Tools
-- RepoX release command orchestrates all steps (see BUILD-ID-0).
+- RepoX release command orchestrates all steps (see docs/architecture/BUILD_IDENTITY_MODEL.md).
+
+Release identity, build kinds, and global build numbers
+are governed by BUILD_IDENTITY_MODEL.md.
 
 Rollback
 - See docs/ops/UPDATE_AND_ROLLBACK.md

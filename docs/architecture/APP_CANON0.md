@@ -1,9 +1,14 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-01-29
 Supersedes: none
 Superseded By: none
+STATUS: CANONICAL
+OWNER: architecture
+LAST_VERIFIED: 2026-01-29
 
 # Application Layer Canon (APP-CANON0)
+
+This document is the canonical representation of PROMPT APP-CANON0.
 
 Scope: setup / launcher / client / server / tools.
 
