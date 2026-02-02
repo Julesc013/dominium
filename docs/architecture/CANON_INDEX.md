@@ -6,6 +6,9 @@ Superseded By: none
 # Canon Index (CLEAN-2)
 
 If it is not listed here as CANONICAL, it is not binding.
+All binding prompts MUST be materialized as exactly one
+canonical document listed here. Prompts themselves are
+execution artifacts and are not authoritative.
 
 ## CANONICAL
 - `docs/architecture/ADOPTION_PROTOCOL.md`
@@ -16,6 +19,7 @@ If it is not listed here as CANONICAL, it is not binding.
 - `docs/architecture/ANTI_ENTROPY_RULES.md`
 - `docs/architecture/APP_CANON0.md`
 - `docs/architecture/APP_CANON1.md`
+- `docs/architecture/APP_AUTOMATION_MODEL.md`
 - `docs/architecture/ARCH0_CONSTITUTION.md`
 - `docs/architecture/ARCHITECTURE.md`
 - `docs/architecture/ARCHITECTURE_LAYERS.md`
@@ -31,6 +35,7 @@ If it is not listed here as CANONICAL, it is not binding.
 - `docs/architecture/AUTHORITY_AND_OMNIPOTENCE.md`
 - `docs/architecture/AUTHORITY_IN_REALITY.md`
 - `docs/architecture/AUTHORITY_MODEL.md`
+- `docs/architecture/BUILD_IDENTITY_MODEL.md`
 - `docs/architecture/BUDGET_POLICY.md`
 - `docs/architecture/BUGREPORT_MODEL.md`
 - `docs/architecture/BUNDLE_MODEL.md`
@@ -72,6 +77,7 @@ If it is not listed here as CANONICAL, it is not binding.
 - `docs/architecture/DOMAIN_JURISDICTIONS_AND_LAW.md`
 - `docs/architecture/DOMAIN_SHARDING_AND_STREAMING.md`
 - `docs/architecture/DOMAIN_VOLUMES.md`
+- `docs/architecture/DEV_OPS_MODEL.md`
 - `docs/architecture/ECONOMIC_MODEL.md`
 - `docs/architecture/ECONOMY_AND_LOGISTICS.md`
 - `docs/architecture/ENERGY_MODEL.md`
@@ -145,6 +151,7 @@ If it is not listed here as CANONICAL, it is not binding.
 - `docs/architecture/PLATFORM_RESPONSIBILITY.md`
 - `docs/architecture/PROCESS_ONLY_MUTATION.md`
 - `docs/architecture/PRODUCT_SHELL_CONTRACT.md`
+- `docs/architecture/PROJECT_EXECUTION_BASELINE.md`
 - `docs/architecture/PROJECTION_LIFECYCLE.md`
 - `docs/architecture/REALITY_FLOW.md`
 - `docs/architecture/REALITY_LAYER.md`
@@ -162,6 +169,7 @@ If it is not listed here as CANONICAL, it is not binding.
 - `docs/architecture/REPO_INTENT.md`
 - `docs/architecture/REPO_NAV.md`
 - `docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md`
+- `docs/architecture/REPOX_AUTOMATION_MODEL.md`
 - `docs/architecture/RISK_AND_LIABILITY_MODEL.md`
 - `docs/architecture/RNG_MODEL.md`
 - `docs/architecture/ROLLING_UPDATES.md`
@@ -205,6 +213,7 @@ If it is not listed here as CANONICAL, it is not binding.
 - `docs/architecture/TRAVEL_AND_MOVEMENT.md`
 - `docs/architecture/TRAVEL_CAPACITY_AND_COST.md`
 - `docs/architecture/TRUST_AND_LEGITIMACY_MODEL.md`
+- `docs/architecture/UI_BINDING_MODEL.md`
 - `docs/architecture/UNIT_SYSTEM_POLICY.md`
 - `docs/architecture/UNKNOWN_UNKNOWNS.md`
 - `docs/architecture/UPDATE_MODEL.md`
