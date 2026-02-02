@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "phases": [
+    {
+      "id": "PRE_BUILD",
+      "steps": [
+        "change_classification",
+        "dependency_detection"
+      ]
+    },
+    {
+      "id": "UI_BIND_PHASE",
+      "steps": [
+        "ui_bind_check"
+      ]
+    },
+    {
+      "id": "SCHEMA_VALIDATE",
+      "steps": [
+        "schema_validate"
+      ]
+    },
+    {
+      "id": "CANON_CHECK",
+      "steps": [
+        "canon_check"
+      ]
+    },
+    {
+      "id": "BUILD",
+      "steps": [
+        "build_targets"
+      ]
+    },
+    {
+      "id": "FAST_TESTX",
+      "steps": [
+        "fast_testx"
+      ]
+    },
+    {
+      "id": "POST_BUILD_GEN",
+      "steps": [
+        "generated_artifacts"
+      ]
+    }
+  ]
+}
