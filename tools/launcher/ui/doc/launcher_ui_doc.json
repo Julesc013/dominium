@@ -358,6 +358,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Play"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Play"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.nav_play"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Play"
@@ -406,6 +426,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Instances"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Instances"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.nav_instances"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -456,6 +496,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Settings"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Settings"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.nav_settings"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Settings"
@@ -504,6 +564,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Mods"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Mods"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.nav_mods"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -592,6 +672,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Accounts"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Accounts"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.nav_accounts"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Accounts"
@@ -636,6 +736,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Help"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Help"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.nav_help"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Help"
@@ -679,6 +799,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Logs"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Logs"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.nav_logs"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -762,6 +902,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "primary_tabs"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "primary_tabs"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tablist"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.primary_tabs"
+        },
+        {
           "key": "tabs.placement",
           "type": "STRING",
           "value": "top"
@@ -810,6 +970,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Home"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Home"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.tab_home"
+        },
         {
           "key": "tab.title",
           "type": "STRING",
@@ -1183,6 +1363,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Instances"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Instances"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.tab_instances"
+        },
+        {
           "key": "tab.title",
           "type": "STRING",
           "value": "Instances"
@@ -1327,7 +1527,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "instances_list"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "instances_list"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "list"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.instances_list"
+        }
+      ],
       "events": [
         {
           "event": "on_change",
@@ -1498,6 +1719,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Play Selected"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Play Selected"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.instances_play"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Play Selected"
@@ -1546,6 +1787,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Edit Selected"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Edit Selected"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.instances_edit"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -1596,6 +1857,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Delete Selected"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Delete Selected"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.instances_delete"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Delete Selected"
@@ -1644,6 +1925,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Settings"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Settings"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.tab_settings"
+        },
         {
           "key": "tab.title",
           "type": "STRING",
@@ -1771,6 +2072,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Auto-update launcher"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Auto-update launcher"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "checkbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.settings_auto_update"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Auto-update launcher"
@@ -1813,7 +2134,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "settings_channel"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "settings_channel"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "combobox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.settings_channel"
+        }
+      ],
       "events": []
     },
     {
@@ -1851,7 +2193,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "settings_install_path"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "settings_install_path"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "textbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.settings_install_path"
+        }
+      ],
       "events": []
     },
     {
@@ -1933,7 +2296,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "settings_renderer"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "settings_renderer"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "combobox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.settings_renderer"
+        }
+      ],
       "events": []
     },
     {
@@ -1971,7 +2355,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "settings_mem_limit"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "settings_mem_limit"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "textbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.settings_mem_limit"
+        }
+      ],
       "events": []
     },
     {
@@ -2010,6 +2415,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Apply Settings"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Apply Settings"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.launcher_ui.settings_apply"
+        },
         {
           "key": "text",
           "type": "STRING",

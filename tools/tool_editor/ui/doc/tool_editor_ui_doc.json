@@ -120,6 +120,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "doc_tabs"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "doc_tabs"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tablist"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.doc_tabs"
+        },
+        {
           "key": "tabs.placement",
           "type": "STRING",
           "value": "top"
@@ -174,6 +194,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Doc 1"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Doc 1"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.doc_tab_0"
+        },
+        {
           "key": "tab.enabled",
           "type": "BOOL",
           "value": true
@@ -222,6 +262,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Doc 2"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Doc 2"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.doc_tab_1"
+        },
         {
           "key": "tab.enabled",
           "type": "BOOL",
@@ -272,6 +332,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Doc 3"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Doc 3"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.doc_tab_2"
+        },
+        {
           "key": "tab.enabled",
           "type": "BOOL",
           "value": false
@@ -320,6 +400,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Doc 4"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Doc 4"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.doc_tab_3"
+        },
         {
           "key": "tab.enabled",
           "type": "BOOL",
@@ -370,6 +470,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "New"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "New"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.btn_new"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "New"
@@ -418,6 +538,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Open"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Open"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.btn_open"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -468,6 +608,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Save"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Save"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.btn_save"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Save"
@@ -516,6 +676,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Save As"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Save As"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.btn_save_as"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -566,6 +746,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Validate"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Validate"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.btn_validate"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Validate"
@@ -613,7 +813,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "log_list"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "log_list"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "listbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.log_list"
+        }
+      ],
       "events": []
     },
     {
@@ -799,6 +1020,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Add"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Add"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.btn_add"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Add"
@@ -848,6 +1089,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Delete"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Delete"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.btn_delete"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Delete"
@@ -895,7 +1156,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "list_hierarchy"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "list_hierarchy"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "listbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.list_hierarchy"
+        }
+      ],
       "events": [
         {
           "event": "on_change",
@@ -1248,7 +1530,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "edit_name"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "edit_name"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "textbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.edit_name"
+        }
+      ],
       "events": [
         {
           "event": "on_change",
@@ -1335,7 +1638,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "edit_x"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "edit_x"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "textbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.edit_x"
+        }
+      ],
       "events": [
         {
           "event": "on_change",
@@ -1422,7 +1746,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "edit_y"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "edit_y"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "textbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.edit_y"
+        }
+      ],
       "events": [
         {
           "event": "on_change",
@@ -1509,7 +1854,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "edit_w"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "edit_w"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "textbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.edit_w"
+        }
+      ],
       "events": [
         {
           "event": "on_change",
@@ -1596,7 +1962,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "edit_h"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "edit_h"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "textbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.tool_editor.edit_h"
+        }
+      ],
       "events": [
         {
           "event": "on_change",

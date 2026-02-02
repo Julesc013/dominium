@@ -1,0 +1,72 @@
+SCHEMA: ui_node.schema
+schema_id: dominium.schema.ui.node
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define UI IR document and node shapes for application-layer UIs.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- UI IR is presentation-only and does NOT alter simulation state.
+- UI nodes are data; behavior lives only in command dispatch.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- number: numeric scalar (integer or fixed-point).
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record ui_doc
+  required:
+    - doc_name: tag
+    - doc_version: integer
+    - widgets: [ui_node]
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - doc_guid: id
+    - target_backends: [tag]
+    - target_tiers: [tag]
+    - metadata: map
+
+record ui_node
+  required:
+    - node_id: integer
+    - node_type: tag
+    - name: tag
+    - parent_id: integer
+    - rect: ui_rect
+    - layout: ui_layout
+    - props: map
+    - events: [ui_event]
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - z_order: integer
+    - accessibility: ui_accessibility
+    - localization_key: tag
+    - metadata: map
+
+TYPE DEFINITIONS:
+record ui_rect
+  required:
+    - x: number
+    - y: number
+    - w: number
+    - h: number
+  optional:
+    - unit: tag
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- ui_rect.* uses `unit.count` for logical UI units unless overridden.
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.

@@ -276,7 +276,11 @@ If it is not listed here as CANONICAL, it is not binding.
 - `docs/dev/REPLAY_WORKFLOW.md`
 - `docs/dev/TOOLS_GUIDE.md`
 - `docs/dev/TOOLS_OVERVIEW.md`
+- `docs/dev/GUI_TO_COMMAND_WORKFLOW.md`
+- `docs/dev/UI_BINDING_PIPELINE.md`
+- `docs/dev/UI_BINDING_RULES.md`
 - `docs/dev/UI_GUIDELINES.md`
+- `docs/dev/UI_NAMING_CONVENTIONS.md`
 - `docs/ops/COMMIT_CONVENTIONS.md`
 - `docs/ops/FAILURE_SCENARIOS.md`
 - `docs/ops/INSTANCE_LIFECYCLE.md`

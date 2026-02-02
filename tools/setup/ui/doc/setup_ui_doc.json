@@ -282,6 +282,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "body_tabs"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "body_tabs"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tablist"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.body_tabs"
+        },
+        {
           "key": "tabs.placement",
           "type": "STRING",
           "value": "top"
@@ -330,6 +350,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Welcome"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Welcome"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.page_welcome"
+        },
         {
           "key": "tab.title",
           "type": "STRING",
@@ -539,6 +579,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Install Location"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Install Location"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.page_path"
+        },
+        {
           "key": "tab.title",
           "type": "STRING",
           "value": "Install Location"
@@ -701,7 +761,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "path_edit"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "path_edit"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "textbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.path_edit"
+        }
+      ],
       "events": []
     },
     {
@@ -740,6 +821,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Browse..."
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Browse..."
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.path_browse"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -789,6 +890,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Components"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Components"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.page_components"
+        },
         {
           "key": "tab.title",
           "type": "STRING",
@@ -916,6 +1037,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Game files"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Game files"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "checkbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.components_core_game"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Game files"
@@ -964,6 +1105,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Starter assets"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Starter assets"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "checkbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.components_core_assets"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -1058,6 +1219,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Example content"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Example content"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "checkbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.components_opt_examples"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Example content"
@@ -1107,6 +1288,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Sample mods (optional)"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Sample mods (optional)"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "checkbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.components_opt_mods"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Sample mods (optional)"
@@ -1154,7 +1355,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "components_list"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "components_list"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "list"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.components_list"
+        }
+      ],
       "events": [
         {
           "event": "on_change",
@@ -1198,6 +1420,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Progress"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Progress"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.page_progress"
+        },
         {
           "key": "tab.title",
           "type": "STRING",
@@ -1361,7 +1603,28 @@
           "max_h": -1
         }
       },
-      "props": [],
+      "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "progress_log"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "progress_log"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "list"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.progress_log"
+        }
+      ],
       "events": []
     },
     {
@@ -1400,6 +1663,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Finish"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Finish"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "tabpanel"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.page_finish"
+        },
         {
           "key": "tab.title",
           "type": "STRING",
@@ -1571,6 +1854,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Launch after install"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Launch after install"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "checkbox"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.finish_launch"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Launch after install"
@@ -1696,6 +1999,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Back"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Back"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.btn_back"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Back"
@@ -1783,6 +2106,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Next"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Next"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.btn_next"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Next"
@@ -1831,6 +2174,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Install"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Install"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.btn_install"
+        },
         {
           "key": "text",
           "type": "STRING",
@@ -1881,6 +2244,26 @@
       },
       "props": [
         {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Finish"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Finish"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.btn_finish"
+        },
+        {
           "key": "text",
           "type": "STRING",
           "value": "Finish"
@@ -1929,6 +2312,26 @@
         }
       },
       "props": [
+        {
+          "key": "accessibility.description",
+          "type": "STRING",
+          "value": "Cancel"
+        },
+        {
+          "key": "accessibility.name",
+          "type": "STRING",
+          "value": "Cancel"
+        },
+        {
+          "key": "accessibility.role",
+          "type": "STRING",
+          "value": "button"
+        },
+        {
+          "key": "localization.key",
+          "type": "STRING",
+          "value": "ui.setup_ui.btn_cancel"
+        },
         {
           "key": "text",
           "type": "STRING",
