@@ -32,6 +32,31 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #define DOM_BUILD_NUMBER 0
 #endif
 
+#ifndef DOM_BUILD_KIND
+/* Purpose: Compile-time build kind (dev/ci/beta/rc/release/hotfix). */
+#define DOM_BUILD_KIND "dev"
+#endif
+
+#ifndef DOM_BUILD_BII
+/* Purpose: Compile-time build instance identifier (dev/ci only). */
+#define DOM_BUILD_BII "unknown"
+#endif
+
+#ifndef DOM_BUILD_GBN
+/* Purpose: Compile-time global build number (dist builds only; "none" otherwise). */
+#define DOM_BUILD_GBN "none"
+#endif
+
+#ifndef DOM_BUILD_ID
+/* Purpose: Combined build identifier (build_kind + id). */
+#define DOM_BUILD_ID DOM_BUILD_KIND "." DOM_BUILD_BII
+#endif
+
+#ifndef DOM_BUILD_TIMESTAMP
+/* Purpose: Build timestamp (UTC ISO-8601). */
+#define DOM_BUILD_TIMESTAMP "unknown"
+#endif
+
 #ifndef DOM_STRINGIFY
 /* Purpose: Macro utilities to stringify numeric macro values. */
 #define DOM_STRINGIFY_HELPER(x) #x
@@ -39,8 +64,8 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #endif
 
 #ifndef DOM_VERSION_BUILD_STR
-/* Purpose: Combined human-readable version string (semantic version + build number). */
-#define DOM_VERSION_BUILD_STR DOM_VERSION_SEMVER " (build " DOM_STRINGIFY(DOM_BUILD_NUMBER) ")"
+/* Purpose: Combined human-readable version string (semantic version + build id). */
+#define DOM_VERSION_BUILD_STR DOM_VERSION_SEMVER "+" DOM_BUILD_ID
 #endif
 
 #endif /* DOM_BUILD_VERSION_H */

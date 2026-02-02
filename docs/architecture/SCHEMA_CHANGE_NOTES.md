@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-02-02
 Supersedes: none
 Superseded By: none
 
@@ -18,6 +18,12 @@ Template:
   Change: <short summary>
   Invariants: INV-...
   Migration: <required migration steps or "none">
+
+- Date: 2026-02-02
+  Schema(s): schema/identity/artifact_identity.schema
+  Change: add artifact identity manifest contract for BUILD-ID-0 stage 1
+  Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
+  Migration: none (new schema)
 
 - Date: 2026-02-01
   Schema(s): schema/ui/ui_node.schema; schema/ui/ui_layout.schema; schema/ui/ui_event.schema; schema/ui/ui_accessibility.schema; schema/ui/ui_string_key.schema

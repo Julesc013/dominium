@@ -259,9 +259,56 @@ set(DOMINIUM_GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated/includ
 set(DOMINIUM_SOURCE_INCLUDE_DIR "${DOMINIUM_ENGINE_INCLUDE_DIR}")
 set(DOMINIUM_INCLUDE_DIR "${DOMINIUM_GENERATED_INCLUDE_DIR};${DOMINIUM_ENGINE_INCLUDE_DIR}")
 
+# Product version inputs (VERSION_* files; semver required).
+function(dom_require_semver label value)
+    string(REGEX MATCH "^[0-9]+\\.[0-9]+\\.[0-9]+$" _dom_semver_ok "${value}")
+    if(NOT _dom_semver_ok)
+        message(FATAL_ERROR "Invalid semver in ${label}: '${value}' (expected MAJOR.MINOR.PATCH)")
+    endif()
+endfunction()
+
+function(dom_read_version path label out_var)
+    if(NOT EXISTS "${path}")
+        message(FATAL_ERROR "Missing ${label} file: ${path}")
+    endif()
+    file(READ "${path}" _dom_version_raw)
+    string(STRIP "${_dom_version_raw}" _dom_version_stripped)
+    if(_dom_version_stripped STREQUAL "")
+        message(FATAL_ERROR "Empty ${label} value in ${path}")
+    endif()
+    dom_require_semver("${label}" "${_dom_version_stripped}")
+    set(${out_var} "${_dom_version_stripped}" PARENT_SCOPE)
+endfunction()
+
+function(dom_parse_semver value prefix)
+    string(REPLACE "." ";" _dom_semver_parts "${value}")
+    list(LENGTH _dom_semver_parts _dom_semver_len)
+    if(_dom_semver_len LESS 3)
+        message(FATAL_ERROR "Invalid semver '${value}' for ${prefix}")
+    endif()
+    list(GET _dom_semver_parts 0 _dom_semver_major)
+    list(GET _dom_semver_parts 1 _dom_semver_minor)
+    list(GET _dom_semver_parts 2 _dom_semver_patch)
+    set(${prefix}_MAJOR "${_dom_semver_major}" PARENT_SCOPE)
+    set(${prefix}_MINOR "${_dom_semver_minor}" PARENT_SCOPE)
+    set(${prefix}_PATCH "${_dom_semver_patch}" PARENT_SCOPE)
+endfunction()
+
+dom_read_version("${CMAKE_SOURCE_DIR}/VERSION_ENGINE" "VERSION_ENGINE" DOM_ENGINE_SEMVER)
+dom_read_version("${CMAKE_SOURCE_DIR}/VERSION_GAME" "VERSION_GAME" DOM_GAME_SEMVER)
+dom_read_version("${CMAKE_SOURCE_DIR}/VERSION_CLIENT" "VERSION_CLIENT" DOM_CLIENT_SEMVER)
+dom_read_version("${CMAKE_SOURCE_DIR}/VERSION_SERVER" "VERSION_SERVER" DOM_SERVER_SEMVER)
+dom_read_version("${CMAKE_SOURCE_DIR}/VERSION_LAUNCHER" "VERSION_LAUNCHER" DOM_LAUNCHER_SEMVER)
+dom_read_version("${CMAKE_SOURCE_DIR}/VERSION_SETUP" "VERSION_SETUP" DOM_SETUP_SEMVER)
+dom_read_version("${CMAKE_SOURCE_DIR}/VERSION_TOOLS" "VERSION_TOOLS" DOM_TOOLS_SEMVER)
+dom_read_version("${CMAKE_SOURCE_DIR}/VERSION_SUITE" "VERSION_SUITE" DOM_SUITE_SEMVER)
+
+dom_parse_semver("${DOM_ENGINE_SEMVER}" DOM_ENGINE_VERSION)
+dom_parse_semver("${DOM_SUITE_SEMVER}" DOM_SUITE_VERSION)
+
 # Generated baseline-safe config header (macros + integer literals only).
 set(DOM_BUILD_ID "unknown" CACHE STRING "Build identifier embedded into binaries")
-set(DOM_PROJECT_SEMVER "0.0.0" CACHE STRING "Project semantic version")
+set(DOM_PROJECT_SEMVER "${DOM_SUITE_SEMVER}" CACHE STRING "Project semantic version" FORCE)
 set(DOM_BUILD_SKU "auto" CACHE STRING "SKU override (auto|modern_desktop|headless_server|devtools|legacy_desktop)")
 set(DOM_BUILD_MODE "" CACHE STRING "Optional build mode label (Debug/Release/DeterministicRelease)")
 set(DOM_TOOLCHAIN_STDLIB "" CACHE STRING "Toolchain standard library label override")
@@ -634,6 +681,40 @@ if(DOM_GIT_EXECUTABLE)
     endif()
 endif()
 
+set(DOM_GIT_DIRTY 0)
+if(DOM_GIT_EXECUTABLE)
+    execute_process(
+        COMMAND "${DOM_GIT_EXECUTABLE}" status --porcelain
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        RESULT_VARIABLE _dom_git_dirty_res
+        OUTPUT_VARIABLE _dom_git_dirty_out
+        ERROR_QUIET
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(_dom_git_dirty_res EQUAL 0 AND NOT _dom_git_dirty_out STREQUAL "")
+        set(DOM_GIT_DIRTY 1)
+    endif()
+endif()
+
+set(DOM_BUILD_KIND "dev")
+if(DEFINED ENV{CI})
+    string(TOLOWER "$ENV{CI}" _dom_ci_raw)
+    if(NOT _dom_ci_raw STREQUAL "" AND NOT _dom_ci_raw STREQUAL "0" AND NOT _dom_ci_raw STREQUAL "false")
+        set(DOM_BUILD_KIND "ci")
+    endif()
+endif()
+
+set(DOM_BUILD_BII "${DOM_GIT_HASH_SHORT}")
+if(DOM_BUILD_BII STREQUAL "" OR DOM_BUILD_BII STREQUAL "unknown")
+    set(DOM_BUILD_BII "nogit")
+endif()
+if(DOM_GIT_DIRTY)
+    set(DOM_BUILD_BII "${DOM_BUILD_BII}.dirty")
+endif()
+
+set(DOM_BUILD_GBN "none")
+string(TIMESTAMP DOM_BUILD_TIMESTAMP "%Y-%m-%dT%H:%M:%SZ" UTC)
+
 set(DOM_TOOLCHAIN_ID "unknown")
 set(_dom_toolchain_id "")
 if(DEFINED CMAKE_C_COMPILER_ID AND NOT CMAKE_C_COMPILER_ID STREQUAL "")
@@ -819,17 +900,12 @@ set(DOM_TOOLCHAIN_TARGET "${_dom_tc_target}")
 set(DOM_TOOLCHAIN_OS_FLOOR "${_dom_tc_floor}")
 set(DOM_TOOLCHAIN_CONFIG "${_dom_tc_config}")
 
-if(NOT DEFINED DOM_BUILD_ID OR DOM_BUILD_ID STREQUAL "" OR DOM_BUILD_ID STREQUAL "unknown")
-    set(_dom_build_id "unknown")
-    if(NOT DOM_GIT_HASH_SHORT STREQUAL "unknown")
-        if(NOT DOM_BUILD_NUMBER STREQUAL "0")
-            set(_dom_build_id "b${DOM_BUILD_NUMBER}-${DOM_GIT_HASH_SHORT}")
-        else()
-            set(_dom_build_id "git-${DOM_GIT_HASH_SHORT}")
-        endif()
-    elseif(NOT DOM_BUILD_NUMBER STREQUAL "0")
-        set(_dom_build_id "b${DOM_BUILD_NUMBER}")
-    endif()
+set(_dom_force_build_id 0)
+if(DOM_BUILD_KIND STREQUAL "dev" OR DOM_BUILD_KIND STREQUAL "ci")
+    set(_dom_force_build_id 1)
+endif()
+if(_dom_force_build_id OR NOT DEFINED DOM_BUILD_ID OR DOM_BUILD_ID STREQUAL "" OR DOM_BUILD_ID STREQUAL "unknown")
+    set(_dom_build_id "${DOM_BUILD_KIND}.${DOM_BUILD_BII}")
     set(DOM_BUILD_ID "${_dom_build_id}" CACHE STRING "Build identifier embedded into binaries" FORCE)
 endif()
 
@@ -844,6 +920,11 @@ add_custom_target(dom_update_build_number ALL
         -DHEADER_FILE=${DOM_BUILD_HEADER_FILE}
         -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
         -DPROJECT_SEMVER=${DOM_PROJECT_SEMVER}
+        -DDOM_BUILD_KIND=${DOM_BUILD_KIND}
+        -DDOM_BUILD_BII=${DOM_BUILD_BII}
+        -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
+        -DDOM_BUILD_ID=${DOM_BUILD_ID}
+        -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
         -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
     COMMENT "Refreshing build number header (no bump)"
 )
@@ -854,6 +935,11 @@ add_custom_target(dom_bump_build_number
         -DHEADER_FILE=${DOM_BUILD_HEADER_FILE}
         -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
         -DPROJECT_SEMVER=${DOM_PROJECT_SEMVER}
+        -DDOM_BUILD_KIND=${DOM_BUILD_KIND}
+        -DDOM_BUILD_BII=${DOM_BUILD_BII}
+        -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
+        -DDOM_BUILD_ID=${DOM_BUILD_ID}
+        -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
         -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
     COMMENT "Bumping global build number"
 )
@@ -869,16 +955,34 @@ add_custom_target(testx_all
         -DHEADER_FILE=${DOM_BUILD_HEADER_FILE}
         -DNUMBER_FILE=${DOM_BUILD_NUMBER_FILE}
         -DPROJECT_SEMVER=${DOM_PROJECT_SEMVER}
+        -DDOM_BUILD_KIND=${DOM_BUILD_KIND}
+        -DDOM_BUILD_BII=${DOM_BUILD_BII}
+        -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
+        -DDOM_BUILD_ID=${DOM_BUILD_ID}
+        -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
         -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     COMMENT "Run TestX and bump build number on success"
 )
 add_compile_definitions(DOM_BUILD_VERSION_GENERATED)
+add_compile_definitions(DOMINO_VERSION_GENERATED)
+add_compile_definitions(DOM_PRODUCT_VERSIONS_GENERATED)
 
 file(MAKE_DIRECTORY "${DOMINIUM_GENERATED_INCLUDE_DIR}/domino")
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config_base.h.in"
     "${DOMINIUM_GENERATED_INCLUDE_DIR}/domino/config_base.h"
+    @ONLY
+)
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/domino_version.generated.h.in"
+    "${DOMINIUM_GENERATED_INCLUDE_DIR}/domino/version.generated.h"
+    @ONLY
+)
+file(MAKE_DIRECTORY "${DOMINIUM_GENERATED_INCLUDE_DIR}/dominium")
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/product_versions.generated.h.in"
+    "${DOMINIUM_GENERATED_INCLUDE_DIR}/dominium/product_versions.generated.h"
     @ONLY
 )
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/generated")
@@ -934,6 +1038,8 @@ add_subdirectory(libs)
 add_subdirectory(engine)
 add_subdirectory(app)
 add_subdirectory(shared_ui_win32)
+add_subdirectory(tools/ui_shared/src/ui_ir)
+add_subdirectory(tools/ui_bind)
 if(DOM_BUILD_GAME)
     add_subdirectory(game)
     add_subdirectory(client)

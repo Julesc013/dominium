@@ -14,11 +14,23 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` 
 #ifndef DOMINO_VERSION_H
 #define DOMINO_VERSION_H
 
-#define DOMINO_VERSION_MAJOR 0
-#define DOMINO_VERSION_MINOR 0
-#define DOMINO_VERSION_PATCH 0
+#ifdef DOMINO_VERSION_GENERATED
+#include "domino/version.generated.h"
+#endif
 
+#ifndef DOMINO_VERSION_MAJOR
+#define DOMINO_VERSION_MAJOR 0
+#endif
+#ifndef DOMINO_VERSION_MINOR
+#define DOMINO_VERSION_MINOR 0
+#endif
+#ifndef DOMINO_VERSION_PATCH
+#define DOMINO_VERSION_PATCH 0
+#endif
+
+#ifndef DOMINO_VERSION_STRING
 #define DOMINO_VERSION_STRING "0.0.0"
+#endif
 
 #ifdef __cplusplus
 extern "C" {

@@ -12,7 +12,12 @@ BUILD_INFO_KEYS = [
     "game_version=",
     "build_number=",
     "build_id=",
+    "build_kind=",
+    "build_bii=",
+    "build_gbn=",
+    "build_timestamp=",
     "git_hash=",
+    "git_commit=",
     "toolchain_id=",
     "toolchain_family=",
     "toolchain_version=",
@@ -72,7 +77,47 @@ def run_cmd(cmd, expect_code=0, expect_nonzero=False, expect_contains=None):
 
 
 def check_build_info(exe, product_name):
-    return run_cmd([exe, "--build-info"], expect_contains=BUILD_INFO_KEYS + ["product=" + product_name])
+    result = subprocess.run(
+        [exe, "--build-info"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        errors="replace",
+    )
+    output = result.stdout
+    if result.returncode != 0:
+        sys.stderr.write("FAIL: expected exit 0 for {}\n".format([exe, "--build-info"]))
+        sys.stderr.write(output)
+        return False
+    for token in BUILD_INFO_KEYS + ["product=" + product_name]:
+        if token not in output:
+            sys.stderr.write("FAIL: missing '{}' in output for {}\n".format(token, exe))
+            sys.stderr.write(output)
+            return False
+    info = {}
+    for line in output.splitlines():
+        if "=" in line:
+            key, value = line.split("=", 1)
+            info[key.strip()] = value.strip()
+    build_kind = info.get("build_kind", "")
+    build_bii = info.get("build_bii", "")
+    build_gbn = info.get("build_gbn", "")
+    if build_kind not in ("dev", "ci"):
+        sys.stderr.write("FAIL: unexpected build_kind '{}'\n".format(build_kind))
+        return False
+    if not build_bii:
+        sys.stderr.write("FAIL: missing build_bii value\n")
+        return False
+    if build_kind in ("dev", "ci") and build_gbn != "none":
+        sys.stderr.write("FAIL: build_gbn must be 'none' for {}\n".format(build_kind))
+        return False
+    if not info.get("build_timestamp"):
+        sys.stderr.write("FAIL: missing build_timestamp value\n")
+        return False
+    if not info.get("git_commit"):
+        sys.stderr.write("FAIL: missing git_commit value\n")
+        return False
+    return True
 
 
 def check_basic_cli(exe, product_token):

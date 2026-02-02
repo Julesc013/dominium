@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_subdirectory(ui_shared/src/ui_ir)
-add_subdirectory(ui_bind)
-
 add_library(tools_shared STATIC
     _shared/tools_shared_stub.c
 )

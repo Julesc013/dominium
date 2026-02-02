@@ -26,3 +26,4 @@ add_library(libs::netproto ALIAS libs_netproto)
 
 add_subdirectory(contracts)
 add_subdirectory(appcore)
+add_subdirectory(build_identity)
