@@ -1,0 +1,13 @@
+schema_version = 1
+
+[[rules]]
+branches = ["main"]
+kinds = ["beta", "rc", "release", "hotfix"]
+channels = ["stable", "beta", "pinned"]
+allow = true
+
+[[rules]]
+branches = ["release"]
+kinds = ["beta", "rc", "release", "hotfix"]
+channels = ["stable", "beta", "pinned"]
+allow = true

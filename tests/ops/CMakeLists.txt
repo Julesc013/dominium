@@ -26,6 +26,18 @@ dom_add_testx(NAME repox_update_feeds_tests
     LABELS ${DOM_TESTX_LABEL_BUILDMETA}
 )
 
+dom_add_testx(NAME repox_gbn_allocator_tests
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/repox_gbn_allocator_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_BUILDMETA}
+)
+
+dom_add_testx(NAME repox_release_tests
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/repox_release_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_BUILDMETA}
+)
+
 dom_add_testx(NAME build_matrix_preset_tests
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/build_matrix_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}

@@ -619,6 +619,7 @@ void dom_app_print_build_info(const dom_app_build_info* info)
     printf("build_bii=%s\n", identity.bii ? identity.bii : "");
     printf("build_gbn=%s\n", identity.gbn ? identity.gbn : "");
     printf("build_timestamp=%s\n", identity.build_timestamp ? identity.build_timestamp : "");
+    printf("release_capability_status=Releases disabled (Stage 2 \xe2\x80\x93 governance only)\n");
     printf("git_hash=%s\n", DOM_GIT_HASH);
     printf("git_commit=%s\n", identity.git_commit ? identity.git_commit : "");
     printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);

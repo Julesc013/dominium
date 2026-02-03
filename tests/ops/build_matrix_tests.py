@@ -4,6 +4,9 @@ import os
 
 
 REQUIRED_CONFIGURE = [
+    "local",
+    "verify",
+    "release-check",
     "dev-win-vs2026",
     "verify-win-vs2026",
     "release-win-vs2026",
@@ -29,6 +32,8 @@ STRICT_KEYS = {
 }
 
 VERIFY_PRESETS = [
+    "verify",
+    "release-check",
     "verify-win-vs2026",
     "verify-macos-xcode",
     "verify-linux-gcc",

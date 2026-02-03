@@ -22,3 +22,17 @@ Normative rules:
 - No dist artifact may exist without an artifact identity manifest that includes build kind, BII/GBN, and protocol/schema/API/ABI versions.
 - Release policy is data-configured; forbidden branches must refuse GBN allocation.
 - Update feeds and changelogs are RepoX-generated and must be consistent with artifact identities.
+
+## Stage 2: Governance Activated (No Distribution)
+
+Enabled:
+- Dry-run release path exists and performs checks/tests.
+- GBN allocator exists but remains disabled by default.
+- Preview artifacts are generated for inspection only.
+
+Disabled:
+- GBN allocation.
+- Tagging, publishing, or feed updates.
+
+Next step:
+- Stage 3 enables allocator and distribution gates explicitly.

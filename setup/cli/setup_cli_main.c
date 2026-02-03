@@ -350,6 +350,7 @@ static void print_build_info(const char* product_name, const char* product_versi
     printf("build_bii=%s\n", identity.bii ? identity.bii : "");
     printf("build_gbn=%s\n", identity.gbn ? identity.gbn : "");
     printf("build_timestamp=%s\n", identity.build_timestamp ? identity.build_timestamp : "");
+    printf("release_capability_status=Releases disabled (Stage 2 - governance only)\n");
     printf("git_hash=%s\n", git_commit ? git_commit : "");
     printf("git_commit=%s\n", git_commit ? git_commit : "");
     printf("toolchain_id=%s\n", DOM_TOOLCHAIN_ID);

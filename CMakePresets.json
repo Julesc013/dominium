@@ -123,6 +123,12 @@
       }
     },
     {
+      "name": "local",
+      "displayName": "LOCAL (Default)",
+      "description": "Local fast dev build (no GBN, minimal TestX).",
+      "inherits": "dev-win-vs2026"
+    },
+    {
       "name": "verify-win-vs2026",
       "displayName": "Verify Win VS 2026 (C89/C++98)",
       "inherits": "msvc-base",
@@ -141,6 +147,21 @@
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
+      "name": "verify",
+      "displayName": "VERIFY",
+      "description": "Strict verification preset (determinism, schema, replay; no GBN).",
+      "inherits": "verify-win-vs2026"
+    },
+    {
+      "name": "release-check",
+      "displayName": "RELEASE-CHECK",
+      "description": "Full pipeline dry-run (release policy + tests; no GBN).",
+      "inherits": "verify-win-vs2026",
+      "cacheVariables": {
+        "DOM_REPOX_RELEASE_CHECK": "ON"
       }
     },
     {
@@ -735,8 +756,23 @@
       "configuration": "Debug"
     },
     {
+      "name": "local",
+      "configurePreset": "local",
+      "configuration": "Debug"
+    },
+    {
       "name": "verify-win-vs2026",
       "configurePreset": "verify-win-vs2026",
+      "configuration": "Debug"
+    },
+    {
+      "name": "verify",
+      "configurePreset": "verify",
+      "configuration": "Debug"
+    },
+    {
+      "name": "release-check",
+      "configurePreset": "release-check",
       "configuration": "Debug"
     },
     {
@@ -915,8 +951,32 @@
       }
     },
     {
+      "name": "local",
+      "configurePreset": "local",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "verify-win-vs2026",
       "configurePreset": "verify-win-vs2026",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "verify",
+      "configurePreset": "verify",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "release-check",
+      "configurePreset": "release-check",
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
