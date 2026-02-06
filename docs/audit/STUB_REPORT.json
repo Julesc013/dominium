@@ -1,0 +1,319 @@
+{
+  "counts": {
+    "acceptable_permanent_stub": 3,
+    "forbidden_stub": 3,
+    "temporary_stub": 46
+  },
+  "stubs": [
+    {
+      "classification": "temporary_stub",
+      "path": "engine/modules/system/dsys_platform_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "engine/modules/system/dsys_proc_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "engine/modules/system/dsys_sdl2_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "engine/modules/system/dsys_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "engine/modules/system/dsys_terminal_detect_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "engine/modules/system/dsys_window_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "engine/render/d_gfx_caps_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "engine/render/stub/d_gfx_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "engine/render/stub/d_gfx_stub.h",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "game/dominium_game_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "game/include/dominium/life/life_events_stub.h",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "game/include/dominium/rules/city/city_services_stub.h",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "game/include/dominium/rules/logistics/routing_stub.h",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "forbidden_stub",
+      "path": "game/rules/city/city_services_stub.cpp",
+      "reason": "authoritative stub in core runtime"
+    },
+    {
+      "classification": "forbidden_stub",
+      "path": "game/rules/life/life_events_stub.cpp",
+      "reason": "authoritative stub in core runtime"
+    },
+    {
+      "classification": "forbidden_stub",
+      "path": "game/rules/logistics/routing_stub.cpp",
+      "reason": "authoritative stub in core runtime"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "game/tests/test_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "game/tests/tests/domino_sys/test_dsys_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "launcher/core/launcher_config_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "launcher/core/launcher_mods_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "launcher/core/launcher_process_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "launcher/core/launcher_profile_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "launcher/gui/launcher_gui_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "launcher/gui/win32/launcher_gui_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "launcher/tui/launcher_tui_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/_orphaned/legacy_source_game/game/core/game_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/_orphaned/legacy_source_game/game/gui/dom_sdl/dom_sdl_stub.cpp",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/_orphaned/legacy_source_game/game/rules/rules_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/mod/host/mod_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/render/api/gfx_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/render/dgfx_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/render/null/dom_rend_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/sim/api/sim_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/system/_legacy/dom_engine_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/system/core/domino_ui_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/system/core/sys_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/system/plat/null/dom_plat_sys_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/system/plat/null/dom_plat_term_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/engine_modules_engine/engine/system/plat/null/dom_plat_ui_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/launcher_core_launcher/launcher/core/launcher_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "legacy/setup_core_setup/setup/core/setup_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "libs/ui_backends/win32/src/ui_ir_parser_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "libs/ui_backends/win32/src/win32_accessibility_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "libs/ui_backends/win32/src/win32_control_factory_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "libs/ui_backends/win32/src/win32_layout_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "libs/ui_backends/win32/src/win32_shell_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "setup/gui/dsu_gui_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "setup/gui/win32/dsu_gui_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "temporary_stub",
+      "path": "setup/tui/dsu_tui_stub.c",
+      "reason": "stub marker"
+    },
+    {
+      "classification": "acceptable_permanent_stub",
+      "path": "tools/_shared/tools_shared_stub.c",
+      "reason": "non-runtime stub"
+    },
+    {
+      "classification": "acceptable_permanent_stub",
+      "path": "tools/coredata_compile_stub.c",
+      "reason": "non-runtime stub"
+    },
+    {
+      "classification": "acceptable_permanent_stub",
+      "path": "tools/coredata_validate_stub.c",
+      "reason": "non-runtime stub"
+    }
+  ],
+  "todos": [
+    "engine/include/domino/dspace_env.h",
+    "engine/modules/content/d_blueprint.c",
+    "engine/modules/view/d_view.c",
+    "engine/modules/world/d_world.h",
+    "legacy/_orphaned/legacy_source_common/common/dom_compat.cpp",
+    "legacy/_orphaned/legacy_source_common/common/dom_packset.cpp",
+    "legacy/_orphaned/legacy_source_common/common/dom_paths.cpp",
+    "legacy/_orphaned/legacy_source_game/game/cli/game_cli.c",
+    "legacy/_orphaned_stage2/tools_common/dom_pack_registry.cpp",
+    "legacy/_orphaned_stage2/tools_common/dom_tool_ops.cpp",
+    "legacy/engine_modules_engine/engine/daggregate.c",
+    "legacy/engine_modules_engine/engine/dbody.c",
+    "legacy/engine_modules_engine/engine/dfield.c",
+    "legacy/engine_modules_engine/engine/dorbit.c",
+    "legacy/engine_modules_engine/engine/dspace_env.c",
+    "legacy/engine_modules_engine/engine/dspace_graph.c",
+    "legacy/engine_modules_engine/engine/dworld.c",
+    "legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c",
+    "legacy/engine_modules_engine/engine/render/api/domino_gfx_core.c",
+    "legacy/engine_modules_engine/engine/render/api/gfx_stub.c",
+    "legacy/engine_modules_engine/engine/render/null/dom_rend_stub.c",
+    "legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c",
+    "legacy/engine_modules_engine/engine/system/core/base/shared/process.cpp",
+    "legacy/engine_modules_engine/engine/system/core/sys_stub.c",
+    "legacy/engine_modules_engine/engine/system/plat/null/dom_plat_sys_stub.c",
+    "legacy/engine_modules_engine/engine/system/plat/sdl/sdl1/dom_platform_sdl1.c",
+    "legacy/engine_modules_engine/engine/system/plat/sdl/sdl2/dom_platform_sdl2.c",
+    "legacy/engine_modules_engine/engine/system/plat/unix/posix/posix_headless/dom_platform_posix_headless.c",
+    "legacy/engine_modules_engine/engine/system/plat/unix/wayland/dom_platform_posix_wayland.c",
+    "legacy/engine_modules_engine/engine/system/plat/unix/x11/dom_platform_posix_x11.c",
+    "legacy/launcher_core_launcher/launcher/adapters/winnt/cli/dominium_launcher_cli.c",
+    "legacy/launcher_core_launcher/launcher/adapters/winnt/cli/launcher_cli.c",
+    "legacy/launcher_core_launcher/launcher/core/dominium_launcher_core.c",
+    "legacy/launcher_core_launcher/launcher/core/dominium_launcher_ext_api.c",
+    "legacy/launcher_core_launcher/launcher/core/dominium_launcher_view_registry.c",
+    "legacy/setup_core_setup/setup/core/dominium_setup_core.c",
+    "libs/appcore/command/command_dispatch.c",
+    "libs/appcore/discover/appcore_discover.c",
+    "libs/appcore/invoke/appcore_invoke.c",
+    "libs/appcore/output/appcore_output.c",
+    "libs/appcore/profile/appcore_profile.c",
+    "libs/appcore/repox/appcore_repox.c",
+    "libs/appcore/validate/appcore_validate.c",
+    "scripts/ci/check_hygiene_scan.py",
+    "scripts/ci/check_todo_blockers.py",
+    "tools/modcheck/dom_modcheck.cpp",
+    "tools/replay_viewer/dom_replay_viewer_controller.cpp",
+    "tools/save_inspector/dom_save_inspector_controller.cpp"
+  ]
+}
