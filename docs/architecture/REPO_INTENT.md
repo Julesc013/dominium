@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-02-06
 Supersedes: none
 Superseded By: none
 
@@ -24,6 +24,7 @@ Normative contracts live under `docs/architecture/` only. See `docs/architecture
 | `cmake/` | Build system modules | Build configuration only | Evolving |
 | `data/` | Data packs and fixtures | Data-only changes, no code | Frozen (pack formats), Evolving (content) |
 | `dist/` | Distribution artifacts and layout | Packaging only | Evolving |
+| `repo/` | Pack output repository (generated packs) | Generated pack outputs only | Quarantined |
 | `updates/` | Update feeds and channel metadata | Packaging metadata only | Evolving |
 | `docs/` | Documentation | See doc taxonomy below | Frozen/Evolving per taxonomy |
 | `engine/` | Engine runtime | Code changes only when explicitly allowed by prompt | Frozen (public contracts), Evolving (internals) |

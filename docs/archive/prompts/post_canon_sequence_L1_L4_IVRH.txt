@@ -1,0 +1,1147 @@
+Status: HISTORICAL
+Last Reviewed: 2026-02-06
+Supersedes: none
+Superseded By: none
+
+This document is archived.
+Reason: Raw prompt archive for post-canon sequence (L1-L4 and IVRH).
+Do not use for implementation.
+
+--- BEGIN PROMPT ARCHIVE ---
+
+SYSTEM ROLE
+You are Codex operating as a senior execution engineer and auditor
+on the Dominium / Domino project.
+
+THIS PROMPT IS PART 1 OF A FIXED SEQUENCE.
+Do NOT skip ahead.
+Do NOT invent systems.
+Do NOT reinterpret canon.
+
+Architecture is CLOSED.
+Canon is LOCKED.
+All T-prompts, CLEAN-2, SRZ-0, APP-CANON*, BUILD-ID-0,
+VALIDATE-0, RepoX, and TestX are already implemented.
+
+Your task here is to COMPLETE and HARDEN
+the AUTHORITATIVE PROCESS SURFACE.
+
+============================================================
+ENTRY CONDITIONS (MUST VERIFY FIRST)
+============================================================
+
+Before proceeding, verify:
+
+- Repo is tagged canon-clean-2
+- RepoX passes with zero violations
+- TestX determinism and schema tests pass
+- Engine builds as strict C89
+- Game builds as strict C++98
+
+If ANY check fails:
+STOP. REPORT. DO NOT CONTINUE.
+
+============================================================
+PURPOSE OF THIS PROMPT
+============================================================
+
+This prompt exists to eliminate ALL remaining
+implicit, hidden, or informal mutation paths
+by forcing every authoritative state change
+to be explicitly enumerated, named, validated,
+and test-covered.
+
+This is NOT feature work.
+This is NOT behavior change.
+This is COMPLETION of what already exists.
+
+============================================================
+CORE CONCEPT: PROCESS REGISTRY (AUTHORITATIVE)
+============================================================
+
+Every Process that can mutate authoritative state
+MUST be explicitly registered.
+
+No executable mutation may exist outside this registry.
+
+The registry is BOTH:
+- a data structure (machine-validated)
+- a documentation surface (human-auditable)
+
+============================================================
+WHAT YOU MUST BUILD
+============================================================
+
+1. A canonical Process Registry format
+2. A concrete registry populated from existing code
+3. RepoX enforcement rules
+4. TestX coverage hooks
+5. Documentation describing guarantees (not philosophy)
+
+============================================================
+1. PROCESS REGISTRY FORMAT
+============================================================
+
+Define a registry schema (C-friendly + data-friendly) with,
+at minimum, the following fields:
+
+- process_id (stable, unique, immutable)
+- human_name
+- owning_layer (engine | game)
+- description (1-3 lines, factual)
+- inputs (typed, named)
+- outputs (typed, named)
+- affected_assemblies
+- affected_fields
+- required_law_checks
+- rng_streams_used (explicit list, may be empty)
+- determinism_notes (ordering, rounding, tie-breaks)
+- failure_modes (explicit, enumerable)
+- version_introduced
+- deprecated (yes/no)
+
+Rules:
+- No free-text logic
+- No defaults
+- Absence must be explicit
+
+============================================================
+2. POPULATE REGISTRY FROM EXISTING CODE
+============================================================
+
+Tasks:
+
+- Enumerate ALL existing mutation paths
+- For each:
+  - Identify the Process boundary
+  - Assign a stable process_id
+  - Extract inputs/outputs
+  - Identify RNG usage
+  - Identify Law constraints
+
+If code performs mutation without a clear Process:
+- Refactor minimally to introduce a Process wrapper
+- Preserve semantics EXACTLY
+
+Do NOT add new behavior.
+
+============================================================
+3. REPOX ENFORCEMENT
+============================================================
+
+Add RepoX rules that:
+
+- Fail the build if:
+  - a mutation occurs outside a registered Process
+  - a Process exists without a registry entry
+  - registry and code signatures diverge
+
+- Validate:
+  - uniqueness of process_id
+  - immutability of existing IDs
+  - registry completeness
+
+============================================================
+4. TESTX INTEGRATION
+============================================================
+
+For every registered Process:
+
+- Add at least one TestX test that:
+  - Executes the Process
+  - Verifies deterministic outcome
+  - Verifies Law enforcement
+  - Verifies no side effects outside declared scope
+
+Tests may be minimal but must exist.
+
+============================================================
+5. DOCUMENTATION
+============================================================
+
+Produce:
+
+- docs/PROCESS_REGISTRY.md explaining:
+  - what the registry is
+  - what it guarantees
+  - what it forbids
+
+NO philosophy.
+NO justification.
+ONLY operational guarantees.
+
+============================================================
+NON-NEGOTIABLE RULES
+============================================================
+
+- Do NOT change simulation semantics
+- Do NOT add new processes
+- Do NOT remove existing capability
+- Do NOT weaken determinism or law
+- Do NOT introduce convenience paths
+
+If ambiguity is encountered:
+STOP and REPORT with exact file and line references.
+
+============================================================
+COMPLETION CRITERIA
+============================================================
+
+This prompt is COMPLETE when:
+
+- Every authoritative mutation path is registered
+- RepoX enforces registry compliance
+- TestX covers every Process
+- Engine/game behavior is unchanged
+- Full build + test suite passes
+- Changes are committed and pushed
+
+============================================================
+FINAL COMMIT MESSAGE
+============================================================
+
+"POST-CANON L1: Authoritative Process Registry completed and enforced"
+
+============================================================
+BEGIN EXECUTION.
+============================================================
+
+SYSTEM ROLE
+You are Codex operating as a senior execution engineer and auditor
+on the Dominium / Domino project.
+
+THIS PROMPT IS PART 2 OF A FIXED SEQUENCE.
+You MUST have completed PART 1 (Authoritative Process Registry)
+before executing this prompt.
+
+Architecture is CLOSED.
+Canon is LOCKED.
+All T-prompts, CLEAN-2, SRZ-0, APP-CANON*, BUILD-ID-0,
+VALIDATE-0, RepoX, and TestX are already implemented.
+
+Your task here is to COMPLETE and HARDEN
+the DATA & SCHEMA EVOLUTION SURFACE.
+
+============================================================
+ENTRY CONDITIONS (MUST VERIFY FIRST)
+============================================================
+
+Before proceeding, verify:
+
+- Repo tag exists: canon-clean-2
+- RepoX passes with zero violations
+- TestX passes, including Process Registry tests
+- Process Registry is complete and enforced
+- Engine builds as strict C89
+- Game builds as strict C++98
+
+If ANY check fails:
+STOP. REPORT. DO NOT CONTINUE.
+
+============================================================
+PURPOSE OF THIS PROMPT
+============================================================
+
+This prompt exists to make DATA the primary
+extension and evolution surface of the system.
+
+After this prompt:
+- Schemas may evolve forever without code rewrites
+- Old data remains loadable deterministically
+- Migration is explicit, auditable, and testable
+- No schema drift or silent coercion is possible
+
+This is NOT feature work.
+This is NOT content authoring.
+This is STRUCTURAL HARDENING.
+
+============================================================
+CORE CONCEPT: SCHEMA VERSION LADDERS
+============================================================
+
+Every schema MUST evolve via an explicit,
+deterministic, versioned ladder.
+
+In-place edits are forbidden.
+
+All schema evolution is:
+- explicit
+- ordered
+- deterministic
+- reversible in principle (forward-only in practice)
+
+============================================================
+WHAT YOU MUST BUILD
+============================================================
+
+1. Canonical schema directory layout
+2. Deterministic migration mechanism
+3. RepoX enforcement rules
+4. TestX migration coverage
+5. Documentation describing guarantees
+
+============================================================
+1. CANONICAL SCHEMA LAYOUT
+============================================================
+
+For EVERY schema currently in use, enforce:
+
+schema/<schema_name>/
+  v1/
+    schema.yaml (or equivalent)
+  v2/
+    schema.yaml
+  v3/
+    schema.yaml
+  migrations/
+    migrate_v1_to_v2.*
+    migrate_v2_to_v3.*
+
+Rules:
+- Versions are monotonic integers
+- Exactly ONE schema definition per version
+- No shared mutable includes between versions
+- Units MUST be explicit in schema, not code
+
+============================================================
+2. MIGRATION MECHANISM (AUTHORITATIVE)
+============================================================
+
+Implement migrations as deterministic functions:
+
+- Input: (old_version_data)
+- Output: (new_version_data)
+- No side effects
+- No I/O
+- No wall-clock
+- No randomness
+
+Rules:
+- Migrations are treated as Processes
+- Migrations MUST be registered in the Process Registry
+- Migrations MUST declare:
+  - source_version
+  - target_version
+  - data loss (explicit, if any)
+
+Chained migrations MUST be supported
+(v1 -> v2 -> v3).
+
+============================================================
+3. REPOX ENFORCEMENT
+============================================================
+
+Add RepoX rules that FAIL if:
+
+- A schema version is modified in-place
+- A migration is missing between adjacent versions
+- Code references an unversioned schema
+- Multiple schema versions are loaded silently
+- Implicit default values are introduced
+
+RepoX MUST enforce:
+- Explicit version selection
+- Explicit migration invocation
+
+============================================================
+4. TESTX MIGRATION COVERAGE
+============================================================
+
+For EVERY migration:
+
+- Add TestX tests that:
+  - Load vN data
+  - Migrate to vN+1
+  - Verify determinism
+  - Verify schema validity
+  - Verify semantic preservation (where applicable)
+
+Additionally:
+- Add round-trip sanity tests where possible
+- Add failure tests for malformed input
+
+============================================================
+5. DOCUMENTATION
+============================================================
+
+Produce:
+
+docs/SCHEMA_EVOLUTION.md containing:
+- Rules of schema evolution
+- Migration guarantees
+- Forbidden patterns
+- How to add a new schema version correctly
+
+NO philosophy.
+NO future speculation.
+ONLY operational rules.
+
+============================================================
+NON-NEGOTIABLE RULES
+============================================================
+
+- Do NOT invent new schema concepts
+- Do NOT embed logic in schemas
+- Do NOT allow silent coercion
+- Do NOT weaken determinism
+- Do NOT auto-migrate without explicit invocation
+
+If ambiguity is encountered:
+STOP and REPORT with exact schema and version.
+
+============================================================
+COMPLETION CRITERIA
+============================================================
+
+This prompt is COMPLETE when:
+
+- All schemas are versioned
+- All migrations are explicit and deterministic
+- RepoX enforces schema immutability
+- TestX covers every migration path
+- Existing data loads correctly
+- Full build + test suite passes
+- Changes are committed and pushed
+
+============================================================
+FINAL COMMIT MESSAGE
+============================================================
+
+"POST-CANON L2: Deterministic schema versioning and migration enforced"
+
+============================================================
+BEGIN EXECUTION.
+============================================================
+
+SYSTEM ROLE
+You are Codex operating as a senior execution engineer and auditor
+on the Dominium / Domino project.
+
+THIS PROMPT IS PART 3 OF A FIXED SEQUENCE.
+You MUST have completed PART 1 (Process Registry)
+and PART 2 (Schema Versioning/Migration) before this.
+
+Architecture is CLOSED.
+Canon is LOCKED.
+All T-prompts, CLEAN-2, SRZ-0, APP-CANON*, BUILD-ID-0,
+VALIDATE-0, RepoX, and TestX are already implemented.
+
+Your task here is to COMPLETE and HARDEN
+CAPABILITY-STAGE GATING across code, data, and applications.
+
+============================================================
+ENTRY CONDITIONS (MUST VERIFY FIRST)
+============================================================
+
+Before proceeding, verify:
+
+- Repo tag exists: canon-clean-2
+- RepoX passes with zero violations
+- TestX passes, including:
+  - Process Registry tests
+  - Schema migration tests
+- Schemas are versioned and immutable
+- Engine builds as strict C89
+- Game builds as strict C++98
+
+If ANY check fails:
+STOP. REPORT. DO NOT CONTINUE.
+
+============================================================
+PURPOSE OF THIS PROMPT
+============================================================
+
+Introduce a single, project-wide mechanism to gate:
+- world/scenario content
+- player affordances
+- AI/agent affordances
+- UI command exposure (CLI/TUI/GUI)
+- tooling visibility
+
+WITHOUT changing simulation semantics
+and WITHOUT introducing new primitives.
+
+This is a coordination and validation layer.
+
+============================================================
+CANONICAL STAGE MODEL (FIXED)
+============================================================
+
+Implement the following stage IDs as DATA (not enums with OTHER):
+
+STAGE_0_NONBIO_WORLD
+STAGE_1_NONINTELLIGENT_LIFE
+STAGE_2_INTELLIGENT_PRE_TOOL
+STAGE_3_PRE_TOOL_WORLD
+STAGE_4_PRE_INDUSTRY
+STAGE_5_PRE_PRESENT
+STAGE_6_FUTURE
+
+Rules:
+- Stages are totally ordered: 0 < 1 < 2 < 3 < 4 < 5 < 6
+- No UNKNOWN / OTHER stage values
+- Absence is invalid: stage must be explicit
+
+============================================================
+WHAT YOU MUST BUILD
+============================================================
+
+1. Stage declaration schema (data format)
+2. Pack-level stage metadata requirements
+3. Command-graph stage requirements (CLI canonical)
+4. UI IR stage validation
+5. RepoX enforcement
+6. TestX stage-gating suites
+7. Documentation
+
+============================================================
+1. STAGE DECLARATION SCHEMA
+============================================================
+
+Define a schema used by:
+- worlds
+- scenarios
+- packs
+- profiles (player/agent)
+- applications (capability surfaces)
+
+Minimum required fields:
+
+- requires_stage (minimum stage to load/use)
+- provides_stage (maximum capability delivered; must be >= requires_stage)
+- stage_features (explicit list of stage-scoped feature keys; no defaults)
+
+Rules:
+- If provides_stage > requires_stage, the delta MUST be explicit in stage_features
+- stage_features keys must be versioned and namespaced (e.g., "t13.fluids.basic")
+
+============================================================
+2. PACK-LEVEL STAGE METADATA (MANDATORY)
+============================================================
+
+Every content pack MUST declare:
+
+- pack_id (stable)
+- pack_version
+- schema_versions used
+- requires_stage
+- provides_stage
+- dependencies (pack_id + version constraints)
+
+Rules:
+- Launcher MUST refuse if:
+  - requires_stage > world provides_stage
+  - dependency stage requirements are incompatible
+  - schema versions mismatch and cannot be migrated explicitly
+
+============================================================
+3. COMMAND GRAPH STAGE REQUIREMENTS (CLI CANONICAL)
+============================================================
+
+Implement/extend the canonical CLI command graph such that:
+
+Each command declares:
+- required_stage
+- required_capabilities (explicit)
+- epistemic_scope (what it can reveal)
+
+GUI/TUI are views over this graph ONLY.
+
+Rules:
+- If world stage < required_stage, command is hidden/disabled
+- If epistemics forbid, command returns partial/empty data with explicit reason codes
+- No UI may implement commands not present in the canonical graph
+
+============================================================
+4. UI IR STAGE VALIDATION (NO UI LOGIC)
+============================================================
+
+Extend UI IR binding rules to enforce:
+
+- UI elements bind ONLY to canonical commands
+- UI elements may declare visibility rules ONLY as:
+  - (world_stage >= required_stage)
+  - (capability present)
+  - (epistemic permission)
+
+Rules:
+- No arbitrary expressions
+- No scripting
+- No callbacks
+- No conditionals outside the fixed predicate set
+
+============================================================
+5. REPOX ENFORCEMENT
+============================================================
+
+RepoX MUST fail if:
+
+- Any pack lacks stage metadata
+- Any application exposes a command without a required_stage
+- Any UI IR binds to a non-canonical command
+- Any stage value is invalid or absent
+- Any stage_features key is unversioned or unnamespaced
+
+============================================================
+6. TESTX STAGE-GATING SUITES
+============================================================
+
+Add TestX suites that:
+
+For each stage S:
+- Load a minimal world at stage S
+- Verify ONLY commands with required_stage <= S are available
+- Verify packs requiring >S are refused loudly
+- Verify determinism is unaffected by stage selection
+- Verify epistemic restrictions remain intact
+
+Add regression tests:
+- Ensure no stage creep: Stage_0 world cannot reveal life systems, etc.
+
+============================================================
+7. DOCUMENTATION
+============================================================
+
+Produce:
+
+docs/CAPABILITY_STAGES.md
+- stage definitions (short, factual)
+- metadata rules
+- command gating rules
+- UI IR gating rules
+- failure modes and required error messages
+
+NO philosophy.
+ONLY operational rules and examples.
+
+============================================================
+NON-NEGOTIABLE RULES
+============================================================
+
+- Do NOT change simulation semantics
+- Do NOT invent new primitives or new T layers
+- Do NOT add "UNKNOWN/OTHER" escapes
+- Do NOT allow silent fallback or implicit defaults
+- Do NOT let UI bypass command graph
+
+If ambiguity is encountered:
+STOP and REPORT with exact file references.
+
+============================================================
+COMPLETION CRITERIA
+============================================================
+
+This prompt is COMPLETE when:
+
+- Stage metadata exists for worlds/scenarios/packs
+- Command graph has required_stage for every command
+- UI IR validation enforces canonical bindings and gating predicates
+- RepoX gates all stage rules
+- TestX confirms stage gating across all stages
+- Full build + test suite passes
+- Changes are committed and pushed
+
+============================================================
+FINAL COMMIT MESSAGE
+============================================================
+
+"POST-CANON L3: Capability-stage gating enforced across packs, commands, and UI IR"
+
+============================================================
+BEGIN EXECUTION.
+============================================================
+
+SYSTEM ROLE
+You are Codex operating as a senior execution engineer and auditor
+on the Dominium / Domino project.
+
+THIS PROMPT IS PART 4 OF A FIXED SEQUENCE.
+You MUST have completed PART 1 (Process Registry),
+PART 2 (Schema Versioning/Migration),
+and PART 3 (Capability-Stage Enforcement) before this.
+
+Architecture is CLOSED.
+Canon is LOCKED.
+All T-prompts, CLEAN-2, SRZ-0, APP-CANON*, BUILD-ID-0,
+VALIDATE-0, RepoX, and TestX are already implemented.
+
+Your task here is to COMPLETE and HARDEN
+the STAGE-BY-STAGE TESTX COVERAGE MATRIX
+so that capability staging remains correct forever.
+
+============================================================
+ENTRY CONDITIONS (MUST VERIFY FIRST)
+============================================================
+
+Before proceeding, verify:
+
+- Repo tag exists: canon-clean-2
+- RepoX passes with zero violations
+- TestX passes, including:
+  - Process Registry coverage
+  - Schema migration coverage
+  - Capability-stage gating coverage
+- Engine builds as strict C89
+- Game builds as strict C++98
+
+If ANY check fails:
+STOP. REPORT. DO NOT CONTINUE.
+
+============================================================
+PURPOSE OF THIS PROMPT
+============================================================
+
+This prompt turns capability stages into a permanent,
+mechanically-enforced regression shield.
+
+After this prompt:
+- Every stage has a canonical minimal world fixture
+- Every stage has required tests (smoke + invariants)
+- No future change can introduce stage creep
+- Failures are localized and diagnosable
+
+This is NOT feature work.
+This is NOT content authoring beyond minimal fixtures.
+This is TEST HARDENING.
+
+============================================================
+WHAT YOU MUST BUILD
+============================================================
+
+1. A stage-by-stage coverage matrix (docs + machine-readable)
+2. Minimal world fixtures for each stage (data-only)
+3. A standard TestX suite structure per stage
+4. Cross-stage regression tests (anti-creep)
+5. Determinism and epistemics assertions per stage
+6. CI wiring so the matrix is always executed
+
+============================================================
+1. COVERAGE MATRIX (CANONICAL)
+============================================================
+
+Create:
+
+tests/testx/STAGE_MATRIX.yaml   (or equivalent)
+docs/TESTX_STAGE_MATRIX.md
+
+Matrix must enumerate:
+- stages (0..6)
+- required fixtures
+- required test suites
+- expected enabled command families
+- expected disabled command families
+- expected pack acceptance/refusal rules
+- determinism expectations
+- epistemic expectations
+
+Rules:
+- No "optional" entries
+- Absence is failure
+- Matrix is versioned and immutable per release tag
+
+============================================================
+2. MINIMAL WORLD FIXTURES (DATA-ONLY)
+============================================================
+
+Create minimal fixtures:
+
+tests/fixtures/worlds/
+  stage_0_nonbio/
+  stage_1_nonintelligent_life/
+  stage_2_intelligent_pre_tool/
+  stage_3_pre_tool_world/
+  stage_4_pre_industry/
+  stage_5_pre_present/
+  stage_6_future/
+
+Rules:
+- Each fixture contains the smallest valid dataset to load
+- No magic defaults; everything explicit
+- Must pass schema validation
+- Must declare requires_stage/provides_stage correctly
+- Must be deterministic and stable (no randomness unless fixed streams)
+
+============================================================
+3. STANDARD TEST SUITE PER STAGE
+============================================================
+
+For each stage S, implement:
+
+tests/testx/stages/stage_S/
+  test_load_and_validate.*
+  test_command_surface.*
+  test_pack_gating.*
+  test_epistemics.*
+  test_determinism_smoke.*
+  test_replay_hash.*
+
+Minimum assertions:
+
+A) Load
+- fixture loads cleanly
+- schema versions are correct or explicitly migrated
+
+B) Command surface
+- all commands with required_stage <= S are available
+- all commands with required_stage > S are unavailable
+- UI bindings (if applicable) match canonical command graph
+
+C) Pack gating
+- packs requiring <= S accepted
+- packs requiring > S refused loudly with specific reason codes
+
+D) Epistemics
+- no omniscient views appear
+- restricted knowledge stays restricted
+- disclosures match epistemic_scope of commands
+
+E) Determinism
+- run N steps twice => identical hash chain
+- if thread variance is supported, verify invariance
+
+F) Replay
+- record replay
+- replay produces same hash
+
+============================================================
+4. CROSS-STAGE REGRESSION (ANTI-CREEP)
+============================================================
+
+Add dedicated tests:
+
+tests/testx/stage_regression/
+  test_no_life_in_stage_0.*
+  test_no_tools_in_stage_2_and_3.*
+  test_no_industry_in_stage_4.*
+  test_no_future_affordances_pre_6.*
+
+Rules:
+- These are explicit "negative" tests.
+- They must fail if any stage leaks later-stage capability.
+
+============================================================
+5. DIAGNOSTICS & FAILURE LOCALIZATION
+============================================================
+
+All stage tests must:
+
+- emit structured failure codes
+- identify:
+  - stage
+  - fixture
+  - command or pack that violated gating
+  - expected vs actual stage requirement
+- avoid verbose logs unless failure occurs
+
+============================================================
+6. CI / AUTOMATION WIRING
+============================================================
+
+Ensure:
+- Stage matrix runs on every PR/commit gate (RepoX/TestX integration)
+- Any modification to fixtures or matrix requires:
+  - explicit review label (if supported)
+  - explicit commit message prefix: "STAGE-MATRIX: ..."
+
+RepoX MUST fail if:
+- stage fixtures exist without matrix entries
+- matrix lists tests/fixtures that do not exist
+- stage names drift from canonical IDs
+
+============================================================
+NON-NEGOTIABLE RULES
+============================================================
+
+- Do NOT change simulation semantics
+- Do NOT add new stages
+- Do NOT add escape hatches (UNKNOWN/OTHER)
+- Do NOT allow "best effort" tests
+- Do NOT loosen assertions to make tests pass
+
+If ambiguity is encountered:
+STOP and REPORT with exact file references.
+
+============================================================
+COMPLETION CRITERIA
+============================================================
+
+This prompt is COMPLETE when:
+
+- STAGE_MATRIX is present (docs + machine-readable)
+- All stage fixtures load deterministically
+- All per-stage suites pass
+- Cross-stage anti-creep tests pass
+- CI executes all matrix suites automatically
+- Full build + full test suite passes
+- Changes are committed and pushed
+
+============================================================
+FINAL COMMIT MESSAGE
+============================================================
+
+"POST-CANON L4: Stage-by-stage TestX matrix and anti-creep regression enforced"
+
+============================================================
+BEGIN EXECUTION.
+============================================================
+
+SYSTEM ROLE
+You are operating on the Dominium / Domino project
+AFTER full architecture design, CLEAN-2, and all POST-CANON hardening.
+
+Architecture is CLOSED.
+Canon is LOCKED.
+Governance is ENFORCED.
+
+This phase is called:
+INTEGRATION, VALIDATION, AND REAL-WORLD HARDENING (IVRH)
+
+Nothing in this prompt re-opens design.
+
+============================================================
+SECTION 1 - CURRENT PROJECT STATE (AUTHORITATIVE)
+============================================================
+
+The following are DONE and enforced:
+
+- Full T0-T24 architecture implemented
+- Process Registry enforced
+- Deterministic schema versioning & migration enforced
+- Capability-stage gating enforced
+- Stage-by-stage TestX anti-creep matrix enforced
+- SRZ-0 verification implemented
+- APP-CANON enforced
+- BUILD-ID-0 enforced
+- RepoX/TestX gating enforced
+- Canon-clean-2 tag exists
+
+The system is now STABLE ENOUGH TO USE.
+
+============================================================
+SECTION 2 - ACTIVE SCOPE (LOCKED)
+============================================================
+
+ACTIVE CAPABILITY STAGE
+- STAGE_5_PRE_PRESENT
+
+ACTIVE PLATFORMS
+- Windows (x64)
+- Linux (x64)
+
+ACTIVE SCENARIO
+- Flooded City (data-only expansion allowed)
+
+ACTIVE ROLES
+- Player
+- Observer
+- Tooling / Inspector
+
+OUT OF SCOPE (EXPLICIT)
+- New systems or primitives
+- Future-stage content (STAGE_6)
+- Mobile platforms
+- Consoles
+- AI autonomy expansion
+- Balance, polish, art passes
+
+Any work outside scope is INVALID.
+
+============================================================
+SECTION 3 - DEVELOPMENT MODES (STRICTLY SEPARATED)
+============================================================
+
+There are FOUR distinct modes of work.
+They MUST NOT be mixed.
+
+MODE A - HUMAN FREEFORM USE (YOU)
+Purpose:
+- Play the game
+- Use tools
+- Explore UI
+- Stress real workflows
+- Experience confusion, friction, surprise
+
+Allowed:
+- Freeform play
+- Screen recording
+- Spoken or written expectations
+- Subjective reactions
+
+Forbidden:
+- Designing fixes
+- Editing code while playing
+- Speculating about architecture changes
+
+OUTPUT:
+- Short screen recordings (<= 60s)
+- Clear statements of expectation vs observation
+
+MODE B - CHATGPT / WEB CHAT (ANALYSIS & PROMPT GENERATION)
+Purpose:
+- Analyse recordings
+- Audit behaviour against canon
+- Classify issues
+- Generate precise fix prompts
+
+Allowed:
+- Canon citation
+- Failure classification
+- Root-cause narrowing
+- Prompt generation
+
+Forbidden:
+- Writing production code
+- Making semantic changes
+- Implementing fixes directly
+- Inventing new systems
+
+OUTPUT:
+1. Structured issue report
+2. Canon references
+3. Codex-ready fix prompt
+
+MODE C - CODEX AGENT (IMPLEMENTATION)
+Purpose:
+- Execute narrowly-scoped fix prompts
+- Modify code, data, tests
+- Enforce canon mechanically
+
+Allowed:
+- Implement exactly what the prompt specifies
+- Add tests
+- Tighten enforcement
+- Refactor internally without semantic change
+
+Forbidden:
+- Expanding scope
+- Fixing adjacent issues "while here"
+- Reinterpreting canon
+- Making UX decisions without instruction
+
+OUTPUT:
+- Code changes
+- Tests
+- Commits
+- Pushes
+
+MODE D - AUTOMATION (RepoX / TestX / CI)
+Purpose:
+- Prevent regressions
+- Enforce invariants
+- Fail loudly
+
+Allowed:
+- Automatic rejection
+- Hard gating
+- Deterministic validation
+
+Forbidden:
+- Silent fallback
+- Best-effort behaviour
+- Human override without code change
+
+Automation is the FINAL AUTHORITY.
+
+============================================================
+SECTION 4 - THE CANONICAL FEEDBACK LOOP
+============================================================
+
+ALL WORK now follows this loop:
+
+1. PLAY / USE (Human)
+2. RECORD (<= 60s clip)
+3. UPLOAD (ChatGPT)
+4. AUDIT (ChatGPT)
+5. FIX PROMPT GENERATED (ChatGPT)
+6. IMPLEMENT (Codex)
+7. TESTX / REPOX PASS
+8. COMMIT & PUSH
+9. REPEAT
+
+NO STEP MAY BE SKIPPED.
+NO FIX MAY BYPASS THIS LOOP.
+
+============================================================
+SECTION 5 - ISSUE CLASSIFICATION (MANDATORY)
+============================================================
+
+Every detected issue MUST be classified as one of:
+
+- CANON VIOLATION (must fix)
+- IMPLEMENTATION GAP
+- EXPOSURE BUG (UI / command surface)
+- DIAGNOSTIC DEFICIT (confusing but correct)
+- NON-ISSUE (expected; document if needed)
+
+Only CANON VIOLATION and IMPLEMENTATION GAP
+permit code changes.
+
+============================================================
+SECTION 6 - FIX PROMPT STRUCTURE (STANDARD)
+============================================================
+
+Every Codex fix prompt MUST include:
+
+- ISSUE ID
+- CLIP TIMESTAMP
+- OBSERVED BEHAVIOUR
+- EXPECTED BEHAVIOUR
+- CANON REFERENCES
+- REQUIRED ACTIONS (numbered)
+- PROHIBITIONS
+- TESTX REQUIREMENTS
+- EXPECTED OUTCOME
+
+No freeform fixes.
+No ambiguity.
+
+============================================================
+SECTION 7 - SUCCESS CRITERIA FOR THIS PHASE
+============================================================
+
+This IVRH phase is SUCCESSFUL when:
+
+- 90%+ fixes are small and test-driven
+- Most bugs are exposure or enforcement issues
+- TestX coverage grows steadily
+- No semantic rewrites are required
+- Playing feels increasingly boring but trustworthy
+- Confusion decreases over time
+
+If instead:
+- fixes grow larger
+- scope expands
+- architecture is questioned
+
+STOP. REASSESS.
+
+============================================================
+SECTION 8 - EMERGENCY RESET CLAUSE
+============================================================
+
+If confusion, drift, or disagreement occurs:
+
+1. STOP
+2. Re-read:
+   - CANON_INDEX.md
+   - CAPABILITY_STAGES.md
+   - APP-CANON0/1
+   - BUILD-ID-0
+3. Restate:
+   "Canon is locked. We are validating, not designing."
+
+Only then continue.
+
+============================================================
+FINAL INSTRUCTION
+============================================================
+
+This phase is about PROVING THE SYSTEM,
+not expanding it.
+
+Begin with play.
+Let reality generate the next tasks.
+
+END OF PROMPT.
+
+--- END PROMPT ARCHIVE ---

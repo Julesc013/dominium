@@ -38,6 +38,12 @@ dom_add_testx(NAME repox_release_tests
     LABELS ${DOM_TESTX_LABEL_BUILDMETA}
 )
 
+dom_add_testx(NAME build_identity_tests
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/build_identity_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_BUILDMETA}
+)
+
 dom_add_testx(NAME build_matrix_preset_tests
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/build_matrix_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}
