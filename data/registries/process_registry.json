@@ -1,0 +1,4042 @@
+{
+  "schema_id": "dominium.schema.process_registry",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "process_id": "org.dominium.base.rules.process.template.epistemic.basic",
+      "human_name": "Org Dominium Base Rules Process Template Epistemic Basic",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.base.rules/content/processes.json",
+      "inputs": [
+        {
+          "name": "observation",
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.observation",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "knowledge",
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.knowledge",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unspecified"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.base.rules"
+      }
+    },
+    {
+      "process_id": "org.dominium.base.rules.process.template.transactional.basic",
+      "human_name": "Org Dominium Base Rules Process Template Transactional Basic",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.base.rules/content/processes.json",
+      "inputs": [
+        {
+          "name": "request",
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.request",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "response",
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.response",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unspecified"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.base.rules"
+      }
+    },
+    {
+      "process_id": "org.dominium.base.rules.process.template.transformative.basic",
+      "human_name": "Org Dominium Base Rules Process Template Transformative Basic",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.base.rules/content/processes.json",
+      "inputs": [
+        {
+          "name": "input",
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.input",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "ref_type": "concept",
+          "ref_id": "org.dominium.base.rules.io.template.output",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unspecified"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.base.rules"
+      }
+    },
+    {
+      "process_id": "process.alchemy.calcine",
+      "human_name": "Alchemy Calcine",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.alchemy/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.alchemy"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.alchemy"
+      }
+    },
+    {
+      "process_id": "process.alchemy.transmute",
+      "human_name": "Alchemy Transmute",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.alchemy/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.alchemy"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.alchemy"
+      }
+    },
+    {
+      "process_id": "process.astrology.interpret",
+      "human_name": "Astrology Interpret",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.astrology/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.astrology"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.astrology"
+      }
+    },
+    {
+      "process_id": "process.craft.execute",
+      "human_name": "Craft Execute",
+      "owning_layer": "engine",
+      "description": "Atomic crafting or disassembly over craft domain inventory and tools.",
+      "inputs": [
+        {
+          "name": "recipe_index",
+          "ref_type": "recipe",
+          "ref_id": "craft.recipe.index",
+          "io_tags": []
+        },
+        {
+          "name": "conditions",
+          "ref_type": "conditions",
+          "ref_id": "craft.conditions",
+          "io_tags": []
+        },
+        {
+          "name": "budget",
+          "ref_type": "budget",
+          "ref_id": "domain.budget",
+          "io_tags": []
+        },
+        {
+          "name": "tick",
+          "ref_type": "time",
+          "ref_id": "time.act_tick",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "ref_type": "result",
+          "ref_id": "craft.result",
+          "io_tags": []
+        },
+        {
+          "name": "inventory",
+          "ref_type": "inventory",
+          "ref_id": "craft.inventory",
+          "io_tags": []
+        },
+        {
+          "name": "tools",
+          "ref_type": "tool",
+          "ref_id": "craft.tools",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "law.allow.crafting",
+        "metalaw.allow.crafting"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "fixed-point",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "refuse.domain_inactive",
+        "refuse.policy",
+        "refuse.budget",
+        "refuse.internal"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "implementation_ref": "dom_craft_execute"
+      }
+    },
+    {
+      "process_id": "process.epistemic.distort",
+      "human_name": "Epistemic Distort",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.epistemics.core/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.access_denied"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.epistemics.core"
+      }
+    },
+    {
+      "process_id": "process.epistemic.experiment",
+      "human_name": "Epistemic Experiment",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.epistemics.core/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.instrument_unavailable",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.epistemics.core"
+      }
+    },
+    {
+      "process_id": "process.epistemic.infer",
+      "human_name": "Epistemic Infer",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.epistemics.core/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_evidence"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.epistemics.core"
+      }
+    },
+    {
+      "process_id": "process.epistemic.measure",
+      "human_name": "Epistemic Measure",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.epistemics.core/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.instrument_unavailable",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.epistemics.core"
+      }
+    },
+    {
+      "process_id": "process.epistemic.observe",
+      "human_name": "Epistemic Observe",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.epistemics.core/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.access_denied",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.epistemics.core"
+      }
+    },
+    {
+      "process_id": "process.epistemic.publish",
+      "human_name": "Epistemic Publish",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.epistemics.core/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.access_denied"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.epistemics.core"
+      }
+    },
+    {
+      "process_id": "process.epistemic.suppress",
+      "human_name": "Epistemic Suppress",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.epistemics.core/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.access_denied"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.epistemics.core"
+      }
+    },
+    {
+      "process_id": "process.epistemic.survey",
+      "human_name": "Epistemic Survey",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.epistemics.core/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.scope_too_large",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.epistemics.core"
+      }
+    },
+    {
+      "process_id": "process.examples.false_science.build",
+      "human_name": "Examples False Science Build",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.examples.false_science/content/processes.json",
+      "inputs": [
+        {
+          "name": "v1",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.false_science.technology_spec.v1",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "v1",
+          "ref_type": "assembly",
+          "ref_id": "assembly.examples.false_science.device.v1",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.examples.false_science.device.v1"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_material",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.examples.false_science"
+      }
+    },
+    {
+      "process_id": "process.examples.false_science.design",
+      "human_name": "Examples False Science Design",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.examples.false_science/content/processes.json",
+      "inputs": [
+        {
+          "name": "v1",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.false_science.doctrine.v1",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "v1",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.false_science.technology_spec.v1",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_evidence"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.examples.false_science"
+      }
+    },
+    {
+      "process_id": "process.examples.lost_civilization.catalog",
+      "human_name": "Examples Lost Civilization Catalog",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.examples.lost_civilization/content/processes.json",
+      "inputs": [
+        {
+          "name": "v1",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.lost_civilization.artifact_catalog.v1",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "v1",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.lost_civilization.history_version_a.v1",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.epistemic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_evidence"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.examples.lost_civilization"
+      }
+    },
+    {
+      "process_id": "process.examples.lost_civilization.excavate",
+      "human_name": "Examples Lost Civilization Excavate",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.examples.lost_civilization/content/processes.json",
+      "inputs": [
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "v1",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.examples.lost_civilization.artifact_catalog.v1",
+          "io_tags": []
+        },
+        {
+          "name": "v1",
+          "ref_type": "assembly",
+          "ref_id": "assembly.examples.lost_civilization.ruins.v1",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.examples.lost_civilization.ruins.v1"
+      ],
+      "affected_fields": [
+        "field.on_planet.terrain.cover"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.examples.lost_civilization"
+      }
+    },
+    {
+      "process_id": "process.hyperspace.enter",
+      "human_name": "Hyperspace Enter",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.hyperspace/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.hyperspace"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_capability",
+        "failure.boundary_denied"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.hyperspace"
+      }
+    },
+    {
+      "process_id": "process.hyperspace.exit",
+      "human_name": "Hyperspace Exit",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.hyperspace/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.hyperspace"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.boundary_denied",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.hyperspace"
+      }
+    },
+    {
+      "process_id": "process.hyperspace.travel",
+      "human_name": "Hyperspace Travel",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.hyperspace/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.hyperspace"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.route_unavailable",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.hyperspace"
+      }
+    },
+    {
+      "process_id": "process.magic.divination",
+      "human_name": "Magic Divination",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.magic/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.magic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.magic"
+      }
+    },
+    {
+      "process_id": "process.magic.ritual.cast",
+      "human_name": "Magic Ritual Cast",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.magic/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.magic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.magic"
+      }
+    },
+    {
+      "process_id": "process.magic.spell.weave",
+      "human_name": "Magic Spell Weave",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.realities.magic/content/processes.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.magic"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_capability",
+        "failure.insufficient_budget"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.realities.magic"
+      }
+    },
+    {
+      "process_id": "process.mine.cut",
+      "human_name": "Mine Cut",
+      "owning_layer": "engine",
+      "description": "Apply a deterministic cut overlay to mining terrain.",
+      "inputs": [
+        {
+          "name": "center",
+          "ref_type": "point",
+          "ref_id": "domain.point",
+          "io_tags": []
+        },
+        {
+          "name": "radius",
+          "ref_type": "scalar",
+          "ref_id": "domain.radius",
+          "io_tags": []
+        },
+        {
+          "name": "budget",
+          "ref_type": "budget",
+          "ref_id": "domain.budget",
+          "io_tags": []
+        },
+        {
+          "name": "tick",
+          "ref_type": "time",
+          "ref_id": "time.act_tick",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "overlay",
+          "ref_type": "overlay",
+          "ref_id": "terrain.overlay",
+          "io_tags": []
+        },
+        {
+          "name": "result",
+          "ref_type": "result",
+          "ref_id": "mining.cut.result",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "terrain.phi"
+      ],
+      "required_law_checks": [
+        "law.allow.mining",
+        "metalaw.allow.mining"
+      ],
+      "rng_streams_used": [
+        "noise.stream.world.mining.overlay"
+      ],
+      "determinism_notes": [
+        "fixed-point",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "refuse.domain_inactive",
+        "refuse.policy",
+        "refuse.budget",
+        "refuse.internal"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "implementation_ref": "dom_mining_cut"
+      }
+    },
+    {
+      "process_id": "process.mine.extract",
+      "human_name": "Mine Extract",
+      "owning_layer": "engine",
+      "description": "Extract material chunks and record depletion at a mining point.",
+      "inputs": [
+        {
+          "name": "center",
+          "ref_type": "point",
+          "ref_id": "domain.point",
+          "io_tags": []
+        },
+        {
+          "name": "radius",
+          "ref_type": "scalar",
+          "ref_id": "domain.radius",
+          "io_tags": []
+        },
+        {
+          "name": "budget",
+          "ref_type": "budget",
+          "ref_id": "domain.budget",
+          "io_tags": []
+        },
+        {
+          "name": "tick",
+          "ref_type": "time",
+          "ref_id": "time.act_tick",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "chunks",
+          "ref_type": "material",
+          "ref_id": "material.chunk",
+          "io_tags": []
+        },
+        {
+          "name": "depletions",
+          "ref_type": "field",
+          "ref_id": "resource.density",
+          "io_tags": []
+        },
+        {
+          "name": "result",
+          "ref_type": "result",
+          "ref_id": "mining.extract.result",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "resource.density"
+      ],
+      "required_law_checks": [
+        "law.allow.mining",
+        "metalaw.allow.mining"
+      ],
+      "rng_streams_used": [
+        "noise.stream.world.mining.chunk"
+      ],
+      "determinism_notes": [
+        "fixed-point",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "refuse.domain_inactive",
+        "refuse.policy",
+        "refuse.budget",
+        "refuse.internal",
+        "refuse.no_analytic"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "implementation_ref": "dom_mining_extract"
+      }
+    },
+    {
+      "process_id": "process.mine.support_check",
+      "human_name": "Mine Support Check",
+      "owning_layer": "engine",
+      "description": "Evaluate support capacity and collapse risk at a mining point.",
+      "inputs": [
+        {
+          "name": "center",
+          "ref_type": "point",
+          "ref_id": "domain.point",
+          "io_tags": []
+        },
+        {
+          "name": "radius",
+          "ref_type": "scalar",
+          "ref_id": "domain.radius",
+          "io_tags": []
+        },
+        {
+          "name": "tick",
+          "ref_type": "time",
+          "ref_id": "time.act_tick",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "result",
+          "ref_type": "result",
+          "ref_id": "mining.support.result",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "law.allow.mining",
+        "metalaw.allow.mining"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "fixed-point",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "refuse.domain_inactive",
+        "refuse.policy",
+        "refuse.internal",
+        "refuse.no_analytic"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "implementation_ref": "dom_mining_support_check"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.certify_structure",
+      "human_name": "On Planet Construction Certify Structure",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.integrity.report",
+          "io_tags": []
+        },
+        {
+          "name": "local",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.regulator.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.jurisdiction.local",
+        "authority.certify.structure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.claim_volume",
+      "human_name": "On Planet Construction Claim Volume",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "local",
+          "ref_type": "domain_volume",
+          "ref_id": "domain.on_planet.infrastructure.volume.local",
+          "io_tags": []
+        },
+        {
+          "name": "ownership",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.registry.ownership",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.ownership.claim",
+        "authority.jurisdiction.local"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.clear_and_prepare",
+      "human_name": "On Planet Construction Clear And Prepare",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover",
+          "io_tags": []
+        },
+        {
+          "name": "compaction",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover",
+          "io_tags": []
+        },
+        {
+          "name": "compaction",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.soil.compaction",
+        "field.on_planet.terrain.cover"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.connect_interface",
+      "human_name": "On Planet Construction Connect Interface",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic",
+          "io_tags": []
+        },
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.joint.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.structure.frame.basic",
+        "part.on_planet.joint.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.establish_foundation",
+      "human_name": "On Planet Construction Establish Foundation",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic",
+          "io_tags": []
+        },
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.foundation.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.foundation.basic",
+          "io_tags": []
+        },
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.foundation.basic"
+      ],
+      "affected_fields": [
+        "field.on_planet.structural.integrity"
+      ],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.place_part",
+      "human_name": "On Planet Construction Place Part",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic",
+          "io_tags": []
+        },
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.panel.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.structure.frame.basic",
+        "part.on_planet.beam.basic",
+        "part.on_planet.panel.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.release_volume",
+      "human_name": "On Planet Construction Release Volume",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "local",
+          "ref_type": "domain_volume",
+          "ref_id": "domain.on_planet.infrastructure.volume.local",
+          "io_tags": []
+        },
+        {
+          "name": "ownership",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.registry.ownership",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.ownership.release",
+        "authority.jurisdiction.local"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.survey_site",
+      "human_name": "On Planet Construction Survey Site",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "elevation",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation",
+          "io_tags": []
+        },
+        {
+          "name": "compaction",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "site",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.survey.site",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.soil.compaction",
+        "field.on_planet.terrain.elevation"
+      ],
+      "required_law_checks": [
+        "authority.observe.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.construction.verify_integrity",
+      "human_name": "On Planet Construction Verify Integrity",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "inputs": [
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.integrity.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.structural.integrity"
+      ],
+      "required_law_checks": [
+        "authority.observe.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.degrade_performance",
+      "human_name": "On Planet Maintenance Degrade Performance",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "inputs": [
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.structural.integrity"
+      ],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unsupported_state"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.fail_component",
+      "human_name": "On Planet Maintenance Fail Component",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.failure.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.structure.frame.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.none"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.inspect_condition",
+      "human_name": "On Planet Maintenance Inspect Condition",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "inputs": [
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "record",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.maintenance.record",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.structural.integrity"
+      ],
+      "required_law_checks": [
+        "authority.observe.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.repair",
+      "human_name": "On Planet Maintenance Repair",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.joint.basic",
+          "io_tags": []
+        },
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "part.on_planet.joint.basic"
+      ],
+      "affected_fields": [
+        "field.on_planet.structural.integrity"
+      ],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.replace_part",
+      "human_name": "On Planet Maintenance Replace Part",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.panel.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.panel.basic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "part.on_planet.panel.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.maintenance.wear_accumulate",
+      "human_name": "On Planet Maintenance Wear Accumulate",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "inputs": [
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.structural.integrity"
+      ],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unsupported_state"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.assemble_subsystem",
+      "human_name": "On Planet Manufacturing Assemble Subsystem",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic",
+          "io_tags": []
+        },
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.joint.basic",
+          "io_tags": []
+        },
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.structure.frame.basic",
+        "part.on_planet.beam.basic",
+        "part.on_planet.joint.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.fabricate_part",
+      "human_name": "On Planet Manufacturing Fabricate Part",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic",
+          "io_tags": []
+        },
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "part.on_planet.beam.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.materials"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.quality_check",
+      "human_name": "On Planet Manufacturing Quality Check",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.structure.frame.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.integrity.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.structure.frame.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.observe.infrastructure"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.scrap_or_rework",
+      "human_name": "On Planet Manufacturing Scrap Or Rework",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.beam.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.aggregate.generic",
+          "io_tags": []
+        },
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.scrap"
+          ]
+        }
+      ],
+      "affected_assemblies": [
+        "part.on_planet.beam.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.materials"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.manufacturing.transform_material",
+      "human_name": "On Planet Manufacturing Transform Material",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.materials"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.access_deposit",
+      "human_name": "On Planet Mining Access Deposit",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "inputs": [
+        {
+          "name": "accessibility",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.resource.accessibility",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "accessibility",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.resource.accessibility",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.resource.accessibility"
+      ],
+      "required_law_checks": [
+        "authority.mutation.subsurface"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.discover_deposit",
+      "human_name": "On Planet Mining Discover Deposit",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "inputs": [
+        {
+          "name": "deposit",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.resource.deposit",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "discovery",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.deposit.discovery",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.resource.deposit"
+      ],
+      "required_law_checks": [
+        "authority.observe.subsurface"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.extract_material",
+      "human_name": "On Planet Mining Extract Material",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "inputs": [
+        {
+          "name": "deposit",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.resource.deposit",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.ore.generic",
+          "io_tags": []
+        },
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.tailings"
+          ]
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.resource.deposit"
+      ],
+      "required_law_checks": [
+        "authority.mutation.subsurface"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.handle_tailings",
+      "human_name": "On Planet Mining Handle Tailings",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "contamination",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.soil.contamination"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.refine_material",
+      "human_name": "On Planet Mining Refine Material",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.ore.generic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic",
+          "io_tags": []
+        },
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.conductive.generic",
+          "io_tags": []
+        },
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.refining"
+          ]
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.materials"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.mining.transport_output",
+      "human_name": "On Planet Mining Transport Output",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.ore.generic",
+          "io_tags": []
+        },
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.logistics.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.ore.generic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.logistics"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.attach",
+      "human_name": "On Planet Network Attach",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.network.node.basic",
+          "io_tags": []
+        },
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.network.node.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.network"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.balance_flow",
+      "human_name": "On Planet Network Balance Flow",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "inputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local",
+          "io_tags": []
+        },
+        {
+          "name": "congestion",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.network.congestion",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local",
+          "io_tags": []
+        },
+        {
+          "name": "congestion",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.network.congestion",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.network.congestion"
+      ],
+      "required_law_checks": [
+        "authority.mutation.network"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.detach",
+      "human_name": "On Planet Network Detach",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.network.node.basic",
+          "io_tags": []
+        },
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.network.node.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.network"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.register",
+      "human_name": "On Planet Network Register",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "inputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.data.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.data.local",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.network"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.repair",
+      "human_name": "On Planet Network Repair",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "inputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local",
+          "io_tags": []
+        },
+        {
+          "name": "basic",
+          "ref_type": "part",
+          "ref_id": "part.on_planet.cable.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.power.local",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "part.on_planet.cable.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.network"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.route_flow",
+      "human_name": "On Planet Network Route Flow",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "inputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.logistics.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.logistics.local",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.network"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.network.verify",
+      "human_name": "On Planet Network Verify",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "inputs": [
+        {
+          "name": "congestion",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.network.congestion",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.network.congestion"
+      ],
+      "required_law_checks": [
+        "authority.observe.network"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.certify",
+      "human_name": "On Planet Regulation Certify",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "inputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.jurisdiction.local",
+        "authority.certify"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.inspect",
+      "human_name": "On Planet Regulation Inspect",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.inspectorate.basic",
+          "io_tags": []
+        },
+        {
+          "name": "integrity",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.structural.integrity",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.structural.integrity"
+      ],
+      "required_law_checks": [
+        "authority.jurisdiction.local"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.issue_or_deny",
+      "human_name": "On Planet Regulation Issue Or Deny",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "inputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        },
+        {
+          "name": "local",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.regulator.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.jurisdiction.local",
+        "authority.permit.issue"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.penalize_violation",
+      "human_name": "On Planet Regulation Penalize Violation",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "inputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        },
+        {
+          "name": "local",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.regulator.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.jurisdiction.local",
+        "authority.penalize"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.request_permit",
+      "human_name": "On Planet Regulation Request Permit",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "inputs": [
+        {
+          "name": "local",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.regulator.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.jurisdiction.local"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.regulation.review_compliance",
+      "human_name": "On Planet Regulation Review Compliance",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "inputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.jurisdiction.local"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.alter_atmosphere",
+      "human_name": "On Planet Terraforming Alter Atmosphere",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "inputs": [
+        {
+          "name": "composition",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition",
+          "io_tags": []
+        },
+        {
+          "name": "pressure",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.pressure",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "composition",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition",
+          "io_tags": []
+        },
+        {
+          "name": "pressure",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.pressure",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.atmosphere.composition",
+        "field.on_planet.atmosphere.pressure"
+      ],
+      "required_law_checks": [
+        "authority.mutation.atmosphere"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.climate_feedback",
+      "human_name": "On Planet Terraforming Climate Feedback",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "inputs": [
+        {
+          "name": "temperature",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.temperature",
+          "io_tags": []
+        },
+        {
+          "name": "albedo",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.climate.albedo",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "temperature",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.temperature",
+          "io_tags": []
+        },
+        {
+          "name": "albedo",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.climate.albedo",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.climate.albedo",
+        "field.on_planet.temperature"
+      ],
+      "required_law_checks": [
+        "authority.mutation.climate"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unsupported_state"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.inject_gases",
+      "human_name": "On Planet Terraforming Inject Gases",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.gas.generic",
+          "io_tags": []
+        },
+        {
+          "name": "composition",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "composition",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.atmosphere.composition"
+      ],
+      "required_law_checks": [
+        "authority.mutation.atmosphere"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.introduce_biomass",
+      "human_name": "On Planet Terraforming Introduce Biomass",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.biotic.generic",
+          "io_tags": []
+        },
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.biomass.cover",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.biomass.cover",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.biomass.cover"
+      ],
+      "required_law_checks": [
+        "authority.mutation.biomass"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.modify_albedo",
+      "human_name": "On Planet Terraforming Modify Albedo",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "inputs": [
+        {
+          "name": "albedo",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.climate.albedo",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "albedo",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.climate.albedo",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.climate.albedo"
+      ],
+      "required_law_checks": [
+        "authority.mutation.climate"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.redistribute_water",
+      "human_name": "On Planet Terraforming Redistribute Water",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "inputs": [
+        {
+          "name": "flow",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow",
+          "io_tags": []
+        },
+        {
+          "name": "storage",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.storage",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "flow",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow",
+          "io_tags": []
+        },
+        {
+          "name": "storage",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.storage",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.hydrology.flow",
+        "field.on_planet.hydrology.storage"
+      ],
+      "required_law_checks": [
+        "authority.mutation.hydrology"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terraforming.remove_gases",
+      "human_name": "On Planet Terraforming Remove Gases",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "inputs": [
+        {
+          "name": "composition",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.gas.generic",
+          "io_tags": []
+        },
+        {
+          "name": "composition",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.atmosphere.composition",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.atmosphere.composition"
+      ],
+      "required_law_checks": [
+        "authority.mutation.atmosphere"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.channel_water",
+      "human_name": "On Planet Terrain Channel Water",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "flow",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "flow",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.hydrology.flow"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain",
+        "authority.mutation.hydrology"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.clear_land",
+      "human_name": "On Planet Terrain Clear Land",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover",
+          "io_tags": []
+        },
+        {
+          "name": "compaction",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover",
+          "io_tags": []
+        },
+        {
+          "name": "compaction",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.soil.compaction",
+        "field.on_planet.terrain.cover"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.compact_soil",
+      "human_name": "On Planet Terrain Compact Soil",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "compaction",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "compaction",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.compaction",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.soil.compaction"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.contaminate",
+      "human_name": "On Planet Terrain Contaminate",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": []
+        },
+        {
+          "name": "contamination",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "contamination",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.soil.contamination"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.cut_tree",
+      "human_name": "On Planet Terrain Cut Tree",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.biotic.generic",
+          "io_tags": []
+        },
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.cover",
+          "io_tags": []
+        },
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.biotic.generic",
+          "io_tags": [
+            "waste.biomass"
+          ]
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.terrain.cover"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.dam_flow",
+      "human_name": "On Planet Terrain Dam Flow",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "flow",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow",
+          "io_tags": []
+        },
+        {
+          "name": "storage",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.storage",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "flow",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.flow",
+          "io_tags": []
+        },
+        {
+          "name": "storage",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.hydrology.storage",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.hydrology.flow",
+        "field.on_planet.hydrology.storage"
+      ],
+      "required_law_checks": [
+        "authority.mutation.hydrology"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.deposit_fill",
+      "human_name": "On Planet Terrain Deposit Fill",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.aggregate.generic",
+          "io_tags": []
+        },
+        {
+          "name": "elevation",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "elevation",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.terrain.elevation"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.excavate",
+      "human_name": "On Planet Terrain Excavate",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "elevation",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation",
+          "io_tags": []
+        },
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.aggregate.generic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.aggregate.generic",
+          "io_tags": []
+        },
+        {
+          "name": "elevation",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation",
+          "io_tags": []
+        },
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.excavation"
+          ]
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.terrain.elevation"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain",
+        "authority.mutation.subsurface"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.grade_surface",
+      "human_name": "On Planet Terrain Grade Surface",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "elevation",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "elevation",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.terrain.elevation",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.terrain.elevation"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.remediate",
+      "human_name": "On Planet Terrain Remediate",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "contamination",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "contamination",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.soil.contamination",
+          "io_tags": []
+        },
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.tailings.generic",
+          "io_tags": [
+            "waste.remediation"
+          ]
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.soil.contamination"
+      ],
+      "required_law_checks": [
+        "authority.mutation.terrain"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.terrain.seed_biomass",
+      "human_name": "On Planet Terrain Seed Biomass",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.biotic.generic",
+          "io_tags": []
+        },
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.biomass.cover",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "cover",
+          "ref_type": "field",
+          "ref_id": "field.on_planet.biomass.cover",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.on_planet.biomass.cover"
+      ],
+      "required_law_checks": [
+        "authority.mutation.biomass"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.load_transport",
+      "human_name": "On Planet Trade Load Transport",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "inputs": [
+        {
+          "name": "generic",
+          "ref_type": "material",
+          "ref_id": "material.on_planet.structural.generic",
+          "io_tags": []
+        },
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.vehicle.chassis.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.logistics"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_material"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.move_goods",
+      "human_name": "On Planet Trade Move Goods",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic",
+          "io_tags": []
+        },
+        {
+          "name": "local",
+          "ref_type": "network",
+          "ref_id": "network.on_planet.logistics.local",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.vehicle.chassis.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.mutation.logistics"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.insufficient_capability"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.negotiate_contract",
+      "human_name": "On Planet Trade Negotiate Contract",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "inputs": [
+        {
+          "name": "clearinghouse",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.trade.clearinghouse",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "contract",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.trade.contract",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.trade.negotiate"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.schedule_delivery",
+      "human_name": "On Planet Trade Schedule Delivery",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "inputs": [
+        {
+          "name": "contract",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.trade.contract",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "schedule",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.delivery.schedule",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.trade.schedule"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.transfer_ownership",
+      "human_name": "On Planet Trade Transfer Ownership",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "inputs": [
+        {
+          "name": "contract",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.trade.contract",
+          "io_tags": []
+        },
+        {
+          "name": "ownership",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.registry.ownership",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.ownership.transfer",
+        "authority.jurisdiction.local"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority",
+        "failure.constraint_violation"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    },
+    {
+      "process_id": "process.on_planet.trade.unload_and_register",
+      "human_name": "On Planet Trade Unload And Register",
+      "owning_layer": "game",
+      "description": "Data-defined process from data/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "inputs": [
+        {
+          "name": "basic",
+          "ref_type": "assembly",
+          "ref_id": "assembly.on_planet.vehicle.chassis.basic",
+          "io_tags": []
+        },
+        {
+          "name": "ownership",
+          "ref_type": "institution",
+          "ref_id": "institution.on_planet.registry.ownership",
+          "io_tags": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "ref_type": "knowledge",
+          "ref_id": "knowledge.on_planet.compliance.report",
+          "io_tags": []
+        }
+      ],
+      "affected_assemblies": [
+        "assembly.on_planet.vehicle.chassis.basic"
+      ],
+      "affected_fields": [],
+      "required_law_checks": [
+        "authority.ownership.transfer",
+        "authority.jurisdiction.local"
+      ],
+      "rng_streams_used": [],
+      "determinism_notes": [
+        "data-defined",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.insufficient_authority"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_pack": "org.dominium.lib.on_planet.processes"
+      }
+    }
+  ]
+}

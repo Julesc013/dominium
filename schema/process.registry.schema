@@ -1,0 +1,48 @@
+SCHEMA: process.registry.schema
+schema_id: dominium.schema.process_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical registry for authoritative process boundaries and mutation surfaces.
+- Provides a deterministic, auditable inventory of process IDs in use.
+
+STABILITY GUARANTEES:
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Process IDs are stable and immutable once published.
+
+REQUIRED SHAPE:
+record process_registry
+  required:
+    - schema_id: id
+    - schema_version: version
+    - records: [process_registry_entry]
+
+record process_registry_entry
+  required:
+    - process_id: id
+    - human_name: string
+    - owning_layer: tag
+    - description: string
+    - inputs: [process_registry_io]
+    - outputs: [process_registry_io]
+    - affected_assemblies: [id]
+    - affected_fields: [id]
+    - required_law_checks: [tag]
+    - rng_streams_used: [tag]
+    - determinism_notes: [string]
+    - failure_modes: [tag]
+    - version_introduced: u32
+    - deprecated: bool
+  optional:
+    - extensions: map
+
+record process_registry_io
+  required:
+    - name: string
+    - ref_type: tag
+    - ref_id: id
+  optional:
+    - unit: tag
+    - io_tags: [tag]

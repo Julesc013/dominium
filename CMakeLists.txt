@@ -1040,6 +1040,14 @@ add_subdirectory(app)
 add_subdirectory(shared_ui_win32)
 add_subdirectory(tools/ui_shared/src/ui_ir)
 add_subdirectory(tools/ui_bind)
+if(WIN32)
+    if(NOT TARGET ui_bind_phase)
+        add_custom_target(ui_bind_phase
+            COMMAND ${CMAKE_COMMAND} -E echo "ui_bind_phase: tool_ui_bind target missing; UI bind phase cannot run."
+            COMMAND ${CMAKE_COMMAND} -E false
+        )
+    endif()
+endif()
 if(DOM_BUILD_GAME)
     add_subdirectory(game)
     add_subdirectory(client)
