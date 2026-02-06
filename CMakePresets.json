@@ -153,7 +153,15 @@
       "name": "verify",
       "displayName": "VERIFY",
       "description": "Strict verification preset (determinism, schema, replay; no GBN).",
-      "inherits": "verify-win-vs2026"
+      "inherits": "verify-win-vs2026",
+      "cacheVariables": {
+        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD_REQUIRED": "ON",
+        "CMAKE_C_EXTENSIONS": "OFF",
+        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF"
+      }
     },
     {
       "name": "release-check",
@@ -161,6 +169,12 @@
       "description": "Full pipeline dry-run (release policy + tests; no GBN).",
       "inherits": "verify-win-vs2026",
       "cacheVariables": {
+        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD_REQUIRED": "ON",
+        "CMAKE_C_EXTENSIONS": "OFF",
+        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
         "DOM_REPOX_RELEASE_CHECK": "ON"
       }
     },

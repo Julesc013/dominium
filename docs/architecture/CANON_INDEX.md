@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-02-06
 Supersedes: none
 Superseded By: none
 
@@ -306,6 +306,7 @@ execution artifacts and are not authoritative.
 
 ## HISTORICAL
 - `docs/archive/README.md`
+- `docs/archive/prompts/post_canon_sequence_L1_L4_IVRH.txt`
 - `docs/archive/app/APR1_RUNTIME_AUDIT.md`
 - `docs/archive/app/APR1_TESTX_COMPLIANCE.md`
 - `docs/archive/app/APR2_TESTX_COMPLIANCE.md`

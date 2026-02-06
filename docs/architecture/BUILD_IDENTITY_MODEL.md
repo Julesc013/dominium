@@ -1,10 +1,10 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-02
+Last Reviewed: 2026-02-06
 Supersedes: none
 Superseded By: none
 STATUS: CANONICAL
 OWNER: architecture
-LAST_VERIFIED: 2026-02-02
+LAST_VERIFIED: 2026-02-06
 
 # Build Identity Model (BUILD-ID-0)
 
@@ -29,6 +29,9 @@ Enabled:
 - Dry-run release path exists and performs checks/tests.
 - GBN allocator exists but remains disabled by default.
 - Preview artifacts are generated for inspection only.
+  - changelog.preview.md
+  - artifact_identity.preview.json
+  - release_plan.preview.json
 
 Disabled:
 - GBN allocation.

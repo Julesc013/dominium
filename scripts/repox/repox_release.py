@@ -99,8 +99,11 @@ def main() -> int:
     parser.add_argument("--kind", required=True)
     parser.add_argument("--channel", required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--publish", action="store_true")
+    parser.add_argument("--tag", action="store_true")
     parser.add_argument("--output-root", default="")
     parser.add_argument("--ctest-preset", default="")
+    parser.add_argument("--ctest-exclude-regex", default="repox_release_tests")
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
@@ -115,7 +118,13 @@ def main() -> int:
         return 2
 
     if not args.dry_run:
-        sys.stderr.write("repox release is dry-run only in Stage 2. Use --dry-run.\n")
+        sys.stderr.write("repox release dry-run requires --dry-run (enable flag missing).\n")
+        return 3
+    if args.publish:
+        sys.stderr.write("repox release publish is disabled in Stage 2.\n")
+        return 3
+    if args.tag:
+        sys.stderr.write("repox release tagging is disabled in Stage 2.\n")
         return 3
 
     policy = load_release_policy(repo_root)
@@ -123,7 +132,8 @@ def main() -> int:
     allowed, reason = check_policy(policy, branch, kind, channel)
     if not allowed:
         sys.stderr.write("release policy refused: {}\n".format(reason))
-        return 4
+        if not args.dry_run:
+            return 4
 
     preset = args.ctest_preset
     if not preset:
@@ -133,7 +143,10 @@ def main() -> int:
             preset = "verify-macos-xcode"
         else:
             preset = "verify-linux-gcc"
-    code, out = run_cmd(["ctest", "--preset", preset, "--output-on-failure"], repo_root)
+    ctest_cmd = ["ctest", "--preset", preset, "--output-on-failure"]
+    if args.ctest_exclude_regex:
+        ctest_cmd += ["--exclude-regex", args.ctest_exclude_regex]
+    code, out = run_cmd(ctest_cmd, repo_root)
     if code != 0:
         sys.stderr.write(out)
         return 5
@@ -143,11 +156,13 @@ def main() -> int:
     ensure_dir(preview_dir)
 
     changelog_path = os.path.join(preview_dir, "changelog.preview.md")
+    changelog_feed_path = os.path.join(preview_dir, "changelog.preview.json")
     changelog_cmd = [
         sys.executable,
         os.path.join(repo_root, "scripts", "repox", "repox_changelog.py"),
         "--repo-root", repo_root,
         "--output", changelog_path,
+        "--feed", changelog_feed_path,
         "--deterministic" if os.environ.get("REPOX_DETERMINISTIC") == "1" else "",
     ]
     changelog_cmd = [c for c in changelog_cmd if c]
@@ -173,9 +188,29 @@ def main() -> int:
     artifact_path = os.path.join(preview_dir, "artifact_identity.preview.json")
     write_json(artifact_path, artifact_identity)
 
+    plan_path = os.path.join(preview_dir, "release_plan.preview.json")
+    release_plan = {
+        "schema_version": 1,
+        "kind": kind,
+        "channel": channel,
+        "policy_branch": branch,
+        "policy_reason": reason,
+        "stage": "stage2-governance-only",
+        "gbn": None,
+        "allow_publish": False,
+        "allow_tag": False,
+        "preview_artifacts": {
+            "changelog": changelog_path,
+            "artifact_identity": artifact_path,
+            "release_plan": plan_path,
+        },
+    }
+    write_json(plan_path, release_plan)
+
     sys.stdout.write("repox_release_dry_run=ok\n")
     sys.stdout.write("preview_changelog={}\n".format(changelog_path))
     sys.stdout.write("preview_identity={}\n".format(artifact_path))
+    sys.stdout.write("preview_release_plan={}\n".format(plan_path))
     return 0
 
 

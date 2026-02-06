@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-02-06
+Supersedes: none
+Superseded By: none
+
 # Code Change Justifications (GOV0)
 
 Status: binding for engine/game code changes.

@@ -14,7 +14,7 @@
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "cd624ca0ce7fda97a986c7e3115ea4f29b19efa41f1145cc3a56d1401577bc57"
+      "sha256": "ee211344dd39837ea6484a9ca4c8c34b0fe07d61a9bba627f9533c659ca889c5"
     },
     {
       "path": "docs/architecture/REPO_NAV.md",
@@ -22,7 +22,7 @@
     },
     {
       "path": "docs/architecture/REPO_INTENT.md",
-      "sha256": "abb327f5286b11e8688f92833884a975f3a735c93cee0d29e2f99ce2c1f48fd1"
+      "sha256": "865b9b41da8bfa92dc1e5176d947ac70df58195e0ab1b2112ed761424b76a010"
     },
     {
       "path": "docs/architecture/ID_AND_NAMESPACE_RULES.md",
@@ -201,5 +201,5 @@
       "sha256": "d5099fd76d8ffa4680d75528af01192063fb4f7e9f74fe6fbcc26840a24a8df5"
     }
   ],
-  "generated_at": "2026-02-02T13:30:00.000000Z"
+  "generated_at": "2026-02-06T00:00:00.000000Z"
 }

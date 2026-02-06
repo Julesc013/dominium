@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build (LOCAL)",
+      "type": "shell",
+      "command": "cmake",
+      "args": ["--build", "--preset", "local"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Test (VERIFY)",
+      "type": "shell",
+      "command": "ctest",
+      "args": ["--preset", "verify", "--output-on-failure"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Release Check (Dry-Run)",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/repox/repox_release.py",
+        "--repo-root",
+        "${workspaceFolder}",
+        "--kind",
+        "beta",
+        "--channel",
+        "beta",
+        "--dry-run",
+        "--ctest-preset",
+        "verify"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
