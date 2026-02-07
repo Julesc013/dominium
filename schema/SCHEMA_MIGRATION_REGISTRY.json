@@ -1,0 +1,16 @@
+{
+  "schema_id": "dominium.schema.migration_registry",
+  "schema_version": "1.0.0",
+  "stability": "core",
+  "migrations": [
+    {
+      "schema_id": "dominium.schema.pack_manifest",
+      "source_version": "1.0.0",
+      "target_version": "2.0.0",
+      "migration_process_id": "process.schema.migrate.pack_manifest.v1_to_v2",
+      "migration_function": "tools/schema_migration/schema_migration_runner.py::migrate_pack_manifest_1_0_0_to_2_0_0",
+      "data_loss": "none",
+      "invocation": "explicit"
+    }
+  ]
+}
