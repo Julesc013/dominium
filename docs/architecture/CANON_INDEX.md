@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-06
+Last Reviewed: 2026-02-07
 Supersedes: none
 Superseded By: none
 
@@ -276,6 +276,8 @@ execution artifacts and are not authoritative.
 - `docs/architecture/KNOWN_WARNINGS.md`
 - `docs/architecture/POST_CLEAN_2_STATUS.md`
 - `docs/architecture/STANDARDS_AND_META_SYSTEMS_MODEL.md`
+- `docs/CAPABILITY_STAGES.md`
+- `docs/TESTX_STAGE_MATRIX.md`
 - `docs/dev/BUILD_MATRIX.md`
 - `docs/dev/DEBUG_AND_DIAGNOSTICS_MODEL.md`
 - `docs/dev/EXPLORATION_SCALING_TESTS.md`

@@ -97,6 +97,27 @@ COMMAND_STAGE_IDS = tuple("DOM_" + stage_id for stage_id in STAGE_IDS)
 STAGE_FEATURE_KEY_RE = re.compile(r"^[a-z][a-z0-9_]*[0-9]+\.[a-z0-9_]+(?:\.[a-z0-9_]+)+$")
 COMMAND_REGISTRY_REL = os.path.join("libs", "appcore", "command", "command_registry.c")
 UI_BIND_TABLE_REL = os.path.join("libs", "appcore", "ui_bind", "ui_command_binding_table.c")
+STAGE_MATRIX_REL = os.path.join("tests", "testx", "STAGE_MATRIX.yaml")
+STAGE_FIXTURE_ROOT = os.path.join("tests", "fixtures", "worlds")
+STAGE_TESTX_ROOT = os.path.join("tests", "testx", "stages")
+STAGE_REGRESSION_ROOT = os.path.join("tests", "testx", "stage_regression")
+STAGE_MATRIX_SUITE_NAMES = (
+    "test_load_and_validate",
+    "test_command_surface",
+    "test_pack_gating",
+    "test_epistemics",
+    "test_determinism_smoke",
+    "test_replay_hash",
+)
+STAGE_ID_TO_DIR = {
+    "STAGE_0_NONBIO_WORLD": "stage_0_nonbio",
+    "STAGE_1_NONINTELLIGENT_LIFE": "stage_1_nonintelligent_life",
+    "STAGE_2_INTELLIGENT_PRE_TOOL": "stage_2_intelligent_pre_tool",
+    "STAGE_3_PRE_TOOL_WORLD": "stage_3_pre_tool_world",
+    "STAGE_4_PRE_INDUSTRY": "stage_4_pre_industry",
+    "STAGE_5_PRE_PRESENT": "stage_5_pre_present",
+    "STAGE_6_FUTURE": "stage_6_future",
+}
 
 
 def repo_rel(repo_root, path):
@@ -923,6 +944,123 @@ def check_ui_canonical_command_bindings(repo_root):
     return violations
 
 
+def check_stage_matrix_integrity(repo_root):
+    invariant_id = "INV-STAGE-MATRIX"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    matrix_path = os.path.join(repo_root, STAGE_MATRIX_REL)
+    if not os.path.isfile(matrix_path):
+        return ["{}: missing {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/"))]
+
+    data = _load_json_file(matrix_path)
+    if not isinstance(data, dict):
+        return ["{}: invalid matrix format {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/"))]
+
+    stages = data.get("stages")
+    if not isinstance(stages, list):
+        return ["{}: stages missing from {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/"))]
+
+    violations = []
+    seen = set()
+    fixture_paths = set()
+    test_paths = set()
+
+    for entry in stages:
+        if not isinstance(entry, dict):
+            violations.append("{}: invalid stage entry in {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/")))
+            continue
+        stage_id = entry.get("stage_id")
+        if stage_id not in STAGE_IDS:
+            violations.append("{}: invalid stage id in matrix: {}".format(invariant_id, stage_id))
+            continue
+        if stage_id in seen:
+            violations.append("{}: duplicate stage id in matrix: {}".format(invariant_id, stage_id))
+            continue
+        seen.add(stage_id)
+
+        stage_dir = STAGE_ID_TO_DIR.get(stage_id)
+        fixture = entry.get("fixture")
+        expected_fixture = "tests/fixtures/worlds/{}/world_stage.json".format(stage_dir)
+        if fixture != expected_fixture:
+            violations.append("{}: fixture mismatch for {} (expected {})".format(
+                invariant_id, stage_id, expected_fixture
+            ))
+        if not isinstance(fixture, str):
+            violations.append("{}: fixture missing for {}".format(invariant_id, stage_id))
+        else:
+            fixture_paths.add(fixture.replace("\\", "/"))
+            if not os.path.isfile(os.path.join(repo_root, fixture)):
+                violations.append("{}: matrix fixture does not exist: {}".format(invariant_id, fixture))
+
+        suites = entry.get("required_test_suites")
+        if suites != list(STAGE_MATRIX_SUITE_NAMES):
+            violations.append("{}: required_test_suites mismatch for {}".format(invariant_id, stage_id))
+
+        tests = entry.get("tests")
+        if not isinstance(tests, list):
+            violations.append("{}: tests list missing for {}".format(invariant_id, stage_id))
+            continue
+
+        expected_tests = [
+            "tests/testx/stages/{}/{}.py".format(stage_dir, suite_name)
+            for suite_name in STAGE_MATRIX_SUITE_NAMES
+        ]
+        if tests != expected_tests:
+            violations.append("{}: tests paths mismatch for {}".format(invariant_id, stage_id))
+
+        for rel in tests:
+            rel_norm = rel.replace("\\", "/")
+            test_paths.add(rel_norm)
+            if not os.path.isfile(os.path.join(repo_root, rel_norm)):
+                violations.append("{}: matrix test file does not exist: {}".format(invariant_id, rel_norm))
+
+    for stage_id in STAGE_IDS:
+        if stage_id not in seen:
+            violations.append("{}: missing matrix entry for {}".format(invariant_id, stage_id))
+
+    fixture_root = os.path.join(repo_root, STAGE_FIXTURE_ROOT)
+    if os.path.isdir(fixture_root):
+        for root, _, files in os.walk(fixture_root):
+            for name in files:
+                if name != "world_stage.json":
+                    continue
+                rel = repo_rel(repo_root, os.path.join(root, name))
+                if rel.replace("\\", "/") not in fixture_paths:
+                    violations.append("{}: stage fixture missing matrix entry: {}".format(invariant_id, rel))
+
+    test_root = os.path.join(repo_root, STAGE_TESTX_ROOT)
+    if os.path.isdir(test_root):
+        for root, _, files in os.walk(test_root):
+            for name in files:
+                if not name.endswith(".py"):
+                    continue
+                rel = repo_rel(repo_root, os.path.join(root, name)).replace("\\", "/")
+                if rel.endswith("stage_suite_runner.py") or rel.endswith("stage_matrix_common.py") or rel.endswith("stage_matrix_contracts.py"):
+                    continue
+                if rel not in test_paths:
+                    violations.append("{}: stage test missing matrix entry: {}".format(invariant_id, rel))
+
+    regression = data.get("regression_tests")
+    if not isinstance(regression, list):
+        violations.append("{}: regression_tests missing from {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/")))
+    else:
+        for rel in regression:
+            if not isinstance(rel, str):
+                violations.append("{}: invalid regression test path in matrix".format(invariant_id))
+                continue
+            if not os.path.isfile(os.path.join(repo_root, rel)):
+                violations.append("{}: regression test missing: {}".format(invariant_id, rel))
+        regression_root = os.path.join(repo_root, STAGE_REGRESSION_ROOT)
+        if os.path.isdir(regression_root):
+            for name in os.listdir(regression_root):
+                rel = normalize_path(os.path.join("tests", "testx", "stage_regression", name))
+                if name.endswith(".py") and rel not in [item.replace("\\", "/") for item in regression]:
+                    violations.append("{}: regression test missing matrix entry: {}".format(invariant_id, rel))
+
+    return violations
+
+
 def _collect_process_defs(repo_root, violations):
     defs = {}
     packs_root = os.path.join(repo_root, "data", "packs")
@@ -1407,6 +1545,7 @@ def main() -> int:
     violations.extend(check_stage_pack_metadata(repo_root))
     violations.extend(check_command_stage_metadata(repo_root))
     violations.extend(check_ui_canonical_command_bindings(repo_root))
+    violations.extend(check_stage_matrix_integrity(repo_root))
     violations.extend(check_process_registry(repo_root))
     violations.extend(check_process_runtime_literals(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))
