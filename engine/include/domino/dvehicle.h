@@ -80,7 +80,7 @@ typedef struct {
             WPosExact   pos;
             Orientation ori;
         } water;
-    };
+    } u;
 } VehiclePose;
 
 /* Registry and lookup */

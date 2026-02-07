@@ -14,6 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/architecture/**`.
 #ifndef DOMINO_PROVENANCE_H
 #define DOMINO_PROVENANCE_H
 
+#include "domino/core/types.h"
 #include "domino/dnumeric.h"
 
 #ifdef __cplusplus

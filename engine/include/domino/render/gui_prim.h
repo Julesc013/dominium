@@ -18,6 +18,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` 
 
 #include "domino/gfx.h"
 
+/* Forward declaration for GUI canvas; defined by renderer backend. */
+struct dcvs_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
