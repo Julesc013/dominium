@@ -92,14 +92,14 @@ typedef struct dom_agent_history_desc {
     dom_provenance_id last_provenance_id;
 } dom_agent_history_desc;
 
-/* dom_agent_history_query: Opaque history query envelope. */
-typedef struct dom_agent_history_query {
+/* dom_agent_history_query_desc: Opaque history query envelope. */
+typedef struct dom_agent_history_query_desc {
     u32         query_id;
     const void* in;
     u32         in_size;
     void*       out;
     u32         out_size;
-} dom_agent_history_query;
+} dom_agent_history_query_desc;
 
 /* Purpose: Create a new agent via a process execution context. */
 int dom_agent_create(const dom_agent_create_request* request,
@@ -139,7 +139,7 @@ int dom_agent_history(dom_agent_id agent_id,
 
 /* Purpose: Query agent history (read-only). */
 int dom_agent_history_query(const dom_agent_history_handle* history,
-                            const dom_agent_history_query* query);
+                            const dom_agent_history_query_desc* query);
 
 /* Purpose: Release an agent history handle. */
 void dom_agent_history_release(dom_agent_history_handle* history);

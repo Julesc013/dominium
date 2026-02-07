@@ -18,11 +18,25 @@ DETERMINISM: FNV-1a hash with fixed ordering.
 extern "C" {
 #endif
 
-static u64 mod_hash_fnv1a64_init(void) {
+#if defined(__cplusplus)
+#define DOM_MOD_HASH_INLINE inline
+#else
+#define DOM_MOD_HASH_INLINE
+#endif
+
+#if defined(_MSC_VER)
+#define DOM_MOD_HASH_MSVC_SUPPRESS_4505 __pragma(warning(suppress:4505))
+#else
+#define DOM_MOD_HASH_MSVC_SUPPRESS_4505
+#endif
+
+DOM_MOD_HASH_MSVC_SUPPRESS_4505
+static DOM_MOD_HASH_INLINE u64 mod_hash_fnv1a64_init(void) {
     return 1469598103934665603ULL;
 }
 
-static u64 mod_hash_fnv1a64_update(u64 hash, const void* data, u32 len) {
+DOM_MOD_HASH_MSVC_SUPPRESS_4505
+static DOM_MOD_HASH_INLINE u64 mod_hash_fnv1a64_update(u64 hash, const void* data, u32 len) {
     const unsigned char* bytes = (const unsigned char*)data;
     u32 i;
     for (i = 0u; i < len; ++i) {
@@ -32,7 +46,8 @@ static u64 mod_hash_fnv1a64_update(u64 hash, const void* data, u32 len) {
     return hash;
 }
 
-static u64 mod_hash_fnv1a64_update_str(u64 hash, const char* text) {
+DOM_MOD_HASH_MSVC_SUPPRESS_4505
+static DOM_MOD_HASH_INLINE u64 mod_hash_fnv1a64_update_str(u64 hash, const char* text) {
     const unsigned char* bytes = (const unsigned char*)(text ? text : "");
     while (*bytes) {
         hash ^= (u64)(*bytes++);
@@ -44,5 +59,8 @@ static u64 mod_hash_fnv1a64_update_str(u64 hash, const char* text) {
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#undef DOM_MOD_HASH_INLINE
+#undef DOM_MOD_HASH_MSVC_SUPPRESS_4505
 
 #endif /* DOMINIUM_MODS_MOD_HASH_H */
