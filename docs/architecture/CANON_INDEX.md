@@ -150,6 +150,7 @@ execution artifacts and are not authoritative.
 - `docs/architecture/PIRACY_CONTAINMENT.md`
 - `docs/architecture/PLATFORM_RESPONSIBILITY.md`
 - `docs/architecture/PROCESS_ONLY_MUTATION.md`
+- `docs/PROCESS_REGISTRY.md`
 - `docs/architecture/PRODUCT_SHELL_CONTRACT.md`
 - `docs/architecture/PROJECT_EXECUTION_BASELINE.md`
 - `docs/architecture/PROJECTION_LIFECYCLE.md`

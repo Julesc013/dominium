@@ -70,6 +70,12 @@ DOCS_ROOT = "docs"
 DOC_EXTS = [".md", ".txt"]
 DOC_STATUS_VALUES = {"CANONICAL", "DERIVED", "HISTORICAL"}
 CANON_STATE_PATH = os.path.join("repo", "canon_state.json")
+PROCESS_REGISTRY_REL = os.path.join("data", "registries", "process_registry.json")
+PROCESS_SCHEMA_ID = "dominium.schema.process"
+PROCESS_REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
+PROCESS_FIXTURE_PATHS = (
+    os.path.join("tests", "contract", "terrain_fixtures.json"),
+)
 
 
 def repo_rel(repo_root, path):
@@ -518,6 +524,208 @@ def check_schema_version_bumps(repo_root):
     return violations
 
 
+def _load_json_file(path):
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            return json.load(handle)
+    except (OSError, ValueError):
+        return None
+
+
+def _collect_process_defs(repo_root, violations):
+    defs = {}
+    packs_root = os.path.join(repo_root, "data", "packs")
+    if not os.path.isdir(packs_root):
+        violations.append("INV-PROCESS-REGISTRY: missing data/packs")
+        return defs
+    for path in iter_files([packs_root], DEFAULT_EXCLUDES, [".json"]):
+        if "process" not in os.path.basename(path).lower():
+            continue
+        data = _load_json_file(path)
+        if not isinstance(data, dict):
+            continue
+        schema_id = data.get("schema_id")
+        if not schema_id and isinstance(data.get("record"), dict):
+            schema_id = data["record"].get("schema_id")
+        if schema_id != PROCESS_SCHEMA_ID:
+            continue
+        records = data.get("records")
+        if records is None and isinstance(data.get("record"), dict):
+            records = data["record"].get("records")
+        if not isinstance(records, list):
+            violations.append("INV-PROCESS-REGISTRY: invalid process records in {}".format(repo_rel(repo_root, path)))
+            continue
+        rel_path = repo_rel(repo_root, path)
+        parts = rel_path.split("/")
+        pack_id = parts[2] if len(parts) > 2 and parts[0] == "data" and parts[1] == "packs" else ""
+        for record in records:
+            if not isinstance(record, dict):
+                violations.append("INV-PROCESS-REGISTRY: invalid process record in {}".format(rel_path))
+                continue
+            process_id = record.get("process_id")
+            if not process_id:
+                violations.append("INV-PROCESS-REGISTRY: missing process_id in {}".format(rel_path))
+                continue
+            if process_id in defs:
+                violations.append("INV-PROCESS-REGISTRY: duplicate process_id {} in {}".format(process_id, rel_path))
+                continue
+            defs[process_id] = {
+                "record": record,
+                "pack_id": pack_id,
+                "path": rel_path,
+            }
+    return defs
+
+
+def _collect_fixture_process_ids(repo_root, violations):
+    ids = set()
+    for rel_path in PROCESS_FIXTURE_PATHS:
+        path = os.path.join(repo_root, rel_path)
+        if not os.path.isfile(path):
+            continue
+        data = _load_json_file(path)
+        if data is None:
+            violations.append("INV-PROCESS-REGISTRY: unable to read fixture {}".format(rel_path))
+            continue
+        _collect_process_ids(data, ids)
+    return ids
+
+
+def _collect_process_ids(node, ids):
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key == "process_id" and isinstance(value, str):
+                ids.add(value)
+            else:
+                _collect_process_ids(value, ids)
+    elif isinstance(node, list):
+        for item in node:
+            _collect_process_ids(item, ids)
+
+
+def check_process_registry(repo_root):
+    invariant_id = "INV-PROCESS-REGISTRY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    violations = []
+    registry_path = os.path.join(repo_root, PROCESS_REGISTRY_REL)
+    if not os.path.isfile(registry_path):
+        return ["{}: missing {}".format(invariant_id, PROCESS_REGISTRY_REL)]
+    registry = _load_json_file(registry_path)
+    if not isinstance(registry, dict):
+        return ["{}: invalid json {}".format(invariant_id, PROCESS_REGISTRY_REL)]
+    if registry.get("schema_id") != PROCESS_REGISTRY_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, PROCESS_REGISTRY_REL))
+    records = registry.get("records")
+    if not isinstance(records, list):
+        return ["{}: records missing or invalid in {}".format(invariant_id, PROCESS_REGISTRY_REL)]
+
+    registry_entries = {}
+    registry_ids = []
+    for entry in records:
+        if not isinstance(entry, dict):
+            violations.append("{}: invalid record in {}".format(invariant_id, PROCESS_REGISTRY_REL))
+            continue
+        process_id = entry.get("process_id")
+        if not process_id:
+            violations.append("{}: missing process_id entry".format(invariant_id))
+            continue
+        if process_id in registry_entries:
+            violations.append("{}: duplicate process_id {}".format(invariant_id, process_id))
+            continue
+        registry_entries[process_id] = entry
+        registry_ids.append(process_id)
+
+    for process_id, entry in registry_entries.items():
+        notes = entry.get("determinism_notes") or []
+        if not isinstance(notes, list) or not notes:
+            violations.append("{}: missing determinism_notes for {}".format(invariant_id, process_id))
+
+    process_defs = _collect_process_defs(repo_root, violations)
+    fixture_ids = _collect_fixture_process_ids(repo_root, violations)
+
+    for process_id in fixture_ids:
+        if process_id not in registry_entries:
+            violations.append("{}: fixture process_id missing from registry: {}".format(invariant_id, process_id))
+
+    for process_id, info in process_defs.items():
+        entry = registry_entries.get(process_id)
+        if not entry:
+            violations.append("{}: missing registry entry for {}".format(invariant_id, process_id))
+            continue
+        pack_id = info.get("pack_id")
+        rel_path = info.get("path", "")
+        record = info.get("record", {})
+        ext = entry.get("extensions") if isinstance(entry.get("extensions"), dict) else {}
+        source_pack = ext.get("source_pack")
+        if pack_id and source_pack != pack_id:
+            violations.append("{}: source_pack mismatch for {} ({} != {})".format(
+                invariant_id, process_id, source_pack, pack_id
+            ))
+        if rel_path and rel_path not in (entry.get("description") or ""):
+            violations.append("{}: description missing source path for {}".format(invariant_id, process_id))
+
+        required_authority = record.get("required_authority_tags") or []
+        required_law = entry.get("required_law_checks") or []
+        missing_law = [tag for tag in required_authority if tag not in required_law]
+        if missing_law:
+            violations.append("{}: required_law_checks missing {} for {}".format(
+                invariant_id, ", ".join(missing_law), process_id
+            ))
+
+        failure_tags = record.get("failure_mode_tags") or []
+        failure_modes = entry.get("failure_modes") or []
+        missing_failures = [tag for tag in failure_tags if tag not in failure_modes]
+        if missing_failures:
+            violations.append("{}: failure_modes missing {} for {}".format(
+                invariant_id, ", ".join(missing_failures), process_id
+            ))
+
+        not_defined = (record.get("extensions") or {}).get("not_defined") or []
+        if "no_truth_mutation" in not_defined:
+            if entry.get("affected_fields") or entry.get("affected_assemblies"):
+                violations.append("{}: no_truth_mutation requires empty affected scope for {}".format(
+                    invariant_id, process_id
+                ))
+
+    for process_id, entry in registry_entries.items():
+        ext = entry.get("extensions") if isinstance(entry.get("extensions"), dict) else {}
+        if ext.get("source_pack") and process_id not in process_defs:
+            violations.append("{}: registry entry missing source pack definition: {}".format(
+                invariant_id, process_id
+            ))
+
+    return violations
+
+
+def check_process_registry_immutability(repo_root):
+    invariant_id = "INV-PROCESS-REGISTRY-IMMUTABLE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    changed_files = get_changed_files(repo_root)
+    if changed_files is None:
+        return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    if PROCESS_REGISTRY_REL.replace("\\", "/") not in [path.replace("\\", "/") for path in changed_files]:
+        return []
+    baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
+    baseline_blob = run_git(["show", "{}:{}".format(baseline, PROCESS_REGISTRY_REL.replace("\\", "/"))], repo_root)
+    if baseline_blob is None:
+        return []
+    try:
+        baseline_data = json.loads(baseline_blob)
+    except ValueError:
+        return ["{}: unable to parse baseline {}".format(invariant_id, PROCESS_REGISTRY_REL)]
+    baseline_ids = {entry.get("process_id") for entry in baseline_data.get("records", []) if isinstance(entry, dict)}
+    current = _load_json_file(os.path.join(repo_root, PROCESS_REGISTRY_REL))
+    if not isinstance(current, dict):
+        return ["{}: unable to parse current {}".format(invariant_id, PROCESS_REGISTRY_REL)]
+    current_ids = {entry.get("process_id") for entry in current.get("records", []) if isinstance(entry, dict)}
+    removed = sorted(pid for pid in baseline_ids if pid and pid not in current_ids)
+    if removed:
+        return ["{}: process_id removed from registry: {}".format(invariant_id, ", ".join(removed))]
+    return []
+
+
 def check_compliance_report_canon(repo_root):
     invariant_id = "INV-REPORT-CANON"
     if is_override_active(repo_root, invariant_id):
@@ -758,6 +966,8 @@ def main() -> int:
     violations.extend(check_doc_references(repo_root, canon_index))
     violations.extend(check_code_doc_references(repo_root, canon_index))
     violations.extend(check_schema_version_bumps(repo_root))
+    violations.extend(check_process_registry(repo_root))
+    violations.extend(check_process_registry_immutability(repo_root))
     violations.extend(check_compliance_report_canon(repo_root))
 
     if violations:
