@@ -70,6 +70,9 @@
     },
     "extensions": {
       "notes": "Exemplar: realistic Earth overlays with scientific epistemics and civic institutions."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

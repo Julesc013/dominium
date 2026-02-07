@@ -1,0 +1,10 @@
+{
+  "schema_id": "dominium.schema.stage_declaration",
+  "schema_version": "1.0.0",
+  "record": {
+    "requires_stage": "STAGE_6_FUTURE",
+    "provides_stage": "STAGE_6_FUTURE",
+    "stage_features": [],
+    "extensions": {}
+  }
+}

@@ -19,6 +19,12 @@ Template:
   Invariants: INV-...
   Migration: <required migration steps or "none">
 
+- Date: 2026-02-07
+  Schema(s): schema/pack_manifest.schema; schema/stage.declaration.schema
+  Change: add explicit capability-stage metadata contract for pack manifests and stage declaration schema
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-SCHEMA-NO-IMPLICIT-DEFAULTS; INV-SCHEMA-VERSION-REF
+  Migration: none (pack_manifest minor bump; explicit stage fields required by RepoX/TestX governance)
+
 - Date: 2026-02-02
   Schema(s): schema/identity/artifact_identity.schema
   Change: add artifact identity manifest contract for BUILD-ID-0 stage 1

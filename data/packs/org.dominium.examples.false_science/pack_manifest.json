@@ -40,6 +40,9 @@
     },
     "extensions": {
       "notes": "Exemplar: wrong scientific model enforced by institutions and processes."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

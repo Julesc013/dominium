@@ -84,6 +84,19 @@ SCHEMA_VERSION_RE = re.compile(r"^\s*schema_version\s*:\s*(\d+\.\d+\.\d+)\s*$", 
 SCHEMA_ID_RE = re.compile(r"^\s*schema_id\s*:\s*([A-Za-z0-9_.-]+)\s*$", re.MULTILINE)
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 SCHEMA_ID_LITERAL_RE = re.compile(r'"(dominium\.schema\.[A-Za-z0-9_.-]+)"')
+STAGE_IDS = (
+    "STAGE_0_NONBIO_WORLD",
+    "STAGE_1_NONINTELLIGENT_LIFE",
+    "STAGE_2_INTELLIGENT_PRE_TOOL",
+    "STAGE_3_PRE_TOOL_WORLD",
+    "STAGE_4_PRE_INDUSTRY",
+    "STAGE_5_PRE_PRESENT",
+    "STAGE_6_FUTURE",
+)
+COMMAND_STAGE_IDS = tuple("DOM_" + stage_id for stage_id in STAGE_IDS)
+STAGE_FEATURE_KEY_RE = re.compile(r"^[a-z][a-z0-9_]*[0-9]+\.[a-z0-9_]+(?:\.[a-z0-9_]+)+$")
+COMMAND_REGISTRY_REL = os.path.join("libs", "appcore", "command", "command_registry.c")
+UI_BIND_TABLE_REL = os.path.join("libs", "appcore", "ui_bind", "ui_command_binding_table.c")
 
 
 def repo_rel(repo_root, path):
@@ -746,6 +759,170 @@ def check_unversioned_schema_references(repo_root):
     return violations
 
 
+def _stage_rank(stage_id):
+    try:
+        return STAGE_IDS.index(stage_id)
+    except ValueError:
+        return -1
+
+
+def _manifest_record(payload):
+    if isinstance(payload, dict) and isinstance(payload.get("record"), dict):
+        return payload.get("record")
+    if isinstance(payload, dict):
+        return payload
+    return {}
+
+
+def check_stage_pack_metadata(repo_root):
+    invariant_id = "INV-STAGE-PACK-METADATA"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    roots = [
+        os.path.join(repo_root, "data", "packs"),
+        os.path.join(repo_root, "data", "worldgen"),
+        os.path.join(repo_root, "tests", "fixtures"),
+        os.path.join(repo_root, "tests", "distribution", "fixtures"),
+    ]
+    for root in roots:
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files([root], DEFAULT_EXCLUDES, [".json"]):
+            if os.path.basename(path) != "pack_manifest.json":
+                continue
+            rel = repo_rel(repo_root, path)
+            payload = _load_json_file(path)
+            if payload is None:
+                violations.append("{}: invalid json {}".format(invariant_id, rel))
+                continue
+            record = _manifest_record(payload)
+            requires_stage = record.get("requires_stage")
+            provides_stage = record.get("provides_stage")
+            stage_features = record.get("stage_features")
+
+            if not isinstance(requires_stage, str) or _stage_rank(requires_stage) < 0:
+                violations.append("{}: invalid requires_stage in {}".format(invariant_id, rel))
+            if not isinstance(provides_stage, str) or _stage_rank(provides_stage) < 0:
+                violations.append("{}: invalid provides_stage in {}".format(invariant_id, rel))
+
+            if isinstance(requires_stage, str) and isinstance(provides_stage, str):
+                if _stage_rank(provides_stage) < _stage_rank(requires_stage):
+                    violations.append("{}: provides_stage < requires_stage in {}".format(invariant_id, rel))
+
+            if not isinstance(stage_features, list):
+                violations.append("{}: missing stage_features in {}".format(invariant_id, rel))
+                continue
+            for idx, feature_key in enumerate(stage_features):
+                if not isinstance(feature_key, str) or STAGE_FEATURE_KEY_RE.match(feature_key) is None:
+                    violations.append("{}: invalid stage_features key in {} at index {}".format(
+                        invariant_id, rel, idx
+                    ))
+            if (isinstance(requires_stage, str) and isinstance(provides_stage, str) and
+                    _stage_rank(provides_stage) > _stage_rank(requires_stage) and len(stage_features) == 0):
+                violations.append("{}: stage_features required when provides_stage > requires_stage in {}".format(
+                    invariant_id, rel
+                ))
+    return violations
+
+
+def _parse_command_registry_entries(text):
+    entries = []
+    current = []
+    collecting = False
+    for line in text.splitlines():
+        if not collecting and re.search(r"^\s*\{\s*DOM_APP_CMD_", line):
+            collecting = True
+            current = [line]
+            if "}" in line:
+                entries.append(" ".join(current))
+                collecting = False
+            continue
+        if collecting:
+            current.append(line)
+            if "}" in line:
+                entries.append(" ".join(current))
+                collecting = False
+    return entries
+
+
+def _parse_command_names(text):
+    names = set()
+    for entry in _parse_command_registry_entries(text):
+        match = re.search(r"\{\s*DOM_APP_CMD_[^,]+,\s*\"([^\"]+)\"", entry)
+        if match:
+            names.add(match.group(1))
+    return names
+
+
+def check_command_stage_metadata(repo_root):
+    invariant_id = "INV-COMMAND-STAGE-METADATA"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    path = os.path.join(repo_root, COMMAND_REGISTRY_REL)
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, COMMAND_REGISTRY_REL.replace("\\", "/"))]
+    text = read_text(path) or ""
+    entries = _parse_command_registry_entries(text)
+    if not entries:
+        return ["{}: no command entries found".format(invariant_id)]
+
+    violations = []
+    stage_literal_re = re.compile(r"DOM_STAGE_[A-Z0-9_]+")
+    scope_re = re.compile(r"DOM_EPISTEMIC_SCOPE_[A-Z_]+")
+    stage_and_caps_re = re.compile(
+        r"DOM_STAGE_[A-Z0-9_]+\s*,\s*[A-Za-z0-9_]+\s*,\s*\d+u\s*,\s*DOM_EPISTEMIC_SCOPE_[A-Z_]+"
+    )
+    for entry in entries:
+        name_match = re.search(r"\{\s*DOM_APP_CMD_[^,]+,\s*\"([^\"]+)\"", entry)
+        cmd_name = name_match.group(1) if name_match else "<unknown>"
+        stage_match = stage_literal_re.search(entry)
+        scope_match = scope_re.search(entry)
+        if not stage_match:
+            violations.append("{}: required_stage missing for command {}".format(invariant_id, cmd_name))
+            continue
+        if stage_match.group(0) not in COMMAND_STAGE_IDS:
+            violations.append("{}: invalid required_stage {} for command {}".format(
+                invariant_id, stage_match.group(0), cmd_name
+            ))
+        if not scope_match:
+            violations.append("{}: epistemic_scope missing for command {}".format(invariant_id, cmd_name))
+        if stage_and_caps_re.search(entry) is None:
+            violations.append("{}: required capability metadata missing for command {}".format(invariant_id, cmd_name))
+    return violations
+
+
+def check_ui_canonical_command_bindings(repo_root):
+    invariant_id = "INV-UI-CANONICAL-COMMAND"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    registry_path = os.path.join(repo_root, COMMAND_REGISTRY_REL)
+    binding_path = os.path.join(repo_root, UI_BIND_TABLE_REL)
+    if not os.path.isfile(registry_path):
+        return ["{}: missing {}".format(invariant_id, COMMAND_REGISTRY_REL.replace("\\", "/"))]
+    if not os.path.isfile(binding_path):
+        return ["{}: missing {}".format(invariant_id, UI_BIND_TABLE_REL.replace("\\", "/"))]
+
+    registry_text = read_text(registry_path) or ""
+    binding_text = read_text(binding_path) or ""
+    command_names = _parse_command_names(registry_text)
+    if not command_names:
+        return ["{}: command registry empty".format(invariant_id)]
+
+    violations = []
+    binding_re = re.compile(r"\{\s*\"[^\"]+\",\s*\"[^\"]+\",\s*\"([^\"]+)\",\s*\d+\s*\}")
+    for match in binding_re.finditer(binding_text):
+        action_key = match.group(1)
+        if action_key not in command_names:
+            violations.append("{}: UI action key not in canonical command registry: {}".format(
+                invariant_id, action_key
+            ))
+    return violations
+
+
 def _collect_process_defs(repo_root, violations):
     defs = {}
     packs_root = os.path.join(repo_root, "data", "packs")
@@ -1227,6 +1404,9 @@ def main() -> int:
     violations.extend(check_schema_migration_routes(repo_root))
     violations.extend(check_schema_no_implicit_defaults(repo_root))
     violations.extend(check_unversioned_schema_references(repo_root))
+    violations.extend(check_stage_pack_metadata(repo_root))
+    violations.extend(check_command_stage_metadata(repo_root))
+    violations.extend(check_ui_canonical_command_bindings(repo_root))
     violations.extend(check_process_registry(repo_root))
     violations.extend(check_process_runtime_literals(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))

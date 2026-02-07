@@ -1,0 +1,46 @@
+SCHEMA: stage.declaration.schema
+schema_id: dominium.schema.stage_declaration
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define explicit capability-stage requirements for packs, worlds, scenarios,
+  profiles, and application command surfaces.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Stage declarations gate availability only.
+- Stage declarations do NOT alter physics, law, or process semantics.
+
+CONVENTIONS:
+- stage_id: one of the fixed stage identifiers.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+STAGE IDENTIFIERS:
+- STAGE_0_NONBIO_WORLD
+- STAGE_1_NONINTELLIGENT_LIFE
+- STAGE_2_INTELLIGENT_PRE_TOOL
+- STAGE_3_PRE_TOOL_WORLD
+- STAGE_4_PRE_INDUSTRY
+- STAGE_5_PRE_PRESENT
+- STAGE_6_FUTURE
+
+REQUIRED SHAPE:
+record stage_declaration
+  required:
+    - requires_stage: stage_id
+    - provides_stage: stage_id
+    - stage_features: [tag]
+    - extensions: map
+  optional:
+    - provenance_ref: provenance_ref
+
+TYPE DEFINITIONS:
+record provenance_ref
+  required:
+    - provenance_id: id

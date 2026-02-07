@@ -79,6 +79,9 @@
     },
     "extensions": {
       "notes": "Canonical on-planet process library definitions."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

@@ -43,6 +43,9 @@
     },
     "extensions": {
       "notes": "Exemplar: magic layered on realistic Earth with coexisting science."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

@@ -18,6 +18,9 @@
     "pack_tags": [
       "pack.class.worldgen"
     ],
-    "extensions": {}
+    "extensions": {},
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

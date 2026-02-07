@@ -33,6 +33,9 @@
     },
     "extensions": {
       "notes": "Procedural cosmology baseline pack; no named galaxies or physics assumptions."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }
