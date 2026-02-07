@@ -55,6 +55,8 @@ FROZEN_SECTION = "## Frozen constitutional surfaces"
 NEXT_SECTION_PREFIX = "## "
 PATH_RE = re.compile(r"`([^`]+)`")
 DOC_REF_RE = re.compile(r"docs/[A-Za-z0-9_./-]+\.(?:md|txt)", re.IGNORECASE)
+CANON_LEVEL_RE = re.compile(r"\bcanon[-_ ]?clean[-_ ]?(\d+)\b", re.IGNORECASE)
+CANON_LEVEL_FIELD_RE = re.compile(r"\bcanon_level\s*[:=]\s*([A-Za-z0-9_.-]+)\b", re.IGNORECASE)
 
 ALLOWED_ARCHIVE_ROOTS = (
     "docs/archive",
@@ -67,6 +69,7 @@ CANON_INDEX_PATH = "docs/architecture/CANON_INDEX.md"
 DOCS_ROOT = "docs"
 DOC_EXTS = [".md", ".txt"]
 DOC_STATUS_VALUES = {"CANONICAL", "DERIVED", "HISTORICAL"}
+CANON_STATE_PATH = os.path.join("repo", "canon_state.json")
 
 
 def repo_rel(repo_root, path):
@@ -387,6 +390,64 @@ def check_canon_index_entries(repo_root, canon_index):
     return violations
 
 
+def _normalize_canon_level(value):
+    if not value:
+        return ""
+    cleaned = str(value).strip().lower()
+    cleaned = cleaned.replace("_", "-").replace(" ", "")
+    if cleaned.startswith("canon-"):
+        cleaned = cleaned[len("canon-"):]
+    return cleaned
+
+
+def check_canon_state(repo_root):
+    invariant_id = "INV-CANON-STATE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    path = os.path.join(repo_root, CANON_STATE_PATH)
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, CANON_STATE_PATH)]
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, ValueError):
+        return ["{}: invalid json {}".format(invariant_id, CANON_STATE_PATH)]
+
+    canon_level = _normalize_canon_level(payload.get("canon_level"))
+    if not canon_level:
+        return ["{}: canon_level missing or empty in {}".format(invariant_id, CANON_STATE_PATH)]
+
+    validated = payload.get("validated_by", {})
+    for key in ("repox", "testx", "determinism", "schema"):
+        if validated.get(key) is not True:
+            return ["{}: validated_by.{} must be true in {}".format(invariant_id, key, CANON_STATE_PATH)]
+
+    evidence = payload.get("evidence", {})
+    for key in ("process_registry", "schema_alignment", "testx_contract"):
+        rel = evidence.get(key, "")
+        if not rel:
+            return ["{}: evidence.{} missing in {}".format(invariant_id, key, CANON_STATE_PATH)]
+        if not os.path.isfile(os.path.join(repo_root, rel)):
+            return ["{}: evidence path missing for {}: {}".format(invariant_id, key, rel)]
+
+    for path in iter_files([os.path.join(repo_root, DOCS_ROOT)], DEFAULT_EXCLUDES, DOC_EXTS):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path) or ""
+        for match in CANON_LEVEL_RE.finditer(text):
+            doc_level = _normalize_canon_level("clean-{}".format(match.group(1)))
+            if doc_level and doc_level != canon_level:
+                return ["{}: doc canon level mismatch: {} -> {} (expected {})".format(
+                    invariant_id, rel, doc_level, canon_level
+                )]
+        for match in CANON_LEVEL_FIELD_RE.finditer(text):
+            doc_level = _normalize_canon_level(match.group(1))
+            if doc_level and doc_level != canon_level:
+                return ["{}: doc canon level mismatch: {} -> {} (expected {})".format(
+                    invariant_id, rel, doc_level, canon_level
+                )]
+    return []
+
+
 def check_doc_references(repo_root, canon_index):
     if is_override_active(repo_root, "INV-CANON-NO-HIST-REF"):
         return []
@@ -692,6 +753,7 @@ def main() -> int:
     violations.extend(check_ambiguous_new_dirs(repo_root))
     canon_index = load_canon_index(repo_root)
     violations.extend(check_canon_index_entries(repo_root, canon_index))
+    violations.extend(check_canon_state(repo_root))
     violations.extend(check_doc_headers(repo_root, canon_index))
     violations.extend(check_doc_references(repo_root, canon_index))
     violations.extend(check_code_doc_references(repo_root, canon_index))
