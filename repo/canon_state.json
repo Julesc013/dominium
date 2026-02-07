@@ -1,0 +1,15 @@
+{
+  "canon_level": "clean-2",
+  "validated_by": {
+    "repox": true,
+    "testx": true,
+    "determinism": true,
+    "schema": true
+  },
+  "evidence": {
+    "process_registry": "data/registries/process_registry.json",
+    "schema_alignment": "docs/SCHEMA_CANON_ALIGNMENT.md",
+    "testx_contract": "docs/ci/TESTX_GATE_CONTRACT.md"
+  },
+  "notes": "Canon state asserted by content verification, not git tags."
+}
