@@ -5,43 +5,41 @@ Superseded By: none
 
 # Gap Report
 
-This report lists blocked, deferred, and immediate next actions discovered
-during the normalization/inventory pass.
+This report lists blocked, deferred, and immediate next actions from the
+current normalization and coverage pass.
 
-## Blocked items (require scoped prompts)
+## Blocked items (require design/governance decision)
 
-1) Pack validation failures (content references missing)
+1) Canon conflict on stage/progression vocabulary in runtime-adjacent surfaces
+   - Sources:
+     - `libs/appcore/command/command_registry.h`
+     - `schema/stage.declaration.schema`
+     - `schema/pack_manifest.schema`
+     - `tools/pack/pack_validate.py`
+   - Finding: `STAGE_*` tokens remain in command/schema/tooling surfaces.
+   - Impact: conflicts with the current invariant requiring capability/entitlement
+     gating without stage/progression encoding.
+   - Required: a governance-level reconciliation prompt; do not modify semantics ad hoc.
+
+2) Pack integrity failures
    - Source: `docs/audit/PACK_AUDIT.txt`
-   - Examples:
-     - `org.dominium.core.assemblies.extended` missing part/interface refs
-     - `org.dominium.core.parts.basic` missing material/interface refs
-     - `org.dominium.examples.*` dependency mismatch fields
-   - Current count: 14 failing packs (see report summary)
-   - Requires: content/schema pack fixes with explicit migration or reference additions
+   - Current status: `59 packs, 14 failures` (`45 PASS`, `14 FAIL`).
+   - Failure classes:
+     - missing FAB references (`part/interface/material/instrument/standard/process`)
+     - dependency field mismatch (`record.dependencies` vs `depends/dependencies`)
+   - Required: scoped pack/schema correction prompts with explicit migration notes.
 
-2) Non-legacy runtime stubs flagged by marker scan
-   - Source: `docs/audit/MARKER_SCAN.txt`
-   - Examples:
-     - `engine/modules/system/*_stub.c` (platform/system stubs)
-     - `engine/render/*_stub.*` (render backend placeholders)
-     - `game/rules/*_stub.cpp` (rules stubs)
-     - `launcher/*_stub.*`, `setup/*_stub.*`, `libs/ui_backends/*_stub.*`
-   - Requires: classification per stub (acceptable/permanent vs. explicit refusal), or scoped implementation prompts
+## Deferred items (tracked, non-blocking for audit-only work)
 
-2) Appcore scaffolding TODOs
-   - Source: `docs/audit/MARKER_SCAN.txt` (libs/appcore/* TODO)
-   - Requires: APP-CANON scoped implementation prompts
+- Temporary stubs remain (`46` in `docs/audit/STUB_REPORT.json`), mainly
+  platform/UI/backend scaffolding.
+- TODO/FIXME/PLACEHOLDER marker backlog remains (`49` hits in `docs/audit/INVENTORY.json` summary).
+- Test-coverage matrix is structural by naming convention and needs deeper
+  capability-to-test semantic mapping.
 
-## Deferred items (non-blocking but tracked)
+## Immediate next actions (safe, local, non-breaking)
 
-- UI backend placeholders (GTK/macOS) remain unimplemented.
-- Launcher/setup GUI/TUI placeholders remain (non-authoritative scaffolding).
-- Legacy stubs in `legacy/` remain quarantined.
-- "stage_root" references appear only in setup test scaffolding (staging paths), not runtime progression.
-
-## Immediate next actions (safe, local)
-
-- Formalize pack reference resolution fixes for the 14 failing packs.
-- Convert raw TODOs to standardized TODO_* markers per `docs/ci/CODEHYGIENE_RULES.md`.
-- Generate a specific prompt for appcore scaffolding completion.
-- Classify non-legacy runtime stubs and decide explicit refusal vs. implementation scope.
+1) Run a scoped pack-reference remediation pass for the 14 failing packs.
+2) Add deterministic lint/report checks for dependency-field canonicalization in pack manifests.
+3) Produce a governance reconciliation prompt for stage-token removal/migration to capabilities.
+4) Add a stub policy report split by authoritative path vs scaffolding path and wire to RepoX informational output.

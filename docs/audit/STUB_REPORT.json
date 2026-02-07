@@ -1,7 +1,7 @@
 {
   "counts": {
-    "acceptable_permanent_stub": 3,
-    "forbidden_stub": 3,
+    "acceptable_permanent_stub": 6,
+    "forbidden_stub": 0,
     "temporary_stub": 46
   },
   "stubs": [
@@ -71,19 +71,19 @@
       "reason": "stub marker"
     },
     {
-      "classification": "forbidden_stub",
+      "classification": "acceptable_permanent_stub",
       "path": "game/rules/city/city_services_stub.cpp",
-      "reason": "authoritative stub in core runtime"
+      "reason": "explicitly documented stub"
     },
     {
-      "classification": "forbidden_stub",
+      "classification": "acceptable_permanent_stub",
       "path": "game/rules/life/life_events_stub.cpp",
-      "reason": "authoritative stub in core runtime"
+      "reason": "explicitly documented stub"
     },
     {
-      "classification": "forbidden_stub",
+      "classification": "acceptable_permanent_stub",
       "path": "game/rules/logistics/routing_stub.cpp",
-      "reason": "authoritative stub in core runtime"
+      "reason": "explicitly documented stub"
     },
     {
       "classification": "temporary_stub",
@@ -312,6 +312,7 @@
     "libs/appcore/validate/appcore_validate.c",
     "scripts/ci/check_hygiene_scan.py",
     "scripts/ci/check_todo_blockers.py",
+    "tools/audit/scan_markers.py",
     "tools/modcheck/dom_modcheck.cpp",
     "tools/replay_viewer/dom_replay_viewer_controller.cpp",
     "tools/save_inspector/dom_save_inspector_controller.cpp"

@@ -1,5 +1,6 @@
 import os
 import re
+from datetime import date
 
 
 def collect_tests(ctest_file, tests, visited):
@@ -56,7 +57,7 @@ def main():
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write("Status: DERIVED\n")
-        f.write("Last Reviewed: 2026-02-08\n")
+        f.write("Last Reviewed: {}\n".format(date.today().isoformat()))
         f.write("Supersedes: none\n")
         f.write("Superseded By: none\n\n")
         f.write("# Test Coverage Matrix (CTEST)\n\n")

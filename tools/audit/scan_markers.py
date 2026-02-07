@@ -4,6 +4,15 @@ from datetime import date
 
 MARKERS = ("TODO", "FIXME", "PLACEHOLDER")
 STUB_TOKEN = "_stub"
+GENERATED_AUDIT_SKIPS = {
+    "docs/audit/marker_scan.txt",
+    "docs/audit/pack_audit.txt",
+    "docs/audit/inventory.md",
+    "docs/audit/inventory_machine.json",
+    "docs/audit/inventory.json",
+    "docs/audit/stub_report.json",
+    "docs/audit/test_coverage_matrix.md",
+}
 
 
 def should_skip_dir(rel_path):
@@ -32,6 +41,11 @@ def is_historical_doc(path):
     except OSError:
         return False
     return False
+
+
+def should_skip_file(path):
+    norm = path.replace("\\", "/").lower()
+    return norm in GENERATED_AUDIT_SKIPS
 
 
 def scan_file(path):
@@ -64,6 +78,8 @@ def main():
             continue
         for name in filenames:
             path = os.path.join(rel, name) if rel else name
+            if should_skip_file(path):
+                continue
             if STUB_TOKEN in name:
                 stub_files.append(path.replace("\\", "/"))
             if not name.lower().endswith((".c", ".cpp", ".h", ".md", ".py", ".txt")):

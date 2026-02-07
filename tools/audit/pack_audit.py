@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+from datetime import date
 
 
 def main():
@@ -17,6 +18,15 @@ def main():
 
     failures = 0
     with open(report_path, "w", encoding="utf-8") as report:
+        report.write("Status: DERIVED\n")
+        report.write("Last Reviewed: {}\n".format(date.today().isoformat()))
+        report.write("Supersedes: none\n")
+        report.write("Superseded By: none\n\n")
+        report.write(
+            "Note: This document may reference archived or historical files\n"
+            "for descriptive purposes only. Such references do not confer\n"
+            "authority and are not normative.\n\n"
+        )
         report.write("Pack audit report\n")
         report.write("Repo root: {}\n".format(os.path.abspath(repo_root)))
         report.write("Pack root: {}\n\n".format(os.path.abspath(packs_root)))

@@ -3,6 +3,10 @@ Last Reviewed: 2026-02-08
 Supersedes: none
 Superseded By: none
 
+Note: This document may reference archived or historical files
+for descriptive purposes only. Such references do not confer
+authority and are not normative.
+
 Pack audit report
 Repo root: c:\Inbox\Git Repos\dominium
 Pack root: c:\Inbox\Git Repos\dominium\data\packs

@@ -5,9 +5,22 @@ Superseded By: none
 
 # Next Prompts (Atomic, Ordered)
 
-1) PACK-REFS-0 — Fix missing part/interface/material/standard references in failing packs.
-2) PACK-DEPS-0 — Resolve dependency schema mismatch in `org.dominium.examples.*` packs.
-3) STUB-CLASSIFY-0 — Classify non-legacy runtime stubs (explicit refusal vs. implementation scope).
-4) TODO-HYGIENE-0 — Convert raw TODOs to TODO_* markers and update blockers list.
-5) APPCORE-REALIZE-0 — Replace libs/appcore TODO stubs with explicit implementations.
-6) UI-BACKENDS-0 — Define scoped plan for GTK/macOS backend placeholders (no implementation unless requested).
+1) `PACK-REF-INTEGRITY-0`
+- Scope: `data/packs/`
+- Goal: resolve missing FAB references in the 14 failing packs, no semantic changes.
+
+2) `PACK-DEPS-CANON-0`
+- Scope: `data/packs/`, `schema/pack_manifest.schema`, `tools/pack/pack_validate.py`
+- Goal: canonicalize dependency field usage and add deterministic validation messaging.
+
+3) `STAGE-TOKEN-RECONCILE-0`
+- Scope: `libs/appcore/command/command_registry.h`, `schema/*.schema`, `tools/pack/pack_validate.py`, docs only
+- Goal: governance reconciliation for stage-token surfaces vs capability-only invariant.
+
+4) `STUB-POLICY-CLASSIFY-0`
+- Scope: `engine/`, `game/`, `launcher/`, `setup/`, `libs/ui_backends/`, `tools/`
+- Goal: classify temporary stubs into acceptable scaffolding vs forbidden authoritative stubs and wire report enforcement.
+
+5) `TEST-COVERAGE-SEMANTIC-MAP-0`
+- Scope: `tests/`, `docs/audit/TEST_COVERAGE_MATRIX.md`
+- Goal: map invariant/capability expectations to concrete tests beyond prefix-only coverage inventory.
