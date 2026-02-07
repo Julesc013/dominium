@@ -756,6 +756,17 @@ set_target_properties(dominium_civ1_city_infra_tests PROPERTIES
 )
 add_test(NAME dominium_civ1_city_infra COMMAND dominium_civ1_city_infra_tests)
 
+add_executable(dominium_civ1_stub_refusal_tests
+    civ1/dom_civ1_stub_refusal_tests.cpp
+)
+target_link_libraries(dominium_civ1_stub_refusal_tests PRIVATE dominium_game)
+set_target_properties(dominium_civ1_stub_refusal_tests PROPERTIES
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+add_test(NAME dominium_civ1_stub_refusal COMMAND dominium_civ1_stub_refusal_tests)
+
 add_executable(dominium_civ2_governance_tests
     civ2/civ2_governance_tests.cpp
 )

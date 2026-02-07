@@ -14,6 +14,7 @@ DETERMINISM: Routing estimates are deterministic.
 
 #include "domino/core/dom_time_core.h"
 #include "domino/core/types.h"
+#include "dominium/rules/city/city_refusal_codes.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,6 +30,10 @@ typedef struct logistics_route_params {
 int logistics_route_estimate(const logistics_route_params* params,
                              dom_act_time_t* out_duration,
                              u32* out_cost);
+int logistics_route_estimate_ex(const logistics_route_params* params,
+                                dom_act_time_t* out_duration,
+                                u32* out_cost,
+                                civ1_refusal_code* out_refusal);
 
 #ifdef __cplusplus
 } /* extern "C" */

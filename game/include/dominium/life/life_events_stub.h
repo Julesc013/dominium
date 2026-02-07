@@ -28,6 +28,9 @@ typedef struct life_cmd_continuation_select {
 /* Purpose: Apply a continuation selection command to bindings. */
 int life_cmd_continuation_apply(life_controller_binding_set* bindings,
                                 const life_cmd_continuation_select* cmd);
+int life_cmd_continuation_apply_ex(life_controller_binding_set* bindings,
+                                   const life_cmd_continuation_select* cmd,
+                                   life_refusal_code* out_refusal);
 
 #ifdef __cplusplus
 } /* extern "C" */

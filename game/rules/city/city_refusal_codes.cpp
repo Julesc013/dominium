@@ -20,6 +20,7 @@ const char* civ1_refusal_to_string(civ1_refusal_code code)
         case CIV1_REFUSAL_MAINTENANCE_TOO_LOW: return "maintenance_too_low";
         case CIV1_REFUSAL_OWNER_NOT_AUTHORIZED: return "owner_not_authorized";
         case CIV1_REFUSAL_CITY_NOT_FOUND: return "city_not_found";
+        case CIV1_REFUSAL_NOT_IMPLEMENTED: return "not_implemented";
         default: return "unknown";
     }
 }
