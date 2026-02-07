@@ -387,1825 +387,2209 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/cache-v2-e6c5d02f56d0fbb4468c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/cache-v2-009b0e922d4823165629.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/cmakeFiles-v1-48dd393e502fa75c7f3d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/cmakeFiles-v1-476683f9af521c0ba5c4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/codemodel-v2-a8676f06b90188d9a4a9.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/codemodel-v2-9845d85e3dc62472847f.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-.-Debug-d0094a50bb2071803777.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-.-Debug-f6f22219c74102c3da70.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-.-MinSizeRel-d0094a50bb2071803777.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-.-MinSizeRel-f6f22219c74102c3da70.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-.-Release-d0094a50bb2071803777.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-.-Release-f6f22219c74102c3da70.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-.-RelWithDebInfo-d0094a50bb2071803777.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-.-RelWithDebInfo-f6f22219c74102c3da70.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-app-Debug-7ab44524cbd5ada90c6a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-app-Debug-1263e082e6b8e9b17c43.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-app-MinSizeRel-7ab44524cbd5ada90c6a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-app-MinSizeRel-1263e082e6b8e9b17c43.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-app-Release-7ab44524cbd5ada90c6a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-app-Release-1263e082e6b8e9b17c43.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-app-RelWithDebInfo-7ab44524cbd5ada90c6a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-app-RelWithDebInfo-1263e082e6b8e9b17c43.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-client-Debug-3c37cf1077c78f229df7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-client-Debug-d28a5dc4d9cc22b3b361.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-client-MinSizeRel-3c37cf1077c78f229df7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-client-MinSizeRel-d28a5dc4d9cc22b3b361.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-client-Release-3c37cf1077c78f229df7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-client-Release-d28a5dc4d9cc22b3b361.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-client-RelWithDebInfo-3c37cf1077c78f229df7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-client-RelWithDebInfo-d28a5dc4d9cc22b3b361.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-engine-Debug-776e2b00c6520ab49d05.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-engine-Debug-05dd41a2a5c8e6b4b441.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-engine-MinSizeRel-776e2b00c6520ab49d05.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-engine-MinSizeRel-05dd41a2a5c8e6b4b441.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-engine-Release-776e2b00c6520ab49d05.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-engine-Release-05dd41a2a5c8e6b4b441.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-engine-RelWithDebInfo-776e2b00c6520ab49d05.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-engine-RelWithDebInfo-05dd41a2a5c8e6b4b441.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-game-Debug-b67dffe3df9019a6d767.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-game-Debug-18ac525aabd0bdbeff49.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-game-MinSizeRel-b67dffe3df9019a6d767.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-game-MinSizeRel-18ac525aabd0bdbeff49.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-game-Release-b67dffe3df9019a6d767.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-game-Release-18ac525aabd0bdbeff49.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-game-RelWithDebInfo-b67dffe3df9019a6d767.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-game-RelWithDebInfo-18ac525aabd0bdbeff49.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-launcher-Debug-bc64fa1774f029bae6dc.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-launcher-Debug-5f5596f7b4d05cdfc687.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-launcher-MinSizeRel-bc64fa1774f029bae6dc.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-launcher-MinSizeRel-5f5596f7b4d05cdfc687.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-launcher-Release-bc64fa1774f029bae6dc.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-launcher-Release-5f5596f7b4d05cdfc687.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-launcher-RelWithDebInfo-bc64fa1774f029bae6dc.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-launcher-RelWithDebInfo-5f5596f7b4d05cdfc687.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs-Debug-dd7a5ca29a7a50124f40.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs-Debug-5fc88dc7ba44dbf1fec1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs-MinSizeRel-dd7a5ca29a7a50124f40.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs-MinSizeRel-5fc88dc7ba44dbf1fec1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs-Release-dd7a5ca29a7a50124f40.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs-Release-5fc88dc7ba44dbf1fec1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs-RelWithDebInfo-dd7a5ca29a7a50124f40.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs-RelWithDebInfo-5fc88dc7ba44dbf1fec1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.appcore-Debug-11ef94d19126bf917cbb.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.appcore-Debug-dcfd17d4728ff8c70a5d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.appcore-MinSizeRel-11ef94d19126bf917cbb.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.appcore-MinSizeRel-dcfd17d4728ff8c70a5d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.appcore-Release-11ef94d19126bf917cbb.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.appcore-Release-dcfd17d4728ff8c70a5d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.appcore-RelWithDebInfo-11ef94d19126bf917cbb.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.appcore-RelWithDebInfo-dcfd17d4728ff8c70a5d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.build_identity-Debug-7250af903889aebc261a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.build_identity-Debug-409038ca4f710243b4cd.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.build_identity-MinSizeRel-7250af903889aebc261a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.build_identity-MinSizeRel-409038ca4f710243b4cd.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.build_identity-Release-7250af903889aebc261a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.build_identity-Release-409038ca4f710243b4cd.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.build_identity-RelWithDebInfo-7250af903889aebc261a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.build_identity-RelWithDebInfo-409038ca4f710243b4cd.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.contracts-Debug-82141234bdd3f7e61b2f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.contracts-Debug-fb06fb616d1fb86b8e15.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.contracts-MinSizeRel-82141234bdd3f7e61b2f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.contracts-MinSizeRel-fb06fb616d1fb86b8e15.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.contracts-Release-82141234bdd3f7e61b2f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.contracts-Release-fb06fb616d1fb86b8e15.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.contracts-RelWithDebInfo-82141234bdd3f7e61b2f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-libs.contracts-RelWithDebInfo-fb06fb616d1fb86b8e15.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-server-Debug-ca16530337ce509e32d1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-server-Debug-d10d072de04c54acb910.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-server-MinSizeRel-ca16530337ce509e32d1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-server-MinSizeRel-d10d072de04c54acb910.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-server-Release-ca16530337ce509e32d1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-server-Release-d10d072de04c54acb910.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-server-RelWithDebInfo-ca16530337ce509e32d1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-server-RelWithDebInfo-d10d072de04c54acb910.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-setup-Debug-8bef3e2d54724182a01e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-setup-Debug-29405be08b00b551427b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-setup-MinSizeRel-8bef3e2d54724182a01e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-setup-MinSizeRel-29405be08b00b551427b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-setup-Release-8bef3e2d54724182a01e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-setup-Release-29405be08b00b551427b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-setup-RelWithDebInfo-8bef3e2d54724182a01e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-setup-RelWithDebInfo-29405be08b00b551427b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32-Debug-2cba130af9d128153bb1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32-Debug-99f2af2574401228e42d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32-MinSizeRel-2cba130af9d128153bb1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32-MinSizeRel-99f2af2574401228e42d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32-Release-2cba130af9d128153bb1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32-Release-99f2af2574401228e42d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32-RelWithDebInfo-2cba130af9d128153bb1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32-RelWithDebInfo-99f2af2574401228e42d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32.ui_backends_win32-Debug-929de128ee5c526bd81a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32.ui_backends_win32-Debug-aa0a4e5184c43162dfc0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32.ui_backends_win32-MinSizeRel-929de128ee5c526bd81a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32.ui_backends_win32-MinSizeRel-aa0a4e5184c43162dfc0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32.ui_backends_win32-Release-929de128ee5c526bd81a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32.ui_backends_win32-Release-aa0a4e5184c43162dfc0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32.ui_backends_win32-RelWithDebInfo-929de128ee5c526bd81a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-shared_ui_win32.ui_backends_win32-RelWithDebInfo-aa0a4e5184c43162dfc0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_bind-Debug-b89542af5b0e4d3f7962.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_bind-Debug-777dadbd1a34d7e0fbf2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_bind-MinSizeRel-b89542af5b0e4d3f7962.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_bind-MinSizeRel-777dadbd1a34d7e0fbf2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_bind-Release-b89542af5b0e4d3f7962.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_bind-Release-777dadbd1a34d7e0fbf2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_bind-RelWithDebInfo-b89542af5b0e4d3f7962.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_bind-RelWithDebInfo-777dadbd1a34d7e0fbf2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_shared.src.ui_ir-Debug-02a2e7e7f6443c9df99f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_shared.src.ui_ir-Debug-dce8e7f24df07635c3cf.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_shared.src.ui_ir-MinSizeRel-02a2e7e7f6443c9df99f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_shared.src.ui_ir-MinSizeRel-dce8e7f24df07635c3cf.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_shared.src.ui_ir-Release-02a2e7e7f6443c9df99f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_shared.src.ui_ir-Release-dce8e7f24df07635c3cf.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_shared.src.ui_ir-RelWithDebInfo-02a2e7e7f6443c9df99f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-tools.ui_shared.src.ui_ir-RelWithDebInfo-dce8e7f24df07635c3cf.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-_deps.dom_sdl2-build-Debug-83f354017cd194ff96b2.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-_deps.dom_sdl2-build-Debug-e5b0996016b89b14614e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-_deps.dom_sdl2-build-MinSizeRel-83f354017cd194ff96b2.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-_deps.dom_sdl2-build-MinSizeRel-e5b0996016b89b14614e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-_deps.dom_sdl2-build-Release-83f354017cd194ff96b2.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-_deps.dom_sdl2-build-Release-e5b0996016b89b14614e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/directory-_deps.dom_sdl2-build-RelWithDebInfo-83f354017cd194ff96b2.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/directory-_deps.dom_sdl2-build-RelWithDebInfo-e5b0996016b89b14614e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/index-2026-02-07T16-56-56-0354.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/index-2026-02-07T18-55-16-0195.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Debug-01a1b1404c7cb61d5c96.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Debug-cbf25bc7daea8ae696f4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Debug-4ace933a164b8377325e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Debug-ddc7f4a68e1eb3710a73.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-MinSizeRel-01a1b1404c7cb61d5c96.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-MinSizeRel-cbf25bc7daea8ae696f4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-MinSizeRel-4ace933a164b8377325e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-MinSizeRel-ddc7f4a68e1eb3710a73.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Release-01a1b1404c7cb61d5c96.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Release-cbf25bc7daea8ae696f4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Release-4ace933a164b8377325e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Release-ddc7f4a68e1eb3710a73.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-RelWithDebInfo-01a1b1404c7cb61d5c96.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-RelWithDebInfo-cbf25bc7daea8ae696f4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-RelWithDebInfo-4ace933a164b8377325e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-RelWithDebInfo-ddc7f4a68e1eb3710a73.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-all_quality_gates-Debug-0213e4b55cb166c7d0f7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-all_quality_gates-Debug-3a8cbfa52f538aeaefc0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-all_quality_gates-MinSizeRel-0213e4b55cb166c7d0f7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-all_quality_gates-MinSizeRel-3a8cbfa52f538aeaefc0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-all_quality_gates-Release-0213e4b55cb166c7d0f7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-all_quality_gates-Release-3a8cbfa52f538aeaefc0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-all_quality_gates-RelWithDebInfo-0213e4b55cb166c7d0f7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-all_quality_gates-RelWithDebInfo-3a8cbfa52f538aeaefc0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-appcore-Debug-499e2c5d2db024494d2a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-appcore-Debug-154607b8f35faa42a8ca.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-appcore-MinSizeRel-95fd21a2559f2b2913f8.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-appcore-MinSizeRel-89b2df185f6f74ee0c31.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-appcore-Release-7f8a13d8494bbea320ec.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-appcore-Release-fd45c0f7f905e8c1218c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-appcore-RelWithDebInfo-f4a17d24c6298db2e994.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-appcore-RelWithDebInfo-7415ae7caa7cf1123c78.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-build_identity-Debug-4448ddcbb325419e338d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-build_identity-Debug-1c2ae455eb8e0c591ecf.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-build_identity-MinSizeRel-2b1020f4382c41bf8cd0.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-build_identity-MinSizeRel-440ea368eec37663f866.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-build_identity-Release-a959caa8e6f6c66c1334.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-build_identity-Release-6ab321e0fc5ab6b7d896.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-build_identity-RelWithDebInfo-636cd0e76feca287b2c0.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-build_identity-RelWithDebInfo-ca77a70769c490cd44a2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_abi_boundaries-Debug-75d872d9620b9e5d1d1d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_abi_boundaries-Debug-9c2ca9684f70d5de603a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_abi_boundaries-MinSizeRel-75d872d9620b9e5d1d1d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_abi_boundaries-MinSizeRel-9c2ca9684f70d5de603a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_abi_boundaries-Release-75d872d9620b9e5d1d1d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_abi_boundaries-Release-9c2ca9684f70d5de603a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_abi_boundaries-RelWithDebInfo-75d872d9620b9e5d1d1d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_abi_boundaries-RelWithDebInfo-9c2ca9684f70d5de603a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-Debug-c16348f0cc2c94c5ad81.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-Debug-d589f5b09b04e77aad27.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-MinSizeRel-c16348f0cc2c94c5ad81.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-MinSizeRel-d589f5b09b04e77aad27.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-Release-c16348f0cc2c94c5ad81.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-Release-d589f5b09b04e77aad27.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-RelWithDebInfo-c16348f0cc2c94c5ad81.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-RelWithDebInfo-d589f5b09b04e77aad27.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_arch-Debug-61b9b4228d5a8b7b3b65.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_arch-Debug-07e2f84b59605d7ce0a1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_arch-MinSizeRel-61b9b4228d5a8b7b3b65.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_arch-MinSizeRel-07e2f84b59605d7ce0a1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_arch-Release-61b9b4228d5a8b7b3b65.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_arch-Release-07e2f84b59605d7ce0a1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_arch-RelWithDebInfo-61b9b4228d5a8b7b3b65.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_arch-RelWithDebInfo-07e2f84b59605d7ce0a1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_comment_density-Debug-e5f772bdb0f5dc1e360f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_comment_density-Debug-19273b15d346ed479f6c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_comment_density-MinSizeRel-e5f772bdb0f5dc1e360f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_comment_density-MinSizeRel-19273b15d346ed479f6c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_comment_density-Release-e5f772bdb0f5dc1e360f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_comment_density-Release-19273b15d346ed479f6c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_comment_density-RelWithDebInfo-e5f772bdb0f5dc1e360f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_comment_density-RelWithDebInfo-19273b15d346ed479f6c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_docs_sanity-Debug-2b3c2c81a6d0bc1fc924.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_docs_sanity-Debug-8ceaa72938206875e952.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_docs_sanity-MinSizeRel-2b3c2c81a6d0bc1fc924.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_docs_sanity-MinSizeRel-8ceaa72938206875e952.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_docs_sanity-Release-2b3c2c81a6d0bc1fc924.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_docs_sanity-Release-8ceaa72938206875e952.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_docs_sanity-RelWithDebInfo-2b3c2c81a6d0bc1fc924.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_docs_sanity-RelWithDebInfo-8ceaa72938206875e952.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_forbidden_enums-Debug-3ba89b95a1b65e598403.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_forbidden_enums-Debug-e2e89ffedb98cbdef261.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_forbidden_enums-MinSizeRel-3ba89b95a1b65e598403.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_forbidden_enums-MinSizeRel-e2e89ffedb98cbdef261.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_forbidden_enums-Release-3ba89b95a1b65e598403.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_forbidden_enums-Release-e2e89ffedb98cbdef261.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_forbidden_enums-RelWithDebInfo-3ba89b95a1b65e598403.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_forbidden_enums-RelWithDebInfo-e2e89ffedb98cbdef261.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_hygiene-Debug-e2c4857e6f355b6bf3ec.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_hygiene-Debug-537ddee0a74d6e412624.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_hygiene-MinSizeRel-e2c4857e6f355b6bf3ec.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_hygiene-MinSizeRel-537ddee0a74d6e412624.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_hygiene-Release-e2c4857e6f355b6bf3ec.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_hygiene-Release-537ddee0a74d6e412624.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_hygiene-RelWithDebInfo-e2c4857e6f355b6bf3ec.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_hygiene-RelWithDebInfo-537ddee0a74d6e412624.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ide_quarantine-Debug-abd61aac2dd8e720a2fa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ide_quarantine-Debug-f1826034745c896c4602.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ide_quarantine-MinSizeRel-abd61aac2dd8e720a2fa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ide_quarantine-MinSizeRel-f1826034745c896c4602.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ide_quarantine-Release-abd61aac2dd8e720a2fa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ide_quarantine-Release-f1826034745c896c4602.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ide_quarantine-RelWithDebInfo-abd61aac2dd8e720a2fa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ide_quarantine-RelWithDebInfo-f1826034745c896c4602.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_magic_numbers-Debug-47b4f2925a0f35acfbd9.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_magic_numbers-Debug-519374b558aaecadb1e4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_magic_numbers-MinSizeRel-47b4f2925a0f35acfbd9.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_magic_numbers-MinSizeRel-519374b558aaecadb1e4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_magic_numbers-Release-47b4f2925a0f35acfbd9.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_magic_numbers-Release-519374b558aaecadb1e4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_magic_numbers-RelWithDebInfo-47b4f2925a0f35acfbd9.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_magic_numbers-RelWithDebInfo-519374b558aaecadb1e4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_switch_on_taxonomy-Debug-8f8875054d25e5bb24aa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_switch_on_taxonomy-Debug-217d9fe8f047f98d7d56.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_switch_on_taxonomy-MinSizeRel-8f8875054d25e5bb24aa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_switch_on_taxonomy-MinSizeRel-217d9fe8f047f98d7d56.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_switch_on_taxonomy-Release-8f8875054d25e5bb24aa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_switch_on_taxonomy-Release-217d9fe8f047f98d7d56.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_switch_on_taxonomy-RelWithDebInfo-8f8875054d25e5bb24aa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_switch_on_taxonomy-RelWithDebInfo-217d9fe8f047f98d7d56.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_todo_blockers-Debug-131d198353d7a6651bad.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_todo_blockers-Debug-5322b5a582819a5616ba.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_todo_blockers-MinSizeRel-131d198353d7a6651bad.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_todo_blockers-MinSizeRel-5322b5a582819a5616ba.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_todo_blockers-Release-131d198353d7a6651bad.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_todo_blockers-Release-5322b5a582819a5616ba.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_todo_blockers-RelWithDebInfo-131d198353d7a6651bad.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_todo_blockers-RelWithDebInfo-5322b5a582819a5616ba.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ui_shell_purity-Debug-9287250bbfc75a2f6b59.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ui_shell_purity-Debug-e6f1ae39c4241d31d7b1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ui_shell_purity-MinSizeRel-9287250bbfc75a2f6b59.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ui_shell_purity-MinSizeRel-e6f1ae39c4241d31d7b1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ui_shell_purity-Release-9287250bbfc75a2f6b59.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ui_shell_purity-Release-e6f1ae39c4241d31d7b1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ui_shell_purity-RelWithDebInfo-9287250bbfc75a2f6b59.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_ui_shell_purity-RelWithDebInfo-e6f1ae39c4241d31d7b1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-Debug-484b12da58449e1082f8.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-Debug-463db1b3866544c791ce.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-MinSizeRel-c5046588d12f56322874.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-MinSizeRel-9fa6e146ec122516d7e0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-Release-d181b8f0e7696bd674e8.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-Release-fbc3cedc3602650f01ca.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-RelWithDebInfo-780e3966f83ac457b95f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-RelWithDebInfo-5728b416750d38742cff.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-Debug-bb7b9f9e41a9fe002a9e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-Debug-edab8f23b88649548316.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-MinSizeRel-bb7b9f9e41a9fe002a9e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-MinSizeRel-edab8f23b88649548316.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-Release-bb7b9f9e41a9fe002a9e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-Release-edab8f23b88649548316.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-RelWithDebInfo-bb7b9f9e41a9fe002a9e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-RelWithDebInfo-edab8f23b88649548316.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-doc_ratio_check-Debug-5926e4c2b9eed5851191.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-doc_ratio_check-Debug-4730801f2854d1842480.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-doc_ratio_check-MinSizeRel-5926e4c2b9eed5851191.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-doc_ratio_check-MinSizeRel-4730801f2854d1842480.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-doc_ratio_check-Release-5926e4c2b9eed5851191.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-doc_ratio_check-Release-4730801f2854d1842480.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-doc_ratio_check-RelWithDebInfo-5926e4c2b9eed5851191.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-doc_ratio_check-RelWithDebInfo-4730801f2854d1842480.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_app_runtime-Debug-cfe9e144988e09513af1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_app_runtime-Debug-434932237faa2cebf133.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_app_runtime-MinSizeRel-c50016223fcae407a466.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_app_runtime-MinSizeRel-3892fc0ae5ade124a67e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_app_runtime-Release-490760cba35a3c5a348a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_app_runtime-Release-aec1a6790c36dee6adbd.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_app_runtime-RelWithDebInfo-ec551333b86b6b2b2c84.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_app_runtime-RelWithDebInfo-8330fe926597d020f200.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-Debug-197f9244791d3beb38cf.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-Debug-e72d33d9be8f15e9451f.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-MinSizeRel-bbb8236907ba41ab6d32.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-MinSizeRel-f6638871390618f4fc1c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-Release-b05698fc169b8fd8823c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-Release-a4de39ce354617bc4fb8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-RelWithDebInfo-26690355af37f0d70e58.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-RelWithDebInfo-8fa9b17d9b0400a842bd.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_game-Debug-2eb59ecc2493201c53b0.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_game-Debug-75968d9080e189a5bee0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_game-MinSizeRel-ec5ea5029ec50cb4ccf8.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_game-MinSizeRel-ba04bfd7e6b287933a2a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_game-Release-248568dc9665f5c79ed2.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_game-Release-11cc73322114d2852fce.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_game-RelWithDebInfo-9aa0a1eae133a74e4a1c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_game-RelWithDebInfo-875e1a69b71380e51bf8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-Debug-f7d2f64a8fdf9daf3799.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-Debug-8a971f340b8c1871882a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-MinSizeRel-3e25ee971dd338ffec57.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-MinSizeRel-541082bffd6ff09df0ec.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-Release-fbb1f0412d8257951bb7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-Release-c298089407f9b39fc020.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-RelWithDebInfo-9a3ba67e5bb741725119.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-RelWithDebInfo-8b8b18b4f7b06783afcd.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_engine-Debug-1b25a1994b1a00556af8.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_engine-Debug-0776747107cacbd3b32a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_engine-MinSizeRel-4ab93110002c93207b88.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_engine-MinSizeRel-e174ce618e72de147566.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_engine-Release-bcb295ed120199a7604a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_engine-Release-41a9a42d4c312908433d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_engine-RelWithDebInfo-45d8e72f5ba49b3ccc17.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_engine-RelWithDebInfo-945a8e55cb800bfa136c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_ui_ir-Debug-0cb0f5dcf21f44e306eb.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_ui_ir-Debug-90cfac72d6f555570a4a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_ui_ir-MinSizeRel-542b6ef64a5ea1c6deed.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_ui_ir-MinSizeRel-66880039da80ea380b5b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_ui_ir-Release-274c26b88b6792bd23cf.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_ui_ir-Release-c5bda79a2326d19ee120.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_ui_ir-RelWithDebInfo-feb799b97c543d0fdb09.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domino_ui_ir-RelWithDebInfo-1eecfaf8e178da59ba0e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domui_validate-Debug-646eeac9b33ffc762da6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domui_validate-Debug-718f839367b17f30de30.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domui_validate-MinSizeRel-d340e34d4d8fec396541.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domui_validate-MinSizeRel-b448c9dbce11efad1fb9.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domui_validate-Release-3d122f18c00ca6ad4aa6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domui_validate-Release-4a46885df144fa4ad8ab.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-domui_validate-RelWithDebInfo-62cc1702c8d1b879e8b0.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-domui_validate-RelWithDebInfo-5afc15c97d4dff2e173e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_bump_build_number-Debug-314ca8fe3d609b1c4c96.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_bump_build_number-Debug-55abd841ac99e706361c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_bump_build_number-MinSizeRel-314ca8fe3d609b1c4c96.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_bump_build_number-MinSizeRel-55abd841ac99e706361c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_bump_build_number-Release-314ca8fe3d609b1c4c96.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_bump_build_number-Release-55abd841ac99e706361c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_bump_build_number-RelWithDebInfo-314ca8fe3d609b1c4c96.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_bump_build_number-RelWithDebInfo-55abd841ac99e706361c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_update_build_number-Debug-815ca8370a91059a2936.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_platform_backend_sdl2-Debug-07fb9f3488a16a80fc81.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_update_build_number-MinSizeRel-815ca8370a91059a2936.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_platform_backend_sdl2-MinSizeRel-07fb9f3488a16a80fc81.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_update_build_number-Release-815ca8370a91059a2936.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_platform_backend_sdl2-Release-07fb9f3488a16a80fc81.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_update_build_number-RelWithDebInfo-815ca8370a91059a2936.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_platform_backend_sdl2-RelWithDebInfo-07fb9f3488a16a80fc81.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-engine_include_sanity-Debug-82861968f8115a9b74b6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_dx9-Debug-e2a5183cb410d47fd8da.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-engine_include_sanity-MinSizeRel-82861968f8115a9b74b6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_dx9-MinSizeRel-e2a5183cb410d47fd8da.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-engine_include_sanity-Release-82861968f8115a9b74b6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_dx9-Release-e2a5183cb410d47fd8da.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-engine_include_sanity-RelWithDebInfo-82861968f8115a9b74b6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_dx9-RelWithDebInfo-e2a5183cb410d47fd8da.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-game_include_sanity-Debug-5fbb34fafdc0ffe687a6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_gl2-Debug-4ccad0e03a1aba20c03b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-game_include_sanity-MinSizeRel-5fbb34fafdc0ffe687a6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_gl2-MinSizeRel-4ccad0e03a1aba20c03b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-game_include_sanity-Release-5fbb34fafdc0ffe687a6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_gl2-Release-4ccad0e03a1aba20c03b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-game_include_sanity-RelWithDebInfo-5fbb34fafdc0ffe687a6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_gl2-RelWithDebInfo-4ccad0e03a1aba20c03b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-Debug-38d3da9321847cbe42cf.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_null-Debug-ba7e4fc685c6b1c229b4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-MinSizeRel-dc576c8d45fee24753fa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_null-MinSizeRel-ba7e4fc685c6b1c229b4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-Release-3a7b5d06892b7633555d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_null-Release-ba7e4fc685c6b1c229b4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-RelWithDebInfo-e93dc431422d8cd43d57.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_null-RelWithDebInfo-ba7e4fc685c6b1c229b4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-Debug-09902c6e28a35e8d0d8d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_soft-Debug-844bbc9910463d592f86.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-MinSizeRel-1edc53f06ad7a6c14398.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_soft-MinSizeRel-844bbc9910463d592f86.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-Release-ce9a1db631925ac0b3db.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_soft-Release-844bbc9910463d592f86.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-RelWithDebInfo-ece85a16d7770f635bbb.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_render_backend_soft-RelWithDebInfo-844bbc9910463d592f86.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_core-Debug-6bda47d556ef3436d6f2.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_update_build_number-Debug-c3b3d0ec9aaa031c9bee.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_core-MinSizeRel-a54a6f651bc19517d559.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_update_build_number-MinSizeRel-c3b3d0ec9aaa031c9bee.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_core-Release-66142071808de7b8dd6c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_update_build_number-Release-c3b3d0ec9aaa031c9bee.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_core-RelWithDebInfo-412fede48d24c59aa3f1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dom_update_build_number-RelWithDebInfo-c3b3d0ec9aaa031c9bee.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_gui-Debug-bf126f5cfdc17362dcf8.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-engine_include_sanity-Debug-4235ee3b64a652540c2d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_gui-MinSizeRel-fc77de7966a3899d4e81.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-engine_include_sanity-MinSizeRel-4235ee3b64a652540c2d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_gui-Release-1a12ef0477081ec8882d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-engine_include_sanity-Release-4235ee3b64a652540c2d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_gui-RelWithDebInfo-9af487ad3c1a644c74ed.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-engine_include_sanity-RelWithDebInfo-4235ee3b64a652540c2d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_tui-Debug-9ad3358af26f6760952d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-game_include_sanity-Debug-736f0b7dcf7ec9c63043.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_tui-MinSizeRel-e9b0582e01d442e26cf6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-game_include_sanity-MinSizeRel-736f0b7dcf7ec9c63043.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_tui-Release-313c0765ed0754f8ae8e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-game_include_sanity-Release-736f0b7dcf7ec9c63043.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_tui-RelWithDebInfo-c11f39d5606c5a5b43b1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-game_include_sanity-RelWithDebInfo-736f0b7dcf7ec9c63043.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-Debug-8d74cb6cfaddb450bb5e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Git__Git-Debug-66561f5df0cabbc9818e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-MinSizeRel-582ec2f1a1fd1e4c4cab.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Git__Git-MinSizeRel-66561f5df0cabbc9818e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-Release-6dd921154a3c10596b06.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Git__Git-Release-66561f5df0cabbc9818e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-RelWithDebInfo-c22e103683d9c79771cc.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Git__Git-RelWithDebInfo-66561f5df0cabbc9818e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-static-Debug-61fed9bed8e68e735016.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-Debug-a2b130e5777f09c9ec79.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-static-MinSizeRel-12801a779f7436e51d0f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-MinSizeRel-3e20a9c4561de95c8c46.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-static-Release-c43dabd6e34074a4e054.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-Release-91002f7ad2e2dc6c03d3.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-static-RelWithDebInfo-e9bd13c37ffbee868ce2.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-RelWithDebInfo-ccae59e5f772bf107c9b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2main-Debug-7b9d5e87243cd255eaa6.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-Debug-da316924dc47448b2fae.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2main-MinSizeRel-c3a9e726e1c6f9bc5aec.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-MinSizeRel-2958629cb73f6b64c25d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2main-Release-e1cd716de0a6559c9a54.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-Release-323b3114d2ee2dd45986.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2main-RelWithDebInfo-d172443bb8b86b2a6790.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-RelWithDebInfo-69db95e4353859f57768.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2_test-Debug-e47b51f24c54cd8d09cb.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_core-Debug-0d8abce5f72e3f461a2a.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2_test-MinSizeRel-12862bb50d1ad2a1398c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_core-MinSizeRel-f0996491fe1739fa06c3.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2_test-Release-2e4be48f01d8de4f41d4.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_core-Release-8be0ce731aba9cfcb909.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2_test-RelWithDebInfo-66f660dc2bf6329d02dd.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_core-RelWithDebInfo-3126e3e7b0ca9814c8fc.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl_headers_copy-Debug-958a6a60537b91e9f53c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_gui-Debug-fc71067458e93f0a1ac5.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl_headers_copy-MinSizeRel-958a6a60537b91e9f53c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_gui-MinSizeRel-465ddcd58c794ea27b79.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl_headers_copy-Release-958a6a60537b91e9f53c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_gui-Release-b180b3aa6019f485d263.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl_headers_copy-RelWithDebInfo-958a6a60537b91e9f53c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_gui-RelWithDebInfo-a28c5493c477ac79a77f.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-Debug-a68861aeff5db09c2be0.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_tui-Debug-087aa183437d3884e9fd.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-MinSizeRel-0b8f6edfd80f659ebf4f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_tui-MinSizeRel-9812e0f9b6b6707edf9d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-Release-b121024ff42fc08ecc39.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_tui-Release-82de64467f36fca10d23.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-RelWithDebInfo-9f131de903d365ed28f8.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_tui-RelWithDebInfo-77c5429c5c270efeb890.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-Debug-7dec4195fae8f522300b.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_base-Debug-ab2debfac98affc37ee2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-MinSizeRel-0a74012921236e543bbf.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_base-MinSizeRel-ab2debfac98affc37ee2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-Release-a5b00aa353aff0b4edae.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_base-Release-ab2debfac98affc37ee2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-RelWithDebInfo-6c2c43f7c079e93cd6df.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_base-RelWithDebInfo-ab2debfac98affc37ee2.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-Debug-b1714c91d58528a32d1e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_contracts-Debug-6ffcb64d0117276a31a4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-MinSizeRel-a030346af53a00cb09f1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_contracts-MinSizeRel-6ffcb64d0117276a31a4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-Release-2a1ceadd0dbacb3aaad5.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_contracts-Release-6ffcb64d0117276a31a4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-RelWithDebInfo-89c641d9d01975e75341.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_contracts-RelWithDebInfo-6ffcb64d0117276a31a4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_core-Debug-9554a605094560d88d14.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_crypto-Debug-cdb0ccf9344f1dc65e53.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_core-MinSizeRel-e8f83513796e041a40c7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_crypto-MinSizeRel-cdb0ccf9344f1dc65e53.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_core-Release-fa84a80d4c6a3eadf7f3.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_crypto-Release-cdb0ccf9344f1dc65e53.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_core-RelWithDebInfo-134a5192096654a51029.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_crypto-RelWithDebInfo-cdb0ccf9344f1dc65e53.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_gui-Debug-445da122fbf0e19239bc.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_fsmodel-Debug-efcc4fc94adf2b35b1ca.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_gui-MinSizeRel-4420402158529b5904a2.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_fsmodel-MinSizeRel-efcc4fc94adf2b35b1ca.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_gui-Release-5626e068cfabad91f2ac.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_fsmodel-Release-efcc4fc94adf2b35b1ca.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_gui-RelWithDebInfo-ea7bddb3922c9e3aae15.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_fsmodel-RelWithDebInfo-efcc4fc94adf2b35b1ca.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_tui-Debug-24e5c59b7244602401fb.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_netproto-Debug-cd8daf67046d1688e89e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_tui-MinSizeRel-33fc78c21cbf9dad9d08.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_netproto-MinSizeRel-cd8daf67046d1688e89e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_tui-Release-34e0c82ff6aa5ff8ce76.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_netproto-Release-cd8daf67046d1688e89e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_tui-RelWithDebInfo-12b5ff1ef936603e7a75.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-libs_netproto-RelWithDebInfo-cd8daf67046d1688e89e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-shared_ui_win32-Debug-31e4314934e43ac4fce3.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-OpenGL__GL-Debug-ef65237aa921f87a4b89.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-shared_ui_win32-MinSizeRel-5b5dc68a614b9c2b3667.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-OpenGL__GL-MinSizeRel-ef65237aa921f87a4b89.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-shared_ui_win32-Release-c8a9329d4098447da681.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-OpenGL__GL-Release-ef65237aa921f87a4b89.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-shared_ui_win32-RelWithDebInfo-bcbde580ac15672de206.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-OpenGL__GL-RelWithDebInfo-ef65237aa921f87a4b89.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-testx_all-Debug-477dc5f4350daf793be5.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-OpenGL__GLU-Debug-e08347c54aa69080e5a4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-testx_all-MinSizeRel-477dc5f4350daf793be5.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-OpenGL__GLU-MinSizeRel-e08347c54aa69080e5a4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-testx_all-Release-477dc5f4350daf793be5.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-OpenGL__GLU-Release-e08347c54aa69080e5a4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-testx_all-RelWithDebInfo-477dc5f4350daf793be5.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-OpenGL__GLU-RelWithDebInfo-e08347c54aa69080e5a4.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-Debug-4ac214debcefd944b594.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Python3__Interpreter-Debug-29c0e907fd04cf63f8e8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-MinSizeRel-100072ac7e15ba924d80.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Python3__Interpreter-MinSizeRel-29c0e907fd04cf63f8e8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-Release-fca83c053080cbab6eee.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Python3__Interpreter-Release-29c0e907fd04cf63f8e8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-RelWithDebInfo-3a7191a1e11f88d4fba0.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Python3__Interpreter-RelWithDebInfo-29c0e907fd04cf63f8e8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-Debug-bd009a1dac96edc8df06.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Python3__InterpreterMultiConfig-Debug-ccb9e9bec7f7ca556858.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-MinSizeRel-e4c205239e4ea50c21e1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Python3__InterpreterMultiConfig-MinSizeRel-ccb9e9bec7f7ca556858.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-Release-e6da9234d221ca87803b.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Python3__InterpreterMultiConfig-Release-ccb9e9bec7f7ca556858.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-RelWithDebInfo-7fb047abeebf368e7cad.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-Python3__InterpreterMultiConfig-RelWithDebInfo-ccb9e9bec7f7ca556858.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_bind_phase-Debug-1ae12dbaf950dfa6450d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl-build-options-Debug-b3f730f50d0488951768.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_bind_phase-MinSizeRel-1ae12dbaf950dfa6450d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl-build-options-MinSizeRel-b3f730f50d0488951768.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_bind_phase-Release-1ae12dbaf950dfa6450d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl-build-options-Release-b3f730f50d0488951768.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_bind_phase-RelWithDebInfo-1ae12dbaf950dfa6450d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl-build-options-RelWithDebInfo-b3f730f50d0488951768.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_capability_test-Debug-43994471a0afd809975e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-Debug-8c2318180dddcaff6381.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_capability_test-MinSizeRel-43994471a0afd809975e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-MinSizeRel-89cf2464bad7577833ca.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_capability_test-Release-43994471a0afd809975e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-Release-d7471ac091492eacb0fb.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_capability_test-RelWithDebInfo-43994471a0afd809975e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-RelWithDebInfo-efa02ffdee89dc75ecf8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_scan_all-Debug-064db2d9133433af198c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-static-Debug-ef13e3e8df4371abfee7.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_scan_all-MinSizeRel-064db2d9133433af198c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-static-MinSizeRel-7ae519ef1ca0cd230898.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_scan_all-Release-064db2d9133433af198c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-static-Release-b838fa4d546b7ef6d6ce.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_scan_all-RelWithDebInfo-064db2d9133433af198c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2-static-RelWithDebInfo-54ad469550dd182e47be.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_validate_all-Debug-2c77d348ce057f8f4c54.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2main-Debug-4e56ede86d067f2a0228.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_validate_all-MinSizeRel-2c77d348ce057f8f4c54.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2main-MinSizeRel-e5b34afb94bb06a3118e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_validate_all-Release-2c77d348ce057f8f4c54.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2main-Release-c71b08e1ceedd5c6944c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_validate_all-RelWithDebInfo-2c77d348ce057f8f4c54.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2main-RelWithDebInfo-57fd4c8b75783bee22fa.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-validate_dist-Debug-c6e444f285545d1815ca.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2_test-Debug-fff6908c626c6820a962.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-validate_dist-MinSizeRel-c6e444f285545d1815ca.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2_test-MinSizeRel-ec26563ebd3c9540377e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-validate_dist-Release-c6e444f285545d1815ca.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2_test-Release-f56486ea6bf3c92314c6.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-validate_dist-RelWithDebInfo-c6e444f285545d1815ca.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-SDL2_test-RelWithDebInfo-3e0bd12cca4345a9fd71.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-verify_dist-Debug-9251b0210ffd2e18679a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl_headers_copy-Debug-fed101c9d41142565555.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-verify_dist-MinSizeRel-9251b0210ffd2e18679a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl_headers_copy-MinSizeRel-fed101c9d41142565555.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-verify_dist-Release-9251b0210ffd2e18679a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl_headers_copy-Release-fed101c9d41142565555.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-verify_dist-RelWithDebInfo-9251b0210ffd2e18679a.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-sdl_headers_copy-RelWithDebInfo-fed101c9d41142565555.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ZERO_CHECK-Debug-5f3f41b6a7f3a78237c7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-Debug-e8597db33def17bcd360.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ZERO_CHECK-MinSizeRel-5f3f41b6a7f3a78237c7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-MinSizeRel-043dc449201962a43ce6.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ZERO_CHECK-Release-5f3f41b6a7f3a78237c7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-Release-fca7871bbb7ddc7b42c1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ZERO_CHECK-RelWithDebInfo-5f3f41b6a7f3a78237c7.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-RelWithDebInfo-ed0b29cec4a1b7608d4e.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-Debug-f5b7fa54174b38506e44.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-MinSizeRel-33a9572a430694cb47d0.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-Release-e45cc174ccb359f761a5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-RelWithDebInfo-38fd233192379a9b1bae.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-Debug-764322161ae1b65b6174.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-MinSizeRel-14031ffc5349fcebc7e2.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-Release-acca002fce7f6c0c8774.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-RelWithDebInfo-daf0f4b04d180a105ac4.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_core-Debug-05a5c5f5466f758311bd.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_core-MinSizeRel-0bab4e0f8d708e7f3a7c.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_core-Release-64cb8a8200431ad57d9c.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_core-RelWithDebInfo-77bc2cf0d95384ced9dc.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_gui-Debug-b5d40b99f14de6daf689.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_gui-MinSizeRel-953efb717a0acdf5a824.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_gui-Release-9c564d6fe2d1bfea85c8.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_gui-RelWithDebInfo-1e0ec9c2476430697778.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_tui-Debug-0a8ded84119f80516ed0.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_tui-MinSizeRel-98eba49945cdecdeb7ae.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_tui-Release-af4e6d3ac30f095a75aa.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_tui-RelWithDebInfo-1399b43905ee403d12c3.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-shared_ui_win32-Debug-a0f4d3e6ba2fb296ac9c.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-shared_ui_win32-MinSizeRel-f346e8058370b3d6d1ba.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-shared_ui_win32-Release-07ddc5faf1843363afb2.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-shared_ui_win32-RelWithDebInfo-28c0c7257e1da676c675.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-testx_all-Debug-37b63cd68c9af18f9828.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-testx_all-MinSizeRel-37b63cd68c9af18f9828.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-testx_all-Release-37b63cd68c9af18f9828.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-testx_all-RelWithDebInfo-37b63cd68c9af18f9828.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-Debug-34f1510b2e1fbc9f9aa4.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-MinSizeRel-075d8c82e1b5349b2a81.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-Release-543600915047e13fa965.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-RelWithDebInfo-10ce22c0dc4f509740bf.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-Debug-d95fc5b7242f09aaa233.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-MinSizeRel-3e3f0f03ed4da9674bf7.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-Release-1c4733324433164ad46c.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-RelWithDebInfo-1cf614b9e6d2f8d4eff4.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_bind_phase-Debug-f71a9bf1e872f525d2c5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_bind_phase-MinSizeRel-f71a9bf1e872f525d2c5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_bind_phase-Release-f71a9bf1e872f525d2c5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_bind_phase-RelWithDebInfo-f71a9bf1e872f525d2c5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_capability_test-Debug-21e560e307be111bd221.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_capability_test-MinSizeRel-21e560e307be111bd221.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_capability_test-Release-21e560e307be111bd221.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_capability_test-RelWithDebInfo-21e560e307be111bd221.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_scan_all-Debug-dc5e94652fc76a2ea1d5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_scan_all-MinSizeRel-dc5e94652fc76a2ea1d5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_scan_all-Release-dc5e94652fc76a2ea1d5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_scan_all-RelWithDebInfo-dc5e94652fc76a2ea1d5.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_validate_all-Debug-9026a10630d0451d529b.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_validate_all-MinSizeRel-9026a10630d0451d529b.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_validate_all-Release-9026a10630d0451d529b.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ui_validate_all-RelWithDebInfo-9026a10630d0451d529b.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-validate_dist-Debug-fce0ce655b061eaf5a40.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-validate_dist-MinSizeRel-fce0ce655b061eaf5a40.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-validate_dist-Release-fce0ce655b061eaf5a40.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-validate_dist-RelWithDebInfo-fce0ce655b061eaf5a40.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-verify_dist-Debug-0ecf7f35c115f20b64e8.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-verify_dist-MinSizeRel-0ecf7f35c115f20b64e8.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-verify_dist-Release-0ecf7f35c115f20b64e8.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-verify_dist-RelWithDebInfo-0ecf7f35c115f20b64e8.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ZERO_CHECK-Debug-76a308ff099c7db6bc18.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ZERO_CHECK-MinSizeRel-76a308ff099c7db6bc18.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ZERO_CHECK-Release-76a308ff099c7db6bc18.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ZERO_CHECK-RelWithDebInfo-76a308ff099c7db6bc18.json",
       "subsystem": "build"
     },
     {
@@ -7197,6 +7581,18 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "build/msvc-base/Testing/TAG",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/Testing/20260207-1855/Test.xml",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "build/msvc-base/Testing/Temporary/CTestCostData.txt",
       "subsystem": "build"
     },
@@ -7204,6 +7600,12 @@
       "category": "build",
       "doc": "docs/build/README.md",
       "path": "build/msvc-base/Testing/Temporary/LastTest.log",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "build/msvc-base/Testing/Temporary/LastTest_20260207-1855.log",
       "subsystem": "build"
     },
     {
@@ -49737,6 +50139,12 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/ctest_n.txt",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/dist_meta.vcxproj",
       "subsystem": "build"
     },
@@ -67749,6 +68157,102 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_42.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_42.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_43.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_43.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_44.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_44.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_45.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_45.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_46.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_46.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_47.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_47.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_48.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_48.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_49.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_49.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_5.save",
       "subsystem": "build"
     },
@@ -67756,6 +68260,126 @@
       "category": "build",
       "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_5.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_50.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_50.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_51.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_51.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_52.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_52.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_53.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_53.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_54.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_54.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_55.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_55.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_56.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_56.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_57.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_57.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_58.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_58.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_59.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_59.save.compat_report.json",
       "subsystem": "build"
     },
     {
@@ -92175,6 +92799,12 @@
     {
       "category": "schema",
       "doc": "docs/schema/SCHEMA_INDEX.md",
+      "path": "schema/SCHEMA_MIGRATION_REGISTRY.json",
+      "subsystem": "schema"
+    },
+    {
+      "category": "schema",
+      "doc": "docs/schema/SCHEMA_INDEX.md",
       "path": "schema/schema_policy.md",
       "subsystem": "schema"
     },
@@ -92254,6 +92884,12 @@
       "category": "schema",
       "doc": "docs/schema/SCHEMA_INDEX.md",
       "path": "schema/srz.zone.schema",
+      "subsystem": "schema"
+    },
+    {
+      "category": "schema",
+      "doc": "docs/schema/SCHEMA_INDEX.md",
+      "path": "schema/stage.declaration.schema",
       "subsystem": "schema"
     },
     {
@@ -93916,6 +94552,12 @@
       "category": "test",
       "doc": "",
       "path": "tests/contract/srz_contract_tests.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/contract/stage_gating_contracts.py",
       "subsystem": "test"
     },
     {
@@ -96231,6 +96873,48 @@
     {
       "category": "test",
       "doc": "",
+      "path": "tests/fixtures/worlds/stage_0_nonbio/world_stage.json",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/fixtures/worlds/stage_1_nonintelligent_life/world_stage.json",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/fixtures/worlds/stage_2_intelligent_pre_tool/world_stage.json",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/fixtures/worlds/stage_3_pre_tool_world/world_stage.json",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/fixtures/worlds/stage_4_pre_industry/world_stage.json",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/fixtures/worlds/stage_5_pre_present/world_stage.json",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/fixtures/worlds/stage_6_future/world_stage.json",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
       "path": "tests/integration/animal_agent_tests.py",
       "subsystem": "test"
     },
@@ -96574,6 +97258,12 @@
       "category": "test",
       "doc": "",
       "path": "tests/invariant/process_only_mutation_tests.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/invariant/process_registry_execution_tests.py",
       "subsystem": "test"
     },
     {
@@ -96969,6 +97659,12 @@
     {
       "category": "test",
       "doc": "",
+      "path": "tests/schema/schema_migration_tests.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
       "path": "tests/schema/schema_namespace_tests.py",
       "subsystem": "test"
     },
@@ -97060,6 +97756,318 @@
       "category": "test",
       "doc": "",
       "path": "tests/signal/signal_schema_contract_tests.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/STAGE_MATRIX.yaml",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stage_matrix_common.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stage_matrix_contracts.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stage_suite_runner.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_0_nonbio/test_command_surface.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_0_nonbio/test_determinism_smoke.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_0_nonbio/test_epistemics.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_0_nonbio/test_load_and_validate.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_0_nonbio/test_pack_gating.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_0_nonbio/test_replay_hash.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_command_surface.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_determinism_smoke.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_epistemics.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_load_and_validate.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_pack_gating.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_replay_hash.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_command_surface.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_determinism_smoke.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_epistemics.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_load_and_validate.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_pack_gating.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_replay_hash.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_command_surface.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_determinism_smoke.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_epistemics.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_load_and_validate.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_pack_gating.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_replay_hash.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_4_pre_industry/test_command_surface.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_4_pre_industry/test_determinism_smoke.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_4_pre_industry/test_epistemics.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_4_pre_industry/test_load_and_validate.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_4_pre_industry/test_pack_gating.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_4_pre_industry/test_replay_hash.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_5_pre_present/test_command_surface.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_5_pre_present/test_determinism_smoke.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_5_pre_present/test_epistemics.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_5_pre_present/test_load_and_validate.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_5_pre_present/test_pack_gating.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_5_pre_present/test_replay_hash.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_6_future/test_command_surface.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_6_future/test_determinism_smoke.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_6_future/test_epistemics.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_6_future/test_load_and_validate.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_6_future/test_pack_gating.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stages/stage_6_future/test_replay_hash.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stage_regression/test_no_future_affordances_pre_6.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stage_regression/test_no_industry_in_stage_4.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stage_regression/test_no_life_in_stage_0.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/stage_regression/test_no_tools_in_stage_2_and_3.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/__pycache__/stage_matrix_common.cpython-39.pyc",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/__pycache__/stage_suite_runner.cpython-39.pyc",
       "subsystem": "test"
     },
     {
@@ -98529,6 +99537,24 @@
     {
       "category": "tool",
       "doc": "docs/tools/TOOLING_OVERVIEW.md",
+      "path": "tools/schema_migration/schema_migration_runner.py",
+      "subsystem": "tools"
+    },
+    {
+      "category": "tool",
+      "doc": "docs/tools/TOOLING_OVERVIEW.md",
+      "path": "tools/schema_migration/__pycache__/schema_migration_runner.cpython-38.pyc",
+      "subsystem": "tools"
+    },
+    {
+      "category": "tool",
+      "doc": "docs/tools/TOOLING_OVERVIEW.md",
+      "path": "tools/schema_migration/__pycache__/schema_migration_runner.cpython-39.pyc",
+      "subsystem": "tools"
+    },
+    {
+      "category": "tool",
+      "doc": "docs/tools/TOOLING_OVERVIEW.md",
       "path": "tools/setup/setup_cli.py",
       "subsystem": "tools"
     },
@@ -99819,12 +100845,12 @@
   ],
   "root": "c:\\Inbox\\Git Repos\\dominium",
   "summary": {
-    "build": 14511,
+    "build": 14615,
     "ci": 12,
     "data": 499,
     "distribution": 17,
-    "schema": 322,
-    "test": 835,
-    "tool": 440
+    "schema": 324,
+    "test": 897,
+    "tool": 443
   }
 }

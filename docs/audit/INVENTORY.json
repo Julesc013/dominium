@@ -1775,12 +1775,17 @@
     "data/worldgen"
   ],
   "docs": [
+    "docs/CAPABILITY_STAGES.md",
     "docs/CODE_CHANGE_JUSTIFICATION.md",
     "docs/CONTRIBUTING.md",
     "docs/FAQ.md",
     "docs/MODDER_GUIDE.md",
     "docs/PHILOSOPHY.md",
+    "docs/PROCESS_REGISTRY.md",
     "docs/README.md",
+    "docs/SCHEMA_CANON_ALIGNMENT.md",
+    "docs/SCHEMA_EVOLUTION.md",
+    "docs/TESTX_STAGE_MATRIX.md",
     "docs/WHAT_PLAYERS_CAN_DO.md",
     "docs/accessibility/ACCESSIBILITY_MODEL.md",
     "docs/agents/AGENT_CONFLICT.md",
@@ -2094,12 +2099,33 @@
     "docs/audit/AG2_MVP_COMPLETION.md",
     "docs/audit/ARCHITECTURE_HEALTH.md",
     "docs/audit/ARCHITECTURE_HEALTH_REPORT.md",
+    "docs/audit/BOUNDARY_AUDIT.md",
+    "docs/audit/BR0_BASELINE.md",
+    "docs/audit/BR0_COMPLETION_REPORT.md",
+    "docs/audit/BR0_PUBLIC_HEADER_FAILS.md",
+    "docs/audit/BR0_RERUN_SEQUENCE.md",
+    "docs/audit/BR0_STUB_RESOLUTION.md",
+    "docs/audit/CONFIDENCE_STATEMENT.md",
     "docs/audit/DOCS_AUDIT_PROMPT0.md",
+    "docs/audit/DOC_DRIFT.md",
     "docs/audit/EG_H_REPO_AUDIT.md",
+    "docs/audit/EXECUTION_LOG.md",
     "docs/audit/FUTURE_PRESSURE_ANALYSIS.md",
+    "docs/audit/GAP_REPORT.md",
+    "docs/audit/INVENTORY.md",
+    "docs/audit/MARKER_SCAN.txt",
+    "docs/audit/NAMING_TAXONOMY_CHECK.md",
+    "docs/audit/NEXT_PROMPTS.md",
     "docs/audit/NORMALIZATION_REPORT.md",
+    "docs/audit/PACK_AUDIT.txt",
+    "docs/audit/PEP0_BASELINE.md",
     "docs/audit/PLAYER2_VALIDATION.md",
+    "docs/audit/PROMPT_EXECUTION_MODEL.md",
     "docs/audit/PROMPT_G_REPORT.md",
+    "docs/audit/REPO_INVENTORY_SUMMARY.md",
+    "docs/audit/SCHEMA_CANON_ALIGNMENT.md",
+    "docs/audit/STUB_REPORT.md",
+    "docs/audit/TEST_COVERAGE_MATRIX.md",
     "docs/audit/VIS3_VALIDATION.md",
     "docs/audit/WG_E_VALIDATION_REPORT.md",
     "docs/audit/WORLDGEN_COMPATIBILITY.md",
@@ -2119,6 +2145,8 @@
     "docs/ci/HYGIENE_QUEUE.md",
     "docs/ci/KNOWN_BLOCKERS.md",
     "docs/ci/REGRESSION_SUITES.md",
+    "docs/ci/TESTX_GATE_CONTRACT.md",
+    "docs/ci/TESTX_TIMEOUT_ANALYSIS.md",
     "docs/content/BASE_PACKS.md",
     "docs/content/CONTENTLIB_OVERVIEW.md",
     "docs/content/CONTENT_OVERVIEW.md",
@@ -3068,6 +3096,12 @@
         "expected_stem": "security.force",
         "path": "schema/security_force.schema",
         "schema_id": "dominium.schema.security.force"
+      },
+      {
+        "actual_stem": "stage.declaration",
+        "expected_stem": "stage_declaration",
+        "path": "schema/stage.declaration.schema",
+        "schema_id": "dominium.schema.stage_declaration"
       },
       {
         "actual_stem": "ui_accessibility",
@@ -5065,6 +5099,14 @@
         "docs/architecture",
         "docs/schema"
       ],
+      "path": "schema/stage.declaration.schema",
+      "subsystem": "schema"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/schema"
+      ],
       "path": "schema/standard.definition.schema",
       "subsystem": "schema"
     },
@@ -5302,29 +5344,87 @@
     }
   ],
   "stage_tokens": [
+    "docs/CAPABILITY_STAGES.md",
+    "docs/TESTX_STAGE_MATRIX.md",
     "docs/archive/prompts/post_canon_sequence_L1_L4_IVRH.txt",
-    "docs/specs/setup/AUDIT_MODEL.md"
+    "docs/specs/setup/AUDIT_MODEL.md",
+    "libs/appcore/command/command_registry.h",
+    "schema/pack_manifest.schema",
+    "schema/stage.declaration.schema",
+    "scripts/ci/check_repox_rules.py",
+    "tests/contract/stage_gating_contracts.py",
+    "tests/testx/stage_matrix_common.py",
+    "tests/testx/stage_matrix_contracts.py",
+    "tests/testx/stage_regression/test_no_future_affordances_pre_6.py",
+    "tests/testx/stage_regression/test_no_industry_in_stage_4.py",
+    "tests/testx/stage_regression/test_no_life_in_stage_0.py",
+    "tests/testx/stage_regression/test_no_tools_in_stage_2_and_3.py",
+    "tests/testx/stage_suite_runner.py",
+    "tests/testx/stages/stage_0_nonbio/test_command_surface.py",
+    "tests/testx/stages/stage_0_nonbio/test_determinism_smoke.py",
+    "tests/testx/stages/stage_0_nonbio/test_epistemics.py",
+    "tests/testx/stages/stage_0_nonbio/test_load_and_validate.py",
+    "tests/testx/stages/stage_0_nonbio/test_pack_gating.py",
+    "tests/testx/stages/stage_0_nonbio/test_replay_hash.py",
+    "tests/testx/stages/stage_1_nonintelligent_life/test_command_surface.py",
+    "tests/testx/stages/stage_1_nonintelligent_life/test_determinism_smoke.py",
+    "tests/testx/stages/stage_1_nonintelligent_life/test_epistemics.py",
+    "tests/testx/stages/stage_1_nonintelligent_life/test_load_and_validate.py",
+    "tests/testx/stages/stage_1_nonintelligent_life/test_pack_gating.py",
+    "tests/testx/stages/stage_1_nonintelligent_life/test_replay_hash.py",
+    "tests/testx/stages/stage_2_intelligent_pre_tool/test_command_surface.py",
+    "tests/testx/stages/stage_2_intelligent_pre_tool/test_determinism_smoke.py",
+    "tests/testx/stages/stage_2_intelligent_pre_tool/test_epistemics.py",
+    "tests/testx/stages/stage_2_intelligent_pre_tool/test_load_and_validate.py",
+    "tests/testx/stages/stage_2_intelligent_pre_tool/test_pack_gating.py",
+    "tests/testx/stages/stage_2_intelligent_pre_tool/test_replay_hash.py",
+    "tests/testx/stages/stage_3_pre_tool_world/test_command_surface.py",
+    "tests/testx/stages/stage_3_pre_tool_world/test_determinism_smoke.py",
+    "tests/testx/stages/stage_3_pre_tool_world/test_epistemics.py",
+    "tests/testx/stages/stage_3_pre_tool_world/test_load_and_validate.py",
+    "tests/testx/stages/stage_3_pre_tool_world/test_pack_gating.py",
+    "tests/testx/stages/stage_3_pre_tool_world/test_replay_hash.py",
+    "tests/testx/stages/stage_4_pre_industry/test_command_surface.py",
+    "tests/testx/stages/stage_4_pre_industry/test_determinism_smoke.py",
+    "tests/testx/stages/stage_4_pre_industry/test_epistemics.py",
+    "tests/testx/stages/stage_4_pre_industry/test_load_and_validate.py",
+    "tests/testx/stages/stage_4_pre_industry/test_pack_gating.py",
+    "tests/testx/stages/stage_4_pre_industry/test_replay_hash.py",
+    "tests/testx/stages/stage_5_pre_present/test_command_surface.py",
+    "tests/testx/stages/stage_5_pre_present/test_determinism_smoke.py",
+    "tests/testx/stages/stage_5_pre_present/test_epistemics.py",
+    "tests/testx/stages/stage_5_pre_present/test_load_and_validate.py",
+    "tests/testx/stages/stage_5_pre_present/test_pack_gating.py",
+    "tests/testx/stages/stage_5_pre_present/test_replay_hash.py",
+    "tests/testx/stages/stage_6_future/test_command_surface.py",
+    "tests/testx/stages/stage_6_future/test_determinism_smoke.py",
+    "tests/testx/stages/stage_6_future/test_epistemics.py",
+    "tests/testx/stages/stage_6_future/test_load_and_validate.py",
+    "tests/testx/stages/stage_6_future/test_pack_gating.py",
+    "tests/testx/stages/stage_6_future/test_replay_hash.py",
+    "tmp/all_files.txt",
+    "tools/pack/pack_validate.py"
   ],
   "summary": {
     "binaries": 187,
     "ci_entries": 25,
     "coverage_entries": 8,
     "data_domains": 14,
-    "docs": 978,
+    "docs": 1006,
     "libraries": 34,
     "pack_families": 7,
     "packs": 59,
-    "schemas": 154,
-    "stage_token_hits": 2,
+    "schemas": 155,
+    "stage_token_hits": 60,
     "stub_counts": {
-      "acceptable_permanent_stub": 3,
-      "forbidden_stub": 3,
+      "acceptable_permanent_stub": 6,
+      "forbidden_stub": 0,
       "temporary_stub": 46
     },
     "stub_files": 52,
-    "tests": 217,
-    "todo_hits": 48,
-    "tools": 274
+    "tests": 270,
+    "todo_hits": 49,
+    "tools": 280
   },
   "tests": [
     {
@@ -5773,6 +5873,14 @@
         "docs/ci"
       ],
       "path": "tests/contract/srz_contract_tests.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/contract/stage_gating_contracts.py",
       "subsystem": "tests"
     },
     {
@@ -6508,6 +6616,22 @@
         "docs/architecture",
         "docs/ci"
       ],
+      "path": "tests/invariant/process_registry_execution_tests.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/invariant/process_registry_tests.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
       "path": "tests/invariant/raw_file_paths_invariant.py",
       "subsystem": "tests"
     },
@@ -6892,6 +7016,14 @@
         "docs/architecture",
         "docs/ci"
       ],
+      "path": "tests/schema/schema_migration_tests.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
       "path": "tests/schema/schema_namespace_tests.py",
       "subsystem": "tests"
     },
@@ -6989,6 +7121,398 @@
         "docs/ci"
       ],
       "path": "tests/test_version.h",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stage_matrix_common.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stage_matrix_contracts.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stage_regression/test_no_future_affordances_pre_6.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stage_regression/test_no_industry_in_stage_4.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stage_regression/test_no_life_in_stage_0.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stage_regression/test_no_tools_in_stage_2_and_3.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stage_suite_runner.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_0_nonbio/test_command_surface.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_0_nonbio/test_determinism_smoke.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_0_nonbio/test_epistemics.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_0_nonbio/test_load_and_validate.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_0_nonbio/test_pack_gating.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_0_nonbio/test_replay_hash.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_command_surface.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_determinism_smoke.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_epistemics.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_load_and_validate.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_pack_gating.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_1_nonintelligent_life/test_replay_hash.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_command_surface.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_determinism_smoke.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_epistemics.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_load_and_validate.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_pack_gating.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_2_intelligent_pre_tool/test_replay_hash.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_command_surface.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_determinism_smoke.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_epistemics.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_load_and_validate.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_pack_gating.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_3_pre_tool_world/test_replay_hash.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_4_pre_industry/test_command_surface.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_4_pre_industry/test_determinism_smoke.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_4_pre_industry/test_epistemics.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_4_pre_industry/test_load_and_validate.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_4_pre_industry/test_pack_gating.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_4_pre_industry/test_replay_hash.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_5_pre_present/test_command_surface.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_5_pre_present/test_determinism_smoke.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_5_pre_present/test_epistemics.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_5_pre_present/test_load_and_validate.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_5_pre_present/test_pack_gating.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_5_pre_present/test_replay_hash.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_6_future/test_command_surface.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_6_future/test_determinism_smoke.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_6_future/test_epistemics.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_6_future/test_load_and_validate.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_6_future/test_pack_gating.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
+      "path": "tests/testx/stages/stage_6_future/test_replay_hash.py",
       "subsystem": "tests"
     },
     {
@@ -7103,6 +7627,46 @@
         "docs/tools"
       ],
       "path": "tools/assetc/tool_assetc.c",
+      "subsystem": "tools"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/tools"
+      ],
+      "path": "tools/audit/generate_inventory.py",
+      "subsystem": "tools"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/tools"
+      ],
+      "path": "tools/audit/generate_inventory_md.py",
+      "subsystem": "tools"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/tools"
+      ],
+      "path": "tools/audit/pack_audit.py",
+      "subsystem": "tools"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/tools"
+      ],
+      "path": "tools/audit/scan_markers.py",
+      "subsystem": "tools"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/tools"
+      ],
+      "path": "tools/audit/test_matrix.py",
       "subsystem": "tools"
     },
     {
@@ -8303,6 +8867,14 @@
         "docs/tools"
       ],
       "path": "tools/scale/scale_cli.h",
+      "subsystem": "tools"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/tools"
+      ],
+      "path": "tools/schema_migration/schema_migration_runner.py",
       "subsystem": "tools"
     },
     {

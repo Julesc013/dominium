@@ -6,6 +6,8 @@ Superseded By: none
 # Repository Inventory Summary
 
 Machine-readable inventory: `docs/audit/INVENTORY_MACHINE.json`  
+Cross-linked inventory: `docs/audit/INVENTORY.json`  
+Stub classification: `docs/audit/STUB_REPORT.json`  
 Test coverage inventory: `docs/audit/TEST_COVERAGE_MATRIX.md`
 
 ## Code subsystems (source roots)
@@ -57,18 +59,26 @@ Pack validation status is captured in `docs/audit/PACK_AUDIT.txt`.
 
 ## Tooling surfaces
 
-Top-level tool directories under `tools/`: 93  
-Canonical tool inventory paths are recorded in `docs/audit/INVENTORY_MACHINE.json`.
+- Tool items discovered by cross-linked inventory: 280
+- Build/distribution helper scripts discovered by cross-linked inventory: 25 CI entries
+- Canonical tool inventory paths are recorded in `docs/audit/INVENTORY.json`.
 
 ## Schemas
 
-`.schema` files under `schema/`: 154  
-Governance: `schema/SCHEMA_VERSIONING.md`, `schema/SCHEMA_MIGRATION.md`, `schema/SCHEMA_VALIDATION.md`.
+- `.schema` files under `schema/`: 155
+- Governance: `schema/SCHEMA_VERSIONING.md`, `schema/SCHEMA_MIGRATION.md`, `schema/SCHEMA_VALIDATION.md`.
 
 ## Tests
 
-CTest-discoverable tests: 309  
-Coverage summary by prefix is in `docs/audit/TEST_COVERAGE_MATRIX.md`.
+- CTest-discoverable tests: 359
+- Test source files in cross-linked inventory: 270
+- Coverage summary by prefix is in `docs/audit/TEST_COVERAGE_MATRIX.md`.
+
+## Runtime safety snapshots
+
+- Stub classification summary: 6 acceptable permanent, 46 temporary, 0 forbidden
+- Marker backlog summary: 49 TODO/FIXME/PLACEHOLDER hits
+- Stage token hits (all scopes): 60
 
 ## CI / Build / Distribution paths
 

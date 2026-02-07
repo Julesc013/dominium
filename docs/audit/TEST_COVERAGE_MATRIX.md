@@ -19,6 +19,7 @@ Source: `out/build/vs2026/verify/CTestTestfile.cmake`
 - budget: 1
 - bugreport: 1
 - build: 6
+- capability: 1
 - climate: 2
 - compat: 1
 - compliance: 1
@@ -51,7 +52,7 @@ Source: `out/build/vs2026/verify/CTestTestfile.cmake`
 - institution: 2
 - integration: 1
 - interaction: 2
-- inv: 13
+- inv: 14
 - invariant: 11
 - kernel: 5
 - knowledge: 2
@@ -88,7 +89,7 @@ Source: `out/build/vs2026/verify/CTestTestfile.cmake`
 - scale1: 4
 - scale2: 4
 - scale3: 4
-- schema: 8
+- schema: 9
 - semantic: 1
 - server: 1
 - services: 1
@@ -99,6 +100,7 @@ Source: `out/build/vs2026/verify/CTestTestfile.cmake`
 - slice1: 2
 - slice2: 2
 - srz: 2
+- stage: 47
 - standard: 2
 - streaming: 1
 - structure: 2
@@ -117,7 +119,7 @@ Source: `out/build/vs2026/verify/CTestTestfile.cmake`
 
 ## Total
 
-- tests: 309
+- tests: 359
 
 ## Notes
 

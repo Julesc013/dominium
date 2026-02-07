@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import date
 
 
 def main():
@@ -11,7 +12,7 @@ def main():
     summary = inv.get("summary", {})
     lines = [
         "Status: DERIVED",
-        "Last Reviewed: 2026-02-07",
+        "Last Reviewed: {}".format(date.today().isoformat()),
         "Supersedes: none",
         "Superseded By: none",
         "",
