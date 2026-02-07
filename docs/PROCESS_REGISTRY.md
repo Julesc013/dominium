@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-07
+Last Reviewed: 2026-02-08
 Supersedes: none
 Superseded By: none
 
@@ -31,8 +31,9 @@ Superseded By: none
 ## Operational Requirements
 - New authoritative processes must add a registry entry before use.
 - Registry changes must remain compatible with existing IDs.
-- Tests must validate registry coverage and determinism.
+- Tests must validate registry coverage and deterministic contract execution for every registered process ID.
 
 ## Enforcement
 - RepoX rejects unregistered process IDs and registry drift.
-- TestX validates registry completeness and deterministic signatures.
+- RepoX rejects runtime process literals used in authoritative modules when not present in the registry.
+- TestX validates registry completeness and deterministic process-contract execution signatures.
