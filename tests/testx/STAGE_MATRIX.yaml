@@ -1,0 +1,241 @@
+{
+  "schema_id": "dominium.testx.stage_matrix",
+  "schema_version": "1.0.0",
+  "stages": [
+    {
+      "stage_id": "STAGE_0_NONBIO_WORLD",
+      "fixture": "tests/fixtures/worlds/stage_0_nonbio/world_stage.json",
+      "required_test_suites": [
+        "test_load_and_validate",
+        "test_command_surface",
+        "test_pack_gating",
+        "test_epistemics",
+        "test_determinism_smoke",
+        "test_replay_hash"
+      ],
+      "tests": [
+        "tests/testx/stages/stage_0_nonbio/test_load_and_validate.py",
+        "tests/testx/stages/stage_0_nonbio/test_command_surface.py",
+        "tests/testx/stages/stage_0_nonbio/test_pack_gating.py",
+        "tests/testx/stages/stage_0_nonbio/test_epistemics.py",
+        "tests/testx/stages/stage_0_nonbio/test_determinism_smoke.py",
+        "tests/testx/stages/stage_0_nonbio/test_replay_hash.py"
+      ],
+      "expected_enabled_command_families": [],
+      "expected_disabled_command_families": [
+        "life",
+        "tooling",
+        "institutions",
+        "industry",
+        "future"
+      ],
+      "expected_pack_acceptance": "<= stage",
+      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "determinism_expectation": "hash-stable command and replay contracts",
+      "epistemic_expectation": "no omniscient disclosure; scopes respected"
+    },
+    {
+      "stage_id": "STAGE_1_NONINTELLIGENT_LIFE",
+      "fixture": "tests/fixtures/worlds/stage_1_nonintelligent_life/world_stage.json",
+      "required_test_suites": [
+        "test_load_and_validate",
+        "test_command_surface",
+        "test_pack_gating",
+        "test_epistemics",
+        "test_determinism_smoke",
+        "test_replay_hash"
+      ],
+      "tests": [
+        "tests/testx/stages/stage_1_nonintelligent_life/test_load_and_validate.py",
+        "tests/testx/stages/stage_1_nonintelligent_life/test_command_surface.py",
+        "tests/testx/stages/stage_1_nonintelligent_life/test_pack_gating.py",
+        "tests/testx/stages/stage_1_nonintelligent_life/test_epistemics.py",
+        "tests/testx/stages/stage_1_nonintelligent_life/test_determinism_smoke.py",
+        "tests/testx/stages/stage_1_nonintelligent_life/test_replay_hash.py"
+      ],
+      "expected_enabled_command_families": [
+        "life"
+      ],
+      "expected_disabled_command_families": [
+        "tooling",
+        "institutions",
+        "industry",
+        "future"
+      ],
+      "expected_pack_acceptance": "<= stage",
+      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "determinism_expectation": "hash-stable command and replay contracts",
+      "epistemic_expectation": "no omniscient disclosure; scopes respected"
+    },
+    {
+      "stage_id": "STAGE_2_INTELLIGENT_PRE_TOOL",
+      "fixture": "tests/fixtures/worlds/stage_2_intelligent_pre_tool/world_stage.json",
+      "required_test_suites": [
+        "test_load_and_validate",
+        "test_command_surface",
+        "test_pack_gating",
+        "test_epistemics",
+        "test_determinism_smoke",
+        "test_replay_hash"
+      ],
+      "tests": [
+        "tests/testx/stages/stage_2_intelligent_pre_tool/test_load_and_validate.py",
+        "tests/testx/stages/stage_2_intelligent_pre_tool/test_command_surface.py",
+        "tests/testx/stages/stage_2_intelligent_pre_tool/test_pack_gating.py",
+        "tests/testx/stages/stage_2_intelligent_pre_tool/test_epistemics.py",
+        "tests/testx/stages/stage_2_intelligent_pre_tool/test_determinism_smoke.py",
+        "tests/testx/stages/stage_2_intelligent_pre_tool/test_replay_hash.py"
+      ],
+      "expected_enabled_command_families": [
+        "life",
+        "tooling"
+      ],
+      "expected_disabled_command_families": [
+        "institutions",
+        "industry",
+        "future"
+      ],
+      "expected_pack_acceptance": "<= stage",
+      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "determinism_expectation": "hash-stable command and replay contracts",
+      "epistemic_expectation": "no omniscient disclosure; scopes respected"
+    },
+    {
+      "stage_id": "STAGE_3_PRE_TOOL_WORLD",
+      "fixture": "tests/fixtures/worlds/stage_3_pre_tool_world/world_stage.json",
+      "required_test_suites": [
+        "test_load_and_validate",
+        "test_command_surface",
+        "test_pack_gating",
+        "test_epistemics",
+        "test_determinism_smoke",
+        "test_replay_hash"
+      ],
+      "tests": [
+        "tests/testx/stages/stage_3_pre_tool_world/test_load_and_validate.py",
+        "tests/testx/stages/stage_3_pre_tool_world/test_command_surface.py",
+        "tests/testx/stages/stage_3_pre_tool_world/test_pack_gating.py",
+        "tests/testx/stages/stage_3_pre_tool_world/test_epistemics.py",
+        "tests/testx/stages/stage_3_pre_tool_world/test_determinism_smoke.py",
+        "tests/testx/stages/stage_3_pre_tool_world/test_replay_hash.py"
+      ],
+      "expected_enabled_command_families": [
+        "life",
+        "tooling"
+      ],
+      "expected_disabled_command_families": [
+        "institutions",
+        "industry",
+        "future"
+      ],
+      "expected_pack_acceptance": "<= stage",
+      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "determinism_expectation": "hash-stable command and replay contracts",
+      "epistemic_expectation": "no omniscient disclosure; scopes respected"
+    },
+    {
+      "stage_id": "STAGE_4_PRE_INDUSTRY",
+      "fixture": "tests/fixtures/worlds/stage_4_pre_industry/world_stage.json",
+      "required_test_suites": [
+        "test_load_and_validate",
+        "test_command_surface",
+        "test_pack_gating",
+        "test_epistemics",
+        "test_determinism_smoke",
+        "test_replay_hash"
+      ],
+      "tests": [
+        "tests/testx/stages/stage_4_pre_industry/test_load_and_validate.py",
+        "tests/testx/stages/stage_4_pre_industry/test_command_surface.py",
+        "tests/testx/stages/stage_4_pre_industry/test_pack_gating.py",
+        "tests/testx/stages/stage_4_pre_industry/test_epistemics.py",
+        "tests/testx/stages/stage_4_pre_industry/test_determinism_smoke.py",
+        "tests/testx/stages/stage_4_pre_industry/test_replay_hash.py"
+      ],
+      "expected_enabled_command_families": [
+        "life",
+        "tooling",
+        "institutions"
+      ],
+      "expected_disabled_command_families": [
+        "industry",
+        "future"
+      ],
+      "expected_pack_acceptance": "<= stage",
+      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "determinism_expectation": "hash-stable command and replay contracts",
+      "epistemic_expectation": "no omniscient disclosure; scopes respected"
+    },
+    {
+      "stage_id": "STAGE_5_PRE_PRESENT",
+      "fixture": "tests/fixtures/worlds/stage_5_pre_present/world_stage.json",
+      "required_test_suites": [
+        "test_load_and_validate",
+        "test_command_surface",
+        "test_pack_gating",
+        "test_epistemics",
+        "test_determinism_smoke",
+        "test_replay_hash"
+      ],
+      "tests": [
+        "tests/testx/stages/stage_5_pre_present/test_load_and_validate.py",
+        "tests/testx/stages/stage_5_pre_present/test_command_surface.py",
+        "tests/testx/stages/stage_5_pre_present/test_pack_gating.py",
+        "tests/testx/stages/stage_5_pre_present/test_epistemics.py",
+        "tests/testx/stages/stage_5_pre_present/test_determinism_smoke.py",
+        "tests/testx/stages/stage_5_pre_present/test_replay_hash.py"
+      ],
+      "expected_enabled_command_families": [
+        "life",
+        "tooling",
+        "institutions",
+        "industry"
+      ],
+      "expected_disabled_command_families": [
+        "future"
+      ],
+      "expected_pack_acceptance": "<= stage",
+      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "determinism_expectation": "hash-stable command and replay contracts",
+      "epistemic_expectation": "no omniscient disclosure; scopes respected"
+    },
+    {
+      "stage_id": "STAGE_6_FUTURE",
+      "fixture": "tests/fixtures/worlds/stage_6_future/world_stage.json",
+      "required_test_suites": [
+        "test_load_and_validate",
+        "test_command_surface",
+        "test_pack_gating",
+        "test_epistemics",
+        "test_determinism_smoke",
+        "test_replay_hash"
+      ],
+      "tests": [
+        "tests/testx/stages/stage_6_future/test_load_and_validate.py",
+        "tests/testx/stages/stage_6_future/test_command_surface.py",
+        "tests/testx/stages/stage_6_future/test_pack_gating.py",
+        "tests/testx/stages/stage_6_future/test_epistemics.py",
+        "tests/testx/stages/stage_6_future/test_determinism_smoke.py",
+        "tests/testx/stages/stage_6_future/test_replay_hash.py"
+      ],
+      "expected_enabled_command_families": [
+        "life",
+        "tooling",
+        "institutions",
+        "industry",
+        "future"
+      ],
+      "expected_disabled_command_families": [],
+      "expected_pack_acceptance": "<= stage",
+      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "determinism_expectation": "hash-stable command and replay contracts",
+      "epistemic_expectation": "no omniscient disclosure; scopes respected"
+    }
+  ],
+  "regression_tests": [
+    "tests/testx/stage_regression/test_no_life_in_stage_0.py",
+    "tests/testx/stage_regression/test_no_tools_in_stage_2_and_3.py",
+    "tests/testx/stage_regression/test_no_industry_in_stage_4.py",
+    "tests/testx/stage_regression/test_no_future_affordances_pre_6.py"
+  ]
+}

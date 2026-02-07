@@ -133,3 +133,51 @@ dom_add_testx(NAME capability_stage_gating_contracts
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME stage_matrix_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stage_matrix_contracts.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+set(DOM_STAGE_MATRIX_STAGE_DIRS
+    stage_0_nonbio
+    stage_1_nonintelligent_life
+    stage_2_intelligent_pre_tool
+    stage_3_pre_tool_world
+    stage_4_pre_industry
+    stage_5_pre_present
+    stage_6_future
+)
+
+set(DOM_STAGE_MATRIX_SUITES
+    test_load_and_validate
+    test_command_surface
+    test_pack_gating
+    test_epistemics
+    test_determinism_smoke
+    test_replay_hash
+)
+
+foreach(stage_dir IN LISTS DOM_STAGE_MATRIX_STAGE_DIRS)
+    foreach(suite_name IN LISTS DOM_STAGE_MATRIX_SUITES)
+        dom_add_testx(NAME stage_matrix_${stage_dir}_${suite_name}
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stages/${stage_dir}/${suite_name}.py
+            LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+        )
+    endforeach()
+endforeach()
+
+set(DOM_STAGE_MATRIX_REGRESSION
+    test_no_life_in_stage_0
+    test_no_tools_in_stage_2_and_3
+    test_no_industry_in_stage_4
+    test_no_future_affordances_pre_6
+)
+
+foreach(regression_name IN LISTS DOM_STAGE_MATRIX_REGRESSION)
+    dom_add_testx(NAME stage_regression_${regression_name}
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stage_regression/${regression_name}.py
+        LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+    )
+endforeach()
