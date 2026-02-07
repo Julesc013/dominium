@@ -30,6 +30,9 @@
     },
     "extensions": {
       "notes": "Template-only process, capability, and institution records."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

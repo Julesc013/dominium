@@ -30,6 +30,9 @@
     },
     "extensions": {
       "notes": "Minimal scenario definitions with explicit pack/capability references."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

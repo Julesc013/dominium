@@ -33,6 +33,9 @@
     },
     "extensions": {
       "notes": "Macro-scale galaxy example; procedural and hybrid only."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

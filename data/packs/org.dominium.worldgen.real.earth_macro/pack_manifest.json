@@ -33,6 +33,9 @@
     },
     "extensions": {
       "notes": "Real-world macro Earth overlay; explicit anchors with procedural refinement below ceiling."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

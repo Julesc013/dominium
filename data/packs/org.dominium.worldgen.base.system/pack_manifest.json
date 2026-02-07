@@ -30,6 +30,9 @@
     },
     "extensions": {
       "notes": "Procedural star system formation; no planets guaranteed."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

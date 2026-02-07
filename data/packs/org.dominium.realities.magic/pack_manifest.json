@@ -45,6 +45,9 @@
     },
     "extensions": {
       "notes": "Magic reality pack; no engine changes or privileged physics."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }

@@ -1,6 +1,6 @@
 SCHEMA: pack_manifest.schema
 schema_id: dominium.schema.pack_manifest
-schema_version: 2.0.0
+schema_version: 2.1.0
 stability: core
 
 PURPOSE:
@@ -47,6 +47,9 @@ record pack_manifest
     - pack_version: tag
     - pack_format_version: integer
     - requires_engine: tag
+    - requires_stage: stage_id
+    - provides_stage: stage_id
+    - stage_features: [tag]
     - provides: [capability_ref]
     - depends: [capability_dependency]
     - extensions: map
@@ -83,3 +86,13 @@ record capability_dependency
 record provenance_ref
   required:
     - provenance_id: id
+
+TYPE ALIASES:
+stage_id:
+  - STAGE_0_NONBIO_WORLD
+  - STAGE_1_NONINTELLIGENT_LIFE
+  - STAGE_2_INTELLIGENT_PRE_TOOL
+  - STAGE_3_PRE_TOOL_WORLD
+  - STAGE_4_PRE_INDUSTRY
+  - STAGE_5_PRE_PRESENT
+  - STAGE_6_FUTURE

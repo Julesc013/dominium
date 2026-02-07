@@ -21,6 +21,16 @@ from fab_lib import add_issue, load_json  # noqa: E402
 
 
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
+STAGE_FEATURE_RE = re.compile(r"^[a-z][a-z0-9_]*[0-9]+\.[a-z0-9_]+(?:\.[a-z0-9_]+)+$")
+STAGE_ORDER = [
+    "STAGE_0_NONBIO_WORLD",
+    "STAGE_1_NONINTELLIGENT_LIFE",
+    "STAGE_2_INTELLIGENT_PRE_TOOL",
+    "STAGE_3_PRE_TOOL_WORLD",
+    "STAGE_4_PRE_INDUSTRY",
+    "STAGE_5_PRE_PRESENT",
+    "STAGE_6_FUTURE",
+]
 
 
 def normalize_list(value):
@@ -41,6 +51,54 @@ def detect_pack_root(pack_root, pack_id, repo_root):
 
 def semver_ok(value):
     return isinstance(value, str) and SEMVER_RE.match(value) is not None
+
+
+def stage_rank(stage_id):
+    try:
+        return STAGE_ORDER.index(stage_id)
+    except ValueError:
+        return -1
+
+
+def validate_stage_metadata(record, issues):
+    requires_stage = record.get("requires_stage")
+    provides_stage = record.get("provides_stage")
+    stage_features = record.get("stage_features")
+
+    if not isinstance(requires_stage, str):
+        add_issue(issues, "manifest_requires_stage", "requires_stage missing", "record.requires_stage")
+    elif stage_rank(requires_stage) < 0:
+        add_issue(issues, "manifest_requires_stage", "requires_stage invalid", "record.requires_stage")
+
+    if not isinstance(provides_stage, str):
+        add_issue(issues, "manifest_provides_stage", "provides_stage missing", "record.provides_stage")
+    elif stage_rank(provides_stage) < 0:
+        add_issue(issues, "manifest_provides_stage", "provides_stage invalid", "record.provides_stage")
+
+    if isinstance(requires_stage, str) and isinstance(provides_stage, str):
+        req_rank = stage_rank(requires_stage)
+        prov_rank = stage_rank(provides_stage)
+        if req_rank >= 0 and prov_rank >= 0 and prov_rank < req_rank:
+            add_issue(issues, "manifest_stage_order",
+                      "provides_stage must be >= requires_stage", "record.provides_stage")
+
+    if not isinstance(stage_features, list):
+        add_issue(issues, "manifest_stage_features", "stage_features missing", "record.stage_features")
+        return
+
+    for idx, feature in enumerate(stage_features):
+        if not isinstance(feature, str) or STAGE_FEATURE_RE.match(feature) is None:
+            add_issue(issues, "manifest_stage_feature_key",
+                      "stage_features key must be namespaced and versioned",
+                      "record.stage_features[{}]".format(idx))
+
+    if isinstance(requires_stage, str) and isinstance(provides_stage, str):
+        req_rank = stage_rank(requires_stage)
+        prov_rank = stage_rank(provides_stage)
+        if req_rank >= 0 and prov_rank >= 0 and prov_rank > req_rank and not stage_features:
+            add_issue(issues, "manifest_stage_features",
+                      "stage_features required when provides_stage exceeds requires_stage",
+                      "record.stage_features")
 
 
 def extract_capabilities(entries):
@@ -98,6 +156,8 @@ def validate_manifest(record, pack_root, issues):
 
     if "extensions" not in record:
         add_issue(issues, "extensions_missing", "extensions missing", "record.extensions")
+
+    validate_stage_metadata(record, issues)
 
     if pack_root and isinstance(pack_id, str):
         folder = os.path.basename(pack_root.rstrip("\\/"))

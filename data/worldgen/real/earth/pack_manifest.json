@@ -73,6 +73,9 @@
     },
     "extensions": {
       "notes": "Canonical Earth refinement data (macro to local). Optional overlay only."
-    }
+    },
+    "requires_stage": "STAGE_0_NONBIO_WORLD",
+    "provides_stage": "STAGE_0_NONBIO_WORLD",
+    "stage_features": []
   }
 }
