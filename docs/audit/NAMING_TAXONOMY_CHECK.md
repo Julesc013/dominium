@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-07
+Last Reviewed: 2026-02-08
 Supersedes: none
 Superseded By: none
 
@@ -29,6 +29,9 @@ All observed pack IDs are lowercase, dot-separated, and namespaced. No illegal
 Schemas are stored as flat `schema/*.schema` files with `schema_id` and
 semantic `schema_version`. No conflicting naming patterns detected in file
 names. See `docs/schema/SCHEMA_INDEX.md` for authoritative naming rules.
+
+All checked schema files include an explicit `stability:` field; no missing
+stability annotations were detected in this pass.
 
 ## Registries / namespaces
 

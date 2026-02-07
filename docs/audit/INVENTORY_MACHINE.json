@@ -387,7 +387,7 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/cache-v2-39d4039d7f5a79985399.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/cache-v2-e6c5d02f56d0fbb4468c.json",
       "subsystem": "build"
     },
     {
@@ -399,7 +399,7 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/codemodel-v2-4be511a2b629b4d18fa3.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/codemodel-v2-a8676f06b90188d9a4a9.json",
       "subsystem": "build"
     },
     {
@@ -813,55 +813,55 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/index-2026-02-07T06-48-34-0995.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/index-2026-02-07T16-56-56-0354.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Debug-c46753077f87c39c4f4b.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Debug-01a1b1404c7cb61d5c96.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Debug-f2b54e5d4f0c6a7d281d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Debug-4ace933a164b8377325e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-MinSizeRel-c46753077f87c39c4f4b.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-MinSizeRel-01a1b1404c7cb61d5c96.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-MinSizeRel-f2b54e5d4f0c6a7d281d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-MinSizeRel-4ace933a164b8377325e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Release-c46753077f87c39c4f4b.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Release-01a1b1404c7cb61d5c96.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Release-f2b54e5d4f0c6a7d281d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-Release-4ace933a164b8377325e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-RelWithDebInfo-c46753077f87c39c4f4b.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-RelWithDebInfo-01a1b1404c7cb61d5c96.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-RelWithDebInfo-f2b54e5d4f0c6a7d281d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-ALL_BUILD-RelWithDebInfo-4ace933a164b8377325e.json",
       "subsystem": "build"
     },
     {
@@ -963,25 +963,25 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-Debug-1a85d39190e9a505a47c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-Debug-c16348f0cc2c94c5ad81.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-MinSizeRel-1a85d39190e9a505a47c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-MinSizeRel-c16348f0cc2c94c5ad81.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-Release-1a85d39190e9a505a47c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-Release-c16348f0cc2c94c5ad81.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-RelWithDebInfo-1a85d39190e9a505a47c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-check_all-RelWithDebInfo-c16348f0cc2c94c5ad81.json",
       "subsystem": "build"
     },
     {
@@ -1227,49 +1227,49 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-Debug-91753e3bc7bb7e97d647.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-Debug-484b12da58449e1082f8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-MinSizeRel-769f6f5cf915d8bc2c0e.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-MinSizeRel-c5046588d12f56322874.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-Release-0cad96744332ee553196.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-Release-d181b8f0e7696bd674e8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-RelWithDebInfo-ad116e334546ee2774ec.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-client_app_win32-RelWithDebInfo-780e3966f83ac457b95f.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-Debug-74b59d9ef6170ef60876.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-Debug-bb7b9f9e41a9fe002a9e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-MinSizeRel-74b59d9ef6170ef60876.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-MinSizeRel-bb7b9f9e41a9fe002a9e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-Release-74b59d9ef6170ef60876.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-Release-bb7b9f9e41a9fe002a9e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-RelWithDebInfo-74b59d9ef6170ef60876.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dist_meta-RelWithDebInfo-bb7b9f9e41a9fe002a9e.json",
       "subsystem": "build"
     },
     {
@@ -1323,25 +1323,25 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-Debug-37f62bea89be7de2f8bf.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-Debug-197f9244791d3beb38cf.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-MinSizeRel-71b05016181c422bdc46.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-MinSizeRel-bbb8236907ba41ab6d32.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-Release-a4c3070845a7061c87f8.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-Release-b05698fc169b8fd8823c.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-RelWithDebInfo-ddc11f0e0a8854abdba9.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_client-RelWithDebInfo-26690355af37f0d70e58.json",
       "subsystem": "build"
     },
     {
@@ -1371,25 +1371,25 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-Debug-149dd93baf5a2339990f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-Debug-f7d2f64a8fdf9daf3799.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-MinSizeRel-ad788ca1d210979ebd4f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-MinSizeRel-3e25ee971dd338ffec57.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-Release-7fa0a51db5c2e44aa486.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-Release-fbb1f0412d8257951bb7.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-RelWithDebInfo-f891ca0fac50bb785f1c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-dominium_server-RelWithDebInfo-9a3ba67e5bb741725119.json",
       "subsystem": "build"
     },
     {
@@ -1563,49 +1563,49 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-Debug-5dfb1d61771d92e069c1.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-Debug-38d3da9321847cbe42cf.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-MinSizeRel-cc2f1779ba0d78855b0d.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-MinSizeRel-dc576c8d45fee24753fa.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-Release-6aab7d4b94b1314b3091.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-Release-3a7b5d06892b7633555d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-RelWithDebInfo-dff6a6a5fe82b94817f4.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_app_win32-RelWithDebInfo-e93dc431422d8cd43d57.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-Debug-1b24fa76c5eb7c968147.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-Debug-09902c6e28a35e8d0d8d.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-MinSizeRel-0d9e3f2a1615582f751f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-MinSizeRel-1edc53f06ad7a6c14398.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-Release-f8c326ae086946b0b95f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-Release-ce9a1db631925ac0b3db.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-RelWithDebInfo-7894f510364d0bb7aef9.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-launcher_cli-RelWithDebInfo-ece85a16d7770f635bbb.json",
       "subsystem": "build"
     },
     {
@@ -1803,73 +1803,73 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-Debug-3d1494a71aedd1944840.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-Debug-a68861aeff5db09c2be0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-MinSizeRel-60348d633d65415838bf.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-MinSizeRel-0b8f6edfd80f659ebf4f.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-Release-6275577b064f95fe2be3.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-Release-b121024ff42fc08ecc39.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-RelWithDebInfo-5b52cbf805bb733d6a61.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-server_app_win32-RelWithDebInfo-9f131de903d365ed28f8.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-Debug-835cf951b60eb25bee4f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-Debug-7dec4195fae8f522300b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-MinSizeRel-861fd49d2a1e085749fc.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-MinSizeRel-0a74012921236e543bbf.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-Release-0b1ef4befd86830570c3.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-Release-a5b00aa353aff0b4edae.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-RelWithDebInfo-3285745aa053e0311765.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_app_win32-RelWithDebInfo-6c2c43f7c079e93cd6df.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-Debug-eb4097237da94f295cf0.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-Debug-b1714c91d58528a32d1e.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-MinSizeRel-ac6d852fa2a22d314e78.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-MinSizeRel-a030346af53a00cb09f1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-Release-288dfcb9d5538f0d7080.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-Release-2a1ceadd0dbacb3aaad5.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-RelWithDebInfo-479a470c9c31142713f9.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-setup_cli-RelWithDebInfo-89c641d9d01975e75341.json",
       "subsystem": "build"
     },
     {
@@ -1995,49 +1995,49 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-Debug-7271685daf1ce555ba17.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-Debug-4ac214debcefd944b594.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-MinSizeRel-8d5023ec9b026eca17ca.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-MinSizeRel-100072ac7e15ba924d80.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-Release-5e83a5316756d7f69f48.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-Release-fca83c053080cbab6eee.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-RelWithDebInfo-ce70f3e3848c27bcc3fa.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_bind-RelWithDebInfo-3a7191a1e11f88d4fba0.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-Debug-9a93d7f572b666b04c6c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-Debug-bd009a1dac96edc8df06.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-MinSizeRel-d8bbc0e5035e794871d0.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-MinSizeRel-e4c205239e4ea50c21e1.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-Release-f495790121af8318783f.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-Release-e6da9234d221ca87803b.json",
       "subsystem": "build"
     },
     {
       "category": "build",
       "doc": "docs/build/README.md",
-      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-RelWithDebInfo-07b135203a75102f881c.json",
+      "path": "build/msvc-base/.cmake/api/v1/reply/target-tool_ui_doc_annotate-RelWithDebInfo-7fb047abeebf368e7cad.json",
       "subsystem": "build"
     },
     {
@@ -54957,6 +54957,1602 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/access_set.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/animal_agents.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/audio.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/autonomy_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/backend_detect.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/budget_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/capability_set.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/climate_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/compat_core.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/compat_modes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/component_view.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/conflict_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/core.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/cost_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/crafting_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/delta_codec.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/det_order.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/det_reduce.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dgfx_trace.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_accum.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_action.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_action_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_agent.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_agent_comp.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_anchor.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_budget.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_capability.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_data_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_delta_buffer.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_delta_commit.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_delta_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_det_hash.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_dirtyset.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_due_sched.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_frame.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_frame_eval.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_frame_graph.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_graph.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_graph_adj.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_graph_boundary.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_graph_iter.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_graph_part.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_graph_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_graph_sort.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_idmap.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_interest.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_lod_index.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_order_key.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_phase.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_pkt_common.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_pose.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_promo.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_quant.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_rebuild.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_rebuild_work.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_rep.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_representable.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_sched.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_sched_hash.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_sched_replay.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_stride.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_tlv_canon.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_tlv_schema.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_tlv_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_type_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_work_item.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dg_work_queue.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domain_cache.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domain_query.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domain_streaming_hints.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domain_tile.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domain_volume.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.lib.recipe",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_semver.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_build_info.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_control.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_deterministic_math.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_ledger_accounts.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_ledger_aggregate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_ledger_core.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_ledger_events.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_ledger_lots.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_ledger_transactions.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_sim.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_time_astronomy.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_time_core.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_time_events.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dom_time_frames.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_dir_sorted.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_guard.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_perf.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_platform_stub.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_posix.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_proc_winnt.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_sdl2_stub.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_term.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_terminal_detect_winnt.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_win32_headless.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dsys_window_winnt.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/dtlv.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_account.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_agent.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_blueprint.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_build.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_build_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_caps.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_caps_builtin.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_caps_export.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_container_state.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_content.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_content_schema.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_content_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_econ_metrics.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_econ_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_env.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_env_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_env_volume.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_gfx.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_gfx_null.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_gfx_soft.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_gfx_stub.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_hydro.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_hydro_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_job.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_job_planner.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_job_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_litho.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_litho_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_macro_capsule_store.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_macro_capsule_subsys.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_macro_event_queue_store.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_macro_event_queue_subsys.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_macro_schedule_store.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_macro_schedule_subsys.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_net.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_net_apply.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_net_cmd.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_net_proto.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_net_schema.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_net_session.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_net_transport.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_org.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_org_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_policy.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_policy_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_replay.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_res.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_research_state.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_research_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_res_model_strata.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_res_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_serialize.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_sim.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_sim_hash.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_sim_process.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_struct.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_struct_blueprint.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_struct_instance.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_struct_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_subsystem.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_subsystems_init.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_system.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_system_input.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_tlv_kv.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_tlv_schema.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_trans.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_trans_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_ui.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_ups.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_vehicle.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_vehicle_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_view.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_world.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_worldgen.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_world_frame.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/d_world_terrain.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/economy_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/ecs_archetype_id.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/energy_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/entity_range.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/event.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/execution_context.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/execution_policy.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/fixed.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/fixed_debug.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/fixed_math.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/fluid_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/fs_util.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/geology_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/gpu_caps.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/gpu_kernels.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/hazard_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/heat_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/history_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/ime.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/information_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/input.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/input_trace.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/inst.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/instance.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/institution_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/kernel_dispatch.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/kernel_iface.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/kernel_policy.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/kernel_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/kernel_selector.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/knowledge_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/manifest_io.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/mining_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/model_table.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/model_tree.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/mod_loader.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/op_ids.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/package_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/packed_view.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/pkg.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/pkt_hash.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/process_guard.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/risk_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/rng.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/rng_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/rng_streams.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/scalar_kernels.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/scheduler_iface.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/scheduler_parallel.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/scheduler_single_thread.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/schema_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/sim.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/simd_caps.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/simd_kernels.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/soa_archetype_storage.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/spacetime.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/srz_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/standard_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/state.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/storage_iface.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/structure_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/sys.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/sys_caps.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/task_graph.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/task_node.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/terrain_mesh.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/terrain_surface.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/travel_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/trust_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/tui.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/types.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/ui.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/vegetation_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/view.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/visibility_mask.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/weather_fields.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/CL.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/Cl.items.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/CL.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/CL.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/CustomBuild.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/CustomBuild.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/CustomBuild.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/domino_engine.lastbuildstate",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/Lib.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/Lib.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/domino_engine.dir/Release/domino_engine.tlog/Lib.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/engine/tests/agent_foundation_contract_tests.vcxproj",
       "subsystem": "build"
     },
@@ -58767,6 +60363,36 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/x64/Release/engine_include_sanity/engine_include_sanity.recipe",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/x64/Release/engine_include_sanity/engine_i.E00C380F.tlog/CustomBuild.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/x64/Release/engine_include_sanity/engine_i.E00C380F.tlog/CustomBuild.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/x64/Release/engine_include_sanity/engine_i.E00C380F.tlog/CustomBuild.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/engine/x64/Release/engine_include_sanity/engine_i.E00C380F.tlog/engine_include_sanity.lastbuildstate",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/game/cmake_install.cmake",
       "subsystem": "build"
     },
@@ -59890,6 +61516,1062 @@
       "category": "build",
       "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/game/dominium_game.dir/Debug/dominium_game.tlog/Lib.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/ability_packages.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/access_ir.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_aggregate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_aggregation_tasks.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_authority.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_belief_update.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_collapse.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_conflict.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_constraint.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_contract.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_doctrine_tasks.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_evaluator.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_goal.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_history_macro.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_institution.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_planner.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_planning_tasks.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_refinement.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_role.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_schedule.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/agent_system.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/aggregate_beliefs.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/aggregate_goals.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/birth_event.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/birth_pipeline.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/birth_refusal_codes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/blockade.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/building_machine.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/casualty_generator.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/city_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/city_refusal_codes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/city_services_stub.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/cohort_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/cohort_types.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/cohort_update_hooks.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/construction_processes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/consumption_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/continuation_policy.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/controller_binding.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/control_authority.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/convoy_security.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/death_event.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/death_pipeline.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/death_scene_observation_hooks.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/delegation.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/demobilization_pipeline.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/demographics.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/diffusion_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/disruption_effects.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/doctrine.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/doctrine_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/domain_transitions.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.lib.recipe",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game_stub.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dom_data_validate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dom_epistemic.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dom_fidelity.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dom_interest_macro.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dom_interest_set.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dom_interest_sources.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/economy_system.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/enforcement_capacity.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/engagement.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/engagement_resolution.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/engagement_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/estate.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/fab_interpreters.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/field_storage.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/gestation_state.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/governance_system.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/household_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/infrastructure_effects.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/inheritance_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/institution_knowledge_binding.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/interdiction.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/interest_system.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/interplanetary_logistics.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/interstellar_logistics.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/jurisdiction_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/jurisdiction_resolver.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/knowledge_item.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/knowledge_refusal_codes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/law_context_builder.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/law_kernel.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/ledger_tasks.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/legitimacy_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/legitimacy_tasks.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/life_audit_log.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/life_events_stub.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/life_refusal_codes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/lineage.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/local_processes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/logistics_flow.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/loss_accounting.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/machine_ops.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/machine_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/macro_due_scheduler_hooks.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/maintenance_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/migration_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/military_cohort.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/mobilization_pipeline.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/mod_compat.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/mod_graph_resolver.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/mod_loader.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/mod_manifest.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/mod_safe_mode.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/morale_state.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/mp0_session.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/needs_constraints.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/needs_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/network_graph.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/occupation_state.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/org_governance_binding.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/pacification_policies.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/parts_and_assemblies.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/physical_audit.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/player_intent.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/policy_bridge.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/policy_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/policy_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/population_projections.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/population_refusal_codes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/population_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/production_chain.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/readiness_state.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/relevance_transitions.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/remains.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/remains_decay_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/reproduction_rules.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/research_process.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/resistance_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/resistance_state.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/resource_processes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/rights_post_death.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/route_control.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/routing_stub.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/salvage.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/scale_collapse_expand.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/scale_domains.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/scale_interest_binding.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/scale_time_warp.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/secrecy_controls.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/security_force.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/shelter_proxy.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/siege_effects.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/store_model.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/survival_production_actions.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/system_registry.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/tech_activation.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/tech_effects.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/tech_prerequisites.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/terrain_processes.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/territory_control.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/transport_capacity.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/ups_runtime.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/visitability_system.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/war_scale_scheduler.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/war_system.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/war_tasks_engagement.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/war_tasks_interdiction.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/war_tasks_occupation.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/work_graph_builder.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/work_ir_emit.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/world_streaming_system.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/zoning_rules.obj",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/CL.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/Cl.items.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/CL.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/CL.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/CustomBuild.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/CustomBuild.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/CustomBuild.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/dominium_game.lastbuildstate",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/Lib.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/Lib.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/dominium_game.dir/Release/dominium_game.tlog/Lib.write.1.tlog",
       "subsystem": "build"
     },
     {
@@ -61156,6 +63838,36 @@
       "category": "build",
       "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/game/x64/Debug/game_include_sanity/game_inc.BDC07E3E.tlog/game_include_sanity.lastbuildstate",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/x64/Release/game_include_sanity/game_include_sanity.recipe",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/x64/Release/game_include_sanity/game_inc.BDC07E3E.tlog/CustomBuild.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/x64/Release/game_include_sanity/game_inc.BDC07E3E.tlog/CustomBuild.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/x64/Release/game_include_sanity/game_inc.BDC07E3E.tlog/CustomBuild.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/game/x64/Release/game_include_sanity/game_inc.BDC07E3E.tlog/game_include_sanity.lastbuildstate",
       "subsystem": "build"
     },
     {
@@ -64797,6 +67509,78 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_24.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_24.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_25.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_25.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_26.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_26.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_27.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_27.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_28.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_28.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_29.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_29.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_3.save",
       "subsystem": "build"
     },
@@ -64809,6 +67593,126 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_30.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_30.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_31.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_31.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_32.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_32.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_33.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_33.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_34.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_34.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_35.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_35.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_36.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_36.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_37.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_37.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_38.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_38.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_39.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_39.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_4.save",
       "subsystem": "build"
     },
@@ -64816,6 +67720,30 @@
       "category": "build",
       "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_4.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_40.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_40.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_41.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_41.save.compat_report.json",
       "subsystem": "build"
     },
     {
@@ -74668,6 +77596,66 @@
       "category": "build",
       "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/x64/Debug/ZERO_CHECK/ZERO_CHECK.tlog/ZERO_CHECK.lastbuildstate",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/testx_all/testx_all.recipe",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/testx_all/testx_all.tlog/CustomBuild.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/testx_all/testx_all.tlog/CustomBuild.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/testx_all/testx_all.tlog/CustomBuild.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/testx_all/testx_all.tlog/testx_all.lastbuildstate",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/ZERO_CHECK/ZERO_CHECK.recipe",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/ZERO_CHECK/ZERO_CHECK.tlog/CustomBuild.command.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/ZERO_CHECK/ZERO_CHECK.tlog/CustomBuild.read.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/ZERO_CHECK/ZERO_CHECK.tlog/CustomBuild.write.1.tlog",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/x64/Release/ZERO_CHECK/ZERO_CHECK.tlog/ZERO_CHECK.lastbuildstate",
       "subsystem": "build"
     },
     {
@@ -93591,6 +96579,12 @@
     {
       "category": "test",
       "doc": "",
+      "path": "tests/invariant/process_registry_tests.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
       "path": "tests/invariant/raw_file_paths_invariant.py",
       "subsystem": "test"
     },
@@ -94210,6 +97204,30 @@
       "category": "tool",
       "doc": "docs/tools/TOOLING_OVERVIEW.md",
       "path": "tools/audit/generate_inventory.py",
+      "subsystem": "tools"
+    },
+    {
+      "category": "tool",
+      "doc": "docs/tools/TOOLING_OVERVIEW.md",
+      "path": "tools/audit/generate_inventory_md.py",
+      "subsystem": "tools"
+    },
+    {
+      "category": "tool",
+      "doc": "docs/tools/TOOLING_OVERVIEW.md",
+      "path": "tools/audit/pack_audit.py",
+      "subsystem": "tools"
+    },
+    {
+      "category": "tool",
+      "doc": "docs/tools/TOOLING_OVERVIEW.md",
+      "path": "tools/audit/scan_markers.py",
+      "subsystem": "tools"
+    },
+    {
+      "category": "tool",
+      "doc": "docs/tools/TOOLING_OVERVIEW.md",
+      "path": "tools/audit/test_matrix.py",
       "subsystem": "tools"
     },
     {
@@ -96801,12 +99819,12 @@
   ],
   "root": "c:\\Inbox\\Git Repos\\dominium",
   "summary": {
-    "build": 14013,
+    "build": 14511,
     "ci": 12,
     "data": 499,
     "distribution": 17,
     "schema": 322,
-    "test": 834,
-    "tool": 436
+    "test": 835,
+    "tool": 440
   }
 }
