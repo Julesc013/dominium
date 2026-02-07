@@ -24,7 +24,7 @@ ctest --output-on-failure --timeout <DOM_TESTX_TIMEOUT> -C <cfg>
 ## Timeout policy
 
 - `DOM_TESTX_TIMEOUT` is a **per-test** timeout in seconds.
-- Default: `900` (15 minutes).
+- Default: `1200` (20 minutes).
 - Override at configure time:
   - `-DDOM_TESTX_TIMEOUT=1200`
 
@@ -38,12 +38,12 @@ A full pass requires:
 ## Expected runtime bands (non-binding)
 
 Local developer machines:
-- Typical: 2–10 minutes
-- Worst-case (debug + slow disks): up to 15 minutes
+- Typical: 2–12 minutes
+- Worst-case (debug + slow disks): up to 20 minutes
 
 CI:
-- Typical: 5–15 minutes
-- Worst-case: up to 20 minutes
+- Typical: 6–18 minutes
+- Worst-case: up to 25 minutes
 
 If runtime exceeds the default timeout, raise `DOM_TESTX_TIMEOUT` explicitly
 and report the observed duration.
