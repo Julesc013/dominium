@@ -193,6 +193,8 @@ static int test_lockstep_parity(void)
     life_controller_binding_set bindings_a;
     life_controller_binding_set bindings_b;
     life_cmd_continuation_select cmd;
+    life_refusal_code refusal_a = LIFE_REFUSAL_NONE;
+    life_refusal_code refusal_b = LIFE_REFUSAL_NONE;
     u64 person_a = 0u;
     u64 person_b = 0u;
 
@@ -204,13 +206,17 @@ static int test_lockstep_parity(void)
     cmd.target_person_id = 77u;
     cmd.action = LIFE_CONT_ACTION_TRANSFER;
 
-    EXPECT(life_cmd_continuation_apply(&bindings_a, &cmd) == 0, "apply A failed");
-    EXPECT(life_cmd_continuation_apply(&bindings_b, &cmd) == 0, "apply B failed");
+    EXPECT(life_cmd_continuation_apply_ex(&bindings_a, &cmd, &refusal_a) != 0,
+           "apply A should refuse");
+    EXPECT(life_cmd_continuation_apply_ex(&bindings_b, &cmd, &refusal_b) != 0,
+           "apply B should refuse");
+    EXPECT(refusal_a == LIFE_REFUSAL_NOT_IMPLEMENTED, "apply A refusal mismatch");
+    EXPECT(refusal_b == LIFE_REFUSAL_NOT_IMPLEMENTED, "apply B refusal mismatch");
 
-    EXPECT(life_controller_bindings_get(&bindings_a, 3u, &person_a) == 1, "binding A missing");
-    EXPECT(life_controller_bindings_get(&bindings_b, 3u, &person_b) == 1, "binding B missing");
-    EXPECT(person_a == person_b, "lockstep parity mismatch");
-    EXPECT(person_a == 77u, "lockstep binding mismatch");
+    EXPECT(life_controller_bindings_get(&bindings_a, 3u, &person_a) == 0,
+           "binding A should remain unset");
+    EXPECT(life_controller_bindings_get(&bindings_b, 3u, &person_b) == 0,
+           "binding B should remain unset");
     return 0;
 }
 

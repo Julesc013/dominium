@@ -13,6 +13,7 @@ DETERMINISM: Service checks are deterministic.
 #define DOMINIUM_RULES_CITY_SERVICES_STUB_H
 
 #include "domino/core/types.h"
+#include "dominium/rules/city/city_refusal_codes.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,6 +26,8 @@ typedef struct city_service_state {
 } city_service_state;
 
 int city_services_available(const city_service_state* state);
+int city_services_available_ex(const city_service_state* state,
+                               civ1_refusal_code* out_refusal);
 
 #ifdef __cplusplus
 } /* extern "C" */

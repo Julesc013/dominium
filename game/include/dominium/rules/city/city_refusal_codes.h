@@ -24,7 +24,8 @@ typedef enum civ1_refusal_code {
     CIV1_REFUSAL_CAPACITY_UNAVAILABLE,
     CIV1_REFUSAL_MAINTENANCE_TOO_LOW,
     CIV1_REFUSAL_OWNER_NOT_AUTHORIZED,
-    CIV1_REFUSAL_CITY_NOT_FOUND
+    CIV1_REFUSAL_CITY_NOT_FOUND,
+    CIV1_REFUSAL_NOT_IMPLEMENTED
 } civ1_refusal_code;
 
 const char* civ1_refusal_to_string(civ1_refusal_code code);

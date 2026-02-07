@@ -8,24 +8,25 @@ FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 THREADING MODEL: No internal synchronization; callers must serialize access.
 ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Command application is deterministic.
+NOTE: PERMANENT STUB — explicit refusal until LIFE continuation execution is implemented.
 */
 #include "dominium/life/life_events_stub.h"
 
 int life_cmd_continuation_apply(life_controller_binding_set* bindings,
                                 const life_cmd_continuation_select* cmd)
 {
-    if (!bindings || !cmd) {
-        return -1;
+    life_refusal_code refusal = LIFE_REFUSAL_NONE;
+    return life_cmd_continuation_apply_ex(bindings, cmd, &refusal);
+}
+
+int life_cmd_continuation_apply_ex(life_controller_binding_set* bindings,
+                                   const life_cmd_continuation_select* cmd,
+                                   life_refusal_code* out_refusal)
+{
+    (void)bindings;
+    (void)cmd;
+    if (out_refusal) {
+        *out_refusal = LIFE_REFUSAL_NOT_IMPLEMENTED;
     }
-    if (cmd->action == LIFE_CONT_ACTION_PENDING) {
-        return 0;
-    }
-    if (cmd->action == LIFE_CONT_ACTION_TRANSFER) {
-        return life_controller_bindings_set(bindings, cmd->controller_id, cmd->target_person_id);
-    }
-    if (cmd->action == LIFE_CONT_ACTION_SPECTATOR ||
-        cmd->action == LIFE_CONT_ACTION_NONE) {
-        return life_controller_bindings_set(bindings, cmd->controller_id, 0u);
-    }
-    return -2;
+    return -1;
 }
