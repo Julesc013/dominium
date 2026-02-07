@@ -544,8 +544,8 @@ def check_schema_version_bumps(repo_root):
         if diff is None:
             violations.append("{}: unable to diff {}".format(invariant_id, rel))
             continue
-        removed = re.search(r"^-schema_version:\\s*(.+)$", diff, re.MULTILINE)
-        added = re.search(r"^\\+schema_version:\\s*(.+)$", diff, re.MULTILINE)
+        removed = re.search(r"^-schema_version:\s*(.+)$", diff, re.MULTILINE)
+        added = re.search(r"^\+schema_version:\s*(.+)$", diff, re.MULTILINE)
         if not (removed and added) or removed.group(1).strip() == added.group(1).strip():
             violations.append("{}: schema_version not bumped for {}".format(invariant_id, rel))
     return violations
