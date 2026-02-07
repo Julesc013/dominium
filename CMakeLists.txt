@@ -943,7 +943,11 @@ add_custom_target(dom_bump_build_number
         -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
     COMMENT "Bumping global build number"
 )
+set(DOM_TESTX_TIMEOUT "900" CACHE STRING "Per-test timeout seconds for TestX gate")
 set(_dom_testx_ctest_cmd ${CMAKE_CTEST_COMMAND} --output-on-failure)
+if(DOM_TESTX_TIMEOUT)
+    list(APPEND _dom_testx_ctest_cmd --timeout ${DOM_TESTX_TIMEOUT})
+endif()
 if(CMAKE_CONFIGURATION_TYPES)
     list(APPEND _dom_testx_ctest_cmd -C $<CONFIG>)
 endif()
