@@ -26,6 +26,12 @@ dom_add_testx(NAME inv_process_registry
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME inv_process_execution_coverage
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/process_registry_execution_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME inv_capability_scope
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/capability_scope_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}

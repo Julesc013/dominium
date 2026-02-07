@@ -76,6 +76,8 @@ PROCESS_REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
 PROCESS_FIXTURE_PATHS = (
     os.path.join("tests", "contract", "terrain_fixtures.json"),
 )
+PROCESS_ID_LITERAL_RE = re.compile(r'"(process\.[A-Za-z0-9_.]+)"')
+PROCESS_ID_LITERAL_ALLOW = {"process.mine.unknown"}
 
 
 def repo_rel(repo_root, path):
@@ -698,6 +700,50 @@ def check_process_registry(repo_root):
     return violations
 
 
+def check_process_runtime_literals(repo_root):
+    invariant_id = "INV-PROCESS-RUNTIME-ID"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    registry = _load_json_file(os.path.join(repo_root, PROCESS_REGISTRY_REL))
+    if not isinstance(registry, dict):
+        return ["{}: unable to parse {}".format(invariant_id, PROCESS_REGISTRY_REL)]
+    records = registry.get("records")
+    if not isinstance(records, list):
+        return ["{}: records missing in {}".format(invariant_id, PROCESS_REGISTRY_REL)]
+
+    process_ids = set()
+    for entry in records:
+        if isinstance(entry, dict):
+            process_id = entry.get("process_id")
+            if isinstance(process_id, str) and process_id:
+                process_ids.add(process_id)
+
+    roots = [
+        os.path.join(repo_root, "engine", "modules", "world"),
+        os.path.join(repo_root, "game", "rules"),
+    ]
+    violations = []
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path) or ""
+        for idx, line in enumerate(text.splitlines(), start=1):
+            for match in PROCESS_ID_LITERAL_RE.finditer(line):
+                process_id = match.group(1)
+                if process_id in PROCESS_ID_LITERAL_ALLOW:
+                    continue
+                if process_id not in process_ids:
+                    violations.append(
+                        "{}: unregistered process literal {}:{} -> {}".format(
+                            invariant_id,
+                            rel,
+                            idx,
+                            process_id,
+                        )
+                    )
+    return violations
+
+
 def check_process_registry_immutability(repo_root):
     invariant_id = "INV-PROCESS-REGISTRY-IMMUTABLE"
     if is_override_active(repo_root, invariant_id):
@@ -967,6 +1013,7 @@ def main() -> int:
     violations.extend(check_code_doc_references(repo_root, canon_index))
     violations.extend(check_schema_version_bumps(repo_root))
     violations.extend(check_process_registry(repo_root))
+    violations.extend(check_process_runtime_literals(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))
     violations.extend(check_compliance_report_canon(repo_root))
 
