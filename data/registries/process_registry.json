@@ -4037,6 +4037,90 @@
       "extensions": {
         "source_pack": "org.dominium.lib.on_planet.processes"
       }
+    },
+    {
+      "process_id": "process.terrain.cut.1",
+      "human_name": "Terrain Cut Fixture",
+      "owning_layer": "engine",
+      "description": "Test fixture process from tests/contract/terrain_fixtures.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "terrain.phi"
+      ],
+      "required_law_checks": [],
+      "rng_streams_used": [
+        "noise.stream.terrain.overlay.1"
+      ],
+      "determinism_notes": [
+        "fixture",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unspecified"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_fixture": "tests/contract/terrain_fixtures.json"
+      }
+    },
+    {
+      "process_id": "process.terrain.fill.1",
+      "human_name": "Terrain Fill Fixture",
+      "owning_layer": "engine",
+      "description": "Test fixture process from tests/contract/terrain_fixtures.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "terrain.phi"
+      ],
+      "required_law_checks": [],
+      "rng_streams_used": [
+        "noise.stream.terrain.overlay.2"
+      ],
+      "determinism_notes": [
+        "fixture",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unspecified"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_fixture": "tests/contract/terrain_fixtures.json"
+      }
+    },
+    {
+      "process_id": "process.terrain.collapse.1",
+      "human_name": "Terrain Collapse Fixture",
+      "owning_layer": "engine",
+      "description": "Test fixture process from tests/contract/terrain_fixtures.json",
+      "inputs": [],
+      "outputs": [],
+      "affected_assemblies": [],
+      "affected_fields": [
+        "terrain.phi"
+      ],
+      "required_law_checks": [],
+      "rng_streams_used": [
+        "noise.stream.terrain.overlay.3"
+      ],
+      "determinism_notes": [
+        "fixture",
+        "deterministic-order"
+      ],
+      "failure_modes": [
+        "failure.unspecified"
+      ],
+      "version_introduced": 1,
+      "deprecated": false,
+      "extensions": {
+        "source_fixture": "tests/contract/terrain_fixtures.json"
+      }
     }
   ]
 }
