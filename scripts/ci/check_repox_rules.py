@@ -73,11 +73,17 @@ CANON_STATE_PATH = os.path.join("repo", "canon_state.json")
 PROCESS_REGISTRY_REL = os.path.join("data", "registries", "process_registry.json")
 PROCESS_SCHEMA_ID = "dominium.schema.process"
 PROCESS_REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
+SCHEMA_MIGRATION_REGISTRY_REL = os.path.join("schema", "SCHEMA_MIGRATION_REGISTRY.json")
+SCHEMA_MIGRATION_REGISTRY_SCHEMA_ID = "dominium.schema.migration_registry"
 PROCESS_FIXTURE_PATHS = (
     os.path.join("tests", "contract", "terrain_fixtures.json"),
 )
 PROCESS_ID_LITERAL_RE = re.compile(r'"(process\.[A-Za-z0-9_.]+)"')
 PROCESS_ID_LITERAL_ALLOW = {"process.mine.unknown"}
+SCHEMA_VERSION_RE = re.compile(r"^\s*schema_version\s*:\s*(\d+\.\d+\.\d+)\s*$", re.MULTILINE)
+SCHEMA_ID_RE = re.compile(r"^\s*schema_id\s*:\s*([A-Za-z0-9_.-]+)\s*$", re.MULTILINE)
+SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+SCHEMA_ID_LITERAL_RE = re.compile(r'"(dominium\.schema\.[A-Za-z0-9_.-]+)"')
 
 
 def repo_rel(repo_root, path):
@@ -515,6 +521,12 @@ def check_schema_version_bumps(repo_root):
         baseline_blob = run_git(["show", "{}:{}".format(baseline, rel)], repo_root)
         if baseline_blob is None:
             continue
+        current_text = read_text(os.path.join(repo_root, rel)) or ""
+        baseline_match = SCHEMA_VERSION_RE.search(baseline_blob)
+        current_match = SCHEMA_VERSION_RE.search(current_text)
+        if not baseline_match or not current_match:
+            violations.append("{}: schema_version missing in {}".format(invariant_id, rel))
+            continue
         diff = run_git(["diff", "--unified=0", "{}...HEAD".format(baseline), "--", rel], repo_root)
         if diff is None:
             violations.append("{}: unable to diff {}".format(invariant_id, rel))
@@ -532,6 +544,206 @@ def _load_json_file(path):
             return json.load(handle)
     except (OSError, ValueError):
         return None
+
+
+def _parse_semver(value):
+    if not isinstance(value, str):
+        return None
+    match = SEMVER_RE.match(value.strip())
+    if not match:
+        return None
+    return tuple(int(part) for part in match.groups())
+
+
+def _load_schema_migration_registry(repo_root):
+    path = os.path.join(repo_root, SCHEMA_MIGRATION_REGISTRY_REL)
+    payload = _load_json_file(path)
+    return path, payload
+
+
+def _migration_route_exists(routes, schema_id, source_version, target_version):
+    for route in routes:
+        if not isinstance(route, dict):
+            continue
+        if route.get("schema_id") != schema_id:
+            continue
+        if route.get("source_version") != source_version:
+            continue
+        if route.get("target_version") != target_version:
+            continue
+        return True
+    return False
+
+
+def check_schema_migration_routes(repo_root):
+    invariant_id = "INV-SCHEMA-MIGRATION-ROUTES"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    path, migration_registry = _load_schema_migration_registry(repo_root)
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, SCHEMA_MIGRATION_REGISTRY_REL)]
+    if not isinstance(migration_registry, dict):
+        return ["{}: invalid json {}".format(invariant_id, SCHEMA_MIGRATION_REGISTRY_REL)]
+
+    if migration_registry.get("schema_id") != SCHEMA_MIGRATION_REGISTRY_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, SCHEMA_MIGRATION_REGISTRY_REL))
+    if _parse_semver(migration_registry.get("schema_version")) is None:
+        violations.append("{}: invalid schema_version in {}".format(invariant_id, SCHEMA_MIGRATION_REGISTRY_REL))
+
+    routes = migration_registry.get("migrations")
+    if not isinstance(routes, list):
+        return ["{}: migrations missing in {}".format(invariant_id, SCHEMA_MIGRATION_REGISTRY_REL)]
+
+    process_registry = _load_json_file(os.path.join(repo_root, PROCESS_REGISTRY_REL))
+    process_ids = set()
+    if isinstance(process_registry, dict) and isinstance(process_registry.get("records"), list):
+        for entry in process_registry.get("records"):
+            if isinstance(entry, dict):
+                process_id = entry.get("process_id")
+                if isinstance(process_id, str):
+                    process_ids.add(process_id)
+
+    route_keys = set()
+    for idx, route in enumerate(routes):
+        if not isinstance(route, dict):
+            violations.append("{}: invalid migration route at index {}".format(invariant_id, idx))
+            continue
+        schema_id = route.get("schema_id")
+        source_version = route.get("source_version")
+        target_version = route.get("target_version")
+        process_id = route.get("migration_process_id")
+        function_ref = route.get("migration_function")
+        invocation = route.get("invocation")
+        data_loss = route.get("data_loss")
+
+        if not schema_id:
+            violations.append("{}: route missing schema_id at index {}".format(invariant_id, idx))
+            continue
+        source_semver = _parse_semver(source_version)
+        target_semver = _parse_semver(target_version)
+        if source_semver is None or target_semver is None:
+            violations.append("{}: invalid semver route {} {} -> {}".format(
+                invariant_id, schema_id, source_version, target_version
+            ))
+            continue
+        if source_semver >= target_semver:
+            violations.append("{}: non-forward migration route {} {} -> {}".format(
+                invariant_id, schema_id, source_version, target_version
+            ))
+        key = (schema_id, source_version, target_version)
+        if key in route_keys:
+            violations.append("{}: duplicate migration route {} {} -> {}".format(
+                invariant_id, schema_id, source_version, target_version
+            ))
+        route_keys.add(key)
+
+        if not process_id:
+            violations.append("{}: missing migration_process_id for {} {} -> {}".format(
+                invariant_id, schema_id, source_version, target_version
+            ))
+        elif process_id not in process_ids:
+            violations.append("{}: migration process not in process registry: {}".format(invariant_id, process_id))
+        if not function_ref or "::" not in function_ref:
+            violations.append("{}: invalid migration_function for {} {} -> {}".format(
+                invariant_id, schema_id, source_version, target_version
+            ))
+        else:
+            rel_file = function_ref.split("::", 1)[0]
+            if not os.path.isfile(os.path.join(repo_root, rel_file)):
+                violations.append("{}: migration function file missing: {}".format(invariant_id, rel_file))
+        if invocation != "explicit":
+            violations.append("{}: migration invocation must be explicit for {} {} -> {}".format(
+                invariant_id, schema_id, source_version, target_version
+            ))
+        if not isinstance(data_loss, str) or not data_loss:
+            violations.append("{}: data_loss missing for {} {} -> {}".format(
+                invariant_id, schema_id, source_version, target_version
+            ))
+
+    changed_files = get_changed_files(repo_root)
+    if changed_files is None:
+        violations.append("{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(
+            invariant_id
+        ))
+        return violations
+
+    baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
+    schema_files = [path for path in changed_files if path.startswith("schema/") and path.endswith(".schema")]
+    for rel in schema_files:
+        baseline_blob = run_git(["show", "{}:{}".format(baseline, rel)], repo_root)
+        if baseline_blob is None:
+            continue
+        current_text = read_text(os.path.join(repo_root, rel)) or ""
+        old_version_match = SCHEMA_VERSION_RE.search(baseline_blob)
+        new_version_match = SCHEMA_VERSION_RE.search(current_text)
+        old_schema_id_match = SCHEMA_ID_RE.search(baseline_blob)
+        new_schema_id_match = SCHEMA_ID_RE.search(current_text)
+        if not old_version_match or not new_version_match or not old_schema_id_match or not new_schema_id_match:
+            continue
+        old_version = old_version_match.group(1).strip()
+        new_version = new_version_match.group(1).strip()
+        old_schema_id = old_schema_id_match.group(1).strip()
+        new_schema_id = new_schema_id_match.group(1).strip()
+        if old_schema_id != new_schema_id:
+            violations.append("{}: schema_id changed in {}".format(invariant_id, rel))
+            continue
+        old_semver = _parse_semver(old_version)
+        new_semver = _parse_semver(new_version)
+        if old_semver is None or new_semver is None:
+            continue
+        if old_semver[0] != new_semver[0]:
+            if not _migration_route_exists(routes, new_schema_id, old_version, new_version):
+                violations.append("{}: missing migration route for {} {} -> {}".format(
+                    invariant_id, new_schema_id, old_version, new_version
+                ))
+
+    return violations
+
+
+def check_schema_no_implicit_defaults(repo_root):
+    invariant_id = "INV-SCHEMA-NO-IMPLICIT-DEFAULTS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    added = get_diff_added_lines(repo_root)
+    if added is None:
+        return ["{}: unable to determine changed lines; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    violations = []
+    default_re = re.compile(r"\bdefault\b", re.IGNORECASE)
+    for rel_path, lines in added.items():
+        rel = rel_path.replace("\\", "/")
+        if not rel.startswith("schema/") or not rel.endswith(".schema"):
+            continue
+        for idx, line in enumerate(lines, start=1):
+            if default_re.search(line):
+                violations.append("{}: implicit default token in {} (added line {})".format(
+                    invariant_id, rel, idx
+                ))
+    return violations
+
+
+def check_unversioned_schema_references(repo_root):
+    invariant_id = "INV-SCHEMA-VERSION-REF"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    added = get_diff_added_lines(repo_root)
+    if added is None:
+        return ["{}: unable to determine changed lines; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    violations = []
+    for rel_path, lines in added.items():
+        rel = rel_path.replace("\\", "/")
+        if not any(rel.startswith(prefix) for prefix in ("engine/", "game/", "client/", "server/", "tools/", "scripts/")):
+            continue
+        for idx, line in enumerate(lines, start=1):
+            for match in SCHEMA_ID_LITERAL_RE.finditer(line):
+                schema_id = match.group(1)
+                # New schema-id literals in code must carry an explicit version reference.
+                if "schema_version" not in line and "@" not in line:
+                    violations.append("{}: unversioned schema reference {}:{} -> {}".format(
+                        invariant_id, rel, idx, schema_id
+                    ))
+    return violations
 
 
 def _collect_process_defs(repo_root, violations):
@@ -1012,6 +1224,9 @@ def main() -> int:
     violations.extend(check_doc_references(repo_root, canon_index))
     violations.extend(check_code_doc_references(repo_root, canon_index))
     violations.extend(check_schema_version_bumps(repo_root))
+    violations.extend(check_schema_migration_routes(repo_root))
+    violations.extend(check_schema_no_implicit_defaults(repo_root))
+    violations.extend(check_unversioned_schema_references(repo_root))
     violations.extend(check_process_registry(repo_root))
     violations.extend(check_process_runtime_literals(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))

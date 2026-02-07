@@ -26,3 +26,5 @@ This directory defines authoritative data-shape contracts for Dominium.
 ## Governance
 - Schema changes require entries in `docs/architecture/SCHEMA_CHANGE_NOTES.md`.
 - Schema changes require TestX validation and may trigger migration notes.
+- Migration routes are explicit in `schema/SCHEMA_MIGRATION_REGISTRY.json`.
+- Migration invocation must be explicit; no silent coercion.

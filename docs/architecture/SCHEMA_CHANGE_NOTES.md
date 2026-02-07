@@ -25,6 +25,12 @@ Template:
   Invariants: INV-SCHEMA-VERSIONED; INV-SCHEMA-UNKNOWN-PRESERVE; INV-SCHEMA-NO-SEMANTIC-REUSE; INV-UNITS-ANNOTATED
   Migration: none (new schema)
 
+- Date: 2026-02-08
+  Schema(s): schema/SCHEMA_MIGRATION_REGISTRY.json
+  Change: add machine-readable explicit migration route registry and deterministic route linkage
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-SCHEMA-MIGRATION-ROUTES; INV-SCHEMA-NO-IMPLICIT-DEFAULTS; INV-SCHEMA-VERSION-REF
+  Migration: none (governance metadata only)
+
 - Date: 2026-02-01
   Schema(s): schema/ui/ui_node.schema; schema/ui/ui_layout.schema; schema/ui/ui_event.schema; schema/ui/ui_accessibility.schema; schema/ui/ui_string_key.schema
   Change: add UI IR schema primitives for binding validation and localization

@@ -18,6 +18,9 @@ If any conflict exists, the authoritative sources are:
   - `schema_id` (stable identifier)
   - `schema_version` (semantic: MAJOR.MINOR.PATCH)
   - `stability` (core | extension | experimental)
+- Migration routes are declared in:
+  - `schema/SCHEMA_MIGRATION.md` (human-auditable)
+  - `schema/SCHEMA_MIGRATION_REGISTRY.json` (machine-auditable)
 
 ## Versioning rules (summary)
 
@@ -31,6 +34,9 @@ If any conflict exists, the authoritative sources are:
 - Migrate or refuse; never silently coerce.
 - MAJOR changes require an explicit migration plan in
   `schema/SCHEMA_MIGRATION.md`.
+- Migration routes require explicit process IDs in
+  `data/registries/process_registry.json`.
+- Migration invocation is explicit only; no automatic background migration.
 - Refuse when migration is missing, lossy, or nondeterministic.
 - Unknown fields must round-trip unchanged.
 
@@ -39,6 +45,7 @@ If any conflict exists, the authoritative sources are:
 TestX contracts:
 - `tests/schema/schema_version_immutability_tests.py`
 - `tests/schema/schema_unknown_field_tests.py`
+- `tests/schema/schema_migration_tests.py`
 - `tests/contract/schema_change_notes_required.py`
 
 Tooling checks:
@@ -47,3 +54,7 @@ Tooling checks:
 
 These enforce explicit versioning, skip-unknown preservation, and refusal on
 unsupported versions.
+
+RepoX checks:
+- `INV-SCHEMA-VERSION-BUMP` (version bump required when schema changes)
+- `INV-SCHEMA-MIGRATION-ROUTES` (migration registry validity and process linkage)
