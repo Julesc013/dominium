@@ -25,7 +25,9 @@ NOTES: Deterministic; no side effects unless --write is used.
 #include <windows.h>
 #else
 #include <errno.h>
+#include <limits.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #endif
 typedef struct bind_entry {
     std::string ui_element_id;
@@ -74,6 +76,69 @@ static std::string join_path(const std::string& root, const std::string& rel)
         return root + rel;
     }
     return root + "/" + rel;
+}
+
+static std::string parent_path(const std::string& path)
+{
+    size_t pos = path.find_last_of("/\\");
+    if (pos == std::string::npos) {
+        return "";
+    }
+    if (pos == 0u) {
+        return path.substr(0u, 1u);
+    }
+    return path.substr(0u, pos);
+}
+
+static bool path_exists(const std::string& path)
+{
+    FILE* f = std::fopen(path.c_str(), "rb");
+    if (!f) {
+        return false;
+    }
+    std::fclose(f);
+    return true;
+}
+
+static std::string executable_dir(void)
+{
+#if defined(_WIN32)
+    char buf[MAX_PATH];
+    DWORD got = GetModuleFileNameA(0, buf, MAX_PATH);
+    if (got == 0u || got >= MAX_PATH) {
+        return "";
+    }
+    return parent_path(std::string(buf, (size_t)got));
+#else
+    char buf[PATH_MAX];
+    ssize_t got = readlink("/proc/self/exe", buf, sizeof(buf) - 1u);
+    if (got <= 0) {
+        return "";
+    }
+    buf[got] = '\0';
+    return parent_path(std::string(buf));
+#endif
+}
+
+static std::string find_repo_root_from(const std::string& start)
+{
+    std::string cur = start;
+    int depth = 0;
+    while (!cur.empty() && depth < 16) {
+        std::string probe = join_path(cur, "tools/ui_index/ui_index.json");
+        if (path_exists(probe)) {
+            return cur;
+        }
+        {
+            std::string up = parent_path(cur);
+            if (up.empty() || up == cur) {
+                break;
+            }
+            cur = up;
+        }
+        ++depth;
+    }
+    return "";
 }
 
 static bool is_interactive_type(domui_widget_type t)
@@ -584,6 +649,7 @@ int main(int argc, char** argv)
     const char* repo_root = ".";
     const char* ui_index_path = 0;
     const char* out_dir = 0;
+    std::string repo_root_storage;
     std::string ui_index_storage;
     std::string out_dir_storage;
     bool do_check = false;
@@ -618,6 +684,18 @@ int main(int argc, char** argv)
         print_usage();
         return 2;
     }
+
+    repo_root_storage = repo_root ? repo_root : ".";
+    if (repo_root_storage.empty() || repo_root_storage == ".") {
+        std::string detected = find_repo_root_from(".");
+        if (detected.empty()) {
+            detected = find_repo_root_from(executable_dir());
+        }
+        if (!detected.empty()) {
+            repo_root_storage = detected;
+        }
+    }
+    repo_root = repo_root_storage.c_str();
 
     if (!ui_index_path) {
         ui_index_storage = std::string(repo_root) + "/tools/ui_index/ui_index.json";
