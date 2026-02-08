@@ -1,0 +1,76 @@
+{
+  "ruleset_id": "repox/data_first",
+  "documentation": "docs/governance/REPOX_RULESETS.md#repoxdata_first",
+  "rules": [
+    {
+      "rule_id": "INV-SCHEMA-VERSION-BUMP",
+      "severity": "FAIL",
+      "scope_paths": ["schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-schema-version-bump",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-SCHEMA-MIGRATION-ROUTES",
+      "severity": "FAIL",
+      "scope_paths": ["schema", "data/registries/process_registry.json"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-schema-migration-routes",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-SCHEMA-NO-IMPLICIT-DEFAULTS",
+      "severity": "FAIL",
+      "scope_paths": ["schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-schema-no-implicit-defaults",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-SCHEMA-VERSION-REF",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "tools", "scripts"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-schema-version-ref",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-CAPABILITY-PACK-METADATA",
+      "severity": "FAIL",
+      "scope_paths": ["data/packs", "data/worldgen", "tests/fixtures"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-capability-pack-metadata",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "DATA_FIRST_BEHAVIOR",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "launcher", "setup", "libs", "tools"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#data_first_behavior",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "NO_SILENT_DEFAULTS",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "launcher", "setup", "libs", "tools"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#no_silent_defaults",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "SCHEMA_ANCHOR_REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "launcher", "setup", "libs", "tools", "schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#schema_anchor_required",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "NEW_FEATURE_REQUIRES_DATA_FIRST",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "launcher", "setup", "libs", "tools", "data", "schema", "docs"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#new_feature_requires_data_first",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-BUGREPORT-RESOLUTION",
+      "severity": "FAIL",
+      "scope_paths": ["data/logs/bugreports"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-bugreport-resolution",
+      "exemption_policy": "allow_with_expiry"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "ruleset_id": "repox/core",
+  "documentation": "docs/governance/REPOX_RULESETS.md#repoxcore",
+  "rules": [
+    {
+      "rule_id": "INV-REPOX-STRUCTURE",
+      "severity": "FAIL",
+      "scope_paths": ["."],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-repox-structure",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-LOCKLIST-FROZEN",
+      "severity": "FAIL",
+      "scope_paths": ["docs/architecture", "docs/archive"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-locklist-frozen",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CANON-STATE",
+      "severity": "FAIL",
+      "scope_paths": ["repo/canon_state.json", "docs/architecture"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-state",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CANON-INDEX",
+      "severity": "FAIL",
+      "scope_paths": ["docs/architecture/CANON_INDEX.md", "docs"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-index",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CANON-NO-SUPERSEDED",
+      "severity": "FAIL",
+      "scope_paths": ["docs"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-no-superseded",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CANON-NO-HIST-REF",
+      "severity": "FAIL",
+      "scope_paths": ["docs"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-no-hist-ref",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CANON-CODE-REF",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "tools", "scripts"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-code-ref",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-DOC-STATUS-HEADER",
+      "severity": "FAIL",
+      "scope_paths": ["docs"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-doc-status-header",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-DET-NO-ANON-RNG",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-det-no-anon-rng",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-DET-NO-WALLCLOCK",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-det-no-wallclock",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FP-AUTH-BAN",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-fp-auth-ban",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-HARDCODED-CONTENT",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-hardcoded-content",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-ENUM-NO-OTHER",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-enum-no-other",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-RAW-PATHS",
+      "severity": "FAIL",
+      "scope_paths": ["schema", "data", "tests/fixtures"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-raw-paths",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PROCESS-REGISTRY",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries", "data/packs", "tests/contract"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-process-registry",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PROCESS-RUNTIME-ID",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-process-runtime-id",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PROCESS-GUARD-RUNTIME",
+      "severity": "FAIL",
+      "scope_paths": ["engine/include/domino/core/process_guard.h", "engine/modules/core/process_guard.c", "engine/tests/process_guard_tests.c", "tests/invariant/process_only_mutation_tests.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-process-guard-runtime",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PROCESS-REGISTRY-IMMUTABLE",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/process_registry.json"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-process-registry-immutable",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-REPORT-CANON",
+      "severity": "FAIL",
+      "scope_paths": ["scripts/ci/compliance_report.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-report-canon",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-REPOX-RULESET-MISSING",
+      "severity": "FAIL",
+      "scope_paths": ["repo/repox/rulesets"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-repox-ruleset-missing",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-REPOX-EXEMPTION-POLICY",
+      "severity": "FAIL",
+      "scope_paths": ["repo/repox/repox_exemptions.json", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-repox-exemption-policy",
+      "exemption_policy": "deny"
+    }
+  ]
+}
