@@ -584,6 +584,8 @@ int main(int argc, char** argv)
     const char* repo_root = ".";
     const char* ui_index_path = 0;
     const char* out_dir = 0;
+    std::string ui_index_storage;
+    std::string out_dir_storage;
     bool do_check = false;
     bool do_write = false;
     int i;
@@ -617,15 +619,13 @@ int main(int argc, char** argv)
         return 2;
     }
 
-    {
-        std::string default_index = std::string(repo_root) + "/tools/ui_index/ui_index.json";
-        std::string default_out = std::string(repo_root) + "/libs/appcore/ui_bind";
-        if (!ui_index_path) {
-            ui_index_path = default_index.c_str();
-        }
-        if (!out_dir) {
-            out_dir = default_out.c_str();
-        }
+    if (!ui_index_path) {
+        ui_index_storage = std::string(repo_root) + "/tools/ui_index/ui_index.json";
+        ui_index_path = ui_index_storage.c_str();
+    }
+    if (!out_dir) {
+        out_dir_storage = std::string(repo_root) + "/libs/appcore/ui_bind";
+        out_dir = out_dir_storage.c_str();
     }
 
     std::vector<ui_bind_index_entry> entries;
