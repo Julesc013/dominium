@@ -6744,6 +6744,31 @@ static int dom_shell_camera_allowed(const dom_shell_policy_set* set, const char*
     return dom_shell_policy_set_contains(set, camera_id);
 }
 
+static const char* dom_shell_resolve_camera_mode(const char* camera_id)
+{
+    if (!camera_id || !camera_id[0]) {
+        return camera_id;
+    }
+    if (strcmp(camera_id, "embodied") == 0 || strcmp(camera_id, "camera.embodied") == 0) {
+        return DOM_SHELL_CAMERA_FREE;
+    }
+    if (strcmp(camera_id, "memory") == 0 || strcmp(camera_id, DOM_SHELL_CAMERA_MEMORY) == 0) {
+        return DOM_SHELL_CAMERA_MEMORY;
+    }
+    if (strcmp(camera_id, "observer") == 0 || strcmp(camera_id, DOM_SHELL_CAMERA_OBSERVER) == 0) {
+        return DOM_SHELL_CAMERA_OBSERVER;
+    }
+    return camera_id;
+}
+
+static int dom_shell_has_tool_entitlement(const dom_shell_policy_set* set, const char* entitlement_id)
+{
+    if (!set || !entitlement_id || !entitlement_id[0]) {
+        return 0;
+    }
+    return dom_shell_policy_set_contains(set, entitlement_id);
+}
+
 static int dom_client_shell_set_camera(dom_client_shell* shell,
                                        const char* camera_id,
                                        dom_app_ui_event_log* log,
@@ -6751,19 +6776,35 @@ static int dom_client_shell_set_camera(dom_client_shell* shell,
                                        size_t status_cap,
                                        int emit_text)
 {
+    const char* resolved_camera_id;
+    const int observer_mode =
+        (camera_id && (strcmp(camera_id, "observer") == 0 || strcmp(camera_id, DOM_SHELL_CAMERA_OBSERVER) == 0));
+    char previous_mode[DOM_SHELL_POLICY_ID_MAX];
     if (!shell || !camera_id || !camera_id[0]) {
         return D_APP_EXIT_USAGE;
     }
+    resolved_camera_id = dom_shell_resolve_camera_mode(camera_id);
+    previous_mode[0] = '\0';
     if (!shell->world.active) {
-        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "no active world");
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "CAMERA_REFUSE_WORLD_INACTIVE");
         dom_shell_set_status(shell, "camera_set=refused");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "%s", shell->last_status);
         }
         return D_APP_EXIT_UNAVAILABLE;
     }
-    if (!dom_shell_camera_allowed(&shell->world.summary.camera, camera_id)) {
-        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "camera not allowed");
+    if (observer_mode &&
+        !dom_shell_has_tool_entitlement(&shell->world.summary.debug, "tool.truth.view")) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "CAMERA_REFUSE_ENTITLEMENT");
+        dom_shell_set_status(shell, "camera_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.nav.camera", "result=refused reason=entitlement mode=observer");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_camera_allowed(&shell->world.summary.camera, resolved_camera_id)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "CAMERA_REFUSE_POLICY");
         dom_shell_set_status(shell, "camera_set=refused");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "%s", shell->last_status);
@@ -6771,19 +6812,67 @@ static int dom_client_shell_set_camera(dom_client_shell* shell,
         dom_shell_emit(shell, log, "client.nav.camera", "result=refused reason=policy");
         return D_APP_EXIT_UNAVAILABLE;
     }
-    strncpy(shell->world.camera_mode, camera_id, sizeof(shell->world.camera_mode) - 1u);
+    strncpy(previous_mode, shell->world.camera_mode, sizeof(previous_mode) - 1u);
+    previous_mode[sizeof(previous_mode) - 1u] = '\0';
+    strncpy(shell->world.camera_mode, resolved_camera_id, sizeof(shell->world.camera_mode) - 1u);
+    shell->world.camera_mode[sizeof(shell->world.camera_mode) - 1u] = '\0';
     dom_shell_set_status(shell, "camera_set=ok");
     if (status && status_cap > 0u) {
         snprintf(status, status_cap, "%s", shell->last_status);
     }
     if (emit_text) {
-        printf("camera_set=ok camera=%s\n", shell->world.camera_mode);
+        printf("camera_set=ok camera=%s previous=%s\n",
+               shell->world.camera_mode,
+               previous_mode[0] ? previous_mode : "none");
     }
     {
-        char detail[128];
-        snprintf(detail, sizeof(detail), "camera=%s result=ok", camera_id);
+        char detail[192];
+        snprintf(detail, sizeof(detail),
+                 "previous=%s camera=%s result=ok watermark=%d",
+                 previous_mode[0] ? previous_mode : "none",
+                 shell->world.camera_mode,
+                 observer_mode ? 1 : 0);
         dom_shell_emit(shell, log, "client.nav.camera", detail);
     }
+    return D_APP_EXIT_OK;
+}
+
+static int dom_client_shell_set_camera_pose(dom_client_shell* shell,
+                                            double x,
+                                            double y,
+                                            double z,
+                                            int has_pose,
+                                            dom_app_ui_event_log* log,
+                                            char* status,
+                                            size_t status_cap,
+                                            int emit_text)
+{
+    char detail[192];
+    if (!shell || !shell->world.active) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "CAMERA_REFUSE_WORLD_INACTIVE");
+        dom_shell_set_status(shell, "camera_pose=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!has_pose) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "CAMERA_REFUSE_USAGE");
+        dom_shell_set_status(shell, "camera_pose=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        return D_APP_EXIT_USAGE;
+    }
+    dom_shell_set_status(shell, "camera_pose=ok");
+    if (status && status_cap > 0u) {
+        snprintf(status, status_cap, "%s", shell->last_status);
+    }
+    if (emit_text) {
+        printf("camera_pose=ok x=%.3f y=%.3f z=%.3f\n", x, y, z);
+    }
+    snprintf(detail, sizeof(detail), "x=%.3f y=%.3f z=%.3f result=ok", x, y, z);
+    dom_shell_emit(shell, log, "client.nav.camera_pose", detail);
     return D_APP_EXIT_OK;
 }
 
@@ -8619,6 +8708,7 @@ int dom_client_shell_execute(dom_client_shell* shell,
             printf("commands: templates new-world scenario-load scenario-status load save replay-save inspect-replay\n");
             printf("          mode camera camera-next move spawn domain inspect-toggle hud-toggle\n");
             printf("          interaction-list object-list object-inspect object-select tool-select\n");
+            printf("          camera.set_mode camera.set_pose blueprint.preview blueprint.place\n");
             printf("          place-preview place-confirm place remove signal-toggle measure\n");
             printf("          signal-list signal-connect signal-threshold signal-set signal-preview\n");
             printf("          where refusal budgets structure fields events batch exit\n");
@@ -11253,12 +11343,45 @@ int dom_client_shell_execute(dom_client_shell* shell,
         }
         return moved ? D_APP_EXIT_OK : D_APP_EXIT_UNAVAILABLE;
     }
-    if (strcmp(token, "camera") == 0 || strcmp(token, "camera-set") == 0) {
+    if (strcmp(token, "camera") == 0 || strcmp(token, "camera-set") == 0 ||
+        strcmp(token, "camera.set_mode") == 0) {
         const char* camera_id = strtok(0, " \t");
         if (!camera_id) {
             return D_APP_EXIT_USAGE;
         }
         return dom_client_shell_set_camera(shell, camera_id, log, status, status_cap, emit_text);
+    }
+    if (strcmp(token, "camera.set_pose") == 0) {
+        double x = 0.0;
+        double y = 0.0;
+        double z = 0.0;
+        double pos[3];
+        int has_pose = 0;
+        while ((next = strtok(0, " \t")) != 0) {
+            char* eq = strchr(next, '=');
+            if (eq) {
+                *eq = '\0';
+                if (strcmp(next, "x") == 0) {
+                    x = strtod(eq + 1, 0);
+                    has_pose = 1;
+                } else if (strcmp(next, "y") == 0) {
+                    y = strtod(eq + 1, 0);
+                    has_pose = 1;
+                } else if (strcmp(next, "z") == 0) {
+                    z = strtod(eq + 1, 0);
+                    has_pose = 1;
+                } else if (strcmp(next, "pos") == 0) {
+                    if (dom_shell_parse_vec3(eq + 1, pos)) {
+                        x = pos[0];
+                        y = pos[1];
+                        z = pos[2];
+                        has_pose = 1;
+                    }
+                }
+            }
+        }
+        return dom_client_shell_set_camera_pose(shell, x, y, z, has_pose,
+                                                log, status, status_cap, emit_text);
     }
     if (strcmp(token, "camera-next") == 0) {
         return dom_client_shell_camera_next(shell, log, status, status_cap, emit_text);
@@ -11323,7 +11446,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
         }
         return dom_shell_interaction_tool_select(shell, tool_id, log, status, status_cap, emit_text);
     }
-    if (strcmp(token, "place-preview") == 0 || strcmp(token, "object-preview") == 0) {
+    if (strcmp(token, "place-preview") == 0 || strcmp(token, "object-preview") == 0 ||
+        strcmp(token, "blueprint.preview") == 0) {
         const char* type_id = 0;
         double pos[3];
         int has_pos = 0;
@@ -11346,7 +11470,8 @@ int dom_client_shell_execute(dom_client_shell* shell,
     if (strcmp(token, "place-confirm") == 0 || strcmp(token, "object-confirm") == 0) {
         return dom_shell_interaction_confirm(shell, log, status, status_cap, emit_text);
     }
-    if (strcmp(token, "place") == 0 || strcmp(token, "object-place") == 0) {
+    if (strcmp(token, "place") == 0 || strcmp(token, "object-place") == 0 ||
+        strcmp(token, "blueprint.place") == 0) {
         const char* type_id = 0;
         double pos[3];
         int has_pos = 0;
