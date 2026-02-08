@@ -75,6 +75,8 @@ PROCESS_SCHEMA_ID = "dominium.schema.process"
 PROCESS_REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
 SCHEMA_MIGRATION_REGISTRY_REL = os.path.join("schema", "SCHEMA_MIGRATION_REGISTRY.json")
 SCHEMA_MIGRATION_REGISTRY_SCHEMA_ID = "dominium.schema.migration_registry"
+SOLVER_REGISTRY_REL = os.path.join("data", "registries", "solver_registry.json")
+SOLVER_REGISTRY_SCHEMA_ID = "dominium.registry.solver_registry"
 PROCESS_FIXTURE_PATHS = (
     os.path.join("tests", "contract", "terrain_fixtures.json"),
 )
@@ -101,10 +103,14 @@ FORBIDDEN_STAGE_TOKEN_PARTS = (
     "provides" + "_stage",
     "stage" + "_features",
     "required" + "_stage",
+    "PROGRE" + "SSION_",
+    "COMPLE" + "TION_",
 )
 FORBIDDEN_STAGE_TOKEN_RE = re.compile(
     r"\b(" + "|".join(re.escape(token) for token in FORBIDDEN_STAGE_TOKEN_PARTS) + r")\b"
 )
+SOLVER_COST_CLASS_SET = ("low", "medium", "high", "critical")
+SOLVER_RESOLUTION_SET = ("macro", "micro", "hybrid")
 COMMAND_REGISTRY_REL = os.path.join("libs", "appcore", "command", "command_registry.c")
 UI_BIND_TABLE_REL = os.path.join("libs", "appcore", "ui_bind", "ui_command_binding_table.c")
 CAPABILITY_MATRIX_REL = os.path.join("tests", "testx", "CAPABILITY_MATRIX.yaml")
@@ -1274,6 +1280,97 @@ def check_forbidden_stage_tokens(repo_root):
     return violations
 
 
+def check_solver_registry_contracts(repo_root):
+    invariant_id = "INV-SOLVER-CONTRACTS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    path = os.path.join(repo_root, SOLVER_REGISTRY_REL)
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, SOLVER_REGISTRY_REL.replace("\\", "/"))]
+
+    payload = _load_json_file(path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, SOLVER_REGISTRY_REL.replace("\\", "/"))]
+
+    violations = []
+    if payload.get("schema_id") != SOLVER_REGISTRY_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, SOLVER_REGISTRY_REL.replace("\\", "/")))
+    if _parse_semver(payload.get("schema_version")) is None:
+        violations.append("{}: invalid schema_version in {}".format(invariant_id, SOLVER_REGISTRY_REL.replace("\\", "/")))
+
+    records = payload.get("records")
+    if not isinstance(records, list) or not records:
+        violations.append("{}: records missing or empty in {}".format(invariant_id, SOLVER_REGISTRY_REL.replace("\\", "/")))
+        return violations
+
+    seen_solver_ids = set()
+    for idx, record in enumerate(records):
+        if not isinstance(record, dict):
+            violations.append("{}: invalid record at index {}".format(invariant_id, idx))
+            continue
+
+        solver_id = record.get("solver_id")
+        if not isinstance(solver_id, str) or not solver_id:
+            violations.append("{}: missing solver_id at index {}".format(invariant_id, idx))
+            continue
+        if not solver_id.startswith("solver."):
+            violations.append("{}: non-namespaced solver_id '{}'".format(invariant_id, solver_id))
+        if solver_id in seen_solver_ids:
+            violations.append("{}: duplicate solver_id '{}'".format(invariant_id, solver_id))
+        seen_solver_ids.add(solver_id)
+
+        if record.get("cost_class") not in SOLVER_COST_CLASS_SET:
+            violations.append("{}: invalid cost_class for {}".format(invariant_id, solver_id))
+        if record.get("resolution") not in SOLVER_RESOLUTION_SET:
+            violations.append("{}: invalid resolution for {}".format(invariant_id, solver_id))
+
+        guarantees = record.get("guarantees")
+        if not isinstance(guarantees, list) or not guarantees:
+            violations.append("{}: guarantees missing for {}".format(invariant_id, solver_id))
+        elif not all(isinstance(item, str) and item for item in guarantees):
+            violations.append("{}: guarantees must be non-empty string list for {}".format(invariant_id, solver_id))
+
+        transitions = record.get("supports_transitions")
+        if not isinstance(transitions, list) or not transitions:
+            violations.append("{}: supports_transitions missing for {}".format(invariant_id, solver_id))
+        else:
+            transition_set = set(item for item in transitions if isinstance(item, str))
+            if "collapse" not in transition_set or "expand" not in transition_set:
+                violations.append("{}: supports_transitions must include collapse+expand for {}".format(invariant_id, solver_id))
+
+        numeric_bounds = record.get("numeric_bounds")
+        if not isinstance(numeric_bounds, dict):
+            violations.append("{}: numeric_bounds missing for {}".format(invariant_id, solver_id))
+        else:
+            if not isinstance(numeric_bounds.get("max_error"), str) or not numeric_bounds.get("max_error"):
+                violations.append("{}: numeric_bounds.max_error missing for {}".format(invariant_id, solver_id))
+            if numeric_bounds.get("bounded") is not True:
+                violations.append("{}: numeric_bounds.bounded must be true for {}".format(invariant_id, solver_id))
+
+        refusal_codes = record.get("refusal_codes")
+        if not isinstance(refusal_codes, list) or not refusal_codes:
+            violations.append("{}: refusal_codes missing for {}".format(invariant_id, solver_id))
+        elif not all(isinstance(code, str) and code for code in refusal_codes):
+            violations.append("{}: refusal_codes must be non-empty string list for {}".format(invariant_id, solver_id))
+
+        conformance_refs = record.get("conformance_bundle_refs")
+        if not isinstance(conformance_refs, list) or not conformance_refs:
+            violations.append("{}: conformance_bundle_refs missing for {}".format(invariant_id, solver_id))
+
+    conformance_schema_rel = os.path.join("schema", "conformance.bundle.schema").replace("\\", "/")
+    conformance_schema_path = os.path.join(repo_root, "schema", "conformance.bundle.schema")
+    if not os.path.isfile(conformance_schema_path):
+        violations.append("{}: missing {}".format(invariant_id, conformance_schema_rel))
+    else:
+        text = read_text(conformance_schema_path) or ""
+        for token in ("allowed_solvers", "invariant_checks", "test_vectors"):
+            if token not in text:
+                violations.append("{}: {} missing token '{}'".format(invariant_id, conformance_schema_rel, token))
+
+    return violations
+
+
 def _collect_process_defs(repo_root, violations):
     defs = {}
     packs_root = os.path.join(repo_root, "data", "packs")
@@ -1762,6 +1859,7 @@ def main() -> int:
     violations.extend(check_observer_freecam_entitlement_gate(repo_root))
     violations.extend(check_renderer_no_truth_access(repo_root))
     violations.extend(check_capability_matrix_integrity(repo_root))
+    violations.extend(check_solver_registry_contracts(repo_root))
     violations.extend(check_forbidden_stage_tokens(repo_root))
     violations.extend(check_process_registry(repo_root))
     violations.extend(check_process_runtime_literals(repo_root))

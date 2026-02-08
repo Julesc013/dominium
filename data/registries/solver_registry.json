@@ -1,0 +1,58 @@
+{
+  "schema_id": "dominium.registry.solver_registry",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "solver_id": "solver.collapse.macro_capsule",
+      "cost_class": "low",
+      "resolution": "macro",
+      "guarantees": [
+        "conservation.mass",
+        "conservation.energy",
+        "deterministic.ordering"
+      ],
+      "supports_transitions": [
+        "collapse",
+        "expand"
+      ],
+      "numeric_bounds": {
+        "max_error": "unit.dimensionless.ratio:0.001",
+        "bounded": true
+      },
+      "refusal_codes": [
+        "SOLVER_REFUSE_BOUNDS",
+        "SOLVER_REFUSE_INELIGIBLE",
+        "SOLVER_REFUSE_BUDGET"
+      ],
+      "conformance_bundle_refs": [
+        "conformance.bundle.macro_capsule.v1"
+      ]
+    },
+    {
+      "solver_id": "solver.expand.local_high_fidelity",
+      "cost_class": "high",
+      "resolution": "micro",
+      "guarantees": [
+        "conservation.mass",
+        "contract.port_consistency",
+        "deterministic.ordering"
+      ],
+      "supports_transitions": [
+        "expand",
+        "collapse"
+      ],
+      "numeric_bounds": {
+        "max_error": "unit.dimensionless.ratio:0.0001",
+        "bounded": true
+      },
+      "refusal_codes": [
+        "SOLVER_REFUSE_BOUNDS",
+        "SOLVER_REFUSE_INELIGIBLE",
+        "SOLVER_REFUSE_BUDGET"
+      ],
+      "conformance_bundle_refs": [
+        "conformance.bundle.local_high_fidelity.v1"
+      ]
+    }
+  ]
+}

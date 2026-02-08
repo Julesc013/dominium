@@ -49,3 +49,9 @@ dom_add_testx(NAME build_matrix_preset_tests
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_BUILDMETA}
 )
+
+dom_add_testx(NAME universe_complexity_contract_tests
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/universe_complexity_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
