@@ -4,7 +4,7 @@
   "capability_sets": [
     {
       "bundle_id": "CAPSET_WORLD_NONBIO",
-      "fixture": "tests/fixtures/worlds/stage_0_nonbio/world_stage.json",
+      "fixture": "tests/fixtures/worlds/capset_world_nonbio/world_capabilities.json",
       "required_test_suites": [
         "test_load_and_validate",
         "test_command_surface",
@@ -14,12 +14,12 @@
         "test_replay_hash"
       ],
       "tests": [
-        "tests/testx/stages/stage_0_nonbio/test_load_and_validate.py",
-        "tests/testx/stages/stage_0_nonbio/test_command_surface.py",
-        "tests/testx/stages/stage_0_nonbio/test_pack_gating.py",
-        "tests/testx/stages/stage_0_nonbio/test_epistemics.py",
-        "tests/testx/stages/stage_0_nonbio/test_determinism_smoke.py",
-        "tests/testx/stages/stage_0_nonbio/test_replay_hash.py"
+        "tests/testx/capability_sets/capset_world_nonbio/test_load_and_validate.py",
+        "tests/testx/capability_sets/capset_world_nonbio/test_command_surface.py",
+        "tests/testx/capability_sets/capset_world_nonbio/test_pack_gating.py",
+        "tests/testx/capability_sets/capset_world_nonbio/test_epistemics.py",
+        "tests/testx/capability_sets/capset_world_nonbio/test_determinism_smoke.py",
+        "tests/testx/capability_sets/capset_world_nonbio/test_replay_hash.py"
       ],
       "provided_capabilities": [
         "dominium.capability.world.nonbio"
@@ -39,7 +39,7 @@
     },
     {
       "bundle_id": "CAPSET_WORLD_LIFE_NONINTELLIGENT",
-      "fixture": "tests/fixtures/worlds/stage_1_nonintelligent_life/world_stage.json",
+      "fixture": "tests/fixtures/worlds/capset_world_life_nonintelligent/world_capabilities.json",
       "required_test_suites": [
         "test_load_and_validate",
         "test_command_surface",
@@ -49,12 +49,12 @@
         "test_replay_hash"
       ],
       "tests": [
-        "tests/testx/stages/stage_1_nonintelligent_life/test_load_and_validate.py",
-        "tests/testx/stages/stage_1_nonintelligent_life/test_command_surface.py",
-        "tests/testx/stages/stage_1_nonintelligent_life/test_pack_gating.py",
-        "tests/testx/stages/stage_1_nonintelligent_life/test_epistemics.py",
-        "tests/testx/stages/stage_1_nonintelligent_life/test_determinism_smoke.py",
-        "tests/testx/stages/stage_1_nonintelligent_life/test_replay_hash.py"
+        "tests/testx/capability_sets/capset_world_life_nonintelligent/test_load_and_validate.py",
+        "tests/testx/capability_sets/capset_world_life_nonintelligent/test_command_surface.py",
+        "tests/testx/capability_sets/capset_world_life_nonintelligent/test_pack_gating.py",
+        "tests/testx/capability_sets/capset_world_life_nonintelligent/test_epistemics.py",
+        "tests/testx/capability_sets/capset_world_life_nonintelligent/test_determinism_smoke.py",
+        "tests/testx/capability_sets/capset_world_life_nonintelligent/test_replay_hash.py"
       ],
       "provided_capabilities": [
         "dominium.capability.world.nonbio",
@@ -76,7 +76,7 @@
     },
     {
       "bundle_id": "CAPSET_WORLD_LIFE_INTELLIGENT",
-      "fixture": "tests/fixtures/worlds/stage_2_intelligent_pre_tool/world_stage.json",
+      "fixture": "tests/fixtures/worlds/capset_world_life_intelligent/world_capabilities.json",
       "required_test_suites": [
         "test_load_and_validate",
         "test_command_surface",
@@ -86,12 +86,12 @@
         "test_replay_hash"
       ],
       "tests": [
-        "tests/testx/stages/stage_2_intelligent_pre_tool/test_load_and_validate.py",
-        "tests/testx/stages/stage_2_intelligent_pre_tool/test_command_surface.py",
-        "tests/testx/stages/stage_2_intelligent_pre_tool/test_pack_gating.py",
-        "tests/testx/stages/stage_2_intelligent_pre_tool/test_epistemics.py",
-        "tests/testx/stages/stage_2_intelligent_pre_tool/test_determinism_smoke.py",
-        "tests/testx/stages/stage_2_intelligent_pre_tool/test_replay_hash.py"
+        "tests/testx/capability_sets/capset_world_life_intelligent/test_load_and_validate.py",
+        "tests/testx/capability_sets/capset_world_life_intelligent/test_command_surface.py",
+        "tests/testx/capability_sets/capset_world_life_intelligent/test_pack_gating.py",
+        "tests/testx/capability_sets/capset_world_life_intelligent/test_epistemics.py",
+        "tests/testx/capability_sets/capset_world_life_intelligent/test_determinism_smoke.py",
+        "tests/testx/capability_sets/capset_world_life_intelligent/test_replay_hash.py"
       ],
       "provided_capabilities": [
         "dominium.capability.world.nonbio",
@@ -114,7 +114,7 @@
     },
     {
       "bundle_id": "CAPSET_WORLD_PRETOOL",
-      "fixture": "tests/fixtures/worlds/stage_3_pre_tool_world/world_stage.json",
+      "fixture": "tests/fixtures/worlds/capset_world_pretool/world_capabilities.json",
       "required_test_suites": [
         "test_load_and_validate",
         "test_command_surface",
@@ -124,12 +124,12 @@
         "test_replay_hash"
       ],
       "tests": [
-        "tests/testx/stages/stage_3_pre_tool_world/test_load_and_validate.py",
-        "tests/testx/stages/stage_3_pre_tool_world/test_command_surface.py",
-        "tests/testx/stages/stage_3_pre_tool_world/test_pack_gating.py",
-        "tests/testx/stages/stage_3_pre_tool_world/test_epistemics.py",
-        "tests/testx/stages/stage_3_pre_tool_world/test_determinism_smoke.py",
-        "tests/testx/stages/stage_3_pre_tool_world/test_replay_hash.py"
+        "tests/testx/capability_sets/capset_world_pretool/test_load_and_validate.py",
+        "tests/testx/capability_sets/capset_world_pretool/test_command_surface.py",
+        "tests/testx/capability_sets/capset_world_pretool/test_pack_gating.py",
+        "tests/testx/capability_sets/capset_world_pretool/test_epistemics.py",
+        "tests/testx/capability_sets/capset_world_pretool/test_determinism_smoke.py",
+        "tests/testx/capability_sets/capset_world_pretool/test_replay_hash.py"
       ],
       "provided_capabilities": [
         "dominium.capability.world.nonbio",
@@ -153,7 +153,7 @@
     },
     {
       "bundle_id": "CAPSET_SOCIETY_INSTITUTIONS",
-      "fixture": "tests/fixtures/worlds/stage_4_pre_industry/world_stage.json",
+      "fixture": "tests/fixtures/worlds/capset_society_institutions/world_capabilities.json",
       "required_test_suites": [
         "test_load_and_validate",
         "test_command_surface",
@@ -163,12 +163,12 @@
         "test_replay_hash"
       ],
       "tests": [
-        "tests/testx/stages/stage_4_pre_industry/test_load_and_validate.py",
-        "tests/testx/stages/stage_4_pre_industry/test_command_surface.py",
-        "tests/testx/stages/stage_4_pre_industry/test_pack_gating.py",
-        "tests/testx/stages/stage_4_pre_industry/test_epistemics.py",
-        "tests/testx/stages/stage_4_pre_industry/test_determinism_smoke.py",
-        "tests/testx/stages/stage_4_pre_industry/test_replay_hash.py"
+        "tests/testx/capability_sets/capset_society_institutions/test_load_and_validate.py",
+        "tests/testx/capability_sets/capset_society_institutions/test_command_surface.py",
+        "tests/testx/capability_sets/capset_society_institutions/test_pack_gating.py",
+        "tests/testx/capability_sets/capset_society_institutions/test_epistemics.py",
+        "tests/testx/capability_sets/capset_society_institutions/test_determinism_smoke.py",
+        "tests/testx/capability_sets/capset_society_institutions/test_replay_hash.py"
       ],
       "provided_capabilities": [
         "dominium.capability.world.nonbio",
@@ -193,7 +193,7 @@
     },
     {
       "bundle_id": "CAPSET_INFRASTRUCTURE_INDUSTRY",
-      "fixture": "tests/fixtures/worlds/stage_5_pre_present/world_stage.json",
+      "fixture": "tests/fixtures/worlds/capset_infrastructure_industry/world_capabilities.json",
       "required_test_suites": [
         "test_load_and_validate",
         "test_command_surface",
@@ -203,12 +203,12 @@
         "test_replay_hash"
       ],
       "tests": [
-        "tests/testx/stages/stage_5_pre_present/test_load_and_validate.py",
-        "tests/testx/stages/stage_5_pre_present/test_command_surface.py",
-        "tests/testx/stages/stage_5_pre_present/test_pack_gating.py",
-        "tests/testx/stages/stage_5_pre_present/test_epistemics.py",
-        "tests/testx/stages/stage_5_pre_present/test_determinism_smoke.py",
-        "tests/testx/stages/stage_5_pre_present/test_replay_hash.py"
+        "tests/testx/capability_sets/capset_infrastructure_industry/test_load_and_validate.py",
+        "tests/testx/capability_sets/capset_infrastructure_industry/test_command_surface.py",
+        "tests/testx/capability_sets/capset_infrastructure_industry/test_pack_gating.py",
+        "tests/testx/capability_sets/capset_infrastructure_industry/test_epistemics.py",
+        "tests/testx/capability_sets/capset_infrastructure_industry/test_determinism_smoke.py",
+        "tests/testx/capability_sets/capset_infrastructure_industry/test_replay_hash.py"
       ],
       "provided_capabilities": [
         "dominium.capability.world.nonbio",
@@ -234,7 +234,7 @@
     },
     {
       "bundle_id": "CAPSET_FUTURE_AFFORDANCES",
-      "fixture": "tests/fixtures/worlds/stage_6_future/world_stage.json",
+      "fixture": "tests/fixtures/worlds/capset_future_affordances/world_capabilities.json",
       "required_test_suites": [
         "test_load_and_validate",
         "test_command_surface",
@@ -244,12 +244,12 @@
         "test_replay_hash"
       ],
       "tests": [
-        "tests/testx/stages/stage_6_future/test_load_and_validate.py",
-        "tests/testx/stages/stage_6_future/test_command_surface.py",
-        "tests/testx/stages/stage_6_future/test_pack_gating.py",
-        "tests/testx/stages/stage_6_future/test_epistemics.py",
-        "tests/testx/stages/stage_6_future/test_determinism_smoke.py",
-        "tests/testx/stages/stage_6_future/test_replay_hash.py"
+        "tests/testx/capability_sets/capset_future_affordances/test_load_and_validate.py",
+        "tests/testx/capability_sets/capset_future_affordances/test_command_surface.py",
+        "tests/testx/capability_sets/capset_future_affordances/test_pack_gating.py",
+        "tests/testx/capability_sets/capset_future_affordances/test_epistemics.py",
+        "tests/testx/capability_sets/capset_future_affordances/test_determinism_smoke.py",
+        "tests/testx/capability_sets/capset_future_affordances/test_replay_hash.py"
       ],
       "provided_capabilities": [
         "dominium.capability.world.nonbio",
@@ -275,9 +275,9 @@
     }
   ],
   "regression_tests": [
-    "tests/testx/stage_regression/test_no_life_without_capability.py",
-    "tests/testx/stage_regression/test_no_tools_without_capability.py",
-    "tests/testx/stage_regression/test_no_industry_without_capability.py",
-    "tests/testx/stage_regression/test_no_future_without_capability.py"
+    "tests/testx/capability_regression/test_no_life_without_capability.py",
+    "tests/testx/capability_regression/test_no_tools_without_capability.py",
+    "tests/testx/capability_regression/test_no_industry_without_capability.py",
+    "tests/testx/capability_regression/test_no_future_without_capability.py"
   ]
 }

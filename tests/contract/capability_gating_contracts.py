@@ -114,13 +114,13 @@ def parse_command_entries(path):
 
 def load_world_fixtures(repo_root):
     fixture_roots = [
-        ("CAPSET_WORLD_NONBIO", os.path.join(repo_root, "tests", "fixtures", "worlds", "stage_0_nonbio", "world_stage.json")),
-        ("CAPSET_WORLD_LIFE_NONINTELLIGENT", os.path.join(repo_root, "tests", "fixtures", "worlds", "stage_1_nonintelligent_life", "world_stage.json")),
-        ("CAPSET_WORLD_LIFE_INTELLIGENT", os.path.join(repo_root, "tests", "fixtures", "worlds", "stage_2_intelligent_pre_tool", "world_stage.json")),
-        ("CAPSET_WORLD_PRETOOL", os.path.join(repo_root, "tests", "fixtures", "worlds", "stage_3_pre_tool_world", "world_stage.json")),
-        ("CAPSET_SOCIETY_INSTITUTIONS", os.path.join(repo_root, "tests", "fixtures", "worlds", "stage_4_pre_industry", "world_stage.json")),
-        ("CAPSET_INFRASTRUCTURE_INDUSTRY", os.path.join(repo_root, "tests", "fixtures", "worlds", "stage_5_pre_present", "world_stage.json")),
-        ("CAPSET_FUTURE_AFFORDANCES", os.path.join(repo_root, "tests", "fixtures", "worlds", "stage_6_future", "world_stage.json")),
+        ("CAPSET_WORLD_NONBIO", os.path.join(repo_root, "tests", "fixtures", "worlds", "capset_world_nonbio", "world_capabilities.json")),
+        ("CAPSET_WORLD_LIFE_NONINTELLIGENT", os.path.join(repo_root, "tests", "fixtures", "worlds", "capset_world_life_nonintelligent", "world_capabilities.json")),
+        ("CAPSET_WORLD_LIFE_INTELLIGENT", os.path.join(repo_root, "tests", "fixtures", "worlds", "capset_world_life_intelligent", "world_capabilities.json")),
+        ("CAPSET_WORLD_PRETOOL", os.path.join(repo_root, "tests", "fixtures", "worlds", "capset_world_pretool", "world_capabilities.json")),
+        ("CAPSET_SOCIETY_INSTITUTIONS", os.path.join(repo_root, "tests", "fixtures", "worlds", "capset_society_institutions", "world_capabilities.json")),
+        ("CAPSET_INFRASTRUCTURE_INDUSTRY", os.path.join(repo_root, "tests", "fixtures", "worlds", "capset_infrastructure_industry", "world_capabilities.json")),
+        ("CAPSET_FUTURE_AFFORDANCES", os.path.join(repo_root, "tests", "fixtures", "worlds", "capset_future_affordances", "world_capabilities.json")),
     ]
     fixtures = []
     for expected_set, path in fixture_roots:

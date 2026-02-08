@@ -20,13 +20,13 @@ SUITE_NAMES = (
 )
 
 CAPABILITY_SET_DIRS = {
-    "CAPSET_WORLD_NONBIO": "stage_0_nonbio",
-    "CAPSET_WORLD_LIFE_NONINTELLIGENT": "stage_1_nonintelligent_life",
-    "CAPSET_WORLD_LIFE_INTELLIGENT": "stage_2_intelligent_pre_tool",
-    "CAPSET_WORLD_PRETOOL": "stage_3_pre_tool_world",
-    "CAPSET_SOCIETY_INSTITUTIONS": "stage_4_pre_industry",
-    "CAPSET_INFRASTRUCTURE_INDUSTRY": "stage_5_pre_present",
-    "CAPSET_FUTURE_AFFORDANCES": "stage_6_future",
+    "CAPSET_WORLD_NONBIO": "capset_world_nonbio",
+    "CAPSET_WORLD_LIFE_NONINTELLIGENT": "capset_world_life_nonintelligent",
+    "CAPSET_WORLD_LIFE_INTELLIGENT": "capset_world_life_intelligent",
+    "CAPSET_WORLD_PRETOOL": "capset_world_pretool",
+    "CAPSET_SOCIETY_INSTITUTIONS": "capset_society_institutions",
+    "CAPSET_INFRASTRUCTURE_INDUSTRY": "capset_infrastructure_industry",
+    "CAPSET_FUTURE_AFFORDANCES": "capset_future_affordances",
 }
 
 
@@ -90,7 +90,7 @@ def main():
 
         set_dir = CAPABILITY_SET_DIRS[bundle_id]
         fixture = entry.get("fixture", "")
-        expected_fixture = "tests/fixtures/worlds/{}/world_stage.json".format(set_dir)
+        expected_fixture = "tests/fixtures/worlds/{}/world_capabilities.json".format(set_dir)
         if fixture != expected_fixture:
             add_violation(
                 violations,
@@ -130,7 +130,7 @@ def main():
             )
             tests = []
         expected_tests = [
-            "tests/testx/stages/{}/{}.py".format(set_dir, suite_name)
+            "tests/testx/capability_sets/{}/{}.py".format(set_dir, suite_name)
             for suite_name in SUITE_NAMES
         ]
         if tests != expected_tests:
