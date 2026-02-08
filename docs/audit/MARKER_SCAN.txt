@@ -92,8 +92,9 @@ docs/architecture/VISITABILITY_AND_REFINEMENT.md:69 [PLACEHOLDER] - Placeholder 
 docs/audit/BOUNDARY_AUDIT.md:26 [TODO] - Legacy modules under `legacy/` contain stubs and TODOs; they are quarantined.
 docs/audit/BOUNDARY_AUDIT.md:28 [PLACEHOLDER]   placeholders. These are non-authoritative but should be tracked.
 docs/audit/BR0_STUB_RESOLUTION.md:25 [PLACEHOLDER] deterministically rather than perform placeholder logic. The refusal paths are
-docs/audit/CONFIDENCE_STATEMENT.md:15 [TODO] - Appcore and UI scaffolding still contain TODO placeholders.
-docs/audit/CONFIDENCE_STATEMENT.md:15 [PLACEHOLDER] - Appcore and UI scaffolding still contain TODO placeholders.
+docs/audit/CONFIDENCE_STATEMENT.md:21 [TODO] - Marker backlog (`49` TODO/FIXME/PLACEHOLDER hits) remains and should be reduced via
+docs/audit/CONFIDENCE_STATEMENT.md:21 [FIXME] - Marker backlog (`49` TODO/FIXME/PLACEHOLDER hits) remains and should be reduced via
+docs/audit/CONFIDENCE_STATEMENT.md:21 [PLACEHOLDER] - Marker backlog (`49` TODO/FIXME/PLACEHOLDER hits) remains and should be reduced via
 docs/audit/DOC_DRIFT.md:8 [PLACEHOLDER] This report lists documentation that explicitly references placeholders or
 docs/audit/DOC_DRIFT.md:13 [TODO] - `docs/architecture/REPORT_GAME_ARCH_DECISIONS.md` contains TODOs for save format and UI placeholders.
 docs/audit/DOC_DRIFT.md:13 [PLACEHOLDER] - `docs/architecture/REPORT_GAME_ARCH_DECISIONS.md` contains TODOs for save format and UI placeholders.
@@ -101,18 +102,12 @@ docs/audit/DOC_DRIFT.md:14 [PLACEHOLDER] - `docs/architecture/CHECKPOINTS.md` in
 docs/audit/DOC_DRIFT.md:15 [PLACEHOLDER] - `docs/ci/CI_ENFORCEMENT_MATRIX.md` contains placeholder entries for future checks.
 docs/audit/DOC_DRIFT.md:16 [TODO] - `docs/guides/IMPLEMENTATION_BACKLOG_*` contain open TODO placeholders.
 docs/audit/DOC_DRIFT.md:16 [PLACEHOLDER] - `docs/guides/IMPLEMENTATION_BACKLOG_*` contain open TODO placeholders.
-docs/audit/EXECUTION_LOG.md:41 [TODO] - `rg -n "TODO|FIXME|PLACEHOLDER" engine game client server tools libs app`
-docs/audit/EXECUTION_LOG.md:41 [FIXME] - `rg -n "TODO|FIXME|PLACEHOLDER" engine game client server tools libs app`
-docs/audit/EXECUTION_LOG.md:41 [PLACEHOLDER] - `rg -n "TODO|FIXME|PLACEHOLDER" engine game client server tools libs app`
-docs/audit/GAP_REPORT.md:26 [PLACEHOLDER]      - `engine/render/*_stub.*` (render backend placeholders)
-docs/audit/GAP_REPORT.md:31 [TODO] 2) Appcore scaffolding TODOs
-docs/audit/GAP_REPORT.md:32 [TODO]    - Source: `docs/audit/MARKER_SCAN.txt` (libs/appcore/* TODO)
-docs/audit/GAP_REPORT.md:37 [PLACEHOLDER] - UI backend placeholders (GTK/macOS) remain unimplemented.
-docs/audit/GAP_REPORT.md:38 [PLACEHOLDER] - Launcher/setup GUI/TUI placeholders remain (non-authoritative scaffolding).
-docs/audit/GAP_REPORT.md:45 [TODO] - Convert raw TODOs to standardized TODO_* markers per `docs/ci/CODEHYGIENE_RULES.md`.
-docs/audit/NEXT_PROMPTS.md:11 [TODO] 4) TODO-HYGIENE-0 — Convert raw TODOs to TODO_* markers and update blockers list.
-docs/audit/NEXT_PROMPTS.md:12 [TODO] 5) APPCORE-REALIZE-0 — Replace libs/appcore TODO stubs with explicit implementations.
-docs/audit/NEXT_PROMPTS.md:13 [PLACEHOLDER] 6) UI-BACKENDS-0 — Define scoped plan for GTK/macOS backend placeholders (no implementation unless requested).
+docs/audit/GAP_REPORT.md:36 [TODO] - TODO/FIXME/PLACEHOLDER marker backlog remains (`49` hits in `docs/audit/INVENTORY.json` summary).
+docs/audit/GAP_REPORT.md:36 [FIXME] - TODO/FIXME/PLACEHOLDER marker backlog remains (`49` hits in `docs/audit/INVENTORY.json` summary).
+docs/audit/GAP_REPORT.md:36 [PLACEHOLDER] - TODO/FIXME/PLACEHOLDER marker backlog remains (`49` hits in `docs/audit/INVENTORY.json` summary).
+docs/audit/REPO_INVENTORY_SUMMARY.md:80 [TODO] - Marker backlog summary: 49 TODO/FIXME/PLACEHOLDER hits
+docs/audit/REPO_INVENTORY_SUMMARY.md:80 [FIXME] - Marker backlog summary: 49 TODO/FIXME/PLACEHOLDER hits
+docs/audit/REPO_INVENTORY_SUMMARY.md:80 [PLACEHOLDER] - Marker backlog summary: 49 TODO/FIXME/PLACEHOLDER hits
 docs/audit/STUB_REPORT.md:12 [PLACEHOLDER] - Acceptable permanent stub: non-authoritative placeholder with explicit
 docs/audit/STUB_REPORT.md:24 [PLACEHOLDER] - UI backend placeholders:
 docs/ci/CI_ENFORCEMENT_MATRIX.md:174 [PLACEHOLDER] | REALITY0-NO-FAKE-001 | Systems must not fabricate visitable worlds without refinement. | Contract tests + admission checks (future hook) | Test | CI fail: REALITY0-NO-FAKE-001 | Require refinement contracts and deny placeholder micro worlds. | Prevents fake visitable worlds. |
