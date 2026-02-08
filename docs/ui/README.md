@@ -13,4 +13,4 @@ Superseded By: none
 ## Epistemic Rendering And Camera
 - `docs/ui/FREECAM_MODES.md`
 - `docs/ui/RENDERING_EPISTEMICS.md`
-
+- `docs/ui/OBSERVATION_AND_INSPECTION.md`

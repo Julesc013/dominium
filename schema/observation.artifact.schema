@@ -1,0 +1,50 @@
+SCHEMA: observation.artifact.schema
+schema_id: dominium.schema.observation.artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define observation artifacts as deterministic epistemic payloads for client/tool presentation.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Observation artifacts do NOT assert authoritative truth.
+- Confidence and staleness metadata do NOT grant authority.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record observation_artifact
+  required:
+    - observation_artifact_id: id
+    - modality: tag
+    - payload_type: tag
+    - payload: map
+    - confidence: quantity
+    - provenance: provenance_ref
+    - staleness: quantity
+    - epistemic_status: tag
+    - reason_codes: [tag]
+    - extensions: map
+  optional:
+    - target_ref: id
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+
+record provenance_ref
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]

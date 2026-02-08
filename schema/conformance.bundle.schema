@@ -1,0 +1,48 @@
+SCHEMA: conformance.bundle.schema
+schema_id: dominium.schema.conformance.bundle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define conformance bundles that bind assembly ports/contracts to solver eligibility and invariant checks.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Conformance bundles do NOT execute simulation logic.
+- Bundle metadata does NOT grant authority.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record conformance_bundle
+  required:
+    - conformance_bundle_id: id
+    - port_contracts: [map]
+    - tolerances: [quantity]
+    - allowed_solvers: [id]
+    - invariant_checks: [tag]
+    - test_vectors: [map]
+    - provenance: provenance_ref
+    - extensions: map
+  optional:
+    - compatibility_tags: [tag]
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+
+record provenance_ref
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]

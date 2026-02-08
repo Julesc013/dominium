@@ -176,6 +176,14 @@ dom_add_testx(NAME freecam_epistemics
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
 
+dom_add_testx(NAME blueprint_refusal
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/blueprint_refusal_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/blueprint_refusal
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
 dom_add_testx(NAME interaction_baseline
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/interaction_baseline_tests.py
         --client $<TARGET_FILE:dominium_client>

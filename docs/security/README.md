@@ -7,6 +7,6 @@ Superseded By: none
 
 ## Threat And Countermeasure Surface
 - `docs/security/CHEAT_THREAT_MODEL.md`
+- `docs/security/CHEATING_AND_VERIFICATION.md`
 - `docs/architecture/THREAT_MODEL.md`
 - `docs/architecture/ANTI_CHEAT_AND_INTEGRITY.md`
-

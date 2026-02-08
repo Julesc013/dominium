@@ -272,7 +272,10 @@ execution artifacts and are not authoritative.
 
 ## DERIVED
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
+- `docs/architecture/ARTIFACT_LIFECYCLE.md`
 - `docs/architecture/APPLICATION_CONTRACTS.md`
+- `docs/architecture/COLLAPSE_EXPAND_SOLVERS.md`
+- `docs/architecture/COMPLEXITY_AND_SCALE.md`
 - `docs/architecture/HISTORY_AND_CIVILIZATION_MODEL.md`
 - `docs/architecture/KNOWN_WARNINGS.md`
 - `docs/architecture/POST_CLEAN_2_STATUS.md`
