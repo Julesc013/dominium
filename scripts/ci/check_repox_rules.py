@@ -129,6 +129,35 @@ CAPABILITY_SET_TO_DIR = {
     "CAPSET_FUTURE_AFFORDANCES": "stage_6_future",
 }
 
+CAMERA_BLUEPRINT_COMMAND_EXPECTATIONS = {
+    "camera.set_mode": {
+        "required_capabilities": ("ui.camera.mode.embodied",),
+        "epistemic_scope": "DOM_EPISTEMIC_SCOPE_PARTIAL",
+        "failure_ref": "k_failure_camera",
+    },
+    "camera.set_pose": {
+        "required_capabilities": ("ui.camera.mode.embodied",),
+        "epistemic_scope": "DOM_EPISTEMIC_SCOPE_OBS_ONLY",
+        "failure_ref": "k_failure_camera",
+    },
+    "blueprint.preview": {
+        "required_capabilities": ("ui.blueprint.preview",),
+        "epistemic_scope": "DOM_EPISTEMIC_SCOPE_MEMORY_ONLY",
+        "failure_ref": "k_failure_blueprint",
+    },
+    "blueprint.place": {
+        "required_capabilities": ("ui.blueprint.place",),
+        "epistemic_scope": "DOM_EPISTEMIC_SCOPE_OBS_ONLY",
+        "failure_ref": "k_failure_blueprint",
+    },
+}
+
+FORBIDDEN_RENDER_TRUTH_TOKENS = (
+    "authoritative_world_state",
+    "truth_snapshot_stream",
+    "hidden_truth_cache",
+)
+
 
 def repo_rel(repo_root, path):
     return os.path.relpath(path, repo_root).replace("\\", "/")
@@ -952,6 +981,141 @@ def check_ui_canonical_command_bindings(repo_root):
     return violations
 
 
+def _line_with_token(text, token):
+    for idx, line in enumerate(text.splitlines(), start=1):
+        if token in line:
+            return idx
+    return 0
+
+
+def check_camera_blueprint_command_metadata(repo_root):
+    invariant_id = "INV-CAMERA-BLUEPRINT-METADATA"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    path = os.path.join(repo_root, COMMAND_REGISTRY_REL)
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, COMMAND_REGISTRY_REL.replace("\\", "/"))]
+    text = read_text(path) or ""
+    entries = _parse_command_registry_entries(text)
+    if not entries:
+        return ["{}: no command entries found".format(invariant_id)]
+
+    arr_re = re.compile(r"static const char\* (k_[A-Za-z0-9_]+)\[\] = \{([^}]*)\};")
+    cap_arrays = {}
+    for match in arr_re.finditer(text):
+        cap_arrays[match.group(1)] = re.findall(r'"([^\"]+)"', match.group(2))
+
+    meta_re = re.compile(
+        r",\s*(k_[A-Za-z0-9_]+)\s*,\s*(\d+)u\s*,\s*(k_[A-Za-z0-9_]+)\s*,\s*(\d+)u\s*,\s*"
+        r"(k_[A-Za-z0-9_]+)\s*,\s*(\d+)u\s*,\s*(DOM_EPISTEMIC_SCOPE_[A-Z_]+)\s*\}"
+    )
+    violations = []
+    found = {}
+    for entry in entries:
+        name_match = re.search(r"\{\s*DOM_APP_CMD_[^,]+,\s*\"([^\"]+)\"", entry)
+        if not name_match:
+            continue
+        cmd_name = name_match.group(1)
+        if cmd_name not in CAMERA_BLUEPRINT_COMMAND_EXPECTATIONS:
+            continue
+        expected = CAMERA_BLUEPRINT_COMMAND_EXPECTATIONS[cmd_name]
+        line_no = _line_with_token(text, "\"{}\"".format(cmd_name))
+        rel = COMMAND_REGISTRY_REL.replace("\\", "/")
+        found[cmd_name] = 1
+        meta_match = meta_re.search(entry)
+        if not meta_match:
+            violations.append(
+                "{}: {}:{} missing command metadata for {}".format(
+                    invariant_id, rel, line_no or 1, cmd_name
+                )
+            )
+            continue
+        failure_ref = meta_match.group(1)
+        cap_ref = meta_match.group(5)
+        cap_count = int(meta_match.group(6))
+        scope = meta_match.group(7)
+        caps = cap_arrays.get(cap_ref, [])
+        if cap_count <= 0:
+            violations.append(
+                "{}: {}:{} required_capabilities empty for {}".format(
+                    invariant_id, rel, line_no or 1, cmd_name
+                )
+            )
+        for capability_id in expected["required_capabilities"]:
+            if capability_id not in caps:
+                violations.append(
+                    "{}: {}:{} missing required capability {} for {}".format(
+                        invariant_id, rel, line_no or 1, capability_id, cmd_name
+                    )
+                )
+        if scope != expected["epistemic_scope"]:
+            violations.append(
+                "{}: {}:{} epistemic_scope mismatch for {} (expected {}, got {})".format(
+                    invariant_id, rel, line_no or 1, cmd_name, expected["epistemic_scope"], scope
+                )
+            )
+        if failure_ref != expected["failure_ref"]:
+            violations.append(
+                "{}: {}:{} failure code set mismatch for {} (expected {}, got {})".format(
+                    invariant_id, rel, line_no or 1, cmd_name, expected["failure_ref"], failure_ref
+                )
+            )
+
+    for cmd_name in CAMERA_BLUEPRINT_COMMAND_EXPECTATIONS:
+        if cmd_name not in found:
+            violations.append("{}: missing canonical command {}".format(invariant_id, cmd_name))
+    return violations
+
+
+def check_observer_freecam_entitlement_gate(repo_root):
+    invariant_id = "INV-OBSERVER-FREECAM-ENTITLEMENT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    rel = "client/shell/client_shell.c"
+    path = os.path.join(repo_root, "client", "shell", "client_shell.c")
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, rel)]
+
+    text = read_text(path) or ""
+    line_mode = _line_with_token(text, "camera.set_mode")
+    line_entitlement = _line_with_token(text, "tool.truth.view")
+    line_refusal = _line_with_token(text, "CAMERA_REFUSE_ENTITLEMENT")
+    violations = []
+    if line_mode <= 0:
+        violations.append("{}: {} missing camera.set_mode parser branch".format(invariant_id, rel))
+    if line_entitlement <= 0:
+        violations.append("{}: {} missing tool.truth.view entitlement gate".format(invariant_id, rel))
+    if line_refusal <= 0:
+        violations.append("{}: {} missing CAMERA_REFUSE_ENTITLEMENT refusal".format(invariant_id, rel))
+    return violations
+
+
+def check_renderer_no_truth_access(repo_root):
+    invariant_id = "INV-RENDER-NO-TRUTH-ACCESS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    roots = [
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "libs", "appcore"),
+    ]
+    violations = []
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path) or ""
+        for idx, line in enumerate(text.splitlines(), start=1):
+            for token in FORBIDDEN_RENDER_TRUTH_TOKENS:
+                if token in line:
+                    violations.append(
+                        "{}: {}:{} forbidden truth-access token {}".format(
+                            invariant_id, rel, idx, token
+                        )
+                    )
+    return violations
+
+
 def check_capability_matrix_integrity(repo_root):
     invariant_id = "INV-CAPABILITY-MATRIX"
     if is_override_active(repo_root, invariant_id):
@@ -1593,7 +1757,10 @@ def main() -> int:
     violations.extend(check_unversioned_schema_references(repo_root))
     violations.extend(check_pack_capability_metadata(repo_root))
     violations.extend(check_command_capability_metadata(repo_root))
+    violations.extend(check_camera_blueprint_command_metadata(repo_root))
     violations.extend(check_ui_canonical_command_bindings(repo_root))
+    violations.extend(check_observer_freecam_entitlement_gate(repo_root))
+    violations.extend(check_renderer_no_truth_access(repo_root))
     violations.extend(check_capability_matrix_integrity(repo_root))
     violations.extend(check_forbidden_stage_tokens(repo_root))
     violations.extend(check_process_registry(repo_root))

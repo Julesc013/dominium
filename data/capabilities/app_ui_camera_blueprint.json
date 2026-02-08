@@ -1,0 +1,138 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "ui.camera.mode.embodied",
+      "capability_tags": [
+        "ui.camera",
+        "mode.embodied"
+      ],
+      "providers": [
+        {
+          "ref_type": "registry",
+          "ref_id": "data.capabilities.app_ui_camera_blueprint"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.data.capabilities.app_ui_camera_blueprint.v1"
+      }
+    },
+    {
+      "capability_id": "ui.camera.mode.memory",
+      "capability_tags": [
+        "ui.camera",
+        "mode.memory"
+      ],
+      "providers": [
+        {
+          "ref_type": "registry",
+          "ref_id": "data.capabilities.app_ui_camera_blueprint"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.data.capabilities.app_ui_camera_blueprint.v1"
+      }
+    },
+    {
+      "capability_id": "ui.camera.mode.observer",
+      "capability_tags": [
+        "ui.camera",
+        "mode.observer",
+        "tooling_only"
+      ],
+      "providers": [
+        {
+          "ref_type": "registry",
+          "ref_id": "data.capabilities.app_ui_camera_blueprint"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.data.capabilities.app_ui_camera_blueprint.v1"
+      }
+    },
+    {
+      "capability_id": "ui.blueprint.preview",
+      "capability_tags": [
+        "ui.blueprint",
+        "preview"
+      ],
+      "providers": [
+        {
+          "ref_type": "registry",
+          "ref_id": "data.capabilities.app_ui_camera_blueprint"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.data.capabilities.app_ui_camera_blueprint.v1"
+      }
+    },
+    {
+      "capability_id": "ui.blueprint.place",
+      "capability_tags": [
+        "ui.blueprint",
+        "place"
+      ],
+      "providers": [
+        {
+          "ref_type": "registry",
+          "ref_id": "data.capabilities.app_ui_camera_blueprint"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.data.capabilities.app_ui_camera_blueprint.v1"
+      }
+    },
+    {
+      "capability_id": "tool.truth.view",
+      "capability_tags": [
+        "tooling",
+        "truth",
+        "entitlement"
+      ],
+      "providers": [
+        {
+          "ref_type": "registry",
+          "ref_id": "data.capabilities.app_ui_camera_blueprint"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.data.capabilities.app_ui_camera_blueprint.v1"
+      }
+    },
+    {
+      "capability_id": "tool.observation.stream",
+      "capability_tags": [
+        "tooling",
+        "observation",
+        "entitlement"
+      ],
+      "providers": [
+        {
+          "ref_type": "registry",
+          "ref_id": "data.capabilities.app_ui_camera_blueprint"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.data.capabilities.app_ui_camera_blueprint.v1"
+      }
+    },
+    {
+      "capability_id": "tool.memory.read",
+      "capability_tags": [
+        "tooling",
+        "memory",
+        "entitlement"
+      ],
+      "providers": [
+        {
+          "ref_type": "registry",
+          "ref_id": "data.capabilities.app_ui_camera_blueprint"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.data.capabilities.app_ui_camera_blueprint.v1"
+      }
+    }
+  ]
+}

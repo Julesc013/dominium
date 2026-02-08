@@ -75,6 +75,8 @@ extern "C" {
 #define DOM_SHELL_CAMERA_FIRST "camera.first_person"
 #define DOM_SHELL_CAMERA_THIRD "camera.third_person"
 #define DOM_SHELL_CAMERA_FREE "camera.free"
+#define DOM_SHELL_CAMERA_MEMORY "camera.memory"
+#define DOM_SHELL_CAMERA_OBSERVER "camera.observer"
 #define DOM_SHELL_PLAYTEST_SANDBOX "policy.playtest.sandbox"
 #define DOM_SHELL_PLAYTEST_HARDCORE "policy.playtest.hardcore"
 #define DOM_SHELL_PLAYTEST_ACCELERATED "policy.playtest.accelerated_time"

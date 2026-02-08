@@ -9,12 +9,30 @@ NOTES: CLI is canonical; GUI binds to this registry.
 
 static const char* k_failure_common[] = { "ok", "usage", "failure", "unavailable" };
 static const int k_exit_common[] = { 0, 1, 2, 3 };
+static const char* k_failure_camera[] = {
+    "ok",
+    "usage",
+    "camera_refuse_policy",
+    "camera_refuse_entitlement",
+    "camera_refuse_world_inactive"
+};
+static const int k_exit_camera[] = { 0, 1, 3, 3, 3 };
+static const char* k_failure_blueprint[] = {
+    "ok",
+    "usage",
+    "blueprint_refuse_capability",
+    "blueprint_refuse_world_inactive"
+};
+static const int k_exit_blueprint[] = { 0, 1, 3, 3 };
 static const char* k_required_caps_none[] = { 0 };
 static const char* k_cap_world_life_nonintelligent[] = { "dominium.capability.world.life.nonintelligent" };
 static const char* k_cap_world_life_intelligent[] = { "dominium.capability.world.life.intelligent" };
 static const char* k_cap_society_institutions[] = { "dominium.capability.society.institutions" };
 static const char* k_cap_infrastructure_industry[] = { "dominium.capability.infrastructure.industry" };
 static const char* k_cap_future_affordances[] = { "dominium.capability.future.affordances" };
+static const char* k_cap_ui_camera_embodied[] = { "ui.camera.mode.embodied" };
+static const char* k_cap_ui_blueprint_preview[] = { "ui.blueprint.preview" };
+static const char* k_cap_ui_blueprint_place[] = { "ui.blueprint.place" };
 
 static const dom_app_command_desc k_commands[] = {
     { DOM_APP_CMD_LAUNCHER_VERSION, "version", "launcher", DOM_APP_ARG_SCHEMA_NONE,
@@ -131,6 +149,14 @@ static const dom_app_command_desc k_commands[] = {
       k_failure_common, 4u, k_exit_common, 4u, k_required_caps_none, 0u, DOM_EPISTEMIC_SCOPE_PARTIAL },
     { DOM_APP_CMD_CLIENT_CAMERA_NEXT, "camera-next", "client", DOM_APP_ARG_SCHEMA_NONE,
       k_failure_common, 4u, k_exit_common, 4u, k_required_caps_none, 0u, DOM_EPISTEMIC_SCOPE_PARTIAL },
+    { DOM_APP_CMD_CLIENT_CAMERA_SET_MODE, "camera.set_mode", "client", DOM_APP_ARG_SCHEMA_ARGS,
+      k_failure_camera, 5u, k_exit_camera, 5u, k_cap_ui_camera_embodied, 1u, DOM_EPISTEMIC_SCOPE_PARTIAL },
+    { DOM_APP_CMD_CLIENT_CAMERA_SET_POSE, "camera.set_pose", "client", DOM_APP_ARG_SCHEMA_ARGS,
+      k_failure_camera, 5u, k_exit_camera, 5u, k_cap_ui_camera_embodied, 1u, DOM_EPISTEMIC_SCOPE_OBS_ONLY },
+    { DOM_APP_CMD_CLIENT_BLUEPRINT_PREVIEW, "blueprint.preview", "client", DOM_APP_ARG_SCHEMA_ARGS,
+      k_failure_blueprint, 4u, k_exit_blueprint, 4u, k_cap_ui_blueprint_preview, 1u, DOM_EPISTEMIC_SCOPE_MEMORY_ONLY },
+    { DOM_APP_CMD_CLIENT_BLUEPRINT_PLACE, "blueprint.place", "client", DOM_APP_ARG_SCHEMA_ARGS,
+      k_failure_blueprint, 4u, k_exit_blueprint, 4u, k_cap_ui_blueprint_place, 1u, DOM_EPISTEMIC_SCOPE_OBS_ONLY },
     { DOM_APP_CMD_CLIENT_INSPECT_TOGGLE, "inspect-toggle", "client", DOM_APP_ARG_SCHEMA_NONE,
       k_failure_common, 4u, k_exit_common, 4u, k_required_caps_none, 0u, DOM_EPISTEMIC_SCOPE_PARTIAL },
     { DOM_APP_CMD_CLIENT_HUD_TOGGLE, "hud-toggle", "client", DOM_APP_ARG_SCHEMA_NONE,
