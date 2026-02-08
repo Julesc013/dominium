@@ -1861,6 +1861,7 @@
     "docs/architecture/CANON_CUT_LINE.md",
     "docs/architecture/CANON_INDEX.md",
     "docs/architecture/CAPABILITY_BASELINES.md",
+    "docs/architecture/CAPABILITY_ONLY_CANON.md",
     "docs/architecture/CHANGELOG_ARCH.md",
     "docs/architecture/CHANGE_PROTOCOL.md",
     "docs/architecture/CHEATS_ARE_JUST_LAWS.md",
@@ -2156,6 +2157,7 @@
     "docs/content/FALLBACK_MATRIX.md",
     "docs/content/IMPORTANCE_INDEX.md",
     "docs/content/INFINITE_DETAIL.md",
+    "docs/content/PACK_CAPABILITIES.md",
     "docs/content/PORTABILITY.md",
     "docs/content/README.md",
     "docs/content/REALITY_OVERLAYS.md",
@@ -3044,6 +3046,12 @@
         "schema_id": "dominium.schema.bundle_container"
       },
       {
+        "actual_stem": "capability.declaration",
+        "expected_stem": "capability_declaration",
+        "path": "schema/capability.declaration.schema",
+        "schema_id": "dominium.schema.capability_declaration"
+      },
+      {
         "actual_stem": "compat.report",
         "expected_stem": "compat_report",
         "path": "schema/compat.report.schema",
@@ -3096,12 +3104,6 @@
         "expected_stem": "security.force",
         "path": "schema/security_force.schema",
         "schema_id": "dominium.schema.security.force"
-      },
-      {
-        "actual_stem": "stage.declaration",
-        "expected_stem": "stage_declaration",
-        "path": "schema/stage.declaration.schema",
-        "schema_id": "dominium.schema.stage_declaration"
       },
       {
         "actual_stem": "ui_accessibility",
@@ -4219,6 +4221,14 @@
         "docs/architecture",
         "docs/schema"
       ],
+      "path": "schema/capability.declaration.schema",
+      "subsystem": "schema"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/schema"
+      ],
       "path": "schema/capability.schema",
       "subsystem": "schema"
     },
@@ -5099,14 +5109,6 @@
         "docs/architecture",
         "docs/schema"
       ],
-      "path": "schema/stage.declaration.schema",
-      "subsystem": "schema"
-    },
-    {
-      "docs": [
-        "docs/architecture",
-        "docs/schema"
-      ],
       "path": "schema/standard.definition.schema",
       "subsystem": "schema"
     },
@@ -5348,74 +5350,22 @@
     "docs/TESTX_STAGE_MATRIX.md",
     "docs/archive/prompts/post_canon_sequence_L1_L4_IVRH.txt",
     "docs/specs/setup/AUDIT_MODEL.md",
-    "libs/appcore/command/command_registry.h",
-    "schema/pack_manifest.schema",
-    "schema/stage.declaration.schema",
-    "scripts/ci/check_repox_rules.py",
-    "tests/contract/stage_gating_contracts.py",
-    "tests/testx/stage_matrix_common.py",
-    "tests/testx/stage_matrix_contracts.py",
-    "tests/testx/stage_regression/test_no_future_affordances_pre_6.py",
-    "tests/testx/stage_regression/test_no_industry_in_stage_4.py",
-    "tests/testx/stage_regression/test_no_life_in_stage_0.py",
-    "tests/testx/stage_regression/test_no_tools_in_stage_2_and_3.py",
-    "tests/testx/stage_suite_runner.py",
-    "tests/testx/stages/stage_0_nonbio/test_command_surface.py",
-    "tests/testx/stages/stage_0_nonbio/test_determinism_smoke.py",
-    "tests/testx/stages/stage_0_nonbio/test_epistemics.py",
-    "tests/testx/stages/stage_0_nonbio/test_load_and_validate.py",
-    "tests/testx/stages/stage_0_nonbio/test_pack_gating.py",
-    "tests/testx/stages/stage_0_nonbio/test_replay_hash.py",
-    "tests/testx/stages/stage_1_nonintelligent_life/test_command_surface.py",
-    "tests/testx/stages/stage_1_nonintelligent_life/test_determinism_smoke.py",
-    "tests/testx/stages/stage_1_nonintelligent_life/test_epistemics.py",
-    "tests/testx/stages/stage_1_nonintelligent_life/test_load_and_validate.py",
-    "tests/testx/stages/stage_1_nonintelligent_life/test_pack_gating.py",
-    "tests/testx/stages/stage_1_nonintelligent_life/test_replay_hash.py",
-    "tests/testx/stages/stage_2_intelligent_pre_tool/test_command_surface.py",
-    "tests/testx/stages/stage_2_intelligent_pre_tool/test_determinism_smoke.py",
-    "tests/testx/stages/stage_2_intelligent_pre_tool/test_epistemics.py",
-    "tests/testx/stages/stage_2_intelligent_pre_tool/test_load_and_validate.py",
-    "tests/testx/stages/stage_2_intelligent_pre_tool/test_pack_gating.py",
-    "tests/testx/stages/stage_2_intelligent_pre_tool/test_replay_hash.py",
-    "tests/testx/stages/stage_3_pre_tool_world/test_command_surface.py",
-    "tests/testx/stages/stage_3_pre_tool_world/test_determinism_smoke.py",
-    "tests/testx/stages/stage_3_pre_tool_world/test_epistemics.py",
-    "tests/testx/stages/stage_3_pre_tool_world/test_load_and_validate.py",
-    "tests/testx/stages/stage_3_pre_tool_world/test_pack_gating.py",
-    "tests/testx/stages/stage_3_pre_tool_world/test_replay_hash.py",
-    "tests/testx/stages/stage_4_pre_industry/test_command_surface.py",
-    "tests/testx/stages/stage_4_pre_industry/test_determinism_smoke.py",
-    "tests/testx/stages/stage_4_pre_industry/test_epistemics.py",
-    "tests/testx/stages/stage_4_pre_industry/test_load_and_validate.py",
-    "tests/testx/stages/stage_4_pre_industry/test_pack_gating.py",
-    "tests/testx/stages/stage_4_pre_industry/test_replay_hash.py",
-    "tests/testx/stages/stage_5_pre_present/test_command_surface.py",
-    "tests/testx/stages/stage_5_pre_present/test_determinism_smoke.py",
-    "tests/testx/stages/stage_5_pre_present/test_epistemics.py",
-    "tests/testx/stages/stage_5_pre_present/test_load_and_validate.py",
-    "tests/testx/stages/stage_5_pre_present/test_pack_gating.py",
-    "tests/testx/stages/stage_5_pre_present/test_replay_hash.py",
-    "tests/testx/stages/stage_6_future/test_command_surface.py",
-    "tests/testx/stages/stage_6_future/test_determinism_smoke.py",
-    "tests/testx/stages/stage_6_future/test_epistemics.py",
-    "tests/testx/stages/stage_6_future/test_load_and_validate.py",
-    "tests/testx/stages/stage_6_future/test_pack_gating.py",
-    "tests/testx/stages/stage_6_future/test_replay_hash.py",
     "tmp/all_files.txt",
-    "tools/pack/pack_validate.py"
+    "tmp/capability_only_text_refactor.py",
+    "tmp/refactor_testx_paths.py",
+    "tools/pack/migrate_capability_gating.py"
   ],
   "summary": {
     "binaries": 187,
     "ci_entries": 25,
     "coverage_entries": 8,
     "data_domains": 14,
-    "docs": 1006,
+    "docs": 1008,
     "libraries": 34,
     "pack_families": 7,
     "packs": 59,
     "schemas": 155,
-    "stage_token_hits": 60,
+    "stage_token_hits": 8,
     "stub_counts": {
       "acceptable_permanent_stub": 6,
       "forbidden_stub": 0,
@@ -5424,7 +5374,7 @@
     "stub_files": 52,
     "tests": 270,
     "todo_hits": 49,
-    "tools": 280
+    "tools": 281
   },
   "tests": [
     {
@@ -5736,6 +5686,14 @@
         "docs/architecture",
         "docs/ci"
       ],
+      "path": "tests/contract/capability_gating_contracts.py",
+      "subsystem": "tests"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/ci"
+      ],
       "path": "tests/contract/compat_report_presence_contracts.py",
       "subsystem": "tests"
     },
@@ -5873,14 +5831,6 @@
         "docs/ci"
       ],
       "path": "tests/contract/srz_contract_tests.py",
-      "subsystem": "tests"
-    },
-    {
-      "docs": [
-        "docs/architecture",
-        "docs/ci"
-      ],
-      "path": "tests/contract/stage_gating_contracts.py",
       "subsystem": "tests"
     },
     {
@@ -7128,7 +7078,7 @@
         "docs/architecture",
         "docs/ci"
       ],
-      "path": "tests/testx/stage_matrix_common.py",
+      "path": "tests/testx/capability_matrix_common.py",
       "subsystem": "tests"
     },
     {
@@ -7136,7 +7086,7 @@
         "docs/architecture",
         "docs/ci"
       ],
-      "path": "tests/testx/stage_matrix_contracts.py",
+      "path": "tests/testx/capability_matrix_contracts.py",
       "subsystem": "tests"
     },
     {
@@ -7144,7 +7094,7 @@
         "docs/architecture",
         "docs/ci"
       ],
-      "path": "tests/testx/stage_regression/test_no_future_affordances_pre_6.py",
+      "path": "tests/testx/capability_suite_runner.py",
       "subsystem": "tests"
     },
     {
@@ -7152,7 +7102,7 @@
         "docs/architecture",
         "docs/ci"
       ],
-      "path": "tests/testx/stage_regression/test_no_industry_in_stage_4.py",
+      "path": "tests/testx/stage_regression/test_no_future_without_capability.py",
       "subsystem": "tests"
     },
     {
@@ -7160,7 +7110,7 @@
         "docs/architecture",
         "docs/ci"
       ],
-      "path": "tests/testx/stage_regression/test_no_life_in_stage_0.py",
+      "path": "tests/testx/stage_regression/test_no_industry_without_capability.py",
       "subsystem": "tests"
     },
     {
@@ -7168,7 +7118,7 @@
         "docs/architecture",
         "docs/ci"
       ],
-      "path": "tests/testx/stage_regression/test_no_tools_in_stage_2_and_3.py",
+      "path": "tests/testx/stage_regression/test_no_life_without_capability.py",
       "subsystem": "tests"
     },
     {
@@ -7176,7 +7126,7 @@
         "docs/architecture",
         "docs/ci"
       ],
-      "path": "tests/testx/stage_suite_runner.py",
+      "path": "tests/testx/stage_regression/test_no_tools_without_capability.py",
       "subsystem": "tests"
     },
     {
@@ -8651,6 +8601,14 @@
         "docs/tools"
       ],
       "path": "tools/pack/capability_inspect.py",
+      "subsystem": "tools"
+    },
+    {
+      "docs": [
+        "docs/architecture",
+        "docs/tools"
+      ],
+      "path": "tools/pack/migrate_capability_gating.py",
       "subsystem": "tools"
     },
     {

@@ -13,13 +13,13 @@ Superseded By: none
 - Scope: `data/packs/`, `schema/pack_manifest.schema`, `tools/pack/pack_validate.py`
 - Goal: canonicalize dependency field usage and add deterministic validation messaging.
 
-3) `STAGE-TOKEN-RECONCILE-0`
-- Scope: `libs/appcore/command/command_registry.h`, `schema/*.schema`, `tools/pack/pack_validate.py`, docs only
-- Goal: governance reconciliation for stage-token surfaces vs capability-only invariant.
-
-4) `STUB-POLICY-CLASSIFY-0`
+3) `STUB-CLASSIFY-0`
 - Scope: `engine/`, `game/`, `launcher/`, `setup/`, `libs/ui_backends/`, `tools/`
-- Goal: classify temporary stubs into acceptable scaffolding vs forbidden authoritative stubs and wire report enforcement.
+- Goal: classify temporary stubs into acceptable scaffolding vs forbidden authoritative paths and add report enforcement.
+
+4) `INVENTORY-STABILIZE-0`
+- Scope: `tools/audit/`, `scripts/audit/`, `docs/audit/INVENTORY_MACHINE.json`
+- Goal: remove transient build/test artifacts from machine inventory to make diffs deterministic.
 
 5) `TEST-COVERAGE-SEMANTIC-MAP-0`
 - Scope: `tests/`, `docs/audit/TEST_COVERAGE_MATRIX.md`

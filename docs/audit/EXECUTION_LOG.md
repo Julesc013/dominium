@@ -12,8 +12,7 @@ auditing using deterministic tooling only.
 
 - `python scripts/ci/check_repox_rules.py --repo-root .` (PASS)
 - `cmake --build out/build/vs2026/verify --config Debug --target domino_engine dominium_game` (PASS)
-- `ctest --test-dir out/build/vs2026/verify -C Debug -R determinism --output-on-failure` (PASS, 19 tests)
-- `ctest --test-dir out/build/vs2026/verify -C Debug -R schema --output-on-failure` (PASS, 10 tests)
+- `cmake --build out/build/vs2026/verify --config Debug --target testx_all` (PASS, 359/359 tests)
 
 ## Audit execution commands
 
@@ -26,19 +25,16 @@ auditing using deterministic tooling only.
 
 ## Files touched in this run
 
-- `tools/audit/pack_audit.py` (added required DERIVED header + historical-reference note in generated report)
-- `tools/audit/generate_inventory_md.py` (made Last Reviewed date dynamic)
-- `tools/audit/test_matrix.py` (made Last Reviewed date dynamic)
-- `tools/audit/scan_markers.py` (excluded generated audit outputs from marker recursion)
+- `docs/audit/INVENTORY.json` (regenerated inventory + subsystem cross-links)
+- `docs/audit/INVENTORY_MACHINE.json` (regenerated machine inventory)
+- `docs/audit/MARKER_SCAN.txt` (regenerated marker report)
+- `docs/audit/TEST_COVERAGE_MATRIX.md` (regenerated test coverage matrix)
 
 ## Generated/updated artifacts
 
 - `docs/audit/INVENTORY_MACHINE.json`
-- `docs/audit/INVENTORY.md`
 - `docs/audit/INVENTORY.json`
-- `docs/audit/STUB_REPORT.json`
 - `docs/audit/MARKER_SCAN.txt`
-- `docs/audit/PACK_AUDIT.txt`
 - `docs/audit/TEST_COVERAGE_MATRIX.md`
 
 ## Determinism impact

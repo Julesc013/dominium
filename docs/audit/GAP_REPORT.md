@@ -10,18 +10,7 @@ current normalization and coverage pass.
 
 ## Blocked items (require design/governance decision)
 
-1) Canon conflict on stage/progression vocabulary in runtime-adjacent surfaces
-   - Sources:
-     - `libs/appcore/command/command_registry.h`
-     - `schema/stage.declaration.schema`
-     - `schema/pack_manifest.schema`
-     - `tools/pack/pack_validate.py`
-   - Finding: `STAGE_*` tokens remain in command/schema/tooling surfaces.
-   - Impact: conflicts with the current invariant requiring capability/entitlement
-     gating without stage/progression encoding.
-   - Required: a governance-level reconciliation prompt; do not modify semantics ad hoc.
-
-2) Pack integrity failures
+1) Pack integrity failures
    - Source: `docs/audit/PACK_AUDIT.txt`
    - Current status: `59 packs, 14 failures` (`45 PASS`, `14 FAIL`).
    - Failure classes:
@@ -34,12 +23,12 @@ current normalization and coverage pass.
 - Temporary stubs remain (`46` in `docs/audit/STUB_REPORT.json`), mainly
   platform/UI/backend scaffolding.
 - TODO/FIXME/PLACEHOLDER marker backlog remains (`49` hits in `docs/audit/INVENTORY.json` summary).
-- Test-coverage matrix is structural by naming convention and needs deeper
-  capability-to-test semantic mapping.
+- `INVENTORY_MACHINE.json` includes transient build/test outputs and should be stabilized
+  to reduce churn between runs.
 
 ## Immediate next actions (safe, local, non-breaking)
 
 1) Run a scoped pack-reference remediation pass for the 14 failing packs.
 2) Add deterministic lint/report checks for dependency-field canonicalization in pack manifests.
-3) Produce a governance reconciliation prompt for stage-token removal/migration to capabilities.
-4) Add a stub policy report split by authoritative path vs scaffolding path and wire to RepoX informational output.
+3) Split temporary stubs into scaffolding vs authoritative paths and wire an informational RepoX report.
+4) Tighten inventory generation filters for transient artifacts (`__pycache__`, test-save outputs, temporary scripts).

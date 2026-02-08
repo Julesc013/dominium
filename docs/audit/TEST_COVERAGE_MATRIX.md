@@ -19,7 +19,7 @@ Source: `out/build/vs2026/verify/CTestTestfile.cmake`
 - budget: 1
 - bugreport: 1
 - build: 6
-- capability: 1
+- capability: 48
 - climate: 2
 - compat: 1
 - compliance: 1
@@ -100,7 +100,6 @@ Source: `out/build/vs2026/verify/CTestTestfile.cmake`
 - slice1: 2
 - slice2: 2
 - srz: 2
-- stage: 47
 - standard: 2
 - streaming: 1
 - structure: 2

@@ -3,6 +3,12 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "build/capability_gating_migration_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "build/msvc-base/ALL_BUILD.vcxproj",
       "subsystem": "build"
     },
@@ -68397,6 +68403,126 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_60.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_60.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_61.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_61.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_62.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_62.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_63.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_63.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_64.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_64.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_65.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_65.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_66.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_66.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_67.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_67.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_68.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_68.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_69.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_69.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_7.save",
       "subsystem": "build"
     },
@@ -68409,6 +68535,126 @@
     {
       "category": "build",
       "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_70.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_70.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_71.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_71.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_72.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_72.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_73.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_73.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_74.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_74.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_75.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_75.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_76.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_76.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_77.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_77.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_78.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_78.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_79.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_79.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_8.save",
       "subsystem": "build"
     },
@@ -68416,6 +68662,30 @@
       "category": "build",
       "doc": "docs/build/README.md",
       "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_8.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_80.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_80.save.compat_report.json",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_81.save",
+      "subsystem": "build"
+    },
+    {
+      "category": "build",
+      "doc": "docs/build/README.md",
+      "path": "out/build/vs2026/verify/tests/app/data/saves/world_0_81.save.compat_report.json",
       "subsystem": "build"
     },
     {
@@ -92187,6 +92457,12 @@
     {
       "category": "schema",
       "doc": "docs/schema/SCHEMA_INDEX.md",
+      "path": "schema/capability.declaration.schema",
+      "subsystem": "schema"
+    },
+    {
+      "category": "schema",
+      "doc": "docs/schema/SCHEMA_INDEX.md",
       "path": "schema/capability.schema",
       "subsystem": "schema"
     },
@@ -92884,12 +93160,6 @@
       "category": "schema",
       "doc": "docs/schema/SCHEMA_INDEX.md",
       "path": "schema/srz.zone.schema",
-      "subsystem": "schema"
-    },
-    {
-      "category": "schema",
-      "doc": "docs/schema/SCHEMA_INDEX.md",
-      "path": "schema/stage.declaration.schema",
       "subsystem": "schema"
     },
     {
@@ -94107,6 +94377,12 @@
     {
       "category": "ci",
       "doc": "docs/ci/README.md",
+      "path": "scripts/ci/__pycache__/check_repox_rules.cpython-38.pyc",
+      "subsystem": "ci"
+    },
+    {
+      "category": "ci",
+      "doc": "docs/ci/README.md",
       "path": "scripts/ci/__pycache__/hygiene_utils.cpython-38.pyc",
       "subsystem": "ci"
     },
@@ -94449,6 +94725,12 @@
     {
       "category": "test",
       "doc": "",
+      "path": "tests/contract/capability_gating_contracts.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
       "path": "tests/contract/CMakeLists.txt",
       "subsystem": "test"
     },
@@ -94557,12 +94839,6 @@
     {
       "category": "test",
       "doc": "",
-      "path": "tests/contract/stage_gating_contracts.py",
-      "subsystem": "test"
-    },
-    {
-      "category": "test",
-      "doc": "",
       "path": "tests/contract/terrain_contract_tests.py",
       "subsystem": "test"
     },
@@ -94582,6 +94858,12 @@
       "category": "test",
       "doc": "",
       "path": "tests/contract/product_shell/product_shell_contract_tests.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/contract/__pycache__/capability_gating_contracts.cpython-38.pyc",
       "subsystem": "test"
     },
     {
@@ -97761,25 +98043,25 @@
     {
       "category": "test",
       "doc": "",
-      "path": "tests/testx/STAGE_MATRIX.yaml",
+      "path": "tests/testx/CAPABILITY_MATRIX.yaml",
       "subsystem": "test"
     },
     {
       "category": "test",
       "doc": "",
-      "path": "tests/testx/stage_matrix_common.py",
+      "path": "tests/testx/capability_matrix_common.py",
       "subsystem": "test"
     },
     {
       "category": "test",
       "doc": "",
-      "path": "tests/testx/stage_matrix_contracts.py",
+      "path": "tests/testx/capability_matrix_contracts.py",
       "subsystem": "test"
     },
     {
       "category": "test",
       "doc": "",
-      "path": "tests/testx/stage_suite_runner.py",
+      "path": "tests/testx/capability_suite_runner.py",
       "subsystem": "test"
     },
     {
@@ -98037,25 +98319,55 @@
     {
       "category": "test",
       "doc": "",
-      "path": "tests/testx/stage_regression/test_no_future_affordances_pre_6.py",
+      "path": "tests/testx/stage_regression/test_no_future_without_capability.py",
       "subsystem": "test"
     },
     {
       "category": "test",
       "doc": "",
-      "path": "tests/testx/stage_regression/test_no_industry_in_stage_4.py",
+      "path": "tests/testx/stage_regression/test_no_industry_without_capability.py",
       "subsystem": "test"
     },
     {
       "category": "test",
       "doc": "",
-      "path": "tests/testx/stage_regression/test_no_life_in_stage_0.py",
+      "path": "tests/testx/stage_regression/test_no_life_without_capability.py",
       "subsystem": "test"
     },
     {
       "category": "test",
       "doc": "",
-      "path": "tests/testx/stage_regression/test_no_tools_in_stage_2_and_3.py",
+      "path": "tests/testx/stage_regression/test_no_tools_without_capability.py",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/__pycache__/capability_matrix_common.cpython-38.pyc",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/__pycache__/capability_matrix_common.cpython-39.pyc",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/__pycache__/capability_matrix_contracts.cpython-38.pyc",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/__pycache__/capability_suite_runner.cpython-38.pyc",
+      "subsystem": "test"
+    },
+    {
+      "category": "test",
+      "doc": "",
+      "path": "tests/testx/__pycache__/capability_suite_runner.cpython-39.pyc",
       "subsystem": "test"
     },
     {
@@ -99352,6 +99664,12 @@
       "category": "tool",
       "doc": "docs/tools/TOOLING_OVERVIEW.md",
       "path": "tools/pack/CMakeLists.txt",
+      "subsystem": "tools"
+    },
+    {
+      "category": "tool",
+      "doc": "docs/tools/TOOLING_OVERVIEW.md",
+      "path": "tools/pack/migrate_capability_gating.py",
       "subsystem": "tools"
     },
     {
@@ -100845,12 +101163,12 @@
   ],
   "root": "c:\\Inbox\\Git Repos\\dominium",
   "summary": {
-    "build": 14615,
-    "ci": 12,
+    "build": 14660,
+    "ci": 13,
     "data": 499,
     "distribution": 17,
     "schema": 324,
-    "test": 897,
-    "tool": 443
+    "test": 903,
+    "tool": 444
   }
 }
