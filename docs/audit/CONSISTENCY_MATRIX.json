@@ -1,0 +1,145 @@
+{
+  "audit_id": "CA-0",
+  "commit": "15acbd4537fd821813730f0638a10938ead922cd",
+  "entry_checks": {
+    "repox": {
+      "command": "python scripts/ci/check_repox_rules.py --repo-root .",
+      "status": "PASS"
+    },
+    "strict_build": {
+      "command": "cmake --build out/build/vs2026/verify --config Debug --target domino_engine dominium_game",
+      "status": "PASS"
+    },
+    "testx_full": {
+      "command": "cmake --build out/build/vs2026/verify --config Debug --target testx_all",
+      "status": "PASS"
+    }
+  },
+  "invariants": [
+    {
+      "id": "determinism",
+      "status": "partially_enforced",
+      "severity": "RISK",
+      "enforcement": [
+        "tests determinism suites under testx_all",
+        "strict C89/C++98 build targets"
+      ],
+      "gaps": [
+        "determinism proofs are broad but some capability matrix checks are static hash checks instead of runtime execution"
+      ]
+    },
+    {
+      "id": "process_only_mutation",
+      "status": "partially_enforced",
+      "severity": "RISK",
+      "enforcement": [
+        "tests/invariant/process_only_mutation_tests.py",
+        "scripts/ci/check_repox_rules.py::check_process_runtime_literals",
+        "tests/invariant/process_registry_tests.py"
+      ],
+      "gaps": [
+        "mutation scan is token-based and can miss alternate write paths",
+        "process literal scan covers only engine/modules/world and game/rules"
+      ]
+    },
+    {
+      "id": "no_omniscience",
+      "status": "partially_enforced",
+      "severity": "RISK",
+      "enforcement": [
+        "client observer freecam entitlement check in client/shell/client_shell.c",
+        "RepoX check_observer_freecam_entitlement_gate",
+        "tests/integration/freecam_epistemics_tests.py"
+      ],
+      "gaps": [
+        "RepoX check is token-presence, not semantic reachability",
+        "renderer truth check blocks only three literal token strings"
+      ]
+    },
+    {
+      "id": "capability_only_gating",
+      "status": "partially_enforced",
+      "severity": "VIOLATION",
+      "enforcement": [
+        "schema/pack_manifest.schema requires capability fields",
+        "tools/pack/pack_validate.py rejects legacy stage fields",
+        "RepoX forbidden legacy token scan outside docs"
+      ],
+      "gaps": [
+        "declared capability ids ui.camera.mode.memory/ui.camera.mode.observer/tool.observation.stream/tool.memory.read are unused in runtime checks",
+        "camera.set_mode metadata lacks mode-specific capability enforcement"
+      ]
+    },
+    {
+      "id": "no_stage_progression_runtime",
+      "status": "enforced",
+      "severity": "INFO",
+      "enforcement": [
+        "ripgrep scan across engine/game/client/server/setup/launcher/tools/libs/schema/tests returned no stage token matches outside docs",
+        "RepoX legacy token scan excludes docs and blocks runtime surfaces"
+      ],
+      "gaps": []
+    },
+    {
+      "id": "schema_explicit_migration",
+      "status": "partially_enforced",
+      "severity": "RISK",
+      "enforcement": [
+        "tools/schema_migration/schema_migration_runner.py explicit migration handlers",
+        "schema/SCHEMA_MIGRATION_REGISTRY.json",
+        "RepoX schema migration route checks"
+      ],
+      "gaps": [
+        "coverage demonstrates route existence but not exhaustive runtime call-site proof for every schema-bearing path"
+      ]
+    },
+    {
+      "id": "collapse_expand_contract_semantics",
+      "status": "partially_enforced",
+      "severity": "RISK",
+      "enforcement": [
+        "collapse/expand APIs and integration tests",
+        "solver registry structure checks in RepoX and tests/ops/universe_complexity_contract_tests.py"
+      ],
+      "gaps": [
+        "solver registry appears not runtime-wired; core_solver_select has no observed runtime call sites"
+      ]
+    },
+    {
+      "id": "command_graph_ui_parity",
+      "status": "partially_enforced",
+      "severity": "RISK",
+      "enforcement": [
+        "libs/appcore/ui_bind/ui_command_binding_table.c generated bindings",
+        "RepoX check_ui_canonical_command_bindings",
+        "capability matrix command surface tests"
+      ],
+      "gaps": [
+        "most parity assertions are static registry/binding checks, not full behavior-level parity execution"
+      ]
+    },
+    {
+      "id": "canon_state_governance",
+      "status": "partially_enforced",
+      "severity": "RISK",
+      "enforcement": [
+        "repo/canon_state.json",
+        "RepoX check_canon_state verifies required booleans and evidence paths"
+      ],
+      "gaps": [
+        "validated_by booleans are declarative file content; they are not cryptographic or run-attested proof of current run"
+      ]
+    },
+    {
+      "id": "docs_runtime_consistency",
+      "status": "contradicted",
+      "severity": "VIOLATION",
+      "enforcement": [
+        "canonical reference exists in docs/architecture/CAPABILITY_ONLY_CANON.md"
+      ],
+      "gaps": [
+        "docs/CAPABILITY_STAGES.md and docs/TESTX_STAGE_MATRIX.md still define stage-based runtime semantics"
+      ]
+    }
+  ]
+}
