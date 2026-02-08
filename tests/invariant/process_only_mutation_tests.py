@@ -12,6 +12,9 @@ from hygiene_utils import DEFAULT_EXCLUDES, iter_files, read_text, strip_c_comme
 SCAN_ROOTS = (
     "engine",
     "game",
+    "server",
+    "client",
+    os.path.join("libs", "appcore"),
 )
 
 ALLOWLIST_DIRS = (

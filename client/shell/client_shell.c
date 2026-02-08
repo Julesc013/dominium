@@ -3248,6 +3248,8 @@ void dom_client_shell_init(dom_client_shell* shell)
     dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_FIRST);
     dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_THIRD);
     dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_FREE);
+    dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_MEMORY);
+    dom_shell_policy_set_add(&shell->create_camera, DOM_SHELL_CAMERA_OBSERVER);
     shell->create_template_index = 0u;
     shell->create_seed = 0u;
     shell->events.head = 0u;
@@ -6769,6 +6771,32 @@ static int dom_shell_has_tool_entitlement(const dom_shell_policy_set* set, const
     return dom_shell_policy_set_contains(set, entitlement_id);
 }
 
+static int dom_shell_capability_allowed(const dom_client_shell* shell, const char* capability_id)
+{
+    if (!shell || !shell->world.active || !capability_id || !capability_id[0]) {
+        return 0;
+    }
+    if (strcmp(capability_id, "ui.camera.mode.embodied") == 0) {
+        return dom_shell_policy_set_contains(&shell->world.summary.camera, DOM_SHELL_CAMERA_FREE);
+    }
+    if (strcmp(capability_id, "ui.camera.mode.memory") == 0) {
+        return dom_shell_policy_set_contains(&shell->world.summary.camera, DOM_SHELL_CAMERA_MEMORY);
+    }
+    if (strcmp(capability_id, "ui.camera.mode.observer") == 0) {
+        return dom_shell_policy_set_contains(&shell->world.summary.camera, DOM_SHELL_CAMERA_OBSERVER);
+    }
+    if (strcmp(capability_id, "ui.blueprint.preview") == 0 ||
+        strcmp(capability_id, "ui.blueprint.place") == 0) {
+        return dom_shell_policy_set_contains(&shell->world.summary.interaction, DOM_SHELL_POLICY_INTERACTION_PLACE);
+    }
+    if (strcmp(capability_id, "tool.truth.view") == 0 ||
+        strcmp(capability_id, "tool.observation.stream") == 0 ||
+        strcmp(capability_id, "tool.memory.read") == 0) {
+        return dom_shell_has_tool_entitlement(&shell->world.summary.debug, capability_id);
+    }
+    return 0;
+}
+
 static int dom_client_shell_set_camera(dom_client_shell* shell,
                                        const char* camera_id,
                                        dom_app_ui_event_log* log,
@@ -6777,13 +6805,13 @@ static int dom_client_shell_set_camera(dom_client_shell* shell,
                                        int emit_text)
 {
     const char* resolved_camera_id;
-    const int observer_mode =
-        (camera_id && (strcmp(camera_id, "observer") == 0 || strcmp(camera_id, DOM_SHELL_CAMERA_OBSERVER) == 0));
+    int observer_mode = 0;
     char previous_mode[DOM_SHELL_POLICY_ID_MAX];
     if (!shell || !camera_id || !camera_id[0]) {
         return D_APP_EXIT_USAGE;
     }
     resolved_camera_id = dom_shell_resolve_camera_mode(camera_id);
+    observer_mode = (strcmp(resolved_camera_id, DOM_SHELL_CAMERA_OBSERVER) == 0);
     previous_mode[0] = '\0';
     if (!shell->world.active) {
         dom_shell_set_refusal(shell, DOM_REFUSAL_INVALID, "CAMERA_REFUSE_WORLD_INACTIVE");
@@ -6793,8 +6821,40 @@ static int dom_client_shell_set_camera(dom_client_shell* shell,
         }
         return D_APP_EXIT_UNAVAILABLE;
     }
+    if (strcmp(resolved_camera_id, DOM_SHELL_CAMERA_FREE) == 0 &&
+        !dom_shell_capability_allowed(shell, "ui.camera.mode.embodied")) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "CAMERA_REFUSE_POLICY");
+        dom_shell_set_status(shell, "camera_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.nav.camera", "result=refused reason=capability mode=embodied");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (strcmp(resolved_camera_id, DOM_SHELL_CAMERA_MEMORY) == 0 &&
+        !dom_shell_capability_allowed(shell, "ui.camera.mode.memory")) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "CAMERA_REFUSE_POLICY");
+        dom_shell_set_status(shell, "camera_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.nav.camera", "result=refused reason=capability mode=memory");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
     if (observer_mode &&
-        !dom_shell_has_tool_entitlement(&shell->world.summary.debug, "tool.truth.view")) {
+        !dom_shell_capability_allowed(shell, "ui.camera.mode.observer")) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "CAMERA_REFUSE_POLICY");
+        dom_shell_set_status(shell, "camera_set=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.nav.camera", "result=refused reason=capability mode=observer");
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (observer_mode &&
+        (!dom_shell_capability_allowed(shell, "tool.truth.view") ||
+         !dom_shell_capability_allowed(shell, "tool.observation.stream") ||
+         !dom_shell_capability_allowed(shell, "tool.memory.read"))) {
         dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "CAMERA_REFUSE_ENTITLEMENT");
         dom_shell_set_status(shell, "camera_set=refused");
         if (status && status_cap > 0u) {
@@ -6854,6 +6914,15 @@ static int dom_client_shell_set_camera_pose(dom_client_shell* shell,
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "%s", shell->last_status);
         }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_capability_allowed(shell, "ui.camera.mode.embodied")) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "CAMERA_REFUSE_POLICY");
+        dom_shell_set_status(shell, "camera_pose=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, "client.nav.camera", "result=refused reason=capability mode=embodied");
         return D_APP_EXIT_UNAVAILABLE;
     }
     if (!has_pose) {
@@ -7145,6 +7214,7 @@ static int dom_shell_interaction_place_internal(dom_client_shell* shell,
                                                 int emit_text)
 {
     const dom_shell_interaction_def* def;
+    const char* required_capability = preview ? "ui.blueprint.preview" : "ui.blueprint.place";
     dom_shell_interaction_object obj;
     double position[3];
     const char* selected;
@@ -7154,6 +7224,16 @@ static int dom_shell_interaction_place_internal(dom_client_shell* shell,
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "%s", shell->last_status);
         }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (!dom_shell_capability_allowed(shell, required_capability)) {
+        dom_shell_set_refusal(shell, DOM_REFUSAL_SCHEMA, "BLUEPRINT_REFUSE_CAPABILITY");
+        dom_shell_set_status(shell, preview ? "interaction_preview=refused" : "interaction_place=refused");
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", shell->last_status);
+        }
+        dom_shell_emit(shell, log, preview ? "client.interaction.preview" : "client.interaction.place",
+                       "result=refused reason=capability");
         return D_APP_EXIT_UNAVAILABLE;
     }
     if (!dom_shell_interaction_policy_allowed(shell, DOM_SHELL_POLICY_INTERACTION_PLACE)) {

@@ -35,5 +35,6 @@ Superseded By: none
 
 ## Enforcement
 - RepoX rejects unregistered process IDs and registry drift.
-- RepoX rejects runtime process literals used in authoritative modules when not present in the registry.
+- RepoX rejects runtime process literals used in `engine`, `game`, `server`, and `client` when not present in the registry.
+- RepoX rejects mutation token usage outside process execution allowlists.
 - TestX validates registry completeness and deterministic process-contract execution signatures.

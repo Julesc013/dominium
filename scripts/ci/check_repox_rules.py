@@ -158,6 +158,17 @@ CAMERA_BLUEPRINT_COMMAND_EXPECTATIONS = {
     },
 }
 
+CAMERA_MODE_RUNTIME_CAPABILITIES = (
+    "ui.camera.mode.embodied",
+    "ui.camera.mode.memory",
+    "ui.camera.mode.observer",
+)
+OBSERVER_TOOL_ENTITLEMENTS = (
+    "tool.truth.view",
+    "tool.observation.stream",
+    "tool.memory.read",
+)
+
 FORBIDDEN_RENDER_TRUTH_TOKENS = (
     "authoritative_world_state",
     "truth_snapshot_stream",
@@ -1086,15 +1097,99 @@ def check_observer_freecam_entitlement_gate(repo_root):
 
     text = read_text(path) or ""
     line_mode = _line_with_token(text, "camera.set_mode")
-    line_entitlement = _line_with_token(text, "tool.truth.view")
+    line_set_camera = _line_with_token(text, "static int dom_client_shell_set_camera")
+    line_policy = _line_with_token(text, "dom_shell_camera_allowed(&shell->world.summary.camera")
     line_refusal = _line_with_token(text, "CAMERA_REFUSE_ENTITLEMENT")
     violations = []
     if line_mode <= 0:
         violations.append("{}: {} missing camera.set_mode parser branch".format(invariant_id, rel))
-    if line_entitlement <= 0:
-        violations.append("{}: {} missing tool.truth.view entitlement gate".format(invariant_id, rel))
+    if line_set_camera <= 0:
+        violations.append("{}: {} missing dom_client_shell_set_camera handler".format(invariant_id, rel))
+    if line_policy <= 0:
+        violations.append("{}: {} missing dom_shell_camera_allowed policy gate".format(invariant_id, rel))
+    for capability_id in CAMERA_MODE_RUNTIME_CAPABILITIES:
+        line_cap = _line_with_token(text, capability_id)
+        if line_cap <= 0:
+            violations.append("{}: {} missing runtime capability gate for {}".format(invariant_id, rel, capability_id))
+        elif line_policy > 0 and line_cap > line_policy:
+            violations.append(
+                "{}: {} capability gate for {} appears after policy selection".format(
+                    invariant_id, rel, capability_id
+                )
+            )
+    for entitlement_id in OBSERVER_TOOL_ENTITLEMENTS:
+        line_entitlement = _line_with_token(text, entitlement_id)
+        if line_entitlement <= 0:
+            violations.append("{}: {} missing entitlement gate {}".format(invariant_id, rel, entitlement_id))
+        elif line_policy > 0 and line_entitlement > line_policy:
+            violations.append(
+                "{}: {} entitlement gate for {} appears after policy selection".format(
+                    invariant_id, rel, entitlement_id
+                )
+            )
     if line_refusal <= 0:
         violations.append("{}: {} missing CAMERA_REFUSE_ENTITLEMENT refusal".format(invariant_id, rel))
+    if _line_with_token(text, "result=refused reason=entitlement mode=observer") <= 0:
+        violations.append("{}: {} missing observer entitlement refusal event".format(invariant_id, rel))
+
+    observer_guard_re = re.compile(
+        r"observer_mode\s*&&\s*!dom_shell_capability_allowed\s*\(\s*shell\s*,\s*\"ui\.camera\.mode\.observer\"\s*\)",
+        re.S,
+    )
+    if not observer_guard_re.search(text):
+        violations.append("{}: {} missing observer-mode capability guard expression".format(invariant_id, rel))
+
+    memory_guard_re = re.compile(
+        r"DOM_SHELL_CAMERA_MEMORY\s*\)\s*==\s*0\s*&&\s*!dom_shell_capability_allowed\s*\(\s*shell\s*,\s*\"ui\.camera\.mode\.memory\"\s*\)",
+        re.S,
+    )
+    if not memory_guard_re.search(text):
+        violations.append("{}: {} missing memory-mode capability guard expression".format(invariant_id, rel))
+
+    entitlement_guard_re = re.compile(
+        r"!dom_shell_capability_allowed\s*\(\s*shell\s*,\s*\"tool\.truth\.view\"\s*\)\s*\|\|\s*"
+        r"!dom_shell_capability_allowed\s*\(\s*shell\s*,\s*\"tool\.observation\.stream\"\s*\)\s*\|\|\s*"
+        r"!dom_shell_capability_allowed\s*\(\s*shell\s*,\s*\"tool\.memory\.read\"\s*\)",
+        re.S,
+    )
+    if not entitlement_guard_re.search(text):
+        violations.append("{}: {} missing full observer entitlement conjunction".format(invariant_id, rel))
+    return violations
+
+
+def check_runtime_command_capability_guards(repo_root):
+    invariant_id = "INV-RUNTIME-CAPABILITY-GUARDS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    rel = "client/shell/client_shell.c"
+    path = os.path.join(repo_root, "client", "shell", "client_shell.c")
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, rel)]
+
+    text = read_text(path) or ""
+    required_tokens = (
+        "dom_shell_capability_allowed(shell, \"ui.camera.mode.embodied\")",
+        "dom_shell_capability_allowed(shell, \"ui.camera.mode.memory\")",
+        "dom_shell_capability_allowed(shell, \"ui.camera.mode.observer\")",
+        "const char* required_capability = preview ? \"ui.blueprint.preview\" : \"ui.blueprint.place\"",
+        "dom_shell_capability_allowed(shell, required_capability)",
+        "dom_shell_capability_allowed(shell, \"tool.truth.view\")",
+        "dom_shell_capability_allowed(shell, \"tool.observation.stream\")",
+        "dom_shell_capability_allowed(shell, \"tool.memory.read\")",
+        "BLUEPRINT_REFUSE_CAPABILITY",
+        "CAMERA_REFUSE_ENTITLEMENT",
+    )
+    violations = []
+    for token in required_tokens:
+        line_no = _line_with_token(text, token)
+        if line_no <= 0:
+            violations.append("{}: {} missing required guard token {}".format(invariant_id, rel, token))
+
+    line_blueprint_func = _line_with_token(text, "static int dom_shell_interaction_place_internal")
+    line_blueprint_cap = _line_with_token(text, "const char* required_capability = preview ? \"ui.blueprint.preview\" : \"ui.blueprint.place\"")
+    if line_blueprint_func > 0 and line_blueprint_cap > 0 and line_blueprint_cap < line_blueprint_func:
+        violations.append("{}: {} blueprint capability selection outside interaction handler".format(invariant_id, rel))
     return violations
 
 
@@ -1119,6 +1214,45 @@ def check_renderer_no_truth_access(repo_root):
                             invariant_id, rel, idx, token
                         )
                     )
+
+    command_registry_path = os.path.join(repo_root, COMMAND_REGISTRY_REL)
+    command_registry_text = read_text(command_registry_path) or ""
+    if command_registry_text:
+        for entry in _parse_command_registry_entries(command_registry_text):
+            name_match = re.search(r"\{\s*DOM_APP_CMD_[^,]+,\s*\"([^\"]+)\"\s*,\s*\"([^\"]+)\"", entry)
+            scope_match = re.search(r"(DOM_EPISTEMIC_SCOPE_[A-Z_]+)", entry)
+            if not name_match or not scope_match:
+                continue
+            command_name = name_match.group(1)
+            app_name = name_match.group(2)
+            scope_name = scope_match.group(1)
+            if app_name == "client" and scope_name == "DOM_EPISTEMIC_SCOPE_FULL":
+                violations.append(
+                    "{}: {} command {} exposes full epistemic scope to client".format(
+                        invariant_id, COMMAND_REGISTRY_REL.replace("\\", "/"), command_name
+                    )
+                )
+
+    freecam_test_rel = os.path.join("tests", "integration", "freecam_epistemics_tests.py")
+    freecam_test_path = os.path.join(repo_root, freecam_test_rel)
+    if not os.path.isfile(freecam_test_path):
+        violations.append("{}: missing {}".format(invariant_id, freecam_test_rel.replace("\\", "/")))
+    else:
+        freecam_text = read_text(freecam_test_path) or ""
+        required_markers = (
+            "CAMERA_REFUSE_ENTITLEMENT",
+            "camera.set_mode observer",
+            "truth_snapshot_stream",
+            "authoritative_world_state",
+            "hidden_truth_cache",
+        )
+        for marker in required_markers:
+            if marker not in freecam_text:
+                violations.append(
+                    "{}: {} missing semantic anti-cheat marker {}".format(
+                        invariant_id, freecam_test_rel.replace("\\", "/"), marker
+                    )
+                )
     return violations
 
 
@@ -1557,12 +1691,30 @@ def check_process_runtime_literals(repo_root):
                 process_ids.add(process_id)
 
     roots = [
-        os.path.join(repo_root, "engine", "modules", "world"),
-        os.path.join(repo_root, "game", "rules"),
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "client"),
     ]
+    mutation_token_res = (
+        re.compile(r"\bapply_writes\s*\("),
+        re.compile(r"\bapply_write\s*\("),
+        re.compile(r"\bapply_reduce\s*\("),
+        re.compile(r"\bdom_ecs_write_op\b"),
+        re.compile(r"\bdom_ecs_write_buffer\b"),
+    )
+    mutation_allow_dirs = (
+        os.path.join("engine", "modules", "ecs").replace("\\", "/"),
+        os.path.join("engine", "modules", "execution").replace("\\", "/"),
+    )
+    mutation_allow_files = (
+        os.path.join("engine", "include", "domino", "ecs", "ecs_storage_iface.h").replace("\\", "/"),
+    )
     violations = []
     for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
         rel = repo_rel(repo_root, path)
+        if rel.startswith("engine/tests/") or rel.startswith("game/tests/") or rel.startswith("tests/"):
+            continue
         text = read_text(path) or ""
         for idx, line in enumerate(text.splitlines(), start=1):
             for match in PROCESS_ID_LITERAL_RE.finditer(line):
@@ -1576,6 +1728,30 @@ def check_process_runtime_literals(repo_root):
                             rel,
                             idx,
                             process_id,
+                        )
+                    )
+
+        allow_mutation = False
+        if rel in mutation_allow_files:
+            allow_mutation = True
+        if not allow_mutation:
+            for allow_dir in mutation_allow_dirs:
+                if rel.startswith(allow_dir + "/"):
+                    allow_mutation = True
+                    break
+        if allow_mutation:
+            continue
+
+        stripped = strip_c_comments_and_strings(text)
+        for idx, line in enumerate(stripped.splitlines(), start=1):
+            for token_re in mutation_token_res:
+                if token_re.search(line):
+                    violations.append(
+                        "{}: mutation token outside process execution allowlist {}:{} -> {}".format(
+                            invariant_id,
+                            rel,
+                            idx,
+                            token_re.pattern,
                         )
                     )
     return violations
@@ -1857,6 +2033,7 @@ def main() -> int:
     violations.extend(check_camera_blueprint_command_metadata(repo_root))
     violations.extend(check_ui_canonical_command_bindings(repo_root))
     violations.extend(check_observer_freecam_entitlement_gate(repo_root))
+    violations.extend(check_runtime_command_capability_guards(repo_root))
     violations.extend(check_renderer_no_truth_access(repo_root))
     violations.extend(check_capability_matrix_integrity(repo_root))
     violations.extend(check_solver_registry_contracts(repo_root))

@@ -12,7 +12,11 @@ Superseded By: none
   - `ui.camera.mode.embodied` (baseline)
 - Additional mode constraints:
   - `memory` mode requires `ui.camera.mode.memory`
-  - `observer` mode requires `ui.camera.mode.observer` and `tool.truth.view`
+  - `observer` mode requires `ui.camera.mode.observer`
+  - `observer` mode additionally requires all tool entitlements:
+    - `tool.truth.view`
+    - `tool.observation.stream`
+    - `tool.memory.read`
 - Epistemic scope:
   - `obs_only` for embodied mode
   - `memory_only` for memory mode
@@ -57,4 +61,3 @@ Superseded By: none
 - CLI is canonical.
 - TUI/GUI invoke only canonical command ids.
 - UI logic cannot bypass canonical command dispatch.
-
