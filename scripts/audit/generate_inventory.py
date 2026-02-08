@@ -357,7 +357,7 @@ def collect_name_checks(repo_root: Path, packs, schemas):
     return {"pack_id_folder_mismatches": pack_mismatches, "schema_id_name_mismatches": schema_mismatches}
 
 
-def collect_stage_tokens(repo_root: Path):
+def collect_legacy_gating_tokens(repo_root: Path):
     hits = []
     token_re = re.compile(r"\bSTAGE_[0-9A-Z_]+\b")
     for path in iter_files(repo_root):
@@ -417,7 +417,7 @@ def main():
     data_domains = collect_data_domains(repo_root)
     stubs = collect_stub_report(repo_root)
     naming = collect_name_checks(repo_root, packs, schemas)
-    stage_tokens = collect_stage_tokens(repo_root)
+    legacy_gating_tokens = collect_legacy_gating_tokens(repo_root)
     pack_families = collect_pack_families(packs)
 
     inventory = {
@@ -436,7 +436,7 @@ def main():
             "data_domains": len(data_domains),
             "stub_files": len(stubs["stubs"]),
             "todo_hits": len(stubs["todos"]),
-            "stage_token_hits": len(stage_tokens),
+            "legacy_gating_token_hits": len(legacy_gating_tokens),
             "stub_counts": stubs["counts"],
         },
         "binaries": binaries,
@@ -451,7 +451,7 @@ def main():
         "docs": docs,
         "data_domains": data_domains,
         "naming_checks": naming,
-        "stage_tokens": stage_tokens,
+        "legacy_gating_tokens": legacy_gating_tokens,
     }
 
     write_json(repo_root / args.out_inventory, inventory)
