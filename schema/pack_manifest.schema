@@ -1,10 +1,10 @@
 SCHEMA: pack_manifest.schema
 schema_id: dominium.schema.pack_manifest
-schema_version: 2.1.0
+schema_version: 2.3.0
 stability: core
 
 PURPOSE:
-- Define pack identity, versions, provided capabilities, and dependencies.
+- Define pack identity, versions, capability gating, and dependencies.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -35,6 +35,12 @@ ENGINE REQUIREMENT RULES:
 DEPENDENCY RULES:
 - depends MUST list capability identifiers, not pack ids.
 
+CAPABILITY GATING RULES:
+- requires_capabilities MUST be explicit.
+- provides_capabilities MUST be explicit.
+- optional_capabilities MAY be omitted; if present, MUST be explicit.
+- entitlements MUST be explicit, including an empty list when none are needed.
+
 COMPATIBILITY NOTES:
 - required_engine_version is a deprecated alias of requires_engine.
 - dependencies is a deprecated alias of depends.
@@ -47,9 +53,9 @@ record pack_manifest
     - pack_version: tag
     - pack_format_version: integer
     - requires_engine: tag
-    - requires_stage: stage_id
-    - provides_stage: stage_id
-    - stage_features: [tag]
+    - requires_capabilities: [capability_ref]
+    - provides_capabilities: [capability_ref]
+    - entitlements: [capability_ref]
     - provides: [capability_ref]
     - depends: [capability_dependency]
     - extensions: map
@@ -60,6 +66,7 @@ record pack_manifest
     - required_engine_version: tag
     - required_protocol_versions: [protocol_requirement]
     - dependencies: [capability_dependency]
+    - optional_capabilities: [capability_ref]
 
 TYPE DEFINITIONS:
 record protocol_requirement
@@ -86,13 +93,3 @@ record capability_dependency
 record provenance_ref
   required:
     - provenance_id: id
-
-TYPE ALIASES:
-stage_id:
-  - STAGE_0_NONBIO_WORLD
-  - STAGE_1_NONINTELLIGENT_LIFE
-  - STAGE_2_INTELLIGENT_PRE_TOOL
-  - STAGE_3_PRE_TOOL_WORLD
-  - STAGE_4_PRE_INDUSTRY
-  - STAGE_5_PRE_PRESENT
-  - STAGE_6_FUTURE

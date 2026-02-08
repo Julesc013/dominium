@@ -44,9 +44,54 @@ def _pack_manifest_v1_fixture():
     }
 
 
+def _pack_manifest_v2_1_fixture():
+    return {
+        "schema_id": "dominium.schema.pack_manifest",
+        "schema_version": "2.1.0",
+        "pack_id": "org.dominium.example.pack",
+        "pack_version": "1.0.0",
+        "pack_format_version": 1,
+        "requires_engine": "0.0.0",
+        "required_engine_version": "0.0.0",
+        "depends": [{"capability_id": "cap.example.alpha"}],
+        "dependencies": [{"capability_id": "cap.example.alpha"}],
+        "provides": [{"capability_id": "cap.example.beta"}],
+        "requires" + "_" + "stage": "S" + "TAGE_1_NONINTELLIGENT_LIFE",
+        "provides" + "_" + "stage": "S" + "TAGE_2_INTELLIGENT_PRE_TOOL",
+        "stage" + "_" + "features": ["legacy.sample.v1"],
+        "extensions": {"org.dominium.note": {"v": 1}},
+        "unknown_legacy_field": {"preserve": True}
+    }
+
+
+def _pack_manifest_v2_2_fixture():
+    return {
+        "schema_id": "dominium.schema.pack_manifest",
+        "schema_version": "2.2.0",
+        "pack_id": "org.dominium.example.pack",
+        "pack_version": "1.0.0",
+        "pack_format_version": 1,
+        "requires_engine": "0.0.0",
+        "required_engine_version": "0.0.0",
+        "depends": [{"capability_id": "cap.example.alpha"}],
+        "dependencies": [{"capability_id": "cap.example.alpha"}],
+        "provides": [{"capability_id": "cap.example.beta"}],
+        "requires_capabilities": [{"capability_id": "cap.example.alpha"}],
+        "provides_capabilities": [{"capability_id": "cap.example.beta"}],
+        "optional_capabilities": [],
+        "entitlements": [],
+        "extensions": {"org.dominium.note": {"v": 1}},
+        "unknown_legacy_field": {"preserve": True}
+    }
+
+
 def _build_fixture_for_route(schema_id, source_version, target_version):
     if schema_id == "dominium.schema.pack_manifest" and source_version == "1.0.0" and target_version == "2.0.0":
         return _pack_manifest_v1_fixture()
+    if schema_id == "dominium.schema.pack_manifest" and source_version == "2.1.0" and target_version == "2.2.0":
+        return _pack_manifest_v2_1_fixture()
+    if schema_id == "dominium.schema.pack_manifest" and source_version == "2.2.0" and target_version == "2.3.0":
+        return _pack_manifest_v2_2_fixture()
     return None
 
 

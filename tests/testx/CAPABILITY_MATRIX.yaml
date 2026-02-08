@@ -1,9 +1,9 @@
 {
-  "schema_id": "dominium.testx.stage_matrix",
+  "schema_id": "dominium.testx.capability_matrix",
   "schema_version": "1.0.0",
-  "stages": [
+  "capability_sets": [
     {
-      "stage_id": "STAGE_0_NONBIO_WORLD",
+      "bundle_id": "CAPSET_WORLD_NONBIO",
       "fixture": "tests/fixtures/worlds/stage_0_nonbio/world_stage.json",
       "required_test_suites": [
         "test_load_and_validate",
@@ -21,6 +21,9 @@
         "tests/testx/stages/stage_0_nonbio/test_determinism_smoke.py",
         "tests/testx/stages/stage_0_nonbio/test_replay_hash.py"
       ],
+      "provided_capabilities": [
+        "dominium.capability.world.nonbio"
+      ],
       "expected_enabled_command_families": [],
       "expected_disabled_command_families": [
         "life",
@@ -29,13 +32,13 @@
         "industry",
         "future"
       ],
-      "expected_pack_acceptance": "<= stage",
-      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "expected_pack_acceptance": "requires_capabilities subset",
+      "expected_pack_refusal": "missing capability -> REFUSE_CAPABILITY_MISSING",
       "determinism_expectation": "hash-stable command and replay contracts",
       "epistemic_expectation": "no omniscient disclosure; scopes respected"
     },
     {
-      "stage_id": "STAGE_1_NONINTELLIGENT_LIFE",
+      "bundle_id": "CAPSET_WORLD_LIFE_NONINTELLIGENT",
       "fixture": "tests/fixtures/worlds/stage_1_nonintelligent_life/world_stage.json",
       "required_test_suites": [
         "test_load_and_validate",
@@ -53,6 +56,10 @@
         "tests/testx/stages/stage_1_nonintelligent_life/test_determinism_smoke.py",
         "tests/testx/stages/stage_1_nonintelligent_life/test_replay_hash.py"
       ],
+      "provided_capabilities": [
+        "dominium.capability.world.nonbio",
+        "dominium.capability.world.life.nonintelligent"
+      ],
       "expected_enabled_command_families": [
         "life"
       ],
@@ -62,13 +69,13 @@
         "industry",
         "future"
       ],
-      "expected_pack_acceptance": "<= stage",
-      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "expected_pack_acceptance": "requires_capabilities subset",
+      "expected_pack_refusal": "missing capability -> REFUSE_CAPABILITY_MISSING",
       "determinism_expectation": "hash-stable command and replay contracts",
       "epistemic_expectation": "no omniscient disclosure; scopes respected"
     },
     {
-      "stage_id": "STAGE_2_INTELLIGENT_PRE_TOOL",
+      "bundle_id": "CAPSET_WORLD_LIFE_INTELLIGENT",
       "fixture": "tests/fixtures/worlds/stage_2_intelligent_pre_tool/world_stage.json",
       "required_test_suites": [
         "test_load_and_validate",
@@ -86,6 +93,11 @@
         "tests/testx/stages/stage_2_intelligent_pre_tool/test_determinism_smoke.py",
         "tests/testx/stages/stage_2_intelligent_pre_tool/test_replay_hash.py"
       ],
+      "provided_capabilities": [
+        "dominium.capability.world.nonbio",
+        "dominium.capability.world.life.nonintelligent",
+        "dominium.capability.world.life.intelligent"
+      ],
       "expected_enabled_command_families": [
         "life",
         "tooling"
@@ -95,13 +107,13 @@
         "industry",
         "future"
       ],
-      "expected_pack_acceptance": "<= stage",
-      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "expected_pack_acceptance": "requires_capabilities subset",
+      "expected_pack_refusal": "missing capability -> REFUSE_CAPABILITY_MISSING",
       "determinism_expectation": "hash-stable command and replay contracts",
       "epistemic_expectation": "no omniscient disclosure; scopes respected"
     },
     {
-      "stage_id": "STAGE_3_PRE_TOOL_WORLD",
+      "bundle_id": "CAPSET_WORLD_PRETOOL",
       "fixture": "tests/fixtures/worlds/stage_3_pre_tool_world/world_stage.json",
       "required_test_suites": [
         "test_load_and_validate",
@@ -119,6 +131,12 @@
         "tests/testx/stages/stage_3_pre_tool_world/test_determinism_smoke.py",
         "tests/testx/stages/stage_3_pre_tool_world/test_replay_hash.py"
       ],
+      "provided_capabilities": [
+        "dominium.capability.world.nonbio",
+        "dominium.capability.world.life.nonintelligent",
+        "dominium.capability.world.life.intelligent",
+        "dominium.capability.world.pretool"
+      ],
       "expected_enabled_command_families": [
         "life",
         "tooling"
@@ -128,13 +146,13 @@
         "industry",
         "future"
       ],
-      "expected_pack_acceptance": "<= stage",
-      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "expected_pack_acceptance": "requires_capabilities subset",
+      "expected_pack_refusal": "missing capability -> REFUSE_CAPABILITY_MISSING",
       "determinism_expectation": "hash-stable command and replay contracts",
       "epistemic_expectation": "no omniscient disclosure; scopes respected"
     },
     {
-      "stage_id": "STAGE_4_PRE_INDUSTRY",
+      "bundle_id": "CAPSET_SOCIETY_INSTITUTIONS",
       "fixture": "tests/fixtures/worlds/stage_4_pre_industry/world_stage.json",
       "required_test_suites": [
         "test_load_and_validate",
@@ -152,6 +170,13 @@
         "tests/testx/stages/stage_4_pre_industry/test_determinism_smoke.py",
         "tests/testx/stages/stage_4_pre_industry/test_replay_hash.py"
       ],
+      "provided_capabilities": [
+        "dominium.capability.world.nonbio",
+        "dominium.capability.world.life.nonintelligent",
+        "dominium.capability.world.life.intelligent",
+        "dominium.capability.world.pretool",
+        "dominium.capability.society.institutions"
+      ],
       "expected_enabled_command_families": [
         "life",
         "tooling",
@@ -161,13 +186,13 @@
         "industry",
         "future"
       ],
-      "expected_pack_acceptance": "<= stage",
-      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "expected_pack_acceptance": "requires_capabilities subset",
+      "expected_pack_refusal": "missing capability -> REFUSE_CAPABILITY_MISSING",
       "determinism_expectation": "hash-stable command and replay contracts",
       "epistemic_expectation": "no omniscient disclosure; scopes respected"
     },
     {
-      "stage_id": "STAGE_5_PRE_PRESENT",
+      "bundle_id": "CAPSET_INFRASTRUCTURE_INDUSTRY",
       "fixture": "tests/fixtures/worlds/stage_5_pre_present/world_stage.json",
       "required_test_suites": [
         "test_load_and_validate",
@@ -185,6 +210,14 @@
         "tests/testx/stages/stage_5_pre_present/test_determinism_smoke.py",
         "tests/testx/stages/stage_5_pre_present/test_replay_hash.py"
       ],
+      "provided_capabilities": [
+        "dominium.capability.world.nonbio",
+        "dominium.capability.world.life.nonintelligent",
+        "dominium.capability.world.life.intelligent",
+        "dominium.capability.world.pretool",
+        "dominium.capability.society.institutions",
+        "dominium.capability.infrastructure.industry"
+      ],
       "expected_enabled_command_families": [
         "life",
         "tooling",
@@ -194,13 +227,13 @@
       "expected_disabled_command_families": [
         "future"
       ],
-      "expected_pack_acceptance": "<= stage",
-      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "expected_pack_acceptance": "requires_capabilities subset",
+      "expected_pack_refusal": "missing capability -> REFUSE_CAPABILITY_MISSING",
       "determinism_expectation": "hash-stable command and replay contracts",
       "epistemic_expectation": "no omniscient disclosure; scopes respected"
     },
     {
-      "stage_id": "STAGE_6_FUTURE",
+      "bundle_id": "CAPSET_FUTURE_AFFORDANCES",
       "fixture": "tests/fixtures/worlds/stage_6_future/world_stage.json",
       "required_test_suites": [
         "test_load_and_validate",
@@ -218,6 +251,15 @@
         "tests/testx/stages/stage_6_future/test_determinism_smoke.py",
         "tests/testx/stages/stage_6_future/test_replay_hash.py"
       ],
+      "provided_capabilities": [
+        "dominium.capability.world.nonbio",
+        "dominium.capability.world.life.nonintelligent",
+        "dominium.capability.world.life.intelligent",
+        "dominium.capability.world.pretool",
+        "dominium.capability.society.institutions",
+        "dominium.capability.infrastructure.industry",
+        "dominium.capability.future.affordances"
+      ],
       "expected_enabled_command_families": [
         "life",
         "tooling",
@@ -226,16 +268,16 @@
         "future"
       ],
       "expected_disabled_command_families": [],
-      "expected_pack_acceptance": "<= stage",
-      "expected_pack_refusal": "> stage -> REFUSE_CAPABILITY_STAGE_TOO_LOW",
+      "expected_pack_acceptance": "requires_capabilities subset",
+      "expected_pack_refusal": "missing capability -> REFUSE_CAPABILITY_MISSING",
       "determinism_expectation": "hash-stable command and replay contracts",
       "epistemic_expectation": "no omniscient disclosure; scopes respected"
     }
   ],
   "regression_tests": [
-    "tests/testx/stage_regression/test_no_life_in_stage_0.py",
-    "tests/testx/stage_regression/test_no_tools_in_stage_2_and_3.py",
-    "tests/testx/stage_regression/test_no_industry_in_stage_4.py",
-    "tests/testx/stage_regression/test_no_future_affordances_pre_6.py"
+    "tests/testx/stage_regression/test_no_life_without_capability.py",
+    "tests/testx/stage_regression/test_no_tools_without_capability.py",
+    "tests/testx/stage_regression/test_no_industry_without_capability.py",
+    "tests/testx/stage_regression/test_no_future_without_capability.py"
   ]
 }

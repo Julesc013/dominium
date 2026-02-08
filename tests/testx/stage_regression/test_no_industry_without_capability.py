@@ -6,21 +6,21 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from stage_matrix_common import add_violation, command_surface, emit_violations, parse_command_entries
+from capability_matrix_common import add_violation, command_surface, emit_violations, parse_command_entries
 
 
 def main():
     violations = []
     commands = parse_command_entries(os.path.abspath(os.path.join(HERE, "..", "..", "..")))
-    allowed, _ = command_surface(commands, "STAGE_0_NONBIO_WORLD")
+    allowed, _ = command_surface(commands, ["dominium.capability.society.institutions"])
     allowed_names = {command["name"] for command in allowed}
-    for forbidden in ("agents", "agent-add"):
+    for forbidden in ("network-create", "network-list"):
         if forbidden in allowed_names:
             add_violation(
                 violations,
-                "STAGE_REGRESSION_LIFE_LEAK",
-                "STAGE_0_NONBIO_WORLD",
-                "life command leaked into stage 0",
+                "CAPABILITY_REGRESSION_INDUSTRY_LEAK",
+                "CAPSET_SOCIETY_INSTITUTIONS",
+                "industry command leaked without capability",
                 command=forbidden,
                 expected="denied",
                 actual="allowed",
@@ -29,10 +29,9 @@ def main():
     if violations:
         emit_violations(violations)
         return 1
-    print("Stage regression passed: no life in stage 0")
+    print("Capability regression passed: no industry without capability")
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
-

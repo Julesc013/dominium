@@ -43,6 +43,7 @@ execution artifacts and are not authoritative.
 - `docs/architecture/CANON_CUT_LINE.md`
 - `docs/architecture/CANON_INDEX.md`
 - `docs/architecture/CAPABILITY_BASELINES.md`
+- `docs/architecture/CAPABILITY_ONLY_CANON.md`
 - `docs/architecture/CHANGELOG_ARCH.md`
 - `docs/architecture/CHANGE_PROTOCOL.md`
 - `docs/architecture/CHEATS_ARE_JUST_LAWS.md`

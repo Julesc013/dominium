@@ -1,26 +1,31 @@
 {
-  "schema_id": "dominium.schema.pack_manifest",
-  "schema_version": "2.0.0",
   "record": {
-    "pack_id": "org.dominium.core.units",
-    "pack_version": "1.0.0",
+    "dependencies": [],
+    "depends": [],
+    "entitlements": [],
+    "extensions": {},
+    "optional": true,
+    "optional_capabilities": [],
     "pack_format_version": 1,
-    "requires_engine": "0.0.0",
-    "required_engine_version": "0.0.0",
+    "pack_id": "org.dominium.core.units",
+    "pack_tags": [
+      "pack.class.core_ontology"
+    ],
+    "pack_version": "1.0.0",
     "provides": [
       {
         "capability_id": "org.dominium.core.units"
       }
     ],
-    "depends": [],
-    "dependencies": [],
-    "optional": true,
-    "pack_tags": [
-      "pack.class.core_ontology"
+    "provides_capabilities": [
+      {
+        "capability_id": "org.dominium.core.units"
+      }
     ],
-    "extensions": {},
-    "requires_stage": "STAGE_0_NONBIO_WORLD",
-    "provides_stage": "STAGE_0_NONBIO_WORLD",
-    "stage_features": []
-  }
+    "required_engine_version": "0.0.0",
+    "requires_capabilities": [],
+    "requires_engine": "0.0.0"
+  },
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0"
 }

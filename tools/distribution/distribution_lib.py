@@ -60,15 +60,31 @@ def extract_capabilities(record):
     return caps
 
 
+def extract_capability_refs(record, field_name):
+    caps = []
+    values = record.get(field_name, [])
+    if not isinstance(values, list):
+        return caps
+    for entry in values:
+        if isinstance(entry, dict):
+            cap_id = entry.get("capability_id")
+        else:
+            cap_id = entry
+        if isinstance(cap_id, str):
+            caps.append(cap_id)
+    return caps
+
+
 def normalize_pack_manifest(payload, root_label, manifest_relpath):
     record = extract_record(payload)
     pack = {
         "pack_id": record.get("pack_id"),
         "pack_version": record.get("pack_version"),
         "pack_format_version": record.get("pack_format_version"),
-        "requires_stage": record.get("requires_stage"),
-        "provides_stage": record.get("provides_stage"),
-        "stage_features": record.get("stage_features") if isinstance(record.get("stage_features"), list) else [],
+        "requires_capabilities": extract_capability_refs(record, "requires_capabilities"),
+        "provides_capabilities": extract_capability_refs(record, "provides_capabilities"),
+        "optional_capabilities": extract_capability_refs(record, "optional_capabilities"),
+        "entitlements": extract_capability_refs(record, "entitlements"),
         "root": root_label,
         "manifest_relpath": manifest_relpath,
         "provides": extract_capabilities(record),

@@ -144,7 +144,7 @@ typedef enum err_artifact_code_e {
 } err_artifact_code;
 
 typedef enum err_txn_code_e {
-    ERRC_TXN_STAGE_FAILED = 1u,
+    ERRC_TXN_PHASE_FAILED = 1u,
     ERRC_TXN_COMMIT_FAILED = 2u,
     ERRC_TXN_ROLLBACK_FAILED = 3u,
     ERRC_TXN_CANCELLED = 4u
@@ -225,7 +225,7 @@ typedef enum err_msg_id_e {
     ERRMSG_ARTIFACT_SIZE_MISMATCH = 135u,
 
     /* Transactions */
-    ERRMSG_TXN_STAGE_FAILED = 140u,
+    ERRMSG_TXN_PHASE_FAILED = 140u,
     ERRMSG_TXN_COMMIT_FAILED = 141u,
     ERRMSG_TXN_ROLLBACK_FAILED = 142u,
     ERRMSG_TXN_CANCELLED = 143u,

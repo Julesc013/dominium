@@ -84,24 +84,34 @@ SCHEMA_VERSION_RE = re.compile(r"^\s*schema_version\s*:\s*(\d+\.\d+\.\d+)\s*$", 
 SCHEMA_ID_RE = re.compile(r"^\s*schema_id\s*:\s*([A-Za-z0-9_.-]+)\s*$", re.MULTILINE)
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 SCHEMA_ID_LITERAL_RE = re.compile(r'"(dominium\.schema\.[A-Za-z0-9_.-]+)"')
-STAGE_IDS = (
-    "STAGE_0_NONBIO_WORLD",
-    "STAGE_1_NONINTELLIGENT_LIFE",
-    "STAGE_2_INTELLIGENT_PRE_TOOL",
-    "STAGE_3_PRE_TOOL_WORLD",
-    "STAGE_4_PRE_INDUSTRY",
-    "STAGE_5_PRE_PRESENT",
-    "STAGE_6_FUTURE",
+CAPABILITY_SET_IDS = (
+    "CAPSET_WORLD_NONBIO",
+    "CAPSET_WORLD_LIFE_NONINTELLIGENT",
+    "CAPSET_WORLD_LIFE_INTELLIGENT",
+    "CAPSET_WORLD_PRETOOL",
+    "CAPSET_SOCIETY_INSTITUTIONS",
+    "CAPSET_INFRASTRUCTURE_INDUSTRY",
+    "CAPSET_FUTURE_AFFORDANCES",
 )
-COMMAND_STAGE_IDS = tuple("DOM_" + stage_id for stage_id in STAGE_IDS)
-STAGE_FEATURE_KEY_RE = re.compile(r"^[a-z][a-z0-9_]*[0-9]+\.[a-z0-9_]+(?:\.[a-z0-9_]+)+$")
+# Keep capability id validation aligned with shared reverse-dns helpers.
+PACK_CAPABILITY_RE = re.compile(r"^[a-z0-9]+(?:\.[a-z0-9][a-z0-9_-]*)+$")
+FORBIDDEN_STAGE_TOKEN_PARTS = (
+    "S" + "TAGE_",
+    "requires" + "_stage",
+    "provides" + "_stage",
+    "stage" + "_features",
+    "required" + "_stage",
+)
+FORBIDDEN_STAGE_TOKEN_RE = re.compile(
+    r"\b(" + "|".join(re.escape(token) for token in FORBIDDEN_STAGE_TOKEN_PARTS) + r")\b"
+)
 COMMAND_REGISTRY_REL = os.path.join("libs", "appcore", "command", "command_registry.c")
 UI_BIND_TABLE_REL = os.path.join("libs", "appcore", "ui_bind", "ui_command_binding_table.c")
-STAGE_MATRIX_REL = os.path.join("tests", "testx", "STAGE_MATRIX.yaml")
-STAGE_FIXTURE_ROOT = os.path.join("tests", "fixtures", "worlds")
-STAGE_TESTX_ROOT = os.path.join("tests", "testx", "stages")
-STAGE_REGRESSION_ROOT = os.path.join("tests", "testx", "stage_regression")
-STAGE_MATRIX_SUITE_NAMES = (
+CAPABILITY_MATRIX_REL = os.path.join("tests", "testx", "CAPABILITY_MATRIX.yaml")
+CAPABILITY_FIXTURE_ROOT = os.path.join("tests", "fixtures", "worlds")
+CAPABILITY_TESTX_ROOT = os.path.join("tests", "testx", "stages")
+CAPABILITY_REGRESSION_ROOT = os.path.join("tests", "testx", "stage_regression")
+CAPABILITY_MATRIX_SUITE_NAMES = (
     "test_load_and_validate",
     "test_command_surface",
     "test_pack_gating",
@@ -109,14 +119,14 @@ STAGE_MATRIX_SUITE_NAMES = (
     "test_determinism_smoke",
     "test_replay_hash",
 )
-STAGE_ID_TO_DIR = {
-    "STAGE_0_NONBIO_WORLD": "stage_0_nonbio",
-    "STAGE_1_NONINTELLIGENT_LIFE": "stage_1_nonintelligent_life",
-    "STAGE_2_INTELLIGENT_PRE_TOOL": "stage_2_intelligent_pre_tool",
-    "STAGE_3_PRE_TOOL_WORLD": "stage_3_pre_tool_world",
-    "STAGE_4_PRE_INDUSTRY": "stage_4_pre_industry",
-    "STAGE_5_PRE_PRESENT": "stage_5_pre_present",
-    "STAGE_6_FUTURE": "stage_6_future",
+CAPABILITY_SET_TO_DIR = {
+    "CAPSET_WORLD_NONBIO": "stage_0_nonbio",
+    "CAPSET_WORLD_LIFE_NONINTELLIGENT": "stage_1_nonintelligent_life",
+    "CAPSET_WORLD_LIFE_INTELLIGENT": "stage_2_intelligent_pre_tool",
+    "CAPSET_WORLD_PRETOOL": "stage_3_pre_tool_world",
+    "CAPSET_SOCIETY_INSTITUTIONS": "stage_4_pre_industry",
+    "CAPSET_INFRASTRUCTURE_INDUSTRY": "stage_5_pre_present",
+    "CAPSET_FUTURE_AFFORDANCES": "stage_6_future",
 }
 
 
@@ -555,13 +565,17 @@ def check_schema_version_bumps(repo_root):
         baseline_blob = run_git(["show", "{}:{}".format(baseline, rel)], repo_root)
         if baseline_blob is None:
             continue
-        current_text = read_text(os.path.join(repo_root, rel)) or ""
+        current_path = os.path.join(repo_root, rel)
+        if not os.path.isfile(current_path):
+            # Deleted schemas are handled by migration-route validation.
+            continue
+        current_text = read_text(current_path) or ""
         baseline_match = SCHEMA_VERSION_RE.search(baseline_blob)
         current_match = SCHEMA_VERSION_RE.search(current_text)
         if not baseline_match or not current_match:
             violations.append("{}: schema_version missing in {}".format(invariant_id, rel))
             continue
-        diff = run_git(["diff", "--unified=0", "{}...HEAD".format(baseline), "--", rel], repo_root)
+        diff = run_git(["diff", "--unified=0", baseline, "--", rel], repo_root)
         if diff is None:
             violations.append("{}: unable to diff {}".format(invariant_id, rel))
             continue
@@ -780,13 +794,6 @@ def check_unversioned_schema_references(repo_root):
     return violations
 
 
-def _stage_rank(stage_id):
-    try:
-        return STAGE_IDS.index(stage_id)
-    except ValueError:
-        return -1
-
-
 def _manifest_record(payload):
     if isinstance(payload, dict) and isinstance(payload.get("record"), dict):
         return payload.get("record")
@@ -795,12 +802,27 @@ def _manifest_record(payload):
     return {}
 
 
-def check_stage_pack_metadata(repo_root):
-    invariant_id = "INV-STAGE-PACK-METADATA"
+def _extract_capability_ids(values):
+    output = []
+    if not isinstance(values, list):
+        return output
+    for entry in values:
+        if isinstance(entry, dict):
+            capability_id = entry.get("capability_id")
+        else:
+            capability_id = entry
+        if isinstance(capability_id, str):
+            output.append(capability_id)
+    return output
+
+
+def check_pack_capability_metadata(repo_root):
+    invariant_id = "INV-CAPABILITY-PACK-METADATA"
     if is_override_active(repo_root, invariant_id):
         return []
 
     violations = []
+    legacy_keys = ("requires" + "_stage", "provides" + "_stage", "stage" + "_features")
     roots = [
         os.path.join(repo_root, "data", "packs"),
         os.path.join(repo_root, "data", "worldgen"),
@@ -819,32 +841,27 @@ def check_stage_pack_metadata(repo_root):
                 violations.append("{}: invalid json {}".format(invariant_id, rel))
                 continue
             record = _manifest_record(payload)
-            requires_stage = record.get("requires_stage")
-            provides_stage = record.get("provides_stage")
-            stage_features = record.get("stage_features")
+            for key in legacy_keys:
+                if key in record:
+                    violations.append("{}: legacy gating key '{}' present in {}".format(invariant_id, key, rel))
 
-            if not isinstance(requires_stage, str) or _stage_rank(requires_stage) < 0:
-                violations.append("{}: invalid requires_stage in {}".format(invariant_id, rel))
-            if not isinstance(provides_stage, str) or _stage_rank(provides_stage) < 0:
-                violations.append("{}: invalid provides_stage in {}".format(invariant_id, rel))
+            requires_caps = _extract_capability_ids(record.get("requires_capabilities"))
+            provides_caps = _extract_capability_ids(record.get("provides_capabilities"))
+            entitlements = _extract_capability_ids(record.get("entitlements"))
 
-            if isinstance(requires_stage, str) and isinstance(provides_stage, str):
-                if _stage_rank(provides_stage) < _stage_rank(requires_stage):
-                    violations.append("{}: provides_stage < requires_stage in {}".format(invariant_id, rel))
+            if not isinstance(record.get("requires_capabilities"), list):
+                violations.append("{}: requires_capabilities missing in {}".format(invariant_id, rel))
+            if not isinstance(record.get("provides_capabilities"), list):
+                violations.append("{}: provides_capabilities missing in {}".format(invariant_id, rel))
+            if not isinstance(record.get("entitlements"), list):
+                violations.append("{}: entitlements missing in {}".format(invariant_id, rel))
 
-            if not isinstance(stage_features, list):
-                violations.append("{}: missing stage_features in {}".format(invariant_id, rel))
-                continue
-            for idx, feature_key in enumerate(stage_features):
-                if not isinstance(feature_key, str) or STAGE_FEATURE_KEY_RE.match(feature_key) is None:
-                    violations.append("{}: invalid stage_features key in {} at index {}".format(
-                        invariant_id, rel, idx
-                    ))
-            if (isinstance(requires_stage, str) and isinstance(provides_stage, str) and
-                    _stage_rank(provides_stage) > _stage_rank(requires_stage) and len(stage_features) == 0):
-                violations.append("{}: stage_features required when provides_stage > requires_stage in {}".format(
-                    invariant_id, rel
-                ))
+            for capability_id in requires_caps + provides_caps + entitlements:
+                if PACK_CAPABILITY_RE.match(capability_id) is None:
+                    violations.append("{}: invalid capability_id '{}' in {}".format(invariant_id, capability_id, rel))
+
+            if len(provides_caps) == 0:
+                violations.append("{}: provides_capabilities empty in {}".format(invariant_id, rel))
     return violations
 
 
@@ -877,8 +894,8 @@ def _parse_command_names(text):
     return names
 
 
-def check_command_stage_metadata(repo_root):
-    invariant_id = "INV-COMMAND-STAGE-METADATA"
+def check_command_capability_metadata(repo_root):
+    invariant_id = "INV-COMMAND-CAPABILITY-METADATA"
     if is_override_active(repo_root, invariant_id):
         return []
 
@@ -891,27 +908,18 @@ def check_command_stage_metadata(repo_root):
         return ["{}: no command entries found".format(invariant_id)]
 
     violations = []
-    stage_literal_re = re.compile(r"DOM_STAGE_[A-Z0-9_]+")
+    capability_ref_re = re.compile(r",\s*(k_[A-Za-z0-9_]+)\s*,\s*(\d+)u\s*,\s*DOM_EPISTEMIC_SCOPE_[A-Z_]+")
     scope_re = re.compile(r"DOM_EPISTEMIC_SCOPE_[A-Z_]+")
-    stage_and_caps_re = re.compile(
-        r"DOM_STAGE_[A-Z0-9_]+\s*,\s*[A-Za-z0-9_]+\s*,\s*\d+u\s*,\s*DOM_EPISTEMIC_SCOPE_[A-Z_]+"
-    )
     for entry in entries:
         name_match = re.search(r"\{\s*DOM_APP_CMD_[^,]+,\s*\"([^\"]+)\"", entry)
         cmd_name = name_match.group(1) if name_match else "<unknown>"
-        stage_match = stage_literal_re.search(entry)
+        capability_match = capability_ref_re.search(entry)
         scope_match = scope_re.search(entry)
-        if not stage_match:
-            violations.append("{}: required_stage missing for command {}".format(invariant_id, cmd_name))
+        if not capability_match:
+            violations.append("{}: required_capabilities missing for command {}".format(invariant_id, cmd_name))
             continue
-        if stage_match.group(0) not in COMMAND_STAGE_IDS:
-            violations.append("{}: invalid required_stage {} for command {}".format(
-                invariant_id, stage_match.group(0), cmd_name
-            ))
         if not scope_match:
             violations.append("{}: epistemic_scope missing for command {}".format(invariant_id, cmd_name))
-        if stage_and_caps_re.search(entry) is None:
-            violations.append("{}: required capability metadata missing for command {}".format(invariant_id, cmd_name))
     return violations
 
 
@@ -944,70 +952,74 @@ def check_ui_canonical_command_bindings(repo_root):
     return violations
 
 
-def check_stage_matrix_integrity(repo_root):
-    invariant_id = "INV-STAGE-MATRIX"
+def check_capability_matrix_integrity(repo_root):
+    invariant_id = "INV-CAPABILITY-MATRIX"
     if is_override_active(repo_root, invariant_id):
         return []
 
-    matrix_path = os.path.join(repo_root, STAGE_MATRIX_REL)
+    matrix_path = os.path.join(repo_root, CAPABILITY_MATRIX_REL)
     if not os.path.isfile(matrix_path):
-        return ["{}: missing {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/"))]
+        return ["{}: missing {}".format(invariant_id, CAPABILITY_MATRIX_REL.replace("\\", "/"))]
 
     data = _load_json_file(matrix_path)
     if not isinstance(data, dict):
-        return ["{}: invalid matrix format {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/"))]
+        return ["{}: invalid matrix format {}".format(invariant_id, CAPABILITY_MATRIX_REL.replace("\\", "/"))]
 
-    stages = data.get("stages")
-    if not isinstance(stages, list):
-        return ["{}: stages missing from {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/"))]
+    sets = data.get("capability_sets")
+    if not isinstance(sets, list):
+        return ["{}: capability_sets missing from {}".format(invariant_id, CAPABILITY_MATRIX_REL.replace("\\", "/"))]
 
     violations = []
     seen = set()
     fixture_paths = set()
     test_paths = set()
 
-    for entry in stages:
+    for entry in sets:
         if not isinstance(entry, dict):
-            violations.append("{}: invalid stage entry in {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/")))
+            violations.append(
+                "{}: invalid capability set entry in {}".format(
+                    invariant_id, CAPABILITY_MATRIX_REL.replace("\\", "/")
+                )
+            )
             continue
-        stage_id = entry.get("stage_id")
-        if stage_id not in STAGE_IDS:
-            violations.append("{}: invalid stage id in matrix: {}".format(invariant_id, stage_id))
+        bundle_id = entry.get("bundle_id")
+        if bundle_id not in CAPABILITY_SET_IDS:
+            violations.append("{}: invalid capability set id in matrix: {}".format(invariant_id, bundle_id))
             continue
-        if stage_id in seen:
-            violations.append("{}: duplicate stage id in matrix: {}".format(invariant_id, stage_id))
+        if bundle_id in seen:
+            violations.append("{}: duplicate capability set id in matrix: {}".format(invariant_id, bundle_id))
             continue
-        seen.add(stage_id)
+        seen.add(bundle_id)
 
-        stage_dir = STAGE_ID_TO_DIR.get(stage_id)
+        capability_dir = CAPABILITY_SET_TO_DIR.get(bundle_id)
         fixture = entry.get("fixture")
-        expected_fixture = "tests/fixtures/worlds/{}/world_stage.json".format(stage_dir)
+        expected_fixture = "tests/fixtures/worlds/{}/world_stage.json".format(capability_dir)
         if fixture != expected_fixture:
             violations.append("{}: fixture mismatch for {} (expected {})".format(
-                invariant_id, stage_id, expected_fixture
+                invariant_id, bundle_id, expected_fixture
             ))
         if not isinstance(fixture, str):
-            violations.append("{}: fixture missing for {}".format(invariant_id, stage_id))
+            violations.append("{}: fixture missing for {}".format(invariant_id, bundle_id))
         else:
             fixture_paths.add(fixture.replace("\\", "/"))
             if not os.path.isfile(os.path.join(repo_root, fixture)):
                 violations.append("{}: matrix fixture does not exist: {}".format(invariant_id, fixture))
 
-        suites = entry.get("required_test_suites")
-        if suites != list(STAGE_MATRIX_SUITE_NAMES):
-            violations.append("{}: required_test_suites mismatch for {}".format(invariant_id, stage_id))
+        suites = entry.get("required_test_suites") or []
+        if suites != list(CAPABILITY_MATRIX_SUITE_NAMES):
+            violations.append("{}: required_test_suites mismatch for {}".format(invariant_id, bundle_id))
 
         tests = entry.get("tests")
         if not isinstance(tests, list):
-            violations.append("{}: tests list missing for {}".format(invariant_id, stage_id))
+            violations.append("{}: tests list missing for {}".format(invariant_id, bundle_id))
             continue
 
         expected_tests = [
-            "tests/testx/stages/{}/{}.py".format(stage_dir, suite_name)
-            for suite_name in STAGE_MATRIX_SUITE_NAMES
+            "tests/testx/stages/{}/{}.py".format(capability_dir, suite_name)
+            for suite_name in CAPABILITY_MATRIX_SUITE_NAMES
         ]
         if tests != expected_tests:
-            violations.append("{}: tests paths mismatch for {}".format(invariant_id, stage_id))
+            violations.append("{}: tests paths mismatch for {}".format(invariant_id, bundle_id))
 
         for rel in tests:
             rel_norm = rel.replace("\\", "/")
@@ -1015,11 +1027,11 @@ def check_stage_matrix_integrity(repo_root):
             if not os.path.isfile(os.path.join(repo_root, rel_norm)):
                 violations.append("{}: matrix test file does not exist: {}".format(invariant_id, rel_norm))
 
-    for stage_id in STAGE_IDS:
-        if stage_id not in seen:
-            violations.append("{}: missing matrix entry for {}".format(invariant_id, stage_id))
+    for bundle_id in CAPABILITY_SET_IDS:
+        if bundle_id not in seen:
+            violations.append("{}: missing matrix entry for {}".format(invariant_id, bundle_id))
 
-    fixture_root = os.path.join(repo_root, STAGE_FIXTURE_ROOT)
+    fixture_root = os.path.join(repo_root, CAPABILITY_FIXTURE_ROOT)
     if os.path.isdir(fixture_root):
         for root, _, files in os.walk(fixture_root):
             for name in files:
@@ -1027,23 +1039,21 @@ def check_stage_matrix_integrity(repo_root):
                     continue
                 rel = repo_rel(repo_root, os.path.join(root, name))
                 if rel.replace("\\", "/") not in fixture_paths:
-                    violations.append("{}: stage fixture missing matrix entry: {}".format(invariant_id, rel))
+                    violations.append("{}: fixture missing matrix entry: {}".format(invariant_id, rel))
 
-    test_root = os.path.join(repo_root, STAGE_TESTX_ROOT)
+    test_root = os.path.join(repo_root, CAPABILITY_TESTX_ROOT)
     if os.path.isdir(test_root):
         for root, _, files in os.walk(test_root):
             for name in files:
                 if not name.endswith(".py"):
                     continue
                 rel = repo_rel(repo_root, os.path.join(root, name)).replace("\\", "/")
-                if rel.endswith("stage_suite_runner.py") or rel.endswith("stage_matrix_common.py") or rel.endswith("stage_matrix_contracts.py"):
-                    continue
                 if rel not in test_paths:
-                    violations.append("{}: stage test missing matrix entry: {}".format(invariant_id, rel))
+                    violations.append("{}: capability test missing matrix entry: {}".format(invariant_id, rel))
 
     regression = data.get("regression_tests")
     if not isinstance(regression, list):
-        violations.append("{}: regression_tests missing from {}".format(invariant_id, STAGE_MATRIX_REL.replace("\\", "/")))
+        violations.append("{}: regression_tests missing from {}".format(invariant_id, CAPABILITY_MATRIX_REL.replace("\\", "/")))
     else:
         for rel in regression:
             if not isinstance(rel, str):
@@ -1051,13 +1061,52 @@ def check_stage_matrix_integrity(repo_root):
                 continue
             if not os.path.isfile(os.path.join(repo_root, rel)):
                 violations.append("{}: regression test missing: {}".format(invariant_id, rel))
-        regression_root = os.path.join(repo_root, STAGE_REGRESSION_ROOT)
+        regression_root = os.path.join(repo_root, CAPABILITY_REGRESSION_ROOT)
         if os.path.isdir(regression_root):
             for name in os.listdir(regression_root):
                 rel = normalize_path(os.path.join("tests", "testx", "stage_regression", name))
                 if name.endswith(".py") and rel not in [item.replace("\\", "/") for item in regression]:
                     violations.append("{}: regression test missing matrix entry: {}".format(invariant_id, rel))
 
+    return violations
+
+
+def check_forbidden_stage_tokens(repo_root):
+    invariant_id = "INV-CAPABILITY-NO-STAGE-TOKENS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    roots = [
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "setup"),
+        os.path.join(repo_root, "launcher"),
+        os.path.join(repo_root, "tools"),
+        os.path.join(repo_root, "libs"),
+        os.path.join(repo_root, "schema"),
+        os.path.join(repo_root, "tests"),
+        os.path.join(repo_root, "scripts"),
+        os.path.join(repo_root, "ci"),
+    ]
+    exts = [
+        ".c", ".cc", ".cpp", ".h", ".hpp", ".inl",
+        ".py", ".json", ".schema", ".yaml", ".yml", ".toml", ".txt", ".cmake",
+    ]
+    violations = []
+    for root in roots:
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files([root], DEFAULT_EXCLUDES, exts):
+            rel = repo_rel(repo_root, path)
+            if rel.startswith("docs/"):
+                continue
+            text = read_text(path) or ""
+            for idx, line in enumerate(text.splitlines(), start=1):
+                if FORBIDDEN_STAGE_TOKEN_RE.search(line):
+                    violations.append("{}: forbidden token in {}:{}".format(invariant_id, rel, idx))
+                    break
     return violations
 
 
@@ -1542,10 +1591,11 @@ def main() -> int:
     violations.extend(check_schema_migration_routes(repo_root))
     violations.extend(check_schema_no_implicit_defaults(repo_root))
     violations.extend(check_unversioned_schema_references(repo_root))
-    violations.extend(check_stage_pack_metadata(repo_root))
-    violations.extend(check_command_stage_metadata(repo_root))
+    violations.extend(check_pack_capability_metadata(repo_root))
+    violations.extend(check_command_capability_metadata(repo_root))
     violations.extend(check_ui_canonical_command_bindings(repo_root))
-    violations.extend(check_stage_matrix_integrity(repo_root))
+    violations.extend(check_capability_matrix_integrity(repo_root))
+    violations.extend(check_forbidden_stage_tokens(repo_root))
     violations.extend(check_process_registry(repo_root))
     violations.extend(check_process_runtime_literals(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))

@@ -1,18 +1,17 @@
 {
-  "schema_id": "dominium.schema.pack_manifest",
-  "schema_version": "2.0.0",
   "record": {
-    "pack_id": "org.dominium.core.signals.baseline",
-    "pack_version": "1.0.0",
-    "pack_format_version": 1,
-    "requires_engine": "0.0.0",
-    "required_engine_version": "0.0.0",
-    "provides": [
+    "dependencies": [
       {
-        "capability_id": "org.dominium.core.signals"
+        "capability_id": "org.dominium.core.units"
       },
       {
-        "capability_id": "org.dominium.core.signals.baseline"
+        "capability_id": "org.dominium.core.materials"
+      },
+      {
+        "capability_id": "org.dominium.core.interfaces"
+      },
+      {
+        "capability_id": "org.dominium.core.standards"
       }
     ],
     "depends": [
@@ -29,7 +28,34 @@
         "capability_id": "org.dominium.core.standards"
       }
     ],
-    "dependencies": [
+    "entitlements": [],
+    "extensions": {},
+    "optional": true,
+    "optional_capabilities": [],
+    "pack_format_version": 1,
+    "pack_id": "org.dominium.core.signals.baseline",
+    "pack_tags": [
+      "pack.class.core_ontology"
+    ],
+    "pack_version": "1.0.0",
+    "provides": [
+      {
+        "capability_id": "org.dominium.core.signals"
+      },
+      {
+        "capability_id": "org.dominium.core.signals.baseline"
+      }
+    ],
+    "provides_capabilities": [
+      {
+        "capability_id": "org.dominium.core.signals"
+      },
+      {
+        "capability_id": "org.dominium.core.signals.baseline"
+      }
+    ],
+    "required_engine_version": "0.0.0",
+    "requires_capabilities": [
       {
         "capability_id": "org.dominium.core.units"
       },
@@ -43,13 +69,8 @@
         "capability_id": "org.dominium.core.standards"
       }
     ],
-    "optional": true,
-    "pack_tags": [
-      "pack.class.core_ontology"
-    ],
-    "extensions": {},
-    "requires_stage": "STAGE_0_NONBIO_WORLD",
-    "provides_stage": "STAGE_0_NONBIO_WORLD",
-    "stage_features": []
-  }
+    "requires_engine": "0.0.0"
+  },
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0"
 }
