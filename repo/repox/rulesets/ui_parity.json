@@ -1,0 +1,41 @@
+{
+  "ruleset_id": "repox/ui_parity",
+  "documentation": "docs/governance/REPOX_RULESETS.md#repoxui_parity",
+  "rules": [
+    {
+      "rule_id": "INV-COMMAND-CAPABILITY-METADATA",
+      "severity": "FAIL",
+      "scope_paths": ["libs/appcore/command/command_registry.c"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-command-capability-metadata",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-UI-CANONICAL-COMMAND",
+      "severity": "FAIL",
+      "scope_paths": ["libs/appcore/ui_bind/ui_command_binding_table.c"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-ui-canonical-command",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-CAMERA-BLUEPRINT-METADATA",
+      "severity": "FAIL",
+      "scope_paths": ["libs/appcore/command/command_registry.c"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-camera-blueprint-metadata",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-RUNTIME-CAPABILITY-GUARDS",
+      "severity": "FAIL",
+      "scope_paths": ["client/shell/client_shell.c"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-runtime-capability-guards",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-CAPABILITY-MATRIX",
+      "severity": "FAIL",
+      "scope_paths": ["tests/testx/CAPABILITY_MATRIX.yaml", "tests/testx"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-capability-matrix",
+      "exemption_policy": "allow_with_expiry"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "ruleset_id": "repox/change_shape",
+  "documentation": "docs/governance/REPOX_RULESETS.md#repoxchange_shape",
+  "rules": [
+    {
+      "rule_id": "INV-REPOX-AMBIGUOUS-DIRS",
+      "severity": "FAIL",
+      "scope_paths": ["."],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-repox-ambiguous-dirs",
+      "exemption_policy": "allow_with_expiry"
+    }
+  ]
+}

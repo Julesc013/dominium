@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -175,6 +176,18 @@ FORBIDDEN_RENDER_TRUTH_TOKENS = (
     "hidden_truth_cache",
 )
 
+RULESET_ROOT = os.path.join("repo", "repox", "rulesets")
+REPOX_EXEMPTIONS_PATH = os.path.join("repo", "repox", "repox_exemptions.json")
+PROOF_MANIFEST_DEFAULT = os.path.join("build", "proof_manifests", "repox_proof_manifest.json")
+EXEMPTION_INLINE_RE = re.compile(r"@repox:allow\((?P<rule_id>[A-Za-z0-9_.-]+)\)(?P<tail>[^\r\n]*)")
+EXEMPTION_REASON_RE = re.compile(r'reason="([^"]+)"')
+EXEMPTION_EXPIRES_RE = re.compile(r'expires="(\d{4}-\d{2}-\d{2})"')
+MECHANISM_ONLY_MARKER = "@repox:mechanism_only"
+INFRA_ONLY_MARKER = "@repox:infrastructure_only"
+PROTOTYPE_MARKER = "@repox:prototype"
+DUPLICATION_MARKER = "@repox:deliberate_duplication"
+RATCHET_KEY = "ratchet_after"
+
 
 def repo_rel(repo_root, path):
     return os.path.relpath(path, repo_root).replace("\\", "/")
@@ -315,7 +328,9 @@ def get_changed_files(repo_root, diff_filter="ACMR"):
     for line in status_output.splitlines():
         if not line:
             continue
-        path = line[3:].strip()
+        # Parse porcelain output defensively instead of assuming fixed offsets.
+        parts = line.split(None, 1)
+        path = parts[1].strip() if len(parts) == 2 else ""
         if path:
             files.append(path.replace("\\", "/"))
     return files
@@ -340,6 +355,365 @@ def get_diff_added_lines(repo_root):
         if line.startswith("+") and not line.startswith("+++"):
             added.setdefault(current, []).append(line[1:])
     return added
+
+
+def _normalize_rel_path(path):
+    return normalize_path(path or "").strip("/")
+
+
+def _violation_to_record(raw):
+    text = str(raw).strip()
+    if not text:
+        return {"raw": "", "rule_id": "INV-UNKNOWN", "detail": "", "path": ""}
+    if ":" in text:
+        rule_id, detail = text.split(":", 1)
+        rule_id = rule_id.strip()
+        detail = detail.strip()
+    else:
+        rule_id = "INV-UNKNOWN"
+        detail = text
+
+    path = ""
+    if detail:
+        first = detail.split()[0].strip()
+        first = first.rstrip(",.;")
+        if "/" in first and not first.startswith("("):
+            if ":" in first:
+                path = first.split(":", 1)[0]
+            else:
+                path = first
+    return {"raw": text, "rule_id": rule_id, "detail": detail, "path": _normalize_rel_path(path)}
+
+
+def _load_ruleset_catalog(repo_root):
+    root = os.path.join(repo_root, RULESET_ROOT)
+    errors = []
+    catalog = {}
+    if not os.path.isdir(root):
+        errors.append("INV-REPOX-RULESET-MISSING: missing ruleset directory {}".format(RULESET_ROOT))
+        return catalog, errors
+
+    for entry in sorted(os.listdir(root)):
+        if not entry.endswith(".json"):
+            continue
+        rel_file = _normalize_rel_path(os.path.join(RULESET_ROOT, entry))
+        abs_file = os.path.join(root, entry)
+        try:
+            with open(abs_file, "r", encoding="utf-8") as handle:
+                payload = json.load(handle)
+        except (OSError, ValueError):
+            errors.append("INV-REPOX-RULESET-MISSING: invalid ruleset json {}".format(rel_file))
+            continue
+
+        rules = payload.get("rules")
+        if not isinstance(rules, list) or not rules:
+            errors.append("INV-REPOX-RULESET-MISSING: ruleset has no rules {}".format(rel_file))
+            continue
+
+        for idx, rule in enumerate(rules, start=1):
+            if not isinstance(rule, dict):
+                errors.append("INV-REPOX-RULESET-MISSING: invalid rule record {}#{}".format(rel_file, idx))
+                continue
+            rule_id = str(rule.get("rule_id", "")).strip()
+            severity = str(rule.get("severity", "")).strip().upper()
+            scope_paths = rule.get("scope_paths")
+            doc_link = str(rule.get("documentation", "")).strip()
+            exemption_policy = str(rule.get("exemption_policy", "")).strip()
+            if not rule_id:
+                errors.append("INV-REPOX-RULESET-MISSING: missing rule_id {}#{}".format(rel_file, idx))
+                continue
+            if severity not in ("WARN", "FAIL"):
+                errors.append("INV-REPOX-RULESET-MISSING: invalid severity {} for {}".format(severity, rule_id))
+                continue
+            if not isinstance(scope_paths, list):
+                errors.append("INV-REPOX-RULESET-MISSING: scope_paths missing for {}".format(rule_id))
+                continue
+            if not doc_link:
+                errors.append("INV-REPOX-RULESET-MISSING: documentation missing for {}".format(rule_id))
+                continue
+            if not exemption_policy:
+                errors.append("INV-REPOX-RULESET-MISSING: exemption_policy missing for {}".format(rule_id))
+                continue
+            if rule_id in catalog:
+                errors.append("INV-REPOX-RULESET-MISSING: duplicate rule_id {}".format(rule_id))
+                continue
+            catalog[rule_id] = {
+                "rule_id": rule_id,
+                "ruleset_id": str(payload.get("ruleset_id", "")).strip() or "repox/unknown",
+                "severity": severity,
+                "scope_paths": [normalize_path(str(p)) for p in scope_paths if str(p).strip()],
+                "documentation": doc_link,
+                "exemption_policy": exemption_policy,
+                "ratchet_after": str(rule.get(RATCHET_KEY, "")).strip(),
+            }
+    if not catalog:
+        errors.append("INV-REPOX-RULESET-MISSING: no rules loaded from {}".format(RULESET_ROOT))
+    return catalog, errors
+
+
+def _load_sidecar_exemptions(repo_root):
+    errors = []
+    exemptions = []
+    path = os.path.join(repo_root, REPOX_EXEMPTIONS_PATH)
+    if not os.path.isfile(path):
+        return exemptions, errors
+
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, ValueError):
+        errors.append("INV-REPOX-EXEMPTION-POLICY: invalid json {}".format(REPOX_EXEMPTIONS_PATH))
+        return exemptions, errors
+
+    entries = payload.get("exemptions")
+    if not isinstance(entries, list):
+        errors.append("INV-REPOX-EXEMPTION-POLICY: exemptions must be a list in {}".format(REPOX_EXEMPTIONS_PATH))
+        return exemptions, errors
+
+    for idx, entry in enumerate(entries, start=1):
+        if not isinstance(entry, dict):
+            errors.append("INV-REPOX-EXEMPTION-POLICY: invalid exemption entry {}#{}".format(REPOX_EXEMPTIONS_PATH, idx))
+            continue
+        rule_id = str(entry.get("rule_id", "")).strip()
+        reason = str(entry.get("reason", "")).strip()
+        expires = str(entry.get("expires", "")).strip()
+        if not rule_id:
+            errors.append("INV-REPOX-EXEMPTION-POLICY: missing rule_id in {}#{}".format(REPOX_EXEMPTIONS_PATH, idx))
+            continue
+        exemptions.append({
+            "source": REPOX_EXEMPTIONS_PATH,
+            "line": idx,
+            "rule_id": rule_id,
+            "reason": reason,
+            "expires": expires,
+            "path": _normalize_rel_path(entry.get("path", "")),
+        })
+    return exemptions, errors
+
+
+def _load_inline_exemptions(repo_root):
+    exemptions = []
+    roots = [
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "libs"),
+        os.path.join(repo_root, "tools"),
+        os.path.join(repo_root, "scripts"),
+        os.path.join(repo_root, "schema"),
+        os.path.join(repo_root, "data"),
+        os.path.join(repo_root, "tests"),
+        os.path.join(repo_root, "docs"),
+    ]
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS + DOC_EXTS + [".json", ".schema", ".yaml", ".yml", ".toml"]):
+        text = read_text(path)
+        if not text or "@repox:allow(" not in text:
+            continue
+        rel = repo_rel(repo_root, path)
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            match = EXEMPTION_INLINE_RE.search(line)
+            if not match:
+                continue
+            tail = match.group("tail") or ""
+            reason_match = EXEMPTION_REASON_RE.search(tail)
+            expires_match = EXEMPTION_EXPIRES_RE.search(tail)
+            exemptions.append({
+                "source": rel,
+                "line": line_no,
+                "rule_id": match.group("rule_id").strip(),
+                "reason": reason_match.group(1).strip() if reason_match else "",
+                "expires": expires_match.group(1).strip() if expires_match else "",
+                "path": rel,
+            })
+    return exemptions
+
+
+def _rule_is_exempted(record, exemptions):
+    rule_id = record.get("rule_id")
+    path = _normalize_rel_path(record.get("path"))
+    for exemption in exemptions:
+        if exemption.get("rule_id") != rule_id:
+            continue
+        ex_path = _normalize_rel_path(exemption.get("path", ""))
+        if not ex_path:
+            return True
+        if path and (path == ex_path or path.startswith(ex_path + "/") or ex_path.startswith(path + "/")):
+            return True
+        if path and ex_path and (path in ex_path or ex_path in path):
+            return True
+    return False
+
+
+def _resolve_rule_severity(meta, today):
+    severity = meta.get("severity", "FAIL")
+    ratchet = meta.get("ratchet_after", "")
+    if severity != "WARN":
+        return severity
+    ratchet_date = _parse_date(ratchet)
+    if ratchet_date and today >= ratchet_date:
+        return "FAIL"
+    return "WARN"
+
+
+def _apply_ruleset_policy(repo_root, violations, today=None):
+    if today is None:
+        today = date.today()
+    records = [_violation_to_record(item) for item in violations]
+    catalog, catalog_errors = _load_ruleset_catalog(repo_root)
+    sidecar, sidecar_errors = _load_sidecar_exemptions(repo_root)
+    inline = _load_inline_exemptions(repo_root)
+    exemptions = sidecar + inline
+
+    policy_failures = []
+    policy_failures.extend(catalog_errors)
+    policy_failures.extend(sidecar_errors)
+
+    for exemption in exemptions:
+        rule_id = exemption.get("rule_id", "")
+        reason = exemption.get("reason", "")
+        expires = exemption.get("expires", "")
+        meta = catalog.get(rule_id)
+        if meta is None:
+            policy_failures.append(
+                "INV-REPOX-EXEMPTION-POLICY: unknown rule_id {} in {}:{}".format(
+                    rule_id, exemption.get("source"), exemption.get("line")
+                )
+            )
+            continue
+        policy = meta.get("exemption_policy", "")
+        if policy == "deny":
+            policy_failures.append(
+                "INV-REPOX-EXEMPTION-POLICY: exemptions denied for {} at {}:{}".format(
+                    rule_id, exemption.get("source"), exemption.get("line")
+                )
+            )
+            continue
+        if not reason:
+            policy_failures.append(
+                "INV-REPOX-EXEMPTION-POLICY: missing reason for {} at {}:{}".format(
+                    rule_id, exemption.get("source"), exemption.get("line")
+                )
+            )
+        if policy in ("allow_with_expiry", "allow"):
+            expiry_date = _parse_date(expires)
+            if expiry_date is None:
+                policy_failures.append(
+                    "INV-REPOX-EXEMPTION-POLICY: missing/invalid expiry for {} at {}:{}".format(
+                        rule_id, exemption.get("source"), exemption.get("line")
+                    )
+                )
+            elif expiry_date < today:
+                policy_failures.append(
+                    "INV-REPOX-EXEMPTION-POLICY: expired exemption for {} at {}:{} (expired {})".format(
+                        rule_id, exemption.get("source"), exemption.get("line"), expires
+                    )
+                )
+
+    fail_items = []
+    warn_items = []
+    for record in records:
+        rule_id = record.get("rule_id")
+        meta = catalog.get(rule_id)
+        if meta is None:
+            fail_items.append(
+                "INV-REPOX-RULESET-MISSING: rule_id not mapped to ruleset {}".format(rule_id)
+            )
+            continue
+        if _rule_is_exempted(record, exemptions):
+            continue
+        severity = _resolve_rule_severity(meta, today)
+        if severity == "WARN":
+            warn_items.append(record.get("raw"))
+        else:
+            fail_items.append(record.get("raw"))
+
+    fail_items.extend(policy_failures)
+    return sorted(set(fail_items)), sorted(set(warn_items))
+
+
+def _collect_manifest_test_names(repo_root):
+    names = set()
+    roots = [os.path.join(repo_root, "tests"), os.path.join(repo_root, "cmake")]
+    pattern = re.compile(r"dom_add_testx\s*\(\s*NAME\s+([A-Za-z0-9_]+)", re.MULTILINE)
+    for path in iter_files(roots, DEFAULT_EXCLUDES, [".cmake", ".txt"]):
+        text = read_text(path) or ""
+        for match in pattern.finditer(text):
+            names.add(match.group(1))
+    return sorted(names)
+
+
+def _build_proof_manifest(repo_root, warnings, failures):
+    changed_files = get_changed_files(repo_root) or []
+    changed = [normalize_path(path) for path in changed_files]
+    required_tests = set()
+    required_invariants = set()
+    required_refusal_codes = {
+        "CAMERA_REFUSE_ENTITLEMENT",
+        "BLUEPRINT_REFUSE_CAPABILITY",
+        "REFUSE_CAPABILITY_MISSING",
+    }
+    required_capability_checks = set(CAMERA_MODE_RUNTIME_CAPABILITIES + OBSERVER_TOOL_ENTITLEMENTS)
+
+    for path in changed:
+        if path.startswith("client/") or path.startswith("libs/appcore/command/") or path.startswith("libs/appcore/ui_bind/"):
+            required_tests.update({
+                "capability_runtime_enforcement",
+                "freecam_epistemics",
+                "blueprint_refusal",
+                "ui_client_menu_parity",
+            })
+            required_invariants.update({
+                "INV-COMMAND-CAPABILITY-METADATA",
+                "INV-RUNTIME-CAPABILITY-GUARDS",
+                "INV-UI-CANONICAL-COMMAND",
+            })
+        if path.startswith("engine/") or path.startswith("game/"):
+            required_tests.update({
+                "inv_process_only_mutation",
+                "invariant_process_only_mutation",
+                "determinism_replay_hash_invariance",
+            })
+            required_invariants.update({
+                "INV-PROCESS-REGISTRY",
+                "INV-PROCESS-RUNTIME-ID",
+            })
+        if path.startswith("schema/") or path.startswith("data/"):
+            required_tests.update({
+                "schema_version_immutability_contracts",
+                "schema_migration_contracts",
+            })
+            required_invariants.update({
+                "INV-SCHEMA-VERSION-BUMP",
+                "INV-SCHEMA-MIGRATION-ROUTES",
+            })
+
+    manifest = {
+        "schema_id": "dominium.repox.proof_manifest",
+        "schema_version": "1.0.0",
+        "generated_by": "scripts/ci/check_repox_rules.py",
+        "changed_files": sorted(changed),
+        "required_capability_checks": sorted(required_capability_checks),
+        "required_refusal_codes": sorted(required_refusal_codes),
+        "required_invariants": sorted(required_invariants),
+        "required_tests": sorted(required_tests),
+        "focused_test_subset": sorted(required_tests),
+        "warnings": sorted(set(warnings)),
+        "failures": sorted(set(failures)),
+        "available_testx_tests": _collect_manifest_test_names(repo_root),
+    }
+    return manifest
+
+
+def write_proof_manifest(repo_root, out_path, warnings, failures):
+    payload = _build_proof_manifest(repo_root, warnings, failures)
+    target = os.path.join(repo_root, out_path)
+    target_dir = os.path.dirname(target)
+    if target_dir:
+        os.makedirs(target_dir, exist_ok=True)
+    with open(target, "w", encoding="utf-8") as handle:
+        json.dump(payload, handle, indent=2, sort_keys=False)
+        handle.write("\n")
 
 
 def parse_frozen_paths(text):
@@ -911,6 +1285,36 @@ def check_pack_capability_metadata(repo_root):
     return violations
 
 
+def check_bugreport_resolution(repo_root):
+    invariant_id = "INV-BUGREPORT-RESOLUTION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    root = os.path.join(repo_root, "data", "logs", "bugreports")
+    if not os.path.isdir(root):
+        return []
+
+    violations = []
+    for path in iter_files([root], DEFAULT_EXCLUDES, [".json"]):
+        rel = repo_rel(repo_root, path)
+        payload = _load_json_file(path)
+        if payload is None:
+            violations.append("{}: invalid json {}".format(invariant_id, rel))
+            continue
+        record = _manifest_record(payload)
+        status = str(record.get("status", "")).strip().lower()
+        if status != "resolved":
+            continue
+        regression_test = str(record.get("regression_test", "")).strip()
+        deferred_reason = str(record.get("deferred_reason", "")).strip()
+        if not regression_test and not deferred_reason:
+            violations.append(
+                "{}: resolved bugreport missing regression_test or deferred_reason in {}".format(
+                    invariant_id, rel
+                )
+            )
+    return violations
+
+
 def _parse_command_registry_entries(text):
     entries = []
     current = []
@@ -1100,6 +1504,7 @@ def check_observer_freecam_entitlement_gate(repo_root):
     line_set_camera = _line_with_token(text, "static int dom_client_shell_set_camera")
     line_policy = _line_with_token(text, "dom_shell_camera_allowed(&shell->world.summary.camera")
     line_refusal = _line_with_token(text, "CAMERA_REFUSE_ENTITLEMENT")
+    line_assignment = _line_with_token(text, "strncpy(shell->world.camera_mode, resolved_camera_id")
     violations = []
     if line_mode <= 0:
         violations.append("{}: {} missing camera.set_mode parser branch".format(invariant_id, rel))
@@ -1131,6 +1536,8 @@ def check_observer_freecam_entitlement_gate(repo_root):
         violations.append("{}: {} missing CAMERA_REFUSE_ENTITLEMENT refusal".format(invariant_id, rel))
     if _line_with_token(text, "result=refused reason=entitlement mode=observer") <= 0:
         violations.append("{}: {} missing observer entitlement refusal event".format(invariant_id, rel))
+    if line_assignment <= 0:
+        violations.append("{}: {} missing camera mode assignment".format(invariant_id, rel))
 
     observer_guard_re = re.compile(
         r"observer_mode\s*&&\s*!dom_shell_capability_allowed\s*\(\s*shell\s*,\s*\"ui\.camera\.mode\.observer\"\s*\)",
@@ -1154,6 +1561,23 @@ def check_observer_freecam_entitlement_gate(repo_root):
     )
     if not entitlement_guard_re.search(text):
         violations.append("{}: {} missing full observer entitlement conjunction".format(invariant_id, rel))
+    if line_assignment > 0:
+        for capability_id in CAMERA_MODE_RUNTIME_CAPABILITIES:
+            line_cap = _line_with_token(text, capability_id)
+            if line_cap > 0 and line_cap > line_assignment:
+                violations.append(
+                    "{}: {} capability gate for {} appears after camera mode assignment".format(
+                        invariant_id, rel, capability_id
+                    )
+                )
+        for entitlement_id in OBSERVER_TOOL_ENTITLEMENTS:
+            line_ent = _line_with_token(text, entitlement_id)
+            if line_ent > 0 and line_ent > line_assignment:
+                violations.append(
+                    "{}: {} entitlement gate for {} appears after camera mode assignment".format(
+                        invariant_id, rel, entitlement_id
+                    )
+                )
     return violations
 
 
@@ -1188,8 +1612,17 @@ def check_runtime_command_capability_guards(repo_root):
 
     line_blueprint_func = _line_with_token(text, "static int dom_shell_interaction_place_internal")
     line_blueprint_cap = _line_with_token(text, "const char* required_capability = preview ? \"ui.blueprint.preview\" : \"ui.blueprint.place\"")
+    line_camera_parser = _line_with_token(text, "strcmp(token, \"camera.set_mode\")")
+    line_camera_dispatch = _line_with_token(text, "return dom_client_shell_set_camera(shell, camera_id")
+    line_pose_dispatch = _line_with_token(text, "return dom_client_shell_set_camera_pose(shell, x, y, z, has_pose")
     if line_blueprint_func > 0 and line_blueprint_cap > 0 and line_blueprint_cap < line_blueprint_func:
         violations.append("{}: {} blueprint capability selection outside interaction handler".format(invariant_id, rel))
+    if line_camera_parser <= 0 or line_camera_dispatch <= 0:
+        violations.append("{}: {} camera command parser/dispatch branch missing".format(invariant_id, rel))
+    elif line_camera_dispatch < line_camera_parser:
+        violations.append("{}: {} camera command dispatch appears before parser branch".format(invariant_id, rel))
+    if line_pose_dispatch <= 0:
+        violations.append("{}: {} camera.set_pose dispatch missing".format(invariant_id, rel))
     return violations
 
 
@@ -1253,6 +1686,64 @@ def check_renderer_no_truth_access(repo_root):
                         invariant_id, freecam_test_rel.replace("\\", "/"), marker
                     )
                 )
+
+    capability_test_rel = os.path.join("tests", "integration", "capability_runtime_enforcement_tests.py")
+    capability_test_path = os.path.join(repo_root, capability_test_rel)
+    if not os.path.isfile(capability_test_path):
+        violations.append("{}: missing {}".format(invariant_id, capability_test_rel.replace("\\", "/")))
+    else:
+        capability_text = read_text(capability_test_path) or ""
+        capability_markers = (
+            "camera.set_mode observer",
+            "CAMERA_REFUSE_ENTITLEMENT",
+            "BLUEPRINT_REFUSE_CAPABILITY",
+        )
+        for marker in capability_markers:
+            if marker not in capability_text:
+                violations.append(
+                    "{}: {} missing runtime capability marker {}".format(
+                        invariant_id, capability_test_rel.replace("\\", "/"), marker
+                    )
+                )
+
+    frame_graph_rel = os.path.join("client", "presentation", "frame_graph_builder.h")
+    frame_graph_path = os.path.join(repo_root, frame_graph_rel)
+    if not os.path.isfile(frame_graph_path):
+        violations.append("{}: missing {}".format(invariant_id, frame_graph_rel.replace("\\", "/")))
+    else:
+        frame_graph_text = read_text(frame_graph_path) or ""
+        required_fields = (
+            "packed_view_set_id",
+            "visibility_mask_set_id",
+            "instance_count",
+        )
+        for field in required_fields:
+            if field not in frame_graph_text:
+                violations.append(
+                    "{}: {} missing render artifact field {}".format(
+                        invariant_id, frame_graph_rel.replace("\\", "/"), field
+                    )
+                )
+        for forbidden in ("authoritative_world_state", "truth_snapshot_stream", "hidden_truth_cache"):
+            if forbidden in frame_graph_text:
+                violations.append(
+                    "{}: {} includes forbidden truth token {}".format(
+                        invariant_id, frame_graph_rel.replace("\\", "/"), forbidden
+                    )
+                )
+
+    render_prep_rel = os.path.join("client", "presentation", "render_prep_system.cpp")
+    render_prep_path = os.path.join(repo_root, render_prep_rel)
+    if not os.path.isfile(render_prep_path):
+        violations.append("{}: missing {}".format(invariant_id, render_prep_rel.replace("\\", "/")))
+    else:
+        render_prep_text = read_text(render_prep_path) or ""
+        if "RenderPrepSystem::is_sim_affecting() const" not in render_prep_text or "return D_FALSE;" not in render_prep_text:
+            violations.append(
+                "{}: {} must declare presentation-only non-sim-affecting behavior".format(
+                    invariant_id, render_prep_rel.replace("\\", "/")
+                )
+            )
     return violations
 
 
@@ -1757,6 +2248,53 @@ def check_process_runtime_literals(repo_root):
     return violations
 
 
+def check_process_guard_runtime_contract(repo_root):
+    invariant_id = "INV-PROCESS-GUARD-RUNTIME"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    header_rel = os.path.join("engine", "include", "domino", "core", "process_guard.h").replace("\\", "/")
+    impl_rel = os.path.join("engine", "modules", "core", "process_guard.c").replace("\\", "/")
+    test_rel = os.path.join("engine", "tests", "process_guard_tests.c").replace("\\", "/")
+    tests_invariant_rel = os.path.join("tests", "invariant", "process_only_mutation_tests.py").replace("\\", "/")
+
+    header = read_text(os.path.join(repo_root, header_rel)) or ""
+    impl = read_text(os.path.join(repo_root, impl_rel)) or ""
+    guard_test = read_text(os.path.join(repo_root, test_rel)) or ""
+    invariant_test = read_text(os.path.join(repo_root, tests_invariant_rel)) or ""
+
+    violations = []
+    if "DOM_PROCESS_GUARD_MUTATION()" not in header:
+        violations.append("{}: {} missing DOM_PROCESS_GUARD_MUTATION macro".format(invariant_id, header_rel))
+    required_impl = (
+        "dom_process_guard_enter",
+        "dom_process_guard_exit",
+        "dom_process_guard_note_mutation",
+        "g_process_guard_violations",
+        "g_process_guard_mutations",
+    )
+    for token in required_impl:
+        if token not in impl:
+            violations.append("{}: {} missing runtime guard token {}".format(invariant_id, impl_rel, token))
+
+    required_guard_tests = (
+        "dom_process_guard_note_mutation",
+        "dom_process_guard_violation_count() == 1u",
+        "dom_process_guard_enter(\"test.process\")",
+    )
+    for token in required_guard_tests:
+        if token not in guard_test:
+            violations.append("{}: {} missing guard runtime assertion {}".format(invariant_id, test_rel, token))
+
+    if "INV-PROCESS-ONLY-MUTATION" not in invariant_test:
+        violations.append(
+            "{}: {} missing process-only mutation invariant linkage".format(
+                invariant_id, tests_invariant_rel
+            )
+        )
+    return violations
+
+
 def check_process_registry_immutability(repo_root):
     invariant_id = "INV-PROCESS-REGISTRY-IMMUTABLE"
     if is_override_active(repo_root, invariant_id):
@@ -1979,6 +2517,260 @@ def check_magic_numbers(repo_root):
     return violations
 
 
+def _runtime_scope_prefixes():
+    return (
+        "engine/",
+        "game/",
+        "client/",
+        "server/",
+        "launcher/",
+        "setup/",
+        "libs/appcore/",
+        "tools/",
+    )
+
+
+def _is_runtime_source(rel):
+    rel_norm = normalize_path(rel)
+    if os.path.splitext(rel_norm)[1].lower() not in SOURCE_EXTS:
+        return False
+    for prefix in _runtime_scope_prefixes():
+        if rel_norm.startswith(prefix):
+            return True
+    return False
+
+
+def _has_marker(repo_root, rel, marker):
+    path = os.path.join(repo_root, rel.replace("/", os.sep))
+    text = read_text(path) or ""
+    return marker in text
+
+
+def check_data_first_behavior(repo_root):
+    invariant_id = "DATA_FIRST_BEHAVIOR"
+    changed = get_changed_files(repo_root)
+    if changed is None:
+        return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+
+    added = get_diff_added_lines(repo_root) or {}
+    runtime_changed = []
+    for rel, lines in added.items():
+        rel_norm = normalize_path(rel)
+        if not _is_runtime_source(rel_norm):
+            continue
+        if any(line.strip() for line in lines):
+            runtime_changed.append(rel_norm)
+
+    if not runtime_changed:
+        return []
+
+    data_first_roots = ("schema/", "data/", "docs/", "repo/", "tests/fixtures/")
+    has_data_first_change = False
+    for rel in changed:
+        rel_norm = normalize_path(rel)
+        if rel_norm.startswith(data_first_roots):
+            has_data_first_change = True
+            break
+    if has_data_first_change:
+        return []
+
+    violations = []
+    for rel in sorted(set(runtime_changed)):
+        if _has_marker(repo_root, rel, MECHANISM_ONLY_MARKER):
+            continue
+        violations.append(
+            "{}: runtime behavior change without schema/data anchor {} (add {} if mechanism-only)".format(
+                invariant_id, rel, MECHANISM_ONLY_MARKER
+            )
+        )
+    return violations
+
+
+def check_no_silent_defaults(repo_root):
+    invariant_id = "NO_SILENT_DEFAULTS"
+    added = get_diff_added_lines(repo_root)
+    if added is None:
+        return ["{}: unable to determine changed lines; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+
+    default_like = (
+        re.compile(r"\bvalue_or\s*\("),
+        re.compile(r"\bget_or_default\s*\("),
+        re.compile(r"\bor_default\s*\("),
+        re.compile(r"\bdefault\s*[:=]"),
+    )
+    violations = []
+    for rel_path, lines in added.items():
+        rel = normalize_path(rel_path)
+        if not _is_runtime_source(rel):
+            continue
+        for idx, line in enumerate(lines, start=1):
+            stripped = strip_c_comments_and_strings(line)
+            if not stripped.strip():
+                continue
+            if "REFUSE_" in stripped or "refusal" in stripped.lower() or "reject" in stripped.lower():
+                continue
+            for pattern in default_like:
+                if pattern.search(stripped):
+                    violations.append(
+                        "{}: {} added line {} uses defaulting without explicit refusal".format(
+                            invariant_id, rel, idx
+                        )
+                    )
+                    break
+    return violations
+
+
+def _collect_schema_tokens(repo_root):
+    tokens = set()
+    roots = [os.path.join(repo_root, "schema")]
+    token_re = re.compile(r"[A-Za-z][A-Za-z0-9_.-]{1,}")
+    for path in iter_files(roots, DEFAULT_EXCLUDES, [".schema", ".json", ".yaml", ".yml", ".md"]):
+        text = read_text(path) or ""
+        for token in token_re.findall(text):
+            tokens.add(token)
+    return tokens
+
+
+def check_schema_anchor_required(repo_root):
+    invariant_id = "SCHEMA_ANCHOR_REQUIRED"
+    added = get_diff_added_lines(repo_root)
+    if added is None:
+        return ["{}: unable to determine changed lines; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    schema_tokens = _collect_schema_tokens(repo_root)
+    key_call_re = re.compile(
+        r"\b(?:json|tlv|manifest|pack|schema|config|cfg|kv)[A-Za-z0-9_]*\s*\([^)]*\"([a-z][a-z0-9_.-]+)\""
+    )
+    violations = []
+    for rel_path, lines in added.items():
+        rel = normalize_path(rel_path)
+        if not _is_runtime_source(rel):
+            continue
+        for idx, line in enumerate(lines, start=1):
+            stripped = strip_c_comments_and_strings(line)
+            if not stripped.strip():
+                continue
+            for match in key_call_re.finditer(stripped):
+                key = match.group(1)
+                if key not in schema_tokens:
+                    violations.append(
+                        "{}: {} added line {} references key '{}' not declared in schema".format(
+                            invariant_id, rel, idx, key
+                        )
+                    )
+    return violations
+
+
+def _count_non_test_occurrences(repo_root, symbol):
+    roots = [
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "launcher"),
+        os.path.join(repo_root, "setup"),
+        os.path.join(repo_root, "libs"),
+        os.path.join(repo_root, "tools"),
+    ]
+    count = 0
+    sym_re = re.compile(r"\b{}\b".format(re.escape(symbol)))
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = normalize_path(repo_rel(repo_root, path))
+        if "/tests/" in rel or rel.startswith("tests/"):
+            continue
+        text = read_text(path) or ""
+        if sym_re.search(text):
+            count += 1
+    return count
+
+
+def check_no_single_use_code_paths(repo_root):
+    invariant_id = "NO_SINGLE_USE_CODE_PATHS"
+    added = get_changed_files(repo_root, diff_filter="A")
+    if added is None:
+        return ["{}: unable to determine added files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+
+    violations = []
+    for rel in added:
+        rel_norm = normalize_path(rel)
+        if not _is_runtime_source(rel_norm):
+            continue
+        if _has_marker(repo_root, rel_norm, PROTOTYPE_MARKER):
+            continue
+        base = os.path.splitext(os.path.basename(rel_norm))[0]
+        refs = _count_non_test_occurrences(repo_root, base)
+        if refs <= 1:
+            violations.append(
+                "{}: {} appears single-use ({} non-test reference); annotate {} when intentional".format(
+                    invariant_id, rel_norm, refs, PROTOTYPE_MARKER
+                )
+            )
+    return violations
+
+
+def check_duplicate_logic_pressure(repo_root):
+    invariant_id = "DUPLICATE_LOGIC_PRESSURE"
+    added = get_diff_added_lines(repo_root)
+    if added is None:
+        return ["{}: unable to determine changed lines; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+
+    line_map = {}
+    for rel_path, lines in added.items():
+        rel = normalize_path(rel_path)
+        if not _is_runtime_source(rel):
+            continue
+        if _has_marker(repo_root, rel, DUPLICATION_MARKER):
+            continue
+        for line in lines:
+            stripped = strip_c_comments_and_strings(line).strip()
+            if len(stripped) < 64:
+                continue
+            if stripped.startswith("#"):
+                continue
+            line_map.setdefault(stripped, set()).add(rel)
+
+    violations = []
+    for snippet, files in line_map.items():
+        if len(files) >= 2:
+            files_sorted = sorted(files)
+            violations.append(
+                "{}: duplicated added logic across {} (snippet hash {})".format(
+                    invariant_id, ", ".join(files_sorted), hashlib.sha1(snippet.encode("utf-8")).hexdigest()[:12]
+                )
+            )
+    return violations
+
+
+def check_new_feature_requires_data_first(repo_root):
+    invariant_id = "NEW_FEATURE_REQUIRES_DATA_FIRST"
+    changed = get_changed_files(repo_root)
+    if changed is None:
+        return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+
+    runtime_changes = [normalize_path(rel) for rel in changed if _is_runtime_source(rel)]
+    if not runtime_changes:
+        return []
+
+    data_touch = False
+    for rel in changed:
+        rel_norm = normalize_path(rel)
+        if rel_norm.startswith("data/") or rel_norm.startswith("schema/") or rel_norm.startswith("docs/"):
+            data_touch = True
+            break
+    if data_touch:
+        return []
+
+    violations = []
+    for rel in sorted(set(runtime_changes)):
+        if _has_marker(repo_root, rel, INFRA_ONLY_MARKER):
+            continue
+        violations.append(
+            "{}: runtime feature touched without data/schema/docs anchor {} (file {})".format(
+                invariant_id, INFRA_ONLY_MARKER, rel
+            )
+        )
+    return violations
+
+
 def check_ambiguous_new_dirs(repo_root):
     invariant_id = "INV-REPOX-AMBIGUOUS-DIRS"
     if is_override_active(repo_root, invariant_id):
@@ -2002,6 +2794,7 @@ def check_ambiguous_new_dirs(repo_root):
 def main() -> int:
     parser = argparse.ArgumentParser(description="RepoX governance rules enforcement.")
     parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--proof-manifest-out", default=PROOF_MANIFEST_DEFAULT)
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
 
@@ -2017,6 +2810,12 @@ def main() -> int:
     violations.extend(check_forbidden_enum_tokens(repo_root))
     violations.extend(check_raw_paths(repo_root))
     violations.extend(check_magic_numbers(repo_root))
+    violations.extend(check_data_first_behavior(repo_root))
+    violations.extend(check_no_silent_defaults(repo_root))
+    violations.extend(check_schema_anchor_required(repo_root))
+    violations.extend(check_no_single_use_code_paths(repo_root))
+    violations.extend(check_duplicate_logic_pressure(repo_root))
+    violations.extend(check_new_feature_requires_data_first(repo_root))
     violations.extend(check_ambiguous_new_dirs(repo_root))
     canon_index = load_canon_index(repo_root)
     violations.extend(check_canon_index_entries(repo_root, canon_index))
@@ -2029,6 +2828,7 @@ def main() -> int:
     violations.extend(check_schema_no_implicit_defaults(repo_root))
     violations.extend(check_unversioned_schema_references(repo_root))
     violations.extend(check_pack_capability_metadata(repo_root))
+    violations.extend(check_bugreport_resolution(repo_root))
     violations.extend(check_command_capability_metadata(repo_root))
     violations.extend(check_camera_blueprint_command_metadata(repo_root))
     violations.extend(check_ui_canonical_command_bindings(repo_root))
@@ -2040,11 +2840,18 @@ def main() -> int:
     violations.extend(check_forbidden_legacy_gating_tokens(repo_root))
     violations.extend(check_process_registry(repo_root))
     violations.extend(check_process_runtime_literals(repo_root))
+    violations.extend(check_process_guard_runtime_contract(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))
     violations.extend(check_compliance_report_canon(repo_root))
 
-    if violations:
-        for item in sorted(set(violations)):
+    failures, warnings = _apply_ruleset_policy(repo_root, violations)
+    write_proof_manifest(repo_root, args.proof_manifest_out, warnings, failures)
+
+    for item in warnings:
+        print("WARN: {}".format(item))
+
+    if failures:
+        for item in failures:
             print(item)
         return 1
 
