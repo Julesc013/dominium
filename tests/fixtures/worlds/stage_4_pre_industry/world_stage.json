@@ -1,10 +1,43 @@
 {
-  "schema_id": "dominium.schema.stage_declaration",
-  "schema_version": "1.0.0",
   "record": {
-    "requires_stage": "STAGE_4_PRE_INDUSTRY",
-    "provides_stage": "STAGE_4_PRE_INDUSTRY",
-    "stage_features": [],
-    "extensions": {}
-  }
+    "entitlements": [],
+    "extensions": {},
+    "optional_capabilities": [],
+    "provides_capabilities": [
+      {
+        "capability_id": "dominium.capability.world.nonbio"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.nonintelligent"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.intelligent"
+      },
+      {
+        "capability_id": "dominium.capability.world.pretool"
+      },
+      {
+        "capability_id": "dominium.capability.society.institutions"
+      }
+    ],
+    "requires_capabilities": [
+      {
+        "capability_id": "dominium.capability.world.nonbio"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.nonintelligent"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.intelligent"
+      },
+      {
+        "capability_id": "dominium.capability.world.pretool"
+      },
+      {
+        "capability_id": "dominium.capability.society.institutions"
+      }
+    ]
+  },
+  "schema_id": "dominium.schema.capability_declaration",
+  "schema_version": "1.0.0"
 }

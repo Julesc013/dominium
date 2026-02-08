@@ -1,0 +1,44 @@
+SCHEMA: capability.declaration.schema
+schema_id: dominium.schema.capability_declaration
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define explicit capability and entitlement declarations for packs, worlds,
+  scenarios, profiles, and application command surfaces.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Capability declarations gate availability only.
+- Capability declarations do NOT alter physics, law, or process semantics.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record capability_declaration
+  required:
+    - requires_capabilities: [capability_ref]
+    - provides_capabilities: [capability_ref]
+    - entitlements: [capability_ref]
+    - extensions: map
+  optional:
+    - optional_capabilities: [capability_ref]
+    - provenance_ref: provenance_ref
+
+TYPE DEFINITIONS:
+record capability_ref
+  required:
+    - capability_id: id
+  optional:
+    - qualifier_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id

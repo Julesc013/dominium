@@ -1,10 +1,25 @@
 {
-  "schema_id": "dominium.schema.stage_declaration",
-  "schema_version": "1.0.0",
   "record": {
-    "requires_stage": "STAGE_1_NONINTELLIGENT_LIFE",
-    "provides_stage": "STAGE_1_NONINTELLIGENT_LIFE",
-    "stage_features": [],
-    "extensions": {}
-  }
+    "entitlements": [],
+    "extensions": {},
+    "optional_capabilities": [],
+    "provides_capabilities": [
+      {
+        "capability_id": "dominium.capability.world.nonbio"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.nonintelligent"
+      }
+    ],
+    "requires_capabilities": [
+      {
+        "capability_id": "dominium.capability.world.nonbio"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.nonintelligent"
+      }
+    ]
+  },
+  "schema_id": "dominium.schema.capability_declaration",
+  "schema_version": "1.0.0"
 }

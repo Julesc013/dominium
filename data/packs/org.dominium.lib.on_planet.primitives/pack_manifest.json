@@ -1,17 +1,18 @@
 {
-  "schema_id": "dominium.schema.pack_manifest",
-  "schema_version": "1.0.0",
   "record": {
+    "dependencies": [],
+    "entitlements": [],
+    "extensions": {
+      "notes": "Canonical on-planet data primitives for processes and actions."
+    },
+    "optional": true,
+    "optional_capabilities": [],
+    "pack_format_version": 1,
     "pack_id": "org.dominium.lib.on_planet.primitives",
     "pack_version": "1.0.0",
-    "pack_format_version": 1,
-    "required_engine_version": "0.0.0",
-    "required_protocol_versions": [
-      {
-        "protocol_id": "dominium.protocol.pack_manifest",
-        "version_constraint": "1"
-      }
-    ],
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.lib.on_planet.primitives.manifest.v1"
+    },
     "provides": [
       {
         "capability_id": "domain.library.on_planet"
@@ -44,16 +45,47 @@
         "capability_id": "knowledge.library.on_planet"
       }
     ],
-    "dependencies": [],
-    "optional": true,
-    "provenance_ref": {
-      "provenance_id": "prov.org.dominium.lib.on_planet.primitives.manifest.v1"
-    },
-    "extensions": {
-      "notes": "Canonical on-planet data primitives for processes and actions."
-    },
-    "requires_stage": "STAGE_0_NONBIO_WORLD",
-    "provides_stage": "STAGE_0_NONBIO_WORLD",
-    "stage_features": []
-  }
+    "provides_capabilities": [
+      {
+        "capability_id": "domain.library.on_planet"
+      },
+      {
+        "capability_id": "field.on_planet.terrain"
+      },
+      {
+        "capability_id": "field.on_planet.environment"
+      },
+      {
+        "capability_id": "field.on_planet.resources"
+      },
+      {
+        "capability_id": "part.library.on_planet"
+      },
+      {
+        "capability_id": "assembly.library.on_planet"
+      },
+      {
+        "capability_id": "network.library.on_planet"
+      },
+      {
+        "capability_id": "material.library.on_planet"
+      },
+      {
+        "capability_id": "institution.library.on_planet"
+      },
+      {
+        "capability_id": "knowledge.library.on_planet"
+      }
+    ],
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "requires_capabilities": []
+  },
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0"
 }

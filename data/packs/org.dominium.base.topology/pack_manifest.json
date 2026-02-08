@@ -1,17 +1,18 @@
 {
-  "schema_id": "dominium.schema.pack_manifest",
-  "schema_version": "1.0.0",
   "record": {
+    "dependencies": [],
+    "entitlements": [],
+    "extensions": {
+      "notes": "Canonical minimal topology pack."
+    },
+    "optional": true,
+    "optional_capabilities": [],
+    "pack_format_version": 1,
     "pack_id": "org.dominium.base.topology",
     "pack_version": "1.0.0",
-    "pack_format_version": 1,
-    "required_engine_version": "0.0.0",
-    "required_protocol_versions": [
-      {
-        "protocol_id": "dominium.protocol.pack_manifest",
-        "version_constraint": "1"
-      }
-    ],
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.base.topology.manifest.v1"
+    },
     "provides": [
       {
         "capability_id": "topology.universe"
@@ -23,16 +24,26 @@
         "capability_id": "domain.volume.basic"
       }
     ],
-    "dependencies": [],
-    "optional": true,
-    "provenance_ref": {
-      "provenance_id": "prov.org.dominium.base.topology.manifest.v1"
-    },
-    "extensions": {
-      "notes": "Canonical minimal topology pack."
-    },
-    "requires_stage": "STAGE_0_NONBIO_WORLD",
-    "provides_stage": "STAGE_0_NONBIO_WORLD",
-    "stage_features": []
-  }
+    "provides_capabilities": [
+      {
+        "capability_id": "topology.universe"
+      },
+      {
+        "capability_id": "topology.node.basic"
+      },
+      {
+        "capability_id": "domain.volume.basic"
+      }
+    ],
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "requires_capabilities": []
+  },
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0"
 }

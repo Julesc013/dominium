@@ -137,18 +137,11 @@ static bool enabled_predicate_allowed(const std::string& predicate)
     if (predicate == "profile.present") {
         return true;
     }
-    if (predicate == "world_stage>=required_stage") {
-        return true;
-    }
     if (predicate == "epistemic_permission") {
         return true;
     }
     if (predicate.size() > 11u && predicate.find("capability:") == 0u) {
         return predicate.size() > 11u;
-    }
-    if (predicate.size() > 12u && predicate.find("world_stage>=") == 0u) {
-        const char* stage_id = predicate.c_str() + 12u;
-        return appcore_stage_rank(stage_id) >= 0;
     }
     if (predicate.size() > 21u && predicate.find("epistemic_permission:") == 0u) {
         return predicate.size() > 21u;
@@ -762,11 +755,6 @@ int main(int argc, char** argv)
                             const dom_app_command_desc* cmd = it->second[0];
                             if (!cmd->arg_schema || !cmd->arg_schema[0]) {
                                 errors.push_back(std::string("UI_BIND_ERROR|event|missing_arg_schema|") + action_key);
-                                continue;
-                            }
-                            if (!cmd->required_stage || appcore_stage_rank(cmd->required_stage) < 0) {
-                                errors.push_back(std::string("UI_BIND_ERROR|event|missing_required_stage|") +
-                                                 action_key);
                                 continue;
                             }
                             if (!command_epistemic_scope_known(cmd->epistemic_scope)) {

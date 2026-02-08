@@ -21,11 +21,11 @@ fi
 
 mkdir -p "$OUT_DIR"
 
-STAGE_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/dominium-pkg-XXXXXX")"
-trap 'rm -rf "$STAGE_ROOT"' EXIT
+DIST_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/dominium-pkg-XXXXXX")"
+trap 'rm -rf "$DIST_ROOT"' EXIT
 
-mkdir -p "$STAGE_ROOT/Applications"
-ditto "$APP_BUNDLE" "$STAGE_ROOT/Applications/$(basename "$APP_BUNDLE")"
+mkdir -p "$DIST_ROOT/Applications"
+ditto "$APP_BUNDLE" "$DIST_ROOT/Applications/$(basename "$APP_BUNDLE")"
 
 COMPONENT_PKG="$OUT_DIR/Dominium-${VERSION}.pkg"
 DISTRIBUTION_PKG="$OUT_DIR/Dominium-${VERSION}-installer.pkg"
@@ -41,7 +41,7 @@ if [[ -n "$SIGN_IDENTITY" ]]; then
 fi
 
 pkgbuild \
-  --root "$STAGE_ROOT" \
+  --root "$DIST_ROOT" \
   --identifier "$IDENTIFIER" \
   --version "$VERSION" \
   --install-location "$INSTALL_LOCATION" \

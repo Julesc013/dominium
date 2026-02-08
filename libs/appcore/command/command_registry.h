@@ -154,15 +154,6 @@ typedef enum dom_app_command_id_e {
     DOM_APP_CMD_SERVER_UI_STATUS
 } dom_app_command_id;
 
-/* canonical capability-stage identifiers (data-facing, fixed set). */
-#define DOM_STAGE_0_NONBIO_WORLD "STAGE_0_NONBIO_WORLD"
-#define DOM_STAGE_1_NONINTELLIGENT_LIFE "STAGE_1_NONINTELLIGENT_LIFE"
-#define DOM_STAGE_2_INTELLIGENT_PRE_TOOL "STAGE_2_INTELLIGENT_PRE_TOOL"
-#define DOM_STAGE_3_PRE_TOOL_WORLD "STAGE_3_PRE_TOOL_WORLD"
-#define DOM_STAGE_4_PRE_INDUSTRY "STAGE_4_PRE_INDUSTRY"
-#define DOM_STAGE_5_PRE_PRESENT "STAGE_5_PRE_PRESENT"
-#define DOM_STAGE_6_FUTURE "STAGE_6_FUTURE"
-
 /* canonical epistemic command scopes. */
 #define DOM_EPISTEMIC_SCOPE_OBS_ONLY "obs_only"
 #define DOM_EPISTEMIC_SCOPE_MEMORY_ONLY "memory_only"
@@ -186,7 +177,6 @@ typedef struct dom_app_command_desc_t {
     u32 failure_code_count;
     const int* exit_codes;
     u32 exit_code_count;
-    const char* required_stage;               /* one of DOM_STAGE_* */
     const char* const* required_capabilities; /* explicit list, may be empty */
     u32 required_capability_count;
     const char* epistemic_scope;              /* one of DOM_EPISTEMIC_SCOPE_* */
@@ -195,8 +185,9 @@ typedef struct dom_app_command_desc_t {
 const dom_app_command_desc* appcore_command_registry(u32* out_count);
 const dom_app_command_desc* appcore_command_find(const char* name);
 int appcore_dispatch_command(const dom_app_command_desc* cmd);
-int appcore_stage_rank(const char* stage_id);
-int appcore_command_stage_allowed(const dom_app_command_desc* cmd, const char* world_stage);
+int appcore_command_capabilities_allowed(const dom_app_command_desc* cmd,
+                                         const char* const* capability_ids,
+                                         u32 capability_count);
 
 #ifdef __cplusplus
 } /* extern "C" */

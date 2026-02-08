@@ -1,10 +1,55 @@
 {
-  "schema_id": "dominium.schema.stage_declaration",
-  "schema_version": "1.0.0",
   "record": {
-    "requires_stage": "STAGE_6_FUTURE",
-    "provides_stage": "STAGE_6_FUTURE",
-    "stage_features": [],
-    "extensions": {}
-  }
+    "entitlements": [],
+    "extensions": {},
+    "optional_capabilities": [],
+    "provides_capabilities": [
+      {
+        "capability_id": "dominium.capability.world.nonbio"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.nonintelligent"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.intelligent"
+      },
+      {
+        "capability_id": "dominium.capability.world.pretool"
+      },
+      {
+        "capability_id": "dominium.capability.society.institutions"
+      },
+      {
+        "capability_id": "dominium.capability.infrastructure.industry"
+      },
+      {
+        "capability_id": "dominium.capability.future.affordances"
+      }
+    ],
+    "requires_capabilities": [
+      {
+        "capability_id": "dominium.capability.world.nonbio"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.nonintelligent"
+      },
+      {
+        "capability_id": "dominium.capability.world.life.intelligent"
+      },
+      {
+        "capability_id": "dominium.capability.world.pretool"
+      },
+      {
+        "capability_id": "dominium.capability.society.institutions"
+      },
+      {
+        "capability_id": "dominium.capability.infrastructure.industry"
+      },
+      {
+        "capability_id": "dominium.capability.future.affordances"
+      }
+    ]
+  },
+  "schema_id": "dominium.schema.capability_declaration",
+  "schema_version": "1.0.0"
 }

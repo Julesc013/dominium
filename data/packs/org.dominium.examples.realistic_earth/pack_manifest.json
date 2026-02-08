@@ -1,22 +1,5 @@
 {
-  "schema_id": "dominium.schema.pack_manifest",
-  "schema_version": "1.0.0",
   "record": {
-    "pack_id": "org.dominium.examples.realistic_earth",
-    "pack_version": "1.0.0",
-    "pack_format_version": 1,
-    "required_engine_version": "0.0.0",
-    "required_protocol_versions": [
-      {
-        "protocol_id": "dominium.protocol.pack_manifest",
-        "version_constraint": "1"
-      }
-    ],
-    "provides": [
-      {
-        "capability_id": "example.realistic_earth"
-      }
-    ],
     "dependencies": [
       {
         "capability_id": "worldgen.model.cosmology"
@@ -64,15 +47,37 @@
         "capability_id": "capability.on_planet.ownership.registry"
       }
     ],
-    "optional": true,
-    "provenance_ref": {
-      "provenance_id": "prov.org.dominium.examples.realistic_earth.manifest.v1"
-    },
+    "entitlements": [],
     "extensions": {
       "notes": "Exemplar: realistic Earth overlays with scientific epistemics and civic institutions."
     },
-    "requires_stage": "STAGE_0_NONBIO_WORLD",
-    "provides_stage": "STAGE_0_NONBIO_WORLD",
-    "stage_features": []
-  }
+    "optional": true,
+    "optional_capabilities": [],
+    "pack_format_version": 1,
+    "pack_id": "org.dominium.examples.realistic_earth",
+    "pack_version": "1.0.0",
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.examples.realistic_earth.manifest.v1"
+    },
+    "provides": [
+      {
+        "capability_id": "example.realistic_earth"
+      }
+    ],
+    "provides_capabilities": [
+      {
+        "capability_id": "example.realistic_earth"
+      }
+    ],
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "requires_capabilities": []
+  },
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0"
 }

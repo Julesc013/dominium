@@ -21,16 +21,11 @@ from fab_lib import add_issue, load_json  # noqa: E402
 
 
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
-STAGE_FEATURE_RE = re.compile(r"^[a-z][a-z0-9_]*[0-9]+\.[a-z0-9_]+(?:\.[a-z0-9_]+)+$")
-STAGE_ORDER = [
-    "STAGE_0_NONBIO_WORLD",
-    "STAGE_1_NONINTELLIGENT_LIFE",
-    "STAGE_2_INTELLIGENT_PRE_TOOL",
-    "STAGE_3_PRE_TOOL_WORLD",
-    "STAGE_4_PRE_INDUSTRY",
-    "STAGE_5_PRE_PRESENT",
-    "STAGE_6_FUTURE",
-]
+LEGACY_GATING_FIELDS = (
+    "requires" + "_stage",
+    "provides" + "_stage",
+    "stage" + "_features",
+)
 
 
 def normalize_list(value):
@@ -53,54 +48,6 @@ def semver_ok(value):
     return isinstance(value, str) and SEMVER_RE.match(value) is not None
 
 
-def stage_rank(stage_id):
-    try:
-        return STAGE_ORDER.index(stage_id)
-    except ValueError:
-        return -1
-
-
-def validate_stage_metadata(record, issues):
-    requires_stage = record.get("requires_stage")
-    provides_stage = record.get("provides_stage")
-    stage_features = record.get("stage_features")
-
-    if not isinstance(requires_stage, str):
-        add_issue(issues, "manifest_requires_stage", "requires_stage missing", "record.requires_stage")
-    elif stage_rank(requires_stage) < 0:
-        add_issue(issues, "manifest_requires_stage", "requires_stage invalid", "record.requires_stage")
-
-    if not isinstance(provides_stage, str):
-        add_issue(issues, "manifest_provides_stage", "provides_stage missing", "record.provides_stage")
-    elif stage_rank(provides_stage) < 0:
-        add_issue(issues, "manifest_provides_stage", "provides_stage invalid", "record.provides_stage")
-
-    if isinstance(requires_stage, str) and isinstance(provides_stage, str):
-        req_rank = stage_rank(requires_stage)
-        prov_rank = stage_rank(provides_stage)
-        if req_rank >= 0 and prov_rank >= 0 and prov_rank < req_rank:
-            add_issue(issues, "manifest_stage_order",
-                      "provides_stage must be >= requires_stage", "record.provides_stage")
-
-    if not isinstance(stage_features, list):
-        add_issue(issues, "manifest_stage_features", "stage_features missing", "record.stage_features")
-        return
-
-    for idx, feature in enumerate(stage_features):
-        if not isinstance(feature, str) or STAGE_FEATURE_RE.match(feature) is None:
-            add_issue(issues, "manifest_stage_feature_key",
-                      "stage_features key must be namespaced and versioned",
-                      "record.stage_features[{}]".format(idx))
-
-    if isinstance(requires_stage, str) and isinstance(provides_stage, str):
-        req_rank = stage_rank(requires_stage)
-        prov_rank = stage_rank(provides_stage)
-        if req_rank >= 0 and prov_rank >= 0 and prov_rank > req_rank and not stage_features:
-            add_issue(issues, "manifest_stage_features",
-                      "stage_features required when provides_stage exceeds requires_stage",
-                      "record.stage_features")
-
-
 def extract_capabilities(entries):
     out = []
     for entry in normalize_list(entries):
@@ -111,6 +58,78 @@ def extract_capabilities(entries):
         if isinstance(cap_id, str):
             out.append(cap_id)
     return out
+
+
+def _validate_capability_list(record, field_name, issues, required):
+    values = record.get(field_name)
+    if values is None:
+        if required:
+            add_issue(
+                issues,
+                "manifest_" + field_name,
+                field_name + " missing",
+                "record." + field_name,
+            )
+        return []
+    if not isinstance(values, list):
+        add_issue(
+            issues,
+            "manifest_" + field_name,
+            field_name + " must be a list",
+            "record." + field_name,
+        )
+        return []
+
+    parsed = []
+    for idx, entry in enumerate(values):
+        if isinstance(entry, dict):
+            cap_id = entry.get("capability_id")
+        else:
+            cap_id = entry
+        if not isinstance(cap_id, str) or not is_reverse_dns(cap_id):
+            add_issue(
+                issues,
+                "namespace_invalid",
+                field_name + " capability_id must be reverse-dns",
+                "record.{0}[{1}]".format(field_name, idx),
+            )
+            continue
+        parsed.append(cap_id)
+    return parsed
+
+
+def validate_capability_metadata(record, issues):
+    for field_name in LEGACY_GATING_FIELDS:
+        if field_name in record:
+            add_issue(
+                issues,
+                "manifest_legacy_gating_field",
+                "legacy gating field is forbidden; run explicit migration",
+                "record." + field_name,
+            )
+
+    required_caps = _validate_capability_list(record, "requires_capabilities", issues, True)
+    provided_caps = _validate_capability_list(record, "provides_capabilities", issues, True)
+    _validate_capability_list(record, "optional_capabilities", issues, False)
+    _validate_capability_list(record, "entitlements", issues, True)
+
+    alias_required = extract_capabilities(record.get("depends"))
+    if alias_required and sorted(required_caps) != sorted(alias_required):
+        add_issue(
+            issues,
+            "requires_capabilities_mismatch",
+            "requires_capabilities must match depends capability set",
+            "record.requires_capabilities",
+        )
+
+    alias_provided = extract_capabilities(record.get("provides"))
+    if alias_provided and sorted(provided_caps) != sorted(alias_provided):
+        add_issue(
+            issues,
+            "provides_capabilities_mismatch",
+            "provides_capabilities must match provides capability set",
+            "record.provides_capabilities",
+        )
 
 
 def manifest_round_trip_ok(payload):
@@ -140,24 +159,31 @@ def validate_manifest(record, pack_root, issues):
         add_issue(issues, "manifest_provides", "provides missing", "record.provides")
     for idx, cap_id in enumerate(provides):
         if not is_reverse_dns(cap_id):
-            add_issue(issues, "namespace_invalid", "capability_id must be reverse-dns",
-                      "record.provides[{}]".format(idx))
+            add_issue(
+                issues,
+                "namespace_invalid",
+                "capability_id must be reverse-dns",
+                "record.provides[{0}]".format(idx),
+            )
 
     depends = extract_capabilities(record.get("depends"))
     for idx, cap_id in enumerate(depends):
         if not is_reverse_dns(cap_id):
-            add_issue(issues, "namespace_invalid", "capability_id must be reverse-dns",
-                      "record.depends[{}]".format(idx))
+            add_issue(
+                issues,
+                "namespace_invalid",
+                "capability_id must be reverse-dns",
+                "record.depends[{0}]".format(idx),
+            )
 
     deps_alias = extract_capabilities(record.get("dependencies"))
-    if deps_alias:
-        if sorted(depends) != sorted(deps_alias):
-            add_issue(issues, "dependencies_mismatch", "depends and dependencies mismatch", "record.dependencies")
+    if deps_alias and sorted(depends) != sorted(deps_alias):
+        add_issue(issues, "dependencies_mismatch", "depends and dependencies mismatch", "record.dependencies")
 
     if "extensions" not in record:
         add_issue(issues, "extensions_missing", "extensions missing", "record.extensions")
 
-    validate_stage_metadata(record, issues)
+    validate_capability_metadata(record, issues)
 
     if pack_root and isinstance(pack_id, str):
         folder = os.path.basename(pack_root.rstrip("\\/"))
@@ -169,9 +195,12 @@ def validate_capability_refs(record, provider_map, issues):
     depends = extract_capabilities(record.get("depends"))
     for cap_id in depends:
         if cap_id not in provider_map:
-            add_issue(issues, "capability_missing",
-                      "required capability has no provider: {}".format(cap_id),
-                      "record.depends")
+            add_issue(
+                issues,
+                "capability_missing",
+                "required capability has no provider: {0}".format(cap_id),
+                "record.depends",
+            )
 
 
 def load_manifest(path):
@@ -186,11 +215,13 @@ def validate_fab(pack_root, repo_root, issues):
     fab_data = load_json(fab_path)
     fab_issues = validate_fab_pack(fab_data, repo_root, pack_root=None)
     for issue in fab_issues:
-        issues.append({
-            "code": "fab_" + issue.get("code", ""),
-            "message": issue.get("message", ""),
-            "path": "fab_pack.{}".format(issue.get("path", "")),
-        })
+        issues.append(
+            {
+                "code": "fab_" + issue.get("code", ""),
+                "message": issue.get("message", ""),
+                "path": "fab_pack.{0}".format(issue.get("path", "")),
+            }
+        )
 
 
 def main():
@@ -240,8 +271,11 @@ def main():
             code_id, code = REFUSAL_INTEGRITY
         if any(issue["code"] == "capability_missing" for issue in issues):
             code_id, code = REFUSAL_CAPABILITY
-        payload = {"ok": False, "issues": issues,
-                   "refusal": make_refusal(code_id, code, "pack validation failed", {})}
+        payload = {
+            "ok": False,
+            "issues": issues,
+            "refusal": make_refusal(code_id, code, "pack validation failed", {}),
+        }
 
     if args.format == "json":
         print(json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True))

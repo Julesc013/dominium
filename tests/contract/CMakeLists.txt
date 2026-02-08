@@ -128,19 +128,19 @@ dom_add_testx(NAME compliance_report_contracts
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
-dom_add_testx(NAME capability_stage_gating_contracts
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/stage_gating_contracts.py
+dom_add_testx(NAME capability_gating_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/capability_gating_contracts.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
-dom_add_testx(NAME stage_matrix_contracts
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stage_matrix_contracts.py
+dom_add_testx(NAME capability_matrix_contracts
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/capability_matrix_contracts.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
-set(DOM_STAGE_MATRIX_STAGE_DIRS
+set(DOM_CAPABILITY_MATRIX_SET_DIRS
     stage_0_nonbio
     stage_1_nonintelligent_life
     stage_2_intelligent_pre_tool
@@ -150,7 +150,7 @@ set(DOM_STAGE_MATRIX_STAGE_DIRS
     stage_6_future
 )
 
-set(DOM_STAGE_MATRIX_SUITES
+set(DOM_CAPABILITY_MATRIX_SUITES
     test_load_and_validate
     test_command_surface
     test_pack_gating
@@ -159,24 +159,24 @@ set(DOM_STAGE_MATRIX_SUITES
     test_replay_hash
 )
 
-foreach(stage_dir IN LISTS DOM_STAGE_MATRIX_STAGE_DIRS)
-    foreach(suite_name IN LISTS DOM_STAGE_MATRIX_SUITES)
-        dom_add_testx(NAME stage_matrix_${stage_dir}_${suite_name}
-            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stages/${stage_dir}/${suite_name}.py
+foreach(capability_dir IN LISTS DOM_CAPABILITY_MATRIX_SET_DIRS)
+    foreach(suite_name IN LISTS DOM_CAPABILITY_MATRIX_SUITES)
+        dom_add_testx(NAME capability_matrix_${capability_dir}_${suite_name}
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stages/${capability_dir}/${suite_name}.py
             LABELS ${DOM_TESTX_LABEL_PORTABILITY}
         )
     endforeach()
 endforeach()
 
-set(DOM_STAGE_MATRIX_REGRESSION
-    test_no_life_in_stage_0
-    test_no_tools_in_stage_2_and_3
-    test_no_industry_in_stage_4
-    test_no_future_affordances_pre_6
+set(DOM_CAPABILITY_MATRIX_REGRESSION
+    test_no_life_without_capability
+    test_no_tools_without_capability
+    test_no_industry_without_capability
+    test_no_future_without_capability
 )
 
-foreach(regression_name IN LISTS DOM_STAGE_MATRIX_REGRESSION)
-    dom_add_testx(NAME stage_regression_${regression_name}
+foreach(regression_name IN LISTS DOM_CAPABILITY_MATRIX_REGRESSION)
+    dom_add_testx(NAME capability_regression_${regression_name}
         COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stage_regression/${regression_name}.py
         LABELS ${DOM_TESTX_LABEL_PORTABILITY}
     )

@@ -1,7 +1,7 @@
 # Deterministic staging script for portable packages.
 #
 # Inputs (required):
-#   - STAGE_DIR: output staging root (bundle root / DOMINIUM_HOME).
+#   - DIST_DIR: output staging root (bundle root / DOMINIUM_HOME).
 #   - VERSION: version string for repo/products/<version>.
 #   - LAUNCHER_BIN: full path to built dominium-launcher binary.
 #   - GAME_BIN: full path to built dominium_game binary.
@@ -9,8 +9,8 @@
 #   - CONFIGURED_BIN_DIR: directory with configured wrapper scripts.
 #   - SOURCE_DIR: repository root (for LICENSE, etc).
 
-if(NOT DEFINED STAGE_DIR OR STAGE_DIR STREQUAL "")
-    message(FATAL_ERROR "stage_dist.cmake: STAGE_DIR is required")
+if(NOT DEFINED DIST_DIR OR DIST_DIR STREQUAL "")
+    message(FATAL_ERROR "stage_dist.cmake: DIST_DIR is required")
 endif()
 if(NOT DEFINED VERSION OR VERSION STREQUAL "")
     message(FATAL_ERROR "stage_dist.cmake: VERSION is required")
@@ -22,7 +22,7 @@ if(NOT DEFINED GAME_BIN OR GAME_BIN STREQUAL "")
     message(FATAL_ERROR "stage_dist.cmake: GAME_BIN is required")
 endif()
 
-set(_stage "${STAGE_DIR}")
+set(_stage "${DIST_DIR}")
 file(REMOVE_RECURSE "${_stage}")
 file(MAKE_DIRECTORY "${_stage}")
 
