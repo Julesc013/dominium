@@ -141,13 +141,13 @@ dom_add_testx(NAME capability_matrix_contracts
 )
 
 set(DOM_CAPABILITY_MATRIX_SET_DIRS
-    stage_0_nonbio
-    stage_1_nonintelligent_life
-    stage_2_intelligent_pre_tool
-    stage_3_pre_tool_world
-    stage_4_pre_industry
-    stage_5_pre_present
-    stage_6_future
+    capset_world_nonbio
+    capset_world_life_nonintelligent
+    capset_world_life_intelligent
+    capset_world_pretool
+    capset_society_institutions
+    capset_infrastructure_industry
+    capset_future_affordances
 )
 
 set(DOM_CAPABILITY_MATRIX_SUITES
@@ -162,7 +162,7 @@ set(DOM_CAPABILITY_MATRIX_SUITES
 foreach(capability_dir IN LISTS DOM_CAPABILITY_MATRIX_SET_DIRS)
     foreach(suite_name IN LISTS DOM_CAPABILITY_MATRIX_SUITES)
         dom_add_testx(NAME capability_matrix_${capability_dir}_${suite_name}
-            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stages/${capability_dir}/${suite_name}.py
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/capability_sets/${capability_dir}/${suite_name}.py
             LABELS ${DOM_TESTX_LABEL_PORTABILITY}
         )
     endforeach()
@@ -177,7 +177,7 @@ set(DOM_CAPABILITY_MATRIX_REGRESSION
 
 foreach(regression_name IN LISTS DOM_CAPABILITY_MATRIX_REGRESSION)
     dom_add_testx(NAME capability_regression_${regression_name}
-        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/stage_regression/${regression_name}.py
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/capability_regression/${regression_name}.py
         LABELS ${DOM_TESTX_LABEL_PORTABILITY}
     )
 endforeach()
