@@ -97,7 +97,7 @@ CAPABILITY_SET_IDS = (
 )
 # Keep capability id validation aligned with shared reverse-dns helpers.
 PACK_CAPABILITY_RE = re.compile(r"^[a-z0-9]+(?:\.[a-z0-9][a-z0-9_-]*)+$")
-FORBIDDEN_STAGE_TOKEN_PARTS = (
+FORBIDDEN_LEGACY_GATING_TOKEN_PARTS = (
     "S" + "TAGE_",
     "requires" + "_stage",
     "provides" + "_stage",
@@ -106,8 +106,8 @@ FORBIDDEN_STAGE_TOKEN_PARTS = (
     "PROGRE" + "SSION_",
     "COMPLE" + "TION_",
 )
-FORBIDDEN_STAGE_TOKEN_RE = re.compile(
-    r"\b(" + "|".join(re.escape(token) for token in FORBIDDEN_STAGE_TOKEN_PARTS) + r")\b"
+FORBIDDEN_LEGACY_GATING_TOKEN_RE = re.compile(
+    r"\b(" + "|".join(re.escape(token) for token in FORBIDDEN_LEGACY_GATING_TOKEN_PARTS) + r")\b"
 )
 SOLVER_COST_CLASS_SET = ("low", "medium", "high", "critical")
 SOLVER_RESOLUTION_SET = ("macro", "micro", "hybrid")
@@ -115,8 +115,8 @@ COMMAND_REGISTRY_REL = os.path.join("libs", "appcore", "command", "command_regis
 UI_BIND_TABLE_REL = os.path.join("libs", "appcore", "ui_bind", "ui_command_binding_table.c")
 CAPABILITY_MATRIX_REL = os.path.join("tests", "testx", "CAPABILITY_MATRIX.yaml")
 CAPABILITY_FIXTURE_ROOT = os.path.join("tests", "fixtures", "worlds")
-CAPABILITY_TESTX_ROOT = os.path.join("tests", "testx", "stages")
-CAPABILITY_REGRESSION_ROOT = os.path.join("tests", "testx", "stage_regression")
+CAPABILITY_TESTX_ROOT = os.path.join("tests", "testx", "capability_sets")
+CAPABILITY_REGRESSION_ROOT = os.path.join("tests", "testx", "capability_regression")
 CAPABILITY_MATRIX_SUITE_NAMES = (
     "test_load_and_validate",
     "test_command_surface",
@@ -126,13 +126,13 @@ CAPABILITY_MATRIX_SUITE_NAMES = (
     "test_replay_hash",
 )
 CAPABILITY_SET_TO_DIR = {
-    "CAPSET_WORLD_NONBIO": "stage_0_nonbio",
-    "CAPSET_WORLD_LIFE_NONINTELLIGENT": "stage_1_nonintelligent_life",
-    "CAPSET_WORLD_LIFE_INTELLIGENT": "stage_2_intelligent_pre_tool",
-    "CAPSET_WORLD_PRETOOL": "stage_3_pre_tool_world",
-    "CAPSET_SOCIETY_INSTITUTIONS": "stage_4_pre_industry",
-    "CAPSET_INFRASTRUCTURE_INDUSTRY": "stage_5_pre_present",
-    "CAPSET_FUTURE_AFFORDANCES": "stage_6_future",
+    "CAPSET_WORLD_NONBIO": "capset_world_nonbio",
+    "CAPSET_WORLD_LIFE_NONINTELLIGENT": "capset_world_life_nonintelligent",
+    "CAPSET_WORLD_LIFE_INTELLIGENT": "capset_world_life_intelligent",
+    "CAPSET_WORLD_PRETOOL": "capset_world_pretool",
+    "CAPSET_SOCIETY_INSTITUTIONS": "capset_society_institutions",
+    "CAPSET_INFRASTRUCTURE_INDUSTRY": "capset_infrastructure_industry",
+    "CAPSET_FUTURE_AFFORDANCES": "capset_future_affordances",
 }
 
 CAMERA_BLUEPRINT_COMMAND_EXPECTATIONS = {
@@ -1163,7 +1163,7 @@ def check_capability_matrix_integrity(repo_root):
 
         capability_dir = CAPABILITY_SET_TO_DIR.get(bundle_id)
         fixture = entry.get("fixture")
-        expected_fixture = "tests/fixtures/worlds/{}/world_stage.json".format(capability_dir)
+        expected_fixture = "tests/fixtures/worlds/{}/world_capabilities.json".format(capability_dir)
         if fixture != expected_fixture:
             violations.append("{}: fixture mismatch for {} (expected {})".format(
                 invariant_id, bundle_id, expected_fixture
@@ -1185,7 +1185,7 @@ def check_capability_matrix_integrity(repo_root):
             continue
 
         expected_tests = [
-            "tests/testx/stages/{}/{}.py".format(capability_dir, suite_name)
+            "tests/testx/capability_sets/{}/{}.py".format(capability_dir, suite_name)
             for suite_name in CAPABILITY_MATRIX_SUITE_NAMES
         ]
         if tests != expected_tests:
@@ -1205,7 +1205,7 @@ def check_capability_matrix_integrity(repo_root):
     if os.path.isdir(fixture_root):
         for root, _, files in os.walk(fixture_root):
             for name in files:
-                if name != "world_stage.json":
+                if name != "world_capabilities.json":
                     continue
                 rel = repo_rel(repo_root, os.path.join(root, name))
                 if rel.replace("\\", "/") not in fixture_paths:
@@ -1234,15 +1234,15 @@ def check_capability_matrix_integrity(repo_root):
         regression_root = os.path.join(repo_root, CAPABILITY_REGRESSION_ROOT)
         if os.path.isdir(regression_root):
             for name in os.listdir(regression_root):
-                rel = normalize_path(os.path.join("tests", "testx", "stage_regression", name))
+                rel = normalize_path(os.path.join("tests", "testx", "capability_regression", name))
                 if name.endswith(".py") and rel not in [item.replace("\\", "/") for item in regression]:
                     violations.append("{}: regression test missing matrix entry: {}".format(invariant_id, rel))
 
     return violations
 
 
-def check_forbidden_stage_tokens(repo_root):
-    invariant_id = "INV-CAPABILITY-NO-STAGE-TOKENS"
+def check_forbidden_legacy_gating_tokens(repo_root):
+    invariant_id = "INV-CAPABILITY-NO-LEGACY-GATING-TOKENS"
     if is_override_active(repo_root, invariant_id):
         return []
 
@@ -1274,7 +1274,7 @@ def check_forbidden_stage_tokens(repo_root):
                 continue
             text = read_text(path) or ""
             for idx, line in enumerate(text.splitlines(), start=1):
-                if FORBIDDEN_STAGE_TOKEN_RE.search(line):
+                if FORBIDDEN_LEGACY_GATING_TOKEN_RE.search(line):
                     violations.append("{}: forbidden token in {}:{}".format(invariant_id, rel, idx))
                     break
     return violations
@@ -1860,7 +1860,7 @@ def main() -> int:
     violations.extend(check_renderer_no_truth_access(repo_root))
     violations.extend(check_capability_matrix_integrity(repo_root))
     violations.extend(check_solver_registry_contracts(repo_root))
-    violations.extend(check_forbidden_stage_tokens(repo_root))
+    violations.extend(check_forbidden_legacy_gating_tokens(repo_root))
     violations.extend(check_process_registry(repo_root))
     violations.extend(check_process_runtime_literals(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))
