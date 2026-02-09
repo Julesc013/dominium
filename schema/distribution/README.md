@@ -10,8 +10,11 @@ no runtime logic lives here.
 - `SPEC_CROSS_SHARD_MESSAGES.md` — cross-shard message schema and ordering.
 - `pkg_manifest.schema` — package manifest contract for dompkg artifacts.
 - `pkg_index.schema` — package index contract.
+- `build_manifest.schema` — deterministic build/package output manifest contract.
 - `install_lock.schema` — deterministic install lock and projection digest contract.
 - `profile.schema` — package profile selection contract.
+- `platform_registry.schema` — platform/arch/abi identifier registry contract.
+- `product_graph.schema` — product dependency/export/capability graph contract.
 - `trust_policy.schema` — signature/trust verification contract.
 
 ## Authority

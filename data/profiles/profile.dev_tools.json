@@ -1,0 +1,45 @@
+{
+  "schema_id": "dominium.schema.distribution.profile",
+  "schema_version": "1.0.0",
+  "record": {
+    "profile_id": "org.dominium.profile.dev_tools",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "requires_capabilities": [
+      {
+        "capability_id": "capability.tools.ui"
+      },
+      {
+        "capability_id": "capability.tools.pkg"
+      }
+    ],
+    "package_refs": [
+      {
+        "pkg_id": "org.dominium.core.setup",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.launcher",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.tools.ui",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.tools.pack",
+        "version_constraint": ">=0.1.0"
+      }
+    ],
+    "optional_capabilities": [
+      {
+        "capability_id": "capability.tools.symbols"
+      }
+    ],
+    "profile_tags": [
+      "developer",
+      "tooling"
+    ],
+    "extensions": {}
+  }
+}

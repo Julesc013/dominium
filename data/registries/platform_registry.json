@@ -1,0 +1,68 @@
+{
+  "schema_id": "dominium.schema.distribution.platform_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.platform",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.distribution.platform_registry@1.0.0",
+    "platforms": [
+      {
+        "platform": "winnt",
+        "arch": "x86_32",
+        "abi_id": "abi:winnt:msvc-v180",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli",
+          "runtime.tui"
+        ],
+        "extensions": {}
+      },
+      {
+        "platform": "winnt",
+        "arch": "x86_64",
+        "abi_id": "abi:winnt:msvc-v180",
+        "shipping_enabled": true,
+        "capability_tags": [
+          "runtime.cli",
+          "runtime.tui",
+          "runtime.gui.win32rc"
+        ],
+        "extensions": {}
+      },
+      {
+        "platform": "winnt",
+        "arch": "arm64",
+        "abi_id": "abi:winnt:msvc-v180",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli",
+          "runtime.tui"
+        ],
+        "extensions": {}
+      },
+      {
+        "platform": "linux",
+        "arch": "x86_64",
+        "abi_id": "abi:linux:gnu",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli",
+          "runtime.tui"
+        ],
+        "extensions": {}
+      },
+      {
+        "platform": "macos",
+        "arch": "x86_64",
+        "abi_id": "abi:macos:clang",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli",
+          "runtime.gui.cocoa"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

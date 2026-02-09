@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.schema.distribution.profile",
+  "schema_version": "1.0.0",
+  "record": {
+    "profile_id": "org.dominium.profile.ci_verify",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "requires_capabilities": [
+      {
+        "capability_id": "capability.runtime.client"
+      },
+      {
+        "capability_id": "capability.runtime.server"
+      },
+      {
+        "capability_id": "capability.tools.ui"
+      },
+      {
+        "capability_id": "capability.tools.pkg"
+      }
+    ],
+    "package_refs": [
+      {
+        "pkg_id": "org.dominium.core.runtime_cfg",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.engine",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.game",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.client",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.server",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.tools.ui",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.tools.pack",
+        "version_constraint": ">=0.1.0"
+      }
+    ],
+    "optional_capabilities": [],
+    "profile_tags": [
+      "ci",
+      "verify"
+    ],
+    "extensions": {}
+  }
+}

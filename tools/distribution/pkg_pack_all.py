@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import glob
 import json
 import os
 import tempfile
@@ -28,41 +29,67 @@ def _existing(paths: List[str]) -> List[str]:
     return [path for path in paths if os.path.isfile(path)]
 
 
+def _existing_glob(patterns: List[str]) -> List[str]:
+    found = []
+    for pattern in patterns:
+        for path in sorted(glob.glob(pattern, recursive=True)):
+            if os.path.isfile(path):
+                found.append(path)
+    return sorted(set(found))
+
+
 def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str) -> List[Dict[str, object]]:
+    dist_root = os.path.join(repo_root, "dist")
+    res_root = os.path.join(dist_root, "res")
+    cfg_root = os.path.join(dist_root, "cfg")
     return [
         {
-            "group": "core-engine",
-            "pkg_id": "org.dominium.pkg.core.engine",
+            "group": "core-runtime_cfg",
+            "pkg_id": "org.dominium.core.runtime_cfg",
             "requires": [],
-            "provides": ["runtime.engine"],
+            "provides": ["runtime.cfg"],
+            "files": _existing_glob([
+                os.path.join(cfg_root, "default", "**", "*"),
+                os.path.join(cfg_root, "profiles", "**", "*"),
+                os.path.join(cfg_root, "schemas", "**", "*"),
+                os.path.join(repo_root, "data", "profiles", "*.json"),
+                os.path.join(repo_root, "schema", "distribution", "*.schema"),
+                os.path.join(repo_root, "schema", "ui", "*.schema"),
+            ]),
+        },
+        {
+            "group": "core-engine",
+            "pkg_id": "org.dominium.core.engine",
+            "requires": [],
+            "provides": ["capability.core.engine"],
             "files": _existing([os.path.join(build_lib, "domino_engine.lib")]),
         },
         {
             "group": "core-game",
-            "pkg_id": "org.dominium.pkg.core.game",
-            "requires": ["runtime.engine"],
-            "provides": ["runtime.game"],
+            "pkg_id": "org.dominium.core.game",
+            "requires": ["capability.core.engine"],
+            "provides": ["capability.core.game"],
             "files": _existing([os.path.join(build_lib, "dominium_game.lib")]),
         },
         {
             "group": "core-client",
-            "pkg_id": "org.dominium.pkg.core.client",
-            "requires": ["runtime.game"],
-            "provides": ["runtime.client"],
+            "pkg_id": "org.dominium.core.client",
+            "requires": ["capability.core.game"],
+            "provides": ["capability.runtime.client"],
             "files": _existing([os.path.join(build_bin, "client.exe")]),
         },
         {
             "group": "core-server",
-            "pkg_id": "org.dominium.pkg.core.server",
-            "requires": ["runtime.game"],
-            "provides": ["runtime.server"],
+            "pkg_id": "org.dominium.core.server",
+            "requires": ["capability.core.game", "capability.render.null"],
+            "provides": ["capability.runtime.server"],
             "files": _existing([os.path.join(build_bin, "server.exe")]),
         },
         {
             "group": "core-launcher",
-            "pkg_id": "org.dominium.pkg.core.launcher",
-            "requires": ["runtime.client"],
-            "provides": ["runtime.launcher"],
+            "pkg_id": "org.dominium.core.launcher",
+            "requires": ["capability.runtime.client"],
+            "provides": ["capability.runtime.launcher"],
             "files": _existing([
                 os.path.join(build_bin, "launcher.exe"),
                 os.path.join(build_bin, "launcher_gui.exe"),
@@ -71,9 +98,9 @@ def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str
         },
         {
             "group": "core-setup",
-            "pkg_id": "org.dominium.pkg.core.setup",
+            "pkg_id": "org.dominium.core.setup",
             "requires": [],
-            "provides": ["runtime.setup"],
+            "provides": ["capability.runtime.setup"],
             "files": _existing([
                 os.path.join(build_bin, "setup.exe"),
                 os.path.join(build_bin, "setup_gui.exe"),
@@ -82,18 +109,27 @@ def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str
         },
         {
             "group": "rend-soft",
-            "pkg_id": "org.dominium.pkg.rend.soft",
-            "requires": ["runtime.engine"],
-            "provides": ["render.soft"],
+            "pkg_id": "org.dominium.rend.soft",
+            "requires": ["capability.core.engine"],
+            "provides": ["capability.render.soft"],
             "files": _existing([
                 os.path.join(build_lib, "dominium_game.lib"),
             ]),
         },
         {
+            "group": "rend-null",
+            "pkg_id": "org.dominium.rend.null",
+            "requires": ["capability.core.engine"],
+            "provides": ["capability.render.null"],
+            "files": _existing([
+                os.path.join(build_lib, "domino_engine.lib"),
+            ]),
+        },
+        {
             "group": "tools-ui",
-            "pkg_id": "org.dominium.pkg.tools.ui",
-            "requires": ["runtime.setup"],
-            "provides": ["tool.ui.bind", "tool.ui.validate"],
+            "pkg_id": "org.dominium.tools.ui",
+            "requires": ["capability.runtime.setup"],
+            "provides": ["capability.tools.ui"],
             "files": _existing([
                 os.path.join(dist_tools, "tool_ui_bind.exe"),
                 os.path.join(dist_tools, "tool_ui_validate.exe"),
@@ -102,31 +138,59 @@ def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str
         },
         {
             "group": "tools-pack",
-            "pkg_id": "org.dominium.pkg.tools.pack",
-            "requires": ["runtime.engine"],
-            "provides": ["tool.pack.validate"],
+            "pkg_id": "org.dominium.tools.pack",
+            "requires": [],
+            "provides": ["capability.tools.pkg"],
             "files": _existing([
                 os.path.join(build_bin, "validate_all.exe"),
                 os.path.join(build_bin, "data_validate.exe"),
+                os.path.join(repo_root, "tools", "distribution", "tool_pkg_pack.py"),
+                os.path.join(repo_root, "tools", "distribution", "tool_pkg_verify.py"),
+                os.path.join(repo_root, "tools", "distribution", "tool_pkg_index.py"),
+                os.path.join(repo_root, "tools", "distribution", "tool_pkg_extract.py"),
+                os.path.join(repo_root, "tools", "distribution", "tool_pkg_diff.py"),
+                os.path.join(repo_root, "tools", "distribution", "dompkg_lib.py"),
             ]),
         },
         {
             "group": "res-common",
-            "pkg_id": "org.dominium.pkg.res.common",
+            "pkg_id": "org.dominium.res.common",
             "requires": [],
-            "provides": ["res.common"],
-            "files": _existing([
+            "provides": ["capability.res.common"],
+            "files": _existing_glob([
+                os.path.join(res_root, "common", "**", "*"),
                 os.path.join(repo_root, "docs", "distribution", "PACK_TAXONOMY.md"),
                 os.path.join(repo_root, "docs", "distribution", "PACK_SOURCES.md"),
             ]),
         },
         {
             "group": "locale-en",
-            "pkg_id": "org.dominium.pkg.locale.en",
-            "requires": ["res.common"],
-            "provides": ["locale.en"],
-            "files": _existing([
+            "pkg_id": "org.dominium.locale.en_US",
+            "requires": ["capability.res.common"],
+            "provides": ["capability.locale.en_US"],
+            "files": _existing_glob([
+                os.path.join(res_root, "locale", "en*", "**", "*"),
                 os.path.join(repo_root, "tests", "distribution", "fixtures", "packs_maximal", "org.dominium.l10n.en_us", "pack_manifest.json"),
+            ]),
+        },
+        {
+            "group": "res-packs-base",
+            "pkg_id": "org.dominium.res.packs.base",
+            "requires": ["capability.res.common"],
+            "provides": ["capability.packs.base"],
+            "files": _existing_glob([
+                os.path.join(res_root, "packs", "**", "*"),
+                os.path.join(repo_root, "data", "packs", "**", "pack_manifest.json"),
+            ]),
+        },
+        {
+            "group": "docs-user",
+            "pkg_id": "org.dominium.docs.user",
+            "requires": [],
+            "provides": ["capability.docs.user"],
+            "files": _existing_glob([
+                os.path.join(dist_root, "docs", "*"),
+                os.path.join(repo_root, "docs", "distribution", "*.md"),
             ]),
         },
     ]
@@ -135,10 +199,10 @@ def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str
 def _symbol_groups(build_bin: str) -> List[Dict[str, object]]:
     specs = []
     base = {
-        "sym-client": ("org.dominium.pkg.sym.client", [os.path.join(build_bin, "client.pdb")]),
-        "sym-server": ("org.dominium.pkg.sym.server", [os.path.join(build_bin, "server.pdb")]),
-        "sym-launcher": ("org.dominium.pkg.sym.launcher", [os.path.join(build_bin, "launcher.pdb")]),
-        "sym-setup": ("org.dominium.pkg.sym.setup", [os.path.join(build_bin, "setup.pdb")]),
+        "sym-client": ("org.dominium.sym.client", [os.path.join(build_bin, "client.pdb")]),
+        "sym-server": ("org.dominium.sym.server", [os.path.join(build_bin, "server.pdb")]),
+        "sym-launcher": ("org.dominium.sym.launcher", [os.path.join(build_bin, "launcher.pdb")]),
+        "sym-setup": ("org.dominium.sym.setup", [os.path.join(build_bin, "setup.pdb")]),
     }
     for group, (pkg_id, files) in base.items():
         existing = _existing(files)

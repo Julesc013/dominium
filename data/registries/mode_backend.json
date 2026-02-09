@@ -1,0 +1,70 @@
+{
+  "schema_id": "dominium.schema.ui.mode_backend",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.ui.mode_backend",
+    "registry_version": "1.0.0",
+    "entries": [
+      {
+        "platform": "winnt",
+        "arch": "x86_64",
+        "abi": "abi:winnt:msvc-v180",
+        "fallback_order": [
+          "gui",
+          "tui",
+          "cli"
+        ],
+        "modes": [
+          {
+            "mode_id": "cli",
+            "backend_id": "dominium.backend.cli.default",
+            "available": true,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.cli"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.mode.invalid",
+            "extensions": {}
+          },
+          {
+            "mode_id": "tui",
+            "backend_id": "dominium.backend.tui.default",
+            "available": true,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.tui"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.mode.environment_incompatible",
+            "extensions": {
+              "requires_tty": true
+            }
+          },
+          {
+            "mode_id": "gui",
+            "backend_id": "dominium.backend.gui.win32rc",
+            "available": true,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.gui"
+              },
+              {
+                "capability_id": "ui.backend.win32rc"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.mode.backend_missing",
+            "extensions": {
+              "backend_package_id": "org.dominium.rend.soft"
+            }
+          }
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

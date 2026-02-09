@@ -1,0 +1,62 @@
+{
+  "ruleset_id": "repox/packaging",
+  "documentation": "docs/governance/REPOX_RULESETS.md#repoxpackaging",
+  "rules": [
+    {
+      "rule_id": "INV-PKG-MANIFEST-FIELDS",
+      "severity": "FAIL",
+      "scope_paths": ["dist/pkg", "schema/distribution/pkg_manifest.schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-pkg-manifest-fields",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-PKG-CAPABILITY-METADATA",
+      "severity": "FAIL",
+      "scope_paths": ["dist/pkg", "data/profiles", "data/registries/product_graph.json"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-pkg-capability-metadata",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-PKG-SIGNATURE-POLICY",
+      "severity": "FAIL",
+      "scope_paths": ["dist/pkg", "schema/distribution/trust_policy.schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-pkg-signature-policy",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-DIST-SYS-SHIPPING",
+      "severity": "FAIL",
+      "scope_paths": ["dist/sys", "dist/pkg", "dist/meta"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-dist-sys-shipping",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-DERIVED-PKG-INDEX-FRESHNESS",
+      "severity": "FAIL",
+      "scope_paths": ["dist/pkg", "dist/meta", "tools/distribution"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-derived-pkg-index-freshness",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-PLATFORM-REGISTRY",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/platform_registry.json", "schema/distribution/platform_registry.schema", "dist/pkg"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-platform-registry",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-PRODUCT-GRAPH-CONSTRAINTS",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/product_graph.json", "schema/distribution/product_graph.schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-product-graph-constraints",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-MODE-BACKEND-REGISTRY",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/mode_backend.json", "schema/ui/mode_backend.schema", "data/registries/platform_registry.json"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-mode-backend-registry",
+      "exemption_policy": "allow_with_expiry"
+    }
+  ]
+}

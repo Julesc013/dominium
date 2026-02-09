@@ -1256,6 +1256,99 @@ add_dependencies(verify_dist dist_meta)
 
 add_custom_target(validate_dist DEPENDS verify_dist)
 
+set(DOM_PKG_ARCH "${DOM_DIST_ARCH}")
+if(DOM_PKG_ARCH STREQUAL "x64")
+    set(DOM_PKG_ARCH "x86_64")
+elseif(DOM_PKG_ARCH STREQUAL "x86")
+    set(DOM_PKG_ARCH "x86_32")
+endif()
+
+set(DOM_PKG_ABI "abi:${DOM_DIST_OS}:${DOM_TOOLCHAIN_FAMILY}")
+if(WIN32 AND MSVC)
+    set(DOM_PKG_ABI "abi:winnt:msvc-v180")
+endif()
+
+set(DOM_PKG_PLATFORM_ROOT "${DOM_DIST_ROOT}/pkg/${DOM_DIST_OS}/${DOM_PKG_ARCH}")
+set(DOM_PKG_OUTPUT_DIR "${DOM_PKG_PLATFORM_ROOT}/pkgs")
+set(DOM_PKG_INDEX_DIR "${DOM_PKG_PLATFORM_ROOT}/index")
+set(DOM_PKG_INDEX_JSON "${DOM_PKG_INDEX_DIR}/pkg_index.json")
+set(DOM_PKG_INDEX_TLV "${DOM_PKG_INDEX_DIR}/pkg_index.tlv")
+set(DOM_DIST_META_PLATFORM_ROOT "${DOM_DIST_ROOT}/meta/${DOM_DIST_OS}/${DOM_PKG_ARCH}")
+set(DOM_BUILD_MANIFEST_JSON "${DOM_DIST_META_PLATFORM_ROOT}/build_manifest.json")
+set(DOM_BUILD_MANIFEST_TLV "${DOM_DIST_META_PLATFORM_ROOT}/build_manifest.tlv")
+
+add_custom_target(pkg_pack_all
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/pkg_pack_all.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --build-bin ${CMAKE_BINARY_DIR}/bin
+        --build-lib ${CMAKE_BINARY_DIR}/lib
+        --dist-tools ${DOM_DIST_BIN_TOOLS}
+        --out-dir ${DOM_PKG_OUTPUT_DIR}
+        --platform ${DOM_DIST_OS}
+        --arch ${DOM_PKG_ARCH}
+        --abi ${DOM_PKG_ABI}
+        --pkg-version ${DOM_PROJECT_SEMVER}
+    DEPENDS ${_dom_dist_targets}
+    COMMENT "Packing dompkg artifacts into dist/pkg"
+)
+if(WIN32 AND TARGET ui_bind_phase)
+    add_dependencies(pkg_pack_all ui_bind_phase)
+endif()
+
+add_custom_target(pkg_verify_all
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/pkg_verify_all.py
+        --pkg-dir ${DOM_PKG_OUTPUT_DIR}
+    DEPENDS pkg_pack_all
+    COMMENT "Verifying dompkg artifacts"
+)
+
+add_custom_target(pkg_index_all
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/tool_pkg_index.py
+        --pkg-dir ${DOM_PKG_OUTPUT_DIR}
+        --out ${DOM_PKG_INDEX_JSON}
+        --tlv-out ${DOM_PKG_INDEX_TLV}
+        --verify
+    DEPENDS pkg_pack_all
+    COMMENT "Generating package index artifacts"
+)
+
+add_custom_target(dist_build_manifest
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/build_manifest.py
+        --index-json ${DOM_PKG_INDEX_JSON}
+        --out-json ${DOM_BUILD_MANIFEST_JSON}
+        --out-tlv ${DOM_BUILD_MANIFEST_TLV}
+        --build-id ${DOM_BUILD_ID}
+        --platform ${DOM_DIST_OS}
+        --arch ${DOM_PKG_ARCH}
+        --abi ${DOM_PKG_ABI}
+        --compression-default deflate
+        --compression-required deflate
+        --compression-optional zstd
+        --zstd-threshold-bytes 1073741824
+        --signature-policy dev_optional
+    DEPENDS pkg_index_all
+    COMMENT "Generating distribution build manifest"
+)
+
+add_custom_target(setup_install_smoke
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/setup_install_smoke.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    COMMENT "Running deterministic setup smoke"
+)
+
+add_custom_target(launcher_run_smoke
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/launcher_run_smoke.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    COMMENT "Running deterministic launcher smoke"
+)
+
+add_custom_target(install_from_pkg_cache
+    COMMAND ${CMAKE_COMMAND} -E echo "install_from_pkg_cache: delegated to setup_install_smoke"
+    DEPENDS setup_install_smoke
+)
+
+add_dependencies(testx_all pkg_verify_all pkg_index_all dist_build_manifest setup_install_smoke launcher_run_smoke)
+
 set(CPACK_PACKAGE_NAME "dominium")
 set(CPACK_PACKAGE_VENDOR "Dominium")
 set(CPACK_PACKAGE_CONTACT "support@dominium.invalid")
