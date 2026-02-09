@@ -4,6 +4,7 @@ import json
 import os
 import platform
 import shutil
+import subprocess
 import sys
 
 
@@ -178,6 +179,38 @@ def _handle_doctor(args):
     return 0 if status["ok"] else 2
 
 
+def _handle_run(args):
+    if not args.argv:
+        print("refuse.command_missing")
+        return 2
+    cmd = list(args.argv)
+    if cmd and cmd[0] == "--":
+        cmd = cmd[1:]
+    argv0 = cmd[0]
+    if "/" in argv0 or "\\" in argv0:
+        print("refuse.path_invocation_forbidden: {}".format(argv0))
+        return 2
+
+    tool_dir, _, _, _ = _resolve_tool_dir(args.repo_root, args.platform, args.arch)
+    status = _tool_status(args.repo_root, tool_dir, require_path=False)
+    if status["missing_files"]:
+        print("refuse.tools_dir_missing")
+        print(json.dumps(status, indent=2, sort_keys=False))
+        return 2
+
+    env = os.environ.copy()
+    env["PATH"] = _prepend_path(env.get("PATH", ""), tool_dir)
+    env["DOM_TOOLS_PATH"] = tool_dir
+    env["DOM_TOOLS_READY"] = "1"
+    exec_path = shutil.which(argv0, path=env["PATH"])
+    if not exec_path and os.name == "nt":
+        exec_path = shutil.which(argv0 + ".exe", path=env["PATH"])
+    if exec_path:
+        cmd[0] = exec_path
+    proc = subprocess.run(cmd, env=env, check=False)
+    return int(proc.returncode)
+
+
 def _build_parser():
     parser = argparse.ArgumentParser(description="Canonical tool PATH adapter.")
     parser.add_argument("--repo-root", default=".")
@@ -193,6 +226,9 @@ def _build_parser():
     p_doctor = sub.add_parser("doctor", help="Validate canonical tools path and tool discoverability.")
     p_doctor.add_argument("--require-path", action="store_true")
     p_doctor.add_argument("--format", choices=("text", "json"), default="text")
+
+    p_run = sub.add_parser("run", help="Run a command with canonical tools PATH applied.")
+    p_run.add_argument("argv", nargs=argparse.REMAINDER)
     return parser
 
 
@@ -206,6 +242,8 @@ def main():
         return _handle_export(args)
     if args.command == "doctor":
         return _handle_doctor(args)
+    if args.command == "run":
+        return _handle_run(args)
     parser.error("unknown command")
     return 2
 

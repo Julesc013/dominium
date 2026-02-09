@@ -49,7 +49,20 @@ endif()
 dom_add_testx(NAME app_ui_bind_phase
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/app_ui_bind_phase_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}
-        --tool $<TARGET_FILE:tool_ui_bind>
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_tool_discoverability
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tool_discoverability_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --scenario positive
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_tool_discoverability_missing_path
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tool_discoverability_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --scenario missing_path
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
