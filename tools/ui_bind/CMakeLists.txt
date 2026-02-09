@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 add_executable(tool_ui_bind
     ui_bind_main.cpp
@@ -51,7 +52,10 @@ set_target_properties(tool_ui_doc_annotate PROPERTIES
 dist_set_role(tool_ui_doc_annotate tools)
 
 add_custom_target(ui_bind_phase
-    COMMAND $<TARGET_FILE:tool_ui_bind>
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/dev/env_tools.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        run --
+        tool_ui_bind
         --repo-root ${CMAKE_SOURCE_DIR}
         --ui-index ${CMAKE_SOURCE_DIR}/tools/ui_index/ui_index.json
         --out-dir ${CMAKE_SOURCE_DIR}/libs/appcore/ui_bind

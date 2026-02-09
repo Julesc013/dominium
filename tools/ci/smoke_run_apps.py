@@ -2,7 +2,9 @@
 import argparse
 import json
 import os
+import shutil
 import subprocess
+import sys
 import tempfile
 from typing import Dict, List, Tuple
 
@@ -11,7 +13,7 @@ def _norm(path: str) -> str:
     return path.replace("\\", "/")
 
 
-def _run(cmd: List[str], cwd: str, timeout_s: int) -> Tuple[int, str, str]:
+def _run(cmd: List[str], cwd: str, timeout_s: int, env: Dict[str, str]) -> Tuple[int, str, str]:
     proc = subprocess.run(
         cmd,
         cwd=cwd,
@@ -19,6 +21,7 @@ def _run(cmd: List[str], cwd: str, timeout_s: int) -> Tuple[int, str, str]:
         stderr=subprocess.PIPE,
         text=True,
         errors="replace",
+        env=env,
         timeout=timeout_s,
     )
     return proc.returncode, proc.stdout, proc.stderr
@@ -28,15 +31,51 @@ def _bin(repo_root: str, build_root: str, name: str) -> str:
     return os.path.join(build_root, "bin", name)
 
 
-def _tool(repo_root: str, name: str) -> str:
-    return os.path.join(repo_root, "dist", "sys", "winnt", "x64", "bin", "tools", name)
+def _tool_env(repo_root: str) -> Dict[str, str]:
+    env = os.environ.copy()
+    adapter = os.path.join(repo_root, "scripts", "dev", "env_tools.py")
+    if not os.path.isfile(adapter):
+        raise RuntimeError("missing env_tools adapter")
+    proc = subprocess.run(
+        [sys.executable, adapter, "--repo-root", repo_root, "print-path"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        errors="replace",
+        check=False,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(proc.stdout.strip() or "unable to resolve tools path")
+    lines = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+    if not lines:
+        raise RuntimeError("env_tools adapter returned empty path")
+    tool_dir = lines[-1]
+    env["PATH"] = tool_dir + os.pathsep + env.get("PATH", "")
+    env["DOM_TOOLS_PATH"] = tool_dir
+    env["DOM_TOOLS_READY"] = "1"
+    return env
 
 
-def _check_entry(entry: Dict[str, object], cwd: str, timeout_s: int) -> Dict[str, object]:
+def _check_entry(entry: Dict[str, object], cwd: str, timeout_s: int, env: Dict[str, str]) -> Dict[str, object]:
     path = str(entry["path"])
     cmd = [path] + list(entry.get("args", []))
     allowed = set(entry.get("allowed_exit_codes", [0]))
-    if not os.path.isfile(path):
+    by_name = bool(entry.get("by_name"))
+    if by_name:
+        resolved = shutil.which(path, path=env.get("PATH", ""))
+        if not resolved and os.name == "nt":
+            resolved = shutil.which(path + ".exe", path=env.get("PATH", ""))
+        if not resolved:
+            return {
+                "name": entry["name"],
+                "status": "missing",
+                "path": path,
+                "cmd": [_norm(c) for c in cmd],
+                "exit_code": None,
+                "allowed_exit_codes": sorted(allowed),
+            }
+        cmd[0] = resolved
+    elif not os.path.isfile(path):
         return {
             "name": entry["name"],
             "status": "missing",
@@ -45,12 +84,12 @@ def _check_entry(entry: Dict[str, object], cwd: str, timeout_s: int) -> Dict[str
             "exit_code": None,
             "allowed_exit_codes": sorted(allowed),
         }
-    code, out, err = _run(cmd, cwd, timeout_s)
+    code, out, err = _run(cmd, cwd, timeout_s, env)
     ok = code in allowed
     return {
         "name": entry["name"],
         "status": "ok" if ok else "fail",
-        "path": _norm(path),
+        "path": path if by_name else _norm(path),
         "cmd": [_norm(c) for c in cmd],
         "exit_code": code,
         "allowed_exit_codes": sorted(allowed),
@@ -73,6 +112,7 @@ def main() -> int:
     else:
         build_root = os.path.join(repo_root, "out", "build", "vs2026", "verify")
     control_registry = os.path.join(repo_root, "data", "registries", "control_capabilities.registry")
+    run_env = _tool_env(repo_root)
 
     probe_cwd = tempfile.mkdtemp(prefix="dominium_smoke_cwd_")
     checks: List[Dict[str, object]] = [
@@ -106,12 +146,12 @@ def main() -> int:
             "args": ["--ui=gui", "--headless", "--smoke"],
             "allowed_exit_codes": [2],
         },
-        {"name": "tool_ui_validate.help", "path": _tool(repo_root, "tool_ui_validate.exe"), "args": ["--help"]},
-        {"name": "tool_ui_doc_annotate.help", "path": _tool(repo_root, "tool_ui_doc_annotate.exe"), "args": ["--help"]},
-        {"name": "tool_ui_bind.check", "path": _tool(repo_root, "tool_ui_bind.exe"), "args": ["--repo-root", repo_root, "--check"]},
+        {"name": "tool_ui_validate.help", "path": "tool_ui_validate", "args": ["--help"], "by_name": True},
+        {"name": "tool_ui_doc_annotate.help", "path": "tool_ui_doc_annotate", "args": ["--help"], "by_name": True},
+        {"name": "tool_ui_bind.check", "path": "tool_ui_bind", "args": ["--repo-root", repo_root, "--check"], "by_name": True},
     ]
 
-    results = [_check_entry(entry, probe_cwd, args.timeout_seconds) for entry in checks]
+    results = [_check_entry(entry, probe_cwd, args.timeout_seconds, run_env) for entry in checks]
     failures = [row for row in results if row["status"] in ("fail", "missing")]
     payload = {
         "result": "ok" if not failures else "fail",

@@ -150,6 +150,38 @@ jobs:
       - name: Build
         run: cmake --build build/${{ matrix.name }} --config Debug
 
+      - name: Canonical tools PATH (adapter)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if command -v python >/dev/null 2>&1; then
+            PYTHON_BIN=python
+          else
+            PYTHON_BIN=python3
+          fi
+          TOOL_DIR="$($PYTHON_BIN scripts/dev/env_tools.py --repo-root . print-path)"
+          echo "$TOOL_DIR" >> "$GITHUB_PATH"
+          echo "DOM_TOOLS_PATH=$TOOL_DIR" >> "$GITHUB_ENV"
+
+      - name: Tool resolution diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          if command -v python >/dev/null 2>&1; then
+            PYTHON_BIN=python
+          else
+            PYTHON_BIN=python3
+          fi
+          "$PYTHON_BIN" - <<'PY'
+import shutil
+required = ("tool_ui_bind", "tool_ui_validate", "tool_ui_doc_annotate")
+for tool in required:
+    path = shutil.which(tool) or shutil.which(tool + ".exe")
+    if not path:
+        raise SystemExit("missing canonical tool on PATH: {}".format(tool))
+    print("{}={}".format(tool, path.replace("\\\\", "/")))
+PY
+
       - name: Test
         run: ctest --test-dir build/${{ matrix.name }} --output-on-failure ${{ matrix.ctest_args }}
 
@@ -228,6 +260,38 @@ jobs:
 
       - name: Build
         run: cmake --build build/${{ matrix.name }} --config Debug
+
+      - name: Canonical tools PATH (adapter)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if command -v python >/dev/null 2>&1; then
+            PYTHON_BIN=python
+          else
+            PYTHON_BIN=python3
+          fi
+          TOOL_DIR="$($PYTHON_BIN scripts/dev/env_tools.py --repo-root . print-path)"
+          echo "$TOOL_DIR" >> "$GITHUB_PATH"
+          echo "DOM_TOOLS_PATH=$TOOL_DIR" >> "$GITHUB_ENV"
+
+      - name: Tool resolution diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          if command -v python >/dev/null 2>&1; then
+            PYTHON_BIN=python
+          else
+            PYTHON_BIN=python3
+          fi
+          "$PYTHON_BIN" - <<'PY'
+import shutil
+required = ("tool_ui_bind", "tool_ui_validate", "tool_ui_doc_annotate")
+for tool in required:
+    path = shutil.which(tool) or shutil.which(tool + ".exe")
+    if not path:
+        raise SystemExit("missing canonical tool on PATH: {}".format(tool))
+    print("{}={}".format(tool, path.replace("\\\\", "/")))
+PY
 
       - name: Test
         run: ctest --test-dir build/${{ matrix.name }} --output-on-failure ${{ matrix.ctest_args }}
