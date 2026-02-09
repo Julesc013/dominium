@@ -68,7 +68,7 @@ def load_registry_commands(repo_root):
 
 def check_ui_header(repo_root, violations):
     header_path = os.path.join(
-        repo_root, "shared_ui_win32", "include", "dom_ui_win32", "ui_win32.h"
+        repo_root, "libs", "ui_backends", "win32", "include", "dom_ui_win32", "ui_win32.h"
     )
     if not os.path.isfile(header_path):
         violations.append("missing shared UI header: {}".format(header_path))
