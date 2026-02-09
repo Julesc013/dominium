@@ -92,6 +92,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-UI-CANONICAL-COMMAND`
 - `INV-CAMERA-BLUEPRINT-METADATA`
 - `INV-RUNTIME-CAPABILITY-GUARDS`
+- `INV-CLIENT-CANONICAL-BRIDGE`
 - `INV-CAPABILITY-MATRIX`
 - `INV-OBSERVER-FREECAM-ENTITLEMENT`
 - `INV-RENDER-NO-TRUTH-ACCESS`
@@ -155,6 +156,13 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when `dist_*` targets are not guarded by `dom_dist_release_lane_guard`.
 - Fails when the release-lane guard does not enforce explicit release build kinds and non-`none` GBN.
 - Fails when `testx_all` hard-depends on packaging targets, which would force release packaging from dev lane execution.
+
+### INV-CLIENT-CANONICAL-BRIDGE
+
+- Fails when canonical client command bridge sources are missing.
+- Fails when `client/app/main_client.c` does not call `client_command_bridge_prepare`.
+- Fails when required `client.*` command families are absent from `client/core/client_commands_registry.c`.
+- Fails when bridge refusal semantics are missing capability/unavailable refusal markers.
 
 ### INV-PREALPHA-PACK-ISOLATION
 
