@@ -59,6 +59,27 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-TOOL-NAME-ONLY",
+      "severity": "FAIL",
+      "scope_paths": ["scripts", "tests", "tools", "cmake", ".github", "CMakeLists.txt"],
+      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tool-name-only",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-TOOLS-PATH-SET",
+      "severity": "FAIL",
+      "scope_paths": ["scripts/dev", "dist/sys", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tools-path-set",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-TOOL-UNRESOLVABLE",
+      "severity": "FAIL",
+      "scope_paths": ["scripts/dev", "dist/sys", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tool-unresolvable",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-DET-NO-ANON-RNG",
       "severity": "FAIL",
       "scope_paths": ["engine", "game"],

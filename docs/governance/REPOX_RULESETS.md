@@ -63,6 +63,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-CANON-NO-HIST-REF`
 - `INV-CANON-CODE-REF`
 - `INV-DOC-STATUS-HEADER`
+- `INV-TOOL-NAME-ONLY`
+- `INV-TOOLS-PATH-SET`
+- `INV-TOOL-UNRESOLVABLE`
 - `INV-DET-NO-ANON-RNG`
 - `INV-DET-NO-WALLCLOCK`
 - `INV-FP-AUTH-BAN`
@@ -124,6 +127,13 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when a tracked top-level directory behaves as a redirect-only CMake shim.
 - Fails for top-level `shared_*` module directories.
 - Prevents reintroduction of ad-hoc root module wrappers instead of using canonical subsystem paths.
+
+### INV-TOOL-NAME-ONLY / INV-TOOLS-PATH-SET / INV-TOOL-UNRESOLVABLE
+
+- Enforces canonical tool invocation by name only.
+- Enforces `PATH` inclusion of `dist/sys/<platform>/<arch>/bin/tools`.
+- Enforces discoverability probes for required canonical tools at RepoX runtime.
+- Detailed policy: `docs/governance/REPOX_TOOL_RULES.md`.
 
 ### INV-PLATFORM-ID-CANONICAL
 
