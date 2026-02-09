@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+import argparse
+import os
+import shutil
+import subprocess
+import sys
+
+
+CANONICAL_TOOLS = (
+    "tool_ui_bind",
+    "tool_ui_validate",
+    "tool_ui_doc_annotate",
+)
+
+
+def _repo_root_from_args(value):
+    if value:
+        return os.path.abspath(value)
+    here = os.path.abspath(__file__)
+    return os.path.normpath(os.path.join(os.path.dirname(here), "..", ".."))
+
+
+def _env_tools_path(repo_root):
+    return os.path.join(repo_root, "scripts", "dev", "env_tools.py")
+
+
+def _run_env_tools(repo_root, args):
+    cmd = [sys.executable, _env_tools_path(repo_root), "--repo-root", repo_root] + list(args)
+    return subprocess.run(cmd, check=False)
+
+
+def _run_env_tools_capture(repo_root, args):
+    cmd = [sys.executable, _env_tools_path(repo_root), "--repo-root", repo_root] + list(args)
+    return subprocess.run(
+        cmd,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        errors="replace",
+    )
+
+
+def cmd_tools_list(repo_root):
+    proc = _run_env_tools_capture(repo_root, ["print-path"])
+    if proc.returncode != 0:
+        sys.stdout.write(proc.stdout)
+        return proc.returncode
+    lines = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+    tool_dir = lines[-1] if lines else ""
+    print("tools_dir={}".format(tool_dir.replace("\\", "/")))
+    for tool in CANONICAL_TOOLS:
+        path = os.path.join(tool_dir, tool + (".exe" if os.name == "nt" else ""))
+        status = "present" if os.path.isfile(path) else "missing"
+        print("{}={}".format(tool, status))
+    return 0
+
+
+def cmd_tools_doctor(repo_root):
+    python_cmd = "python"
+    if shutil.which(python_cmd) is None:
+        python_cmd = "python3"
+    return _run_env_tools(
+        repo_root,
+        ["run", "--", python_cmd, _env_tools_path(repo_root), "--repo-root", repo_root, "doctor", "--require-path"],
+    ).returncode
+
+
+def cmd_tools_ui_bind(repo_root, passthrough):
+    args = ["run", "--", "tool_ui_bind"] + list(passthrough)
+    return _run_env_tools(repo_root, args).returncode
+
+
+def build_parser():
+    parser = argparse.ArgumentParser(description="Developer convenience wrapper commands.")
+    parser.add_argument("--repo-root", default="")
+    sub = parser.add_subparsers(dest="group", required=True)
+
+    tools = sub.add_parser("tools", help="Canonical tool wrapper commands.")
+    tools_sub = tools.add_subparsers(dest="action", required=True)
+
+    tools_sub.add_parser("list", help="List canonical tools and presence under canonical tools root.")
+    tools_sub.add_parser("doctor", help="Run canonical tool discoverability doctor through adapter.")
+
+    ui_bind = tools_sub.add_parser("ui_bind", help="Run tool_ui_bind through canonical adapter.")
+    ui_bind.add_argument("args", nargs=argparse.REMAINDER)
+
+    return parser
+
+
+def main():
+    parser = build_parser()
+    args = parser.parse_args()
+    repo_root = _repo_root_from_args(args.repo_root)
+    if args.group == "tools" and args.action == "list":
+        return cmd_tools_list(repo_root)
+    if args.group == "tools" and args.action == "doctor":
+        return cmd_tools_doctor(repo_root)
+    if args.group == "tools" and args.action == "ui_bind":
+        passthrough = list(args.args)
+        if passthrough and passthrough[0] == "--":
+            passthrough = passthrough[1:]
+        return cmd_tools_ui_bind(repo_root, passthrough)
+    parser.error("unsupported command")
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
