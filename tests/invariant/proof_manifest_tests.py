@@ -35,7 +35,7 @@ def main():
                 repo_root,
                 "run",
                 "--",
-                sys.executable,
+                "python",
                 repox_script,
                 "--repo-root",
                 repo_root,
