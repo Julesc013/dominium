@@ -70,7 +70,7 @@
       {
         "platform": "win9x",
         "arch": "x86_32",
-        "abi_id": "abi:win9x:msvc-vc6",
+        "abi_id": "abi:win9x:mingw-legacy",
         "shipping_enabled": false,
         "capability_tags": [
           "runtime.cli",
@@ -78,6 +78,17 @@
         ],
         "extensions": {
           "support_status": "declared_not_built",
+          "pointer_width_bits": 32,
+          "supported_modes": [
+            "cli",
+            "tui"
+          ],
+          "path_constraints": {
+            "case_sensitivity": "case_insensitive",
+            "max_path_bytes": 260,
+            "supports_long_paths": false
+          },
+          "max_memory_note": "legacy profile target; keep runtime footprint small",
           "compression_support": {
             "required": [
               "deflate"
@@ -89,13 +100,25 @@
       {
         "platform": "win16",
         "arch": "x86_16",
-        "abi_id": "abi:win16:msc16",
+        "abi_id": "abi:win16:watcom-16",
         "shipping_enabled": false,
         "capability_tags": [
-          "runtime.cli"
+          "runtime.cli",
+          "runtime.tui"
         ],
         "extensions": {
           "support_status": "declared_not_built",
+          "pointer_width_bits": 16,
+          "supported_modes": [
+            "cli",
+            "tui"
+          ],
+          "path_constraints": {
+            "case_sensitivity": "case_insensitive",
+            "max_path_bytes": 128,
+            "supports_long_paths": false
+          },
+          "max_memory_note": "16-bit process model; strict segment budget",
           "compression_support": {
             "required": [
               "deflate"
@@ -110,10 +133,54 @@
         "abi_id": "abi:dos:watcom",
         "shipping_enabled": false,
         "capability_tags": [
-          "runtime.cli"
+          "runtime.cli",
+          "runtime.tui"
         ],
         "extensions": {
           "support_status": "declared_not_built",
+          "pointer_width_bits": 16,
+          "supported_modes": [
+            "cli",
+            "tui"
+          ],
+          "path_constraints": {
+            "case_sensitivity": "case_insensitive",
+            "max_path_bytes": 127,
+            "supports_long_paths": false
+          },
+          "max_memory_note": "conventional memory constrained target",
+          "toolchain_note": "OpenWatcom DOS target",
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": []
+          }
+        }
+      },
+      {
+        "platform": "dos",
+        "arch": "x86_32",
+        "abi_id": "abi:dos:djgpp",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli",
+          "runtime.tui"
+        ],
+        "extensions": {
+          "support_status": "declared_not_built",
+          "pointer_width_bits": 32,
+          "supported_modes": [
+            "cli",
+            "tui"
+          ],
+          "path_constraints": {
+            "case_sensitivity": "case_insensitive",
+            "max_path_bytes": 127,
+            "supports_long_paths": false
+          },
+          "max_memory_note": "flat 32-bit DOS extender profile",
+          "toolchain_note": "DJGPP DOS target",
           "compression_support": {
             "required": [
               "deflate"

@@ -63,6 +63,166 @@
           }
         ],
         "extensions": {}
+      },
+      {
+        "platform": "win9x",
+        "arch": "x86_32",
+        "abi": "abi:win9x:mingw-legacy",
+        "fallback_order": [
+          "tui",
+          "cli"
+        ],
+        "modes": [
+          {
+            "mode_id": "cli",
+            "backend_id": "dominium.backend.cli.default",
+            "available": false,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.cli"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.platform.unsupported",
+            "extensions": {}
+          },
+          {
+            "mode_id": "tui",
+            "backend_id": "dominium.backend.tui.default",
+            "available": false,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.tui"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.platform.unsupported",
+            "extensions": {}
+          }
+        ],
+        "extensions": {
+          "support_status": "declared_not_built"
+        }
+      },
+      {
+        "platform": "win16",
+        "arch": "x86_16",
+        "abi": "abi:win16:watcom-16",
+        "fallback_order": [
+          "tui",
+          "cli"
+        ],
+        "modes": [
+          {
+            "mode_id": "cli",
+            "backend_id": "dominium.backend.cli.default",
+            "available": false,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.cli"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.platform.unsupported",
+            "extensions": {}
+          },
+          {
+            "mode_id": "tui",
+            "backend_id": "dominium.backend.tui.default",
+            "available": false,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.tui"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.platform.unsupported",
+            "extensions": {}
+          }
+        ],
+        "extensions": {
+          "support_status": "declared_not_built"
+        }
+      },
+      {
+        "platform": "dos",
+        "arch": "x86_16",
+        "abi": "abi:dos:watcom",
+        "fallback_order": [
+          "tui",
+          "cli"
+        ],
+        "modes": [
+          {
+            "mode_id": "cli",
+            "backend_id": "dominium.backend.cli.default",
+            "available": false,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.cli"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.platform.unsupported",
+            "extensions": {}
+          },
+          {
+            "mode_id": "tui",
+            "backend_id": "dominium.backend.tui.default",
+            "available": false,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.tui"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.platform.unsupported",
+            "extensions": {}
+          }
+        ],
+        "extensions": {
+          "support_status": "declared_not_built"
+        }
+      },
+      {
+        "platform": "dos",
+        "arch": "x86_32",
+        "abi": "abi:dos:djgpp",
+        "fallback_order": [
+          "tui",
+          "cli"
+        ],
+        "modes": [
+          {
+            "mode_id": "cli",
+            "backend_id": "dominium.backend.cli.default",
+            "available": false,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.cli"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.platform.unsupported",
+            "extensions": {}
+          },
+          {
+            "mode_id": "tui",
+            "backend_id": "dominium.backend.tui.default",
+            "available": false,
+            "required_capabilities": [
+              {
+                "capability_id": "ui.mode.tui"
+              }
+            ],
+            "required_entitlements": [],
+            "refusal_code": "refuse.platform.unsupported",
+            "extensions": {}
+          }
+        ],
+        "extensions": {
+          "support_status": "declared_not_built"
+        }
       }
     ],
     "extensions": {}

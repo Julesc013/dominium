@@ -79,6 +79,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-SCHEMA-NO-IMPLICIT-DEFAULTS`
 - `INV-SCHEMA-VERSION-REF`
 - `INV-CAPABILITY-PACK-METADATA`
+- `INV-PREALPHA-PACK-ISOLATION`
 - `INV-BUGREPORT-RESOLUTION`
 - `DATA_FIRST_BEHAVIOR`
 - `NO_SILENT_DEFAULTS`
@@ -140,3 +141,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - Fails when setup/launcher CLI surfaces do not expose explicit portable/install contract arguments.
 - Contract reference: `docs/dev/PORTABLE_TESTING.md`.
+
+### INV-PREALPHA-PACK-ISOLATION
+
+- Fails if pre-alpha packs are missing explicit disposable markers.
+- Fails if runtime code paths reference pre-alpha pack IDs directly.
+- Keeps disposable content churn isolated to data/pack surfaces.

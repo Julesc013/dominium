@@ -1,0 +1,37 @@
+{
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0",
+  "record": {
+    "pack_id": "org.dominium.content.terrain.placeholder",
+    "pack_version": "0.1.0",
+    "pack_format_version": 1,
+    "requires_engine": "0.0.0",
+    "required_engine_version": "0.0.0",
+    "requires_capabilities": [],
+    "provides_capabilities": [
+      {
+        "capability_id": "org.dominium.content.terrain.placeholder"
+      }
+    ],
+    "optional_capabilities": [],
+    "entitlements": [],
+    "provides": [
+      {
+        "capability_id": "org.dominium.content.terrain.placeholder"
+      }
+    ],
+    "depends": [],
+    "dependencies": [],
+    "optional": true,
+    "pack_tags": [
+      "pack.class.content",
+      "pack.maturity.prealpha",
+      "pack.stability.disposable"
+    ],
+    "extensions": {
+      "maturity": "prealpha",
+      "stability": "disposable",
+      "replace_policy": "replaceable_wholesale"
+    }
+  }
+}

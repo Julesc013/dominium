@@ -72,6 +72,32 @@ def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str
             "files": _existing([os.path.join(build_lib, "dominium_game.lib")]),
         },
         {
+            "group": "sdk-engine",
+            "pkg_id": "org.dominium.sdk.engine",
+            "requires": ["capability.core.engine"],
+            "provides": ["capability.sdk.engine"],
+            "files": _existing_glob([
+                os.path.join(build_lib, "domino_engine.lib"),
+                os.path.join(repo_root, "engine", "include", "domino", "**", "*.h"),
+                os.path.join(repo_root, "schema", "distribution", "*.schema"),
+                os.path.join(repo_root, "LICENSE.md"),
+                os.path.join(repo_root, "README.md"),
+            ]),
+        },
+        {
+            "group": "sdk-game",
+            "pkg_id": "org.dominium.sdk.game",
+            "requires": ["capability.sdk.engine", "capability.core.game"],
+            "provides": ["capability.sdk.game"],
+            "files": _existing_glob([
+                os.path.join(build_lib, "dominium_game.lib"),
+                os.path.join(repo_root, "game", "include", "dominium", "**", "*.h"),
+                os.path.join(repo_root, "schema", "distribution", "*.schema"),
+                os.path.join(repo_root, "LICENSE.md"),
+                os.path.join(repo_root, "README.md"),
+            ]),
+        },
+        {
             "group": "core-client",
             "pkg_id": "org.dominium.core.client",
             "requires": ["capability.core.game"],

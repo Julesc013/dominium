@@ -1,0 +1,29 @@
+{
+  "schema_id": "dominium.schema.distribution.profile",
+  "schema_version": "1.0.0",
+  "record": {
+    "profile_id": "org.dominium.profile.sdk_engine",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "requires_capabilities": [
+      {
+        "capability_id": "capability.core.engine"
+      }
+    ],
+    "package_refs": [
+      {
+        "pkg_id": "org.dominium.sdk.engine",
+        "version_constraint": ">=0.1.0"
+      }
+    ],
+    "optional_capabilities": [],
+    "profile_tags": [
+      "sdk",
+      "engine"
+    ],
+    "extensions": {
+      "intent": "compile_link_only",
+      "runtime_required": false
+    }
+  }
+}

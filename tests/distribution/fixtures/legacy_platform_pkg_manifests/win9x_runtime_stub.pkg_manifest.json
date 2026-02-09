@@ -1,0 +1,25 @@
+{
+  "schema_id": "dominium.schema.distribution.pkg_manifest",
+  "schema_version": "1.0.0",
+  "pkg_id": "org.dominium.runtime.win9x.stub",
+  "pkg_version": "0.1.0",
+  "pkg_format_version": 1,
+  "platform": "win9x",
+  "arch": "x86_32",
+  "abi": "abi:win9x:mingw-legacy",
+  "requires_capabilities": [],
+  "provides_capabilities": [],
+  "entitlements": [],
+  "optional_capabilities": [],
+  "compression": "deflate",
+  "chunk_size_bytes": 1048576,
+  "file_exports": [],
+  "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "extensions": {
+    "install_scope": "optional",
+    "support_status": "declared_not_built",
+    "refusal_codes": [
+      "REFUSE_PLATFORM_UNSUPPORTED"
+    ]
+  }
+}

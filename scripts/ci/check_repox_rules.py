@@ -98,6 +98,8 @@ CAPABILITY_SET_IDS = (
 )
 # Keep capability id validation aligned with shared reverse-dns helpers.
 PACK_CAPABILITY_RE = re.compile(r"^[a-z0-9]+(?:\.[a-z0-9][a-z0-9_-]*)+$")
+PREALPHA_MATURITY_TAG = "pack.maturity.prealpha"
+PREALPHA_STABILITY_TAG = "pack.stability.disposable"
 FORBIDDEN_LEGACY_GATING_TOKEN_PARTS = (
     "S" + "TAGE_",
     "requires" + "_stage",
@@ -1332,6 +1334,89 @@ def check_pack_capability_metadata(repo_root):
 
             if len(provides_caps) == 0:
                 violations.append("{}: provides_capabilities empty in {}".format(invariant_id, rel))
+    return violations
+
+
+def _collect_prealpha_pack_ids(repo_root):
+    pack_ids = set()
+    root = os.path.join(repo_root, "data", "packs")
+    if not os.path.isdir(root):
+        return pack_ids
+
+    for path in iter_files([root], DEFAULT_EXCLUDES, [".json"]):
+        if os.path.basename(path) != "pack_manifest.json":
+            continue
+        payload = _load_json_file(path)
+        if payload is None:
+            continue
+        record = _manifest_record(payload)
+        pack_id = str(record.get("pack_id", "")).strip()
+        if not pack_id:
+            continue
+        tags = set([str(value) for value in (record.get("pack_tags") or []) if isinstance(value, str)])
+        extensions = record.get("extensions") if isinstance(record.get("extensions"), dict) else {}
+        maturity = str(extensions.get("maturity", "")).strip()
+        stability = str(extensions.get("stability", "")).strip()
+        if PREALPHA_MATURITY_TAG in tags or maturity == "prealpha":
+            pack_ids.add(pack_id)
+        if PREALPHA_STABILITY_TAG in tags or stability == "disposable":
+            # Stability markers alone are not enough; keep this branch explicit for policy diagnostics.
+            continue
+    return pack_ids
+
+
+def check_prealpha_pack_isolation(repo_root):
+    invariant_id = "INV-PREALPHA-PACK-ISOLATION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    prealpha_pack_ids = _collect_prealpha_pack_ids(repo_root)
+    if not prealpha_pack_ids:
+        return violations
+
+    packs_root = os.path.join(repo_root, "data", "packs")
+    for path in iter_files([packs_root], DEFAULT_EXCLUDES, [".json"]):
+        if os.path.basename(path) != "pack_manifest.json":
+            continue
+        rel = repo_rel(repo_root, path)
+        payload = _load_json_file(path)
+        if payload is None:
+            continue
+        record = _manifest_record(payload)
+        pack_id = str(record.get("pack_id", "")).strip()
+        if pack_id not in prealpha_pack_ids:
+            continue
+        tags = set([str(value) for value in (record.get("pack_tags") or []) if isinstance(value, str)])
+        extensions = record.get("extensions") if isinstance(record.get("extensions"), dict) else {}
+        maturity = str(extensions.get("maturity", "")).strip()
+        stability = str(extensions.get("stability", "")).strip()
+        if PREALPHA_MATURITY_TAG not in tags or maturity != "prealpha":
+            violations.append("{}: prealpha pack missing explicit maturity marker in {}".format(invariant_id, rel))
+        if PREALPHA_STABILITY_TAG not in tags or stability != "disposable":
+            violations.append("{}: prealpha pack missing explicit disposable stability marker in {}".format(invariant_id, rel))
+
+    runtime_roots = [
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "launcher"),
+        os.path.join(repo_root, "setup"),
+        os.path.join(repo_root, "libs"),
+        os.path.join(repo_root, "tools"),
+    ]
+    for path in iter_files(runtime_roots, DEFAULT_EXCLUDES, SOURCE_EXTS + [".py"]):
+        rel = repo_rel(repo_root, path)
+        rel_norm = normalize_path(rel)
+        if rel_norm.startswith("tests/"):
+            continue
+        text = read_text(path) or ""
+        for pack_id in prealpha_pack_ids:
+            if pack_id in text:
+                violations.append("{}: runtime path references prealpha pack id '{}' in {}".format(
+                    invariant_id, pack_id, rel_norm
+                ))
     return violations
 
 
@@ -3371,6 +3456,7 @@ def main() -> int:
     violations.extend(check_schema_no_implicit_defaults(repo_root))
     violations.extend(check_unversioned_schema_references(repo_root))
     violations.extend(check_pack_capability_metadata(repo_root))
+    violations.extend(check_prealpha_pack_isolation(repo_root))
     violations.extend(check_pkg_manifest_fields(repo_root))
     violations.extend(check_pkg_capability_metadata(repo_root))
     violations.extend(check_pkg_signature_policy(repo_root))

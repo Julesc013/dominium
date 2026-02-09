@@ -1,0 +1,13 @@
+{
+  "schema_id": "dominium.schema.placeholder.content",
+  "schema_version": "1.0.0",
+  "record": {
+    "pack_id": "org.dominium.content.worldgen.placeholder",
+    "kind": "worldgen",
+    "status": "placeholder",
+    "notes": [
+      "Data-only placeholder for pre-alpha iteration."
+    ],
+    "extensions": {}
+  }
+}
