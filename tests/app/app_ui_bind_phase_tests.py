@@ -7,14 +7,19 @@ import sys
 def main():
     parser = argparse.ArgumentParser(description="UI_BIND_PHASE contract test.")
     parser.add_argument("--repo-root", required=True)
-    parser.add_argument("--tool", required=True)
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    tool_path = args.tool
+    adapter = os.path.join(repo_root, "scripts", "dev", "env_tools.py")
 
     cmd = [
-        tool_path,
+        sys.executable,
+        adapter,
+        "--repo-root",
+        repo_root,
+        "run",
+        "--",
+        "tool_ui_bind",
         "--repo-root",
         repo_root,
         "--ui-index",
