@@ -31,6 +31,13 @@
       "exemption_policy": "allow_with_expiry"
     },
     {
+      "rule_id": "INV-CLIENT-CANONICAL-BRIDGE",
+      "severity": "FAIL",
+      "scope_paths": ["client/app/main_client.c", "client/core", "client/modes"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-client-canonical-bridge",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
       "rule_id": "INV-CAPABILITY-MATRIX",
       "severity": "FAIL",
       "scope_paths": ["tests/testx/CAPABILITY_MATRIX.yaml", "tests/testx"],

@@ -2409,6 +2409,74 @@ def check_runtime_command_capability_guards(repo_root):
     return violations
 
 
+def check_client_canonical_bridge(repo_root):
+    invariant_id = "INV-CLIENT-CANONICAL-BRIDGE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    bridge_rel = "client/core/client_command_bridge.c"
+    registry_rel = "client/core/client_commands_registry.c"
+    runtime_rel = "client/app/main_client.c"
+    mode_files = (
+        "client/modes/client_mode_cli.c",
+        "client/modes/client_mode_tui.c",
+        "client/modes/client_mode_gui.c",
+    )
+    required_commands = (
+        "client.boot.start",
+        "client.menu.open",
+        "client.menu.select.singleplayer",
+        "client.menu.select.multiplayer",
+        "client.world.create",
+        "client.world.inspect",
+        "client.world.modify",
+        "client.world.delete",
+        "client.world.play",
+        "client.server.list",
+        "client.server.connect",
+        "client.options.get",
+        "client.about.show",
+        "client.diag.show_build_identity",
+        "client.replay.export",
+    )
+
+    violations = []
+    for rel in (bridge_rel, registry_rel, runtime_rel):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, rel))
+    for rel in mode_files:
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing mode adapter {}".format(invariant_id, rel))
+    if violations:
+        return violations
+
+    bridge_text = read_text(os.path.join(repo_root, bridge_rel.replace("/", os.sep))) or ""
+    registry_text = read_text(os.path.join(repo_root, registry_rel.replace("/", os.sep))) or ""
+    runtime_text = read_text(os.path.join(repo_root, runtime_rel.replace("/", os.sep))) or ""
+
+    for command in required_commands:
+        if "\"{}\"".format(command) not in registry_text:
+            violations.append("{}: {} missing command {}".format(invariant_id, registry_rel, command))
+    for marker in (
+        "client_command_bridge_prepare(",
+        "client_collect_capabilities(",
+        "client_state_machine_init(",
+    ):
+        if marker not in runtime_text:
+            violations.append("{}: {} missing runtime bridge marker {}".format(invariant_id, runtime_rel, marker))
+    for marker in (
+        "REFUSE_CAPABILITY_MISSING",
+        "REFUSE_UNAVAILABLE",
+        "client.server.",
+        "client.world.",
+    ):
+        if marker not in bridge_text:
+            violations.append("{}: {} missing bridge marker {}".format(invariant_id, bridge_rel, marker))
+    return violations
+
+
 def check_renderer_no_truth_access(repo_root):
     invariant_id = "INV-RENDER-NO-TRUTH-ACCESS"
     if is_override_active(repo_root, invariant_id):
@@ -3672,6 +3740,7 @@ def main() -> int:
     violations.extend(check_ui_canonical_command_bindings(repo_root))
     violations.extend(check_observer_freecam_entitlement_gate(repo_root))
     violations.extend(check_runtime_command_capability_guards(repo_root))
+    violations.extend(check_client_canonical_bridge(repo_root))
     violations.extend(check_renderer_no_truth_access(repo_root))
     violations.extend(check_capability_matrix_integrity(repo_root))
     violations.extend(check_solver_registry_contracts(repo_root))
