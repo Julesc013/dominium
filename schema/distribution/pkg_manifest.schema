@@ -1,0 +1,73 @@
+SCHEMA: pkg_manifest.schema
+schema_id: dominium.schema.distribution.pkg_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define package identity, compatibility surface, and file exports for dompkg artifacts.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Manifest data declares compatibility and package content only.
+- Manifest does not authorize install mutation by itself.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- bool: true or false.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record pkg_manifest
+  required:
+    - pkg_id: id
+    - pkg_version: tag
+    - pkg_format_version: integer
+    - platform: tag
+    - arch: tag
+    - abi: tag
+    - requires_capabilities: [capability_ref]
+    - provides_capabilities: [capability_ref]
+    - entitlements: [capability_ref]
+    - compression: tag
+    - chunk_size_bytes: integer
+    - file_exports: [file_export]
+    - content_hash: tag
+    - extensions: map
+  optional:
+    - optional_capabilities: [capability_ref]
+    - provenance_ref: provenance_ref
+    - signature: signature_ref
+
+TYPE DEFINITIONS:
+record capability_ref
+  required:
+    - capability_id: id
+  optional:
+    - qualifier_tags: [tag]
+
+record file_export
+  required:
+    - path: tag
+    - size_bytes: integer
+    - sha256: tag
+    - mode: tag
+    - chunk_count: integer
+  optional:
+    - export_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id
+
+record signature_ref
+  required:
+    - signature_format: tag
+    - signer_id: id
+  optional:
+    - signature_digest: tag
