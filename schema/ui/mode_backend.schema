@@ -1,0 +1,51 @@
+SCHEMA: mode_backend.schema
+schema_id: dominium.schema.ui.mode_backend
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical mode/backend availability and fallback ordering.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- bool: true or false.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record mode_backend_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - entries: [mode_backend_entry]
+    - extensions: map
+
+record mode_backend_entry
+  required:
+    - platform: tag
+    - arch: tag
+    - abi: tag
+    - fallback_order: [tag]
+    - modes: [mode_entry]
+    - extensions: map
+
+record mode_entry
+  required:
+    - mode_id: tag
+    - backend_id: id
+    - available: bool
+    - required_capabilities: [capability_ref]
+    - required_entitlements: [capability_ref]
+    - refusal_code: tag
+    - extensions: map
+
+record capability_ref
+  required:
+    - capability_id: id
+  optional:
+    - qualifier_tags: [tag]

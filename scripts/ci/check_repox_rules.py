@@ -188,6 +188,30 @@ PROTOTYPE_MARKER = "@repox:prototype"
 DUPLICATION_MARKER = "@repox:deliberate_duplication"
 RATCHET_KEY = "ratchet_after"
 
+DIST_PKG_ROOT_REL = os.path.join("dist", "pkg")
+DIST_META_ROOT_REL = os.path.join("dist", "meta")
+DIST_SYS_ROOT_REL = os.path.join("dist", "sys")
+PLATFORM_REGISTRY_REL = os.path.join("data", "registries", "platform_registry.json")
+PRODUCT_GRAPH_REL = os.path.join("data", "registries", "product_graph.json")
+MODE_BACKEND_REL = os.path.join("data", "registries", "mode_backend.json")
+PLATFORM_REGISTRY_SCHEMA_ID = "dominium.schema.distribution.platform_registry"
+PRODUCT_GRAPH_SCHEMA_ID = "dominium.schema.distribution.product_graph"
+MODE_BACKEND_SCHEMA_ID = "dominium.schema.ui.mode_backend"
+PKG_MANIFEST_REQUIRED_FIELDS = (
+    "pkg_id",
+    "pkg_version",
+    "platform",
+    "arch",
+    "abi",
+    "requires_capabilities",
+    "provides_capabilities",
+    "entitlements",
+    "compression",
+    "chunk_size_bytes",
+    "file_exports",
+    "content_hash",
+)
+
 
 def repo_rel(repo_root, path):
     return os.path.relpath(path, repo_root).replace("\\", "/")
@@ -1312,6 +1336,265 @@ def check_bugreport_resolution(repo_root):
                     invariant_id, rel
                 )
             )
+    return violations
+
+
+def _iter_pkg_manifest_sidecars(repo_root):
+    root = os.path.join(repo_root, DIST_PKG_ROOT_REL)
+    if not os.path.isdir(root):
+        return []
+    sidecars = []
+    for path in iter_files([root], DEFAULT_EXCLUDES, [".json"]):
+        rel = repo_rel(repo_root, path)
+        rel_norm = normalize_path(rel)
+        if rel_norm.endswith(".dompkg.manifest.json"):
+            sidecars.append((rel_norm, path))
+    sidecars.sort(key=lambda item: item[0])
+    return sidecars
+
+
+def _load_json_required(path, invariant_id):
+    payload = _load_json_file(path)
+    if payload is None:
+        return None, ["{}: invalid json {}".format(invariant_id, normalize_path(path))]
+    if not isinstance(payload, dict):
+        return None, ["{}: payload must be object {}".format(invariant_id, normalize_path(path))]
+    return payload, []
+
+
+def _json_bool(value):
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        lowered = value.strip().lower()
+        if lowered in ("1", "true", "yes", "on"):
+            return True
+    return False
+
+
+def check_pkg_manifest_fields(repo_root):
+    invariant_id = "INV-PKG-MANIFEST-FIELDS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    violations = []
+    for rel, abs_path in _iter_pkg_manifest_sidecars(repo_root):
+        payload = _load_json_file(abs_path)
+        if not isinstance(payload, dict):
+            violations.append("{}: invalid manifest json {}".format(invariant_id, rel))
+            continue
+        for field in PKG_MANIFEST_REQUIRED_FIELDS:
+            if field not in payload:
+                violations.append("{}: missing field '{}' in {}".format(invariant_id, field, rel))
+    return violations
+
+
+def check_pkg_capability_metadata(repo_root):
+    invariant_id = "INV-PKG-CAPABILITY-METADATA"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    violations = []
+    for rel, abs_path in _iter_pkg_manifest_sidecars(repo_root):
+        payload = _load_json_file(abs_path)
+        if not isinstance(payload, dict):
+            continue
+        requires = payload.get("requires_capabilities")
+        provides = payload.get("provides_capabilities")
+        if not isinstance(requires, list):
+            violations.append("{}: requires_capabilities must be list in {}".format(invariant_id, rel))
+            continue
+        if not isinstance(provides, list):
+            violations.append("{}: provides_capabilities must be list in {}".format(invariant_id, rel))
+            continue
+        if not provides:
+            violations.append("{}: provides_capabilities empty in {}".format(invariant_id, rel))
+        for field_name, values in (("requires_capabilities", requires), ("provides_capabilities", provides)):
+            for value in values:
+                cap_id = value if isinstance(value, str) else value.get("capability_id") if isinstance(value, dict) else ""
+                if not isinstance(cap_id, str) or not PACK_CAPABILITY_RE.match(cap_id):
+                    violations.append("{}: invalid capability '{}' in {} field {}".format(
+                        invariant_id, cap_id, rel, field_name
+                    ))
+    return violations
+
+
+def check_pkg_signature_policy(repo_root):
+    invariant_id = "INV-PKG-SIGNATURE-POLICY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    release_required = _json_bool(os.environ.get("DOM_RELEASE_BUILD", "0"))
+    if not release_required:
+        return []
+    violations = []
+    for rel, abs_path in _iter_pkg_manifest_sidecars(repo_root):
+        payload = _load_json_file(abs_path)
+        if not isinstance(payload, dict):
+            continue
+        signature = payload.get("signature")
+        if not isinstance(signature, dict):
+            violations.append("{}: signature missing for release package {}".format(invariant_id, rel))
+    return violations
+
+
+def check_dist_sys_shipping(repo_root):
+    invariant_id = "INV-DIST-SYS-SHIPPING"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    changed = get_changed_files(repo_root)
+    if changed is None:
+        return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    has_sys = False
+    has_shipping = False
+    for rel in changed:
+        rel_norm = normalize_path(rel)
+        if rel_norm.startswith("dist/sys/"):
+            has_sys = True
+        if rel_norm.startswith("dist/pkg/") or rel_norm.startswith("dist/meta/"):
+            has_shipping = True
+    if has_sys and not has_shipping:
+        return ["{}: dist/sys changed without dist/pkg or dist/meta updates".format(invariant_id)]
+    return []
+
+
+def check_derived_pkg_index_freshness(repo_root):
+    invariant_id = "INV-DERIVED-PKG-INDEX-FRESHNESS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    changed = get_changed_files(repo_root)
+    if changed is None:
+        return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
+    pkg_changes = []
+    has_index_refresh = False
+    for rel in changed:
+        rel_norm = normalize_path(rel)
+        if rel_norm.startswith("dist/pkg/") and ("/pkgs/" in rel_norm or rel_norm.endswith(".dompkg.manifest.json")):
+            pkg_changes.append(rel_norm)
+        if "/index/pkg_index." in rel_norm or "/build_manifest." in rel_norm:
+            has_index_refresh = True
+    if pkg_changes and not has_index_refresh:
+        return ["{}: package artifacts changed without pkg index/build manifest refresh".format(invariant_id)]
+    return []
+
+
+def check_platform_registry(repo_root):
+    invariant_id = "INV-PLATFORM-REGISTRY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    abs_path = os.path.join(repo_root, PLATFORM_REGISTRY_REL)
+    payload = _load_json_file(abs_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, PLATFORM_REGISTRY_REL)]
+    if payload.get("schema_id") != PLATFORM_REGISTRY_SCHEMA_ID:
+        return ["{}: schema_id mismatch in {}".format(invariant_id, PLATFORM_REGISTRY_REL)]
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return ["{}: record missing in {}".format(invariant_id, PLATFORM_REGISTRY_REL)]
+    platforms = record.get("platforms")
+    if not isinstance(platforms, list) or not platforms:
+        return ["{}: platforms missing in {}".format(invariant_id, PLATFORM_REGISTRY_REL)]
+    tuples = set()
+    violations = []
+    for entry in platforms:
+        if not isinstance(entry, dict):
+            violations.append("{}: invalid platform entry in {}".format(invariant_id, PLATFORM_REGISTRY_REL))
+            continue
+        platform = str(entry.get("platform", "")).strip()
+        arch = str(entry.get("arch", "")).strip()
+        abi_id = str(entry.get("abi_id", "")).strip()
+        if not platform or not arch or not abi_id:
+            violations.append("{}: incomplete platform entry in {}".format(invariant_id, PLATFORM_REGISTRY_REL))
+            continue
+        tuples.add((platform, arch, abi_id))
+    for rel, abs_manifest in _iter_pkg_manifest_sidecars(repo_root):
+        payload = _load_json_file(abs_manifest)
+        if not isinstance(payload, dict):
+            continue
+        key = (str(payload.get("platform", "")).strip(), str(payload.get("arch", "")).strip(), str(payload.get("abi", "")).strip())
+        if all(key) and key not in tuples:
+            violations.append("{}: package tuple not declared in platform registry {} ({}/{}/{})".format(
+                invariant_id, rel, key[0], key[1], key[2]
+            ))
+    return violations
+
+
+def check_product_graph_constraints(repo_root):
+    invariant_id = "INV-PRODUCT-GRAPH-CONSTRAINTS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    abs_path = os.path.join(repo_root, PRODUCT_GRAPH_REL)
+    payload = _load_json_file(abs_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, PRODUCT_GRAPH_REL)]
+    if payload.get("schema_id") != PRODUCT_GRAPH_SCHEMA_ID:
+        return ["{}: schema_id mismatch in {}".format(invariant_id, PRODUCT_GRAPH_REL)]
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return ["{}: record missing in {}".format(invariant_id, PRODUCT_GRAPH_REL)]
+    nodes = record.get("nodes")
+    if not isinstance(nodes, list) or not nodes:
+        return ["{}: nodes missing in {}".format(invariant_id, PRODUCT_GRAPH_REL)]
+
+    node_ids = set()
+    violations = []
+    for node in nodes:
+        if not isinstance(node, dict):
+            violations.append("{}: invalid node entry in {}".format(invariant_id, PRODUCT_GRAPH_REL))
+            continue
+        product_id = str(node.get("product_id", "")).strip()
+        if not product_id:
+            violations.append("{}: node missing product_id in {}".format(invariant_id, PRODUCT_GRAPH_REL))
+            continue
+        if product_id in node_ids:
+            violations.append("{}: duplicate product_id '{}' in {}".format(invariant_id, product_id, PRODUCT_GRAPH_REL))
+            continue
+        node_ids.add(product_id)
+        if product_id in ("dominium.product.sdk.engine", "dominium.product.sdk.game"):
+            requires_exports = [str(value) for value in (node.get("requires_exports") or [])]
+            if "export:bin.setup" in requires_exports or "export:bin.launcher" in requires_exports:
+                violations.append("{}: sdk product depends on setup/launcher export {}".format(invariant_id, product_id))
+    return violations
+
+
+def check_mode_backend_registry(repo_root):
+    invariant_id = "INV-MODE-BACKEND-REGISTRY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+    mode_path = os.path.join(repo_root, MODE_BACKEND_REL)
+    mode_payload = _load_json_file(mode_path)
+    if not isinstance(mode_payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, MODE_BACKEND_REL)]
+    if mode_payload.get("schema_id") != MODE_BACKEND_SCHEMA_ID:
+        return ["{}: schema_id mismatch in {}".format(invariant_id, MODE_BACKEND_REL)]
+    record = mode_payload.get("record")
+    if not isinstance(record, dict):
+        return ["{}: record missing in {}".format(invariant_id, MODE_BACKEND_REL)]
+    entries = record.get("entries")
+    if not isinstance(entries, list) or not entries:
+        return ["{}: entries missing in {}".format(invariant_id, MODE_BACKEND_REL)]
+
+    platform_payload = _load_json_file(os.path.join(repo_root, PLATFORM_REGISTRY_REL))
+    platform_tuples = set()
+    if isinstance(platform_payload, dict):
+        platform_record = platform_payload.get("record")
+        if isinstance(platform_record, dict):
+            for item in platform_record.get("platforms") or []:
+                if isinstance(item, dict):
+                    platform_tuples.add((str(item.get("platform", "")).strip(), str(item.get("arch", "")).strip(), str(item.get("abi_id", "")).strip()))
+
+    violations = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            violations.append("{}: invalid mode backend entry in {}".format(invariant_id, MODE_BACKEND_REL))
+            continue
+        key = (str(entry.get("platform", "")).strip(), str(entry.get("arch", "")).strip(), str(entry.get("abi", "")).strip())
+        if key not in platform_tuples:
+            violations.append("{}: mode backend tuple not in platform registry ({}/{}/{})".format(
+                invariant_id, key[0], key[1], key[2]
+            ))
+        fallback_order = entry.get("fallback_order")
+        if not isinstance(fallback_order, list) or "cli" not in [str(value) for value in fallback_order]:
+            violations.append("{}: fallback_order must include cli for tuple ({}/{}/{})".format(
+                invariant_id, key[0], key[1], key[2]
+            ))
     return violations
 
 
@@ -2828,6 +3111,14 @@ def main() -> int:
     violations.extend(check_schema_no_implicit_defaults(repo_root))
     violations.extend(check_unversioned_schema_references(repo_root))
     violations.extend(check_pack_capability_metadata(repo_root))
+    violations.extend(check_pkg_manifest_fields(repo_root))
+    violations.extend(check_pkg_capability_metadata(repo_root))
+    violations.extend(check_pkg_signature_policy(repo_root))
+    violations.extend(check_dist_sys_shipping(repo_root))
+    violations.extend(check_derived_pkg_index_freshness(repo_root))
+    violations.extend(check_platform_registry(repo_root))
+    violations.extend(check_product_graph_constraints(repo_root))
+    violations.extend(check_mode_backend_registry(repo_root))
     violations.extend(check_bugreport_resolution(repo_root))
     violations.extend(check_command_capability_metadata(repo_root))
     violations.extend(check_camera_blueprint_command_metadata(repo_root))

@@ -1,0 +1,211 @@
+{
+  "schema_id": "dominium.schema.distribution.product_graph",
+  "schema_version": "1.0.0",
+  "record": {
+    "graph_id": "dominium.product.graph",
+    "graph_version": "1.0.0",
+    "nodes": [
+      {
+        "product_id": "dominium.product.engine",
+        "kind": "library",
+        "provides_exports": [
+          "export:lib.engine"
+        ],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.core.engine"
+          }
+        ],
+        "requires_exports": [],
+        "requires_capabilities": [],
+        "restrictions": [],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.game",
+        "kind": "library",
+        "provides_exports": [
+          "export:lib.game"
+        ],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.core.game"
+          }
+        ],
+        "requires_exports": [
+          "export:lib.engine"
+        ],
+        "requires_capabilities": [],
+        "restrictions": [],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.client",
+        "kind": "host_binary",
+        "provides_exports": [
+          "export:bin.client"
+        ],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.runtime.client"
+          }
+        ],
+        "requires_exports": [
+          "export:lib.engine",
+          "export:lib.game"
+        ],
+        "requires_capabilities": [
+          {
+            "capability_id": "capability.render.any"
+          }
+        ],
+        "restrictions": [],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.server",
+        "kind": "host_binary",
+        "provides_exports": [
+          "export:bin.server"
+        ],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.runtime.server"
+          }
+        ],
+        "requires_exports": [
+          "export:lib.engine",
+          "export:lib.game"
+        ],
+        "requires_capabilities": [
+          {
+            "capability_id": "capability.render.null"
+          }
+        ],
+        "restrictions": [],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.launcher",
+        "kind": "host_binary",
+        "provides_exports": [
+          "export:bin.launcher"
+        ],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.runtime.launcher"
+          }
+        ],
+        "requires_exports": [
+          "export:bin.client"
+        ],
+        "requires_capabilities": [],
+        "restrictions": [],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.setup",
+        "kind": "host_binary",
+        "provides_exports": [
+          "export:bin.setup"
+        ],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.runtime.setup"
+          }
+        ],
+        "requires_exports": [
+          "export:tool.pkg.verify"
+        ],
+        "requires_capabilities": [],
+        "restrictions": [],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.tools.ui",
+        "kind": "tools",
+        "provides_exports": [
+          "export:tool.ui.bind",
+          "export:tool.ui.validate"
+        ],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.tools.ui"
+          }
+        ],
+        "requires_exports": [],
+        "requires_capabilities": [],
+        "restrictions": [],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.tools.pkg",
+        "kind": "tools",
+        "provides_exports": [
+          "export:tool.pkg.pack",
+          "export:tool.pkg.verify",
+          "export:tool.pkg.index",
+          "export:tool.pkg.extract",
+          "export:tool.pkg.diff"
+        ],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.tools.pkg"
+          }
+        ],
+        "requires_exports": [],
+        "requires_capabilities": [],
+        "restrictions": [],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.sdk.engine",
+        "kind": "sdk",
+        "provides_exports": [
+          "export:sdk.engine"
+        ],
+        "provides_capabilities": [],
+        "requires_exports": [
+          "export:lib.engine"
+        ],
+        "requires_capabilities": [],
+        "restrictions": [
+          {
+            "restriction_id": "dominium.restriction.sdk.no_setup",
+            "rule": "must_not_require_export:bin.setup"
+          },
+          {
+            "restriction_id": "dominium.restriction.sdk.no_launcher",
+            "rule": "must_not_require_export:bin.launcher"
+          }
+        ],
+        "extensions": {}
+      },
+      {
+        "product_id": "dominium.product.sdk.game",
+        "kind": "sdk",
+        "provides_exports": [
+          "export:sdk.game"
+        ],
+        "provides_capabilities": [],
+        "requires_exports": [
+          "export:lib.engine",
+          "export:lib.game"
+        ],
+        "requires_capabilities": [],
+        "restrictions": [
+          {
+            "restriction_id": "dominium.restriction.sdk.no_setup",
+            "rule": "must_not_require_export:bin.setup"
+          },
+          {
+            "restriction_id": "dominium.restriction.sdk.no_launcher",
+            "rule": "must_not_require_export:bin.launcher"
+          }
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

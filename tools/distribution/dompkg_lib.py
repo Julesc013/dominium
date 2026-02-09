@@ -16,7 +16,8 @@ CHUNK_SIZE_V1 = 1024 * 1024
 CHUNK_TABLE_RECORD = struct.Struct("<IIQIIQ32s")
 HEADER_STRUCT = struct.Struct("<8sIIQQQQQQQQ")
 TLV_HEAD = struct.Struct("<HI")
-SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._\\-/]+$")
+SAFE_PATH_RE = re.compile(r"^[A-Za-z0-9._/\\-]+$")
+CONTENT_HASH_PLACEHOLDER = "0" * 64
 
 
 class DomPkgError(Exception):
@@ -156,7 +157,7 @@ def _validate_manifest_shape(manifest: dict) -> None:
 
 def _manifest_for_hash(manifest: dict) -> dict:
     clone = json.loads(json.dumps(manifest))
-    clone["content_hash"] = ""
+    clone["content_hash"] = CONTENT_HASH_PLACEHOLDER
     return clone
 
 
@@ -233,17 +234,17 @@ def pack_package(
         "compression": compression,
         "chunk_size_bytes": CHUNK_SIZE_V1,
         "file_exports": file_exports,
-        "content_hash": "",
+        "content_hash": CONTENT_HASH_PLACEHOLDER,
         "extensions": {},
     }
     if signature_payload:
         manifest["signature"] = signature_payload
 
     manifest_for_hash = _manifest_for_hash(manifest)
-    manifest_tlv = TLV_HEAD.pack(TLV_TYPE_MANIFEST_JSON, len(canonical_json_bytes(manifest_for_hash))) + canonical_json_bytes(manifest_for_hash)
+    manifest_tlv_for_hash = TLV_HEAD.pack(TLV_TYPE_MANIFEST_JSON, len(canonical_json_bytes(manifest_for_hash))) + canonical_json_bytes(manifest_for_hash)
 
     manifest_offset = HEADER_SIZE
-    chunk_table_offset = manifest_offset + len(manifest_tlv)
+    chunk_table_offset = manifest_offset + len(manifest_tlv_for_hash)
     payload_offset = chunk_table_offset + len(chunk_table_bytes)
 
     signature_bytes = b""
@@ -259,7 +260,7 @@ def pack_package(
         HEADER_SIZE,
         FORMAT_VERSION,
         manifest_offset,
-        len(manifest_tlv),
+        len(manifest_tlv_for_hash),
         chunk_table_offset,
         len(chunk_table_bytes),
         payload_offset,
@@ -267,9 +268,11 @@ def pack_package(
         0,
         0,
     )
-    content_hash = sha256_bytes(header_for_hash + manifest_tlv + chunk_table_bytes + payload_bytes)
+    content_hash = sha256_bytes(header_for_hash + manifest_tlv_for_hash + chunk_table_bytes + payload_bytes)
     manifest["content_hash"] = content_hash
     manifest_tlv = TLV_HEAD.pack(TLV_TYPE_MANIFEST_JSON, len(canonical_json_bytes(manifest))) + canonical_json_bytes(manifest)
+    if len(manifest_tlv) != len(manifest_tlv_for_hash):
+        raise DomPkgError("refuse.manifest_invalid_value", "content hash canonicalization changed manifest length")
     chunk_table_offset = manifest_offset + len(manifest_tlv)
     payload_offset = chunk_table_offset + len(chunk_table_bytes)
     if signature_bytes:
@@ -434,24 +437,31 @@ def verify_package(pkg_path: str, trust_policy_path: str = "") -> Dict[str, obje
         if int(export.get("size_bytes", -1)) != file_sizes[idx]:
             raise DomPkgError("refuse.hash_mismatch", "file size mismatch", {"path": export.get("path")})
 
-    manifest_for_hash = _manifest_for_hash(manifest)
-    manifest_tlv_for_hash = TLV_HEAD.pack(TLV_TYPE_MANIFEST_JSON, len(canonical_json_bytes(manifest_for_hash))) + canonical_json_bytes(manifest_for_hash)
-    header_for_hash = HEADER_STRUCT.pack(
-        MAGIC,
-        HEADER_SIZE,
-        FORMAT_VERSION,
-        header["manifest_offset"],
-        len(manifest_tlv_for_hash),
-        header["chunk_offset"],
-        header["chunk_size"],
-        header["payload_offset"],
-        header["payload_size"],
-        0,
-        0,
-    )
-    actual_content_hash = sha256_bytes(header_for_hash + manifest_tlv_for_hash + chunk_table_block + payload_block)
+    def _content_hash_for(canonical_manifest: dict) -> str:
+        manifest_tlv = TLV_HEAD.pack(TLV_TYPE_MANIFEST_JSON, len(canonical_json_bytes(canonical_manifest))) + canonical_json_bytes(canonical_manifest)
+        header_for_hash_local = HEADER_STRUCT.pack(
+            MAGIC,
+            HEADER_SIZE,
+            FORMAT_VERSION,
+            header["manifest_offset"],
+            len(manifest_tlv),
+            header["chunk_offset"],
+            header["chunk_size"],
+            header["payload_offset"],
+            header["payload_size"],
+            0,
+            0,
+        )
+        return sha256_bytes(header_for_hash_local + manifest_tlv + chunk_table_block + payload_block)
+
+    actual_content_hash = _content_hash_for(_manifest_for_hash(manifest))
     if manifest.get("content_hash") != actual_content_hash:
-        raise DomPkgError("refuse.hash_mismatch", "content hash mismatch")
+        # Legacy fallback for older packages that used empty-string canonicalization.
+        legacy_manifest = json.loads(json.dumps(manifest))
+        legacy_manifest["content_hash"] = ""
+        legacy_content_hash = _content_hash_for(legacy_manifest)
+        if manifest.get("content_hash") != legacy_content_hash:
+            raise DomPkgError("refuse.hash_mismatch", "content hash mismatch")
 
     if trust_policy_path:
         policy = _load_signature_policy(trust_policy_path)

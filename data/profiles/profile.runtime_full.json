@@ -1,0 +1,76 @@
+{
+  "schema_id": "dominium.schema.distribution.profile",
+  "schema_version": "1.0.0",
+  "record": {
+    "profile_id": "org.dominium.profile.runtime_full",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "requires_capabilities": [
+      {
+        "capability_id": "capability.runtime.client"
+      },
+      {
+        "capability_id": "capability.runtime.server"
+      },
+      {
+        "capability_id": "capability.runtime.launcher"
+      }
+    ],
+    "package_refs": [
+      {
+        "pkg_id": "org.dominium.core.runtime_cfg",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.engine",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.game",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.client",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.server",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.launcher",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.rend.soft",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.rend.null",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.res.common",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.locale.en_US",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.res.packs.base",
+        "version_constraint": ">=0.1.0"
+      }
+    ],
+    "optional_capabilities": [
+      {
+        "capability_id": "capability.runtime.gui"
+      }
+    ],
+    "profile_tags": [
+      "runtime",
+      "full"
+    ],
+    "extensions": {}
+  }
+}
