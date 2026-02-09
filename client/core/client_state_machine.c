@@ -36,19 +36,16 @@ void client_state_machine_init(client_state_machine* machine)
 
 const char* client_state_machine_state_name(client_session_state state)
 {
-    switch (state) {
-    case CLIENT_SESSION_STATE_BOOT_PROGRESS: return "BootProgress";
-    case CLIENT_SESSION_STATE_MAIN_MENU: return "MainMenu";
-    case CLIENT_SESSION_STATE_SINGLEPLAYER_WORLD_MANAGER: return "SingleplayerWorldManager";
-    case CLIENT_SESSION_STATE_MULTIPLAYER_SERVER_BROWSER: return "MultiplayerServerBrowser";
-    case CLIENT_SESSION_STATE_OPTIONS: return "Options";
-    case CLIENT_SESSION_STATE_ABOUT: return "About";
-    case CLIENT_SESSION_STATE_SESSION_LAUNCHING: return "SessionLaunching";
-    case CLIENT_SESSION_STATE_SESSION_RUNNING: return "SessionRunning";
-    case CLIENT_SESSION_STATE_REFUSAL_ERROR: return "RefusalError";
-    default: break;
-    }
-    return "Unknown";
+    if (state == CLIENT_SESSION_STATE_BOOT_PROGRESS) return "BootProgress";
+    if (state == CLIENT_SESSION_STATE_MAIN_MENU) return "MainMenu";
+    if (state == CLIENT_SESSION_STATE_SINGLEPLAYER_WORLD_MANAGER) return "SingleplayerWorldManager";
+    if (state == CLIENT_SESSION_STATE_MULTIPLAYER_SERVER_BROWSER) return "MultiplayerServerBrowser";
+    if (state == CLIENT_SESSION_STATE_OPTIONS) return "Options";
+    if (state == CLIENT_SESSION_STATE_ABOUT) return "About";
+    if (state == CLIENT_SESSION_STATE_SESSION_LAUNCHING) return "SessionLaunching";
+    if (state == CLIENT_SESSION_STATE_SESSION_RUNNING) return "SessionRunning";
+    if (state == CLIENT_SESSION_STATE_REFUSAL_ERROR) return "RefusalError";
+    return "RefusalError";
 }
 
 const char* client_state_machine_last_command(const client_state_machine* machine)
