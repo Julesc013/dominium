@@ -184,6 +184,41 @@ dom_add_testx(NAME capability_runtime_enforcement
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
 
+dom_add_testx(NAME client_flow_smoke
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/client_flow_smoke_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/client_flow_smoke
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
+dom_add_testx(NAME client_parity
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/client_parity_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/client_parity
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
+dom_add_testx(NAME server_discovery
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/server_discovery_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/server_discovery
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
+dom_add_testx(NAME world_manager
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/world_manager_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/world_manager
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
+dom_add_testx(NAME client_refusal_codes
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/client_refusal_codes_tests.py
+        --client $<TARGET_FILE:dominium_client>
+        --temp-root ${CMAKE_BINARY_DIR}/tests/client_refusal_codes
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
 dom_add_testx(NAME blueprint_refusal
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/blueprint_refusal_tests.py
         --client $<TARGET_FILE:dominium_client>
