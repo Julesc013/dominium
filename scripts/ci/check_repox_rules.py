@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from datetime import date
@@ -280,6 +281,25 @@ BUILD_PRESET_CONTRACT_TARGETS = {
     "dos-x86_16": "all_runtime",
 }
 
+CANONICAL_TOOL_IDS = (
+    "tool_ui_bind",
+    "tool_ui_validate",
+    "tool_ui_doc_annotate",
+)
+
+TOOL_SCAN_EXTS = (
+    ".py",
+    ".cmake",
+    ".txt",
+    ".yml",
+    ".yaml",
+    ".json",
+    ".cmd",
+    ".bat",
+    ".ps1",
+    ".sh",
+)
+
 
 def repo_rel(repo_root, path):
     return os.path.relpath(path, repo_root).replace("\\", "/")
@@ -392,6 +412,40 @@ def run_git(args, repo_root):
     if result.returncode != 0:
         return None
     return result.stdout.strip()
+
+
+def _resolve_canonical_tools_dir(repo_root):
+    adapter_rel = os.path.join("scripts", "dev", "env_tools.py")
+    adapter_abs = os.path.join(repo_root, adapter_rel)
+    if not os.path.isfile(adapter_abs):
+        return "", "missing {}".format(adapter_rel.replace("\\", "/"))
+    proc = subprocess.run(
+        [sys.executable, adapter_abs, "--repo-root", repo_root, "print-path"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    if proc.returncode != 0:
+        detail = proc.stdout.strip() or "adapter invocation failed"
+        return "", detail
+    tool_dir = proc.stdout.strip().splitlines()
+    if not tool_dir:
+        return "", "adapter returned empty path"
+    return os.path.normpath(tool_dir[-1].strip()), ""
+
+
+def _path_contains_dir(path_value, target_dir):
+    target_norm = os.path.normcase(os.path.normpath(target_dir))
+    for entry in path_value.split(os.pathsep):
+        if not entry:
+            continue
+        entry_norm = os.path.normcase(os.path.normpath(entry))
+        if entry_norm == target_norm:
+            return True
+    return False
 
 
 def parse_changed_files(output):
@@ -1940,6 +1994,133 @@ def check_portable_run_contract(repo_root):
         violations.append("{}: tools/launcher/launcher_cli.py missing mode selector contract".format(invariant_id))
     if "--mode" not in setup_text and "--ui-mode" not in setup_text:
         violations.append("{}: tools/setup/setup_cli.py missing mode selector contract".format(invariant_id))
+    return violations
+
+
+def _iter_tool_invocation_scan_files(repo_root):
+    roots = [
+        os.path.join(repo_root, "scripts"),
+        os.path.join(repo_root, "tests"),
+        os.path.join(repo_root, "tools"),
+        os.path.join(repo_root, "cmake"),
+        os.path.join(repo_root, ".github"),
+    ]
+    for root in roots:
+        if not os.path.isdir(root):
+            continue
+        for path in iter_files([root], DEFAULT_EXCLUDES, TOOL_SCAN_EXTS):
+            yield path
+    root_cmake = os.path.join(repo_root, "CMakeLists.txt")
+    if os.path.isfile(root_cmake):
+        yield root_cmake
+
+
+def check_tool_name_only(repo_root):
+    invariant_id = "INV-TOOL-NAME-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    token_res = {
+        tool_id: re.compile(r"([A-Za-z0-9_./\\:-]*{}(?:\.exe)?)".format(re.escape(tool_id)), re.IGNORECASE)
+        for tool_id in CANONICAL_TOOL_IDS
+    }
+    for path in _iter_tool_invocation_scan_files(repo_root):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path) or ""
+        for idx, line in enumerate(text.splitlines(), start=1):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            for tool_id in CANONICAL_TOOL_IDS:
+                marker = "TARGET_FILE:{}".format(tool_id)
+                if marker in stripped:
+                    violations.append(
+                        "{}: {}:{} path-indirection invocation forbidden ({})".format(
+                            invariant_id, rel, idx, marker
+                        )
+                    )
+                for match in token_res[tool_id].finditer(stripped):
+                    token = match.group(1)
+                    token_lower = token.lower()
+                    if "/" in token or "\\" in token or token_lower.startswith(".") or ":" in token_lower:
+                        violations.append(
+                            "{}: {}:{} path-based tool invocation forbidden ({})".format(
+                                invariant_id, rel, idx, token
+                            )
+                        )
+    return sorted(set(violations))
+
+
+def check_tools_path_set(repo_root):
+    invariant_id = "INV-TOOLS-PATH-SET"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    tool_dir, detail = _resolve_canonical_tools_dir(repo_root)
+    if not tool_dir:
+        return ["{}: unable to resolve canonical tools path ({})".format(invariant_id, detail)]
+    if not os.path.isdir(tool_dir):
+        return ["{}: canonical tools directory missing {}".format(invariant_id, normalize_path(tool_dir))]
+
+    env_path = os.environ.get("PATH", "")
+    if not _path_contains_dir(env_path, tool_dir):
+        return ["{}: PATH missing canonical tools directory {}".format(invariant_id, normalize_path(tool_dir))]
+    return []
+
+
+def check_tool_unresolvable(repo_root):
+    invariant_id = "INV-TOOL-UNRESOLVABLE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    tool_dir, detail = _resolve_canonical_tools_dir(repo_root)
+    if not tool_dir:
+        return ["{}: unable to resolve canonical tools path ({})".format(invariant_id, detail)]
+    if not os.path.isdir(tool_dir):
+        return ["{}: canonical tools directory missing {}".format(invariant_id, normalize_path(tool_dir))]
+
+    violations = []
+    resolved = {}
+    for tool_id in CANONICAL_TOOL_IDS:
+        candidates = [tool_id]
+        if os.name == "nt":
+            candidates.insert(0, tool_id + ".exe")
+        tool_path = ""
+        for candidate in candidates:
+            found = shutil.which(candidate)
+            if found:
+                tool_path = normalize_path(found)
+                break
+        if not tool_path:
+            violations.append("{}: tool not discoverable by PATH {}".format(invariant_id, tool_id))
+            continue
+        resolved[tool_id] = tool_path
+
+    bind_path = resolved.get("tool_ui_bind")
+    if bind_path:
+        try:
+            probe = subprocess.run(
+                [bind_path, "--help"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=20,
+                check=False,
+            )
+        except OSError as exc:
+            violations.append("{}: tool_ui_bind help probe failed: {}".format(invariant_id, exc))
+        except subprocess.TimeoutExpired:
+            violations.append("{}: tool_ui_bind help probe timeout".format(invariant_id))
+        else:
+            if probe.returncode != 0:
+                violations.append(
+                    "{}: tool_ui_bind help probe returned {} ({})".format(
+                        invariant_id, probe.returncode, probe.stdout.strip()
+                    )
+                )
     return violations
 
 
@@ -3697,6 +3878,9 @@ def main() -> int:
     violations.extend(check_frozen_contract_modifications(repo_root, changed_files))
 
     violations.extend(check_authoritative_symbols(repo_root))
+    violations.extend(check_tool_name_only(repo_root))
+    violations.extend(check_tools_path_set(repo_root))
+    violations.extend(check_tool_unresolvable(repo_root))
     violations.extend(check_forbidden_enum_tokens(repo_root))
     violations.extend(check_raw_paths(repo_root))
     violations.extend(check_magic_numbers(repo_root))
