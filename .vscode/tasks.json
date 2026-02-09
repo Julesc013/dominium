@@ -2,10 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build (LOCAL)",
+      "label": "Build (MSVC DEV DEBUG)",
       "type": "shell",
       "command": "cmake",
-      "args": ["--build", "--preset", "local"],
+      "args": ["--build", "--preset", "msvc-dev-debug"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -13,10 +13,10 @@
       "problemMatcher": []
     },
     {
-      "label": "Test (VERIFY)",
+      "label": "Test (VERIFY FAST)",
       "type": "shell",
-      "command": "ctest",
-      "args": ["--preset", "verify", "--output-on-failure"],
+      "command": "cmake",
+      "args": ["--build", "--preset", "msvc-verify", "--target", "verify_fast"],
       "group": {
         "kind": "test",
         "isDefault": true

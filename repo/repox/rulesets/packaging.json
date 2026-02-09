@@ -85,6 +85,20 @@
       "scope_paths": ["tools/launcher/launcher_cli.py", "tools/setup/setup_cli.py", "docs/dev/PORTABLE_TESTING.md"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-portable-run-contract",
       "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-BUILD-PRESET-CONTRACT",
+      "severity": "FAIL",
+      "scope_paths": ["CMakePresets.json", ".vscode/tasks.json", "docs/dev/IDE_BUILD_DEFAULTS.md", "docs/build/BUILD_LANES.md"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-build-preset-contract",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-DIST-RELEASE-LANE-GATE",
+      "severity": "FAIL",
+      "scope_paths": ["CMakeLists.txt", "cmake/check_release_lane.cmake", "docs/build/BUILD_LANES.md", "docs/ci/VERIFY_FAST_VS_FULL.md"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-dist-release-lane-gate",
+      "exemption_policy": "allow_with_expiry"
     }
   ]
 }
