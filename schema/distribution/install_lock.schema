@@ -1,0 +1,50 @@
+SCHEMA: install_lock.schema
+schema_id: dominium.schema.distribution.install_lock
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic install lock state for package projection and rollback.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record install_lock
+  required:
+    - lock_id: id
+    - lock_version: tag
+    - install_id: id
+    - profile_id: id
+    - platform: tag
+    - arch: tag
+    - package_resolutions: [package_resolution]
+    - projection_digest: tag
+    - generated_at: tag
+    - generated_by: tag
+    - extensions: map
+  optional:
+    - previous_lock_ref: lock_ref
+
+TYPE DEFINITIONS:
+record package_resolution
+  required:
+    - pkg_id: id
+    - pkg_version: tag
+    - content_hash: tag
+  optional:
+    - package_path: tag
+
+record lock_ref
+  required:
+    - lock_id: id
+  optional:
+    - lock_version: tag

@@ -16,6 +16,7 @@ RepoX rules are organized into policy packs under `repo/repox/rulesets/`.
 - `repox/security`: epistemic and anti-cheat checks.
 - `repox/change_shape`: repository-shape and ambiguity checks.
 - `repox/derived_artifacts`: machine-generated contract surfaces (e.g., solver registry).
+- `repox/packaging`: package/distribution governance for `dompkg` and `dist/*`.
 
 Each rule record defines:
 
@@ -98,3 +99,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-REPOX-AMBIGUOUS-DIRS`
 - `INV-REPOX-RULESET-MISSING`
 - `INV-REPOX-EXEMPTION-POLICY`
+- `INV-PKG-MANIFEST-FIELDS`
+- `INV-PKG-CAPABILITY-METADATA`
+- `INV-PKG-SIGNATURE-POLICY`
+- `INV-DIST-SYS-SHIPPING`
+- `INV-DERIVED-PKG-INDEX-FRESHNESS`
