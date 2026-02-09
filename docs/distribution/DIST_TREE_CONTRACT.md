@@ -8,6 +8,8 @@ Superseded By: none
 ## Scope
 
 This document defines immutable layout intent for distribution outputs.
+Canonical platform IDs and alias bans are defined in
+`docs/distribution/PLATFORM_ID_CANON.md`.
 
 ## Tree Roles
 
@@ -35,3 +37,5 @@ This document defines immutable layout intent for distribution outputs.
 
 - If `dist/sys` changes are published without corresponding package artifacts,
   governance must refuse release packaging.
+- Platform directory names must be canonical (`winnt`, `macosx`, `linux`,
+  `android`, `ios`, `web`, plus declared legacy IDs in registry).

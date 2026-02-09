@@ -28,7 +28,9 @@ def main() -> int:
         print(json.dumps({"result": "error", "message": "launcher_cli.py missing"}))
         return 1
 
-    help_run = _run(["python", cli, "--help"], repo_root)
+    probe_cwd = tempfile.mkdtemp(prefix="launcher_smoke_cwd_")
+
+    help_run = _run(["python", cli, "--help"], probe_cwd)
     if help_run.returncode != 0:
         print(help_run.stdout)
         print(help_run.stderr)
@@ -70,7 +72,7 @@ def main() -> int:
         "preflight",
         "--install-manifest", install_manifest,
         "--instance-manifest", instance_manifest,
-    ], repo_root)
+    ], probe_cwd)
     if preflight_run.returncode != 0:
         print(preflight_run.stdout)
         print(preflight_run.stderr)
@@ -84,7 +86,7 @@ def main() -> int:
         "--instance-manifest", instance_manifest,
         "--confirm",
         "--run-mode", "play",
-    ], repo_root)
+    ], probe_cwd)
     if run_probe.returncode != 0:
         print(run_probe.stdout)
         print(run_probe.stderr)

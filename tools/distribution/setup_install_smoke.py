@@ -28,7 +28,9 @@ def main() -> int:
         print(json.dumps({"result": "error", "message": "setup_cli.py missing"}))
         return 1
 
-    help_run = _run(["python", cli, "--help"], repo_root)
+    probe_cwd = tempfile.mkdtemp(prefix="setup_smoke_cwd_")
+
+    help_run = _run(["python", cli, "--help"], probe_cwd)
     if help_run.returncode != 0:
         print(help_run.stdout)
         print(help_run.stderr)
@@ -50,7 +52,7 @@ def main() -> int:
         "--scope", "portable",
         "--install-root", os.path.join(work, "install"),
         "--out", invocation,
-    ], repo_root)
+    ], probe_cwd)
     if export_run.returncode != 0:
         print(export_run.stdout)
         print(export_run.stderr)
@@ -64,7 +66,7 @@ def main() -> int:
         "--manifest", manifest,
         "--invocation", invocation,
         "--out", plan,
-    ], repo_root)
+    ], probe_cwd)
     if plan_run.returncode != 0:
         print(plan_run.stdout)
         print(plan_run.stderr)

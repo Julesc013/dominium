@@ -211,6 +211,32 @@ PKG_MANIFEST_REQUIRED_FIELDS = (
     "file_exports",
     "content_hash",
 )
+CANONICAL_PLATFORM_IDS = (
+    "winnt",
+    "win9x",
+    "win16",
+    "dos",
+    "macosx",
+    "macclassic",
+    "linux",
+    "android",
+    "ios",
+    "web",
+)
+FORBIDDEN_PLATFORM_ALIASES = (
+    "win",
+    "windows",
+    "mac",
+    "osx",
+)
+DIST_PLATFORM_CANON_ROOTS = (
+    os.path.join("dist", "pkg"),
+    os.path.join("dist", "sys"),
+    os.path.join("dist", "sym"),
+    os.path.join("dist", "meta"),
+    os.path.join("dist", "wrap"),
+    os.path.join("dist", "redist"),
+)
 
 
 def repo_rel(repo_root, path):
@@ -1516,6 +1542,106 @@ def check_platform_registry(repo_root):
     return violations
 
 
+def _iter_directories(path):
+    if not os.path.isdir(path):
+        return []
+    items = []
+    try:
+        for name in sorted(os.listdir(path)):
+            abs_path = os.path.join(path, name)
+            if os.path.isdir(abs_path):
+                items.append(name)
+    except OSError:
+        return []
+    return items
+
+
+def check_platform_id_canonical(repo_root):
+    invariant_id = "INV-PLATFORM-ID-CANONICAL"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    abs_registry = os.path.join(repo_root, PLATFORM_REGISTRY_REL)
+    payload = _load_json_file(abs_registry)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, PLATFORM_REGISTRY_REL)]
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return ["{}: record missing in {}".format(invariant_id, PLATFORM_REGISTRY_REL)]
+
+    declared_platforms = set()
+    for entry in record.get("platforms") or []:
+        if not isinstance(entry, dict):
+            continue
+        platform = str(entry.get("platform", "")).strip()
+        if not platform:
+            continue
+        declared_platforms.add(platform)
+        if platform in FORBIDDEN_PLATFORM_ALIASES:
+            violations.append("{}: forbidden alias '{}' in {}".format(
+                invariant_id, platform, PLATFORM_REGISTRY_REL.replace("\\", "/")
+            ))
+        if platform not in CANONICAL_PLATFORM_IDS:
+            violations.append("{}: non-canonical platform '{}' in {}".format(
+                invariant_id, platform, PLATFORM_REGISTRY_REL.replace("\\", "/")
+            ))
+
+    for forbidden in FORBIDDEN_PLATFORM_ALIASES:
+        if forbidden in declared_platforms:
+            violations.append("{}: forbidden alias '{}' declared in platform registry".format(
+                invariant_id, forbidden
+            ))
+
+    for rel_root in DIST_PLATFORM_CANON_ROOTS:
+        abs_root = os.path.join(repo_root, rel_root)
+        for name in _iter_directories(abs_root):
+            name_norm = normalize_path(name)
+            rel = normalize_path(os.path.join(rel_root, name))
+            if name_norm in FORBIDDEN_PLATFORM_ALIASES:
+                violations.append("{}: forbidden platform alias directory {}".format(invariant_id, rel))
+                continue
+            # Dist platform roots should use canonical platform IDs only.
+            if rel_root != os.path.join("dist", "redist") and name_norm not in CANONICAL_PLATFORM_IDS:
+                violations.append("{}: non-canonical platform directory {}".format(invariant_id, rel))
+
+    for rel, abs_manifest in _iter_pkg_manifest_sidecars(repo_root):
+        payload = _load_json_file(abs_manifest)
+        if not isinstance(payload, dict):
+            continue
+        platform = str(payload.get("platform", "")).strip()
+        if not platform:
+            continue
+        if platform in FORBIDDEN_PLATFORM_ALIASES:
+            violations.append("{}: manifest uses forbidden platform alias {} ({})".format(
+                invariant_id, platform, rel
+            ))
+        elif platform not in CANONICAL_PLATFORM_IDS:
+            violations.append("{}: manifest uses non-canonical platform {} ({})".format(
+                invariant_id, platform, rel
+            ))
+
+    mode_payload = _load_json_file(os.path.join(repo_root, MODE_BACKEND_REL))
+    if isinstance(mode_payload, dict):
+        mode_record = mode_payload.get("record")
+        if isinstance(mode_record, dict):
+            for idx, entry in enumerate(mode_record.get("entries") or []):
+                if not isinstance(entry, dict):
+                    continue
+                platform = str(entry.get("platform", "")).strip()
+                if not platform:
+                    continue
+                if platform in FORBIDDEN_PLATFORM_ALIASES:
+                    violations.append("{}: mode backend entry {} uses forbidden alias '{}'".format(
+                        invariant_id, idx, platform
+                    ))
+                elif platform not in CANONICAL_PLATFORM_IDS:
+                    violations.append("{}: mode backend entry {} uses non-canonical platform '{}'".format(
+                        invariant_id, idx, platform
+                    ))
+    return violations
+
+
 def check_product_graph_constraints(repo_root):
     invariant_id = "INV-PRODUCT-GRAPH-CONSTRAINTS"
     if is_override_active(repo_root, invariant_id):
@@ -1595,6 +1721,100 @@ def check_mode_backend_registry(repo_root):
             violations.append("{}: fallback_order must include cli for tuple ({}/{}/{})".format(
                 invariant_id, key[0], key[1], key[2]
             ))
+    return violations
+
+
+def check_dist_sys_derived(repo_root):
+    invariant_id = "INV-DIST-SYS-DERIVED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    cmake_path = os.path.join(repo_root, "CMakeLists.txt")
+    cmake_text = read_text(cmake_path) or ""
+    block = re.search(r"add_custom_target\(pkg_pack_all(.*?)\)\s*\n", cmake_text, re.S)
+    if block:
+        body = block.group(1)
+        disallowed_tokens = (
+            "DOM_DIST_LEAF",
+            "DOM_DIST_BIN_LAUNCH",
+            "DOM_DIST_BIN_GAME",
+            "DOM_DIST_BIN_ENGINE",
+            "DOM_DIST_BIN_REND",
+            "DOM_DIST_BIN_SHARE",
+            "dist/sys/",
+            "dist\\sys\\",
+        )
+        for token in disallowed_tokens:
+            if token in body:
+                violations.append("{}: pkg_pack_all consumes dist/sys runtime path token '{}'".format(
+                    invariant_id, token
+                ))
+                break
+    else:
+        violations.append("{}: unable to locate pkg_pack_all in CMakeLists.txt".format(invariant_id))
+
+    pack_script_rel = os.path.join("tools", "distribution", "pkg_pack_all.py")
+    pack_script = read_text(os.path.join(repo_root, pack_script_rel)) or ""
+    if "dist/sys" in pack_script.replace("\\", "/"):
+        violations.append("{}: tools/distribution/pkg_pack_all.py references dist/sys as packaging input".format(
+            invariant_id
+        ))
+    return violations
+
+
+def check_mode_backend_selection_contract(repo_root):
+    invariant_id = "INV-MODE-BACKEND-SELECTION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    runtime_roots = [
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "launcher"),
+        os.path.join(repo_root, "setup"),
+        os.path.join(repo_root, "libs"),
+        os.path.join(repo_root, "app"),
+        os.path.join(repo_root, "tools"),
+    ]
+    backend_literal_re = re.compile(r"dominium\.backend\.[a-z0-9_.-]+")
+    for path in iter_files(runtime_roots, DEFAULT_EXCLUDES, SOURCE_EXTS + [".py"]):
+        rel = repo_rel(repo_root, path)
+        rel_norm = normalize_path(rel)
+        if rel_norm == normalize_path(MODE_BACKEND_REL):
+            continue
+        if rel_norm.startswith("tests/"):
+            continue
+        text = read_text(path) or ""
+        for match in backend_literal_re.finditer(text):
+            violations.append("{}: hardcoded mode backend literal '{}' in {}".format(
+                invariant_id, match.group(0), rel_norm
+            ))
+    return violations
+
+
+def check_portable_run_contract(repo_root):
+    invariant_id = "INV-PORTABLE-RUN-CONTRACT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    setup_rel = normalize_path(os.path.join("tools", "setup", "setup_cli.py"))
+    launcher_rel = normalize_path(os.path.join("tools", "launcher", "launcher_cli.py"))
+    setup_text = read_text(os.path.join(repo_root, setup_rel.replace("/", os.sep))) or ""
+    launcher_text = read_text(os.path.join(repo_root, launcher_rel.replace("/", os.sep))) or ""
+
+    if "--install-root" not in setup_text:
+        violations.append("{}: tools/setup/setup_cli.py missing --install-root contract".format(invariant_id))
+    if "--lockfile" not in launcher_text:
+        violations.append("{}: tools/launcher/launcher_cli.py missing --lockfile contract".format(invariant_id))
+    if "--mode" not in launcher_text and "--run-mode" not in launcher_text:
+        violations.append("{}: tools/launcher/launcher_cli.py missing mode selector contract".format(invariant_id))
+    if "--mode" not in setup_text and "--ui-mode" not in setup_text:
+        violations.append("{}: tools/setup/setup_cli.py missing mode selector contract".format(invariant_id))
     return violations
 
 
@@ -3157,8 +3377,12 @@ def main() -> int:
     violations.extend(check_dist_sys_shipping(repo_root))
     violations.extend(check_derived_pkg_index_freshness(repo_root))
     violations.extend(check_platform_registry(repo_root))
+    violations.extend(check_platform_id_canonical(repo_root))
+    violations.extend(check_dist_sys_derived(repo_root))
     violations.extend(check_product_graph_constraints(repo_root))
     violations.extend(check_mode_backend_registry(repo_root))
+    violations.extend(check_mode_backend_selection_contract(repo_root))
+    violations.extend(check_portable_run_contract(repo_root))
     violations.extend(check_bugreport_resolution(repo_root))
     violations.extend(check_command_capability_metadata(repo_root))
     violations.extend(check_camera_blueprint_command_metadata(repo_root))

@@ -17,7 +17,7 @@ function(_dominium_dist_detect_os out_var)
     if(WIN32)
         set(_os "winnt")
     elseif(APPLE)
-        set(_os "macos")
+        set(_os "macosx")
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
         set(_os "web")
     elseif(ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Android")
@@ -141,8 +141,12 @@ function(dominium_dist_init)
         "${_etc_dir}"
         "${_man_dir}"
         "${_root_abs}/pkg"
-        "${_root_abs}/pkg/win"
-        "${_root_abs}/pkg/mac"
+        "${_root_abs}/pkg/winnt"
+        "${_root_abs}/pkg/win9x"
+        "${_root_abs}/pkg/win16"
+        "${_root_abs}/pkg/dos"
+        "${_root_abs}/pkg/macosx"
+        "${_root_abs}/pkg/macclassic"
         "${_root_abs}/pkg/linux"
         "${_root_abs}/pkg/android"
         "${_root_abs}/pkg/ios"

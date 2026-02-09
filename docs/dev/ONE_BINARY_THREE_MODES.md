@@ -14,6 +14,8 @@ This document defines operator-visible behavior for binaries that expose
 
 - Mode registry: `data/registries/mode_backend.json`.
 - Mode schema: `schema/ui/mode_backend.schema`.
+- Runtime entrypoint contract (product-specific surface): `--install-root`,
+  `--lockfile`, and `--mode`.
 - Launcher resolves mode by:
   1. explicit `--mode` argument,
   2. registry fallback order for platform/arch/abi,
@@ -39,4 +41,5 @@ Each refusal must include mode id and backend id in details.
 - Mode selection must not grant capabilities.
 - GUI console dispatch must use canonical command dispatcher.
 - RepoX enforces registry-driven backend selection.
+- RepoX enforces canonical platform IDs for mode tuple resolution.
 - TestX validates mode fallback and refusal determinism.

@@ -45,6 +45,20 @@
       "exemption_policy": "allow_with_expiry"
     },
     {
+      "rule_id": "INV-PLATFORM-ID-CANONICAL",
+      "severity": "FAIL",
+      "scope_paths": ["dist/pkg", "dist/meta", "dist/sym", "dist/sys", "data/registries/platform_registry.json", "data/registries/mode_backend.json"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-platform-id-canonical",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-DIST-SYS-DERIVED",
+      "severity": "FAIL",
+      "scope_paths": ["tools/distribution/pkg_pack_all.py", "CMakeLists.txt", "dist/sys", "dist/pkg"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-dist-sys-derived",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
       "rule_id": "INV-PRODUCT-GRAPH-CONSTRAINTS",
       "severity": "FAIL",
       "scope_paths": ["data/registries/product_graph.json", "schema/distribution/product_graph.schema"],
@@ -56,6 +70,20 @@
       "severity": "FAIL",
       "scope_paths": ["data/registries/mode_backend.json", "schema/ui/mode_backend.schema", "data/registries/platform_registry.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-mode-backend-registry",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-MODE-BACKEND-SELECTION",
+      "severity": "FAIL",
+      "scope_paths": ["launcher", "client", "setup", "app", "tools/launcher", "tools/setup", "data/registries/mode_backend.json"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-mode-backend-selection",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-PORTABLE-RUN-CONTRACT",
+      "severity": "FAIL",
+      "scope_paths": ["tools/launcher/launcher_cli.py", "tools/setup/setup_cli.py", "docs/dev/PORTABLE_TESTING.md"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-portable-run-contract",
       "exemption_policy": "allow_with_expiry"
     }
   ]
