@@ -30,11 +30,12 @@ law gates. Mods do not alter engine code or authoritative execution semantics.
 - Mismatch results in refusal, not silent fallback.
 - Conflicts must be explicit and deterministically resolved.
 
-## Dependencies
-- `schema/mod_extension_policy.md`
-- `schema/schema_policy.md`
-- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
-
-## See also
-- `docs/architecture/EXTENSION_RULES.md`
-- `docs/MODDING.md`
+## Dependencies
+- `schema/mod_extension_policy.md`
+- `schema/schema_policy.md`
+- `docs/architecture/VALIDATION_RULES.md`
+- `docs/governance/REPOX_RULESETS.md`
+
+## See also
+- `docs/architecture/EXTENSION_RULES.md`
+- `docs/architecture/CANON_INDEX.md`

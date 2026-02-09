@@ -60,7 +60,6 @@ def infer_subsystem(rel_path: str) -> str:
         "tools/",
         "libs/",
         "app/",
-        "shared_ui_win32/",
     ):
         if rel_path.startswith(prefix):
             return prefix.rstrip("/")

@@ -25,10 +25,12 @@ summarizes the decision process; it does not replace ARCH0 or CHANGE_PROTOCOL.
 - "Small" changes can bypass review or CI enforcement.
 - Invariants are optional or negotiable.
 
-## Dependencies
-- `docs/architecture/ARCH0_CONSTITUTION.md`
-- `docs/architecture/CHANGE_PROTOCOL.md`
-- `docs/ci/CI_ENFORCEMENT_MATRIX.md`
-
-## See also
-- `docs/GOVERNANCE.md`
+## Dependencies
+- `docs/architecture/ARCH0_CONSTITUTION.md`
+- `docs/architecture/CHANGE_PROTOCOL.md`
+- `docs/architecture/VALIDATION_RULES.md`
+- `docs/governance/REPOX_RULESETS.md`
+- `docs/governance/TESTX_PROOF_MODEL.md`
+
+## See also
+- `docs/architecture/CANON_INDEX.md`

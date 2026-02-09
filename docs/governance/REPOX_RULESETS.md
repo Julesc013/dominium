@@ -97,6 +97,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-CAPABILITY-NO-LEGACY-GATING-TOKENS`
 - `INV-SOLVER-CONTRACTS`
 - `INV-REPOX-AMBIGUOUS-DIRS`
+- `INV-ROOT-MODULE-SHIM`
 - `INV-REPOX-RULESET-MISSING`
 - `INV-REPOX-EXEMPTION-POLICY`
 - `INV-PKG-MANIFEST-FIELDS`
@@ -107,3 +108,11 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-PLATFORM-REGISTRY`
 - `INV-PRODUCT-GRAPH-CONSTRAINTS`
 - `INV-MODE-BACKEND-REGISTRY`
+
+## Key Rule Notes
+
+### INV-ROOT-MODULE-SHIM
+
+- Fails when a tracked top-level directory behaves as a redirect-only CMake shim.
+- Fails for top-level `shared_*` module directories.
+- Prevents reintroduction of ad-hoc root module wrappers instead of using canonical subsystem paths.
