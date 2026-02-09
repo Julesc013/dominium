@@ -271,11 +271,9 @@ Roadmap context does not weaken canon.
 - App runtime and CLI contracts: `docs/app/README.md`
 - Platform runtime and lifecycle: `docs/platform/README.md`
 - Renderer interface and backends: `docs/render/README.md`
-- Build, toolchain, and SKU model: `docs/build/TOOLCHAIN_MODEL.md`,
-  `docs/build/SKU_MODEL.md`, `docs/build/OS_FLOOR_POLICY.md`
-- TestX compliance: `docs/app/TESTX_INVENTORY.md`,
-  `docs/app/TESTX_COMPLIANCE.md`, `docs/app/APR1_TESTX_COMPLIANCE.md`,
-  `docs/app/APR2_TESTX_COMPLIANCE.md`, `docs/app/APR3_TESTX_COMPLIANCE.md`,
-  `docs/app/APR4_TESTX_COMPLIANCE.md`
-- RepoX integration: `docs/repox/APRX_INVENTORY.md`,
-  `docs/repox/APRX_INTEGRATION_HOOKS.md`
+- Build, toolchain, and SKU model: `docs/build/TOOLCHAIN_MODEL.md`,
+  `docs/build/SKU_MODEL.md`, `docs/build/OS_FLOOR_POLICY.md`
+- TestX compliance: `docs/app/TESTX_INVENTORY.md`,
+  `docs/app/TESTX_COMPLIANCE.md`, `docs/governance/TESTX_PROOF_MODEL.md`
+- RepoX integration: `docs/governance/REPOX_RULESETS.md`,
+  `docs/repox/APRX_INTEGRATION_HOOKS.md`

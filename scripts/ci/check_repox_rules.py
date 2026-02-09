@@ -3074,6 +3074,45 @@ def check_ambiguous_new_dirs(repo_root):
     return violations
 
 
+def check_root_module_shims(repo_root):
+    invariant_id = "INV-ROOT-MODULE-SHIM"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    tracked_dirs_out = run_git(["ls-tree", "-d", "--name-only", "HEAD"], repo_root)
+    tracked_files_out = run_git(["ls-tree", "-r", "--name-only", "HEAD"], repo_root)
+    if tracked_dirs_out is None or tracked_files_out is None:
+        return ["{}: unable to enumerate tracked root directories".format(invariant_id)]
+
+    tracked_dirs = [normalize_path(item) for item in tracked_dirs_out.splitlines() if item.strip()]
+    tracked_files = [normalize_path(item) for item in tracked_files_out.splitlines() if item.strip()]
+    violations = []
+
+    for root_dir in sorted(tracked_dirs):
+        if "/" in root_dir:
+            continue
+        cmake_rel = normalize_path(os.path.join(root_dir, "CMakeLists.txt"))
+        if cmake_rel not in tracked_files:
+            continue
+
+        files_under = [path for path in tracked_files if path.startswith(root_dir + "/")]
+        cmake_text = read_text(os.path.join(repo_root, cmake_rel.replace("/", os.sep))) or ""
+        redirect_only = (
+            "add_subdirectory(" in cmake_text
+            and "add_library(" not in cmake_text
+            and "add_executable(" not in cmake_text
+        )
+        shared_prefix = root_dir.startswith("shared_")
+        if shared_prefix or (len(files_under) <= 3 and redirect_only):
+            shape = "shared_prefix" if shared_prefix else "redirect_only"
+            violations.append(
+                "{}: root module shim detected {} (shape={}, files={})".format(
+                    invariant_id, root_dir, shape, len(files_under)
+                )
+            )
+    return violations
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="RepoX governance rules enforcement.")
     parser.add_argument("--repo-root", default=".")
@@ -3100,6 +3139,7 @@ def main() -> int:
     violations.extend(check_duplicate_logic_pressure(repo_root))
     violations.extend(check_new_feature_requires_data_first(repo_root))
     violations.extend(check_ambiguous_new_dirs(repo_root))
+    violations.extend(check_root_module_shims(repo_root))
     canon_index = load_canon_index(repo_root)
     violations.extend(check_canon_index_entries(repo_root, canon_index))
     violations.extend(check_canon_state(repo_root))
