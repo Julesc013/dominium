@@ -26,7 +26,7 @@ def main() -> int:
         repo_root,
         "run",
         "--",
-        sys.executable,
+        "python",
         script,
         "--repo-root",
         repo_root,
