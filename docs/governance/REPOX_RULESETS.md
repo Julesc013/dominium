@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-08
+Last Reviewed: 2026-02-09
 Supersedes: none
 Superseded By: none
 
@@ -106,8 +106,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-DIST-SYS-SHIPPING`
 - `INV-DERIVED-PKG-INDEX-FRESHNESS`
 - `INV-PLATFORM-REGISTRY`
+- `INV-PLATFORM-ID-CANONICAL`
+- `INV-DIST-SYS-DERIVED`
 - `INV-PRODUCT-GRAPH-CONSTRAINTS`
 - `INV-MODE-BACKEND-REGISTRY`
+- `INV-MODE-BACKEND-SELECTION`
+- `INV-PORTABLE-RUN-CONTRACT`
 
 ## Key Rule Notes
 
@@ -116,3 +120,23 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when a tracked top-level directory behaves as a redirect-only CMake shim.
 - Fails for top-level `shared_*` module directories.
 - Prevents reintroduction of ad-hoc root module wrappers instead of using canonical subsystem paths.
+
+### INV-PLATFORM-ID-CANONICAL
+
+- Fails when non-canonical platform aliases appear in platform registries, package manifests, or dist platform roots.
+- Allowed platform IDs are declared in `docs/distribution/PLATFORM_ID_CANON.md`.
+
+### INV-DIST-SYS-DERIVED
+
+- Fails when packaging input is sourced from `dist/sys`.
+- Enforces `dist/pkg` as shipping source and `dist/sys` as realized output only.
+
+### INV-MODE-BACKEND-SELECTION
+
+- Fails on hardcoded backend literals in runtime sources.
+- Backend availability and fallback order must come from `data/registries/mode_backend.json`.
+
+### INV-PORTABLE-RUN-CONTRACT
+
+- Fails when setup/launcher CLI surfaces do not expose explicit portable/install contract arguments.
+- Contract reference: `docs/dev/PORTABLE_TESTING.md`.

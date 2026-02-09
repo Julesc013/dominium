@@ -15,7 +15,16 @@
           "runtime.cli",
           "runtime.tui"
         ],
-        "extensions": {}
+        "extensions": {
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": [
+              "zstd"
+            ]
+          }
+        }
       },
       {
         "platform": "winnt",
@@ -27,7 +36,16 @@
           "runtime.tui",
           "runtime.gui.win32rc"
         ],
-        "extensions": {}
+        "extensions": {
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": [
+              "zstd"
+            ]
+          }
+        }
       },
       {
         "platform": "winnt",
@@ -38,7 +56,89 @@
           "runtime.cli",
           "runtime.tui"
         ],
-        "extensions": {}
+        "extensions": {
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": [
+              "zstd"
+            ]
+          }
+        }
+      },
+      {
+        "platform": "win9x",
+        "arch": "x86_32",
+        "abi_id": "abi:win9x:msvc-vc6",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli",
+          "runtime.tui"
+        ],
+        "extensions": {
+          "support_status": "declared_not_built",
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": []
+          }
+        }
+      },
+      {
+        "platform": "win16",
+        "arch": "x86_16",
+        "abi_id": "abi:win16:msc16",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli"
+        ],
+        "extensions": {
+          "support_status": "declared_not_built",
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": []
+          }
+        }
+      },
+      {
+        "platform": "dos",
+        "arch": "x86_16",
+        "abi_id": "abi:dos:watcom",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli"
+        ],
+        "extensions": {
+          "support_status": "declared_not_built",
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": []
+          }
+        }
+      },
+      {
+        "platform": "macclassic",
+        "arch": "ppc",
+        "abi_id": "abi:macclassic:metrowerks",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli"
+        ],
+        "extensions": {
+          "support_status": "declared_not_built",
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": []
+          }
+        }
       },
       {
         "platform": "linux",
@@ -49,20 +149,126 @@
           "runtime.cli",
           "runtime.tui"
         ],
-        "extensions": {}
+        "extensions": {
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": [
+              "zstd"
+            ]
+          }
+        }
       },
       {
-        "platform": "macos",
+        "platform": "macosx",
         "arch": "x86_64",
-        "abi_id": "abi:macos:clang",
+        "abi_id": "abi:macosx:clang",
         "shipping_enabled": false,
         "capability_tags": [
           "runtime.cli",
           "runtime.gui.cocoa"
         ],
-        "extensions": {}
+        "extensions": {
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": [
+              "zstd"
+            ]
+          }
+        }
+      },
+      {
+        "platform": "android",
+        "arch": "arm64",
+        "abi_id": "abi:android:ndk-r26",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli",
+          "runtime.tui"
+        ],
+        "extensions": {
+          "support_status": "declared_not_built",
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": [
+              "zstd"
+            ]
+          }
+        }
+      },
+      {
+        "platform": "ios",
+        "arch": "arm64",
+        "abi_id": "abi:ios:xcode",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.gui.uikit"
+        ],
+        "extensions": {
+          "support_status": "declared_not_built",
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": [
+              "zstd"
+            ]
+          }
+        }
+      },
+      {
+        "platform": "web",
+        "arch": "wasm32",
+        "abi_id": "abi:web:emscripten",
+        "shipping_enabled": false,
+        "capability_tags": [
+          "runtime.cli"
+        ],
+        "extensions": {
+          "support_status": "declared_not_built",
+          "compression_support": {
+            "required": [
+              "deflate"
+            ],
+            "optional": [
+              "zstd"
+            ]
+          }
+        }
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "canonical_platform_ids": [
+        "winnt",
+        "win9x",
+        "win16",
+        "dos",
+        "macosx",
+        "macclassic",
+        "linux",
+        "android",
+        "ios",
+        "web"
+      ],
+      "forbidden_platform_aliases": [
+        "win",
+        "windows",
+        "mac",
+        "osx"
+      ],
+      "compression_policy": {
+        "required_algorithms": [
+          "deflate"
+        ],
+        "optional_algorithms": [
+          "zstd"
+        ]
+      }
+    }
   }
 }
