@@ -2,7 +2,18 @@ cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium_client
     app/main_client.c
+    adapters/client_fs_adapter.c
+    adapters/client_network_adapter.c
+    core/client_command_bridge.c
+    core/client_commands_registry.c
+    core/client_models_options.c
+    core/client_models_server.c
+    core/client_models_world.c
+    core/client_state_machine.c
     input/client_input_bindings.c
+    modes/client_mode_cli.c
+    modes/client_mode_gui.c
+    modes/client_mode_tui.c
     observability/readonly_view_model.c
     shell/client_shell.c
     ui/client_ui_compositor.c
@@ -16,8 +27,11 @@ target_link_libraries(dominium_client PRIVATE
     libs::contracts
 )
 target_include_directories(dominium_client PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/adapters
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/input
+    ${CMAKE_CURRENT_SOURCE_DIR}/modes
     ${CMAKE_CURRENT_SOURCE_DIR}/observability
     ${CMAKE_CURRENT_SOURCE_DIR}/shell
     ${CMAKE_CURRENT_SOURCE_DIR}/ui
