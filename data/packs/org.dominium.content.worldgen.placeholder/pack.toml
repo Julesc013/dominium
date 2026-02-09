@@ -1,0 +1,9 @@
+pack_id = "org.dominium.content.worldgen.placeholder"
+pack_version = "0.1.0"
+pack_format_version = 1
+requires_engine = "0.0.0"
+provides = ["org.dominium.content.worldgen.placeholder"]
+depends = []
+optional = true
+pack_tags = ["pack.class.content", "pack.maturity.prealpha", "pack.stability.disposable"]
+extensions = { maturity = "prealpha", stability = "disposable" }

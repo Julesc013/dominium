@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.schema.profile",
+  "schema_version": "1.1.0",
+  "record": {
+    "profile_id": "org.dominium.profile.runtime_min_prealpha",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "description": "Minimal pre-alpha pack set for fast replacement cycles.",
+    "recommended_packs": [
+      {
+        "pack_id": "org.dominium.content.worldgen.placeholder"
+      },
+      {
+        "pack_id": "org.dominium.content.resources.placeholder"
+      }
+    ],
+    "default_world_templates": [
+      {
+        "template_id": "org.dominium.template.minimal"
+      }
+    ],
+    "ui_density": "org.dominium.ui.density.standard",
+    "verbosity": "org.dominium.ui.verbosity.normal",
+    "default_law_presets": [
+      "org.dominium.law.default"
+    ],
+    "default_meta_law_presets": [
+      "org.dominium.meta_law.default"
+    ],
+    "warnings_level": "org.dominium.warnings.standard",
+    "profile_tags": [
+      "runtime",
+      "prealpha",
+      "replaceable"
+    ],
+    "extensions": {
+      "pack_policy": {
+        "maturity": "prealpha",
+        "stability": "disposable"
+      }
+    }
+  }
+}

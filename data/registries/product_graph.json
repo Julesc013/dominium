@@ -162,9 +162,16 @@
         "product_id": "dominium.product.sdk.engine",
         "kind": "sdk",
         "provides_exports": [
-          "export:sdk.engine"
+          "export:sdk.engine",
+          "export:lib.engine",
+          "export:headers.engine",
+          "export:schemas.engine"
         ],
-        "provides_capabilities": [],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.sdk.engine"
+          }
+        ],
         "requires_exports": [
           "export:lib.engine"
         ],
@@ -185,11 +192,18 @@
         "product_id": "dominium.product.sdk.game",
         "kind": "sdk",
         "provides_exports": [
-          "export:sdk.game"
+          "export:sdk.game",
+          "export:lib.game",
+          "export:headers.game",
+          "export:schemas.game"
         ],
-        "provides_capabilities": [],
+        "provides_capabilities": [
+          {
+            "capability_id": "capability.sdk.game"
+          }
+        ],
         "requires_exports": [
-          "export:lib.engine",
+          "export:sdk.engine",
           "export:lib.game"
         ],
         "requires_capabilities": [],

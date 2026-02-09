@@ -1,0 +1,56 @@
+{
+  "schema_id": "dominium.schema.distribution.profile",
+  "schema_version": "1.0.0",
+  "record": {
+    "profile_id": "org.dominium.profile.runtime_min.dos",
+    "profile_version": "1.0.0",
+    "profile_format_version": 1,
+    "requires_capabilities": [
+      {
+        "capability_id": "capability.runtime.client"
+      },
+      {
+        "capability_id": "capability.render.null"
+      }
+    ],
+    "package_refs": [
+      {
+        "pkg_id": "org.dominium.core.runtime_cfg",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.engine",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.game",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.core.client",
+        "version_constraint": ">=0.1.0"
+      },
+      {
+        "pkg_id": "org.dominium.rend.null",
+        "version_constraint": ">=0.1.0"
+      }
+    ],
+    "optional_capabilities": [],
+    "profile_tags": [
+      "runtime",
+      "minimal",
+      "legacy",
+      "platform.dos"
+    ],
+    "extensions": {
+      "target_platform": "dos",
+      "target_arch": "x86_16",
+      "target_abis": [
+        "abi:dos:watcom",
+        "abi:dos:djgpp"
+      ],
+      "legacy_support_status": "declared_not_built",
+      "unsupported_refusal_code": "REFUSE_PLATFORM_UNSUPPORTED"
+    }
+  }
+}
