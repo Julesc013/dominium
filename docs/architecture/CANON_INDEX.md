@@ -261,6 +261,9 @@ execution artifacts and are not authoritative.
 - `docs/agents/AGENT_LIFECYCLE.md`
 - `docs/agents/AGENT_MODEL.md`
 - `docs/agents/AGENT_NON_GOALS.md`
+- `docs/governance/REMEDIATION_STATE_MACHINE.md`
+- `docs/governance/SEMANTIC_ESCALATION_POLICY.md`
+- `docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md`
 - `docs/guides/TOOLING_OVERVIEW.md`
 - `docs/guides/ui_editor/README.md`
 - `docs/policies/COMPATIBILITY_PROMISES.md`
