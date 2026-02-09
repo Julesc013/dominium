@@ -24,6 +24,15 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include "client_shell.h"
 #include "readonly_view_model.h"
 #include "client_ui_compositor.h"
+#include "client_command_bridge.h"
+#include "client_models_options.h"
+#include "client_models_server.h"
+#include "client_models_world.h"
+#include "client_mode_cli.h"
+#include "client_mode_tui.h"
+#include "client_mode_gui.h"
+#include "client_fs_adapter.h"
+#include "client_network_adapter.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -98,6 +107,7 @@ static void print_help(void)
     printf("  --expect-caps-abi <v>        Require caps ABI match\n");
     printf("  --expect-gfx-api <v>         Require gfx API match\n");
     printf("commands:\n");
+    printf("  client.*        Canonical command namespace (bridged to CLI handlers)\n");
     printf("  new-world       Create a new world (use built-in templates)\n");
     printf("  create-world    Create + save world (auto path if omitted)\n");
     printf("  load-world      Load a world save (default path or path=...)\n");
@@ -310,6 +320,46 @@ static int client_parse_u64(const char* text, uint64_t* out_value)
     }
     *out_value = (uint64_t)value;
     return 1;
+}
+
+static u32 client_collect_capabilities(const char* env_text,
+                                       char* storage,
+                                       size_t storage_cap,
+                                       const char** out_caps,
+                                       u32 out_caps_cap)
+{
+    u32 count = 0u;
+    char* cursor = 0;
+    if (!env_text || !env_text[0] || !storage || storage_cap == 0u || !out_caps || out_caps_cap == 0u) {
+        return 0u;
+    }
+    strncpy(storage, env_text, storage_cap - 1u);
+    storage[storage_cap - 1u] = '\0';
+    cursor = storage;
+    while (*cursor && count < out_caps_cap) {
+        char* comma = strchr(cursor, ',');
+        while (*cursor && isspace((unsigned char)*cursor)) {
+            cursor++;
+        }
+        if (comma) {
+            *comma = '\0';
+        }
+        {
+            char* end = cursor + strlen(cursor);
+            while (end > cursor && isspace((unsigned char)end[-1])) {
+                end--;
+            }
+            *end = '\0';
+        }
+        if (*cursor) {
+            out_caps[count++] = cursor;
+        }
+        if (!comma) {
+            break;
+        }
+        cursor = comma + 1;
+    }
+    return count;
 }
 
 static int client_parse_ui_scale(const char* text, int* out_value)
@@ -2891,8 +2941,22 @@ static int client_ui_execute_command(const char* cmd,
     static int cli_preset_index = 0;
     static client_ui_settings fallback_settings;
     static int fallback_settings_ready = 0;
+    static client_options_model options_model;
+    static client_world_model world_model;
+    static client_server_model server_model;
+    static int models_ready = 0;
     dom_client_shell* shell = 0;
+    client_state_machine state_machine;
     char cmd_buf[512];
+    char bridged_cmd[512];
+    char bridge_message[CLIENT_UI_STATUS_MAX];
+    char capabilities_storage[512];
+    const char* capability_ids[32];
+    u32 capability_count = 0u;
+    const char* effective_cmd = cmd;
+    client_command_bridge_result bridge_result = CLIENT_COMMAND_BRIDGE_NOT_CANONICAL;
+    const char* provider_refusal = 0;
+    client_discovery_provider_status lan_status;
     char* token;
     if (status && status_cap > 0u) {
         status[0] = '\0';
@@ -2919,11 +2983,74 @@ static int client_ui_execute_command(const char* cmd,
     } else {
         shell = &ui_state->shell;
     }
-    strncpy(cmd_buf, cmd, sizeof(cmd_buf) - 1u);
+    if (!models_ready) {
+        client_options_model_init(&options_model);
+        client_world_model_init(&world_model);
+        client_server_model_init(&server_model);
+        models_ready = 1;
+    }
+    client_state_machine_init(&state_machine);
+    capability_count = client_collect_capabilities(getenv("DOM_CLIENT_CAPABILITIES"),
+                                                   capabilities_storage,
+                                                   sizeof(capabilities_storage),
+                                                   capability_ids,
+                                                   32u);
+    bridge_result = client_command_bridge_prepare(cmd,
+                                                  bridged_cmd,
+                                                  sizeof(bridged_cmd),
+                                                  bridge_message,
+                                                  sizeof(bridge_message),
+                                                  capability_ids,
+                                                  capability_count,
+                                                  &state_machine);
+    if (bridge_result == CLIENT_COMMAND_BRIDGE_REFUSED) {
+        if (log) {
+            dom_app_ui_event_log_emit(log,
+                                      client_state_machine_last_command(&state_machine),
+                                      bridge_message);
+        }
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", bridge_message);
+        }
+        if (emit_text) {
+            printf("%s\n", bridge_message);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
+    }
+    if (bridge_result == CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK) {
+        if (log) {
+            dom_app_ui_event_log_emit(log,
+                                      client_state_machine_last_command(&state_machine),
+                                      bridge_message);
+        }
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "%s", bridge_message);
+        }
+        if (emit_text) {
+            printf("%s\n", bridge_message);
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (bridge_result == CLIENT_COMMAND_BRIDGE_REWRITTEN) {
+        effective_cmd = bridged_cmd;
+    }
+
+    strncpy(cmd_buf, effective_cmd, sizeof(cmd_buf) - 1u);
     cmd_buf[sizeof(cmd_buf) - 1u] = '\0';
     token = strtok(cmd_buf, " \t");
     if (!token) {
         return D_APP_EXIT_USAGE;
+    }
+    lan_status = client_network_provider_lan();
+    provider_refusal = client_network_provider_refusal_code(lan_status);
+    if (strcmp(token, "server-list") == 0 || strcmp(token, "server-connect") == 0) {
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "refusal=%s command=%s", provider_refusal, token);
+        }
+        if (emit_text) {
+            printf("refusal=%s command=%s\n", provider_refusal, token);
+        }
+        return D_APP_EXIT_UNAVAILABLE;
     }
     if (strcmp(token, "tools") == 0) {
         if (log) {
@@ -3216,7 +3343,7 @@ static int client_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
-    return dom_client_shell_execute(shell, cmd, log, status, status_cap, emit_text);
+    return dom_client_shell_execute(shell, effective_cmd, log, status, status_cap, emit_text);
 }
 
 static void client_ui_apply_action(client_ui_state* state,
