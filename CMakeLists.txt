@@ -1041,7 +1041,7 @@ file(MAKE_DIRECTORY
 add_subdirectory(libs)
 add_subdirectory(engine)
 add_subdirectory(app)
-add_subdirectory(shared_ui_win32)
+add_subdirectory(libs/ui_backends/win32)
 add_subdirectory(tools/ui_shared/src/ui_ir)
 add_subdirectory(tools/ui_bind)
 if(WIN32)
