@@ -190,7 +190,87 @@
         "DOM_BUILD_LAUNCHER": "ON",
         "DOM_BUILD_GAME": "ON",
         "DOM_BUILD_TESTS": "OFF",
+        "DOM_BUILD_KIND": "release",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
+      "name": "msvc-dev-debug",
+      "displayName": "MSVC Dev Debug (Default Lane)",
+      "inherits": "dev-win-vs2026",
+      "cacheVariables": {
+        "DOM_BUILD_KIND": "dev"
+      }
+    },
+    {
+      "name": "msvc-dev-release",
+      "displayName": "MSVC Dev Release",
+      "inherits": "dev-win-vs2026",
+      "cacheVariables": {
+        "DOM_BUILD_MODE": "Release",
+        "DOM_BUILD_KIND": "dev"
+      }
+    },
+    {
+      "name": "msvc-verify",
+      "displayName": "MSVC Verify Fast",
+      "inherits": "verify-win-vs2026",
+      "cacheVariables": {
+        "DOM_BUILD_KIND": "dev"
+      }
+    },
+    {
+      "name": "msvc-verify-full",
+      "displayName": "MSVC Verify Full",
+      "inherits": "verify-win-vs2026",
+      "cacheVariables": {
+        "DOM_BUILD_KIND": "dev"
+      }
+    },
+    {
+      "name": "release-winnt-x86_64",
+      "displayName": "Release WinNT x86_64",
+      "inherits": "release-win-vs2026",
+      "cacheVariables": {
+        "DOM_BUILD_KIND": "release"
+      }
+    },
+    {
+      "name": "win9x-x86_32-legacy",
+      "displayName": "Win9x x86_32 Legacy (Declared)",
+      "inherits": "msvc-base",
+      "hidden": true,
+      "architecture": "Win32",
+      "cacheVariables": {
+        "DOM_TARGET_OS_FAMILY": "win9x",
+        "DOM_TARGET_ARCH": "x86_32",
+        "DOM_BUILD_MODE": "Debug"
+      }
+    },
+    {
+      "name": "win16-x86_16",
+      "displayName": "Win16 x86_16 (Declared)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/toolchain_x86_16.cmake",
+        "DOM_TARGET_OS_FAMILY": "win16",
+        "DOM_TARGET_ARCH": "x86_16",
+        "DOM_BUILD_MODE": "Debug"
+      }
+    },
+    {
+      "name": "dos-x86_16",
+      "displayName": "DOS x86_16 (Declared)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/toolchain_x86_16.cmake",
+        "DOM_TARGET_OS_FAMILY": "dos",
+        "DOM_TARGET_ARCH": "x86_16",
+        "DOM_BUILD_MODE": "Debug"
       }
     },
     {
@@ -377,7 +457,32 @@
       "inherits": "macos-xcode-debug",
       "cacheVariables": {
         "DOM_BUILD_MODE": "Release",
+        "DOM_BUILD_KIND": "release",
         "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "macos-dev",
+      "displayName": "macOS Dev",
+      "inherits": "dev-macos-xcode"
+    },
+    {
+      "name": "macos-verify",
+      "displayName": "macOS Verify Fast",
+      "inherits": "verify-macos-xcode"
+    },
+    {
+      "name": "macos-verify-full",
+      "displayName": "macOS Verify Full",
+      "inherits": "verify-macos-xcode"
+    },
+    {
+      "name": "release-macos-arm64",
+      "displayName": "Release macOS arm64",
+      "inherits": "release-macos-xcode",
+      "cacheVariables": {
+        "DOM_TARGET_ARCH": "arm64",
+        "DOM_BUILD_KIND": "release"
       }
     },
     {
@@ -483,7 +588,37 @@
       "inherits": "linux-debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "DOM_BUILD_MODE": "Release"
+        "DOM_BUILD_MODE": "Release",
+        "DOM_BUILD_KIND": "release"
+      }
+    },
+    {
+      "name": "linux-gcc-dev",
+      "displayName": "Linux GCC Dev",
+      "inherits": "dev-linux-gcc"
+    },
+    {
+      "name": "linux-clang-dev",
+      "displayName": "Linux Clang Dev",
+      "inherits": "dev-linux-clang"
+    },
+    {
+      "name": "linux-verify",
+      "displayName": "Linux Verify Fast",
+      "inherits": "verify-linux-gcc"
+    },
+    {
+      "name": "linux-verify-full",
+      "displayName": "Linux Verify Full",
+      "inherits": "verify-linux-gcc"
+    },
+    {
+      "name": "release-linux-x86_64",
+      "displayName": "Release Linux x86_64",
+      "inherits": "release-linux-gcc",
+      "cacheVariables": {
+        "DOM_TARGET_ARCH": "x86_64",
+        "DOM_BUILD_KIND": "release"
       }
     },
     {
@@ -767,32 +902,84 @@
     {
       "name": "dev-win-vs2026",
       "configurePreset": "dev-win-vs2026",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "targets": ["all_runtime"]
     },
     {
       "name": "local",
       "configurePreset": "local",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "targets": ["all_runtime"]
     },
     {
       "name": "verify-win-vs2026",
       "configurePreset": "verify-win-vs2026",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "targets": ["verify_fast"]
     },
     {
       "name": "verify",
       "configurePreset": "verify",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "targets": ["verify_fast"]
     },
     {
       "name": "release-check",
       "configurePreset": "release-check",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "targets": ["verify_full"]
     },
     {
       "name": "release-win-vs2026",
       "configurePreset": "release-win-vs2026",
-      "configuration": "Release"
+      "configuration": "Release",
+      "targets": ["dist_all"]
+    },
+    {
+      "name": "msvc-dev-debug",
+      "configurePreset": "msvc-dev-debug",
+      "configuration": "Debug",
+      "targets": ["all_runtime"]
+    },
+    {
+      "name": "msvc-dev-release",
+      "configurePreset": "msvc-dev-release",
+      "configuration": "Release",
+      "targets": ["all_runtime"]
+    },
+    {
+      "name": "msvc-verify",
+      "configurePreset": "msvc-verify",
+      "configuration": "Debug",
+      "targets": ["verify_fast"]
+    },
+    {
+      "name": "msvc-verify-full",
+      "configurePreset": "msvc-verify-full",
+      "configuration": "Debug",
+      "targets": ["verify_full"]
+    },
+    {
+      "name": "release-winnt-x86_64",
+      "configurePreset": "release-winnt-x86_64",
+      "configuration": "Release",
+      "targets": ["dist_all"]
+    },
+    {
+      "name": "win9x-x86_32-legacy",
+      "configurePreset": "win9x-x86_32-legacy",
+      "configuration": "Debug",
+      "targets": ["all_runtime"]
+    },
+    {
+      "name": "win16-x86_16",
+      "configurePreset": "win16-x86_16",
+      "targets": ["all_runtime"]
+    },
+    {
+      "name": "dos-x86_16",
+      "configurePreset": "dos-x86_16",
+      "targets": ["all_runtime"]
     },
     {
       "name": "legacy-win-vs2015",
@@ -853,17 +1040,44 @@
     {
       "name": "dev-macos-xcode",
       "configurePreset": "dev-macos-xcode",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "targets": ["all_runtime"]
     },
     {
       "name": "verify-macos-xcode",
       "configurePreset": "verify-macos-xcode",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "targets": ["verify_fast"]
     },
     {
       "name": "release-macos-xcode",
       "configurePreset": "release-macos-xcode",
-      "configuration": "Release"
+      "configuration": "Release",
+      "targets": ["dist_all"]
+    },
+    {
+      "name": "macos-dev",
+      "configurePreset": "macos-dev",
+      "configuration": "Debug",
+      "targets": ["all_runtime"]
+    },
+    {
+      "name": "macos-verify",
+      "configurePreset": "macos-verify",
+      "configuration": "Debug",
+      "targets": ["verify_fast"]
+    },
+    {
+      "name": "macos-verify-full",
+      "configurePreset": "macos-verify-full",
+      "configuration": "Debug",
+      "targets": ["verify_full"]
+    },
+    {
+      "name": "release-macos-arm64",
+      "configurePreset": "release-macos-arm64",
+      "configuration": "Release",
+      "targets": ["dist_all"]
     },
     {
       "name": "linux-debug",
@@ -886,19 +1100,48 @@
     },
     {
       "name": "dev-linux-gcc",
-      "configurePreset": "dev-linux-gcc"
+      "configurePreset": "dev-linux-gcc",
+      "targets": ["all_runtime"]
     },
     {
       "name": "dev-linux-clang",
-      "configurePreset": "dev-linux-clang"
+      "configurePreset": "dev-linux-clang",
+      "targets": ["all_runtime"]
     },
     {
       "name": "verify-linux-gcc",
-      "configurePreset": "verify-linux-gcc"
+      "configurePreset": "verify-linux-gcc",
+      "targets": ["verify_fast"]
     },
     {
       "name": "release-linux-gcc",
-      "configurePreset": "release-linux-gcc"
+      "configurePreset": "release-linux-gcc",
+      "targets": ["dist_all"]
+    },
+    {
+      "name": "linux-gcc-dev",
+      "configurePreset": "linux-gcc-dev",
+      "targets": ["all_runtime"]
+    },
+    {
+      "name": "linux-clang-dev",
+      "configurePreset": "linux-clang-dev",
+      "targets": ["all_runtime"]
+    },
+    {
+      "name": "linux-verify",
+      "configurePreset": "linux-verify",
+      "targets": ["verify_fast"]
+    },
+    {
+      "name": "linux-verify-full",
+      "configurePreset": "linux-verify-full",
+      "targets": ["verify_full"]
+    },
+    {
+      "name": "release-linux-x86_64",
+      "configurePreset": "release-linux-x86_64",
+      "targets": ["dist_all"]
     },
     {
       "name": "msys2-debug",
@@ -1005,6 +1248,68 @@
       }
     },
     {
+      "name": "msvc-dev-debug",
+      "configurePreset": "msvc-dev-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "msvc-dev-release",
+      "configurePreset": "msvc-dev-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "msvc-verify",
+      "configurePreset": "msvc-verify",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "msvc-verify-full",
+      "configurePreset": "msvc-verify-full",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "release-winnt-x86_64",
+      "configurePreset": "release-winnt-x86_64",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "win9x-x86_32-legacy",
+      "configurePreset": "win9x-x86_32-legacy",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "win16-x86_16",
+      "configurePreset": "win16-x86_16",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "dos-x86_16",
+      "configurePreset": "dos-x86_16",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "legacy-win-vs2015",
       "configurePreset": "legacy-win-vs2015",
       "configuration": "Debug",
@@ -1053,6 +1358,14 @@
       }
     },
     {
+      "name": "macos-dev",
+      "configurePreset": "macos-dev",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "verify-macos-xcode",
       "configurePreset": "verify-macos-xcode",
       "configuration": "Debug",
@@ -1061,8 +1374,32 @@
       }
     },
     {
+      "name": "macos-verify",
+      "configurePreset": "macos-verify",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "macos-verify-full",
+      "configurePreset": "macos-verify-full",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "release-macos-xcode",
       "configurePreset": "release-macos-xcode",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "release-macos-arm64",
+      "configurePreset": "release-macos-arm64",
       "configuration": "Release",
       "output": {
         "outputOnFailure": true
@@ -1083,8 +1420,22 @@
       }
     },
     {
+      "name": "linux-gcc-dev",
+      "configurePreset": "linux-gcc-dev",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "dev-linux-clang",
       "configurePreset": "dev-linux-clang",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-clang-dev",
+      "configurePreset": "linux-clang-dev",
       "output": {
         "outputOnFailure": true
       }
@@ -1097,8 +1448,29 @@
       }
     },
     {
+      "name": "linux-verify",
+      "configurePreset": "linux-verify",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-verify-full",
+      "configurePreset": "linux-verify-full",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "release-linux-gcc",
       "configurePreset": "release-linux-gcc",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "release-linux-x86_64",
+      "configurePreset": "release-linux-x86_64",
       "output": {
         "outputOnFailure": true
       }

@@ -113,6 +113,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-MODE-BACKEND-REGISTRY`
 - `INV-MODE-BACKEND-SELECTION`
 - `INV-PORTABLE-RUN-CONTRACT`
+- `INV-BUILD-PRESET-CONTRACT`
+- `INV-DIST-RELEASE-LANE-GATE`
 
 ## Key Rule Notes
 
@@ -141,6 +143,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - Fails when setup/launcher CLI surfaces do not expose explicit portable/install contract arguments.
 - Contract reference: `docs/dev/PORTABLE_TESTING.md`.
+
+### INV-BUILD-PRESET-CONTRACT
+
+- Fails when required configure/build presets are missing from `CMakePresets.json`.
+- Fails when required build presets do not point at mandated lane targets (`all_runtime`, `verify_fast`, `verify_full`, `dist_all`).
+- Fails when VSCode default tasks drift from the canonical Windows dev/verify lane mapping.
+
+### INV-DIST-RELEASE-LANE-GATE
+
+- Fails when `dist_*` targets are not guarded by `dom_dist_release_lane_guard`.
+- Fails when the release-lane guard does not enforce explicit release build kinds and non-`none` GBN.
+- Fails when `testx_all` hard-depends on packaging targets, which would force release packaging from dev lane execution.
 
 ### INV-PREALPHA-PACK-ISOLATION
 

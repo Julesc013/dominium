@@ -696,11 +696,12 @@ if(DOM_GIT_EXECUTABLE)
     endif()
 endif()
 
-set(DOM_BUILD_KIND "dev")
-if(DEFINED ENV{CI})
+set(DOM_BUILD_KIND "dev" CACHE STRING "Build lane kind (dev|ci|release|beta|rc|hotfix)")
+set_property(CACHE DOM_BUILD_KIND PROPERTY STRINGS dev ci release beta rc hotfix)
+if(DOM_BUILD_KIND STREQUAL "dev" AND DEFINED ENV{CI})
     string(TOLOWER "$ENV{CI}" _dom_ci_raw)
     if(NOT _dom_ci_raw STREQUAL "" AND NOT _dom_ci_raw STREQUAL "0" AND NOT _dom_ci_raw STREQUAL "false")
-        set(DOM_BUILD_KIND "ci")
+        set(DOM_BUILD_KIND "ci" CACHE STRING "Build lane kind (dev|ci|release|beta|rc|hotfix)" FORCE)
     endif()
 endif()
 
@@ -714,6 +715,12 @@ endif()
 
 set(DOM_BUILD_GBN "none")
 string(TIMESTAMP DOM_BUILD_TIMESTAMP "%Y-%m-%dT%H:%M:%SZ" UTC)
+set(DOM_RELEASE_KINDS release beta rc hotfix)
+set(DOM_IS_RELEASE_LANE OFF)
+list(FIND DOM_RELEASE_KINDS "${DOM_BUILD_KIND}" _dom_release_kind_idx)
+if(NOT _dom_release_kind_idx EQUAL -1)
+    set(DOM_IS_RELEASE_LANE ON)
+endif()
 
 set(DOM_TOOLCHAIN_ID "unknown")
 set(_dom_toolchain_id "")
@@ -1074,6 +1081,57 @@ if(DOM_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
+function(dom_add_existing_deps target)
+    foreach(_dep IN LISTS ARGN)
+        if(TARGET ${_dep})
+            add_dependencies(${target} ${_dep})
+        endif()
+    endforeach()
+endfunction()
+
+add_custom_target(all_libs)
+dom_add_existing_deps(all_libs
+    appcore
+    build_identity
+    domino_engine
+    dominium_game
+    dominium_app_runtime
+    domino_ui_ir
+    launcher_core
+    setup_core
+    shared_ui_win32
+)
+
+add_custom_target(all_apps)
+dom_add_existing_deps(all_apps
+    dominium_client
+    dominium_server
+    launcher_cli
+    launcher_tui
+    launcher_gui
+    setup_cli
+    setup_tui
+    setup_gui
+)
+
+add_custom_target(all_tools)
+dom_add_existing_deps(all_tools
+    tool_ui_bind
+    domui_validate
+    tool_ui_doc_annotate
+    coredata_compile
+    coredata_validate
+)
+
+add_custom_target(all_renderers)
+dom_add_existing_deps(all_renderers domino_engine)
+
+add_custom_target(all_runtime)
+add_dependencies(all_runtime all_libs all_apps all_tools all_renderers)
+if(TARGET build_identity AND TARGET dom_update_build_number)
+    add_dependencies(build_identity dom_update_build_number)
+endif()
+
 if(DOM_PROJECTION)
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ide")
     include(IdeCommon)
@@ -1342,12 +1400,62 @@ add_custom_target(launcher_run_smoke
     COMMENT "Running deterministic launcher smoke"
 )
 
+add_custom_target(smoke_run_apps
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/smoke_run_apps.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --build-root ${CMAKE_BINARY_DIR}
+        --output ${CMAKE_BINARY_DIR}/smoke_run_apps.json
+    DEPENDS all_runtime
+    COMMENT "Running bounded application smoke checks"
+)
+
 add_custom_target(install_from_pkg_cache
     COMMAND ${CMAKE_COMMAND} -E echo "install_from_pkg_cache: delegated to setup_install_smoke"
     DEPENDS setup_install_smoke
 )
 
-add_dependencies(testx_all pkg_verify_all pkg_index_all dist_build_manifest setup_install_smoke launcher_run_smoke)
+set(DOM_VERIFY_FAST_TIMEOUT "300" CACHE STRING "Per-test timeout seconds for verify_fast")
+set(_dom_verify_fast_ctest_cmd ${CMAKE_CTEST_COMMAND} --output-on-failure)
+if(DOM_VERIFY_FAST_TIMEOUT)
+    list(APPEND _dom_verify_fast_ctest_cmd --timeout ${DOM_VERIFY_FAST_TIMEOUT})
+endif()
+if(CMAKE_CONFIGURATION_TYPES)
+    list(APPEND _dom_verify_fast_ctest_cmd -C $<CONFIG>)
+endif()
+
+add_custom_target(verify_fast
+    COMMAND ${_dom_verify_fast_ctest_cmd} -L smoke
+    COMMAND ${_dom_verify_fast_ctest_cmd} -L portability
+    COMMAND ${_dom_verify_fast_ctest_cmd} -L buildmeta
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Running bounded verification suite (fast lane)"
+)
+add_dependencies(verify_fast
+    all_quality_gates
+    check_arch
+    check_abi_boundaries
+    check_ui_shell_purity
+    smoke_run_apps
+)
+if(WIN32 AND TARGET ui_bind_phase)
+    add_dependencies(verify_fast ui_bind_phase)
+endif()
+
+add_custom_target(verify_full DEPENDS verify_fast testx_all)
+
+add_custom_target(dom_dist_release_lane_guard
+    COMMAND ${CMAKE_COMMAND}
+        -DDOM_BUILD_KIND=${DOM_BUILD_KIND}
+        -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
+        -P ${CMAKE_SOURCE_DIR}/cmake/check_release_lane.cmake
+    COMMENT "Validating release lane gate for dist targets"
+)
+
+add_custom_target(dist_pack DEPENDS dom_dist_release_lane_guard pkg_pack_all)
+add_custom_target(dist_index DEPENDS dom_dist_release_lane_guard pkg_index_all)
+add_custom_target(dist_verify DEPENDS dom_dist_release_lane_guard pkg_verify_all)
+add_custom_target(dist_smoke DEPENDS dom_dist_release_lane_guard setup_install_smoke launcher_run_smoke)
+add_custom_target(dist_all DEPENDS dist_pack dist_index dist_verify dist_build_manifest dist_smoke)
 
 set(CPACK_PACKAGE_NAME "dominium")
 set(CPACK_PACKAGE_VENDOR "Dominium")

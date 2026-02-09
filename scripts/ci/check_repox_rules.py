@@ -240,6 +240,46 @@ DIST_PLATFORM_CANON_ROOTS = (
     os.path.join("dist", "redist"),
 )
 
+BUILD_PRESET_CONTRACT_CONFIGURE = (
+    "msvc-dev-debug",
+    "msvc-dev-release",
+    "msvc-verify",
+    "msvc-verify-full",
+    "release-winnt-x86_64",
+    "linux-gcc-dev",
+    "linux-clang-dev",
+    "linux-verify",
+    "linux-verify-full",
+    "release-linux-x86_64",
+    "macos-dev",
+    "macos-verify",
+    "macos-verify-full",
+    "release-macos-arm64",
+    "win9x-x86_32-legacy",
+    "win16-x86_16",
+    "dos-x86_16",
+)
+
+BUILD_PRESET_CONTRACT_TARGETS = {
+    "msvc-dev-debug": "all_runtime",
+    "msvc-dev-release": "all_runtime",
+    "msvc-verify": "verify_fast",
+    "msvc-verify-full": "verify_full",
+    "release-winnt-x86_64": "dist_all",
+    "linux-gcc-dev": "all_runtime",
+    "linux-clang-dev": "all_runtime",
+    "linux-verify": "verify_fast",
+    "linux-verify-full": "verify_full",
+    "release-linux-x86_64": "dist_all",
+    "macos-dev": "all_runtime",
+    "macos-verify": "verify_fast",
+    "macos-verify-full": "verify_full",
+    "release-macos-arm64": "dist_all",
+    "win9x-x86_32-legacy": "all_runtime",
+    "win16-x86_16": "all_runtime",
+    "dos-x86_16": "all_runtime",
+}
+
 
 def repo_rel(repo_root, path):
     return os.path.relpath(path, repo_root).replace("\\", "/")
@@ -1903,6 +1943,161 @@ def check_portable_run_contract(repo_root):
     return violations
 
 
+def _preset_cache_value(preset_map, preset_name, key):
+    seen = set()
+    current = preset_name
+    while current and current not in seen:
+        seen.add(current)
+        preset = preset_map.get(current)
+        if not isinstance(preset, dict):
+            return None
+        cache = preset.get("cacheVariables")
+        if isinstance(cache, dict) and key in cache:
+            return str(cache.get(key))
+        inherits = preset.get("inherits")
+        if isinstance(inherits, list):
+            current = str(inherits[0]) if inherits else ""
+        elif isinstance(inherits, str):
+            current = inherits
+        else:
+            current = ""
+    return None
+
+
+def check_build_preset_contract(repo_root):
+    invariant_id = "INV-BUILD-PRESET-CONTRACT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    presets_rel = "CMakePresets.json"
+    presets_path = os.path.join(repo_root, presets_rel)
+    payload = _load_json_file(presets_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, presets_rel)]
+
+    configure = payload.get("configurePresets")
+    build = payload.get("buildPresets")
+    if not isinstance(configure, list) or not isinstance(build, list):
+        return ["{}: missing configurePresets/buildPresets in {}".format(invariant_id, presets_rel)]
+
+    configure_map = {}
+    build_map = {}
+    for entry in configure:
+        if isinstance(entry, dict):
+            name = str(entry.get("name", "")).strip()
+            if name:
+                configure_map[name] = entry
+    for entry in build:
+        if isinstance(entry, dict):
+            name = str(entry.get("name", "")).strip()
+            if name:
+                build_map[name] = entry
+
+    violations = []
+    for preset_name in BUILD_PRESET_CONTRACT_CONFIGURE:
+        if preset_name not in configure_map:
+            violations.append("{}: missing configure preset {}".format(invariant_id, preset_name))
+        if preset_name not in build_map:
+            violations.append("{}: missing build preset {}".format(invariant_id, preset_name))
+
+    for preset_name, expected_target in BUILD_PRESET_CONTRACT_TARGETS.items():
+        build_entry = build_map.get(preset_name)
+        if not isinstance(build_entry, dict):
+            continue
+        targets = build_entry.get("targets")
+        if not isinstance(targets, list):
+            violations.append("{}: build preset {} missing targets list".format(invariant_id, preset_name))
+            continue
+        normalized = [str(item).strip() for item in targets if str(item).strip()]
+        if expected_target not in normalized:
+            violations.append(
+                "{}: build preset {} missing target {} (got {})".format(
+                    invariant_id, preset_name, expected_target, ",".join(normalized)
+                )
+            )
+
+    for release_preset in ("release-winnt-x86_64", "release-linux-x86_64", "release-macos-arm64"):
+        build_kind = _preset_cache_value(configure_map, release_preset, "DOM_BUILD_KIND")
+        if build_kind != "release":
+            violations.append(
+                "{}: configure preset {} must set DOM_BUILD_KIND=release".format(invariant_id, release_preset)
+            )
+
+    vscode_tasks_rel = ".vscode/tasks.json"
+    vscode_tasks_path = os.path.join(repo_root, vscode_tasks_rel)
+    tasks_payload = _load_json_file(vscode_tasks_path)
+    if not isinstance(tasks_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, vscode_tasks_rel))
+        return violations
+    tasks = tasks_payload.get("tasks")
+    if not isinstance(tasks, list):
+        violations.append("{}: missing tasks in {}".format(invariant_id, vscode_tasks_rel))
+        return violations
+
+    build_task_ok = False
+    test_task_ok = False
+    for task in tasks:
+        if not isinstance(task, dict):
+            continue
+        label = str(task.get("label", "")).strip()
+        args = task.get("args")
+        if not isinstance(args, list):
+            continue
+        args_norm = [str(value).strip() for value in args]
+        if label == "Build (MSVC DEV DEBUG)" and "msvc-dev-debug" in args_norm:
+            build_task_ok = True
+        if label == "Test (VERIFY FAST)" and "verify_fast" in args_norm:
+            test_task_ok = True
+    if not build_task_ok:
+        violations.append("{}: missing VSCode default build task for msvc-dev-debug".format(invariant_id))
+    if not test_task_ok:
+        violations.append("{}: missing VSCode default test task for verify_fast".format(invariant_id))
+
+    return violations
+
+
+def check_dist_release_lane_gate(repo_root):
+    invariant_id = "INV-DIST-RELEASE-LANE-GATE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    cmake_rel = "CMakeLists.txt"
+    cmake_text = read_text(os.path.join(repo_root, cmake_rel)) or ""
+    violations = []
+
+    if "add_custom_target(dom_dist_release_lane_guard" not in cmake_text:
+        violations.append("{}: {} missing dom_dist_release_lane_guard target".format(invariant_id, cmake_rel))
+    if "cmake/check_release_lane.cmake" not in cmake_text:
+        violations.append("{}: {} missing check_release_lane.cmake hook".format(invariant_id, cmake_rel))
+
+    for target_name in ("dist_pack", "dist_index", "dist_verify", "dist_smoke"):
+        pattern = re.compile(r"add_custom_target\(\s*{}\s+DEPENDS\s+dom_dist_release_lane_guard".format(target_name))
+        if not pattern.search(cmake_text):
+            violations.append(
+                "{}: {} target {} must depend on dom_dist_release_lane_guard".format(
+                    invariant_id, cmake_rel, target_name
+                )
+            )
+    if "add_custom_target(dist_all DEPENDS dist_pack dist_index dist_verify dist_build_manifest dist_smoke)" not in cmake_text:
+        violations.append("{}: {} dist_all target contract mismatch".format(invariant_id, cmake_rel))
+
+    if "add_dependencies(testx_all pkg_verify_all" in cmake_text:
+        violations.append("{}: {} testx_all must not hard-depend on dist packaging targets".format(invariant_id, cmake_rel))
+
+    guard_rel = "cmake/check_release_lane.cmake"
+    guard_path = os.path.join(repo_root, guard_rel.replace("/", os.sep))
+    guard_text = read_text(guard_path) or ""
+    for marker in (
+        "DIST_RELEASE_ONLY|build_kind_missing",
+        "DIST_RELEASE_ONLY|invalid_build_kind",
+        "DIST_RELEASE_ONLY|missing_gbn",
+    ):
+        if marker not in guard_text:
+            violations.append("{}: {} missing marker {}".format(invariant_id, guard_rel, marker))
+
+    return violations
+
+
 def _parse_command_registry_entries(text):
     entries = []
     current = []
@@ -3469,6 +3664,8 @@ def main() -> int:
     violations.extend(check_mode_backend_registry(repo_root))
     violations.extend(check_mode_backend_selection_contract(repo_root))
     violations.extend(check_portable_run_contract(repo_root))
+    violations.extend(check_build_preset_contract(repo_root))
+    violations.extend(check_dist_release_lane_gate(repo_root))
     violations.extend(check_bugreport_resolution(repo_root))
     violations.extend(check_command_capability_metadata(repo_root))
     violations.extend(check_camera_blueprint_command_metadata(repo_root))
