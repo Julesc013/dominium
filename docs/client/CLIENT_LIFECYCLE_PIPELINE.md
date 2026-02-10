@@ -46,3 +46,5 @@ Client session entry is command-driven and deterministic.
 - `client.session.inspect`, `client.session.map.open`, `client.session.stats`, and `client.session.replay.toggle`
   are allowed only in `SessionReady`.
 - `client.session.begin` is the only command that transitions to `SessionRunning`.
+- Re-entry triggers (`network_drop`, `client_restart`, `authority_change`) route through
+  `ResolveSession -> AcquireWorld -> VerifyWorld -> WarmupSimulation -> WarmupPresentation -> SessionReady`.

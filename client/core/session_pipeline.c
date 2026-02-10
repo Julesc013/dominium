@@ -167,7 +167,8 @@ int client_session_pipeline_apply_command(client_session_pipeline* pipeline, con
         transition_to(pipeline, CLIENT_SESSION_STAGE_SESSION_READY);
         return 1;
     }
-    if (strcmp(command_id, "client.session.reentry") == 0) {
+    if (strcmp(command_id, "client.session.reentry") == 0 ||
+        starts_with(command_id, "client.session.reentry.")) {
         transition_to(pipeline, CLIENT_SESSION_STAGE_RESOLVE_SESSION);
         transition_to(pipeline, CLIENT_SESSION_STAGE_ACQUIRE_WORLD);
         transition_to(pipeline, CLIENT_SESSION_STAGE_VERIFY_WORLD);

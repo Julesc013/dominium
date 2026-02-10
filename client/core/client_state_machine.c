@@ -228,8 +228,10 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
         return 1;
     }
     if (strcmp(command_id, "client.session.resume") == 0 ||
-        strcmp(command_id, "client.session.reentry") == 0) {
-        if (strcmp(command_id, "client.session.reentry") == 0) {
+        strcmp(command_id, "client.session.reentry") == 0 ||
+        starts_with(command_id, "client.session.reentry.")) {
+        if (strcmp(command_id, "client.session.reentry") == 0 ||
+            starts_with(command_id, "client.session.reentry.")) {
             client_session_artifacts_warmup_simulation(&machine->artifacts);
             client_session_artifacts_warmup_presentation(&machine->artifacts);
         }

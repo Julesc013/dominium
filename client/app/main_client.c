@@ -115,6 +115,9 @@ static void print_help(void)
     printf("  client.session.map.open Open map panel at SessionReady\n");
     printf("  client.session.stats    Open stats panel at SessionReady\n");
     printf("  client.session.replay.toggle Toggle replay recording at SessionReady\n");
+    printf("  client.session.reentry.network_drop Re-entry path for network interruption\n");
+    printf("  client.session.reentry.client_restart Re-entry path after client restart\n");
+    printf("  client.session.reentry.authority_change Re-entry path for authority handoff\n");
     printf("  new-world       Create a new world (use built-in templates)\n");
     printf("  create-world    Create + save world (auto path if omitted)\n");
     printf("  load-world      Load a world save (default path or path=...)\n");
