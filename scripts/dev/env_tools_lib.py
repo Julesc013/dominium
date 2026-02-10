@@ -115,6 +115,15 @@ def canonical_tools_dir(repo_root, platform_id="", arch_id=""):
     return canonical_tools_dir_details(repo_root, platform_id, arch_id)[0]
 
 
+def canonical_build_dirs(repo_root):
+    repo_root = _norm(os.path.abspath(repo_root))
+    return {
+        "verify": _norm(os.path.join(repo_root, "out", "build", "vs2026", "verify")),
+        "dev": _norm(os.path.join(repo_root, "out", "build", "vs2026", "dev")),
+        "msvc_base": _norm(os.path.join(repo_root, "build", "msvc-base")),
+    }
+
+
 def default_host_path():
     if os.name == "nt":
         system_root = os.environ.get("SystemRoot", r"C:\Windows")
@@ -157,20 +166,27 @@ def default_host_path():
     return os.pathsep.join(valid)
 
 
-def prepend_tools_to_path(env, tools_dir):
+def prepend_to_env(env, key, value):
     out = dict(env or {})
-    existing = out.get("PATH", "")
+    key_name = str(key)
+    prepend_value = str(value or "")
+    existing = out.get(key_name, "")
     items = [item for item in existing.split(os.pathsep) if item]
-    norm_tools = _norm_case(tools_dir)
+    norm_prepend = _norm_case(prepend_value)
     dedup = []
     seen = set()
     for item in items:
         norm_item = _norm_case(item)
-        if norm_item in seen or norm_item == norm_tools:
+        if norm_item in seen or norm_item == norm_prepend:
             continue
         seen.add(norm_item)
         dedup.append(item)
-    out["PATH"] = os.pathsep.join([tools_dir] + dedup)
+    out[key_name] = os.pathsep.join([prepend_value] + dedup) if prepend_value else os.pathsep.join(dedup)
+    return out
+
+
+def prepend_tools_to_path(env, tools_dir):
+    out = prepend_to_env(env, "PATH", tools_dir)
     out["DOM_TOOLS_PATH"] = tools_dir
     out["DOM_TOOLS_READY"] = "1"
     return out
