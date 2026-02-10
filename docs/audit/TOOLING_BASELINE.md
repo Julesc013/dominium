@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-09
+Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
 
@@ -13,9 +13,10 @@ This baseline captures canonical tool discoverability guarantees for RepoX, Test
 
 - `INV-TOOL-NAME-ONLY`
 - `INV-TOOLS-PATH-SET`
+- `INV-TOOLS-DIR-MISSING`
 - `INV-TOOL-UNRESOLVABLE`
 
-## Required Adapter
+## Adapter Surface
 
 - `scripts/dev/env_tools.py`
 - `scripts/dev/env_tools.cmd`
@@ -25,7 +26,7 @@ This baseline captures canonical tool discoverability guarantees for RepoX, Test
 ## TestX Regression Coverage
 
 - `test_tool_discoverability` verifies canonical tools resolve by name after canonical PATH setup.
-- `test_tool_discoverability_missing_path` verifies RepoX fails loudly when canonical tools PATH is absent.
+- `test_tool_discoverability_missing_path` verifies RepoX/TestX succeed even when caller PATH is empty, because environment canonicalization is self-contained.
 
 ## Diagnostics Contract
 

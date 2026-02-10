@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-09
+Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
 
@@ -16,16 +16,16 @@ Canonical tool invocation is PATH-based and name-only.
 
 Only this directory is sanctioned for canonical tool discovery.
 
-## Required Adapter
+## Canonical Adapter Family
 
-Use the single adapter family under `scripts/dev/`:
+Adapter utilities under `scripts/dev/`:
 
 - `scripts/dev/env_tools.py`
 - `scripts/dev/env_tools.cmd`
 - `scripts/dev/env_tools.ps1`
 - `scripts/dev/env_tools.sh`
 
-The adapter is responsible for:
+Adapter responsibilities:
 
 - resolving host platform/arch to canonical tool root
 - prepending canonical tool root to `PATH` deterministically
@@ -55,3 +55,9 @@ This policy applies to:
 - CI scripts
 - developer shells
 - wrapper scripts and mega-prompt execution instructions
+
+## Execution Policy
+
+- RepoX and TestX must canonicalize PATH internally before any tool discoverability checks.
+- Manual shell preparation via `env_tools` is optional convenience only.
+- Preferred gate entrypoint: `python scripts/dev/gate.py verify`.
