@@ -37,6 +37,9 @@ const char* client_state_machine_state_name(client_session_state state);
 const char* client_state_machine_last_command(const client_state_machine* machine);
 const char* client_state_machine_last_refusal(const client_state_machine* machine);
 const char* client_state_machine_stage_name(const client_state_machine* machine);
+const char* client_state_machine_warmup_simulation_step(const client_state_machine* machine);
+const char* client_state_machine_warmup_presentation_step(const client_state_machine* machine);
+int client_state_machine_simulation_time_advanced(const client_state_machine* machine);
 
 #ifdef __cplusplus
 }

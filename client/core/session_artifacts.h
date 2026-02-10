@@ -20,7 +20,12 @@ typedef struct client_session_artifacts_t {
     char source_id[96];
     char world_hash[96];
     char expected_hash[96];
+    char warmup_simulation_step[96];
+    char warmup_presentation_step[96];
     int verified;
+    int warmup_simulation_ready;
+    int warmup_presentation_ready;
+    int simulation_time_advanced;
 } client_session_artifacts;
 
 void client_session_artifacts_init(client_session_artifacts* artifacts);
@@ -40,8 +45,13 @@ int client_session_artifacts_verify_hash(client_session_artifacts* artifacts,
                                          const char* expected_hash,
                                          char* out_refusal,
                                          size_t out_refusal_cap);
+void client_session_artifacts_warmup_simulation(client_session_artifacts* artifacts);
+void client_session_artifacts_warmup_presentation(client_session_artifacts* artifacts);
 int client_session_artifacts_layer_allowed(const char* layer_id);
 const char* client_session_artifacts_mode_name(client_world_acquire_mode mode);
+const char* client_session_artifacts_warmup_simulation_step(const client_session_artifacts* artifacts);
+const char* client_session_artifacts_warmup_presentation_step(const client_session_artifacts* artifacts);
+int client_session_artifacts_simulation_time_advanced(const client_session_artifacts* artifacts);
 
 #ifdef __cplusplus
 }

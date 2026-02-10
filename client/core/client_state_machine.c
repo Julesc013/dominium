@@ -75,6 +75,30 @@ const char* client_state_machine_stage_name(const client_state_machine* machine)
     return client_session_pipeline_stage_name(&machine->pipeline);
 }
 
+const char* client_state_machine_warmup_simulation_step(const client_state_machine* machine)
+{
+    if (!machine) {
+        return "";
+    }
+    return client_session_artifacts_warmup_simulation_step(&machine->artifacts);
+}
+
+const char* client_state_machine_warmup_presentation_step(const client_state_machine* machine)
+{
+    if (!machine) {
+        return "";
+    }
+    return client_session_artifacts_warmup_presentation_step(&machine->artifacts);
+}
+
+int client_state_machine_simulation_time_advanced(const client_state_machine* machine)
+{
+    if (!machine) {
+        return 0;
+    }
+    return client_session_artifacts_simulation_time_advanced(&machine->artifacts);
+}
+
 int client_state_machine_apply(client_state_machine* machine, const char* command_id)
 {
     int pipeline_ok = 1;
@@ -138,6 +162,8 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
                                                     "server.default",
                                                     "hash.world.default");
         }
+        client_session_artifacts_warmup_simulation(&machine->artifacts);
+        client_session_artifacts_warmup_presentation(&machine->artifacts);
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
         if (machine->pipeline.stage_id == CLIENT_SESSION_STAGE_SESSION_READY) {
             machine->state = CLIENT_SESSION_STATE_SESSION_READY;
@@ -154,6 +180,10 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
     }
     if (strcmp(command_id, "client.session.resume") == 0 ||
         strcmp(command_id, "client.session.reentry") == 0) {
+        if (strcmp(command_id, "client.session.reentry") == 0) {
+            client_session_artifacts_warmup_simulation(&machine->artifacts);
+            client_session_artifacts_warmup_presentation(&machine->artifacts);
+        }
         machine->state = CLIENT_SESSION_STATE_SESSION_READY;
         return 1;
     }
@@ -203,6 +233,8 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
             machine->state = CLIENT_SESSION_STATE_REFUSAL_ERROR;
             return 0;
         }
+        client_session_artifacts_warmup_simulation(&machine->artifacts);
+        client_session_artifacts_warmup_presentation(&machine->artifacts);
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
         return 1;
     }

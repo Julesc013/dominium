@@ -10,7 +10,9 @@ The session transition workspace replaces loading-screen behavior with a stage-a
 ## Required Panels (NOW)
 
 - `Progress`: semantic stage timeline, never percentage-only.
+- `Progress` also reports warm-up execution steps for simulation and presentation.
 - `Details`: lock hash, world hash, pack set hash, capability set, schema refs.
+- `Details` includes `session.simulation.time_advanced` and must remain `0` during warm-up.
 - `Messages`: warnings/refusals in deterministic order.
 - `Actions`: `Cancel`, `Back`, `Fix`, `Continue` command surfaces.
 
