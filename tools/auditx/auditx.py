@@ -6,6 +6,12 @@ import json
 import os
 import sys
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+if THIS_DIR not in sys.path:
+    sys.path.insert(0, THIS_DIR)
+
+from graph import build_analysis_graph
+
 
 def _repo_root(path):
     if path:
@@ -14,12 +20,18 @@ def _repo_root(path):
 
 
 def _cmd_scan(args):
+    graph = build_analysis_graph(_repo_root(args.repo_root))
     payload = {
-        "result": "scan_not_ready",
+        "result": "scan_graph_ready",
         "reason_code": "refuse.not_implemented",
         "repo_root": _repo_root(args.repo_root),
         "changed_only": bool(args.changed_only),
         "format": args.format,
+        "graph": {
+            "node_count": len(graph.nodes),
+            "edge_count": len(graph.edges),
+            "graph_hash": graph.stable_hash(),
+        },
     }
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
