@@ -96,9 +96,11 @@ def build_parser():
 
     gate = sub.add_parser("gate", help="Run autonomous gate workflow.")
     gate_sub = gate.add_subparsers(dest="action", required=True)
+    gate_sub.add_parser("dev", help="Run RepoX + strict build with remediation.")
     gate_sub.add_parser("verify", help="Run RepoX + strict build + full TestX with remediation.")
     gate_sub.add_parser("dist", help="Run verify lane then explicit dist targets.")
     gate_sub.add_parser("doctor", help="Show canonical gate environment diagnostics.")
+    gate_sub.add_parser("remediate", help="Run remediation-mode diagnostics for RepoX stage.")
 
     return parser
 
