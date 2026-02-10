@@ -15,7 +15,7 @@ RepoX rules are organized into policy packs under `repo/repox/rulesets/`.
 - `repox/ui_parity`: command metadata, UI canonical binding, capability matrix integrity.
 - `repox/security`: epistemic and anti-cheat checks.
 - `repox/change_shape`: repository-shape and ambiguity checks.
-- `repox/derived_artifacts`: machine-generated contract surfaces (e.g., solver registry).
+- `repox/derived_artifacts`: machine-generated contract surfaces (e.g., solver registry, AuditX derived reports).
 - `repox/packaging`: package/distribution governance for `dompkg` and `dist/*`.
 
 Each rule record defines:
@@ -105,6 +105,10 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-RENDER-NO-TRUTH-ACCESS`
 - `INV-CAPABILITY-NO-LEGACY-GATING-TOKENS`
 - `INV-SOLVER-CONTRACTS`
+- `INV-AUDITX-ARTIFACT-HEADERS`
+- `INV-AUDITX-DETERMINISM`
+- `INV-AUDITX-NONRUNTIME`
+- `INV-AUDITX-OUTPUT-STALE`
 - `INV-REPOX-AMBIGUOUS-DIRS`
 - `INV-ROOT-MODULE-SHIM`
 - `INV-REPOX-RULESET-MISSING`
@@ -201,3 +205,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails if pre-alpha packs are missing explicit disposable markers.
 - Fails if runtime code paths reference pre-alpha pack IDs directly.
 - Keeps disposable content churn isolated to data/pack surfaces.
+
+### INV-AUDITX-ARTIFACT-HEADERS
+
+- Fails when `docs/audit/auditx/` exists but required artifact files are missing.
+- Fails when markdown artifacts are missing RepoX doc headers.
+- Fails when JSON artifacts are missing `status=DERIVED` or `last_reviewed`.
+
+### INV-AUDITX-DETERMINISM
+
+- Fails when deterministic scan primitives are missing from AuditX implementation.
+- Enforces stable hash/fingerprint/sort contract in graph, model, and output writers.
+
+### INV-AUDITX-NONRUNTIME
+
+- Fails when runtime sources reference `tools/auditx` implementation paths.
+- Keeps AuditX tooling strictly out of runtime product code.
+
+### INV-AUDITX-OUTPUT-STALE
+
+- Warns when committed `docs/audit/auditx/FINDINGS.json` lags far behind HEAD.
+- Non-gating signal to refresh derived semantic reports.
