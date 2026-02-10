@@ -9,6 +9,11 @@ import subprocess
 import sys
 from datetime import date
 
+DEV_SCRIPT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "dev"))
+if DEV_SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, DEV_SCRIPT_DIR)
+
+from env_tools_lib import canonical_tools_dir_details, default_host_path, prepend_tools_to_path, resolve_tool
 from hygiene_utils import DEFAULT_EXCLUDES, iter_files, read_text, strip_c_comments_and_strings, normalize_path
 
 
@@ -396,9 +401,36 @@ def is_override_active(repo_root, invariant_id, today=None):
 
 
 def run_git(args, repo_root):
+    git_cmd = shutil.which("git")
+    if not git_cmd:
+        fallback = []
+        if os.name == "nt":
+            roots = [
+                os.environ.get("ProgramFiles", ""),
+                os.environ.get("ProgramW6432", ""),
+                os.environ.get("ProgramFiles(x86)", ""),
+                os.environ.get("LocalAppData", ""),
+            ]
+            suffixes = (
+                os.path.join("Git", "cmd", "git.exe"),
+                os.path.join("Git", "bin", "git.exe"),
+                os.path.join("Programs", "Git", "cmd", "git.exe"),
+            )
+            for root in roots:
+                if not root:
+                    continue
+                for suffix in suffixes:
+                    candidate = os.path.join(root, suffix)
+                    if os.path.isfile(candidate):
+                        fallback.append(candidate)
+        else:
+            for candidate in ("/usr/bin/git", "/bin/git", "/usr/local/bin/git"):
+                if os.path.isfile(candidate):
+                    fallback.append(candidate)
+        git_cmd = fallback[0] if fallback else "git"
     try:
         result = subprocess.run(
-            ["git"] + args,
+            [git_cmd] + args,
             cwd=repo_root,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -415,26 +447,30 @@ def run_git(args, repo_root):
 
 
 def _resolve_canonical_tools_dir(repo_root):
-    adapter_rel = os.path.join("scripts", "dev", "env_tools.py")
-    adapter_abs = os.path.join(repo_root, adapter_rel)
-    if not os.path.isfile(adapter_abs):
-        return "", "missing {}".format(adapter_rel.replace("\\", "/"))
-    proc = subprocess.run(
-        [sys.executable, adapter_abs, "--repo-root", repo_root, "print-path"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        check=False,
-    )
-    if proc.returncode != 0:
-        detail = proc.stdout.strip() or "adapter invocation failed"
-        return "", detail
-    tool_dir = proc.stdout.strip().splitlines()
+    try:
+        tool_dir, _, _, _ = canonical_tools_dir_details(repo_root)
+    except RuntimeError as exc:
+        return "", str(exc)
+    return os.path.normpath(tool_dir), ""
+
+
+def _canonicalize_tools_path(repo_root):
+    tool_dir, detail = _resolve_canonical_tools_dir(repo_root)
     if not tool_dir:
-        return "", "adapter returned empty path"
-    return os.path.normpath(tool_dir[-1].strip()), ""
+        return "", detail
+
+    base_path = os.environ.get("PATH", "")
+    if not base_path:
+        base_path = os.environ.get("DOM_HOST_PATH", "")
+    if not base_path:
+        base_path = default_host_path()
+    env = dict(os.environ)
+    env["PATH"] = base_path
+    env = prepend_tools_to_path(env, tool_dir)
+    os.environ["PATH"] = env.get("PATH", "")
+    os.environ["DOM_TOOLS_PATH"] = env.get("DOM_TOOLS_PATH", tool_dir)
+    os.environ["DOM_TOOLS_READY"] = env.get("DOM_TOOLS_READY", "1")
+    return tool_dir, ""
 
 
 def _path_contains_dir(path_value, target_dir):
@@ -2061,11 +2097,23 @@ def check_tools_path_set(repo_root):
     if not tool_dir:
         return ["{}: unable to resolve canonical tools path ({})".format(invariant_id, detail)]
     if not os.path.isdir(tool_dir):
-        return ["{}: canonical tools directory missing {}".format(invariant_id, normalize_path(tool_dir))]
+        return [
+            "INV-TOOLS-DIR-MISSING: canonical tools directory missing {} (build tools to {} via target ui_bind_phase or tools target)".format(
+                normalize_path(tool_dir), normalize_path(tool_dir)
+            )
+        ]
 
     env_path = os.environ.get("PATH", "")
     if not _path_contains_dir(env_path, tool_dir):
-        return ["{}: PATH missing canonical tools directory {}".format(invariant_id, normalize_path(tool_dir))]
+        return ["{}: canonical tools directory not active in process PATH {}".format(invariant_id, normalize_path(tool_dir))]
+
+    dom_tools_path = os.environ.get("DOM_TOOLS_PATH", "")
+    if dom_tools_path and os.path.normcase(os.path.normpath(dom_tools_path)) != os.path.normcase(os.path.normpath(tool_dir)):
+        return [
+            "{}: DOM_TOOLS_PATH mismatch (expected {}, got {})".format(
+                invariant_id, normalize_path(tool_dir), normalize_path(dom_tools_path)
+            )
+        ]
     return []
 
 
@@ -2083,15 +2131,7 @@ def check_tool_unresolvable(repo_root):
     violations = []
     resolved = {}
     for tool_id in CANONICAL_TOOL_IDS:
-        candidates = [tool_id]
-        if os.name == "nt":
-            candidates.insert(0, tool_id + ".exe")
-        tool_path = ""
-        for candidate in candidates:
-            found = shutil.which(candidate)
-            if found:
-                tool_path = normalize_path(found)
-                break
+        tool_path = resolve_tool(tool_id, os.environ)
         if not tool_path:
             violations.append("{}: tool not discoverable by PATH {}".format(invariant_id, tool_id))
             continue
@@ -3868,6 +3908,7 @@ def main() -> int:
     parser.add_argument("--proof-manifest-out", default=PROOF_MANIFEST_DEFAULT)
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
+    _canonicalize_tools_path(repo_root)
 
     violations = []
     allowed = load_allowed_top_level(repo_root)
