@@ -1,0 +1,108 @@
+{
+  "schema_id": "dominium.schema.worldgen.module",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.module",
+    "registry_version": "1.0.0",
+    "entries": [
+      {
+        "module_id": "org.dominium.worldgen.terrain_base",
+        "module_status": "active",
+        "inputs": [
+          "world.seed",
+          "world.region_bounds"
+        ],
+        "outputs": [
+          "world.layer.elevation",
+          "world.layer.slope"
+        ],
+        "rng_stream": "rng.worldgen.terrain_base",
+        "preview_layers": [
+          "preview.terrain.height"
+        ],
+        "depends_on": [],
+        "refusal_codes": [
+          "refuse.worldgen.input_missing"
+        ],
+        "unit_annotations": {},
+        "extensions": {}
+      },
+      {
+        "module_id": "org.dominium.worldgen.hydrology",
+        "module_status": "active",
+        "inputs": [
+          "world.layer.elevation"
+        ],
+        "outputs": [
+          "world.layer.hydrology"
+        ],
+        "rng_stream": "rng.worldgen.hydrology",
+        "preview_layers": [
+          "preview.hydrology.rivers"
+        ],
+        "depends_on": [
+          "org.dominium.worldgen.terrain_base"
+        ],
+        "refusal_codes": [
+          "refuse.worldgen.dependency_missing"
+        ],
+        "unit_annotations": {},
+        "extensions": {}
+      },
+      {
+        "module_id": "org.dominium.worldgen.climate_stub",
+        "module_status": "experimental",
+        "inputs": [
+          "world.layer.elevation",
+          "world.layer.hydrology"
+        ],
+        "outputs": [
+          "world.layer.climate"
+        ],
+        "rng_stream": "rng.worldgen.climate_stub",
+        "preview_layers": [
+          "preview.climate.stub"
+        ],
+        "depends_on": [
+          "org.dominium.worldgen.terrain_base",
+          "org.dominium.worldgen.hydrology"
+        ],
+        "refusal_codes": [
+          "refuse.not_implemented"
+        ],
+        "unit_annotations": {},
+        "extensions": {
+          "experimental": true
+        }
+      },
+      {
+        "module_id": "org.dominium.worldgen.resources_stub",
+        "module_status": "experimental",
+        "inputs": [
+          "world.layer.elevation",
+          "world.layer.hydrology"
+        ],
+        "outputs": [
+          "world.layer.resources"
+        ],
+        "rng_stream": "rng.worldgen.resources_stub",
+        "preview_layers": [
+          "preview.resources.stub"
+        ],
+        "depends_on": [
+          "org.dominium.worldgen.terrain_base",
+          "org.dominium.worldgen.hydrology"
+        ],
+        "refusal_codes": [
+          "refuse.not_implemented"
+        ],
+        "unit_annotations": {},
+        "extensions": {
+          "experimental": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
+

@@ -1,0 +1,65 @@
+SCHEMA: ui_ir.schema
+schema_id: dominium.schema.ui.ir
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define top-level UI IR documents composed from nodes, layouts, and command bindings.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- UI IR is presentation-only and does NOT alter simulation state.
+- Behavior remains command-driven and capability-gated.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record ui_ir_document
+  required:
+    - doc_id: id
+    - doc_version: integer
+    - root_layout: ui_layout_ref
+    - nodes: [ui_node_ref]
+    - command_bindings: [ui_command_binding]
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - metadata: map
+
+TYPE DEFINITIONS:
+record ui_layout_ref
+  required:
+    - schema_id: id
+    - layout_id: tag
+  optional:
+    - layout_profile: tag
+
+record ui_node_ref
+  required:
+    - node_id: integer
+    - node_type: tag
+    - name: tag
+  optional:
+    - metadata: map
+
+record ui_command_binding
+  required:
+    - command_id: tag
+    - action_id: tag
+    - mode_scope: [tag]
+  optional:
+    - required_capabilities: [tag]
+    - refusal_codes: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
