@@ -31,3 +31,7 @@ AuditX is the semantic audit axis in the governance stack.
 - A2 Ownership boundary
 - A3 Canon drift
 - A4 Schema usage
+- A5 Capability misuse
+- A6 UI parity / bypass
+- A7 Legacy contamination
+- A8 Derived artifact freshness smell
