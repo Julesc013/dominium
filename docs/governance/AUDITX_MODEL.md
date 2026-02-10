@@ -24,3 +24,10 @@ AuditX is the semantic audit axis in the governance stack.
 - Graph nodes: files, symbols, commands, schemas, packs, tests, products.
 - Graph edges: includes/imports, command bindings, schema usage, pack dependencies.
 - Traversal and graph hashing are deterministic.
+
+## Initial Analyzer Set
+
+- A1 Reachability / orphaned code
+- A2 Ownership boundary
+- A3 Canon drift
+- A4 Schema usage

@@ -10,7 +10,9 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 if THIS_DIR not in sys.path:
     sys.path.insert(0, THIS_DIR)
 
+from analyzers import run_analyzers
 from graph import build_analysis_graph
+from model.serialization import compute_fingerprint, finding_to_dict, sort_findings
 
 
 def _repo_root(path):
@@ -19,12 +21,33 @@ def _repo_root(path):
     return os.path.abspath(os.getcwd())
 
 
+def _created_utc():
+    return os.environ.get("AUDITX_CREATED_UTC", "1970-01-01T00:00:00Z")
+
+
+def _finalize_findings(finding_objects):
+    records = []
+    for finding in finding_objects:
+        finding.created_utc = _created_utc()
+        records.append(finding_to_dict(finding))
+    records = sort_findings(records)
+    counters = {}
+    for item in records:
+        analyzer_id = item.get("analyzer_id", "A0")
+        counters[analyzer_id] = counters.get(analyzer_id, 0) + 1
+        item["finding_id"] = "{}:{:04d}".format(analyzer_id, counters[analyzer_id])
+        item["fingerprint"] = compute_fingerprint(item)
+    return records
+
+
 def _cmd_scan(args):
-    graph = build_analysis_graph(_repo_root(args.repo_root))
+    root = _repo_root(args.repo_root)
+    graph = build_analysis_graph(root)
+    findings = _finalize_findings(run_analyzers(graph, root))
     payload = {
-        "result": "scan_graph_ready",
-        "reason_code": "refuse.not_implemented",
-        "repo_root": _repo_root(args.repo_root),
+        "result": "scan_partial_ready",
+        "reason_code": "refuse.not_fully_implemented",
+        "repo_root": root,
         "changed_only": bool(args.changed_only),
         "format": args.format,
         "graph": {
@@ -32,6 +55,8 @@ def _cmd_scan(args):
             "edge_count": len(graph.edges),
             "graph_hash": graph.stable_hash(),
         },
+        "findings_count": len(findings),
+        "findings_preview": findings[: min(len(findings), 20)],
     }
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
