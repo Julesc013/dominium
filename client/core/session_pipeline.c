@@ -99,6 +99,34 @@ int client_session_pipeline_apply_command(client_session_pipeline* pipeline, con
         transition_to(pipeline, CLIENT_SESSION_STAGE_SESSION_READY);
         return 1;
     }
+    if (strcmp(command_id, "client.session.acquire.local") == 0 ||
+        strcmp(command_id, "client.session.acquire.spec") == 0 ||
+        strcmp(command_id, "client.session.acquire.server") == 0 ||
+        strcmp(command_id, "client.session.acquire.macro") == 0) {
+        if (pipeline->stage_id == CLIENT_SESSION_STAGE_SESSION_RUNNING) {
+            set_refusal(pipeline, CLIENT_SESSION_REFUSE_INVALID_TRANSITION);
+            return 0;
+        }
+        transition_to(pipeline, CLIENT_SESSION_STAGE_ACQUIRE_WORLD);
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.verify") == 0 ||
+        strcmp(command_id, "client.session.verify.mismatch") == 0) {
+        if (pipeline->stage_id != CLIENT_SESSION_STAGE_ACQUIRE_WORLD &&
+            pipeline->stage_id != CLIENT_SESSION_STAGE_VERIFY_WORLD) {
+            set_refusal(pipeline, CLIENT_SESSION_REFUSE_INVALID_TRANSITION);
+            return 0;
+        }
+        if (strcmp(command_id, "client.session.verify.mismatch") == 0) {
+            set_refusal(pipeline, CLIENT_SESSION_REFUSE_WORLD_HASH_MISMATCH);
+            return 0;
+        }
+        transition_to(pipeline, CLIENT_SESSION_STAGE_VERIFY_WORLD);
+        transition_to(pipeline, CLIENT_SESSION_STAGE_WARMUP_SIMULATION);
+        transition_to(pipeline, CLIENT_SESSION_STAGE_WARMUP_PRESENTATION);
+        transition_to(pipeline, CLIENT_SESSION_STAGE_SESSION_READY);
+        return 1;
+    }
     if (strcmp(command_id, "client.session.begin") == 0) {
         if (pipeline->stage_id != CLIENT_SESSION_STAGE_SESSION_READY) {
             set_refusal(pipeline, CLIENT_SESSION_REFUSE_BEGIN_REQUIRES_READY);

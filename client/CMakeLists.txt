@@ -10,6 +10,7 @@ add_executable(dominium_client
     core/client_models_server.c
     core/client_models_world.c
     core/client_state_machine.c
+    core/session_artifacts.c
     core/session_pipeline.c
     core/session_refusal_codes.c
     core/session_stage_registry.c

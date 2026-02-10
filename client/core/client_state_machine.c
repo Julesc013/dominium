@@ -32,6 +32,7 @@ void client_state_machine_init(client_state_machine* machine)
     }
     memset(machine, 0, sizeof(*machine));
     client_session_pipeline_init(&machine->pipeline);
+    client_session_artifacts_init(&machine->artifacts);
     machine->state = CLIENT_SESSION_STATE_BOOT_PROGRESS;
 }
 
@@ -128,6 +129,15 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
     }
     if (strcmp(command_id, "client.world.play") == 0 ||
         strcmp(command_id, "client.server.connect") == 0) {
+        if (strcmp(command_id, "client.world.play") == 0) {
+            client_session_artifacts_acquire_local(&machine->artifacts,
+                                                   "world.snapshot.default",
+                                                   "hash.world.default");
+        } else {
+            client_session_artifacts_acquire_server(&machine->artifacts,
+                                                    "server.default",
+                                                    "hash.world.default");
+        }
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
         if (machine->pipeline.stage_id == CLIENT_SESSION_STAGE_SESSION_READY) {
             machine->state = CLIENT_SESSION_STATE_SESSION_READY;
@@ -149,6 +159,51 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
     }
     if (strcmp(command_id, "client.menu.quit") == 0) {
         machine->state = CLIENT_SESSION_STATE_REFUSAL_ERROR;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.acquire.local") == 0) {
+        client_session_artifacts_acquire_local(&machine->artifacts,
+                                               "world.snapshot.manual",
+                                               "hash.world.default");
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.acquire.spec") == 0) {
+        client_session_artifacts_acquire_spec(&machine->artifacts,
+                                              "world.spec.manual",
+                                              "hash.world.default");
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.acquire.server") == 0) {
+        client_session_artifacts_acquire_server(&machine->artifacts,
+                                                "server.manual",
+                                                "hash.world.default");
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.acquire.macro") == 0) {
+        client_session_artifacts_acquire_macro(&machine->artifacts,
+                                               "macro.manual",
+                                               "hash.world.default");
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.verify") == 0 ||
+        strcmp(command_id, "client.session.verify.mismatch") == 0) {
+        char refusal[96];
+        const char* expected = strcmp(command_id, "client.session.verify.mismatch") == 0
+                                   ? "hash.world.mismatch"
+                                   : "hash.world.default";
+        if (!client_session_artifacts_verify_hash(&machine->artifacts,
+                                                  expected,
+                                                  refusal,
+                                                  sizeof(refusal))) {
+            copy_text(machine->last_refusal, sizeof(machine->last_refusal), refusal);
+            machine->state = CLIENT_SESSION_STATE_REFUSAL_ERROR;
+            return 0;
+        }
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
         return 1;
     }
     if (starts_with(command_id, "client.world.")) {

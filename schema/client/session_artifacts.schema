@@ -1,0 +1,41 @@
+SCHEMA: session_artifacts.schema
+schema_id: dominium.schema.client.session_artifacts
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define lifecycle acquisition/verification artifacts consumed by client session orchestration.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Artifacts describe orchestration state and validation outcomes only.
+- They MUST NOT encode simulation truth or gameplay outcomes.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record session_artifacts
+  required:
+    - artifact_id: id
+    - schema_version_ref: tag
+    - acquisition_mode: tag
+    - source_id: tag
+    - world_hash: tag
+    - expected_hash: tag
+    - verification_status: tag
+    - allowed_observation_layers: [tag]
+    - refusal_codes: [tag]
+    - extensions: map
+  optional:
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
