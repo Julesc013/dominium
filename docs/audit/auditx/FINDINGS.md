@@ -8,24 +8,264 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 743
-- Severities: INFO=66, RISK=13, WARN=664
-- Categories: canon_drift=580, capability_misuse=62, derived_freshness=4, reachability=4, schema_usage=93
+- Total findings: 1099
+- Severities: INFO=202, RISK=168, WARN=729
+- Categories: canon_drift=580, capability_misuse=121, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, ui_parity=29
 
 ## Top Findings
 
-- `A1_REACHABILITY_ORPHANED:0001` WARN `reachability` (tools/auditx/analyzers/a8_derived_freshness_smell.py)
+- `A1_REACHABILITY_ORPHANED:0001` WARN `reachability` (app/include/dominium/app/app_runtime.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0002` WARN `reachability` (tools/auditx/auditx.py)
+- `A1_REACHABILITY_ORPHANED:0002` WARN `reachability` (app/include/dominium/app/compat_report.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0003` WARN `reachability` (tools/auditx/output/__init__.py)
+- `A1_REACHABILITY_ORPHANED:0003` WARN `reachability` (app/include/dominium/app/readonly_adapter.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0004` WARN `reachability` (tools/auditx/output/writers.py)
+- `A1_REACHABILITY_ORPHANED:0004` WARN `reachability` (app/include/dominium/app/readonly_format.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0005` WARN `reachability` (app/include/dominium/app/ui_event_log.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0006` WARN `reachability` (app/include/dominium/app/ui_presentation.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0007` WARN `reachability` (app/src/app_runtime.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0008` WARN `reachability` (app/src/compat_report.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0009` WARN `reachability` (app/src/readonly_adapter.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0010` WARN `reachability` (app/src/readonly_format.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0011` WARN `reachability` (app/src/ui_event_log.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0012` WARN `reachability` (app/src/ui_presentation.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0013` WARN `reachability` (client/adapters/client_fs_adapter.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0014` WARN `reachability` (client/adapters/client_fs_adapter.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0015` WARN `reachability` (client/adapters/client_network_adapter.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0016` WARN `reachability` (client/adapters/client_network_adapter.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0017` WARN `reachability` (client/app/main_client.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0018` WARN `reachability` (client/core/client_command_bridge.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0019` WARN `reachability` (client/core/client_command_bridge.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0020` WARN `reachability` (client/core/client_commands_registry.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0021` WARN `reachability` (client/core/client_commands_registry.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0022` WARN `reachability` (client/core/client_models_options.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0023` WARN `reachability` (client/core/client_models_options.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0024` WARN `reachability` (client/core/client_models_server.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0025` WARN `reachability` (client/core/client_models_server.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0026` WARN `reachability` (client/core/client_models_world.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0027` WARN `reachability` (client/core/client_models_world.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0028` WARN `reachability` (client/core/client_state_machine.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0029` WARN `reachability` (client/core/client_state_machine.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0030` WARN `reachability` (client/gui/client_app_win32.cpp)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0031` WARN `reachability` (client/input/client_input_bindings.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0032` WARN `reachability` (client/input/client_input_bindings.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0033` WARN `reachability` (client/modes/client_mode_cli.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0034` WARN `reachability` (client/modes/client_mode_cli.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0035` WARN `reachability` (client/modes/client_mode_gui.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0036` WARN `reachability` (client/modes/client_mode_gui.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0037` WARN `reachability` (client/modes/client_mode_tui.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0038` WARN `reachability` (client/modes/client_mode_tui.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0039` WARN `reachability` (client/observability/readonly_view_model.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0040` WARN `reachability` (client/observability/readonly_view_model.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0041` WARN `reachability` (client/presentation/frame_graph_builder.cpp)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0042` WARN `reachability` (client/presentation/frame_graph_builder.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0043` WARN `reachability` (client/presentation/render_prep_system.cpp)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0044` WARN `reachability` (client/presentation/render_prep_system.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0045` WARN `reachability` (client/shell/client_shell.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0046` WARN `reachability` (client/shell/client_shell.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0047` WARN `reachability` (client/ui/client_ui_compositor.c)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0048` WARN `reachability` (client/ui/client_ui_compositor.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0049` WARN `reachability` (dominium/game_api.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0050` WARN `reachability` (domino/core.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0051` WARN `reachability` (engine/include/domino/abi.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0052` WARN `reachability` (engine/include/domino/agent.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0053` WARN `reachability` (engine/include/domino/app/runtime.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0054` WARN `reachability` (engine/include/domino/app/startup.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0055` WARN `reachability` (engine/include/domino/audio.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0056` WARN `reachability` (engine/include/domino/authority.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0057` WARN `reachability` (engine/include/domino/baseline.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0058` WARN `reachability` (engine/include/domino/build_info.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0059` WARN `reachability` (engine/include/domino/canvas.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0060` WARN `reachability` (engine/include/domino/capability.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0061` WARN `reachability` (engine/include/domino/caps.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0062` WARN `reachability` (engine/include/domino/cli/cli.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0063` WARN `reachability` (engine/include/domino/compat.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0064` WARN `reachability` (engine/include/domino/compat_modes.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0065` WARN `reachability` (engine/include/domino/control.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0066` WARN `reachability` (engine/include/domino/core.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0067` WARN `reachability` (engine/include/domino/core/d_tlv.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0068` WARN `reachability` (engine/include/domino/core/d_tlv_kv.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0069` WARN `reachability` (engine/include/domino/core/det_order.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0070` WARN `reachability` (engine/include/domino/core/det_reduce.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0071` WARN `reachability` (engine/include/domino/core/dom_deterministic_math.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0072` WARN `reachability` (engine/include/domino/core/dom_ledger.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0073` WARN `reachability` (engine/include/domino/core/dom_time_astronomy.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0074` WARN `reachability` (engine/include/domino/core/dom_time_core.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0075` WARN `reachability` (engine/include/domino/core/dom_time_events.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0076` WARN `reachability` (engine/include/domino/core/dom_time_frames.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0077` WARN `reachability` (engine/include/domino/core/fixed.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0078` WARN `reachability` (engine/include/domino/core/fixed_math.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0079` WARN `reachability` (engine/include/domino/core/process_guard.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0080` WARN `reachability` (engine/include/domino/core/rng.h)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A2_OWNERSHIP_BOUNDARY:0001` RISK `ownership_boundary` (client/app/main_client.c)
+  - Client path appears to combine install tokens with mutation operations.
+  - Client should remain presentation-only for install mutation.
+- `A2_OWNERSHIP_BOUNDARY:0002` RISK `ownership_boundary` (client/shell/client_shell.c)
+  - Client path appears to combine install tokens with mutation operations.
+  - Client should remain presentation-only for install mutation.
+- `A2_OWNERSHIP_BOUNDARY:0003` RISK `ownership_boundary` (launcher/cli/launcher_ui_shell.c)
+  - Launcher path appears to directly mutate install-managed artifacts.
+  - Setup should be the install mutation authority.
+- `A2_OWNERSHIP_BOUNDARY:0004` WARN `ownership_boundary` (libs/appcore/ui_bind/ui_command_binding_table.h)
+  - UI-related file references command IDs but no dispatcher token was found.
+  - Potential UI bypass of canonical command dispatcher.
 - `A3_CANON_DRIFT:0001` WARN `canon_drift` (docs/CODE_CHANGE_JUSTIFICATION.md)
   - Normative language detected but no explicit enforcement anchor found.
   - Consider linking invariant IDs or tests for this behavior.
@@ -72,245 +312,5 @@ Superseded By: none
   - Normative language detected but no explicit enforcement anchor found.
   - Consider linking invariant IDs or tests for this behavior.
 - `A3_CANON_DRIFT:0016` WARN `canon_drift` (docs/agents/AGENT_MEMORY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0017` WARN `canon_drift` (docs/agents/AGENT_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0018` WARN `canon_drift` (docs/agents/AGENT_NON_GOALS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0019` WARN `canon_drift` (docs/agents/AGENT_PLANNING.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0020` WARN `canon_drift` (docs/agents/AGENT_POWER.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0021` WARN `canon_drift` (docs/app/ARTIFACT_IDENTITY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0022` WARN `canon_drift` (docs/app/CLIENT_RENDERER_UI.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0023` WARN `canon_drift` (docs/app/CLIENT_UI_LAYER.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0024` WARN `canon_drift` (docs/app/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0025` WARN `canon_drift` (docs/app/GUI_MODE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0026` WARN `canon_drift` (docs/app/HEADLESS_AND_ZERO_PACK.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0027` WARN `canon_drift` (docs/app/NATIVE_UI_POLICY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0028` WARN `canon_drift` (docs/app/READONLY_ADAPTER.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0029` WARN `canon_drift` (docs/app/TUI_MODE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0030` WARN `canon_drift` (docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0031` WARN `canon_drift` (docs/architecture/AI_BUDGET_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0032` WARN `canon_drift` (docs/architecture/AI_INTENT_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0033` WARN `canon_drift` (docs/architecture/ANTI_CHEAT_AND_INTEGRITY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0034` WARN `canon_drift` (docs/architecture/ANTI_CHEAT_AS_LAW.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0035` WARN `canon_drift` (docs/architecture/APPLICATION_CONTRACTS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0036` WARN `canon_drift` (docs/architecture/ARCH0_CONSTITUTION.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0037` WARN `canon_drift` (docs/architecture/ARCHITECTURE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0038` WARN `canon_drift` (docs/architecture/ARCHIVAL_AND_PERMANENCE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0039` WARN `canon_drift` (docs/architecture/ARCH_CHANGE_PROCESS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0040` WARN `canon_drift` (docs/architecture/ARCH_ENFORCEMENT.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0041` WARN `canon_drift` (docs/architecture/ARCH_SPEC_OWNERSHIP.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0042` WARN `canon_drift` (docs/architecture/ARTIFACT_LIFECYCLE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0043` WARN `canon_drift` (docs/architecture/AUDITABILITY_AND_DISCLOSURE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0044` WARN `canon_drift` (docs/architecture/AUTHORITY_AND_OMNIPOTENCE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0045` WARN `canon_drift` (docs/architecture/BUDGET_POLICY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0046` WARN `canon_drift` (docs/architecture/BUGREPORT_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0047` WARN `canon_drift` (docs/architecture/BUNDLE_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0048` WARN `canon_drift` (docs/architecture/CANONICAL_SYSTEM_MAP.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0049` WARN `canon_drift` (docs/architecture/CANON_CUT_LINE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0050` WARN `canon_drift` (docs/architecture/CANON_INDEX.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0051` WARN `canon_drift` (docs/architecture/CAPABILITY_BASELINES.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0052` WARN `canon_drift` (docs/architecture/CHANGE_PROTOCOL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0053` WARN `canon_drift` (docs/architecture/CHEATS_ARE_JUST_LAWS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0054` WARN `canon_drift` (docs/architecture/CHECKPOINTING_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0055` WARN `canon_drift` (docs/architecture/CIVILIZATION_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0056` WARN `canon_drift` (docs/architecture/CODE_KNOWLEDGE_BOUNDARY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0057` WARN `canon_drift` (docs/architecture/COLLAPSE_AND_DECAY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0058` WARN `canon_drift` (docs/architecture/COLLAPSE_EXPAND_CONTRACT.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0059` WARN `canon_drift` (docs/architecture/COLLAPSE_EXPAND_SOLVERS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0060` WARN `canon_drift` (docs/architecture/COMPATIBILITY_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0061` WARN `canon_drift` (docs/architecture/CONFLICT_AND_WAR_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0062` WARN `canon_drift` (docs/architecture/CONSTANT_COST_GUARANTEE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0063` WARN `canon_drift` (docs/architecture/CONTENT_AND_STORAGE_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0064` WARN `canon_drift` (docs/architecture/CONTROL_LAYERS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0065` WARN `canon_drift` (docs/architecture/CRASH_RECOVERY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0066` WARN `canon_drift` (docs/architecture/CROSS_SHARD_LOG.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0067` WARN `canon_drift` (docs/architecture/DEMO_AND_TOURIST_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0068` WARN `canon_drift` (docs/architecture/DETERMINISTIC_ORDERING_POLICY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0069` WARN `canon_drift` (docs/architecture/DETERMINISTIC_REDUCTION_RULES.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0070` WARN `canon_drift` (docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0071` WARN `canon_drift` (docs/architecture/DISTRIBUTED_TIME_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0072` WARN `canon_drift` (docs/architecture/DISTRIBUTION_AND_STOREFRONTS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0073` WARN `canon_drift` (docs/architecture/DISTRIBUTION_PROFILES.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0074` WARN `canon_drift` (docs/architecture/DOMAIN_SHARDING_AND_STREAMING.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0075` WARN `canon_drift` (docs/architecture/DOMAIN_VOLUMES.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0076` WARN `canon_drift` (docs/architecture/ECONOMY_AND_LOGISTICS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0077` WARN `canon_drift` (docs/architecture/ENERGY_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0078` WARN `canon_drift` (docs/architecture/EPISTEMICS_AND_SCALED_MMO.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0079` WARN `canon_drift` (docs/architecture/EPISTEMICS_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0080` WARN `canon_drift` (docs/architecture/EXECUTION_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0081` WARN `canon_drift` (docs/architecture/EXECUTION_REORDERING_POLICY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0082` WARN `canon_drift` (docs/architecture/EXISTENCE_AND_REALITY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0083` WARN `canon_drift` (docs/architecture/EXISTENCE_LIFECYCLE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0084` WARN `canon_drift` (docs/architecture/EXOTIC_TRAVEL_AND_REALITY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0085` WARN `canon_drift` (docs/architecture/EXPLORATION_METRICS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0086` WARN `canon_drift` (docs/architecture/EXTENSION_RULES.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0087` WARN `canon_drift` (docs/architecture/FABRICATION_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0088` WARN `canon_drift` (docs/architecture/FLUIDS_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0089` WARN `canon_drift` (docs/architecture/GENERATED_CODE_POLICY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0090` WARN `canon_drift` (docs/architecture/GLOBAL_ID_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0091` WARN `canon_drift` (docs/architecture/GLOSSARY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0092` WARN `canon_drift` (docs/architecture/GOVERNANCE_AND_INSTITUTIONS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0093` WARN `canon_drift` (docs/architecture/HARDWARE_EVOLUTION_STRATEGY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0094` WARN `canon_drift` (docs/architecture/HAZARDS_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0095` WARN `canon_drift` (docs/architecture/HISTORY_AND_CIVILIZATION_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0096` WARN `canon_drift` (docs/architecture/IDENTITY_ACROSS_TIME.md)
   - Normative language detected but no explicit enforcement anchor found.
   - Consider linking invariant IDs or tests for this behavior.
