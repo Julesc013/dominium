@@ -116,11 +116,36 @@ def run_missing_path(repo_root):
             env=raw_env,
             check=False,
         )
+        workspace_id = "test-tooldiscoverability-ws"
+        doctor_proc = subprocess.run(
+            [
+                sys.executable,
+                gate_script,
+                "doctor",
+                "--repo-root",
+                repo_root,
+                "--workspace-id",
+                workspace_id,
+            ],
+            cwd=random_cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            env=raw_env,
+            check=False,
+        )
     finally:
         shutil.rmtree(random_cwd, ignore_errors=True)
     if phase_proc.returncode != 0:
         raise RuntimeError(
             "gate.py ui_bind_check failed under empty PATH/any-CWD:\n{}".format(phase_proc.stdout)
+        )
+    if doctor_proc.returncode != 0:
+        raise RuntimeError("gate.py doctor failed under empty PATH/any-CWD:\n{}".format(doctor_proc.stdout))
+    if workspace_id not in (doctor_proc.stdout or ""):
+        raise RuntimeError(
+            "gate.py doctor did not report workspace_id under empty PATH/any-CWD:\n{}".format(doctor_proc.stdout)
         )
 
     print("tool_discoverability_missing_path=ok")

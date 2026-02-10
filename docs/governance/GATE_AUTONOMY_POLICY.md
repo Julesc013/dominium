@@ -9,10 +9,13 @@ RepoX and TestX must self-canonicalize their tool environment. Manual `PATH` set
 
 ## Canonical Contract
 
-- Canonical tools are discovered from `dist/sys/<platform>/<arch>/bin/tools/`.
+- Canonical tools are discovered from workspace-aware roots:
+  - preferred: `dist/ws/<workspace_id>/sys/<platform>/<arch>/bin/tools/`
+  - fallback: `dist/sys/<platform>/<arch>/bin/tools/`
 - RepoX prepends this directory to its own process `PATH` at run start.
 - TestX tool-invocation tests use the same canonicalization helpers.
 - Missing canonical tools directory is a hard failure (`INV-TOOLS-DIR-MISSING`) with remediation guidance.
+- `workspace_id` is derived deterministically unless explicitly set via `DOM_WS_ID` (or `--workspace-id` on dev wrappers).
 
 ## Manual vs Autonomous Invocation
 
@@ -37,11 +40,12 @@ Use `scripts/dev/gate.py` (or `python scripts/dev/dev.py gate ...`) as the prefe
 Behavior:
 
 - self-canonicalizes `PATH`
+- derives workspace-scoped build/dist/remediation roots
 - runs dependency-aware gate classes from `data/registries/gate_policy.json`
 - supports minimal preflight (`PRECHECK_MIN`) and strict completion (`EXIT_STRICT`)
 - evaluates dependency gates (`TASK_DEPENDENCY`) such as `ui_bind_check`
 - attempts deterministic tool-discovery remediation when `INV-TOOLS-DIR-MISSING` occurs
-- writes remediation artifacts to `docs/audit/remediation/...`
+- writes remediation artifacts to `docs/audit/remediation/<workspace_id>/...`
 
 Prompt templates must use this gate entry contract. See `docs/governance/PROMPT_GATE_CONTRACT.md`.
 

@@ -28,13 +28,19 @@ def _gate_path(repo_root):
     return os.path.join(repo_root, "scripts", "dev", "gate.py")
 
 
-def _run_env_tools(repo_root, args):
-    cmd = [sys.executable, _env_tools_path(repo_root), "--repo-root", repo_root] + list(args)
+def _run_env_tools(repo_root, args, workspace_id=""):
+    cmd = [sys.executable, _env_tools_path(repo_root), "--repo-root", repo_root]
+    if workspace_id:
+        cmd.extend(["--workspace-id", workspace_id])
+    cmd += list(args)
     return subprocess.run(cmd, check=False)
 
 
-def _run_env_tools_capture(repo_root, args):
-    cmd = [sys.executable, _env_tools_path(repo_root), "--repo-root", repo_root] + list(args)
+def _run_env_tools_capture(repo_root, args, workspace_id=""):
+    cmd = [sys.executable, _env_tools_path(repo_root), "--repo-root", repo_root]
+    if workspace_id:
+        cmd.extend(["--workspace-id", workspace_id])
+    cmd += list(args)
     return subprocess.run(
         cmd,
         check=False,
@@ -45,8 +51,8 @@ def _run_env_tools_capture(repo_root, args):
     )
 
 
-def cmd_tools_list(repo_root):
-    proc = _run_env_tools_capture(repo_root, ["print-path"])
+def cmd_tools_list(repo_root, workspace_id=""):
+    proc = _run_env_tools_capture(repo_root, ["print-path"], workspace_id=workspace_id)
     if proc.returncode != 0:
         sys.stdout.write(proc.stdout)
         return proc.returncode
@@ -60,29 +66,34 @@ def cmd_tools_list(repo_root):
     return 0
 
 
-def cmd_tools_doctor(repo_root):
+def cmd_tools_doctor(repo_root, workspace_id=""):
     python_cmd = "python"
     if shutil.which(python_cmd) is None:
         python_cmd = "python3"
     return _run_env_tools(
         repo_root,
         ["run", "--", python_cmd, _env_tools_path(repo_root), "--repo-root", repo_root, "doctor", "--require-path"],
+        workspace_id=workspace_id,
     ).returncode
 
 
-def cmd_tools_ui_bind(repo_root, passthrough):
+def cmd_tools_ui_bind(repo_root, passthrough, workspace_id=""):
     args = ["run", "--", "tool_ui_bind"] + list(passthrough)
-    return _run_env_tools(repo_root, args).returncode
+    return _run_env_tools(repo_root, args, workspace_id=workspace_id).returncode
 
 
-def cmd_gate(repo_root, action, passthrough):
-    cmd = [sys.executable, _gate_path(repo_root), action, "--repo-root", repo_root] + list(passthrough)
+def cmd_gate(repo_root, action, passthrough, workspace_id=""):
+    cmd = [sys.executable, _gate_path(repo_root), action, "--repo-root", repo_root]
+    if workspace_id:
+        cmd.extend(["--workspace-id", workspace_id])
+    cmd += list(passthrough)
     return subprocess.run(cmd, check=False).returncode
 
 
 def build_parser():
     parser = argparse.ArgumentParser(description="Developer convenience wrapper commands.")
     parser.add_argument("--repo-root", default="")
+    parser.add_argument("--workspace-id", default="")
     sub = parser.add_subparsers(dest="group", required=True)
 
     tools = sub.add_parser("tools", help="Canonical tool wrapper commands.")
@@ -112,16 +123,16 @@ def main():
     args = parser.parse_args()
     repo_root = _repo_root_from_args(args.repo_root)
     if args.group == "tools" and args.action == "list":
-        return cmd_tools_list(repo_root)
+        return cmd_tools_list(repo_root, workspace_id=args.workspace_id)
     if args.group == "tools" and args.action == "doctor":
-        return cmd_tools_doctor(repo_root)
+        return cmd_tools_doctor(repo_root, workspace_id=args.workspace_id)
     if args.group == "tools" and args.action == "ui_bind":
         passthrough = list(args.args)
         if passthrough and passthrough[0] == "--":
             passthrough = passthrough[1:]
-        return cmd_tools_ui_bind(repo_root, passthrough)
+        return cmd_tools_ui_bind(repo_root, passthrough, workspace_id=args.workspace_id)
     if args.group == "gate":
-        return cmd_gate(repo_root, args.action, [])
+        return cmd_gate(repo_root, args.action, [], workspace_id=args.workspace_id)
     parser.error("unsupported command")
     return 2
 

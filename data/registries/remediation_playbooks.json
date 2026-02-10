@@ -93,6 +93,36 @@
         "extensions": {}
       },
       {
+        "playbook_id": "dominium.playbook.workspace_collision",
+        "blocker_type": "WORKSPACE_COLLISION",
+        "strategy_classes": [
+          "environment",
+          "build_wiring",
+          "adapter_fix"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "re-resolve workspace-scoped build/dist roots",
+          "retry with canonical workspace metadata"
+        ],
+        "extensions": {}
+      },
+      {
+        "playbook_id": "dominium.playbook.versioning_policy_mismatch",
+        "blocker_type": "VERSIONING_POLICY_MISMATCH",
+        "strategy_classes": [
+          "registry_schema",
+          "governance_rule"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": true,
+        "notes": [
+          "versioning policy mismatch requires governance-aligned remediation"
+        ],
+        "extensions": {}
+      },
+      {
         "playbook_id": "dominium.playbook.doc_canon_drift",
         "blocker_type": "DOC_CANON_DRIFT",
         "strategy_classes": [

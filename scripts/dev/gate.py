@@ -11,12 +11,13 @@ from datetime import datetime
 
 from env_tools_lib import (
     CANONICAL_TOOL_IDS,
+    WORKSPACE_ID_ENV_KEY,
     canonical_build_dirs,
-    canonical_tools_dir,
-    default_host_path,
+    canonicalize_env_for_workspace,
+    canonical_workspace_id,
     detect_repo_root,
-    prepend_tools_to_path,
     resolve_tool,
+    select_verify_build_dir,
 )
 
 
@@ -34,6 +35,8 @@ MECHANICAL_BLOCKER_TYPES = (
     "BUILD_OUTPUT_MISSING",
     "PATH_CWD_DEPENDENCY",
     "ENVIRONMENT_CONTRACT",
+    "WORKSPACE_COLLISION",
+    "VERSIONING_POLICY_MISMATCH",
 )
 
 
@@ -43,18 +46,38 @@ def _repo_root(arg_value):
     return detect_repo_root(os.getcwd(), __file__)
 
 
-def _canonical_env(repo_root, base_env=None):
-    env = dict(base_env or os.environ)
-    tools_dir = canonical_tools_dir(repo_root)
-    base_path = env.get("PATH", "")
-    if not base_path:
-        base_path = env.get("DOM_HOST_PATH", "") or os.environ.get("PATH", "")
-    if not base_path:
-        base_path = default_host_path()
-    env["PATH"] = base_path
-    env = prepend_tools_to_path(env, tools_dir)
-    env["DOM_HOST_PATH"] = base_path
-    return env, tools_dir
+def _norm(path):
+    return os.path.normpath(path)
+
+
+def _norm_case(path):
+    return os.path.normcase(_norm(path))
+
+
+def _canonical_env(repo_root, base_env=None, ws_id=""):
+    env_in = dict(base_env or os.environ)
+    resolved_ws = (ws_id or "").strip() or env_in.get(WORKSPACE_ID_ENV_KEY, "")
+    resolved_ws = resolved_ws or canonical_workspace_id(repo_root, env=env_in)
+    env, ws_dirs = canonicalize_env_for_workspace(
+        env_in,
+        repo_root,
+        ws_id=resolved_ws,
+    )
+    tools_dir = env.get("DOM_CANONICAL_TOOLS_DIR", "") or env.get("DOM_TOOLS_PATH", "")
+    return env, tools_dir, ws_dirs
+
+
+def _rewrite_command_paths(command, verify_build_dir):
+    rewritten = []
+    legacy_verify_norm = _norm_case(VERIFY_BUILD_DIR_REL)
+    for token in command:
+        token_text = str(token)
+        token_norm = _norm_case(token_text)
+        if token_norm == legacy_verify_norm:
+            rewritten.append(verify_build_dir)
+            continue
+        rewritten.append(token_text)
+    return rewritten
 
 
 def _run(cmd, repo_root, env):
@@ -143,14 +166,24 @@ def _policy_gates_for_classes(policy, class_ids):
     return selected
 
 
-def _format_gate_command(command_tokens, repo_root):
+def _format_gate_command(command_tokens, repo_root, verify_build_dir="", ws_id="", dist_root=""):
     out = []
+    format_ctx = {
+        "repo_root": repo_root,
+        "verify_build_dir": verify_build_dir,
+        "ws_id": ws_id,
+        "dist_root": dist_root,
+    }
     for idx, token in enumerate(command_tokens):
-        resolved = str(token).format(repo_root=repo_root)
+        raw = str(token)
+        try:
+            resolved = raw.format(**format_ctx)
+        except (IndexError, KeyError, ValueError):
+            resolved = raw
         if idx == 0 and resolved.lower() in ("python", "python3"):
             resolved = sys.executable
         out.append(resolved)
-    return out
+    return _rewrite_command_paths(out, verify_build_dir or VERIFY_BUILD_DIR_REL)
 
 
 def _targets_from_command(tokens):
@@ -274,8 +307,19 @@ def _write_cache_payload(path, records):
         handle.write("\n")
 
 
-def _changed_files_from_timestamp_cache(repo_root, globs):
-    cache_path = os.path.join(repo_root, UI_BIND_CACHE_REL)
+def _ui_bind_cache_path(repo_root, env):
+    verify_dir = ""
+    if env:
+        verify_dir = str(env.get("DOM_WS_VERIFY_BUILD_DIR", "")).strip()
+    if verify_dir:
+        if not os.path.isabs(verify_dir):
+            verify_dir = os.path.join(repo_root, verify_dir)
+        return os.path.join(os.path.normpath(verify_dir), "gate_ui_bind_cache.json")
+    return os.path.join(repo_root, UI_BIND_CACHE_REL)
+
+
+def _changed_files_from_timestamp_cache(repo_root, globs, env=None):
+    cache_path = _ui_bind_cache_path(repo_root, env)
     previous = _cache_payload(cache_path)
 
     current = {}
@@ -311,7 +355,7 @@ def _match_glob(rel_path, pattern):
     return glob.fnmatch.fnmatch(path_norm, pattern_norm)
 
 
-def _gate_applies(gate, repo_root, requested_targets):
+def _gate_applies(gate, repo_root, requested_targets, env=None):
     conditions = gate.get("applies_when", [])
     if not isinstance(conditions, list) or not conditions:
         return True
@@ -324,7 +368,7 @@ def _gate_applies(gate, repo_root, requested_targets):
                 values = cond.get("values", [])
                 if isinstance(values, list):
                     patterns.extend(str(item) for item in values if str(item).strip())
-        changed = _changed_files_from_timestamp_cache(repo_root, patterns)
+        changed = _changed_files_from_timestamp_cache(repo_root, patterns, env=env)
     changed_set = set(changed or [])
     target_set = set(requested_targets or [])
 
@@ -370,6 +414,8 @@ def _default_strategy_classes(blocker_type):
         "BUILD_OUTPUT_MISSING": ["build_wiring", "tooling_integration"],
         "PATH_CWD_DEPENDENCY": ["environment", "adapter_fix"],
         "ENVIRONMENT_CONTRACT": ["environment", "adapter_fix", "build_wiring"],
+        "WORKSPACE_COLLISION": ["environment", "build_wiring", "adapter_fix"],
+        "VERSIONING_POLICY_MISMATCH": ["registry_schema", "governance_rule"],
         "DOC_CANON_DRIFT": ["governance_rule", "regression_test"],
     }
     return list(defaults.get(blocker_type, ["environment", "build_wiring"]))
@@ -388,6 +434,10 @@ def _diagnose_blocker(stage_name, output):
         return "DERIVED_ARTIFACT_STALE"
     if "schema" in text.lower() and ("mismatch" in text.lower() or "invalid" in text.lower()):
         return "SCHEMA_MISMATCH"
+    if "workspace" in text.lower() and ("collision" in text.lower() or "conflict" in text.lower()):
+        return "WORKSPACE_COLLISION"
+    if "version" in text.lower() and ("policy" in text.lower() or "mismatch" in text.lower()):
+        return "VERSIONING_POLICY_MISMATCH"
     if "cannot find the file specified" in text.lower() or "LNK1104" in upper:
         return "BUILD_OUTPUT_MISSING"
     if "cwd" in text.lower() and "path" in text.lower():
@@ -421,15 +471,15 @@ def _tool_build_attempts():
     )
 
 
-def _run_build_targets(repo_root, env, targets):
+def _run_build_targets(repo_root, env, targets, verify_build_dir):
     return _run(
-        ["cmake", "--build", VERIFY_BUILD_DIR_REL, "--config", "Debug", "--target"] + list(targets),
+        ["cmake", "--build", verify_build_dir, "--config", "Debug", "--target"] + list(targets),
         repo_root,
         env,
     )
 
 
-def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted):
+def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted, verify_build_dir):
     key = (stage_name, strategy_class)
     if key in attempted:
         return None
@@ -452,7 +502,7 @@ def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted):
             if target_key in attempted:
                 continue
             attempted.add(target_key)
-            result = _run_build_targets(repo_root, env, targets)
+            result = _run_build_targets(repo_root, env, targets, verify_build_dir)
             result["strategy"] = strategy_class
             result["targets"] = list(targets)
             return result
@@ -488,7 +538,7 @@ def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted):
             targets = ("domino_engine", "dominium_game", "dominium_client")
         else:
             targets = ("ui_bind_phase",)
-        result = _run_build_targets(repo_root, env, targets)
+        result = _run_build_targets(repo_root, env, targets, verify_build_dir)
         result["strategy"] = strategy_class
         result["targets"] = list(targets)
         return result
@@ -513,12 +563,15 @@ def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted):
     return None
 
 
-def _artifact_dir(repo_root, gate_name, blocker_type):
+def _artifact_dir(repo_root, gate_name, blocker_type, remediation_root=""):
     stamp = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
-    rel = os.path.join(REMEDIATION_ROOT_REL, "{}_{}_{}".format(stamp, gate_name, blocker_type))
-    abs_path = os.path.join(repo_root, rel)
+    root = remediation_root or os.path.join(repo_root, REMEDIATION_ROOT_REL)
+    if not os.path.isabs(root):
+        root = os.path.join(repo_root, root)
+    abs_path = os.path.join(root, "{}_{}_{}".format(stamp, gate_name, blocker_type))
     os.makedirs(abs_path, exist_ok=True)
-    return abs_path, rel.replace("\\", "/")
+    rel = os.path.relpath(abs_path, repo_root).replace("\\", "/")
+    return abs_path, rel
 
 
 def _write_json(path, payload):
@@ -527,8 +580,16 @@ def _write_json(path, payload):
         handle.write("\n")
 
 
-def _write_remediation_bundle(repo_root, gate_name, blocker_type, failure, actions, verification):
-    out_dir, out_rel = _artifact_dir(repo_root, gate_name, blocker_type)
+def _write_remediation_bundle(
+    repo_root,
+    gate_name,
+    blocker_type,
+    failure,
+    actions,
+    verification,
+    remediation_root="",
+):
+    out_dir, out_rel = _artifact_dir(repo_root, gate_name, blocker_type, remediation_root=remediation_root)
     _write_json(os.path.join(out_dir, "failure.json"), failure)
     _write_json(os.path.join(out_dir, "actions_taken.json"), {"actions": actions})
     _write_json(os.path.join(out_dir, "verification.json"), verification)
@@ -568,7 +629,15 @@ def _write_remediation_bundle(repo_root, gate_name, blocker_type, failure, actio
         handle.write("## Failure Output\n\n```\n{}\n```\n".format((failure.get("output", "") or "").strip()))
 
 
-def _remediate_until_progress(repo_root, env, stage_name, command, playbooks, auto_remediate=True):
+def _remediate_until_progress(
+    repo_root,
+    env,
+    stage_name,
+    command,
+    playbooks,
+    verify_build_dir,
+    auto_remediate=True,
+):
     actions = []
     attempted = set()
     result = _run(command, repo_root, env)
@@ -585,7 +654,14 @@ def _remediate_until_progress(repo_root, env, stage_name, command, playbooks, au
         strategy_classes = playbooks.get(blocker_type) or _default_strategy_classes(blocker_type)
         improved = False
         for strategy_class in strategy_classes:
-            action = _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted)
+            action = _attempt_strategy(
+                repo_root,
+                env,
+                stage_name,
+                strategy_class,
+                attempted,
+                verify_build_dir,
+            )
             if action is None:
                 continue
             actions.append(action)
@@ -625,6 +701,10 @@ def _execute_gate_set(
     policy,
     class_ids,
     playbooks,
+    verify_build_dir,
+    ws_id="",
+    dist_root="",
+    remediation_root="",
     requested_targets=None,
     only_gate_ids=None,
 ):
@@ -641,7 +721,7 @@ def _execute_gate_set(
         if only_gate_ids and gate_id not in only_gate_ids:
             verification["skipped"].append(gate_id)
             continue
-        if not _gate_applies(gate, repo_root, sorted(requested_targets)):
+        if not _gate_applies(gate, repo_root, sorted(requested_targets), env=env):
             verification["skipped"].append(gate_id)
             continue
 
@@ -651,7 +731,13 @@ def _execute_gate_set(
                 "gate {} skipped: invalid command definition".format(gate_id)
             )
             continue
-        command = _format_gate_command(command_tokens, repo_root)
+        command = _format_gate_command(
+            command_tokens,
+            repo_root,
+            verify_build_dir=verify_build_dir,
+            ws_id=ws_id,
+            dist_root=dist_root,
+        )
         command = _resolve_command_executable(command, env)
         auto_remediate = bool(gate.get("auto_remediate", False))
         severity = str(gate.get("severity", "fail")).strip().lower()
@@ -662,6 +748,7 @@ def _execute_gate_set(
             gate_id,
             command,
             playbooks,
+            verify_build_dir,
             auto_remediate=auto_remediate,
         )
         actions.extend(gate_actions)
@@ -680,6 +767,7 @@ def _execute_gate_set(
             result,
             actions,
             verification,
+            remediation_root=remediation_root,
         )
         sys.stdout.write(result.get("output", ""))
         return 1, verification, actions
@@ -687,14 +775,26 @@ def _execute_gate_set(
     return 0, verification, actions
 
 
-def _run_gate(repo_root, gate_kind, only_gate_ids=None):
-    env, tools_dir = _canonical_env(repo_root)
+def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id=""):
+    env, tools_dir, ws_dirs = _canonical_env(repo_root, ws_id=workspace_id)
+    verify_build_dir, ws_dirs = select_verify_build_dir(
+        repo_root,
+        ws_id=ws_dirs.get("workspace_id", workspace_id),
+        platform_id=ws_dirs.get("platform", ""),
+        arch_id=ws_dirs.get("arch", ""),
+        env=env,
+    )
+    dist_root = ws_dirs.get("dist_root", os.path.join(repo_root, "dist"))
+    remediation_root = ws_dirs.get("remediation_root", os.path.join(repo_root, REMEDIATION_ROOT_REL))
     playbooks = _load_playbooks(repo_root)
     policy = _load_gate_policy(repo_root)
     verification = {
         "gate_kind": gate_kind,
         "repo_root": repo_root.replace("\\", "/"),
         "tools_dir": tools_dir.replace("\\", "/"),
+        "workspace_id": ws_dirs.get("workspace_id", ""),
+        "verify_build_dir": verify_build_dir.replace("\\", "/"),
+        "dist_root": dist_root.replace("\\", "/"),
         "commands": [],
         "skipped": [],
         "warnings": [],
@@ -705,7 +805,17 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None):
         payload = {
             "repo_root": repo_root.replace("\\", "/"),
             "tools_dir": tools_dir.replace("\\", "/"),
-            "build_dirs": {k: v.replace("\\", "/") for k, v in canonical_build_dirs(repo_root).items()},
+            "build_dirs": {
+                k: v.replace("\\", "/")
+                for k, v in canonical_build_dirs(
+                    repo_root,
+                    ws_id=ws_dirs.get("workspace_id", ""),
+                    platform_id=ws_dirs.get("platform", ""),
+                    arch_id=ws_dirs.get("arch", ""),
+                    env=env,
+                ).items()
+            },
+            "workspace_id": ws_dirs.get("workspace_id", ""),
             "tools": [],
         }
         ok = True
@@ -757,6 +867,10 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None):
             policy,
             class_ids,
             playbooks,
+            verify_build_dir,
+            ws_id=ws_dirs.get("workspace_id", ""),
+            dist_root=dist_root,
+            remediation_root=remediation_root,
             requested_targets=requested_targets,
             only_gate_ids=only_gate_ids,
         )
@@ -775,6 +889,7 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None):
             {"command": [], "output": "pass", "returncode": 0},
             actions,
             verification,
+            remediation_root=remediation_root,
         )
     return 0
 
@@ -786,9 +901,15 @@ def main():
         choices=("dev", "verify", "dist", "doctor", "remediate", "precheck", "exitcheck"),
     )
     parser.add_argument("--repo-root", default="")
+    parser.add_argument("--workspace-id", default="")
     parser.add_argument("--only-gate", action="append", default=[])
     args = parser.parse_args()
-    return _run_gate(_repo_root(args.repo_root), args.command, only_gate_ids=args.only_gate)
+    return _run_gate(
+        _repo_root(args.repo_root),
+        args.command,
+        only_gate_ids=args.only_gate,
+        workspace_id=args.workspace_id,
+    )
 
 
 if __name__ == "__main__":
