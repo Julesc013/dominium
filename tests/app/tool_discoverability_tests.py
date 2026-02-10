@@ -1,7 +1,9 @@
 import argparse
 import os
+import shutil
 import subprocess
 import sys
+import tempfile
 
 
 CANONICAL_TOOLS = (
@@ -93,19 +95,32 @@ def run_missing_path(repo_root):
     if "RepoX governance rules OK." not in (proc.stdout or ""):
         raise RuntimeError("RepoX did not report success under empty PATH")
 
-    phase_script = os.path.join(repo_root, "tests", "app", "app_ui_bind_phase_tests.py")
-    phase_proc = subprocess.run(
-        [sys.executable, phase_script, "--repo-root", repo_root],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        errors="replace",
-        env=raw_env,
-        check=False,
-    )
+    gate_script = os.path.join(repo_root, "scripts", "dev", "gate.py")
+    random_cwd = tempfile.mkdtemp(prefix="dom-gate-anycwd-")
+    try:
+        phase_proc = subprocess.run(
+            [
+                sys.executable,
+                gate_script,
+                "exitcheck",
+                "--repo-root",
+                repo_root,
+                "--only-gate",
+                "ui_bind_check",
+            ],
+            cwd=random_cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            env=raw_env,
+            check=False,
+        )
+    finally:
+        shutil.rmtree(random_cwd, ignore_errors=True)
     if phase_proc.returncode != 0:
         raise RuntimeError(
-            "TestX tool path contract failed under empty PATH:\n{}".format(phase_proc.stdout)
+            "gate.py ui_bind_check failed under empty PATH/any-CWD:\n{}".format(phase_proc.stdout)
         )
 
     print("tool_discoverability_missing_path=ok")
