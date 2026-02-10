@@ -85,43 +85,4 @@ def run(graph, repo_root, changed_files=None):
         if len(findings) >= 120:
             break
 
-    watch_files = (
-        "data/registries/command_registry.json",
-        "data/registries/capability_registry.json",
-        "schema/ui/ui_ir.schema",
-        "schema/distribution/pkg_manifest.schema",
-    )
-    manifest_files = (
-        "docs/audit/auditx/FINDINGS.json",
-        "docs/audit/auditx/SUMMARY.md",
-    )
-    for watch in watch_files:
-        if not any(node.label == watch for node in graph.nodes.values() if node.node_type == "file"):
-            continue
-        for manifest in manifest_files:
-            if any(node.label == manifest for node in graph.nodes.values() if node.node_type == "file"):
-                continue
-            findings.append(
-                make_finding(
-                    analyzer_id=ANALYZER_ID,
-                    category="derived_freshness",
-                    severity="INFO",
-                    confidence=0.35,
-                    file_path=watch,
-                    evidence=[
-                        "Potential freshness coupling detected with missing derived audit artifact.",
-                        "Expected artifact candidate: {}".format(manifest),
-                    ],
-                    suggested_classification="TODO-BLOCKED",
-                    recommended_action="ADD_RULE",
-                    related_invariants=["INV-DERIVED-ARTIFACT-FRESHNESS"],
-                    related_paths=[watch, manifest],
-                )
-            )
-            if len(findings) >= 180:
-                break
-        if len(findings) >= 180:
-            break
-
     return sorted(findings, key=lambda item: (item.location.file, item.severity, item.confidence))
-

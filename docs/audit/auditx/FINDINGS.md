@@ -1,0 +1,316 @@
+Status: DERIVED
+Last Reviewed: 2026-02-10
+Supersedes: none
+Superseded By: none
+
+
+# AuditX Findings
+
+## Summary
+
+- Total findings: 743
+- Severities: INFO=66, RISK=13, WARN=664
+- Categories: canon_drift=580, capability_misuse=62, derived_freshness=4, reachability=4, schema_usage=93
+
+## Top Findings
+
+- `A1_REACHABILITY_ORPHANED:0001` WARN `reachability` (tools/auditx/analyzers/a8_derived_freshness_smell.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0002` WARN `reachability` (tools/auditx/auditx.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0003` WARN `reachability` (tools/auditx/output/__init__.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0004` WARN `reachability` (tools/auditx/output/writers.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A3_CANON_DRIFT:0001` WARN `canon_drift` (docs/CODE_CHANGE_JUSTIFICATION.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0002` WARN `canon_drift` (docs/FAQ.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0003` WARN `canon_drift` (docs/MODDER_GUIDE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0004` WARN `canon_drift` (docs/WHAT_PLAYERS_CAN_DO.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0005` WARN `canon_drift` (docs/accessibility/ACCESSIBILITY_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0006` WARN `canon_drift` (docs/agents/AGENT_CONFLICT.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0007` WARN `canon_drift` (docs/agents/AGENT_CONTRACTS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0008` WARN `canon_drift` (docs/agents/AGENT_FAILURE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0009` WARN `canon_drift` (docs/agents/AGENT_GOALS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0010` WARN `canon_drift` (docs/agents/AGENT_HISTORY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0011` WARN `canon_drift` (docs/agents/AGENT_HISTORY_MACRO.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0012` WARN `canon_drift` (docs/agents/AGENT_IDENTITY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0013` WARN `canon_drift` (docs/agents/AGENT_INSTITUTIONS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0014` WARN `canon_drift` (docs/agents/AGENT_KNOWLEDGE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0015` WARN `canon_drift` (docs/agents/AGENT_LIFECYCLE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0016` WARN `canon_drift` (docs/agents/AGENT_MEMORY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0017` WARN `canon_drift` (docs/agents/AGENT_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0018` WARN `canon_drift` (docs/agents/AGENT_NON_GOALS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0019` WARN `canon_drift` (docs/agents/AGENT_PLANNING.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0020` WARN `canon_drift` (docs/agents/AGENT_POWER.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0021` WARN `canon_drift` (docs/app/ARTIFACT_IDENTITY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0022` WARN `canon_drift` (docs/app/CLIENT_RENDERER_UI.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0023` WARN `canon_drift` (docs/app/CLIENT_UI_LAYER.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0024` WARN `canon_drift` (docs/app/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0025` WARN `canon_drift` (docs/app/GUI_MODE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0026` WARN `canon_drift` (docs/app/HEADLESS_AND_ZERO_PACK.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0027` WARN `canon_drift` (docs/app/NATIVE_UI_POLICY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0028` WARN `canon_drift` (docs/app/READONLY_ADAPTER.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0029` WARN `canon_drift` (docs/app/TUI_MODE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0030` WARN `canon_drift` (docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0031` WARN `canon_drift` (docs/architecture/AI_BUDGET_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0032` WARN `canon_drift` (docs/architecture/AI_INTENT_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0033` WARN `canon_drift` (docs/architecture/ANTI_CHEAT_AND_INTEGRITY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0034` WARN `canon_drift` (docs/architecture/ANTI_CHEAT_AS_LAW.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0035` WARN `canon_drift` (docs/architecture/APPLICATION_CONTRACTS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0036` WARN `canon_drift` (docs/architecture/ARCH0_CONSTITUTION.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0037` WARN `canon_drift` (docs/architecture/ARCHITECTURE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0038` WARN `canon_drift` (docs/architecture/ARCHIVAL_AND_PERMANENCE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0039` WARN `canon_drift` (docs/architecture/ARCH_CHANGE_PROCESS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0040` WARN `canon_drift` (docs/architecture/ARCH_ENFORCEMENT.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0041` WARN `canon_drift` (docs/architecture/ARCH_SPEC_OWNERSHIP.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0042` WARN `canon_drift` (docs/architecture/ARTIFACT_LIFECYCLE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0043` WARN `canon_drift` (docs/architecture/AUDITABILITY_AND_DISCLOSURE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0044` WARN `canon_drift` (docs/architecture/AUTHORITY_AND_OMNIPOTENCE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0045` WARN `canon_drift` (docs/architecture/BUDGET_POLICY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0046` WARN `canon_drift` (docs/architecture/BUGREPORT_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0047` WARN `canon_drift` (docs/architecture/BUNDLE_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0048` WARN `canon_drift` (docs/architecture/CANONICAL_SYSTEM_MAP.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0049` WARN `canon_drift` (docs/architecture/CANON_CUT_LINE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0050` WARN `canon_drift` (docs/architecture/CANON_INDEX.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0051` WARN `canon_drift` (docs/architecture/CAPABILITY_BASELINES.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0052` WARN `canon_drift` (docs/architecture/CHANGE_PROTOCOL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0053` WARN `canon_drift` (docs/architecture/CHEATS_ARE_JUST_LAWS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0054` WARN `canon_drift` (docs/architecture/CHECKPOINTING_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0055` WARN `canon_drift` (docs/architecture/CIVILIZATION_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0056` WARN `canon_drift` (docs/architecture/CODE_KNOWLEDGE_BOUNDARY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0057` WARN `canon_drift` (docs/architecture/COLLAPSE_AND_DECAY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0058` WARN `canon_drift` (docs/architecture/COLLAPSE_EXPAND_CONTRACT.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0059` WARN `canon_drift` (docs/architecture/COLLAPSE_EXPAND_SOLVERS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0060` WARN `canon_drift` (docs/architecture/COMPATIBILITY_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0061` WARN `canon_drift` (docs/architecture/CONFLICT_AND_WAR_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0062` WARN `canon_drift` (docs/architecture/CONSTANT_COST_GUARANTEE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0063` WARN `canon_drift` (docs/architecture/CONTENT_AND_STORAGE_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0064` WARN `canon_drift` (docs/architecture/CONTROL_LAYERS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0065` WARN `canon_drift` (docs/architecture/CRASH_RECOVERY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0066` WARN `canon_drift` (docs/architecture/CROSS_SHARD_LOG.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0067` WARN `canon_drift` (docs/architecture/DEMO_AND_TOURIST_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0068` WARN `canon_drift` (docs/architecture/DETERMINISTIC_ORDERING_POLICY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0069` WARN `canon_drift` (docs/architecture/DETERMINISTIC_REDUCTION_RULES.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0070` WARN `canon_drift` (docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0071` WARN `canon_drift` (docs/architecture/DISTRIBUTED_TIME_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0072` WARN `canon_drift` (docs/architecture/DISTRIBUTION_AND_STOREFRONTS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0073` WARN `canon_drift` (docs/architecture/DISTRIBUTION_PROFILES.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0074` WARN `canon_drift` (docs/architecture/DOMAIN_SHARDING_AND_STREAMING.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0075` WARN `canon_drift` (docs/architecture/DOMAIN_VOLUMES.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0076` WARN `canon_drift` (docs/architecture/ECONOMY_AND_LOGISTICS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0077` WARN `canon_drift` (docs/architecture/ENERGY_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0078` WARN `canon_drift` (docs/architecture/EPISTEMICS_AND_SCALED_MMO.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0079` WARN `canon_drift` (docs/architecture/EPISTEMICS_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0080` WARN `canon_drift` (docs/architecture/EXECUTION_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0081` WARN `canon_drift` (docs/architecture/EXECUTION_REORDERING_POLICY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0082` WARN `canon_drift` (docs/architecture/EXISTENCE_AND_REALITY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0083` WARN `canon_drift` (docs/architecture/EXISTENCE_LIFECYCLE.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0084` WARN `canon_drift` (docs/architecture/EXOTIC_TRAVEL_AND_REALITY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0085` WARN `canon_drift` (docs/architecture/EXPLORATION_METRICS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0086` WARN `canon_drift` (docs/architecture/EXTENSION_RULES.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0087` WARN `canon_drift` (docs/architecture/FABRICATION_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0088` WARN `canon_drift` (docs/architecture/FLUIDS_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0089` WARN `canon_drift` (docs/architecture/GENERATED_CODE_POLICY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0090` WARN `canon_drift` (docs/architecture/GLOBAL_ID_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0091` WARN `canon_drift` (docs/architecture/GLOSSARY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0092` WARN `canon_drift` (docs/architecture/GOVERNANCE_AND_INSTITUTIONS.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0093` WARN `canon_drift` (docs/architecture/HARDWARE_EVOLUTION_STRATEGY.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0094` WARN `canon_drift` (docs/architecture/HAZARDS_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0095` WARN `canon_drift` (docs/architecture/HISTORY_AND_CIVILIZATION_MODEL.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
+- `A3_CANON_DRIFT:0096` WARN `canon_drift` (docs/architecture/IDENTITY_ACROSS_TIME.md)
+  - Normative language detected but no explicit enforcement anchor found.
+  - Consider linking invariant IDs or tests for this behavior.
