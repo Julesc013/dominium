@@ -23,4 +23,8 @@ Superseded By: none
 
 - Entered only by explicit `client.session.begin`.
 - `client.session.begin` is refused unless the pipeline stage is `SessionReady`.
+- Re-entry commands:
+  - `client.session.reentry.network_drop`
+  - `client.session.reentry.client_restart`
+  - `client.session.reentry.authority_change`
 - Re-entry returns through lifecycle stages and re-establishes `SessionReady` before running.

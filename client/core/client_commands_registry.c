@@ -108,6 +108,12 @@ static const client_command_desc k_commands[] = {
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
     { "client.session.replay.toggle", k_caps_none, 0u, "partial", k_refusal_session, 9u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.session.reentry.network_drop", k_caps_none, 0u, "partial", k_refusal_session, 9u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.session.reentry.client_restart", k_caps_none, 0u, "partial", k_refusal_session, 9u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.session.reentry.authority_change", k_caps_none, 0u, "partial", k_refusal_session, 9u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
 
     { "client.options.get", k_caps_none, 0u, "partial", k_refusal_common, 5u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
