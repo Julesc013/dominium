@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-09
+Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
 
@@ -25,6 +25,26 @@ Behavior:
 - wrappers call canonical tools by name only
 - wrappers apply canonical tool PATH via `scripts/dev/env_tools.py`
 - wrappers do not bypass RepoX/TestX invariants
+
+## Gate Wrappers
+
+Canonical autonomous gate entrypoint:
+
+- `python scripts/dev/gate.py verify`
+- `python scripts/dev/gate.py dist`
+- `python scripts/dev/gate.py doctor`
+
+Equivalent dev wrapper commands:
+
+- `python scripts/dev/dev.py gate verify`
+- `python scripts/dev/dev.py gate dist`
+- `python scripts/dev/dev.py gate doctor`
+
+Behavior:
+
+- canonicalizes tool PATH in-process
+- runs RepoX/build/TestX deterministically
+- emits remediation artifacts to `docs/audit/remediation/...`
 
 ## Notes
 

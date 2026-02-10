@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-09
+Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
 
@@ -16,9 +16,15 @@ This document defines RepoX invariants for canonical tool discoverability and in
 
 ## INV-TOOLS-PATH-SET
 
-- Intent: RepoX execution environment must include canonical tools directory in `PATH`.
-- Fails when canonical tool root is missing from process `PATH`.
+- Intent: RepoX must canonicalize tool discovery in-process.
+- Fails when canonical tool root is not active in RepoX process `PATH` after canonicalization.
 - Canonical root is resolved from `dist/sys/<platform>/<arch>/bin/tools/`.
+
+## INV-TOOLS-DIR-MISSING
+
+- Intent: fail explicitly when canonical tools output does not exist yet.
+- Fails when `dist/sys/<platform>/<arch>/bin/tools/` is missing.
+- Remediation hint is mandatory: build tools via `ui_bind_phase` or canonical tools target.
 
 ## INV-TOOL-UNRESOLVABLE
 
@@ -34,9 +40,8 @@ This document defines RepoX invariants for canonical tool discoverability and in
 
 ## Operational Rule
 
-Before RepoX/TestX/CI execution, apply `scripts/dev/env_tools` for the current shell:
+- RepoX/TestX self-canonicalize internally; manual shell PATH setup is not required.
+- `scripts/dev/env_tools.*` remains optional convenience for interactive shells.
+- Preferred entrypoint for full gate execution is `python scripts/dev/gate.py verify`.
 
-- `scripts/dev/env_tools.cmd`
-- `scripts/dev/env_tools.ps1`
-- `scripts/dev/env_tools.sh`
-- `python scripts/dev/env_tools.py ...`
+See `docs/governance/GATE_AUTONOMY_POLICY.md` for autonomous gate flow.

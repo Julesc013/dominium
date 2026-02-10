@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-09
+Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
 
@@ -65,6 +65,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-DOC-STATUS-HEADER`
 - `INV-TOOL-NAME-ONLY`
 - `INV-TOOLS-PATH-SET`
+- `INV-TOOLS-DIR-MISSING`
 - `INV-TOOL-UNRESOLVABLE`
 - `INV-DET-NO-ANON-RNG`
 - `INV-DET-NO-WALLCLOCK`
@@ -128,10 +129,11 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails for top-level `shared_*` module directories.
 - Prevents reintroduction of ad-hoc root module wrappers instead of using canonical subsystem paths.
 
-### INV-TOOL-NAME-ONLY / INV-TOOLS-PATH-SET / INV-TOOL-UNRESOLVABLE
+### INV-TOOL-NAME-ONLY / INV-TOOLS-PATH-SET / INV-TOOLS-DIR-MISSING / INV-TOOL-UNRESOLVABLE
 
 - Enforces canonical tool invocation by name only.
-- Enforces `PATH` inclusion of `dist/sys/<platform>/<arch>/bin/tools`.
+- Enforces in-process PATH canonicalization to `dist/sys/<platform>/<arch>/bin/tools`.
+- Enforces explicit missing-directory failure (`INV-TOOLS-DIR-MISSING`) with remediation hint.
 - Enforces discoverability probes for required canonical tools at RepoX runtime.
 - Detailed policy: `docs/governance/REPOX_TOOL_RULES.md`.
 
