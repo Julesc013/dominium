@@ -1,0 +1,41 @@
+SCHEMA: ui_pack.schema
+schema_id: dominium.schema.ui.pack
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define validated UI extension packs containing IR fragments, layouts, and themes.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- UI packs extend presentation only and cannot bypass command dispatch.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record ui_pack
+  required:
+    - pack_id: id
+    - pack_version: tag
+    - provides_layouts: [tag]
+    - provides_themes: [tag]
+    - ir_fragments: [tag]
+    - command_bindings: [tag]
+    - required_capabilities: [tag]
+    - refusal_codes: [tag]
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+

@@ -1,0 +1,40 @@
+SCHEMA: universe_spec.schema
+schema_id: dominium.schema.world.universe_spec
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define lazy universe index and refinement hint artifacts.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Universe specs declare indexing/refinement hints only.
+- They do NOT encode simulation rule changes.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record universe_spec
+  required:
+    - universe_id: id
+    - macro_seed: tag
+    - systems: [map]
+    - refinement_hints: [map]
+    - capsule_refs: [id]
+    - refusal_codes: [tag]
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+

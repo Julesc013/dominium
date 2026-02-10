@@ -261,6 +261,7 @@ execution artifacts and are not authoritative.
 - `docs/agents/AGENT_LIFECYCLE.md`
 - `docs/agents/AGENT_MODEL.md`
 - `docs/agents/AGENT_NON_GOALS.md`
+- `docs/client/CLIENT_UI_AND_FLOW.md`
 - `docs/client/CLIENT_SETTINGS.md`
 - `docs/dev/NOW_SOON_LATER_ROADMAP.md`
 - `docs/governance/REMEDIATION_STATE_MACHINE.md`
@@ -279,6 +280,12 @@ execution artifacts and are not authoritative.
 - `docs/settings/SETTINGS_OWNERSHIP_MODEL.md`
 - `docs/setup/SETUP_SETTINGS.md`
 - `docs/tools/TOOLS_SETTINGS.md`
+- `docs/ui/UI_IR_SCHEMA_AND_LAYOUTS.md`
+- `docs/ui/UI_MODDING_AND_THEMES.md`
+- `docs/ui/UI_SYSTEM_DOCTRINE.md`
+- `docs/worldgen/WORLDGEN_PIPELINE.md`
+- `docs/worldgen/WORLDGEN_PREVIEW_AND_OPTIMIZATION.md`
+- `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`
 
 ## DERIVED
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`

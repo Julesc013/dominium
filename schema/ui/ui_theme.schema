@@ -1,0 +1,38 @@
+SCHEMA: ui_theme.schema
+schema_id: dominium.schema.ui.theme
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define deterministic, presentation-only theme payloads for UI rendering modes.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Theme data does NOT modify command behavior or simulation outcomes.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record ui_theme
+  required:
+    - theme_id: id
+    - palette: map
+    - typography: map
+    - spacing: map
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - icon_set: map
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
