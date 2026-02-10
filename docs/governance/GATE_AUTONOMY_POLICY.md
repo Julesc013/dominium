@@ -26,9 +26,11 @@ RepoX and TestX must self-canonicalize their tool environment. Manual `PATH` set
 
 Use `scripts/dev/gate.py` (or `python scripts/dev/dev.py gate ...`) as the preferred entrypoint:
 
+- `gate dev`
 - `gate verify`
 - `gate dist`
 - `gate doctor`
+- `gate remediate`
 
 Behavior:
 
@@ -36,3 +38,9 @@ Behavior:
 - runs RepoX, strict build, and TestX in one flow
 - attempts deterministic tool-discovery remediation when `INV-TOOLS-DIR-MISSING` occurs
 - writes remediation artifacts to `docs/audit/remediation/...`
+
+## Remediation Discipline
+
+- Mechanical failures are remediated automatically.
+- Remediation follows `docs/governance/REMEDIATION_STATE_MACHINE.md`.
+- Semantic escalations follow `docs/governance/SEMANTIC_ESCALATION_POLICY.md`.

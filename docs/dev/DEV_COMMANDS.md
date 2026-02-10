@@ -33,12 +33,16 @@ Canonical autonomous gate entrypoint:
 - `python scripts/dev/gate.py verify`
 - `python scripts/dev/gate.py dist`
 - `python scripts/dev/gate.py doctor`
+- `python scripts/dev/gate.py dev`
+- `python scripts/dev/gate.py remediate`
 
 Equivalent dev wrapper commands:
 
 - `python scripts/dev/dev.py gate verify`
 - `python scripts/dev/dev.py gate dist`
 - `python scripts/dev/dev.py gate doctor`
+- `python scripts/dev/dev.py gate dev`
+- `python scripts/dev/dev.py gate remediate`
 
 Behavior:
 
