@@ -179,7 +179,7 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
     if (starts_with(token, "client.session.")) {
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s stage=%s",
+                 "result=ok command=%s stage=%s workspace=session_transition",
                  token,
                  client_state_machine_stage_name(state_machine));
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
