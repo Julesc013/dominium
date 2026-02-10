@@ -35,6 +35,12 @@ record session_artifacts
     - warmup_simulation_ready: tag
     - warmup_presentation_ready: tag
     - simulation_time_advanced: tag
+    - world_ready: tag
+    - camera_placed: tag
+    - agent_actions_executed: tag
+    - map_open: tag
+    - stats_visible: tag
+    - replay_recording_enabled: tag
     - allowed_observation_layers: [tag]
     - refusal_codes: [tag]
     - extensions: map

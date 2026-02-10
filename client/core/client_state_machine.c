@@ -99,6 +99,54 @@ int client_state_machine_simulation_time_advanced(const client_state_machine* ma
     return client_session_artifacts_simulation_time_advanced(&machine->artifacts);
 }
 
+int client_state_machine_world_ready(const client_state_machine* machine)
+{
+    if (!machine) {
+        return 0;
+    }
+    return client_session_artifacts_world_ready(&machine->artifacts);
+}
+
+int client_state_machine_camera_placed(const client_state_machine* machine)
+{
+    if (!machine) {
+        return 0;
+    }
+    return client_session_artifacts_camera_placed(&machine->artifacts);
+}
+
+int client_state_machine_agent_actions_executed(const client_state_machine* machine)
+{
+    if (!machine) {
+        return 0;
+    }
+    return client_session_artifacts_agent_actions_executed(&machine->artifacts);
+}
+
+int client_state_machine_map_open(const client_state_machine* machine)
+{
+    if (!machine) {
+        return 0;
+    }
+    return client_session_artifacts_map_open(&machine->artifacts);
+}
+
+int client_state_machine_stats_visible(const client_state_machine* machine)
+{
+    if (!machine) {
+        return 0;
+    }
+    return client_session_artifacts_stats_visible(&machine->artifacts);
+}
+
+int client_state_machine_replay_recording_enabled(const client_state_machine* machine)
+{
+    if (!machine) {
+        return 0;
+    }
+    return client_session_artifacts_replay_recording_enabled(&machine->artifacts);
+}
+
 int client_state_machine_apply(client_state_machine* machine, const char* command_id)
 {
     int pipeline_ok = 1;
@@ -164,6 +212,7 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
         }
         client_session_artifacts_warmup_simulation(&machine->artifacts);
         client_session_artifacts_warmup_presentation(&machine->artifacts);
+        client_session_artifacts_mark_session_ready(&machine->artifacts);
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
         if (machine->pipeline.stage_id == CLIENT_SESSION_STAGE_SESSION_READY) {
             machine->state = CLIENT_SESSION_STATE_SESSION_READY;
@@ -184,6 +233,7 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
             client_session_artifacts_warmup_simulation(&machine->artifacts);
             client_session_artifacts_warmup_presentation(&machine->artifacts);
         }
+        client_session_artifacts_mark_session_ready(&machine->artifacts);
         machine->state = CLIENT_SESSION_STATE_SESSION_READY;
         return 1;
     }
@@ -235,7 +285,28 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
         }
         client_session_artifacts_warmup_simulation(&machine->artifacts);
         client_session_artifacts_warmup_presentation(&machine->artifacts);
+        client_session_artifacts_mark_session_ready(&machine->artifacts);
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.inspect") == 0) {
+        machine->state = CLIENT_SESSION_STATE_SESSION_READY;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.map.open") == 0) {
+        client_session_artifacts_set_map_open(&machine->artifacts, 1);
+        machine->state = CLIENT_SESSION_STATE_SESSION_READY;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.stats") == 0) {
+        client_session_artifacts_set_stats_visible(&machine->artifacts, 1);
+        machine->state = CLIENT_SESSION_STATE_SESSION_READY;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.replay.toggle") == 0) {
+        int enabled = client_session_artifacts_replay_recording_enabled(&machine->artifacts);
+        client_session_artifacts_set_replay_recording(&machine->artifacts, enabled ? 0 : 1);
+        machine->state = CLIENT_SESSION_STATE_SESSION_READY;
         return 1;
     }
     if (starts_with(command_id, "client.world.")) {

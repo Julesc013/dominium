@@ -40,3 +40,9 @@ Client session entry is command-driven and deterministic.
 - Presentation warm-up is deterministic and explicit:
   `layout_loaded>renderer_backend_loaded>input_mappings_loaded>camera_defaults_prepared`.
 - `session.simulation.time_advanced` stays `0` through warm-up and `SessionReady`.
+
+## SessionReady Contract
+
+- `client.session.inspect`, `client.session.map.open`, `client.session.stats`, and `client.session.replay.toggle`
+  are allowed only in `SessionReady`.
+- `client.session.begin` is the only command that transitions to `SessionRunning`.

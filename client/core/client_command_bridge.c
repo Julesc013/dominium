@@ -180,14 +180,26 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         const char* warmup_sim = state_machine ? client_state_machine_warmup_simulation_step(state_machine) : "";
         const char* warmup_present = state_machine ? client_state_machine_warmup_presentation_step(state_machine) : "";
         int time_advanced = state_machine ? client_state_machine_simulation_time_advanced(state_machine) : 0;
+        int world_ready = state_machine ? client_state_machine_world_ready(state_machine) : 0;
+        int camera_placed = state_machine ? client_state_machine_camera_placed(state_machine) : 0;
+        int actions_executed = state_machine ? client_state_machine_agent_actions_executed(state_machine) : 0;
+        int map_open = state_machine ? client_state_machine_map_open(state_machine) : 0;
+        int stats_visible = state_machine ? client_state_machine_stats_visible(state_machine) : 0;
+        int replay_recording = state_machine ? client_state_machine_replay_recording_enabled(state_machine) : 0;
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s stage=%s workspace=session_transition warmup.sim=%s warmup.presentation=%s time_advanced=%d",
+                 "result=ok command=%s stage=%s workspace=session_transition warmup.sim=%s warmup.presentation=%s time_advanced=%d world_ready=%d camera_placed=%d agent_actions_executed=%d map_open=%d stats_visible=%d replay_recording=%d",
                  token,
                  client_state_machine_stage_name(state_machine),
                  warmup_sim,
                  warmup_present,
-                 time_advanced);
+                 time_advanced,
+                 world_ready,
+                 camera_placed,
+                 actions_executed,
+                 map_open,
+                 stats_visible,
+                 replay_recording);
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (starts_with(token, "client.server.") ||
