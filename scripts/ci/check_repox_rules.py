@@ -4115,6 +4115,128 @@ def check_root_module_shims(repo_root):
     return violations
 
 
+def check_auditx_artifact_headers(repo_root):
+    invariant_id = "INV-AUDITX-ARTIFACT-HEADERS"
+    output_root = os.path.join(repo_root, "docs", "audit", "auditx")
+    if not os.path.isdir(output_root):
+        return []
+
+    expected_md = (
+        "docs/audit/auditx/README.md",
+        "docs/audit/auditx/FINDINGS.md",
+        "docs/audit/auditx/SUMMARY.md",
+    )
+    expected_json = (
+        "docs/audit/auditx/FINDINGS.json",
+        "docs/audit/auditx/INVARIANT_MAP.json",
+    )
+
+    violations = []
+    for rel in expected_md:
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing artifact {}".format(invariant_id, rel))
+            continue
+        text = read_text(path) or ""
+        header = parse_doc_header(text)
+        if not header:
+            violations.append("{}: missing doc header {}".format(invariant_id, rel))
+            continue
+        status = header.get("status", "")
+        if status != "DERIVED":
+            violations.append("{}: expected DERIVED status in {} (found {})".format(invariant_id, rel, status))
+        reviewed = header.get("reviewed", "")
+        if not _parse_date(reviewed):
+            violations.append("{}: invalid Last Reviewed '{}' in {}".format(invariant_id, reviewed, rel))
+
+    for rel in expected_json:
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing artifact {}".format(invariant_id, rel))
+            continue
+        payload = _load_json_file(path)
+        if payload is None:
+            violations.append("{}: invalid json {}".format(invariant_id, rel))
+            continue
+        status = str(payload.get("status", "")).strip()
+        reviewed = str(payload.get("last_reviewed", "")).strip()
+        if status != "DERIVED":
+            violations.append("{}: expected DERIVED status in {} (found {})".format(invariant_id, rel, status))
+        if not _parse_date(reviewed):
+            violations.append("{}: invalid last_reviewed '{}' in {}".format(invariant_id, reviewed, rel))
+
+    return violations
+
+
+def check_auditx_deterministic_contract(repo_root):
+    invariant_id = "INV-AUDITX-DETERMINISM"
+    checks = (
+        ("tools/auditx/auditx.py", ("sort_findings(", "compute_fingerprint(", "build_analysis_graph(")),
+        ("tools/auditx/model/serialization.py", ("sort_keys=True", "sha256(")),
+        ("tools/auditx/graph/analysis_graph.py", ("stable_hash(", "sort_keys=True")),
+        ("tools/auditx/output/writers.py", ("sort_keys=True", "_build_invariant_map(")),
+    )
+
+    violations = []
+    for rel, tokens in checks:
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        text = read_text(path)
+        if not text:
+            violations.append("{}: missing file {}".format(invariant_id, rel))
+            continue
+        for token in tokens:
+            if token not in text:
+                violations.append("{}: missing deterministic token '{}' in {}".format(invariant_id, token, rel))
+    return violations
+
+
+def check_auditx_nonruntime_leak(repo_root):
+    invariant_id = "INV-AUDITX-NONRUNTIME"
+    roots = [
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "launcher"),
+        os.path.join(repo_root, "setup"),
+        os.path.join(repo_root, "libs"),
+    ]
+    violations = []
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path) or ""
+        lowered = text.lower()
+        if "tools/auditx" in lowered or "tools\\auditx" in lowered or "auditx.py" in lowered:
+            violations.append(
+                "{}: runtime source references AuditX implementation {}".format(invariant_id, rel)
+            )
+    return violations
+
+
+def check_auditx_output_staleness(repo_root):
+    invariant_id = "INV-AUDITX-OUTPUT-STALE"
+    tracked = "docs/audit/auditx/FINDINGS.json"
+    tracked_path = os.path.join(repo_root, tracked.replace("/", os.sep))
+    if not os.path.isfile(tracked_path):
+        return []
+
+    latest_commit = run_git(["log", "-n", "1", "--format=%H", "--", tracked], repo_root)
+    if not latest_commit:
+        return ["{}: unable to locate git history for {}".format(invariant_id, tracked)]
+    distance = run_git(["rev-list", "--count", "{}..HEAD".format(latest_commit)], repo_root)
+    try:
+        delta = int(distance or "0")
+    except ValueError:
+        return ["{}: invalid revision distance '{}'".format(invariant_id, distance)]
+    if delta <= 30:
+        return []
+    return [
+        "{}: audit outputs may be stale ({} commits since {})".format(
+            invariant_id, delta, tracked
+        )
+    ]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="RepoX governance rules enforcement.")
     parser.add_argument("--repo-root", default="")
@@ -4195,6 +4317,10 @@ def main() -> int:
     violations.extend(check_process_guard_runtime_contract(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))
     violations.extend(check_compliance_report_canon(repo_root))
+    violations.extend(check_auditx_artifact_headers(repo_root))
+    violations.extend(check_auditx_deterministic_contract(repo_root))
+    violations.extend(check_auditx_nonruntime_leak(repo_root))
+    violations.extend(check_auditx_output_staleness(repo_root))
 
     failures, warnings = _apply_ruleset_policy(repo_root, violations)
     write_proof_manifest(repo_root, args.proof_manifest_out, warnings, failures)

@@ -8,6 +8,34 @@
       "scope_paths": ["data/registries/solver_registry.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-solver-contracts",
       "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-AUDITX-ARTIFACT-HEADERS",
+      "severity": "FAIL",
+      "scope_paths": ["docs/audit/auditx", "tools/auditx/output"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-artifact-headers",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-AUDITX-DETERMINISM",
+      "severity": "FAIL",
+      "scope_paths": ["tools/auditx", "docs/audit/auditx"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-determinism",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-AUDITX-NONRUNTIME",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "launcher", "setup", "libs", "tools/auditx"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-nonruntime",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
+      "rule_id": "INV-AUDITX-OUTPUT-STALE",
+      "severity": "WARN",
+      "scope_paths": ["docs/audit/auditx", "tools/auditx"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-output-stale",
+      "exemption_policy": "allow_with_expiry"
     }
   ]
 }
