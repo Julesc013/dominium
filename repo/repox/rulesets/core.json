@@ -66,10 +66,10 @@
       "exemption_policy": "deny"
     },
     {
-      "rule_id": "INV-TOOLS-PATH-SET",
+      "rule_id": "INV-TOOLS-DIR-EXISTS",
       "severity": "FAIL",
       "scope_paths": ["scripts/dev", "dist/sys", "scripts/ci/check_repox_rules.py"],
-      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tools-path-set",
+      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tools-dir-exists",
       "exemption_policy": "deny"
     },
     {

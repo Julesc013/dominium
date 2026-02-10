@@ -14,7 +14,7 @@ This document defines RepoX invariants for canonical tool discoverability and in
 - Fails when CMake uses target-file path indirection for canonical tool execution.
 - Allowed form: `tool_<name> ...` after `env_tools` canonical PATH setup.
 
-## INV-TOOLS-PATH-SET
+## INV-TOOLS-DIR-EXISTS
 
 - Intent: RepoX must canonicalize tool discovery in-process.
 - Fails when canonical tool root is not active in RepoX process `PATH` after canonicalization.
