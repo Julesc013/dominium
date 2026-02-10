@@ -9,6 +9,15 @@ import tempfile
 from typing import Dict, List, Tuple
 
 
+def _load_env_tools_lib(repo_root: str):
+    dev_root = os.path.join(repo_root, "scripts", "dev")
+    if dev_root not in sys.path:
+        sys.path.insert(0, dev_root)
+    import env_tools_lib
+
+    return env_tools_lib
+
+
 def _norm(path: str) -> str:
     return path.replace("\\", "/")
 
@@ -32,27 +41,9 @@ def _bin(repo_root: str, build_root: str, name: str) -> str:
 
 
 def _tool_env(repo_root: str) -> Dict[str, str]:
-    env = os.environ.copy()
-    adapter = os.path.join(repo_root, "scripts", "dev", "env_tools.py")
-    if not os.path.isfile(adapter):
-        raise RuntimeError("missing env_tools adapter")
-    proc = subprocess.run(
-        [sys.executable, adapter, "--repo-root", repo_root, "print-path"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        errors="replace",
-        check=False,
-    )
-    if proc.returncode != 0:
-        raise RuntimeError(proc.stdout.strip() or "unable to resolve tools path")
-    lines = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
-    if not lines:
-        raise RuntimeError("env_tools adapter returned empty path")
-    tool_dir = lines[-1]
-    env["PATH"] = tool_dir + os.pathsep + env.get("PATH", "")
-    env["DOM_TOOLS_PATH"] = tool_dir
-    env["DOM_TOOLS_READY"] = "1"
+    tools_lib = _load_env_tools_lib(repo_root)
+    tool_dir = tools_lib.canonical_tools_dir(repo_root)
+    env = tools_lib.prepend_tools_to_path(dict(os.environ), tool_dir)
     return env
 
 
