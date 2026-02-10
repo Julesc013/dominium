@@ -111,6 +111,10 @@ static void print_help(void)
     printf("  client.session.begin    Explicitly transition SessionReady -> SessionRunning\n");
     printf("  client.session.resume   Deterministic session resume path\n");
     printf("  client.session.abort    Abort active transition/run and tear down\n");
+    printf("  client.session.inspect  Inspect fogged world state at SessionReady\n");
+    printf("  client.session.map.open Open map panel at SessionReady\n");
+    printf("  client.session.stats    Open stats panel at SessionReady\n");
+    printf("  client.session.replay.toggle Toggle replay recording at SessionReady\n");
     printf("  new-world       Create a new world (use built-in templates)\n");
     printf("  create-world    Create + save world (auto path if omitted)\n");
     printf("  load-world      Load a world save (default path or path=...)\n");

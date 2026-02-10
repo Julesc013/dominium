@@ -40,6 +40,12 @@ const char* client_state_machine_stage_name(const client_state_machine* machine)
 const char* client_state_machine_warmup_simulation_step(const client_state_machine* machine);
 const char* client_state_machine_warmup_presentation_step(const client_state_machine* machine);
 int client_state_machine_simulation_time_advanced(const client_state_machine* machine);
+int client_state_machine_world_ready(const client_state_machine* machine);
+int client_state_machine_camera_placed(const client_state_machine* machine);
+int client_state_machine_agent_actions_executed(const client_state_machine* machine);
+int client_state_machine_map_open(const client_state_machine* machine);
+int client_state_machine_stats_visible(const client_state_machine* machine);
+int client_state_machine_replay_recording_enabled(const client_state_machine* machine);
 
 #ifdef __cplusplus
 }

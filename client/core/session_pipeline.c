@@ -127,6 +127,16 @@ int client_session_pipeline_apply_command(client_session_pipeline* pipeline, con
         transition_to(pipeline, CLIENT_SESSION_STAGE_SESSION_READY);
         return 1;
     }
+    if (strcmp(command_id, "client.session.inspect") == 0 ||
+        strcmp(command_id, "client.session.map.open") == 0 ||
+        strcmp(command_id, "client.session.stats") == 0 ||
+        strcmp(command_id, "client.session.replay.toggle") == 0) {
+        if (pipeline->stage_id != CLIENT_SESSION_STAGE_SESSION_READY) {
+            set_refusal(pipeline, CLIENT_SESSION_REFUSE_INVALID_TRANSITION);
+            return 0;
+        }
+        return 1;
+    }
     if (strcmp(command_id, "client.session.begin") == 0) {
         if (pipeline->stage_id != CLIENT_SESSION_STAGE_SESSION_READY) {
             set_refusal(pipeline, CLIENT_SESSION_REFUSE_BEGIN_REQUIRES_READY);

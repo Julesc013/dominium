@@ -210,6 +210,42 @@
         "metadata": {}
       },
       {
+        "panel_id": "details",
+        "source_key": "session.world.ready",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.camera.placed",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.agent.actions_executed",
+        "formatter": "int",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.map.open",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.stats.visible",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.replay.recording_enabled",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
         "panel_id": "messages",
         "source_key": "session.refusal_code",
         "formatter": "identity",
