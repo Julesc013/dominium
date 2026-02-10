@@ -27,6 +27,13 @@ static const char* k_refusal_server[] = {
     "REFUSE_SERVER_INCOMPATIBLE",
     "REFUSE_NETWORK_UNAVAILABLE"
 };
+static const char* k_refusal_session[] = {
+    "ok",
+    "usage",
+    "refuse.invalid_transition",
+    "refuse.begin_requires_ready",
+    "refuse.resume_requires_suspend"
+};
 
 static const client_command_desc k_commands[] = {
     { "client.boot.start", k_caps_none, 0u, "partial", k_refusal_common, 5u,
@@ -67,6 +74,17 @@ static const client_command_desc k_commands[] = {
     { "client.server.refresh", k_caps_tool_observation, 1u, "partial", k_refusal_server, 5u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
     { "client.server.connect", k_caps_tool_observation, 1u, "partial", k_refusal_server, 5u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+
+    { "client.session.begin", k_caps_none, 0u, "partial", k_refusal_session, 5u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.session.suspend", k_caps_none, 0u, "partial", k_refusal_session, 5u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.session.resume", k_caps_none, 0u, "partial", k_refusal_session, 5u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.session.reentry", k_caps_none, 0u, "partial", k_refusal_session, 5u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.session.abort", k_caps_none, 0u, "partial", k_refusal_session, 5u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
 
     { "client.options.get", k_caps_none, 0u, "partial", k_refusal_common, 5u,

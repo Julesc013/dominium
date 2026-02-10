@@ -26,7 +26,8 @@ static const bridge_alias k_aliases[] = {
     { "client.options.accessibility.set", "accessibility-next" },
     { "client.replay.list", "inspect-replay" },
     { "client.replay.inspect", "inspect-replay" },
-    { "client.replay.export", "replay-save" }
+    { "client.replay.export", "replay-save" },
+    { "client.session.abort", "exit" }
 };
 
 static int starts_with(const char* value, const char* prefix)
@@ -173,6 +174,14 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         strcmp(token, "client.diag.show_lock_hash") == 0 ||
         strcmp(token, "client.diag.export_bugreport") == 0) {
         snprintf(out_message, out_message_cap, "result=ok command=%s", token);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (starts_with(token, "client.session.")) {
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s stage=%s",
+                 token,
+                 client_state_machine_stage_name(state_machine));
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (starts_with(token, "client.server.") ||

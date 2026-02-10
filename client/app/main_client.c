@@ -108,6 +108,9 @@ static void print_help(void)
     printf("  --expect-gfx-api <v>         Require gfx API match\n");
     printf("commands:\n");
     printf("  client.*        Canonical command namespace (bridged to CLI handlers)\n");
+    printf("  client.session.begin    Explicitly transition SessionReady -> SessionRunning\n");
+    printf("  client.session.resume   Deterministic session resume path\n");
+    printf("  client.session.abort    Abort active transition/run and tear down\n");
     printf("  new-world       Create a new world (use built-in templates)\n");
     printf("  create-world    Create + save world (auto path if omitted)\n");
     printf("  load-world      Load a world save (default path or path=...)\n");

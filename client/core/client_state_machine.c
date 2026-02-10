@@ -31,6 +31,7 @@ void client_state_machine_init(client_state_machine* machine)
         return;
     }
     memset(machine, 0, sizeof(*machine));
+    client_session_pipeline_init(&machine->pipeline);
     machine->state = CLIENT_SESSION_STATE_BOOT_PROGRESS;
 }
 
@@ -43,6 +44,7 @@ const char* client_state_machine_state_name(client_session_state state)
     if (state == CLIENT_SESSION_STATE_OPTIONS) return "Options";
     if (state == CLIENT_SESSION_STATE_ABOUT) return "About";
     if (state == CLIENT_SESSION_STATE_SESSION_LAUNCHING) return "SessionLaunching";
+    if (state == CLIENT_SESSION_STATE_SESSION_READY) return "SessionReady";
     if (state == CLIENT_SESSION_STATE_SESSION_RUNNING) return "SessionRunning";
     if (state == CLIENT_SESSION_STATE_REFUSAL_ERROR) return "RefusalError";
     return "RefusalError";
@@ -64,8 +66,17 @@ const char* client_state_machine_last_refusal(const client_state_machine* machin
     return machine->last_refusal;
 }
 
+const char* client_state_machine_stage_name(const client_state_machine* machine)
+{
+    if (!machine) {
+        return client_session_stage_name(CLIENT_SESSION_STAGE_TEAR_DOWN_SESSION);
+    }
+    return client_session_pipeline_stage_name(&machine->pipeline);
+}
+
 int client_state_machine_apply(client_state_machine* machine, const char* command_id)
 {
+    int pipeline_ok = 1;
     if (!machine || !command_id || !command_id[0]) {
         return 0;
     }
@@ -75,6 +86,16 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
     if (!starts_with(command_id, "client.")) {
         return 1;
     }
+
+    pipeline_ok = client_session_pipeline_apply_command(&machine->pipeline, command_id);
+    if (!pipeline_ok) {
+        copy_text(machine->last_refusal,
+                  sizeof(machine->last_refusal),
+                  client_session_pipeline_last_refusal(&machine->pipeline));
+        machine->state = CLIENT_SESSION_STATE_REFUSAL_ERROR;
+        return 0;
+    }
+
     machine->transition_count += 1u;
 
     if (strcmp(command_id, "client.boot.start") == 0) {
@@ -108,6 +129,22 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
     if (strcmp(command_id, "client.world.play") == 0 ||
         strcmp(command_id, "client.server.connect") == 0) {
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        if (machine->pipeline.stage_id == CLIENT_SESSION_STAGE_SESSION_READY) {
+            machine->state = CLIENT_SESSION_STATE_SESSION_READY;
+        }
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.begin") == 0) {
+        machine->state = CLIENT_SESSION_STATE_SESSION_RUNNING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.suspend") == 0) {
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.resume") == 0 ||
+        strcmp(command_id, "client.session.reentry") == 0) {
+        machine->state = CLIENT_SESSION_STATE_SESSION_READY;
         return 1;
     }
     if (strcmp(command_id, "client.menu.quit") == 0) {
@@ -132,6 +169,10 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
     }
     if (starts_with(command_id, "client.replay.")) {
         machine->state = CLIENT_SESSION_STATE_SESSION_RUNNING;
+        return 1;
+    }
+    if (starts_with(command_id, "client.session.")) {
+        machine->state = CLIENT_SESSION_STATE_SESSION_READY;
         return 1;
     }
     return 1;
