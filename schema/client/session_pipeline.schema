@@ -1,0 +1,59 @@
+SCHEMA: session_pipeline.schema
+schema_id: dominium.schema.client.session_pipeline
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Declare deterministic client session lifecycle pipelines.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Pipeline declarations orchestrate session lifecycle only.
+- They MUST NOT define gameplay or simulation rules.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record session_pipeline
+  required:
+    - pipeline_id: id
+    - schema_version_ref: tag
+    - stages: [session_stage]
+    - allowed_transitions: [session_transition]
+    - abort_semantics: map
+    - resume_semantics: map
+    - required_capabilities: [tag]
+    - deterministic_ordering: map
+    - extensions: map
+  optional:
+    - metadata: map
+
+TYPE DEFINITIONS:
+record session_stage
+  required:
+    - stage_id: tag
+    - ordinal: integer
+    - required_capabilities: [tag]
+  optional:
+    - stage_refusal_codes: [tag]
+    - metadata: map
+
+record session_transition
+  required:
+    - from_stage_id: tag
+    - to_stage_id: tag
+    - command_id: tag
+  optional:
+    - refusal_codes: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
