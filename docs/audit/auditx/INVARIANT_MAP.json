@@ -1,0 +1,158 @@
+{
+  "invariants": {
+    "INV-CANON-INDEX": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0247",
+          "location": "docs/gameplay/CONSTRUCTION_MODEL.md"
+        }
+      ],
+      "severities": {
+        "WARN": 1
+      }
+    },
+    "INV-CAPABILITY-GATED-RUNTIME": {
+      "finding_count": 62,
+      "recommended_actions": {
+        "ADD_TEST": 62
+      },
+      "sample_findings": [
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0001",
+          "location": "data/registries"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0002",
+          "location": "data/registries"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0003",
+          "location": "data/registries"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0004",
+          "location": "data/registries"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0005",
+          "location": "data/registries"
+        }
+      ],
+      "severities": {
+        "INFO": 62
+      }
+    },
+    "INV-DERIVED-ARTIFACT-FRESHNESS": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "ADD_RULE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0001",
+          "location": "docs/audit/auditx/FINDINGS.md"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0002",
+          "location": "docs/audit/auditx/README.md"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0003",
+          "location": "docs/audit/auditx/SUMMARY.md"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0004",
+          "location": "docs/governance/AUDITX_MODEL.md"
+        }
+      ],
+      "severities": {
+        "INFO": 4
+      }
+    },
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "RETIRE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "tools/auditx/analyzers/a8_derived_freshness_smell.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "tools/auditx/auditx.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "tools/auditx/output/__init__.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "tools/auditx/output/writers.py"
+        }
+      ],
+      "severities": {
+        "WARN": 4
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 93,
+      "recommended_actions": {
+        "ADD_RULE": 13,
+        "ADD_TEST": 80
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": "tools/auditx/auditx.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0002",
+          "location": "tools/auditx/auditx.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0003",
+          "location": "tools/auditx/output/writers.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0004",
+          "location": "tools/auditx/output/writers.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0005",
+          "location": "tools/auditx/output/writers.py"
+        }
+      ],
+      "severities": {
+        "RISK": 13,
+        "WARN": 80
+      }
+    }
+  },
+  "last_reviewed": "2026-02-10",
+  "status": "DERIVED"
+}
