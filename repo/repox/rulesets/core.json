@@ -73,6 +73,13 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-TOOLS-DIR-MISSING",
+      "severity": "FAIL",
+      "scope_paths": ["dist/sys", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tools-dir-missing",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-TOOL-UNRESOLVABLE",
       "severity": "FAIL",
       "scope_paths": ["scripts/dev", "dist/sys", "scripts/ci/check_repox_rules.py"],
