@@ -10,11 +10,11 @@ Superseded By: none
 
 - INFO: 202
 - RISK: 169
-- WARN: 731
+- WARN: 732
 
 ## Counts By Category
 
-- canon_drift: 581
+- canon_drift: 582
 - capability_misuse: 121
 - derived_freshness: 120
 - legacy_contamination: 5

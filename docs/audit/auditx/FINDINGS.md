@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1102
-- Severities: INFO=202, RISK=169, WARN=731
-- Categories: canon_drift=581, capability_misuse=121, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, ui_parity=31
+- Total findings: 1103
+- Severities: INFO=202, RISK=169, WARN=732
+- Categories: canon_drift=582, capability_misuse=121, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, ui_parity=31
 
 ## Top Findings
 
