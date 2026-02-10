@@ -24,6 +24,7 @@ void client_session_artifacts_init(client_session_artifacts* artifacts)
     }
     memset(artifacts, 0, sizeof(*artifacts));
     artifacts->mode = CLIENT_WORLD_ACQUIRE_NONE;
+    artifacts->simulation_time_advanced = 0;
 }
 
 static void acquire_common(client_session_artifacts* artifacts,
@@ -36,9 +37,14 @@ static void acquire_common(client_session_artifacts* artifacts,
     }
     artifacts->mode = mode;
     artifacts->verified = 0;
+    artifacts->warmup_simulation_ready = 0;
+    artifacts->warmup_presentation_ready = 0;
+    artifacts->simulation_time_advanced = 0;
     copy_text(artifacts->source_id, sizeof(artifacts->source_id), source_id);
     copy_text(artifacts->world_hash, sizeof(artifacts->world_hash), world_hash);
     artifacts->expected_hash[0] = '\0';
+    artifacts->warmup_simulation_step[0] = '\0';
+    artifacts->warmup_presentation_step[0] = '\0';
 }
 
 void client_session_artifacts_acquire_local(client_session_artifacts* artifacts,
@@ -89,6 +95,29 @@ int client_session_artifacts_verify_hash(client_session_artifacts* artifacts,
     return 1;
 }
 
+void client_session_artifacts_warmup_simulation(client_session_artifacts* artifacts)
+{
+    if (!artifacts) {
+        return;
+    }
+    copy_text(artifacts->warmup_simulation_step,
+              sizeof(artifacts->warmup_simulation_step),
+              "rng_streams_initialized>macro_capsules_seeded>fields_initialized>agent_shells_initialized>authority_policies_bound");
+    artifacts->warmup_simulation_ready = 1;
+    artifacts->simulation_time_advanced = 0;
+}
+
+void client_session_artifacts_warmup_presentation(client_session_artifacts* artifacts)
+{
+    if (!artifacts) {
+        return;
+    }
+    copy_text(artifacts->warmup_presentation_step,
+              sizeof(artifacts->warmup_presentation_step),
+              "layout_loaded>renderer_backend_loaded>input_mappings_loaded>camera_defaults_prepared");
+    artifacts->warmup_presentation_ready = 1;
+}
+
 int client_session_artifacts_layer_allowed(const char* layer_id)
 {
     if (!layer_id || !layer_id[0]) {
@@ -108,4 +137,28 @@ const char* client_session_artifacts_mode_name(client_world_acquire_mode mode)
     if (mode == CLIENT_WORLD_ACQUIRE_SERVER_FETCH) return "FetchFromServer";
     if (mode == CLIENT_WORLD_ACQUIRE_MACRO_RECONSTRUCT) return "ReconstructFromMacroCapsules";
     return "Unspecified";
+}
+
+const char* client_session_artifacts_warmup_simulation_step(const client_session_artifacts* artifacts)
+{
+    if (!artifacts || !artifacts->warmup_simulation_step[0]) {
+        return "";
+    }
+    return artifacts->warmup_simulation_step;
+}
+
+const char* client_session_artifacts_warmup_presentation_step(const client_session_artifacts* artifacts)
+{
+    if (!artifacts || !artifacts->warmup_presentation_step[0]) {
+        return "";
+    }
+    return artifacts->warmup_presentation_step;
+}
+
+int client_session_artifacts_simulation_time_advanced(const client_session_artifacts* artifacts)
+{
+    if (!artifacts) {
+        return 0;
+    }
+    return artifacts->simulation_time_advanced;
 }

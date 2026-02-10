@@ -177,11 +177,17 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (starts_with(token, "client.session.")) {
+        const char* warmup_sim = state_machine ? client_state_machine_warmup_simulation_step(state_machine) : "";
+        const char* warmup_present = state_machine ? client_state_machine_warmup_presentation_step(state_machine) : "";
+        int time_advanced = state_machine ? client_state_machine_simulation_time_advanced(state_machine) : 0;
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s stage=%s workspace=session_transition",
+                 "result=ok command=%s stage=%s workspace=session_transition warmup.sim=%s warmup.presentation=%s time_advanced=%d",
                  token,
-                 client_state_machine_stage_name(state_machine));
+                 client_state_machine_stage_name(state_machine),
+                 warmup_sim,
+                 warmup_present,
+                 time_advanced);
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (starts_with(token, "client.server.") ||

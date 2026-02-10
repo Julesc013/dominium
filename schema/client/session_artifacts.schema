@@ -30,6 +30,11 @@ record session_artifacts
     - world_hash: tag
     - expected_hash: tag
     - verification_status: tag
+    - warmup_simulation_step: tag
+    - warmup_presentation_step: tag
+    - warmup_simulation_ready: tag
+    - warmup_presentation_ready: tag
+    - simulation_time_advanced: tag
     - allowed_observation_layers: [tag]
     - refusal_codes: [tag]
     - extensions: map

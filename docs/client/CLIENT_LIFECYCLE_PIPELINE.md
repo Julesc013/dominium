@@ -32,3 +32,11 @@ Client session entry is command-driven and deterministic.
 - Transition order is stable and lexical command IDs are mapped to fixed stage edges.
 - Refusal results are stable (`refuse.begin_requires_ready`, `refuse.invalid_transition`, `refuse.resume_requires_suspend`).
 - No transition mutates simulation time; lifecycle logic is orchestration only.
+
+## Warm-Up Contract
+
+- Simulation warm-up is deterministic and explicit:
+  `rng_streams_initialized>macro_capsules_seeded>fields_initialized>agent_shells_initialized>authority_policies_bound`.
+- Presentation warm-up is deterministic and explicit:
+  `layout_loaded>renderer_backend_loaded>input_mappings_loaded>camera_defaults_prepared`.
+- `session.simulation.time_advanced` stays `0` through warm-up and `SessionReady`.
