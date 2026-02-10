@@ -79,9 +79,13 @@ def main():
     ok = ok and ok_multi
     ok = ok and require("REFUSE_CAPABILITY_MISSING" in out_multi, "multiplayer refusal must be capability-gated")
 
-    ok_opts, out_opts = run_cmd([client_path, "client.options.get"], env=env)
+    ok_opts, out_opts = run_cmd([client_path, "client.settings.get"], env=env)
     ok = ok and ok_opts
-    ok = ok and require("client_settings=ok" in out_opts, "options get must bridge to settings")
+    ok = ok and require("client_settings=ok" in out_opts, "settings get must bridge to settings")
+
+    ok_reset, out_reset = run_cmd([client_path, "client.settings.reset"], env=env)
+    ok = ok and ok_reset
+    ok = ok and require("client_settings=reset" in out_reset, "settings reset must be deterministic")
 
     obs_env = dict(env)
     obs_env["DOM_CLIENT_CAPABILITIES"] = "tool.observation.stream"

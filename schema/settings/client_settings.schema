@@ -1,0 +1,96 @@
+SCHEMA: settings/client_settings.schema
+schema_id: dominium.schema.settings.client
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical client presentation settings.
+- No simulation semantics.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown keys under `extensions` MUST be preserved.
+- No field removal/rename without MAJOR bump.
+
+REQUIRED SHAPE:
+record client_settings
+  required:
+    - settings_id: id
+    - schema_id: id
+    - schema_version: semver
+    - ui: client_ui_settings
+    - input: client_input_settings
+    - audio: client_audio_settings
+    - renderer: client_renderer_settings
+    - accessibility: client_accessibility_settings
+    - replay: client_replay_settings
+    - debug_overlay: client_debug_overlay_settings
+    - network: client_network_settings
+    - soon: client_soon_settings
+    - later: client_later_settings
+    - extensions: map
+
+TYPE DEFINITIONS:
+record client_ui_settings
+  required:
+    - mode_preference: enum(cli|tui|gui)
+    - scale_percent: integer
+    - font_size_points: integer
+    - contrast: enum(default|high)
+
+record client_input_settings
+  required:
+    - keybindings_profile: id
+
+record client_audio_settings
+  required:
+    - volume_percent: integer
+    - mute: bool
+
+record client_renderer_settings
+  required:
+    - selection: id
+
+record client_accessibility_settings
+  required:
+    - reduced_motion: bool
+    - keyboard_only: bool
+    - screen_reader: bool
+  optional:
+    - advanced: soon_stub
+
+record client_replay_settings
+  required:
+    - recording_enabled: bool
+
+record client_debug_overlay_settings
+  required:
+    - visibility: bool
+
+record client_network_settings
+  required:
+    - timeout_ms: integer
+    - sort_mode: enum(ping|name|players)
+
+record client_soon_settings
+  required:
+    - controller_profiles: soon_stub
+    - advanced_accessibility: soon_stub
+    - server_browser_advanced_filters: soon_stub
+
+record client_later_settings
+  required:
+    - theming: later_stub
+    - animated_transitions: later_stub
+    - visual_replay_timeline: later_stub
+
+record soon_stub
+  required:
+    - availability: enum(stub)
+    - refusal_code: id
+
+record later_stub
+  required:
+    - availability: enum(deferred)
+    - note: tag
+

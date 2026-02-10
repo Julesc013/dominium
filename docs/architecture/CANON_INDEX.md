@@ -261,9 +261,12 @@ execution artifacts and are not authoritative.
 - `docs/agents/AGENT_LIFECYCLE.md`
 - `docs/agents/AGENT_MODEL.md`
 - `docs/agents/AGENT_NON_GOALS.md`
+- `docs/client/CLIENT_SETTINGS.md`
+- `docs/dev/NOW_SOON_LATER_ROADMAP.md`
 - `docs/governance/REMEDIATION_STATE_MACHINE.md`
 - `docs/governance/SEMANTIC_ESCALATION_POLICY.md`
 - `docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md`
+- `docs/launcher/LAUNCHER_SETTINGS.md`
 - `docs/guides/TOOLING_OVERVIEW.md`
 - `docs/guides/ui_editor/README.md`
 - `docs/policies/COMPATIBILITY_PROMISES.md`
@@ -272,6 +275,10 @@ execution artifacts and are not authoritative.
 - `docs/policies/FEATURE_EPOCH_POLICY.md`
 - `docs/policies/LONG_TERM_SUPPORT_POLICY.md`
 - `docs/policies/RENDER_BACKEND_LIFECYCLE.md`
+- `docs/server/SERVER_SETTINGS.md`
+- `docs/settings/SETTINGS_OWNERSHIP_MODEL.md`
+- `docs/setup/SETUP_SETTINGS.md`
+- `docs/tools/TOOLS_SETTINGS.md`
 
 ## DERIVED
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`

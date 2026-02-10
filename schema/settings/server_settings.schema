@@ -1,0 +1,43 @@
+SCHEMA: settings/server_settings.schema
+schema_id: dominium.schema.settings.server
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical server authority policy settings.
+
+REQUIRED SHAPE:
+record server_settings
+  required:
+    - settings_id: id
+    - schema_id: id
+    - schema_version: tag
+    - tick_rate_hz: integer
+    - authority_mode: enum(local|networked|dedicated)
+    - logging_level: enum(info|warn|error)
+    - snapshot_interval_ticks: integer
+    - srz_policy: tag
+    - soon: server_soon_settings
+    - later: server_later_settings
+    - extensions: map
+
+TYPE DEFINITIONS:
+record server_soon_settings
+  required:
+    - advanced_rate_limits: soon_stub
+    - anti_cheat_tuning: soon_stub
+
+record server_later_settings
+  required:
+    - live_policy_dashboards: later_stub
+
+record soon_stub
+  required:
+    - availability: enum(stub)
+    - refusal_code: id
+
+record later_stub
+  required:
+    - availability: enum(deferred)
+    - note: tag
+

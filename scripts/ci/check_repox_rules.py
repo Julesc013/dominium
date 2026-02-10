@@ -56,6 +56,7 @@ ALLOWED_REVERSE_DNS_PREFIXES = (
 )
 
 ENUM_TOKEN_RE = re.compile(r"\b[A-Za-z0-9_]*(CUSTOM|OTHER|UNKNOWN|MISC|UNSPECIFIED)[A-Za-z0-9_]*\b")
+INCLUDE_DIRECTIVE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]+)[">]')
 
 ABS_WIN_RE = re.compile(r"[A-Za-z]:[\\/]")
 ABS_UNIX_RE = re.compile(r"/(Users|home|var|etc|opt|usr|private)/")
@@ -2682,6 +2683,9 @@ def check_client_canonical_bridge(repo_root):
         "client.server.list",
         "client.server.connect",
         "client.options.get",
+        "client.settings.get",
+        "client.settings.set",
+        "client.settings.reset",
         "client.about.show",
         "client.diag.show_build_identity",
         "client.replay.export",
@@ -2721,6 +2725,97 @@ def check_client_canonical_bridge(repo_root):
     ):
         if marker not in bridge_text:
             violations.append("{}: {} missing bridge marker {}".format(invariant_id, bridge_rel, marker))
+    return violations
+
+
+def check_settings_ownership_boundaries(repo_root):
+    invariant_id = "INV-SETTINGS-OWNERSHIP"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    boundary_rules = (
+        ("client/", ("setup/",), "client sources must not include setup mutators directly"),
+        ("launcher/", ("client/", "setup/"), "launcher sources must not include client/setup implementation headers"),
+        ("setup/", ("client/", "launcher/"), "setup sources must not include client/launcher implementation headers"),
+    )
+    violations = []
+
+    roots = (
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "launcher"),
+        os.path.join(repo_root, "setup"),
+    )
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = repo_rel(repo_root, path).replace("\\", "/")
+        text = read_text(path) or ""
+        for idx, line in enumerate(text.splitlines(), start=1):
+            match = INCLUDE_DIRECTIVE_RE.match(line)
+            if not match:
+                continue
+            include_path = match.group(1).replace("\\", "/")
+            for prefix, forbidden_includes, message in boundary_rules:
+                if not rel.startswith(prefix):
+                    continue
+                for forbidden in forbidden_includes:
+                    if include_path.startswith(forbidden):
+                        violations.append(
+                            "{}: {}:{} {} (include={})".format(
+                                invariant_id, rel, idx, message, include_path
+                            )
+                        )
+                        break
+                else:
+                    continue
+                break
+    return violations
+
+
+def check_no_engine_settings(repo_root):
+    invariant_id = "INV-NO-ENGINE-SETTINGS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    roots = (
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+    )
+    forbidden_include_prefixes = (
+        "client/",
+        "launcher/",
+        "setup/",
+        "dominium/app/",
+    )
+    forbidden_setting_literals = (
+        "client.settings.",
+        "launcher.settings.",
+        "setup.settings.",
+        "tools.settings.",
+    )
+
+    violations = []
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = repo_rel(repo_root, path).replace("\\", "/")
+        text = read_text(path) or ""
+        for idx, line in enumerate(text.splitlines(), start=1):
+            include_match = INCLUDE_DIRECTIVE_RE.match(line)
+            if include_match:
+                include_path = include_match.group(1).replace("\\", "/")
+                for prefix in forbidden_include_prefixes:
+                    if include_path.startswith(prefix):
+                        violations.append(
+                            "{}: {}:{} forbidden include in engine/game ({})".format(
+                                invariant_id, rel, idx, include_path
+                            )
+                        )
+                        break
+            stripped = strip_c_comments_and_strings(line)
+            for token in forbidden_setting_literals:
+                if token in stripped:
+                    violations.append(
+                        "{}: {}:{} forbidden user settings literal {}".format(
+                            invariant_id, rel, idx, token
+                        )
+                    )
     return violations
 
 
@@ -4089,6 +4184,8 @@ def main() -> int:
     violations.extend(check_observer_freecam_entitlement_gate(repo_root))
     violations.extend(check_runtime_command_capability_guards(repo_root))
     violations.extend(check_client_canonical_bridge(repo_root))
+    violations.extend(check_settings_ownership_boundaries(repo_root))
+    violations.extend(check_no_engine_settings(repo_root))
     violations.extend(check_renderer_no_truth_access(repo_root))
     violations.extend(check_capability_matrix_integrity(repo_root))
     violations.extend(check_solver_registry_contracts(repo_root))

@@ -1,0 +1,46 @@
+SCHEMA: settings/setup_settings.schema
+schema_id: dominium.schema.settings.setup
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical setup/install mutation settings.
+
+REQUIRED SHAPE:
+record setup_settings
+  required:
+    - settings_id: id
+    - schema_id: id
+    - schema_version: tag
+    - install_roots: [path]
+    - package_store_path: path
+    - offline_cache_path: path
+    - trust_policy: enum(dev|strict|release)
+    - auto_repair_policy: enum(disabled|safe|aggressive)
+    - rollback_depth: integer
+    - default_profile: id
+    - soon: setup_soon_settings
+    - later: setup_later_settings
+    - extensions: map
+
+TYPE DEFINITIONS:
+record setup_soon_settings
+  required:
+    - guided_install_wizard: soon_stub
+    - disk_planning_heuristics: soon_stub
+
+record setup_later_settings
+  required:
+    - background_updates: later_stub
+    - delta_patch_tuning: later_stub
+
+record soon_stub
+  required:
+    - availability: enum(stub)
+    - refusal_code: id
+
+record later_stub
+  required:
+    - availability: enum(deferred)
+    - note: tag
+

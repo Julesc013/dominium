@@ -72,7 +72,7 @@ def main():
     tui_log = os.path.join(temp_root, "tui.log")
     gui_log = os.path.join(temp_root, "gui.log")
 
-    ok_cli, _ = run_cmd([client_path, "--ui-log", cli_log, "client.options.get"], env=env)
+    ok_cli, _ = run_cmd([client_path, "--ui-log", cli_log, "client.settings.get"], env=env)
     ok = ok and ok_cli
 
     ok_tui, _ = run_cmd(
