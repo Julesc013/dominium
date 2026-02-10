@@ -5,49 +5,33 @@ Superseded By: none
 
 # Semantic Escalation Policy
 
-## Escalation Scope
+## Rule
 
-Escalation to a human is allowed only when mechanical remediation cannot proceed without a semantic decision.
+Escalation to humans is allowed only for semantic ambiguity, never for mechanical blockers.
 
-Allowed escalation reasons:
+## Mechanical Blockers (No Escalation)
 
-- canon meaning conflict
-- policy/licensing decision
-- trust/security model decision
-- unresolved semantic ambiguity
+- Tool discoverability
+- PATH/CWD setup issues
+- Missing derived artifacts
+- Build output wiring
+- Deterministic regeneration tasks
 
-Disallowed escalation reasons:
+These must be remediated autonomously.
 
-- build friction
-- tooling path issues
-- artifact freshness
-- deterministic mechanical refactors
-- missing regression tests
+## Semantic Blockers (Escalation Allowed)
 
-## Required Evidence
+- Canon meaning conflicts
+- Ontology interpretation disputes
+- Security/trust model meaning choices
+- Policy decisions requiring human authority
 
-Escalation must include:
+## Required Escalation Template
 
-1. failing gate and exact error text
-2. blocker classification
-3. semantic locality
-4. attempted strategy classes and outcomes
-5. proof that no further mechanical strategy remains
-
-## Required Template
-
-- `BLOCKER TYPE:`
-- `FAILED GATE:`
-- `ROOT CAUSE:`
-- `ATTEMPTED FIXES:`
-- `REMAINING OPTIONS:`
-- `RECOMMENDED OPTION:`
-- `RATIONALE:`
-
-Any escalation artifact missing these fields is invalid.
-
-## Governance Enforcement
-
-- RepoX enforces escalation template compliance.
-- TestX covers failure cases where escalation is attempted without semantic justification.
-
+- `BLOCKER TYPE`
+- `FAILED GATE`
+- `ROOT CAUSE`
+- `ATTEMPTED FIXES`
+- `REMAINING OPTIONS`
+- `RECOMMENDED OPTION`
+- `RATIONALE`

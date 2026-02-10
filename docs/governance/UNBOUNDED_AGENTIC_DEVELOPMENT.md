@@ -42,4 +42,7 @@ If any gate fails, remediation mode is mandatory.
 - RepoX enforces remediation discipline and bounded mutation.
 - TestX verifies blocker regressions, discoverability, anti-thrashing, and locality checks.
 - AuditX tracks recurrence, thrash patterns, and prevention coverage.
-
+- Gate flow and remediation state machine:
+  - `docs/governance/GATE_AUTONOMY_POLICY.md`
+  - `docs/governance/REMEDIATION_STATE_MACHINE.md`
+  - `docs/governance/SEMANTIC_ESCALATION_POLICY.md`

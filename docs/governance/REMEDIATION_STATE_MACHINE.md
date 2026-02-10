@@ -5,91 +5,62 @@ Superseded By: none
 
 # Remediation State Machine
 
-## Overview
+## Purpose
 
-Remediation mode is entered automatically when any required gate fails.
+Define mandatory autonomous remediation behavior for gate failures.
 
 ## States
 
 ### R1 Diagnose
 
-- Identify failing gate and exact error output.
-- Classify blocker:
-  - `TOOL_DISCOVERY`
-  - `DERIVED_ARTIFACT`
-  - `SCHEMA_MISMATCH`
-  - `GOVERNANCE_RULE`
-  - `CAPABILITY_MISSING`
-  - `COMMAND_GRAPH_DRIFT`
-  - `ENVIRONMENT_CONTRACT`
-  - `DETERMINISM`
-  - `DOCUMENTATION_DRIFT`
-  - `OTHER` (with explicit justification)
-- Derive semantic locality from failure evidence.
+- Capture exact failing gate and invariant.
+- Classify blocker type.
+- Record impacted files and subsystem scope.
 
-### R2 Enumerate Strategies
+### R2 Enumerate Strategy Classes
 
-Minimum strategy classes:
+- Environment or adapter correction
+- Registry or schema alignment
+- Build wiring
+- Governance rule or regression test reinforcement
+- Derived artifact regeneration
 
-- environment/adapter
-- registry/schema alignment
-- tooling integration
-- build wiring
-- governance rule
-- TestX regression
-- artifact regeneration
+### R3 Safe Remediation
 
-### R3 Safe Attempt
-
-Apply strategies that satisfy:
-
-- no simulation semantic change
-- no governance weakening
-- deterministic and reversible
-- locality-bounded mutation
+- No simulation semantic changes.
+- No governance weakening.
+- Idempotent and reversible operations only.
 
 ### R4 Verify and Prevent
 
-- Re-run failed gate.
-- Re-run upstream gates.
-- Add at least one prevention artifact:
-  - RepoX invariant, or
-  - TestX regression, or
-  - AuditX analyzer/finding.
+- Re-run affected gate and upstream gates.
+- Attach prevention artifacts (RepoX, TestX, or AuditX).
 
 ### R5 Progress Check
 
-Required measurable improvement:
-
-- fewer failing gates, or
-- reduced blocker severity/confidence, or
-- narrower locality, or
-- new prevention coverage.
-
-If no improvement, switch strategy class and continue.
+- Require measurable improvement:
+  - fewer failures, or
+  - lower failure score/severity, or
+  - narrower blast radius.
 
 ### R6 Semantic Escalation
 
-Only for semantic ambiguity requiring human intent.
+- Escalate only for meaning decisions:
+  - canon interpretation conflicts
+  - trust/security policy meaning choices
+  - ontology-level ambiguity
 
-Required escalation template:
+## Remediation Artifacts
 
-- `BLOCKER TYPE:`
-- `FAILED GATE:`
-- `ROOT CAUSE:`
-- `ATTEMPTED FIXES:`
-- `REMAINING OPTIONS:`
-- `RECOMMENDED OPTION:`
-- `RATIONALE:`
+Each remediation cycle writes:
 
-## Artifacts
+- `failure.json`
+- `failure.md`
+- `actions_taken.json`
+- `verification.json`
+- `prevention_links.json`
+- `diff_summary.txt`
 
-Every failure cycle writes:
+Under:
 
-- `docs/audit/remediation/<timestamp>_<gate>_<type>/failure.json`
-- `docs/audit/remediation/<timestamp>_<gate>_<type>/failure.md`
-- `docs/audit/remediation/<timestamp>_<gate>_<type>/actions_taken.json`
-- `docs/audit/remediation/<timestamp>_<gate>_<type>/verification.json`
-- `docs/audit/remediation/<timestamp>_<gate>_<type>/prevention_links.json`
-- `docs/audit/remediation/<timestamp>_<gate>_<type>/diff_summary.txt`
-
+- `docs/audit/remediation/<timestamp>_<gate>_<type>/`
