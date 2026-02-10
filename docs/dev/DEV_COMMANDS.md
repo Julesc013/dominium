@@ -19,6 +19,7 @@ Supported commands:
 - `python scripts/dev/dev.py tools list`
 - `python scripts/dev/dev.py tools doctor`
 - `python scripts/dev/dev.py tools ui_bind -- --repo-root . --check`
+- direct repo-root shims: `tool_ui_bind`, `tool_ui_validate`, `tool_ui_doc_annotate`
 
 Behavior:
 

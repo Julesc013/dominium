@@ -41,6 +41,8 @@ This document defines RepoX invariants for canonical tool discoverability and in
 ## Operational Rule
 
 - RepoX/TestX self-canonicalize internally; manual shell PATH setup is not required.
+- Repo-root shim commands (`tool_ui_bind.cmd`, `tool_ui_validate.cmd`, `tool_ui_doc_annotate.cmd`)
+  are allowed for interactive use and resolve canonical binaries only.
 - `scripts/dev/env_tools.*` remains optional convenience for interactive shells.
 - Preferred entrypoint for full gate execution is `python scripts/dev/gate.py verify`.
 

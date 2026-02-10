@@ -32,6 +32,15 @@ Adapter responsibilities:
 - validating canonical tools are discoverable by name
 - failing with refusal diagnostics when discovery is invalid
 
+Repo-root command shims are provided for zero-setup interactive use:
+
+- `tool_ui_bind.cmd`
+- `tool_ui_validate.cmd`
+- `tool_ui_doc_annotate.cmd`
+
+These shims resolve and execute the canonical binary from
+`dist/sys/<platform>/<arch>/bin/tools/` and do not change policy.
+
 ## Canonical Invocation Form
 
 Invoke canonical tools by executable name only:
