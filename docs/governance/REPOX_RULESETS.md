@@ -67,6 +67,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-TOOLS-DIR-EXISTS`
 - `INV-TOOLS-DIR-MISSING`
 - `INV-TOOL-UNRESOLVABLE`
+- `INV-REMEDIATION-PLAYBOOKS`
 - `INV-DET-NO-ANON-RNG`
 - `INV-DET-NO-WALLCLOCK`
 - `INV-FP-AUTH-BAN`
@@ -136,6 +137,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Enforces explicit missing-directory failure (`INV-TOOLS-DIR-MISSING`) with remediation hint.
 - Enforces discoverability probes for required canonical tools at RepoX runtime.
 - Detailed policy: `docs/governance/REPOX_TOOL_RULES.md`.
+
+### INV-REMEDIATION-PLAYBOOKS
+
+- Fails when remediation playbook schema/registry are missing or invalid.
+- Fails when required blocker playbooks are missing.
+- Enforces deterministic strategy class declarations for autonomous gate remediation.
 
 ### INV-PLATFORM-ID-CANONICAL
 
