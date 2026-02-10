@@ -26,16 +26,9 @@ def main():
     manifest_path = os.path.join(repo_root, args.manifest)
     if not os.path.isfile(manifest_path):
         repox_script = os.path.join(repo_root, "scripts", "ci", "check_repox_rules.py")
-        adapter = os.path.join(repo_root, "scripts", "dev", "env_tools.py")
         result = subprocess.run(
             [
                 sys.executable,
-                adapter,
-                "--repo-root",
-                repo_root,
-                "run",
-                "--",
-                "python",
                 repox_script,
                 "--repo-root",
                 repo_root,

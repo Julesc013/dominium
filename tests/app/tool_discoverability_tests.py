@@ -1,6 +1,5 @@
 import argparse
 import os
-import shutil
 import subprocess
 import sys
 
@@ -12,61 +11,30 @@ CANONICAL_TOOLS = (
 )
 
 
-def _resolve_tool_dir(repo_root):
-    adapter = os.path.join(repo_root, "scripts", "dev", "env_tools.py")
-    proc = subprocess.run(
-        [sys.executable, adapter, "--repo-root", repo_root, "print-path"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        errors="replace",
-        check=False,
-    )
-    if proc.returncode != 0:
-        raise RuntimeError("env_tools print-path failed: {}".format(proc.stdout))
-    lines = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
-    if not lines:
-        raise RuntimeError("env_tools print-path returned empty path")
-    return os.path.normpath(lines[-1])
+def _load_env_tools_lib(repo_root):
+    dev_root = os.path.join(repo_root, "scripts", "dev")
+    if dev_root not in sys.path:
+        sys.path.insert(0, dev_root)
+    import env_tools_lib
+
+    return env_tools_lib
 
 
-def _path_with_tool_dir(base_path, tool_dir):
-    parts = [item for item in (base_path or "").split(os.pathsep) if item]
-    norm_tool = os.path.normcase(os.path.normpath(tool_dir))
-    dedup = []
-    seen = set()
-    for item in parts:
-        norm_item = os.path.normcase(os.path.normpath(item))
-        if norm_item in seen or norm_item == norm_tool:
-            continue
-        seen.add(norm_item)
-        dedup.append(item)
-    return os.pathsep.join([tool_dir] + dedup)
-
-
-def _path_without_tool_dir(base_path, tool_dir):
-    parts = [item for item in (base_path or "").split(os.pathsep) if item]
-    norm_tool = os.path.normcase(os.path.normpath(tool_dir))
-    kept = []
-    for item in parts:
-        norm_item = os.path.normcase(os.path.normpath(item))
-        if norm_item == norm_tool:
-            continue
-        kept.append(item)
-    return os.pathsep.join(kept)
+def _canonicalized_env(repo_root, base_env):
+    tools_lib = _load_env_tools_lib(repo_root)
+    tool_dir = tools_lib.canonical_tools_dir(repo_root)
+    env = tools_lib.prepend_tools_to_path(dict(base_env), tool_dir)
+    return env, tool_dir, tools_lib
 
 
 def run_positive(repo_root):
-    tool_dir = _resolve_tool_dir(repo_root)
-    env = os.environ.copy()
-    env["PATH"] = _path_with_tool_dir(env.get("PATH", ""), tool_dir)
-    env["DOM_TOOLS_PATH"] = tool_dir
-    env["DOM_TOOLS_READY"] = "1"
+    env, tool_dir, tools_lib = _canonicalized_env(repo_root, os.environ)
+
+    if not os.path.isdir(tool_dir):
+        raise RuntimeError("canonical tools directory missing: {}".format(tool_dir))
 
     for tool in CANONICAL_TOOLS:
-        resolved = shutil.which(tool, path=env.get("PATH", ""))
-        if not resolved and os.name == "nt":
-            resolved = shutil.which(tool + ".exe", path=env.get("PATH", ""))
+        resolved = tools_lib.resolve_tool(tool, env)
         if not resolved:
             raise RuntimeError("tool not discoverable by PATH: {}".format(tool))
         help_proc = subprocess.run(
@@ -81,9 +49,7 @@ def run_positive(repo_root):
         if help_proc.returncode != 0:
             raise RuntimeError("tool help failed {}: {}".format(tool, help_proc.stdout))
 
-    bind_exec = shutil.which("tool_ui_bind", path=env.get("PATH", ""))
-    if not bind_exec and os.name == "nt":
-        bind_exec = shutil.which("tool_ui_bind.exe", path=env.get("PATH", ""))
+    bind_exec = tools_lib.resolve_tool("tool_ui_bind", env)
     if not bind_exec:
         raise RuntimeError("tool_ui_bind missing from canonical PATH")
 
@@ -104,11 +70,11 @@ def run_positive(repo_root):
 
 
 def run_missing_path(repo_root):
-    tool_dir = _resolve_tool_dir(repo_root)
-    env = os.environ.copy()
-    env["PATH"] = _path_without_tool_dir(env.get("PATH", ""), tool_dir)
-    env.pop("DOM_TOOLS_PATH", None)
-    env.pop("DOM_TOOLS_READY", None)
+    raw_env = os.environ.copy()
+    raw_env["PATH"] = ""
+    raw_env.pop("DOM_HOST_PATH", None)
+    raw_env.pop("DOM_TOOLS_PATH", None)
+    raw_env.pop("DOM_TOOLS_READY", None)
 
     repox = os.path.join(repo_root, "scripts", "ci", "check_repox_rules.py")
     proc = subprocess.run(
@@ -117,16 +83,31 @@ def run_missing_path(repo_root):
         stderr=subprocess.STDOUT,
         text=True,
         errors="replace",
-        env=env,
+        env=raw_env,
         check=False,
     )
-    if proc.returncode == 0:
-        raise RuntimeError("RepoX unexpectedly passed without canonical tools PATH")
-    output = proc.stdout or ""
-    if "INV-TOOLS-PATH-SET" not in output:
-        raise RuntimeError("missing INV-TOOLS-PATH-SET in failure output:\n{}".format(output))
-    if "INV-TOOL-UNRESOLVABLE" not in output:
-        raise RuntimeError("missing INV-TOOL-UNRESOLVABLE in failure output:\n{}".format(output))
+    if proc.returncode != 0:
+        raise RuntimeError(
+            "RepoX failed under empty PATH despite self-canonicalization:\n{}".format(proc.stdout)
+        )
+    if "RepoX governance rules OK." not in (proc.stdout or ""):
+        raise RuntimeError("RepoX did not report success under empty PATH")
+
+    phase_script = os.path.join(repo_root, "tests", "app", "app_ui_bind_phase_tests.py")
+    phase_proc = subprocess.run(
+        [sys.executable, phase_script, "--repo-root", repo_root],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        errors="replace",
+        env=raw_env,
+        check=False,
+    )
+    if phase_proc.returncode != 0:
+        raise RuntimeError(
+            "TestX tool path contract failed under empty PATH:\n{}".format(phase_proc.stdout)
+        )
+
     print("tool_discoverability_missing_path=ok")
     return 0
 

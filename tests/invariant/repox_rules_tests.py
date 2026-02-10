@@ -18,19 +18,7 @@ def main() -> int:
         return 0
 
     script = os.path.join(repo_root, "scripts", "ci", "check_repox_rules.py")
-    adapter = os.path.join(repo_root, "scripts", "dev", "env_tools.py")
-    cmd = [
-        sys.executable,
-        adapter,
-        "--repo-root",
-        repo_root,
-        "run",
-        "--",
-        "python",
-        script,
-        "--repo-root",
-        repo_root,
-    ]
+    cmd = [sys.executable, script, "--repo-root", repo_root]
     return subprocess.call(cmd)
 
 
