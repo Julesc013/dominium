@@ -1,5 +1,5 @@
 {
-  "schema_id": "dominium.schema.ui.workspace",
+  "schema_id": "dominium.schema.ui.workspace@1.0.0",
   "schema_version": "1.0.0",
   "record": {
     "workspace_id": "org.dominium.client.workspace.session_transition.default",

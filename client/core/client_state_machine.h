@@ -2,6 +2,7 @@
 #define DOMINIUM_CLIENT_STATE_MACHINE_H
 
 #include "domino/core/types.h"
+#include "session_artifacts.h"
 #include "session_pipeline.h"
 
 #ifdef __cplusplus
@@ -24,6 +25,7 @@ typedef enum client_session_state_e {
 typedef struct client_state_machine_t {
     client_session_state state;
     client_session_pipeline pipeline;
+    client_session_artifacts artifacts;
     char last_command[96];
     char last_refusal[96];
     u32 transition_count;
