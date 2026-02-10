@@ -26,8 +26,10 @@ RepoX and TestX must self-canonicalize their tool environment. Manual `PATH` set
 
 Use `scripts/dev/gate.py` (or `python scripts/dev/dev.py gate ...`) as the preferred entrypoint:
 
-- `gate dev`
+- `gate precheck`
+- `gate exitcheck`
 - `gate verify`
+- `gate dev`
 - `gate dist`
 - `gate doctor`
 - `gate remediate`
@@ -35,9 +37,13 @@ Use `scripts/dev/gate.py` (or `python scripts/dev/dev.py gate ...`) as the prefe
 Behavior:
 
 - self-canonicalizes `PATH`
-- runs RepoX, strict build, and TestX in one flow
+- runs dependency-aware gate classes from `data/registries/gate_policy.json`
+- supports minimal preflight (`PRECHECK_MIN`) and strict completion (`EXIT_STRICT`)
+- evaluates dependency gates (`TASK_DEPENDENCY`) such as `ui_bind_check`
 - attempts deterministic tool-discovery remediation when `INV-TOOLS-DIR-MISSING` occurs
 - writes remediation artifacts to `docs/audit/remediation/...`
+
+Prompt templates must use this gate entry contract. See `docs/governance/PROMPT_GATE_CONTRACT.md`.
 
 ## Remediation Discipline
 

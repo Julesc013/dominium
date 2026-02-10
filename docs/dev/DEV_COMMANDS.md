@@ -31,6 +31,8 @@ Behavior:
 
 Canonical autonomous gate entrypoint:
 
+- `python scripts/dev/gate.py precheck`
+- `python scripts/dev/gate.py exitcheck`
 - `python scripts/dev/gate.py verify`
 - `python scripts/dev/gate.py dist`
 - `python scripts/dev/gate.py doctor`
@@ -39,6 +41,8 @@ Canonical autonomous gate entrypoint:
 
 Equivalent dev wrapper commands:
 
+- `python scripts/dev/dev.py gate precheck`
+- `python scripts/dev/dev.py gate exitcheck`
 - `python scripts/dev/dev.py gate verify`
 - `python scripts/dev/dev.py gate dist`
 - `python scripts/dev/dev.py gate doctor`
@@ -48,7 +52,8 @@ Equivalent dev wrapper commands:
 Behavior:
 
 - canonicalizes tool PATH in-process
-- runs RepoX/build/TestX deterministically
+- runs gate policy classes deterministically (minimal precheck and strict exitcheck)
+- supports targeted execution with `--only-gate <gate_id>` for dependency gate diagnostics
 - emits remediation artifacts to `docs/audit/remediation/...`
 
 ## Notes
