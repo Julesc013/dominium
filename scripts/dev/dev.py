@@ -96,6 +96,8 @@ def build_parser():
 
     gate = sub.add_parser("gate", help="Run autonomous gate workflow.")
     gate_sub = gate.add_subparsers(dest="action", required=True)
+    gate_sub.add_parser("precheck", help="Run dependency-aware minimal precheck gates.")
+    gate_sub.add_parser("exitcheck", help="Run strict exit gates with dependency checks.")
     gate_sub.add_parser("dev", help="Run RepoX + strict build with remediation.")
     gate_sub.add_parser("verify", help="Run RepoX + strict build + full TestX with remediation.")
     gate_sub.add_parser("dist", help="Run verify lane then explicit dist targets.")

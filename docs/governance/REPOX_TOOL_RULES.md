@@ -44,6 +44,11 @@ This document defines RepoX invariants for canonical tool discoverability and in
 - Repo-root shim commands (`tool_ui_bind.cmd`, `tool_ui_validate.cmd`, `tool_ui_doc_annotate.cmd`)
   are allowed for interactive use and resolve canonical binaries only.
 - `scripts/dev/env_tools.*` remains optional convenience for interactive shells.
-- Preferred entrypoint for full gate execution is `python scripts/dev/gate.py verify`.
+- Preferred entrypoints are:
+  - `python scripts/dev/gate.py precheck`
+  - `python scripts/dev/gate.py exitcheck`
+  - `python scripts/dev/gate.py verify`
+
+Prompt and queue automation must use the gate contract in `docs/governance/PROMPT_GATE_CONTRACT.md`.
 
 See `docs/governance/GATE_AUTONOMY_POLICY.md` for autonomous gate flow.
