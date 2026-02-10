@@ -1,0 +1,112 @@
+{
+  "schema_id": "dominium.schema.governance.remediation_playbook",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.remediation.playbooks",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.remediation_playbook@1.0.0",
+    "playbooks": [
+      {
+        "playbook_id": "dominium.playbook.tool_discovery",
+        "blocker_type": "TOOL_DISCOVERY",
+        "strategy_classes": [
+          "environment",
+          "tooling_integration",
+          "build_wiring"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "repair canonical tool discoverability",
+          "build minimal tool targets before retry"
+        ],
+        "extensions": {}
+      },
+      {
+        "playbook_id": "dominium.playbook.derived_artifact_stale",
+        "blocker_type": "DERIVED_ARTIFACT_STALE",
+        "strategy_classes": [
+          "artifact_regeneration",
+          "tooling_integration"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "regenerate derived artifacts deterministically"
+        ],
+        "extensions": {}
+      },
+      {
+        "playbook_id": "dominium.playbook.schema_mismatch",
+        "blocker_type": "SCHEMA_MISMATCH",
+        "strategy_classes": [
+          "registry_schema",
+          "artifact_regeneration"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "refresh schema-linked derived outputs"
+        ],
+        "extensions": {}
+      },
+      {
+        "playbook_id": "dominium.playbook.ui_bind_drift",
+        "blocker_type": "UI_BIND_DRIFT",
+        "strategy_classes": [
+          "artifact_regeneration",
+          "tooling_integration"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "regenerate ui bind outputs from canonical command graph"
+        ],
+        "extensions": {}
+      },
+      {
+        "playbook_id": "dominium.playbook.build_output_missing",
+        "blocker_type": "BUILD_OUTPUT_MISSING",
+        "strategy_classes": [
+          "build_wiring",
+          "tooling_integration"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "restore required build outputs with canonical targets"
+        ],
+        "extensions": {}
+      },
+      {
+        "playbook_id": "dominium.playbook.path_cwd_dependency",
+        "blocker_type": "PATH_CWD_DEPENDENCY",
+        "strategy_classes": [
+          "environment",
+          "adapter_fix"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "remove cwd/path assumptions from gate execution"
+        ],
+        "extensions": {}
+      },
+      {
+        "playbook_id": "dominium.playbook.doc_canon_drift",
+        "blocker_type": "DOC_CANON_DRIFT",
+        "strategy_classes": [
+          "governance_rule",
+          "regression_test"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": true,
+        "notes": [
+          "requires semantic escalation when canon meaning is ambiguous"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

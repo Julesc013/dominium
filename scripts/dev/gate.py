@@ -100,6 +100,7 @@ def _default_strategy_classes(blocker_type):
     defaults = {
         "TOOL_DISCOVERY": ["environment", "tooling_integration", "build_wiring"],
         "DERIVED_ARTIFACT_STALE": ["artifact_regeneration", "tooling_integration"],
+        "UI_BIND_DRIFT": ["artifact_regeneration", "tooling_integration"],
         "SCHEMA_MISMATCH": ["registry_schema", "artifact_regeneration"],
         "BUILD_OUTPUT_MISSING": ["build_wiring", "tooling_integration"],
         "PATH_CWD_DEPENDENCY": ["environment", "adapter_fix"],
@@ -114,7 +115,9 @@ def _diagnose_blocker(stage_name, output):
     upper = text.upper()
     if "INV-TOOLS-DIR-MISSING" in text or "TOOL_UI_BIND" in text and "NOT RECOGNIZED" in upper:
         return "TOOL_DISCOVERY"
-    if "UI_BIND_ERROR" in text or "stale" in text and "ui_bind" in text:
+    if "UI_BIND_ERROR" in text:
+        return "UI_BIND_DRIFT"
+    if "stale" in text and "ui_bind" in text:
         return "DERIVED_ARTIFACT_STALE"
     if "schema" in text.lower() and ("mismatch" in text.lower() or "invalid" in text.lower()):
         return "SCHEMA_MISMATCH"

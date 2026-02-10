@@ -87,6 +87,13 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-REMEDIATION-PLAYBOOKS",
+      "severity": "FAIL",
+      "scope_paths": ["schema/governance", "data/registries/remediation_playbooks.json", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-remediation-playbooks",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-DET-NO-ANON-RNG",
       "severity": "FAIL",
       "scope_paths": ["engine", "game"],

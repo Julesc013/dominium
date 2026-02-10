@@ -251,6 +251,18 @@ DIST_PLATFORM_CANON_ROOTS = (
     os.path.join("dist", "wrap"),
     os.path.join("dist", "redist"),
 )
+REMEDIATION_PLAYBOOK_SCHEMA_REL = os.path.join("schema", "governance", "remediation_playbook.schema")
+REMEDIATION_PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
+REMEDIATION_PLAYBOOK_SCHEMA_ID = "dominium.schema.governance.remediation_playbook"
+REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
+    "TOOL_DISCOVERY",
+    "DERIVED_ARTIFACT_STALE",
+    "SCHEMA_MISMATCH",
+    "UI_BIND_DRIFT",
+    "BUILD_OUTPUT_MISSING",
+    "PATH_CWD_DEPENDENCY",
+    "DOC_CANON_DRIFT",
+)
 
 BUILD_PRESET_CONTRACT_CONFIGURE = (
     "msvc-dev-debug",
@@ -3462,6 +3474,73 @@ def check_authoritative_symbols(repo_root):
     return violations
 
 
+def check_remediation_playbooks(repo_root):
+    invariant_id = "INV-REMEDIATION-PLAYBOOKS"
+    schema_path = os.path.join(repo_root, REMEDIATION_PLAYBOOK_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, REMEDIATION_PLAYBOOK_REGISTRY_REL)
+    violations = []
+
+    if not os.path.isfile(schema_path):
+        return ["{}: missing schema {}".format(invariant_id, normalize_path(REMEDIATION_PLAYBOOK_SCHEMA_REL))]
+    if not os.path.isfile(registry_path):
+        return ["{}: missing registry {}".format(invariant_id, normalize_path(REMEDIATION_PLAYBOOK_REGISTRY_REL))]
+
+    try:
+        with open(registry_path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, ValueError):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(REMEDIATION_PLAYBOOK_REGISTRY_REL))]
+
+    schema_id = str(payload.get("schema_id", "")).strip()
+    if schema_id != REMEDIATION_PLAYBOOK_SCHEMA_ID:
+        violations.append(
+            "{}: schema_id mismatch {} (expected {})".format(
+                invariant_id,
+                schema_id or "<missing>",
+                REMEDIATION_PLAYBOOK_SCHEMA_ID,
+            )
+        )
+
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return ["{}: missing record object".format(invariant_id)]
+
+    entries = record.get("playbooks")
+    if not isinstance(entries, list) or not entries:
+        return ["{}: playbooks list missing or empty".format(invariant_id)]
+
+    seen_ids = set()
+    seen_blockers = set()
+    for idx, entry in enumerate(entries):
+        if not isinstance(entry, dict):
+            violations.append("{}: playbook {} is not an object".format(invariant_id, idx))
+            continue
+        playbook_id = str(entry.get("playbook_id", "")).strip()
+        blocker = str(entry.get("blocker_type", "")).strip()
+        strategies = entry.get("strategy_classes")
+        if not playbook_id:
+            violations.append("{}: playbook {} missing playbook_id".format(invariant_id, idx))
+        elif playbook_id in seen_ids:
+            violations.append("{}: duplicate playbook_id {}".format(invariant_id, playbook_id))
+        else:
+            seen_ids.add(playbook_id)
+        if not blocker:
+            violations.append("{}: playbook {} missing blocker_type".format(invariant_id, playbook_id or idx))
+        else:
+            seen_blockers.add(blocker)
+        if not isinstance(strategies, list) or not [item for item in strategies if str(item).strip()]:
+            violations.append(
+                "{}: playbook {} has no strategy classes".format(invariant_id, playbook_id or idx)
+            )
+
+    missing_blockers = sorted(set(REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS) - seen_blockers)
+    if missing_blockers:
+        violations.append(
+            "{}: missing required blocker playbooks {}".format(invariant_id, ", ".join(missing_blockers))
+        )
+    return violations
+
+
 def check_forbidden_enum_tokens(repo_root):
     invariant_id = "INV-ENUM-NO-OTHER"
     if is_override_active(repo_root, invariant_id):
@@ -3931,6 +4010,7 @@ def main() -> int:
     violations.extend(check_tool_name_only(repo_root))
     violations.extend(check_tools_dir_exists(repo_root))
     violations.extend(check_tool_unresolvable(repo_root))
+    violations.extend(check_remediation_playbooks(repo_root))
     violations.extend(check_forbidden_enum_tokens(repo_root))
     violations.extend(check_raw_paths(repo_root))
     violations.extend(check_magic_numbers(repo_root))
