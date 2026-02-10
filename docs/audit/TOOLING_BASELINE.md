@@ -12,7 +12,7 @@ This baseline captures canonical tool discoverability guarantees for RepoX, Test
 ## Enforced Invariants
 
 - `INV-TOOL-NAME-ONLY`
-- `INV-TOOLS-PATH-SET`
+- `INV-TOOLS-DIR-EXISTS`
 - `INV-TOOLS-DIR-MISSING`
 - `INV-TOOL-UNRESOLVABLE`
 

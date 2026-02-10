@@ -13,7 +13,13 @@ DEV_SCRIPT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", 
 if DEV_SCRIPT_DIR not in sys.path:
     sys.path.insert(0, DEV_SCRIPT_DIR)
 
-from env_tools_lib import canonical_tools_dir_details, default_host_path, prepend_tools_to_path, resolve_tool
+from env_tools_lib import (
+    canonical_tools_dir_details,
+    default_host_path,
+    detect_repo_root,
+    prepend_tools_to_path,
+    resolve_tool,
+)
 from hygiene_utils import DEFAULT_EXCLUDES, iter_files, read_text, strip_c_comments_and_strings, normalize_path
 
 
@@ -2088,8 +2094,8 @@ def check_tool_name_only(repo_root):
     return sorted(set(violations))
 
 
-def check_tools_path_set(repo_root):
-    invariant_id = "INV-TOOLS-PATH-SET"
+def check_tools_dir_exists(repo_root):
+    invariant_id = "INV-TOOLS-DIR-EXISTS"
     if is_override_active(repo_root, invariant_id):
         return []
 
@@ -3904,10 +3910,13 @@ def check_root_module_shims(repo_root):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="RepoX governance rules enforcement.")
-    parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--repo-root", default="")
     parser.add_argument("--proof-manifest-out", default=PROOF_MANIFEST_DEFAULT)
     args = parser.parse_args()
-    repo_root = os.path.abspath(args.repo_root)
+    if args.repo_root:
+        repo_root = os.path.abspath(args.repo_root)
+    else:
+        repo_root = detect_repo_root(os.getcwd(), __file__)
     _canonicalize_tools_path(repo_root)
 
     violations = []
@@ -3920,7 +3929,7 @@ def main() -> int:
 
     violations.extend(check_authoritative_symbols(repo_root))
     violations.extend(check_tool_name_only(repo_root))
-    violations.extend(check_tools_path_set(repo_root))
+    violations.extend(check_tools_dir_exists(repo_root))
     violations.extend(check_tool_unresolvable(repo_root))
     violations.extend(check_forbidden_enum_tokens(repo_root))
     violations.extend(check_raw_paths(repo_root))

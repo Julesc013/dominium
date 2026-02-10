@@ -64,7 +64,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-CANON-CODE-REF`
 - `INV-DOC-STATUS-HEADER`
 - `INV-TOOL-NAME-ONLY`
-- `INV-TOOLS-PATH-SET`
+- `INV-TOOLS-DIR-EXISTS`
 - `INV-TOOLS-DIR-MISSING`
 - `INV-TOOL-UNRESOLVABLE`
 - `INV-DET-NO-ANON-RNG`
@@ -129,7 +129,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails for top-level `shared_*` module directories.
 - Prevents reintroduction of ad-hoc root module wrappers instead of using canonical subsystem paths.
 
-### INV-TOOL-NAME-ONLY / INV-TOOLS-PATH-SET / INV-TOOLS-DIR-MISSING / INV-TOOL-UNRESOLVABLE
+### INV-TOOL-NAME-ONLY / INV-TOOLS-DIR-EXISTS / INV-TOOLS-DIR-MISSING / INV-TOOL-UNRESOLVABLE
 
 - Enforces canonical tool invocation by name only.
 - Enforces in-process PATH canonicalization to `dist/sys/<platform>/<arch>/bin/tools`.
