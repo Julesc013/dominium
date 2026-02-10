@@ -17,9 +17,10 @@
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
-      "finding_count": 62,
+      "finding_count": 121,
       "recommended_actions": {
-        "ADD_TEST": 62
+        "ADD_RULE": 60,
+        "ADD_TEST": 61
       },
       "sample_findings": [
         {
@@ -49,107 +50,216 @@
         }
       ],
       "severities": {
-        "INFO": 62
+        "INFO": 61,
+        "WARN": 60
+      }
+    },
+    "INV-CLI-CANONICAL-UI": {
+      "finding_count": 30,
+      "recommended_actions": {
+        "ADD_RULE": 8,
+        "ADD_TEST": 22
+      },
+      "sample_findings": [
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0004",
+          "location": "libs/appcore/ui_bind/ui_command_binding_table.h"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0001",
+          "location": "client_mode_gui.h"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0002",
+          "location": "client_mode_tui.h"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0003",
+          "location": "engine/include/domino/gui/gui.h"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0004",
+          "location": "engine/include/domino/gui/style.h"
+        }
+      ],
+      "severities": {
+        "INFO": 21,
+        "WARN": 9
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 4,
+      "finding_count": 120,
       "recommended_actions": {
-        "ADD_RULE": 4
+        "ADD_RULE": 120
       },
       "sample_findings": [
         {
           "category": "derived_freshness",
           "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0001",
-          "location": "docs/audit/auditx/FINDINGS.md"
+          "location": "docs/CAPABILITY_STAGES.md"
         },
         {
           "category": "derived_freshness",
           "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0002",
-          "location": "docs/audit/auditx/README.md"
+          "location": "docs/CODE_CHANGE_JUSTIFICATION.md"
         },
         {
           "category": "derived_freshness",
           "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0003",
-          "location": "docs/audit/auditx/SUMMARY.md"
+          "location": "docs/CONTRIBUTING.md"
         },
         {
           "category": "derived_freshness",
           "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0004",
-          "location": "docs/governance/AUDITX_MODEL.md"
+          "location": "docs/FAQ.md"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0005",
+          "location": "docs/MODDER_GUIDE.md"
         }
       ],
       "severities": {
-        "INFO": 4
+        "INFO": 120
+      }
+    },
+    "INV-LEGACY-CODE-QUARANTINED": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "ADD_TEST": 5
+      },
+      "sample_findings": [
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
+          "location": "setup/packages/scripts/packaging/pipeline.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
+          "location": "tools/auditx/analyzers/a1_reachability_orphaned.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0003",
+          "location": "tools/auditx/analyzers/a5_capability_misuse.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0004",
+          "location": "tools/auditx/analyzers/a6_ui_parity_bypass.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0005",
+          "location": "tools/auditx/analyzers/a7_legacy_contamination.py"
+        }
+      ],
+      "severities": {
+        "RISK": 5
+      }
+    },
+    "INV-SETTINGS-OWNERSHIP": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0001",
+          "location": "client/app/main_client.c"
+        },
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0002",
+          "location": "client/shell/client_shell.c"
+        },
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0003",
+          "location": "launcher/cli/launcher_ui_shell.c"
+        }
+      ],
+      "severities": {
+        "RISK": 3
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 4,
+      "finding_count": 80,
       "recommended_actions": {
-        "RETIRE": 4
+        "RETIRE": 80
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "tools/auditx/analyzers/a8_derived_freshness_smell.py"
+          "location": "app/include/dominium/app/app_runtime.h"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "tools/auditx/auditx.py"
+          "location": "app/include/dominium/app/compat_report.h"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "tools/auditx/output/__init__.py"
+          "location": "app/include/dominium/app/readonly_adapter.h"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "tools/auditx/output/writers.py"
+          "location": "app/include/dominium/app/readonly_format.h"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
+          "location": "app/include/dominium/app/ui_event_log.h"
         }
       ],
       "severities": {
-        "WARN": 4
+        "WARN": 80
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 93,
+      "finding_count": 160,
       "recommended_actions": {
-        "ADD_RULE": 13,
-        "ADD_TEST": 80
+        "ADD_RULE": 160
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "tools/auditx/auditx.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "tools/auditx/auditx.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "tools/auditx/output/writers.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "tools/auditx/output/writers.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "tools/auditx/output/writers.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         }
       ],
       "severities": {
-        "RISK": 13,
-        "WARN": 80
+        "RISK": 160
       }
     }
   },
