@@ -217,6 +217,22 @@ def main():
             "platform_ext_window_mode=",
         ],
     )
+    ok = ok and run_cmd(
+        [args.launcher, "launcher.settings.get"],
+        expect_contains=["launcher_settings=ok"],
+    )
+    ok = ok and run_cmd(
+        [args.launcher, "launcher.settings.set"],
+        expect_contains=["launcher_settings=set"],
+    )
+    ok = ok and run_cmd(
+        [args.setup, "setup.settings.get"],
+        expect_contains=["setup_settings=ok", "trust_policy="],
+    )
+    ok = ok and run_cmd(
+        [args.setup, "setup.settings.set", "trust_policy=dev"],
+        expect_contains=["setup_settings=set key=trust_policy value=dev"],
+    )
 
     ok = ok and run_cmd(
         [args.server, "--ui=gui"],

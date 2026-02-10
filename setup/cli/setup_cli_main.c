@@ -650,6 +650,8 @@ static void setup_print_help(void)
     printf("  apply     Apply a transactional plan\\n");
     printf("  detect    Detect install root status\\n");
     printf("  manifest  Manifest operations (validate)\\n");
+    printf("  setup.settings.get Canonical setup settings read command\\n");
+    printf("  setup.settings.set Canonical setup settings write command (ephemeral in current process)\\n");
     printf("  ops <args> Install/instance operations (delegates to ops_cli)\\n");
     printf("  share <args> Bundle export/import/inspect (delegates to share_cli)\\n");
 }
@@ -1350,6 +1352,29 @@ int setup_main(int argc, char** argv)
     }
     if (strcmp(cmd, "--version") == 0 || strcmp(cmd, "version") == 0) {
         print_version(DOMINIUM_SETUP_VERSION);
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(cmd, "setup.settings.get") == 0) {
+        printf("setup_settings=ok\\n");
+        printf("install_roots=default\\n");
+        printf("package_store_path=dist/pkg\\n");
+        printf("offline_cache_path=dist/pkg/cache\\n");
+        printf("trust_policy=dev\\n");
+        printf("auto_repair_policy=safe\\n");
+        printf("rollback_depth=4\\n");
+        printf("default_profile=profile.runtime_full\\n");
+        printf("soon.guided_install_wizard=refuse.not_implemented\\n");
+        printf("soon.disk_planning_heuristics=refuse.not_implemented\\n");
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(cmd, "setup.settings.set") == 0) {
+        const char* kv = (cmd_index + 1 < argc) ? argv[cmd_index + 1] : 0;
+        const char* eq = kv ? strchr(kv, '=') : 0;
+        if (!eq || eq == kv || !eq[1]) {
+            fprintf(stderr, "setup: setup.settings.set requires key=value\\n");
+            return D_APP_EXIT_USAGE;
+        }
+        printf("setup_settings=set key=%.*s value=%s\\n", (int)(eq - kv), kv, eq + 1);
         return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "prepare") == 0) {

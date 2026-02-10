@@ -199,6 +199,20 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-SETTINGS-OWNERSHIP",
+      "severity": "FAIL",
+      "scope_paths": ["client", "launcher", "setup", "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"],
+      "documentation": "docs/settings/SETTINGS_OWNERSHIP_MODEL.md#forbidden-overlaps",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-ENGINE-SETTINGS",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"],
+      "documentation": "docs/settings/SETTINGS_OWNERSHIP_MODEL.md#ownership",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-ROOT-MODULE-SHIM",
       "severity": "FAIL",
       "scope_paths": ["CMakeLists.txt", "*/CMakeLists.txt", "libs", "engine", "game", "client", "server", "launcher", "setup", "tools", "app"],

@@ -121,6 +121,7 @@ static void print_help(void)
     printf("  preset-prev     Cycle meta-law preset (reverse)\n");
     printf("  accessibility-next Cycle accessibility preset\n");
     printf("  keybind-next    Cycle keybind profile\n");
+    printf("  settings-reset  Reset local presentation settings to defaults\n");
     printf("  replay-step     Step one replay event (UI only)\n");
     printf("  replay-rewind   Rewind replay cursor (UI only)\n");
     printf("  replay-pause    Toggle replay pause (UI only)\n");
@@ -3082,6 +3083,19 @@ static int client_ui_execute_command(const char* cmd,
             for (i = 0; i < count; ++i) {
                 printf("%s\n", lines[i]);
             }
+        }
+        return D_APP_EXIT_OK;
+    }
+    if (strcmp(token, "settings-reset") == 0) {
+        client_ui_settings_init(settings);
+        if (log) {
+            dom_app_ui_event_log_emit(log, "client.settings", "result=reset");
+        }
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "client_settings=reset");
+        }
+        if (emit_text) {
+            printf("client_settings=reset\n");
         }
         return D_APP_EXIT_OK;
     }

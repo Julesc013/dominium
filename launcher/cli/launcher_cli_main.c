@@ -141,6 +141,8 @@ static void launcher_print_help(void)
     printf("  bugreport <args> Bundle reproducible bug reports (delegates to bugreport_cli)\n");
     printf("  tools           Open tools shell (handoff)\n");
     printf("  settings        Show current UI settings\n");
+    printf("  launcher.settings.get Canonical settings read command\n");
+    printf("  launcher.settings.set Canonical settings write command (deterministic no-op unless key args are supported)\n");
     printf("  exit            Exit launcher\n");
 }
 

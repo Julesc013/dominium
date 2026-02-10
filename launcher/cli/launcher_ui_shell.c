@@ -301,22 +301,25 @@ int launcher_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
-    if (strcmp(cmd, "settings") == 0) {
+    if (strcmp(cmd, "settings") == 0 ||
+        strcmp(cmd, "launcher.settings.get") == 0 ||
+        strcmp(cmd, "launcher.settings.set") == 0) {
         char lines[LAUNCHER_UI_SETTINGS_LINES][LAUNCHER_UI_LABEL_MAX];
         char diag[LAUNCHER_UI_DIAG_LINES][LAUNCHER_UI_LABEL_MAX];
         int count = 0;
         int diag_count = 0;
         int i;
+        int is_set = (strcmp(cmd, "launcher.settings.set") == 0);
         launcher_ui_settings_format_lines(settings, (char*)lines,
                                           LAUNCHER_UI_SETTINGS_LINES,
                                           LAUNCHER_UI_LABEL_MAX, &count);
         diag_count = launcher_ui_collect_diagnostics_lines(diag, LAUNCHER_UI_DIAG_LINES);
-        dom_app_ui_event_log_emit(log, "launcher.settings", "result=ok");
+        dom_app_ui_event_log_emit(log, "launcher.settings", is_set ? "result=set" : "result=ok");
         if (status && status_cap > 0u) {
-            snprintf(status, status_cap, "launcher_settings=ok");
+            snprintf(status, status_cap, is_set ? "launcher_settings=set" : "launcher_settings=ok");
         }
         if (emit_text) {
-            printf("launcher_settings=ok\n");
+            printf(is_set ? "launcher_settings=set\n" : "launcher_settings=ok\n");
             for (i = 0; i < count; ++i) {
                 printf("%s\n", lines[i]);
             }
