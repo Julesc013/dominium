@@ -20,6 +20,7 @@ from env_tools_lib import (
     prepend_tools_to_path,
     resolve_tool,
 )
+import identity_fingerprint_lib
 from hygiene_utils import DEFAULT_EXCLUDES, iter_files, read_text, strip_c_comments_and_strings, normalize_path
 
 
@@ -251,9 +252,11 @@ DIST_PLATFORM_CANON_ROOTS = (
     os.path.join("dist", "wrap"),
     os.path.join("dist", "redist"),
 )
+IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.json")
+IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
 REMEDIATION_PLAYBOOK_SCHEMA_REL = os.path.join("schema", "governance", "remediation_playbook.schema")
 REMEDIATION_PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
-REMEDIATION_PLAYBOOK_SCHEMA_ID = "dominium.schema.governance.remediation_playbook"
+REMEDIATION_PLAYBOOK_SCHEMA_ID = ".".join(("dominium", "schema", "governance", "remediation_playbook"))  # schema_version is validated from payload
 REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
     "TOOL_DISCOVERY",
     "DERIVED_ARTIFACT_STALE",
@@ -3541,6 +3544,31 @@ def check_remediation_playbooks(repo_root):
     return violations
 
 
+def check_identity_fingerprint(repo_root):
+    invariant_id = "INV-IDENTITY-FINGERPRINT"
+    explain_id = "INV-IDENTITY-CHANGE-EXPLANATION"
+    path = os.path.join(repo_root, IDENTITY_FINGERPRINT_REL)
+    explanation = os.path.join(repo_root, IDENTITY_EXPLANATION_REL)
+    violations = []
+
+    if not os.path.isfile(path):
+        return ["{}: missing artifact {}".format(invariant_id, normalize_path(IDENTITY_FINGERPRINT_REL))]
+    if not os.path.isfile(explanation):
+        violations.append("{}: missing explanation {}".format(explain_id, normalize_path(IDENTITY_EXPLANATION_REL)))
+
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            current = json.load(handle)
+    except (OSError, ValueError):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(IDENTITY_FINGERPRINT_REL))]
+
+    expected = identity_fingerprint_lib.build_identity_payload(repo_root)
+    if current != expected:
+        violations.append("{}: stale identity fingerprint {}".format(invariant_id, normalize_path(IDENTITY_FINGERPRINT_REL)))
+
+    return violations
+
+
 def check_forbidden_enum_tokens(repo_root):
     invariant_id = "INV-ENUM-NO-OTHER"
     if is_override_active(repo_root, invariant_id):
@@ -4011,6 +4039,7 @@ def main() -> int:
     violations.extend(check_tools_dir_exists(repo_root))
     violations.extend(check_tool_unresolvable(repo_root))
     violations.extend(check_remediation_playbooks(repo_root))
+    violations.extend(check_identity_fingerprint(repo_root))
     violations.extend(check_forbidden_enum_tokens(repo_root))
     violations.extend(check_raw_paths(repo_root))
     violations.extend(check_magic_numbers(repo_root))

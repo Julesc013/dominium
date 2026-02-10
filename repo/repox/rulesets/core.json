@@ -94,6 +94,20 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-IDENTITY-FINGERPRINT",
+      "severity": "FAIL",
+      "scope_paths": ["docs/audit/identity_fingerprint.json", "scripts/dev/identity_fingerprint_lib.py", "tools/ci/tool_identity_fingerprint.py", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-fingerprint",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-IDENTITY-CHANGE-EXPLANATION",
+      "severity": "FAIL",
+      "scope_paths": ["docs/audit/identity_fingerprint_explanation.md", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-change-explanation",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-DET-NO-ANON-RNG",
       "severity": "FAIL",
       "scope_paths": ["engine", "game"],

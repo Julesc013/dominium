@@ -1,0 +1,36 @@
+{
+  "fingerprint_sha256": "9a00bb29daabbb2ffce0273f23fb4d8ad3d4bc9c85b7df3b813011c280d65726",
+  "inputs": {
+    "canon_index": {
+      "path": "docs/architecture/CANON_INDEX.md",
+      "sha256": "8be4e88116de6a3afd5b43a39ebaaa96eac4ddbffbf90d2aeb287c1afe625bd7"
+    },
+    "gate_runner": {
+      "path": "scripts/dev/gate.py",
+      "sha256": "9e6de1f3136fcb4f2c32c90fef7663b01309f73cf4e2f6e1e0a20b292e569284"
+    },
+    "ontology_commitment": {
+      "sha256": "831a336a64022e33b1f72801c3e636cf817fc3e96c4c0223c3bd2cc2190930d7",
+      "value": "Assemblies|Fields|Processes|Agents|Law"
+    },
+    "repox_rulesets": {
+      "path": "repo/repox/rulesets",
+      "sha256": "180e33ea4531760fdf9de9d4d2b2dae0812d0c43b2381a5c2b192f26317f8da0"
+    },
+    "status_now_snapshot": {
+      "path": "docs/STATUS_NOW.md",
+      "sha256": "759a028019b67caa7112af9c6de67e419d9eeaf7020c47653b20b98854722416"
+    },
+    "testx_suite_set": {
+      "sha256": "9806e891bb8474a91af853e503ead425460db0edec18bbc908ccd0431aa341d8",
+      "source_root": "tests",
+      "suite_count": 255
+    },
+    "unbounded_doctrine": {
+      "path": "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md",
+      "sha256": "beb6c50be22b2c046d6c6b365598f434fea663ce1139bd5a706725190ea8cdc6"
+    }
+  },
+  "schema_id": "dominium.audit.identity_fingerprint",
+  "schema_version": "1.0.0"
+}

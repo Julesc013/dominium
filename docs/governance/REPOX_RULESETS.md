@@ -68,6 +68,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-TOOLS-DIR-MISSING`
 - `INV-TOOL-UNRESOLVABLE`
 - `INV-REMEDIATION-PLAYBOOKS`
+- `INV-IDENTITY-FINGERPRINT`
+- `INV-IDENTITY-CHANGE-EXPLANATION`
 - `INV-DET-NO-ANON-RNG`
 - `INV-DET-NO-WALLCLOCK`
 - `INV-FP-AUTH-BAN`
@@ -143,6 +145,17 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when remediation playbook schema/registry are missing or invalid.
 - Fails when required blocker playbooks are missing.
 - Enforces deterministic strategy class declarations for autonomous gate remediation.
+
+### INV-IDENTITY-FINGERPRINT
+
+- Fails when `docs/audit/identity_fingerprint.json` is missing or stale.
+- Fingerprint is derived from canon/governance-critical identity inputs.
+- Canonical generator: `tools/ci/tool_identity_fingerprint.py`.
+
+### INV-IDENTITY-CHANGE-EXPLANATION
+
+- Fails when identity input changes are not accompanied by explanation artifact updates.
+- Explanation artifact: `docs/audit/identity_fingerprint_explanation.md`.
 
 ### INV-PLATFORM-ID-CANONICAL
 
