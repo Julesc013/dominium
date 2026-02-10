@@ -1,0 +1,210 @@
+{
+  "schema_id": "dominium.schema.governance.gate_policy",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.gate.policy",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.gate_policy@1.0.0",
+    "gate_classes": [
+      {
+        "class_id": "PRECHECK_MIN",
+        "description": "Fast preflight checks before autonomous work begins.",
+        "extensions": {}
+      },
+      {
+        "class_id": "TASK_DEPENDENCY",
+        "description": "Checks that run only when touched paths or requested targets require them.",
+        "extensions": {}
+      },
+      {
+        "class_id": "EXIT_STRICT",
+        "description": "Strict completion checks required before a prompt is complete.",
+        "extensions": {}
+      }
+    ],
+    "gates": [
+      {
+        "gate_id": "repox.precheck",
+        "gate_class": "PRECHECK_MIN",
+        "command": [
+          "python",
+          "scripts/ci/check_repox_rules.py",
+          "--repo-root",
+          "{repo_root}",
+          "--minimal"
+        ],
+        "applies_when": [
+          {
+            "kind": "always",
+            "values": [
+              "true"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.tool_discovery",
+          "dominium.playbook.schema_mismatch"
+        ],
+        "extensions": {}
+      },
+      {
+        "gate_id": "toolchain.sanity",
+        "gate_class": "PRECHECK_MIN",
+        "command": [
+          "cmake",
+          "--build",
+          "out/build/vs2026/verify",
+          "--config",
+          "Debug",
+          "--target",
+          "domino_engine",
+          "dominium_game"
+        ],
+        "applies_when": [
+          {
+            "kind": "always",
+            "values": [
+              "true"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.build_output_missing"
+        ],
+        "extensions": {}
+      },
+      {
+        "gate_id": "ui_bind_check",
+        "gate_class": "TASK_DEPENDENCY",
+        "command": [
+          "tool_ui_bind",
+          "--repo-root",
+          "{repo_root}",
+          "--check"
+        ],
+        "applies_when": [
+          {
+            "kind": "changed_glob",
+            "values": [
+              "libs/appcore/command/*",
+              "libs/appcore/ui_bind/*",
+              "tools/ui_index/*",
+              "tools/ui_bind/*",
+              "schema/ui/*",
+              "docs/ui/*",
+              "client/ui/*",
+              "tests/ui_parity/*"
+            ]
+          },
+          {
+            "kind": "requested_target",
+            "values": [
+              "ui_bind_phase",
+              "dominium_client",
+              "dominium-tools",
+              "all_runtime",
+              "verify_full",
+              "testx_all"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.ui_bind_drift",
+          "dominium.playbook.derived_artifact_stale",
+          "dominium.playbook.tool_discovery"
+        ],
+        "extensions": {}
+      },
+      {
+        "gate_id": "repox.full",
+        "gate_class": "EXIT_STRICT",
+        "command": [
+          "python",
+          "scripts/ci/check_repox_rules.py",
+          "--repo-root",
+          "{repo_root}"
+        ],
+        "applies_when": [
+          {
+            "kind": "always",
+            "values": [
+              "true"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.tool_discovery",
+          "dominium.playbook.schema_mismatch",
+          "dominium.playbook.doc_canon_drift"
+        ],
+        "extensions": {}
+      },
+      {
+        "gate_id": "build.strict",
+        "gate_class": "EXIT_STRICT",
+        "command": [
+          "cmake",
+          "--build",
+          "out/build/vs2026/verify",
+          "--config",
+          "Debug",
+          "--target",
+          "domino_engine",
+          "dominium_game",
+          "dominium_client"
+        ],
+        "applies_when": [
+          {
+            "kind": "always",
+            "values": [
+              "true"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.build_output_missing"
+        ],
+        "extensions": {}
+      },
+      {
+        "gate_id": "testx.full",
+        "gate_class": "EXIT_STRICT",
+        "command": [
+          "cmake",
+          "--build",
+          "out/build/vs2026/verify",
+          "--config",
+          "Debug",
+          "--target",
+          "testx_all"
+        ],
+        "applies_when": [
+          {
+            "kind": "always",
+            "values": [
+              "true"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.build_output_missing",
+          "dominium.playbook.path_cwd_dependency"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -1,0 +1,50 @@
+SCHEMA: governance/gate_policy.schema
+schema_id: dominium.schema.governance.gate_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define dependency-aware gate execution policy consumed by scripts/dev/gate.py.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown extension keys MUST be preserved.
+- No field removal/rename without MAJOR version bump.
+
+NON-SEMANTICS:
+- Gate policy controls automation flow only.
+- Gate policy does not alter simulation semantics.
+
+REQUIRED SHAPE:
+record gate_policy_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - gate_classes: [gate_class]
+    - gates: [gate_entry]
+    - extensions: map
+
+record gate_class
+  required:
+    - class_id: tag
+    - description: tag
+    - extensions: map
+
+record gate_entry
+  required:
+    - gate_id: id
+    - gate_class: tag
+    - command: [tag]
+    - applies_when: [condition]
+    - severity: tag
+    - auto_remediate: bool
+    - remediation_playbook_ids: [id]
+    - extensions: map
+
+record condition
+  required:
+    - kind: tag
+    - values: [tag]
+  optional:
+    - negate: bool

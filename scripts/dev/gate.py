@@ -23,6 +23,7 @@ VERIFY_BUILD_DIR_REL = os.path.join("out", "build", "vs2026", "verify")
 REMEDIATION_ROOT_REL = os.path.join("docs", "audit", "remediation")
 REPOX_SCRIPT_REL = os.path.join("scripts", "ci", "check_repox_rules.py")
 PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
+GATE_POLICY_REGISTRY_REL = os.path.join("data", "registries", "gate_policy.json")
 
 MECHANICAL_BLOCKER_TYPES = (
     "TOOL_DISCOVERY",
@@ -94,6 +95,33 @@ def _load_playbooks(repo_root):
             continue
         out[blocker_type] = [str(item).strip() for item in strategies if str(item).strip()]
     return out
+
+
+def _load_gate_policy(repo_root):
+    path = os.path.join(repo_root, GATE_POLICY_REGISTRY_REL)
+    if not os.path.isfile(path):
+        return {"gate_classes": {}, "gates": []}
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, ValueError):
+        return {"gate_classes": {}, "gates": []}
+
+    record = payload.get("record", {})
+    classes = {}
+    for item in record.get("gate_classes", []):
+        class_id = str(item.get("class_id", "")).strip()
+        if not class_id:
+            continue
+        classes[class_id] = item
+
+    gates = []
+    for gate in record.get("gates", []):
+        gate_id = str(gate.get("gate_id", "")).strip()
+        if not gate_id:
+            continue
+        gates.append(gate)
+    return {"gate_classes": classes, "gates": gates}
 
 
 def _default_strategy_classes(blocker_type):

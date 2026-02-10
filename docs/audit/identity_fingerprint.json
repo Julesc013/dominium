@@ -1,5 +1,5 @@
 {
-  "fingerprint_sha256": "9a00bb29daabbb2ffce0273f23fb4d8ad3d4bc9c85b7df3b813011c280d65726",
+  "fingerprint_sha256": "c66f9a0a451bcbb6b342376f4398f033819768470816a18144789c0787ca387a",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
@@ -7,7 +7,7 @@
     },
     "gate_runner": {
       "path": "scripts/dev/gate.py",
-      "sha256": "9e6de1f3136fcb4f2c32c90fef7663b01309f73cf4e2f6e1e0a20b292e569284"
+      "sha256": "dfd53332804b134678d23fa6fb09e408c493b1956a80631e8ca3a38826c11c4d"
     },
     "ontology_commitment": {
       "sha256": "831a336a64022e33b1f72801c3e636cf817fc3e96c4c0223c3bd2cc2190930d7",
