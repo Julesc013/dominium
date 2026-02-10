@@ -8,7 +8,7 @@
       "sample_findings": [
         {
           "category": "canon_drift",
-          "finding_id": "A3_CANON_DRIFT:0248",
+          "finding_id": "A3_CANON_DRIFT:0249",
           "location": "docs/gameplay/CONSTRUCTION_MODEL.md"
         }
       ],
