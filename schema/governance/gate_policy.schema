@@ -41,6 +41,8 @@ record gate_entry
     - auto_remediate: bool
     - remediation_playbook_ids: [id]
     - extensions: map
+  optional:
+    - callable_id: id
 
 record condition
   required:

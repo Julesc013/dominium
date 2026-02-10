@@ -30,8 +30,7 @@
           "python",
           "scripts/ci/check_repox_rules.py",
           "--repo-root",
-          "{repo_root}",
-          "--minimal"
+          "{repo_root}"
         ],
         "applies_when": [
           {
@@ -105,10 +104,7 @@
             "values": [
               "ui_bind_phase",
               "dominium_client",
-              "dominium-tools",
-              "all_runtime",
-              "verify_full",
-              "testx_all"
+              "dominium-tools"
             ]
           }
         ],
@@ -201,6 +197,35 @@
         "remediation_playbook_ids": [
           "dominium.playbook.build_output_missing",
           "dominium.playbook.path_cwd_dependency"
+        ],
+        "extensions": {}
+      },
+      {
+        "gate_id": "dist.verify",
+        "gate_class": "EXIT_STRICT",
+        "command": [
+          "cmake",
+          "--build",
+          "out/build/vs2026/verify",
+          "--config",
+          "Debug",
+          "--target",
+          "dist_all"
+        ],
+        "applies_when": [
+          {
+            "kind": "requested_target",
+            "values": [
+              "dist_all"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.build_output_missing",
+          "dominium.playbook.path_cwd_dependency",
+          "dominium.playbook.derived_artifact_stale"
         ],
         "extensions": {}
       }
