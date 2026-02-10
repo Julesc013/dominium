@@ -24,6 +24,10 @@ def _env_tools_path(repo_root):
     return os.path.join(repo_root, "scripts", "dev", "env_tools.py")
 
 
+def _gate_path(repo_root):
+    return os.path.join(repo_root, "scripts", "dev", "gate.py")
+
+
 def _run_env_tools(repo_root, args):
     cmd = [sys.executable, _env_tools_path(repo_root), "--repo-root", repo_root] + list(args)
     return subprocess.run(cmd, check=False)
@@ -71,6 +75,11 @@ def cmd_tools_ui_bind(repo_root, passthrough):
     return _run_env_tools(repo_root, args).returncode
 
 
+def cmd_gate(repo_root, action, passthrough):
+    cmd = [sys.executable, _gate_path(repo_root), action, "--repo-root", repo_root] + list(passthrough)
+    return subprocess.run(cmd, check=False).returncode
+
+
 def build_parser():
     parser = argparse.ArgumentParser(description="Developer convenience wrapper commands.")
     parser.add_argument("--repo-root", default="")
@@ -84,6 +93,12 @@ def build_parser():
 
     ui_bind = tools_sub.add_parser("ui_bind", help="Run tool_ui_bind through canonical adapter.")
     ui_bind.add_argument("args", nargs=argparse.REMAINDER)
+
+    gate = sub.add_parser("gate", help="Run autonomous gate workflow.")
+    gate_sub = gate.add_subparsers(dest="action", required=True)
+    gate_sub.add_parser("verify", help="Run RepoX + strict build + full TestX with remediation.")
+    gate_sub.add_parser("dist", help="Run verify lane then explicit dist targets.")
+    gate_sub.add_parser("doctor", help="Show canonical gate environment diagnostics.")
 
     return parser
 
@@ -101,6 +116,8 @@ def main():
         if passthrough and passthrough[0] == "--":
             passthrough = passthrough[1:]
         return cmd_tools_ui_bind(repo_root, passthrough)
+    if args.group == "gate":
+        return cmd_gate(repo_root, args.action, [])
     parser.error("unsupported command")
     return 2
 
