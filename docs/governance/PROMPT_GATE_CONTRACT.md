@@ -28,5 +28,5 @@ Prompts, automation, and queued runs must enter governance gates through `script
 ## Remediation Rule
 
 - Mechanical failures are remediated in-process by `gate.py`.
-- Successful/failed remediation attempts are recorded under `docs/audit/remediation/`.
+- Successful/failed remediation attempts are recorded under `docs/audit/remediation/<workspace_id>/`.
 - Semantic ambiguity is escalated per `docs/governance/SEMANTIC_ESCALATION_POLICY.md`.

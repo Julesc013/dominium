@@ -21,6 +21,10 @@ Supported commands:
 - `python scripts/dev/dev.py tools ui_bind -- --repo-root . --check`
 - direct repo-root shims: `tool_ui_bind`, `tool_ui_validate`, `tool_ui_doc_annotate`
 
+Workspace pinning (optional):
+
+- `python scripts/dev/dev.py --workspace-id <ws_id> tools doctor`
+
 Behavior:
 
 - wrappers call canonical tools by name only
@@ -38,6 +42,7 @@ Canonical autonomous gate entrypoint:
 - `python scripts/dev/gate.py doctor`
 - `python scripts/dev/gate.py dev`
 - `python scripts/dev/gate.py remediate`
+- optional workspace pinning: `python scripts/dev/gate.py verify --workspace-id <ws_id>`
 
 Equivalent dev wrapper commands:
 
@@ -55,6 +60,7 @@ Behavior:
 - runs gate policy classes deterministically (minimal precheck and strict exitcheck)
 - supports targeted execution with `--only-gate <gate_id>` for dependency gate diagnostics
 - emits remediation artifacts to `docs/audit/remediation/...`
+- emits remediation artifacts to `docs/audit/remediation/<workspace_id>/...`
 
 ## Notes
 

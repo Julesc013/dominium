@@ -8,9 +8,14 @@ import sys
 
 from env_tools_lib import (
     CANONICAL_TOOL_IDS,
+    WORKSPACE_ID_ENV_KEY,
+    canonical_workspace_dirs,
+    canonical_workspace_id,
+    canonicalize_env_for_workspace,
     canonical_tools_dir_details,
     prepend_tools_to_path,
     resolve_tool,
+    sanitize_workspace_id,
 )
 
 def _norm(path):
@@ -21,8 +26,8 @@ def _norm_case(path):
     return os.path.normcase(_norm(path))
 
 
-def _resolve_tool_dir(repo_root, platform_id="", arch_id=""):
-    return canonical_tools_dir_details(repo_root, platform_id, arch_id)
+def _resolve_tool_dir(repo_root, platform_id="", arch_id="", ws_id=""):
+    return canonical_tools_dir_details(repo_root, platform_id, arch_id, ws_id=ws_id)
 
 
 def _tool_filename(tool_id):
@@ -73,13 +78,15 @@ def _shell_quote_ps(value):
 
 
 def _handle_print_path(args):
-    tool_dir, _, _, _ = _resolve_tool_dir(args.repo_root, args.platform, args.arch)
+    ws_id = sanitize_workspace_id_or_default(args.repo_root, args.workspace_id)
+    tool_dir, _, _, _ = _resolve_tool_dir(args.repo_root, args.platform, args.arch, ws_id=ws_id)
     print(tool_dir)
     return 0
 
 
 def _handle_export(args):
-    tool_dir, _, _, _ = _resolve_tool_dir(args.repo_root, args.platform, args.arch)
+    ws_id = sanitize_workspace_id_or_default(args.repo_root, args.workspace_id)
+    tool_dir, _, _, _ = _resolve_tool_dir(args.repo_root, args.platform, args.arch, ws_id=ws_id)
     status = _tool_status(args.repo_root, tool_dir, require_path=False)
     if status["missing_files"]:
         print("refuse.tools_dir_missing")
@@ -109,10 +116,20 @@ def _handle_export(args):
 
 
 def _handle_doctor(args):
-    tool_dir, platform_id, arch_id, candidates = _resolve_tool_dir(args.repo_root, args.platform, args.arch)
+    ws_id = sanitize_workspace_id_or_default(args.repo_root, args.workspace_id)
+    tool_dir, platform_id, arch_id, candidates = _resolve_tool_dir(
+        args.repo_root, args.platform, args.arch, ws_id=ws_id
+    )
     status = _tool_status(args.repo_root, tool_dir, require_path=args.require_path)
+    ws_dirs = canonical_workspace_dirs(
+        args.repo_root, ws_id=ws_id, platform_id=platform_id, arch_id=arch_id
+    )
     status["platform"] = platform_id
     status["arch"] = arch_id
+    status["workspace_id"] = ws_dirs["workspace_id"]
+    status["workspace_build_root"] = ws_dirs["build_root"].replace("\\", "/")
+    status["workspace_dist_root"] = ws_dirs["dist_root"].replace("\\", "/")
+    status["workspace_remediation_root"] = ws_dirs["remediation_root"].replace("\\", "/")
     status["arch_candidates"] = list(candidates)
     status["refusal_code"] = "ok" if status["ok"] else "refuse.tool_discoverability_failed"
 
@@ -144,17 +161,22 @@ def _handle_run(args):
         print("refuse.path_invocation_forbidden: {}".format(argv0))
         return 2
 
-    tool_dir, _, _, _ = _resolve_tool_dir(args.repo_root, args.platform, args.arch)
+    ws_id = sanitize_workspace_id_or_default(args.repo_root, args.workspace_id)
+    tool_dir, platform_id, arch_id, _ = _resolve_tool_dir(args.repo_root, args.platform, args.arch, ws_id=ws_id)
     status = _tool_status(args.repo_root, tool_dir, require_path=False)
     if status["missing_files"]:
         print("refuse.tools_dir_missing")
         print(json.dumps(status, indent=2, sort_keys=False))
         return 2
 
-    env = os.environ.copy()
-    env["PATH"] = _prepend_path(env.get("PATH", ""), tool_dir)
-    env["DOM_TOOLS_PATH"] = tool_dir
-    env["DOM_TOOLS_READY"] = "1"
+    env, ws_dirs = canonicalize_env_for_workspace(
+        os.environ.copy(),
+        args.repo_root,
+        ws_id=ws_id,
+        platform_id=platform_id,
+        arch_id=arch_id,
+    )
+    env[WORKSPACE_ID_ENV_KEY] = ws_dirs["workspace_id"]
     exec_path = shutil.which(argv0, path=env["PATH"])
     if not exec_path and os.name == "nt":
         exec_path = shutil.which(argv0 + ".exe", path=env["PATH"])
@@ -164,11 +186,19 @@ def _handle_run(args):
     return int(proc.returncode)
 
 
+def sanitize_workspace_id_or_default(repo_root, workspace_id):
+    explicit = sanitize_workspace_id(workspace_id or "")
+    if explicit:
+        return explicit
+    return canonical_workspace_id(repo_root, env=os.environ)
+
+
 def _build_parser():
     parser = argparse.ArgumentParser(description="Canonical tool PATH adapter.")
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--platform", default="")
     parser.add_argument("--arch", default="")
+    parser.add_argument("--workspace-id", default="")
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("print-path", help="Print canonical tools directory path.")

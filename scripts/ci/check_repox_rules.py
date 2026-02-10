@@ -14,10 +14,10 @@ if DEV_SCRIPT_DIR not in sys.path:
     sys.path.insert(0, DEV_SCRIPT_DIR)
 
 from env_tools_lib import (
+    WORKSPACE_ID_ENV_KEY,
+    canonicalize_env_for_workspace,
     canonical_tools_dir_details,
-    default_host_path,
     detect_repo_root,
-    prepend_tools_to_path,
     resolve_tool,
 )
 import identity_fingerprint_lib
@@ -265,6 +265,8 @@ REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
     "BUILD_OUTPUT_MISSING",
     "PATH_CWD_DEPENDENCY",
     "DOC_CANON_DRIFT",
+    "WORKSPACE_COLLISION",
+    "VERSIONING_POLICY_MISMATCH",
 )
 
 BUILD_PRESET_CONTRACT_CONFIGURE = (
@@ -469,28 +471,31 @@ def run_git(args, repo_root):
 
 def _resolve_canonical_tools_dir(repo_root):
     try:
-        tool_dir, _, _, _ = canonical_tools_dir_details(repo_root)
+        tool_dir, _, _, _ = canonical_tools_dir_details(
+            repo_root,
+            ws_id=os.environ.get(WORKSPACE_ID_ENV_KEY, ""),
+            env=os.environ,
+        )
     except RuntimeError as exc:
         return "", str(exc)
     return os.path.normpath(tool_dir), ""
 
 
 def _canonicalize_tools_path(repo_root):
-    tool_dir, detail = _resolve_canonical_tools_dir(repo_root)
+    try:
+        env, _ = canonicalize_env_for_workspace(
+            dict(os.environ),
+            repo_root,
+            ws_id=os.environ.get(WORKSPACE_ID_ENV_KEY, ""),
+        )
+    except RuntimeError as exc:
+        return "", str(exc)
+    os.environ.update(env)
+    tool_dir = env.get("DOM_CANONICAL_TOOLS_DIR", "")
     if not tool_dir:
-        return "", detail
-
-    base_path = os.environ.get("PATH", "")
-    if not base_path:
-        base_path = os.environ.get("DOM_HOST_PATH", "")
-    if not base_path:
-        base_path = default_host_path()
-    env = dict(os.environ)
-    env["PATH"] = base_path
-    env = prepend_tools_to_path(env, tool_dir)
-    os.environ["PATH"] = env.get("PATH", "")
-    os.environ["DOM_TOOLS_PATH"] = env.get("DOM_TOOLS_PATH", tool_dir)
-    os.environ["DOM_TOOLS_READY"] = env.get("DOM_TOOLS_READY", "1")
+        tool_dir, detail = _resolve_canonical_tools_dir(repo_root)
+        if not tool_dir:
+            return "", detail
     return tool_dir, ""
 
 

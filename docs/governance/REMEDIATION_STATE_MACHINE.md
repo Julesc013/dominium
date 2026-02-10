@@ -63,4 +63,4 @@ Each remediation cycle writes:
 
 Under:
 
-- `docs/audit/remediation/<timestamp>_<gate>_<type>/`
+- `docs/audit/remediation/<workspace_id>/<timestamp>_<gate>_<type>/`

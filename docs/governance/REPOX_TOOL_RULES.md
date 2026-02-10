@@ -18,7 +18,7 @@ This document defines RepoX invariants for canonical tool discoverability and in
 
 - Intent: RepoX must canonicalize tool discovery in-process.
 - Fails when canonical tool root is not active in RepoX process `PATH` after canonicalization.
-- Canonical root is resolved from `dist/sys/<platform>/<arch>/bin/tools/`.
+- Canonical root prefers `dist/ws/<workspace_id>/sys/<platform>/<arch>/bin/tools/` and falls back to `dist/sys/<platform>/<arch>/bin/tools/`.
 
 ## INV-TOOLS-DIR-MISSING
 
@@ -41,6 +41,7 @@ This document defines RepoX invariants for canonical tool discoverability and in
 ## Operational Rule
 
 - RepoX/TestX self-canonicalize internally; manual shell PATH setup is not required.
+- Workspace selection is deterministic unless explicitly pinned via `DOM_WS_ID`.
 - Repo-root shim commands (`tool_ui_bind.cmd`, `tool_ui_validate.cmd`, `tool_ui_doc_annotate.cmd`)
   are allowed for interactive use and resolve canonical binaries only.
 - `scripts/dev/env_tools.*` remains optional convenience for interactive shells.
