@@ -19,3 +19,8 @@ AuditX is the semantic audit axis in the governance stack.
 - AuditX is non-gating by default.
 - AuditX emits reports; it does not auto-mutate runtime code.
 
+## Shared Analysis Graph
+
+- Graph nodes: files, symbols, commands, schemas, packs, tests, products.
+- Graph edges: includes/imports, command bindings, schema usage, pack dependencies.
+- Traversal and graph hashing are deterministic.
