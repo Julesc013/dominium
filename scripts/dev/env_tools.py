@@ -2,18 +2,16 @@
 import argparse
 import json
 import os
-import platform
 import shutil
 import subprocess
 import sys
 
-
-CANONICAL_TOOL_IDS = (
-    "tool_ui_bind",
-    "tool_ui_validate",
-    "tool_ui_doc_annotate",
+from env_tools_lib import (
+    CANONICAL_TOOL_IDS,
+    canonical_tools_dir_details,
+    prepend_tools_to_path,
+    resolve_tool,
 )
-
 
 def _norm(path):
     return os.path.normpath(path)
@@ -23,41 +21,8 @@ def _norm_case(path):
     return os.path.normcase(_norm(path))
 
 
-def _host_platform_id():
-    sys_name = platform.system().lower()
-    if sys_name.startswith("win"):
-        return "winnt"
-    if sys_name == "linux":
-        return "linux"
-    if sys_name == "darwin":
-        return "macosx"
-    raise RuntimeError("refuse.platform_unsupported: {}".format(sys_name))
-
-
-def _host_arch_candidates():
-    machine = platform.machine().lower()
-    if machine in ("amd64", "x86_64"):
-        return ["x64", "x86_64"]
-    if machine in ("x86", "i386", "i686"):
-        return ["x86", "x86_32"]
-    if machine in ("arm64", "aarch64"):
-        return ["arm64"]
-    if machine.startswith("arm"):
-        return ["arm", "arm32"]
-    return [machine]
-
-
 def _resolve_tool_dir(repo_root, platform_id="", arch_id=""):
-    plat = platform_id or _host_platform_id()
-    candidates = [arch_id] if arch_id else _host_arch_candidates()
-    candidates = [item for item in candidates if item]
-    for arch in candidates:
-        candidate = os.path.join(repo_root, "dist", "sys", plat, arch, "bin", "tools")
-        if os.path.isdir(candidate):
-            return _norm(candidate), plat, arch, candidates
-    arch = candidates[0] if candidates else "x64"
-    fallback = os.path.join(repo_root, "dist", "sys", plat, arch, "bin", "tools")
-    return _norm(fallback), plat, arch, candidates
+    return canonical_tools_dir_details(repo_root, platform_id, arch_id)
 
 
 def _tool_filename(tool_id):
@@ -73,19 +38,7 @@ def _split_path(path_value):
 
 
 def _prepend_path(path_value, tool_dir):
-    items = _split_path(path_value)
-    norm_tool = _norm_case(tool_dir)
-    kept = []
-    seen = set()
-    for item in items:
-        norm_item = _norm_case(item)
-        if norm_item in seen:
-            continue
-        seen.add(norm_item)
-        if norm_item == norm_tool:
-            continue
-        kept.append(item)
-    return os.pathsep.join([tool_dir] + kept)
+    return prepend_tools_to_path({"PATH": path_value}, tool_dir).get("PATH", "")
 
 
 def _tool_status(repo_root, tool_dir, require_path):
@@ -95,7 +48,7 @@ def _tool_status(repo_root, tool_dir, require_path):
         expected = os.path.join(tool_dir, _tool_filename(tool_id))
         if not os.path.isfile(expected):
             files_missing.append(expected)
-        if require_path and shutil.which(_tool_filename(tool_id)) is None and shutil.which(tool_id) is None:
+        if require_path and not resolve_tool(tool_id, os.environ):
             names_unresolvable.append(tool_id)
     ok = (not files_missing) and (not names_unresolvable)
     return {
