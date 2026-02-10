@@ -8,7 +8,7 @@
       "sample_findings": [
         {
           "category": "canon_drift",
-          "finding_id": "A3_CANON_DRIFT:0247",
+          "finding_id": "A3_CANON_DRIFT:0248",
           "location": "docs/gameplay/CONSTRUCTION_MODEL.md"
         }
       ],
@@ -55,10 +55,10 @@
       }
     },
     "INV-CLI-CANONICAL-UI": {
-      "finding_count": 30,
+      "finding_count": 32,
       "recommended_actions": {
-        "ADD_RULE": 8,
-        "ADD_TEST": 22
+        "ADD_RULE": 9,
+        "ADD_TEST": 23
       },
       "sample_findings": [
         {
@@ -89,7 +89,8 @@
       ],
       "severities": {
         "INFO": 21,
-        "WARN": 9
+        "RISK": 1,
+        "WARN": 10
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {

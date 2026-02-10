@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1099
-- Severities: INFO=202, RISK=168, WARN=729
-- Categories: canon_drift=580, capability_misuse=121, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, ui_parity=29
+- Total findings: 1102
+- Severities: INFO=202, RISK=169, WARN=731
+- Categories: canon_drift=581, capability_misuse=121, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, ui_parity=31
 
 ## Top Findings
 
@@ -101,157 +101,157 @@ Superseded By: none
 - `A1_REACHABILITY_ORPHANED:0029` WARN `reachability` (client/core/client_state_machine.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0030` WARN `reachability` (client/gui/client_app_win32.cpp)
+- `A1_REACHABILITY_ORPHANED:0030` WARN `reachability` (client/core/session_artifacts.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0031` WARN `reachability` (client/input/client_input_bindings.c)
+- `A1_REACHABILITY_ORPHANED:0031` WARN `reachability` (client/core/session_artifacts.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0032` WARN `reachability` (client/input/client_input_bindings.h)
+- `A1_REACHABILITY_ORPHANED:0032` WARN `reachability` (client/core/session_pipeline.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0033` WARN `reachability` (client/modes/client_mode_cli.c)
+- `A1_REACHABILITY_ORPHANED:0033` WARN `reachability` (client/core/session_pipeline.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0034` WARN `reachability` (client/modes/client_mode_cli.h)
+- `A1_REACHABILITY_ORPHANED:0034` WARN `reachability` (client/core/session_refusal_codes.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0035` WARN `reachability` (client/modes/client_mode_gui.c)
+- `A1_REACHABILITY_ORPHANED:0035` WARN `reachability` (client/core/session_refusal_codes.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0036` WARN `reachability` (client/modes/client_mode_gui.h)
+- `A1_REACHABILITY_ORPHANED:0036` WARN `reachability` (client/core/session_stage_registry.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0037` WARN `reachability` (client/modes/client_mode_tui.c)
+- `A1_REACHABILITY_ORPHANED:0037` WARN `reachability` (client/core/session_stage_registry.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0038` WARN `reachability` (client/modes/client_mode_tui.h)
+- `A1_REACHABILITY_ORPHANED:0038` WARN `reachability` (client/gui/client_app_win32.cpp)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0039` WARN `reachability` (client/observability/readonly_view_model.c)
+- `A1_REACHABILITY_ORPHANED:0039` WARN `reachability` (client/input/client_input_bindings.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0040` WARN `reachability` (client/observability/readonly_view_model.h)
+- `A1_REACHABILITY_ORPHANED:0040` WARN `reachability` (client/input/client_input_bindings.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0041` WARN `reachability` (client/presentation/frame_graph_builder.cpp)
+- `A1_REACHABILITY_ORPHANED:0041` WARN `reachability` (client/modes/client_mode_cli.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0042` WARN `reachability` (client/presentation/frame_graph_builder.h)
+- `A1_REACHABILITY_ORPHANED:0042` WARN `reachability` (client/modes/client_mode_cli.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0043` WARN `reachability` (client/presentation/render_prep_system.cpp)
+- `A1_REACHABILITY_ORPHANED:0043` WARN `reachability` (client/modes/client_mode_gui.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0044` WARN `reachability` (client/presentation/render_prep_system.h)
+- `A1_REACHABILITY_ORPHANED:0044` WARN `reachability` (client/modes/client_mode_gui.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0045` WARN `reachability` (client/shell/client_shell.c)
+- `A1_REACHABILITY_ORPHANED:0045` WARN `reachability` (client/modes/client_mode_tui.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0046` WARN `reachability` (client/shell/client_shell.h)
+- `A1_REACHABILITY_ORPHANED:0046` WARN `reachability` (client/modes/client_mode_tui.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0047` WARN `reachability` (client/ui/client_ui_compositor.c)
+- `A1_REACHABILITY_ORPHANED:0047` WARN `reachability` (client/observability/readonly_view_model.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0048` WARN `reachability` (client/ui/client_ui_compositor.h)
+- `A1_REACHABILITY_ORPHANED:0048` WARN `reachability` (client/observability/readonly_view_model.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0049` WARN `reachability` (dominium/game_api.h)
+- `A1_REACHABILITY_ORPHANED:0049` WARN `reachability` (client/presentation/frame_graph_builder.cpp)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0050` WARN `reachability` (domino/core.h)
+- `A1_REACHABILITY_ORPHANED:0050` WARN `reachability` (client/presentation/frame_graph_builder.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0051` WARN `reachability` (engine/include/domino/abi.h)
+- `A1_REACHABILITY_ORPHANED:0051` WARN `reachability` (client/presentation/render_prep_system.cpp)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0052` WARN `reachability` (engine/include/domino/agent.h)
+- `A1_REACHABILITY_ORPHANED:0052` WARN `reachability` (client/presentation/render_prep_system.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0053` WARN `reachability` (engine/include/domino/app/runtime.h)
+- `A1_REACHABILITY_ORPHANED:0053` WARN `reachability` (client/shell/client_shell.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0054` WARN `reachability` (engine/include/domino/app/startup.h)
+- `A1_REACHABILITY_ORPHANED:0054` WARN `reachability` (client/shell/client_shell.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0055` WARN `reachability` (engine/include/domino/audio.h)
+- `A1_REACHABILITY_ORPHANED:0055` WARN `reachability` (client/ui/client_ui_compositor.c)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0056` WARN `reachability` (engine/include/domino/authority.h)
+- `A1_REACHABILITY_ORPHANED:0056` WARN `reachability` (client/ui/client_ui_compositor.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0057` WARN `reachability` (engine/include/domino/baseline.h)
+- `A1_REACHABILITY_ORPHANED:0057` WARN `reachability` (dominium/game_api.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0058` WARN `reachability` (engine/include/domino/build_info.h)
+- `A1_REACHABILITY_ORPHANED:0058` WARN `reachability` (domino/core.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0059` WARN `reachability` (engine/include/domino/canvas.h)
+- `A1_REACHABILITY_ORPHANED:0059` WARN `reachability` (engine/include/domino/abi.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0060` WARN `reachability` (engine/include/domino/capability.h)
+- `A1_REACHABILITY_ORPHANED:0060` WARN `reachability` (engine/include/domino/agent.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0061` WARN `reachability` (engine/include/domino/caps.h)
+- `A1_REACHABILITY_ORPHANED:0061` WARN `reachability` (engine/include/domino/app/runtime.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0062` WARN `reachability` (engine/include/domino/cli/cli.h)
+- `A1_REACHABILITY_ORPHANED:0062` WARN `reachability` (engine/include/domino/app/startup.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0063` WARN `reachability` (engine/include/domino/compat.h)
+- `A1_REACHABILITY_ORPHANED:0063` WARN `reachability` (engine/include/domino/audio.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0064` WARN `reachability` (engine/include/domino/compat_modes.h)
+- `A1_REACHABILITY_ORPHANED:0064` WARN `reachability` (engine/include/domino/authority.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0065` WARN `reachability` (engine/include/domino/control.h)
+- `A1_REACHABILITY_ORPHANED:0065` WARN `reachability` (engine/include/domino/baseline.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0066` WARN `reachability` (engine/include/domino/core.h)
+- `A1_REACHABILITY_ORPHANED:0066` WARN `reachability` (engine/include/domino/build_info.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0067` WARN `reachability` (engine/include/domino/core/d_tlv.h)
+- `A1_REACHABILITY_ORPHANED:0067` WARN `reachability` (engine/include/domino/canvas.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0068` WARN `reachability` (engine/include/domino/core/d_tlv_kv.h)
+- `A1_REACHABILITY_ORPHANED:0068` WARN `reachability` (engine/include/domino/capability.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0069` WARN `reachability` (engine/include/domino/core/det_order.h)
+- `A1_REACHABILITY_ORPHANED:0069` WARN `reachability` (engine/include/domino/caps.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0070` WARN `reachability` (engine/include/domino/core/det_reduce.h)
+- `A1_REACHABILITY_ORPHANED:0070` WARN `reachability` (engine/include/domino/cli/cli.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0071` WARN `reachability` (engine/include/domino/core/dom_deterministic_math.h)
+- `A1_REACHABILITY_ORPHANED:0071` WARN `reachability` (engine/include/domino/compat.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0072` WARN `reachability` (engine/include/domino/core/dom_ledger.h)
+- `A1_REACHABILITY_ORPHANED:0072` WARN `reachability` (engine/include/domino/compat_modes.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0073` WARN `reachability` (engine/include/domino/core/dom_time_astronomy.h)
+- `A1_REACHABILITY_ORPHANED:0073` WARN `reachability` (engine/include/domino/control.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0074` WARN `reachability` (engine/include/domino/core/dom_time_core.h)
+- `A1_REACHABILITY_ORPHANED:0074` WARN `reachability` (engine/include/domino/core.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0075` WARN `reachability` (engine/include/domino/core/dom_time_events.h)
+- `A1_REACHABILITY_ORPHANED:0075` WARN `reachability` (engine/include/domino/core/d_tlv.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0076` WARN `reachability` (engine/include/domino/core/dom_time_frames.h)
+- `A1_REACHABILITY_ORPHANED:0076` WARN `reachability` (engine/include/domino/core/d_tlv_kv.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0077` WARN `reachability` (engine/include/domino/core/fixed.h)
+- `A1_REACHABILITY_ORPHANED:0077` WARN `reachability` (engine/include/domino/core/det_order.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0078` WARN `reachability` (engine/include/domino/core/fixed_math.h)
+- `A1_REACHABILITY_ORPHANED:0078` WARN `reachability` (engine/include/domino/core/det_reduce.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0079` WARN `reachability` (engine/include/domino/core/process_guard.h)
+- `A1_REACHABILITY_ORPHANED:0079` WARN `reachability` (engine/include/domino/core/dom_deterministic_math.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0080` WARN `reachability` (engine/include/domino/core/rng.h)
+- `A1_REACHABILITY_ORPHANED:0080` WARN `reachability` (engine/include/domino/core/dom_ledger.h)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
 - `A2_OWNERSHIP_BOUNDARY:0001` RISK `ownership_boundary` (client/app/main_client.c)
