@@ -1,0 +1,131 @@
+{
+  "schema_id": "dominium.schema.governance.trust_policy",
+  "schema_version": "1.0.0",
+  "record": {
+    "policy_id": "dominium.registry.security.trust_policy",
+    "policy_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.trust_policy@1.0.0",
+    "entries": [
+      {
+        "subsystem": "engine_core",
+        "trust_level": "authoritative",
+        "allowed_actions": [
+          "consume_finalized_artifacts",
+          "execute_deterministic_runtime"
+        ],
+        "forbidden_actions": [
+          "read_user_settings",
+          "load_unverified_pack"
+        ],
+        "escalation_required": true,
+        "notes": [
+          "Engine consumes explicit parameters only.",
+          "Authority policy enforcement remains server-owned."
+        ],
+        "extensions": {}
+      },
+      {
+        "subsystem": "game_logic",
+        "trust_level": "authoritative",
+        "allowed_actions": [
+          "consume_finalized_artifacts",
+          "emit_runtime_events"
+        ],
+        "forbidden_actions": [
+          "read_user_settings",
+          "mutate_install_state"
+        ],
+        "escalation_required": true,
+        "notes": [
+          "Game logic cannot bypass launcher/setup boundaries."
+        ],
+        "extensions": {}
+      },
+      {
+        "subsystem": "client_renderer",
+        "trust_level": "bounded",
+        "allowed_actions": [
+          "render_projection",
+          "dispatch_command_graph"
+        ],
+        "forbidden_actions": [
+          "mutate_authoritative_state",
+          "read_server_only_fields"
+        ],
+        "escalation_required": false,
+        "notes": [
+          "Renderer path must obey epistemic visibility constraints."
+        ],
+        "extensions": {}
+      },
+      {
+        "subsystem": "server_authority",
+        "trust_level": "root",
+        "allowed_actions": [
+          "validate_client_intents",
+          "enforce_law_profile",
+          "verify_world_hash"
+        ],
+        "forbidden_actions": [
+          "trust_unvalidated_client_state"
+        ],
+        "escalation_required": true,
+        "notes": [
+          "Server authority always validates intents before acceptance."
+        ],
+        "extensions": {}
+      },
+      {
+        "subsystem": "tools",
+        "trust_level": "bounded",
+        "allowed_actions": [
+          "read_only_inspection",
+          "explicit_mutation_via_invocation"
+        ],
+        "forbidden_actions": [
+          "implicit_runtime_mutation",
+          "law_profile_bypass"
+        ],
+        "escalation_required": false,
+        "notes": [
+          "Tool mutation must be explicit and auditable."
+        ],
+        "extensions": {}
+      },
+      {
+        "subsystem": "packs",
+        "trust_level": "untrusted",
+        "allowed_actions": [
+          "provide_data_and_schema_extensions"
+        ],
+        "forbidden_actions": [
+          "privilege_escalation",
+          "runtime_code_injection"
+        ],
+        "escalation_required": true,
+        "notes": [
+          "Pack content is accepted only after validation and signature checks."
+        ],
+        "extensions": {}
+      },
+      {
+        "subsystem": "controlx",
+        "trust_level": "bounded",
+        "allowed_actions": [
+          "route_execution_via_gate",
+          "record_remediation_artifacts"
+        ],
+        "forbidden_actions": [
+          "gate_bypass",
+          "semantic_policy_override"
+        ],
+        "escalation_required": true,
+        "notes": [
+          "ControlX is orchestration-only and cannot redefine canon."
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
