@@ -63,6 +63,7 @@
           "invariant",
           "performance",
           "regression",
+          "security",
           "workspace"
         ],
         "required_gates": [
@@ -82,6 +83,8 @@
             "determinism_thread_count_invariance",
             "performx_determinism",
             "performx_smoke",
+            "securex_boundary_tests",
+            "securex_privilege_tests",
             "test_determinism_budget",
             "test_determinism_srz",
             "test_determinism_thread",
@@ -96,7 +99,8 @@
           "dist",
           "packaging",
           "performance",
-          "regression"
+          "regression",
+          "security"
         ],
         "required_gates": [
           "repox.full",
@@ -120,7 +124,9 @@
             "distribution_lockfile_determinism",
             "distribution_platform_portability_consistency",
             "performx_regression_detection",
-            "performx_workspace_isolation"
+            "performx_workspace_isolation",
+            "securex_pack_signature_tests",
+            "securex_reproducible_build_tests"
           ]
         }
       }
