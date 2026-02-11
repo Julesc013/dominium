@@ -1,0 +1,123 @@
+{
+  "artifact_class": "CANONICAL",
+  "record": {
+    "baseline_id": "compatx.baseline",
+    "extensions": {},
+    "matrix_entries": [
+      {
+        "compatibility_type": "backward",
+        "component_id": "public.headers.runtime",
+        "component_type": "abi",
+        "from_version": "1.0.0",
+        "migration_id": "",
+        "migration_required": false,
+        "to_version": "1.1.0"
+      },
+      {
+        "compatibility_type": "backward",
+        "component_id": "public.cli.api",
+        "component_type": "api",
+        "from_version": "1.0.0",
+        "migration_id": "",
+        "migration_required": false,
+        "to_version": "1.1.0"
+      },
+      {
+        "compatibility_type": "full",
+        "component_id": "identity_fingerprint",
+        "component_type": "identity",
+        "from_version": "1.0.0",
+        "migration_id": "",
+        "migration_required": false,
+        "to_version": "1.0.1"
+      },
+      {
+        "compatibility_type": "forward",
+        "component_id": "pack.core.runtime",
+        "component_type": "pack",
+        "from_version": "1.0.0",
+        "migration_id": "migration.pack.core_runtime.1_0_0_to_1_1_0",
+        "migration_required": true,
+        "to_version": "1.1.0"
+      },
+      {
+        "compatibility_type": "backward",
+        "component_id": "net.protocol.client_server",
+        "component_type": "protocol",
+        "from_version": "1.0.0",
+        "migration_id": "migration.protocol.client_server.1_0_0_to_1_1_0",
+        "migration_required": true,
+        "to_version": "1.1.0"
+      },
+      {
+        "compatibility_type": "forward",
+        "component_id": "replay_format",
+        "component_type": "replay",
+        "from_version": "1.0.0",
+        "migration_id": "migration.replay_format.1_0_0_to_1_1_0",
+        "migration_required": true,
+        "to_version": "1.1.0"
+      },
+      {
+        "compatibility_type": "forward",
+        "component_id": "save_format",
+        "component_type": "save",
+        "from_version": "1.0.0",
+        "migration_id": "migration.save_format.1_0_0_to_1_1_0",
+        "migration_required": true,
+        "to_version": "1.1.0"
+      },
+      {
+        "compatibility_type": "backward",
+        "component_id": "metrics_spec",
+        "component_type": "schema",
+        "from_version": "1.0.0",
+        "migration_id": "migration.schema.metrics_spec.1_0_0_to_1_1_0",
+        "migration_required": true,
+        "to_version": "1.1.0"
+      },
+      {
+        "compatibility_type": "backward",
+        "component_id": "mission_spec",
+        "component_type": "schema",
+        "from_version": "1.0.0",
+        "migration_id": "migration.schema.mission_spec.1_0_0_to_1_1_0",
+        "migration_required": true,
+        "to_version": "1.1.0"
+      },
+      {
+        "compatibility_type": "backward",
+        "component_id": "scenario_spec",
+        "component_type": "schema",
+        "from_version": "1.0.0",
+        "migration_id": "migration.schema.scenario_spec.1_0_0_to_1_1_0",
+        "migration_required": true,
+        "to_version": "1.1.0"
+      }
+    ],
+    "migration_ids": [
+      "migration.pack.core_runtime.1_0_0_to_1_1_0",
+      "migration.protocol.client_server.1_0_0_to_1_1_0",
+      "migration.replay_format.1_0_0_to_1_1_0",
+      "migration.save_format.1_0_0_to_1_1_0",
+      "migration.schema.metrics_spec.1_0_0_to_1_1_0",
+      "migration.schema.mission_spec.1_0_0_to_1_1_0",
+      "migration.schema.scenario_spec.1_0_0_to_1_1_0"
+    ],
+    "schema_policies": [
+      "dominium.schema.metrics_spec",
+      "dominium.schema.mission_spec",
+      "dominium.schema.replay_format",
+      "dominium.schema.save_format",
+      "dominium.schema.scenario_spec"
+    ],
+    "summary": {
+      "matrix_entries": 10,
+      "migration_entries": 7,
+      "policy_entries": 5,
+      "warnings": []
+    }
+  },
+  "schema_id": "dominium.schema.governance.compat_matrix",
+  "schema_version": "1.0.0"
+}

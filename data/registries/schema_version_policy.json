@@ -1,0 +1,94 @@
+{
+  "schema_id": "dominium.schema.governance.schema_version_policy",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compat.schema_version_policy",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.schema_version_policy@1.0.0",
+    "policies": [
+      {
+        "schema_id": "dominium.schema.scenario_spec",
+        "current_version": "1.1.0",
+        "allowed_backward": [
+          "1.0.0",
+          "1.1.0"
+        ],
+        "allowed_forward": [
+          "1.1.0"
+        ],
+        "breaking_change_requires_migration": true,
+        "deprecation_policy": "warn_then_remove_two_cycles",
+        "deprecated_fields": [
+          "legacy_seed"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_id": "dominium.schema.mission_spec",
+        "current_version": "1.1.0",
+        "allowed_backward": [
+          "1.0.0",
+          "1.1.0"
+        ],
+        "allowed_forward": [
+          "1.1.0"
+        ],
+        "breaking_change_requires_migration": true,
+        "deprecation_policy": "warn_then_remove_two_cycles",
+        "deprecated_fields": [
+          "legacy_objective"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_id": "dominium.schema.metrics_spec",
+        "current_version": "1.1.0",
+        "allowed_backward": [
+          "1.0.0",
+          "1.1.0"
+        ],
+        "allowed_forward": [
+          "1.1.0"
+        ],
+        "breaking_change_requires_migration": true,
+        "deprecation_policy": "warn_then_remove_two_cycles",
+        "deprecated_fields": [
+          "legacy_counter"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_id": "dominium.schema.save_format",
+        "current_version": "1.1.0",
+        "allowed_backward": [
+          "1.0.0",
+          "1.1.0"
+        ],
+        "allowed_forward": [
+          "1.1.0"
+        ],
+        "breaking_change_requires_migration": true,
+        "deprecation_policy": "warn_then_remove_two_cycles",
+        "deprecated_fields": [],
+        "extensions": {}
+      },
+      {
+        "schema_id": "dominium.schema.replay_format",
+        "current_version": "1.1.0",
+        "allowed_backward": [
+          "1.0.0",
+          "1.1.0"
+        ],
+        "allowed_forward": [
+          "1.1.0"
+        ],
+        "breaking_change_requires_migration": true,
+        "deprecation_policy": "warn_then_remove_two_cycles",
+        "deprecated_fields": [],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

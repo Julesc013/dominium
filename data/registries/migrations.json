@@ -1,0 +1,83 @@
+{
+  "schema_id": "dominium.schema.governance.migration_spec",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compat.migrations",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.migration_spec@1.0.0",
+    "migrations": [
+      {
+        "migration_id": "migration.pack.core_runtime.1_0_0_to_1_1_0",
+        "from_version": "1.0.0",
+        "to_version": "1.1.0",
+        "component_type": "pack",
+        "deterministic_required": true,
+        "migration_tool": "tools/compatx/compatx.py::migrate",
+        "notes": "Pack manifest compatibility alias migration.",
+        "version_field": "schema_version"
+      },
+      {
+        "migration_id": "migration.protocol.client_server.1_0_0_to_1_1_0",
+        "from_version": "1.0.0",
+        "to_version": "1.1.0",
+        "component_type": "protocol",
+        "deterministic_required": true,
+        "migration_tool": "tools/compatx/compatx.py::migrate",
+        "notes": "Protocol compatibility transition metadata.",
+        "version_field": "schema_version"
+      },
+      {
+        "migration_id": "migration.replay_format.1_0_0_to_1_1_0",
+        "from_version": "1.0.0",
+        "to_version": "1.1.0",
+        "component_type": "replay",
+        "deterministic_required": true,
+        "migration_tool": "tools/compatx/compatx.py::migrate",
+        "notes": "Replay payload metadata transition.",
+        "version_field": "schema_version"
+      },
+      {
+        "migration_id": "migration.save_format.1_0_0_to_1_1_0",
+        "from_version": "1.0.0",
+        "to_version": "1.1.0",
+        "component_type": "save",
+        "deterministic_required": true,
+        "migration_tool": "tools/compatx/compatx.py::migrate",
+        "notes": "Save payload metadata transition.",
+        "version_field": "schema_version"
+      },
+      {
+        "migration_id": "migration.schema.metrics_spec.1_0_0_to_1_1_0",
+        "from_version": "1.0.0",
+        "to_version": "1.1.0",
+        "component_type": "schema",
+        "deterministic_required": true,
+        "migration_tool": "tools/compatx/compatx.py::migrate",
+        "notes": "Metrics spec schema migration placeholder.",
+        "version_field": "schema_version"
+      },
+      {
+        "migration_id": "migration.schema.mission_spec.1_0_0_to_1_1_0",
+        "from_version": "1.0.0",
+        "to_version": "1.1.0",
+        "component_type": "schema",
+        "deterministic_required": true,
+        "migration_tool": "tools/compatx/compatx.py::migrate",
+        "notes": "Mission spec schema migration placeholder.",
+        "version_field": "schema_version"
+      },
+      {
+        "migration_id": "migration.schema.scenario_spec.1_0_0_to_1_1_0",
+        "from_version": "1.0.0",
+        "to_version": "1.1.0",
+        "component_type": "schema",
+        "deterministic_required": true,
+        "migration_tool": "tools/compatx/compatx.py::migrate",
+        "notes": "Scenario spec schema migration placeholder.",
+        "version_field": "schema_version"
+      }
+    ],
+    "extensions": {}
+  }
+}
+

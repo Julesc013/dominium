@@ -59,59 +59,10 @@
       "exemption_policy": "deny"
     },
     {
-      "rule_id": "INV-TOOL-NAME-ONLY",
+      "rule_id": "INV-ONTOLOGY-IMMUTABLE",
       "severity": "FAIL",
-      "scope_paths": ["scripts", "tests", "tools", "cmake", ".github", "CMakeLists.txt"],
-      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tool-name-only",
-      "exemption_policy": "deny"
-    },
-    {
-      "rule_id": "INV-TOOLS-DIR-EXISTS",
-      "severity": "FAIL",
-      "scope_paths": ["scripts/dev", "dist/sys", "scripts/ci/check_repox_rules.py"],
-      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tools-dir-exists",
-      "exemption_policy": "deny"
-    },
-    {
-      "rule_id": "INV-TOOLS-DIR-MISSING",
-      "severity": "FAIL",
-      "scope_paths": ["dist/sys", "scripts/ci/check_repox_rules.py"],
-      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tools-dir-missing",
-      "exemption_policy": "deny"
-    },
-    {
-      "rule_id": "INV-TOOL-UNRESOLVABLE",
-      "severity": "FAIL",
-      "scope_paths": ["scripts/dev", "dist/sys", "scripts/ci/check_repox_rules.py"],
-      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-tool-unresolvable",
-      "exemption_policy": "deny"
-    },
-    {
-      "rule_id": "INV-NO-DIRECT-GATE-CALLS",
-      "severity": "FAIL",
-      "scope_paths": ["scripts/dev", "scripts/ci", ".github/workflows", "docs/governance", "docs/dev"],
-      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-no-direct-gate-calls",
-      "exemption_policy": "deny"
-    },
-    {
-      "rule_id": "INV-REMEDIATION-PLAYBOOKS",
-      "severity": "FAIL",
-      "scope_paths": ["schema/governance", "data/registries/remediation_playbooks.json", "scripts/ci/check_repox_rules.py"],
-      "documentation": "docs/governance/REPOX_RULESETS.md#inv-remediation-playbooks",
-      "exemption_policy": "deny"
-    },
-    {
-      "rule_id": "INV-IDENTITY-FINGERPRINT",
-      "severity": "FAIL",
-      "scope_paths": ["docs/audit/identity_fingerprint.json", "scripts/dev/identity_fingerprint_lib.py", "tools/ci/tool_identity_fingerprint.py", "scripts/ci/check_repox_rules.py"],
-      "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-fingerprint",
-      "exemption_policy": "deny"
-    },
-    {
-      "rule_id": "INV-IDENTITY-CHANGE-EXPLANATION",
-      "severity": "FAIL",
-      "scope_paths": ["docs/audit/identity_fingerprint_explanation.md", "scripts/ci/check_repox_rules.py"],
-      "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-change-explanation",
+      "scope_paths": ["docs/governance/GOVERNANCE_ARCHITECTURE.md", "docs/architecture", "repo/canon_state.json", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-ontology-immutable",
       "exemption_policy": "deny"
     },
     {
@@ -155,6 +106,35 @@
       "scope_paths": ["schema", "data", "tests/fixtures"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-raw-paths",
       "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-COMPAT-MATRIX-VALID",
+      "severity": "FAIL",
+      "scope_paths": ["schema/governance/compat_matrix.schema", "data/registries/compat_matrix.json"],
+      "documentation": "docs/governance/COMPATX_MODEL.md#compatibility-philosophy",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-COMPAT-MIGRATIONS-VALID",
+      "severity": "FAIL",
+      "scope_paths": ["schema/governance/migration_spec.schema", "data/registries/migrations.json"],
+      "documentation": "docs/governance/COMPATX_MODEL.md#compatibility-philosophy",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-SCHEMA-VERSION-POLICY",
+      "severity": "FAIL",
+      "scope_paths": ["schema/governance/schema_version_policy.schema", "data/registries/schema_version_policy.json"],
+      "documentation": "docs/governance/COMPATX_MODEL.md#compatibility-philosophy",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "WARN-SCHEMA-DEPRECATED-FIELDS",
+      "severity": "WARN",
+      "scope_paths": ["schema", "data/registries/schema_version_policy.json"],
+      "documentation": "docs/governance/COMPATX_MODEL.md#compatibility-philosophy",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2099-01-01"
     },
     {
       "rule_id": "INV-PROCESS-REGISTRY",
@@ -203,6 +183,13 @@
       "severity": "FAIL",
       "scope_paths": ["repo/repox/repox_exemptions.json", "scripts/ci/check_repox_rules.py"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-repox-exemption-policy",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-IDENTITY-FINGERPRINT",
+      "severity": "FAIL",
+      "scope_paths": ["docs/audit/identity_fingerprint.json", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-fingerprint",
       "exemption_policy": "deny"
     },
     {

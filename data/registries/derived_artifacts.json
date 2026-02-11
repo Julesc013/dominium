@@ -35,6 +35,40 @@
         "extensions": {}
       },
       {
+        "artifact_id": "artifact.auditx.promotion_candidates",
+        "path": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/auditx/auditx.py",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Promotion candidates are deterministic suggestions only.",
+          "Activation requires explicit RepoX acceptance."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_run_meta_fields",
+          "regeneration_tool": "python tools/auditx/auditx.py scan --format json"
+        }
+      },
+      {
+        "artifact_id": "artifact.auditx.trends",
+        "path": "docs/audit/auditx/TRENDS.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/auditx/auditx.py",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Trend summary derived from canonical findings only.",
+          "No wall-clock metadata allowed."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_timestamps",
+          "regeneration_tool": "python tools/auditx/auditx.py scan --format json"
+        }
+      },
+      {
         "artifact_id": "artifact.auditx.run_meta",
         "path": "docs/audit/auditx/RUN_META.json",
         "artifact_class": "RUN_META",
@@ -117,6 +151,106 @@
           "Must be deterministic for identical UI index and command graph."
         ],
         "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.performx.results",
+        "path": "docs/audit/performance/PERFORMX_RESULTS.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/performx/performx.py",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Canonical envelope results.",
+          "No timestamps or machine identifiers allowed."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_run_meta_fields",
+          "regeneration_tool": "python tools/performx/performx.py run --repo-root ."
+        }
+      },
+      {
+        "artifact_id": "artifact.performx.regressions",
+        "path": "docs/audit/performance/PERFORMX_REGRESSIONS.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/performx/performx.py",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Canonical regression report derived from performance results and baseline.",
+          "Hardware identifiers are excluded from canonical output."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_run_meta_fields",
+          "regeneration_tool": "python tools/performx/performx.py run --repo-root ."
+        }
+      },
+      {
+        "artifact_id": "artifact.performx.run_meta",
+        "path": "docs/audit/performance/RUN_META.json",
+        "artifact_class": "RUN_META",
+        "producer": "tools/performx/performx.py",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Run metadata for diagnostics.",
+          "May include timestamps and hardware profile details."
+        ],
+        "extensions": {
+          "regeneration_tool": "python tools/performx/performx.py run --repo-root ."
+        }
+      },
+      {
+        "artifact_id": "artifact.performx.baseline",
+        "path": "docs/audit/performance/PERFORMX_BASELINE.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/performx/performx.py baseline --update",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Explicit baseline for regression comparison.",
+          "Update requires deterministic justification and RepoX approval."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_run_meta_fields",
+          "regeneration_tool": "python tools/performx/performx.py baseline --repo-root . --update --justification <path>"
+        }
+      },
+      {
+        "artifact_id": "artifact.compatx.baseline",
+        "path": "docs/audit/compat/COMPAT_BASELINE.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/compatx/compatx.py verify",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Canonical compatibility baseline for schema, pack, save, replay, protocol, API, and ABI.",
+          "Contains deterministic compatibility transitions and migration linkage only."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_run_meta_fields",
+          "regeneration_tool": "python tools/compatx/compatx.py verify --repo-root ."
+        }
+      },
+      {
+        "artifact_id": "artifact.compatx.baseline_md",
+        "path": "docs/audit/compat/COMPAT_BASELINE.md",
+        "artifact_class": "DERIVED_VIEW",
+        "producer": "tools/compatx/compatx.py verify",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Human-readable compatibility baseline summary.",
+          "Formatting changes are non-semantic."
+        ],
+        "extensions": {
+          "regeneration_tool": "python tools/compatx/compatx.py verify --repo-root ."
+        }
       },
       {
         "artifact_id": "artifact.perf.trace.sample",

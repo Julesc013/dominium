@@ -1,0 +1,113 @@
+{
+  "schema_id": "dominium.schema.governance.compat_matrix",
+  "schema_version": "1.0.0",
+  "record": {
+    "matrix_id": "dominium.registry.compat.matrix",
+    "matrix_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.compat_matrix@1.0.0",
+    "entries": [
+      {
+        "component_type": "schema",
+        "component_id": "scenario_spec",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "backward",
+        "migration_required": true,
+        "migration_id": "migration.schema.scenario_spec.1_0_0_to_1_1_0",
+        "extensions": {}
+      },
+      {
+        "component_type": "schema",
+        "component_id": "mission_spec",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "backward",
+        "migration_required": true,
+        "migration_id": "migration.schema.mission_spec.1_0_0_to_1_1_0",
+        "extensions": {}
+      },
+      {
+        "component_type": "schema",
+        "component_id": "metrics_spec",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "backward",
+        "migration_required": true,
+        "migration_id": "migration.schema.metrics_spec.1_0_0_to_1_1_0",
+        "extensions": {}
+      },
+      {
+        "component_type": "identity",
+        "component_id": "identity_fingerprint",
+        "version_from": "1.0.0",
+        "version_to": "1.0.1",
+        "compatibility_type": "full",
+        "migration_required": false,
+        "migration_id": "",
+        "extensions": {}
+      },
+      {
+        "component_type": "save",
+        "component_id": "save_format",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "forward",
+        "migration_required": true,
+        "migration_id": "migration.save_format.1_0_0_to_1_1_0",
+        "extensions": {}
+      },
+      {
+        "component_type": "replay",
+        "component_id": "replay_format",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "forward",
+        "migration_required": true,
+        "migration_id": "migration.replay_format.1_0_0_to_1_1_0",
+        "extensions": {}
+      },
+      {
+        "component_type": "protocol",
+        "component_id": "net.protocol.client_server",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "backward",
+        "migration_required": true,
+        "migration_id": "migration.protocol.client_server.1_0_0_to_1_1_0",
+        "extensions": {}
+      },
+      {
+        "component_type": "api",
+        "component_id": "public.cli.api",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "backward",
+        "migration_required": false,
+        "migration_id": "",
+        "extensions": {}
+      },
+      {
+        "component_type": "abi",
+        "component_id": "public.headers.runtime",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "backward",
+        "migration_required": false,
+        "migration_id": "",
+        "extensions": {}
+      },
+      {
+        "component_type": "pack",
+        "component_id": "pack.core.runtime",
+        "version_from": "1.0.0",
+        "version_to": "1.1.0",
+        "compatibility_type": "forward",
+        "migration_required": true,
+        "migration_id": "migration.pack.core_runtime.1_0_0_to_1_1_0",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

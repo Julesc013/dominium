@@ -1,0 +1,33 @@
+SCHEMA: governance/schema_version_policy.schema
+schema_id: dominium.schema.governance.schema_version_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define required versioning policy per schema.
+- Encode migration requirements and deprecation rules.
+
+NON-SEMANTICS:
+- Policy governs compatibility validation only.
+- Policy does not alter runtime simulation behavior.
+
+REQUIRED SHAPE:
+record schema_version_policy_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - policies: [schema_version_policy]
+    - extensions: map
+
+record schema_version_policy
+  required:
+    - schema_id: id
+    - current_version: semver
+    - allowed_backward: [semver_or_wildcard]
+    - allowed_forward: [semver_or_wildcard]
+    - breaking_change_requires_migration: bool
+    - deprecation_policy: tag
+    - deprecated_fields: [tag]
+    - extensions: map
+
