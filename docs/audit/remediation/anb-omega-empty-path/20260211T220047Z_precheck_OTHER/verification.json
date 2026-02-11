@@ -1,0 +1,30 @@
+{
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts/ci/check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "RepoX governance rules OK.\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\anb-omega-empty-path\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "domino_engine",
+        "dominium_game"
+      ],
+      "output": "Error: not a CMake build directory (missing CMakeCache.txt)\n",
+      "returncode": 1
+    }
+  ],
+  "skipped": [],
+  "warnings": []
+}

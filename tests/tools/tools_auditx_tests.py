@@ -19,11 +19,11 @@ REQUIRED_FINDING_KEYS = (
     "recommended_action",
     "related_invariants",
     "related_paths",
-    "created_utc",
     "fingerprint",
 )
 
 CANONICAL_FORBIDDEN_KEYS = {
+    "created_utc",
     "last_reviewed",
     "generated_utc",
     "duration_ms",
@@ -125,6 +125,47 @@ def _validate_invariant_payload(path):
     return ""
 
 
+def _validate_promotion_payload(path):
+    try:
+        payload = _load_json(path)
+    except (OSError, ValueError):
+        return "unable to parse {}".format(path)
+    if payload.get("artifact_class") != "CANONICAL":
+        return "artifact_class must be CANONICAL in {}".format(path)
+    candidates = payload.get("candidates")
+    if not isinstance(candidates, list):
+        return "candidates list missing in {}".format(path)
+    for idx, item in enumerate(candidates[:200]):
+        if not isinstance(item, dict):
+            return "candidate {} invalid in {}".format(idx, path)
+        for required in ("rule_type", "rationale", "evidence_paths", "suggested_ruleset", "risk_score"):
+            if required not in item:
+                return "candidate {} missing {} in {}".format(idx, required, path)
+    failures = []
+    _walk_forbidden_keys(payload, failures)
+    if failures:
+        return "canonical promotion payload includes forbidden run-meta keys: {}".format(", ".join(failures[:5]))
+    return ""
+
+
+def _validate_trends_payload(path):
+    try:
+        payload = _load_json(path)
+    except (OSError, ValueError):
+        return "unable to parse {}".format(path)
+    if payload.get("artifact_class") != "CANONICAL":
+        return "artifact_class must be CANONICAL in {}".format(path)
+    if "category_frequency" not in payload or not isinstance(payload.get("category_frequency"), dict):
+        return "category_frequency missing in {}".format(path)
+    if "severity_distribution" not in payload or not isinstance(payload.get("severity_distribution"), dict):
+        return "severity_distribution missing in {}".format(path)
+    failures = []
+    _walk_forbidden_keys(payload, failures)
+    if failures:
+        return "canonical trends payload includes forbidden run-meta keys: {}".format(", ".join(failures[:5]))
+    return ""
+
+
 def _validate_run_meta(path):
     try:
         payload = _load_json(path)
@@ -159,8 +200,10 @@ def main():
 
     findings_path = os.path.join(repo_root, "docs", "audit", "auditx", "FINDINGS.json")
     invariant_path = os.path.join(repo_root, "docs", "audit", "auditx", "INVARIANT_MAP.json")
+    promotion_path = os.path.join(repo_root, "docs", "audit", "auditx", "PROMOTION_CANDIDATES.json")
+    trends_path = os.path.join(repo_root, "docs", "audit", "auditx", "TRENDS.json")
     run_meta_path = os.path.join(repo_root, "docs", "audit", "auditx", "RUN_META.json")
-    for required in (findings_path, invariant_path, run_meta_path):
+    for required in (findings_path, invariant_path, promotion_path, trends_path, run_meta_path):
         if not os.path.isfile(required):
             print("missing artifact {}".format(required))
             return 1
@@ -168,6 +211,8 @@ def main():
     for validator, path in (
         (_validate_findings_payload, findings_path),
         (_validate_invariant_payload, invariant_path),
+        (_validate_promotion_payload, promotion_path),
+        (_validate_trends_payload, trends_path),
         (_validate_run_meta, run_meta_path),
     ):
         error = validator(path)
@@ -177,6 +222,8 @@ def main():
 
     findings_hash_before, _ = _canonical_hash(findings_path)
     invariant_hash_before, _ = _canonical_hash(invariant_path)
+    promotion_hash_before, _ = _canonical_hash(promotion_path)
+    trends_hash_before, _ = _canonical_hash(trends_path)
 
     rescan = _run_auditx(repo_root, "scan")
     if rescan.returncode != 0:
@@ -185,6 +232,8 @@ def main():
         return 1
     findings_hash_after, _ = _canonical_hash(findings_path)
     invariant_hash_after, _ = _canonical_hash(invariant_path)
+    promotion_hash_after, _ = _canonical_hash(promotion_path)
+    trends_hash_after, _ = _canonical_hash(trends_path)
     if findings_hash_before != findings_hash_after:
         print("FINDINGS.json canonical hash drift across rescans")
         print("before={}".format(findings_hash_before))
@@ -194,6 +243,16 @@ def main():
         print("INVARIANT_MAP.json canonical hash drift across rescans")
         print("before={}".format(invariant_hash_before))
         print("after={}".format(invariant_hash_after))
+        return 1
+    if promotion_hash_before != promotion_hash_after:
+        print("PROMOTION_CANDIDATES.json canonical hash drift across rescans")
+        print("before={}".format(promotion_hash_before))
+        print("after={}".format(promotion_hash_after))
+        return 1
+    if trends_hash_before != trends_hash_after:
+        print("TRENDS.json canonical hash drift across rescans")
+        print("before={}".format(trends_hash_before))
+        print("after={}".format(trends_hash_after))
         return 1
 
     changed = _run_auditx(repo_root, "scan", "--changed-only")

@@ -1,0 +1,31 @@
+SCHEMA: governance/controlx_queue.schema
+schema_id: dominium.schema.governance.controlx_queue
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define queue input consumed by ControlX.
+- Queue entries carry prompt sources and deterministic execution metadata.
+
+STABILITY GUARANTEES:
+- Required fields MUST remain present.
+- Field removals or renames require MAJOR version change.
+
+NON-SEMANTICS:
+- Queue records describe orchestration mechanics only.
+- Queue records do not alter simulation semantics.
+
+REQUIRED SHAPE:
+record controlx_queue
+  required:
+    - queue_id: id
+    - continue_on_mechanical_failure: bool
+    - items: [controlx_queue_item]
+    - extensions: map
+
+record controlx_queue_item
+  required:
+    - item_id: id
+    - prompt_text: text
+    - prompt_file: text
+    - metadata: map

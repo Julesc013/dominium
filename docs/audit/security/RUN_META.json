@@ -1,8 +1,8 @@
 {
   "artifact_class": "RUN_META",
-  "duration_ms": 2696,
-  "finding_count": 40,
-  "generated_utc": "2026-02-11T19:50:44Z",
+  "duration_ms": 3370,
+  "finding_count": 94,
+  "generated_utc": "2026-02-11T23:23:41Z",
   "role_entry_count": 4,
   "trust_entry_count": 7,
   "workspace_id": "vs2026"

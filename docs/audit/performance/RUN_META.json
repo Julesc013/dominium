@@ -1,0 +1,19 @@
+{
+  "artifact_class": "RUN_META",
+  "cache_hit": true,
+  "cache_key": "b10678a69adcb33c653e9877d358ecc4dcf81096835e85553db18615f9180e0e",
+  "duration_ms": 127,
+  "generated_utc": "2026-02-11T23:23:28Z",
+  "hardware_profile": {
+    "arch": "amd64",
+    "cpu_class": "mainstream",
+    "cpu_count": 8,
+    "cpu_model": "Intel64 Family 6 Model 158 Stepping 9, GenuineIntel",
+    "memory_bytes": 0,
+    "os": "windows"
+  },
+  "regression_hash": "64db1e942a0a806c376231f9ee368dc85dc55f9e5c28c3c79b1a9ac7fe7ba81a",
+  "result_hash": "d2425215a1b36bd7a73ab5b870e5605fe270df9107673d1c19491a540bd29f8e",
+  "status": "DERIVED",
+  "workspace_id": "vs2026"
+}

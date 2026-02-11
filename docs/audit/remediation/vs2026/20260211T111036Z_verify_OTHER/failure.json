@@ -1,0 +1,13 @@
+{
+  "command": [
+    "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+    "--build",
+    "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+    "--config",
+    "Debug",
+    "--target",
+    "testx_verify"
+  ],
+  "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Run TestX verify suite\n  {\n    \"required_test_tags\": [\n      \"determinism\",\n      \"docs\",\n      \"identity\",\n      \"integration\",\n      \"invariant\",\n      \"registry\",\n      \"regression\",\n      \"schema\",\n      \"tools\",\n      \"workspace\"\n    ],\n    \"result\": \"suite_complete\",\n    \"returncode\": 8,\n    \"selected_tests\": [\n      \"determinism_srz\",\n      \"determinism_thread_count_invariance\",\n      \"test_determinism_budget\",\n      \"test_determinism_srz\",\n      \"test_determinism_thread\",\n      \"test_rng_stream_consistency\"\n    ],\n    \"suite_id\": \"testx_verify\",\n    \"summary_json\": \"docs/audit/testx/TESTX_SUMMARY.json\"\n  }\nC:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Microsoft\\VC\\v180\\Microsoft.CppCommon.targets(254,5): error MSB8066: Custom build for 'C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\CMakeFiles\\e79bb7050942be89f695b7f4c5716a5d\\testx_verify.rule' exited with code 8. [C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\testx_verify.vcxproj]\n",
+  "returncode": 1
+}

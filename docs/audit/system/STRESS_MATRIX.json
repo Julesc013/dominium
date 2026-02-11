@@ -1,0 +1,32 @@
+{
+  "artifact_class": "CANONICAL",
+  "record": {
+    "baseline_state_sha256": "d92366aa89dfd614187bc5084cd15bb6ade6ef93f157af93a3378b1c4edeacc4",
+    "extensions": {},
+    "matrix_id": "anb-omega.stress",
+    "scenarios": [
+      {
+        "evidence": [
+          "CompatX classifies breaking schema changes deterministically"
+        ],
+        "returncode": 1,
+        "scenario_id": "compat.breaking_schema_diff",
+        "status": "fail"
+      },
+      {
+        "evidence": [
+          "Identity fingerprint and explanation artifact are both present"
+        ],
+        "returncode": 0,
+        "scenario_id": "identity.explanation_required",
+        "status": "pass"
+      }
+    ],
+    "summary": {
+      "failure_count": 1,
+      "scenario_count": 2
+    }
+  },
+  "schema_id": "dominium.audit.system.stress_matrix",
+  "schema_version": "1.0.0"
+}

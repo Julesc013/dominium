@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1099
-- Severities: INFO=200, RISK=169, WARN=730
-- Categories: canon_drift=580, capability_misuse=119, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, ui_parity=31
+- Total findings: 1226
+- Severities: INFO=200, RISK=169, VIOLATION=1, WARN=856
+- Categories: canon_drift=580, capability_misuse=119, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1, ui_parity=31
 
 ## Top Findings
 
@@ -266,51 +266,51 @@ Superseded By: none
 - `A2_OWNERSHIP_BOUNDARY:0004` WARN `ownership_boundary` (libs/appcore/ui_bind/ui_command_binding_table.h)
   - UI-related file references command IDs but no dispatcher token was found.
   - Potential UI bypass of canonical command dispatcher.
-- `A3_CANON_DRIFT:0001` WARN `canon_drift` (docs/CODE_CHANGE_JUSTIFICATION.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0002` WARN `canon_drift` (docs/FAQ.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0003` WARN `canon_drift` (docs/MODDER_GUIDE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0004` WARN `canon_drift` (docs/WHAT_PLAYERS_CAN_DO.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0005` WARN `canon_drift` (docs/accessibility/ACCESSIBILITY_MODEL.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0006` WARN `canon_drift` (docs/agents/AGENT_CONFLICT.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0007` WARN `canon_drift` (docs/agents/AGENT_CONTRACTS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0008` WARN `canon_drift` (docs/agents/AGENT_FAILURE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0009` WARN `canon_drift` (docs/agents/AGENT_GOALS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0010` WARN `canon_drift` (docs/agents/AGENT_HISTORY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0011` WARN `canon_drift` (docs/agents/AGENT_HISTORY_MACRO.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0012` WARN `canon_drift` (docs/agents/AGENT_IDENTITY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0013` WARN `canon_drift` (docs/agents/AGENT_INSTITUTIONS.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0014` WARN `canon_drift` (docs/agents/AGENT_KNOWLEDGE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0015` WARN `canon_drift` (docs/agents/AGENT_LIFECYCLE.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
-- `A3_CANON_DRIFT:0016` WARN `canon_drift` (docs/agents/AGENT_MEMORY.md)
-  - Normative language detected but no explicit enforcement anchor found.
-  - Consider linking invariant IDs or tests for this behavior.
+- `A2_SCHEMA_SHADOWING:0001` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0002` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/fields.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.field
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0003` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/topology_nodes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0004` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0005` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0006` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/institutions.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0007` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/processes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0008` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0009` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.scenarios.minimal/content/scenarios.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0010` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.scenarios.minimal/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0011` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0012` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/content/topology_nodes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0013` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0014` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0015` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/content/topology_nodes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0016` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.

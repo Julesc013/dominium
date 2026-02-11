@@ -1,0 +1,49 @@
+{
+  "schema_id": "dominium.schema.governance.performance_profile",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.performance_profiles",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.performance_profile@1.0.0",
+    "profiles": [
+      {
+        "profile_id": "profile.cpu.entry",
+        "cpu_class": "entry",
+        "normalization_factor": 0.85,
+        "notes": [
+          "Low core-count baseline profile."
+        ],
+        "extensions": {}
+      },
+      {
+        "profile_id": "profile.cpu.mainstream",
+        "cpu_class": "mainstream",
+        "normalization_factor": 1.0,
+        "notes": [
+          "Default development profile."
+        ],
+        "extensions": {}
+      },
+      {
+        "profile_id": "profile.cpu.high",
+        "cpu_class": "high",
+        "normalization_factor": 1.15,
+        "notes": [
+          "High core-count profile."
+        ],
+        "extensions": {}
+      },
+      {
+        "profile_id": "profile.cpu.unknown",
+        "cpu_class": "unknown",
+        "normalization_factor": 1.0,
+        "notes": [
+          "Fallback profile when CPU class is unavailable."
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

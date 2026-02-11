@@ -1,0 +1,88 @@
+{
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts/ci/check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "RepoX governance rules OK.\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "domino_engine",
+        "dominium_game"
+      ],
+      "output": "CMake is re-running because C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools/CMakeFiles/generate.stamp is out-of-date.\n  the file 'C:/Inbox/Git Repos/dominium/tests/tools/CMakeLists.txt'\n  is newer than 'C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools/CMakeFiles/generate.stamp.depend'\n  result='-1'\n-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.19045.\nCMake global include check OK.\nCMake Deprecation Warning at out/build/vs2026/verify/_deps/dom_sdl2-src/CMakeLists.txt:8 (cmake_minimum_required):\n  Compatibility with CMake < 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n  to tell CMake that the project requires at least <min> but has been updated\n  to work with policies introduced by <max> or earlier.\n\n\n-- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) \n-- \"pkg-config --static --libs sdl2\" will return invalid information\nCMake Deprecation Warning at out/build/vs2026/verify/_deps/dom_sdl2-src/CMakeLists.txt:3253 (cmake_minimum_required):\n  Compatibility with CMake < 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n  to tell CMake that the project requires at least <min> but has been updated\n  to work with policies introduced by <max> or earlier.\n\n\n-- \n-- SDL2 was configured with the following options:\n-- \n-- Platform: Windows-10.0.19045\n-- 64-bit:   TRUE\n-- Compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe\n-- Revision: SDL-release-2.30.5-0-g2eef7ca47\n-- \n-- Subsystems:\n--   Atomic:\tON\n--   Audio:\tON\n--   Video:\tON\n--   Render:\tON\n--   Events:\tON\n--   Joystick:\tON\n--   Haptic:\tON\n--   Hidapi:\tON\n--   Power:\tON\n--   Threads:\tON\n--   Timers:\tON\n--   File:\tON\n--   Loadso:\tON\n--   CPUinfo:\tON\n--   Filesystem:\tON\n--   Sensor:\tON\n--   Locale:\tON\n--   Misc:\tON\n-- \n-- Options:\n--   SDL2_DISABLE_INSTALL        (Wanted: ON): OFF\n--   SDL2_DISABLE_SDL2MAIN       (Wanted: OFF): OFF\n--   SDL2_DISABLE_UNINSTALL      (Wanted: ON): OFF\n--   SDL_3DNOW                   (Wanted: ON): OFF\n--   SDL_ALSA                    (Wanted: OFF): OFF\n--   SDL_ALSA_SHARED             (Wanted: OFF): OFF\n--   SDL_ALTIVEC                 (Wanted: ON): OFF\n--   SDL_ARMNEON                 (Wanted: OFF): OFF\n--   SDL_ARMSIMD                 (Wanted: OFF): OFF\n--   SDL_ARTS                    (Wanted: OFF): OFF\n--   SDL_ARTS_SHARED             (Wanted: OFF): OFF\n--   SDL_ASAN                    (Wanted: OFF): OFF\n--   SDL_ASSEMBLY                (Wanted: ON): OFF\n--   SDL_ASSERTIONS              (Wanted: auto): auto\n--   SDL_BACKGROUNDING_SIGNAL    (Wanted: OFF): OFF\n--   SDL_CCACHE                  (Wanted: ON): OFF\n--   SDL_CLOCK_GETTIME           (Wanted: OFF): OFF\n--   SDL_COCOA                   (Wanted: OFF): OFF\n--   SDL_DBUS                    (Wanted: OFF): OFF\n--   SDL_DIRECTFB                (Wanted: OFF): OFF\n--   SDL_DIRECTFB_SHARED         (Wanted: OFF): OFF\n--   SDL_DIRECTX                 (Wanted: ON): ON\n--   SDL_DISKAUDIO               (Wanted: ON): ON\n--   SDL_DUMMYAUDIO              (Wanted: ON): ON\n--   SDL_DUMMYVIDEO              (Wanted: ON): ON\n--   SDL_ESD                     (Wanted: OFF): OFF\n--   SDL_ESD_SHARED              (Wanted: OFF): OFF\n--   SDL_FOREGROUNDING_SIGNAL    (Wanted: OFF): OFF\n--   SDL_FUSIONSOUND             (Wanted: OFF): OFF\n--   SDL_FUSIONSOUND_SHARED      (Wanted: OFF): OFF\n--   SDL_GCC_ATOMICS             (Wanted: OFF): OFF\n--   SDL_HIDAPI                  (Wanted: ON): ON\n--   SDL_HIDAPI_JOYSTICK         (Wanted: ON): ON\n--   SDL_HIDAPI_LIBUSB           (Wanted: OFF): OFF\n--   SDL_IBUS                    (Wanted: OFF): OFF\n--   SDL_INSTALL_TESTS           (Wanted: OFF): OFF\n--   SDL_JACK                    (Wanted: OFF): OFF\n--   SDL_JACK_SHARED             (Wanted: OFF): OFF\n--   SDL_KMSDRM                  (Wanted: OFF): OFF\n--   SDL_KMSDRM_SHARED           (Wanted: OFF): OFF\n--   SDL_LASX                    (Wanted: OFF): OFF\n--   SDL_LIBC                    (Wanted: OFF): OFF\n--   SDL_LIBICONV                (Wanted: OFF): OFF\n--   SDL_LIBSAMPLERATE           (Wanted: OFF): OFF\n--   SDL_LIBSAMPLERATE_SHARED    (Wanted: OFF): OFF\n--   SDL_LIBUDEV                 (Wanted: ON): OFF\n--   SDL_LSX                     (Wanted: OFF): OFF\n--   SDL_METAL                   (Wanted: OFF): OFF\n--   SDL_MMX                     (Wanted: ON): OFF\n--   SDL_NAS                     (Wanted: OFF): OFF\n--   SDL_NAS_SHARED              (Wanted: OFF): OFF\n--   SDL_OFFSCREEN               (Wanted: ON): ON\n--   SDL_OPENGL                  (Wanted: ON): ON\n--   SDL_OPENGLES                (Wanted: ON): ON\n--   SDL_OSS                     (Wanted: OFF): OFF\n--   SDL_PIPEWIRE                (Wanted: OFF): OFF\n--   SDL_PIPEWIRE_SHARED         (Wanted: OFF): OFF\n--   SDL_PTHREADS                (Wanted: OFF): OFF\n--   SDL_PTHREADS_SEM            (Wanted: OFF): OFF\n--   SDL_PULSEAUDIO              (Wanted: OFF): OFF\n--   SDL_PULSEAUDIO_SHARED       (Wanted: OFF): OFF\n--   SDL_RENDER_D3D              (Wanted: ON): ON\n--   SDL_RENDER_METAL            (Wanted: OFF): OFF\n--   SDL_RPATH                   (Wanted: OFF): OFF\n--   SDL_RPI                     (Wanted: OFF): OFF\n--   SDL_SNDIO                   (Wanted: OFF): OFF\n--   SDL_SNDIO_SHARED            (Wanted: OFF): OFF\n--   SDL_SSE                     (Wanted: ON): ON\n--   SDL_SSE2                    (Wanted: ON): ON\n--   SDL_SSE3                    (Wanted: ON): ON\n--   SDL_SSEMATH                 (Wanted: ON): OFF\n--   SDL_STATIC_PIC              (Wanted: OFF): OFF\n--   SDL_SYSTEM_ICONV            (Wanted: OFF): OFF\n--   SDL_TESTS                   (Wanted: OFF): OFF\n--   SDL_VENDOR_INFO             (Wanted: ): OFF\n--   SDL_VIRTUAL_JOYSTICK        (Wanted: ON): ON\n--   SDL_VIVANTE                 (Wanted: OFF): OFF\n--   SDL_VULKAN                  (Wanted: ON): ON\n--   SDL_WASAPI                  (Wanted: ON): ON\n--   SDL_WAYLAND                 (Wanted: OFF): OFF\n--   SDL_WAYLAND_LIBDECOR        (Wanted: OFF): OFF\n--   SDL_WAYLAND_LIBDECOR_SHARED (Wanted: OFF): OFF\n--   SDL_WAYLAND_QT_TOUCH        (Wanted: OFF): OFF\n--   SDL_WAYLAND_SHARED          (Wanted: OFF): OFF\n--   SDL_X11                     (Wanted: OFF): OFF\n--   SDL_X11_SHARED              (Wanted: OFF): OFF\n--   SDL_X11_XCURSOR             (Wanted: OFF): OFF\n--   SDL_X11_XDBE                (Wanted: OFF): OFF\n--   SDL_X11_XFIXES              (Wanted: OFF): OFF\n--   SDL_X11_XINPUT              (Wanted: OFF): OFF\n--   SDL_X11_XRANDR              (Wanted: OFF): OFF\n--   SDL_X11_XSCRNSAVER          (Wanted: OFF): OFF\n--   SDL_X11_XSHAPE              (Wanted: OFF): OFF\n--   SDL_XINPUT                  (Wanted: ON): ON\n-- \n--  CFLAGS:        /DWIN32 /D_WINDOWS\n--  EXTRA_CFLAGS:  \n--  EXTRA_LDFLAGS:  -CETCOMPAT\n--  EXTRA_LIBS:    kernel32;user32;gdi32;winmm;imm32;ole32;oleaut32;version;uuid;advapi32;setupapi;shell32;dinput8\n-- \n--  Build Shared Library: ON\n--  Build Static Library: ON\n--  Build Static Library with Position Independent Code: OFF\n-- \n-- Configuring done (67.7s)\n-- Generating done (18.8s)\n-- Build files have been written to: C:/Inbox/Git Repos/dominium/out/build/vs2026/verify\nMSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  dom_build_info.c\n  backend_detect.c\n  d_gfx.c\n  Generating Code...\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\nMSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Checking include boundaries for game sources\n  Include sanity OK.\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  dominium_game.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\dominium_game.lib\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "tool_ui_bind.CMD",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium",
+        "--check"
+      ],
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts/ci/check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "RepoX governance rules OK.\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "domino_engine",
+        "dominium_game",
+        "dominium_client"
+      ],
+      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\nMSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Checking include boundaries for game sources\n  Include sanity OK.\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  dominium_game.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\dominium_game.lib\nMSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Refreshing build number header (no bump)\n  build_identity.c\n  build_identity.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\build_identity.lib\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  app_runtime.c\n  dominium_app_runtime.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\dominium_app_runtime.lib\n  Checking include boundaries for game sources\n  Include sanity OK.\n  dominium_game.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\dominium_game.lib\n  main_client.c\n  dominium_client.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\client.exe\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "testx_verify"
+      ],
+      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Run TestX verify suite\n  {\n    \"required_test_tags\": [\n      \"determinism\",\n      \"docs\",\n      \"identity\",\n      \"integration\",\n      \"invariant\",\n      \"registry\",\n      \"regression\",\n      \"schema\",\n      \"tools\",\n      \"workspace\"\n    ],\n    \"result\": \"suite_complete\",\n    \"returncode\": 0,\n    \"selected_tests\": [\n      \"determinism_srz\",\n      \"determinism_thread_count_invariance\",\n      \"test_determinism_budget\",\n      \"test_determinism_srz\",\n      \"test_determinism_thread\",\n      \"test_rng_stream_consistency\"\n    ],\n    \"suite_id\": \"testx_verify\",\n    \"summary_json\": \"docs/audit/testx/TESTX_SUMMARY.json\"\n  }\n",
+      "returncode": 0
+    }
+  ],
+  "dist_root": "c:/Inbox/Git Repos/dominium/dist/ws/vs2026",
+  "gate_kind": "verify",
+  "repo_root": "c:/Inbox/Git Repos/dominium",
+  "skipped": [
+    "testx.fast",
+    "testx.dist",
+    "dist.verify"
+  ],
+  "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools",
+  "verify_build_dir": "c:/Inbox/Git Repos/dominium/out/build/vs2026/verify",
+  "warnings": [],
+  "workspace_id": "vs2026"
+}

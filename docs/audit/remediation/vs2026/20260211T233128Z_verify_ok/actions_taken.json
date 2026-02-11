@@ -1,0 +1,18 @@
+{
+  "actions": [
+    {
+      "note": "canonical environment refreshed",
+      "status": "applied",
+      "strategy": "environment",
+      "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools"
+    },
+    {
+      "applied_strategy": "environment",
+      "returncode": 0,
+      "score_after": 1000,
+      "score_before": 1001,
+      "stage": "repox.precheck",
+      "strategy": "verify_after_strategy"
+    }
+  ]
+}

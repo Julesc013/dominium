@@ -1,0 +1,15 @@
+{
+  "artifact_class": "CANONICAL",
+  "record": {
+    "extensions": {},
+    "regressions": [],
+    "result_set_id": "performx.regressions",
+    "summary": {
+      "critical_failures": 0,
+      "regression_count": 0,
+      "warnings": 0
+    }
+  },
+  "schema_id": "dominium.schema.governance.performance_result",
+  "schema_version": "1.0.0"
+}

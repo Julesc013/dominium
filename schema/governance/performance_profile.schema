@@ -1,0 +1,34 @@
+SCHEMA: governance/performance_profile.schema
+schema_id: dominium.schema.governance.performance_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define coarse hardware normalization profiles for PerformX.
+- Keep hardware metadata out of canonical performance outputs.
+
+STABILITY GUARANTEES:
+- Profile IDs and cpu_class labels are stable identifiers.
+- Required fields MUST remain present.
+
+NON-SEMANTICS:
+- Profiles adjust measurement normalization only.
+- Profiles do not modify simulation semantics.
+
+REQUIRED SHAPE:
+record performance_profile_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - profiles: [performance_profile]
+    - extensions: map
+
+record performance_profile
+  required:
+    - profile_id: id
+    - cpu_class: tag
+    - normalization_factor: number
+    - notes: [tag]
+    - extensions: map
+

@@ -8,7 +8,6 @@ def _stable_fingerprint_payload(finding_dict):
     payload = dict(finding_dict)
     payload.pop("finding_id", None)
     payload.pop("fingerprint", None)
-    payload.pop("created_utc", None)
     return payload
 
 
@@ -39,7 +38,6 @@ def finding_to_dict(finding):
         "recommended_action": finding.recommended_action,
         "related_invariants": sorted(set(finding.related_invariants)),
         "related_paths": sorted(set(finding.related_paths)),
-        "created_utc": finding.created_utc,
         "fingerprint": finding.fingerprint,
     }
 
@@ -55,4 +53,3 @@ def sort_findings(finding_dicts):
             item.get("finding_id", ""),
         ),
     )
-

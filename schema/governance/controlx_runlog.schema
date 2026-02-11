@@ -1,0 +1,34 @@
+SCHEMA: governance/controlx_runlog.schema
+schema_id: dominium.schema.governance.controlx_runlog
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic ControlX run log shape.
+- Capture sanitation, workspace routing, gate execution, and final status.
+
+STABILITY GUARANTEES:
+- Required fields MUST remain present.
+- Unknown extension fields MUST be preserved.
+
+NON-SEMANTICS:
+- Run logs record control-plane behavior only.
+- Run logs are not authority for runtime simulation semantics.
+
+REQUIRED SHAPE:
+record controlx_runlog
+  required:
+    - artifact_class: tag
+    - item_id: id
+    - prompt_hash: hash
+    - requested_subsystems: [tag]
+    - sanitization_action_count: u32
+    - workspace_id: tag
+    - gate_steps: [controlx_gate_step]
+    - remediation_artifact_count: u32
+    - status: tag
+
+record controlx_gate_step
+  required:
+    - command: text
+    - returncode: i32

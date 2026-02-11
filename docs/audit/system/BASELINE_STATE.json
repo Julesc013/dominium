@@ -1,0 +1,48 @@
+{
+  "artifact_class": "CANONICAL",
+  "record": {
+    "active_pack_set_sha256": "27793d574d8e22084a448ece2d34daa13d5fe2c5232da603113016ac67037d85",
+    "baseline_id": "anb-omega.baseline",
+    "extensions": {},
+    "gate_policy_sha256": "1491808e65a9b84ebd95fd6b3f5a2a16e5df583d30163d507fda442c887d0628",
+    "head_hash": "01841b8f85e79c8694e0091d47b2cd30d0f95e97",
+    "identity_fingerprint_sha256": "d2e99cc8dd104c2a017f478f1ddbfd5cf6986d99e6c4ac26d685f5abe089e493",
+    "schema_registry_sha256": "ac9fc0bb7ed6032b13ddc03d6e6f5fe433102162307b22b2db5bd612d712b4b4",
+    "tool_hashes": [
+      {
+        "path": "tool_ui_bind.cmd",
+        "sha256": "0127c250fdd33f3235d1af9f90af923619733eff9a7a1253155b2191a97a8fcf"
+      },
+      {
+        "path": "tool_ui_doc_annotate.cmd",
+        "sha256": "0127c250fdd33f3235d1af9f90af923619733eff9a7a1253155b2191a97a8fcf"
+      },
+      {
+        "path": "tool_ui_validate.cmd",
+        "sha256": "0127c250fdd33f3235d1af9f90af923619733eff9a7a1253155b2191a97a8fcf"
+      },
+      {
+        "path": "tools/auditx/auditx.py",
+        "sha256": "6371771e53d5dbfa47559ad8d5c224dc67700ef93155872a0ab5cd9ecfcea5c0"
+      },
+      {
+        "path": "tools/compatx/compatx.py",
+        "sha256": "cca70485fda23d7d7392d1033a2bd56eb6ea633462742d1ac25ebd870af3e3cf"
+      },
+      {
+        "path": "tools/controlx/controlx.py",
+        "sha256": "97e4890766339d131cfee5694b5429f368d9402a783c1c5621e6339d59a6aeb7"
+      },
+      {
+        "path": "tools/performx/performx.py",
+        "sha256": "ccc33a57ce0b943c599c43b6c3ab9844674a62ab988133cf8dd2cba9ef86d727"
+      },
+      {
+        "path": "tools/securex/securex.py",
+        "sha256": "80228ecc0860ea4ed868747662a993a809cac083a4916313d4895085c5f70a32"
+      }
+    ]
+  },
+  "schema_id": "dominium.audit.system.baseline_state",
+  "schema_version": "1.0.0"
+}

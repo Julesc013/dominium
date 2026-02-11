@@ -1,0 +1,9 @@
+{
+  "artifact_class": "RUN_META",
+  "failure_scenarios": [
+    "compat.breaking_schema_diff"
+  ],
+  "generated_utc": "2026-02-11T23:40:45Z",
+  "quick_mode": true,
+  "status": "DERIVED"
+}

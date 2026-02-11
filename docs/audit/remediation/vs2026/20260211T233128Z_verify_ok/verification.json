@@ -1,0 +1,88 @@
+{
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts/ci/check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "RepoX governance rules OK.\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "domino_engine",
+        "dominium_game"
+      ],
+      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\nMSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Checking include boundaries for game sources\n  Include sanity OK.\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  dominium_game.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\dominium_game.lib\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "tool_ui_bind.CMD",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium",
+        "--check"
+      ],
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts/ci/check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "RepoX governance rules OK.\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "domino_engine",
+        "dominium_game",
+        "dominium_client"
+      ],
+      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\nMSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Checking include boundaries for game sources\n  Include sanity OK.\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  dominium_game.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\dominium_game.lib\nMSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Refreshing build number header (no bump)\n  build_identity.c\n  build_identity.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\build_identity.lib\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  app_runtime.c\n  dominium_app_runtime.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\dominium_app_runtime.lib\n  Checking include boundaries for game sources\n  Include sanity OK.\n  dominium_game.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\dominium_game.lib\n  main_client.c\n  dominium_client.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\client.exe\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "testx_verify"
+      ],
+      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Run TestX verify suite\n  {\n    \"required_test_tags\": [\n      \"determinism\",\n      \"docs\",\n      \"identity\",\n      \"integration\",\n      \"invariant\",\n      \"performance\",\n      \"registry\",\n      \"regression\",\n      \"schema\",\n      \"security\",\n      \"tools\",\n      \"workspace\"\n    ],\n    \"result\": \"suite_complete\",\n    \"returncode\": 0,\n    \"selected_tests\": [\n      \"determinism_srz\",\n      \"determinism_thread_count_invariance\",\n      \"performx_determinism\",\n      \"performx_smoke\",\n      \"securex_boundary_tests\",\n      \"securex_privilege_tests\",\n      \"test_determinism_budget\",\n      \"test_determinism_srz\",\n      \"test_determinism_thread\",\n      \"test_rng_stream_consistency\"\n    ],\n    \"suite_id\": \"testx_verify\",\n    \"summary_json\": \"docs/audit/testx/TESTX_SUMMARY.json\"\n  }\n",
+      "returncode": 0
+    }
+  ],
+  "dist_root": "c:/Inbox/Git Repos/dominium/dist/ws/vs2026",
+  "gate_kind": "verify",
+  "repo_root": "c:/Inbox/Git Repos/dominium",
+  "skipped": [
+    "testx.fast",
+    "testx.dist",
+    "dist.verify"
+  ],
+  "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools",
+  "verify_build_dir": "c:/Inbox/Git Repos/dominium/out/build/vs2026/verify",
+  "warnings": [],
+  "workspace_id": "vs2026"
+}

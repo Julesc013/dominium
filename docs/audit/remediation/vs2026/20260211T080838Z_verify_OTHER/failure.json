@@ -1,0 +1,10 @@
+{
+  "command": [
+    "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+    "scripts/ci/check_repox_rules.py",
+    "--repo-root",
+    "c:\\Inbox\\Git Repos\\dominium"
+  ],
+  "output": "INV-REPOX-RULESET-MISSING: duplicate rule_id INV-CAPABILITY-NO-LEGACY-GATING-TOKENS\nINV-REPOX-RULESET-MISSING: duplicate rule_id INV-SCHEMA-NO-IMPLICIT-DEFAULTS\nINV-REPOX-RULESET-MISSING: duplicate rule_id INV-SCHEMA-VERSION-BUMP\nINV-REPOX-RULESET-MISSING: duplicate rule_id NO_SILENT_DEFAULTS\n",
+  "returncode": 1
+}

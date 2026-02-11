@@ -951,15 +951,59 @@ add_custom_target(dom_bump_build_number
     COMMENT "Bumping global build number"
 )
 set(DOM_TESTX_TIMEOUT "1200" CACHE STRING "Per-test timeout seconds for TestX gate")
-set(_dom_testx_ctest_cmd ${CMAKE_CTEST_COMMAND} --output-on-failure)
-if(DOM_TESTX_TIMEOUT)
-    list(APPEND _dom_testx_ctest_cmd --timeout ${DOM_TESTX_TIMEOUT})
-endif()
-if(CMAKE_CONFIGURATION_TYPES)
-    list(APPEND _dom_testx_ctest_cmd -C $<CONFIG>)
-endif()
+set(DOM_TESTX_RUNNER "${CMAKE_SOURCE_DIR}/scripts/dev/testx_proof_engine.py")
+set(DOM_TESTX_SUMMARY_JSON "${CMAKE_SOURCE_DIR}/docs/audit/testx/TESTX_SUMMARY.json")
+set(DOM_TESTX_SUMMARY_MD "${CMAKE_SOURCE_DIR}/docs/audit/testx/TESTX_SUMMARY.md")
+set(DOM_TESTX_RUN_META_JSON "${CMAKE_SOURCE_DIR}/docs/audit/testx/TESTX_RUN_META.json")
+
+add_custom_target(testx_fast
+    COMMAND ${Python3_EXECUTABLE} ${DOM_TESTX_RUNNER}
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --suite testx_fast
+        --build-dir ${CMAKE_BINARY_DIR}
+        --summary-json ${DOM_TESTX_SUMMARY_JSON}
+        --summary-md ${DOM_TESTX_SUMMARY_MD}
+        --run-meta-json ${DOM_TESTX_RUN_META_JSON}
+        --config $<CONFIG>
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Run TestX fast suite (manifest-driven)"
+)
+
+add_custom_target(testx_verify
+    COMMAND ${Python3_EXECUTABLE} ${DOM_TESTX_RUNNER}
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --suite testx_verify
+        --build-dir ${CMAKE_BINARY_DIR}
+        --summary-json ${DOM_TESTX_SUMMARY_JSON}
+        --summary-md ${DOM_TESTX_SUMMARY_MD}
+        --run-meta-json ${DOM_TESTX_RUN_META_JSON}
+        --config $<CONFIG>
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Run TestX verify suite"
+)
+
+add_custom_target(testx_dist
+    COMMAND ${Python3_EXECUTABLE} ${DOM_TESTX_RUNNER}
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --suite testx_dist
+        --build-dir ${CMAKE_BINARY_DIR}
+        --summary-json ${DOM_TESTX_SUMMARY_JSON}
+        --summary-md ${DOM_TESTX_SUMMARY_MD}
+        --run-meta-json ${DOM_TESTX_RUN_META_JSON}
+        --config $<CONFIG>
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Run TestX dist suite"
+)
+
 add_custom_target(testx_all
-    COMMAND ${_dom_testx_ctest_cmd}
+    COMMAND ${Python3_EXECUTABLE} ${DOM_TESTX_RUNNER}
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --suite testx_verify
+        --build-dir ${CMAKE_BINARY_DIR}
+        --summary-json ${DOM_TESTX_SUMMARY_JSON}
+        --summary-md ${DOM_TESTX_SUMMARY_MD}
+        --run-meta-json ${DOM_TESTX_RUN_META_JSON}
+        --config $<CONFIG>
     COMMAND ${CMAKE_COMMAND}
         -DDOM_BUILD_NUMBER_BUMP=1
         -DSTATE_FILE=${DOM_BUILD_STATE_FILE}
@@ -973,7 +1017,7 @@ add_custom_target(testx_all
         -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
         -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMENT "Run TestX and bump build number on success"
+    COMMENT "Run TestX verify suite and bump build number on success"
 )
 add_compile_definitions(DOM_BUILD_VERSION_GENERATED)
 add_compile_definitions(DOMINO_VERSION_GENERATED)
