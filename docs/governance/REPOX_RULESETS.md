@@ -105,6 +105,10 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-OBSERVER-FREECAM-ENTITLEMENT`
 - `INV-RENDER-NO-TRUTH-ACCESS`
 - `INV-CAPABILITY-NO-LEGACY-GATING-TOKENS`
+- `INV-SECUREX-TRUST-POLICY-VALID`
+- `INV-SECUREX-PRIVILEGE-MODEL`
+- `INV-UNLOCKED-DEPENDENCY`
+- `INV-TOOL-VERSION-MISMATCH`
 - `INV-SOLVER-CONTRACTS`
 - `INV-DERIVED-ARTIFACT-CONTRACT`
 - `INV-AUDITX-ARTIFACT-HEADERS`
@@ -242,3 +246,26 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - Warns when committed `docs/audit/auditx/FINDINGS.json` lags far behind HEAD.
 - Non-gating signal to refresh derived semantic reports.
+
+### INV-SECUREX-TRUST-POLICY-VALID
+
+- Fails when SecureX trust-policy schema/registry are missing or malformed.
+- Fails when required subsystem trust entries are absent.
+- Ensures trust boundaries are declared in data, not ad-hoc code paths.
+
+### INV-SECUREX-PRIVILEGE-MODEL
+
+- Fails when privilege role registry is missing required roles or malformed.
+- Fails when required observer entitlements are missing or elevated roles omit watermark policy.
+- Enforces law-profile-driven privilege contracts.
+
+### INV-UNLOCKED-DEPENDENCY
+
+- Fails when dependency manifests use non-pinned version ranges in governed surfaces.
+- Prevents silent supply-chain drift through floating dependency ranges.
+
+### INV-TOOL-VERSION-MISMATCH
+
+- Fails when `docs/audit/security/INTEGRITY_MANIFEST.json` is missing, malformed, or stale.
+- Fails when recorded tool hashes do not match current tool sources.
+- Prevents committing derived artifacts produced by mismatched tool implementations.

@@ -1,0 +1,85 @@
+{
+  "artifact_class": "CANONICAL",
+  "record": {
+    "canonical_artifact_hashes": [
+      {
+        "id": "artifact.auditx.findings",
+        "sha256": "526522fd07bde99e7e82d7aa294458c5d4c3789ade3f0b4a2d57c4be685147ac",
+        "source": "docs/audit/auditx/FINDINGS.json"
+      },
+      {
+        "id": "artifact.compatx.baseline",
+        "sha256": "c4d0385ccca0c297c8f9b7ce500a9ada1320268474ed6b39ab89e64cf6cbc7f4",
+        "source": "docs/audit/compat/COMPAT_BASELINE.json"
+      },
+      {
+        "id": "artifact.identity_fingerprint",
+        "sha256": "2ab88590f40c461fe834ef93b79d08803ed82ca1e1b459c94d3fe0875c7d1354",
+        "source": "docs/audit/identity_fingerprint.json"
+      }
+    ],
+    "extensions": {},
+    "identity_fingerprint_sha256": "9432020b996f8de164638ac50d319df02d63e4ce8be8e94f93a0e42650fc405c",
+    "manifest_id": "securex.integrity_manifest",
+    "manifest_version": "1.0.0",
+    "pack_hashes": [
+      {
+        "id": "registry.security_roles",
+        "sha256": "0376f14888cfc8bbf7622f3cc51cba49ef26f5caf5388f71299fd21f5c58d421",
+        "source": "data/registries/security_roles.json"
+      },
+      {
+        "id": "registry.trust_policy",
+        "sha256": "408e33ce2bb49a88e0a366e901a0a3e284f2599185b45ce780698b1ab4395fcc",
+        "source": "data/registries/trust_policy.json"
+      }
+    ],
+    "schema_hashes": [
+      {
+        "id": "schema.integrity_manifest",
+        "sha256": "471338341c998121ee5d5f3e012fdb63771e140ba559617291551dc7fc613a22",
+        "source": "schema/governance/integrity_manifest.schema"
+      },
+      {
+        "id": "schema.pack_signature",
+        "sha256": "263883e8db0638bfbf4efa6193010be5a3a4ad1e76cce55524cf253a87a9b9b3",
+        "source": "schema/governance/pack_signature.schema"
+      },
+      {
+        "id": "schema.privilege_model",
+        "sha256": "4736f78cbb655858bae6f5ade958b63d38acce2dc33b23030c362b72a75a6d39",
+        "source": "schema/governance/privilege_model.schema"
+      },
+      {
+        "id": "schema.trust_policy",
+        "sha256": "0e91add5a7d2e336bcf56dbc18a1f50813def9b96fa0eb6b21b43d0da9e755f5",
+        "source": "schema/governance/trust_policy.schema"
+      }
+    ],
+    "schema_version_ref": "dominium.schema.governance.integrity_manifest@1.0.0",
+    "tool_hashes": [
+      {
+        "id": "tool.auditx",
+        "sha256": "6371771e53d5dbfa47559ad8d5c224dc67700ef93155872a0ab5cd9ecfcea5c0",
+        "source": "tools/auditx/auditx.py"
+      },
+      {
+        "id": "tool.compatx",
+        "sha256": "cca70485fda23d7d7392d1033a2bd56eb6ea633462742d1ac25ebd870af3e3cf",
+        "source": "tools/compatx/compatx.py"
+      },
+      {
+        "id": "tool.controlx",
+        "sha256": "97e4890766339d131cfee5694b5429f368d9402a783c1c5621e6339d59a6aeb7",
+        "source": "tools/controlx/controlx.py"
+      },
+      {
+        "id": "tool.securex",
+        "sha256": "80228ecc0860ea4ed868747662a993a809cac083a4916313d4895085c5f70a32",
+        "source": "tools/securex/securex.py"
+      }
+    ]
+  },
+  "schema_id": "dominium.schema.governance.integrity_manifest",
+  "schema_version": "1.0.0"
+}
