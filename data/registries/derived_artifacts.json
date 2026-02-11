@@ -253,6 +253,56 @@
         }
       },
       {
+        "artifact_id": "artifact.securex.findings",
+        "path": "docs/audit/security/FINDINGS.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/securex/securex.py verify",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Canonical security findings emitted by SecureX.",
+          "No run metadata fields are allowed in this artifact."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_timestamps",
+          "regeneration_tool": "python tools/securex/securex.py verify --repo-root ."
+        }
+      },
+      {
+        "artifact_id": "artifact.securex.integrity_manifest",
+        "path": "docs/audit/security/INTEGRITY_MANIFEST.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/securex/securex.py verify",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Canonical integrity manifest for tool and artifact hashes.",
+          "Used to enforce tool-version consistency."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_run_meta_fields",
+          "regeneration_tool": "python tools/securex/securex.py verify --repo-root ."
+        }
+      },
+      {
+        "artifact_id": "artifact.securex.run_meta",
+        "path": "docs/audit/security/RUN_META.json",
+        "artifact_class": "RUN_META",
+        "producer": "tools/securex/securex.py verify",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Run metadata for SecureX diagnostics.",
+          "May vary across runs and is excluded from determinism checks."
+        ],
+        "extensions": {
+          "regeneration_tool": "python tools/securex/securex.py verify --repo-root ."
+        }
+      },
+      {
         "artifact_id": "artifact.perf.trace.sample",
         "path": "docs/audit/perf/profile_trace.sample.json",
         "artifact_class": "RUN_META",

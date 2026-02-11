@@ -22,6 +22,34 @@
       "scope_paths": ["engine", "game", "client", "server", "launcher", "setup", "tools", "libs", "schema", "tests"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-capability-no-legacy-gating-tokens",
       "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-SECUREX-TRUST-POLICY-VALID",
+      "severity": "FAIL",
+      "scope_paths": ["schema/governance/trust_policy.schema", "data/registries/trust_policy.json"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-securex-trust-policy-valid",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-SECUREX-PRIVILEGE-MODEL",
+      "severity": "FAIL",
+      "scope_paths": ["schema/governance/privilege_model.schema", "data/registries/security_roles.json", "client", "launcher", "setup", "server"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-securex-privilege-model",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-UNLOCKED-DEPENDENCY",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries", "scripts", "tools", "package.json", "requirements.txt", "requirements-dev.txt"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-unlocked-dependency",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-TOOL-VERSION-MISMATCH",
+      "severity": "FAIL",
+      "scope_paths": ["docs/audit/security/INTEGRITY_MANIFEST.json", "tools", "scripts", "schema/governance/integrity_manifest.schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tool-version-mismatch",
+      "exemption_policy": "deny"
     }
   ]
 }

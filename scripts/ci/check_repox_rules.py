@@ -294,6 +294,14 @@ COMPAT_MIGRATION_SCHEMA_ID = "dominium.schema.governance.migration_spec"  # sche
 COMPAT_SCHEMA_POLICY_SCHEMA_REL = os.path.join("schema", "governance", "schema_version_policy.schema")
 COMPAT_SCHEMA_POLICY_REGISTRY_REL = os.path.join("data", "registries", "schema_version_policy.json")
 COMPAT_SCHEMA_POLICY_SCHEMA_ID = "dominium.schema.governance.schema_version_policy"  # schema_version: 1.0.0
+SECUREX_TRUST_POLICY_SCHEMA_REL = os.path.join("schema", "governance", "trust_policy.schema")
+SECUREX_TRUST_POLICY_REGISTRY_REL = os.path.join("data", "registries", "trust_policy.json")
+SECUREX_TRUST_POLICY_SCHEMA_ID = "dominium.schema.governance.trust_policy"  # schema_version: 1.0.0
+SECUREX_PRIVILEGE_MODEL_SCHEMA_REL = os.path.join("schema", "governance", "privilege_model.schema")
+SECUREX_PRIVILEGE_MODEL_REGISTRY_REL = os.path.join("data", "registries", "security_roles.json")
+SECUREX_PRIVILEGE_MODEL_SCHEMA_ID = "dominium.schema.governance.privilege_model"  # schema_version: 1.0.0
+SECUREX_INTEGRITY_MANIFEST_REL = os.path.join("docs", "audit", "security", "INTEGRITY_MANIFEST.json")
+SECUREX_INTEGRITY_MANIFEST_SCHEMA_ID = "dominium.schema.governance.integrity_manifest"  # schema_version: 1.0.0
 
 BUILD_PRESET_CONTRACT_CONFIGURE = (
     "msvc-dev-debug",
@@ -1294,6 +1302,20 @@ def _load_json_file(path):
             return json.load(handle)
     except (OSError, ValueError):
         return None
+
+
+def _sha256_file(path):
+    digest = hashlib.sha256()
+    try:
+        with open(path, "rb") as handle:
+            while True:
+                chunk = handle.read(1 << 16)
+                if not chunk:
+                    break
+                digest.update(chunk)
+    except OSError:
+        return ""
+    return digest.hexdigest()
 
 
 def _parse_semver(value):
@@ -4518,6 +4540,224 @@ def check_schema_deprecated_fields(repo_root):
     return violations
 
 
+def check_securex_trust_policy_registry(repo_root):
+    invariant_id = "INV-SECUREX-TRUST-POLICY-VALID"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_path = os.path.join(repo_root, SECUREX_TRUST_POLICY_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, SECUREX_TRUST_POLICY_REGISTRY_REL)
+    if not os.path.isfile(schema_path):
+        return ["{}: missing schema {}".format(invariant_id, normalize_path(SECUREX_TRUST_POLICY_SCHEMA_REL))]
+    if not os.path.isfile(registry_path):
+        return ["{}: missing registry {}".format(invariant_id, normalize_path(SECUREX_TRUST_POLICY_REGISTRY_REL))]
+
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(SECUREX_TRUST_POLICY_REGISTRY_REL))]
+
+    violations = []
+    if str(payload.get("schema_id", "")).strip() != SECUREX_TRUST_POLICY_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, normalize_path(SECUREX_TRUST_POLICY_REGISTRY_REL)))
+    if _parse_semver(payload.get("schema_version")) is None:
+        violations.append("{}: invalid schema_version in {}".format(invariant_id, normalize_path(SECUREX_TRUST_POLICY_REGISTRY_REL)))
+
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return violations + ["{}: missing record object in {}".format(invariant_id, normalize_path(SECUREX_TRUST_POLICY_REGISTRY_REL))]
+    rows = record.get("entries")
+    if not isinstance(rows, list):
+        return violations + ["{}: entries must be list in {}".format(invariant_id, normalize_path(SECUREX_TRUST_POLICY_REGISTRY_REL))]
+
+    required_subsystems = {
+        "engine_core",
+        "game_logic",
+        "client_renderer",
+        "server_authority",
+        "tools",
+        "packs",
+        "controlx",
+    }
+    seen = set()
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append("{}: entry {} must be object".format(invariant_id, idx))
+            continue
+        subsystem = str(row.get("subsystem", "")).strip()
+        trust_level = str(row.get("trust_level", "")).strip()
+        allowed = row.get("allowed_actions")
+        forbidden = row.get("forbidden_actions")
+        escalation = row.get("escalation_required")
+        if not subsystem:
+            violations.append("{}: entry {} missing subsystem".format(invariant_id, idx))
+            continue
+        seen.add(subsystem)
+        if trust_level not in {"root", "authoritative", "bounded", "untrusted"}:
+            violations.append("{}: entry {} invalid trust_level '{}'".format(invariant_id, idx, trust_level))
+        if not isinstance(allowed, list) or not allowed:
+            violations.append("{}: entry {} allowed_actions must be non-empty list".format(invariant_id, idx))
+        if not isinstance(forbidden, list) or not forbidden:
+            violations.append("{}: entry {} forbidden_actions must be non-empty list".format(invariant_id, idx))
+        if not isinstance(escalation, bool):
+            violations.append("{}: entry {} escalation_required must be bool".format(invariant_id, idx))
+
+    missing = sorted(required_subsystems - seen)
+    if missing:
+        violations.append("{}: missing required subsystems {}".format(invariant_id, ", ".join(missing)))
+    return violations
+
+
+def check_securex_privilege_model(repo_root):
+    invariant_id = "INV-SECUREX-PRIVILEGE-MODEL"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_path = os.path.join(repo_root, SECUREX_PRIVILEGE_MODEL_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, SECUREX_PRIVILEGE_MODEL_REGISTRY_REL)
+    if not os.path.isfile(schema_path):
+        return ["{}: missing schema {}".format(invariant_id, normalize_path(SECUREX_PRIVILEGE_MODEL_SCHEMA_REL))]
+    if not os.path.isfile(registry_path):
+        return ["{}: missing registry {}".format(invariant_id, normalize_path(SECUREX_PRIVILEGE_MODEL_REGISTRY_REL))]
+
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(SECUREX_PRIVILEGE_MODEL_REGISTRY_REL))]
+
+    violations = []
+    if str(payload.get("schema_id", "")).strip() != SECUREX_PRIVILEGE_MODEL_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, normalize_path(SECUREX_PRIVILEGE_MODEL_REGISTRY_REL)))
+    if _parse_semver(payload.get("schema_version")) is None:
+        violations.append("{}: invalid schema_version in {}".format(invariant_id, normalize_path(SECUREX_PRIVILEGE_MODEL_REGISTRY_REL)))
+
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return violations + ["{}: missing record object in {}".format(invariant_id, normalize_path(SECUREX_PRIVILEGE_MODEL_REGISTRY_REL))]
+    rows = record.get("roles")
+    if not isinstance(rows, list):
+        return violations + ["{}: roles must be list in {}".format(invariant_id, normalize_path(SECUREX_PRIVILEGE_MODEL_REGISTRY_REL))]
+
+    required_roles = {"role.observer", "role.creator", "role.mission_player"}
+    seen = set()
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append("{}: role {} must be object".format(invariant_id, idx))
+            continue
+        role_id = str(row.get("role_id", "")).strip()
+        law_profile_id = str(row.get("law_profile_id", "")).strip()
+        entitlements = row.get("entitlements")
+        watermark = str(row.get("watermark_policy", "")).strip()
+        if not role_id:
+            violations.append("{}: role {} missing role_id".format(invariant_id, idx))
+            continue
+        seen.add(role_id)
+        if not law_profile_id:
+            violations.append("{}: role '{}' missing law_profile_id".format(invariant_id, role_id))
+        if not isinstance(entitlements, list):
+            violations.append("{}: role '{}' entitlements must be list".format(invariant_id, role_id))
+            entitlements = []
+        entitlement_set = {str(item).strip() for item in entitlements if str(item).strip()}
+        if role_id == "role.observer":
+            required = {"camera.mode.observer_truth", "ui.overlay.world_layers"}
+            missing = sorted(required - entitlement_set)
+            if missing:
+                violations.append("{}: observer role missing entitlements {}".format(invariant_id, ", ".join(missing)))
+            if watermark == "none":
+                violations.append("{}: observer role must set watermark_policy".format(invariant_id))
+        if role_id == "role.creator" and watermark == "none":
+            violations.append("{}: creator role must set watermark_policy".format(invariant_id))
+        if watermark not in {"none", "observer", "dev"}:
+            violations.append("{}: role '{}' invalid watermark_policy '{}'".format(invariant_id, role_id, watermark))
+    missing_roles = sorted(required_roles - seen)
+    if missing_roles:
+        violations.append("{}: missing required roles {}".format(invariant_id, ", ".join(missing_roles)))
+    return violations
+
+
+def check_unlocked_dependency(repo_root):
+    invariant_id = "INV-UNLOCKED-DEPENDENCY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    requirements_files = ("requirements.txt", "requirements-dev.txt")
+    for rel in requirements_files:
+        path = os.path.join(repo_root, rel)
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for idx, line in enumerate(text.splitlines(), start=1):
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            if "==" in stripped:
+                continue
+            if any(token in stripped for token in (">=", "<=", "~=", ">", "<")):
+                violations.append("{}: unlocked dependency '{}' at {}:{}".format(
+                    invariant_id, stripped, rel, idx
+                ))
+
+    package_json_path = os.path.join(repo_root, "package.json")
+    if os.path.isfile(package_json_path):
+        payload = _load_json_file(package_json_path)
+        if isinstance(payload, dict):
+            for section in ("dependencies", "devDependencies", "optionalDependencies"):
+                deps = payload.get(section)
+                if not isinstance(deps, dict):
+                    continue
+                for name, version in deps.items():
+                    version_text = str(version).strip()
+                    if not version_text:
+                        continue
+                    if version_text[0] in {"^", "~", ">", "<", "*"}:
+                        violations.append("{}: package.json {} '{}' uses unlocked range '{}'".format(
+                            invariant_id, section, name, version_text
+                        ))
+    return violations
+
+
+def check_tool_version_mismatch(repo_root):
+    invariant_id = "INV-TOOL-VERSION-MISMATCH"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    manifest_path = os.path.join(repo_root, SECUREX_INTEGRITY_MANIFEST_REL)
+    if not os.path.isfile(manifest_path):
+        return ["{}: missing {}".format(invariant_id, normalize_path(SECUREX_INTEGRITY_MANIFEST_REL))]
+    payload = _load_json_file(manifest_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(SECUREX_INTEGRITY_MANIFEST_REL))]
+
+    violations = []
+    if str(payload.get("schema_id", "")).strip() != SECUREX_INTEGRITY_MANIFEST_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, normalize_path(SECUREX_INTEGRITY_MANIFEST_REL)))
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return violations + ["{}: missing record object in {}".format(invariant_id, normalize_path(SECUREX_INTEGRITY_MANIFEST_REL))]
+    tool_hashes = record.get("tool_hashes")
+    if not isinstance(tool_hashes, list):
+        return violations + ["{}: tool_hashes must be list in {}".format(invariant_id, normalize_path(SECUREX_INTEGRITY_MANIFEST_REL))]
+
+    for idx, row in enumerate(tool_hashes):
+        if not isinstance(row, dict):
+            violations.append("{}: tool_hashes entry {} must be object".format(invariant_id, idx))
+            continue
+        source = normalize_path(str(row.get("source", "")).strip())
+        expected_sha = str(row.get("sha256", "")).strip().lower()
+        if not source or not expected_sha:
+            violations.append("{}: tool_hashes entry {} missing source/sha256".format(invariant_id, idx))
+            continue
+        abs_source = os.path.join(repo_root, source.replace("/", os.sep))
+        if not os.path.isfile(abs_source):
+            violations.append("{}: tool source missing {}".format(invariant_id, source))
+            continue
+        actual_sha = _sha256_file(abs_source)
+        if actual_sha != expected_sha:
+            violations.append("{}: hash mismatch for {} (expected {}, got {})".format(
+                invariant_id, source, expected_sha, actual_sha
+            ))
+    return violations
+
+
 def check_derived_artifact_contract(repo_root):
     invariant_id = "INV-DERIVED-ARTIFACT-CONTRACT"
     schema_path = os.path.join(repo_root, DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL)
@@ -4858,6 +5098,10 @@ def main() -> int:
     violations.extend(check_compat_migration_registry(repo_root))
     violations.extend(check_schema_version_policy_registry(repo_root))
     violations.extend(check_schema_deprecated_fields(repo_root))
+    violations.extend(check_securex_trust_policy_registry(repo_root))
+    violations.extend(check_securex_privilege_model(repo_root))
+    violations.extend(check_unlocked_dependency(repo_root))
+    violations.extend(check_tool_version_mismatch(repo_root))
     violations.extend(check_pack_capability_metadata(repo_root))
     violations.extend(check_prealpha_pack_isolation(repo_root))
     violations.extend(check_pkg_manifest_fields(repo_root))
