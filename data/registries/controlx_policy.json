@@ -1,0 +1,70 @@
+{
+  "schema_id": "dominium.schema.governance.controlx_policy",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.controlx.policy",
+    "registry_version": "1.0.0",
+    "forbidden_patterns": [
+      {
+        "pattern_id": "controlx.forbid.stop_on_failure",
+        "pattern": "\\bstop\\s+on\\s+failure\\b",
+        "reason": "mechanical failures are remediated, not stop conditions"
+      },
+      {
+        "pattern_id": "controlx.forbid.ask_permission",
+        "pattern": "\\b(do you want|should i proceed|please advise|would you like me)\\b",
+        "reason": "permission-asking in remediation flow is not allowed"
+      },
+      {
+        "pattern_id": "controlx.forbid.bypass",
+        "pattern": "\\b(bypass|disable|skip)\\s+(repox|testx|gate|governance)\\b",
+        "reason": "gate and governance bypasses are forbidden"
+      },
+      {
+        "pattern_id": "controlx.forbid.schema_policy_bypass",
+        "pattern": "\\b(ignore|bypass|skip)\\s+(the\\s+)?schema\\s+version\\s+policy\\b",
+        "reason": "schema version policy cannot be bypassed in prompts"
+      },
+      {
+        "pattern_id": "controlx.forbid.workspace_escape",
+        "pattern": "\\bwrite\\s+outside\\s+workspace\\b",
+        "reason": "workspace isolation must remain enforced"
+      },
+      {
+        "pattern_id": "controlx.forbid.disable_determinism",
+        "pattern": "\\bdisable\\s+determinism\\b",
+        "reason": "determinism cannot be disabled by prompt directives"
+      },
+      {
+        "pattern_id": "controlx.forbid.raw_gate_calls",
+        "pattern": "(check_repox_rules\\.py|\\bctest\\b|\\btool_ui_bind\\b|\\btool_ui_validate\\b|\\btool_ui_doc_annotate\\b|tools[\\\\/]performx[\\\\/]performx\\.py|\\bperformx\\.py\\b)",
+        "reason": "raw gate or tool invocations are replaced by gate.py routing"
+      }
+    ],
+    "allowed_operation_categories": [
+      "docs",
+      "code",
+      "data",
+      "tests",
+      "tools"
+    ],
+    "semantic_escalation_keywords": [
+      "ontology change",
+      "canon change",
+      "licensing",
+      "security policy",
+      "trust policy",
+      "meaning change"
+    ],
+    "mutation_locality_rules": [
+      "workspace_build_dist_only",
+      "canonical_docs_schema_data_only"
+    ],
+    "run_mode": {
+      "precheck": "precheck",
+      "taskcheck": "taskcheck",
+      "exitcheck": "exitcheck"
+    },
+    "extensions": {}
+  }
+}

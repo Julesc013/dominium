@@ -193,6 +193,13 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-FAILURE-CLASS-COVERAGE",
+      "severity": "FAIL",
+      "scope_paths": ["schema/governance/failure_classes.schema", "data/registries/failure_classes.json", "tests"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-failure-class-coverage",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-SETTINGS-OWNERSHIP",
       "severity": "FAIL",
       "scope_paths": ["client", "launcher", "setup", "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"],

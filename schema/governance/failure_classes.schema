@@ -1,0 +1,36 @@
+SCHEMA: governance/failure_classes.schema
+schema_id: dominium.schema.governance.failure_classes
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical mechanical failure classes used by autonomous remediation.
+- Bind each failure class to a deterministic remediation path, regression tests, and docs.
+
+STABILITY GUARANTEES:
+- failure_class_id values are stable identifiers and MUST NOT be reused.
+- Field removals/renames require a MAJOR schema_version bump.
+
+NON-SEMANTICS:
+- Failure classes describe governance/tooling mechanics only.
+- They do not alter simulation semantics.
+
+REQUIRED SHAPE:
+record failure_class_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: id
+    - classes: [failure_class]
+    - extensions: map
+
+record failure_class
+  required:
+    - failure_class_id: id
+    - blocker_type: id
+    - remediation_playbook_id: id
+    - regression_tests: [id]
+    - explanation_doc: text
+    - severity: enum(warn|fail)
+    - mechanical: bool
+    - extensions: map
