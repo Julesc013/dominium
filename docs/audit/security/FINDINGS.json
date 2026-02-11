@@ -89,7 +89,7 @@
         "confidence": 0.9,
         "evidence": "bypass_law_profile",
         "finding_id": "SECUREX:0017",
-        "path": "tools/auditx/cache/vs2026/entries/be4820dcb41f9ba9c9ba067867626692a30c060ba5b4a3918a914f9fdbe1c328.json",
+        "path": "tools/auditx/cache/vs2026/entries/9331450b151919c0802055f890c0d16f7ec8d4e6b635492519061e0b62eea813.json",
         "severity": "VIOLATION"
       },
       {
@@ -97,7 +97,7 @@
         "confidence": 0.9,
         "evidence": "bypass_law_profile",
         "finding_id": "SECUREX:0020",
-        "path": "tools/auditx/cache/vs2026/entries/e8b45dd3f103194cc404ed476bffb8ff003299f5a7b2ae215f65396647d9b1cc.json",
+        "path": "tools/auditx/cache/vs2026/entries/97ee72e20974e7313c0336ae079b3f506c7efe3f6e661d1512b5a20fbf3fa3f5.json",
         "severity": "VIOLATION"
       },
       {
@@ -105,7 +105,7 @@
         "confidence": 0.9,
         "evidence": "bypass_law_profile",
         "finding_id": "SECUREX:0023",
-        "path": "tools/auditx/cache/vs2026/entries/e9b6f47bb51f9b2f2f96d9f6af3bf90d51364b9011440604089bc5942eada007.json",
+        "path": "tools/auditx/cache/vs2026/entries/aeeb9f30747dbda255a0916e6f6430ab6f4fa659da15abe6bf6b2a6a7d4aadfc.json",
         "severity": "VIOLATION"
       },
       {
@@ -113,7 +113,7 @@
         "confidence": 0.9,
         "evidence": "bypass_law_profile",
         "finding_id": "SECUREX:0026",
-        "path": "tools/securex/core/boundary_validator.py",
+        "path": "tools/auditx/cache/vs2026/entries/be4820dcb41f9ba9c9ba067867626692a30c060ba5b4a3918a914f9fdbe1c328.json",
         "severity": "VIOLATION"
       },
       {
@@ -121,6 +121,30 @@
         "confidence": 0.9,
         "evidence": "bypass_law_profile",
         "finding_id": "SECUREX:0029",
+        "path": "tools/auditx/cache/vs2026/entries/e8b45dd3f103194cc404ed476bffb8ff003299f5a7b2ae215f65396647d9b1cc.json",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "bypass_law_profile",
+        "finding_id": "SECUREX:0032",
+        "path": "tools/auditx/cache/vs2026/entries/e9b6f47bb51f9b2f2f96d9f6af3bf90d51364b9011440604089bc5942eada007.json",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "bypass_law_profile",
+        "finding_id": "SECUREX:0035",
+        "path": "tools/securex/core/boundary_validator.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "bypass_law_profile",
+        "finding_id": "SECUREX:0038",
         "path": "tools/securex/securex.py",
         "severity": "VIOLATION"
       },
@@ -153,7 +177,7 @@
         "confidence": 0.9,
         "evidence": "disable_epistemic_guard",
         "finding_id": "SECUREX:0018",
-        "path": "tools/auditx/cache/vs2026/entries/be4820dcb41f9ba9c9ba067867626692a30c060ba5b4a3918a914f9fdbe1c328.json",
+        "path": "tools/auditx/cache/vs2026/entries/9331450b151919c0802055f890c0d16f7ec8d4e6b635492519061e0b62eea813.json",
         "severity": "VIOLATION"
       },
       {
@@ -161,7 +185,7 @@
         "confidence": 0.9,
         "evidence": "disable_epistemic_guard",
         "finding_id": "SECUREX:0021",
-        "path": "tools/auditx/cache/vs2026/entries/e8b45dd3f103194cc404ed476bffb8ff003299f5a7b2ae215f65396647d9b1cc.json",
+        "path": "tools/auditx/cache/vs2026/entries/97ee72e20974e7313c0336ae079b3f506c7efe3f6e661d1512b5a20fbf3fa3f5.json",
         "severity": "VIOLATION"
       },
       {
@@ -169,7 +193,7 @@
         "confidence": 0.9,
         "evidence": "disable_epistemic_guard",
         "finding_id": "SECUREX:0024",
-        "path": "tools/auditx/cache/vs2026/entries/e9b6f47bb51f9b2f2f96d9f6af3bf90d51364b9011440604089bc5942eada007.json",
+        "path": "tools/auditx/cache/vs2026/entries/aeeb9f30747dbda255a0916e6f6430ab6f4fa659da15abe6bf6b2a6a7d4aadfc.json",
         "severity": "VIOLATION"
       },
       {
@@ -177,7 +201,7 @@
         "confidence": 0.9,
         "evidence": "disable_epistemic_guard",
         "finding_id": "SECUREX:0027",
-        "path": "tools/securex/core/boundary_validator.py",
+        "path": "tools/auditx/cache/vs2026/entries/be4820dcb41f9ba9c9ba067867626692a30c060ba5b4a3918a914f9fdbe1c328.json",
         "severity": "VIOLATION"
       },
       {
@@ -185,6 +209,30 @@
         "confidence": 0.9,
         "evidence": "disable_epistemic_guard",
         "finding_id": "SECUREX:0030",
+        "path": "tools/auditx/cache/vs2026/entries/e8b45dd3f103194cc404ed476bffb8ff003299f5a7b2ae215f65396647d9b1cc.json",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "disable_epistemic_guard",
+        "finding_id": "SECUREX:0033",
+        "path": "tools/auditx/cache/vs2026/entries/e9b6f47bb51f9b2f2f96d9f6af3bf90d51364b9011440604089bc5942eada007.json",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "disable_epistemic_guard",
+        "finding_id": "SECUREX:0036",
+        "path": "tools/securex/core/boundary_validator.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "disable_epistemic_guard",
+        "finding_id": "SECUREX:0039",
         "path": "tools/securex/securex.py",
         "severity": "VIOLATION"
       },
@@ -217,7 +265,7 @@
         "confidence": 0.9,
         "evidence": "override_authority_state",
         "finding_id": "SECUREX:0019",
-        "path": "tools/auditx/cache/vs2026/entries/be4820dcb41f9ba9c9ba067867626692a30c060ba5b4a3918a914f9fdbe1c328.json",
+        "path": "tools/auditx/cache/vs2026/entries/9331450b151919c0802055f890c0d16f7ec8d4e6b635492519061e0b62eea813.json",
         "severity": "VIOLATION"
       },
       {
@@ -225,7 +273,7 @@
         "confidence": 0.9,
         "evidence": "override_authority_state",
         "finding_id": "SECUREX:0022",
-        "path": "tools/auditx/cache/vs2026/entries/e8b45dd3f103194cc404ed476bffb8ff003299f5a7b2ae215f65396647d9b1cc.json",
+        "path": "tools/auditx/cache/vs2026/entries/97ee72e20974e7313c0336ae079b3f506c7efe3f6e661d1512b5a20fbf3fa3f5.json",
         "severity": "VIOLATION"
       },
       {
@@ -233,7 +281,7 @@
         "confidence": 0.9,
         "evidence": "override_authority_state",
         "finding_id": "SECUREX:0025",
-        "path": "tools/auditx/cache/vs2026/entries/e9b6f47bb51f9b2f2f96d9f6af3bf90d51364b9011440604089bc5942eada007.json",
+        "path": "tools/auditx/cache/vs2026/entries/aeeb9f30747dbda255a0916e6f6430ab6f4fa659da15abe6bf6b2a6a7d4aadfc.json",
         "severity": "VIOLATION"
       },
       {
@@ -241,7 +289,7 @@
         "confidence": 0.9,
         "evidence": "override_authority_state",
         "finding_id": "SECUREX:0028",
-        "path": "tools/securex/core/boundary_validator.py",
+        "path": "tools/auditx/cache/vs2026/entries/be4820dcb41f9ba9c9ba067867626692a30c060ba5b4a3918a914f9fdbe1c328.json",
         "severity": "VIOLATION"
       },
       {
@@ -249,6 +297,30 @@
         "confidence": 0.9,
         "evidence": "override_authority_state",
         "finding_id": "SECUREX:0031",
+        "path": "tools/auditx/cache/vs2026/entries/e8b45dd3f103194cc404ed476bffb8ff003299f5a7b2ae215f65396647d9b1cc.json",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "override_authority_state",
+        "finding_id": "SECUREX:0034",
+        "path": "tools/auditx/cache/vs2026/entries/e9b6f47bb51f9b2f2f96d9f6af3bf90d51364b9011440604089bc5942eada007.json",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "override_authority_state",
+        "finding_id": "SECUREX:0037",
+        "path": "tools/securex/core/boundary_validator.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "override_authority_state",
+        "finding_id": "SECUREX:0040",
         "path": "tools/securex/securex.py",
         "severity": "VIOLATION"
       }
@@ -256,9 +328,9 @@
     "summary": {
       "by_category": {
         "boundary_io": 7,
-        "privilege_bypass": 24
+        "privilege_bypass": 33
       },
-      "total": 31
+      "total": 40
     }
   },
   "schema_id": "dominium.schema.governance.securex_findings",
