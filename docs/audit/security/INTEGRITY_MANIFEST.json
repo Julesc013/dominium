@@ -4,7 +4,7 @@
     "canonical_artifact_hashes": [
       {
         "id": "artifact.auditx.findings",
-        "sha256": "526522fd07bde99e7e82d7aa294458c5d4c3789ade3f0b4a2d57c4be685147ac",
+        "sha256": "ef4c6f2854d6fa8f45ca7a96f2cc166b395f187e2dba0304bbb587e49c03d9dd",
         "source": "docs/audit/auditx/FINDINGS.json"
       },
       {
