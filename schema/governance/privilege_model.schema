@@ -1,0 +1,30 @@
+SCHEMA: governance/privilege_model.schema
+schema_id: dominium.schema.governance.privilege_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define least-privilege role mappings to law profiles and entitlements.
+- Prevent ad-hoc mode flags from bypassing law profile enforcement.
+
+NON-SEMANTICS:
+- Privilege model configures access controls only.
+- Privilege model does not add gameplay semantics.
+
+REQUIRED SHAPE:
+record privilege_model_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - roles: [privilege_role]
+    - extensions: map
+
+record privilege_role
+  required:
+    - role_id: id
+    - law_profile_id: id
+    - entitlements: [id]
+    - restrictions: [tag]
+    - watermark_policy: enum(none|observer|dev)
+    - extensions: map
