@@ -36,6 +36,7 @@ Behavior:
 Canonical autonomous gate entrypoint:
 
 - `python scripts/dev/gate.py precheck`
+- `python scripts/dev/gate.py taskcheck`
 - `python scripts/dev/gate.py exitcheck`
 - `python scripts/dev/gate.py verify`
 - `python scripts/dev/gate.py dist`
@@ -47,6 +48,7 @@ Canonical autonomous gate entrypoint:
 Equivalent dev wrapper commands:
 
 - `python scripts/dev/dev.py gate precheck`
+- `python scripts/dev/dev.py gate taskcheck`
 - `python scripts/dev/dev.py gate exitcheck`
 - `python scripts/dev/dev.py gate verify`
 - `python scripts/dev/dev.py gate dist`
@@ -61,6 +63,12 @@ Behavior:
 - supports targeted execution with `--only-gate <gate_id>` for dependency gate diagnostics
 - emits remediation artifacts to `docs/audit/remediation/...`
 - emits remediation artifacts to `docs/audit/remediation/<workspace_id>/...`
+
+Sanctioned legacy wrappers:
+
+- `python scripts/dev/gate_shim.py verify`
+- `python scripts/dev/run_repox.py`
+- `python scripts/dev/run_testx.py`
 
 ## Notes
 

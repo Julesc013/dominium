@@ -70,12 +70,13 @@ Analyzers are modular plugins that consume the shared analysis graph and emit fi
 
 ## Outputs
 
-`auditx scan` writes DERIVED artifacts under `docs/audit/auditx/`:
+`auditx scan` writes artifacts under `docs/audit/auditx/`:
 
-- `FINDINGS.json`
-- `FINDINGS.md`
-- `SUMMARY.md`
-- `INVARIANT_MAP.json`
+- `FINDINGS.json` (`CANONICAL`)
+- `INVARIANT_MAP.json` (`CANONICAL`)
+- `RUN_META.json` (`RUN_META`)
+- `FINDINGS.md` (`DERIVED_VIEW`)
+- `SUMMARY.md` (`DERIVED_VIEW`)
 
 ## Promotion Path
 

@@ -13,10 +13,10 @@ AuditX is the semantic audit pipeline for Dominium.
 
 Running `scan` writes deterministic artifacts to `docs/audit/auditx/`:
 
-- `FINDINGS.json`
-- `FINDINGS.md`
-- `SUMMARY.md`
-- `INVARIANT_MAP.json`
+- `FINDINGS.json` (`CANONICAL`)
+- `INVARIANT_MAP.json` (`CANONICAL`)
+- `RUN_META.json` (`RUN_META`)
+- `FINDINGS.md` (`DERIVED_VIEW`)
+- `SUMMARY.md` (`DERIVED_VIEW`)
 
 `enforce` is reserved and currently returns `refuse.not_enabled`.
-

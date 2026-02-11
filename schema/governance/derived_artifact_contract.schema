@@ -1,0 +1,38 @@
+SCHEMA: governance/derived_artifact_contract.schema
+schema_id: dominium.schema.governance.derived_artifact_contract
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Classify derived artifacts as canonical semantic outputs, derived views, or run metadata.
+- Define determinism expectations for each artifact class.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown extension keys MUST be preserved.
+- No field removal/rename without MAJOR version bump.
+
+NON-SEMANTICS:
+- This contract governs artifact hygiene only.
+- It does not alter simulation semantics.
+
+REQUIRED SHAPE:
+record derived_artifact_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - artifacts: [derived_artifact]
+    - extensions: map
+
+record derived_artifact
+  required:
+    - artifact_id: id
+    - path: tag
+    - artifact_class: tag
+    - producer: tag
+    - canonical_hash_required: bool
+    - regenerable: bool
+    - used_for_gating: bool
+    - notes: [tag]
+    - extensions: map

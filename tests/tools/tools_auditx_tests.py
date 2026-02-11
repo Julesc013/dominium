@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -21,6 +22,16 @@ REQUIRED_FINDING_KEYS = (
     "created_utc",
     "fingerprint",
 )
+
+CANONICAL_FORBIDDEN_KEYS = {
+    "last_reviewed",
+    "generated_utc",
+    "duration_ms",
+    "host_name",
+    "machine_name",
+    "scan_id",
+    "run_id",
+}
 
 
 def _run_cmd(cmd, cwd):
@@ -51,31 +62,80 @@ def _parse_json_stdout(result):
         return None
 
 
-def _git_status(repo_root):
-    if not shutil.which("git"):
-        return None
-    result = _run_cmd(["git", "status", "--porcelain"], cwd=repo_root)
-    if result.returncode != 0:
-        return None
-    return [line.strip() for line in (result.stdout or "").splitlines() if line.strip()]
+def _load_json(path):
+    with open(path, "r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def _canonical_hash(path):
+    payload = _load_json(path)
+    blob = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+    return hashlib.sha256(blob).hexdigest(), payload
+
+
+def _walk_forbidden_keys(node, failures, prefix=""):
+    if isinstance(node, dict):
+        for key, value in node.items():
+            full = "{}.{}".format(prefix, key) if prefix else key
+            if key in CANONICAL_FORBIDDEN_KEYS:
+                failures.append(full)
+            _walk_forbidden_keys(value, failures, prefix=full)
+        return
+    if isinstance(node, list):
+        for idx, value in enumerate(node):
+            _walk_forbidden_keys(value, failures, prefix="{}[{}]".format(prefix, idx))
 
 
 def _validate_findings_payload(path):
     try:
-        with open(path, "r", encoding="utf-8") as handle:
-            payload = json.load(handle)
+        payload = _load_json(path)
     except (OSError, ValueError):
         return "unable to parse {}".format(path)
 
+    if payload.get("artifact_class") != "CANONICAL":
+        return "artifact_class must be CANONICAL in {}".format(path)
     findings = payload.get("findings")
     if not isinstance(findings, list):
         return "findings list missing in {}".format(path)
-    if "status" not in payload or "last_reviewed" not in payload:
-        return "status metadata missing in {}".format(path)
     for idx, finding in enumerate(findings[:200]):
         missing = [key for key in REQUIRED_FINDING_KEYS if key not in finding]
         if missing:
             return "finding {} missing keys {}".format(idx, ",".join(missing))
+
+    failures = []
+    _walk_forbidden_keys(payload, failures)
+    if failures:
+        return "canonical payload includes forbidden run-meta keys: {}".format(", ".join(failures[:5]))
+    return ""
+
+
+def _validate_invariant_payload(path):
+    try:
+        payload = _load_json(path)
+    except (OSError, ValueError):
+        return "unable to parse {}".format(path)
+    if payload.get("artifact_class") != "CANONICAL":
+        return "artifact_class must be CANONICAL in {}".format(path)
+    if "invariants" not in payload or not isinstance(payload.get("invariants"), dict):
+        return "invariants map missing in {}".format(path)
+    failures = []
+    _walk_forbidden_keys(payload, failures)
+    if failures:
+        return "canonical invariant map includes forbidden run-meta keys: {}".format(", ".join(failures[:5]))
+    return ""
+
+
+def _validate_run_meta(path):
+    try:
+        payload = _load_json(path)
+    except (OSError, ValueError):
+        return "unable to parse {}".format(path)
+    if payload.get("artifact_class") != "RUN_META":
+        return "artifact_class must be RUN_META in {}".format(path)
+    if payload.get("status") != "DERIVED":
+        return "status must be DERIVED in {}".format(path)
+    if "generated_utc" not in payload:
+        return "RUN_META must include generated_utc in {}".format(path)
     return ""
 
 
@@ -84,8 +144,6 @@ def main():
     parser.add_argument("--repo-root", default=".")
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
-
-    baseline_status = _git_status(repo_root)
 
     scan = _run_auditx(repo_root, "scan")
     if scan.returncode != 0:
@@ -100,14 +158,43 @@ def main():
         return 1
 
     findings_path = os.path.join(repo_root, "docs", "audit", "auditx", "FINDINGS.json")
-    if not os.path.isfile(findings_path):
-        print("missing findings artifact {}".format(findings_path))
+    invariant_path = os.path.join(repo_root, "docs", "audit", "auditx", "INVARIANT_MAP.json")
+    run_meta_path = os.path.join(repo_root, "docs", "audit", "auditx", "RUN_META.json")
+    for required in (findings_path, invariant_path, run_meta_path):
+        if not os.path.isfile(required):
+            print("missing artifact {}".format(required))
+            return 1
+
+    for validator, path in (
+        (_validate_findings_payload, findings_path),
+        (_validate_invariant_payload, invariant_path),
+        (_validate_run_meta, run_meta_path),
+    ):
+        error = validator(path)
+        if error:
+            print(error)
+            return 1
+
+    findings_hash_before, _ = _canonical_hash(findings_path)
+    invariant_hash_before, _ = _canonical_hash(invariant_path)
+
+    rescan = _run_auditx(repo_root, "scan")
+    if rescan.returncode != 0:
+        print("auditx rescan failed rc={}".format(rescan.returncode))
+        print(rescan.stdout)
         return 1
-    validation_error = _validate_findings_payload(findings_path)
-    if validation_error:
-        print(validation_error)
+    findings_hash_after, _ = _canonical_hash(findings_path)
+    invariant_hash_after, _ = _canonical_hash(invariant_path)
+    if findings_hash_before != findings_hash_after:
+        print("FINDINGS.json canonical hash drift across rescans")
+        print("before={}".format(findings_hash_before))
+        print("after={}".format(findings_hash_after))
         return 1
-    post_scan_status = _git_status(repo_root)
+    if invariant_hash_before != invariant_hash_after:
+        print("INVARIANT_MAP.json canonical hash drift across rescans")
+        print("before={}".format(invariant_hash_before))
+        print("after={}".format(invariant_hash_after))
+        return 1
 
     changed = _run_auditx(repo_root, "scan", "--changed-only")
     changed_payload = _parse_json_stdout(changed)
@@ -129,23 +216,6 @@ def main():
             print("changed-only refusal payload invalid")
             print(changed.stdout)
             return 1
-
-    # Restore canonical findings artifacts and assert no tracked file drift.
-    rescan = _run_auditx(repo_root, "scan")
-    if rescan.returncode != 0:
-        print("auditx rescan failed rc={}".format(rescan.returncode))
-        return 1
-
-    final_status = _git_status(repo_root)
-    if post_scan_status is not None and final_status is not None and final_status != post_scan_status:
-        print("auditx output determinism violated (status drift across rescans)")
-        print("post_scan={}".format(post_scan_status))
-        print("final={}".format(final_status))
-        return 1
-    if baseline_status is not None and baseline_status == [] and final_status is not None and final_status != []:
-        print("auditx read-only contract violated on clean tree")
-        print("final={}".format(final_status))
-        return 1
 
     print("auditx tools smoke OK")
     return 0

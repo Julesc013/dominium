@@ -1,0 +1,138 @@
+{
+  "schema_id": "dominium.schema.governance.derived_artifact_contract",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.derived_artifacts",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.derived_artifact_contract@1.0.0",
+    "artifacts": [
+      {
+        "artifact_id": "artifact.auditx.findings",
+        "path": "docs/audit/auditx/FINDINGS.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/auditx/auditx.py",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "No run metadata fields.",
+          "Deterministic semantic findings output."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.auditx.invariant_map",
+        "path": "docs/audit/auditx/INVARIANT_MAP.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/auditx/auditx.py",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "No run metadata fields.",
+          "Deterministic invariant mapping output."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.auditx.run_meta",
+        "path": "docs/audit/auditx/RUN_META.json",
+        "artifact_class": "RUN_META",
+        "producer": "tools/auditx/auditx.py",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Run metadata may include timestamps and host details.",
+          "Never used as an input to gate determinism checks."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.auditx.findings_md",
+        "path": "docs/audit/auditx/FINDINGS.md",
+        "artifact_class": "DERIVED_VIEW",
+        "producer": "tools/auditx/auditx.py",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Human-facing derived report.",
+          "Formatting changes are non-semantic."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.auditx.summary_md",
+        "path": "docs/audit/auditx/SUMMARY.md",
+        "artifact_class": "DERIVED_VIEW",
+        "producer": "tools/auditx/auditx.py",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Human-facing derived summary.",
+          "Formatting changes are non-semantic."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.identity.fingerprint",
+        "path": "docs/audit/identity_fingerprint.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/ci/tool_identity_fingerprint.py",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Identity invariants contract input.",
+          "Deterministic by design."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.pkg.index",
+        "path": "dist/pkg/winnt/x86_64/index/pkg_index.json",
+        "artifact_class": "CANONICAL",
+        "producer": "dist_all",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Package index consumed by packaging and install validation.",
+          "Determinism checks compare semantic hash only."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.ui.bind.table",
+        "path": "libs/appcore/ui_bind/ui_command_binding_table.c",
+        "artifact_class": "CANONICAL",
+        "producer": "tool_ui_bind --write",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Generated command binding table.",
+          "Must be deterministic for identical UI index and command graph."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.perf.trace.sample",
+        "path": "docs/audit/perf/profile_trace.sample.json",
+        "artifact_class": "RUN_META",
+        "producer": "tool_profile_capture",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Trace values are informational.",
+          "Only trace schema/structure is considered deterministic."
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

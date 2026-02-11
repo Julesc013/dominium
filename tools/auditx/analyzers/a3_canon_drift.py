@@ -29,7 +29,7 @@ def _iter_docs(repo_root):
             if not name.lower().endswith(".md"):
                 continue
             rel = os.path.relpath(os.path.join(root, name), repo_root).replace("\\", "/")
-            if rel.startswith("docs/archive/"):
+            if rel.startswith("docs/archive/") or rel.startswith("docs/audit/"):
                 continue
             records.append(rel)
     return sorted(records)
@@ -90,4 +90,3 @@ def run(graph, repo_root, changed_files=None):
             break
 
     return sorted(findings, key=lambda item: (item.location.file, item.severity))
-

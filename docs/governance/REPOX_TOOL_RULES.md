@@ -32,6 +32,19 @@ This document defines RepoX invariants for canonical tool discoverability and in
 - RepoX validates discoverability at run start.
 - Fails when any required canonical tool is missing or not resolvable by name.
 
+## INV-NO-DIRECT-GATE-CALLS
+
+- Intent: automation must route governance/test gates through canonical gate wrappers.
+- Forbid direct invocations of:
+  - `scripts/ci/check_repox_rules.py`
+  - `tool_ui_bind`
+  - `ctest`
+- Allowed wrappers:
+  - `python scripts/dev/gate.py ...`
+  - `python scripts/dev/gate_shim.py ...`
+  - `python scripts/dev/run_repox.py`
+  - `python scripts/dev/run_testx.py`
+
 ## Canonical Required Tools
 
 - `tool_ui_bind`
@@ -47,6 +60,7 @@ This document defines RepoX invariants for canonical tool discoverability and in
 - `scripts/dev/env_tools.*` remains optional convenience for interactive shells.
 - Preferred entrypoints are:
   - `python scripts/dev/gate.py precheck`
+  - `python scripts/dev/gate.py taskcheck`
   - `python scripts/dev/gate.py exitcheck`
   - `python scripts/dev/gate.py verify`
 

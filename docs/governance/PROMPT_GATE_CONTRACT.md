@@ -10,14 +10,20 @@ Prompts, automation, and queued runs must enter governance gates through `script
 ## Canonical Entry
 
 - Use `python scripts/dev/gate.py precheck --repo-root <repo>` for minimal preflight.
+- Use `python scripts/dev/gate.py taskcheck --repo-root <repo>` for dependency-only gate checks.
 - Use `python scripts/dev/gate.py exitcheck --repo-root <repo>` for strict completion.
-- Use `python scripts/dev/gate.py verify --repo-root <repo>` for full precheck + exitcheck flow.
+- Use `python scripts/dev/gate.py verify --repo-root <repo>` for full precheck + taskcheck + exitcheck flow.
 
 ## Tool Invocation Rule
 
 - Prompts must not call raw tool checks directly (example: `tool_ui_bind --check`).
+- Prompts must not call `scripts/ci/check_repox_rules.py` or `ctest` directly.
 - Raw tool invocations are allowed only inside gate automation and dedicated tests.
 - `ui_bind_check` is a dependency gate controlled by `data/registries/gate_policy.json`.
+- Legacy entrypoints may use wrappers that forward to `gate.py`:
+  - `python scripts/dev/gate_shim.py`
+  - `python scripts/dev/run_repox.py`
+  - `python scripts/dev/run_testx.py`
 
 ## Dependency-Aware Behavior
 

@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-10
+Last Reviewed: 2026-02-11
 Supersedes: none
 Superseded By: none
 
@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1103
-- Severities: INFO=202, RISK=169, WARN=732
-- Categories: canon_drift=582, capability_misuse=121, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, ui_parity=31
+- Total findings: 1099
+- Severities: INFO=200, RISK=169, WARN=730
+- Categories: canon_drift=580, capability_misuse=119, derived_freshness=120, legacy_contamination=5, ownership_boundary=4, reachability=80, schema_usage=160, ui_parity=31
 
 ## Top Findings
 

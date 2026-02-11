@@ -255,12 +255,25 @@ DIST_PLATFORM_CANON_ROOTS = (
 )
 IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.json")
 IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
+DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL = os.path.join("schema", "governance", "derived_artifact_contract.schema")
+DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
+DERIVED_ARTIFACT_SCHEMA_ID = "dominium.schema.governance.derived_artifact_contract"
+DERIVED_ARTIFACT_CLASSES = ("CANONICAL", "DERIVED_VIEW", "RUN_META")
+DERIVED_ARTIFACT_REQUIRED_IDS = (
+    "artifact.auditx.findings",
+    "artifact.auditx.invariant_map",
+    "artifact.auditx.run_meta",
+    "artifact.identity.fingerprint",
+    "artifact.ui.bind.table",
+)
 REMEDIATION_PLAYBOOK_SCHEMA_REL = os.path.join("schema", "governance", "remediation_playbook.schema")
 REMEDIATION_PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
 REMEDIATION_PLAYBOOK_SCHEMA_ID = ".".join(("dominium", "schema", "governance", "remediation_playbook"))  # schema_version is validated from payload
 REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
     "TOOL_DISCOVERY",
     "DERIVED_ARTIFACT_STALE",
+    "DIST_OUTPUT_MISSING",
+    "PKG_INDEX_MISSING",
     "SCHEMA_MISMATCH",
     "UI_BIND_DRIFT",
     "BUILD_OUTPUT_MISSING",
@@ -316,6 +329,19 @@ CANONICAL_TOOL_IDS = (
     "tool_ui_doc_annotate",
 )
 
+AUDITX_CANONICAL_ARTIFACTS = (
+    "docs/audit/auditx/FINDINGS.json",
+    "docs/audit/auditx/INVARIANT_MAP.json",
+)
+AUDITX_RUN_META_ARTIFACT = "docs/audit/auditx/RUN_META.json"
+AUDITX_CANONICAL_FORBIDDEN_KEYS = (
+    "last_reviewed",
+    "generated_utc",
+    "duration_ms",
+    "scan_id",
+    "run_id",
+)
+
 TOOL_SCAN_EXTS = (
     ".py",
     ".cmake",
@@ -328,6 +354,19 @@ TOOL_SCAN_EXTS = (
     ".ps1",
     ".sh",
 )
+DIRECT_GATE_SCAN_ROOTS = (
+    os.path.join("scripts", "dev"),
+    os.path.join("scripts", "ci"),
+    os.path.join(".github", "workflows"),
+)
+DIRECT_GATE_SCAN_EXTS = (".py", ".sh", ".cmd", ".bat", ".ps1", ".yml", ".yaml")
+DIRECT_GATE_ALLOWLIST = {
+    normalize_path(os.path.join("scripts", "dev", "gate.py")),
+    normalize_path(os.path.join("scripts", "dev", "gate_shim.py")),
+    normalize_path(os.path.join("scripts", "dev", "run_repox.py")),
+    normalize_path(os.path.join("scripts", "dev", "run_testx.py")),
+    normalize_path(os.path.join("scripts", "ci", "check_repox_rules.py")),
+}
 
 
 def repo_rel(repo_root, path):
@@ -2189,6 +2228,67 @@ def check_tool_unresolvable(repo_root):
                     )
                 )
     return violations
+
+
+def _iter_direct_gate_scan_files(repo_root):
+    roots = [os.path.join(repo_root, rel_root) for rel_root in DIRECT_GATE_SCAN_ROOTS]
+    excludes = DEFAULT_EXCLUDES + [".git", "out", "build", "dist"]
+    for path in iter_files(roots, excludes, DIRECT_GATE_SCAN_EXTS):
+        rel = normalize_path(repo_rel(repo_root, path))
+        if rel in DIRECT_GATE_ALLOWLIST:
+            continue
+        yield rel, path
+
+
+def check_no_direct_gate_calls(repo_root):
+    invariant_id = "INV-NO-DIRECT-GATE-CALLS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    repox_direct_re = re.compile(r"\bscripts[\\/]+ci[\\/]+check_repox_rules\.py\b", re.IGNORECASE)
+    ui_bind_direct_re = re.compile(r"(^|\\s)tool_ui_bind(?:\\.exe)?\\b", re.IGNORECASE)
+    ctest_direct_re = re.compile(r"(^|\\s)ctest\\b", re.IGNORECASE)
+    allowed_forwarders = (
+        "scripts/dev/gate.py",
+        "scripts/dev/gate_shim.py",
+        "scripts/dev/run_repox.py",
+        "scripts/dev/run_testx.py",
+    )
+
+    violations = []
+    for rel, path in _iter_direct_gate_scan_files(repo_root):
+        text = read_text(path) or ""
+        for idx, line in enumerate(text.splitlines(), start=1):
+            normalized = line.replace("\\", "/")
+            stripped = normalized.strip()
+            if not stripped:
+                continue
+
+            if repox_direct_re.search(normalized):
+                if not any(token in normalized for token in allowed_forwarders):
+                    violations.append(
+                        "{}: {}:{} direct RepoX invocation forbidden; use scripts/dev/run_repox.py or gate.py".format(
+                            invariant_id, rel, idx
+                        )
+                    )
+
+            if ui_bind_direct_re.search(normalized):
+                if "tool_ui_bind --help" in normalized.lower():
+                    continue
+                violations.append(
+                    "{}: {}:{} direct tool_ui_bind call forbidden; route through gate.py or scripts/dev/dev.py".format(
+                        invariant_id, rel, idx
+                    )
+                )
+
+            if ctest_direct_re.search(normalized):
+                violations.append(
+                    "{}: {}:{} direct ctest invocation forbidden; route through scripts/dev/run_testx.py or gate.py".format(
+                        invariant_id, rel, idx
+                    )
+                )
+
+    return sorted(set(violations))
 
 
 def _preset_cache_value(preset_map, preset_name, key):
@@ -4115,6 +4215,106 @@ def check_root_module_shims(repo_root):
     return violations
 
 
+def check_derived_artifact_contract(repo_root):
+    invariant_id = "INV-DERIVED-ARTIFACT-CONTRACT"
+    schema_path = os.path.join(repo_root, DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, DERIVED_ARTIFACT_REGISTRY_REL)
+    violations = []
+
+    if not os.path.isfile(schema_path):
+        return ["{}: missing schema {}".format(invariant_id, normalize_path(DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL))]
+    if not os.path.isfile(registry_path):
+        return ["{}: missing registry {}".format(invariant_id, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL))]
+
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL))]
+
+    schema_id = str(payload.get("schema_id", "")).strip()
+    if schema_id != DERIVED_ARTIFACT_SCHEMA_ID:
+        violations.append(
+            "{}: registry schema_id mismatch in {} (found {})".format(
+                invariant_id, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL), schema_id
+            )
+        )
+
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return violations + ["{}: missing record object in {}".format(
+            invariant_id, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL)
+        )]
+
+    artifacts = record.get("artifacts")
+    if not isinstance(artifacts, list):
+        return violations + ["{}: artifacts must be a list in {}".format(
+            invariant_id, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL)
+        )]
+
+    seen_ids = set()
+    seen_paths = set()
+    for entry in artifacts:
+        if not isinstance(entry, dict):
+            violations.append("{}: non-object artifact entry in {}".format(
+                invariant_id, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL)
+            ))
+            continue
+
+        artifact_id = str(entry.get("artifact_id", "")).strip()
+        path = normalize_path(str(entry.get("path", "")).strip())
+        artifact_class = str(entry.get("artifact_class", "")).strip()
+        canonical_hash_required = entry.get("canonical_hash_required")
+        used_for_gating = entry.get("used_for_gating")
+
+        if not artifact_id:
+            violations.append("{}: artifact entry missing artifact_id in {}".format(
+                invariant_id, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL)
+            ))
+            continue
+        if artifact_id in seen_ids:
+            violations.append("{}: duplicate artifact_id '{}' in {}".format(
+                invariant_id, artifact_id, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL)
+            ))
+        seen_ids.add(artifact_id)
+
+        if not path:
+            violations.append("{}: artifact '{}' missing path".format(invariant_id, artifact_id))
+        elif path in seen_paths:
+            violations.append("{}: duplicate artifact path '{}' in {}".format(
+                invariant_id, path, normalize_path(DERIVED_ARTIFACT_REGISTRY_REL)
+            ))
+        seen_paths.add(path)
+
+        if artifact_class not in DERIVED_ARTIFACT_CLASSES:
+            violations.append("{}: artifact '{}' has invalid artifact_class '{}'".format(
+                invariant_id, artifact_id, artifact_class
+            ))
+        if not isinstance(canonical_hash_required, bool):
+            violations.append("{}: artifact '{}' canonical_hash_required must be bool".format(
+                invariant_id, artifact_id
+            ))
+        if not isinstance(used_for_gating, bool):
+            violations.append("{}: artifact '{}' used_for_gating must be bool".format(
+                invariant_id, artifact_id
+            ))
+
+        if artifact_class == "CANONICAL" and canonical_hash_required is not True:
+            violations.append("{}: artifact '{}' must require canonical hash".format(
+                invariant_id, artifact_id
+            ))
+        if artifact_class == "RUN_META" and used_for_gating is True:
+            violations.append("{}: RUN_META artifact '{}' cannot be gating input".format(
+                invariant_id, artifact_id
+            ))
+
+    missing_required_ids = sorted(set(DERIVED_ARTIFACT_REQUIRED_IDS) - seen_ids)
+    if missing_required_ids:
+        violations.append("{}: missing required artifact ids {}".format(
+            invariant_id, ", ".join(missing_required_ids)
+        ))
+
+    return violations
+
+
 def check_auditx_artifact_headers(repo_root):
     invariant_id = "INV-AUDITX-ARTIFACT-HEADERS"
     output_root = os.path.join(repo_root, "docs", "audit", "auditx")
@@ -4126,10 +4326,7 @@ def check_auditx_artifact_headers(repo_root):
         "docs/audit/auditx/FINDINGS.md",
         "docs/audit/auditx/SUMMARY.md",
     )
-    expected_json = (
-        "docs/audit/auditx/FINDINGS.json",
-        "docs/audit/auditx/INVARIANT_MAP.json",
-    )
+    expected_json = AUDITX_CANONICAL_ARTIFACTS
 
     violations = []
     for rel in expected_md:
@@ -4158,12 +4355,44 @@ def check_auditx_artifact_headers(repo_root):
         if payload is None:
             violations.append("{}: invalid json {}".format(invariant_id, rel))
             continue
-        status = str(payload.get("status", "")).strip()
-        reviewed = str(payload.get("last_reviewed", "")).strip()
-        if status != "DERIVED":
-            violations.append("{}: expected DERIVED status in {} (found {})".format(invariant_id, rel, status))
-        if not _parse_date(reviewed):
-            violations.append("{}: invalid last_reviewed '{}' in {}".format(invariant_id, reviewed, rel))
+        artifact_class = str(payload.get("artifact_class", "")).strip()
+        if artifact_class != "CANONICAL":
+            violations.append("{}: expected CANONICAL artifact_class in {} (found {})".format(
+                invariant_id, rel, artifact_class
+            ))
+
+        stack = [payload]
+        while stack:
+            node = stack.pop()
+            if isinstance(node, dict):
+                for key, value in node.items():
+                    if key in AUDITX_CANONICAL_FORBIDDEN_KEYS:
+                        violations.append("{}: forbidden run-meta key '{}' in {}".format(invariant_id, key, rel))
+                    stack.append(value)
+            elif isinstance(node, list):
+                stack.extend(node)
+
+    run_meta_path = os.path.join(repo_root, AUDITX_RUN_META_ARTIFACT.replace("/", os.sep))
+    if os.path.isfile(run_meta_path):
+        payload = _load_json_file(run_meta_path)
+        if payload is None:
+            violations.append("{}: invalid json {}".format(invariant_id, AUDITX_RUN_META_ARTIFACT))
+        else:
+            artifact_class = str(payload.get("artifact_class", "")).strip()
+            if artifact_class != "RUN_META":
+                violations.append("{}: expected RUN_META artifact_class in {} (found {})".format(
+                    invariant_id, AUDITX_RUN_META_ARTIFACT, artifact_class
+                ))
+            status = str(payload.get("status", "")).strip()
+            if status != "DERIVED":
+                violations.append("{}: expected DERIVED status in {} (found {})".format(
+                    invariant_id, AUDITX_RUN_META_ARTIFACT, status
+                ))
+            generated = str(payload.get("generated_utc", "")).strip()
+            if not generated:
+                violations.append("{}: missing generated_utc in {}".format(
+                    invariant_id, AUDITX_RUN_META_ARTIFACT
+                ))
 
     return violations
 
@@ -4260,6 +4489,7 @@ def main() -> int:
     violations.extend(check_tool_name_only(repo_root))
     violations.extend(check_tools_dir_exists(repo_root))
     violations.extend(check_tool_unresolvable(repo_root))
+    violations.extend(check_no_direct_gate_calls(repo_root))
     violations.extend(check_remediation_playbooks(repo_root))
     violations.extend(check_identity_fingerprint(repo_root))
     violations.extend(check_forbidden_enum_tokens(repo_root))
@@ -4317,6 +4547,7 @@ def main() -> int:
     violations.extend(check_process_guard_runtime_contract(repo_root))
     violations.extend(check_process_registry_immutability(repo_root))
     violations.extend(check_compliance_report_canon(repo_root))
+    violations.extend(check_derived_artifact_contract(repo_root))
     violations.extend(check_auditx_artifact_headers(repo_root))
     violations.extend(check_auditx_deterministic_contract(repo_root))
     violations.extend(check_auditx_nonruntime_leak(repo_root))

@@ -87,6 +87,13 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-NO-DIRECT-GATE-CALLS",
+      "severity": "FAIL",
+      "scope_paths": ["scripts/dev", "scripts/ci", ".github/workflows", "docs/governance", "docs/dev"],
+      "documentation": "docs/governance/REPOX_TOOL_RULES.md#inv-no-direct-gate-calls",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-REMEDIATION-PLAYBOOKS",
       "severity": "FAIL",
       "scope_paths": ["schema/governance", "data/registries/remediation_playbooks.json", "scripts/ci/check_repox_rules.py"],

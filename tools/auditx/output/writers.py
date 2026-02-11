@@ -2,11 +2,25 @@
 
 import json
 import os
+import platform
 from datetime import datetime, timezone
+
+
+CANONICAL_ARTIFACT_CLASS = "CANONICAL"
+DERIVED_VIEW_ARTIFACT_CLASS = "DERIVED_VIEW"
+RUN_META_ARTIFACT_CLASS = "RUN_META"
+
+_CANONICAL_FINDINGS_SCHEMA_ID = "dominium.auditx.findings"
+_CANONICAL_INVARIANT_MAP_SCHEMA_ID = "dominium.auditx.invariant_map"
+_CANONICAL_SCHEMA_VERSION = "1.0.0"
 
 
 def _today_utc():
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def _now_utc():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _doc_header(today):
@@ -30,7 +44,7 @@ def _ensure_output_dir(repo_root):
 
 def _write_json(path, payload):
     with open(path, "w", encoding="utf-8", newline="\n") as handle:
-        json.dump(payload, handle, indent=2, sort_keys=True)
+        json.dump(payload, handle, indent=2, sort_keys=True, ensure_ascii=True)
         handle.write("\n")
 
 
@@ -97,6 +111,47 @@ def _build_invariant_map(findings):
     return ordered
 
 
+def _canonical_findings_payload(findings, graph_hash, changed_only, scan_result):
+    return {
+        "artifact_class": CANONICAL_ARTIFACT_CLASS,
+        "schema_id": _CANONICAL_FINDINGS_SCHEMA_ID,
+        "schema_version": _CANONICAL_SCHEMA_VERSION,
+        "result": scan_result,
+        "changed_only": bool(changed_only),
+        "graph_hash": graph_hash,
+        "finding_count": len(findings),
+        "findings": findings,
+    }
+
+
+def _canonical_invariant_map_payload(invariants):
+    return {
+        "artifact_class": CANONICAL_ARTIFACT_CLASS,
+        "schema_id": _CANONICAL_INVARIANT_MAP_SCHEMA_ID,
+        "schema_version": _CANONICAL_SCHEMA_VERSION,
+        "invariants": invariants,
+    }
+
+
+def _run_meta_payload(graph_hash, changed_only, output_format, scan_result, run_meta=None):
+    payload = {
+        "artifact_class": RUN_META_ARTIFACT_CLASS,
+        "status": "DERIVED",
+        "last_reviewed": _today_utc(),
+        "generated_utc": _now_utc(),
+        "result": scan_result,
+        "changed_only": bool(changed_only),
+        "output_format": output_format,
+        "graph_hash": graph_hash,
+        "python_version": platform.python_version(),
+        "platform": platform.system().lower(),
+    }
+    if isinstance(run_meta, dict):
+        for key in sorted(run_meta.keys()):
+            payload[key] = run_meta[key]
+    return payload
+
+
 def _render_findings_md(findings, today):
     lines = [_doc_header(today), "# AuditX Findings", "", "## Summary", ""]
     lines.append("- Total findings: {}".format(len(findings)))
@@ -150,9 +205,10 @@ def _write_readme_if_missing(output_dir, today):
     content = _doc_header(today) + (
         "# AuditX Artifacts\n\n"
         "- `FINDINGS.json`: canonical machine-readable findings payload.\n"
-        "- `FINDINGS.md`: human-readable summarized findings.\n"
-        "- `SUMMARY.md`: count rollups by severity and category.\n"
-        "- `INVARIANT_MAP.json`: invariant mapping and coverage hints.\n"
+        "- `INVARIANT_MAP.json`: canonical invariant mapping payload.\n"
+        "- `RUN_META.json`: non-canonical run metadata (timestamps and host info).\n"
+        "- `FINDINGS.md`: derived view summary for humans.\n"
+        "- `SUMMARY.md`: derived count rollups for humans.\n"
     )
     _write_text(readme, content)
 
@@ -164,42 +220,55 @@ def write_reports(
     changed_only,
     output_format,
     scan_result="scan_complete",
+    run_meta=None,
 ):
     today = _today_utc()
     output_dir = _ensure_output_dir(repo_root)
     _write_readme_if_missing(output_dir, today)
 
-    findings_payload = {
-        "status": "DERIVED",
-        "last_reviewed": today,
-        "result": scan_result,
-        "changed_only": bool(changed_only),
-        "graph_hash": graph_hash,
-        "finding_count": len(findings),
-        "findings": findings,
-    }
+    invariants = _build_invariant_map(findings)
+    findings_payload = _canonical_findings_payload(findings, graph_hash, changed_only, scan_result)
+    invariant_payload = _canonical_invariant_map_payload(invariants)
+    run_meta_payload = _run_meta_payload(
+        graph_hash=graph_hash,
+        changed_only=changed_only,
+        output_format=output_format,
+        scan_result=scan_result,
+        run_meta=run_meta,
+    )
+
     _write_json(os.path.join(output_dir, "FINDINGS.json"), findings_payload)
-
-    invariant_payload = {
-        "status": "DERIVED",
-        "last_reviewed": today,
-        "invariants": _build_invariant_map(findings),
-    }
     _write_json(os.path.join(output_dir, "INVARIANT_MAP.json"), invariant_payload)
+    _write_json(os.path.join(output_dir, "RUN_META.json"), run_meta_payload)
 
-    findings_md = _render_findings_md(findings, today)
-    summary_md = _render_summary_md(findings, today)
-    _write_text(os.path.join(output_dir, "FINDINGS.md"), findings_md)
-    _write_text(os.path.join(output_dir, "SUMMARY.md"), summary_md)
+    if output_format in ("md", "both"):
+        findings_md = _render_findings_md(findings, today)
+        summary_md = _render_summary_md(findings, today)
+        _write_text(os.path.join(output_dir, "FINDINGS.md"), findings_md)
+        _write_text(os.path.join(output_dir, "SUMMARY.md"), summary_md)
+
+    written = [
+        "docs/audit/auditx/FINDINGS.json",
+        "docs/audit/auditx/INVARIANT_MAP.json",
+        "docs/audit/auditx/RUN_META.json",
+    ]
+    if output_format in ("md", "both"):
+        written.extend(
+            (
+                "docs/audit/auditx/FINDINGS.md",
+                "docs/audit/auditx/SUMMARY.md",
+            )
+        )
 
     return {
+        "artifact_classes": {
+            "FINDINGS.json": CANONICAL_ARTIFACT_CLASS,
+            "INVARIANT_MAP.json": CANONICAL_ARTIFACT_CLASS,
+            "RUN_META.json": RUN_META_ARTIFACT_CLASS,
+            "FINDINGS.md": DERIVED_VIEW_ARTIFACT_CLASS,
+            "SUMMARY.md": DERIVED_VIEW_ARTIFACT_CLASS,
+        },
         "output_dir": output_dir.replace("\\", "/"),
         "output_format": output_format,
-        "written": [
-            "docs/audit/auditx/FINDINGS.json",
-            "docs/audit/auditx/FINDINGS.md",
-            "docs/audit/auditx/SUMMARY.md",
-            "docs/audit/auditx/INVARIANT_MAP.json",
-        ],
+        "written": written,
     }
-

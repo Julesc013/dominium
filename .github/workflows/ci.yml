@@ -183,10 +183,10 @@ for tool in required:
 PY
 
       - name: Test
-        run: ctest --test-dir build/${{ matrix.name }} --output-on-failure ${{ matrix.ctest_args }}
+        run: python scripts/dev/run_testx.py --repo-root . --test-dir build/${{ matrix.name }} --output-on-failure --extra-args "${{ matrix.ctest_args }}"
 
       - name: Kernel smoke tests
-        run: ctest --test-dir build/${{ matrix.name }} --output-on-failure -R "dominium_layer_checks|launcher_kernel_smoke|setup_kernel_smoke"
+        run: python scripts/dev/run_testx.py --repo-root . --test-dir build/${{ matrix.name }} --output-on-failure --include-regex "dominium_layer_checks|launcher_kernel_smoke|setup_kernel_smoke"
 
       - name: Launcher CLI smoke (ui/gfx matrix)
         run: python setup/packages/scripts/ci/launcher_cli_smoke_matrix.py --build-dir build/${{ matrix.name }}
@@ -294,7 +294,7 @@ for tool in required:
 PY
 
       - name: Test
-        run: ctest --test-dir build/${{ matrix.name }} --output-on-failure ${{ matrix.ctest_args }}
+        run: python scripts/dev/run_testx.py --repo-root . --test-dir build/${{ matrix.name }} --output-on-failure --extra-args "${{ matrix.ctest_args }}"
 
       - name: Upload test artifacts
         if: always()
