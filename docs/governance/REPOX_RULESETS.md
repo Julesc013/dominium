@@ -69,6 +69,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-TOOL-UNRESOLVABLE`
 - `INV-NO-DIRECT-GATE-CALLS`
 - `INV-REMEDIATION-PLAYBOOKS`
+- `INV-FAILURE-CLASS-COVERAGE`
 - `INV-IDENTITY-FINGERPRINT`
 - `INV-IDENTITY-CHANGE-EXPLANATION`
 - `INV-DET-NO-ANON-RNG`
@@ -161,6 +162,13 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when remediation playbook schema/registry are missing or invalid.
 - Fails when required blocker playbooks are missing.
 - Enforces deterministic strategy class declarations for autonomous gate remediation.
+
+### INV-FAILURE-CLASS-COVERAGE
+
+- Fails when failure-class schema or registry is missing or malformed.
+- Fails when failure classes reference unknown remediation playbooks.
+- Fails when failure classes are missing regression tests or explanation docs.
+- Fails when listed regression test names are not present in canonical TestX CMake registrations.
 
 ### INV-IDENTITY-FINGERPRINT
 

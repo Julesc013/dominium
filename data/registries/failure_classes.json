@@ -1,0 +1,121 @@
+{
+  "schema_id": "dominium.schema.governance.failure_classes",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.failure_classes",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.failure_classes@1.0.0",
+    "classes": [
+      {
+        "failure_class_id": "fail.blocker.tool_discovery",
+        "blocker_type": "TOOL_DISCOVERY",
+        "remediation_playbook_id": "dominium.playbook.tool_discovery",
+        "regression_tests": [
+          "historical_blocker_tool_discovery",
+          "test_testx_empty_path",
+          "test_testx_arbitrary_cwd"
+        ],
+        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#tool_discovery",
+        "severity": "fail",
+        "mechanical": true,
+        "extensions": {}
+      },
+      {
+        "failure_class_id": "fail.blocker.derived_artifact_stale",
+        "blocker_type": "DERIVED_ARTIFACT_STALE",
+        "remediation_playbook_id": "dominium.playbook.derived_artifact_stale",
+        "regression_tests": [
+          "historical_blocker_derived_nondeterminism",
+          "test_canonical_artifact_hash_stability",
+          "test_no_timestamp_in_canonical"
+        ],
+        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#derived_artifact_stale",
+        "severity": "fail",
+        "mechanical": true,
+        "extensions": {}
+      },
+      {
+        "failure_class_id": "fail.blocker.schema_mismatch",
+        "blocker_type": "SCHEMA_MISMATCH",
+        "remediation_playbook_id": "dominium.playbook.schema_mismatch",
+        "regression_tests": [
+          "compatx_schema_diff_tests",
+          "compatx_migration_tests"
+        ],
+        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#schema_mismatch",
+        "severity": "fail",
+        "mechanical": true,
+        "extensions": {}
+      },
+      {
+        "failure_class_id": "fail.blocker.ui_bind_drift",
+        "blocker_type": "UI_BIND_DRIFT",
+        "remediation_playbook_id": "dominium.playbook.ui_bind_drift",
+        "regression_tests": [
+          "historical_blocker_direct_gate_invocation"
+        ],
+        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#ui_bind_drift",
+        "severity": "fail",
+        "mechanical": true,
+        "extensions": {}
+      },
+      {
+        "failure_class_id": "fail.blocker.build_output_missing",
+        "blocker_type": "BUILD_OUTPUT_MISSING",
+        "remediation_playbook_id": "dominium.playbook.build_output_missing",
+        "regression_tests": [
+          "queue_continue_tests",
+          "controlx_smoke"
+        ],
+        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#build_output_missing",
+        "severity": "fail",
+        "mechanical": true,
+        "extensions": {}
+      },
+      {
+        "failure_class_id": "fail.blocker.path_cwd_dependency",
+        "blocker_type": "PATH_CWD_DEPENDENCY",
+        "remediation_playbook_id": "dominium.playbook.path_cwd_dependency",
+        "regression_tests": [
+          "test_auditx_empty_path",
+          "test_auditx_arbitrary_cwd",
+          "test_performx_empty_path",
+          "test_performx_arbitrary_cwd"
+        ],
+        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#path_cwd_dependency",
+        "severity": "fail",
+        "mechanical": true,
+        "extensions": {}
+      },
+      {
+        "failure_class_id": "fail.blocker.workspace_collision",
+        "blocker_type": "WORKSPACE_COLLISION",
+        "remediation_playbook_id": "dominium.playbook.workspace_collision",
+        "regression_tests": [
+          "test_workspace_isolation_build",
+          "test_workspace_isolation_dist",
+          "performx_workspace_isolation",
+          "workspace_isolation_tests"
+        ],
+        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#workspace_collision",
+        "severity": "fail",
+        "mechanical": true,
+        "extensions": {}
+      },
+      {
+        "failure_class_id": "fail.blocker.identity_drift",
+        "blocker_type": "IDENTITY_DRIFT",
+        "remediation_playbook_id": "dominium.playbook.doc_canon_drift",
+        "regression_tests": [
+          "historical_blocker_identity_drift",
+          "test_identity_explanation_required"
+        ],
+        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#identity_drift",
+        "severity": "fail",
+        "mechanical": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

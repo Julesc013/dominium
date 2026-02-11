@@ -284,6 +284,9 @@ REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
     "WORKSPACE_COLLISION",
     "VERSIONING_POLICY_MISMATCH",
 )
+FAILURE_CLASS_SCHEMA_REL = os.path.join("schema", "governance", "failure_classes.schema")
+FAILURE_CLASS_REGISTRY_REL = os.path.join("data", "registries", "failure_classes.json")
+FAILURE_CLASS_SCHEMA_ID = "dominium.schema.governance.failure_classes"  # schema_version: 1.0.0
 
 COMPAT_MATRIX_SCHEMA_REL = os.path.join("schema", "governance", "compat_matrix.schema")
 COMPAT_MATRIX_REGISTRY_REL = os.path.join("data", "registries", "compat_matrix.json")
@@ -3801,6 +3804,111 @@ def check_remediation_playbooks(repo_root):
     return violations
 
 
+def _collect_testx_names(repo_root):
+    cmake_paths = (
+        os.path.join(repo_root, "tests", "invariant", "CMakeLists.txt"),
+        os.path.join(repo_root, "tests", "tools", "CMakeLists.txt"),
+        os.path.join(repo_root, "tests", "regression", "historical_blockers", "CMakeLists.txt"),
+    )
+    names = set()
+    marker = "dom_add_testx(NAME "
+    for path in cmake_paths:
+        text = read_text(path)
+        if not text:
+            continue
+        offset = 0
+        while True:
+            idx = text.find(marker, offset)
+            if idx < 0:
+                break
+            start = idx + len(marker)
+            end = text.find("\n", start)
+            if end < 0:
+                break
+            token = text[start:end].strip().split()
+            if token:
+                names.add(token[0])
+            offset = end + 1
+    return names
+
+
+def check_failure_class_registry(repo_root):
+    invariant_id = "INV-FAILURE-CLASS-COVERAGE"
+    schema_path = os.path.join(repo_root, FAILURE_CLASS_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, FAILURE_CLASS_REGISTRY_REL)
+    playbook_path = os.path.join(repo_root, REMEDIATION_PLAYBOOK_REGISTRY_REL)
+    violations = []
+
+    if not os.path.isfile(schema_path):
+        return ["{}: missing schema {}".format(invariant_id, normalize_path(FAILURE_CLASS_SCHEMA_REL))]
+    if not os.path.isfile(registry_path):
+        return ["{}: missing registry {}".format(invariant_id, normalize_path(FAILURE_CLASS_REGISTRY_REL))]
+    if not os.path.isfile(playbook_path):
+        return ["{}: missing playbook registry {}".format(invariant_id, normalize_path(REMEDIATION_PLAYBOOK_REGISTRY_REL))]
+
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(FAILURE_CLASS_REGISTRY_REL))]
+    if str(payload.get("schema_id", "")).strip() != FAILURE_CLASS_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, normalize_path(FAILURE_CLASS_REGISTRY_REL)))
+
+    playbook_payload = _load_json_file(playbook_path)
+    if not isinstance(playbook_payload, dict):
+        return violations + ["{}: invalid json {}".format(invariant_id, normalize_path(REMEDIATION_PLAYBOOK_REGISTRY_REL))]
+    playbook_rows = playbook_payload.get("record", {}).get("playbooks", [])
+    playbook_ids = set()
+    for row in playbook_rows if isinstance(playbook_rows, list) else []:
+        if isinstance(row, dict):
+            playbook_ids.add(str(row.get("playbook_id", "")).strip())
+
+    rows = payload.get("record", {}).get("classes", [])
+    if not isinstance(rows, list) or not rows:
+        return violations + ["{}: classes list missing or empty".format(invariant_id)]
+
+    known_tests = _collect_testx_names(repo_root)
+    seen_ids = set()
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append("{}: class {} is not an object".format(invariant_id, idx))
+            continue
+        failure_class_id = str(row.get("failure_class_id", "")).strip()
+        playbook_id = str(row.get("remediation_playbook_id", "")).strip()
+        explanation_doc = str(row.get("explanation_doc", "")).strip()
+        tests = row.get("regression_tests")
+
+        if not failure_class_id:
+            violations.append("{}: class {} missing failure_class_id".format(invariant_id, idx))
+            continue
+        if failure_class_id in seen_ids:
+            violations.append("{}: duplicate failure_class_id {}".format(invariant_id, failure_class_id))
+        seen_ids.add(failure_class_id)
+
+        if not playbook_id:
+            violations.append("{}: {} missing remediation_playbook_id".format(invariant_id, failure_class_id))
+        elif playbook_id not in playbook_ids:
+            violations.append("{}: {} references unknown playbook {}".format(invariant_id, failure_class_id, playbook_id))
+
+        if not explanation_doc:
+            violations.append("{}: {} missing explanation_doc".format(invariant_id, failure_class_id))
+        else:
+            doc_path = explanation_doc.split("#", 1)[0].strip()
+            if doc_path:
+                abs_doc = os.path.join(repo_root, doc_path.replace("/", os.sep))
+                if not os.path.isfile(abs_doc):
+                    violations.append("{}: {} explanation_doc not found {}".format(invariant_id, failure_class_id, explanation_doc))
+
+        if not isinstance(tests, list) or not [item for item in tests if str(item).strip()]:
+            violations.append("{}: {} missing regression_tests".format(invariant_id, failure_class_id))
+        else:
+            for test_name in tests:
+                token = str(test_name).strip()
+                if token and token not in known_tests:
+                    violations.append("{}: {} references unknown regression test {}".format(
+                        invariant_id, failure_class_id, token
+                    ))
+    return violations
+
+
 def check_identity_fingerprint(repo_root):
     invariant_id = "INV-IDENTITY-FINGERPRINT"
     explain_id = "INV-IDENTITY-CHANGE-EXPLANATION"
@@ -5072,6 +5180,7 @@ def main() -> int:
     violations.extend(check_tool_unresolvable(repo_root))
     violations.extend(check_no_direct_gate_calls(repo_root))
     violations.extend(check_remediation_playbooks(repo_root))
+    violations.extend(check_failure_class_registry(repo_root))
     violations.extend(check_identity_fingerprint(repo_root))
     violations.extend(check_forbidden_enum_tokens(repo_root))
     violations.extend(check_raw_paths(repo_root))

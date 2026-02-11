@@ -157,3 +157,78 @@ dom_add_testx(NAME invariant_srz_execution_modes
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME test_manifest_selection_logic
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/testx_manifest_selection_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case selection_logic
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_manifest_fallback_when_missing
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/testx_manifest_selection_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case fallback_when_missing
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_canonical_artifact_hash_stability
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/derived_artifact_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case hash_stability
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_no_timestamp_in_canonical
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/derived_artifact_contract_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case no_timestamp
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_workspace_isolation_build
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/workspace_isolation_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case build
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_workspace_isolation_dist
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/workspace_isolation_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case dist
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_no_global_write
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/workspace_isolation_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case no_global_write
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_testx_empty_path
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/testx_environment_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case empty_path
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_testx_arbitrary_cwd
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/testx_environment_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case arbitrary_cwd
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME no_git_status_determinism_tests
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/no_git_status_determinism_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME failure_class_registry_tests
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/failure_class_registry_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
