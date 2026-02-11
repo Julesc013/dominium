@@ -7,7 +7,7 @@ import os
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
-EXPECTED_SCHEMA_ID = "dominium.schema.governance.compat_matrix"
+EXPECTED_SCHEMA_ID = "dominium.schema.governance.compat_matrix"  # schema_version: 1.0.0
 COMPATIBILITY_TYPES = {"forward", "backward", "full", "none"}
 COMPONENT_TYPES = {"schema", "pack", "save", "replay", "protocol", "api", "abi", "identity"}
 

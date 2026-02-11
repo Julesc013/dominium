@@ -9,7 +9,7 @@ import os
 from typing import Any, Dict, Iterable, List, Tuple
 
 
-EXPECTED_SCHEMA_ID = "dominium.schema.governance.migration_spec"
+EXPECTED_SCHEMA_ID = "dominium.schema.governance.migration_spec"  # schema_version: 1.0.0
 
 
 def _parse_semver(value: Any) -> Tuple[int, int, int] | None:
@@ -168,4 +168,3 @@ def migration_tool_exists(repo_root: str, migration_tool: str) -> bool:
     rel = value.split("::", 1)[0]
     candidate = os.path.join(repo_root, rel.replace("/", os.sep))
     return os.path.isfile(candidate)
-

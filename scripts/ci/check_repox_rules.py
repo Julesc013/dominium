@@ -287,13 +287,13 @@ REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
 
 COMPAT_MATRIX_SCHEMA_REL = os.path.join("schema", "governance", "compat_matrix.schema")
 COMPAT_MATRIX_REGISTRY_REL = os.path.join("data", "registries", "compat_matrix.json")
-COMPAT_MATRIX_SCHEMA_ID = "dominium.schema.governance.compat_matrix"
+COMPAT_MATRIX_SCHEMA_ID = "dominium.schema.governance.compat_matrix"  # schema_version: 1.0.0
 COMPAT_MIGRATION_SCHEMA_REL = os.path.join("schema", "governance", "migration_spec.schema")
 COMPAT_MIGRATION_REGISTRY_REL = os.path.join("data", "registries", "migrations.json")
-COMPAT_MIGRATION_SCHEMA_ID = "dominium.schema.governance.migration_spec"
+COMPAT_MIGRATION_SCHEMA_ID = "dominium.schema.governance.migration_spec"  # schema_version: 1.0.0
 COMPAT_SCHEMA_POLICY_SCHEMA_REL = os.path.join("schema", "governance", "schema_version_policy.schema")
 COMPAT_SCHEMA_POLICY_REGISTRY_REL = os.path.join("data", "registries", "schema_version_policy.json")
-COMPAT_SCHEMA_POLICY_SCHEMA_ID = "dominium.schema.governance.schema_version_policy"
+COMPAT_SCHEMA_POLICY_SCHEMA_ID = "dominium.schema.governance.schema_version_policy"  # schema_version: 1.0.0
 
 BUILD_PRESET_CONTRACT_CONFIGURE = (
     "msvc-dev-debug",
