@@ -257,7 +257,7 @@ IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.j
 IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
 DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL = os.path.join("schema", "governance", "derived_artifact_contract.schema")
 DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
-DERIVED_ARTIFACT_SCHEMA_ID = "dominium.schema.governance.derived_artifact_contract"
+DERIVED_ARTIFACT_SCHEMA_ID = "dominium.schema.governance.derived_artifact_contract"  # schema_version: 1.0.0
 DERIVED_ARTIFACT_CLASSES = ("CANONICAL", "DERIVED_VIEW", "RUN_META")
 DERIVED_ARTIFACT_REQUIRED_IDS = (
     "artifact.auditx.findings",
