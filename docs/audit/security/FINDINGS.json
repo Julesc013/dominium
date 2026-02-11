@@ -1,0 +1,146 @@
+{
+  "artifact_class": "CANONICAL",
+  "record": {
+    "extensions": {},
+    "finding_set_id": "securex.findings",
+    "findings": [
+      {
+        "category": "boundary_io",
+        "confidence": 0.6,
+        "evidence": "direct file I/O token in client/render path",
+        "finding_id": "SECUREX:0001",
+        "path": "client/app/main_client.c",
+        "severity": "WARN"
+      },
+      {
+        "category": "boundary_io",
+        "confidence": 0.6,
+        "evidence": "direct file I/O token in client/render path",
+        "finding_id": "SECUREX:0002",
+        "path": "client/core/client_command_bridge.c",
+        "severity": "WARN"
+      },
+      {
+        "category": "boundary_io",
+        "confidence": 0.6,
+        "evidence": "direct file I/O token in client/render path",
+        "finding_id": "SECUREX:0003",
+        "path": "client/core/client_state_machine.c",
+        "severity": "WARN"
+      },
+      {
+        "category": "boundary_io",
+        "confidence": 0.6,
+        "evidence": "direct file I/O token in client/render path",
+        "finding_id": "SECUREX:0004",
+        "path": "client/core/client_state_machine.h",
+        "severity": "WARN"
+      },
+      {
+        "category": "boundary_io",
+        "confidence": 0.6,
+        "evidence": "direct file I/O token in client/render path",
+        "finding_id": "SECUREX:0005",
+        "path": "client/core/session_artifacts.c",
+        "severity": "WARN"
+      },
+      {
+        "category": "boundary_io",
+        "confidence": 0.6,
+        "evidence": "direct file I/O token in client/render path",
+        "finding_id": "SECUREX:0006",
+        "path": "client/core/session_artifacts.h",
+        "severity": "WARN"
+      },
+      {
+        "category": "boundary_io",
+        "confidence": 0.6,
+        "evidence": "direct file I/O token in client/render path",
+        "finding_id": "SECUREX:0007",
+        "path": "client/shell/client_shell.c",
+        "severity": "WARN"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "bypass_law_profile",
+        "finding_id": "SECUREX:0008",
+        "path": "tools/auditx/analyzers/c1_security_boundary.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "bypass_law_profile",
+        "finding_id": "SECUREX:0011",
+        "path": "tools/securex/core/boundary_validator.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "bypass_law_profile",
+        "finding_id": "SECUREX:0014",
+        "path": "tools/securex/securex.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "disable_epistemic_guard",
+        "finding_id": "SECUREX:0009",
+        "path": "tools/auditx/analyzers/c1_security_boundary.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "disable_epistemic_guard",
+        "finding_id": "SECUREX:0012",
+        "path": "tools/securex/core/boundary_validator.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "disable_epistemic_guard",
+        "finding_id": "SECUREX:0015",
+        "path": "tools/securex/securex.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "override_authority_state",
+        "finding_id": "SECUREX:0010",
+        "path": "tools/auditx/analyzers/c1_security_boundary.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "override_authority_state",
+        "finding_id": "SECUREX:0013",
+        "path": "tools/securex/core/boundary_validator.py",
+        "severity": "VIOLATION"
+      },
+      {
+        "category": "privilege_bypass",
+        "confidence": 0.9,
+        "evidence": "override_authority_state",
+        "finding_id": "SECUREX:0016",
+        "path": "tools/securex/securex.py",
+        "severity": "VIOLATION"
+      }
+    ],
+    "summary": {
+      "by_category": {
+        "boundary_io": 7,
+        "privilege_bypass": 9
+      },
+      "total": 16
+    }
+  },
+  "schema_id": "dominium.schema.governance.securex_findings",
+  "schema_version": "1.0.0"
+}
