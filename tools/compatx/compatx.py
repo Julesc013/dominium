@@ -162,7 +162,7 @@ def _build_baseline_payload(
     )
     return {
         "artifact_class": "CANONICAL",
-        "schema_id": "dominium.schema.governance.compat_matrix",
+        "schema_id": "dominium.schema.governance.compat_matrix",  # schema_version: 1.0.0
         "schema_version": "1.0.0",
         "record": {
             "baseline_id": "compatx.baseline",
@@ -410,4 +410,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
