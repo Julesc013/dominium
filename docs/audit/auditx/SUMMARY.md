@@ -10,7 +10,8 @@ Superseded By: none
 
 - INFO: 200
 - RISK: 169
-- WARN: 730
+- VIOLATION: 1
+- WARN: 856
 
 ## Counts By Category
 
@@ -21,4 +22,8 @@ Superseded By: none
 - ownership_boundary: 4
 - reachability: 80
 - schema_usage: 160
+- semantic.capability_drift: 5
+- semantic.derived_artifact_contract: 1
+- semantic.schema_shadowing: 120
+- semantic.workspace_contamination: 1
 - ui_parity: 31

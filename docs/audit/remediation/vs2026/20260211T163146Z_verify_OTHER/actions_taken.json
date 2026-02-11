@@ -1,0 +1,43 @@
+{
+  "actions": [
+    {
+      "note": "canonical environment refreshed",
+      "status": "applied",
+      "strategy": "environment",
+      "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools"
+    },
+    {
+      "applied_strategy": "environment",
+      "returncode": 1,
+      "score_after": 1011,
+      "score_before": 1011,
+      "stage": "repox.precheck",
+      "strategy": "verify_after_strategy"
+    },
+    {
+      "command": [
+        "cmake",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "ui_bind_phase"
+      ],
+      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  appcore.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\appcore.lib\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  domino_ui_ir.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_ui_ir.lib\n  tool_ui_bind.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\dist\\sys\\winnt\\x64\\bin\\tools\\tool_ui_bind.exe\n",
+      "returncode": 0,
+      "strategy": "build_wiring",
+      "targets": [
+        "ui_bind_phase"
+      ]
+    },
+    {
+      "applied_strategy": "build_wiring",
+      "returncode": 1,
+      "score_after": 1011,
+      "score_before": 1011,
+      "stage": "repox.precheck",
+      "strategy": "verify_after_strategy"
+    }
+  ]
+}

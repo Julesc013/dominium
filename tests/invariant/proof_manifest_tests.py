@@ -15,7 +15,7 @@ def parse_args():
     parser.add_argument("--repo-root", default=".")
     parser.add_argument(
         "--manifest",
-        default=os.path.join("build", "proof_manifests", "repox_proof_manifest.json"),
+        default=os.path.join("docs", "audit", "proof_manifest.json"),
     )
     return parser.parse_args()
 
@@ -56,24 +56,38 @@ def main():
     if payload.get("schema_version") != "1.0.0":
         return fail("schema_version mismatch in proof manifest")
 
-    required_tests = payload.get("required_tests")
-    available_tests = payload.get("available_testx_tests")
-    focused_subset = payload.get("focused_test_subset")
-    if not isinstance(required_tests, list):
-        return fail("required_tests must be a list")
-    if not isinstance(available_tests, list):
-        return fail("available_testx_tests must be a list")
-    if not isinstance(focused_subset, list):
-        return fail("focused_test_subset must be a list")
+    changed_paths = payload.get("changed_paths")
+    impacted_subsystems = payload.get("impacted_subsystems")
+    impacted_invariants = payload.get("impacted_invariants")
+    required_test_tags = payload.get("required_test_tags")
+    if not isinstance(changed_paths, list):
+        return fail("changed_paths must be a list")
+    if not isinstance(impacted_subsystems, list):
+        return fail("impacted_subsystems must be a list")
+    if not isinstance(impacted_invariants, list):
+        return fail("impacted_invariants must be a list")
+    if not isinstance(required_test_tags, list) or not required_test_tags:
+        return fail("required_test_tags must be a non-empty list")
 
-    available = set(available_tests)
-    missing = sorted(test for test in required_tests if test not in available)
-    if missing:
-        return fail("required proof tests missing from TestX registration: {}".format(", ".join(missing)))
+    required_tests = payload.get("required_tests", [])
+    available_tests = payload.get("available_testx_tests", [])
+    focused_subset = payload.get("focused_test_subset", [])
+    if required_tests and not isinstance(required_tests, list):
+        return fail("required_tests must be a list when present")
+    if available_tests and not isinstance(available_tests, list):
+        return fail("available_testx_tests must be a list when present")
+    if focused_subset and not isinstance(focused_subset, list):
+        return fail("focused_test_subset must be a list when present")
 
-    subset_missing = sorted(test for test in focused_subset if test not in available)
-    if subset_missing:
-        return fail("focused_test_subset includes unknown tests: {}".format(", ".join(subset_missing)))
+    if isinstance(required_tests, list) and isinstance(available_tests, list) and available_tests:
+        available = set(available_tests)
+        missing = sorted(test for test in required_tests if test not in available)
+        if missing:
+            return fail("required proof tests missing from TestX registration: {}".format(", ".join(missing)))
+
+        subset_missing = sorted(test for test in focused_subset if test not in available)
+        if subset_missing:
+            return fail("focused_test_subset includes unknown tests: {}".format(", ".join(subset_missing)))
 
     required_caps = payload.get("required_capability_checks")
     required_refusals = payload.get("required_refusal_codes")

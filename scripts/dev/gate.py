@@ -559,8 +559,12 @@ def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted, ver
             targets = ("dist_all",)
         elif "dist" in stage_lower:
             targets = ("dist_all",)
+        elif "testx.fast" in stage_lower:
+            targets = ("testx_fast",)
+        elif "testx.dist" in stage_lower:
+            targets = ("testx_dist",)
         elif "testx" in stage_lower:
-            targets = ("testx_all",)
+            targets = ("testx_verify",)
         elif "build" in stage_lower or "toolchain" in stage_lower:
             targets = ("domino_engine", "dominium_game", "dominium_client")
         else:
@@ -987,31 +991,36 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
         return 0 if ok else 2
 
     precheck_targets = ("domino_engine", "dominium_game")
-    exit_targets = ("domino_engine", "dominium_game", "dominium_client", "testx_all")
+    dev_targets = ("domino_engine", "dominium_game", "testx_fast")
+    verify_targets = ("domino_engine", "dominium_game", "dominium_client", "testx_verify")
+    dist_targets = ("domino_engine", "dominium_game", "dominium_client", "testx_dist", "dist_all")
     if gate_kind == "precheck":
         phase_specs = [(("PRECHECK_MIN",), precheck_targets)]
     elif gate_kind == "taskcheck":
-        phase_specs = [(("TASK_DEPENDENCY",), exit_targets)]
+        phase_specs = [(("TASK_DEPENDENCY",), verify_targets)]
     elif gate_kind == "exitcheck":
-        phase_specs = [(("TASK_DEPENDENCY", "EXIT_STRICT"), exit_targets)]
+        phase_specs = [(("TASK_DEPENDENCY", "EXIT_STRICT"), verify_targets)]
     elif gate_kind == "dev":
-        phase_specs = [(("PRECHECK_MIN",), precheck_targets)]
+        phase_specs = [
+            (("PRECHECK_MIN",), precheck_targets),
+            (("TASK_DEPENDENCY",), dev_targets),
+        ]
     elif gate_kind == "verify":
         phase_specs = [
             (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY",), exit_targets),
-            (("EXIT_STRICT",), exit_targets),
+            (("TASK_DEPENDENCY",), verify_targets),
+            (("EXIT_STRICT",), verify_targets),
         ]
     elif gate_kind == "dist":
         phase_specs = [
             (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY",), tuple(list(exit_targets) + ["dist_all"])),
-            (("EXIT_STRICT",), tuple(list(exit_targets) + ["dist_all"])),
+            (("TASK_DEPENDENCY",), dist_targets),
+            (("EXIT_STRICT",), dist_targets),
         ]
     elif gate_kind == "remediate":
         phase_specs = [
             (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY", "EXIT_STRICT"), exit_targets),
+            (("TASK_DEPENDENCY", "EXIT_STRICT"), verify_targets),
         ]
     else:
         raise RuntimeError("unsupported gate command {}".format(gate_kind))

@@ -8,6 +8,15 @@ from analyzers import a5_capability_misuse
 from analyzers import a6_ui_parity_bypass
 from analyzers import a7_legacy_contamination
 from analyzers import a8_derived_freshness_smell
+from analyzers import b1_duplicate_concept
+from analyzers import b2_schema_shadowing
+from analyzers import b3_capability_drift
+from analyzers import b4_derived_artifact_contract
+from analyzers import b5_cross_pack_entropy
+from analyzers import b6_prompt_drift
+from analyzers import b7_workspace_contamination
+from analyzers import b8_blocker_recurrence
+from analyzers import c1_security_boundary
 
 
 ANALYZERS = (
@@ -19,6 +28,15 @@ ANALYZERS = (
     a6_ui_parity_bypass,
     a7_legacy_contamination,
     a8_derived_freshness_smell,
+    b1_duplicate_concept,
+    b2_schema_shadowing,
+    b3_capability_drift,
+    b4_derived_artifact_contract,
+    b5_cross_pack_entropy,
+    b6_prompt_drift,
+    b7_workspace_contamination,
+    b8_blocker_recurrence,
+    c1_security_boundary,
 )
 
 

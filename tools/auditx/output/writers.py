@@ -1,9 +1,12 @@
 """AuditX deterministic report writers."""
 
+import hashlib
 import json
 import os
 import platform
 from datetime import datetime, timezone
+
+from canonicalize import canonical_json_string, canonicalize_json_payload
 
 
 CANONICAL_ARTIFACT_CLASS = "CANONICAL"
@@ -12,6 +15,8 @@ RUN_META_ARTIFACT_CLASS = "RUN_META"
 
 _CANONICAL_FINDINGS_SCHEMA_ID = "dominium.auditx.findings"
 _CANONICAL_INVARIANT_MAP_SCHEMA_ID = "dominium.auditx.invariant_map"
+_CANONICAL_PROMOTION_SCHEMA_ID = "dominium.auditx.promotion_candidates"
+_CANONICAL_TRENDS_SCHEMA_ID = "dominium.auditx.trends"
 _CANONICAL_SCHEMA_VERSION = "1.0.0"
 
 
@@ -111,8 +116,152 @@ def _build_invariant_map(findings):
     return ordered
 
 
+def _build_promotion_candidates(findings):
+    candidates = {}
+    severity_weight = {"INFO": 0.25, "WARN": 0.5, "RISK": 0.75, "VIOLATION": 1.0}
+    for finding in findings:
+        severity = str(finding.get("severity", "INFO"))
+        confidence = float(finding.get("confidence", 0.0) or 0.0)
+        if severity not in ("RISK", "VIOLATION"):
+            continue
+        if confidence < 0.70:
+            continue
+
+        invariants = finding.get("related_invariants") or []
+        category = str(finding.get("category", "general"))
+        anchor = invariants[0] if invariants else category
+        suggested_ruleset = "core.json"
+        if category.startswith("workspace"):
+            suggested_ruleset = "workspace.json"
+        elif category.startswith("prompt") or category.startswith("docs"):
+            suggested_ruleset = "prompt_policy.json"
+        elif category.startswith("derived"):
+            suggested_ruleset = "derived.json"
+        elif category.startswith("tool"):
+            suggested_ruleset = "tooling.json"
+        elif category.startswith("identity"):
+            suggested_ruleset = "identity.json"
+
+        rule_type = "INVARIANT_HARDEN"
+        if str(finding.get("recommended_action", "")) == "ADD_TEST":
+            rule_type = "TEST_REGRESSION"
+
+        key = "{}::{}::{}".format(rule_type, suggested_ruleset, anchor)
+        record = candidates.setdefault(
+            key,
+            {
+                "rule_type": rule_type,
+                "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+                "evidence_paths": set(),
+                "suggested_ruleset": suggested_ruleset,
+                "risk_score": 0.0,
+            },
+        )
+        paths = set(finding.get("related_paths") or [])
+        location_file = str(finding.get("location", {}).get("file", "")).strip()
+        if location_file:
+            paths.add(location_file)
+        record["evidence_paths"].update(path for path in paths if path)
+        score = round(confidence * severity_weight.get(severity, 0.25), 4)
+        if score > record["risk_score"]:
+            record["risk_score"] = score
+
+    rows = []
+    for key in sorted(candidates.keys()):
+        record = candidates[key]
+        rows.append(
+            {
+                "rule_type": record["rule_type"],
+                "rationale": record["rationale"],
+                "evidence_paths": sorted(record["evidence_paths"]),
+                "suggested_ruleset": record["suggested_ruleset"],
+                "risk_score": float(record["risk_score"]),
+            }
+        )
+    rows.sort(key=lambda item: (-item["risk_score"], item["rule_type"], item["suggested_ruleset"], item["evidence_paths"]))
+    return rows
+
+
+def _count_by_key(findings, key_name):
+    counts = {}
+    for finding in findings:
+        key = str(finding.get(key_name, "UNKNOWN"))
+        counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _delta_counts(current, previous):
+    out = {}
+    all_keys = sorted(set(current.keys()) | set(previous.keys()))
+    for key in all_keys:
+        out[key] = int(current.get(key, 0)) - int(previous.get(key, 0))
+    return out
+
+
+def _build_trends(findings, cache):
+    findings_blob = canonical_json_string({"findings": findings})
+    findings_hash = hashlib.sha256(findings_blob.encode("utf-8")).hexdigest()
+    category_counts = _count_by_key(findings, "category")
+    severity_counts = _count_by_key(findings, "severity")
+
+    previous = {}
+    previous_hash = ""
+    history = {"history": []}
+    if cache is not None:
+        history = cache.load_trend_history()
+    history_rows = history.get("history", []) if isinstance(history, dict) else []
+    for row in reversed(history_rows):
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("findings_hash", "")) == findings_hash:
+            continue
+        previous_hash = str(row.get("findings_hash", ""))
+        previous = row
+        break
+
+    previous_category = previous.get("category_frequency", {}) if isinstance(previous, dict) else {}
+    previous_severity = previous.get("severity_distribution", {}) if isinstance(previous, dict) else {}
+    if not isinstance(previous_category, dict):
+        previous_category = {}
+    if not isinstance(previous_severity, dict):
+        previous_severity = {}
+
+    payload = {
+        "artifact_class": CANONICAL_ARTIFACT_CLASS,
+        "schema_id": _CANONICAL_TRENDS_SCHEMA_ID,
+        "schema_version": _CANONICAL_SCHEMA_VERSION,
+        "findings_hash": findings_hash,
+        "total_findings": len(findings),
+        "category_frequency": category_counts,
+        "severity_distribution": severity_counts,
+        "delta_over_time": {
+            "category_frequency": _delta_counts(category_counts, previous_category),
+            "severity_distribution": _delta_counts(severity_counts, previous_severity),
+        },
+        "history_reference": {
+            "previous_distinct_hash": previous_hash,
+        },
+    }
+
+    if cache is not None:
+        next_row = {
+            "findings_hash": findings_hash,
+            "category_frequency": category_counts,
+            "severity_distribution": severity_counts,
+        }
+        next_history = list(history_rows)
+        if not next_history or next_history[-1].get("findings_hash") != findings_hash:
+            next_history.append(next_row)
+        if len(next_history) > 256:
+            next_history = next_history[-256:]
+        cache.save_trend_history({"history": next_history})
+
+    return payload
+
+
 def _canonical_findings_payload(findings, graph_hash, changed_only, scan_result):
-    return {
+    return canonicalize_json_payload(
+        {
         "artifact_class": CANONICAL_ARTIFACT_CLASS,
         "schema_id": _CANONICAL_FINDINGS_SCHEMA_ID,
         "schema_version": _CANONICAL_SCHEMA_VERSION,
@@ -121,16 +270,31 @@ def _canonical_findings_payload(findings, graph_hash, changed_only, scan_result)
         "graph_hash": graph_hash,
         "finding_count": len(findings),
         "findings": findings,
-    }
+        }
+    )
 
 
 def _canonical_invariant_map_payload(invariants):
-    return {
+    return canonicalize_json_payload(
+        {
         "artifact_class": CANONICAL_ARTIFACT_CLASS,
         "schema_id": _CANONICAL_INVARIANT_MAP_SCHEMA_ID,
         "schema_version": _CANONICAL_SCHEMA_VERSION,
         "invariants": invariants,
-    }
+        }
+    )
+
+
+def _canonical_promotion_payload(candidates):
+    return canonicalize_json_payload(
+        {
+            "artifact_class": CANONICAL_ARTIFACT_CLASS,
+            "schema_id": _CANONICAL_PROMOTION_SCHEMA_ID,
+            "schema_version": _CANONICAL_SCHEMA_VERSION,
+            "candidate_count": len(candidates),
+            "candidates": candidates,
+        }
+    )
 
 
 def _run_meta_payload(graph_hash, changed_only, output_format, scan_result, run_meta=None):
@@ -206,6 +370,8 @@ def _write_readme_if_missing(output_dir, today):
         "# AuditX Artifacts\n\n"
         "- `FINDINGS.json`: canonical machine-readable findings payload.\n"
         "- `INVARIANT_MAP.json`: canonical invariant mapping payload.\n"
+        "- `PROMOTION_CANDIDATES.json`: canonical RepoX-promotion candidate suggestions.\n"
+        "- `TRENDS.json`: canonical trend summary derived from canonical findings.\n"
         "- `RUN_META.json`: non-canonical run metadata (timestamps and host info).\n"
         "- `FINDINGS.md`: derived view summary for humans.\n"
         "- `SUMMARY.md`: derived count rollups for humans.\n"
@@ -221,14 +387,18 @@ def write_reports(
     output_format,
     scan_result="scan_complete",
     run_meta=None,
+    cache=None,
 ):
     today = _today_utc()
     output_dir = _ensure_output_dir(repo_root)
     _write_readme_if_missing(output_dir, today)
 
     invariants = _build_invariant_map(findings)
+    promotion_candidates = _build_promotion_candidates(findings)
+    trends_payload = _build_trends(findings, cache=cache)
     findings_payload = _canonical_findings_payload(findings, graph_hash, changed_only, scan_result)
     invariant_payload = _canonical_invariant_map_payload(invariants)
+    promotion_payload = _canonical_promotion_payload(promotion_candidates)
     run_meta_payload = _run_meta_payload(
         graph_hash=graph_hash,
         changed_only=changed_only,
@@ -239,6 +409,8 @@ def write_reports(
 
     _write_json(os.path.join(output_dir, "FINDINGS.json"), findings_payload)
     _write_json(os.path.join(output_dir, "INVARIANT_MAP.json"), invariant_payload)
+    _write_json(os.path.join(output_dir, "PROMOTION_CANDIDATES.json"), promotion_payload)
+    _write_json(os.path.join(output_dir, "TRENDS.json"), trends_payload)
     _write_json(os.path.join(output_dir, "RUN_META.json"), run_meta_payload)
 
     if output_format in ("md", "both"):
@@ -250,6 +422,8 @@ def write_reports(
     written = [
         "docs/audit/auditx/FINDINGS.json",
         "docs/audit/auditx/INVARIANT_MAP.json",
+        "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+        "docs/audit/auditx/TRENDS.json",
         "docs/audit/auditx/RUN_META.json",
     ]
     if output_format in ("md", "both"):
@@ -264,6 +438,8 @@ def write_reports(
         "artifact_classes": {
             "FINDINGS.json": CANONICAL_ARTIFACT_CLASS,
             "INVARIANT_MAP.json": CANONICAL_ARTIFACT_CLASS,
+            "PROMOTION_CANDIDATES.json": CANONICAL_ARTIFACT_CLASS,
+            "TRENDS.json": CANONICAL_ARTIFACT_CLASS,
             "RUN_META.json": RUN_META_ARTIFACT_CLASS,
             "FINDINGS.md": DERIVED_VIEW_ARTIFACT_CLASS,
             "SUMMARY.md": DERIVED_VIEW_ARTIFACT_CLASS,

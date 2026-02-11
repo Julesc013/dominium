@@ -1,0 +1,45 @@
+SCHEMA: governance/performance_result.schema
+schema_id: dominium.schema.governance.performance_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical performance result and regression artifact structure.
+- Define run metadata separation for non-deterministic values.
+
+STABILITY GUARANTEES:
+- Canonical result fields MUST remain present.
+- Removal or rename requires MAJOR version bump.
+
+NON-SEMANTICS:
+- Result artifacts report measurements only.
+- They do not alter runtime behavior.
+
+REQUIRED SHAPE:
+record performance_result
+  required:
+    - artifact_class: tag
+    - schema_id: id
+    - schema_version: tag
+    - record: map
+
+record performance_result_record
+  required:
+    - result_set_id: id
+    - results: [performance_result_row]
+    - extensions: map
+
+record performance_result_row
+  required:
+    - envelope_id: id
+    - subsystem: tag
+    - workload_type: tag
+    - metrics: [performance_metric_result]
+
+record performance_metric_result
+  required:
+    - metric_id: id
+    - unit: tag
+    - raw_value: number
+    - normalized_value: number
+

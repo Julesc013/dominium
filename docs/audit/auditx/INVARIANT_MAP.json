@@ -18,9 +18,10 @@
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
-      "finding_count": 11,
+      "finding_count": 119,
       "recommended_actions": {
-        "ADD_TEST": 11
+        "ADD_RULE": 60,
+        "ADD_TEST": 59
       },
       "sample_findings": [
         {
@@ -50,43 +51,376 @@
         }
       ],
       "severities": {
-        "INFO": 11
+        "INFO": 59,
+        "WARN": 60
+      }
+    },
+    "INV-CAPABILITY-SCOPE": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "ADD_TEST": 5
+      },
+      "sample_findings": [
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0001",
+          "location": "libs/appcore/command/command_registry.c"
+        },
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0002",
+          "location": "libs/appcore/command/command_registry.c"
+        },
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0003",
+          "location": "libs/appcore/command/command_registry.c"
+        },
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0004",
+          "location": "libs/appcore/command/command_registry.c"
+        },
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0005",
+          "location": "libs/appcore/command/command_registry.c"
+        }
+      ],
+      "severities": {
+        "WARN": 5
+      }
+    },
+    "INV-CLI-CANONICAL-UI": {
+      "finding_count": 31,
+      "recommended_actions": {
+        "ADD_RULE": 9,
+        "ADD_TEST": 22
+      },
+      "sample_findings": [
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0004",
+          "location": "libs/appcore/ui_bind/ui_command_binding_table.h"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0001",
+          "location": "client_mode_gui.h"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0002",
+          "location": "client_mode_tui.h"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0003",
+          "location": "engine/include/domino/gui/gui.h"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0004",
+          "location": "engine/include/domino/gui/style.h"
+        }
+      ],
+      "severities": {
+        "INFO": 21,
+        "WARN": 10
+      }
+    },
+    "INV-DERIVED-ARTIFACT-FRESHNESS": {
+      "finding_count": 120,
+      "recommended_actions": {
+        "ADD_RULE": 120
+      },
+      "sample_findings": [
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0001",
+          "location": "docs/CAPABILITY_STAGES.md"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0002",
+          "location": "docs/CODE_CHANGE_JUSTIFICATION.md"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0003",
+          "location": "docs/CONTRIBUTING.md"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0004",
+          "location": "docs/FAQ.md"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0005",
+          "location": "docs/MODDER_GUIDE.md"
+        }
+      ],
+      "severities": {
+        "INFO": 120
+      }
+    },
+    "INV-LEGACY-CODE-QUARANTINED": {
+      "finding_count": 85,
+      "recommended_actions": {
+        "ADD_TEST": 85
+      },
+      "sample_findings": [
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
+          "location": "setup/packages/scripts/packaging/pipeline.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
+          "location": "tools/auditx/analyzers/a1_reachability_orphaned.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0003",
+          "location": "tools/auditx/analyzers/a5_capability_misuse.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0004",
+          "location": "tools/auditx/analyzers/a6_ui_parity_bypass.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0005",
+          "location": "tools/auditx/analyzers/a7_legacy_contamination.py"
+        }
+      ],
+      "severities": {
+        "RISK": 85
+      }
+    },
+    "INV-SCHEMA-SHADOWING-CONTROL": {
+      "finding_count": 120,
+      "recommended_actions": {
+        "ADD_TEST": 120
+      },
+      "sample_findings": [
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0001",
+          "location": "data/packs/org.dominium.base.body.earth_macro/content/domains.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0002",
+          "location": "data/packs/org.dominium.base.body.earth_macro/content/fields.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0003",
+          "location": "data/packs/org.dominium.base.body.earth_macro/content/topology_nodes.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0004",
+          "location": "data/packs/org.dominium.base.body.earth_macro/pack_manifest.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0005",
+          "location": "data/packs/org.dominium.base.rules/content/capabilities.json"
+        }
+      ],
+      "severities": {
+        "WARN": 120
+      }
+    },
+    "INV-SECUREX-PRIVILEGE-MODEL": {
+      "finding_count": 69,
+      "recommended_actions": {
+        "ADD_TEST": 69
+      },
+      "sample_findings": [
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0030",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0031",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0032",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0033",
+          "location": "tools/auditx/cache/vs2026/entries/079117023d1cd328313f3e15341906810a0b6a7c199c9591f3eb6ad0cffc5e48.json"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0034",
+          "location": "tools/auditx/cache/vs2026/entries/079117023d1cd328313f3e15341906810a0b6a7c199c9591f3eb6ad0cffc5e48.json"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 69
+      }
+    },
+    "INV-SECUREX-TRUST-POLICY-VALID": {
+      "finding_count": 29,
+      "recommended_actions": {
+        "ADD_RULE": 29
+      },
+      "sample_findings": [
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0001",
+          "location": "client/app/main_client.c"
+        },
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0002",
+          "location": "client/core/client_command_bridge.c"
+        },
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0003",
+          "location": "client/core/client_state_machine.c"
+        },
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0004",
+          "location": "client/core/client_state_machine.h"
+        },
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0005",
+          "location": "client/core/session_artifacts.c"
+        }
+      ],
+      "severities": {
+        "WARN": 29
+      }
+    },
+    "INV-SETTINGS-OWNERSHIP": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0001",
+          "location": "client/app/main_client.c"
+        },
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0002",
+          "location": "client/shell/client_shell.c"
+        },
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0003",
+          "location": "launcher/cli/launcher_ui_shell.c"
+        }
+      ],
+      "severities": {
+        "RISK": 3
+      }
+    },
+    "INV-WORKSPACE-ISOLATION": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "semantic.workspace_contamination",
+          "finding_id": "A7_WORKSPACE_CONTAMINATION:0001",
+          "location": "scripts/ci/check_repox_rules.py"
+        }
+      ],
+      "severities": {
+        "WARN": 1
+      }
+    },
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 80,
+      "recommended_actions": {
+        "RETIRE": 80
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "app/include/dominium/app/app_runtime.h"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "app/include/dominium/app/compat_report.h"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "app/include/dominium/app/readonly_adapter.h"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "app/include/dominium/app/readonly_format.h"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
+          "location": "app/include/dominium/app/ui_event_log.h"
+        }
+      ],
+      "severities": {
+        "WARN": 80
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 80,
+      "finding_count": 160,
       "recommended_actions": {
-        "ADD_TEST": 80
+        "ADD_RULE": 160
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "schema/accessibility_preset.schema"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "schema/agent.autonomy_budget.schema"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "schema/agent.delegation.schema"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "schema/agent.goal.schema"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "schema/ai.profile.schema"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         }
       ],
       "severities": {
-        "WARN": 80
+        "RISK": 160
       }
     }
   },

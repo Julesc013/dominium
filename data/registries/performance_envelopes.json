@@ -1,0 +1,139 @@
+{
+  "schema_id": "dominium.schema.governance.performance_envelope",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.performance_envelopes",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.performance_envelope@1.0.0",
+    "envelopes": [
+      {
+        "envelope_id": "envelope.engine.sim_step_basic",
+        "subsystem": "engine",
+        "workload_type": "simulation_step",
+        "metrics": [
+          {
+            "metric_id": "wall_time_ms",
+            "unit": "ms",
+            "extensions": {}
+          },
+          {
+            "metric_id": "allocations",
+            "unit": "count",
+            "extensions": {}
+          }
+        ],
+        "tolerances": {
+          "wall_time_ms": {
+            "percent": 12.5,
+            "absolute": 1.0
+          },
+          "allocations": {
+            "percent": 10.0,
+            "absolute": 1500.0
+          }
+        },
+        "deterministic_required": true,
+        "hardware_normalization": "cpu_class",
+        "regression_severity": "warn",
+        "extensions": {}
+      },
+      {
+        "envelope_id": "envelope.worldgen.minimal",
+        "subsystem": "tools",
+        "workload_type": "worldgen",
+        "metrics": [
+          {
+            "metric_id": "wall_time_ms",
+            "unit": "ms",
+            "extensions": {}
+          },
+          {
+            "metric_id": "peak_memory_mb",
+            "unit": "MiB",
+            "extensions": {}
+          }
+        ],
+        "tolerances": {
+          "wall_time_ms": {
+            "percent": 15.0,
+            "absolute": 1.5
+          },
+          "peak_memory_mb": {
+            "percent": 20.0,
+            "absolute": 8.0
+          }
+        },
+        "deterministic_required": true,
+        "hardware_normalization": "cpu_class",
+        "regression_severity": "warn",
+        "extensions": {}
+      },
+      {
+        "envelope_id": "envelope.ui.render_null",
+        "subsystem": "client",
+        "workload_type": "ui_render",
+        "metrics": [
+          {
+            "metric_id": "wall_time_ms",
+            "unit": "ms",
+            "extensions": {}
+          },
+          {
+            "metric_id": "ops_count",
+            "unit": "count",
+            "extensions": {}
+          }
+        ],
+        "tolerances": {
+          "wall_time_ms": {
+            "percent": 10.0,
+            "absolute": 0.8
+          },
+          "ops_count": {
+            "percent": 8.0,
+            "absolute": 12000.0
+          }
+        },
+        "deterministic_required": true,
+        "hardware_normalization": "cpu_class",
+        "regression_severity": "warn",
+        "extensions": {}
+      },
+      {
+        "envelope_id": "envelope.ensemble.basic",
+        "subsystem": "tools",
+        "workload_type": "ensemble_run",
+        "metrics": [
+          {
+            "metric_id": "wall_time_ms",
+            "unit": "ms",
+            "extensions": {}
+          },
+          {
+            "metric_id": "ops_count",
+            "unit": "count",
+            "extensions": {}
+          }
+        ],
+        "tolerances": {
+          "wall_time_ms": {
+            "percent": 5.0,
+            "absolute": 0.5
+          },
+          "ops_count": {
+            "percent": 4.0,
+            "absolute": 9000.0
+          }
+        },
+        "deterministic_required": true,
+        "hardware_normalization": "cpu_class",
+        "regression_severity": "fail",
+        "extensions": {
+          "critical": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
+

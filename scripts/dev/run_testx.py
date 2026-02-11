@@ -4,6 +4,7 @@
 import argparse
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 
@@ -23,7 +24,7 @@ def _gate_mode(repo_root, workspace_id):
         "--repo-root",
         repo_root,
         "--only-gate",
-        "testx.full",
+        "testx.verify",
     ]
     if workspace_id:
         cmd.extend(["--workspace-id", workspace_id])
@@ -37,11 +38,49 @@ def _ctest_mode(repo_root, workspace_id, args):
     from env_tools_lib import canonicalize_env_for_workspace
 
     env, _ = canonicalize_env_for_workspace(dict(os.environ), repo_root, ws_id=workspace_id or "")
-    cmd = ["ctest"]
+    def _resolve_ctest():
+        cache_candidates = []
+        if args.test_dir:
+            candidate = args.test_dir
+            if not os.path.isabs(candidate):
+                candidate = os.path.join(repo_root, candidate)
+            cache_candidates.append(os.path.join(candidate, "CMakeCache.txt"))
+        for cache_path in cache_candidates:
+            if not os.path.isfile(cache_path):
+                continue
+            try:
+                with open(cache_path, "r", encoding="utf-8", errors="ignore") as handle:
+                    for line in handle:
+                        if line.startswith("CMAKE_CTEST_COMMAND:INTERNAL="):
+                            value = line.split("=", 1)[1].strip()
+                            if value and os.path.isfile(value):
+                                return value
+            except OSError:
+                continue
+
+        resolved = shutil.which("ctest", path=env.get("PATH", ""))
+        if resolved:
+            return resolved
+
+        cmake_cmd = shutil.which("cmake", path=env.get("PATH", ""))
+        if cmake_cmd:
+            probe = os.path.join(os.path.dirname(cmake_cmd), "ctest.exe" if os.name == "nt" else "ctest")
+            if os.path.isfile(probe):
+                return probe
+        return ""
+
+    ctest_cmd = _resolve_ctest()
+    if not ctest_cmd:
+        sys.stderr.write("refuse.ctest_unresolvable: unable to resolve ctest in canonical environment\n")
+        return 127
+
+    cmd = [ctest_cmd]
     if args.preset:
         cmd.extend(["--preset", args.preset])
     if args.test_dir:
         cmd.extend(["--test-dir", args.test_dir])
+    if args.config:
+        cmd.extend(["-C", args.config])
     if args.output_on_failure:
         cmd.append("--output-on-failure")
     if args.include_regex:
@@ -57,6 +96,7 @@ def build_parser():
     parser = argparse.ArgumentParser(description="Run TestX through canonical gate or wrapper mode.")
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--workspace-id", default="")
+    parser.add_argument("--config", default="Debug")
     parser.add_argument("--test-dir", default="")
     parser.add_argument("--preset", default="")
     parser.add_argument("--include-regex", default="")

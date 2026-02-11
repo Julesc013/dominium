@@ -1,0 +1,61 @@
+{
+  "actions": [
+    {
+      "note": "canonical environment refreshed",
+      "status": "applied",
+      "strategy": "environment",
+      "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools"
+    },
+    {
+      "applied_strategy": "environment",
+      "returncode": 0,
+      "score_after": 1000,
+      "score_before": 1001,
+      "stage": "repox.precheck",
+      "strategy": "verify_after_strategy"
+    },
+    {
+      "note": "canonical environment refreshed",
+      "status": "applied",
+      "strategy": "environment",
+      "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools"
+    },
+    {
+      "applied_strategy": "environment",
+      "returncode": 1,
+      "score_after": 1001,
+      "score_before": 1001,
+      "stage": "toolchain.sanity",
+      "strategy": "verify_after_strategy"
+    },
+    {
+      "command": [
+        "cmake",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\anb-omega-empty-path\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "domino_engine",
+        "dominium_game",
+        "dominium_client"
+      ],
+      "output": "refuse.command_unresolvable: [WinError 2] The system cannot find the file specified",
+      "returncode": 127,
+      "strategy": "build_wiring",
+      "targets": [
+        "domino_engine",
+        "dominium_game",
+        "dominium_client"
+      ]
+    },
+    {
+      "applied_strategy": "build_wiring",
+      "returncode": 1,
+      "score_after": 1001,
+      "score_before": 1001,
+      "stage": "toolchain.sanity",
+      "strategy": "verify_after_strategy"
+    }
+  ]
+}

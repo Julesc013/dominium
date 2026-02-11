@@ -173,7 +173,35 @@
         "extensions": {}
       },
       {
-        "gate_id": "testx.full",
+        "gate_id": "testx.fast",
+        "gate_class": "TASK_DEPENDENCY",
+        "command": [
+          "cmake",
+          "--build",
+          "{verify_build_dir}",
+          "--config",
+          "Debug",
+          "--target",
+          "testx_fast"
+        ],
+        "applies_when": [
+          {
+            "kind": "requested_target",
+            "values": [
+              "testx_fast"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.build_output_missing",
+          "dominium.playbook.path_cwd_dependency"
+        ],
+        "extensions": {}
+      },
+      {
+        "gate_id": "testx.verify",
         "gate_class": "EXIT_STRICT",
         "command": [
           "cmake",
@@ -182,13 +210,41 @@
           "--config",
           "Debug",
           "--target",
-          "testx_all"
+          "testx_verify"
         ],
         "applies_when": [
           {
-            "kind": "always",
+            "kind": "requested_target",
             "values": [
-              "true"
+              "testx_verify"
+            ]
+          }
+        ],
+        "severity": "fail",
+        "auto_remediate": true,
+        "remediation_playbook_ids": [
+          "dominium.playbook.build_output_missing",
+          "dominium.playbook.path_cwd_dependency"
+        ],
+        "extensions": {}
+      },
+      {
+        "gate_id": "testx.dist",
+        "gate_class": "EXIT_STRICT",
+        "command": [
+          "cmake",
+          "--build",
+          "{verify_build_dir}",
+          "--config",
+          "Debug",
+          "--target",
+          "testx_dist"
+        ],
+        "applies_when": [
+          {
+            "kind": "requested_target",
+            "values": [
+              "testx_dist"
             ]
           }
         ],

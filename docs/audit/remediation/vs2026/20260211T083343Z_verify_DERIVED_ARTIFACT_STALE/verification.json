@@ -1,0 +1,16 @@
+{
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts/ci/check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "INV-CANON-INDEX: canonical doc not listed in CANON_INDEX: docs/governance/TESTX_ARCHITECTURE.md\n",
+      "returncode": 1
+    }
+  ],
+  "skipped": [],
+  "warnings": []
+}
