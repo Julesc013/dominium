@@ -1,233 +1,8 @@
 {
   "artifact_class": "CANONICAL",
   "changed_only": true,
-  "finding_count": 728,
+  "finding_count": 671,
   "findings": [
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-      "fingerprint": "620b1af8366f1801cb2344385567b122ed825da1bb42adf1cfed25a16b10342d",
-      "location": {
-        "file": "scripts/ci/check_repox_rules.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "scripts/ci/check_repox_rules.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-      "fingerprint": "10cbea6d22ba76754ba0cea248d5d265eebef1c76512e7b8594fd8da0f3bebe3",
-      "location": {
-        "file": "scripts/dev/dev.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "scripts/dev/dev.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-      "fingerprint": "f39e06c9b8a006231b7a586edbcc6e35a88c4aed5bd4ab033a2c74b7f170a044",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-      "fingerprint": "c8737af3c371fdb0a0d9e1cdcd899f682662f9382e47c77bf27b2b6d08e2cad3",
-      "location": {
-        "file": "scripts/dev/gate_shim.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "scripts/dev/gate_shim.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-      "fingerprint": "53378cf4b4a13463ab604b29d36c8ca59a02c5ce1d72282aee05d6ca2f0cd1e9",
-      "location": {
-        "file": "scripts/dev/run_repox.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "scripts/dev/run_repox.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0006",
-      "fingerprint": "22107edeceeef443098866c4eca457469cfb36156ad8966977b31397702b7046",
-      "location": {
-        "file": "scripts/dev/run_testx.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "scripts/dev/run_testx.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0007",
-      "fingerprint": "ee6f7a34e37b43ea8a66f10364943aa83687e7e459bf2c51f6e2471782d8f305",
-      "location": {
-        "file": "tools/auditx/analyzers/a3_canon_drift.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "tools/auditx/analyzers/a3_canon_drift.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0008",
-      "fingerprint": "ad97f25372cbc38c3d4759591fae82a8061039fdecb35ff13894d172bc6b8c46",
-      "location": {
-        "file": "tools/auditx/graph/builder.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "tools/auditx/graph/builder.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
-    {
-      "analyzer_id": "A1_REACHABILITY_ORPHANED",
-      "category": "reachability",
-      "confidence": 0.7,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "No non-test or non-doc incoming references found.",
-        "Likely orphaned or prototype leakage candidate."
-      ],
-      "finding_id": "A1_REACHABILITY_ORPHANED:0009",
-      "fingerprint": "3ae50ef6e4db1e735e96c78a9f458bc912924fd802326844b3edc53ba6b4c980",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "RETIRE",
-      "related_invariants": [
-        "NO_SINGLE_USE_CODE_PATHS"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "PROTOTYPE"
-    },
     {
       "analyzer_id": "A3_CANON_DRIFT",
       "category": "canon_drift",
@@ -13574,1188 +13349,13 @@
     {
       "analyzer_id": "A4_SCHEMA_USAGE",
       "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: epistemic_scope",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0001",
-      "fingerprint": "32a4b3aa569e9a487fe7b5e682e5b06f5123a32a7fe564c41707975995d98452",
-      "location": {
-        "file": "scripts/ci/check_repox_rules.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/ci/check_repox_rules.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: epistemic_scope",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0002",
-      "fingerprint": "32a4b3aa569e9a487fe7b5e682e5b06f5123a32a7fe564c41707975995d98452",
-      "location": {
-        "file": "scripts/ci/check_repox_rules.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/ci/check_repox_rules.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: failure_ref",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0003",
-      "fingerprint": "bbb74b85b71b1c118217607f7c098a6f2ad87bdd859eeca9926609e8e8fcff24",
-      "location": {
-        "file": "scripts/ci/check_repox_rules.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/ci/check_repox_rules.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: failure_ref",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0004",
-      "fingerprint": "bbb74b85b71b1c118217607f7c098a6f2ad87bdd859eeca9926609e8e8fcff24",
-      "location": {
-        "file": "scripts/ci/check_repox_rules.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/ci/check_repox_rules.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: print-path",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0005",
-      "fingerprint": "71584f327d47eff9ba7430a03cb87646784e339e79da6a360b55c6d02bdf6eab",
-      "location": {
-        "file": "scripts/dev/dev.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/dev.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: strategy",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0006",
-      "fingerprint": "b96e12289425bcabd002b1c027b5b855fe9e0c1b1d16271e6c65d5bd7254f5b5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: targets",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0007",
-      "fingerprint": "9bd8266e1f09fc33375e9274b9f0c8cdec509f7b5a93c0877ec7faaeebc4a1f5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: strategy",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0008",
-      "fingerprint": "b96e12289425bcabd002b1c027b5b855fe9e0c1b1d16271e6c65d5bd7254f5b5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: targets",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0009",
-      "fingerprint": "9bd8266e1f09fc33375e9274b9f0c8cdec509f7b5a93c0877ec7faaeebc4a1f5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: dist_all",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0010",
-      "fingerprint": "a84b8c27ed2a6e4813e0218e59481d21e29717eb9b71d9932dcfcb2dde58eb17",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: strategy",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0011",
-      "fingerprint": "b96e12289425bcabd002b1c027b5b855fe9e0c1b1d16271e6c65d5bd7254f5b5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: targets",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0012",
-      "fingerprint": "9bd8266e1f09fc33375e9274b9f0c8cdec509f7b5a93c0877ec7faaeebc4a1f5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: identity_fingerprint",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0013",
-      "fingerprint": "5bdb23160f3868ad0309e0ac98056942706a830d6cbe99a37fa4d35e6cfaf87f",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: strategy",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0014",
-      "fingerprint": "b96e12289425bcabd002b1c027b5b855fe9e0c1b1d16271e6c65d5bd7254f5b5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: targets",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0015",
-      "fingerprint": "9bd8266e1f09fc33375e9274b9f0c8cdec509f7b5a93c0877ec7faaeebc4a1f5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: ui_bind_write",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0016",
-      "fingerprint": "c19bc12df4916309aa6a8b9e0708031e8cb6c9c1e468c78d0f0bb01ff1cd87e6",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: strategy",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0017",
-      "fingerprint": "b96e12289425bcabd002b1c027b5b855fe9e0c1b1d16271e6c65d5bd7254f5b5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: targets",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0018",
-      "fingerprint": "9bd8266e1f09fc33375e9274b9f0c8cdec509f7b5a93c0877ec7faaeebc4a1f5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: strategy",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0019",
-      "fingerprint": "b96e12289425bcabd002b1c027b5b855fe9e0c1b1d16271e6c65d5bd7254f5b5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: targets",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0020",
-      "fingerprint": "9bd8266e1f09fc33375e9274b9f0c8cdec509f7b5a93c0877ec7faaeebc4a1f5",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: repox_refresh",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0021",
-      "fingerprint": "2910d34141de7fdacfc6e6cc3dd05a921ee8e18412098066a0f3df027800b21c",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: returncode",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0022",
-      "fingerprint": "2763e86fdc2eedccb60b27d9163a4a2953e8ecc3ed0a99128e0ef491e9ac6cb2",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: returncode",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0023",
-      "fingerprint": "2763e86fdc2eedccb60b27d9163a4a2953e8ecc3ed0a99128e0ef491e9ac6cb2",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: returncode",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0024",
-      "fingerprint": "2763e86fdc2eedccb60b27d9163a4a2953e8ecc3ed0a99128e0ef491e9ac6cb2",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: returncode",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0025",
-      "fingerprint": "2763e86fdc2eedccb60b27d9163a4a2953e8ecc3ed0a99128e0ef491e9ac6cb2",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: returncode",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0026",
-      "fingerprint": "2763e86fdc2eedccb60b27d9163a4a2953e8ecc3ed0a99128e0ef491e9ac6cb2",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: skipped",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0027",
-      "fingerprint": "1138b16da9d0449e7da0f2b8f12c206188ec699e4bd18731e678d283c1d6d65d",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: skipped",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0028",
-      "fingerprint": "1138b16da9d0449e7da0f2b8f12c206188ec699e4bd18731e678d283c1d6d65d",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: warnings",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0029",
-      "fingerprint": "e4ef9ab584460aeab5ebb48c6149f6e4583e3e1955f085551d9e05ebab66d33f",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: returncode",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0030",
-      "fingerprint": "2763e86fdc2eedccb60b27d9163a4a2953e8ecc3ed0a99128e0ef491e9ac6cb2",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: warnings",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0031",
-      "fingerprint": "e4ef9ab584460aeab5ebb48c6149f6e4583e3e1955f085551d9e05ebab66d33f",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: dist_all",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0032",
-      "fingerprint": "a84b8c27ed2a6e4813e0218e59481d21e29717eb9b71d9932dcfcb2dde58eb17",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: dist_all",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0033",
-      "fingerprint": "a84b8c27ed2a6e4813e0218e59481d21e29717eb9b71d9932dcfcb2dde58eb17",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: skipped",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0034",
-      "fingerprint": "1138b16da9d0449e7da0f2b8f12c206188ec699e4bd18731e678d283c1d6d65d",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: warnings",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0035",
-      "fingerprint": "e4ef9ab584460aeab5ebb48c6149f6e4583e3e1955f085551d9e05ebab66d33f",
-      "location": {
-        "file": "scripts/dev/gate.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/gate.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: ctest",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0036",
-      "fingerprint": "ba1926cf4d4538401c2a0112d09c9f511dc15247c7b7d61a053e1d65a726a423",
-      "location": {
-        "file": "scripts/dev/run_testx.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "scripts/dev/run_testx.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: finding_count",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0037",
-      "fingerprint": "a4fc0c16ad42a641b43f1a1b94e55847040c2b8d1ab678ba7f6e409906bdcba8",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: severities",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0038",
-      "fingerprint": "6a8f1e17d91aa7d291a90cdd369299be27ac67560f5d94292d2dc98434aa12dc",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: severities",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0039",
-      "fingerprint": "6a8f1e17d91aa7d291a90cdd369299be27ac67560f5d94292d2dc98434aa12dc",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: recommended_actions",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0040",
-      "fingerprint": "55f1bebc89976e0065b2a7faf62c0eaf0d8a3cdd31dfb62d73f00a360ff76536",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: recommended_actions",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0041",
-      "fingerprint": "55f1bebc89976e0065b2a7faf62c0eaf0d8a3cdd31dfb62d73f00a360ff76536",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: sample_findings",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0042",
-      "fingerprint": "3f0f3a2934eac9c73598cf3e65e33e8bfad206e8549a5882bcc8b9907f0ea412",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: sample_findings",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0043",
-      "fingerprint": "3f0f3a2934eac9c73598cf3e65e33e8bfad206e8549a5882bcc8b9907f0ea412",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: finding_count",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0044",
-      "fingerprint": "a4fc0c16ad42a641b43f1a1b94e55847040c2b8d1ab678ba7f6e409906bdcba8",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: severities",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0045",
-      "fingerprint": "6a8f1e17d91aa7d291a90cdd369299be27ac67560f5d94292d2dc98434aa12dc",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: recommended_actions",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0046",
-      "fingerprint": "55f1bebc89976e0065b2a7faf62c0eaf0d8a3cdd31dfb62d73f00a360ff76536",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Detected key access without obvious schema anchor: sample_findings",
-        "Best-effort heuristic; verify if schema declaration exists."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0047",
-      "fingerprint": "3f0f3a2934eac9c73598cf3e65e33e8bfad206e8549a5882bcc8b9907f0ea412",
-      "location": {
-        "file": "tools/auditx/output/writers.py"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "tools/auditx/output/writers.py"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
       "confidence": 0.75,
       "created_utc": "1970-01-01T00:00:00Z",
       "evidence": [
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0048",
+      "finding_id": "A4_SCHEMA_USAGE:0001",
       "fingerprint": "06538e39ef9fefdf9b94f0a7de5d022e3c7cae9dae275d4b090087b9b29683ea",
       "location": {
         "file": "schema/accessibility_preset.schema"
@@ -14780,7 +13380,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0049",
+      "finding_id": "A4_SCHEMA_USAGE:0002",
       "fingerprint": "27bea189c8ab24dffe98bd2d28f9c0e130ddbac6270f4af11938eb44f5ac343d",
       "location": {
         "file": "schema/agent.autonomy_budget.schema"
@@ -14805,7 +13405,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0050",
+      "finding_id": "A4_SCHEMA_USAGE:0003",
       "fingerprint": "b558870565b95ad7473daff9729871ae33ea1774113b8fba2f154cc5537bcc23",
       "location": {
         "file": "schema/agent.delegation.schema"
@@ -14830,7 +13430,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0051",
+      "finding_id": "A4_SCHEMA_USAGE:0004",
       "fingerprint": "33021417db3d4de720ab5bbd665d70cc7ee2650b568b4a699ecf9c631374e411",
       "location": {
         "file": "schema/agent.goal.schema"
@@ -14855,7 +13455,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0052",
+      "finding_id": "A4_SCHEMA_USAGE:0005",
       "fingerprint": "e15eb56e21dcd5ac26158b8f8b3f25e8bc366a321f76b44f6b3ffaf4cce75c2b",
       "location": {
         "file": "schema/ai.profile.schema"
@@ -14880,7 +13480,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0053",
+      "finding_id": "A4_SCHEMA_USAGE:0006",
       "fingerprint": "49d18fb1cc6381499474087f59226e49f8adf67c0afa9d7a92a998fc2b66299d",
       "location": {
         "file": "schema/animal.agent.schema"
@@ -14905,7 +13505,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0054",
+      "finding_id": "A4_SCHEMA_USAGE:0007",
       "fingerprint": "c0e2d30e6c032797b70eacf0c29913bb3d190ac0cf4bd8d57ac7acd32a92305c",
       "location": {
         "file": "schema/animal.species.schema"
@@ -14930,7 +13530,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0055",
+      "finding_id": "A4_SCHEMA_USAGE:0008",
       "fingerprint": "fcba8c952fc60167da322811310386c05d58bc11da0b24c284f139836b6db2ab",
       "location": {
         "file": "schema/assembly.schema"
@@ -14955,7 +13555,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0056",
+      "finding_id": "A4_SCHEMA_USAGE:0009",
       "fingerprint": "3271878b8baa61d460ecdcf168a63be5564c12dd543c36e15d7f1b6e6851b1a7",
       "location": {
         "file": "schema/authority.schema"
@@ -14980,7 +13580,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0057",
+      "finding_id": "A4_SCHEMA_USAGE:0010",
       "fingerprint": "6b79c9e628e98dbaf9b1a37e4f2b7d2765911a1749057426a10646b724fb1805",
       "location": {
         "file": "schema/batch_lot.schema"
@@ -15005,7 +13605,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0058",
+      "finding_id": "A4_SCHEMA_USAGE:0011",
       "fingerprint": "3faad9bfce3c0434d0c588d5c2f5fb63a56fef02e228ce92dbc8b2e52e9f662d",
       "location": {
         "file": "schema/budget_policy.schema"
@@ -15030,7 +13630,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0059",
+      "finding_id": "A4_SCHEMA_USAGE:0012",
       "fingerprint": "d56ff739dbe600dcebe116da1f947b67e89c41cd0b9b397c692bf256d2b03150",
       "location": {
         "file": "schema/budget_snapshot.schema"
@@ -15055,7 +13655,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0060",
+      "finding_id": "A4_SCHEMA_USAGE:0013",
       "fingerprint": "b8123551a671c04c4bf226914c0dda95fdfd94856241f53c215d8dbaf289a955",
       "location": {
         "file": "schema/bugreport.bundle.schema"
@@ -15080,7 +13680,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0061",
+      "finding_id": "A4_SCHEMA_USAGE:0014",
       "fingerprint": "ab2e72c56a9507a2d228d597f290b1c7bd0072ce5613930ae124e5eb63bdd301",
       "location": {
         "file": "schema/bugreport.observation.schema"
@@ -15105,7 +13705,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0062",
+      "finding_id": "A4_SCHEMA_USAGE:0015",
       "fingerprint": "c0561485ade324234426a9c19e0f13075e7cabe1f531d247c8a1f8ae89b72bcc",
       "location": {
         "file": "schema/bundle.container.schema"
@@ -15130,7 +13730,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0063",
+      "finding_id": "A4_SCHEMA_USAGE:0016",
       "fingerprint": "682f49bc86e4fa8497cf4007b110280eb827f6a54e37137b9f0875bbebb0aff6",
       "location": {
         "file": "schema/capability.declaration.schema"
@@ -15155,7 +13755,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0064",
+      "finding_id": "A4_SCHEMA_USAGE:0017",
       "fingerprint": "6a8728d070bba629bc359a48484e09eebbc71f1f9aa4e858b6ba697b76b9ee9a",
       "location": {
         "file": "schema/capability.schema"
@@ -15180,7 +13780,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0065",
+      "finding_id": "A4_SCHEMA_USAGE:0018",
       "fingerprint": "a16900201dad36f04a99c93a527173aa80f7a1b0925bf607f9cb9f734aff7888",
       "location": {
         "file": "schema/capability_baseline.schema"
@@ -15205,7 +13805,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0066",
+      "finding_id": "A4_SCHEMA_USAGE:0019",
       "fingerprint": "c48627b8ebd7989ddc7ca7b2323af69f8acc2c49aa6212a2e1683428f4cb9837",
       "location": {
         "file": "schema/capability_lockfile.schema"
@@ -15230,7 +13830,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0067",
+      "finding_id": "A4_SCHEMA_USAGE:0020",
       "fingerprint": "c3e677edf51a9a2a6419a4792c28cf2f26fa2b791481fd66862531f1dc4cdfc9",
       "location": {
         "file": "schema/checkpoint.schema"
@@ -15255,7 +13855,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0068",
+      "finding_id": "A4_SCHEMA_USAGE:0021",
       "fingerprint": "988ff5863fcfdb2de5ebd80a131de2cdeecffffdbb19d0dacf6474fb0ea2dde6",
       "location": {
         "file": "schema/civilization.edge.schema"
@@ -15280,7 +13880,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0069",
+      "finding_id": "A4_SCHEMA_USAGE:0022",
       "fingerprint": "93cd3c198da254bb890ee61396f8eaa1c1b82ca583f845ee969a88ee8ee0f0e5",
       "location": {
         "file": "schema/civilization.graph.schema"
@@ -15305,7 +13905,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0070",
+      "finding_id": "A4_SCHEMA_USAGE:0023",
       "fingerprint": "ebf5444d1840ef433a38df8386df0c95846cfc37b55ca7a87152c8937c633127",
       "location": {
         "file": "schema/civilization.node.schema"
@@ -15330,7 +13930,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0071",
+      "finding_id": "A4_SCHEMA_USAGE:0024",
       "fingerprint": "fc305c7fa9d483be63953e89d594750dd24f64aa2866ec25775398981755b61f",
       "location": {
         "file": "schema/client/session_artifacts.schema"
@@ -15355,7 +13955,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0072",
+      "finding_id": "A4_SCHEMA_USAGE:0025",
       "fingerprint": "ec8290da514d149280b2a17eef23a0b6503d4d22d00e98aaf75a86367047a553",
       "location": {
         "file": "schema/client/session_pipeline.schema"
@@ -15380,7 +13980,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0073",
+      "finding_id": "A4_SCHEMA_USAGE:0026",
       "fingerprint": "6f806034831fb1c591fbf1e22357695371e4ec216b08386e014a4bddb1f06105",
       "location": {
         "file": "schema/climate.envelope.schema"
@@ -15405,7 +14005,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0074",
+      "finding_id": "A4_SCHEMA_USAGE:0027",
       "fingerprint": "122a98f302e60a2e5df32799baac858bd94339c409a6b99f856038c203e666c8",
       "location": {
         "file": "schema/climate.field.schema"
@@ -15430,7 +14030,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0075",
+      "finding_id": "A4_SCHEMA_USAGE:0028",
       "fingerprint": "ea2b373c81b1ef8207afb45542423d825a80f9166adf30d606b3aa4b9d6ad3dc",
       "location": {
         "file": "schema/compat.report.schema"
@@ -15455,7 +14055,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0076",
+      "finding_id": "A4_SCHEMA_USAGE:0029",
       "fingerprint": "3612bef22cfcf342659c8eaf9839e087b9b1398980c252be96e1dfba25fc45da",
       "location": {
         "file": "schema/conflict.event.schema"
@@ -15480,7 +14080,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0077",
+      "finding_id": "A4_SCHEMA_USAGE:0030",
       "fingerprint": "e02eae9b847fa1541371e2920c3b13ba4df19889d105cc0e2d91cdaa550ff698",
       "location": {
         "file": "schema/conflict.record.schema"
@@ -15505,7 +14105,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0078",
+      "finding_id": "A4_SCHEMA_USAGE:0031",
       "fingerprint": "e87aa50040e226cb0ca5a7056a4e84e3056755e451abbb3a89d7255a5af00c9d",
       "location": {
         "file": "schema/conflict.side.schema"
@@ -15530,7 +14130,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0079",
+      "finding_id": "A4_SCHEMA_USAGE:0032",
       "fingerprint": "75bf83b91a50f9ac4a494c402fc016ea8e433a13280ca0c39b5360f8a803f807",
       "location": {
         "file": "schema/conformance.bundle.schema"
@@ -15555,7 +14155,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0080",
+      "finding_id": "A4_SCHEMA_USAGE:0033",
       "fingerprint": "5fafd86840045196b3200fc7b3fdb3d3721f7ba044d6b6eed15c2206d6c17f4f",
       "location": {
         "file": "schema/cross_shard_message.schema"
@@ -15580,7 +14180,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0081",
+      "finding_id": "A4_SCHEMA_USAGE:0034",
       "fingerprint": "c3e2c1fd262ec25b78a5dbc351188b364fadfba3a5216a4caa14643079a7fdce",
       "location": {
         "file": "schema/distribution/build_manifest.schema"
@@ -15605,7 +14205,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0082",
+      "finding_id": "A4_SCHEMA_USAGE:0035",
       "fingerprint": "7ad1d2ac5c9197a04fca4fdd7f62faa1646fc524b80272407ddeccb656a39132",
       "location": {
         "file": "schema/distribution/install_lock.schema"
@@ -15630,7 +14230,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0083",
+      "finding_id": "A4_SCHEMA_USAGE:0036",
       "fingerprint": "bea59ef5a7b56ad4f79ea3eadf56df7943bbd3d3496a61905378764cf6f0918d",
       "location": {
         "file": "schema/distribution/pkg_index.schema"
@@ -15655,7 +14255,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0084",
+      "finding_id": "A4_SCHEMA_USAGE:0037",
       "fingerprint": "7ecf98fa08d362d970dbf381f8550a72d8f802cd8fb1d3c7d3c5e19c477ac333",
       "location": {
         "file": "schema/distribution/pkg_manifest.schema"
@@ -15680,7 +14280,57 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0085",
+      "finding_id": "A4_SCHEMA_USAGE:0038",
+      "fingerprint": "701b55c7b2775eb2a69210258edc6d1bea676abcfcaaaf91ce42fd4db3a5e842",
+      "location": {
+        "file": "schema/distribution/platform_registry.schema"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "schema/distribution/platform_registry.schema"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.75,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Schema appears unreferenced by non-schema files in graph scan.",
+        "May indicate stale, orphaned, or not-yet-integrated schema."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0039",
+      "fingerprint": "ad8dbba1e8e845a1143a01388d3a778cfb23ffb1ab810600db35f79214e3c50e",
+      "location": {
+        "file": "schema/distribution/product_graph.schema"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "schema/distribution/product_graph.schema"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.75,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Schema appears unreferenced by non-schema files in graph scan.",
+        "May indicate stale, orphaned, or not-yet-integrated schema."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0040",
       "fingerprint": "2eab18673a366edbb43fe4f431a6e2b701fffb5f2e94427990da407f937f1589",
       "location": {
         "file": "schema/distribution/profile.schema"
@@ -15705,7 +14355,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0086",
+      "finding_id": "A4_SCHEMA_USAGE:0041",
       "fingerprint": "9bafa659ec235c8c8f2d314434558fb422f53220faeb7d8d101daeb908021f26",
       "location": {
         "file": "schema/distribution/trust_policy.schema"
@@ -15730,7 +14380,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0087",
+      "finding_id": "A4_SCHEMA_USAGE:0042",
       "fingerprint": "800ed61a20114e32ddda17aaf3ce4413fb1556c62830dca62c0145cdb078905e",
       "location": {
         "file": "schema/domain.schema"
@@ -15755,7 +14405,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0088",
+      "finding_id": "A4_SCHEMA_USAGE:0043",
       "fingerprint": "b17b3e52a8f2b04e4e92812a18a868bb849d47f3ea8c143eb6d9a7a6ffdebf17",
       "location": {
         "file": "schema/education.program.schema"
@@ -15780,7 +14430,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0089",
+      "finding_id": "A4_SCHEMA_USAGE:0044",
       "fingerprint": "be65d96112f277e7fd3ed75d4e92b76852911be669c674633fdbc7d33dfd3ee8",
       "location": {
         "file": "schema/energy.flow.schema"
@@ -15805,7 +14455,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0090",
+      "finding_id": "A4_SCHEMA_USAGE:0045",
       "fingerprint": "ae51df014fe222951274e61ef8d7ae731c13307a63ae8284fc591680cb433f8a",
       "location": {
         "file": "schema/energy.loss.schema"
@@ -15830,7 +14480,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0091",
+      "finding_id": "A4_SCHEMA_USAGE:0046",
       "fingerprint": "bfef2d4397c7b3cbb74c58f85fb55d4b6a6086d0dee93bb3e7ee629c071b896c",
       "location": {
         "file": "schema/energy.store.schema"
@@ -15855,7 +14505,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0092",
+      "finding_id": "A4_SCHEMA_USAGE:0047",
       "fingerprint": "03048fef407141021790e1613293d6f359e550f5fa96f12a4b50bca090c2668e",
       "location": {
         "file": "schema/engagement.outcome.schema"
@@ -15880,7 +14530,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0093",
+      "finding_id": "A4_SCHEMA_USAGE:0048",
       "fingerprint": "f3e3d2603e482d3ee77dda4a1f266790c22f1b8a3208b9f71385de4f29ae1775",
       "location": {
         "file": "schema/engagement.schema"
@@ -15905,7 +14555,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0094",
+      "finding_id": "A4_SCHEMA_USAGE:0049",
       "fingerprint": "700dae6f8c1ac2c27a2b4a2adfa3720779af58c434e114d854e7fa5b5d470282",
       "location": {
         "file": "schema/field.schema"
@@ -15930,7 +14580,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0095",
+      "finding_id": "A4_SCHEMA_USAGE:0050",
       "fingerprint": "7826312fa517c30f7268af09e1337ae6308802abb3d05d97f0b585cc8b115f36",
       "location": {
         "file": "schema/fluid.flow.schema"
@@ -15955,7 +14605,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0096",
+      "finding_id": "A4_SCHEMA_USAGE:0051",
       "fingerprint": "f2832c07d882eebd4dbe01121d40910e8b141cfdc5c75c320069d04a91f07d12",
       "location": {
         "file": "schema/fluid.pressure.schema"
@@ -15980,7 +14630,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0097",
+      "finding_id": "A4_SCHEMA_USAGE:0052",
       "fingerprint": "2800e2b967fb9ab1bec96160d82e94c65535d276b7bbef0ba7a77ffed488b69c",
       "location": {
         "file": "schema/fluid.properties.schema"
@@ -16005,7 +14655,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0098",
+      "finding_id": "A4_SCHEMA_USAGE:0053",
       "fingerprint": "d2a9dc5907b29b59e30982787db1363adaed090146027edd7f79bd9c69f81612",
       "location": {
         "file": "schema/fluid.store.schema"
@@ -16030,7 +14680,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0099",
+      "finding_id": "A4_SCHEMA_USAGE:0054",
       "fingerprint": "15d4e293c89a4b60517ced94e6225aeaa4991353b72afea0c0365f68f086d674",
       "location": {
         "file": "schema/geology.field.schema"
@@ -16055,7 +14705,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0100",
+      "finding_id": "A4_SCHEMA_USAGE:0055",
       "fingerprint": "7b2a4ec9e8177ae6eb55f01a522df009035a2a46a6002be181b80fd85bb14f14",
       "location": {
         "file": "schema/geology.layer.schema"
@@ -16080,7 +14730,32 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0101",
+      "finding_id": "A4_SCHEMA_USAGE:0056",
+      "fingerprint": "d5a003a79507d582e60f75e75738021734ad1c17482ebfbad71e91a6d386a56e",
+      "location": {
+        "file": "schema/governance/derived_artifact_contract.schema"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "schema/governance/derived_artifact_contract.schema"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.75,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Schema appears unreferenced by non-schema files in graph scan.",
+        "May indicate stale, orphaned, or not-yet-integrated schema."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0057",
       "fingerprint": "bdb41829be6a55b7904efd84fd19e8f72c616e12185cee170f9229d2a1f07321",
       "location": {
         "file": "schema/governance/gate_policy.schema"
@@ -16105,7 +14780,32 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0102",
+      "finding_id": "A4_SCHEMA_USAGE:0058",
+      "fingerprint": "94536f996f11a2e613da6d76959a754e2b0daad174aee1c38f7a21a759dff414",
+      "location": {
+        "file": "schema/governance/remediation_playbook.schema"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "schema/governance/remediation_playbook.schema"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.75,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Schema appears unreferenced by non-schema files in graph scan.",
+        "May indicate stale, orphaned, or not-yet-integrated schema."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0059",
       "fingerprint": "ab5f2049395ab5f5aeac95f643405b32b1a9bc3b5f2beb1edcdf5c280b8a3b5a",
       "location": {
         "file": "schema/hazard.exposure.schema"
@@ -16130,7 +14830,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0103",
+      "finding_id": "A4_SCHEMA_USAGE:0060",
       "fingerprint": "1f0e82f51ead249bca2f9eda730e1052211bd1bd898fb95855db95744f396161",
       "location": {
         "file": "schema/hazard.field.schema"
@@ -16155,7 +14855,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0104",
+      "finding_id": "A4_SCHEMA_USAGE:0061",
       "fingerprint": "8829f641bb6b0ee1c2d5ddc8ca066ca54104fa1483be7cf5f064fd551addb957",
       "location": {
         "file": "schema/hazard.schema"
@@ -16180,7 +14880,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0105",
+      "finding_id": "A4_SCHEMA_USAGE:0062",
       "fingerprint": "aec8124369ced684c23eafa430097d9d947ff33687a8fadb7f782e36175e881d",
       "location": {
         "file": "schema/hazard.type.schema"
@@ -16205,7 +14905,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0106",
+      "finding_id": "A4_SCHEMA_USAGE:0063",
       "fingerprint": "0fc25b3e4775c3575e5db8b4339a59c71223a95fb956704808f53186f141b2c9",
       "location": {
         "file": "schema/heat.flow.schema"
@@ -16230,7 +14930,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0107",
+      "finding_id": "A4_SCHEMA_USAGE:0064",
       "fingerprint": "4c00eb13a9807f40d1c3e0212ddb4297e98c21a62c5efae234d0c16c0e5487ab",
       "location": {
         "file": "schema/heat.store.schema"
@@ -16255,7 +14955,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0108",
+      "finding_id": "A4_SCHEMA_USAGE:0065",
       "fingerprint": "0f94caf25f0336441c11160813c0ddfa2e131a93a20b995cdcddd852d5f2ec17",
       "location": {
         "file": "schema/history.epoch.schema"
@@ -16280,7 +14980,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0109",
+      "finding_id": "A4_SCHEMA_USAGE:0066",
       "fingerprint": "d6e9abb2e86b927d54a376b6dfa915472aafdfe26b4c6c3f402c09e1768c6266",
       "location": {
         "file": "schema/history.event.schema"
@@ -16305,7 +15005,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0110",
+      "finding_id": "A4_SCHEMA_USAGE:0067",
       "fingerprint": "4526b35f220de94984cf4d74bd3100dbd4ef646fd4b5aa01e8dd8ac12920dd00",
       "location": {
         "file": "schema/history.source.schema"
@@ -16330,7 +15030,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0111",
+      "finding_id": "A4_SCHEMA_USAGE:0068",
       "fingerprint": "6393b3e86cc619e7bb101f3ab95e6a1ca62b76791ba0e29ac3843f70df14fedc",
       "location": {
         "file": "schema/hud_layout.schema"
@@ -16355,7 +15055,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0112",
+      "finding_id": "A4_SCHEMA_USAGE:0069",
       "fingerprint": "b9cf3dd38964d0f30db9c2ee44864ff01df1052a0ecf44ef1960005aa157075a",
       "location": {
         "file": "schema/identity/artifact_identity.schema"
@@ -16380,7 +15080,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0113",
+      "finding_id": "A4_SCHEMA_USAGE:0070",
       "fingerprint": "a5dd00ccb85dbeb5c9faec18351f70fcfdaa7e359bfe1f2b6e5c941d2bf69959",
       "location": {
         "file": "schema/install.manifest.schema"
@@ -16405,7 +15105,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0114",
+      "finding_id": "A4_SCHEMA_USAGE:0071",
       "fingerprint": "05270003c48cb27561966e5d0cac0f3d96e405612fd97482954b1d0d51bb07de",
       "location": {
         "file": "schema/instance.manifest.schema"
@@ -16430,7 +15130,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0115",
+      "finding_id": "A4_SCHEMA_USAGE:0072",
       "fingerprint": "c3211f288ff664189d37e5165aac566ef7c08036d61a3aede18fd795a2d6251a",
       "location": {
         "file": "schema/institution.capability.schema"
@@ -16455,7 +15155,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0116",
+      "finding_id": "A4_SCHEMA_USAGE:0073",
       "fingerprint": "2ff30c3c85e89c333cc739f4b668b3d4817b1a8b9ee8fc2ec31dc0a86a64df4e",
       "location": {
         "file": "schema/institution.entity.schema"
@@ -16480,7 +15180,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0117",
+      "finding_id": "A4_SCHEMA_USAGE:0074",
       "fingerprint": "322a5172e2e6a15ad6242571d878fd732aeabbf30d7d0c45ef0d983860024ad3",
       "location": {
         "file": "schema/institution.schema"
@@ -16505,7 +15205,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0118",
+      "finding_id": "A4_SCHEMA_USAGE:0075",
       "fingerprint": "695e9f1441dbccf73bb7dc51c92a9316effce36d0597e8eaa4b410e68c50d408",
       "location": {
         "file": "schema/institution.scope.schema"
@@ -16530,7 +15230,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0119",
+      "finding_id": "A4_SCHEMA_USAGE:0076",
       "fingerprint": "fa6c9e0f497d65daa10440d011599368e70122bea2df4972f33ea5c26dad7a3e",
       "location": {
         "file": "schema/instrument.schema"
@@ -16555,7 +15255,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0120",
+      "finding_id": "A4_SCHEMA_USAGE:0077",
       "fingerprint": "0ce3a02d32a9b07c8716549e0cb8b09177a4759bb11ba0ac678a27aa080b78da",
       "location": {
         "file": "schema/insurance.claim.schema"
@@ -16580,7 +15280,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0121",
+      "finding_id": "A4_SCHEMA_USAGE:0078",
       "fingerprint": "bc0d10d8cc1be8ca17d178d97682f77a30174959559dcb4f6879f90e83776eb8",
       "location": {
         "file": "schema/insurance.policy.schema"
@@ -16605,7 +15305,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0122",
+      "finding_id": "A4_SCHEMA_USAGE:0079",
       "fingerprint": "bb2e193bff6f396468b25ad0edfa0b9007ce6ed185b904ef19bd3eb8d9c26fc7",
       "location": {
         "file": "schema/interface.schema"
@@ -16630,32 +15330,7 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0123",
-      "fingerprint": "f9d6c11f14060a4e29c48a9c73a8c5dfd6b1864aa81ba1146d4a0324ec2bd27e",
-      "location": {
-        "file": "schema/knowledge.artifact.schema"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "schema/knowledge.artifact.schema"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0124",
+      "finding_id": "A4_SCHEMA_USAGE:0080",
       "fingerprint": "afed008ee8f3ef94e57f0d15f1bef72f8ea2821560d6430adca1619d97fd1693",
       "location": {
         "file": "schema/knowledge.schema"
@@ -16666,81 +15341,6 @@
       ],
       "related_paths": [
         "schema/knowledge.schema"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0125",
-      "fingerprint": "03729c0d901dce1bde31bd43e6eeec0e86deb2d2d14cb90f47f96122667160dd",
-      "location": {
-        "file": "schema/legitimacy.field.schema"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "schema/legitimacy.field.schema"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0126",
-      "fingerprint": "d4b2b934138d2d03580b708e020fda47e4f704693079181f16b34ec44d031b68",
-      "location": {
-        "file": "schema/liability.attribution.schema"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "schema/liability.attribution.schema"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0127",
-      "fingerprint": "6a97729f9b6c22f8d90ffa28e5a1e57624f6d8e2e4d8f8cf3aa5cfb8fe1fdcba",
-      "location": {
-        "file": "schema/liability.event.schema"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "schema/liability.event.schema"
       ],
       "severity": "WARN",
       "status": "OPEN",
@@ -17020,34 +15620,9 @@
       "severity": "INFO",
       "status": "OPEN",
       "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A8_DERIVED_FRESHNESS_SMELL",
-      "category": "derived_freshness",
-      "confidence": 0.55,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Derived artifact lacks obvious generator/source command reference.",
-        "Add deterministic regeneration hint to improve freshness governance."
-      ],
-      "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0001",
-      "fingerprint": "685ef60c76218eb7388cfb8dd6bc921a6bca968a06408387e28308ba896c33e7",
-      "location": {
-        "file": "docs/governance/AUDITX_MODEL.md"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-DERIVED-ARTIFACT-FRESHNESS"
-      ],
-      "related_paths": [
-        "docs/governance/AUDITX_MODEL.md"
-      ],
-      "severity": "INFO",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
     }
   ],
-  "graph_hash": "ca3f32046ef417e97df9e4a23e7f87d0095b5ae534f754a406e042a281f5e6f0",
+  "graph_hash": "f0227748d1d8ff2623ffa9ef0e168c65671fc2c0e2f0298bed7ee1d2f66ccf40",
   "result": "scan_complete",
   "schema_id": "dominium.auditx.findings",
   "schema_version": "1.0.0"
