@@ -1,0 +1,69 @@
+{
+  "schema_id": "dominium.schema.governance.privilege_model",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.security.roles",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.privilege_model@1.0.0",
+    "roles": [
+      {
+        "role_id": "role.observer",
+        "law_profile_id": "law.observer",
+        "entitlements": [
+          "camera.mode.observer_truth",
+          "ui.overlay.world_layers",
+          "ui.console.command.read_only"
+        ],
+        "restrictions": [
+          "no_authoritative_mutation",
+          "no_pack_enablement"
+        ],
+        "watermark_policy": "observer",
+        "extensions": {}
+      },
+      {
+        "role_id": "role.creator",
+        "law_profile_id": "law.creative",
+        "entitlements": [
+          "ui.console.command.read_write",
+          "ui.overlay.world_layers",
+          "scenario.mutate"
+        ],
+        "restrictions": [
+          "no_engine_patching",
+          "no_server_authority_override"
+        ],
+        "watermark_policy": "dev",
+        "extensions": {}
+      },
+      {
+        "role_id": "role.mission_player",
+        "law_profile_id": "law.mission_player",
+        "entitlements": [
+          "ui.hud.basic",
+          "ui.console.command.read_only"
+        ],
+        "restrictions": [
+          "no_truth_overlay",
+          "no_freecam_truth"
+        ],
+        "watermark_policy": "none",
+        "extensions": {}
+      },
+      {
+        "role_id": "role.tools_operator",
+        "law_profile_id": "law.lab",
+        "entitlements": [
+          "tool.ensemble.run",
+          "tool.attribution.view"
+        ],
+        "restrictions": [
+          "no_runtime_authority_override"
+        ],
+        "watermark_policy": "dev",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
