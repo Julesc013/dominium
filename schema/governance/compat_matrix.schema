@@ -1,0 +1,33 @@
+SCHEMA: governance/compat_matrix.schema
+schema_id: dominium.schema.governance.compat_matrix
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare compatibility relationships between versioned components.
+- Require explicit migrations for breaking transitions.
+
+NON-SEMANTICS:
+- Matrix entries describe compatibility policy only.
+- Entries do not modify simulation behavior.
+
+REQUIRED SHAPE:
+record compat_matrix_registry
+  required:
+    - matrix_id: id
+    - matrix_version: tag
+    - schema_version_ref: tag
+    - entries: [compat_matrix_entry]
+    - extensions: map
+
+record compat_matrix_entry
+  required:
+    - component_type: tag
+    - component_id: id
+    - version_from: semver
+    - version_to: semver
+    - compatibility_type: enum(forward|backward|full|none)
+    - migration_required: bool
+    - migration_id: id_or_empty
+    - extensions: map
+

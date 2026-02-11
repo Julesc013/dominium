@@ -194,7 +194,7 @@ FORBIDDEN_RENDER_TRUTH_TOKENS = (
 
 RULESET_ROOT = os.path.join("repo", "repox", "rulesets")
 REPOX_EXEMPTIONS_PATH = os.path.join("repo", "repox", "repox_exemptions.json")
-PROOF_MANIFEST_DEFAULT = os.path.join("build", "proof_manifests", "repox_proof_manifest.json")
+PROOF_MANIFEST_DEFAULT = os.path.join("docs", "audit", "proof_manifest.json")
 EXEMPTION_INLINE_RE = re.compile(r"@repox:allow\((?P<rule_id>[A-Za-z0-9_.-]+)\)(?P<tail>[^\r\n]*)")
 EXEMPTION_REASON_RE = re.compile(r'reason="([^"]+)"')
 EXEMPTION_EXPIRES_RE = re.compile(r'expires="(\d{4}-\d{2}-\d{2})"')
@@ -262,6 +262,8 @@ DERIVED_ARTIFACT_CLASSES = ("CANONICAL", "DERIVED_VIEW", "RUN_META")
 DERIVED_ARTIFACT_REQUIRED_IDS = (
     "artifact.auditx.findings",
     "artifact.auditx.invariant_map",
+    "artifact.auditx.promotion_candidates",
+    "artifact.auditx.trends",
     "artifact.auditx.run_meta",
     "artifact.identity.fingerprint",
     "artifact.ui.bind.table",
@@ -282,6 +284,16 @@ REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
     "WORKSPACE_COLLISION",
     "VERSIONING_POLICY_MISMATCH",
 )
+
+COMPAT_MATRIX_SCHEMA_REL = os.path.join("schema", "governance", "compat_matrix.schema")
+COMPAT_MATRIX_REGISTRY_REL = os.path.join("data", "registries", "compat_matrix.json")
+COMPAT_MATRIX_SCHEMA_ID = "dominium.schema.governance.compat_matrix"
+COMPAT_MIGRATION_SCHEMA_REL = os.path.join("schema", "governance", "migration_spec.schema")
+COMPAT_MIGRATION_REGISTRY_REL = os.path.join("data", "registries", "migrations.json")
+COMPAT_MIGRATION_SCHEMA_ID = "dominium.schema.governance.migration_spec"
+COMPAT_SCHEMA_POLICY_SCHEMA_REL = os.path.join("schema", "governance", "schema_version_policy.schema")
+COMPAT_SCHEMA_POLICY_REGISTRY_REL = os.path.join("data", "registries", "schema_version_policy.json")
+COMPAT_SCHEMA_POLICY_SCHEMA_ID = "dominium.schema.governance.schema_version_policy"
 
 BUILD_PRESET_CONTRACT_CONFIGURE = (
     "msvc-dev-debug",
@@ -332,9 +344,12 @@ CANONICAL_TOOL_IDS = (
 AUDITX_CANONICAL_ARTIFACTS = (
     "docs/audit/auditx/FINDINGS.json",
     "docs/audit/auditx/INVARIANT_MAP.json",
+    "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+    "docs/audit/auditx/TRENDS.json",
 )
 AUDITX_RUN_META_ARTIFACT = "docs/audit/auditx/RUN_META.json"
 AUDITX_CANONICAL_FORBIDDEN_KEYS = (
+    "created_utc",
     "last_reviewed",
     "generated_utc",
     "duration_ms",
@@ -365,6 +380,7 @@ DIRECT_GATE_ALLOWLIST = {
     normalize_path(os.path.join("scripts", "dev", "gate_shim.py")),
     normalize_path(os.path.join("scripts", "dev", "run_repox.py")),
     normalize_path(os.path.join("scripts", "dev", "run_testx.py")),
+    normalize_path(os.path.join("scripts", "dev", "testx_proof_engine.py")),
     normalize_path(os.path.join("scripts", "ci", "check_repox_rules.py")),
 }
 
@@ -893,9 +909,11 @@ def _collect_manifest_test_names(repo_root):
 
 def _build_proof_manifest(repo_root, warnings, failures):
     changed_files = get_changed_files(repo_root) or []
-    changed = [normalize_path(path) for path in changed_files]
+    changed = sorted(normalize_path(path) for path in changed_files)
     required_tests = set()
     required_invariants = set()
+    required_test_tags = {"invariant"}
+    impacted_subsystems = set()
     required_refusal_codes = {
         "CAMERA_REFUSE_ENTITLEMENT",
         "BLUEPRINT_REFUSE_CAPABILITY",
@@ -904,6 +922,9 @@ def _build_proof_manifest(repo_root, warnings, failures):
     required_capability_checks = set(CAMERA_MODE_RUNTIME_CAPABILITIES + OBSERVER_TOOL_ENTITLEMENTS)
 
     for path in changed:
+        top = path.split("/", 1)[0] if "/" in path else path
+        if top in ("engine", "game", "client", "server", "launcher", "setup", "tools", "schema", "data", "docs", "tests", "libs"):
+            impacted_subsystems.add(top)
         if path.startswith("client/") or path.startswith("libs/appcore/command/") or path.startswith("libs/appcore/ui_bind/"):
             required_tests.update({
                 "capability_runtime_enforcement",
@@ -911,6 +932,7 @@ def _build_proof_manifest(repo_root, warnings, failures):
                 "blueprint_refusal",
                 "ui_client_menu_parity",
             })
+            required_test_tags.update({"ui", "parity", "capability"})
             required_invariants.update({
                 "INV-COMMAND-CAPABILITY-METADATA",
                 "INV-RUNTIME-CAPABILITY-GUARDS",
@@ -922,6 +944,7 @@ def _build_proof_manifest(repo_root, warnings, failures):
                 "invariant_process_only_mutation",
                 "determinism_replay_hash_invariance",
             })
+            required_test_tags.update({"runtime", "determinism", "regression"})
             required_invariants.update({
                 "INV-PROCESS-REGISTRY",
                 "INV-PROCESS-RUNTIME-ID",
@@ -931,16 +954,27 @@ def _build_proof_manifest(repo_root, warnings, failures):
                 "schema_version_immutability_contracts",
                 "schema_migration_contracts",
             })
+            required_test_tags.update({"schema", "registry", "invariant"})
             required_invariants.update({
                 "INV-SCHEMA-VERSION-BUMP",
                 "INV-SCHEMA-MIGRATION-ROUTES",
             })
+        if path.startswith("tools/"):
+            required_test_tags.update({"tools", "integration"})
+        if path.startswith("tests/"):
+            required_test_tags.update({"regression"})
+        if path.startswith("docs/"):
+            required_test_tags.update({"docs"})
 
     manifest = {
         "schema_id": "dominium.repox.proof_manifest",
         "schema_version": "1.0.0",
         "generated_by": "scripts/ci/check_repox_rules.py",
-        "changed_files": sorted(changed),
+        "changed_paths": changed,
+        "changed_files": changed,
+        "impacted_subsystems": sorted(impacted_subsystems),
+        "impacted_invariants": sorted(required_invariants),
+        "required_test_tags": sorted(required_test_tags),
         "required_capability_checks": sorted(required_capability_checks),
         "required_refusal_codes": sorted(required_refusal_codes),
         "required_invariants": sorted(required_invariants),
@@ -2253,6 +2287,7 @@ def check_no_direct_gate_calls(repo_root):
         "scripts/dev/gate_shim.py",
         "scripts/dev/run_repox.py",
         "scripts/dev/run_testx.py",
+        "scripts/dev/testx_proof_engine.py",
     )
 
     violations = []
@@ -4215,6 +4250,274 @@ def check_root_module_shims(repo_root):
     return violations
 
 
+def check_compat_matrix_registry(repo_root):
+    invariant_id = "INV-COMPAT-MATRIX-VALID"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_path = os.path.join(repo_root, COMPAT_MATRIX_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, COMPAT_MATRIX_REGISTRY_REL)
+    if not os.path.isfile(schema_path):
+        return ["{}: missing schema {}".format(invariant_id, normalize_path(COMPAT_MATRIX_SCHEMA_REL))]
+    if not os.path.isfile(registry_path):
+        return ["{}: missing registry {}".format(invariant_id, normalize_path(COMPAT_MATRIX_REGISTRY_REL))]
+
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(COMPAT_MATRIX_REGISTRY_REL))]
+
+    violations = []
+    if str(payload.get("schema_id", "")).strip() != COMPAT_MATRIX_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, normalize_path(COMPAT_MATRIX_REGISTRY_REL)))
+    if _parse_semver(payload.get("schema_version")) is None:
+        violations.append("{}: invalid schema_version in {}".format(invariant_id, normalize_path(COMPAT_MATRIX_REGISTRY_REL)))
+
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return violations + ["{}: missing record object in {}".format(invariant_id, normalize_path(COMPAT_MATRIX_REGISTRY_REL))]
+    rows = record.get("entries")
+    if not isinstance(rows, list):
+        return violations + ["{}: entries must be list in {}".format(invariant_id, normalize_path(COMPAT_MATRIX_REGISTRY_REL))]
+
+    seen = set()
+    compat_types = {"forward", "backward", "full", "none"}
+    component_types = {"schema", "pack", "save", "replay", "protocol", "api", "abi", "identity"}
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append("{}: entry {} must be object".format(invariant_id, idx))
+            continue
+        component_type = str(row.get("component_type", "")).strip()
+        component_id = str(row.get("component_id", "")).strip()
+        version_from = str(row.get("version_from", "")).strip()
+        version_to = str(row.get("version_to", "")).strip()
+        compatibility_type = str(row.get("compatibility_type", "")).strip()
+        migration_required = row.get("migration_required")
+        migration_id = str(row.get("migration_id", "")).strip()
+
+        if component_type not in component_types:
+            violations.append("{}: invalid component_type '{}' at entry {}".format(invariant_id, component_type, idx))
+        if not component_id:
+            violations.append("{}: missing component_id at entry {}".format(invariant_id, idx))
+        if _parse_semver(version_from) is None or _parse_semver(version_to) is None:
+            violations.append("{}: invalid versions at entry {}".format(invariant_id, idx))
+        if compatibility_type not in compat_types:
+            violations.append("{}: invalid compatibility_type '{}' at entry {}".format(invariant_id, compatibility_type, idx))
+        if not isinstance(migration_required, bool):
+            violations.append("{}: migration_required must be bool at entry {}".format(invariant_id, idx))
+        if migration_required is True and not migration_id:
+            violations.append("{}: migration_id required at entry {}".format(invariant_id, idx))
+
+        key = (component_type, component_id, version_from, version_to)
+        if key in seen:
+            violations.append("{}: duplicate transition {} {} {} -> {}".format(
+                invariant_id, component_type, component_id, version_from, version_to
+            ))
+        seen.add(key)
+
+    return violations
+
+
+def check_compat_migration_registry(repo_root):
+    invariant_id = "INV-COMPAT-MIGRATIONS-VALID"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_path = os.path.join(repo_root, COMPAT_MIGRATION_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, COMPAT_MIGRATION_REGISTRY_REL)
+    matrix_path = os.path.join(repo_root, COMPAT_MATRIX_REGISTRY_REL)
+    if not os.path.isfile(schema_path):
+        return ["{}: missing schema {}".format(invariant_id, normalize_path(COMPAT_MIGRATION_SCHEMA_REL))]
+    if not os.path.isfile(registry_path):
+        return ["{}: missing registry {}".format(invariant_id, normalize_path(COMPAT_MIGRATION_REGISTRY_REL))]
+
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(COMPAT_MIGRATION_REGISTRY_REL))]
+
+    violations = []
+    if str(payload.get("schema_id", "")).strip() != COMPAT_MIGRATION_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, normalize_path(COMPAT_MIGRATION_REGISTRY_REL)))
+    if _parse_semver(payload.get("schema_version")) is None:
+        violations.append("{}: invalid schema_version in {}".format(invariant_id, normalize_path(COMPAT_MIGRATION_REGISTRY_REL)))
+
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return violations + ["{}: missing record object in {}".format(invariant_id, normalize_path(COMPAT_MIGRATION_REGISTRY_REL))]
+    rows = record.get("migrations")
+    if not isinstance(rows, list):
+        return violations + ["{}: migrations must be list in {}".format(invariant_id, normalize_path(COMPAT_MIGRATION_REGISTRY_REL))]
+
+    migration_ids = set()
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append("{}: migration {} must be object".format(invariant_id, idx))
+            continue
+        migration_id = str(row.get("migration_id", "")).strip()
+        from_version = str(row.get("from_version", "")).strip()
+        to_version = str(row.get("to_version", "")).strip()
+        migration_tool = str(row.get("migration_tool", "")).strip()
+        deterministic_required = row.get("deterministic_required")
+        if not migration_id:
+            violations.append("{}: migration {} missing migration_id".format(invariant_id, idx))
+            continue
+        if migration_id in migration_ids:
+            violations.append("{}: duplicate migration_id '{}'".format(invariant_id, migration_id))
+        migration_ids.add(migration_id)
+        if _parse_semver(from_version) is None or _parse_semver(to_version) is None:
+            violations.append("{}: invalid version route for '{}'".format(invariant_id, migration_id))
+        if not isinstance(deterministic_required, bool):
+            violations.append("{}: deterministic_required must be bool for '{}'".format(invariant_id, migration_id))
+        if not migration_tool:
+            violations.append("{}: migration_tool missing for '{}'".format(invariant_id, migration_id))
+        else:
+            rel_file = migration_tool.split("::", 1)[0]
+            if not os.path.isfile(os.path.join(repo_root, rel_file.replace("/", os.sep))):
+                violations.append("{}: migration tool file missing for '{}' -> {}".format(
+                    invariant_id, migration_id, normalize_path(rel_file)
+                ))
+
+    matrix_payload = _load_json_file(matrix_path) if os.path.isfile(matrix_path) else None
+    if isinstance(matrix_payload, dict):
+        matrix_record = matrix_payload.get("record")
+        matrix_rows = matrix_record.get("entries") if isinstance(matrix_record, dict) else None
+        if isinstance(matrix_rows, list):
+            for idx, row in enumerate(matrix_rows):
+                if not isinstance(row, dict):
+                    continue
+                if row.get("migration_required") is not True:
+                    continue
+                migration_id = str(row.get("migration_id", "")).strip()
+                if not migration_id:
+                    violations.append("{}: compat matrix entry {} missing migration_id".format(invariant_id, idx))
+                elif migration_id not in migration_ids:
+                    violations.append("{}: missing migration '{}' referenced by compat matrix entry {}".format(
+                        invariant_id, migration_id, idx
+                    ))
+    return violations
+
+
+def check_schema_version_policy_registry(repo_root):
+    invariant_id = "INV-SCHEMA-VERSION-POLICY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_path = os.path.join(repo_root, COMPAT_SCHEMA_POLICY_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, COMPAT_SCHEMA_POLICY_REGISTRY_REL)
+    matrix_path = os.path.join(repo_root, COMPAT_MATRIX_REGISTRY_REL)
+    if not os.path.isfile(schema_path):
+        return ["{}: missing schema {}".format(invariant_id, normalize_path(COMPAT_SCHEMA_POLICY_SCHEMA_REL))]
+    if not os.path.isfile(registry_path):
+        return ["{}: missing registry {}".format(invariant_id, normalize_path(COMPAT_SCHEMA_POLICY_REGISTRY_REL))]
+
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(COMPAT_SCHEMA_POLICY_REGISTRY_REL))]
+
+    violations = []
+    if str(payload.get("schema_id", "")).strip() != COMPAT_SCHEMA_POLICY_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, normalize_path(COMPAT_SCHEMA_POLICY_REGISTRY_REL)))
+    if _parse_semver(payload.get("schema_version")) is None:
+        violations.append("{}: invalid schema_version in {}".format(invariant_id, normalize_path(COMPAT_SCHEMA_POLICY_REGISTRY_REL)))
+
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return violations + ["{}: missing record object in {}".format(invariant_id, normalize_path(COMPAT_SCHEMA_POLICY_REGISTRY_REL))]
+    rows = record.get("policies")
+    if not isinstance(rows, list):
+        return violations + ["{}: policies must be list in {}".format(invariant_id, normalize_path(COMPAT_SCHEMA_POLICY_REGISTRY_REL))]
+
+    matrix_components = set()
+    matrix_payload = _load_json_file(matrix_path) if os.path.isfile(matrix_path) else None
+    if isinstance(matrix_payload, dict):
+        matrix_record = matrix_payload.get("record")
+        matrix_rows = matrix_record.get("entries") if isinstance(matrix_record, dict) else None
+        if isinstance(matrix_rows, list):
+            for row in matrix_rows:
+                if not isinstance(row, dict):
+                    continue
+                component_id = str(row.get("component_id", "")).strip()
+                if component_id:
+                    matrix_components.add(component_id)
+
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append("{}: policy {} must be object".format(invariant_id, idx))
+            continue
+        schema_id = str(row.get("schema_id", "")).strip()
+        current_version = str(row.get("current_version", "")).strip()
+        allowed_backward = row.get("allowed_backward")
+        allowed_forward = row.get("allowed_forward")
+        breaking = row.get("breaking_change_requires_migration")
+        deprecation_policy = str(row.get("deprecation_policy", "")).strip()
+        deprecated_fields = row.get("deprecated_fields")
+
+        if not schema_id:
+            violations.append("{}: policy {} missing schema_id".format(invariant_id, idx))
+        if _parse_semver(current_version) is None:
+            violations.append("{}: policy {} invalid current_version".format(invariant_id, idx))
+        if not isinstance(allowed_backward, list):
+            violations.append("{}: policy {} allowed_backward must be list".format(invariant_id, idx))
+        if not isinstance(allowed_forward, list):
+            violations.append("{}: policy {} allowed_forward must be list".format(invariant_id, idx))
+        if not isinstance(breaking, bool):
+            violations.append("{}: policy {} breaking_change_requires_migration must be bool".format(invariant_id, idx))
+        if not deprecation_policy:
+            violations.append("{}: policy {} missing deprecation_policy".format(invariant_id, idx))
+        if deprecated_fields is not None and not isinstance(deprecated_fields, list):
+            violations.append("{}: policy {} deprecated_fields must be list".format(invariant_id, idx))
+
+        short_id = schema_id.rsplit(".", 1)[-1] if schema_id else ""
+        if matrix_components and schema_id and short_id not in matrix_components and schema_id not in matrix_components:
+            violations.append("{}: policy '{}' missing schema component transition in {}".format(
+                invariant_id, schema_id, normalize_path(COMPAT_MATRIX_REGISTRY_REL)
+            ))
+    return violations
+
+
+def check_schema_deprecated_fields(repo_root):
+    invariant_id = "WARN-SCHEMA-DEPRECATED-FIELDS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    registry_path = os.path.join(repo_root, COMPAT_SCHEMA_POLICY_REGISTRY_REL)
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return []
+    record = payload.get("record")
+    rows = record.get("policies") if isinstance(record, dict) else None
+    if not isinstance(rows, list):
+        return []
+
+    deprecated_tokens = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        fields = row.get("deprecated_fields")
+        if not isinstance(fields, list):
+            continue
+        for token in fields:
+            value = str(token).strip()
+            if value:
+                deprecated_tokens.add(value)
+    if not deprecated_tokens:
+        return []
+
+    changed_files = get_changed_files(repo_root)
+    if changed_files is None:
+        return []
+    candidates = [path for path in changed_files if path.startswith("schema/") or path.startswith("data/")]
+    violations = []
+    for rel in sorted(candidates):
+        diff = run_git(["diff", "--unified=0", "--", rel], repo_root)
+        if diff is None:
+            continue
+        for token in sorted(deprecated_tokens):
+            pattern = re.compile(r"^\+[^+].*\b{}\b".format(re.escape(token)))
+            if pattern.search(diff):
+                violations.append("{}: deprecated field token '{}' added in {}".format(invariant_id, token, rel))
+    return violations
+
+
 def check_derived_artifact_contract(repo_root):
     invariant_id = "INV-DERIVED-ARTIFACT-CONTRACT"
     schema_path = os.path.join(repo_root, DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL)
@@ -4400,10 +4703,12 @@ def check_auditx_artifact_headers(repo_root):
 def check_auditx_deterministic_contract(repo_root):
     invariant_id = "INV-AUDITX-DETERMINISM"
     checks = (
-        ("tools/auditx/auditx.py", ("sort_findings(", "compute_fingerprint(", "build_analysis_graph(")),
+        ("tools/auditx/auditx.py", ("sort_findings(", "compute_fingerprint(", "build_analysis_graph(", "build_cache_context(")),
         ("tools/auditx/model/serialization.py", ("sort_keys=True", "sha256(")),
         ("tools/auditx/graph/analysis_graph.py", ("stable_hash(", "sort_keys=True")),
-        ("tools/auditx/output/writers.py", ("sort_keys=True", "_build_invariant_map(")),
+        ("tools/auditx/output/writers.py", ("sort_keys=True", "_build_invariant_map(", "_build_promotion_candidates(", "_build_trends(")),
+        ("tools/auditx/canonicalize.py", ("canonical_json_string(", "canonicalize_json_payload(")),
+        ("tools/auditx/cache_engine.py", ("build_cache_context(", "changed_paths_from_state(")),
     )
 
     violations = []
@@ -4466,6 +4771,42 @@ def check_auditx_output_staleness(repo_root):
     ]
 
 
+def check_auditx_promotion_candidates(repo_root):
+    invariant_id = "INV-AUDITX-PROMOTION-CANDIDATE-SHAPE"
+    rel = "docs/audit/auditx/PROMOTION_CANDIDATES.json"
+    path = os.path.join(repo_root, rel.replace("/", os.sep))
+    if not os.path.isfile(path):
+        return []
+
+    payload = _load_json_file(path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, rel)]
+    if str(payload.get("artifact_class", "")).strip() != "CANONICAL":
+        return ["{}: expected CANONICAL artifact_class in {}".format(invariant_id, rel)]
+    rows = payload.get("candidates")
+    if not isinstance(rows, list):
+        return ["{}: candidates must be list in {}".format(invariant_id, rel)]
+
+    violations = []
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append("{}: candidate {} must be object in {}".format(invariant_id, idx, rel))
+            continue
+        for key in ("rule_type", "rationale", "evidence_paths", "suggested_ruleset", "risk_score"):
+            if key not in row:
+                violations.append("{}: candidate {} missing key '{}' in {}".format(invariant_id, idx, key, rel))
+        if row.get("auto_activate") is True:
+            violations.append("{}: candidate {} sets forbidden auto_activate=true in {}".format(invariant_id, idx, rel))
+        suggested_ruleset = normalize_path(str(row.get("suggested_ruleset", "")).strip())
+        if suggested_ruleset and "/" not in suggested_ruleset:
+            expected = normalize_path(os.path.join("repo", "repox", "rulesets", suggested_ruleset))
+            if not os.path.isfile(os.path.join(repo_root, expected.replace("/", os.sep))):
+                violations.append("{}: candidate {} references unknown ruleset '{}'".format(
+                    invariant_id, idx, suggested_ruleset
+                ))
+    return violations
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="RepoX governance rules enforcement.")
     parser.add_argument("--repo-root", default="")
@@ -4513,6 +4854,10 @@ def main() -> int:
     violations.extend(check_schema_migration_routes(repo_root))
     violations.extend(check_schema_no_implicit_defaults(repo_root))
     violations.extend(check_unversioned_schema_references(repo_root))
+    violations.extend(check_compat_matrix_registry(repo_root))
+    violations.extend(check_compat_migration_registry(repo_root))
+    violations.extend(check_schema_version_policy_registry(repo_root))
+    violations.extend(check_schema_deprecated_fields(repo_root))
     violations.extend(check_pack_capability_metadata(repo_root))
     violations.extend(check_prealpha_pack_isolation(repo_root))
     violations.extend(check_pkg_manifest_fields(repo_root))
@@ -4551,6 +4896,7 @@ def main() -> int:
     violations.extend(check_auditx_artifact_headers(repo_root))
     violations.extend(check_auditx_deterministic_contract(repo_root))
     violations.extend(check_auditx_nonruntime_leak(repo_root))
+    violations.extend(check_auditx_promotion_candidates(repo_root))
     violations.extend(check_auditx_output_staleness(repo_root))
 
     failures, warnings = _apply_ruleset_policy(repo_root, violations)

@@ -1,0 +1,130 @@
+{
+  "schema_id": "dominium.schema.governance.testx_suites",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.testx.suites",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.testx_suites@1.0.0",
+    "suites": [
+      {
+        "suite_id": "testx_fast",
+        "test_tags": [
+          "auditx",
+          "environment",
+          "invariant",
+          "manifest",
+          "workspace"
+        ],
+        "required_gates": [
+          "repox.precheck"
+        ],
+        "deterministic_required": true,
+        "environment_constraints": [
+          "cwd_agnostic",
+          "path_canonicalized"
+        ],
+        "extensions": {
+          "default_tests": [
+            "inv_proof_manifest",
+            "inv_repox_rules",
+            "tools_auditx"
+          ],
+          "tests_by_tag": {
+            "auditx": [
+              "test_canonical_artifact_hash_stability",
+              "test_no_timestamp_in_canonical",
+              "tools_auditx"
+            ],
+            "environment": [
+              "test_testx_arbitrary_cwd",
+              "test_testx_empty_path"
+            ],
+            "invariant": [
+              "inv_proof_manifest",
+              "inv_repox_rules"
+            ],
+            "manifest": [
+              "test_manifest_fallback_when_missing",
+              "test_manifest_selection_logic"
+            ],
+            "workspace": [
+              "test_no_global_write",
+              "test_workspace_isolation_build",
+              "test_workspace_isolation_dist"
+            ]
+          }
+        }
+      },
+      {
+        "suite_id": "testx_verify",
+        "test_tags": [
+          "determinism",
+          "identity",
+          "invariant",
+          "performance",
+          "regression",
+          "workspace"
+        ],
+        "required_gates": [
+          "repox.full",
+          "build.strict"
+        ],
+        "deterministic_required": true,
+        "environment_constraints": [
+          "cwd_agnostic",
+          "path_canonicalized",
+          "workspace_scoped"
+        ],
+        "extensions": {
+          "run_all_tests": true,
+          "required_tests": [
+            "determinism_srz",
+            "determinism_thread_count_invariance",
+            "performx_determinism",
+            "performx_smoke",
+            "test_determinism_budget",
+            "test_determinism_srz",
+            "test_determinism_thread",
+            "test_rng_stream_consistency"
+          ]
+        }
+      },
+      {
+        "suite_id": "testx_dist",
+        "test_tags": [
+          "compatibility",
+          "dist",
+          "packaging",
+          "performance",
+          "regression"
+        ],
+        "required_gates": [
+          "repox.full",
+          "build.strict",
+          "dist.verify"
+        ],
+        "deterministic_required": true,
+        "environment_constraints": [
+          "cwd_agnostic",
+          "path_canonicalized",
+          "workspace_scoped"
+        ],
+        "extensions": {
+          "run_all_tests": true,
+          "required_tests": [
+            "compatx_migration_tests",
+            "compatx_pack_matrix_tests",
+            "compatx_save_replay_tests",
+            "compatx_schema_diff_tests",
+            "distribution_determinism_performance_baseline",
+            "distribution_lockfile_determinism",
+            "distribution_platform_portability_consistency",
+            "performx_regression_detection",
+            "performx_workspace_isolation"
+          ]
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

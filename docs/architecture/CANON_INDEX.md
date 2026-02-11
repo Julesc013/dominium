@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-07
+Last Reviewed: 2026-02-11
 Supersedes: none
 Superseded By: none
 
@@ -264,8 +264,13 @@ execution artifacts and are not authoritative.
 - `docs/client/CLIENT_UI_AND_FLOW.md`
 - `docs/client/CLIENT_SETTINGS.md`
 - `docs/dev/NOW_SOON_LATER_ROADMAP.md`
+- `docs/governance/COMPATX_MODEL.md`
+- `docs/governance/CONTROLX_MODEL.md`
+- `docs/governance/PERFORMX_MODEL.md`
+- `docs/governance/PROMPT_FIREWALL_POLICY.md`
 - `docs/governance/REMEDIATION_STATE_MACHINE.md`
 - `docs/governance/SEMANTIC_ESCALATION_POLICY.md`
+- `docs/governance/TESTX_ARCHITECTURE.md`
 - `docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md`
 - `docs/launcher/LAUNCHER_SETTINGS.md`
 - `docs/guides/TOOLING_OVERVIEW.md`
@@ -297,6 +302,9 @@ execution artifacts and are not authoritative.
 - `docs/architecture/KNOWN_WARNINGS.md`
 - `docs/architecture/POST_CLEAN_2_STATUS.md`
 - `docs/architecture/STANDARDS_AND_META_SYSTEMS_MODEL.md`
+- `docs/audit/AUDITX_OVERHAUL_REPORT.md`
+- `docs/audit/compat/COMPAT_BASELINE.md`
+- `docs/audit/compat/README.md`
 - `docs/CAPABILITY_STAGES.md`
 - `docs/TESTX_STAGE_MATRIX.md`
 - `docs/dev/BUILD_MATRIX.md`
@@ -326,6 +334,10 @@ execution artifacts and are not authoritative.
 - `docs/ops/SERVER_OPERATIONS.md`
 - `docs/ops/SERVER_SCOPE.md`
 - `docs/ops/UPDATE_AND_ROLLBACK.md`
+- `docs/audit/TESTX_OVERHAUL_REPORT.md`
+- `docs/audit/controlx/README.md`
+- `docs/audit/performance/PERFORMX_BASELINE.md`
+- `docs/audit/performance/README.md`
 - `docs/repox/APRX_INTEGRATION_HOOKS.md`
 
 ## HISTORICAL
