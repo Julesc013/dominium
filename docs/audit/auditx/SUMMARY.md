@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-10
+Last Reviewed: 2026-02-11
 Supersedes: none
 Superseded By: none
 
@@ -8,14 +8,14 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 202
+- INFO: 200
 - RISK: 169
-- WARN: 732
+- WARN: 730
 
 ## Counts By Category
 
-- canon_drift: 582
-- capability_misuse: 121
+- canon_drift: 580
+- capability_misuse: 119
 - derived_freshness: 120
 - legacy_contamination: 5
 - ownership_boundary: 4

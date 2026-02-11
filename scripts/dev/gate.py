@@ -5,6 +5,7 @@ import argparse
 import glob
 import json
 import os
+import shlex
 import subprocess
 import sys
 from datetime import datetime
@@ -31,6 +32,8 @@ UI_BIND_CACHE_REL = os.path.join(VERIFY_BUILD_DIR_REL, "gate_ui_bind_cache.json"
 MECHANICAL_BLOCKER_TYPES = (
     "TOOL_DISCOVERY",
     "DERIVED_ARTIFACT_STALE",
+    "DIST_OUTPUT_MISSING",
+    "PKG_INDEX_MISSING",
     "SCHEMA_MISMATCH",
     "BUILD_OUTPUT_MISSING",
     "PATH_CWD_DEPENDENCY",
@@ -409,6 +412,8 @@ def _default_strategy_classes(blocker_type):
     defaults = {
         "TOOL_DISCOVERY": ["environment", "tooling_integration", "build_wiring"],
         "DERIVED_ARTIFACT_STALE": ["artifact_regeneration", "tooling_integration"],
+        "DIST_OUTPUT_MISSING": ["build_wiring", "artifact_regeneration"],
+        "PKG_INDEX_MISSING": ["build_wiring", "artifact_regeneration"],
         "UI_BIND_DRIFT": ["artifact_regeneration", "tooling_integration"],
         "SCHEMA_MISMATCH": ["registry_schema", "artifact_regeneration"],
         "BUILD_OUTPUT_MISSING": ["build_wiring", "tooling_integration"],
@@ -426,6 +431,12 @@ def _diagnose_blocker(stage_name, output):
     upper = text.upper()
     if "INV-IDENTITY-FINGERPRINT" in text:
         return "DERIVED_ARTIFACT_STALE"
+    if "INV-DERIVED-STALE" in text:
+        return "DERIVED_ARTIFACT_STALE"
+    if "INV-DIST-MISSING" in text:
+        return "DIST_OUTPUT_MISSING"
+    if "INV-PKG-INDEX-MISSING" in text:
+        return "PKG_INDEX_MISSING"
     if "INV-TOOLS-DIR-MISSING" in text or "TOOL_UI_BIND" in text and "NOT RECOGNIZED" in upper:
         return "TOOL_DISCOVERY"
     if "UI_BIND_ERROR" in text:
@@ -463,6 +474,14 @@ def _failure_score(result):
     return score
 
 
+def _has_measurable_progress(before_result, after_result):
+    before_score = _failure_score(before_result)
+    after_score = _failure_score(after_result)
+    if int(before_result.get("returncode", 0)) != 0 and int(after_result.get("returncode", 0)) == 0:
+        return True
+    return after_score < before_score
+
+
 def _tool_build_attempts():
     return (
         ("ui_bind_phase",),
@@ -479,14 +498,14 @@ def _run_build_targets(repo_root, env, targets, verify_build_dir):
     )
 
 
-def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted, verify_build_dir):
-    key = (stage_name, strategy_class)
+def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted, verify_build_dir, blocker_type=""):
+    key = (stage_name, strategy_class, blocker_type)
     if key in attempted:
         return None
     attempted.add(key)
 
     if strategy_class == "environment":
-        env2, tools_dir = _canonical_env(repo_root, env)
+        env2, tools_dir, _ws_dirs = _canonical_env(repo_root, env)
         env.clear()
         env.update(env2)
         return {
@@ -509,6 +528,12 @@ def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted, ver
         return None
 
     if strategy_class == "artifact_regeneration":
+        if blocker_type in ("DIST_OUTPUT_MISSING", "PKG_INDEX_MISSING"):
+            result = _run_build_targets(repo_root, env, ("dist_all",), verify_build_dir)
+            result["strategy"] = strategy_class
+            result["targets"] = ["dist_all"]
+            return result
+
         stage_lower = stage_name.lower()
         if "repox" in stage_lower:
             result = _run(
@@ -530,7 +555,9 @@ def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted, ver
 
     if strategy_class == "build_wiring":
         stage_lower = stage_name.lower()
-        if "dist" in stage_lower:
+        if blocker_type in ("DIST_OUTPUT_MISSING", "PKG_INDEX_MISSING"):
+            targets = ("dist_all",)
+        elif "dist" in stage_lower:
             targets = ("dist_all",)
         elif "testx" in stage_lower:
             targets = ("testx_all",)
@@ -550,7 +577,7 @@ def _attempt_strategy(repo_root, env, stage_name, strategy_class, attempted, ver
         return result
 
     if strategy_class == "adapter_fix":
-        env2, tools_dir = _canonical_env(repo_root, env)
+        env2, tools_dir, _ws_dirs = _canonical_env(repo_root, env)
         env.clear()
         env.update(env2)
         return {
@@ -629,6 +656,127 @@ def _write_remediation_bundle(
         handle.write("## Failure Output\n\n```\n{}\n```\n".format((failure.get("output", "") or "").strip()))
 
 
+def _load_queue_steps(queue_file):
+    if not queue_file:
+        return None, "refuse.queue_file_required"
+    if not os.path.isfile(queue_file):
+        return None, "refuse.queue_file_missing"
+
+    try:
+        with open(queue_file, "r", encoding="utf-8") as handle:
+            text = handle.read()
+    except OSError:
+        return None, "refuse.queue_file_unreadable"
+
+    steps = None
+    try:
+        parsed = json.loads(text)
+    except ValueError:
+        parsed = None
+
+    if isinstance(parsed, list):
+        steps = parsed
+    elif isinstance(parsed, dict):
+        raw_steps = parsed.get("steps")
+        if isinstance(raw_steps, list):
+            steps = raw_steps
+
+    if steps is None:
+        steps = []
+        for raw_line in text.splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = shlex.split(line, posix=False)
+            if not parts:
+                continue
+            steps.append({"command": parts[0], "args": parts[1:]})
+
+    normalized = []
+    for step in steps:
+        if isinstance(step, str):
+            normalized.append({"command": step.strip()})
+            continue
+        if isinstance(step, dict):
+            normalized.append(step)
+    if not normalized:
+        return None, "refuse.queue_empty"
+    return normalized, ""
+
+
+def _run_queue(repo_root, queue_file, workspace_id=""):
+    steps, refusal = _load_queue_steps(queue_file)
+    if steps is None:
+        print(json.dumps({"result": "refused", "refusal_code": refusal}, indent=2, sort_keys=True))
+        return 2
+
+    results = []
+    overall_code = 0
+    for idx, step in enumerate(steps, start=1):
+        command = str(step.get("command", "")).strip()
+        if not command:
+            results.append({"index": idx, "result": "skipped", "reason": "missing_command"})
+            continue
+        if command == "run-queue":
+            results.append({"index": idx, "command": command, "result": "failed", "reason": "nested_queue_forbidden"})
+            overall_code = 1
+            continue
+
+        only_gate_ids = step.get("only_gate") or step.get("only_gates") or []
+        if isinstance(only_gate_ids, str):
+            only_gate_ids = [only_gate_ids]
+        if not isinstance(only_gate_ids, list):
+            only_gate_ids = []
+        step_workspace_id = str(step.get("workspace_id", "")).strip() or workspace_id
+
+        code = _run_gate(
+            repo_root,
+            command,
+            only_gate_ids=only_gate_ids,
+            workspace_id=step_workspace_id,
+        )
+        results.append(
+            {
+                "index": idx,
+                "command": command,
+                "only_gate": only_gate_ids,
+                "workspace_id": step_workspace_id,
+                "returncode": int(code),
+            }
+        )
+        if code != 0:
+            overall_code = 1
+
+    env, _, ws_dirs = _canonical_env(repo_root, ws_id=workspace_id)
+    remediation_root = ws_dirs.get("remediation_root", os.path.join(repo_root, REMEDIATION_ROOT_REL))
+    out_dir, out_rel = _artifact_dir(repo_root, "run_queue", "summary", remediation_root=remediation_root)
+    _write_json(
+        os.path.join(out_dir, "verification.json"),
+        {
+            "status": "DERIVED",
+            "last_reviewed": datetime.utcnow().strftime("%Y-%m-%d"),
+            "queue_file": os.path.relpath(queue_file, repo_root).replace("\\", "/"),
+            "workspace_id": ws_dirs.get("workspace_id", ""),
+            "results": results,
+            "overall_returncode": overall_code,
+        },
+    )
+    print(
+        json.dumps(
+            {
+                "result": "queue_complete",
+                "workspace_id": ws_dirs.get("workspace_id", ""),
+                "artifact_dir": out_rel,
+                "overall_returncode": overall_code,
+                "steps": results,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return overall_code
+
+
 def _remediate_until_progress(
     repo_root,
     env,
@@ -661,6 +809,7 @@ def _remediate_until_progress(
                 strategy_class,
                 attempted,
                 verify_build_dir,
+                blocker_type=blocker_type,
             )
             if action is None:
                 continue
@@ -677,12 +826,13 @@ def _remediate_until_progress(
                     "score_after": new_score,
                 }
             )
+            previous_result = result
             result = rerun
             if result["returncode"] == 0:
                 improved = True
                 score = 0
                 break
-            if new_score < score:
+            if _has_measurable_progress(previous_result, rerun):
                 improved = True
                 score = new_score
                 break
@@ -775,7 +925,10 @@ def _execute_gate_set(
     return 0, verification, actions
 
 
-def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id=""):
+def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_file=""):
+    if gate_kind == "run-queue":
+        return _run_queue(repo_root, queue_file, workspace_id=workspace_id)
+
     env, tools_dir, ws_dirs = _canonical_env(repo_root, ws_id=workspace_id)
     verify_build_dir, ws_dirs = select_verify_build_dir(
         repo_root,
@@ -837,6 +990,8 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id=""):
     exit_targets = ("domino_engine", "dominium_game", "dominium_client", "testx_all")
     if gate_kind == "precheck":
         phase_specs = [(("PRECHECK_MIN",), precheck_targets)]
+    elif gate_kind == "taskcheck":
+        phase_specs = [(("TASK_DEPENDENCY",), exit_targets)]
     elif gate_kind == "exitcheck":
         phase_specs = [(("TASK_DEPENDENCY", "EXIT_STRICT"), exit_targets)]
     elif gate_kind == "dev":
@@ -844,12 +999,14 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id=""):
     elif gate_kind == "verify":
         phase_specs = [
             (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY", "EXIT_STRICT"), exit_targets),
+            (("TASK_DEPENDENCY",), exit_targets),
+            (("EXIT_STRICT",), exit_targets),
         ]
     elif gate_kind == "dist":
         phase_specs = [
             (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY", "EXIT_STRICT"), tuple(list(exit_targets) + ["dist_all"])),
+            (("TASK_DEPENDENCY",), tuple(list(exit_targets) + ["dist_all"])),
+            (("EXIT_STRICT",), tuple(list(exit_targets) + ["dist_all"])),
         ]
     elif gate_kind == "remediate":
         phase_specs = [
@@ -898,17 +1055,19 @@ def main():
     parser = argparse.ArgumentParser(description="Canonical gate runner with autonomous remediation.")
     parser.add_argument(
         "command",
-        choices=("dev", "verify", "dist", "doctor", "remediate", "precheck", "exitcheck"),
+        choices=("dev", "verify", "dist", "doctor", "remediate", "precheck", "taskcheck", "exitcheck", "run-queue"),
     )
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--workspace-id", default="")
     parser.add_argument("--only-gate", action="append", default=[])
+    parser.add_argument("--queue-file", default="")
     args = parser.parse_args()
     return _run_gate(
         _repo_root(args.repo_root),
         args.command,
         only_gate_ids=args.only_gate,
         workspace_id=args.workspace_id,
+        queue_file=args.queue_file,
     )
 
 

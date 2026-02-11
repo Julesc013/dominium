@@ -67,6 +67,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-TOOLS-DIR-EXISTS`
 - `INV-TOOLS-DIR-MISSING`
 - `INV-TOOL-UNRESOLVABLE`
+- `INV-NO-DIRECT-GATE-CALLS`
 - `INV-REMEDIATION-PLAYBOOKS`
 - `INV-IDENTITY-FINGERPRINT`
 - `INV-IDENTITY-CHANGE-EXPLANATION`
@@ -105,6 +106,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-RENDER-NO-TRUTH-ACCESS`
 - `INV-CAPABILITY-NO-LEGACY-GATING-TOKENS`
 - `INV-SOLVER-CONTRACTS`
+- `INV-DERIVED-ARTIFACT-CONTRACT`
 - `INV-AUDITX-ARTIFACT-HEADERS`
 - `INV-AUDITX-DETERMINISM`
 - `INV-AUDITX-NONRUNTIME`
@@ -143,6 +145,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Enforces explicit missing-directory failure (`INV-TOOLS-DIR-MISSING`) with remediation hint.
 - Enforces discoverability probes for required canonical tools at RepoX runtime.
 - Detailed policy: `docs/governance/REPOX_TOOL_RULES.md`.
+
+### INV-NO-DIRECT-GATE-CALLS
+
+- Fails when automation scripts invoke raw gate commands directly.
+- Raw `check_repox_rules.py`, `tool_ui_bind`, and `ctest` calls must be routed through sanctioned wrappers.
+- Canonical wrappers are `scripts/dev/gate.py`, `scripts/dev/gate_shim.py`, `scripts/dev/run_repox.py`, and `scripts/dev/run_testx.py`.
 
 ### INV-REMEDIATION-PLAYBOOKS
 
@@ -210,7 +218,15 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - Fails when `docs/audit/auditx/` exists but required artifact files are missing.
 - Fails when markdown artifacts are missing RepoX doc headers.
-- Fails when JSON artifacts are missing `status=DERIVED` or `last_reviewed`.
+- Fails when canonical JSON artifacts are not marked `artifact_class=CANONICAL`.
+- Fails when canonical JSON artifacts include run-meta timestamp keys.
+- Fails when `RUN_META.json` is malformed or missing `artifact_class=RUN_META`.
+
+### INV-DERIVED-ARTIFACT-CONTRACT
+
+- Fails when the derived artifact contract schema/registry is missing or invalid.
+- Fails when required canonical artifact IDs are missing from the registry.
+- Fails when artifact class metadata conflicts with determinism/gating expectations.
 
 ### INV-AUDITX-DETERMINISM
 

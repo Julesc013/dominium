@@ -19,10 +19,13 @@ RepoX and TestX must self-canonicalize their tool environment. Manual `PATH` set
 
 ## Manual vs Autonomous Invocation
 
-- Supported direct invocation (no shell pre-step required):
-  - `python scripts/ci/check_repox_rules.py --repo-root .`
-  - `cmake --build out/build/vs2026/verify --config Debug --target testx_all`
-- Optional convenience pre-step:
+- Canonical invocation:
+  - `python scripts/dev/gate.py ...`
+- Legacy forwarders:
+  - `python scripts/dev/gate_shim.py ...`
+  - `python scripts/dev/run_repox.py`
+  - `python scripts/dev/run_testx.py`
+- Optional interactive convenience:
   - `scripts/dev/env_tools.*`
 
 ## Canonical Gate Runner
@@ -30,6 +33,7 @@ RepoX and TestX must self-canonicalize their tool environment. Manual `PATH` set
 Use `scripts/dev/gate.py` (or `python scripts/dev/dev.py gate ...`) as the preferred entrypoint:
 
 - `gate precheck`
+- `gate taskcheck`
 - `gate exitcheck`
 - `gate verify`
 - `gate dev`
@@ -43,6 +47,7 @@ Behavior:
 - derives workspace-scoped build/dist/remediation roots
 - runs dependency-aware gate classes from `data/registries/gate_policy.json`
 - supports minimal preflight (`PRECHECK_MIN`) and strict completion (`EXIT_STRICT`)
+- supports dependency-only evaluation (`TASK_DEPENDENCY`) through `gate taskcheck`
 - evaluates dependency gates (`TASK_DEPENDENCY`) such as `ui_bind_check`
 - attempts deterministic tool-discovery remediation when `INV-TOOLS-DIR-MISSING` occurs
 - writes remediation artifacts to `docs/audit/remediation/<workspace_id>/...`

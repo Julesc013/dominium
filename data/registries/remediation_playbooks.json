@@ -79,6 +79,34 @@
         "extensions": {}
       },
       {
+        "playbook_id": "dominium.playbook.dist_output_missing",
+        "blocker_type": "DIST_OUTPUT_MISSING",
+        "strategy_classes": [
+          "build_wiring",
+          "artifact_regeneration"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "restore dist outputs using deterministic dist_all target"
+        ],
+        "extensions": {}
+      },
+      {
+        "playbook_id": "dominium.playbook.pkg_index_missing",
+        "blocker_type": "PKG_INDEX_MISSING",
+        "strategy_classes": [
+          "build_wiring",
+          "artifact_regeneration"
+        ],
+        "deterministic": true,
+        "semantic_escalation_allowed": false,
+        "notes": [
+          "rebuild package indexes from canonical dist targets"
+        ],
+        "extensions": {}
+      },
+      {
         "playbook_id": "dominium.playbook.path_cwd_dependency",
         "blocker_type": "PATH_CWD_DEPENDENCY",
         "strategy_classes": [

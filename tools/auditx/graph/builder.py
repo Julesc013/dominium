@@ -10,6 +10,7 @@ from .analysis_graph import AnalysisGraph
 SOURCE_EXTS = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".py", ".json", ".schema", ".md", ".txt")
 SYMBOL_EXTS = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".py")
 SKIP_DIRS_DEFAULT = {".git", ".vs", "build", "out", "dist", "tmp", "__pycache__"}
+SKIP_PATH_PREFIXES_DEFAULT = ("docs/audit/",)
 
 INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]+)[">]')
 IMPORT_RE = re.compile(r"^\s*(?:from\s+([A-Za-z0-9_\.]+)\s+import|import\s+([A-Za-z0-9_\.]+))")
@@ -36,6 +37,8 @@ def _walk_repo_files(repo_root, skip_dirs):
         files = sorted(files)
         for name in files:
             rel = os.path.relpath(os.path.join(root, name), repo_root).replace("\\", "/")
+            if rel.startswith(SKIP_PATH_PREFIXES_DEFAULT):
+                continue
             ext = os.path.splitext(rel)[1].lower()
             if ext in SOURCE_EXTS:
                 records.append(rel)
@@ -187,4 +190,3 @@ def build_analysis_graph(repo_root, changed_only_paths=None, skip_dirs=None):
     _collect_test_nodes(repo_root, graph)
     _collect_file_graph(repo_root, graph, selected)
     return graph
-
