@@ -1,0 +1,31 @@
+SCHEMA: governance/trust_policy.schema
+schema_id: dominium.schema.governance.trust_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare trust boundaries between runtime and tooling subsystems.
+- Define allowed and forbidden actions as data policy.
+
+NON-SEMANTICS:
+- Trust policy constrains orchestration and validation only.
+- Policy does not modify simulation semantics.
+
+REQUIRED SHAPE:
+record trust_policy_registry
+  required:
+    - policy_id: id
+    - policy_version: tag
+    - schema_version_ref: tag
+    - entries: [trust_policy_entry]
+    - extensions: map
+
+record trust_policy_entry
+  required:
+    - subsystem: id
+    - trust_level: enum(root|authoritative|bounded|untrusted)
+    - allowed_actions: [tag]
+    - forbidden_actions: [tag]
+    - escalation_required: bool
+    - notes: [text]
+    - extensions: map
