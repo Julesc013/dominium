@@ -1,0 +1,31 @@
+SCHEMA: governance/integrity_manifest.schema
+schema_id: dominium.schema.governance.integrity_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare integrity evidence for pack sets, tool binaries, and canonical artifacts.
+- Provide deterministic hash manifest for verification tooling.
+
+NON-SEMANTICS:
+- Integrity manifest validates artifact provenance only.
+- Manifest generation does not change simulation semantics.
+
+REQUIRED SHAPE:
+record integrity_manifest
+  required:
+    - manifest_id: id
+    - manifest_version: tag
+    - schema_version_ref: tag
+    - identity_fingerprint_sha256: hex
+    - schema_hashes: [hash_entry]
+    - pack_hashes: [hash_entry]
+    - tool_hashes: [hash_entry]
+    - canonical_artifact_hashes: [hash_entry]
+    - extensions: map
+
+record hash_entry
+  required:
+    - id: id
+    - sha256: hex
+    - source: text
