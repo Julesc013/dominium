@@ -53,93 +53,39 @@
         "INFO": 11
       }
     },
-    "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "derived_freshness",
-          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0001",
-          "location": "docs/governance/AUDITX_MODEL.md"
-        }
-      ],
-      "severities": {
-        "INFO": 1
-      }
-    },
-    "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 9,
-      "recommended_actions": {
-        "RETIRE": 9
-      },
-      "sample_findings": [
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "scripts/dev/dev.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "scripts/dev/gate.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "scripts/dev/gate_shim.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "scripts/dev/run_repox.py"
-        }
-      ],
-      "severities": {
-        "WARN": 9
-      }
-    },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 127,
+      "finding_count": 80,
       "recommended_actions": {
-        "ADD_RULE": 47,
         "ADD_TEST": 80
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "schema/accessibility_preset.schema"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "schema/agent.autonomy_budget.schema"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "schema/agent.delegation.schema"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "schema/agent.goal.schema"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "scripts/dev/dev.py"
+          "location": "schema/ai.profile.schema"
         }
       ],
       "severities": {
-        "RISK": 47,
         "WARN": 80
       }
     }
