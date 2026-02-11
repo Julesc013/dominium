@@ -1,0 +1,24 @@
+SCHEMA: governance/pack_signature.schema
+schema_id: dominium.schema.governance.pack_signature
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic signature payload for package verification.
+- Bind signer identity and hash algorithm metadata to pack payloads.
+
+NON-SEMANTICS:
+- Signature metadata authenticates artifacts only.
+- Signature policy does not alter runtime behavior.
+
+REQUIRED SHAPE:
+record pack_signature
+  required:
+    - signature_id: id
+    - signer_id: id
+    - key_id: tag
+    - algorithm: tag
+    - payload_hash_sha256: hex
+    - signature_blob_b64: text
+    - issued_utc: text
+    - extensions: map
