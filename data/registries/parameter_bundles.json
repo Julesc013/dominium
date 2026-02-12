@@ -77,6 +77,8 @@
         "extensions": {}
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "session_spec_schema_ref": "dominium.schema.session.session_spec@1.1.0"
+    }
   }
 }

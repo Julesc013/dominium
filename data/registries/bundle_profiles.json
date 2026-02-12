@@ -105,6 +105,8 @@
         }
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "session_defaults_registry": "dominium.registry.session.defaults"
+    }
   }
 }

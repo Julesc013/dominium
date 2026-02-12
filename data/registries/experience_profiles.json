@@ -31,6 +31,8 @@
         ],
         "notes": "Observer exploration baseline.",
         "extensions": {
+          "authority_context_id": "ctx.exp.observer.law.observer.default",
+          "session_spec_template_id": "session.defaults.base",
           "legacy_aliases": [
             "exp.observer.default"
           ]
@@ -61,6 +63,8 @@
         ],
         "notes": "Survival baseline with constrained law.",
         "extensions": {
+          "authority_context_id": "ctx.exp.survival.law.survival.default",
+          "session_spec_template_id": "session.defaults.base",
           "legacy_aliases": [
             "exp.survival.softcore"
           ]
@@ -90,7 +94,10 @@
           "tool.world.inspect"
         ],
         "notes": "Hardcore is law+parameter delta only.",
-        "extensions": {}
+        "extensions": {
+          "authority_context_id": "ctx.exp.hardcore.law.survival.hardcore",
+          "session_spec_template_id": "session.defaults.base"
+        }
       },
       {
         "experience_id": "exp.creative",
@@ -117,7 +124,10 @@
           "tool.worldgen.preview"
         ],
         "notes": "Scenario-level authoring only; no authority escalation.",
-        "extensions": {}
+        "extensions": {
+          "authority_context_id": "ctx.exp.creative.law.creative.full",
+          "session_spec_template_id": "session.defaults.base"
+        }
       },
       {
         "experience_id": "exp.lab",
@@ -144,7 +154,10 @@
           "tool.attribution.stub"
         ],
         "notes": "Assumptions/metrics/ensemble workflow.",
-        "extensions": {}
+        "extensions": {
+          "authority_context_id": "ctx.exp.lab.law.lab.default",
+          "session_spec_template_id": "session.defaults.base"
+        }
       },
       {
         "experience_id": "exp.mission",
@@ -171,7 +184,10 @@
           "tool.mission.progress"
         ],
         "notes": "Mission player with constrained intent families.",
-        "extensions": {}
+        "extensions": {
+          "authority_context_id": "ctx.exp.mission.law.mission.player",
+          "session_spec_template_id": "session.defaults.base"
+        }
       },
       {
         "experience_id": "exp.survival.softcore",
@@ -189,9 +205,15 @@
         "default_parameter_bundle_id": "survival.params.default",
         "tool_visibility": [],
         "notes": "Compatibility profile preserved for existing fixtures.",
-        "extensions": {}
+        "extensions": {
+          "authority_context_id": "ctx.exp.survival.softcore.survival.softcore",
+          "session_spec_template_id": "session.defaults.base"
+        }
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "session_spec_schema_ref": "dominium.schema.session.session_spec@1.1.0",
+      "authority_context_schema_ref": "dominium.schema.authority.context@1.1.0"
+    }
   }
 }
