@@ -3149,6 +3149,78 @@ def check_glossary_term_canon(repo_root):
     return violations
 
 
+def check_universe_identity_immutability(repo_root):
+    invariant_id = "INV-UNIVERSE_IDENTITY_IMMUTABLE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    identity_rel = "schema/universe/universe_identity.schema"
+    state_rel = "schema/universe/universe_state.schema"
+    identity_path = os.path.join(repo_root, identity_rel.replace("/", os.sep))
+    state_path = os.path.join(repo_root, state_rel.replace("/", os.sep))
+    violations = []
+
+    if not os.path.isfile(identity_path):
+        violations.append("{}: missing {}".format(invariant_id, identity_rel))
+    if not os.path.isfile(state_path):
+        violations.append("{}: missing {}".format(invariant_id, state_rel))
+    if violations:
+        return violations
+
+    identity_text = read_text(identity_path) or ""
+    state_text = read_text(state_path) or ""
+    identity_required = (
+        "universe_id",
+        "global_seed",
+        "domain_binding_ids",
+        "physics_profile_id",
+        "base_scenario_id",
+        "compatibility_schema_refs",
+        "immutable_after_create: bool",
+    )
+    state_required = (
+        "universe_id",
+        "time_ref",
+        "refinement_state_refs",
+        "agent_state_refs",
+        "law_state_refs",
+        "save_checkpoint_refs",
+        "history_log_anchors",
+    )
+    for field in identity_required:
+        if field not in identity_text:
+            violations.append("{}: {} missing required field {}".format(invariant_id, identity_rel, field))
+    for field in state_required:
+        if field not in state_text:
+            violations.append("{}: {} missing required field {}".format(invariant_id, state_rel, field))
+
+    roots = (
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "launcher"),
+        os.path.join(repo_root, "setup"),
+    )
+    mutation_tokens = (
+        "set_universe_identity(",
+        "update_universe_identity(",
+        "mutate_universe_identity(",
+        "rewrite_universe_identity(",
+    )
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = normalize_path(repo_rel(repo_root, path))
+        text = read_text(path) or ""
+        lowered = text.lower()
+        for token in mutation_tokens:
+            if token in lowered:
+                violations.append("{}: forbidden identity mutation token {} in {}".format(
+                    invariant_id, token, rel
+                ))
+                break
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -5581,6 +5653,7 @@ def main() -> int:
     violations.extend(check_no_hardcoded_mode_branch(repo_root))
     violations.extend(check_authority_context_required(repo_root))
     violations.extend(check_glossary_term_canon(repo_root))
+    violations.extend(check_universe_identity_immutability(repo_root))
     violations.extend(check_mode_as_profiles(repo_root))
     violations.extend(check_ui_entitlement_gating(repo_root))
     violations.extend(check_defaults_optional(repo_root))

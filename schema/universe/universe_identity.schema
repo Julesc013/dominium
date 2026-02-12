@@ -1,0 +1,25 @@
+SCHEMA: universe/universe_identity.schema
+schema_id: dominium.schema.universe.identity
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define immutable universe creation identity.
+- Separate stable identity from mutable runtime state.
+
+NON-SEMANTICS:
+- This schema does not change simulation behavior.
+- It declares identity inputs and compatibility anchors only.
+
+REQUIRED SHAPE:
+record universe_identity
+  required:
+    - universe_id: id
+    - global_seed: id
+    - domain_binding_ids: [id]
+    - physics_profile_id: id
+    - base_scenario_id: id
+    - initial_pack_set_hash_expectation: tag
+    - compatibility_schema_refs: [tag]
+    - immutable_after_create: bool
+    - extensions: map
