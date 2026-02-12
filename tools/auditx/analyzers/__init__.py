@@ -20,6 +20,8 @@ from analyzers import c1_security_boundary
 from analyzers import c2_mode_flag_smell
 from analyzers import c3_capability_bypass_smell
 from analyzers import c4_terminology_misuse
+from analyzers import c5_experience_profile_drift
+from analyzers import c6_authority_bypass_smell
 
 
 ANALYZERS = (
@@ -43,6 +45,8 @@ ANALYZERS = (
     c2_mode_flag_smell,
     c3_capability_bypass_smell,
     c4_terminology_misuse,
+    c5_experience_profile_drift,
+    c6_authority_bypass_smell,
 )
 
 
