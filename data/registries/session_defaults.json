@@ -1,0 +1,29 @@
+{
+  "schema_id": "dominium.schema.session.defaults",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.session.defaults",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.session.session_spec@1.1.0",
+    "default_session_spec_template": {
+      "session_id_prefix": "session",
+      "universe_id": "universe.default",
+      "save_id": "none",
+      "scenario_id": "scenario.sandbox.minimal",
+      "mission_id": "none",
+      "experience_id": "exp.observer",
+      "parameter_bundle_id": "observer.params.default",
+      "pack_lock_hash": "hash.unset",
+      "authority_context": "ctx.exp.observer.law.observer.default",
+      "budget_policy_id": "budget.dev.generous",
+      "fidelity_policy_id": "fidelity.default",
+      "replay_policy": "recording_disabled",
+      "deterministic_seed_bundle": [
+        "seed.session.root"
+      ],
+      "workspace_id": "ws.unset",
+      "extensions": {}
+    },
+    "extensions": {}
+  }
+}

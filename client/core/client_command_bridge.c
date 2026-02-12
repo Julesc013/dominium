@@ -519,22 +519,28 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (strcmp(token, "client.session.create_from_selection") == 0) {
+        const char* scenario_id = "";
+        const char* parameter_bundle_id = "";
+        const char* mission_id = "";
         if (!profile_selected()) {
             format_refusal(out_message, out_message_cap, "refuse.profile_not_selected", token);
             return CLIENT_COMMAND_BRIDGE_REFUSED;
         }
         set_default_scenario_if_missing();
         set_default_parameter_if_missing();
+        scenario_id = g_selection.scenario_id[0] ? g_selection.scenario_id : "scenario.sandbox.minimal";
+        parameter_bundle_id = g_selection.parameter_bundle_id[0] ? g_selection.parameter_bundle_id : "observer.params.default";
+        mission_id = g_selection.mission_id[0] ? g_selection.mission_id : "none";
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s experience_id=%s law_profile_id=%s authority_context_id=%s scenario_id=%s parameter_bundle_id=%s mission_id=%s",
+                 "result=ok command=%s session_id=session.selected universe_id=universe.default save_id=none scenario_id=%s mission_id=%s experience_id=%s law_profile_id=%s parameter_bundle_id=%s pack_lock_hash=hash.unset authority_context_id=%s budget_policy_id=budget.dev.generous fidelity_policy_id=fidelity.default replay_policy=recording_disabled seed_bundle=seed.session.root workspace_id=ws.unset",
                  token,
+                 scenario_id,
+                 mission_id,
                  g_selection.experience_id,
                  g_selection.law_profile_id,
-                 g_selection.authority_context_id,
-                 g_selection.scenario_id,
-                 g_selection.parameter_bundle_id,
-                 g_selection.mission_id[0] ? g_selection.mission_id : "none");
+                 parameter_bundle_id,
+                 g_selection.authority_context_id);
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (strcmp(token, "client.ui.hud.show") == 0 ||

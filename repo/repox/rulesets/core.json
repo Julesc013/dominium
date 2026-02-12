@@ -257,6 +257,13 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-SESSION_SPEC_REQUIRED_FOR_RUN",
+      "severity": "FAIL",
+      "scope_paths": ["schema/session/session_spec.schema", "data/registries/session_defaults.json", "client/core/client_command_bridge.c", "client/core/client_commands_registry.c"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-session-spec-required-for-run",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": ["data/registries/law_profiles.json", "data/registries/experience_profiles.json", "data/registries/parameter_bundles.json"],

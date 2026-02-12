@@ -1,6 +1,6 @@
 SCHEMA: session/session_spec.schema
 schema_id: dominium.schema.session.session_spec
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -14,10 +14,18 @@ NON-SEMANTICS:
 REQUIRED SHAPE:
 record session_spec
   required:
-    - session_spec_id: id
+    - session_id: id
     - universe_id: id
     - save_id: id
+    - scenario_id: id
+    - mission_id: id
     - experience_id: id
     - parameter_bundle_id: id
+    - pack_lock_hash: tag
     - authority_context: id
+    - budget_policy_id: id
+    - fidelity_policy_id: id
+    - replay_policy: enum(recording_enabled|recording_disabled)
+    - deterministic_seed_bundle: [id]
+    - workspace_id: tag
     - extensions: map

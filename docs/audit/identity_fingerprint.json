@@ -1,5 +1,5 @@
 {
-  "fingerprint_sha256": "5dcacc3f4822c864251ecba85f116caabf8bbad429b839739080f9c1f57b6f9b",
+  "fingerprint_sha256": "3dedb9acb044f699e2e221fc77a55ee5ef778fa82409f6363de77a5551f55553",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
@@ -15,16 +15,16 @@
     },
     "repox_rulesets": {
       "path": "repo/repox/rulesets",
-      "sha256": "adb4767c8d1ed46dbc144f875500aa4a6dba0b8b65592772eaf29359899da435"
+      "sha256": "bc530b1f1b17c84facdf5600ff4636bc71976f7e9fedbdc01009933c2e5c7fea"
     },
     "status_now_snapshot": {
       "path": "docs/STATUS_NOW.md",
       "sha256": "759a028019b67caa7112af9c6de67e419d9eeaf7020c47653b20b98854722416"
     },
     "testx_suite_set": {
-      "sha256": "ceaa285ce07b90232db15a3ccbfde1aec1aeb5652cd65143acbbd977e6913198",
+      "sha256": "77f9dc9d8e428849839a7eb69baef9870e4c0b1d1d9958077c44e0fd8d947500",
       "source_root": "tests",
-      "suite_count": 310
+      "suite_count": 312
     },
     "unbounded_doctrine": {
       "path": "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md",
