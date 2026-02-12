@@ -292,3 +292,9 @@ dom_add_testx(NAME test_session_spec_required_for_launch
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME test_glossary_consistency
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_glossary_consistency.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

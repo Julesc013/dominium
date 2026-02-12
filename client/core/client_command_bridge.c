@@ -20,6 +20,11 @@ typedef struct bridge_profile_binding_t {
     int watermark_observer;
 } bridge_profile_binding;
 
+typedef struct bridge_experience_bundle_t {
+    const char* experience_id;
+    const char* parameter_bundle_id;
+} bridge_experience_bundle;
+
 typedef struct bridge_selection_state_t {
     char experience_id[96];
     char law_profile_id[96];
@@ -86,6 +91,16 @@ static const char* k_parameter_bundle_ids[] = {
     "creative.params.default",
     "lab.params.default",
     "mission.params.default"
+};
+
+static const bridge_experience_bundle k_experience_parameter_defaults[] = {
+    { "exp.observer", "observer.params.default" },
+    { "exp.survival", "survival.params.default" },
+    { "exp.survival.softcore", "survival.params.default" },
+    { "exp.hardcore", "survival.params.harsh" },
+    { "exp.creative", "creative.params.default" },
+    { "exp.lab", "lab.params.default" },
+    { "exp.mission", "mission.params.default" }
 };
 
 static bridge_selection_state g_selection = {
@@ -254,27 +269,14 @@ static void apply_profile_binding(const bridge_profile_binding* binding)
 
 static const char* default_parameter_bundle_for_experience(const char* experience_id)
 {
+    size_t i = 0u;
     if (!experience_id || !experience_id[0]) {
         return "";
     }
-    if (strcmp(experience_id, "exp.observer") == 0) {
-        return "observer.params.default";
-    }
-    if (strcmp(experience_id, "exp.survival") == 0 ||
-        strcmp(experience_id, "exp.survival.softcore") == 0) {
-        return "survival.params.default";
-    }
-    if (strcmp(experience_id, "exp.hardcore") == 0) {
-        return "survival.params.harsh";
-    }
-    if (strcmp(experience_id, "exp.creative") == 0) {
-        return "creative.params.default";
-    }
-    if (strcmp(experience_id, "exp.lab") == 0) {
-        return "lab.params.default";
-    }
-    if (strcmp(experience_id, "exp.mission") == 0) {
-        return "mission.params.default";
+    for (i = 0u; i < (sizeof(k_experience_parameter_defaults) / sizeof(k_experience_parameter_defaults[0])); ++i) {
+        if (strcmp(experience_id, k_experience_parameter_defaults[i].experience_id) == 0) {
+            return k_experience_parameter_defaults[i].parameter_bundle_id;
+        }
     }
     return "";
 }

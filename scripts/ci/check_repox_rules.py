@@ -3003,6 +3003,10 @@ def check_no_hardcoded_mode_branch(repo_root):
         "hardcore" + "_" + "mode",
         "spectator" + "_" + "mode",
     )
+    branch_re = re.compile(
+        r"\bif\s*\([^)]*\b(?:is_)?(?:survival|creative|hardcore|spectator)\b[^)]*\)",
+        re.IGNORECASE,
+    )
     violations = []
     for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
         rel = repo_rel(repo_root, path).replace("\\", "/")
@@ -3015,6 +3019,12 @@ def check_no_hardcoded_mode_branch(repo_root):
                     )
                 )
                 break
+        if branch_re.search(text):
+            violations.append(
+                "{}: {} contains mode-branch conditional pattern".format(
+                    invariant_id, rel
+                )
+            )
     return violations
 
 
