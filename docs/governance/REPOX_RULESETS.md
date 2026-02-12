@@ -116,6 +116,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-AUDITX-DETERMINISM`
 - `INV-AUDITX-NONRUNTIME`
 - `INV-AUDITX-OUTPUT-STALE`
+- `INV-GLOSSARY-TERM-CANON`
+- `WARN-GLOSSARY-TERM-CANON`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-MODE-AS-PROFILES`
@@ -282,6 +284,17 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when `docs/audit/security/INTEGRITY_MANIFEST.json` is missing, malformed, or stale.
 - Fails when recorded tool hashes do not match current tool sources.
 - Prevents committing derived artifacts produced by mismatched tool implementations.
+
+### INV-GLOSSARY-TERM-CANON
+
+- Fails when canonical architecture/governance docs use glossary-forbidden synonyms.
+- Fails when glossary schema/registry/doc artifacts are missing or malformed.
+- Keeps normative terminology stable across canon surfaces.
+
+### WARN-GLOSSARY-TERM-CANON
+
+- Warns when non-canonical docs use glossary-forbidden synonyms.
+- Non-gating during migration; intended to ratchet once drift is cleaned up.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 

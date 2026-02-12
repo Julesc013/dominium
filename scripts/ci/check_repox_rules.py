@@ -255,6 +255,8 @@ DIST_PLATFORM_CANON_ROOTS = (
 )
 IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.json")
 IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
+GLOSSARY_SCHEMA_REL = os.path.join("schema", "governance", "glossary.schema")
+GLOSSARY_REGISTRY_REL = os.path.join("data", "registries", "glossary.json")
 DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL = os.path.join("schema", "governance", "derived_artifact_contract.schema")
 DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
 DERIVED_ARTIFACT_SCHEMA_ID = "dominium.schema.governance.derived_artifact_contract"  # schema_version: 1.0.0
@@ -3059,6 +3061,94 @@ def check_authority_context_required(repo_root):
     return violations
 
 
+def check_glossary_term_canon(repo_root):
+    invariant_id = "INV-GLOSSARY-TERM-CANON"
+    warn_id = "WARN-GLOSSARY-TERM-CANON"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_path = os.path.join(repo_root, GLOSSARY_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, GLOSSARY_REGISTRY_REL)
+    glossary_doc_rel = "docs/architecture/TERMINOLOGY_GLOSSARY.md"
+    glossary_doc_path = os.path.join(repo_root, glossary_doc_rel.replace("/", os.sep))
+    violations = []
+
+    if not os.path.isfile(schema_path):
+        violations.append("{}: missing {}".format(invariant_id, normalize_path(GLOSSARY_SCHEMA_REL)))
+        return violations
+    if not os.path.isfile(registry_path):
+        violations.append("{}: missing {}".format(invariant_id, normalize_path(GLOSSARY_REGISTRY_REL)))
+        return violations
+    if not os.path.isfile(glossary_doc_path):
+        violations.append("{}: missing {}".format(invariant_id, glossary_doc_rel))
+        return violations
+
+    payload = _load_json_file(registry_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(GLOSSARY_REGISTRY_REL))]
+
+    terms = ((payload.get("record") or {}).get("terms") or [])
+    if not isinstance(terms, list):
+        return ["{}: terms must be list in {}".format(invariant_id, normalize_path(GLOSSARY_REGISTRY_REL))]
+
+    forbidden_pairs = []
+    for row in terms:
+        if not isinstance(row, dict):
+            continue
+        display_name = str(row.get("display_name", "")).strip()
+        forbidden = row.get("forbidden_synonyms") or []
+        if not display_name:
+            violations.append("{}: term missing display_name in {}".format(
+                invariant_id, normalize_path(GLOSSARY_REGISTRY_REL)
+            ))
+            continue
+        if display_name not in (read_text(glossary_doc_path) or ""):
+            violations.append("{}: glossary doc missing term '{}'".format(invariant_id, display_name))
+        if not isinstance(forbidden, list):
+            continue
+        for synonym in forbidden:
+            text = str(synonym).strip().lower()
+            # Canonical enforcement is initially limited to explicit token-like aliases
+            # to avoid broad natural-language false positives in historical docs.
+            if text and ("_" in text or "." in text or ":" in text):
+                forbidden_pairs.append((display_name, text))
+
+    canonical_roots = (
+        os.path.join(repo_root, "docs", "architecture"),
+        os.path.join(repo_root, "docs", "governance"),
+    )
+    all_doc_root = os.path.join(repo_root, "docs")
+    scan_exts = [".md"]
+
+    for path in iter_files(canonical_roots, DEFAULT_EXCLUDES, scan_exts):
+        rel = normalize_path(repo_rel(repo_root, path))
+        if rel == glossary_doc_rel:
+            continue
+        text = (read_text(path) or "").lower()
+        for display_name, synonym in forbidden_pairs:
+            if synonym in text:
+                violations.append("{}: {} uses forbidden synonym '{}' for {}".format(
+                    invariant_id, rel, synonym, display_name
+                ))
+
+    for path in iter_files([all_doc_root], DEFAULT_EXCLUDES, scan_exts):
+        rel = normalize_path(repo_rel(repo_root, path))
+        if rel.startswith("docs/architecture/") or rel.startswith("docs/governance/"):
+            continue
+        if rel.startswith("docs/archive/"):
+            continue
+        if rel == glossary_doc_rel:
+            continue
+        text = (read_text(path) or "").lower()
+        for display_name, synonym in forbidden_pairs:
+            if synonym in text:
+                violations.append("{}: {} uses forbidden synonym '{}' for {}".format(
+                    warn_id, rel, synonym, display_name
+                ))
+                break
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -5490,6 +5580,7 @@ def main() -> int:
     violations.extend(check_no_engine_settings(repo_root))
     violations.extend(check_no_hardcoded_mode_branch(repo_root))
     violations.extend(check_authority_context_required(repo_root))
+    violations.extend(check_glossary_term_canon(repo_root))
     violations.extend(check_mode_as_profiles(repo_root))
     violations.extend(check_ui_entitlement_gating(repo_root))
     violations.extend(check_defaults_optional(repo_root))

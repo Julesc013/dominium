@@ -19,6 +19,7 @@ from analyzers import b8_blocker_recurrence
 from analyzers import c1_security_boundary
 from analyzers import c2_mode_flag_smell
 from analyzers import c3_capability_bypass_smell
+from analyzers import c4_terminology_misuse
 
 
 ANALYZERS = (
@@ -41,6 +42,7 @@ ANALYZERS = (
     c1_security_boundary,
     c2_mode_flag_smell,
     c3_capability_bypass_smell,
+    c4_terminology_misuse,
 )
 
 
