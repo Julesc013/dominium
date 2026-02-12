@@ -1,0 +1,32 @@
+SCHEMA: meta/parameter_bundle.schema
+schema_id: dominium.schema.meta.parameter_bundle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic parameter bundle contract used by experience/scenario/session selection.
+- Bundle values tune existing behavior only; they do not define new mechanics.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown keys under `extensions` MUST be preserved.
+- No field removal/rename without MAJOR bump.
+
+REQUIRED SHAPE:
+record parameter_bundle_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - bundles: [parameter_bundle]
+    - extensions: map
+
+record parameter_bundle
+  required:
+    - parameter_bundle_id: id
+    - domain: enum(survival|creative|lab|mission|observer)
+    - deterministic_required: bool
+    - parameters: map
+    - notes: tag
+    - extensions: map
+

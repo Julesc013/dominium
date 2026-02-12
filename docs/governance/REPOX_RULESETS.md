@@ -116,6 +116,11 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-AUDITX-DETERMINISM`
 - `INV-AUDITX-NONRUNTIME`
 - `INV-AUDITX-OUTPUT-STALE`
+- `INV-NO-HARDCODED-MODE-BRANCH`
+- `INV-AUTHORITY-CONTEXT-REQUIRED`
+- `INV-MODE-AS-PROFILES`
+- `INV-UI-ENTITLEMENT-GATING`
+- `INV-DEFAULTS-OPTIONAL`
 - `INV-REPOX-AMBIGUOUS-DIRS`
 - `INV-ROOT-MODULE-SHIM`
 - `INV-REPOX-RULESET-MISSING`
@@ -277,3 +282,31 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when `docs/audit/security/INTEGRITY_MANIFEST.json` is missing, malformed, or stale.
 - Fails when recorded tool hashes do not match current tool sources.
 - Prevents committing derived artifacts produced by mismatched tool implementations.
+
+### INV-NO-HARDCODED-MODE-BRANCH
+
+- Fails when runtime/governance sources introduce hardcoded mode-flag tokens.
+- Enforces profile-driven mode composition and prevents semantic forks.
+
+### INV-AUTHORITY-CONTEXT-REQUIRED
+
+- Fails when `schema/session/session_spec.schema` or `schema/authority/authority_context.schema` are missing.
+- Fails when required authority/session wiring fields are absent.
+
+### INV-MODE-AS-PROFILES
+
+- Fails when `ExperienceProfile` entries do not bind to valid `LawProfile` IDs.
+- Fails when experiences reference unknown default parameter bundles.
+- Ensures mode intent resolves through registries, not ad-hoc runtime flags.
+
+### INV-UI-ENTITLEMENT-GATING
+
+- Fails when entitlement-sensitive UI commands are missing metadata in command registry.
+- Fails when bridge-level refusal markers for profile/entitlement checks are missing.
+- Locks HUD/overlay/console/freecam surfaces to profile-derived entitlements.
+
+### INV-DEFAULTS-OPTIONAL
+
+- Fails when `bundle.core.runtime` is missing or marked optional.
+- Fails when non-core default bundles are not explicitly optional.
+- Preserves core boot viability when optional content bundles are removed.

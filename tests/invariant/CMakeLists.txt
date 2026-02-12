@@ -244,3 +244,21 @@ dom_add_testx(NAME test_survival_no_nondiegetic_lenses
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME test_experience_law_bindings
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_experience_law_bindings.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_ui_entitlement_gating
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_ui_entitlement_gating.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_optional_bundles_core_runtime
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_optional_bundles_core_runtime.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

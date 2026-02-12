@@ -1,70 +1,248 @@
 {
   "schema_id": "dominium.schema.law_profile",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "record": {
     "registry_id": "dominium.registry.law_profiles",
-    "registry_version": "1.0.0",
-    "schema_version_ref": "dominium.schema.law_profile@1.0.0",
+    "registry_version": "1.1.0",
+    "schema_version_ref": "dominium.schema.law_profile@1.1.0",
     "profiles": [
       {
-        "law_profile_id": "law.observer",
+        "law_profile_id": "law.observer.default",
         "capabilities_granted": [
           "camera.mode.observer_truth",
-          "ui.overlay.world_layers"
-        ],
-        "entitlements_granted": [
-          "ui.console.command.read_only"
-        ],
-        "forbidden_lenses": [],
-        "restrictions": [
-          "no_authoritative_mutation"
-        ],
-        "extensions": {}
-      },
-      {
-        "law_profile_id": "law.lab",
-        "capabilities_granted": [
-          "scenario.inspect",
-          "tool.ensemble.run"
-        ],
-        "entitlements_granted": [
-          "ui.console.command.read_write"
-        ],
-        "forbidden_lenses": [],
-        "restrictions": [
-          "no_engine_patching"
-        ],
-        "extensions": {}
-      },
-      {
-        "law_profile_id": "law.creative",
-        "capabilities_granted": [
-          "scenario.mutate"
-        ],
-        "entitlements_granted": [
-          "ui.console.command.read_write"
-        ],
-        "forbidden_lenses": [],
-        "restrictions": [
-          "no_server_authority_override"
-        ],
-        "extensions": {}
-      },
-      {
-        "law_profile_id": "law.mission_player",
-        "capabilities_granted": [
+          "ui.overlay.world_layers",
           "ui.hud.basic"
         ],
+        "capabilities_revoked": [
+          "intent.world.mutate",
+          "intent.spawn.assembly",
+          "intent.delete.assembly"
+        ],
         "entitlements_granted": [
-          "ui.console.command.read_only"
+          "ui.console.command.read_only",
+          "ui.overlay.world_layers",
+          "camera.mode.observer_truth",
+          "ui.hud.basic"
         ],
-        "forbidden_lenses": [
-          "lens.nondiegetic.console"
+        "epistemic_policy_id": "epistemic.observer_truth",
+        "allowed_intent_families": [
+          "intent.inspect",
+          "intent.navigate"
         ],
-        "restrictions": [
-          "no_truth_overlay"
+        "forbidden_intent_families": [
+          "intent.world.mutate",
+          "intent.authority.escalate"
+        ],
+        "persistence_rules": [
+          "persistence.none"
+        ],
+        "watermark_policy": "observer",
+        "audit_required": true,
+        "refusal_codes": [
+          "refuse.capability_missing",
+          "refuse.authority_denied",
+          "refuse.entitlement_required"
+        ],
+        "extensions": {
+          "legacy_aliases": [
+            "law.observer"
+          ]
+        }
+      },
+      {
+        "law_profile_id": "law.survival.default",
+        "capabilities_granted": [
+          "ui.hud.basic",
+          "intent.survival.consume",
+          "intent.survival.craft"
+        ],
+        "capabilities_revoked": [
+          "camera.mode.observer_truth",
+          "ui.overlay.world_layers",
+          "intent.spawn.assembly",
+          "intent.delete.assembly"
+        ],
+        "entitlements_granted": [
+          "ui.hud.basic"
+        ],
+        "epistemic_policy_id": "epistemic.embodied_limited",
+        "allowed_intent_families": [
+          "intent.survival",
+          "intent.inspect.local"
+        ],
+        "forbidden_intent_families": [
+          "intent.world.mutate",
+          "intent.authority.escalate"
+        ],
+        "persistence_rules": [
+          "persistence.respawn.allowed"
+        ],
+        "watermark_policy": "none",
+        "audit_required": true,
+        "refusal_codes": [
+          "refuse.entitlement_required",
+          "refuse.intent_forbidden",
+          "refuse.authority_denied"
         ],
         "extensions": {}
+      },
+      {
+        "law_profile_id": "law.survival.hardcore",
+        "capabilities_granted": [
+          "ui.hud.basic",
+          "intent.survival.consume",
+          "intent.survival.craft"
+        ],
+        "capabilities_revoked": [
+          "camera.mode.observer_truth",
+          "ui.overlay.world_layers",
+          "intent.spawn.assembly",
+          "intent.delete.assembly",
+          "intent.revive",
+          "intent.rollback"
+        ],
+        "entitlements_granted": [
+          "ui.hud.basic"
+        ],
+        "epistemic_policy_id": "epistemic.embodied_limited",
+        "allowed_intent_families": [
+          "intent.survival",
+          "intent.inspect.local"
+        ],
+        "forbidden_intent_families": [
+          "intent.world.mutate",
+          "intent.authority.escalate",
+          "intent.revive",
+          "intent.rollback"
+        ],
+        "persistence_rules": [
+          "persistence.respawn.forbidden"
+        ],
+        "watermark_policy": "none",
+        "audit_required": true,
+        "refusal_codes": [
+          "refuse.intent_forbidden",
+          "refuse.respawn_forbidden",
+          "refuse.authority_denied"
+        ],
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "law.creative.full",
+        "capabilities_granted": [
+          "ui.hud.basic",
+          "intent.scenario.mutate",
+          "intent.spawn.assembly",
+          "intent.delete.assembly"
+        ],
+        "capabilities_revoked": [
+          "intent.authority.escalate"
+        ],
+        "entitlements_granted": [
+          "ui.console.command.read_write",
+          "ui.overlay.world_layers"
+        ],
+        "epistemic_policy_id": "epistemic.editorial",
+        "allowed_intent_families": [
+          "intent.scenario",
+          "intent.inspect",
+          "intent.build"
+        ],
+        "forbidden_intent_families": [
+          "intent.authority.escalate"
+        ],
+        "persistence_rules": [
+          "persistence.save.allowed"
+        ],
+        "watermark_policy": "dev",
+        "audit_required": true,
+        "refusal_codes": [
+          "refuse.intent_forbidden",
+          "refuse.authority_denied"
+        ],
+        "extensions": {
+          "legacy_aliases": [
+            "law.creative"
+          ]
+        }
+      },
+      {
+        "law_profile_id": "law.lab.default",
+        "capabilities_granted": [
+          "scenario.inspect",
+          "tool.ensemble.run",
+          "tool.attribution.view"
+        ],
+        "capabilities_revoked": [
+          "intent.model.mutate",
+          "intent.authority.escalate"
+        ],
+        "entitlements_granted": [
+          "ui.console.command.read_write",
+          "ui.hud.basic"
+        ],
+        "epistemic_policy_id": "epistemic.lab",
+        "allowed_intent_families": [
+          "intent.lab",
+          "intent.inspect"
+        ],
+        "forbidden_intent_families": [
+          "intent.model.mutate",
+          "intent.authority.escalate"
+        ],
+        "persistence_rules": [
+          "persistence.session_only"
+        ],
+        "watermark_policy": "dev",
+        "audit_required": true,
+        "refusal_codes": [
+          "refuse.intent_forbidden",
+          "refuse.authority_denied"
+        ],
+        "extensions": {
+          "legacy_aliases": [
+            "law.lab"
+          ]
+        }
+      },
+      {
+        "law_profile_id": "law.mission.player",
+        "capabilities_granted": [
+          "ui.hud.basic",
+          "intent.mission.progress"
+        ],
+        "capabilities_revoked": [
+          "camera.mode.observer_truth",
+          "intent.spawn.assembly",
+          "intent.delete.assembly"
+        ],
+        "entitlements_granted": [
+          "ui.console.command.read_only",
+          "ui.hud.basic"
+        ],
+        "epistemic_policy_id": "epistemic.mission_player",
+        "allowed_intent_families": [
+          "intent.mission",
+          "intent.inspect.local"
+        ],
+        "forbidden_intent_families": [
+          "intent.authority.escalate",
+          "intent.world.mutate"
+        ],
+        "persistence_rules": [
+          "persistence.respawn.allowed"
+        ],
+        "watermark_policy": "none",
+        "audit_required": true,
+        "refusal_codes": [
+          "refuse.intent_forbidden",
+          "refuse.entitlement_required"
+        ],
+        "extensions": {
+          "legacy_aliases": [
+            "law.mission_player"
+          ]
+        }
       },
       {
         "law_profile_id": "survival.softcore",
@@ -72,14 +250,31 @@
           "ui.hud.basic",
           "input.embodied"
         ],
+        "capabilities_revoked": [
+          "camera.mode.observer_truth"
+        ],
         "entitlements_granted": [],
+        "epistemic_policy_id": "epistemic.embodied_limited",
+        "allowed_intent_families": [
+          "intent.survival"
+        ],
+        "forbidden_intent_families": [
+          "intent.authority.escalate"
+        ],
+        "persistence_rules": [
+          "persistence.respawn.allowed"
+        ],
         "forbidden_lenses": [
           "lens.nondiegetic.*"
         ],
-        "restrictions": [
-          "no_nondiegetic_lens_usage"
+        "watermark_policy": "none",
+        "audit_required": true,
+        "refusal_codes": [
+          "refuse.intent_forbidden"
         ],
-        "extensions": {}
+        "extensions": {
+          "compat_profile": true
+        }
       }
     ],
     "extensions": {}

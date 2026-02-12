@@ -1,0 +1,23 @@
+SCHEMA: scenario/metrics_spec.schema
+schema_id: dominium.schema.scenario.metrics
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Metrics specification contract for scenario and mission evaluation surfaces.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown keys under `extensions` MUST be preserved.
+- No field removal/rename without MAJOR bump.
+
+REQUIRED SHAPE:
+record metrics_spec
+  required:
+    - metrics_id: id
+    - metric_ids: [id]
+    - required_pack_ids: [id]
+    - required_capabilities: [id]
+    - deterministic_required: bool
+    - extensions: map
+

@@ -300,6 +300,7 @@ execution artifacts and are not authoritative.
 - `docs/architecture/COMPLEXITY_AND_SCALE.md`
 - `docs/architecture/HISTORY_AND_CIVILIZATION_MODEL.md`
 - `docs/architecture/KNOWN_WARNINGS.md`
+- `docs/architecture/MODES_AS_PROFILES.md`
 - `docs/architecture/POST_CLEAN_2_STATUS.md`
 - `docs/architecture/STANDARDS_AND_META_SYSTEMS_MODEL.md`
 - `docs/audit/AUDITX_OVERHAUL_REPORT.md`

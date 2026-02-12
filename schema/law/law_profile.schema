@@ -1,0 +1,38 @@
+SCHEMA: law/law_profile.schema
+schema_id: dominium.schema.law_profile
+schema_version: 1.1.0
+stability: core
+
+PURPOSE:
+- Canonical law profile contract for profile-driven mode composition.
+- Defines permissions/epistemics as data, not code branches.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown keys under `extensions` MUST be preserved.
+- No field removal/rename without MAJOR bump.
+
+REQUIRED SHAPE:
+record law_profile_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - profiles: [law_profile]
+    - extensions: map
+
+record law_profile
+  required:
+    - law_profile_id: id
+    - capabilities_granted: [id]
+    - capabilities_revoked: [id]
+    - entitlements_granted: [id]
+    - epistemic_policy_id: id
+    - allowed_intent_families: [id]
+    - forbidden_intent_families: [id]
+    - persistence_rules: [id]
+    - watermark_policy: enum(none|observer|dev)
+    - audit_required: bool
+    - refusal_codes: [id]
+    - extensions: map
+

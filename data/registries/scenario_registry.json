@@ -1,0 +1,66 @@
+{
+  "schema_id": "dominium.schema.scenario.registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.scenarios",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.scenario.spec@1.0.0",
+    "scenarios": [
+      {
+        "scenario_id": "scenario.sandbox.minimal",
+        "required_pack_ids": [],
+        "required_capabilities": [],
+        "required_experience_ids": [
+          "exp.observer",
+          "exp.survival",
+          "exp.creative",
+          "exp.lab",
+          "exp.mission"
+        ],
+        "required_law_profile_ids": [],
+        "deterministic_seed_stream": "seed.scenario.sandbox.minimal",
+        "lock_hash_expectation": "hash.unset",
+        "extensions": {}
+      },
+      {
+        "scenario_id": "scenario.sol.system.demo",
+        "required_pack_ids": [
+          "pack.scenario.sol.demo"
+        ],
+        "required_capabilities": [],
+        "required_experience_ids": [
+          "exp.observer",
+          "exp.lab"
+        ],
+        "required_law_profile_ids": [
+          "law.observer.default",
+          "law.lab.default"
+        ],
+        "deterministic_seed_stream": "seed.scenario.sol.system.demo",
+        "lock_hash_expectation": "hash.unset",
+        "extensions": {}
+      },
+      {
+        "scenario_id": "scenario.earth.surface.demo",
+        "required_pack_ids": [
+          "pack.scenario.earth.demo"
+        ],
+        "required_capabilities": [],
+        "required_experience_ids": [
+          "exp.observer",
+          "exp.survival",
+          "exp.hardcore"
+        ],
+        "required_law_profile_ids": [
+          "law.observer.default",
+          "law.survival.default",
+          "law.survival.hardcore"
+        ],
+        "deterministic_seed_stream": "seed.scenario.earth.surface.demo",
+        "lock_hash_expectation": "hash.unset",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

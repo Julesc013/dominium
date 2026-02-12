@@ -228,6 +228,27 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-MODE-AS-PROFILES",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/law_profiles.json", "data/registries/experience_profiles.json", "data/registries/parameter_bundles.json"],
+      "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#modes-as-profiles-invariants",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-UI-ENTITLEMENT-GATING",
+      "severity": "FAIL",
+      "scope_paths": ["client/core/client_commands_registry.c", "client/core/client_command_bridge.c"],
+      "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#entitlement-gating",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-DEFAULTS-OPTIONAL",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/bundle_profiles.json"],
+      "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#optional-default-bundles",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-ROOT-MODULE-SHIM",
       "severity": "FAIL",
       "scope_paths": ["CMakeLists.txt", "*/CMakeLists.txt", "libs", "engine", "game", "client", "server", "launcher", "setup", "tools", "app"],

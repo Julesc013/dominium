@@ -6,6 +6,11 @@ static const char* k_caps_none[] = { 0 };
 static const char* k_caps_blueprint_place[] = { "ui.blueprint.place" };
 static const char* k_caps_tool_observation[] = { "tool.observation.stream" };
 static const char* k_caps_tool_memory[] = { "tool.memory.read" };
+static const char* k_caps_ui_hud[] = { "ui.hud.basic" };
+static const char* k_caps_ui_overlay_world_layers[] = { "ui.overlay.world_layers" };
+static const char* k_caps_console_ro[] = { "ui.console.command.read_only" };
+static const char* k_caps_console_rw[] = { "ui.console.command.read_write" };
+static const char* k_caps_freecam_observer[] = { "camera.mode.observer_truth" };
 static const char* k_refusal_common[] = {
     "ok",
     "usage",
@@ -38,6 +43,16 @@ static const char* k_refusal_session[] = {
     "refuse.world_hash_mismatch",
     "refuse.authority_denied"
 };
+static const char* k_refusal_profile[] = {
+    "ok",
+    "usage",
+    "refuse.profile_unknown",
+    "refuse.profile_not_selected",
+    "refuse.scenario_unknown",
+    "refuse.parameter_unknown",
+    "refuse.mission_unknown",
+    "refuse.entitlement_required"
+};
 
 static const client_command_desc k_commands[] = {
     { "client.boot.start", k_caps_none, 0u, "partial", k_refusal_common, 5u,
@@ -54,6 +69,26 @@ static const client_command_desc k_commands[] = {
     { "client.menu.select.options", k_caps_none, 0u, "partial", k_refusal_common, 5u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
     { "client.menu.select.about", k_caps_none, 0u, "partial", k_refusal_common, 5u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.play.open", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.experience.list", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.experience.select", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.scenario.list", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.scenario.select", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.mission.list", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.mission.select", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.parameters.list", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.parameters.select", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.session.create_from_selection", k_caps_none, 0u, "partial", k_refusal_profile, 8u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
     { "client.menu.quit", k_caps_none, 0u, "partial", k_refusal_common, 5u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
@@ -139,6 +174,16 @@ static const client_command_desc k_commands[] = {
     { "client.diag.show_lock_hash", k_caps_none, 0u, "partial", k_refusal_common, 5u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
     { "client.diag.export_bugreport", k_caps_tool_memory, 1u, "partial", k_refusal_common, 5u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.ui.hud.show", k_caps_ui_hud, 1u, "partial", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.ui.overlay.world_layers.show", k_caps_ui_overlay_world_layers, 1u, "obs_only", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.console.open", k_caps_console_ro, 1u, "obs_only", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.console.open.readwrite", k_caps_console_rw, 1u, "obs_only", k_refusal_profile, 8u,
+      CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
+    { "client.camera.freecam.enable", k_caps_freecam_observer, 1u, "obs_only", k_refusal_profile, 8u,
       CLIENT_CMD_MODE_CLI | CLIENT_CMD_MODE_TUI | CLIENT_CMD_MODE_GUI },
 
     { "client.replay.list", k_caps_tool_memory, 1u, "memory_only", k_refusal_common, 5u,

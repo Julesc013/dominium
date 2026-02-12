@@ -1,0 +1,82 @@
+{
+  "schema_id": "dominium.schema.meta.parameter_bundle",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.parameter_bundles",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.meta.parameter_bundle@1.0.0",
+    "bundles": [
+      {
+        "parameter_bundle_id": "observer.params.default",
+        "domain": "observer",
+        "deterministic_required": true,
+        "parameters": {
+          "overlay.terrain": true,
+          "overlay.hydrology": true,
+          "overlay.resources": false,
+          "freecam.speed.base": 1.0
+        },
+        "notes": "Observer exploration defaults.",
+        "extensions": {}
+      },
+      {
+        "parameter_bundle_id": "survival.params.default",
+        "domain": "survival",
+        "deterministic_required": true,
+        "parameters": {
+          "hunger.rate": 1.0,
+          "hydration.rate": 1.0,
+          "exposure.rate": 1.0
+        },
+        "notes": "Baseline survival rates.",
+        "extensions": {}
+      },
+      {
+        "parameter_bundle_id": "survival.params.harsh",
+        "domain": "survival",
+        "deterministic_required": true,
+        "parameters": {
+          "hunger.rate": 1.4,
+          "hydration.rate": 1.5,
+          "exposure.rate": 1.25
+        },
+        "notes": "Hardcore tuning delta only.",
+        "extensions": {}
+      },
+      {
+        "parameter_bundle_id": "creative.params.default",
+        "domain": "creative",
+        "deterministic_required": true,
+        "parameters": {
+          "build.queue.max": 256,
+          "spawn.cost.scalar": 0.0
+        },
+        "notes": "Creative authoring defaults.",
+        "extensions": {}
+      },
+      {
+        "parameter_bundle_id": "lab.params.default",
+        "domain": "lab",
+        "deterministic_required": true,
+        "parameters": {
+          "ensemble.count": 8,
+          "attribution.rank.limit": 16
+        },
+        "notes": "Lab defaults for analysis tooling.",
+        "extensions": {}
+      },
+      {
+        "parameter_bundle_id": "mission.params.default",
+        "domain": "mission",
+        "deterministic_required": true,
+        "parameters": {
+          "objective.hint.level": 1,
+          "mission.time.scale": 1.0
+        },
+        "notes": "Mission player defaults.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

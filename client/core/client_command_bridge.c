@@ -9,6 +9,31 @@ typedef struct bridge_alias_t {
     const char* legacy;
 } bridge_alias;
 
+typedef struct bridge_profile_binding_t {
+    const char* experience_id;
+    const char* law_profile_id;
+    int allow_hud;
+    int allow_overlay;
+    int allow_console_ro;
+    int allow_console_rw;
+    int allow_freecam;
+    int watermark_observer;
+} bridge_profile_binding;
+
+typedef struct bridge_selection_state_t {
+    char experience_id[96];
+    char law_profile_id[96];
+    char scenario_id[96];
+    char mission_id[96];
+    char parameter_bundle_id[96];
+    int allow_hud;
+    int allow_overlay;
+    int allow_console_ro;
+    int allow_console_rw;
+    int allow_freecam;
+    int watermark_observer;
+} bridge_selection_state;
+
 static const bridge_alias k_aliases[] = {
     /* @repox:infrastructure_only Canonical command alias routing only. */
     { "client.menu.select.singleplayer", "new-world" },
@@ -29,6 +54,41 @@ static const bridge_alias k_aliases[] = {
     { "client.replay.inspect", "inspect-replay" },
     { "client.replay.export", "replay-save" },
     { "client.session.abort", "exit" }
+};
+
+static const bridge_profile_binding k_profile_bindings[] = {
+    { "exp.observer", "law.observer.default", 1, 1, 1, 0, 1, 1 },
+    { "exp.survival", "law.survival.default", 1, 0, 0, 0, 0, 0 },
+    { "exp.hardcore", "law.survival.hardcore", 1, 0, 0, 0, 0, 0 },
+    { "exp.creative", "law.creative.full", 1, 1, 1, 1, 0, 1 },
+    { "exp.lab", "law.lab.default", 1, 1, 1, 1, 0, 1 },
+    { "exp.mission", "law.mission.player", 1, 0, 1, 0, 0, 0 },
+    { "exp.survival.softcore", "survival.softcore", 1, 0, 0, 0, 0, 0 }
+};
+
+static const char* k_scenario_ids[] = {
+    "scenario.sandbox.minimal",
+    "scenario.sol.system.demo",
+    "scenario.earth.surface.demo"
+};
+
+static const char* k_mission_ids[] = {
+    "mission.learn_observer",
+    "mission.compare_two_runs",
+    "mission.run_ensemble"
+};
+
+static const char* k_parameter_bundle_ids[] = {
+    "observer.params.default",
+    "survival.params.default",
+    "survival.params.harsh",
+    "creative.params.default",
+    "lab.params.default",
+    "mission.params.default"
+};
+
+static bridge_selection_state g_selection = {
+    "", "", "", "", "", 0, 0, 0, 0, 0, 0
 };
 
 static int starts_with(const char* value, const char* prefix)
@@ -96,6 +156,167 @@ static const char* lookup_alias(const char* token)
         }
     }
     return 0;
+}
+
+static int value_in_list(const char* value, const char* const* ids, u32 count)
+{
+    u32 i;
+    if (!value || !value[0] || !ids || count == 0u) {
+        return 0;
+    }
+    for (i = 0u; i < count; ++i) {
+        if (ids[i] && strcmp(ids[i], value) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static const bridge_profile_binding* find_profile_binding(const char* experience_id)
+{
+    u32 i;
+    if (!experience_id || !experience_id[0]) {
+        return 0;
+    }
+    for (i = 0u; i < (u32)(sizeof(k_profile_bindings) / sizeof(k_profile_bindings[0])); ++i) {
+        if (strcmp(k_profile_bindings[i].experience_id, experience_id) == 0) {
+            return &k_profile_bindings[i];
+        }
+    }
+    return 0;
+}
+
+static void set_selection_id(char* out, size_t cap, const char* value)
+{
+    copy_text(out, cap, value);
+}
+
+static void parse_selection_value(const char* remainder, char* out, size_t out_cap)
+{
+    const char* p = remainder;
+    size_t len = 0u;
+    if (!out || out_cap == 0u) {
+        return;
+    }
+    out[0] = '\0';
+    if (!p) {
+        return;
+    }
+    while (*p && isspace((unsigned char)*p)) {
+        p++;
+    }
+    if (!*p) {
+        return;
+    }
+    while (p[len] && !isspace((unsigned char)p[len])) {
+        len++;
+    }
+    if (len == 0u) {
+        return;
+    }
+    if (len >= out_cap) {
+        len = out_cap - 1u;
+    }
+    memcpy(out, p, len);
+    out[len] = '\0';
+    p = strchr(out, '=');
+    if (p && p[1]) {
+        const char* value = p + 1;
+        memmove(out, value, strlen(value) + 1u);
+    }
+}
+
+static void apply_profile_binding(const bridge_profile_binding* binding)
+{
+    if (!binding) {
+        return;
+    }
+    set_selection_id(g_selection.experience_id, sizeof(g_selection.experience_id), binding->experience_id);
+    set_selection_id(g_selection.law_profile_id, sizeof(g_selection.law_profile_id), binding->law_profile_id);
+    g_selection.allow_hud = binding->allow_hud;
+    g_selection.allow_overlay = binding->allow_overlay;
+    g_selection.allow_console_ro = binding->allow_console_ro;
+    g_selection.allow_console_rw = binding->allow_console_rw;
+    g_selection.allow_freecam = binding->allow_freecam;
+    g_selection.watermark_observer = binding->watermark_observer;
+}
+
+static const char* default_parameter_bundle_for_experience(const char* experience_id)
+{
+    if (!experience_id || !experience_id[0]) {
+        return "";
+    }
+    if (strcmp(experience_id, "exp.observer") == 0) {
+        return "observer.params.default";
+    }
+    if (strcmp(experience_id, "exp.survival") == 0 ||
+        strcmp(experience_id, "exp.survival.softcore") == 0) {
+        return "survival.params.default";
+    }
+    if (strcmp(experience_id, "exp.hardcore") == 0) {
+        return "survival.params.harsh";
+    }
+    if (strcmp(experience_id, "exp.creative") == 0) {
+        return "creative.params.default";
+    }
+    if (strcmp(experience_id, "exp.lab") == 0) {
+        return "lab.params.default";
+    }
+    if (strcmp(experience_id, "exp.mission") == 0) {
+        return "mission.params.default";
+    }
+    return "";
+}
+
+static int profile_selected(void)
+{
+    return g_selection.experience_id[0] != '\0' ? 1 : 0;
+}
+
+static int entitlement_allowed(const char* token)
+{
+    if (!token || !token[0]) {
+        return 0;
+    }
+    if (strcmp(token, "client.ui.hud.show") == 0) {
+        return g_selection.allow_hud;
+    }
+    if (strcmp(token, "client.ui.overlay.world_layers.show") == 0) {
+        return g_selection.allow_overlay;
+    }
+    if (strcmp(token, "client.console.open") == 0) {
+        return g_selection.allow_console_ro || g_selection.allow_console_rw;
+    }
+    if (strcmp(token, "client.console.open.readwrite") == 0) {
+        return g_selection.allow_console_rw;
+    }
+    if (strcmp(token, "client.camera.freecam.enable") == 0) {
+        return g_selection.allow_freecam;
+    }
+    return 0;
+}
+
+static void set_default_scenario_if_missing(void)
+{
+    if (!g_selection.scenario_id[0]) {
+        set_selection_id(g_selection.scenario_id,
+                         sizeof(g_selection.scenario_id),
+                         k_scenario_ids[0]);
+    }
+}
+
+static void set_default_parameter_if_missing(void)
+{
+    const char* default_id = "";
+    if (g_selection.parameter_bundle_id[0]) {
+        return;
+    }
+    default_id = default_parameter_bundle_for_experience(g_selection.experience_id);
+    if (default_id && default_id[0]) {
+        set_selection_id(g_selection.parameter_bundle_id,
+                         sizeof(g_selection.parameter_bundle_id),
+                         default_id);
+    }
 }
 
 static void format_refusal(char* out_message,
@@ -175,6 +396,153 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         strcmp(token, "client.diag.show_lock_hash") == 0 ||
         strcmp(token, "client.diag.export_bugreport") == 0) {
         snprintf(out_message, out_message_cap, "result=ok command=%s", token);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.play.open") == 0) {
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s workspaces=play_selector,scenario_selector,mission_selector",
+                 token);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.experience.list") == 0) {
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s experiences=exp.observer,exp.survival,exp.hardcore,exp.creative,exp.lab,exp.mission,exp.survival.softcore",
+                 token);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.experience.select") == 0) {
+        char value[128];
+        const bridge_profile_binding* binding = 0;
+        parse_selection_value(remainder, value, sizeof(value));
+        binding = find_profile_binding(value);
+        if (!binding) {
+            format_refusal(out_message, out_message_cap, "refuse.profile_unknown", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
+        apply_profile_binding(binding);
+        set_selection_id(g_selection.parameter_bundle_id,
+                         sizeof(g_selection.parameter_bundle_id),
+                         default_parameter_bundle_for_experience(binding->experience_id));
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s experience_id=%s law_profile_id=%s watermark=%s",
+                 token,
+                 g_selection.experience_id,
+                 g_selection.law_profile_id,
+                 g_selection.watermark_observer ? "OBSERVER MODE" : "none");
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.scenario.list") == 0) {
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s scenarios=scenario.sandbox.minimal,scenario.sol.system.demo,scenario.earth.surface.demo",
+                 token);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.scenario.select") == 0) {
+        char value[128];
+        parse_selection_value(remainder, value, sizeof(value));
+        if (!value_in_list(value,
+                           k_scenario_ids,
+                           (u32)(sizeof(k_scenario_ids) / sizeof(k_scenario_ids[0])))) {
+            format_refusal(out_message, out_message_cap, "refuse.scenario_unknown", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
+        set_selection_id(g_selection.scenario_id, sizeof(g_selection.scenario_id), value);
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s scenario_id=%s",
+                 token,
+                 g_selection.scenario_id);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.mission.list") == 0) {
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s missions=mission.learn_observer,mission.compare_two_runs,mission.run_ensemble",
+                 token);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.mission.select") == 0) {
+        char value[128];
+        parse_selection_value(remainder, value, sizeof(value));
+        if (!value_in_list(value,
+                           k_mission_ids,
+                           (u32)(sizeof(k_mission_ids) / sizeof(k_mission_ids[0])))) {
+            format_refusal(out_message, out_message_cap, "refuse.mission_unknown", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
+        set_selection_id(g_selection.mission_id, sizeof(g_selection.mission_id), value);
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s mission_id=%s",
+                 token,
+                 g_selection.mission_id);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.parameters.list") == 0) {
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s bundles=observer.params.default,survival.params.default,survival.params.harsh,creative.params.default,lab.params.default,mission.params.default",
+                 token);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.parameters.select") == 0) {
+        char value[128];
+        parse_selection_value(remainder, value, sizeof(value));
+        if (!value_in_list(value,
+                           k_parameter_bundle_ids,
+                           (u32)(sizeof(k_parameter_bundle_ids) / sizeof(k_parameter_bundle_ids[0])))) {
+            format_refusal(out_message, out_message_cap, "refuse.parameter_unknown", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
+        set_selection_id(g_selection.parameter_bundle_id, sizeof(g_selection.parameter_bundle_id), value);
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s parameter_bundle_id=%s",
+                 token,
+                 g_selection.parameter_bundle_id);
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.session.create_from_selection") == 0) {
+        if (!profile_selected()) {
+            format_refusal(out_message, out_message_cap, "refuse.profile_not_selected", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
+        set_default_scenario_if_missing();
+        set_default_parameter_if_missing();
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s experience_id=%s law_profile_id=%s scenario_id=%s parameter_bundle_id=%s mission_id=%s",
+                 token,
+                 g_selection.experience_id,
+                 g_selection.law_profile_id,
+                 g_selection.scenario_id,
+                 g_selection.parameter_bundle_id,
+                 g_selection.mission_id[0] ? g_selection.mission_id : "none");
+        return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
+    }
+    if (strcmp(token, "client.ui.hud.show") == 0 ||
+        strcmp(token, "client.ui.overlay.world_layers.show") == 0 ||
+        strcmp(token, "client.console.open") == 0 ||
+        strcmp(token, "client.console.open.readwrite") == 0 ||
+        strcmp(token, "client.camera.freecam.enable") == 0) {
+        if (!profile_selected()) {
+            format_refusal(out_message, out_message_cap, "refuse.profile_not_selected", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
+        if (!entitlement_allowed(token)) {
+            format_refusal(out_message, out_message_cap, "refuse.entitlement_required", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
+        snprintf(out_message,
+                 out_message_cap,
+                 "result=ok command=%s experience_id=%s watermark=%s",
+                 token,
+                 g_selection.experience_id,
+                 g_selection.watermark_observer ? "OBSERVER MODE" : "none");
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (starts_with(token, "client.session.")) {
