@@ -1,0 +1,209 @@
+{
+  "schema_id": "dominium.registry.future_cases",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.future_cases",
+    "registry_version": "1.0.0",
+    "cases": [
+      {
+        "case_id": "future.vr_interface",
+        "description": "VR interface expressed as experience/workspace capability, no primitive change.",
+        "required_experience_ids": [
+          "exp.observer"
+        ],
+        "required_law_profile_ids": [
+          "law.observer.default"
+        ],
+        "required_ui_pack_ids": [
+          "ui.pack.observer"
+        ],
+        "required_capabilities": [
+          "ui.hud.basic"
+        ],
+        "optional_domain_ids": [],
+        "expected_refusal_codes": [
+          "refuse.capability_missing"
+        ]
+      },
+      {
+        "case_id": "future.spectator_esports",
+        "description": "Spectator/esports view through law profile and entitlements only.",
+        "required_experience_ids": [
+          "exp.observer"
+        ],
+        "required_law_profile_ids": [
+          "law.observer.default"
+        ],
+        "required_ui_pack_ids": [
+          "ui.pack.observer"
+        ],
+        "required_capabilities": [
+          "camera.mode.observer_truth"
+        ],
+        "optional_domain_ids": [],
+        "expected_refusal_codes": [
+          "refuse.entitlement_required"
+        ]
+      },
+      {
+        "case_id": "future.creative_authoring",
+        "description": "Creative authoring via profile and scenario mutation intents.",
+        "required_experience_ids": [
+          "exp.creative"
+        ],
+        "required_law_profile_ids": [
+          "law.creative.full"
+        ],
+        "required_ui_pack_ids": [
+          "ui.pack.builder"
+        ],
+        "required_capabilities": [
+          "intent.scenario.mutate"
+        ],
+        "optional_domain_ids": [],
+        "expected_refusal_codes": [
+          "refuse.authority_denied"
+        ]
+      },
+      {
+        "case_id": "future.lab_ensemble",
+        "description": "Lab ensemble execution as tools capability with profile gating.",
+        "required_experience_ids": [
+          "exp.lab"
+        ],
+        "required_law_profile_ids": [
+          "law.lab.default"
+        ],
+        "required_ui_pack_ids": [
+          "ui.pack.lab"
+        ],
+        "required_capabilities": [
+          "tool.ensemble.run"
+        ],
+        "optional_domain_ids": [],
+        "expected_refusal_codes": [
+          "refuse.intent_forbidden"
+        ]
+      },
+      {
+        "case_id": "future.magic_domain_pack",
+        "description": "Magic as optional domain pack declaration with deterministic refusal when absent.",
+        "required_experience_ids": [
+          "exp.lab"
+        ],
+        "required_law_profile_ids": [
+          "law.lab.default"
+        ],
+        "required_ui_pack_ids": [],
+        "required_capabilities": [
+          "tool.worldgen.preview"
+        ],
+        "optional_domain_ids": [
+          "dom.domain.magic.pack"
+        ],
+        "expected_refusal_codes": [
+          "refuse.pack_missing"
+        ]
+      },
+      {
+        "case_id": "future.chemistry_micro_domain",
+        "description": "Chemistry micro domain represented as optional domain binding.",
+        "required_experience_ids": [
+          "exp.lab"
+        ],
+        "required_law_profile_ids": [
+          "law.lab.default"
+        ],
+        "required_ui_pack_ids": [],
+        "required_capabilities": [
+          "tool.worldgen.preview"
+        ],
+        "optional_domain_ids": [
+          "dom.domain.chemistry.micro"
+        ],
+        "expected_refusal_codes": [
+          "refuse.pack_missing"
+        ]
+      },
+      {
+        "case_id": "future.mmo_srz_split",
+        "description": "MMO split represented via authority context and SRZ policy hints.",
+        "required_experience_ids": [
+          "exp.mission"
+        ],
+        "required_law_profile_ids": [
+          "law.mission.player"
+        ],
+        "required_ui_pack_ids": [
+          "ui.pack.mission"
+        ],
+        "required_capabilities": [
+          "intent.mission.progress"
+        ],
+        "optional_domain_ids": [],
+        "expected_refusal_codes": [
+          "refuse.authority_denied"
+        ]
+      },
+      {
+        "case_id": "future.classroom_locked_assumptions",
+        "description": "Classroom assumptions through lab experience restrictions only.",
+        "required_experience_ids": [
+          "exp.lab"
+        ],
+        "required_law_profile_ids": [
+          "law.lab.default"
+        ],
+        "required_ui_pack_ids": [
+          "ui.pack.lab"
+        ],
+        "required_capabilities": [
+          "tool.attribution.view"
+        ],
+        "optional_domain_ids": [],
+        "expected_refusal_codes": [
+          "refuse.intent_forbidden"
+        ]
+      },
+      {
+        "case_id": "future.bci_input_capability",
+        "description": "BCI input represented by capability ID only; no mode branch.",
+        "required_experience_ids": [
+          "exp.observer"
+        ],
+        "required_law_profile_ids": [
+          "law.observer.default"
+        ],
+        "required_ui_pack_ids": [],
+        "required_capabilities": [
+          "input.bci.stream"
+        ],
+        "optional_domain_ids": [],
+        "expected_refusal_codes": [
+          "refuse.capability_missing"
+        ]
+      },
+      {
+        "case_id": "future.campaign_narrative_pack",
+        "description": "Campaign narrative chain as mission pack content, not hardcoded mode logic.",
+        "required_experience_ids": [
+          "exp.mission"
+        ],
+        "required_law_profile_ids": [
+          "law.mission.player"
+        ],
+        "required_ui_pack_ids": [
+          "ui.pack.mission"
+        ],
+        "required_capabilities": [
+          "intent.mission.progress"
+        ],
+        "optional_domain_ids": [],
+        "expected_refusal_codes": [
+          "refuse.pack_missing"
+        ]
+      }
+    ],
+    "extensions": {}
+  }
+}
