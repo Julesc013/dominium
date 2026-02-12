@@ -2979,6 +2979,86 @@ def check_no_engine_settings(repo_root):
     return violations
 
 
+def check_no_hardcoded_mode_branch(repo_root):
+    invariant_id = "INV-NO-HARDCODED-MODE-BRANCH"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    roots = (
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+        os.path.join(repo_root, "launcher"),
+        os.path.join(repo_root, "setup"),
+        os.path.join(repo_root, "tools"),
+        os.path.join(repo_root, "libs"),
+        os.path.join(repo_root, "scripts"),
+    )
+    forbidden_tokens = (
+        "survival" + "_" + "mode",
+        "creative" + "_" + "mode",
+        "hardcore" + "_" + "mode",
+        "spectator" + "_" + "mode",
+    )
+    violations = []
+    for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = repo_rel(repo_root, path).replace("\\", "/")
+        text = (read_text(path) or "").lower()
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: {} contains forbidden hardcoded mode token {}".format(
+                        invariant_id, rel, token
+                    )
+                )
+                break
+    return violations
+
+
+def check_authority_context_required(repo_root):
+    invariant_id = "INV-AUTHORITY-CONTEXT-REQUIRED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    session_rel = "schema/session/session_spec.schema"
+    authority_rel = "schema/authority/authority_context.schema"
+    required_session_fields = (
+        "universe_id",
+        "save_id",
+        "experience_id",
+        "parameter_bundle_id",
+        "authority_context",
+    )
+    required_authority_fields = (
+        "authority_origin",
+        "experience_id",
+        "law_profile_id",
+        "entitlements",
+    )
+
+    violations = []
+    session_path = os.path.join(repo_root, session_rel.replace("/", os.sep))
+    authority_path = os.path.join(repo_root, authority_rel.replace("/", os.sep))
+
+    if not os.path.isfile(session_path):
+        violations.append("{}: missing {}".format(invariant_id, session_rel))
+    if not os.path.isfile(authority_path):
+        violations.append("{}: missing {}".format(invariant_id, authority_rel))
+    if violations:
+        return violations
+
+    session_text = read_text(session_path) or ""
+    authority_text = read_text(authority_path) or ""
+    for field in required_session_fields:
+        if field not in session_text:
+            violations.append("{}: {} missing required field {}".format(invariant_id, session_rel, field))
+    for field in required_authority_fields:
+        if field not in authority_text:
+            violations.append("{}: {} missing required field {}".format(invariant_id, authority_rel, field))
+    return violations
+
+
 def check_renderer_no_truth_access(repo_root):
     invariant_id = "INV-RENDER-NO-TRUTH-ACCESS"
     if is_override_active(repo_root, invariant_id):
@@ -5236,6 +5316,8 @@ def main() -> int:
     violations.extend(check_client_canonical_bridge(repo_root))
     violations.extend(check_settings_ownership_boundaries(repo_root))
     violations.extend(check_no_engine_settings(repo_root))
+    violations.extend(check_no_hardcoded_mode_branch(repo_root))
+    violations.extend(check_authority_context_required(repo_root))
     violations.extend(check_renderer_no_truth_access(repo_root))
     violations.extend(check_capability_matrix_integrity(repo_root))
     violations.extend(check_solver_registry_contracts(repo_root))

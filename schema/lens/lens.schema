@@ -1,0 +1,29 @@
+SCHEMA: lens/lens.schema
+schema_id: dominium.schema.lens
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define observability lenses as data for lawful client presentation.
+- Keep diegetic vs nondiegetic visibility explicit and entitlement-gated.
+
+NON-SEMANTICS:
+- Lenses describe visibility channels only.
+- Lens declarations do not mutate simulation state.
+
+REQUIRED SHAPE:
+record lens_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - lenses: [lens_entry]
+    - extensions: map
+
+record lens_entry
+  required:
+    - lens_id: id
+    - lens_type: enum(diegetic|nondiegetic)
+    - channels: [id]
+    - description: tag
+    - extensions: map

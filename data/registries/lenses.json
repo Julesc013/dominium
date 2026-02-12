@@ -1,0 +1,32 @@
+{
+  "schema_id": "dominium.schema.lens",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.lenses",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.lens@1.0.0",
+    "lenses": [
+      {
+        "lens_id": "lens.diegetic.body_senses",
+        "lens_type": "diegetic",
+        "channels": [
+          "vision.local",
+          "audio.local",
+          "touch.local"
+        ],
+        "description": "Embodied local senses only.",
+        "extensions": {}
+      },
+      {
+        "lens_id": "lens.nondiegetic.console",
+        "lens_type": "nondiegetic",
+        "channels": [
+          "ui.console.command"
+        ],
+        "description": "Nondiegetic console interaction channel.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

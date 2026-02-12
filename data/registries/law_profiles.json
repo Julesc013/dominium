@@ -1,0 +1,87 @@
+{
+  "schema_id": "dominium.schema.law_profile",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.law_profiles",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.law_profile@1.0.0",
+    "profiles": [
+      {
+        "law_profile_id": "law.observer",
+        "capabilities_granted": [
+          "camera.mode.observer_truth",
+          "ui.overlay.world_layers"
+        ],
+        "entitlements_granted": [
+          "ui.console.command.read_only"
+        ],
+        "forbidden_lenses": [],
+        "restrictions": [
+          "no_authoritative_mutation"
+        ],
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "law.lab",
+        "capabilities_granted": [
+          "scenario.inspect",
+          "tool.ensemble.run"
+        ],
+        "entitlements_granted": [
+          "ui.console.command.read_write"
+        ],
+        "forbidden_lenses": [],
+        "restrictions": [
+          "no_engine_patching"
+        ],
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "law.creative",
+        "capabilities_granted": [
+          "scenario.mutate"
+        ],
+        "entitlements_granted": [
+          "ui.console.command.read_write"
+        ],
+        "forbidden_lenses": [],
+        "restrictions": [
+          "no_server_authority_override"
+        ],
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "law.mission_player",
+        "capabilities_granted": [
+          "ui.hud.basic"
+        ],
+        "entitlements_granted": [
+          "ui.console.command.read_only"
+        ],
+        "forbidden_lenses": [
+          "lens.nondiegetic.console"
+        ],
+        "restrictions": [
+          "no_truth_overlay"
+        ],
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "survival.softcore",
+        "capabilities_granted": [
+          "ui.hud.basic",
+          "input.embodied"
+        ],
+        "entitlements_granted": [],
+        "forbidden_lenses": [
+          "lens.nondiegetic.*"
+        ],
+        "restrictions": [
+          "no_nondiegetic_lens_usage"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

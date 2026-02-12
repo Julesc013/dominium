@@ -214,6 +214,20 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-NO-HARDCODED-MODE-BRANCH",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "launcher", "setup", "tools", "libs", "scripts"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-hardcoded-mode-branch",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-AUTHORITY-CONTEXT-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": ["schema/session/session_spec.schema", "schema/authority/authority_context.schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-authority-context-required",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-ROOT-MODULE-SHIM",
       "severity": "FAIL",
       "scope_paths": ["CMakeLists.txt", "*/CMakeLists.txt", "libs", "engine", "game", "client", "server", "launcher", "setup", "tools", "app"],
