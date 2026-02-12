@@ -3316,7 +3316,7 @@ def check_session_spec_required_for_run(repo_root):
         if not isinstance(payload, dict):
             violations.append("{}: invalid json {}".format(invariant_id, registry_rel))
         else:
-            if str(payload.get("schema_id", "")).strip() != "dominium.schema.session.defaults":
+            if str(payload.get("schema_id", "")).strip() != "dominium.schema.session.defaults":  # schema_version: 1.0.0
                 violations.append("{}: schema_id mismatch in {}".format(invariant_id, registry_rel))
             template = ((payload.get("record") or {}).get("default_session_spec_template") or {})
             if not isinstance(template, dict):

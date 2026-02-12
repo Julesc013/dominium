@@ -44,6 +44,7 @@
           "refuse.entitlement_required"
         ],
         "extensions": {
+          "authority_context_required": true,
           "legacy_aliases": [
             "law.observer"
           ]
@@ -84,7 +85,9 @@
           "refuse.intent_forbidden",
           "refuse.authority_denied"
         ],
-        "extensions": {}
+        "extensions": {
+          "authority_context_required": true
+        }
       },
       {
         "law_profile_id": "law.survival.hardcore",
@@ -125,7 +128,9 @@
           "refuse.respawn_forbidden",
           "refuse.authority_denied"
         ],
-        "extensions": {}
+        "extensions": {
+          "authority_context_required": true
+        }
       },
       {
         "law_profile_id": "law.creative.full",
@@ -161,6 +166,7 @@
           "refuse.authority_denied"
         ],
         "extensions": {
+          "authority_context_required": true,
           "legacy_aliases": [
             "law.creative"
           ]
@@ -200,6 +206,7 @@
           "refuse.authority_denied"
         ],
         "extensions": {
+          "authority_context_required": true,
           "legacy_aliases": [
             "law.lab"
           ]
@@ -239,6 +246,7 @@
           "refuse.entitlement_required"
         ],
         "extensions": {
+          "authority_context_required": true,
           "legacy_aliases": [
             "law.mission_player"
           ]
@@ -273,10 +281,14 @@
           "refuse.intent_forbidden"
         ],
         "extensions": {
+          "authority_context_required": true,
           "compat_profile": true
         }
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "authority_context_schema_ref": "dominium.schema.authority.context@1.1.0",
+      "session_spec_schema_ref": "dominium.schema.session.session_spec@1.1.0"
+    }
   }
 }
