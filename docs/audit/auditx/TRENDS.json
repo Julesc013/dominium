@@ -4,12 +4,12 @@
     "canon_drift": 580,
     "capability_misuse": 119,
     "derived_freshness": 120,
-    "legacy_contamination": 85,
+    "legacy_contamination": 160,
     "ownership_boundary": 4,
     "reachability": 80,
     "schema_usage": 160,
     "security.boundary_io": 29,
-    "security.privilege_bypass": 69,
+    "security.privilege_bypass": 300,
     "semantic.capability_drift": 5,
     "semantic.schema_shadowing": 120,
     "semantic.workspace_contamination": 1,
@@ -20,7 +20,7 @@
       "canon_drift": 0,
       "capability_misuse": 0,
       "derived_freshness": 0,
-      "legacy_contamination": 2,
+      "legacy_contamination": 0,
       "ownership_boundary": 0,
       "reachability": 0,
       "schema_usage": 0,
@@ -33,22 +33,22 @@
     },
     "severity_distribution": {
       "INFO": 0,
-      "RISK": 2,
+      "RISK": 0,
       "VIOLATION": 0,
       "WARN": 0
     }
   },
-  "findings_hash": "a9debbceaf4cfe8b2526c6c6b50541480683f978b69e0d5a9bd911c8fc164673",
+  "findings_hash": "6f4151356fa38202fb79c80381641c7d222601105a9ea8ec9f2687ab29314f6c",
   "history_reference": {
-    "previous_distinct_hash": "27715eef45e5e5327a48cd8a2ec796ba05b518e260b9e827f9e3c7935f98cbbe"
+    "previous_distinct_hash": "58b050d53768ae853dee977c799ead0cb15d5cb236c1bb616dd80ac4e82c778b"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 200,
-    "RISK": 248,
-    "VIOLATION": 69,
+    "RISK": 323,
+    "VIOLATION": 300,
     "WARN": 885
   },
-  "total_findings": 1402
+  "total_findings": 1708
 }

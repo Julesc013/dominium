@@ -1,0 +1,12 @@
+Status: DERIVED
+Last Reviewed: 2026-02-12
+Supersedes: none
+Superseded By: none
+
+gate run with deterministic remediation
+C:\Users\Jules\AppData\Local\Programs\Python\Python38-32\python.exe scripts/ci/check_repox_rules.py --repo-root c:\Inbox\Git Repos\dominium => 0
+C:\Program Files\CMake\bin\cmake.EXE --build c:\Inbox\Git Repos\dominium\out\build\vs2026\verify --config Debug --target domino_engine dominium_game => 0
+tool_ui_bind.CMD --repo-root c:\Inbox\Git Repos\dominium --check => 0
+C:\Users\Jules\AppData\Local\Programs\Python\Python38-32\python.exe scripts/ci/check_repox_rules.py --repo-root c:\Inbox\Git Repos\dominium => 0
+C:\Program Files\CMake\bin\cmake.EXE --build c:\Inbox\Git Repos\dominium\out\build\vs2026\verify --config Debug --target domino_engine dominium_game dominium_client => 0
+C:\Program Files\CMake\bin\cmake.EXE --build c:\Inbox\Git Repos\dominium\out\build\vs2026\verify --config Debug --target testx_verify => 0
