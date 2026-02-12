@@ -3268,6 +3268,67 @@ def check_authority_context_required_for_intents(repo_root):
     return violations
 
 
+def check_session_spec_required_for_run(repo_root):
+    invariant_id = "INV-SESSION_SPEC_REQUIRED_FOR_RUN"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_rel = "schema/session/session_spec.schema"
+    registry_rel = "data/registries/session_defaults.json"
+    bridge_rel = "client/core/client_command_bridge.c"
+    commands_rel = "client/core/client_commands_registry.c"
+    violations = []
+    schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
+    registry_path = os.path.join(repo_root, registry_rel.replace("/", os.sep))
+    bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
+    commands_path = os.path.join(repo_root, commands_rel.replace("/", os.sep))
+
+    for rel, path in ((schema_rel, schema_path), (bridge_rel, bridge_path), (commands_rel, commands_path)):
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, rel))
+    if violations:
+        return violations
+
+    schema_text = read_text(schema_path) or ""
+    required_fields = (
+        "session_id",
+        "universe_id",
+        "experience_id",
+        "parameter_bundle_id",
+        "pack_lock_hash",
+        "authority_context",
+        "budget_policy_id",
+        "fidelity_policy_id",
+        "deterministic_seed_bundle",
+    )
+    for field in required_fields:
+        if field not in schema_text:
+            violations.append("{}: {} missing required field {}".format(invariant_id, schema_rel, field))
+
+    bridge_text = read_text(bridge_path) or ""
+    command_text = read_text(commands_path) or ""
+    for marker in ("client.session.create_from_selection", "session_id=session.selected", "authority_context_id="):
+        if marker not in bridge_text and marker not in command_text:
+            violations.append("{}: missing session-spec marker '{}'".format(invariant_id, marker))
+
+    if os.path.isfile(registry_path):
+        payload = _load_json_file(registry_path)
+        if not isinstance(payload, dict):
+            violations.append("{}: invalid json {}".format(invariant_id, registry_rel))
+        else:
+            if str(payload.get("schema_id", "")).strip() != "dominium.schema.session.defaults":
+                violations.append("{}: schema_id mismatch in {}".format(invariant_id, registry_rel))
+            template = ((payload.get("record") or {}).get("default_session_spec_template") or {})
+            if not isinstance(template, dict):
+                violations.append("{}: default_session_spec_template missing in {}".format(invariant_id, registry_rel))
+            else:
+                for key in ("session_id_prefix", "universe_id", "experience_id", "parameter_bundle_id", "authority_context"):
+                    if key not in template:
+                        violations.append("{}: {} missing template key {}".format(invariant_id, registry_rel, key))
+
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -5700,6 +5761,7 @@ def main() -> int:
     violations.extend(check_no_hardcoded_mode_branch(repo_root))
     violations.extend(check_authority_context_required(repo_root))
     violations.extend(check_authority_context_required_for_intents(repo_root))
+    violations.extend(check_session_spec_required_for_run(repo_root))
     violations.extend(check_glossary_term_canon(repo_root))
     violations.extend(check_universe_identity_immutability(repo_root))
     violations.extend(check_mode_as_profiles(repo_root))

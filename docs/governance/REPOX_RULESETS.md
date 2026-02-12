@@ -120,6 +120,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `WARN-GLOSSARY-TERM-CANON`
 - `INV-UNIVERSE_IDENTITY_IMMUTABLE`
 - `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
+- `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-MODE-AS-PROFILES`
@@ -309,6 +310,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when authority-context schema is missing required enforcement fields.
 - Fails when client intent/session command bridge does not carry authority-context markers.
 - Fails when server-side authority checks are not context-aware for authoritative sessions.
+
+### INV-SESSION_SPEC_REQUIRED_FOR_RUN
+
+- Fails when session launch schema omits required deterministic/session-binding fields.
+- Fails when client launch flow lacks session-spec creation markers.
+- Fails when session default template registry is missing required reconstruction keys.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 
