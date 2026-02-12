@@ -228,6 +228,21 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-GLOSSARY-TERM-CANON",
+      "severity": "FAIL",
+      "scope_paths": ["schema/governance/glossary.schema", "data/registries/glossary.json", "docs/architecture", "docs/governance"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-glossary-term-canon",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "WARN-GLOSSARY-TERM-CANON",
+      "severity": "WARN",
+      "scope_paths": ["docs"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#warn-glossary-term-canon",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2099-01-01"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": ["data/registries/law_profiles.json", "data/registries/experience_profiles.json", "data/registries/parameter_bundles.json"],

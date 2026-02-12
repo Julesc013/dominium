@@ -1,0 +1,31 @@
+SCHEMA: governance/glossary.schema
+schema_id: dominium.schema.governance.glossary
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical terminology registry for architecture/governance language.
+- Prevent term drift and ambiguous synonyms in normative docs and tooling.
+
+NON-SEMANTICS:
+- Glossary does not change runtime behavior.
+- Glossary governs naming and documentation consistency only.
+
+REQUIRED SHAPE:
+record glossary_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - terms: [glossary_term]
+    - extensions: map
+
+record glossary_term
+  required:
+    - term_id: id
+    - display_name: tag
+    - canonical_definition: tag
+    - forbidden_synonyms: [tag]
+    - allowed_contexts: [enum(docs|code|ui)]
+    - notes: tag
+    - extensions: map

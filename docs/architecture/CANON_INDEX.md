@@ -303,6 +303,7 @@ execution artifacts and are not authoritative.
 - `docs/architecture/MODES_AS_PROFILES.md`
 - `docs/architecture/POST_CLEAN_2_STATUS.md`
 - `docs/architecture/STANDARDS_AND_META_SYSTEMS_MODEL.md`
+- `docs/architecture/TERMINOLOGY_GLOSSARY.md`
 - `docs/audit/AUDITX_OVERHAUL_REPORT.md`
 - `docs/audit/compat/COMPAT_BASELINE.md`
 - `docs/audit/compat/README.md`

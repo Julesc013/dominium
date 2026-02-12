@@ -1,0 +1,327 @@
+{
+  "schema_id": "dominium.schema.governance.glossary",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.glossary",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.glossary@1.0.0",
+    "terms": [
+      {
+        "term_id": "term.universe",
+        "display_name": "Universe",
+        "canonical_definition": "The total content envelope addressed by a single UniverseIdentity.",
+        "forbidden_synonyms": [
+          "worldspace"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Top-level scope for world/system/region refinement.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.universe_identity",
+        "display_name": "UniverseIdentity",
+        "canonical_definition": "Immutable creation contract for a universe (seed, domain bindings, compatibility refs).",
+        "forbidden_synonyms": [
+          "universe config mutable",
+          "universe runtime profile"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code"
+        ],
+        "notes": "Must not change after creation without explicit migration.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.universe_state",
+        "display_name": "UniverseState",
+        "canonical_definition": "Evolving runtime/save state for a universe; references checkpoints, refinement, and history.",
+        "forbidden_synonyms": [
+          "universe identity mutable",
+          "static universe descriptor"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Separated from UniverseIdentity to preserve deterministic compatibility.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.world",
+        "display_name": "World",
+        "canonical_definition": "A simulation domain instance scoped inside a universe.",
+        "forbidden_synonyms": [
+          "world equals universe"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "World is not equivalent to Universe.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.zone",
+        "display_name": "Zone",
+        "canonical_definition": "A bounded region used for refinement, interest, and execution partitioning.",
+        "forbidden_synonyms": [
+          "stage"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Zone naming must not imply progression stages.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.srz",
+        "display_name": "SRZ",
+        "canonical_definition": "Simulation responsibility zone partition used for authority and workload scaling.",
+        "forbidden_synonyms": [
+          "server shard stage"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code"
+        ],
+        "notes": "SRZ is execution partitioning, not gameplay progression.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.save",
+        "display_name": "Save",
+        "canonical_definition": "Persistent checkpoint artifact of UniverseState and related deterministic references.",
+        "forbidden_synonyms": [
+          "session profile"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Save data does not redefine laws or ontology.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.session",
+        "display_name": "Session",
+        "canonical_definition": "A runtime execution instance derived from SessionSpec and authority context.",
+        "forbidden_synonyms": [
+          "session mode flag"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Session lifecycle is pipeline-driven.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.session_spec",
+        "display_name": "SessionSpec",
+        "canonical_definition": "Deterministic binding artifact for launching/re-entering a session.",
+        "forbidden_synonyms": [
+          "session flags"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code"
+        ],
+        "notes": "Used by client/launcher/server entrypoints.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.instance",
+        "display_name": "Instance",
+        "canonical_definition": "Launcher-managed runtime composition target with explicit pack/profile selections.",
+        "forbidden_synonyms": [
+          "save slot mode"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Instance config is reconstructible and lock-hashed.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.scenario",
+        "display_name": "Scenario",
+        "canonical_definition": "Data-defined world/task setup contract selected for a session.",
+        "forbidden_synonyms": [
+          "campaign mode"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Scenario may be optional-pack gated.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.mission",
+        "display_name": "Mission",
+        "canonical_definition": "Objective/evaluation contract layered over scenario and law profile constraints.",
+        "forbidden_synonyms": [
+          "story mode branch"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Mission does not bypass LawProfile.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.metrics",
+        "display_name": "Metrics",
+        "canonical_definition": "Declared measurement definitions used for evaluation/reporting, deterministic where required.",
+        "forbidden_synonyms": [
+          "ad-hoc telemetry"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Metrics registry remains data-first.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.experience_profile",
+        "display_name": "ExperienceProfile",
+        "canonical_definition": "Configuration surface binding law, UI workspace defaults, and visible scenario/mission sets.",
+        "forbidden_synonyms": [
+          "survival_mode",
+          "creative_mode",
+          "hardcore_mode",
+          "spectator_mode"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Experience selection never introduces hardcoded branches.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.law_profile",
+        "display_name": "LawProfile",
+        "canonical_definition": "Permission and epistemic policy declaration for capabilities, entitlements, and intent families.",
+        "forbidden_synonyms": [
+          "god mode",
+          "cheat mode"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Law profiles are authoritative boundaries, not UX presets.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.parameter_bundle",
+        "display_name": "ParameterBundle",
+        "canonical_definition": "Schema-validated deterministic tuning map attached to SessionSpec.",
+        "forbidden_synonyms": [
+          "difficulty hardcode"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code"
+        ],
+        "notes": "Bundle values tune existing behavior only.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.bundle_profile",
+        "display_name": "BundleProfile",
+        "canonical_definition": "Install/enable content grouping for optional pack sets.",
+        "forbidden_synonyms": [
+          "required dlc"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Core runtime must remain usable with optional bundles removed.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.authority_context",
+        "display_name": "AuthorityContext",
+        "canonical_definition": "Resolved authority metadata attached to intents/commands/session execution.",
+        "forbidden_synonyms": [
+          "client trust bypass"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code"
+        ],
+        "notes": "Required for intent submission paths.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.truth_model",
+        "display_name": "TruthModel",
+        "canonical_definition": "Authoritative simulation state visibility boundary.",
+        "forbidden_synonyms": [
+          "render truth direct"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code"
+        ],
+        "notes": "Only exposed through law/entitlement policy.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.perceived_model",
+        "display_name": "PerceivedModel",
+        "canonical_definition": "Epistemically filtered view of truth available to a role/profile.",
+        "forbidden_synonyms": [
+          "omniscient render model"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Perceived model is command/query output for clients.",
+        "extensions": {}
+      },
+      {
+        "term_id": "term.render_model",
+        "display_name": "RenderModel",
+        "canonical_definition": "Presentation artifact derived from perceived data and UI IR.",
+        "forbidden_synonyms": [
+          "authoritative state"
+        ],
+        "allowed_contexts": [
+          "docs",
+          "code",
+          "ui"
+        ],
+        "notes": "Render model is never source of truth.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
