@@ -3,7 +3,6 @@
 
 import argparse
 import glob
-import hashlib
 import json
 import os
 import shlex
@@ -43,13 +42,6 @@ MECHANICAL_BLOCKER_TYPES = (
     "VERSIONING_POLICY_MISMATCH",
 )
 
-
-# Gate throughput hotfix:
-# - verify defaults to FAST lane (precheck + task dependency)
-# - add explicit FULL lane for exhaustive verification
-# - short-circuit repeated invocations on identical repo state
-GATE_STATE_CACHE_REL = os.path.join(VERIFY_BUILD_DIR_REL, "gate_state_cache.json")
-DEFAULT_FAST_VERIFY = True
 
 def _repo_root(arg_value):
     if arg_value:
@@ -292,60 +284,6 @@ def _changed_files_from_git(repo_root):
     files = [_normalize_rel(line) for line in out.splitlines() if line.strip()]
     return sorted(set(files))
 
-
-
-def _compute_repo_state_hash(repo_root):
-    """Cheap deterministic state hash: HEAD + working tree diff."""
-    head = _run_capture(repo_root, ["git", "rev-parse", "HEAD"]) or ""
-    head = head.strip()
-    # Use porcelain to capture staged/unstaged changes deterministically.
-    status = _run_capture(repo_root, ["git", "status", "--porcelain=v1", "--untracked-files=normal"]) or ""
-    payload = (head + "\n" + status).encode("utf-8", errors="replace")
-    return hashlib.sha256(payload).hexdigest()
-
-def _state_cache_path(repo_root, env):
-    # Prefer workspace-scoped verify dir if available
-    verify_dir = str((env or {}).get("DOM_WS_VERIFY_BUILD_DIR", "")).strip()
-    if verify_dir:
-        if not os.path.isabs(verify_dir):
-            verify_dir = os.path.join(repo_root, verify_dir)
-        return os.path.join(os.path.normpath(verify_dir), "gate_state_cache.json")
-    return os.path.join(repo_root, GATE_STATE_CACHE_REL)
-
-def _load_state_cache(repo_root, env):
-    path = _state_cache_path(repo_root, env)
-    if not os.path.isfile(path):
-        return {}
-    try:
-        with open(path, "r", encoding="utf-8") as handle:
-            data = json.load(handle)
-    except (OSError, ValueError):
-        return {}
-    return data if isinstance(data, dict) else {}
-
-def _write_state_cache(repo_root, env, data):
-    path = _state_cache_path(repo_root, env)
-    parent = os.path.dirname(path)
-    if parent and not os.path.isdir(parent):
-        os.makedirs(parent, exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="\n") as handle:
-        json.dump(data, handle, indent=2, sort_keys=True)
-        handle.write("\n")
-
-def _try_short_circuit(repo_root, env, gate_kind):
-    """Return 0 if we already passed this gate_kind on identical state."""
-    cache = _load_state_cache(repo_root, env)
-    cur = _compute_repo_state_hash(repo_root)
-    key = f"ok:{gate_kind}"
-    if cache.get(key, "") == cur:
-        return 0
-    return None
-
-def _mark_short_circuit_ok(repo_root, env, gate_kind):
-    cache = _load_state_cache(repo_root, env)
-    cur = _compute_repo_state_hash(repo_root)
-    cache[f"ok:{gate_kind}"] = cur
-    _write_state_cache(repo_root, env, cache)
 
 def _cache_payload(path):
     if not os.path.isfile(path):
@@ -996,12 +934,6 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
         return _run_queue(repo_root, queue_file, workspace_id=workspace_id)
 
     env, tools_dir, ws_dirs = _canonical_env(repo_root, ws_id=workspace_id)
-
-    # Throughput short-circuit: if identical repo state already passed this gate kind, return immediately.
-    if gate_kind in ("precheck", "taskcheck", "exitcheck", "dev", "verify", "full", "dist"):
-        cached = _try_short_circuit(repo_root, env, gate_kind)
-        if cached == 0:
-            return 0
     verify_build_dir, ws_dirs = select_verify_build_dir(
         repo_root,
         ws_id=ws_dirs.get("workspace_id", workspace_id),
@@ -1067,21 +999,13 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
     elif gate_kind == "taskcheck":
         phase_specs = [(("TASK_DEPENDENCY",), verify_targets)]
     elif gate_kind == "exitcheck":
-        phase_specs = [(("TASK_DEPENDENCY", "EXIT_STRICT"), ("domino_engine","dominium_game","dominium_client"))]
+        phase_specs = [(("TASK_DEPENDENCY", "EXIT_STRICT"), verify_targets)]
     elif gate_kind == "dev":
         phase_specs = [
             (("PRECHECK_MIN",), precheck_targets),
             (("TASK_DEPENDENCY",), dev_targets),
         ]
     elif gate_kind == "verify":
-        # FAST by default: run minimal precheck + dependency gates + fast tests only.
-        # Escalation to strict/full should be explicit (gate.py full) or handled by gate policy applies_when.
-        phase_specs = [
-            (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY",), dev_targets),
-        ]
-    elif gate_kind == "full":
-        # FULL verify: legacy behavior (precheck + dependency + strict exit) with verify targets.
         phase_specs = [
             (("PRECHECK_MIN",), precheck_targets),
             (("TASK_DEPENDENCY",), verify_targets),
@@ -1133,7 +1057,6 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
             verification,
             remediation_root=remediation_root,
         )
-    _mark_short_circuit_ok(repo_root, env, gate_kind)
     return 0
 
 
@@ -1141,7 +1064,7 @@ def main():
     parser = argparse.ArgumentParser(description="Canonical gate runner with autonomous remediation.")
     parser.add_argument(
         "command",
-        choices=("dev", "verify", "full", "dist", "doctor", "remediate", "precheck", "taskcheck", "exitcheck", "run-queue"),
+        choices=("dev", "verify", "dist", "doctor", "remediate", "precheck", "taskcheck", "exitcheck", "run-queue"),
     )
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--workspace-id", default="")

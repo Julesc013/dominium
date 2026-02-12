@@ -5,7 +5,7 @@
     "baseline_id": "anb-omega.baseline",
     "extensions": {},
     "gate_policy_sha256": "1491808e65a9b84ebd95fd6b3f5a2a16e5df583d30163d507fda442c887d0628",
-    "head_hash": "01841b8f85e79c8694e0091d47b2cd30d0f95e97",
+    "head_hash": "4ec8a42c4973137ad83b356192a4eb5a7ead4f32",
     "identity_fingerprint_sha256": "d2e99cc8dd104c2a017f478f1ddbfd5cf6986d99e6c4ac26d685f5abe089e493",
     "schema_registry_sha256": "ac9fc0bb7ed6032b13ddc03d6e6f5fe433102162307b22b2db5bd612d712b4b4",
     "tool_hashes": [

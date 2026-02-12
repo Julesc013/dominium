@@ -166,9 +166,9 @@
       }
     },
     "INV-LEGACY-CODE-QUARANTINED": {
-      "finding_count": 85,
+      "finding_count": 160,
       "recommended_actions": {
-        "ADD_TEST": 85
+        "ADD_TEST": 160
       },
       "sample_findings": [
         {
@@ -198,7 +198,7 @@
         }
       ],
       "severities": {
-        "RISK": 85
+        "RISK": 160
       }
     },
     "INV-SCHEMA-SHADOWING-CONTROL": {
@@ -238,9 +238,9 @@
       }
     },
     "INV-SECUREX-PRIVILEGE-MODEL": {
-      "finding_count": 69,
+      "finding_count": 300,
       "recommended_actions": {
-        "ADD_TEST": 69
+        "ADD_TEST": 300
       },
       "sample_findings": [
         {
@@ -261,16 +261,16 @@
         {
           "category": "security.privilege_bypass",
           "finding_id": "C1:0033",
-          "location": "tools/auditx/cache/vs2026/entries/079117023d1cd328313f3e15341906810a0b6a7c199c9591f3eb6ad0cffc5e48.json"
+          "location": "tools/auditx/cache/vs2026/entries/04319c251b514abd802d989dd828b9fada90c82e9c744c55a5dae80becb42c71.json"
         },
         {
           "category": "security.privilege_bypass",
           "finding_id": "C1:0034",
-          "location": "tools/auditx/cache/vs2026/entries/079117023d1cd328313f3e15341906810a0b6a7c199c9591f3eb6ad0cffc5e48.json"
+          "location": "tools/auditx/cache/vs2026/entries/04319c251b514abd802d989dd828b9fada90c82e9c744c55a5dae80becb42c71.json"
         }
       ],
       "severities": {
-        "VIOLATION": 69
+        "VIOLATION": 300
       }
     },
     "INV-SECUREX-TRUST-POLICY-VALID": {
