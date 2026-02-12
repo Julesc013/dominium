@@ -1370,11 +1370,56 @@ int setup_main(int argc, char** argv)
     if (strcmp(cmd, "setup.settings.set") == 0) {
         const char* kv = (cmd_index + 1 < argc) ? argv[cmd_index + 1] : 0;
         const char* eq = kv ? strchr(kv, '=') : 0;
+        char key[96];
+        const char* value = 0;
+        size_t key_len = 0u;
+        int valid = 0;
+        /* @repox:infrastructure_only Setup settings validation/refusal mapping only. */
         if (!eq || eq == kv || !eq[1]) {
             fprintf(stderr, "setup: setup.settings.set requires key=value\\n");
             return D_APP_EXIT_USAGE;
         }
-        printf("setup_settings=set key=%.*s value=%s\\n", (int)(eq - kv), kv, eq + 1);
+        key_len = (size_t)(eq - kv);
+        if (key_len >= sizeof(key)) {
+            key_len = sizeof(key) - 1u;
+        }
+        memcpy(key, kv, key_len);
+        key[key_len] = '\0';
+        value = eq + 1;
+        if (strcmp(key, "install_roots") == 0 ||
+            strcmp(key, "package_store_path") == 0 ||
+            strcmp(key, "offline_cache_path") == 0 ||
+            strcmp(key, "default_profile") == 0) {
+            valid = (value[0] != '\0') ? 1 : 0;
+        } else if (strcmp(key, "trust_policy") == 0) {
+            valid = (strcmp(value, "dev") == 0 ||
+                     strcmp(value, "strict") == 0 ||
+                     strcmp(value, "release") == 0) ? 1 : 0;
+        } else if (strcmp(key, "auto_repair_policy") == 0) {
+            valid = (strcmp(value, "disabled") == 0 ||
+                     strcmp(value, "safe") == 0 ||
+                     strcmp(value, "aggressive") == 0) ? 1 : 0;
+        } else if (strcmp(key, "rollback_depth") == 0) {
+            char* end = 0;
+            unsigned long depth = strtoul(value, &end, 10);
+            valid = (end && *end == '\0' && depth > 0ul && depth <= 128ul) ? 1 : 0;
+        } else if (strcmp(key, "guided_install_wizard") == 0 ||
+                   strcmp(key, "disk_planning_heuristics") == 0) {
+            printf("refusal=refuse.not_implemented command=setup.settings.set key=%s\\n", key);
+            return D_APP_EXIT_UNAVAILABLE;
+        } else if (strcmp(key, "background_updates") == 0 ||
+                   strcmp(key, "delta_patch_tuning") == 0) {
+            printf("refusal=refuse.deferred command=setup.settings.set key=%s\\n", key);
+            return D_APP_EXIT_UNAVAILABLE;
+        } else {
+            printf("refusal=refuse.unsupported_setting command=setup.settings.set key=%s\\n", key);
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        if (!valid) {
+            printf("refusal=refuse.invalid_value command=setup.settings.set key=%s\\n", key);
+            return D_APP_EXIT_USAGE;
+        }
+        printf("setup_settings=set key=%s value=%s\\n", key, value);
         return D_APP_EXIT_OK;
     }
     if (strcmp(cmd, "prepare") == 0) {

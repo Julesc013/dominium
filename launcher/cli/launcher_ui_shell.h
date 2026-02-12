@@ -39,8 +39,9 @@ void launcher_ui_settings_format_lines(const launcher_ui_settings* settings,
                                        size_t line_stride,
                                        int* out_count);
 
+/* @repox:infrastructure_only Settings command dispatcher for UI parity only. */
 int launcher_ui_execute_command(const char* cmd,
-                                const launcher_ui_settings* settings,
+                                launcher_ui_settings* settings,
                                 dom_app_ui_event_log* log,
                                 char* status,
                                 size_t status_cap,
