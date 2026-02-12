@@ -118,6 +118,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-AUDITX-OUTPUT-STALE`
 - `INV-GLOSSARY-TERM-CANON`
 - `WARN-GLOSSARY-TERM-CANON`
+- `INV-UNIVERSE_IDENTITY_IMMUTABLE`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-MODE-AS-PROFILES`
@@ -295,6 +296,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - Warns when non-canonical docs use glossary-forbidden synonyms.
 - Non-gating during migration; intended to ratchet once drift is cleaned up.
+
+### INV-UNIVERSE_IDENTITY_IMMUTABLE
+
+- Fails when universe identity/state schemas are missing required split-contract fields.
+- Fails when runtime sources introduce explicit universe identity mutation tokens.
+- Keeps UniverseIdentity immutable after creation while UniverseState carries evolution.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 

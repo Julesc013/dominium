@@ -1,0 +1,24 @@
+SCHEMA: universe/universe_state.schema
+schema_id: dominium.schema.universe.state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define mutable runtime/save state references for an existing universe.
+- Keep dynamic state separate from immutable identity.
+
+NON-SEMANTICS:
+- This schema does not introduce gameplay rules.
+- It only declares pointers/anchors for deterministic state tracking.
+
+REQUIRED SHAPE:
+record universe_state
+  required:
+    - universe_id: id
+    - time_ref: tag
+    - refinement_state_refs: [id]
+    - agent_state_refs: [id]
+    - law_state_refs: [id]
+    - save_checkpoint_refs: [id]
+    - history_log_anchors: [id]
+    - extensions: map

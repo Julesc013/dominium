@@ -243,6 +243,13 @@
       "ratchet_after": "2099-01-01"
     },
     {
+      "rule_id": "INV-UNIVERSE_IDENTITY_IMMUTABLE",
+      "severity": "FAIL",
+      "scope_paths": ["schema/universe/universe_identity.schema", "schema/universe/universe_state.schema", "engine", "game", "client", "server", "launcher", "setup"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-universe-identity-immutable",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": ["data/registries/law_profiles.json", "data/registries/experience_profiles.json", "data/registries/parameter_bundles.json"],
