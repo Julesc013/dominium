@@ -1,0 +1,36 @@
+{
+  "schema_id": "dominium.schema.scenario.metrics_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.metrics",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.scenario.metrics@1.0.0",
+    "metrics_specs": [
+      {
+        "metrics_id": "metrics.core.basic",
+        "metric_ids": [
+          "metric.sim.hash",
+          "metric.sim.time",
+          "metric.event.count"
+        ],
+        "required_pack_ids": [],
+        "required_capabilities": [],
+        "deterministic_required": true,
+        "extensions": {}
+      },
+      {
+        "metrics_id": "metrics.worldgen.summary",
+        "metric_ids": [
+          "metric.worldgen.land_fraction",
+          "metric.worldgen.elevation_histogram",
+          "metric.worldgen.river_density"
+        ],
+        "required_pack_ids": [],
+        "required_capabilities": [],
+        "deterministic_required": true,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -17,6 +17,8 @@ from analyzers import b6_prompt_drift
 from analyzers import b7_workspace_contamination
 from analyzers import b8_blocker_recurrence
 from analyzers import c1_security_boundary
+from analyzers import c2_mode_flag_smell
+from analyzers import c3_capability_bypass_smell
 
 
 ANALYZERS = (
@@ -37,6 +39,8 @@ ANALYZERS = (
     b7_workspace_contamination,
     b8_blocker_recurrence,
     c1_security_boundary,
+    c2_mode_flag_smell,
+    c3_capability_bypass_smell,
 )
 
 

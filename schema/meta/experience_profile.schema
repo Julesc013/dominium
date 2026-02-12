@@ -1,0 +1,36 @@
+SCHEMA: meta/experience_profile.schema
+schema_id: dominium.schema.meta.experience_profile
+schema_version: 1.1.0
+stability: core
+
+PURPOSE:
+- Canonical experience profile contract.
+- Binds UI/workspace visibility and scenario/mission visibility to a law profile.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown keys under `extensions` MUST be preserved.
+- No field removal/rename without MAJOR bump.
+
+REQUIRED SHAPE:
+record experience_profile_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - profiles: [experience_profile]
+    - extensions: map
+
+record experience_profile
+  required:
+    - experience_id: id
+    - law_profile_id: id
+    - default_ui_workspace_ids: [id]
+    - ui_pack_ids: [id]
+    - visible_scenario_sets: [id]
+    - visible_mission_sets: [id]
+    - default_parameter_bundle_id: id
+    - tool_visibility: [id]
+    - notes: tag
+    - extensions: map
+

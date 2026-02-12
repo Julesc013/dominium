@@ -1,0 +1,70 @@
+{
+  "schema_id": "dominium.schema.scenario.mission_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.missions",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.scenario.mission@1.0.0",
+    "missions": [
+      {
+        "mission_id": "mission.learn_observer",
+        "scenario_id": "scenario.sandbox.minimal",
+        "required_pack_ids": [],
+        "required_capabilities": [],
+        "required_experience_ids": [
+          "exp.observer",
+          "exp.mission"
+        ],
+        "required_law_profile_ids": [
+          "law.observer.default",
+          "law.mission.player"
+        ],
+        "deterministic_seed_stream": "seed.mission.learn_observer",
+        "objective_ids": [
+          "objective.nav",
+          "objective.inspect"
+        ],
+        "extensions": {}
+      },
+      {
+        "mission_id": "mission.compare_two_runs",
+        "scenario_id": "scenario.sandbox.minimal",
+        "required_pack_ids": [],
+        "required_capabilities": [
+          "tool.ensemble.run"
+        ],
+        "required_experience_ids": [
+          "exp.lab"
+        ],
+        "required_law_profile_ids": [
+          "law.lab.default"
+        ],
+        "deterministic_seed_stream": "seed.mission.compare_two_runs",
+        "objective_ids": [
+          "objective.ensemble.compare"
+        ],
+        "extensions": {}
+      },
+      {
+        "mission_id": "mission.run_ensemble",
+        "scenario_id": "scenario.sandbox.minimal",
+        "required_pack_ids": [],
+        "required_capabilities": [
+          "tool.ensemble.run"
+        ],
+        "required_experience_ids": [
+          "exp.lab"
+        ],
+        "required_law_profile_ids": [
+          "law.lab.default"
+        ],
+        "deterministic_seed_stream": "seed.mission.run_ensemble",
+        "objective_ids": [
+          "objective.ensemble.execute"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

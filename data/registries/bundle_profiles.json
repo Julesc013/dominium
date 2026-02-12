@@ -1,34 +1,108 @@
 {
-  "schema_id": "dominium.schema.bundle_profiles",
+  "schema_id": "dominium.schema.meta.bundle_profile",
   "schema_version": "1.0.0",
   "record": {
     "registry_id": "dominium.registry.bundle_profiles",
-    "registry_version": "1.0.0",
-    "schema_version_ref": "dominium.schema.bundle_profiles@1.0.0",
+    "registry_version": "1.1.0",
+    "schema_version_ref": "dominium.schema.meta.bundle_profile@1.0.0",
     "bundles": [
       {
         "bundle_id": "bundle.core.runtime",
-        "optional": false,
-        "pack_ids": [
+        "description": "Minimal runtime packs required for core boot.",
+        "install_pack_ids": [
           "pack.core.runtime"
         ],
-        "extensions": {}
+        "default_experience_id": "exp.observer",
+        "optional_content": [],
+        "size_class": "small",
+        "extensions": {
+          "optional": false,
+          "pack_ids": [
+            "pack.core.runtime"
+          ]
+        }
+      },
+      {
+        "bundle_id": "bundle.experience.defaults",
+        "description": "Default profile/workspace packs for observer, survival, creative, lab, mission.",
+        "install_pack_ids": [
+          "pack.ui.core",
+          "pack.ui.observer",
+          "pack.ui.survival",
+          "pack.ui.builder",
+          "pack.ui.lab",
+          "pack.ui.mission"
+        ],
+        "default_experience_id": "exp.observer",
+        "optional_content": [
+          "experience.set.defaults"
+        ],
+        "size_class": "medium",
+        "extensions": {
+          "optional": true
+        }
+      },
+      {
+        "bundle_id": "bundle.scenarios.intro",
+        "description": "Optional introductory scenario packs.",
+        "install_pack_ids": [
+          "pack.scenario.intro",
+          "pack.scenario.sol.demo",
+          "pack.scenario.earth.demo"
+        ],
+        "optional_content": [
+          "scenario.set.intro"
+        ],
+        "size_class": "medium",
+        "extensions": {
+          "optional": true,
+          "pack_ids": [
+            "pack.scenario.intro"
+          ]
+        }
+      },
+      {
+        "bundle_id": "bundle.missions.intro",
+        "description": "Optional introductory mission packs.",
+        "install_pack_ids": [
+          "pack.mission.intro"
+        ],
+        "optional_content": [
+          "mission.set.training"
+        ],
+        "size_class": "small",
+        "extensions": {
+          "optional": true
+        }
+      },
+      {
+        "bundle_id": "bundle.education.basic",
+        "description": "Optional education/tutorial content.",
+        "install_pack_ids": [
+          "pack.education.basic"
+        ],
+        "optional_content": [
+          "lesson.set.basic"
+        ],
+        "size_class": "large",
+        "extensions": {
+          "optional": true
+        }
       },
       {
         "bundle_id": "bundle.default_core",
-        "optional": false,
-        "pack_ids": [
+        "description": "Compatibility alias for historical automation.",
+        "install_pack_ids": [
           "pack.core.runtime"
         ],
-        "extensions": {}
-      },
-      {
-        "bundle_id": "bundle.scenarios_intro",
-        "optional": true,
-        "pack_ids": [
-          "pack.scenario.intro"
-        ],
-        "extensions": {}
+        "optional_content": [],
+        "size_class": "small",
+        "extensions": {
+          "optional": false,
+          "pack_ids": [
+            "pack.core.runtime"
+          ]
+        }
       }
     ],
     "extensions": {}

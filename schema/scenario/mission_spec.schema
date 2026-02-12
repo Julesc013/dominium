@@ -1,0 +1,26 @@
+SCHEMA: scenario/mission_spec.schema
+schema_id: dominium.schema.scenario.mission
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Mission specification contract bound to scenario/law/experience profiles.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown keys under `extensions` MUST be preserved.
+- No field removal/rename without MAJOR bump.
+
+REQUIRED SHAPE:
+record mission_spec
+  required:
+    - mission_id: id
+    - scenario_id: id
+    - required_pack_ids: [id]
+    - required_capabilities: [id]
+    - required_experience_ids: [id]
+    - required_law_profile_ids: [id]
+    - deterministic_seed_stream: id
+    - objective_ids: [id]
+    - extensions: map
+

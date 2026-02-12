@@ -3059,6 +3059,178 @@ def check_authority_context_required(repo_root):
     return violations
 
 
+def check_mode_as_profiles(repo_root):
+    invariant_id = "INV-MODE-AS-PROFILES"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    law_rel = "data/registries/law_profiles.json"
+    exp_rel = "data/registries/experience_profiles.json"
+    param_rel = "data/registries/parameter_bundles.json"
+    violations = []
+
+    law_path = os.path.join(repo_root, law_rel.replace("/", os.sep))
+    exp_path = os.path.join(repo_root, exp_rel.replace("/", os.sep))
+    param_path = os.path.join(repo_root, param_rel.replace("/", os.sep))
+
+    for rel, path in ((law_rel, law_path), (exp_rel, exp_path), (param_rel, param_path)):
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, rel))
+    if violations:
+        return violations
+
+    law_payload = _load_json_file(law_path)
+    exp_payload = _load_json_file(exp_path)
+    param_payload = _load_json_file(param_path)
+    if not isinstance(law_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, law_rel))
+        return violations
+    if not isinstance(exp_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, exp_rel))
+        return violations
+    if not isinstance(param_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, param_rel))
+        return violations
+
+    laws = ((law_payload.get("record") or {}).get("profiles") or [])
+    experiences = ((exp_payload.get("record") or {}).get("profiles") or [])
+    bundles = ((param_payload.get("record") or {}).get("bundles") or [])
+    if not isinstance(laws, list):
+        violations.append("{}: profiles must be list in {}".format(invariant_id, law_rel))
+        return violations
+    if not isinstance(experiences, list):
+        violations.append("{}: profiles must be list in {}".format(invariant_id, exp_rel))
+        return violations
+    if not isinstance(bundles, list):
+        violations.append("{}: bundles must be list in {}".format(invariant_id, param_rel))
+        return violations
+
+    law_ids = set()
+    bundle_ids = set()
+    for row in laws:
+        if not isinstance(row, dict):
+            continue
+        law_id = str(row.get("law_profile_id", "")).strip()
+        if law_id:
+            law_ids.add(law_id)
+    for row in bundles:
+        if not isinstance(row, dict):
+            continue
+        bundle_id = str(row.get("parameter_bundle_id", "")).strip()
+        if bundle_id:
+            bundle_ids.add(bundle_id)
+
+    for row in experiences:
+        if not isinstance(row, dict):
+            violations.append("{}: non-object experience profile in {}".format(invariant_id, exp_rel))
+            continue
+        exp_id = str(row.get("experience_id", "")).strip()
+        law_id = str(row.get("law_profile_id", "")).strip()
+        default_bundle_id = str(row.get("default_parameter_bundle_id", "")).strip()
+        if not exp_id:
+            violations.append("{}: experience entry missing experience_id in {}".format(invariant_id, exp_rel))
+            continue
+        if not law_id:
+            violations.append("{}: {} missing law_profile_id for {}".format(invariant_id, exp_rel, exp_id))
+        elif law_id not in law_ids:
+            violations.append("{}: {} references unknown law_profile_id '{}' for {}".format(
+                invariant_id, exp_rel, law_id, exp_id
+            ))
+        if not default_bundle_id:
+            violations.append("{}: {} missing default_parameter_bundle_id for {}".format(
+                invariant_id, exp_rel, exp_id
+            ))
+        elif default_bundle_id not in bundle_ids:
+            violations.append("{}: {} references unknown parameter bundle '{}' for {}".format(
+                invariant_id, exp_rel, default_bundle_id, exp_id
+            ))
+    return violations
+
+
+def check_ui_entitlement_gating(repo_root):
+    invariant_id = "INV-UI-ENTITLEMENT-GATING"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    rel = "client/core/client_commands_registry.c"
+    bridge_rel = "client/core/client_command_bridge.c"
+    path = os.path.join(repo_root, rel.replace("/", os.sep))
+    bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
+    violations = []
+    text = read_text(path) or ""
+    bridge_text = read_text(bridge_path) or ""
+    if not text:
+        return ["{}: missing {}".format(invariant_id, rel)]
+    if not bridge_text:
+        return ["{}: missing {}".format(invariant_id, bridge_rel)]
+
+    required_pairs = (
+        ("client.ui.hud.show", "ui.hud.basic"),
+        ("client.ui.overlay.world_layers.show", "ui.overlay.world_layers"),
+        ("client.console.open", "ui.console.command.read_only"),
+        ("client.console.open.readwrite", "ui.console.command.read_write"),
+        ("client.camera.freecam.enable", "camera.mode.observer_truth"),
+    )
+    for command_id, entitlement in required_pairs:
+        if command_id not in text:
+            violations.append("{}: missing command {} in {}".format(invariant_id, command_id, rel))
+        if entitlement not in text:
+            violations.append("{}: missing entitlement {} in {}".format(invariant_id, entitlement, rel))
+
+    for token in ("refuse.entitlement_required", "refuse.profile_not_selected"):
+        if token not in bridge_text:
+            violations.append("{}: missing refusal {} in {}".format(invariant_id, token, bridge_rel))
+    return violations
+
+
+def check_defaults_optional(repo_root):
+    invariant_id = "INV-DEFAULTS-OPTIONAL"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    rel = "data/registries/bundle_profiles.json"
+    path = os.path.join(repo_root, rel.replace("/", os.sep))
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, rel)]
+
+    payload = _load_json_file(path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, rel)]
+
+    bundles = ((payload.get("record") or {}).get("bundles") or [])
+    if not isinstance(bundles, list):
+        return ["{}: bundles must be list in {}".format(invariant_id, rel)]
+
+    violations = []
+    seen_core = False
+    for row in bundles:
+        if not isinstance(row, dict):
+            violations.append("{}: non-object bundle entry in {}".format(invariant_id, rel))
+            continue
+        bundle_id = str(row.get("bundle_id", "")).strip()
+        optional_flag = ((row.get("extensions") or {}).get("optional"))
+        if bundle_id == "bundle.core.runtime":
+            seen_core = True
+            if optional_flag is not False:
+                violations.append("{}: bundle.core.runtime must set extensions.optional=false".format(
+                    invariant_id
+                ))
+        elif bundle_id == "bundle.default_core":
+            if optional_flag is not False:
+                violations.append("{}: bundle.default_core must set extensions.optional=false".format(
+                    invariant_id
+                ))
+        elif bundle_id:
+            if optional_flag is not True:
+                violations.append("{}: non-core bundle {} must set extensions.optional=true".format(
+                    invariant_id, bundle_id
+                ))
+
+    if not seen_core:
+        violations.append("{}: missing bundle.core.runtime in {}".format(invariant_id, rel))
+    return violations
+
+
 def check_renderer_no_truth_access(repo_root):
     invariant_id = "INV-RENDER-NO-TRUTH-ACCESS"
     if is_override_active(repo_root, invariant_id):
@@ -5318,6 +5490,9 @@ def main() -> int:
     violations.extend(check_no_engine_settings(repo_root))
     violations.extend(check_no_hardcoded_mode_branch(repo_root))
     violations.extend(check_authority_context_required(repo_root))
+    violations.extend(check_mode_as_profiles(repo_root))
+    violations.extend(check_ui_entitlement_gating(repo_root))
+    violations.extend(check_defaults_optional(repo_root))
     violations.extend(check_renderer_no_truth_access(repo_root))
     violations.extend(check_capability_matrix_integrity(repo_root))
     violations.extend(check_solver_registry_contracts(repo_root))
