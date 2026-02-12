@@ -23,6 +23,7 @@ typedef struct bridge_profile_binding_t {
 typedef struct bridge_selection_state_t {
     char experience_id[96];
     char law_profile_id[96];
+    char authority_context_id[128];
     char scenario_id[96];
     char mission_id[96];
     char parameter_bundle_id[96];
@@ -88,7 +89,7 @@ static const char* k_parameter_bundle_ids[] = {
 };
 
 static bridge_selection_state g_selection = {
-    "", "", "", "", "", 0, 0, 0, 0, 0, 0
+    "", "", "", "", "", "", 0, 0, 0, 0, 0, 0
 };
 
 static int starts_with(const char* value, const char* prefix)
@@ -228,11 +229,21 @@ static void parse_selection_value(const char* remainder, char* out, size_t out_c
 
 static void apply_profile_binding(const bridge_profile_binding* binding)
 {
+    const char* exp = "";
+    const char* law = "";
     if (!binding) {
         return;
     }
-    set_selection_id(g_selection.experience_id, sizeof(g_selection.experience_id), binding->experience_id);
-    set_selection_id(g_selection.law_profile_id, sizeof(g_selection.law_profile_id), binding->law_profile_id);
+    exp = binding->experience_id ? binding->experience_id : "";
+    law = binding->law_profile_id ? binding->law_profile_id : "";
+    set_selection_id(g_selection.experience_id, sizeof(g_selection.experience_id), exp);
+    set_selection_id(g_selection.law_profile_id, sizeof(g_selection.law_profile_id), law);
+    snprintf(g_selection.authority_context_id,
+             sizeof(g_selection.authority_context_id),
+             "ctx.%s.%s",
+             exp[0] ? exp : "unknown",
+             law[0] ? law : "unknown");
+    g_selection.authority_context_id[sizeof(g_selection.authority_context_id) - 1u] = '\0';
     g_selection.allow_hud = binding->allow_hud;
     g_selection.allow_overlay = binding->allow_overlay;
     g_selection.allow_console_ro = binding->allow_console_ro;
@@ -427,10 +438,11 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
                          default_parameter_bundle_for_experience(binding->experience_id));
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s experience_id=%s law_profile_id=%s watermark=%s",
+                 "result=ok command=%s experience_id=%s law_profile_id=%s authority_context_id=%s watermark=%s",
                  token,
                  g_selection.experience_id,
                  g_selection.law_profile_id,
+                 g_selection.authority_context_id,
                  g_selection.watermark_observer ? "OBSERVER MODE" : "none");
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
@@ -515,10 +527,11 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         set_default_parameter_if_missing();
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s experience_id=%s law_profile_id=%s scenario_id=%s parameter_bundle_id=%s mission_id=%s",
+                 "result=ok command=%s experience_id=%s law_profile_id=%s authority_context_id=%s scenario_id=%s parameter_bundle_id=%s mission_id=%s",
                  token,
                  g_selection.experience_id,
                  g_selection.law_profile_id,
+                 g_selection.authority_context_id,
                  g_selection.scenario_id,
                  g_selection.parameter_bundle_id,
                  g_selection.mission_id[0] ? g_selection.mission_id : "none");
@@ -539,9 +552,10 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         }
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s experience_id=%s watermark=%s",
+                 "result=ok command=%s experience_id=%s authority_context_id=%s watermark=%s",
                  token,
                  g_selection.experience_id,
+                 g_selection.authority_context_id,
                  g_selection.watermark_observer ? "OBSERVER MODE" : "none");
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
@@ -557,9 +571,10 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         int replay_recording = state_machine ? client_state_machine_replay_recording_enabled(state_machine) : 0;
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s stage=%s workspace=session_transition warmup.sim=%s warmup.presentation=%s time_advanced=%d world_ready=%d camera_placed=%d agent_actions_executed=%d map_open=%d stats_visible=%d replay_recording=%d",
+                 "result=ok command=%s stage=%s workspace=session_transition authority_context_id=%s warmup.sim=%s warmup.presentation=%s time_advanced=%d world_ready=%d camera_placed=%d agent_actions_executed=%d map_open=%d stats_visible=%d replay_recording=%d",
                  token,
                  client_state_machine_stage_name(state_machine),
+                 g_selection.authority_context_id[0] ? g_selection.authority_context_id : "ctx.unset",
                  warmup_sim,
                  warmup_present,
                  time_advanced,

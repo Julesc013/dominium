@@ -250,6 +250,13 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS",
+      "severity": "FAIL",
+      "scope_paths": ["schema/authority/authority_context.schema", "client/core/client_command_bridge.c", "server/authority/dom_server_authority.h", "server/authority/dom_server_authority.cpp"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-authority-context-required-for-intents",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": ["data/registries/law_profiles.json", "data/registries/experience_profiles.json", "data/registries/parameter_bundles.json"],

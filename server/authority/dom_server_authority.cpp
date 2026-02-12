@@ -71,6 +71,14 @@ static int dom_authority_action_allowed(u32 profile, u32 action)
     return 0;
 }
 
+static int dom_authority_str_eq(const char* a, const char* b)
+{
+    if (!a || !b) {
+        return 0;
+    }
+    return strcmp(a, b) == 0 ? 1 : 0;
+}
+
 dom_authority_decision dom_server_authority_check(const dom_authority_claims* claims,
                                                   u32 action)
 {
@@ -92,6 +100,40 @@ dom_authority_decision dom_server_authority_check(const dom_authority_claims* cl
     }
     out.refusal_code = DOM_AUTH_REFUSE_PROFILE_INSUFFICIENT;
     return out;
+}
+
+dom_authority_decision dom_server_authority_check_with_context(const dom_authority_claims* claims,
+                                                               const dom_authority_context* ctx,
+                                                               u32 action)
+{
+    dom_authority_decision base;
+    base.allowed = 0;
+    base.refusal_code = DOM_AUTH_REFUSE_ENTITLEMENT_MISSING;
+    if (!ctx) {
+        return base;
+    }
+    if (!ctx->law_profile_id || !ctx->law_profile_id[0]) {
+        base.refusal_code = DOM_AUTH_REFUSE_PROFILE_MISSING;
+        return base;
+    }
+
+    base = dom_server_authority_check(claims, action);
+    if (!base.allowed) {
+        return base;
+    }
+
+    if (ctx->server_authoritative &&
+        dom_authority_str_eq(ctx->authority_origin, "client") &&
+        action != DOM_AUTH_ACTION_VIEW) {
+        if (!claims ||
+            (claims->profile != DOM_AUTH_PROFILE_FULL_PLAYER &&
+             claims->profile != DOM_AUTH_PROFILE_ADMIN)) {
+            base.allowed = 0;
+            base.refusal_code = DOM_AUTH_REFUSE_PROFILE_INSUFFICIENT;
+            return base;
+        }
+    }
+    return base;
 }
 
 dom_authority_validation_result dom_server_authority_validate_token(const char* token,

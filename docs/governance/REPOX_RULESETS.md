@@ -119,6 +119,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-GLOSSARY-TERM-CANON`
 - `WARN-GLOSSARY-TERM-CANON`
 - `INV-UNIVERSE_IDENTITY_IMMUTABLE`
+- `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-MODE-AS-PROFILES`
@@ -302,6 +303,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when universe identity/state schemas are missing required split-contract fields.
 - Fails when runtime sources introduce explicit universe identity mutation tokens.
 - Keeps UniverseIdentity immutable after creation while UniverseState carries evolution.
+
+### INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS
+
+- Fails when authority-context schema is missing required enforcement fields.
+- Fails when client intent/session command bridge does not carry authority-context markers.
+- Fails when server-side authority checks are not context-aware for authoritative sessions.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 
