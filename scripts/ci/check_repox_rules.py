@@ -3221,6 +3221,53 @@ def check_universe_identity_immutability(repo_root):
     return violations
 
 
+def check_authority_context_required_for_intents(repo_root):
+    invariant_id = "INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_rel = "schema/authority/authority_context.schema"
+    client_rel = "client/core/client_command_bridge.c"
+    server_h_rel = "server/authority/dom_server_authority.h"
+    server_cpp_rel = "server/authority/dom_server_authority.cpp"
+    schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
+    client_path = os.path.join(repo_root, client_rel.replace("/", os.sep))
+    server_h_path = os.path.join(repo_root, server_h_rel.replace("/", os.sep))
+    server_cpp_path = os.path.join(repo_root, server_cpp_rel.replace("/", os.sep))
+    violations = []
+
+    for rel, path in ((schema_rel, schema_path),
+                      (client_rel, client_path),
+                      (server_h_rel, server_h_path),
+                      (server_cpp_rel, server_cpp_path)):
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, rel))
+    if violations:
+        return violations
+
+    schema_text = read_text(schema_path) or ""
+    for marker in ("authority_origin", "experience_id", "law_profile_id", "entitlements",
+                   "capability_set_hash", "epistemic_scope_id", "server_authoritative"):
+        if marker not in schema_text:
+            violations.append("{}: {} missing {}".format(invariant_id, schema_rel, marker))
+
+    client_text = read_text(client_path) or ""
+    for marker in ("authority_context_id", "ctx.unset"):
+        if marker not in client_text:
+            violations.append("{}: {} missing marker {}".format(invariant_id, client_rel, marker))
+
+    server_h_text = read_text(server_h_path) or ""
+    server_cpp_text = read_text(server_cpp_path) or ""
+    for marker in ("dom_authority_context", "dom_server_authority_check_with_context"):
+        if marker not in server_h_text and marker not in server_cpp_text:
+            violations.append("{}: server authority missing marker {}".format(invariant_id, marker))
+    if "server_authoritative" not in server_cpp_text:
+        violations.append("{}: {} missing server_authoritative enforcement marker".format(
+            invariant_id, server_cpp_rel
+        ))
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -5652,6 +5699,7 @@ def main() -> int:
     violations.extend(check_no_engine_settings(repo_root))
     violations.extend(check_no_hardcoded_mode_branch(repo_root))
     violations.extend(check_authority_context_required(repo_root))
+    violations.extend(check_authority_context_required_for_intents(repo_root))
     violations.extend(check_glossary_term_canon(repo_root))
     violations.extend(check_universe_identity_immutability(repo_root))
     violations.extend(check_mode_as_profiles(repo_root))

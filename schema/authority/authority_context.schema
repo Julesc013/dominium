@@ -1,6 +1,6 @@
 SCHEMA: authority/authority_context.schema
 schema_id: dominium.schema.authority.context
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -15,8 +15,14 @@ REQUIRED SHAPE:
 record authority_context
   required:
     - authority_context_id: id
-    - authority_origin: enum(local|server|replay|tool)
+    - authority_origin: enum(client|server|tool|replay)
     - experience_id: id
     - law_profile_id: id
     - entitlements: [id]
+    - capability_set_hash: tag
+    - epistemic_scope_id: id
+    - privilege_watermark_policy: enum(none|observer|dev)
+    - audit_required: bool
+    - server_authoritative: bool
+    - refusal_policy_id: id
     - extensions: map
