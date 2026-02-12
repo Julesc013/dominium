@@ -426,14 +426,21 @@ static int client_parse_log_level(const char* text, int* out_value)
 
 typedef struct client_ui_settings {
     char renderer[16];
+    char mode_preference[8];
     int ui_scale_percent;
+    int font_size_points;
     int palette;
     int log_level;
     int debug_ui;
+    int audio_volume_percent;
+    int audio_mute;
     char ui_density[24];
     char verbosity[24];
     char keybind_profile_id[64];
     char accessibility_preset_id[64];
+    int replay_recording_enabled;
+    int network_timeout_ms;
+    char network_sort_mode[16];
     int reduced_motion;
     int keyboard_only;
     int screen_reader;
@@ -495,6 +502,214 @@ static const char* client_log_level_name(int level)
     return "info";
 }
 
+static int client_parse_bool_text(const char* text, int* out_value)
+{
+    if (!text || !out_value) {
+        return 0;
+    }
+    if (strcmp(text, "1") == 0 || strcmp(text, "true") == 0 ||
+        strcmp(text, "on") == 0 || strcmp(text, "yes") == 0 ||
+        strcmp(text, "enabled") == 0) {
+        *out_value = 1;
+        return 1;
+    }
+    if (strcmp(text, "0") == 0 || strcmp(text, "false") == 0 ||
+        strcmp(text, "off") == 0 || strcmp(text, "no") == 0 ||
+        strcmp(text, "disabled") == 0) {
+        *out_value = 0;
+        return 1;
+    }
+    return 0;
+}
+
+static int client_settings_apply_kv(client_ui_settings* settings,
+                                    const char* key,
+                                    const char* value,
+                                    const char** out_refusal_code)
+{
+    /* @repox:infrastructure_only Command-surface settings updates; simulation semantics unchanged. */
+    uint32_t n = 0u;
+    int parsed = 0;
+    size_t len = 0u;
+    if (out_refusal_code) {
+        *out_refusal_code = "refuse.unsupported_setting";
+    }
+    if (!settings || !key || !key[0] || !value || !value[0]) {
+        if (out_refusal_code) {
+            *out_refusal_code = "refuse.invalid_value";
+        }
+        return 0;
+    }
+    if (strcmp(key, "ui.mode_preference") == 0) {
+        if (strcmp(value, "cli") != 0 && strcmp(value, "tui") != 0 && strcmp(value, "gui") != 0) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        strncpy(settings->mode_preference, value, sizeof(settings->mode_preference) - 1u);
+        settings->mode_preference[sizeof(settings->mode_preference) - 1u] = '\0';
+        return 1;
+    }
+    if (strcmp(key, "ui.scale") == 0) {
+        if (!client_parse_u32(value, &n) || n < 50u || n > 300u) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->ui_scale_percent = (int)n;
+        return 1;
+    }
+    if (strcmp(key, "ui.font_size") == 0) {
+        if (!client_parse_u32(value, &n) || n < 8u || n > 72u) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->font_size_points = (int)n;
+        return 1;
+    }
+    if (strcmp(key, "ui.contrast") == 0) {
+        if (strcmp(value, "default") == 0) {
+            settings->palette = 0;
+            return 1;
+        }
+        if (strcmp(value, "high") == 0 || strcmp(value, "high-contrast") == 0) {
+            settings->palette = 1;
+            return 1;
+        }
+        if (out_refusal_code) {
+            *out_refusal_code = "refuse.invalid_value";
+        }
+        return 0;
+    }
+    if (strcmp(key, "input.keybindings") == 0) {
+        strncpy(settings->keybind_profile_id, value, sizeof(settings->keybind_profile_id) - 1u);
+        settings->keybind_profile_id[sizeof(settings->keybind_profile_id) - 1u] = '\0';
+        return 1;
+    }
+    if (strcmp(key, "audio.volume") == 0) {
+        if (!client_parse_u32(value, &n) || n > 100u) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->audio_volume_percent = (int)n;
+        return 1;
+    }
+    if (strcmp(key, "audio.mute") == 0) {
+        if (!client_parse_bool_text(value, &parsed)) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->audio_mute = parsed ? 1 : 0;
+        return 1;
+    }
+    if (strcmp(key, "renderer.selection") == 0) {
+        len = strlen(value);
+        if (len >= sizeof(settings->renderer)) {
+            len = sizeof(settings->renderer) - 1u;
+        }
+        memcpy(settings->renderer, value, len);
+        settings->renderer[len] = '\0';
+        return 1;
+    }
+    if (strcmp(key, "accessibility.reduced_motion") == 0) {
+        if (!client_parse_bool_text(value, &parsed)) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->reduced_motion = parsed ? 1 : 0;
+        return 1;
+    }
+    if (strcmp(key, "accessibility.keyboard_only") == 0) {
+        if (!client_parse_bool_text(value, &parsed)) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->keyboard_only = parsed ? 1 : 0;
+        return 1;
+    }
+    if (strcmp(key, "accessibility.screen_reader") == 0) {
+        if (!client_parse_bool_text(value, &parsed)) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->screen_reader = parsed ? 1 : 0;
+        return 1;
+    }
+    if (strcmp(key, "replay.recording_enabled") == 0) {
+        if (!client_parse_bool_text(value, &parsed)) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->replay_recording_enabled = parsed ? 1 : 0;
+        return 1;
+    }
+    if (strcmp(key, "debug_overlay.visibility") == 0) {
+        if (!client_parse_bool_text(value, &parsed)) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->debug_ui = parsed ? 1 : 0;
+        return 1;
+    }
+    if (strcmp(key, "network.preference.timeout_ms") == 0) {
+        if (!client_parse_u32(value, &n) || n < 100u || n > 60000u) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->network_timeout_ms = (int)n;
+        return 1;
+    }
+    if (strcmp(key, "network.preference.sort_mode") == 0) {
+        if (strcmp(value, "ping") != 0 && strcmp(value, "name") != 0 && strcmp(value, "players") != 0) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        strncpy(settings->network_sort_mode, value, sizeof(settings->network_sort_mode) - 1u);
+        settings->network_sort_mode[sizeof(settings->network_sort_mode) - 1u] = '\0';
+        return 1;
+    }
+
+    if (strcmp(key, "controller.profiles") == 0 ||
+        strcmp(key, "accessibility.advanced") == 0 ||
+        strcmp(key, "server_browser.advanced_filters") == 0) {
+        if (out_refusal_code) {
+            *out_refusal_code = "refuse.not_implemented";
+        }
+        return 0;
+    }
+    if (strcmp(key, "theming") == 0 ||
+        strcmp(key, "animated_transitions") == 0 ||
+        strcmp(key, "visual_replay_timeline") == 0) {
+        if (out_refusal_code) {
+            *out_refusal_code = "refuse.deferred";
+        }
+        return 0;
+    }
+    return 0;
+}
+
 static void client_ui_settings_init(client_ui_settings* settings)
 {
     if (!settings) {
@@ -502,10 +717,15 @@ static void client_ui_settings_init(client_ui_settings* settings)
     }
     memset(settings, 0, sizeof(*settings));
     settings->renderer[0] = '\0';
+    strncpy(settings->mode_preference, "cli", sizeof(settings->mode_preference) - 1u);
+    settings->mode_preference[sizeof(settings->mode_preference) - 1u] = '\0';
     settings->ui_scale_percent = 100;
+    settings->font_size_points = 14;
     settings->palette = 0;
     settings->log_level = 0;
     settings->debug_ui = 0;
+    settings->audio_volume_percent = 100;
+    settings->audio_mute = 0;
     strncpy(settings->ui_density, "standard", sizeof(settings->ui_density) - 1u);
     settings->ui_density[sizeof(settings->ui_density) - 1u] = '\0';
     strncpy(settings->verbosity, "normal", sizeof(settings->verbosity) - 1u);
@@ -515,6 +735,10 @@ static void client_ui_settings_init(client_ui_settings* settings)
     strncpy(settings->accessibility_preset_id, "default",
             sizeof(settings->accessibility_preset_id) - 1u);
     settings->accessibility_preset_id[sizeof(settings->accessibility_preset_id) - 1u] = '\0';
+    settings->replay_recording_enabled = 1;
+    settings->network_timeout_ms = 5000;
+    strncpy(settings->network_sort_mode, "ping", sizeof(settings->network_sort_mode) - 1u);
+    settings->network_sort_mode[sizeof(settings->network_sort_mode) - 1u] = '\0';
     settings->reduced_motion = 0;
     settings->keyboard_only = 0;
     settings->screen_reader = 0;
@@ -548,7 +772,18 @@ static void client_ui_settings_format_lines(const client_ui_settings* settings,
     }
     if ((size_t)count < line_cap) {
         snprintf(line0 + (line_stride * count), line_stride,
+                 "ui.mode_preference=%s",
+                 settings->mode_preference[0] ? settings->mode_preference : "cli");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
                  "ui_scale=%d%%", settings->ui_scale_percent);
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "ui.font_size=%d", settings->font_size_points);
         count += 1;
     }
     if ((size_t)count < line_cap) {
@@ -579,6 +814,16 @@ static void client_ui_settings_format_lines(const client_ui_settings* settings,
     if ((size_t)count < line_cap) {
         snprintf(line0 + (line_stride * count), line_stride,
                  "input_mode=%s", settings->keyboard_only ? "keyboard_only" : "standard");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "audio.volume=%d", settings->audio_volume_percent);
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "audio.mute=%s", settings->audio_mute ? "true" : "false");
         count += 1;
     }
     if ((size_t)count < line_cap) {
@@ -623,6 +868,38 @@ static void client_ui_settings_format_lines(const client_ui_settings* settings,
     if ((size_t)count < line_cap) {
         snprintf(line0 + (line_stride * count), line_stride,
                  "debug_ui=%s", settings->debug_ui ? "enabled" : "disabled");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "replay.recording_enabled=%s",
+                 settings->replay_recording_enabled ? "true" : "false");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "network.preference.timeout_ms=%d", settings->network_timeout_ms);
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "network.preference.sort_mode=%s",
+                 settings->network_sort_mode[0] ? settings->network_sort_mode : "ping");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "soon.controller.profiles=refuse.not_implemented");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "soon.accessibility.advanced=refuse.not_implemented");
+        count += 1;
+    }
+    if ((size_t)count < line_cap) {
+        snprintf(line0 + (line_stride * count), line_stride,
+                 "soon.server_browser.advanced_filters=refuse.not_implemented");
         count += 1;
     }
     if (out_count) {
@@ -820,7 +1097,7 @@ cleanup:
 }
 
 #define CLIENT_UI_MENU_COUNT 6
-#define CLIENT_UI_SETTINGS_LINES 20
+#define CLIENT_UI_SETTINGS_LINES 32
 #define CLIENT_UI_STATUS_MAX 180
 #define CLIENT_UI_LABEL_MAX 128
 #define CLIENT_UI_RENDERER_MAX 8
@@ -3096,6 +3373,54 @@ static int client_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
+    if (strcmp(token, "settings-set") == 0) {
+        const char* kv = strtok(NULL, " \t");
+        const char* refusal = 0;
+        const char* eq = kv ? strchr(kv, '=') : 0;
+        char key[96];
+        char value[160];
+        size_t key_len = 0u;
+        if (!eq || eq == kv || !eq[1]) {
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "refusal=refuse.invalid_value command=client.settings.set");
+            }
+            if (emit_text) {
+                printf("refusal=refuse.invalid_value command=client.settings.set\n");
+            }
+            return D_APP_EXIT_USAGE;
+        }
+        key_len = (size_t)(eq - kv);
+        if (key_len >= sizeof(key)) {
+            key_len = sizeof(key) - 1u;
+        }
+        memcpy(key, kv, key_len);
+        key[key_len] = '\0';
+        strncpy(value, eq + 1, sizeof(value) - 1u);
+        value[sizeof(value) - 1u] = '\0';
+        if (!client_settings_apply_kv(settings, key, value, &refusal)) {
+            if (status && status_cap > 0u) {
+                snprintf(status, status_cap, "refusal=%s command=client.settings.set key=%s",
+                         refusal ? refusal : "refuse.unsupported_setting",
+                         key);
+            }
+            if (emit_text) {
+                printf("refusal=%s command=client.settings.set key=%s\n",
+                       refusal ? refusal : "refuse.unsupported_setting",
+                       key);
+            }
+            return D_APP_EXIT_UNAVAILABLE;
+        }
+        if (log) {
+            dom_app_ui_event_log_emit(log, "client.settings", "result=set");
+        }
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "client_settings=set key=%s value=%s", key, value);
+        }
+        if (emit_text) {
+            printf("client_settings=set key=%s value=%s\n", key, value);
+        }
+        return D_APP_EXIT_OK;
+    }
     if (strcmp(token, "settings-reset") == 0) {
         client_ui_settings_init(settings);
         if (log) {
@@ -4844,6 +5169,7 @@ int client_main(int argc, char** argv)
     int want_deterministic = 0;
     int want_interactive = 0;
     const char* cmd = 0;
+    int cmd_index = -1;
     dom_control_caps control_caps;
     int control_loaded = 0;
     int timing_mode_set = 0;
@@ -5256,12 +5582,9 @@ int client_main(int argc, char** argv)
             continue;
         }
         if (argv[i][0] != '-') {
-            if (!cmd) {
-                cmd = argv[i];
-                continue;
-            }
-            fprintf(stderr, "client: unexpected argument '%s'\n", argv[i]);
-            return D_APP_EXIT_USAGE;
+            cmd = argv[i];
+            cmd_index = i;
+            break;
         }
     }
     if (want_help) {
@@ -5518,8 +5841,28 @@ int client_main(int argc, char** argv)
             ui_log_open = 1;
         }
         {
+            char cmd_line[512];
             char status[160];
-            int res = client_ui_execute_command(cmd, &ui_settings, &ui_log, 0,
+            size_t cmd_len = 0u;
+            int argi = 0;
+            int res = 0;
+            cmd_line[0] = '\0';
+            if (cmd && cmd[0]) {
+                strncpy(cmd_line, cmd, sizeof(cmd_line) - 1u);
+                cmd_line[sizeof(cmd_line) - 1u] = '\0';
+            }
+            cmd_len = strlen(cmd_line);
+            for (argi = cmd_index + 1; argi < argc && cmd_len + 2u < sizeof(cmd_line); ++argi) {
+                size_t take = strlen(argv[argi]);
+                if (cmd_len + take + 2u >= sizeof(cmd_line)) {
+                    take = sizeof(cmd_line) - cmd_len - 2u;
+                }
+                cmd_line[cmd_len++] = ' ';
+                memcpy(cmd_line + cmd_len, argv[argi], take);
+                cmd_len += take;
+                cmd_line[cmd_len] = '\0';
+            }
+            res = client_ui_execute_command(cmd_line, &ui_settings, &ui_log, 0,
                                                 status, sizeof(status), 1);
             if (ui_log_open) {
                 dom_app_ui_event_log_close(&ui_log);

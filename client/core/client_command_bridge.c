@@ -10,6 +10,7 @@ typedef struct bridge_alias_t {
 } bridge_alias;
 
 static const bridge_alias k_aliases[] = {
+    /* @repox:infrastructure_only Canonical command alias routing only. */
     { "client.menu.select.singleplayer", "new-world" },
     { "client.menu.select.options", "settings" },
     { "client.menu.quit", "exit" },
@@ -20,7 +21,7 @@ static const bridge_alias k_aliases[] = {
     { "client.options.get", "settings" },
     { "client.options.set", "settings" },
     { "client.settings.get", "settings" },
-    { "client.settings.set", "settings" },
+    { "client.settings.set", "settings-set" },
     { "client.settings.reset", "settings-reset" },
     { "client.options.renderer.select", "renderer-next" },
     { "client.options.accessibility.set", "accessibility-next" },

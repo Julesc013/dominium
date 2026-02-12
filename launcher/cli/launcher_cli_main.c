@@ -1136,8 +1136,29 @@ int launcher_main(int argc, char** argv)
         ui_log_open = 1;
     }
     {
+        char cmd_line[512];
         char status[160];
-        int res = launcher_ui_execute_command(cmd, &ui_settings, &ui_log,
+        size_t cmd_len = 0u;
+        int argi = 0;
+        int res = 0;
+        /* @repox:infrastructure_only Preserve command arguments for canonical command-dispatch parity. */
+        cmd_line[0] = '\0';
+        if (cmd && cmd[0]) {
+            strncpy(cmd_line, cmd, sizeof(cmd_line) - 1u);
+            cmd_line[sizeof(cmd_line) - 1u] = '\0';
+        }
+        cmd_len = strlen(cmd_line);
+        for (argi = cmd_index + 1; argi < argc && cmd_len + 2u < sizeof(cmd_line); ++argi) {
+            size_t take = strlen(argv[argi]);
+            if (cmd_len + take + 2u >= sizeof(cmd_line)) {
+                take = sizeof(cmd_line) - cmd_len - 2u;
+            }
+            cmd_line[cmd_len++] = ' ';
+            memcpy(cmd_line + cmd_len, argv[argi], take);
+            cmd_len += take;
+            cmd_line[cmd_len] = '\0';
+        }
+        res = launcher_ui_execute_command(cmd_line, &ui_settings, &ui_log,
                                               status, sizeof(status), 1);
         if (ui_log_open) {
             dom_app_ui_event_log_close(&ui_log);

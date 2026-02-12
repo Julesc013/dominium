@@ -208,6 +208,15 @@ def main():
     )
 
     ok = ok and run_cmd(
+        [args.client, "client.settings.set", "ui.scale=125"],
+        expect_contains=["client_settings=set key=ui.scale value=125"],
+    )
+    ok = ok and run_cmd(
+        [args.client, "client.settings.set", "controller.profiles=default"],
+        expect_nonzero=True,
+        expect_contains=["refusal=refuse.not_implemented"],
+    )
+    ok = ok and run_cmd(
         [args.launcher, "capabilities"],
         expect_contains=[
             "platform_backend=",
@@ -222,8 +231,8 @@ def main():
         expect_contains=["launcher_settings=ok"],
     )
     ok = ok and run_cmd(
-        [args.launcher, "launcher.settings.set"],
-        expect_contains=["launcher_settings=set"],
+        [args.launcher, "launcher.settings.set", "log_verbosity=warn"],
+        expect_contains=["launcher_settings=set", "log_verbosity=warn"],
     )
     ok = ok and run_cmd(
         [args.setup, "setup.settings.get"],

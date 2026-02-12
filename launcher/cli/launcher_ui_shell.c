@@ -106,6 +106,8 @@ static const launcher_ui_menu_item g_launcher_menu_items[LAUNCHER_UI_MENU_COUNT]
     { "ui.launcher.menu.exit", "Exit" }
 };
 
+static void launcher_settings_set_renderer(launcher_ui_settings* settings, const char* name);
+
 static const char* launcher_ui_text(const launcher_ui_state* state,
                                     const char* id,
                                     const char* fallback)
@@ -137,6 +139,144 @@ static const char* launcher_log_level_name(int level)
     default: break;
     }
     return "info";
+}
+
+static int launcher_parse_bool_text(const char* text, int* out_value)
+{
+    if (!text || !out_value) {
+        return 0;
+    }
+    if (strcmp(text, "1") == 0 || strcmp(text, "true") == 0 ||
+        strcmp(text, "on") == 0 || strcmp(text, "yes") == 0 ||
+        strcmp(text, "enabled") == 0) {
+        *out_value = 1;
+        return 1;
+    }
+    if (strcmp(text, "0") == 0 || strcmp(text, "false") == 0 ||
+        strcmp(text, "off") == 0 || strcmp(text, "no") == 0 ||
+        strcmp(text, "disabled") == 0) {
+        *out_value = 0;
+        return 1;
+    }
+    return 0;
+}
+
+static int launcher_parse_log_level_text(const char* text, int* out_level)
+{
+    if (!text || !out_level) {
+        return 0;
+    }
+    if (strcmp(text, "info") == 0) {
+        *out_level = 0;
+        return 1;
+    }
+    if (strcmp(text, "warn") == 0) {
+        *out_level = 1;
+        return 1;
+    }
+    if (strcmp(text, "error") == 0) {
+        *out_level = 2;
+        return 1;
+    }
+    return 0;
+}
+
+static int launcher_parse_u32_text(const char* text, uint32_t* out_value)
+{
+    char* end = 0;
+    unsigned long v = 0ul;
+    if (!text || !text[0] || !out_value) {
+        return 0;
+    }
+    v = strtoul(text, &end, 10);
+    if (!end || *end != '\0' || v > 0xfffffffful) {
+        return 0;
+    }
+    *out_value = (uint32_t)v;
+    return 1;
+}
+
+static int launcher_settings_apply_kv(launcher_ui_settings* settings,
+                                      const char* key,
+                                      const char* value,
+                                      const char** out_refusal_code)
+{
+    /* @repox:infrastructure_only Launcher settings command surface; no simulation semantics change. */
+    uint32_t n = 0u;
+    int parsed = 0;
+    int level = 0;
+    if (out_refusal_code) {
+        *out_refusal_code = "refuse.unsupported_setting";
+    }
+    if (!settings || !key || !key[0] || !value || !value[0]) {
+        if (out_refusal_code) {
+            *out_refusal_code = "refuse.invalid_value";
+        }
+        return 0;
+    }
+    if (strcmp(key, "renderer.selection") == 0) {
+        launcher_settings_set_renderer(settings, value);
+        return 1;
+    }
+    if (strcmp(key, "ui.scale") == 0) {
+        if (!launcher_parse_u32_text(value, &n) || n < 50u || n > 300u) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->ui_scale_percent = (int)n;
+        return 1;
+    }
+    if (strcmp(key, "ui.contrast") == 0) {
+        if (strcmp(value, "default") == 0) {
+            settings->palette = 0;
+            return 1;
+        }
+        if (strcmp(value, "high") == 0 || strcmp(value, "high-contrast") == 0) {
+            settings->palette = 1;
+            return 1;
+        }
+        if (out_refusal_code) {
+            *out_refusal_code = "refuse.invalid_value";
+        }
+        return 0;
+    }
+    if (strcmp(key, "log_verbosity") == 0) {
+        if (!launcher_parse_log_level_text(value, &level)) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->log_level = level;
+        return 1;
+    }
+    if (strcmp(key, "debug_overlay.visibility") == 0) {
+        if (!launcher_parse_bool_text(value, &parsed)) {
+            if (out_refusal_code) {
+                *out_refusal_code = "refuse.invalid_value";
+            }
+            return 0;
+        }
+        settings->debug_ui = parsed ? 1 : 0;
+        return 1;
+    }
+    if (strcmp(key, "visual_dependency_graph") == 0 ||
+        strcmp(key, "instance_cloning_ui") == 0) {
+        if (out_refusal_code) {
+            *out_refusal_code = "refuse.not_implemented";
+        }
+        return 0;
+    }
+    if (strcmp(key, "cloud_sync") == 0 ||
+        strcmp(key, "visual_diff_dashboards") == 0) {
+        if (out_refusal_code) {
+            *out_refusal_code = "refuse.deferred";
+        }
+        return 0;
+    }
+    return 0;
 }
 
 void launcher_ui_settings_init(launcher_ui_settings* settings)
@@ -245,13 +385,14 @@ void launcher_ui_settings_format_lines(const launcher_ui_settings* settings,
 }
 
 int launcher_ui_execute_command(const char* cmd,
-                                const launcher_ui_settings* settings,
+                                launcher_ui_settings* settings,
                                 dom_app_ui_event_log* log,
                                 char* status,
                                 size_t status_cap,
                                 int emit_text)
 {
-    (void)settings;
+    char cmd_copy[320];
+    char* token = 0;
     if (status && status_cap > 0u) {
         status[0] = '\0';
     }
@@ -261,7 +402,16 @@ int launcher_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_USAGE;
     }
-    if (strcmp(cmd, "new-world") == 0 || strcmp(cmd, "start") == 0) {
+    strncpy(cmd_copy, cmd, sizeof(cmd_copy) - 1u);
+    cmd_copy[sizeof(cmd_copy) - 1u] = '\0';
+    token = strtok(cmd_copy, " \t");
+    if (!token || !token[0]) {
+        if (status && status_cap > 0u) {
+            snprintf(status, status_cap, "launcher: missing command");
+        }
+        return D_APP_EXIT_USAGE;
+    }
+    if (strcmp(token, "new-world") == 0 || strcmp(token, "start") == 0) {
         dom_app_ui_event_log_emit(log, "launcher.new_world", "result=ok");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "launcher_new_world=ok");
@@ -271,7 +421,7 @@ int launcher_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
-    if (strcmp(cmd, "load-world") == 0 || strcmp(cmd, "load-save") == 0) {
+    if (strcmp(token, "load-world") == 0 || strcmp(token, "load-save") == 0) {
         dom_app_ui_event_log_emit(log, "launcher.load_world", "result=unavailable");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "launcher_load_world=unavailable");
@@ -281,7 +431,7 @@ int launcher_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
-    if (strcmp(cmd, "inspect-replay") == 0) {
+    if (strcmp(token, "inspect-replay") == 0) {
         dom_app_ui_event_log_emit(log, "launcher.inspect_replay", "result=unavailable");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "launcher_inspect_replay=unavailable");
@@ -291,7 +441,7 @@ int launcher_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_UNAVAILABLE;
     }
-    if (strcmp(cmd, "tools") == 0) {
+    if (strcmp(token, "tools") == 0) {
         dom_app_ui_event_log_emit(log, "launcher.tools", "result=ok");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "launcher_tools=ok");
@@ -301,15 +451,53 @@ int launcher_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
-    if (strcmp(cmd, "settings") == 0 ||
-        strcmp(cmd, "launcher.settings.get") == 0 ||
-        strcmp(cmd, "launcher.settings.set") == 0) {
+    if (strcmp(token, "settings") == 0 ||
+        strcmp(token, "launcher.settings.get") == 0 ||
+        strcmp(token, "launcher.settings.set") == 0) {
         char lines[LAUNCHER_UI_SETTINGS_LINES][LAUNCHER_UI_LABEL_MAX];
         char diag[LAUNCHER_UI_DIAG_LINES][LAUNCHER_UI_LABEL_MAX];
+        const char* arg = strtok(NULL, " \t");
+        const char* refusal = 0;
         int count = 0;
         int diag_count = 0;
         int i;
-        int is_set = (strcmp(cmd, "launcher.settings.set") == 0);
+        int is_set = (strcmp(token, "launcher.settings.set") == 0);
+        if (is_set && arg && arg[0]) {
+            const char* eq = strchr(arg, '=');
+            char key[96];
+            char value[160];
+            size_t key_len = 0u;
+            if (!eq || eq == arg || !eq[1]) {
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "refusal=refuse.invalid_value command=launcher.settings.set");
+                }
+                if (emit_text) {
+                    printf("refusal=refuse.invalid_value command=launcher.settings.set\n");
+                }
+                return D_APP_EXIT_USAGE;
+            }
+            key_len = (size_t)(eq - arg);
+            if (key_len >= sizeof(key)) {
+                key_len = sizeof(key) - 1u;
+            }
+            memcpy(key, arg, key_len);
+            key[key_len] = '\0';
+            strncpy(value, eq + 1, sizeof(value) - 1u);
+            value[sizeof(value) - 1u] = '\0';
+            if (!launcher_settings_apply_kv(settings, key, value, &refusal)) {
+                if (status && status_cap > 0u) {
+                    snprintf(status, status_cap, "refusal=%s command=launcher.settings.set key=%s",
+                             refusal ? refusal : "refuse.unsupported_setting",
+                             key);
+                }
+                if (emit_text) {
+                    printf("refusal=%s command=launcher.settings.set key=%s\n",
+                           refusal ? refusal : "refuse.unsupported_setting",
+                           key);
+                }
+                return D_APP_EXIT_UNAVAILABLE;
+            }
+        }
         launcher_ui_settings_format_lines(settings, (char*)lines,
                                           LAUNCHER_UI_SETTINGS_LINES,
                                           LAUNCHER_UI_LABEL_MAX, &count);
@@ -329,7 +517,7 @@ int launcher_ui_execute_command(const char* cmd,
         }
         return D_APP_EXIT_OK;
     }
-    if (strcmp(cmd, "exit") == 0) {
+    if (strcmp(token, "exit") == 0) {
         dom_app_ui_event_log_emit(log, "launcher.exit", "result=ok");
         if (status && status_cap > 0u) {
             snprintf(status, status_cap, "launcher_exit=ok");
