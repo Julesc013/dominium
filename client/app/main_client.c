@@ -56,6 +56,7 @@ int mkdir(const char* path, int mode);
 
 #define CLIENT_UI_DEFAULT_SCENARIO_PATH "data/scenarios/default.scenario"
 #define CLIENT_UI_DEFAULT_VARIANT_PATH "data/variants/default.variant"
+#define CLIENT_UI_COMMAND_CAP 4096u
 
 static void client_print_platform_caps(void);
 static void client_ui_copy_string(char* out, size_t cap, const char* value);
@@ -3235,8 +3236,8 @@ static int client_ui_execute_command(const char* cmd,
     static int models_ready = 0;
     dom_client_shell* shell = 0;
     client_state_machine state_machine;
-    char cmd_buf[512];
-    char bridged_cmd[512];
+    char cmd_buf[CLIENT_UI_COMMAND_CAP];
+    char bridged_cmd[CLIENT_UI_COMMAND_CAP];
     char bridge_message[CLIENT_UI_STATUS_MAX];
     char capabilities_storage[512];
     const char* capability_ids[32];
@@ -5841,7 +5842,7 @@ int client_main(int argc, char** argv)
             ui_log_open = 1;
         }
         {
-            char cmd_line[512];
+            char cmd_line[CLIENT_UI_COMMAND_CAP];
             char status[160];
             size_t cmd_len = 0u;
             int argi = 0;
