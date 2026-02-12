@@ -1,0 +1,23 @@
+SCHEMA: session/session_spec.schema
+schema_id: dominium.schema.session.session_spec
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical session selection inputs for client/launcher orchestration.
+- Keep session composition data-first and explicit.
+
+NON-SEMANTICS:
+- SessionSpec does not alter simulation rules.
+- SessionSpec describes references and authority context only.
+
+REQUIRED SHAPE:
+record session_spec
+  required:
+    - session_spec_id: id
+    - universe_id: id
+    - save_id: id
+    - experience_id: id
+    - parameter_bundle_id: id
+    - authority_context: id
+    - extensions: map

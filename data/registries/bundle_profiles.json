@@ -7,6 +7,14 @@
     "schema_version_ref": "dominium.schema.bundle_profiles@1.0.0",
     "bundles": [
       {
+        "bundle_id": "bundle.core.runtime",
+        "optional": false,
+        "pack_ids": [
+          "pack.core.runtime"
+        ],
+        "extensions": {}
+      },
+      {
         "bundle_id": "bundle.default_core",
         "optional": false,
         "pack_ids": [
@@ -26,4 +34,3 @@
     "extensions": {}
   }
 }
-

@@ -1,0 +1,31 @@
+{
+  "schema_id": "dominium.schema.meta.experience_profile",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.experience_profiles",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.meta.experience_profile@1.0.0",
+    "profiles": [
+      {
+        "experience_id": "exp.observer.default",
+        "law_profile_id": "law.observer",
+        "default_mode": "gui",
+        "visible_lenses": [
+          "lens.diegetic.body_senses",
+          "lens.nondiegetic.console"
+        ],
+        "extensions": {}
+      },
+      {
+        "experience_id": "exp.survival.softcore",
+        "law_profile_id": "survival.softcore",
+        "default_mode": "gui",
+        "visible_lenses": [
+          "lens.diegetic.body_senses"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
