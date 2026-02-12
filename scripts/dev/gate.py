@@ -3,7 +3,6 @@
 
 import argparse
 import glob
-import hashlib
 import json
 import os
 import shlex
@@ -20,6 +19,14 @@ from env_tools_lib import (
     detect_repo_root,
     resolve_tool,
     select_verify_build_dir,
+)
+from gate_policy_eval import (
+    FAST_MODE,
+    FULL_MODE,
+    STRICT_MODE,
+    compute_workspace_state_hash,
+    evaluate_gate_mode,
+    load_gate_policy_version,
 )
 
 
@@ -48,7 +55,7 @@ MECHANICAL_BLOCKER_TYPES = (
 # - verify defaults to FAST lane (precheck + task dependency)
 # - add explicit FULL lane for exhaustive verification
 # - short-circuit repeated invocations on identical repo state
-GATE_STATE_CACHE_REL = os.path.join(VERIFY_BUILD_DIR_REL, "gate_state_cache.json")
+GATE_STATE_CACHE_REL = os.path.join("tmp", "gate_last_ok.json")
 DEFAULT_FAST_VERIFY = True
 
 def _repo_root(arg_value):
@@ -292,28 +299,18 @@ def _changed_files_from_git(repo_root):
     files = [_normalize_rel(line) for line in out.splitlines() if line.strip()]
     return sorted(set(files))
 
+def _state_cache_path(repo_root, ws_dirs=None):
+    ws_dirs = ws_dirs or {}
+    dist_root = str(ws_dirs.get("dist_root", "")).strip()
+    if not dist_root:
+        dist_root = os.path.join(repo_root, "dist")
+    if not os.path.isabs(dist_root):
+        dist_root = os.path.join(repo_root, dist_root)
+    return os.path.join(os.path.normpath(dist_root), GATE_STATE_CACHE_REL)
 
 
-def _compute_repo_state_hash(repo_root):
-    """Cheap deterministic state hash: HEAD + working tree diff."""
-    head = _run_capture(repo_root, ["git", "rev-parse", "HEAD"]) or ""
-    head = head.strip()
-    # Use porcelain to capture staged/unstaged changes deterministically.
-    status = _run_capture(repo_root, ["git", "status", "--porcelain=v1", "--untracked-files=normal"]) or ""
-    payload = (head + "\n" + status).encode("utf-8", errors="replace")
-    return hashlib.sha256(payload).hexdigest()
-
-def _state_cache_path(repo_root, env):
-    # Prefer workspace-scoped verify dir if available
-    verify_dir = str((env or {}).get("DOM_WS_VERIFY_BUILD_DIR", "")).strip()
-    if verify_dir:
-        if not os.path.isabs(verify_dir):
-            verify_dir = os.path.join(repo_root, verify_dir)
-        return os.path.join(os.path.normpath(verify_dir), "gate_state_cache.json")
-    return os.path.join(repo_root, GATE_STATE_CACHE_REL)
-
-def _load_state_cache(repo_root, env):
-    path = _state_cache_path(repo_root, env)
+def _load_state_cache(repo_root, ws_dirs=None):
+    path = _state_cache_path(repo_root, ws_dirs=ws_dirs)
     if not os.path.isfile(path):
         return {}
     try:
@@ -321,10 +318,16 @@ def _load_state_cache(repo_root, env):
             data = json.load(handle)
     except (OSError, ValueError):
         return {}
-    return data if isinstance(data, dict) else {}
+    if not isinstance(data, dict):
+        return {}
+    last_success = data.get("last_success", {})
+    if not isinstance(last_success, dict):
+        last_success = {}
+    return {"last_success": last_success}
 
-def _write_state_cache(repo_root, env, data):
-    path = _state_cache_path(repo_root, env)
+
+def _write_state_cache(repo_root, ws_dirs, data):
+    path = _state_cache_path(repo_root, ws_dirs=ws_dirs)
     parent = os.path.dirname(path)
     if parent and not os.path.isdir(parent):
         os.makedirs(parent, exist_ok=True)
@@ -332,20 +335,23 @@ def _write_state_cache(repo_root, env, data):
         json.dump(data, handle, indent=2, sort_keys=True)
         handle.write("\n")
 
-def _try_short_circuit(repo_root, env, gate_kind):
-    """Return 0 if we already passed this gate_kind on identical state."""
-    cache = _load_state_cache(repo_root, env)
-    cur = _compute_repo_state_hash(repo_root)
-    key = f"ok:{gate_kind}"
-    if cache.get(key, "") == cur:
+
+def _try_short_circuit(repo_root, ws_dirs, gate_kind, gate_mode, state_hash):
+    """Return 0 if we already passed this gate kind+mode on identical state."""
+    cache = _load_state_cache(repo_root, ws_dirs=ws_dirs)
+    key = "{}:{}".format(gate_kind, gate_mode)
+    if cache.get("last_success", {}).get(key, "") == state_hash:
         return 0
     return None
 
-def _mark_short_circuit_ok(repo_root, env, gate_kind):
-    cache = _load_state_cache(repo_root, env)
-    cur = _compute_repo_state_hash(repo_root)
-    cache[f"ok:{gate_kind}"] = cur
-    _write_state_cache(repo_root, env, cache)
+
+def _mark_short_circuit_ok(repo_root, ws_dirs, gate_kind, gate_mode, state_hash):
+    cache = _load_state_cache(repo_root, ws_dirs=ws_dirs)
+    if "last_success" not in cache or not isinstance(cache["last_success"], dict):
+        cache["last_success"] = {}
+    key = "{}:{}".format(gate_kind, gate_mode)
+    cache["last_success"][key] = state_hash
+    _write_state_cache(repo_root, ws_dirs, cache)
 
 def _cache_payload(path):
     if not os.path.isfile(path):
@@ -991,17 +997,132 @@ def _execute_gate_set(
     return 0, verification, actions
 
 
-def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_file=""):
+def _fast_task_targets_for_impact(impact):
+    if impact == "DOCS_ONLY":
+        return ()
+    return ("testx_fast",)
+
+
+def _phase_specs_for_gate(gate_kind, mode, impact):
+    fast_task_targets = _fast_task_targets_for_impact(impact)
+    strict_targets = ("toolchain_sanity", "build_strict", "testx_fast", "auditx_changed")
+    full_targets = ("toolchain_sanity", "build_strict", "testx_verify", "auditx_changed")
+    dist_targets = (
+        "toolchain_sanity",
+        "build_strict",
+        "testx_verify",
+        "testx_dist",
+        "auditx_changed",
+        "dist_all",
+    )
+
+    if gate_kind == "precheck":
+        return [(("PRECHECK_MIN",), ())]
+
+    if gate_kind == "taskcheck":
+        if mode == FAST_MODE:
+            return [(("TASK_DEPENDENCY",), fast_task_targets)]
+        if mode == STRICT_MODE:
+            return [(("TASK_DEPENDENCY",), strict_targets)]
+        return [(("TASK_DEPENDENCY",), full_targets)]
+
+    if gate_kind == "exitcheck":
+        if mode == FAST_MODE:
+            return [(("TASK_DEPENDENCY",), fast_task_targets)]
+        if mode == STRICT_MODE:
+            return [
+                (("TASK_DEPENDENCY",), strict_targets),
+                (("EXIT_STRICT",), strict_targets),
+            ]
+        return [
+            (("TASK_DEPENDENCY",), full_targets),
+            (("EXIT_STRICT",), full_targets),
+        ]
+
+    if gate_kind == "dev":
+        return [
+            (("PRECHECK_MIN",), ()),
+            (("TASK_DEPENDENCY",), fast_task_targets),
+        ]
+
+    if gate_kind in ("verify", "strict", "full"):
+        if mode == FAST_MODE:
+            return [
+                (("PRECHECK_MIN",), ()),
+                (("TASK_DEPENDENCY",), fast_task_targets),
+            ]
+        if mode == STRICT_MODE:
+            return [
+                (("PRECHECK_MIN",), strict_targets),
+                (("TASK_DEPENDENCY",), strict_targets),
+                (("EXIT_STRICT",), strict_targets),
+            ]
+        return [
+            (("PRECHECK_MIN",), full_targets),
+            (("TASK_DEPENDENCY",), full_targets),
+            (("EXIT_STRICT",), full_targets),
+        ]
+
+    if gate_kind == "dist":
+        return [
+            (("PRECHECK_MIN",), dist_targets),
+            (("TASK_DEPENDENCY",), dist_targets),
+            (("EXIT_STRICT",), dist_targets),
+        ]
+
+    if gate_kind == "remediate":
+        return [
+            (("PRECHECK_MIN",), strict_targets),
+            (("TASK_DEPENDENCY",), strict_targets),
+            (("EXIT_STRICT",), strict_targets),
+        ]
+
+    raise RuntimeError("unsupported gate command {}".format(gate_kind))
+
+
+def _effective_mode_for_gate(repo_root, gate_kind, force_strict=False, force_full=False):
+    if gate_kind == "dist":
+        return {"mode": FULL_MODE, "impact": "DIST_LANE", "reason": "dist_lane", "changed_files": []}
+    if gate_kind == "full":
+        return {"mode": FULL_MODE, "impact": "EXPLICIT_FULL", "reason": "explicit_full", "changed_files": []}
+    if gate_kind == "strict":
+        return {"mode": STRICT_MODE, "impact": "EXPLICIT_STRICT", "reason": "explicit_strict", "changed_files": []}
+    if gate_kind in ("verify", "exitcheck", "taskcheck", "dev"):
+        return evaluate_gate_mode(
+            repo_root,
+            gate_kind,
+            force_strict=force_strict,
+            force_full=force_full,
+        )
+    return {"mode": FAST_MODE, "impact": "DEFAULT", "reason": "default", "changed_files": []}
+
+
+def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_file="", force_strict=False, force_full=False):
     if gate_kind == "run-queue":
         return _run_queue(repo_root, queue_file, workspace_id=workspace_id)
 
     env, tools_dir, ws_dirs = _canonical_env(repo_root, ws_id=workspace_id)
+    mode_eval = _effective_mode_for_gate(
+        repo_root,
+        gate_kind,
+        force_strict=force_strict,
+        force_full=force_full,
+    )
+    gate_mode = str(mode_eval.get("mode", FAST_MODE)).strip() or FAST_MODE
 
-    # Throughput short-circuit: if identical repo state already passed this gate kind, return immediately.
-    if gate_kind in ("precheck", "taskcheck", "exitcheck", "dev", "verify", "full", "dist"):
-        cached = _try_short_circuit(repo_root, env, gate_kind)
+    gate_policy_version = load_gate_policy_version(repo_root, GATE_POLICY_REGISTRY_REL)
+    state_hash = compute_workspace_state_hash(repo_root, gate_policy_version)
+    if gate_kind in ("precheck", "taskcheck", "exitcheck", "dev", "verify", "strict", "full", "dist"):
+        cached = _try_short_circuit(
+            repo_root,
+            ws_dirs=ws_dirs,
+            gate_kind=gate_kind,
+            gate_mode=gate_mode,
+            state_hash=state_hash,
+        )
         if cached == 0:
             return 0
+
     verify_build_dir, ws_dirs = select_verify_build_dir(
         repo_root,
         ws_id=ws_dirs.get("workspace_id", workspace_id),
@@ -1015,6 +1136,9 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
     policy = _load_gate_policy(repo_root)
     verification = {
         "gate_kind": gate_kind,
+        "gate_mode": gate_mode,
+        "impact": mode_eval.get("impact", ""),
+        "impact_reason": mode_eval.get("reason", ""),
         "repo_root": repo_root.replace("\\", "/"),
         "tools_dir": tools_dir.replace("\\", "/"),
         "workspace_id": ws_dirs.get("workspace_id", ""),
@@ -1058,48 +1182,12 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
         print(json.dumps(payload, indent=2, sort_keys=True))
         return 0 if ok else 2
 
-    precheck_targets = ("domino_engine", "dominium_game")
-    dev_targets = ("domino_engine", "dominium_game", "testx_fast")
-    verify_targets = ("domino_engine", "dominium_game", "dominium_client", "testx_verify")
-    dist_targets = ("domino_engine", "dominium_game", "dominium_client", "testx_dist", "dist_all")
-    if gate_kind == "precheck":
-        phase_specs = [(("PRECHECK_MIN",), precheck_targets)]
-    elif gate_kind == "taskcheck":
-        phase_specs = [(("TASK_DEPENDENCY",), verify_targets)]
-    elif gate_kind == "exitcheck":
-        phase_specs = [(("TASK_DEPENDENCY", "EXIT_STRICT"), ("domino_engine","dominium_game","dominium_client"))]
-    elif gate_kind == "dev":
-        phase_specs = [
-            (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY",), dev_targets),
-        ]
-    elif gate_kind == "verify":
-        # FAST by default: run minimal precheck + dependency gates + fast tests only.
-        # Escalation to strict/full should be explicit (gate.py full) or handled by gate policy applies_when.
-        phase_specs = [
-            (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY",), dev_targets),
-        ]
-    elif gate_kind == "full":
-        # FULL verify: legacy behavior (precheck + dependency + strict exit) with verify targets.
-        phase_specs = [
-            (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY",), verify_targets),
-            (("EXIT_STRICT",), verify_targets),
-        ]
-    elif gate_kind == "dist":
-        phase_specs = [
-            (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY",), dist_targets),
-            (("EXIT_STRICT",), dist_targets),
-        ]
-    elif gate_kind == "remediate":
-        phase_specs = [
-            (("PRECHECK_MIN",), precheck_targets),
-            (("TASK_DEPENDENCY", "EXIT_STRICT"), verify_targets),
-        ]
-    else:
-        raise RuntimeError("unsupported gate command {}".format(gate_kind))
+    if gate_mode == FAST_MODE and gate_kind in ("verify", "exitcheck", "taskcheck"):
+        verification["warnings"].append(
+            "FAST mode active: strict/full checks skipped. Run `gate.py strict` or `gate.py full` for exhaustive validation."
+        )
+
+    phase_specs = _phase_specs_for_gate(gate_kind, gate_mode, str(mode_eval.get("impact", "")))
 
     for class_ids, requested_targets in phase_specs:
         code, phase_verification, phase_actions = _execute_gate_set(
@@ -1133,7 +1221,14 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
             verification,
             remediation_root=remediation_root,
         )
-    _mark_short_circuit_ok(repo_root, env, gate_kind)
+    post_state_hash = compute_workspace_state_hash(repo_root, gate_policy_version)
+    _mark_short_circuit_ok(
+        repo_root,
+        ws_dirs=ws_dirs,
+        gate_kind=gate_kind,
+        gate_mode=gate_mode,
+        state_hash=post_state_hash,
+    )
     return 0
 
 
@@ -1141,12 +1236,26 @@ def main():
     parser = argparse.ArgumentParser(description="Canonical gate runner with autonomous remediation.")
     parser.add_argument(
         "command",
-        choices=("dev", "verify", "full", "dist", "doctor", "remediate", "precheck", "taskcheck", "exitcheck", "run-queue"),
+        choices=(
+            "dev",
+            "verify",
+            "strict",
+            "full",
+            "dist",
+            "doctor",
+            "remediate",
+            "precheck",
+            "taskcheck",
+            "exitcheck",
+            "run-queue",
+        ),
     )
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--workspace-id", default="")
     parser.add_argument("--only-gate", action="append", default=[])
     parser.add_argument("--queue-file", default="")
+    parser.add_argument("--strict", action="store_true", help="Force STRICT mode for verify/exitcheck/taskcheck/dev.")
+    parser.add_argument("--full", action="store_true", help="Force FULL mode for verify/exitcheck/taskcheck/dev.")
     args = parser.parse_args()
     return _run_gate(
         _repo_root(args.repo_root),
@@ -1154,6 +1263,8 @@ def main():
         only_gate_ids=args.only_gate,
         workspace_id=args.workspace_id,
         queue_file=args.queue_file,
+        force_strict=args.strict,
+        force_full=args.full,
     )
 
 

@@ -63,9 +63,9 @@
         ],
         "applies_when": [
           {
-            "kind": "always",
+            "kind": "requested_target",
             "values": [
-              "true"
+              "toolchain_sanity"
             ]
           }
         ],
@@ -159,9 +159,9 @@
         ],
         "applies_when": [
           {
-            "kind": "always",
+            "kind": "requested_target",
             "values": [
-              "true"
+              "build_strict"
             ]
           }
         ],
@@ -229,6 +229,32 @@
         "extensions": {}
       },
       {
+        "gate_id": "auditx.minimal",
+        "gate_class": "EXIT_STRICT",
+        "command": [
+          "python",
+          "tools/auditx/auditx.py",
+          "scan",
+          "--changed-only",
+          "--format",
+          "json"
+        ],
+        "applies_when": [
+          {
+            "kind": "requested_target",
+            "values": [
+              "auditx_changed"
+            ]
+          }
+        ],
+        "severity": "warn",
+        "auto_remediate": false,
+        "remediation_playbook_ids": [
+          "dominium.playbook.doc_canon_drift"
+        ],
+        "extensions": {}
+      },
+      {
         "gate_id": "testx.dist",
         "gate_class": "EXIT_STRICT",
         "command": [
@@ -286,6 +312,36 @@
         "extensions": {}
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "default_mode_by_command": {
+        "verify": "FAST",
+        "exitcheck": "FAST",
+        "strict": "STRICT",
+        "full": "FULL",
+        "dist": "FULL"
+      },
+      "execution_modes": [
+        {
+          "mode_id": "FAST",
+          "description": "Minimal precheck + dependency gates only; strict/full gates skipped by default.",
+          "full_escalation_allowed": false
+        },
+        {
+          "mode_id": "STRICT",
+          "description": "RepoX full + targeted build/test gates + changed-only AuditX.",
+          "full_escalation_allowed": false
+        },
+        {
+          "mode_id": "FULL",
+          "description": "Exhaustive lane for dist or explicit full requests.",
+          "full_escalation_allowed": true
+        }
+      ],
+      "state_hash_inputs": [
+        "git_head",
+        "working_tree_diff_hash",
+        "gate_policy_version"
+      ]
+    }
   }
 }
