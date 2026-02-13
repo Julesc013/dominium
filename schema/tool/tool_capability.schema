@@ -1,0 +1,27 @@
+SCHEMA: tool/tool_capability.schema
+schema_id: dominium.schema.tool_capability
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define minimal tool capability grades used by process requirement checks.
+
+NON-SEMANTICS:
+- Capability grades are ordinal metadata only.
+- No direct simulation behavior is encoded.
+
+REQUIRED SHAPE:
+record tool_capability_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - capabilities: [tool_capability_entry]
+    - extensions: map
+
+record tool_capability_entry
+  required:
+    - tool_capability_id: id
+    - properties: map
+    - description: text
+    - extensions: map
