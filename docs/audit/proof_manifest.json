@@ -3,24 +3,18 @@
   "schema_version": "1.0.0",
   "generated_by": "scripts/ci/check_repox_rules.py",
   "changed_paths": [
-    "docs/archive/architecture/ARCH_GLOSSARY.md",
-    "docs/audit/CONSOLIDATION_REPORT.md",
-    "tests/integration/test_gate_fast_strict_full_profiles.py"
+    "docs/audit/proof_manifest.json"
   ],
   "changed_files": [
-    "docs/archive/architecture/ARCH_GLOSSARY.md",
-    "docs/audit/CONSOLIDATION_REPORT.md",
-    "tests/integration/test_gate_fast_strict_full_profiles.py"
+    "docs/audit/proof_manifest.json"
   ],
   "impacted_subsystems": [
-    "docs",
-    "tests"
+    "docs"
   ],
   "impacted_invariants": [],
   "required_test_tags": [
     "docs",
-    "invariant",
-    "regression"
+    "invariant"
   ],
   "required_capability_checks": [
     "tool.memory.read",
@@ -42,9 +36,7 @@
     "WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile",
     "WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T063945Z_verify_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile"
   ],
-  "failures": [
-    "INV-IDENTITY-CHANGE-EXPLANATION: missing explanation docs/audit/identity_fingerprint_explanation.md"
-  ],
+  "failures": [],
   "available_testx_tests": [
     "ai_tools_tests",
     "anb_omega_smoke_tests",
