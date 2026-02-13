@@ -3251,6 +3251,7 @@ def check_survival_no_nondiegetic_lenses(repo_root):
 
     required_ids = (
         "law.survival.default",
+        "law.survival.softcore",
         "law.survival.hardcore",
         "survival.softcore",
     )
@@ -3279,6 +3280,67 @@ def check_survival_no_nondiegetic_lenses(repo_root):
             violations.append("{}: {} must allow lens.diegetic.*".format(invariant_id, law_id))
         if not any(str(item).strip().startswith("lens.nondiegetic") for item in forbidden):
             violations.append("{}: {} must forbid lens.nondiegetic.*".format(invariant_id, law_id))
+    return violations
+
+
+def check_survival_diegetic_contract(repo_root):
+    invariant_id = "INV-SURVIVAL-DIEGETIC-CONTRACT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    law_rel = "data/registries/law_profiles.json"
+    bridge_rel = "client/core/client_command_bridge.c"
+    law_path = os.path.join(repo_root, law_rel.replace("/", os.sep))
+    bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
+    if not os.path.isfile(law_path):
+        return ["{}: missing {}".format(invariant_id, law_rel)]
+    if not os.path.isfile(bridge_path):
+        return ["{}: missing {}".format(invariant_id, bridge_rel)]
+
+    payload = _load_json_file(law_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, law_rel)]
+
+    profiles = ((payload.get("record") or {}).get("profiles") or [])
+    if not isinstance(profiles, list):
+        return ["{}: profiles must be list in {}".format(invariant_id, law_rel)]
+
+    survival_ids = ("law.survival.default", "law.survival.softcore", "law.survival.hardcore", "survival.softcore")
+    by_id = {}
+    for row in profiles:
+        if isinstance(row, dict):
+            law_id = str(row.get("law_profile_id", "")).strip()
+            if law_id:
+                by_id[law_id] = row
+
+    violations = []
+    forbidden_entitlements = ("ui.console.command.read_only", "ui.console.command.read_write", "camera.mode.observer_truth")
+    for law_id in survival_ids:
+        row = by_id.get(law_id)
+        if not isinstance(row, dict):
+            violations.append("{}: missing law profile {}".format(invariant_id, law_id))
+            continue
+        allowed = [str(item).strip() for item in (row.get("allowed_lenses") or [])]
+        forbidden = [str(item).strip() for item in (row.get("forbidden_lenses") or [])]
+        entitlements = [str(item).strip() for item in (row.get("entitlements_granted") or [])]
+        if "lens.diegetic.*" not in allowed:
+            violations.append("{}: {} must allow lens.diegetic.*".format(invariant_id, law_id))
+        if not any(item.startswith("lens.nondiegetic") for item in forbidden):
+            violations.append("{}: {} must forbid nondiegetic lenses".format(invariant_id, law_id))
+        for entitlement in forbidden_entitlements:
+            if entitlement in entitlements:
+                violations.append("{}: {} must not grant {}".format(invariant_id, law_id, entitlement))
+
+    bridge_text = read_text(bridge_path) or ""
+    required_bindings = (
+        "{ \"exp.survival\", \"law.survival.softcore\", 1, 0, 0, 0, 0, 0 }",
+        "{ \"exp.hardcore\", \"law.survival.hardcore\", 1, 0, 0, 0, 0, 0 }",
+        "refuse.entitlement_required",
+    )
+    for marker in required_bindings:
+        if marker not in bridge_text:
+            violations.append("{}: {} missing marker {}".format(invariant_id, bridge_rel, marker))
+
     return violations
 
 
@@ -5831,6 +5893,7 @@ def main() -> int:
     violations.extend(check_no_hardcoded_mode_branch(repo_root))
     violations.extend(check_authority_context_required(repo_root))
     violations.extend(check_survival_no_nondiegetic_lenses(repo_root))
+    violations.extend(check_survival_diegetic_contract(repo_root))
     violations.extend(check_authority_context_required_for_intents(repo_root))
     violations.extend(check_session_spec_required_for_run(repo_root))
     violations.extend(check_glossary_term_canon(repo_root))
