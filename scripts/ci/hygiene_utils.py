@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+from typing import Dict, List, Tuple
 
 DEFAULT_ROOTS = [
     "engine",
@@ -56,6 +57,9 @@ TEXT_EXTS = CODE_EXTS + [
     ".yaml",
 ]
 
+_ROOT_WALK_CACHE: Dict[Tuple[str, Tuple[str, ...]], Tuple[str, ...]] = {}
+_TEXT_CACHE: Dict[Tuple[str, int, int], str] = {}
+
 
 def normalize_path(path):
     return os.path.normpath(path).replace("\\", "/")
@@ -89,6 +93,31 @@ def is_excluded(path_norm, exclude_norms):
     return False
 
 
+def _list_files_for_root(root, exclude_norms):
+    root_abs = normalize_path(os.path.abspath(root)).lower()
+    key = (root_abs, tuple(exclude_norms))
+    cached = _ROOT_WALK_CACHE.get(key)
+    if cached is not None:
+        return list(cached)
+
+    files = []
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(
+            [d for d in dirnames if not is_excluded(normalize_path(os.path.join(dirpath, d)).lower(), exclude_norms)]
+        )
+        for filename in sorted(filenames):
+            full_path = os.path.join(dirpath, filename)
+            path_norm = normalize_path(full_path).lower()
+            if is_excluded(path_norm, exclude_norms):
+                continue
+            if os.path.isfile(full_path):
+                files.append(full_path)
+
+    files = sorted(files, key=lambda p: normalize_path(p).lower())
+    _ROOT_WALK_CACHE[key] = tuple(files)
+    return list(files)
+
+
 def iter_files(roots, excludes, exts):
     exclude_norms = [normalize_path(item).lower() for item in excludes]
     exts_set = {ext.lower() for ext in exts}
@@ -99,29 +128,33 @@ def iter_files(roots, excludes, exts):
         root_norm = normalize_path(root).lower()
         if is_excluded(root_norm, exclude_norms):
             continue
-        for dirpath, dirnames, filenames in os.walk(root):
-            dirnames[:] = sorted(
-                [d for d in dirnames if not is_excluded(normalize_path(os.path.join(dirpath, d)).lower(), exclude_norms)]
-            )
-            for filename in sorted(filenames):
-                ext = os.path.splitext(filename)[1].lower()
-                if ext not in exts_set:
-                    continue
-                full_path = os.path.join(dirpath, filename)
-                path_norm = normalize_path(full_path).lower()
-                if is_excluded(path_norm, exclude_norms):
-                    continue
-                if os.path.isfile(full_path):
-                    files.append(full_path)
+        for full_path in _list_files_for_root(root, exclude_norms):
+            ext = os.path.splitext(full_path)[1].lower()
+            if ext in exts_set:
+                files.append(full_path)
     return sorted(files, key=lambda p: normalize_path(p).lower())
 
 
 def read_text(path):
     try:
-        with open(path, "r", encoding="utf-8", errors="replace") as handle:
-            return normalize_newlines(handle.read())
+        stat_result = os.stat(path)
     except OSError:
         return None
+    key = (
+        normalize_path(path).lower(),
+        int(getattr(stat_result, "st_mtime_ns", int(float(stat_result.st_mtime) * 1000000000.0))),
+        int(stat_result.st_size),
+    )
+    cached = _TEXT_CACHE.get(key)
+    if cached is not None:
+        return cached
+    try:
+        with open(path, "r", encoding="utf-8", errors="replace") as handle:
+            text = normalize_newlines(handle.read())
+    except OSError:
+        return None
+    _TEXT_CACHE[key] = text
+    return text
 
 
 def strip_c_comments_and_strings(text):

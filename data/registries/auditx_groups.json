@@ -1,0 +1,75 @@
+{
+  "schema_id": "dominium.schema.governance.auditx_groups",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.auditx_groups",
+    "registry_version": "1.0.0",
+    "groups": [
+      {
+        "group_id": "auditx.group.core.policy",
+        "paths": [
+          "repo/repox/**",
+          "scripts/ci/**",
+          "data/registries/**",
+          "schema/**",
+          "docs/governance/**"
+        ],
+        "tags": [
+          "policy",
+          "changed_only"
+        ],
+        "default_profile": "fast",
+        "runner_id": "auditx.group.core.policy",
+        "runner_command": [
+          "python",
+          "tools/auditx/auditx.py",
+          "scan",
+          "--changed-only",
+          "--format",
+          "json"
+        ],
+        "expected_artifacts": [
+          "docs/audit/auditx/FINDINGS.json",
+          "docs/audit/auditx/INVARIANT_MAP.json"
+        ],
+        "escalation_thresholds": {
+          "strict": true,
+          "full": false
+        }
+      },
+      {
+        "group_id": "auditx.group.full.semantic",
+        "paths": [
+          "engine/**",
+          "game/**",
+          "client/**",
+          "server/**",
+          "tools/**",
+          "docs/**"
+        ],
+        "tags": [
+          "semantic",
+          "full_scan"
+        ],
+        "default_profile": "full",
+        "runner_id": "auditx.group.full.semantic",
+        "runner_command": [
+          "python",
+          "tools/auditx/auditx.py",
+          "scan",
+          "--format",
+          "json"
+        ],
+        "expected_artifacts": [
+          "docs/audit/auditx/FINDINGS.json",
+          "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+          "docs/audit/auditx/TRENDS.json"
+        ],
+        "escalation_thresholds": {
+          "strict": true,
+          "full": true
+        }
+      }
+    ]
+  }
+}

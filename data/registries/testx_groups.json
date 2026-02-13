@@ -1,0 +1,141 @@
+{
+  "schema_id": "dominium.schema.governance.testx_groups",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.testx_groups",
+    "registry_version": "1.0.0",
+    "groups": [
+      {
+        "group_id": "testx.group.core.invariants",
+        "paths": [
+          "schema/**",
+          "data/registries/**",
+          "repo/repox/**",
+          "tests/invariant/**",
+          "scripts/ci/**"
+        ],
+        "tags": [
+          "invariant",
+          "fast"
+        ],
+        "default_profile": "fast",
+        "runner_id": "testx.group.core.invariants",
+        "runner_command": [
+          "python",
+          "scripts/dev/run_xstack_group_tests.py",
+          "--repo-root",
+          "{repo_root}",
+          "--group-id",
+          "testx.group.core.invariants"
+        ],
+        "expected_artifacts": [
+          "docs/audit/testx/TESTX_SUMMARY.json",
+          "docs/audit/testx/TESTX_RUN_META.json"
+        ],
+        "escalation_thresholds": {
+          "strict": true,
+          "full": false
+        }
+      },
+      {
+        "group_id": "testx.group.runtime.verify",
+        "paths": [
+          "engine/**",
+          "game/**",
+          "client/**",
+          "server/**",
+          "tests/integration/**"
+        ],
+        "tags": [
+          "verify"
+        ],
+        "default_profile": "strict",
+        "runner_id": "testx.group.runtime.verify",
+        "runner_command": [
+          "python",
+          "scripts/dev/run_xstack_group_tests.py",
+          "--repo-root",
+          "{repo_root}",
+          "--group-id",
+          "testx.group.runtime.verify"
+        ],
+        "expected_artifacts": [
+          "docs/audit/testx/TESTX_SUMMARY.json"
+        ],
+        "escalation_thresholds": {
+          "strict": true,
+          "full": true
+        }
+      },
+      {
+        "group_id": "testx.group.full.verify",
+        "paths": [
+          "engine/**",
+          "game/**",
+          "client/**",
+          "server/**",
+          "tests/integration/**",
+          "tests/invariant/**",
+          "tools/xstack/**",
+          "scripts/dev/gate.py",
+          "data/registries/testx_groups.json",
+          "data/registries/auditx_groups.json",
+          "data/registries/gate_policy.json"
+        ],
+        "tags": [
+          "verify",
+          "full"
+        ],
+        "default_profile": "full",
+        "runner_id": "testx.group.full.verify",
+        "runner_command": [
+          "python",
+          "scripts/dev/run_xstack_group_tests.py",
+          "--repo-root",
+          "{repo_root}",
+          "--group-id",
+          "testx.group.full.verify"
+        ],
+        "expected_artifacts": [
+          "docs/audit/testx/TESTX_SUMMARY.json",
+          "docs/audit/testx/TESTX_RUN_META.json"
+        ],
+        "escalation_thresholds": {
+          "strict": false,
+          "full": true
+        }
+      },
+      {
+        "group_id": "testx.group.dist",
+        "paths": [
+          "cmake/dist*",
+          "scripts/pkg/**",
+          "scripts/dist/**",
+          "dist/**"
+        ],
+        "tags": [
+          "dist",
+          "packaging"
+        ],
+        "default_profile": "full",
+        "runner_id": "testx.group.dist",
+        "runner_command": [
+          "cmake",
+          "--build",
+          "out/build/vs2026/verify",
+          "--config",
+          "Debug",
+          "--target",
+          "testx_dist"
+        ],
+        "expected_artifacts": [
+          "docs/audit/testx/TESTX_SUMMARY.json"
+        ],
+        "escalation_thresholds": {
+          "strict": false,
+          "full": true
+        }
+      }
+    ]
+  }
+}

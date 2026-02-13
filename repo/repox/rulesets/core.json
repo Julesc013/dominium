@@ -193,6 +193,13 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-IDENTITY-CHANGE-EXPLANATION",
+      "severity": "FAIL",
+      "scope_paths": ["docs/audit/identity_fingerprint_explanation.md", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-fingerprint",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-FAILURE-CLASS-COVERAGE",
       "severity": "FAIL",
       "scope_paths": ["schema/governance/failure_classes.schema", "data/registries/failure_classes.json", "tests"],

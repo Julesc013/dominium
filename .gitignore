@@ -327,3 +327,4 @@ venv/
 # Keep launcher public config header tracked.
 !launcher/include/launcher/launcher_config.h
 stdout
+.xstack_cache/

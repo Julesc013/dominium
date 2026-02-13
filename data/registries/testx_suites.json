@@ -56,6 +56,52 @@
         }
       },
       {
+        "suite_id": "testx_gate_fast",
+        "test_tags": [
+          "gate",
+          "integration",
+          "invariant",
+          "xstack"
+        ],
+        "required_gates": [
+          "repox.precheck"
+        ],
+        "deterministic_required": true,
+        "environment_constraints": [
+          "cwd_agnostic",
+          "path_canonicalized",
+          "workspace_scoped"
+        ],
+        "extensions": {
+          "default_tests": [
+            "test_gate_plan_determinism",
+            "test_gate_cache_correctness",
+            "test_testx_group_mapping",
+            "test_auditx_group_mapping",
+            "test_gate_fast_strict_full_profiles"
+          ],
+          "tests_by_tag": {
+            "gate": [
+              "test_gate_plan_determinism",
+              "test_gate_cache_correctness",
+              "test_gate_fast_strict_full_profiles"
+            ],
+            "integration": [
+              "test_gate_fast_strict_full_profiles"
+            ],
+            "invariant": [
+              "test_testx_group_mapping",
+              "test_auditx_group_mapping"
+            ],
+            "xstack": [
+              "test_gate_plan_determinism",
+              "test_gate_cache_correctness",
+              "test_gate_fast_strict_full_profiles"
+            ]
+          }
+        }
+      },
+      {
         "suite_id": "testx_verify",
         "test_tags": [
           "determinism",
@@ -90,6 +136,52 @@
             "test_determinism_thread",
             "test_rng_stream_consistency"
           ]
+        }
+      },
+      {
+        "suite_id": "testx_strict_light",
+        "test_tags": [
+          "integration",
+          "invariant",
+          "regression",
+          "tools",
+          "xstack"
+        ],
+        "required_gates": [
+          "repox.precheck"
+        ],
+        "deterministic_required": true,
+        "environment_constraints": [
+          "cwd_agnostic",
+          "path_canonicalized",
+          "workspace_scoped"
+        ],
+        "extensions": {
+          "default_tests": [
+            "test_gate_plan_determinism",
+            "test_gate_cache_correctness",
+            "test_testx_group_mapping",
+            "test_auditx_group_mapping",
+            "test_gate_fast_strict_full_profiles"
+          ],
+          "tests_by_tag": {
+            "integration": [
+              "test_gate_fast_strict_full_profiles"
+            ],
+            "invariant": [
+              "inv_proof_manifest",
+              "inv_repox_rules",
+              "test_gate_plan_determinism",
+              "test_gate_cache_correctness"
+            ],
+            "tools": [
+              "test_testx_group_mapping",
+              "test_auditx_group_mapping"
+            ],
+            "xstack": [
+              "test_gate_fast_strict_full_profiles"
+            ]
+          }
         }
       },
       {
