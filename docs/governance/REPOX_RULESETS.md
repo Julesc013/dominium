@@ -123,6 +123,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
+- `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
+- `INV-SURVIVAL-DIEGETIC-CONTRACT`
 - `INV-MODE-AS-PROFILES`
 - `INV-UI-ENTITLEMENT-GATING`
 - `INV-DEFAULTS-OPTIONAL`
@@ -332,6 +334,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when survival law profiles do not explicitly permit diegetic lenses.
 - Fails when survival law profiles do not explicitly forbid `lens.nondiegetic.*`.
 - Enforces diegetic survival contract as data, not UI runtime branching.
+
+### INV-SURVIVAL-DIEGETIC-CONTRACT
+
+- Fails when survival law profiles grant nondiegetic console/freecam entitlements.
+- Fails when survival bridge bindings allow HUD-only survival profiles to surface nondiegetic tools.
+- Locks survival to diegetic lens surfaces with deterministic entitlement refusal.
 
 ### INV-MODE-AS-PROFILES
 
