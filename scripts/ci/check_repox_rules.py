@@ -3231,6 +3231,57 @@ def check_universe_identity_immutability(repo_root):
     return violations
 
 
+def check_survival_no_nondiegetic_lenses(repo_root):
+    invariant_id = "INV-SURVIVAL-NO-NONDIEGETIC-LENSES"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    rel = "data/registries/law_profiles.json"
+    path = os.path.join(repo_root, rel.replace("/", os.sep))
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, rel)]
+
+    payload = _load_json_file(path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, rel)]
+
+    profiles = ((payload.get("record") or {}).get("profiles") or [])
+    if not isinstance(profiles, list):
+        return ["{}: profiles must be list in {}".format(invariant_id, rel)]
+
+    required_ids = (
+        "law.survival.default",
+        "law.survival.hardcore",
+        "survival.softcore",
+    )
+    by_id = {}
+    for row in profiles:
+        if isinstance(row, dict):
+            law_id = str(row.get("law_profile_id", "")).strip()
+            if law_id:
+                by_id[law_id] = row
+
+    violations = []
+    for law_id in required_ids:
+        profile = by_id.get(law_id)
+        if not isinstance(profile, dict):
+            violations.append("{}: missing law profile {}".format(invariant_id, law_id))
+            continue
+        allowed = profile.get("allowed_lenses")
+        forbidden = profile.get("forbidden_lenses")
+        if not isinstance(allowed, list):
+            violations.append("{}: {} allowed_lenses must be list".format(invariant_id, law_id))
+            continue
+        if not isinstance(forbidden, list):
+            violations.append("{}: {} forbidden_lenses must be list".format(invariant_id, law_id))
+            continue
+        if "lens.diegetic.*" not in [str(item).strip() for item in allowed]:
+            violations.append("{}: {} must allow lens.diegetic.*".format(invariant_id, law_id))
+        if not any(str(item).strip().startswith("lens.nondiegetic") for item in forbidden):
+            violations.append("{}: {} must forbid lens.nondiegetic.*".format(invariant_id, law_id))
+    return violations
+
+
 def check_authority_context_required_for_intents(repo_root):
     invariant_id = "INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS"
     if is_override_active(repo_root, invariant_id):
@@ -5770,6 +5821,7 @@ def main() -> int:
     violations.extend(check_no_engine_settings(repo_root))
     violations.extend(check_no_hardcoded_mode_branch(repo_root))
     violations.extend(check_authority_context_required(repo_root))
+    violations.extend(check_survival_no_nondiegetic_lenses(repo_root))
     violations.extend(check_authority_context_required_for_intents(repo_root))
     violations.extend(check_session_spec_required_for_run(repo_root))
     violations.extend(check_glossary_term_canon(repo_root))
