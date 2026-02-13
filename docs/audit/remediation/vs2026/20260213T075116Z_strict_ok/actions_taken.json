@@ -1,0 +1,26 @@
+{
+  "actions": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "tools\\ci\\tool_identity_fingerprint.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "{\"fingerprint_sha256\": \"fb1022b39a79509bee9bc9475de22bc01017c3edb523fcb8f28a22e5082e381d\", \"inputs\": {\"canon_index\": {\"path\": \"docs/architecture/CANON_INDEX.md\", \"sha256\": \"b0e4d5e844d41562f78ae46f3b1016b625c8c87f2363aef6efa886c336026f11\"}, \"gate_runner\": {\"path\": \"scripts/dev/gate.py\", \"sha256\": \"9d7afd745f03492be6975477e12a0496da1bf749db14078dcb7a2f28c826b8a9\"}, \"ontology_commitment\": {\"sha256\": \"831a336a64022e33b1f72801c3e636cf817fc3e96c4c0223c3bd2cc2190930d7\", \"value\": \"Assemblies|Fields|Processes|Agents|Law\"}, \"repox_rulesets\": {\"path\": \"repo/repox/rulesets\", \"sha256\": \"40dfa41365091df8118ad069355dd066e0a37f2e18c667d100a9c67769310df1\"}, \"status_now_snapshot\": {\"path\": \"docs/STATUS_NOW.md\", \"sha256\": \"759a028019b67caa7112af9c6de67e419d9eeaf7020c47653b20b98854722416\"}, \"testx_suite_set\": {\"sha256\": \"b2aaceebb0daa08f0d7c7a52b3a2a8f866b18e1eb9aa6505166a0604e9eae814\", \"source_root\": \"tests\", \"suite_count\": 335}, \"unbounded_doctrine\": {\"path\": \"docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md\", \"sha256\": \"beb6c50be22b2c046d6c6b365598f434fea663ce1139bd5a706725190ea8cdc6\"}}, \"schema_id\": \"dominium.audit.identity_fingerprint\", \"schema_version\": \"1.0.0\"}\n",
+      "returncode": 0,
+      "strategy": "artifact_regeneration",
+      "targets": [
+        "identity_fingerprint"
+      ]
+    },
+    {
+      "applied_strategy": "artifact_regeneration",
+      "returncode": 0,
+      "score_after": 1000,
+      "score_before": 1001,
+      "stage": "repox.full",
+      "strategy": "verify_after_strategy"
+    }
+  ]
+}

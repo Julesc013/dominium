@@ -1,0 +1,65 @@
+{
+  "actions": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts\\ci\\check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "WARN: WARN-GLOSSARY-TERM-CANON: docs/GLOSSARY.md uses forbidden synonym 'survival_mode' for ExperienceProfile\nINV-CANON-INDEX: architecture doc missing from CANON_INDEX: docs/architecture/ARCH_GLOSSARY.md\nINV-CANON-INDEX: historical doc outside docs/archive: docs/architecture/ARCH_GLOSSARY.md\nINV-CANON-INDEX: listed doc missing: docs/architecture/GLOSSARY.md\nINV-DOC-STATUS-HEADER: missing status header: docs/GLOSSARY.md\n",
+      "returncode": 1,
+      "strategy": "registry_schema",
+      "targets": [
+        "repox_refresh"
+      ]
+    },
+    {
+      "applied_strategy": "registry_schema",
+      "returncode": 1,
+      "score_after": 1002,
+      "score_before": 1003,
+      "stage": "testx.fast",
+      "strategy": "verify_after_strategy"
+    },
+    {
+      "note": "canonical environment refreshed",
+      "status": "applied",
+      "strategy": "environment",
+      "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools"
+    },
+    {
+      "applied_strategy": "environment",
+      "returncode": 1,
+      "score_after": 1002,
+      "score_before": 1002,
+      "stage": "testx.fast",
+      "strategy": "verify_after_strategy"
+    },
+    {
+      "command": [
+        "cmake",
+        "--build",
+        "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "testx_fast"
+      ],
+      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Run TestX fast suite (manifest-driven)\n  {\n    \"required_test_tags\": [\n      \"docs\",\n      \"invariant\"\n    ],\n    \"result\": \"suite_complete\",\n    \"returncode\": 8,\n    \"selected_tests\": [\n      \"inv_proof_manifest\",\n      \"inv_repox_rules\",\n      \"tools_auditx\"\n    ],\n    \"suite_id\": \"testx_fast\",\n    \"summary_json\": \"docs/audit/testx/TESTX_SUMMARY.json\"\n  }\nC:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Microsoft\\VC\\v180\\Microsoft.CppCommon.targets(254,5): error MSB8066: Custom build for 'C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\CMakeFiles\\e79bb7050942be89f695b7f4c5716a5d\\testx_fast.rule' exited with code 8. [C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\testx_fast.vcxproj]\n",
+      "returncode": 1,
+      "strategy": "build_wiring",
+      "targets": [
+        "testx_fast"
+      ]
+    },
+    {
+      "applied_strategy": "build_wiring",
+      "returncode": 1,
+      "score_after": 1002,
+      "score_before": 1002,
+      "stage": "testx.fast",
+      "strategy": "verify_after_strategy"
+    }
+  ]
+}

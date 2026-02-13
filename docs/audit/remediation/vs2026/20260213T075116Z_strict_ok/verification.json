@@ -1,0 +1,35 @@
+{
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts/ci/check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "WARN: WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile\nWARN: WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T063945Z_verify_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile\nRepoX governance rules OK.\n",
+      "returncode": 0
+    }
+  ],
+  "dist_root": "c:/Inbox/Git Repos/dominium/dist/ws/vs2026",
+  "gate_kind": "strict",
+  "gate_mode": "STRICT",
+  "impact": "EXPLICIT_STRICT",
+  "impact_reason": "explicit_strict",
+  "repo_root": "c:/Inbox/Git Repos/dominium",
+  "skipped": [
+    "repox.precheck",
+    "toolchain.sanity",
+    "ui_bind_check",
+    "testx.fast",
+    "build.strict",
+    "testx.verify",
+    "auditx.minimal",
+    "testx.dist",
+    "dist.verify"
+  ],
+  "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools",
+  "verify_build_dir": "c:/Inbox/Git Repos/dominium/out/build/vs2026/verify",
+  "warnings": [],
+  "workspace_id": "vs2026"
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+    "--build",
+    "c:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify",
+    "--config",
+    "Debug",
+    "--target",
+    "testx_fast"
+  ],
+  "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  Run TestX fast suite (manifest-driven)\n  {\n    \"required_test_tags\": [\n      \"docs\",\n      \"invariant\"\n    ],\n    \"result\": \"suite_complete\",\n    \"returncode\": 8,\n    \"selected_tests\": [\n      \"inv_proof_manifest\",\n      \"inv_repox_rules\",\n      \"tools_auditx\"\n    ],\n    \"suite_id\": \"testx_fast\",\n    \"summary_json\": \"docs/audit/testx/TESTX_SUMMARY.json\"\n  }\nC:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Microsoft\\VC\\v180\\Microsoft.CppCommon.targets(254,5): error MSB8066: Custom build for 'C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\CMakeFiles\\e79bb7050942be89f695b7f4c5716a5d\\testx_fast.rule' exited with code 8. [C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\testx_fast.vcxproj]\n",
+  "returncode": 1
+}
