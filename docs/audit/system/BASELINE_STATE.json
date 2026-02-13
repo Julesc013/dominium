@@ -4,10 +4,10 @@
     "active_pack_set_sha256": "27793d574d8e22084a448ece2d34daa13d5fe2c5232da603113016ac67037d85",
     "baseline_id": "anb-omega.baseline",
     "extensions": {},
-    "gate_policy_sha256": "1491808e65a9b84ebd95fd6b3f5a2a16e5df583d30163d507fda442c887d0628",
-    "head_hash": "4ec8a42c4973137ad83b356192a4eb5a7ead4f32",
-    "identity_fingerprint_sha256": "d2e99cc8dd104c2a017f478f1ddbfd5cf6986d99e6c4ac26d685f5abe089e493",
-    "schema_registry_sha256": "ac9fc0bb7ed6032b13ddc03d6e6f5fe433102162307b22b2db5bd612d712b4b4",
+    "gate_policy_sha256": "caa4242acdf242bdecaffbf0bc63172d3c7817fd68d49065da67473fa75faf00",
+    "head_hash": "b58509078408bff4e4ff7ffd7179dcf0345edbe9",
+    "identity_fingerprint_sha256": "6bc20fff7106d62f1974194c6b0f8236a054bdc0c8e8a7cb0fe22f6f301d8bf7",
+    "schema_registry_sha256": "cedde73281e57193491ec0c0fab8c6fa5fc66916cfe6802c92f7f4a9a9cf20de",
     "tool_hashes": [
       {
         "path": "tool_ui_bind.cmd",
