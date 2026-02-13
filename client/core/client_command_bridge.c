@@ -286,6 +286,14 @@ static int profile_selected(void)
     return g_selection.experience_id[0] != '\0' ? 1 : 0;
 }
 
+static int authority_context_ready(void)
+{
+    if (!profile_selected()) {
+        return 0;
+    }
+    return g_selection.authority_context_id[0] != '\0' ? 1 : 0;
+}
+
 static int entitlement_allowed(const char* token)
 {
     if (!token || !token[0]) {
@@ -457,6 +465,10 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
     }
     if (strcmp(token, "client.scenario.select") == 0) {
         char value[128];
+        if (!authority_context_ready()) {
+            format_refusal(out_message, out_message_cap, "refuse.authority_context_required", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
         parse_selection_value(remainder, value, sizeof(value));
         if (!value_in_list(value,
                            k_scenario_ids,
@@ -481,6 +493,10 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
     }
     if (strcmp(token, "client.mission.select") == 0) {
         char value[128];
+        if (!authority_context_ready()) {
+            format_refusal(out_message, out_message_cap, "refuse.authority_context_required", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
         parse_selection_value(remainder, value, sizeof(value));
         if (!value_in_list(value,
                            k_mission_ids,
@@ -505,6 +521,10 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
     }
     if (strcmp(token, "client.parameters.select") == 0) {
         char value[128];
+        if (!authority_context_ready()) {
+            format_refusal(out_message, out_message_cap, "refuse.authority_context_required", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
         parse_selection_value(remainder, value, sizeof(value));
         if (!value_in_list(value,
                            k_parameter_bundle_ids,
@@ -524,8 +544,8 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         const char* scenario_id = "";
         const char* parameter_bundle_id = "";
         const char* mission_id = "";
-        if (!profile_selected()) {
-            format_refusal(out_message, out_message_cap, "refuse.profile_not_selected", token);
+        if (!authority_context_ready()) {
+            format_refusal(out_message, out_message_cap, "refuse.authority_context_required", token);
             return CLIENT_COMMAND_BRIDGE_REFUSED;
         }
         set_default_scenario_if_missing();
@@ -550,8 +570,8 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         strcmp(token, "client.console.open") == 0 ||
         strcmp(token, "client.console.open.readwrite") == 0 ||
         strcmp(token, "client.camera.freecam.enable") == 0) {
-        if (!profile_selected()) {
-            format_refusal(out_message, out_message_cap, "refuse.profile_not_selected", token);
+        if (!authority_context_ready()) {
+            format_refusal(out_message, out_message_cap, "refuse.authority_context_required", token);
             return CLIENT_COMMAND_BRIDGE_REFUSED;
         }
         if (!entitlement_allowed(token)) {
@@ -568,6 +588,10 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (starts_with(token, "client.session.")) {
+        if (!authority_context_ready()) {
+            format_refusal(out_message, out_message_cap, "refuse.authority_context_required", token);
+            return CLIENT_COMMAND_BRIDGE_REFUSED;
+        }
         const char* warmup_sim = state_machine ? client_state_machine_warmup_simulation_step(state_machine) : "";
         const char* warmup_present = state_machine ? client_state_machine_warmup_presentation_step(state_machine) : "";
         int time_advanced = state_machine ? client_state_machine_simulation_time_advanced(state_machine) : 0;

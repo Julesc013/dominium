@@ -1,5 +1,5 @@
 {
-  "fingerprint_sha256": "90d74dc2446c37cc42fe68b67f34583146880eae47ddff38abf950ad4ded58c1",
+  "fingerprint_sha256": "46ca4a35f496effd9c200d74c7c8ec48d3002f20fd9b1f39e0b7e496e6b38769",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
@@ -22,9 +22,9 @@
       "sha256": "759a028019b67caa7112af9c6de67e419d9eeaf7020c47653b20b98854722416"
     },
     "testx_suite_set": {
-      "sha256": "e1d9ecdbfc2e1cabc5b889e5f93c283d7b84f0a9d62d33c220d1fe761a0bdfba",
+      "sha256": "34f1f3e7b70249a33c59a7f9b9d4c5b4a9893a93dee282c11f1e8f963f2c63cd",
       "source_root": "tests",
-      "suite_count": 314
+      "suite_count": 318
     },
     "unbounded_doctrine": {
       "path": "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md",

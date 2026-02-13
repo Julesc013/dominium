@@ -3313,7 +3313,7 @@ def check_authority_context_required_for_intents(repo_root):
             violations.append("{}: {} missing {}".format(invariant_id, schema_rel, marker))
 
     client_text = read_text(client_path) or ""
-    for marker in ("authority_context_id", "ctx.unset"):
+    for marker in ("authority_context_id", "ctx.unset", "refuse.authority_context_required"):
         if marker not in client_text:
             violations.append("{}: {} missing marker {}".format(invariant_id, client_rel, marker))
 
@@ -3508,9 +3508,18 @@ def check_ui_entitlement_gating(repo_root):
         if entitlement not in text:
             violations.append("{}: missing entitlement {} in {}".format(invariant_id, entitlement, rel))
 
-    for token in ("refuse.entitlement_required", "refuse.profile_not_selected"):
-        if token not in bridge_text:
-            violations.append("{}: missing refusal {} in {}".format(invariant_id, token, bridge_rel))
+    if "refuse.entitlement_required" not in bridge_text:
+        violations.append("{}: missing refusal {} in {}".format(
+            invariant_id, "refuse.entitlement_required", bridge_rel
+        ))
+    if ("refuse.profile_not_selected" not in bridge_text and
+            "refuse.authority_context_required" not in bridge_text):
+        violations.append("{}: missing refusal {} or {} in {}".format(
+            invariant_id,
+            "refuse.profile_not_selected",
+            "refuse.authority_context_required",
+            bridge_rel,
+        ))
     return violations
 
 
