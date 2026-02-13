@@ -2,8 +2,8 @@
   "artifact_class": "RUN_META",
   "cache_hit": true,
   "cache_key": "b10678a69adcb33c653e9877d358ecc4dcf81096835e85553db18615f9180e0e",
-  "duration_ms": 105,
-  "generated_utc": "2026-02-12T14:17:26Z",
+  "duration_ms": 90,
+  "generated_utc": "2026-02-13T02:33:49Z",
   "hardware_profile": {
     "arch": "amd64",
     "cpu_class": "mainstream",

@@ -9,7 +9,7 @@
       "sample_findings": [
         {
           "category": "canon_drift",
-          "finding_id": "A3_CANON_DRIFT:0247",
+          "finding_id": "A3_CANON_DRIFT:0248",
           "location": "docs/gameplay/CONSTRUCTION_MODEL.md"
         }
       ],
@@ -165,6 +165,22 @@
         "INFO": 120
       }
     },
+    "INV-GLOSSARY-TERM-CANON": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "terminology_misuse",
+          "finding_id": "C4_TERMINOLOGY_MISUSE:0001",
+          "location": "docs/architecture/TERMINOLOGY_GLOSSARY.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-LEGACY-CODE-QUARANTINED": {
       "finding_count": 160,
       "recommended_actions": {
@@ -199,6 +215,78 @@
       ],
       "severities": {
         "RISK": 160
+      }
+    },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 18,
+      "recommended_actions": {
+        "ADD_RULE": 18
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "data/registries/glossary.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0002",
+          "location": "tests/systemic/test_future_case_stress_suite.py"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0003",
+          "location": "tools/auditx/cache/vs2026/entries/00039f76f9f9aa7612e2ac3f5a5661ef0afdfb00d60ee7df3bfe4765b0e4eefe.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0004",
+          "location": "tools/auditx/cache/vs2026/entries/07c6c4a83a0b5e668c7696db8f9586697bb24b96bf09816892e3fe128f65eaca.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0005",
+          "location": "tools/auditx/cache/vs2026/entries/1140891f05cf80c35a36d0196520c8e2a02d83fc89d295c0394e0b977af64518.json"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 18
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 18,
+      "recommended_actions": {
+        "ADD_RULE": 18
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "data/registries/glossary.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0002",
+          "location": "tests/systemic/test_future_case_stress_suite.py"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0003",
+          "location": "tools/auditx/cache/vs2026/entries/00039f76f9f9aa7612e2ac3f5a5661ef0afdfb00d60ee7df3bfe4765b0e4eefe.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0004",
+          "location": "tools/auditx/cache/vs2026/entries/07c6c4a83a0b5e668c7696db8f9586697bb24b96bf09816892e3fe128f65eaca.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0005",
+          "location": "tools/auditx/cache/vs2026/entries/1140891f05cf80c35a36d0196520c8e2a02d83fc89d295c0394e0b977af64518.json"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 18
       }
     },
     "INV-SCHEMA-SHADOWING-CONTROL": {
@@ -237,76 +325,20 @@
         "WARN": 120
       }
     },
-    "INV-SECUREX-PRIVILEGE-MODEL": {
-      "finding_count": 300,
-      "recommended_actions": {
-        "ADD_TEST": 300
-      },
-      "sample_findings": [
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0030",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0031",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0032",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0033",
-          "location": "tools/auditx/cache/vs2026/entries/04319c251b514abd802d989dd828b9fada90c82e9c744c55a5dae80becb42c71.json"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0034",
-          "location": "tools/auditx/cache/vs2026/entries/04319c251b514abd802d989dd828b9fada90c82e9c744c55a5dae80becb42c71.json"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 300
-      }
-    },
     "INV-SECUREX-TRUST-POLICY-VALID": {
-      "finding_count": 29,
+      "finding_count": 1,
       "recommended_actions": {
-        "ADD_RULE": 29
+        "ADD_RULE": 1
       },
       "sample_findings": [
         {
           "category": "security.boundary_io",
           "finding_id": "C1:0001",
-          "location": "client/app/main_client.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0002",
           "location": "client/core/client_command_bridge.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0003",
-          "location": "client/core/client_state_machine.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0004",
-          "location": "client/core/client_state_machine.h"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0005",
-          "location": "client/core/session_artifacts.c"
         }
       ],
       "severities": {
-        "WARN": 29
+        "WARN": 1
       }
     },
     "INV-SETTINGS-OWNERSHIP": {
