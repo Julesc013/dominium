@@ -103,6 +103,7 @@ execution artifacts and are not authoritative.
 - `docs/architecture/GENERATED_CODE_POLICY.md`
 - `docs/architecture/GLOBAL_ID_MODEL.md`
 - `docs/architecture/GLOSSARY.md`
+- `docs/GLOSSARY.md`
 - `docs/architecture/GOVERNANCE_AND_INSTITUTIONS.md`
 - `docs/architecture/GUI_BASELINE.md`
 - `docs/architecture/HARDWARE_EVOLUTION_STRATEGY.md`
@@ -357,6 +358,7 @@ execution artifacts and are not authoritative.
 - `docs/archive/architecture/INVARIANTS.md`
 - `docs/archive/architecture/MENTAL_MODEL.md`
 - `docs/archive/architecture/NON_GOALS.md`
+- `docs/archive/architecture/ARCH_GLOSSARY.md`
 - `docs/archive/architecture/TERMINOLOGY.md`
 - `docs/archive/architecture/VISITABILITY_AND_REALITY.md`
 - `docs/archive/build/APR5_BUILD_INVENTORY.md`

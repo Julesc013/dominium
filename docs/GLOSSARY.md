@@ -1,11 +1,13 @@
-DOMINIUM — CANONICAL GLOSSARY
-Version: 1.0.0 (Normative)
-Compatibility: Bound to Constitutional Architecture & Execution Contract v1
-Scope: Dominium / Domino ecosystem
-Status: CANONICAL / Authoritative
+Status: CANONICAL
 Last Reviewed: 2026-02-13
 Supersedes: docs/architecture/ARCH_GLOSSARY.md
 Superseded By: none
+
+# Dominium Canonical Glossary
+
+Version: 1.0.0 (Normative)
+Compatibility: Bound to Constitutional Architecture and Execution Contract v1
+Scope: Dominium / Domino ecosystem
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 A
@@ -596,13 +598,9 @@ Historical content pack context.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Deprecated Terms:
-- survival_mode
-- creative_mode
-- hardcore_mode
-- spectator_mode
-- debug_mode
-- godmode
-- sandbox
+- Legacy mode-flag identifiers (`*_mode`) in runtime code
+- Ad hoc privilege flags outside `AuthorityContext`
+- Non-registry "sandbox" or "god" labels
 
 Reserved Words:
 Deterministic, Law, Authority, Lens, Canonical, Identity, Collapse, Expand, Macro, Micro, Process, Refusal.
