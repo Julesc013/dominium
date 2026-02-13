@@ -1,7 +1,7 @@
-Status: CANONICAL
-Last Reviewed: 2026-02-01
+Status: HISTORICAL
+Last Reviewed: 2026-02-13
 Supersedes: none
-Superseded By: none
+Superseded By: docs/GLOSSARY.md
 
 # Glossary (ARCH0 Binding)
 
