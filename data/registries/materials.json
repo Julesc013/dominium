@@ -1,0 +1,77 @@
+{
+  "schema_id": "dominium.schema.material.foundation",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.materials",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.material.foundation@1.0.0",
+    "materials": [
+      {
+        "material_id": "mat.wood",
+        "properties": {
+          "hardness": 1,
+          "combustibility": 3,
+          "tensile_strength": 2,
+          "moisture": 1,
+          "density": 2
+        },
+        "affordances": [
+          "cuttable",
+          "splittable",
+          "burnable",
+          "bindable"
+        ],
+        "description": "Baseline wood material.",
+        "extensions": {}
+      },
+      {
+        "material_id": "mat.stone",
+        "properties": {
+          "hardness": 4,
+          "combustibility": 0,
+          "tensile_strength": 3,
+          "moisture": 0,
+          "density": 4
+        },
+        "affordances": [
+          "splittable"
+        ],
+        "description": "Baseline stone material.",
+        "extensions": {}
+      },
+      {
+        "material_id": "mat.water",
+        "properties": {
+          "hardness": 0,
+          "combustibility": 0,
+          "tensile_strength": 0,
+          "moisture": 5,
+          "density": 2
+        },
+        "affordances": [
+          "consumable"
+        ],
+        "description": "Baseline water resource material.",
+        "extensions": {}
+      },
+      {
+        "material_id": "mat.leaves",
+        "properties": {
+          "hardness": 0,
+          "combustibility": 2,
+          "tensile_strength": 1,
+          "moisture": 2,
+          "density": 1
+        },
+        "affordances": [
+          "cuttable",
+          "burnable",
+          "bindable"
+        ],
+        "description": "Baseline leaves material.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

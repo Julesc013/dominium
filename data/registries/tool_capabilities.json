@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.schema.tool_capability",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.tool_capabilities",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.tool_capability@1.0.0",
+    "capabilities": [
+      {
+        "tool_capability_id": "toolcap.sharp_edge_grade1",
+        "properties": {
+          "sharpness_grade": 1,
+          "force_grade": 0,
+          "heat_grade": 0,
+          "binding_grade": 0
+        },
+        "description": "Basic sharp edge capability.",
+        "extensions": {}
+      },
+      {
+        "tool_capability_id": "toolcap.blunt_force_grade1",
+        "properties": {
+          "sharpness_grade": 0,
+          "force_grade": 1,
+          "heat_grade": 0,
+          "binding_grade": 0
+        },
+        "description": "Basic blunt force capability.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema_id": "dominium.schema.process_requirement",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.process_requirements",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.process_requirement@1.0.0",
+    "process_requirements": [
+      {
+        "process_id": "process.gather_resource",
+        "requires_material_affordance": [],
+        "requires_tool_capability": [],
+        "requires_heat": false,
+        "requires_binding": false,
+        "description": "Gather basic resource nodes.",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.craft_basic_tool",
+        "requires_material_affordance": [
+          "cuttable",
+          "bindable"
+        ],
+        "requires_tool_capability": [
+          "toolcap.sharp_edge_grade1"
+        ],
+        "requires_heat": false,
+        "requires_binding": true,
+        "description": "Craft deterministic baseline tool chain.",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.build_shelter",
+        "requires_material_affordance": [
+          "splittable",
+          "bindable"
+        ],
+        "requires_tool_capability": [
+          "toolcap.blunt_force_grade1"
+        ],
+        "requires_heat": false,
+        "requires_binding": true,
+        "description": "Build baseline shelter assembly.",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.consume_resource",
+        "requires_material_affordance": [
+          "consumable"
+        ],
+        "requires_tool_capability": [],
+        "requires_heat": false,
+        "requires_binding": false,
+        "description": "Consume basic survival resource.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

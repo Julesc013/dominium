@@ -1,0 +1,29 @@
+SCHEMA: material/material.schema
+schema_id: dominium.schema.material.foundation
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define minimal material properties and affordances for deterministic survival scaffolding.
+- Keep material semantics data-defined and replaceable.
+
+NON-SEMANTICS:
+- Values do not assert real-world physics accuracy.
+- Schema does not encode gameplay balance or simulation outcomes.
+
+REQUIRED SHAPE:
+record material_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - materials: [material_entry]
+    - extensions: map
+
+record material_entry
+  required:
+    - material_id: id
+    - properties: map
+    - affordances: [id]
+    - description: text
+    - extensions: map
