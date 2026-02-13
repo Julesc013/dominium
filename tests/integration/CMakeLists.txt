@@ -212,6 +212,27 @@ dom_add_testx(NAME world_manager
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
 
+dom_add_testx(NAME test_gate_fast_strict_full_profiles
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_gate_fast_strict_full_profiles.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case profiles
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
+dom_add_testx(NAME test_gate_fast_profile_does_not_run_full_suite
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_gate_fast_strict_full_profiles.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case fast_no_full_suite
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
+dom_add_testx(NAME test_gate_full_profile_shards_groups
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_gate_fast_strict_full_profiles.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case full_shards_groups
+    LABELS ${DOM_TESTX_LABEL_SMOKE}
+)
+
 dom_add_testx(NAME client_refusal_codes
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/client_refusal_codes_tests.py
         --client $<TARGET_FILE:dominium_client>

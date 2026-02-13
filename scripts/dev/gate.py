@@ -10,6 +10,21 @@ import subprocess
 import sys
 from datetime import datetime
 
+_XSTACK_CORE_READY = False
+_XSTACK_IMPORT_ERROR = ""
+try:
+    _REPO_HINT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+    if _REPO_HINT not in sys.path:
+        sys.path.insert(0, _REPO_HINT)
+    from tools.xstack.core.plan import build_execution_plan
+    from tools.xstack.core.profiler import export_json as export_profile_json
+    from tools.xstack.core.profiler import reset as reset_profile
+    from tools.xstack.core.scheduler import execute_plan
+
+    _XSTACK_CORE_READY = True
+except Exception as exc:  # pragma: no cover
+    _XSTACK_IMPORT_ERROR = str(exc)
+
 from env_tools_lib import (
     CANONICAL_TOOL_IDS,
     WORKSPACE_ID_ENV_KEY,
@@ -1097,7 +1112,115 @@ def _effective_mode_for_gate(repo_root, gate_kind, force_strict=False, force_ful
     return {"mode": FAST_MODE, "impact": "DEFAULT", "reason": "default", "changed_files": []}
 
 
+def _profile_for_command(gate_kind, force_strict=False, force_full=False):
+    if force_full:
+        return FULL_MODE
+    if force_strict:
+        return STRICT_MODE
+    if gate_kind in ("full", "dist"):
+        return FULL_MODE
+    if gate_kind == "strict":
+        return STRICT_MODE
+    return FAST_MODE
+
+
+def _write_full_plan_warning(repo_root, plan_payload):
+    estimate = plan_payload.get("estimate") or {}
+    if not bool(estimate.get("warn_full_plan_too_large")):
+        return ""
+    out_path = os.path.join(repo_root, "docs", "audit", "xstack", "FULL_PLAN_TOO_LARGE.md")
+    parent = os.path.dirname(out_path)
+    if parent and not os.path.isdir(parent):
+        os.makedirs(parent, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write("Status: DERIVED\n")
+        handle.write("Last Reviewed: {}\n".format(datetime.utcnow().strftime("%Y-%m-%d")))
+        handle.write("Supersedes: none\n")
+        handle.write("Superseded By: none\n\n")
+        handle.write("# FULL Plan Size Warning\n\n")
+        handle.write("- profile: `{}`\n".format(plan_payload.get("profile", "")))
+        handle.write("- plan_hash: `{}`\n".format(plan_payload.get("plan_hash", "")))
+        handle.write("- total_work_units: `{}`\n".format(estimate.get("total_work_units", 0)))
+        handle.write("- suggested_action: `partition test/audit groups and increase sharding granularity`\n")
+    return out_path
+
+
+def _run_gate_xstack(
+    repo_root,
+    gate_kind,
+    workspace_id="",
+    force_strict=False,
+    force_full=False,
+    trace=False,
+    profile_report=False,
+):
+    if not _XSTACK_CORE_READY:
+        return None
+    if gate_kind in ("doctor", "remediate", "run-queue"):
+        return None
+
+    reset_profile(trace=trace)
+    profile = _profile_for_command(gate_kind, force_strict=force_strict, force_full=force_full)
+    plan_payload = build_execution_plan(
+        repo_root=repo_root,
+        gate_command=gate_kind,
+        requested_profile=profile,
+        workspace_id=workspace_id,
+    )
+    result = execute_plan(
+        repo_root=repo_root,
+        plan_payload=plan_payload,
+        trace=trace,
+        profile_report=profile_report,
+    )
+    profile_path = export_profile_json(
+        os.path.join(repo_root, ".xstack_cache", "last_profile.json"),
+        extra={
+            "gate_kind": gate_kind,
+            "profile": plan_payload.get("profile", ""),
+            "plan_hash": plan_payload.get("plan_hash", ""),
+            "cache_hits": result.get("cache_hits", 0),
+            "cache_misses": result.get("cache_misses", 0),
+            "total_seconds": result.get("total_seconds", 0.0),
+            "exit_code": result.get("exit_code", 1),
+        },
+    )
+
+    warning_path = _write_full_plan_warning(repo_root, plan_payload)
+    output = {
+        "result": "xstack_plan_complete",
+        "gate_kind": gate_kind,
+        "profile": plan_payload.get("profile", ""),
+        "strict_variant": plan_payload.get("strict_variant", ""),
+        "plan_hash": plan_payload.get("plan_hash", ""),
+        "plan_path": os.path.relpath(plan_payload.get("plan_path", ""), repo_root).replace("\\", "/") if plan_payload.get("plan_path") else "",
+        "cache_hits": result.get("cache_hits", 0),
+        "cache_misses": result.get("cache_misses", 0),
+        "total_seconds": result.get("total_seconds", 0.0),
+        "exit_code": result.get("exit_code", 1),
+        "full_plan_warning": os.path.relpath(warning_path, repo_root).replace("\\", "/") if warning_path else "",
+        "profile_path": os.path.relpath(profile_path, repo_root).replace("\\", "/"),
+    }
+    if profile_report:
+        output["profile_report"] = result.get("profile_report", {})
+    print(json.dumps(output, indent=2, sort_keys=True))
+    return int(result.get("exit_code", 1))
+
+
 def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_file="", force_strict=False, force_full=False):
+    if not only_gate_ids:
+        xstack_code = _run_gate_xstack(
+            repo_root,
+            gate_kind,
+            workspace_id=workspace_id,
+            force_strict=force_strict,
+            force_full=force_full,
+            trace=bool(os.environ.get("DOM_GATE_TRACE", "")),
+            profile_report=bool(os.environ.get("DOM_GATE_PROFILE_REPORT", "")),
+        )
+        if xstack_code is not None:
+            return xstack_code
+
     if gate_kind == "run-queue":
         return _run_queue(repo_root, queue_file, workspace_id=workspace_id)
 
@@ -1256,7 +1379,17 @@ def main():
     parser.add_argument("--queue-file", default="")
     parser.add_argument("--strict", action="store_true", help="Force STRICT mode for verify/exitcheck/taskcheck/dev.")
     parser.add_argument("--full", action="store_true", help="Force FULL mode for verify/exitcheck/taskcheck/dev.")
+    parser.add_argument("--trace", action="store_true", help="Emit structured XStack trace events.")
+    parser.add_argument("--profile-report", action="store_true", help="Include scheduler profile report in output.")
     args = parser.parse_args()
+    if args.trace:
+        os.environ["DOM_GATE_TRACE"] = "1"
+    else:
+        os.environ.pop("DOM_GATE_TRACE", None)
+    if args.profile_report:
+        os.environ["DOM_GATE_PROFILE_REPORT"] = "1"
+    else:
+        os.environ.pop("DOM_GATE_PROFILE_REPORT", None)
     return _run_gate(
         _repo_root(args.repo_root),
         args.command,

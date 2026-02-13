@@ -352,3 +352,27 @@ dom_add_testx(NAME test_survival_diegetic_only
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME test_gate_plan_determinism
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_gate_plan_determinism.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_gate_cache_correctness
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_gate_cache_correctness.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_testx_group_mapping
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_testx_group_mapping.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_auditx_group_mapping
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_auditx_group_mapping.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

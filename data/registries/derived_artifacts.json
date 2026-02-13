@@ -111,6 +111,48 @@
         "extensions": {}
       },
       {
+        "artifact_id": "artifact.testx.summary",
+        "path": "docs/audit/testx/TESTX_SUMMARY.json",
+        "artifact_class": "CANONICAL",
+        "producer": "testx runner",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Canonical selected test summary.",
+          "No wall-clock fields permitted."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.testx.summary_md",
+        "path": "docs/audit/testx/TESTX_SUMMARY.md",
+        "artifact_class": "DERIVED_VIEW",
+        "producer": "testx runner",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Human-readable TestX summary view.",
+          "Formatting changes are non-semantic."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.testx.run_meta",
+        "path": "docs/audit/testx/TESTX_RUN_META.json",
+        "artifact_class": "RUN_META",
+        "producer": "testx runner",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Run metadata with duration/timestamp fields.",
+          "Excluded from canonical determinism comparisons."
+        ],
+        "extensions": {}
+      },
+      {
         "artifact_id": "artifact.identity.fingerprint",
         "path": "docs/audit/identity_fingerprint.json",
         "artifact_class": "CANONICAL",
@@ -121,6 +163,20 @@
         "notes": [
           "Identity invariants contract input.",
           "Deterministic by design."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.repox.proof_manifest",
+        "path": "docs/audit/proof_manifest.json",
+        "artifact_class": "RUN_META",
+        "producer": "scripts/ci/check_repox_rules.py",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "RepoX guidance manifest for impacted tests and invariants.",
+          "Includes volatile changed-path metadata and is excluded from canonical hashing."
         ],
         "extensions": {}
       },
@@ -313,6 +369,48 @@
         "notes": [
           "Trace values are informational.",
           "Only trace schema/structure is considered deterministic."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.xstack.speed_report",
+        "path": "docs/audit/xstack/XSTACK_SPEED_REPORT.md",
+        "artifact_class": "DERIVED_VIEW",
+        "producer": "scripts/dev/gate.py --profile-report",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Human-readable throughput diagnostics.",
+          "May include host-dependent duration values."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.xstack.final_validation",
+        "path": "docs/audit/xstack/FINAL_PERFORMANCE_VALIDATION.md",
+        "artifact_class": "DERIVED_VIEW",
+        "producer": "scripts/dev/gate.py full --profile-report",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Validation summary generated after throughput validation runs.",
+          "Contains informational timing data only."
+        ],
+        "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.xstack.full_plan_warning",
+        "path": "docs/audit/xstack/FULL_PLAN_TOO_LARGE.md",
+        "artifact_class": "RUN_META",
+        "producer": "tools/xstack/core/time_estimator.py",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Advisory warning for oversized FULL execution plans.",
+          "Used for tuning sharding; not a gate blocker."
         ],
         "extensions": {}
       }

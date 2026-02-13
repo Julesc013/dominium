@@ -328,7 +328,7 @@
         },
         {
           "mode_id": "STRICT",
-          "description": "RepoX full + targeted build/test gates + changed-only AuditX.",
+          "description": "RepoX full + targeted build/test gates + changed-only AuditX (light/deep split).",
           "full_escalation_allowed": false
         },
         {
@@ -337,6 +337,61 @@
           "full_escalation_allowed": true
         }
       ],
+      "profiles": {
+        "FAST": {
+          "required_runners": [
+            "repox_runner",
+            "testx.group.core.invariants",
+            "auditx.group.core.policy"
+          ],
+          "allowed_skips": [
+            "performx_runner",
+            "compatx_runner",
+            "securex_runner"
+          ],
+          "escalation_triggers": [
+            "schema/**",
+            "data/registries/**",
+            "repo/repox/**",
+            "scripts/ci/**"
+          ]
+        },
+        "STRICT_LIGHT": {
+          "required_runners": [
+            "repox_runner",
+            "testx.group.core.invariants",
+            "testx.group.runtime.verify",
+            "auditx.group.core.policy"
+          ],
+          "allowed_skips": [
+            "testx.group.dist"
+          ]
+        },
+        "STRICT_DEEP": {
+          "required_runners": [
+            "repox_runner",
+            "testx.group.core.invariants",
+            "testx.group.runtime.verify",
+            "auditx.group.core.policy"
+          ],
+          "allowed_skips": []
+        },
+        "FULL": {
+          "required_runners": [
+            "repox_runner",
+            "testx.group.core.invariants",
+            "testx.group.runtime.verify",
+            "testx.group.full.verify",
+            "testx.group.dist",
+            "auditx.group.core.policy",
+            "auditx.group.full.semantic",
+            "performx_runner",
+            "compatx_runner",
+            "securex_runner"
+          ],
+          "allowed_skips": []
+        }
+      },
       "state_hash_inputs": [
         "git_head",
         "working_tree_diff_hash",

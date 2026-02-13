@@ -1,0 +1,118 @@
+{
+  "schema_id": "dominium.schema.governance.xstack_components",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.xstack_components",
+    "registry_version": "1.0.0",
+    "groups": [
+      {
+        "group_id": "engine",
+        "runners": [
+          "repox_runner",
+          "testx_runner",
+          "auditx_runner"
+        ]
+      },
+      {
+        "group_id": "game",
+        "runners": [
+          "repox_runner",
+          "testx_runner",
+          "auditx_runner"
+        ]
+      },
+      {
+        "group_id": "client",
+        "runners": [
+          "repox_runner",
+          "testx_runner",
+          "auditx_runner"
+        ]
+      },
+      {
+        "group_id": "server",
+        "runners": [
+          "repox_runner",
+          "testx_runner",
+          "auditx_runner",
+          "securex_runner"
+        ]
+      },
+      {
+        "group_id": "schema",
+        "runners": [
+          "repox_runner",
+          "testx_runner",
+          "auditx_runner",
+          "compatx_runner"
+        ]
+      },
+      {
+        "group_id": "data",
+        "runners": [
+          "repox_runner",
+          "testx_runner",
+          "auditx_runner",
+          "compatx_runner"
+        ]
+      },
+      {
+        "group_id": "tools",
+        "runners": [
+          "repox_runner",
+          "auditx_runner",
+          "performx_runner",
+          "securex_runner"
+        ]
+      },
+      {
+        "group_id": "docs",
+        "runners": [
+          "repox_runner",
+          "auditx_runner"
+        ]
+      },
+      {
+        "group_id": "performx_runner",
+        "runner_command": [
+          "python",
+          "tools/performx/performx.py",
+          "run",
+          "--repo-root",
+          "{repo_root}"
+        ],
+        "expected_artifacts": [
+          "docs/audit/performance/PERFORMX_RESULTS.json",
+          "docs/audit/performance/PERFORMX_REGRESSIONS.json"
+        ]
+      },
+      {
+        "group_id": "compatx_runner",
+        "runner_command": [
+          "python",
+          "tools/compatx/compatx.py",
+          "verify",
+          "--repo-root",
+          "{repo_root}"
+        ],
+        "expected_artifacts": [
+          "docs/audit/compat/COMPAT_BASELINE.json"
+        ]
+      },
+      {
+        "group_id": "securex_runner",
+        "runner_command": [
+          "python",
+          "tools/securex/securex.py",
+          "verify",
+          "--repo-root",
+          "{repo_root}"
+        ],
+        "expected_artifacts": [
+          "docs/audit/security/FINDINGS.json",
+          "docs/audit/security/INTEGRITY_MANIFEST.json"
+        ]
+      }
+    ]
+  }
+}
