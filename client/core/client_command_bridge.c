@@ -64,7 +64,7 @@ static const bridge_alias k_aliases[] = {
 
 static const bridge_profile_binding k_profile_bindings[] = {
     { "exp.observer", "law.observer.default", 1, 1, 1, 0, 1, 1 },
-    { "exp.survival", "law.survival.default", 1, 0, 0, 0, 0, 0 },
+    { "exp.survival", "law.survival.softcore", 1, 0, 0, 0, 0, 0 },
     { "exp.hardcore", "law.survival.hardcore", 1, 0, 0, 0, 0, 0 },
     { "exp.creative", "law.creative.full", 1, 1, 1, 1, 0, 1 },
     { "exp.lab", "law.lab.default", 1, 1, 1, 1, 0, 1 },

@@ -40,7 +40,7 @@
       },
       {
         "experience_id": "exp.survival",
-        "law_profile_id": "law.survival.default",
+        "law_profile_id": "law.survival.softcore",
         "default_ui_workspace_ids": [
           "workspace.play_selector",
           "workspace.session_transition",
@@ -63,7 +63,7 @@
         ],
         "notes": "Survival baseline with constrained law.",
         "extensions": {
-          "authority_context_id": "ctx.exp.survival.law.survival.default",
+          "authority_context_id": "ctx.exp.survival.law.survival.softcore",
           "session_spec_template_id": "session.defaults.base",
           "legacy_aliases": [
             "exp.survival.softcore"

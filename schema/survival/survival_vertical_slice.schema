@@ -1,0 +1,48 @@
+SCHEMA: survival/survival_vertical_slice.schema
+schema_id: dominium.schema.survival.vertical_slice
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define a minimal deterministic survival truth layer scaffold.
+- Keep survival structure data-driven and replaceable.
+
+NON-SEMANTICS:
+- This schema does not define balancing outcomes.
+- This schema does not add new simulation primitives.
+
+REQUIRED SHAPE:
+record survival_vertical_slice
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - agent_fields: [field_entry]
+    - world_fields: [field_entry]
+    - assemblies: [assembly_entry]
+    - processes: [process_entry]
+    - parameter_bundle_refs: [id]
+    - extensions: map
+
+record field_entry
+  required:
+    - field_id: id
+    - description: text
+    - deterministic_required: bool
+    - extensions: map
+
+record assembly_entry
+  required:
+    - assembly_id: id
+    - fields: [id]
+    - description: text
+    - deterministic_required: bool
+    - extensions: map
+
+record process_entry
+  required:
+    - process_id: id
+    - description: text
+    - deterministic_required: bool
+    - requirement_ref: id
+    - extensions: map

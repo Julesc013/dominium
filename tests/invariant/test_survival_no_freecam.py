@@ -41,10 +41,10 @@ def main() -> int:
     bridge_text = _read(bridge_path)
     registry_text = _read(registry_path)
 
-    if "law.survival.default" not in law_text or "camera.mode.observer_truth" not in law_text:
+    if "law.survival.softcore" not in law_text or "camera.mode.observer_truth" not in law_text:
         print("{}: survival law must revoke camera.mode.observer_truth".format(invariant_id))
         return 1
-    if "{ \"exp.survival\", \"law.survival.default\", 1, 0, 0, 0, 0, 0 }" not in bridge_text:
+    if "{ \"exp.survival\", \"law.survival.softcore\", 1, 0, 0, 0, 0, 0 }" not in bridge_text:
         print("{}: survival bridge binding must keep freecam disabled".format(invariant_id))
         return 1
     if "client.camera.freecam.enable" not in registry_text:

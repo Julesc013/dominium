@@ -1,0 +1,125 @@
+{
+  "schema_id": "dominium.schema.survival.vertical_slice",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.survival.vertical_slice",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.survival.vertical_slice@1.0.0",
+    "agent_fields": [
+      {
+        "field_id": "need.energy",
+        "description": "Agent energy reserve.",
+        "deterministic_required": true,
+        "extensions": {}
+      },
+      {
+        "field_id": "need.hydration",
+        "description": "Agent hydration reserve.",
+        "deterministic_required": true,
+        "extensions": {}
+      },
+      {
+        "field_id": "need.exposure",
+        "description": "Agent exposure pressure from environment.",
+        "deterministic_required": true,
+        "extensions": {}
+      },
+      {
+        "field_id": "health.hp",
+        "description": "Agent health pool.",
+        "deterministic_required": true,
+        "extensions": {}
+      },
+      {
+        "field_id": "status.alive",
+        "description": "Agent alive/dead status marker.",
+        "deterministic_required": true,
+        "extensions": {}
+      }
+    ],
+    "world_fields": [
+      {
+        "field_id": "env.temperature",
+        "description": "Ambient temperature field.",
+        "deterministic_required": true,
+        "extensions": {}
+      },
+      {
+        "field_id": "env.daylight",
+        "description": "Daylight intensity field.",
+        "deterministic_required": true,
+        "extensions": {}
+      }
+    ],
+    "assemblies": [
+      {
+        "assembly_id": "assembly.shelter_basic",
+        "fields": [
+          "shelter.rating"
+        ],
+        "description": "Minimal shelter assembly scaffold.",
+        "deterministic_required": true,
+        "extensions": {}
+      }
+    ],
+    "processes": [
+      {
+        "process_id": "process.need_tick",
+        "description": "Apply deterministic decay to need fields.",
+        "deterministic_required": true,
+        "requirement_ref": "process.gather_resource",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.exposure_tick",
+        "description": "Apply environmental exposure to needs/health.",
+        "deterministic_required": true,
+        "requirement_ref": "process.build_shelter",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.consume_item",
+        "description": "Consume item/resource to restore needs.",
+        "deterministic_required": true,
+        "requirement_ref": "process.consume_resource",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.gather_resource",
+        "description": "Gather basic materials/resources.",
+        "deterministic_required": true,
+        "requirement_ref": "process.gather_resource",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.craft_basic_tool",
+        "description": "Craft the baseline tool chain.",
+        "deterministic_required": true,
+        "requirement_ref": "process.craft_basic_tool",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.build_shelter",
+        "description": "Create shelter assembly to mitigate exposure.",
+        "deterministic_required": true,
+        "requirement_ref": "process.build_shelter",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.death_process",
+        "description": "Finalize death persistence state transitions.",
+        "deterministic_required": true,
+        "requirement_ref": "process.consume_resource",
+        "extensions": {}
+      }
+    ],
+    "parameter_bundle_refs": [
+      "survival.params.default",
+      "survival.params.harsh"
+    ],
+    "extensions": {
+      "hardcore_profile_ref": "law.survival.hardcore",
+      "softcore_profile_ref": "law.survival.softcore"
+    }
+  }
+}

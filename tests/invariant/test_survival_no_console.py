@@ -40,15 +40,15 @@ def main() -> int:
     law_text = _read(law_path)
     bridge_text = _read(bridge_path)
 
-    if "law.survival.default" not in law_text:
-        print("{}: missing law.survival.default".format(invariant_id))
+    if "law.survival.softcore" not in law_text:
+        print("{}: missing law.survival.softcore".format(invariant_id))
         return 1
     if "\"forbidden_lenses\": [" not in law_text or "lens.nondiegetic.*" not in law_text:
-        print("{}: law.survival.default must forbid nondiegetic lenses".format(invariant_id))
+        print("{}: law.survival.softcore must forbid nondiegetic lenses".format(invariant_id))
         return 1
 
     required_bridge = (
-        "{ \"exp.survival\", \"law.survival.default\", 1, 0, 0, 0, 0, 0 }",
+        "{ \"exp.survival\", \"law.survival.softcore\", 1, 0, 0, 0, 0, 0 }",
         "client.console.open",
         "refuse.entitlement_required",
     )

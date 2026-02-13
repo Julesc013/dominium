@@ -101,6 +101,55 @@
         }
       },
       {
+        "law_profile_id": "law.survival.softcore",
+        "capabilities_granted": [
+          "ui.hud.basic",
+          "intent.survival.consume",
+          "intent.survival.craft"
+        ],
+        "capabilities_revoked": [
+          "camera.mode.observer_truth",
+          "ui.overlay.world_layers",
+          "intent.spawn.assembly",
+          "intent.delete.assembly"
+        ],
+        "entitlements_granted": [
+          "ui.hud.basic"
+        ],
+        "epistemic_policy_id": "epistemic.embodied_limited",
+        "allowed_intent_families": [
+          "intent.survival",
+          "intent.inspect.local"
+        ],
+        "forbidden_intent_families": [
+          "intent.world.mutate",
+          "intent.authority.escalate"
+        ],
+        "persistence_rules": [
+          "persistence.respawn.allowed"
+        ],
+        "allowed_lenses": [
+          "lens.diegetic.*"
+        ],
+        "forbidden_lenses": [
+          "lens.nondiegetic.*"
+        ],
+        "watermark_policy": "none",
+        "audit_required": true,
+        "refusal_codes": [
+          "refuse.entitlement_required",
+          "refuse.intent_forbidden",
+          "refuse.authority_denied"
+        ],
+        "extensions": {
+          "authority_context_required": true,
+          "legacy_aliases": [
+            "law.survival.default",
+            "survival.softcore"
+          ]
+        }
+      },
+      {
         "law_profile_id": "law.survival.hardcore",
         "capabilities_granted": [
           "ui.hud.basic",
