@@ -53,6 +53,44 @@
         "requires_binding": false,
         "description": "Consume basic survival resource.",
         "extensions": {}
+      },
+      {
+        "process_id": "process.consume_item",
+        "requires_material_affordance": [
+          "consumable"
+        ],
+        "requires_tool_capability": [],
+        "requires_heat": false,
+        "requires_binding": false,
+        "description": "Consume item alias mapped to consume resource contracts.",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.need_tick",
+        "requires_material_affordance": [],
+        "requires_tool_capability": [],
+        "requires_heat": false,
+        "requires_binding": false,
+        "description": "Need decay step with no extra material/tool requirement.",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.exposure_tick",
+        "requires_material_affordance": [],
+        "requires_tool_capability": [],
+        "requires_heat": false,
+        "requires_binding": false,
+        "description": "Exposure decay step with optional shelter mitigation.",
+        "extensions": {}
+      },
+      {
+        "process_id": "process.death_process",
+        "requires_material_affordance": [],
+        "requires_tool_capability": [],
+        "requires_heat": false,
+        "requires_binding": false,
+        "description": "Death transition process contract.",
+        "extensions": {}
       }
     ],
     "extensions": {}

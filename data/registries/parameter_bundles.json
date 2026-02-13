@@ -26,7 +26,12 @@
         "parameters": {
           "hunger.rate": 1.0,
           "hydration.rate": 1.0,
-          "exposure.rate": 1.0
+          "exposure.rate": 1.0,
+          "need.energy.decay_rate": 1.0,
+          "need.hydration.decay_rate": 1.0,
+          "need.exposure.decay_rate": 1.0,
+          "exposure.shelter_multiplier": 0.65,
+          "exposure.daylight_multiplier": 0.85
         },
         "notes": "Baseline survival rates.",
         "extensions": {}
@@ -38,7 +43,12 @@
         "parameters": {
           "hunger.rate": 1.4,
           "hydration.rate": 1.5,
-          "exposure.rate": 1.25
+          "exposure.rate": 1.25,
+          "need.energy.decay_rate": 1.4,
+          "need.hydration.decay_rate": 1.5,
+          "need.exposure.decay_rate": 1.25,
+          "exposure.shelter_multiplier": 0.8,
+          "exposure.daylight_multiplier": 1.0
         },
         "notes": "Hardcore tuning delta only.",
         "extensions": {}
