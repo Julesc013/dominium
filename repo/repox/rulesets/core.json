@@ -228,6 +228,13 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-SURVIVAL-NO-NONDIEGETIC-LENSES",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/law_profiles.json", "data/registries/lenses.json", "schema/lens/lens.schema"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-survival-no-nondiegetic-lenses",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-GLOSSARY-TERM-CANON",
       "severity": "FAIL",
       "scope_paths": ["schema/governance/glossary.schema", "data/registries/glossary.json", "docs/architecture", "docs/governance"],

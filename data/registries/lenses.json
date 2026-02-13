@@ -1,29 +1,127 @@
 {
   "schema_id": "dominium.schema.lens",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "record": {
     "registry_id": "dominium.registry.lenses",
-    "registry_version": "1.0.0",
-    "schema_version_ref": "dominium.schema.lens@1.0.0",
+    "registry_version": "1.1.0",
+    "schema_version_ref": "dominium.schema.lens@1.1.0",
     "lenses": [
       {
         "lens_id": "lens.diegetic.body_senses",
-        "lens_type": "diegetic",
-        "channels": [
-          "vision.local",
-          "audio.local",
-          "touch.local"
+        "category": "diegetic",
+        "required_entitlements": [],
+        "requires_authority_level": "authority.profile.any",
+        "allowed_experiences": [
+          "exp.survival",
+          "exp.hardcore",
+          "exp.survival.softcore",
+          "exp.mission",
+          "exp.creative",
+          "exp.lab",
+          "exp.observer"
         ],
-        "description": "Embodied local senses only.",
+        "watermark_policy": "none",
+        "description": "Direct local embodied sensing channel.",
+        "extensions": {}
+      },
+      {
+        "lens_id": "lens.diegetic.instrument.map",
+        "category": "diegetic",
+        "required_entitlements": [],
+        "requires_authority_level": "authority.profile.any",
+        "allowed_experiences": [
+          "exp.survival",
+          "exp.hardcore",
+          "exp.survival.softcore",
+          "exp.mission",
+          "exp.creative",
+          "exp.lab",
+          "exp.observer"
+        ],
+        "watermark_policy": "none",
+        "description": "Instrumented map view treated as in-world tooling.",
+        "extensions": {}
+      },
+      {
+        "lens_id": "lens.diegetic.instrument.compass",
+        "category": "diegetic",
+        "required_entitlements": [],
+        "requires_authority_level": "authority.profile.any",
+        "allowed_experiences": [
+          "exp.survival",
+          "exp.hardcore",
+          "exp.survival.softcore",
+          "exp.mission",
+          "exp.creative",
+          "exp.lab",
+          "exp.observer"
+        ],
+        "watermark_policy": "none",
+        "description": "Directional instrument channel.",
+        "extensions": {}
+      },
+      {
+        "lens_id": "lens.nondiegetic.hud.basic",
+        "category": "nondiegetic",
+        "required_entitlements": [
+          "ui.hud.basic"
+        ],
+        "requires_authority_level": "authority.profile.any",
+        "allowed_experiences": [
+          "exp.observer",
+          "exp.mission",
+          "exp.creative",
+          "exp.lab"
+        ],
+        "watermark_policy": "none",
+        "description": "Basic HUD overlay channel.",
+        "extensions": {}
+      },
+      {
+        "lens_id": "lens.nondiegetic.overlay.debug",
+        "category": "nondiegetic",
+        "required_entitlements": [
+          "ui.overlay.world_layers"
+        ],
+        "requires_authority_level": "authority.profile.any",
+        "allowed_experiences": [
+          "exp.observer",
+          "exp.lab",
+          "exp.creative"
+        ],
+        "watermark_policy": "observer",
+        "description": "Debug and truth-derived overlay projection.",
         "extensions": {}
       },
       {
         "lens_id": "lens.nondiegetic.console",
-        "lens_type": "nondiegetic",
-        "channels": [
-          "ui.console.command"
+        "category": "nondiegetic",
+        "required_entitlements": [
+          "ui.console.command.read_only"
         ],
-        "description": "Nondiegetic console interaction channel.",
+        "requires_authority_level": "authority.profile.any",
+        "allowed_experiences": [
+          "exp.observer",
+          "exp.lab",
+          "exp.creative",
+          "exp.mission"
+        ],
+        "watermark_policy": "dev",
+        "description": "Console surface bound to canonical command graph.",
+        "extensions": {}
+      },
+      {
+        "lens_id": "lens.nondiegetic.freecam",
+        "category": "nondiegetic",
+        "required_entitlements": [
+          "camera.mode.observer_truth"
+        ],
+        "requires_authority_level": "authority.profile.any",
+        "allowed_experiences": [
+          "exp.observer"
+        ],
+        "watermark_policy": "observer",
+        "description": "Non-diegetic exploration free camera.",
         "extensions": {}
       }
     ],

@@ -1,6 +1,6 @@
 SCHEMA: law/law_profile.schema
 schema_id: dominium.schema.law_profile
-schema_version: 1.1.0
+schema_version: 1.2.0
 stability: core
 
 PURPOSE:
@@ -31,8 +31,9 @@ record law_profile
     - allowed_intent_families: [id]
     - forbidden_intent_families: [id]
     - persistence_rules: [id]
+    - allowed_lenses: [id]
+    - forbidden_lenses: [id]
     - watermark_policy: enum(none|observer|dev)
     - audit_required: bool
     - refusal_codes: [id]
     - extensions: map
-

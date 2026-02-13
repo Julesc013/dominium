@@ -1,10 +1,10 @@
 {
   "schema_id": "dominium.schema.law_profile",
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "record": {
     "registry_id": "dominium.registry.law_profiles",
-    "registry_version": "1.1.0",
-    "schema_version_ref": "dominium.schema.law_profile@1.1.0",
+    "registry_version": "1.2.0",
+    "schema_version_ref": "dominium.schema.law_profile@1.2.0",
     "profiles": [
       {
         "law_profile_id": "law.observer.default",
@@ -36,6 +36,11 @@
         "persistence_rules": [
           "persistence.none"
         ],
+        "allowed_lenses": [
+          "lens.diegetic.*",
+          "lens.nondiegetic.*"
+        ],
+        "forbidden_lenses": [],
         "watermark_policy": "observer",
         "audit_required": true,
         "refusal_codes": [
@@ -77,6 +82,12 @@
         ],
         "persistence_rules": [
           "persistence.respawn.allowed"
+        ],
+        "allowed_lenses": [
+          "lens.diegetic.*"
+        ],
+        "forbidden_lenses": [
+          "lens.nondiegetic.*"
         ],
         "watermark_policy": "none",
         "audit_required": true,
@@ -121,6 +132,12 @@
         "persistence_rules": [
           "persistence.respawn.forbidden"
         ],
+        "allowed_lenses": [
+          "lens.diegetic.*"
+        ],
+        "forbidden_lenses": [
+          "lens.nondiegetic.*"
+        ],
         "watermark_policy": "none",
         "audit_required": true,
         "refusal_codes": [
@@ -159,6 +176,11 @@
         "persistence_rules": [
           "persistence.save.allowed"
         ],
+        "allowed_lenses": [
+          "lens.diegetic.*",
+          "lens.nondiegetic.*"
+        ],
+        "forbidden_lenses": [],
         "watermark_policy": "dev",
         "audit_required": true,
         "refusal_codes": [
@@ -199,6 +221,11 @@
         "persistence_rules": [
           "persistence.session_only"
         ],
+        "allowed_lenses": [
+          "lens.diegetic.*",
+          "lens.nondiegetic.*"
+        ],
+        "forbidden_lenses": [],
         "watermark_policy": "dev",
         "audit_required": true,
         "refusal_codes": [
@@ -239,6 +266,15 @@
         "persistence_rules": [
           "persistence.respawn.allowed"
         ],
+        "allowed_lenses": [
+          "lens.diegetic.*",
+          "lens.nondiegetic.hud.basic",
+          "lens.nondiegetic.console"
+        ],
+        "forbidden_lenses": [
+          "lens.nondiegetic.freecam",
+          "lens.nondiegetic.overlay.debug"
+        ],
         "watermark_policy": "none",
         "audit_required": true,
         "refusal_codes": [
@@ -271,6 +307,9 @@
         ],
         "persistence_rules": [
           "persistence.respawn.allowed"
+        ],
+        "allowed_lenses": [
+          "lens.diegetic.*"
         ],
         "forbidden_lenses": [
           "lens.nondiegetic.*"

@@ -327,6 +327,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when `schema/session/session_spec.schema` or `schema/authority/authority_context.schema` are missing.
 - Fails when required authority/session wiring fields are absent.
 
+### INV-SURVIVAL-NO-NONDIEGETIC-LENSES
+
+- Fails when survival law profiles do not explicitly permit diegetic lenses.
+- Fails when survival law profiles do not explicitly forbid `lens.nondiegetic.*`.
+- Enforces diegetic survival contract as data, not UI runtime branching.
+
 ### INV-MODE-AS-PROFILES
 
 - Fails when `ExperienceProfile` entries do not bind to valid `LawProfile` IDs.
