@@ -1,0 +1,16 @@
+{
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+        "scripts/ci/check_repox_rules.py",
+        "--repo-root",
+        "c:\\Inbox\\Git Repos\\dominium"
+      ],
+      "output": "WARN: WARN-GLOSSARY-TERM-CANON: docs/GLOSSARY.md uses forbidden synonym 'survival_mode' for ExperienceProfile\nWARN: WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile\nINV-CANON-INDEX: architecture doc missing from CANON_INDEX: docs/architecture/ARCH_GLOSSARY.md\nINV-CANON-INDEX: historical doc outside docs/archive: docs/architecture/ARCH_GLOSSARY.md\nINV-CANON-INDEX: listed doc missing: docs/architecture/GLOSSARY.md\nINV-DOC-STATUS-HEADER: missing status header: docs/GLOSSARY.md\n",
+      "returncode": 1
+    }
+  ],
+  "skipped": [],
+  "warnings": []
+}

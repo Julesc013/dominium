@@ -8,4 +8,4 @@ Superseded By: none
 - suite_id: `testx_verify`
 - result: `fail`
 - selected_tests: `10`
-- required_test_tags: `determinism, docs, identity, invariant, performance, regression, security, workspace`
+- required_test_tags: `determinism, docs, identity, integration, invariant, performance, registry, regression, schema, security, tools, workspace`

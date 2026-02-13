@@ -9,7 +9,7 @@
       "sample_findings": [
         {
           "category": "canon_drift",
-          "finding_id": "A3_CANON_DRIFT:0248",
+          "finding_id": "A3_CANON_DRIFT:0247",
           "location": "docs/gameplay/CONSTRUCTION_MODEL.md"
         }
       ],
@@ -129,6 +129,22 @@
         "WARN": 10
       }
     },
+    "INV-COMMAND-CAPABILITY-DECLARED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "capability_bypass_smell",
+          "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
+          "location": "client/core/client_command_bridge.c"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
       "finding_count": 120,
       "recommended_actions": {
@@ -218,75 +234,75 @@
       }
     },
     "INV-MODE-AS-PROFILES": {
-      "finding_count": 18,
+      "finding_count": 64,
       "recommended_actions": {
-        "ADD_RULE": 18
+        "ADD_RULE": 64
       },
       "sample_findings": [
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "data/registries/glossary.json"
+          "location": ".xstack_cache/repox_runner/08c11546d5688195cda22c7dfcb56f58c1d2db6d6d607822f29211c1b506bd98.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0002",
-          "location": "tests/systemic/test_future_case_stress_suite.py"
+          "location": ".xstack_cache/repox_runner/447820c2af58873710c15df23894aae70323ed70523bacc66813150f8a163555.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0003",
-          "location": "tools/auditx/cache/vs2026/entries/00039f76f9f9aa7612e2ac3f5a5661ef0afdfb00d60ee7df3bfe4765b0e4eefe.json"
+          "location": ".xstack_cache/repox_runner/4ec236e00486166a6297cec783d803e993db8493cade1eda03b14e2ea9265618.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0004",
-          "location": "tools/auditx/cache/vs2026/entries/07c6c4a83a0b5e668c7696db8f9586697bb24b96bf09816892e3fe128f65eaca.json"
+          "location": ".xstack_cache/repox_runner/babc83e0226c31067e8937a754522292eb9a033617ac2bed40dfd36430c2496b.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0005",
-          "location": "tools/auditx/cache/vs2026/entries/1140891f05cf80c35a36d0196520c8e2a02d83fc89d295c0394e0b977af64518.json"
+          "location": "data/registries/glossary.json"
         }
       ],
       "severities": {
-        "VIOLATION": 18
+        "VIOLATION": 64
       }
     },
     "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 18,
+      "finding_count": 64,
       "recommended_actions": {
-        "ADD_RULE": 18
+        "ADD_RULE": 64
       },
       "sample_findings": [
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "data/registries/glossary.json"
+          "location": ".xstack_cache/repox_runner/08c11546d5688195cda22c7dfcb56f58c1d2db6d6d607822f29211c1b506bd98.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0002",
-          "location": "tests/systemic/test_future_case_stress_suite.py"
+          "location": ".xstack_cache/repox_runner/447820c2af58873710c15df23894aae70323ed70523bacc66813150f8a163555.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0003",
-          "location": "tools/auditx/cache/vs2026/entries/00039f76f9f9aa7612e2ac3f5a5661ef0afdfb00d60ee7df3bfe4765b0e4eefe.json"
+          "location": ".xstack_cache/repox_runner/4ec236e00486166a6297cec783d803e993db8493cade1eda03b14e2ea9265618.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0004",
-          "location": "tools/auditx/cache/vs2026/entries/07c6c4a83a0b5e668c7696db8f9586697bb24b96bf09816892e3fe128f65eaca.json"
+          "location": ".xstack_cache/repox_runner/babc83e0226c31067e8937a754522292eb9a033617ac2bed40dfd36430c2496b.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0005",
-          "location": "tools/auditx/cache/vs2026/entries/1140891f05cf80c35a36d0196520c8e2a02d83fc89d295c0394e0b977af64518.json"
+          "location": "data/registries/glossary.json"
         }
       ],
       "severities": {
-        "VIOLATION": 18
+        "VIOLATION": 64
       }
     },
     "INV-SCHEMA-SHADOWING-CONTROL": {
@@ -325,22 +341,6 @@
         "WARN": 120
       }
     },
-    "INV-SECUREX-TRUST-POLICY-VALID": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0001",
-          "location": "client/core/client_command_bridge.c"
-        }
-      ],
-      "severities": {
-        "WARN": 1
-      }
-    },
     "INV-SETTINGS-OWNERSHIP": {
       "finding_count": 3,
       "recommended_actions": {
@@ -365,6 +365,22 @@
       ],
       "severities": {
         "RISK": 3
+      }
+    },
+    "INV-UI-ENTITLEMENT-GATING": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "capability_bypass_smell",
+          "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
+          "location": "client/core/client_command_bridge.c"
+        }
+      ],
+      "severities": {
+        "RISK": 1
       }
     },
     "INV-WORKSPACE-ISOLATION": {

@@ -1,0 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-02-13
+Supersedes: none
+Superseded By: none
+
+gate run with deterministic remediation
+C:\Users\Jules\AppData\Local\Programs\Python\Python38-32\python.exe scripts/ci/check_repox_rules.py --repo-root c:\Inbox\Git Repos\dominium => 0

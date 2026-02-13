@@ -1,0 +1,11 @@
+{
+  "docs": [
+    "docs/governance/GATE_AUTONOMY_POLICY.md",
+    "docs/governance/REPOX_TOOL_RULES.md",
+    "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md"
+  ],
+  "tests": [
+    "tests/app/tool_discoverability_tests.py",
+    "tests/invariant/repox_rules_tests.py"
+  ]
+}
