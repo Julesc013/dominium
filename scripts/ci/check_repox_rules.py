@@ -2453,6 +2453,41 @@ def check_no_tracked_writes_during_gate(repo_root):
     return violations
 
 
+def check_runtime_no_xstack_imports(repo_root):
+    invariant_id = "INV-RUNTIME-NO-XSTACK-IMPORTS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    runtime_roots = [
+        os.path.join(repo_root, "engine"),
+        os.path.join(repo_root, "game"),
+        os.path.join(repo_root, "client"),
+        os.path.join(repo_root, "server"),
+    ]
+    runtime_cmake = [
+        os.path.join(repo_root, "engine", "CMakeLists.txt"),
+        os.path.join(repo_root, "game", "CMakeLists.txt"),
+        os.path.join(repo_root, "client", "CMakeLists.txt"),
+        os.path.join(repo_root, "server", "CMakeLists.txt"),
+        os.path.join(repo_root, "CMakeLists.txt"),
+    ]
+    violations = []
+    for path in iter_files(runtime_roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
+        rel = repo_rel(repo_root, path)
+        text = read_text(path) or ""
+        lowered = text.lower()
+        if "tools/xstack" in lowered or "tools\\xstack" in lowered or "tools.xstack" in lowered:
+            violations.append("{}: runtime source references tools/xstack {}".format(invariant_id, rel))
+    for path in runtime_cmake:
+        if not os.path.isfile(path):
+            continue
+        rel = repo_rel(repo_root, path)
+        text = (read_text(path) or "").lower()
+        if "tools/xstack" in text or "tools\\xstack" in text:
+            violations.append("{}: runtime cmake references tools/xstack {}".format(invariant_id, rel))
+    return violations
+
+
 def _preset_cache_value(preset_map, preset_name, key):
     seen = set()
     current = preset_name
@@ -6420,6 +6455,7 @@ def main() -> int:
                 lambda: check_capability_matrix_integrity(repo_root),
                 lambda: check_solver_registry_contracts(repo_root),
                 lambda: check_forbidden_legacy_gating_tokens(repo_root),
+                lambda: check_runtime_no_xstack_imports(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
             ],
         },

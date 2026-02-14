@@ -345,6 +345,13 @@
       "scope_paths": ["scripts/dev/gate.py", ".xstack_cache/gate/TOUCHED_FILES_MANIFEST.json"],
       "documentation": "docs/governance/XSTACK_TRACK_IGNORE_POLICY.md#command-write-behavior",
       "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-RUNTIME-NO-XSTACK-IMPORTS",
+      "severity": "FAIL",
+      "scope_paths": ["engine", "game", "client", "server", "CMakeLists.txt"],
+      "documentation": "docs/governance/XSTACK_PORTABILITY.md#runtime-decoupling-contract",
+      "exemption_policy": "deny"
     }
   ]
 }
