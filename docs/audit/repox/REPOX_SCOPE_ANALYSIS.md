@@ -1,6 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-14
-Owner: governance
+Supersedes: none
+Superseded By: none
 
 # RepoX Scope Analysis (Cold Path)
 
