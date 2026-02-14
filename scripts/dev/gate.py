@@ -71,6 +71,7 @@ DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_arti
 TRACKED_WRITE_MANIFEST_SUFFIX = os.path.join("gate", "TOUCHED_FILES_MANIFEST.json")
 SNAPSHOT_REPORT_REL = os.path.join("docs", "audit", "system", "SNAPSHOT_REPORT.md")
 LEDGER_SNAPSHOT_REL = os.path.join("docs", "audit", "system", "LEDGER_SNAPSHOT.md")
+PERFORMANCE_CEILING_ALERT_REL = os.path.join("docs", "audit", "xstack", "PERFORMANCE_CEILING_ALERT.md")
 
 MECHANICAL_BLOCKER_TYPES = (
     "TOOL_DISCOVERY",
@@ -1263,6 +1264,108 @@ def _write_full_plan_warning(repo_root, plan_payload, cache_root=""):
     return out_path
 
 
+def _strict_cold_threshold_s():
+    raw = str(os.environ.get("DOM_XSTACK_STRICT_COLD_THRESHOLD_S", "120")).strip()
+    try:
+        return max(1.0, float(raw))
+    except ValueError:
+        return 120.0
+
+
+def _strict_cold_ceiling_exceeded(plan_payload, result, threshold_s):
+    profile = str(plan_payload.get("profile", "")).strip().upper()
+    if not profile.startswith("STRICT"):
+        return False
+    if int(result.get("cache_misses", 0)) <= 0:
+        return False
+    return float(result.get("total_seconds", 0.0)) > float(threshold_s)
+
+
+def _performance_impacted_groups(plan_payload, result):
+    by_node = {
+        str(row.get("node_id", "")): row
+        for row in (plan_payload.get("nodes") or [])
+        if isinstance(row, dict) and str(row.get("node_id", "")).strip()
+    }
+    impacted = []
+    for row in (result.get("results") or []):
+        if not isinstance(row, dict):
+            continue
+        if bool(row.get("cache_hit")):
+            continue
+        node = by_node.get(str(row.get("node_id", "")), {})
+        group_id = str(node.get("group_id", "")).strip()
+        runner_id = str(row.get("runner_id", "")).strip()
+        token = group_id or runner_id
+        if token:
+            impacted.append(token)
+    return sorted(set(impacted))
+
+
+def _write_performance_ceiling_alert(repo_root, cache_root, plan_payload, result, threshold_s, snapshot_mode=False):
+    impacted = _performance_impacted_groups(plan_payload, result)
+    summary_lines = [
+        "Status: DERIVED",
+        "Last Reviewed: 2026-02-14",
+        "Supersedes: none",
+        "Superseded By: none",
+        "",
+        "# Performance Ceiling Alert",
+        "",
+        "- profile: `{}`".format(str(plan_payload.get("profile", ""))),
+        "- plan_hash: `{}`".format(str(plan_payload.get("plan_hash", ""))),
+        "- strict_cold_threshold_s: `{:.3f}`".format(float(threshold_s)),
+        "- measured_total_s: `{:.6f}`".format(float(result.get("total_seconds", 0.0))),
+        "- cache_misses: `{}`".format(int(result.get("cache_misses", 0))),
+        "- recommended_rule_groups: `{}`".format(",".join(impacted) if impacted else "none"),
+    ]
+    text = "\n".join(summary_lines) + "\n"
+
+    cache_alert_path = os.path.join(cache_root, "xstack", "PERFORMANCE_CEILING_ALERT.md")
+    cache_parent = os.path.dirname(cache_alert_path)
+    if cache_parent and not os.path.isdir(cache_parent):
+        os.makedirs(cache_parent, exist_ok=True)
+    with open(cache_alert_path, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
+
+    snapshot_alert_path = ""
+    if snapshot_mode:
+        snapshot_alert_path = os.path.join(repo_root, PERFORMANCE_CEILING_ALERT_REL)
+        snapshot_parent = os.path.dirname(snapshot_alert_path)
+        if snapshot_parent and not os.path.isdir(snapshot_parent):
+            os.makedirs(snapshot_parent, exist_ok=True)
+        with open(snapshot_alert_path, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(text)
+
+    return {
+        "cache_alert_path": cache_alert_path,
+        "snapshot_alert_path": snapshot_alert_path,
+        "impacted_groups": impacted,
+    }
+
+
+def _merge_performance_failure(output):
+    classes = [str(item).strip().upper() for item in (output.get("failure_classes") or []) if str(item).strip()]
+    if "PERFORMANCE" not in classes:
+        classes.append("PERFORMANCE")
+    summary_rows = []
+    seen = {}
+    for row in (output.get("failure_summary") or []):
+        if not isinstance(row, dict):
+            continue
+        token = str(row.get("failure_class", "")).strip().upper()
+        if not token:
+            continue
+        seen[token] = max(int(row.get("count", 0)), seen.get(token, 0))
+    seen["PERFORMANCE"] = max(1, seen.get("PERFORMANCE", 0))
+    for token in sorted(seen.keys()):
+        summary_rows.append({"failure_class": token, "count": int(seen[token])})
+    output["failure_classes"] = sorted(set(classes))
+    output["failure_summary"] = summary_rows
+    output["primary_failure_class"] = "PERFORMANCE"
+    return output
+
+
 def _write_snapshot_report(repo_root, plan_payload, result, profile_path):
     out_path = os.path.join(repo_root, SNAPSHOT_REPORT_REL)
     parent = os.path.dirname(out_path)
@@ -1361,6 +1464,25 @@ def _run_gate_xstack(
         "full_plan_warning": os.path.relpath(warning_path, repo_root).replace("\\", "/") if warning_path else "",
         "profile_path": os.path.relpath(profile_path, repo_root).replace("\\", "/"),
     }
+    threshold_s = _strict_cold_threshold_s()
+    if _strict_cold_ceiling_exceeded(plan_payload, result, threshold_s):
+        alert = _write_performance_ceiling_alert(
+            repo_root=repo_root,
+            cache_root=cache_root,
+            plan_payload=plan_payload,
+            result=result,
+            threshold_s=threshold_s,
+            snapshot_mode=snapshot_mode,
+        )
+        output = _merge_performance_failure(output)
+        output["performance_ceiling_threshold_s"] = float(threshold_s)
+        output["performance_ceiling_alert"] = os.path.relpath(str(alert.get("cache_alert_path", "")), repo_root).replace("\\", "/")
+        output["performance_impacted_rule_groups"] = list(alert.get("impacted_groups") or [])
+        if str(alert.get("snapshot_alert_path", "")).strip():
+            output["performance_ceiling_snapshot"] = os.path.relpath(
+                str(alert.get("snapshot_alert_path", "")),
+                repo_root,
+            ).replace("\\", "/")
     try:
         runner_ids = [
             str(row.get("runner_id", "")).strip()
@@ -1383,7 +1505,7 @@ def _run_gate_xstack(
             cache_hits=int(result.get("cache_hits", 0)),
             cache_misses=int(result.get("cache_misses", 0)),
             artifact_hashes=canonical_ledger_artifact_hashes(repo_root, canonical_artifacts),
-            failure_class=str(result.get("primary_failure_class", "")),
+            failure_class=str(output.get("primary_failure_class", "")),
             duration_s=float(result.get("total_seconds", 0.0)),
             workspace_id=resolved_ws,
         )
