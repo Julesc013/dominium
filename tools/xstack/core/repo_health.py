@@ -119,12 +119,15 @@ def _canonical_artifact_hashes(repo_root: str) -> Tuple[Dict[str, str], List[str
     contract = load_artifact_contract(repo_root)
     hashes: Dict[str, str] = {}
     missing: List[str] = []
+    self_rel = _norm(DEFAULT_JSON_OUT)
     for artifact_id in sorted(contract.keys()):
         row = contract.get(artifact_id, {})
         if str(row.get("artifact_class", "")).strip() != "CANONICAL":
             continue
         rel = _norm(str(row.get("path", "")))
         if not rel:
+            continue
+        if rel == self_rel:
             continue
         abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
         if not os.path.isfile(abs_path):
