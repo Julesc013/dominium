@@ -25,6 +25,9 @@ Invariants, determinism, and canonical enforcement remain mandatory.
 - `FULL_ALL` (explicit `gate.py full --full-all`)
   - Runs all registered shards and heavy runners.
   - Intended for explicit exhaustive local checks and CI hardening.
+- `SNAPSHOT` (explicit `gate.py snapshot`)
+  - Runs strict validation once and allows writes only for `SNAPSHOT_ONLY` artifacts.
+  - Produces canonical audit snapshot outputs and `docs/audit/system/SNAPSHOT_REPORT.md`.
 
 ## Escalation Rules
 
@@ -110,6 +113,13 @@ Live events include:
 - duration per runner
 - profile summary with total runtime
 
+## Tracked Write Policy
+
+- `gate.py verify|strict|full|doctor` must not modify tracked files.
+- these commands may only write under `.xstack_cache/` (or workspace temp roots).
+- `gate.py snapshot` is the only command allowed to update tracked `docs/audit/**` artifacts, and only for entries marked `commit_policy=SNAPSHOT_ONLY` in `data/registries/derived_artifacts.json`.
+- each gate run emits `.xstack_cache/gate/TOUCHED_FILES_MANIFEST.json` for enforcement and diagnostics.
+
 ## Structural Bounding
 
 FULL mode is bounded by architecture, not timeouts:
@@ -117,7 +127,7 @@ FULL mode is bounded by architecture, not timeouts:
 - group sharding (`testx_groups.json`, `auditx_groups.json`)
 - parallel execution
 - selective heavy runner inclusion via impact
-- plan-size estimator warnings (`docs/audit/xstack/FULL_PLAN_TOO_LARGE.md`)
+- plan-size estimator warnings (`.xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md`)
 
 ## TestX Monolith Policy
 

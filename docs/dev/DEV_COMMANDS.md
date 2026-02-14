@@ -39,6 +39,9 @@ Canonical autonomous gate entrypoint:
 - `python scripts/dev/gate.py taskcheck`
 - `python scripts/dev/gate.py exitcheck`
 - `python scripts/dev/gate.py verify`
+- `python scripts/dev/gate.py strict`
+- `python scripts/dev/gate.py full`
+- `python scripts/dev/gate.py snapshot`
 - `python scripts/dev/gate.py dist`
 - `python scripts/dev/gate.py doctor`
 - `python scripts/dev/gate.py dev`
@@ -51,6 +54,9 @@ Equivalent dev wrapper commands:
 - `python scripts/dev/dev.py gate taskcheck`
 - `python scripts/dev/dev.py gate exitcheck`
 - `python scripts/dev/dev.py gate verify`
+- `python scripts/dev/dev.py gate strict`
+- `python scripts/dev/dev.py gate full`
+- `python scripts/dev/dev.py gate snapshot`
 - `python scripts/dev/dev.py gate dist`
 - `python scripts/dev/dev.py gate doctor`
 - `python scripts/dev/dev.py gate dev`
@@ -63,6 +69,8 @@ Behavior:
 - supports targeted execution with `--only-gate <gate_id>` for dependency gate diagnostics
 - emits remediation artifacts to `docs/audit/remediation/...`
 - emits remediation artifacts to `docs/audit/remediation/<workspace_id>/...`
+- verify/strict/full are tracked-read-only and write diagnostics under `.xstack_cache/`
+- snapshot is the only mode allowed to write `SNAPSHOT_ONLY` artifacts to `docs/audit/`
 
 Sanctioned legacy wrappers:
 
