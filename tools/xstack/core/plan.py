@@ -123,6 +123,53 @@ def _plan_hash(plan_payload: Dict[str, object]) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
+def _normalize_json(value: object) -> object:
+    if isinstance(value, dict):
+        out = {}
+        for key in sorted(value.keys()):
+            out[str(key)] = _normalize_json(value[key])
+        return out
+    if isinstance(value, list):
+        normalized = [_normalize_json(item) for item in value]
+        if all(isinstance(item, str) for item in normalized):
+            return sorted(set(str(item) for item in normalized))
+        return normalized
+    if isinstance(value, str):
+        return str(value)
+    return value
+
+
+def _registry_definition(groups: Dict[str, dict]) -> List[dict]:
+    out: List[dict] = []
+    for group_id in sorted(groups.keys()):
+        row = groups.get(group_id, {})
+        if not isinstance(row, dict):
+            continue
+        normalized = _normalize_json(row)
+        out.append({"group_id": group_id, "definition": normalized})
+    return out
+
+
+def _plan_hash_inputs(
+    repo_state_hash: str,
+    profile: str,
+    testx_groups: Dict[str, dict],
+    auditx_groups: Dict[str, dict],
+    xstack_components: Dict[str, dict],
+    impact: Dict[str, object],
+) -> Dict[str, object]:
+    return {
+        "repo_state_hash": str(repo_state_hash or ""),
+        "profile": str(profile or ""),
+        "runner_registry_definitions": {
+            "testx_groups": _registry_definition(testx_groups),
+            "auditx_groups": _registry_definition(auditx_groups),
+            "xstack_components": _registry_definition(xstack_components),
+        },
+        "impact_graph_mapping": _normalize_json(impact),
+    }
+
+
 def _set_levels(nodes: List[dict]) -> List[dict]:
     by_id = {str(row.get("node_id", "")): row for row in nodes}
 
@@ -256,7 +303,16 @@ def build_execution_plan(
             "nodes": nodes,
         }
         plan_payload["estimate"] = estimate_plan(plan_payload)
-        plan_hash = _plan_hash(plan_payload)
+        plan_hash_inputs = _plan_hash_inputs(
+            repo_state_hash=str(merkle.get("repo_state_hash", "")),
+            profile=profile,
+            testx_groups=testx_groups,
+            auditx_groups=auditx_groups,
+            xstack_components=xstack_components,
+            impact=impact,
+        )
+        plan_payload["plan_hash_inputs"] = plan_hash_inputs
+        plan_hash = _plan_hash(plan_hash_inputs)
         plan_payload["plan_hash"] = plan_hash
 
         plans_dir = os.path.join(cache_root or os.path.join(repo_root, ".xstack_cache"), "plans")
