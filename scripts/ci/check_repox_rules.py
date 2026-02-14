@@ -7,7 +7,7 @@ import re
 import shutil
 import subprocess
 import sys
-from datetime import date
+from datetime import date, datetime
 
 DEV_SCRIPT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "dev"))
 if DEV_SCRIPT_DIR not in sys.path:
@@ -195,6 +195,7 @@ FORBIDDEN_RENDER_TRUTH_TOKENS = (
 RULESET_ROOT = os.path.join("repo", "repox", "rulesets")
 REPOX_EXEMPTIONS_PATH = os.path.join("repo", "repox", "repox_exemptions.json")
 PROOF_MANIFEST_DEFAULT = os.path.join("docs", "audit", "proof_manifest.json")
+REPOX_PROFILE_REL = os.path.join("docs", "audit", "repox", "REPOX_PROFILE.json")
 EXEMPTION_INLINE_RE = re.compile(r"@repox:allow\((?P<rule_id>[A-Za-z0-9_.-]+)\)(?P<tail>[^\r\n]*)")
 EXEMPTION_REASON_RE = re.compile(r'reason="([^"]+)"')
 EXEMPTION_EXPIRES_RE = re.compile(r'expires="(\d{4}-\d{2}-\d{2})"')
@@ -257,6 +258,13 @@ IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.j
 IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
 GLOSSARY_SCHEMA_REL = os.path.join("schema", "governance", "glossary.schema")
 GLOSSARY_REGISTRY_REL = os.path.join("data", "registries", "glossary.json")
+PRESENTATION_MATRIX_SCHEMA_REL = os.path.join("schema", "governance", "presentation_matrix.schema")
+PRESENTATION_MATRIX_REGISTRY_REL = os.path.join("data", "registries", "presentation_matrix.json")
+PRESENTATION_MATRIX_SCHEMA_ID = "dominium.schema.governance.presentation_matrix"  # schema_version: 1.0.0
+AUDITX_PROMOTION_POLICY_REL = os.path.join("docs", "governance", "AUDITX_PROMOTION_POLICY.md")
+REPO_HEALTH_SNAPSHOT_JSON_REL = os.path.join("docs", "audit", "system", "REPO_HEALTH_SNAPSHOT.json")
+REPO_HEALTH_SNAPSHOT_MD_REL = os.path.join("docs", "audit", "system", "REPO_HEALTH_SNAPSHOT.md")
+GOVERNANCE_FINAL_REPORT_REL = os.path.join("docs", "audit", "system", "GOVERNANCE_FINAL_REPORT.md")
 DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL = os.path.join("schema", "governance", "derived_artifact_contract.schema")
 DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
 DERIVED_ARTIFACT_SCHEMA_ID = "dominium.schema.governance.derived_artifact_contract"  # schema_version: 1.0.0
@@ -269,6 +277,15 @@ DERIVED_ARTIFACT_REQUIRED_IDS = (
     "artifact.auditx.run_meta",
     "artifact.identity.fingerprint",
     "artifact.ui.bind.table",
+)
+DERIVED_ARTIFACT_CANONICAL_FORBIDDEN_KEYS = (
+    "created_utc",
+    "generated_utc",
+    "last_reviewed",
+    "timestamp",
+    "timestamp_utc",
+    "run_id",
+    "duration_ms",
 )
 REMEDIATION_PLAYBOOK_SCHEMA_REL = os.path.join("schema", "governance", "remediation_playbook.schema")
 REMEDIATION_PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
@@ -3585,6 +3602,104 @@ def check_ui_entitlement_gating(repo_root):
     return violations
 
 
+def check_presentation_matrix_integrity(repo_root):
+    invariant_id = "INV-PRESENTATION-MATRIX-INTEGRITY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_path = os.path.join(repo_root, PRESENTATION_MATRIX_SCHEMA_REL)
+    registry_path = os.path.join(repo_root, PRESENTATION_MATRIX_REGISTRY_REL)
+    law_path = os.path.join(repo_root, "data", "registries", "law_profiles.json")
+    lens_path = os.path.join(repo_root, "data", "registries", "lenses.json")
+
+    violations = []
+    if not os.path.isfile(schema_path):
+        violations.append("{}: missing schema {}".format(invariant_id, normalize_path(PRESENTATION_MATRIX_SCHEMA_REL)))
+        return violations
+    if not os.path.isfile(registry_path):
+        violations.append("{}: missing registry {}".format(invariant_id, normalize_path(PRESENTATION_MATRIX_REGISTRY_REL)))
+        return violations
+    if not os.path.isfile(law_path):
+        violations.append("{}: missing data/registries/law_profiles.json".format(invariant_id))
+        return violations
+    if not os.path.isfile(lens_path):
+        violations.append("{}: missing data/registries/lenses.json".format(invariant_id))
+        return violations
+
+    payload = _load_json_file(registry_path)
+    laws_payload = _load_json_file(law_path)
+    lenses_payload = _load_json_file(lens_path)
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(PRESENTATION_MATRIX_REGISTRY_REL))]
+    if not isinstance(laws_payload, dict) or not isinstance(lenses_payload, dict):
+        return ["{}: invalid law/lens registries".format(invariant_id)]
+
+    if str(payload.get("schema_id", "")).strip() != PRESENTATION_MATRIX_SCHEMA_ID:
+        violations.append("{}: schema_id mismatch in {}".format(invariant_id, normalize_path(PRESENTATION_MATRIX_REGISTRY_REL)))
+
+    rows = ((payload.get("record") or {}).get("rows") or [])
+    if not isinstance(rows, list):
+        return violations + ["{}: rows must be list in {}".format(invariant_id, normalize_path(PRESENTATION_MATRIX_REGISTRY_REL))]
+
+    law_rows = ((laws_payload.get("record") or {}).get("profiles") or [])
+    lens_rows = ((lenses_payload.get("record") or {}).get("lenses") or [])
+    known_laws = {str(row.get("law_profile_id", "")).strip() for row in law_rows if isinstance(row, dict)}
+    known_lenses = {str(row.get("lens_id", "")).strip() for row in lens_rows if isinstance(row, dict)}
+    seen_laws = set()
+
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append("{}: row {} must be object".format(invariant_id, idx))
+            continue
+        law_id = str(row.get("law_profile_id", "")).strip()
+        if not law_id:
+            violations.append("{}: row {} missing law_profile_id".format(invariant_id, idx))
+            continue
+        if law_id not in known_laws:
+            violations.append("{}: unknown law_profile_id '{}'".format(invariant_id, law_id))
+        if law_id in seen_laws:
+            violations.append("{}: duplicate law_profile_id '{}'".format(invariant_id, law_id))
+        seen_laws.add(law_id)
+
+        allowed_lenses = [str(item).strip() for item in (row.get("allowed_lenses") or []) if str(item).strip()]
+        allowed_panels = [str(item).strip() for item in (row.get("allowed_panels") or []) if str(item).strip()]
+        required_entitlements = {str(item).strip() for item in (row.get("required_entitlements") or []) if str(item).strip()}
+        if not allowed_lenses:
+            violations.append("{}: {} must declare allowed_lenses".format(invariant_id, law_id))
+
+        for lens in allowed_lenses:
+            if lens.endswith(".*"):
+                prefix = lens[:-2]
+                if not any(item.startswith(prefix + ".") or item == prefix for item in known_lenses):
+                    violations.append("{}: {} references unknown lens prefix '{}'".format(invariant_id, law_id, lens))
+            elif lens not in known_lenses:
+                violations.append("{}: {} references unknown lens '{}'".format(invariant_id, law_id, lens))
+
+        if law_id.startswith("law.survival") or law_id == "survival.softcore":
+            if any(item.startswith("lens.nondiegetic") for item in allowed_lenses):
+                violations.append("{}: {} must not allow nondiegetic lenses".format(invariant_id, law_id))
+            forbidden_panels = ("panel.console", "panel.overlay.debug", "panel.freecam")
+            for panel in forbidden_panels:
+                if panel in allowed_panels:
+                    violations.append("{}: {} must not expose {}".format(invariant_id, law_id, panel))
+
+        if "panel.console" in allowed_panels and not (
+            "ui.console.command.read_only" in required_entitlements
+            or "ui.console.command.read_write" in required_entitlements
+        ):
+            violations.append("{}: {} exposes panel.console without console entitlement".format(invariant_id, law_id))
+
+        if "panel.overlay.world_layers" in allowed_panels and "ui.overlay.world_layers" not in required_entitlements:
+            violations.append("{}: {} exposes world overlay panel without ui.overlay.world_layers entitlement".format(
+                invariant_id, law_id
+            ))
+
+        if law_id == "law.observer.default" and row.get("watermark_required") is not True:
+            violations.append("{}: law.observer.default requires watermark_required=true".format(invariant_id))
+
+    return violations
+
+
 def check_defaults_optional(repo_root):
     invariant_id = "INV-DEFAULTS-OPTIONAL"
     if is_override_active(repo_root, invariant_id):
@@ -5610,6 +5725,35 @@ def check_derived_artifact_contract(repo_root):
             violations.append("{}: RUN_META artifact '{}' cannot be gating input".format(
                 invariant_id, artifact_id
             ))
+        if artifact_class == "DERIVED_VIEW":
+            ext = entry.get("extensions")
+            regen_tool = ""
+            if isinstance(ext, dict):
+                regen_tool = str(ext.get("regeneration_tool", "")).strip()
+            if not regen_tool:
+                violations.append("{}: DERIVED_VIEW artifact '{}' missing extensions.regeneration_tool".format(
+                    invariant_id, artifact_id
+                ))
+
+        artifact_abs = os.path.join(repo_root, path.replace("/", os.sep))
+        if artifact_class == "CANONICAL" and path.endswith(".json"):
+            if os.path.isfile(artifact_abs):
+                artifact_payload = _load_json_file(artifact_abs)
+                if isinstance(artifact_payload, dict):
+                    stack = [artifact_payload]
+                    while stack:
+                        node = stack.pop()
+                        if isinstance(node, dict):
+                            for key, value in node.items():
+                                if key in DERIVED_ARTIFACT_CANONICAL_FORBIDDEN_KEYS:
+                                    violations.append(
+                                        "{}: canonical artifact '{}' contains forbidden run-meta key '{}'".format(
+                                            invariant_id, artifact_id, key
+                                        )
+                                    )
+                                stack.append(value)
+                        elif isinstance(node, list):
+                            stack.extend(node)
 
     missing_required_ids = sorted(set(DERIVED_ARTIFACT_REQUIRED_IDS) - seen_ids)
     if missing_required_ids:
@@ -5809,10 +5953,226 @@ def check_auditx_promotion_candidates(repo_root):
     return violations
 
 
+def check_auditx_promotion_policy_present(repo_root):
+    invariant_id = "INV-AUDITX-PROMOTION-POLICY-PRESENT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    rel = normalize_path(AUDITX_PROMOTION_POLICY_REL)
+    path = os.path.join(repo_root, rel.replace("/", os.sep))
+    if not os.path.isfile(path):
+        return ["{}: missing {}".format(invariant_id, rel)]
+
+    text = read_text(path) or ""
+    header = parse_doc_header(text)
+    if not header:
+        return ["{}: missing doc status header in {}".format(invariant_id, rel)]
+    if header.get("status") != "CANONICAL":
+        return ["{}: expected CANONICAL status in {} (found {})".format(invariant_id, rel, header.get("status", ""))]
+
+    required_tokens = (
+        "AuditX -> RepoX Promotion Policy",
+        "## Thresholds",
+        "## Promotion Flow",
+        "## Human Sign-Off Requirements",
+        "## Invariant Retirement",
+    )
+    violations = []
+    for token in required_tokens:
+        if token not in text:
+            violations.append("{}: missing section '{}' in {}".format(invariant_id, token, rel))
+    return violations
+
+
+def check_repo_health_snapshot_finalization(repo_root, changed_files):
+    invariant_id = "INV-REPO-HEALTH-SNAPSHOT-FINALIZATION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    normalized_changed = {normalize_path(str(item)) for item in (changed_files or []) if str(item).strip()}
+    final_report_rel = normalize_path(GOVERNANCE_FINAL_REPORT_REL)
+    if final_report_rel not in normalized_changed:
+        return []
+
+    snapshot_json_rel = normalize_path(REPO_HEALTH_SNAPSHOT_JSON_REL)
+    snapshot_md_rel = normalize_path(REPO_HEALTH_SNAPSHOT_MD_REL)
+    violations = []
+    if snapshot_json_rel not in normalized_changed:
+        violations.append("{}: governance final report update requires snapshot json update ({})".format(
+            invariant_id, snapshot_json_rel
+        ))
+    if snapshot_md_rel not in normalized_changed:
+        violations.append("{}: governance final report update requires snapshot markdown update ({})".format(
+            invariant_id, snapshot_md_rel
+        ))
+
+    snapshot_json_path = os.path.join(repo_root, snapshot_json_rel.replace("/", os.sep))
+    if not os.path.isfile(snapshot_json_path):
+        violations.append("{}: missing {}".format(invariant_id, snapshot_json_rel))
+        return violations
+    payload = _load_json_file(snapshot_json_path)
+    if not isinstance(payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, snapshot_json_rel))
+        return violations
+    if str(payload.get("artifact_class", "")).strip() != "CANONICAL":
+        violations.append("{}: {} must declare artifact_class=CANONICAL".format(
+            invariant_id, snapshot_json_rel
+        ))
+    if payload.get("git_status_clean") is not True:
+        violations.append("{}: {} requires git_status_clean=true for finalization".format(
+            invariant_id, snapshot_json_rel
+        ))
+    return violations
+
+
+def _sha256_text(value):
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _load_merkle_roots(repo_root):
+    try:
+        if repo_root not in sys.path:
+            sys.path.insert(0, repo_root)
+        from tools.xstack.core.merkle_tree import compute_repo_state_hash
+    except Exception:
+        return {}
+    payload = compute_repo_state_hash(repo_root)
+    roots = payload.get("roots") or {}
+    return roots if isinstance(roots, dict) else {}
+
+
+def _impacted_roots(changed_files):
+    impacted = set()
+    for rel in changed_files:
+        norm = normalize_path(rel).strip("/")
+        if not norm:
+            continue
+        head = norm.split("/")[0].lower()
+        if head in {"engine", "game", "client", "server", "tools", "schema", "data", "docs", "scripts", "repo", "tests"}:
+            impacted.add(head)
+            continue
+        if head in {"cmake", ".github", "ci"}:
+            impacted.add("scripts")
+            continue
+        impacted.add("repo")
+    return impacted
+
+
+def _repox_cache_path(repo_root, group_id, cache_key):
+    root = os.path.join(repo_root, ".xstack_cache", "repox", normalize_path(group_id).replace("/", "_"))
+    if not os.path.isdir(root):
+        os.makedirs(root, exist_ok=True)
+    return os.path.join(root, "{}.json".format(cache_key))
+
+
+def _load_group_cache(repo_root, group_id, cache_key):
+    path = _repox_cache_path(repo_root, group_id, cache_key)
+    if not os.path.isfile(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, ValueError):
+        return None
+    if not isinstance(payload, dict):
+        return None
+    return payload
+
+
+def _store_group_cache(repo_root, group_id, cache_key, payload):
+    path = _repox_cache_path(repo_root, group_id, cache_key)
+    with open(path, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump(payload, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+
+
+def _group_dep_hash(roots, deps):
+    rows = []
+    for dep in sorted(set(str(item).strip().lower() for item in deps if str(item).strip())):
+        row = roots.get(dep, {})
+        rows.append("{}:{}".format(dep, str(row.get("hash", ""))))
+    return _sha256_text("|".join(rows))
+
+
+def _run_check_group(repo_root, group_id, deps, profile, impacted_roots, roots, checks):
+    dep_hash = _group_dep_hash(roots, deps)
+    cache_key = _sha256_text(json.dumps({"group_id": group_id, "profile": profile, "dep_hash": dep_hash}, sort_keys=True))
+
+    should_execute = True
+    if profile in {"FAST", "STRICT"} and deps:
+        if not (set(dep.lower() for dep in deps) & set(impacted_roots)):
+            should_execute = False
+
+    cache_hit = False
+    cached = _load_group_cache(repo_root, group_id, cache_key)
+    if cached is not None:
+        cache_hit = True
+        if not should_execute:
+            return {
+                "group_id": group_id,
+                "duration_ms": int(cached.get("duration_ms", 0)),
+                "cache_hit": True,
+                "dep_hash": dep_hash,
+                "violations": list(cached.get("violations") or []),
+            }
+
+    started = datetime.utcnow()
+    violations = []
+    for check in checks:
+        rows = check()
+        if rows:
+            violations.extend(rows)
+    duration_ms = int((datetime.utcnow() - started).total_seconds() * 1000.0)
+
+    _store_group_cache(
+        repo_root,
+        group_id,
+        cache_key,
+        {
+            "schema_version": "1.0.0",
+            "group_id": group_id,
+            "dep_hash": dep_hash,
+            "duration_ms": duration_ms,
+            "violations": list(violations),
+        },
+    )
+    return {
+        "group_id": group_id,
+        "duration_ms": duration_ms,
+        "cache_hit": cache_hit,
+        "dep_hash": dep_hash,
+        "violations": violations,
+    }
+
+
+def _write_repox_profile(repo_root, profile, changed_files, impacted_roots, group_rows, total_ms):
+    out_rel = normalize_path(REPOX_PROFILE_REL)
+    out_path = os.path.join(repo_root, out_rel.replace("/", os.sep))
+    parent = os.path.dirname(out_path)
+    if parent and not os.path.isdir(parent):
+        os.makedirs(parent, exist_ok=True)
+    payload = {
+        "artifact_class": "RUN_META",
+        "status": "DERIVED",
+        "generated_utc": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "profile": profile,
+        "changed_files": sorted(set(changed_files)),
+        "impacted_roots": sorted(set(impacted_roots)),
+        "total_duration_ms": int(total_ms),
+        "cache_hits": sum(1 for row in group_rows if row.get("cache_hit")),
+        "cache_misses": sum(1 for row in group_rows if not row.get("cache_hit")),
+        "groups": group_rows,
+    }
+    with open(out_path, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump(payload, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="RepoX governance rules enforcement.")
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--proof-manifest-out", default=PROOF_MANIFEST_DEFAULT)
+    parser.add_argument("--profile", default="STRICT", choices=("FAST", "STRICT", "FULL"))
     args = parser.parse_args()
     if args.repo_root:
         repo_root = os.path.abspath(args.repo_root)
@@ -5820,105 +6180,173 @@ def main() -> int:
         repo_root = detect_repo_root(os.getcwd(), __file__)
     _canonicalize_tools_path(repo_root)
 
-    violations = []
-    allowed = load_allowed_top_level(repo_root)
-    violations.extend(check_top_level(repo_root, allowed))
-    violations.extend(check_archived_paths(repo_root))
-
+    started = datetime.utcnow()
     changed_files = get_changed_files(repo_root)
-    violations.extend(check_frozen_contract_modifications(repo_root, changed_files))
-
-    violations.extend(check_authoritative_symbols(repo_root))
-    violations.extend(check_tool_name_only(repo_root))
-    violations.extend(check_tools_dir_exists(repo_root))
-    violations.extend(check_tool_unresolvable(repo_root))
-    violations.extend(check_no_direct_gate_calls(repo_root))
-    violations.extend(check_remediation_playbooks(repo_root))
-    violations.extend(check_failure_class_registry(repo_root))
-    violations.extend(check_identity_fingerprint(repo_root))
-    violations.extend(check_forbidden_enum_tokens(repo_root))
-    violations.extend(check_raw_paths(repo_root))
-    violations.extend(check_magic_numbers(repo_root))
-    violations.extend(check_data_first_behavior(repo_root))
-    violations.extend(check_no_silent_defaults(repo_root))
-    violations.extend(check_schema_anchor_required(repo_root))
-    violations.extend(check_no_single_use_code_paths(repo_root))
-    violations.extend(check_duplicate_logic_pressure(repo_root))
-    violations.extend(check_new_feature_requires_data_first(repo_root))
-    violations.extend(check_ambiguous_new_dirs(repo_root))
-    violations.extend(check_root_module_shims(repo_root))
+    impacted_roots = _impacted_roots(changed_files)
+    roots = _load_merkle_roots(repo_root)
+    allowed = load_allowed_top_level(repo_root)
     canon_index = load_canon_index(repo_root)
-    violations.extend(check_canon_index_entries(repo_root, canon_index))
-    violations.extend(check_canon_state(repo_root))
-    violations.extend(check_doc_headers(repo_root, canon_index))
-    violations.extend(check_doc_references(repo_root, canon_index))
-    violations.extend(check_code_doc_references(repo_root, canon_index))
-    violations.extend(check_schema_version_bumps(repo_root))
-    violations.extend(check_schema_migration_routes(repo_root))
-    violations.extend(check_schema_no_implicit_defaults(repo_root))
-    violations.extend(check_unversioned_schema_references(repo_root))
-    violations.extend(check_compat_matrix_registry(repo_root))
-    violations.extend(check_compat_migration_registry(repo_root))
-    violations.extend(check_schema_version_policy_registry(repo_root))
-    violations.extend(check_schema_deprecated_fields(repo_root))
-    violations.extend(check_securex_trust_policy_registry(repo_root))
-    violations.extend(check_securex_privilege_model(repo_root))
-    violations.extend(check_unlocked_dependency(repo_root))
-    violations.extend(check_tool_version_mismatch(repo_root))
-    violations.extend(check_pack_capability_metadata(repo_root))
-    violations.extend(check_prealpha_pack_isolation(repo_root))
-    violations.extend(check_pkg_manifest_fields(repo_root))
-    violations.extend(check_pkg_capability_metadata(repo_root))
-    violations.extend(check_pkg_signature_policy(repo_root))
-    violations.extend(check_dist_sys_shipping(repo_root))
-    violations.extend(check_derived_pkg_index_freshness(repo_root))
-    violations.extend(check_platform_registry(repo_root))
-    violations.extend(check_platform_id_canonical(repo_root))
-    violations.extend(check_dist_sys_derived(repo_root))
-    violations.extend(check_product_graph_constraints(repo_root))
-    violations.extend(check_mode_backend_registry(repo_root))
-    violations.extend(check_mode_backend_selection_contract(repo_root))
-    violations.extend(check_portable_run_contract(repo_root))
-    violations.extend(check_build_preset_contract(repo_root))
-    violations.extend(check_dist_release_lane_gate(repo_root))
-    violations.extend(check_bugreport_resolution(repo_root))
-    violations.extend(check_command_capability_metadata(repo_root))
-    violations.extend(check_camera_blueprint_command_metadata(repo_root))
-    violations.extend(check_ui_canonical_command_bindings(repo_root))
-    violations.extend(check_observer_freecam_entitlement_gate(repo_root))
-    violations.extend(check_runtime_command_capability_guards(repo_root))
-    violations.extend(check_client_canonical_bridge(repo_root))
-    violations.extend(check_settings_ownership_boundaries(repo_root))
-    violations.extend(check_no_engine_settings(repo_root))
-    violations.extend(check_no_hardcoded_mode_branch(repo_root))
-    violations.extend(check_authority_context_required(repo_root))
-    violations.extend(check_survival_no_nondiegetic_lenses(repo_root))
-    violations.extend(check_survival_diegetic_contract(repo_root))
-    violations.extend(check_authority_context_required_for_intents(repo_root))
-    violations.extend(check_session_spec_required_for_run(repo_root))
-    violations.extend(check_glossary_term_canon(repo_root))
-    violations.extend(check_universe_identity_immutability(repo_root))
-    violations.extend(check_mode_as_profiles(repo_root))
-    violations.extend(check_ui_entitlement_gating(repo_root))
-    violations.extend(check_defaults_optional(repo_root))
-    violations.extend(check_renderer_no_truth_access(repo_root))
-    violations.extend(check_capability_matrix_integrity(repo_root))
-    violations.extend(check_solver_registry_contracts(repo_root))
-    violations.extend(check_forbidden_legacy_gating_tokens(repo_root))
-    violations.extend(check_process_registry(repo_root))
-    violations.extend(check_process_runtime_literals(repo_root))
-    violations.extend(check_process_guard_runtime_contract(repo_root))
-    violations.extend(check_process_registry_immutability(repo_root))
-    violations.extend(check_compliance_report_canon(repo_root))
-    violations.extend(check_derived_artifact_contract(repo_root))
-    violations.extend(check_auditx_artifact_headers(repo_root))
-    violations.extend(check_auditx_deterministic_contract(repo_root))
-    violations.extend(check_auditx_nonruntime_leak(repo_root))
-    violations.extend(check_auditx_promotion_candidates(repo_root))
-    violations.extend(check_auditx_output_staleness(repo_root))
+
+    groups = [
+        (
+            "repox.core.structure",
+            ("repo", "scripts", "tests"),
+            [
+                lambda: check_top_level(repo_root, allowed),
+                lambda: check_archived_paths(repo_root),
+                lambda: check_frozen_contract_modifications(repo_root, changed_files),
+                lambda: check_authoritative_symbols(repo_root),
+                lambda: check_tool_name_only(repo_root),
+                lambda: check_tools_dir_exists(repo_root),
+                lambda: check_tool_unresolvable(repo_root),
+                lambda: check_no_direct_gate_calls(repo_root),
+                lambda: check_remediation_playbooks(repo_root),
+                lambda: check_failure_class_registry(repo_root),
+                lambda: check_identity_fingerprint(repo_root),
+            ],
+        ),
+        (
+            "repox.docs.canon",
+            ("docs", "repo"),
+            [
+                lambda: check_canon_index_entries(repo_root, canon_index),
+                lambda: check_canon_state(repo_root),
+                lambda: check_doc_headers(repo_root, canon_index),
+                lambda: check_doc_references(repo_root, canon_index),
+                lambda: check_code_doc_references(repo_root, canon_index),
+                lambda: check_glossary_term_canon(repo_root),
+                lambda: check_auditx_promotion_policy_present(repo_root),
+                lambda: check_repo_health_snapshot_finalization(repo_root, changed_files),
+                lambda: check_auditx_artifact_headers(repo_root),
+                lambda: check_auditx_promotion_candidates(repo_root),
+                lambda: check_auditx_output_staleness(repo_root),
+            ],
+        ),
+        (
+            "repox.schema.compat",
+            ("schema", "data", "docs"),
+            [
+                lambda: check_schema_version_bumps(repo_root),
+                lambda: check_schema_migration_routes(repo_root),
+                lambda: check_schema_no_implicit_defaults(repo_root),
+                lambda: check_unversioned_schema_references(repo_root),
+                lambda: check_compat_matrix_registry(repo_root),
+                lambda: check_compat_migration_registry(repo_root),
+                lambda: check_schema_version_policy_registry(repo_root),
+                lambda: check_schema_deprecated_fields(repo_root),
+                lambda: check_securex_trust_policy_registry(repo_root),
+                lambda: check_securex_privilege_model(repo_root),
+                lambda: check_unlocked_dependency(repo_root),
+                lambda: check_tool_version_mismatch(repo_root),
+                lambda: check_derived_artifact_contract(repo_root),
+            ],
+        ),
+        (
+            "repox.dist.platform",
+            ("data", "schema", "scripts", "dist"),
+            [
+                lambda: check_pkg_manifest_fields(repo_root),
+                lambda: check_pkg_capability_metadata(repo_root),
+                lambda: check_pkg_signature_policy(repo_root),
+                lambda: check_dist_sys_shipping(repo_root),
+                lambda: check_derived_pkg_index_freshness(repo_root),
+                lambda: check_platform_registry(repo_root),
+                lambda: check_platform_id_canonical(repo_root),
+                lambda: check_dist_sys_derived(repo_root),
+                lambda: check_product_graph_constraints(repo_root),
+                lambda: check_mode_backend_registry(repo_root),
+                lambda: check_mode_backend_selection_contract(repo_root),
+                lambda: check_portable_run_contract(repo_root),
+                lambda: check_build_preset_contract(repo_root),
+                lambda: check_dist_release_lane_gate(repo_root),
+            ],
+        ),
+        (
+            "repox.runtime.policy",
+            ("client", "server", "engine", "game", "data", "schema"),
+            [
+                lambda: check_pack_capability_metadata(repo_root),
+                lambda: check_prealpha_pack_isolation(repo_root),
+                lambda: check_bugreport_resolution(repo_root),
+                lambda: check_command_capability_metadata(repo_root),
+                lambda: check_camera_blueprint_command_metadata(repo_root),
+                lambda: check_ui_canonical_command_bindings(repo_root),
+                lambda: check_observer_freecam_entitlement_gate(repo_root),
+                lambda: check_runtime_command_capability_guards(repo_root),
+                lambda: check_client_canonical_bridge(repo_root),
+                lambda: check_settings_ownership_boundaries(repo_root),
+                lambda: check_no_engine_settings(repo_root),
+                lambda: check_no_hardcoded_mode_branch(repo_root),
+                lambda: check_authority_context_required(repo_root),
+                lambda: check_survival_no_nondiegetic_lenses(repo_root),
+                lambda: check_survival_diegetic_contract(repo_root),
+                lambda: check_authority_context_required_for_intents(repo_root),
+                lambda: check_session_spec_required_for_run(repo_root),
+                lambda: check_mode_as_profiles(repo_root),
+                lambda: check_ui_entitlement_gating(repo_root),
+                lambda: check_presentation_matrix_integrity(repo_root),
+                lambda: check_defaults_optional(repo_root),
+                lambda: check_renderer_no_truth_access(repo_root),
+                lambda: check_capability_matrix_integrity(repo_root),
+                lambda: check_solver_registry_contracts(repo_root),
+                lambda: check_forbidden_legacy_gating_tokens(repo_root),
+            ],
+        ),
+        (
+            "repox.runtime.heavy_scans",
+            ("engine", "game", "client", "server", "tools", "schema", "data", "tests", "docs"),
+            [
+                lambda: check_forbidden_enum_tokens(repo_root),
+                lambda: check_raw_paths(repo_root),
+                lambda: check_magic_numbers(repo_root),
+                lambda: check_data_first_behavior(repo_root),
+                lambda: check_no_silent_defaults(repo_root),
+                lambda: check_schema_anchor_required(repo_root),
+                lambda: check_no_single_use_code_paths(repo_root),
+                lambda: check_duplicate_logic_pressure(repo_root),
+                lambda: check_new_feature_requires_data_first(repo_root),
+                lambda: check_ambiguous_new_dirs(repo_root),
+                lambda: check_root_module_shims(repo_root),
+                lambda: check_universe_identity_immutability(repo_root),
+                lambda: check_process_registry(repo_root),
+                lambda: check_process_runtime_literals(repo_root),
+                lambda: check_process_guard_runtime_contract(repo_root),
+                lambda: check_process_registry_immutability(repo_root),
+                lambda: check_compliance_report_canon(repo_root),
+                lambda: check_auditx_deterministic_contract(repo_root),
+                lambda: check_auditx_nonruntime_leak(repo_root),
+            ],
+        ),
+    ]
+
+    profile = str(args.profile).strip().upper()
+    group_rows = []
+    violations = []
+    for group_id, deps, checks in groups:
+        row = _run_check_group(
+            repo_root=repo_root,
+            group_id=group_id,
+            deps=deps,
+            profile=profile,
+            impacted_roots=impacted_roots,
+            roots=roots,
+            checks=checks,
+        )
+        group_rows.append(
+            {
+                "group_id": row.get("group_id"),
+                "duration_ms": int(row.get("duration_ms", 0)),
+                "cache_hit": bool(row.get("cache_hit")),
+                "dep_hash": str(row.get("dep_hash", "")),
+                "violation_count": len(row.get("violations") or []),
+            }
+        )
+        violations.extend(row.get("violations") or [])
 
     failures, warnings = _apply_ruleset_policy(repo_root, violations)
     write_proof_manifest(repo_root, args.proof_manifest_out, warnings, failures)
+    total_ms = int((datetime.utcnow() - started).total_seconds() * 1000.0)
+    _write_repox_profile(repo_root, profile, changed_files, impacted_roots, group_rows, total_ms)
 
     for item in warnings:
         print("WARN: {}".format(item))

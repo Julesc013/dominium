@@ -1,0 +1,37 @@
+SCHEMA: governance/presentation_matrix.schema
+schema_id: dominium.schema.governance.presentation_matrix
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Bind LawProfile lens/UI/command availability in one deterministic matrix.
+- Prevent diegetic leaks and capability bypass drift.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown extension keys MUST be preserved.
+- No field removal/rename without MAJOR version bump.
+
+NON-SEMANTICS:
+- This matrix does not create new gameplay behavior.
+- It constrains presentation and command exposure only.
+
+REQUIRED SHAPE:
+record presentation_matrix
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - rows: [presentation_row]
+    - extensions: map
+
+record presentation_row
+  required:
+    - law_profile_id: id
+    - allowed_lenses: [id]
+    - allowed_ui_packs: [id]
+    - allowed_panels: [id]
+    - allowed_commands: [id]
+    - required_entitlements: [id]
+    - watermark_required: bool
+    - extensions: map

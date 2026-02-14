@@ -94,7 +94,9 @@
           "Human-facing derived report.",
           "Formatting changes are non-semantic."
         ],
-        "extensions": {}
+        "extensions": {
+          "regeneration_tool": "python tools/auditx/auditx.py scan --format md"
+        }
       },
       {
         "artifact_id": "artifact.auditx.summary_md",
@@ -108,7 +110,9 @@
           "Human-facing derived summary.",
           "Formatting changes are non-semantic."
         ],
-        "extensions": {}
+        "extensions": {
+          "regeneration_tool": "python tools/auditx/auditx.py scan --format md"
+        }
       },
       {
         "artifact_id": "artifact.testx.summary",
@@ -136,7 +140,9 @@
           "Human-readable TestX summary view.",
           "Formatting changes are non-semantic."
         ],
-        "extensions": {}
+        "extensions": {
+          "regeneration_tool": "python scripts/dev/run_xstack_group_tests.py --repo-root . --group-id testx.group.core.invariants"
+        }
       },
       {
         "artifact_id": "artifact.testx.run_meta",
@@ -179,6 +185,55 @@
           "Includes volatile changed-path metadata and is excluded from canonical hashing."
         ],
         "extensions": {}
+      },
+      {
+        "artifact_id": "artifact.repox.profile",
+        "path": "docs/audit/repox/REPOX_PROFILE.json",
+        "artifact_class": "RUN_META",
+        "producer": "scripts/ci/check_repox_rules.py --profile",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Per-ruleset runtime profile for cold/warm RepoX diagnostics.",
+          "Contains timing/cache metadata and is never a gate input."
+        ],
+        "extensions": {
+          "regeneration_tool": "python scripts/ci/check_repox_rules.py --repo-root . --profile STRICT"
+        }
+      },
+      {
+        "artifact_id": "artifact.repo_health.snapshot_json",
+        "path": "docs/audit/system/REPO_HEALTH_SNAPSHOT.json",
+        "artifact_class": "CANONICAL",
+        "producer": "tools/xstack/core/repo_health.py",
+        "canonical_hash_required": true,
+        "regenerable": true,
+        "used_for_gating": true,
+        "notes": [
+          "Deterministic repository health snapshot keyed to current repo state.",
+          "Used for governance finalization proof."
+        ],
+        "extensions": {
+          "canonicalization_rules": "stable_sort+no_wallclock",
+          "regeneration_tool": "python tools/xstack/core/repo_health.py --repo-root ."
+        }
+      },
+      {
+        "artifact_id": "artifact.repo_health.snapshot_md",
+        "path": "docs/audit/system/REPO_HEALTH_SNAPSHOT.md",
+        "artifact_class": "DERIVED_VIEW",
+        "producer": "tools/xstack/core/repo_health.py",
+        "canonical_hash_required": false,
+        "regenerable": true,
+        "used_for_gating": false,
+        "notes": [
+          "Human-readable mirror of repository health snapshot.",
+          "Formatting-only changes are non-semantic."
+        ],
+        "extensions": {
+          "regeneration_tool": "python tools/xstack/core/repo_health.py --repo-root ."
+        }
       },
       {
         "artifact_id": "artifact.pkg.index",
@@ -384,7 +439,9 @@
           "Human-readable throughput diagnostics.",
           "May include host-dependent duration values."
         ],
-        "extensions": {}
+        "extensions": {
+          "regeneration_tool": "python scripts/dev/gate.py strict --repo-root . --profile-report"
+        }
       },
       {
         "artifact_id": "artifact.xstack.final_validation",
@@ -398,7 +455,9 @@
           "Validation summary generated after throughput validation runs.",
           "Contains informational timing data only."
         ],
-        "extensions": {}
+        "extensions": {
+          "regeneration_tool": "python scripts/dev/gate.py full --repo-root . --profile-report"
+        }
       },
       {
         "artifact_id": "artifact.xstack.full_plan_warning",

@@ -1,0 +1,152 @@
+{
+  "schema_id": "dominium.schema.governance.presentation_matrix",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.presentation_matrix",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.presentation_matrix@1.0.0",
+    "rows": [
+      {
+        "law_profile_id": "law.observer.default",
+        "allowed_lenses": [
+          "lens.diegetic.*",
+          "lens.nondiegetic.hud.basic",
+          "lens.nondiegetic.overlay.debug",
+          "lens.nondiegetic.console",
+          "lens.nondiegetic.freecam"
+        ],
+        "allowed_ui_packs": [
+          "ui.pack.core",
+          "ui.pack.observer"
+        ],
+        "allowed_panels": [
+          "panel.hud.basic",
+          "panel.overlay.world_layers",
+          "panel.console",
+          "panel.freecam"
+        ],
+        "allowed_commands": [
+          "client.session.inspect",
+          "client.session.map.open",
+          "client.session.stats",
+          "client.session.begin"
+        ],
+        "required_entitlements": [
+          "ui.hud.basic",
+          "ui.overlay.world_layers",
+          "ui.console.command.read_only",
+          "camera.mode.observer_truth"
+        ],
+        "watermark_required": true,
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "law.survival.softcore",
+        "allowed_lenses": [
+          "lens.diegetic.*"
+        ],
+        "allowed_ui_packs": [
+          "ui.pack.core",
+          "ui.pack.survival"
+        ],
+        "allowed_panels": [
+          "panel.hud.basic",
+          "panel.inventory",
+          "panel.map.instrument"
+        ],
+        "allowed_commands": [
+          "client.session.inspect",
+          "client.session.map.open",
+          "client.session.begin"
+        ],
+        "required_entitlements": [
+          "ui.hud.basic"
+        ],
+        "watermark_required": false,
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "law.survival.hardcore",
+        "allowed_lenses": [
+          "lens.diegetic.*"
+        ],
+        "allowed_ui_packs": [
+          "ui.pack.core",
+          "ui.pack.survival"
+        ],
+        "allowed_panels": [
+          "panel.hud.basic",
+          "panel.inventory",
+          "panel.map.instrument"
+        ],
+        "allowed_commands": [
+          "client.session.inspect",
+          "client.session.map.open",
+          "client.session.begin"
+        ],
+        "required_entitlements": [
+          "ui.hud.basic"
+        ],
+        "watermark_required": false,
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "law.creative.full",
+        "allowed_lenses": [
+          "lens.diegetic.*",
+          "lens.nondiegetic.hud.basic",
+          "lens.nondiegetic.console"
+        ],
+        "allowed_ui_packs": [
+          "ui.pack.core",
+          "ui.pack.builder"
+        ],
+        "allowed_panels": [
+          "panel.hud.basic",
+          "panel.console",
+          "panel.builder"
+        ],
+        "allowed_commands": [
+          "client.session.inspect",
+          "client.session.map.open",
+          "client.session.begin"
+        ],
+        "required_entitlements": [
+          "ui.hud.basic",
+          "ui.console.command.read_write"
+        ],
+        "watermark_required": true,
+        "extensions": {}
+      },
+      {
+        "law_profile_id": "law.mission.player",
+        "allowed_lenses": [
+          "lens.diegetic.*",
+          "lens.nondiegetic.hud.basic",
+          "lens.nondiegetic.console"
+        ],
+        "allowed_ui_packs": [
+          "ui.pack.core",
+          "ui.pack.mission"
+        ],
+        "allowed_panels": [
+          "panel.hud.basic",
+          "panel.console",
+          "panel.mission.objectives"
+        ],
+        "allowed_commands": [
+          "client.session.inspect",
+          "client.session.map.open",
+          "client.session.begin"
+        ],
+        "required_entitlements": [
+          "ui.hud.basic",
+          "ui.console.command.read_only"
+        ],
+        "watermark_required": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

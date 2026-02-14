@@ -1,5 +1,5 @@
-Status: DERIVED
-Last Reviewed: 2026-02-13
+Status: CANONICAL
+Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 
@@ -22,6 +22,9 @@ Invariants, determinism, and canonical enforcement remain mandatory.
 - `FULL` (explicit `gate.py full` or `gate.py dist`)
   - Runs all sharded groups and heavy runners with parallel scheduling and caching.
   - Default `full` is impacted-group based; set `DOM_GATE_FULL_ALL=1` for exhaustive all-group execution.
+- `FULL_ALL` (explicit `gate.py full --full-all`)
+  - Runs all registered shards and heavy runners.
+  - Intended for explicit exhaustive local checks and CI hardening.
 
 ## Escalation Rules
 
@@ -33,6 +36,7 @@ Escalation is data-defined in `data/registries/gate_policy.json`.
   - `repo/repox/**`
   - `scripts/ci/**`
 - `STRICT -> FULL` only for explicit `full`/`dist` intent.
+- `FULL -> FULL_ALL` only for explicit `--full-all` (or `DOM_GATE_FULL_ALL=1`) intent.
 - Packaging changes do not force FULL unless `full` or `dist` is requested.
 
 ## Incremental Planning Model
@@ -114,6 +118,19 @@ FULL mode is bounded by architecture, not timeouts:
 - parallel execution
 - selective heavy runner inclusion via impact
 - plan-size estimator warnings (`docs/audit/xstack/FULL_PLAN_TOO_LARGE.md`)
+
+## TestX Monolith Policy
+
+- `testx_all` is treated as CI/legacy-only.
+- Gate profiles route through sharded groups in `data/registries/testx_groups.json`.
+- Local development should use `gate.py verify|strict|full`.
+
+## Repo Health Snapshot
+
+- Governance finalization updates must include:
+  - `docs/audit/system/REPO_HEALTH_SNAPSHOT.json`
+  - `docs/audit/system/REPO_HEALTH_SNAPSHOT.md`
+- Snapshot json is canonical and must report `git_status_clean=true` for finalization commits.
 
 ## Key Files
 
