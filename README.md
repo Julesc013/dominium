@@ -62,7 +62,6 @@ out\build\vs2026\verify\bin\tools.exe --help
 
 - Architecture: `docs/ARCHITECTURE.md`
 - Governance stack: `docs/XSTACK.md`
-- Survival vertical slice: `docs/SURVIVAL_SLICE.md`
 - Canon index: `docs/architecture/CANON_INDEX.md`
 - Glossary: `docs/GLOSSARY.md`
 - Status snapshot: `docs/STATUS_NOW.md`
@@ -79,10 +78,6 @@ Execution and enforcement layers:
 ## Contributing
 
 Contribution workflow, coding standards, schema/registry updates, and gate usage are documented in `CONTRIBUTING.md`.
-
-## Survival Baseline
-
-The deterministic minimal survival slice, including needs, hazards, shelter, and diegetic lens constraints, is documented in `docs/SURVIVAL_SLICE.md`.
 
 ## More Detailed Docs
 
