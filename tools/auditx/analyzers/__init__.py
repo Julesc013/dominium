@@ -23,6 +23,7 @@ from analyzers import c4_terminology_misuse
 from analyzers import c5_experience_profile_drift
 from analyzers import c6_authority_bypass_smell
 from analyzers import c7_lens_bypass_smell
+from analyzers import c8_run_meta_input_smell
 
 
 ANALYZERS = (
@@ -49,6 +50,7 @@ ANALYZERS = (
     c5_experience_profile_drift,
     c6_authority_bypass_smell,
     c7_lens_bypass_smell,
+    c8_run_meta_input_smell,
 )
 
 
