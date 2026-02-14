@@ -377,6 +377,12 @@ dom_add_testx(NAME test_repox_cache_equivalence
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME test_repox_dep_hash_stability_when_run_meta_changes
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_repox_dep_hash_stability_when_run_meta_changes.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME test_testx_group_mapping
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_testx_group_mapping.py
         --repo-root ${CMAKE_SOURCE_DIR}

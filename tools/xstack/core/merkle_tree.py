@@ -26,10 +26,11 @@ DEFAULT_SUBTREES: Tuple[str, ...] = (
 )
 MERKLE_ROOTS_CACHE_REL = os.path.join("merkle", "roots.json")
 MERKLE_FILE_HASH_CACHE_REL = os.path.join("merkle", "file_hashes.json")
-RUN_META_PREFIXES: Tuple[str, ...] = (
-    "docs/audit/",
-    "docs/audit/remediation/",
+DEFAULT_SKIP_PREFIXES: Tuple[str, ...] = (
     ".xstack_cache/",
+    "build/",
+    "dist/",
+    "tmp/",
     "tools/auditx/cache/",
     "tools/compatx/cache/",
     "tools/performx/cache/",
@@ -101,6 +102,7 @@ def _subtree_hash(
     hash_cache: Dict[str, dict],
     next_hash_cache: Dict[str, dict],
     skip_paths: set,
+    skip_prefixes: Tuple[str, ...],
 ) -> Dict[str, object]:
     phase = "merkle.subtree.{}".format(subtree_rel)
     start_phase(phase)
@@ -116,7 +118,7 @@ def _subtree_hash(
         rel = _norm(os.path.relpath(path, repo_root))
         if rel in skip_paths:
             continue
-        if any(rel.startswith(prefix) for prefix in RUN_META_PREFIXES):
+        if any(rel.startswith(prefix) for prefix in skip_prefixes):
             continue
         if rel.startswith("tools/") and "/cache/" in rel:
             continue
@@ -158,17 +160,38 @@ def _store_json_cache(repo_root: str, cache_root: str, rel_path: str, payload: D
     return path
 
 
-def _artifact_skip_paths(repo_root: str) -> set:
+def _artifact_skip_paths(
+    repo_root: str,
+    include_artifact_classes: Tuple[str, ...] | None = None,
+    exclude_artifact_classes: Tuple[str, ...] | None = None,
+) -> set:
     contract = load_artifact_contract(repo_root)
     skip = set()
+    include_classes = {str(item).strip().upper() for item in (include_artifact_classes or ()) if str(item).strip()}
+    exclude_classes = {str(item).strip().upper() for item in (exclude_artifact_classes or ()) if str(item).strip()}
     for row in contract.values():
         rel = str(row.get("path", "")).replace("\\", "/").strip("/")
         if not rel:
             continue
-        # Gate input hashes are source-driven. Generated artifacts are outputs and
-        # must not invalidate cache keys on every gate run.
-        skip.add(rel)
+        artifact_class = str(row.get("artifact_class", "")).strip().upper()
+        if include_classes and artifact_class not in include_classes:
+            skip.add(rel)
+            continue
+        if exclude_classes and artifact_class in exclude_classes:
+            skip.add(rel)
     return skip
+
+
+def build_skip_prefixes(extra_excluded_prefixes: Tuple[str, ...] | None = None) -> Tuple[str, ...]:
+    prefixes = set(DEFAULT_SKIP_PREFIXES)
+    for value in (extra_excluded_prefixes or ()):
+        token = _norm(str(value))
+        if not token:
+            continue
+        if not token.endswith("/"):
+            token += "/"
+        prefixes.add(token)
+    return tuple(sorted(prefixes))
 
 
 def compute_subtree_roots(
@@ -176,16 +199,25 @@ def compute_subtree_roots(
     subtrees: List[str] | None = None,
     hash_cache: Dict[str, dict] | None = None,
     skip_paths: set | None = None,
+    skip_prefixes: Tuple[str, ...] | None = None,
 ) -> Tuple[Dict[str, dict], Dict[str, dict]]:
     roots: Dict[str, dict] = {}
     next_hash_cache: Dict[str, dict] = {}
     current_cache = hash_cache or {}
     effective_skip = skip_paths or set()
+    effective_prefixes = tuple(skip_prefixes or ())
     for subtree in (subtrees or list(DEFAULT_SUBTREES)):
         token = _norm(str(subtree))
         if not token:
             continue
-        roots[token] = _subtree_hash(repo_root, token, current_cache, next_hash_cache, effective_skip)
+        roots[token] = _subtree_hash(
+            repo_root,
+            token,
+            current_cache,
+            next_hash_cache,
+            effective_skip,
+            effective_prefixes,
+        )
     return roots, next_hash_cache
 
 
@@ -216,16 +248,29 @@ def store_file_hash_cache(repo_root: str, hashes: Dict[str, dict], cache_root: s
     return _store_json_cache(repo_root, cache_root, MERKLE_FILE_HASH_CACHE_REL, payload)
 
 
-def compute_repo_state_hash(repo_root: str, cache_root: str = "", subtrees: List[str] | None = None) -> Dict[str, object]:
+def compute_repo_state_hash(
+    repo_root: str,
+    cache_root: str = "",
+    subtrees: List[str] | None = None,
+    include_artifact_classes: Tuple[str, ...] | None = None,
+    exclude_artifact_classes: Tuple[str, ...] | None = ("RUN_META", "DERIVED_VIEW"),
+    extra_excluded_prefixes: Tuple[str, ...] | None = None,
+) -> Dict[str, object]:
     start_phase("merkle.compute_repo_state_hash")
     hash_cache = load_file_hash_cache(repo_root, cache_root=cache_root)
-    skip_paths = _artifact_skip_paths(repo_root)
+    skip_paths = _artifact_skip_paths(
+        repo_root,
+        include_artifact_classes=include_artifact_classes,
+        exclude_artifact_classes=exclude_artifact_classes,
+    )
+    skip_prefixes = build_skip_prefixes(extra_excluded_prefixes=extra_excluded_prefixes)
     try:
         roots, next_hash_cache = compute_subtree_roots(
             repo_root,
             subtrees=subtrees,
             hash_cache=hash_cache,
             skip_paths=skip_paths,
+            skip_prefixes=skip_prefixes,
         )
         state_hash = _repo_state_hash(roots)
         payload = {
