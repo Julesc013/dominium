@@ -542,6 +542,25 @@
         "write_root": "docs_audit"
       },
       {
+        "artifact_class": "DERIVED_VIEW",
+        "artifact_id": "artifact.xstack.ledger_snapshot",
+        "canonical_hash_required": false,
+        "commit_policy": "SNAPSHOT_ONLY",
+        "extensions": {
+          "regeneration_tool": "python scripts/dev/gate.py snapshot --repo-root . --ledger-export"
+        },
+        "notes": [
+          "Deterministic execution ledger summary for snapshot auditing.",
+          "Contains non-gating run diagnostics."
+        ],
+        "path": "docs/audit/system/LEDGER_SNAPSHOT.md",
+        "producer": "scripts/dev/gate.py --ledger-export",
+        "regenerable": true,
+        "regeneration_tool": "python scripts/dev/gate.py snapshot --repo-root . --ledger-export",
+        "used_for_gating": false,
+        "write_root": "docs_audit"
+      },
+      {
         "artifact_class": "RUN_META",
         "artifact_id": "artifact.xstack.full_plan_warning",
         "canonical_hash_required": false,

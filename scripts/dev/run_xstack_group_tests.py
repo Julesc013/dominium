@@ -14,6 +14,7 @@ GROUP_TESTS = {
     "testx.group.core.invariants": [
         ["tests/invariant/test_gate_plan_determinism.py", "--repo-root", "."],
         ["tests/invariant/test_gate_cache_correctness.py", "--repo-root", "."],
+        ["tests/invariant/test_ledger_deterministic_when_inputs_identical.py", "--repo-root", "."],
         ["tests/invariant/test_repox_cache_equivalence.py", "--repo-root", "."],
         ["tests/invariant/test_testx_group_mapping.py", "--repo-root", "."],
         ["tests/invariant/test_auditx_group_mapping.py", "--repo-root", "."],
@@ -32,6 +33,7 @@ GROUP_TESTS = {
     "testx.group.full.verify": [
         ["tests/invariant/test_gate_plan_determinism.py", "--repo-root", "."],
         ["tests/invariant/test_gate_cache_correctness.py", "--repo-root", "."],
+        ["tests/invariant/test_ledger_deterministic_when_inputs_identical.py", "--repo-root", "."],
         ["tests/invariant/test_repox_cache_equivalence.py", "--repo-root", "."],
         ["tests/integration/test_gate_fast_strict_full_profiles.py", "--repo-root", ".", "--case", "profiles"],
         ["tests/integration/test_gate_fast_strict_full_profiles.py", "--repo-root", ".", "--case", "full_shards_groups"],
