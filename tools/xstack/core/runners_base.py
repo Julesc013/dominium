@@ -68,3 +68,8 @@ class BaseRunner(metaclass=ABCMeta):
         """Return true if runner is part of default FULL profile."""
 
         return False
+
+    def version_hash(self) -> str:
+        """Return deterministic runner implementation version hash."""
+
+        return ""

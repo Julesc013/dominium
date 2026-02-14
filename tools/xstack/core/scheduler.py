@@ -13,7 +13,7 @@ from . import log as xlog
 from .cache_store import load_entry, store_entry
 from .failure import aggregate_failure_classes, classify_failure
 from .profiler import end_phase, start_phase
-from .runners import resolve_adapter, result_to_dict
+from .runners import resolve_adapter, result_to_dict, runner_version_hash
 from .runners_base import RunnerContext
 
 
@@ -111,12 +111,14 @@ def execute_plan(
                     pending.remove(node_id)
                     runner_id = str(node.get("runner_id", "")).strip()
                     input_hash = _node_input_hash(node, plan_payload, completed)
+                    version_hash = runner_version_hash(runner_id)
                     cache_profile = _cache_profile_id(runner_id, str(plan_payload.get("profile", "")).strip())
                     cache_entry = load_entry(
                         repo_root,
                         runner_id=runner_id,
                         input_hash=input_hash,
                         profile_id=cache_profile,
+                        version_hash=version_hash,
                         cache_root=cache_root,
                     )
                     if cache_entry:
@@ -149,14 +151,21 @@ def execute_plan(
                     node_start = xlog.phase_start(runner_id, trace=trace)
                     start_phase("runner.{}".format(runner_id))
                     future = pool.submit(_run_node, node, repo_root, str(plan_payload.get("workspace_id", "")), plan_payload)
-                    running[future] = (node_id, input_hash, node_start, "runner.{}".format(runner_id), cache_profile)
+                    running[future] = (
+                        node_id,
+                        input_hash,
+                        node_start,
+                        "runner.{}".format(runner_id),
+                        cache_profile,
+                        version_hash,
+                    )
 
                 if not running:
                     continue
 
                 done, _pending = wait(list(running.keys()), return_when=FIRST_COMPLETED)
                 for future in done:
-                    node_id, input_hash, node_start, phase_name, cache_profile = running.pop(future)
+                    node_id, input_hash, node_start, phase_name, cache_profile, version_hash = running.pop(future)
                     node = node_by_id[node_id]
                     runner_id = str(node.get("runner_id", "")).strip()
                     raw = future.result()
@@ -192,6 +201,7 @@ def execute_plan(
                         artifacts_produced=result["artifacts_produced"],
                         timestamp_utc=str(raw.get("timestamp_utc", "")),
                         output=result["output"],
+                        version_hash=version_hash,
                         failure_class=result.get("failure_class", ""),
                         failure_message=result.get("failure_message", ""),
                         remediation_hint=result.get("remediation_hint", ""),

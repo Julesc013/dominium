@@ -27,6 +27,20 @@ def _hash_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
+def _file_hash(path: str) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        while True:
+            chunk = handle.read(1024 * 1024)
+            if not chunk:
+                break
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+_MODULE_HASH = _file_hash(__file__)
+
+
 def _run(repo_root: str, command: List[str], env: Dict[str, str], runner_id: str = "") -> Tuple[int, str]:
     phase_name = "subprocess.{}".format(runner_id or "runner")
     is_build = bool(command) and str(command[0]).lower().endswith("cmake") and "--build" in command
@@ -249,6 +263,17 @@ class CommandRunner(BaseRunner):
     def default_full_enabled(self) -> bool:
         return self._default_full
 
+    def version_hash(self) -> str:
+        payload = {
+            "impl": "CommandRunner.v1",
+            "module_hash": _MODULE_HASH,
+            "runner_id": self._canonical_id,
+            "produced_artifacts": sorted(set(self._produced_artifacts)),
+            "default_full": bool(self._default_full),
+            "grouped": bool(self._grouped),
+        }
+        return _hash_text(json.dumps(payload, sort_keys=True, separators=(",", ":")))
+
     def run(self, context: RunnerContext) -> RunnerResult:
         node = context.node
         runner_id = str(node.get("runner_id", "")).strip() or self.runner_id()
@@ -333,7 +358,7 @@ _SECUREX_RUNNER = CommandRunner(
 )
 
 
-def resolve_adapter(runner_id: str) -> BaseRunner:
+def _resolve_known_adapter(runner_id: str) -> BaseRunner | None:
     token = str(runner_id).strip()
     if token == "repox_runner":
         return _REPOX_RUNNER
@@ -347,6 +372,13 @@ def resolve_adapter(runner_id: str) -> BaseRunner:
         return _COMPATX_RUNNER
     if token.startswith("securex.") or token == "securex_runner":
         return _SECUREX_RUNNER
+    return None
+
+
+def resolve_adapter(runner_id: str) -> BaseRunner:
+    adapter = _resolve_known_adapter(runner_id)
+    if adapter is not None:
+        return adapter
     return _REPOX_RUNNER
 
 
@@ -357,7 +389,15 @@ def runner_metadata(runner_id: str) -> Dict[str, object]:
         "produces": runner.produces(),
         "supports_groups": bool(runner.supports_groups()),
         "default_full": bool(runner.default_full_enabled()),
+        "version_hash": runner.version_hash(),
     }
+
+
+def runner_version_hash(runner_id: str) -> str:
+    adapter = _resolve_known_adapter(runner_id)
+    if adapter is None:
+        return ""
+    return adapter.version_hash()
 
 
 def default_full_runner_ids() -> List[str]:
