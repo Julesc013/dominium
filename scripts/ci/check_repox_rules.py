@@ -196,6 +196,13 @@ RULESET_ROOT = os.path.join("repo", "repox", "rulesets")
 REPOX_EXEMPTIONS_PATH = os.path.join("repo", "repox", "repox_exemptions.json")
 PROOF_MANIFEST_DEFAULT = os.path.join("docs", "audit", "proof_manifest.json")
 REPOX_PROFILE_REL = os.path.join("docs", "audit", "repox", "REPOX_PROFILE.json")
+STRUCTURE_SCOPE_EXCLUDED_PREFIXES = (
+    "docs/audit",
+    "dist",
+    "build",
+    "tmp",
+    ".xstack_cache",
+)
 EXEMPTION_INLINE_RE = re.compile(r"@repox:allow\((?P<rule_id>[A-Za-z0-9_.-]+)\)(?P<tail>[^\r\n]*)")
 EXEMPTION_REASON_RE = re.compile(r'reason="([^"]+)"')
 EXEMPTION_EXPIRES_RE = re.compile(r'expires="(\d{4}-\d{2}-\d{2})"')
@@ -6029,14 +6036,26 @@ def _sha256_text(value):
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
-def _load_merkle_roots(repo_root):
+def _load_merkle_roots(
+    repo_root,
+    subtrees=None,
+    include_artifact_classes=None,
+    exclude_artifact_classes=("RUN_META", "DERIVED_VIEW"),
+    extra_excluded_prefixes=None,
+):
     try:
         if repo_root not in sys.path:
             sys.path.insert(0, repo_root)
         from tools.xstack.core.merkle_tree import compute_repo_state_hash
     except Exception:
         return {}
-    payload = compute_repo_state_hash(repo_root)
+    payload = compute_repo_state_hash(
+        repo_root,
+        subtrees=list(subtrees) if subtrees else None,
+        include_artifact_classes=tuple(include_artifact_classes) if include_artifact_classes else None,
+        exclude_artifact_classes=tuple(exclude_artifact_classes) if exclude_artifact_classes else None,
+        extra_excluded_prefixes=tuple(extra_excluded_prefixes) if extra_excluded_prefixes else None,
+    )
     roots = payload.get("roots") or {}
     return roots if isinstance(roots, dict) else {}
 
@@ -6357,11 +6376,28 @@ def main() -> int:
     profile = str(args.profile).strip().upper()
     group_rows = []
     violations = []
+    scoped_roots_cache = {}
     for group in groups:
         group_id = str(group.get("group_id", "")).strip()
         scope_subtrees = tuple(group.get("scope_subtrees") or ())
         artifact_classes = tuple(group.get("artifact_classes") or ())
         checks = list(group.get("checks") or [])
+        group_roots = roots
+        if group_id.startswith("repox.structure."):
+            cache_key = (
+                tuple(sorted(scope_subtrees)),
+                tuple(sorted(str(item).strip().upper() for item in artifact_classes if str(item).strip())),
+                tuple(sorted(STRUCTURE_SCOPE_EXCLUDED_PREFIXES)),
+            )
+            if cache_key not in scoped_roots_cache:
+                scoped_roots_cache[cache_key] = _load_merkle_roots(
+                    repo_root,
+                    subtrees=scope_subtrees,
+                    include_artifact_classes=artifact_classes,
+                    exclude_artifact_classes=("RUN_META", "DERIVED_VIEW"),
+                    extra_excluded_prefixes=STRUCTURE_SCOPE_EXCLUDED_PREFIXES,
+                )
+            group_roots = scoped_roots_cache[cache_key]
         row = _run_check_group(
             repo_root=repo_root,
             group_id=group_id,
@@ -6369,7 +6405,7 @@ def main() -> int:
             artifact_classes=artifact_classes,
             profile=profile,
             impacted_roots=impacted_roots,
-            roots=roots,
+            roots=group_roots,
             checks=checks,
         )
         group_rows.append(
