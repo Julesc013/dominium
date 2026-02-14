@@ -561,6 +561,25 @@
         "write_root": "docs_audit"
       },
       {
+        "artifact_class": "DERIVED_VIEW",
+        "artifact_id": "artifact.xstack.performance_ceiling_alert",
+        "canonical_hash_required": false,
+        "commit_policy": "SNAPSHOT_ONLY",
+        "extensions": {
+          "regeneration_tool": "python scripts/dev/gate.py snapshot --repo-root ."
+        },
+        "notes": [
+          "Structural alert raised when STRICT cold runtime exceeds configured threshold.",
+          "Report is advisory and does not enforce timeouts."
+        ],
+        "path": "docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md",
+        "producer": "scripts/dev/gate.py strict",
+        "regenerable": true,
+        "regeneration_tool": "python scripts/dev/gate.py snapshot --repo-root .",
+        "used_for_gating": false,
+        "write_root": "docs_audit"
+      },
+      {
         "artifact_class": "RUN_META",
         "artifact_id": "artifact.xstack.full_plan_warning",
         "canonical_hash_required": false,
