@@ -6123,28 +6123,25 @@ def _run_check_group(
     roots,
     checks,
 ):
-    dep_hash = _group_dep_hash(roots, scope_subtrees)
-    cache_key = _sha256_text(json.dumps({"group_id": group_id, "profile": profile, "dep_hash": dep_hash}, sort_keys=True))
+    input_hash = _group_dep_hash(roots, scope_subtrees)
+    cache_key = _sha256_text(json.dumps({"group_id": group_id, "input_hash": input_hash}, sort_keys=True))
 
     should_execute = True
     if profile in {"FAST", "STRICT"} and scope_subtrees:
         if not (set(dep.lower() for dep in scope_subtrees) & set(impacted_roots)):
             should_execute = False
 
-    cache_hit = False
     cached = _load_group_cache(repo_root, group_id, cache_key)
     if cached is not None:
-        cache_hit = True
-        if not should_execute:
-            return {
-                "group_id": group_id,
-                "duration_ms": int(cached.get("duration_ms", 0)),
-                "cache_hit": True,
-                "dep_hash": dep_hash,
-                "scope_subtrees": list(scope_subtrees),
-                "artifact_classes": list(artifact_classes),
-                "violations": list(cached.get("violations") or []),
-            }
+        return {
+            "group_id": group_id,
+            "duration_ms": int(cached.get("duration_ms", 0)),
+            "cache_hit": True,
+            "dep_hash": input_hash,
+            "scope_subtrees": list(scope_subtrees),
+            "artifact_classes": list(artifact_classes),
+            "violations": list(cached.get("violations") or []),
+        }
 
     started = datetime.utcnow()
     violations = []
@@ -6161,7 +6158,7 @@ def _run_check_group(
         {
             "schema_version": "1.0.0",
             "group_id": group_id,
-            "dep_hash": dep_hash,
+            "input_hash": input_hash,
             "scope_subtrees": list(scope_subtrees),
             "artifact_classes": list(artifact_classes),
             "duration_ms": duration_ms,
@@ -6171,8 +6168,8 @@ def _run_check_group(
     return {
         "group_id": group_id,
         "duration_ms": duration_ms,
-        "cache_hit": cache_hit,
-        "dep_hash": dep_hash,
+        "cache_hit": False,
+        "dep_hash": input_hash,
         "scope_subtrees": list(scope_subtrees),
         "artifact_classes": list(artifact_classes),
         "violations": violations,
