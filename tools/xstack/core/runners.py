@@ -10,6 +10,17 @@ import sys
 from datetime import datetime
 from typing import Dict, List, Tuple
 
+try:
+    from tools.xstack.extensions import extension_registry_definitions, extension_runner_map
+except Exception:  # pragma: no cover
+    def extension_runner_map(force_refresh: bool = False) -> Dict[str, BaseRunner]:
+        _ = force_refresh
+        return {}
+
+    def extension_registry_definitions(force_refresh: bool = False) -> List[dict]:
+        _ = force_refresh
+        return []
+
 from .failure import classify_failure
 from .profiler import end_phase, start_phase
 from .runners_base import BaseRunner, RunnerContext, RunnerResult
@@ -375,10 +386,20 @@ def _resolve_known_adapter(runner_id: str) -> BaseRunner | None:
     return None
 
 
+def _resolve_extension_adapter(runner_id: str) -> BaseRunner | None:
+    token = str(runner_id).strip()
+    if not token:
+        return None
+    return extension_runner_map().get(token)
+
+
 def resolve_adapter(runner_id: str) -> BaseRunner:
     adapter = _resolve_known_adapter(runner_id)
     if adapter is not None:
         return adapter
+    ext_adapter = _resolve_extension_adapter(runner_id)
+    if ext_adapter is not None:
+        return ext_adapter
     return _REPOX_RUNNER
 
 
@@ -396,17 +417,53 @@ def runner_metadata(runner_id: str) -> Dict[str, object]:
 def runner_version_hash(runner_id: str) -> str:
     adapter = _resolve_known_adapter(runner_id)
     if adapter is None:
+        adapter = _resolve_extension_adapter(runner_id)
+    if adapter is None:
         return ""
     return adapter.version_hash()
 
 
 def default_full_runner_ids() -> List[str]:
-    candidates = (_REPOX_RUNNER, _TESTX_RUNNER, _AUDITX_RUNNER, _PERFORMX_RUNNER, _COMPATX_RUNNER, _SECUREX_RUNNER)
+    candidates = [
+        _REPOX_RUNNER,
+        _TESTX_RUNNER,
+        _AUDITX_RUNNER,
+        _PERFORMX_RUNNER,
+        _COMPATX_RUNNER,
+        _SECUREX_RUNNER,
+    ]
+    candidates.extend(extension_runner_map().values())
     out = []
     for runner in candidates:
         if runner.default_full_enabled():
             out.append(runner.runner_id())
     return sorted(set(out))
+
+
+def runner_registry_definitions() -> Dict[str, object]:
+    builtins = []
+    for runner in (
+        _REPOX_RUNNER,
+        _TESTX_RUNNER,
+        _AUDITX_RUNNER,
+        _PERFORMX_RUNNER,
+        _COMPATX_RUNNER,
+        _SECUREX_RUNNER,
+    ):
+        builtins.append(
+            {
+                "runner_id": runner.runner_id(),
+                "produces": runner.produces(),
+                "supports_groups": bool(runner.supports_groups()),
+                "default_full": bool(runner.default_full_enabled()),
+                "version_hash": runner.version_hash(),
+            }
+        )
+    builtins.sort(key=lambda row: str(row.get("runner_id", "")))
+    return {
+        "builtin_runners": builtins,
+        "extensions": extension_registry_definitions(),
+    }
 
 
 def result_to_dict(result: RunnerResult) -> Dict[str, object]:
