@@ -277,6 +277,7 @@ execution artifacts and are not authoritative.
 - `docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md`
 - `docs/governance/XSTACK_INCREMENTAL_MODEL.md`
 - `docs/governance/XSTACK_PORTABILITY.md`
+- `docs/governance/XSTACK_TRACK_IGNORE_POLICY.md`
 - `docs/governance/XSTACK_TEMPLATE_CHECKLIST.md`
 - `docs/launcher/LAUNCHER_SETTINGS.md`
 - `docs/guides/TOOLING_OVERVIEW.md`

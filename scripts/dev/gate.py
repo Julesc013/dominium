@@ -51,6 +51,9 @@ REPOX_SCRIPT_REL = os.path.join("scripts", "ci", "check_repox_rules.py")
 PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
 GATE_POLICY_REGISTRY_REL = os.path.join("data", "registries", "gate_policy.json")
 UI_BIND_CACHE_REL = os.path.join(VERIFY_BUILD_DIR_REL, "gate_ui_bind_cache.json")
+DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
+TRACKED_WRITE_MANIFEST_REL = os.path.join(".xstack_cache", "gate", "TOUCHED_FILES_MANIFEST.json")
+SNAPSHOT_REPORT_REL = os.path.join("docs", "audit", "system", "SNAPSHOT_REPORT.md")
 
 MECHANICAL_BLOCKER_TYPES = (
     "TOOL_DISCOVERY",
@@ -284,6 +287,94 @@ def _run_capture(repo_root, args):
     if proc.returncode != 0:
         return None
     return proc.stdout
+
+
+def _git_tracked_status(repo_root):
+    out = _run_capture(
+        repo_root,
+        ["git", "status", "--porcelain", "--untracked-files=no"],
+    )
+    rows = {}
+    if out is None:
+        return rows
+    for raw in out.splitlines():
+        line = raw.rstrip()
+        if len(line) < 4:
+            continue
+        status = line[:2]
+        path = line[3:].strip()
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1].strip()
+        path = path.replace("\\", "/").strip("/")
+        if not path:
+            continue
+        rows[path] = status
+    return rows
+
+
+def _snapshot_only_paths(repo_root):
+    path = os.path.join(repo_root, DERIVED_ARTIFACT_REGISTRY_REL)
+    if not os.path.isfile(path):
+        return set()
+    try:
+        payload = json.load(open(path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()
+    rows = ((payload.get("record") or {}).get("artifacts") or [])
+    out = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("commit_policy", "")).strip() != "SNAPSHOT_ONLY":
+            continue
+        rel = str(row.get("path", "")).replace("\\", "/").strip("/")
+        if rel:
+            out.add(rel)
+    out.add(SNAPSHOT_REPORT_REL.replace("\\", "/"))
+    return out
+
+
+def _write_touched_manifest(repo_root, payload):
+    out_path = os.path.join(repo_root, TRACKED_WRITE_MANIFEST_REL)
+    parent = os.path.dirname(out_path)
+    if parent and not os.path.isdir(parent):
+        os.makedirs(parent, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump(payload, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+    return out_path
+
+
+def _tracked_write_violations(repo_root, gate_kind, profile, before_status, after_status, snapshot_mode):
+    before_status = before_status or {}
+    after_status = after_status or {}
+    touched = []
+    for path in sorted(set(before_status.keys()) | set(after_status.keys())):
+        before = before_status.get(path, "")
+        after = after_status.get(path, "")
+        if before == after:
+            continue
+        touched.append(path)
+
+    allowed = sorted(_snapshot_only_paths(repo_root)) if snapshot_mode else []
+    allowed_set = set(allowed)
+    if snapshot_mode:
+        violations = [path for path in touched if path not in allowed_set]
+    else:
+        violations = list(touched)
+
+    manifest = {
+        "artifact_class": "RUN_META",
+        "status": "DERIVED",
+        "gate_kind": gate_kind,
+        "profile": profile,
+        "snapshot_mode": bool(snapshot_mode),
+        "touched_tracked_files": touched,
+        "allowed_snapshot_only_files": allowed,
+        "violations": violations,
+    }
+    manifest_path = _write_touched_manifest(repo_root, manifest)
+    return violations, manifest_path
 
 
 def _normalize_rel(path):
@@ -1060,7 +1151,7 @@ def _phase_specs_for_gate(gate_kind, mode, impact):
             (("TASK_DEPENDENCY",), fast_task_targets),
         ]
 
-    if gate_kind in ("verify", "strict", "full"):
+    if gate_kind in ("verify", "strict", "full", "snapshot"):
         if mode == FAST_MODE:
             return [
                 (("PRECHECK_MIN",), ()),
@@ -1102,6 +1193,8 @@ def _effective_mode_for_gate(repo_root, gate_kind, force_strict=False, force_ful
         return {"mode": FULL_MODE, "impact": "EXPLICIT_FULL", "reason": "explicit_full", "changed_files": []}
     if gate_kind == "strict":
         return {"mode": STRICT_MODE, "impact": "EXPLICIT_STRICT", "reason": "explicit_strict", "changed_files": []}
+    if gate_kind == "snapshot":
+        return {"mode": STRICT_MODE, "impact": "EXPLICIT_SNAPSHOT", "reason": "explicit_snapshot", "changed_files": []}
     if gate_kind in ("verify", "exitcheck", "taskcheck", "dev"):
         return evaluate_gate_mode(
             repo_root,
@@ -1123,6 +1216,8 @@ def _profile_for_command(gate_kind, force_strict=False, force_full=False, force_
         return FULL_MODE
     if gate_kind == "strict":
         return STRICT_MODE
+    if gate_kind == "snapshot":
+        return FULL_MODE if force_full else STRICT_MODE
     return FAST_MODE
 
 
@@ -1130,7 +1225,7 @@ def _write_full_plan_warning(repo_root, plan_payload):
     estimate = plan_payload.get("estimate") or {}
     if not bool(estimate.get("warn_full_plan_too_large")):
         return ""
-    out_path = os.path.join(repo_root, "docs", "audit", "xstack", "FULL_PLAN_TOO_LARGE.md")
+    out_path = os.path.join(repo_root, ".xstack_cache", "xstack", "FULL_PLAN_TOO_LARGE.md")
     parent = os.path.dirname(out_path)
     if parent and not os.path.isdir(parent):
         os.makedirs(parent, exist_ok=True)
@@ -1144,6 +1239,30 @@ def _write_full_plan_warning(repo_root, plan_payload):
         handle.write("- plan_hash: `{}`\n".format(plan_payload.get("plan_hash", "")))
         handle.write("- total_work_units: `{}`\n".format(estimate.get("total_work_units", 0)))
         handle.write("- suggested_action: `partition test/audit groups and increase sharding granularity`\n")
+    return out_path
+
+
+def _write_snapshot_report(repo_root, plan_payload, result, profile_path):
+    out_path = os.path.join(repo_root, SNAPSHOT_REPORT_REL)
+    parent = os.path.dirname(out_path)
+    if parent and not os.path.isdir(parent):
+        os.makedirs(parent, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write("Status: DERIVED\n")
+        handle.write("Last Reviewed: {}\n".format(datetime.utcnow().strftime("%Y-%m-%d")))
+        handle.write("Supersedes: none\n")
+        handle.write("Superseded By: none\n\n")
+        handle.write("# XStack Snapshot Report\n\n")
+        handle.write("- gate_kind: `snapshot`\n")
+        handle.write("- profile: `{}`\n".format(str(plan_payload.get("profile", ""))))
+        handle.write("- plan_hash: `{}`\n".format(str(plan_payload.get("plan_hash", ""))))
+        handle.write("- cache_hits: `{}`\n".format(int(result.get("cache_hits", 0))))
+        handle.write("- cache_misses: `{}`\n".format(int(result.get("cache_misses", 0))))
+        handle.write("- total_seconds: `{:.6f}`\n".format(float(result.get("total_seconds", 0.0))))
+        handle.write("- profile_trace: `{}`\n".format(os.path.relpath(profile_path, repo_root).replace("\\", "/")))
+        warning = str(result.get("full_plan_warning", "")).strip()
+        if warning:
+            handle.write("- full_plan_warning: `{}`\n".format(warning))
     return out_path
 
 
@@ -1162,6 +1281,8 @@ def _run_gate_xstack(
     if gate_kind in ("doctor", "remediate", "run-queue"):
         return None
 
+    snapshot_mode = gate_kind == "snapshot"
+    tracked_before = _git_tracked_status(repo_root)
     reset_profile(trace=trace)
     profile = _profile_for_command(
         gate_kind,
@@ -1211,6 +1332,30 @@ def _run_gate_xstack(
     }
     if profile_report:
         output["profile_report"] = result.get("profile_report", {})
+    snapshot_report_rel = ""
+    if snapshot_mode and int(result.get("exit_code", 1)) == 0:
+        snapshot_path = _write_snapshot_report(repo_root, plan_payload, output, profile_path)
+        snapshot_report_rel = os.path.relpath(snapshot_path, repo_root).replace("\\", "/")
+        output["snapshot_report"] = snapshot_report_rel
+
+    tracked_after = _git_tracked_status(repo_root)
+    violations, touched_manifest = _tracked_write_violations(
+        repo_root=repo_root,
+        gate_kind=gate_kind,
+        profile=str(plan_payload.get("profile", "")),
+        before_status=tracked_before,
+        after_status=tracked_after,
+        snapshot_mode=snapshot_mode,
+    )
+    output["touched_manifest"] = os.path.relpath(touched_manifest, repo_root).replace("\\", "/")
+    if violations:
+        output["result"] = "refused"
+        output["refusal_code"] = "refuse.tracked_write_outside_policy"
+        output["touched_tracked_files"] = violations
+        output["exit_code"] = 1
+        print(json.dumps(output, indent=2, sort_keys=True))
+        return 1
+
     print(json.dumps(output, indent=2, sort_keys=True))
     return int(result.get("exit_code", 1))
 
@@ -1382,6 +1527,7 @@ def main():
             "verify",
             "strict",
             "full",
+            "snapshot",
             "dist",
             "doctor",
             "remediate",
