@@ -16,6 +16,18 @@ try:
     _REPO_HINT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
     if _REPO_HINT not in sys.path:
         sys.path.insert(0, _REPO_HINT)
+    from tools.xstack.core.execution_ledger import (
+        append_entry as append_ledger_entry,
+    )
+    from tools.xstack.core.execution_ledger import (
+        build_entry as build_ledger_entry,
+    )
+    from tools.xstack.core.execution_ledger import (
+        canonical_artifact_hashes as canonical_ledger_artifact_hashes,
+    )
+    from tools.xstack.core.execution_ledger import (
+        export_snapshot_markdown as export_ledger_snapshot_markdown,
+    )
     from tools.xstack.core.plan import build_execution_plan
     from tools.xstack.core.profiler import export_json as export_profile_json
     from tools.xstack.core.profiler import reset as reset_profile
@@ -54,6 +66,7 @@ UI_BIND_CACHE_REL = os.path.join(VERIFY_BUILD_DIR_REL, "gate_ui_bind_cache.json"
 DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
 TRACKED_WRITE_MANIFEST_REL = os.path.join(".xstack_cache", "gate", "TOUCHED_FILES_MANIFEST.json")
 SNAPSHOT_REPORT_REL = os.path.join("docs", "audit", "system", "SNAPSHOT_REPORT.md")
+LEDGER_SNAPSHOT_REL = os.path.join("docs", "audit", "system", "LEDGER_SNAPSHOT.md")
 
 MECHANICAL_BLOCKER_TYPES = (
     "TOOL_DISCOVERY",
@@ -1275,6 +1288,7 @@ def _run_gate_xstack(
     force_full_all=False,
     trace=False,
     profile_report=False,
+    ledger_export=False,
 ):
     if not _XSTACK_CORE_READY:
         return None
@@ -1330,6 +1344,37 @@ def _run_gate_xstack(
         "full_plan_warning": os.path.relpath(warning_path, repo_root).replace("\\", "/") if warning_path else "",
         "profile_path": os.path.relpath(profile_path, repo_root).replace("\\", "/"),
     }
+    try:
+        runner_ids = [
+            str(row.get("runner_id", "")).strip()
+            for row in (result.get("results") or [])
+            if isinstance(row, dict) and str(row.get("runner_id", "")).strip()
+        ]
+        canonical_artifacts = []
+        for row in (plan_payload.get("nodes") or []):
+            if not isinstance(row, dict):
+                continue
+            for rel in (row.get("expected_artifacts") or []):
+                token = str(rel).replace("\\", "/").strip("/")
+                if token:
+                    canonical_artifacts.append(token)
+        ledger_entry = build_ledger_entry(
+            repo_state_hash=str(plan_payload.get("repo_state_hash", "")),
+            plan_hash=str(plan_payload.get("plan_hash", "")),
+            profile=str(plan_payload.get("profile", "")),
+            runner_ids=runner_ids,
+            cache_hits=int(result.get("cache_hits", 0)),
+            cache_misses=int(result.get("cache_misses", 0)),
+            artifact_hashes=canonical_ledger_artifact_hashes(repo_root, canonical_artifacts),
+            failure_class="",
+            duration_s=float(result.get("total_seconds", 0.0)),
+            workspace_id=str(workspace_id or ""),
+        )
+        ledger_meta = append_ledger_entry(repo_root, ledger_entry)
+        if ledger_meta.get("entry_path"):
+            output["ledger_entry"] = os.path.relpath(str(ledger_meta["entry_path"]), repo_root).replace("\\", "/")
+    except Exception:
+        pass
     if profile_report:
         output["profile_report"] = result.get("profile_report", {})
     snapshot_report_rel = ""
@@ -1337,6 +1382,15 @@ def _run_gate_xstack(
         snapshot_path = _write_snapshot_report(repo_root, plan_payload, output, profile_path)
         snapshot_report_rel = os.path.relpath(snapshot_path, repo_root).replace("\\", "/")
         output["snapshot_report"] = snapshot_report_rel
+        if ledger_export:
+            try:
+                ledger_snapshot_path = export_ledger_snapshot_markdown(
+                    repo_root=repo_root,
+                    out_path=os.path.join(repo_root, LEDGER_SNAPSHOT_REL),
+                )
+                output["ledger_snapshot"] = os.path.relpath(ledger_snapshot_path, repo_root).replace("\\", "/")
+            except Exception:
+                pass
 
     tracked_after = _git_tracked_status(repo_root)
     violations, touched_manifest = _tracked_write_violations(
@@ -1369,6 +1423,7 @@ def _run_gate(
     force_strict=False,
     force_full=False,
     force_full_all=False,
+    ledger_export=False,
 ):
     if not only_gate_ids:
         xstack_code = _run_gate_xstack(
@@ -1380,6 +1435,7 @@ def _run_gate(
             force_full_all=force_full_all,
             trace=bool(os.environ.get("DOM_GATE_TRACE", "")),
             profile_report=bool(os.environ.get("DOM_GATE_PROFILE_REPORT", "")),
+            ledger_export=ledger_export,
         )
         if xstack_code is not None:
             return xstack_code
@@ -1550,6 +1606,11 @@ def main():
     )
     parser.add_argument("--trace", action="store_true", help="Emit structured XStack trace events.")
     parser.add_argument("--profile-report", action="store_true", help="Include scheduler profile report in output.")
+    parser.add_argument(
+        "--ledger-export",
+        action="store_true",
+        help="Export snapshot-mode execution ledger summary to docs/audit/system/LEDGER_SNAPSHOT.md.",
+    )
     args = parser.parse_args()
     if args.trace:
         os.environ["DOM_GATE_TRACE"] = "1"
@@ -1568,6 +1629,7 @@ def main():
         force_strict=args.strict,
         force_full=args.full,
         force_full_all=args.full_all,
+        ledger_export=args.ledger_export,
     )
 
 
