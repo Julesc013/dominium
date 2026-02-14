@@ -13,6 +13,7 @@ from datetime import datetime
 GROUP_TESTS = {
     "testx.group.core.invariants": [
         ["tests/invariant/test_gate_plan_determinism.py", "--repo-root", "."],
+        ["tests/invariant/test_plan_hash_determinism.py", "--repo-root", "."],
         ["tests/invariant/test_gate_cache_correctness.py", "--repo-root", "."],
         ["tests/invariant/test_ledger_deterministic_when_inputs_identical.py", "--repo-root", "."],
         ["tests/invariant/test_failure_classification_determinism.py", "--repo-root", "."],
@@ -33,6 +34,7 @@ GROUP_TESTS = {
     ],
     "testx.group.full.verify": [
         ["tests/invariant/test_gate_plan_determinism.py", "--repo-root", "."],
+        ["tests/invariant/test_plan_hash_determinism.py", "--repo-root", "."],
         ["tests/invariant/test_gate_cache_correctness.py", "--repo-root", "."],
         ["tests/invariant/test_ledger_deterministic_when_inputs_identical.py", "--repo-root", "."],
         ["tests/invariant/test_failure_classification_determinism.py", "--repo-root", "."],
