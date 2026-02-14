@@ -1112,7 +1112,9 @@ def _effective_mode_for_gate(repo_root, gate_kind, force_strict=False, force_ful
     return {"mode": FAST_MODE, "impact": "DEFAULT", "reason": "default", "changed_files": []}
 
 
-def _profile_for_command(gate_kind, force_strict=False, force_full=False):
+def _profile_for_command(gate_kind, force_strict=False, force_full=False, force_full_all=False):
+    if force_full_all:
+        return "FULL_ALL"
     if force_full:
         return FULL_MODE
     if force_strict:
@@ -1151,6 +1153,7 @@ def _run_gate_xstack(
     workspace_id="",
     force_strict=False,
     force_full=False,
+    force_full_all=False,
     trace=False,
     profile_report=False,
 ):
@@ -1160,7 +1163,12 @@ def _run_gate_xstack(
         return None
 
     reset_profile(trace=trace)
-    profile = _profile_for_command(gate_kind, force_strict=force_strict, force_full=force_full)
+    profile = _profile_for_command(
+        gate_kind,
+        force_strict=force_strict,
+        force_full=force_full,
+        force_full_all=force_full_all,
+    )
     plan_payload = build_execution_plan(
         repo_root=repo_root,
         gate_command=gate_kind,
@@ -1207,7 +1215,16 @@ def _run_gate_xstack(
     return int(result.get("exit_code", 1))
 
 
-def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_file="", force_strict=False, force_full=False):
+def _run_gate(
+    repo_root,
+    gate_kind,
+    only_gate_ids=None,
+    workspace_id="",
+    queue_file="",
+    force_strict=False,
+    force_full=False,
+    force_full_all=False,
+):
     if not only_gate_ids:
         xstack_code = _run_gate_xstack(
             repo_root,
@@ -1215,6 +1232,7 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
             workspace_id=workspace_id,
             force_strict=force_strict,
             force_full=force_full,
+            force_full_all=force_full_all,
             trace=bool(os.environ.get("DOM_GATE_TRACE", "")),
             profile_report=bool(os.environ.get("DOM_GATE_PROFILE_REPORT", "")),
         )
@@ -1229,7 +1247,7 @@ def _run_gate(repo_root, gate_kind, only_gate_ids=None, workspace_id="", queue_f
         repo_root,
         gate_kind,
         force_strict=force_strict,
-        force_full=force_full,
+        force_full=(force_full or force_full_all),
     )
     gate_mode = str(mode_eval.get("mode", FAST_MODE)).strip() or FAST_MODE
 
@@ -1379,6 +1397,11 @@ def main():
     parser.add_argument("--queue-file", default="")
     parser.add_argument("--strict", action="store_true", help="Force STRICT mode for verify/exitcheck/taskcheck/dev.")
     parser.add_argument("--full", action="store_true", help="Force FULL mode for verify/exitcheck/taskcheck/dev.")
+    parser.add_argument(
+        "--full-all",
+        action="store_true",
+        help="Run FULL_ALL profile (all registered shards) for xstack-backed commands.",
+    )
     parser.add_argument("--trace", action="store_true", help="Emit structured XStack trace events.")
     parser.add_argument("--profile-report", action="store_true", help="Include scheduler profile report in output.")
     args = parser.parse_args()
@@ -1398,6 +1421,7 @@ def main():
         queue_file=args.queue_file,
         force_strict=args.strict,
         force_full=args.full,
+        force_full_all=args.full_all,
     )
 
 

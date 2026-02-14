@@ -11,12 +11,19 @@ from datetime import datetime
 from typing import Dict, List, Tuple
 
 from .profiler import end_phase, start_phase
+from .runners_base import BaseRunner, RunnerContext, RunnerResult
 
-_SCRIPTS_DEV = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "scripts", "dev"))
+_SCRIPTS_DEV = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "scripts", "dev")
+)
 if _SCRIPTS_DEV not in sys.path:
     sys.path.insert(0, _SCRIPTS_DEV)
 
 from env_tools_lib import canonical_workspace_id, canonicalize_env_for_workspace  # pylint: disable=wrong-import-position
+
+
+def _hash_text(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
 def _run(repo_root: str, command: List[str], env: Dict[str, str], runner_id: str = "") -> Tuple[int, str]:
@@ -55,18 +62,7 @@ def _artifact_hash(exit_code: int, output: str, artifacts: List[str]) -> str:
         "artifacts": sorted(set(artifacts)),
     }
     text = json.dumps(payload, sort_keys=True, separators=(",", ":"))
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()
-
-
-def _runner_result(runner_id: str, exit_code: int, output: str, artifacts: List[str]) -> Dict[str, object]:
-    return {
-        "runner_id": runner_id,
-        "exit_code": int(exit_code),
-        "output": output,
-        "artifacts_produced": sorted(set(artifacts)),
-        "output_hash": _artifact_hash(exit_code, output, artifacts),
-        "timestamp_utc": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-    }
+    return _hash_text(text)
 
 
 def _coerce_optional_refusal(runner_id: str, exit_code: int, output: str) -> Tuple[int, str]:
@@ -104,76 +100,172 @@ def _resolve_env(repo_root: str, workspace_id: str = "") -> Dict[str, str]:
     return env
 
 
-def _execute_command_node(node: Dict[str, object], repo_root: str, env: Dict[str, str]) -> Dict[str, object]:
-    runner_id = str(node.get("runner_id", "")).strip()
-    command = node.get("command") or []
-    if not isinstance(command, list) or not command:
-        return _runner_result(runner_id, 2, "refuse.invalid_runner_command", [])
-    cmd = []
-    for idx, token in enumerate(command):
-        value = str(token)
-        if idx == 0 and value in ("python", "python3"):
-            cmd.append(sys.executable)
-        else:
-            cmd.append(value.format(repo_root=repo_root))
-    exit_code, output = _run(repo_root, cmd, env, runner_id=runner_id)
-    exit_code, output = _coerce_optional_refusal(runner_id, exit_code, output)
-    artifacts = [str(item) for item in (node.get("expected_artifacts") or []) if str(item).strip()]
-    return _runner_result(runner_id, exit_code, output, artifacts)
+def _normalize_result(runner_id: str, exit_code: int, output: str, artifacts: List[str]) -> RunnerResult:
+    return RunnerResult(
+        runner_id=runner_id,
+        exit_code=int(exit_code),
+        output=str(output or ""),
+        artifacts_produced=sorted(set(str(item) for item in artifacts if str(item).strip())),
+        output_hash=_artifact_hash(exit_code, output, artifacts),
+        timestamp_utc=datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+    )
 
 
-def repox_runner(node: Dict[str, object], repo_root: str, workspace_id: str = "") -> Dict[str, object]:
-    env = _resolve_env(repo_root, workspace_id=workspace_id)
-    return _execute_command_node(node, repo_root, env)
+class CommandRunner(BaseRunner):
+    """Default command-backed runner implementation."""
+
+    def __init__(
+        self,
+        canonical_id: str,
+        produced_artifacts: List[str],
+        default_full: bool = False,
+        grouped: bool = False,
+    ):
+        self._canonical_id = canonical_id
+        self._produced_artifacts = list(produced_artifacts)
+        self._default_full = bool(default_full)
+        self._grouped = bool(grouped)
+
+    def runner_id(self) -> str:
+        return self._canonical_id
+
+    def input_hash(self, repo_state: str, registries_hash: str, profile: str) -> str:
+        payload = {
+            "runner_id": self.runner_id(),
+            "repo_state": str(repo_state),
+            "registries_hash": str(registries_hash),
+            "profile": str(profile),
+        }
+        return _hash_text(json.dumps(payload, sort_keys=True, separators=(",", ":")))
+
+    def produces(self) -> List[str]:
+        return sorted(set(self._produced_artifacts))
+
+    def supports_groups(self) -> bool:
+        return self._grouped
+
+    def estimate_cost(self, context: RunnerContext) -> int:
+        command = context.node.get("command") or []
+        if not isinstance(command, list):
+            return 1
+        return max(1, len(command))
+
+    def default_full_enabled(self) -> bool:
+        return self._default_full
+
+    def run(self, context: RunnerContext) -> RunnerResult:
+        node = context.node
+        runner_id = str(node.get("runner_id", "")).strip() or self.runner_id()
+        command = node.get("command") or []
+        if not isinstance(command, list) or not command:
+            return _normalize_result(runner_id, 2, "refuse.invalid_runner_command", [])
+
+        cmd = []
+        for idx, token in enumerate(command):
+            value = str(token)
+            if idx == 0 and value in ("python", "python3"):
+                cmd.append(sys.executable)
+            else:
+                cmd.append(value.format(repo_root=context.repo_root, profile=context.plan_profile))
+
+        env = _resolve_env(context.repo_root, workspace_id=context.workspace_id)
+        exit_code, output = _run(context.repo_root, cmd, env, runner_id=runner_id)
+        exit_code, output = _coerce_optional_refusal(runner_id, exit_code, output)
+        artifacts = [str(item) for item in (node.get("expected_artifacts") or []) if str(item).strip()]
+        if not artifacts:
+            artifacts = self.produces()
+        return _normalize_result(runner_id, exit_code, output, artifacts)
 
 
-def testx_runner(node: Dict[str, object], repo_root: str, workspace_id: str = "") -> Dict[str, object]:
-    env = _resolve_env(repo_root, workspace_id=workspace_id)
-    return _execute_command_node(node, repo_root, env)
+_REPOX_RUNNER = CommandRunner(
+    "repox_runner",
+    produced_artifacts=[
+        "docs/audit/proof_manifest.json",
+        "docs/audit/repox/REPOX_PROFILE.json",
+    ],
+)
+_TESTX_RUNNER = CommandRunner(
+    "testx_runner",
+    produced_artifacts=[
+        "docs/audit/testx/TESTX_SUMMARY.json",
+        "docs/audit/testx/TESTX_RUN_META.json",
+    ],
+    grouped=True,
+)
+_AUDITX_RUNNER = CommandRunner(
+    "auditx_runner",
+    produced_artifacts=[
+        "docs/audit/auditx/FINDINGS.json",
+        "docs/audit/auditx/INVARIANT_MAP.json",
+        "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+    ],
+    grouped=True,
+)
+_PERFORMX_RUNNER = CommandRunner(
+    "performx_runner",
+    produced_artifacts=[
+        "docs/audit/performance/PERFORMX_RESULTS.json",
+        "docs/audit/performance/PERFORMX_REGRESSIONS.json",
+    ],
+    default_full=True,
+)
+_COMPATX_RUNNER = CommandRunner(
+    "compatx_runner",
+    produced_artifacts=["docs/audit/compat/COMPAT_BASELINE.json"],
+    default_full=True,
+)
+_SECUREX_RUNNER = CommandRunner(
+    "securex_runner",
+    produced_artifacts=[
+        "docs/audit/security/FINDINGS.json",
+        "docs/audit/security/INTEGRITY_MANIFEST.json",
+    ],
+    default_full=True,
+)
 
 
-def auditx_runner(node: Dict[str, object], repo_root: str, workspace_id: str = "") -> Dict[str, object]:
-    env = _resolve_env(repo_root, workspace_id=workspace_id)
-    return _execute_command_node(node, repo_root, env)
+def resolve_adapter(runner_id: str) -> BaseRunner:
+    token = str(runner_id).strip()
+    if token == "repox_runner":
+        return _REPOX_RUNNER
+    if token.startswith("testx.") or token == "testx_runner":
+        return _TESTX_RUNNER
+    if token.startswith("auditx.") or token == "auditx_runner":
+        return _AUDITX_RUNNER
+    if token.startswith("performx.") or token == "performx_runner":
+        return _PERFORMX_RUNNER
+    if token.startswith("compatx.") or token == "compatx_runner":
+        return _COMPATX_RUNNER
+    if token.startswith("securex.") or token == "securex_runner":
+        return _SECUREX_RUNNER
+    return _REPOX_RUNNER
 
 
-def performx_runner(node: Dict[str, object], repo_root: str, workspace_id: str = "") -> Dict[str, object]:
-    env = _resolve_env(repo_root, workspace_id=workspace_id)
-    return _execute_command_node(node, repo_root, env)
+def runner_metadata(runner_id: str) -> Dict[str, object]:
+    runner = resolve_adapter(runner_id)
+    return {
+        "runner_id": runner.runner_id(),
+        "produces": runner.produces(),
+        "supports_groups": bool(runner.supports_groups()),
+        "default_full": bool(runner.default_full_enabled()),
+    }
 
 
-def compatx_runner(node: Dict[str, object], repo_root: str, workspace_id: str = "") -> Dict[str, object]:
-    env = _resolve_env(repo_root, workspace_id=workspace_id)
-    return _execute_command_node(node, repo_root, env)
+def default_full_runner_ids() -> List[str]:
+    candidates = (_REPOX_RUNNER, _TESTX_RUNNER, _AUDITX_RUNNER, _PERFORMX_RUNNER, _COMPATX_RUNNER, _SECUREX_RUNNER)
+    out = []
+    for runner in candidates:
+        if runner.default_full_enabled():
+            out.append(runner.runner_id())
+    return sorted(set(out))
 
 
-def securex_runner(node: Dict[str, object], repo_root: str, workspace_id: str = "") -> Dict[str, object]:
-    env = _resolve_env(repo_root, workspace_id=workspace_id)
-    return _execute_command_node(node, repo_root, env)
-
-
-def resolve_adapter(runner_id: str):
-    key = str(runner_id).strip()
-    if key == "repox_runner":
-        return repox_runner
-    if key.startswith("testx."):
-        return testx_runner
-    if key.startswith("auditx."):
-        return auditx_runner
-    if key.startswith("performx."):
-        return performx_runner
-    if key.startswith("compatx."):
-        return compatx_runner
-    if key.startswith("securex."):
-        return securex_runner
-    if key == "testx_runner":
-        return testx_runner
-    if key == "auditx_runner":
-        return auditx_runner
-    if key == "performx_runner":
-        return performx_runner
-    if key == "compatx_runner":
-        return compatx_runner
-    if key == "securex_runner":
-        return securex_runner
-    return repox_runner
+def result_to_dict(result: RunnerResult) -> Dict[str, object]:
+    return {
+        "runner_id": result.runner_id,
+        "exit_code": int(result.exit_code),
+        "output": result.output,
+        "artifacts_produced": list(result.artifacts_produced),
+        "output_hash": result.output_hash,
+        "timestamp_utc": result.timestamp_utc,
+    }
