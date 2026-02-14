@@ -50,7 +50,7 @@ def estimate_plan(plan_payload: Dict[str, object]) -> Dict[str, object]:
         "max_parallel_bucket_units": max_parallel_bucket,
         "estimated_seconds": estimated_seconds,
         "warn_full_plan_too_large": bool(
-            str(plan_payload.get("profile", "")).strip().upper() == "FULL"
+            str(plan_payload.get("profile", "")).strip().upper() in {"FULL", "FULL_ALL"}
             and total_units > 240
         ),
     }

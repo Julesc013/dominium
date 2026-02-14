@@ -335,6 +335,11 @@
           "mode_id": "FULL",
           "description": "Exhaustive lane for dist or explicit full requests.",
           "full_escalation_allowed": true
+        },
+        {
+          "mode_id": "FULL_ALL",
+          "description": "Explicit opt-in all-shard execution across TestX/AuditX groups.",
+          "full_escalation_allowed": true
         }
       ],
       "profiles": {
@@ -390,13 +395,55 @@
             "securex_runner"
           ],
           "allowed_skips": []
+        },
+        "FULL_ALL": {
+          "required_runners": [
+            "repox_runner",
+            "testx.group.core.invariants",
+            "testx.group.runtime.verify",
+            "testx.group.full.verify",
+            "testx.group.dist",
+            "auditx.group.core.policy",
+            "auditx.group.full.semantic",
+            "performx_runner",
+            "compatx_runner",
+            "securex_runner"
+          ],
+          "allowed_skips": []
         }
       },
       "state_hash_inputs": [
         "git_head",
         "working_tree_diff_hash",
         "gate_policy_version"
-      ]
+      ],
+      "monolith_policy": {
+        "testx_all": {
+          "local_usage": "legacy_or_explicit_only",
+          "gate_profiles": "forbidden",
+          "ci_usage": "allowed_explicit",
+          "canonical_path": "sharded_groups"
+        }
+      },
+      "profile_semantics": {
+        "FAST": "minimal impacted checks only",
+        "STRICT_LIGHT": "invariants plus impacted runtime and semantic groups",
+        "STRICT_DEEP": "strict-light plus schema/governance depth checks",
+        "FULL": "impacted full-shard execution",
+        "FULL_ALL": "all registered shards with heavy runners"
+      },
+      "strict_split_triggers": {
+        "STRICT_DEEP": [
+          "schema/**",
+          "data/registries/**",
+          "repo/repox/**",
+          "scripts/ci/**",
+          "docs/governance/**"
+        ],
+        "STRICT_LIGHT": [
+          "**"
+        ]
+      }
     }
   }
 }

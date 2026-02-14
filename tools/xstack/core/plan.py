@@ -10,6 +10,7 @@ from typing import Dict, List, Tuple
 from .impact_graph import build_impact_graph
 from .merkle_tree import compute_repo_state_hash
 from .profiler import end_phase, start_phase
+from .runners import default_full_runner_ids, runner_metadata
 from .time_estimator import estimate_plan
 
 
@@ -58,8 +59,13 @@ def _profile_defaults(gate_command: str, gate_policy_payload: dict) -> str:
     return "FAST"
 
 
-def _detect_strict_depth(changed_paths: List[str]) -> str:
+def _detect_strict_depth(changed_paths: List[str], gate_policy_payload: dict) -> str:
     deep_prefixes = ("schema/", "data/registries/", "repo/repox/", "scripts/ci/")
+    triggers = ((((gate_policy_payload.get("record") or {}).get("extensions") or {}).get("strict_split_triggers") or {}).get("STRICT_DEEP") or [])
+    if isinstance(triggers, list):
+        normalized = tuple(_norm(str(item)).rstrip("*") for item in triggers if str(item).strip() and str(item).strip() != "**")
+        if normalized:
+            deep_prefixes = normalized
     for rel in changed_paths:
         token = _norm(rel)
         if any(token.startswith(prefix) for prefix in deep_prefixes):
@@ -94,9 +100,10 @@ def _build_group_nodes(
     for group_id in selected:
         row = groups.get(group_id, {})
         default_profile = str(row.get("default_profile", "fast")).strip().upper()
-        if profile == "FAST" and default_profile not in {"FAST"}:
+        profile_family = str(profile).strip().upper()
+        if profile_family == "FAST" and default_profile not in {"FAST"}:
             continue
-        if profile == "STRICT" and default_profile not in {"FAST", "STRICT"}:
+        if profile_family.startswith("STRICT") and default_profile not in {"FAST", "STRICT"}:
             continue
         node = {
             "node_id": "{}::{}".format(prefix, group_id),
@@ -174,20 +181,31 @@ def build_execution_plan(
         )
 
         merkle = compute_repo_state_hash(repo_root, cache_root=cache_root)
-        profile = (requested_profile or _profile_defaults(gate_command, gate_policy)).strip().upper() or "FAST"
-        strict_depth = _detect_strict_depth(impact.get("changed_paths") or [])
-        include_all = profile == "FULL" and str(os.environ.get("DOM_GATE_FULL_ALL", "")).strip().lower() in {
-            "1",
-            "true",
-            "yes",
-        }
+        requested = (requested_profile or _profile_defaults(gate_command, gate_policy)).strip().upper() or "FAST"
+        strict_depth = _detect_strict_depth(impact.get("changed_paths") or [], gate_policy)
+        profile = requested
+        if requested == "STRICT":
+            profile = strict_depth
+        elif requested in {"STRICT_LIGHT", "STRICT_DEEP"}:
+            strict_depth = requested
+            profile = requested
+
+        include_all = False
+        if profile == "FULL_ALL":
+            include_all = True
+        elif profile == "FULL":
+            include_all = str(os.environ.get("DOM_GATE_FULL_ALL", "")).strip().lower() in {
+                "1",
+                "true",
+                "yes",
+            }
 
         nodes: List[dict] = [
             {
                 "node_id": "repox.base",
                 "runner_id": "repox_runner",
-                "command": ["python", "scripts/ci/check_repox_rules.py", "--repo-root", "{repo_root}"],
-                "expected_artifacts": ["docs/audit/proof_manifest.json"],
+                "command": ["python", "scripts/ci/check_repox_rules.py", "--repo-root", "{repo_root}", "--profile", "{profile}"],
+                "expected_artifacts": runner_metadata("repox_runner").get("produces") or ["docs/audit/proof_manifest.json"],
                 "parallelizable": False,
                 "depends_on": [],
             }
@@ -197,19 +215,22 @@ def build_execution_plan(
         nodes.extend(_build_group_nodes(auditx_groups, impact.get("impacted_auditx_groups") or [], include_all, profile, "auditx"))
 
         required_runners = impact.get("required_runners") or []
-        if profile == "FULL":
-            for runner_id in ("performx_runner", "compatx_runner", "securex_runner"):
-                if runner_id in required_runners or profile == "FULL":
-                    nodes.append(
-                        {
-                            "node_id": runner_id,
-                            "runner_id": runner_id,
-                            "command": _command_tokens(xstack_components.get(runner_id, {}).get("runner_command")),
-                            "expected_artifacts": xstack_components.get(runner_id, {}).get("expected_artifacts") or [],
-                            "parallelizable": True,
-                            "depends_on": ["repox.base"],
-                        }
-                    )
+        if profile in {"FULL", "FULL_ALL"}:
+            for runner_id in default_full_runner_ids():
+                if runner_id not in required_runners and runner_id not in {"performx_runner", "compatx_runner", "securex_runner"}:
+                    continue
+                row = xstack_components.get(runner_id, {})
+                expected = row.get("expected_artifacts") or runner_metadata(runner_id).get("produces") or []
+                nodes.append(
+                    {
+                        "node_id": runner_id,
+                        "runner_id": runner_id,
+                        "command": _command_tokens(row.get("runner_command")),
+                        "expected_artifacts": expected,
+                        "parallelizable": True,
+                        "depends_on": ["repox.base"],
+                    }
+                )
 
         nodes = _enforce_artifact_write_order(nodes)
         nodes = _set_levels(nodes)
@@ -227,7 +248,7 @@ def build_execution_plan(
             "schema_version": "1.0.0",
             "gate_command": gate_command,
             "profile": profile,
-            "strict_variant": strict_depth if profile == "STRICT" else "",
+            "strict_variant": strict_depth if profile.startswith("STRICT") else "",
             "workspace_id": workspace_id,
             "repo_state_hash": str(merkle.get("repo_state_hash", "")),
             "merkle_roots": merkle.get("roots", {}),

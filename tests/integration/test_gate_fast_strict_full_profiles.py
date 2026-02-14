@@ -24,15 +24,19 @@ def run_profiles(repo_root: str) -> int:
     fast = build_plan(repo_root=repo_root, gate_command="verify", requested_profile="FAST")
     strict = build_plan(repo_root=repo_root, gate_command="strict", requested_profile="STRICT")
     full = build_plan(repo_root=repo_root, gate_command="full", requested_profile="FULL")
+    full_all = build_plan(repo_root=repo_root, gate_command="full", requested_profile="FULL_ALL")
 
     if fast.get("profile") != "FAST":
         print("verify should map to FAST profile")
         return 1
-    if strict.get("profile") != "STRICT":
-        print("strict command should map to STRICT profile")
+    if strict.get("profile") not in {"STRICT_LIGHT", "STRICT_DEEP"}:
+        print("strict command should map to strict-light or strict-deep profile")
         return 1
     if full.get("profile") != "FULL":
         print("full command should map to FULL profile")
+        return 1
+    if full_all.get("profile") != "FULL_ALL":
+        print("full all command should map to FULL_ALL profile")
         return 1
     print("gate profile mapping check OK")
     return 0
@@ -61,15 +65,7 @@ def run_full_shards_groups(repo_root: str) -> int:
         print("FULL impacted plan should include at least one impacted shard group")
         return 1
 
-    previous = os.environ.get("DOM_GATE_FULL_ALL", "")
-    os.environ["DOM_GATE_FULL_ALL"] = "1"
-    try:
-        full_all = build_plan(repo_root=repo_root, gate_command="full", requested_profile="FULL")
-    finally:
-        if previous:
-            os.environ["DOM_GATE_FULL_ALL"] = previous
-        else:
-            os.environ.pop("DOM_GATE_FULL_ALL", None)
+    full_all = build_plan(repo_root=repo_root, gate_command="full", requested_profile="FULL_ALL")
 
     full_all_runners = _runner_ids(full_all)
     full_all_testx = sorted(item for item in full_all_runners if item.startswith("testx.group."))

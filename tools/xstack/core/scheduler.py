@@ -12,7 +12,8 @@ from typing import Dict, List
 from . import log as xlog
 from .cache_store import load_entry, store_entry
 from .profiler import end_phase, start_phase
-from .runners import resolve_adapter
+from .runners import resolve_adapter, result_to_dict
+from .runners_base import RunnerContext
 
 
 def _hash_text(value: str) -> str:
@@ -34,9 +35,16 @@ def _node_input_hash(node: dict, plan_payload: dict, completed: Dict[str, dict])
     return _hash_text(json.dumps(payload, sort_keys=True, separators=(",", ":")))
 
 
-def _run_node(node: dict, repo_root: str, workspace_id: str) -> dict:
+def _run_node(node: dict, repo_root: str, workspace_id: str, plan_payload: dict) -> dict:
     adapter = resolve_adapter(str(node.get("runner_id", "")))
-    return adapter(node, repo_root, workspace_id=workspace_id)
+    context = RunnerContext(
+        repo_root=repo_root,
+        workspace_id=workspace_id,
+        node=node,
+        plan_profile=str(plan_payload.get("profile", "")).strip(),
+        repo_state_hash=str(plan_payload.get("repo_state_hash", "")).strip(),
+    )
+    return result_to_dict(adapter.run(context))
 
 
 def _cache_profile_id(runner_id: str, profile_id: str) -> str:
@@ -60,7 +68,7 @@ def execute_plan(
     cache_root: str = "",
 ) -> Dict[str, object]:
     start_phase("scheduler.execute_plan", {"profile": str(plan_payload.get("profile", ""))})
-    fail_fast = str(plan_payload.get("profile", "")).strip().upper() != "FULL"
+    fail_fast = str(plan_payload.get("profile", "")).strip().upper() not in {"FULL", "FULL_ALL"}
     nodes = [row for row in (plan_payload.get("nodes") or []) if isinstance(row, dict)]
     node_by_id = {str(row.get("node_id", "")): row for row in nodes}
     pending = sorted(node_by_id.keys())
@@ -127,7 +135,7 @@ def execute_plan(
                     xlog.cache_event(runner_id, False, trace=trace)
                     node_start = xlog.phase_start(runner_id, trace=trace)
                     start_phase("runner.{}".format(runner_id))
-                    future = pool.submit(_run_node, node, repo_root, str(plan_payload.get("workspace_id", "")))
+                    future = pool.submit(_run_node, node, repo_root, str(plan_payload.get("workspace_id", "")), plan_payload)
                     running[future] = (node_id, input_hash, node_start, "runner.{}".format(runner_id), cache_profile)
 
                 if not running:
