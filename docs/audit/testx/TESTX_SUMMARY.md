@@ -1,11 +1,11 @@
 Status: DERIVED
-Last Reviewed: 2026-02-13
+Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 
-# TestX Suite Summary
+# XStack Test Group Summary
 
-- suite_id: `testx_verify`
-- result: `fail`
-- selected_tests: `10`
-- required_test_tags: `determinism, docs, identity, integration, invariant, performance, registry, regression, schema, security, tools, workspace`
+- group_id: `testx.group.runtime.verify`
+- returncode: `0`
+- selected_test_count: `9`
+- suite_passed: `true`

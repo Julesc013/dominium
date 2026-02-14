@@ -1,0 +1,668 @@
+{
+  "cumulative": [
+    {
+      "count": 1,
+      "max_s": 1.0276935,
+      "min_s": 1.0276935,
+      "phase_name": "plan.generate",
+      "total_s": 1.0276935
+    },
+    {
+      "count": 1,
+      "max_s": 0.9320745000000001,
+      "min_s": 0.9320745000000001,
+      "phase_name": "merkle.compute_repo_state_hash",
+      "total_s": 0.9320745000000001
+    },
+    {
+      "count": 1,
+      "max_s": 0.19104339999999997,
+      "min_s": 0.19104339999999997,
+      "phase_name": "merkle.subtree.docs",
+      "total_s": 0.19104339999999997
+    },
+    {
+      "count": 1,
+      "max_s": 0.15645599999999993,
+      "min_s": 0.15645599999999993,
+      "phase_name": "merkle.subtree.tests",
+      "total_s": 0.15645599999999993
+    },
+    {
+      "count": 1,
+      "max_s": 0.12459330000000002,
+      "min_s": 0.12459330000000002,
+      "phase_name": "merkle.subtree.data",
+      "total_s": 0.12459330000000002
+    },
+    {
+      "count": 1,
+      "max_s": 0.10623949999999999,
+      "min_s": 0.10623949999999999,
+      "phase_name": "merkle.subtree.tools",
+      "total_s": 0.10623949999999999
+    },
+    {
+      "count": 1,
+      "max_s": 0.10581420000000002,
+      "min_s": 0.10581420000000002,
+      "phase_name": "merkle.subtree.engine",
+      "total_s": 0.10581420000000002
+    },
+    {
+      "count": 1,
+      "max_s": 0.09170040000000002,
+      "min_s": 0.09170040000000002,
+      "phase_name": "merkle.subtree.game",
+      "total_s": 0.09170040000000002
+    },
+    {
+      "count": 1,
+      "max_s": 0.09154589999999999,
+      "min_s": 0.09154589999999999,
+      "phase_name": "impact_graph.build",
+      "total_s": 0.09154589999999999
+    },
+    {
+      "count": 1,
+      "max_s": 0.0834953,
+      "min_s": 0.0834953,
+      "phase_name": "impact_graph.changed_files",
+      "total_s": 0.0834953
+    },
+    {
+      "count": 1,
+      "max_s": 0.0824232,
+      "min_s": 0.0824232,
+      "phase_name": "impact_graph.git_diff",
+      "total_s": 0.0824232
+    },
+    {
+      "count": 1,
+      "max_s": 0.05359360000000013,
+      "min_s": 0.05359360000000013,
+      "phase_name": "scheduler.execute_plan",
+      "total_s": 0.05359360000000013
+    },
+    {
+      "count": 1,
+      "max_s": 0.04557239999999996,
+      "min_s": 0.04557239999999996,
+      "phase_name": "merkle.subtree.schema",
+      "total_s": 0.04557239999999996
+    },
+    {
+      "count": 1,
+      "max_s": 0.020362299999999944,
+      "min_s": 0.020362299999999944,
+      "phase_name": "cache.lookup.auditx.group.core.policy",
+      "total_s": 0.020362299999999944
+    },
+    {
+      "count": 1,
+      "max_s": 0.018316800000000022,
+      "min_s": 0.018316800000000022,
+      "phase_name": "cache.lookup.testx.group.runtime.verify",
+      "total_s": 0.018316800000000022
+    },
+    {
+      "count": 1,
+      "max_s": 0.0130382,
+      "min_s": 0.0130382,
+      "phase_name": "cache.lookup.testx.group.core.invariants",
+      "total_s": 0.0130382
+    },
+    {
+      "count": 1,
+      "max_s": 0.0075980999999999965,
+      "min_s": 0.0075980999999999965,
+      "phase_name": "merkle.subtree.client",
+      "total_s": 0.0075980999999999965
+    },
+    {
+      "count": 1,
+      "max_s": 0.005936900000000023,
+      "min_s": 0.005936900000000023,
+      "phase_name": "merkle.subtree.scripts",
+      "total_s": 0.005936900000000023
+    },
+    {
+      "count": 1,
+      "max_s": 0.005792000000000019,
+      "min_s": 0.005792000000000019,
+      "phase_name": "merkle.subtree.server",
+      "total_s": 0.005792000000000019
+    },
+    {
+      "count": 1,
+      "max_s": 0.0015823000000000365,
+      "min_s": 0.0015823000000000365,
+      "phase_name": "merkle.subtree.repo",
+      "total_s": 0.0015823000000000365
+    },
+    {
+      "count": 1,
+      "max_s": 0.0007013000000000158,
+      "min_s": 0.0007013000000000158,
+      "phase_name": "cache.lookup.repox_runner",
+      "total_s": 0.0007013000000000158
+    }
+  ],
+  "events": [
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "gate_command": "strict",
+        "requested_profile": "STRICT"
+      },
+      "name": "plan.generate",
+      "parent_id": 0,
+      "phase_id": 1,
+      "t_rel_s": 6.999999999979245e-06,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "impact_graph.build",
+      "parent_id": 1,
+      "phase_id": 2,
+      "t_rel_s": 0.0013985999999999998,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "impact_graph.changed_files",
+      "parent_id": 2,
+      "phase_id": 3,
+      "t_rel_s": 0.0014091999999999993,
+      "thread_id": 173080
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "git",
+          "diff",
+          "--name-only",
+          "--diff-filter=ACMR",
+          "origin/main...HEAD"
+        ]
+      },
+      "name": "impact_graph.git_diff",
+      "parent_id": 3,
+      "phase_id": 4,
+      "t_rel_s": 0.0014224999999999932,
+      "thread_id": 173080
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0824232,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "impact_graph.git_diff",
+      "parent_id": 3,
+      "phase_id": 4,
+      "t_rel_s": 0.0838457,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.0834953,
+      "event": "end",
+      "meta": {
+        "count": 25
+      },
+      "name": "impact_graph.changed_files",
+      "parent_id": 2,
+      "phase_id": 3,
+      "t_rel_s": 0.0849045,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.09154589999999999,
+      "event": "end",
+      "meta": {
+        "auditx_groups": 2,
+        "changed_paths": 25,
+        "testx_groups": 3
+      },
+      "name": "impact_graph.build",
+      "parent_id": 1,
+      "phase_id": 2,
+      "t_rel_s": 0.09294449999999999,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.compute_repo_state_hash",
+      "parent_id": 1,
+      "phase_id": 5,
+      "t_rel_s": 0.09298029999999999,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.engine",
+      "parent_id": 5,
+      "phase_id": 6,
+      "t_rel_s": 0.11677279999999998,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.10581420000000002,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 649
+      },
+      "name": "merkle.subtree.engine",
+      "parent_id": 5,
+      "phase_id": 6,
+      "t_rel_s": 0.222587,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.game",
+      "parent_id": 5,
+      "phase_id": 7,
+      "t_rel_s": 0.2226425,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.09170040000000002,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 618
+      },
+      "name": "merkle.subtree.game",
+      "parent_id": 5,
+      "phase_id": 7,
+      "t_rel_s": 0.3143429,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.client",
+      "parent_id": 5,
+      "phase_id": 8,
+      "t_rel_s": 0.3143988,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.0075980999999999965,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 46
+      },
+      "name": "merkle.subtree.client",
+      "parent_id": 5,
+      "phase_id": 8,
+      "t_rel_s": 0.32199690000000003,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.server",
+      "parent_id": 5,
+      "phase_id": 9,
+      "t_rel_s": 0.32202849999999994,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.005792000000000019,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 44
+      },
+      "name": "merkle.subtree.server",
+      "parent_id": 5,
+      "phase_id": 9,
+      "t_rel_s": 0.32782049999999996,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.tools",
+      "parent_id": 5,
+      "phase_id": 10,
+      "t_rel_s": 0.3278533,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.10623949999999999,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 534
+      },
+      "name": "merkle.subtree.tools",
+      "parent_id": 5,
+      "phase_id": 10,
+      "t_rel_s": 0.43409279999999995,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.schema",
+      "parent_id": 5,
+      "phase_id": 11,
+      "t_rel_s": 0.4341598,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.04557239999999996,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 387
+      },
+      "name": "merkle.subtree.schema",
+      "parent_id": 5,
+      "phase_id": 11,
+      "t_rel_s": 0.47973219999999994,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.data",
+      "parent_id": 5,
+      "phase_id": 12,
+      "t_rel_s": 0.4797796,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.12459330000000002,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 565
+      },
+      "name": "merkle.subtree.data",
+      "parent_id": 5,
+      "phase_id": 12,
+      "t_rel_s": 0.6043729,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.docs",
+      "parent_id": 5,
+      "phase_id": 13,
+      "t_rel_s": 0.6045271,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.19104339999999997,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 1079
+      },
+      "name": "merkle.subtree.docs",
+      "parent_id": 5,
+      "phase_id": 13,
+      "t_rel_s": 0.7955705,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.scripts",
+      "parent_id": 5,
+      "phase_id": 14,
+      "t_rel_s": 0.7956675999999999,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.005936900000000023,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 46
+      },
+      "name": "merkle.subtree.scripts",
+      "parent_id": 5,
+      "phase_id": 14,
+      "t_rel_s": 0.8016044999999999,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.repo",
+      "parent_id": 5,
+      "phase_id": 15,
+      "t_rel_s": 0.8016403,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.0015823000000000365,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 11
+      },
+      "name": "merkle.subtree.repo",
+      "parent_id": 5,
+      "phase_id": 15,
+      "t_rel_s": 0.8032226,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.tests",
+      "parent_id": 5,
+      "phase_id": 16,
+      "t_rel_s": 0.803249,
+      "thread_id": 173080
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.15645599999999993,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 746
+      },
+      "name": "merkle.subtree.tests",
+      "parent_id": 5,
+      "phase_id": 16,
+      "t_rel_s": 0.9597049999999999,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.9320745000000001,
+      "event": "end",
+      "meta": {},
+      "name": "merkle.compute_repo_state_hash",
+      "parent_id": 1,
+      "phase_id": 5,
+      "t_rel_s": 1.0250548000000002,
+      "thread_id": 173080
+    },
+    {
+      "depth": 0,
+      "duration_s": 1.0276935,
+      "event": "end",
+      "meta": {},
+      "name": "plan.generate",
+      "parent_id": 0,
+      "phase_id": 1,
+      "t_rel_s": 1.0277005000000001,
+      "thread_id": 173080
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "profile": "STRICT_DEEP"
+      },
+      "name": "scheduler.execute_plan",
+      "parent_id": 0,
+      "phase_id": 17,
+      "t_rel_s": 1.0277725,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.repox_runner",
+      "parent_id": 17,
+      "phase_id": 18,
+      "t_rel_s": 1.0281803,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.0007013000000000158,
+      "event": "end",
+      "meta": {
+        "cache_hit": true
+      },
+      "name": "cache.lookup.repox_runner",
+      "parent_id": 17,
+      "phase_id": 18,
+      "t_rel_s": 1.0288816,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.auditx.group.core.policy",
+      "parent_id": 17,
+      "phase_id": 19,
+      "t_rel_s": 1.0291248000000002,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.020362299999999944,
+      "event": "end",
+      "meta": {
+        "cache_hit": true
+      },
+      "name": "cache.lookup.auditx.group.core.policy",
+      "parent_id": 17,
+      "phase_id": 19,
+      "t_rel_s": 1.0494871000000001,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.testx.group.core.invariants",
+      "parent_id": 17,
+      "phase_id": 20,
+      "t_rel_s": 1.0496724000000002,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.0130382,
+      "event": "end",
+      "meta": {
+        "cache_hit": true
+      },
+      "name": "cache.lookup.testx.group.core.invariants",
+      "parent_id": 17,
+      "phase_id": 20,
+      "t_rel_s": 1.0627106000000002,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.testx.group.runtime.verify",
+      "parent_id": 17,
+      "phase_id": 21,
+      "t_rel_s": 1.0628857,
+      "thread_id": 173080
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.018316800000000022,
+      "event": "end",
+      "meta": {
+        "cache_hit": true
+      },
+      "name": "cache.lookup.testx.group.runtime.verify",
+      "parent_id": 17,
+      "phase_id": 21,
+      "t_rel_s": 1.0812025,
+      "thread_id": 173080
+    },
+    {
+      "depth": 0,
+      "duration_s": 0.05359360000000013,
+      "event": "end",
+      "meta": {},
+      "name": "scheduler.execute_plan",
+      "parent_id": 0,
+      "phase_id": 17,
+      "t_rel_s": 1.0813661,
+      "thread_id": 173080
+    }
+  ],
+  "extra": {
+    "cache_hits": 4,
+    "cache_misses": 0,
+    "exit_code": 0,
+    "gate_kind": "strict",
+    "plan_hash": "5d4325f1162e472bc6f4e5638cb192e1f5eb827bf8afffa3a0c7fd3c0f6d5ae6",
+    "profile": "STRICT_DEEP",
+    "total_seconds": 0.05332541465759277
+  },
+  "run_started_utc": "2026-02-14T02:57:01Z",
+  "schema_version": "1.0.0",
+  "total_runtime_s": 1.0814206000000002
+}

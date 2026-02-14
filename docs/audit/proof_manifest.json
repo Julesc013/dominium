@@ -3,18 +3,78 @@
   "schema_version": "1.0.0",
   "generated_by": "scripts/ci/check_repox_rules.py",
   "changed_paths": [
-    "docs/audit/proof_manifest.json"
+    "data/registries/derived_artifacts.json",
+    "data/registries/gate_policy.json",
+    "data/registries/presentation_matrix.json",
+    "docs/governance/AUDITX_PROMOTION_POLICY.md",
+    "docs/governance/GATE_THROUGHPUT_POLICY.md",
+    "docs/governance/REPOX_RULESETS.md",
+    "docs/governance/TESTX_ARCHITECTURE.md",
+    "docs/governance/XSTACK_INCREMENTAL_MODEL.md",
+    "docs/governance/XSTACK_PORTABILITY.md",
+    "docs/governance/XSTACK_TEMPLATE_CHECKLIST.md",
+    "repo/repox/rulesets/core.json",
+    "schema/governance/presentation_matrix.schema",
+    "scripts/ci/check_repox_rules.py",
+    "scripts/dev/gate.py",
+    "scripts/dev/run_xstack_group_tests.py",
+    "tests/integration/test_gate_fast_strict_full_profiles.py",
+    "tests/invariant/CMakeLists.txt",
+    "tests/invariant/test_observer_watermark_required.py",
+    "tests/invariant/test_repox_cache_equivalence.py",
+    "tools/xstack/core/plan.py",
+    "tools/xstack/core/repo_health.py",
+    "tools/xstack/core/runners.py",
+    "tools/xstack/core/runners_base.py",
+    "tools/xstack/core/scheduler.py",
+    "tools/xstack/core/time_estimator.py"
   ],
   "changed_files": [
-    "docs/audit/proof_manifest.json"
+    "data/registries/derived_artifacts.json",
+    "data/registries/gate_policy.json",
+    "data/registries/presentation_matrix.json",
+    "docs/governance/AUDITX_PROMOTION_POLICY.md",
+    "docs/governance/GATE_THROUGHPUT_POLICY.md",
+    "docs/governance/REPOX_RULESETS.md",
+    "docs/governance/TESTX_ARCHITECTURE.md",
+    "docs/governance/XSTACK_INCREMENTAL_MODEL.md",
+    "docs/governance/XSTACK_PORTABILITY.md",
+    "docs/governance/XSTACK_TEMPLATE_CHECKLIST.md",
+    "repo/repox/rulesets/core.json",
+    "schema/governance/presentation_matrix.schema",
+    "scripts/ci/check_repox_rules.py",
+    "scripts/dev/gate.py",
+    "scripts/dev/run_xstack_group_tests.py",
+    "tests/integration/test_gate_fast_strict_full_profiles.py",
+    "tests/invariant/CMakeLists.txt",
+    "tests/invariant/test_observer_watermark_required.py",
+    "tests/invariant/test_repox_cache_equivalence.py",
+    "tools/xstack/core/plan.py",
+    "tools/xstack/core/repo_health.py",
+    "tools/xstack/core/runners.py",
+    "tools/xstack/core/runners_base.py",
+    "tools/xstack/core/scheduler.py",
+    "tools/xstack/core/time_estimator.py"
   ],
   "impacted_subsystems": [
-    "docs"
+    "data",
+    "docs",
+    "schema",
+    "tests",
+    "tools"
   ],
-  "impacted_invariants": [],
+  "impacted_invariants": [
+    "INV-SCHEMA-MIGRATION-ROUTES",
+    "INV-SCHEMA-VERSION-BUMP"
+  ],
   "required_test_tags": [
     "docs",
-    "invariant"
+    "integration",
+    "invariant",
+    "registry",
+    "regression",
+    "schema",
+    "tools"
   ],
   "required_capability_checks": [
     "tool.memory.read",
@@ -29,9 +89,18 @@
     "CAMERA_REFUSE_ENTITLEMENT",
     "REFUSE_CAPABILITY_MISSING"
   ],
-  "required_invariants": [],
-  "required_tests": [],
-  "focused_test_subset": [],
+  "required_invariants": [
+    "INV-SCHEMA-MIGRATION-ROUTES",
+    "INV-SCHEMA-VERSION-BUMP"
+  ],
+  "required_tests": [
+    "schema_migration_contracts",
+    "schema_version_immutability_contracts"
+  ],
+  "focused_test_subset": [
+    "schema_migration_contracts",
+    "schema_version_immutability_contracts"
+  ],
   "warnings": [
     "WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile",
     "WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T063945Z_verify_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile"
@@ -313,12 +382,14 @@
     "test_no_global_write",
     "test_no_mode_flags",
     "test_no_timestamp_in_canonical",
+    "test_observer_watermark_required",
     "test_optional_bundles_core_runtime",
     "test_performx_arbitrary_cwd",
     "test_performx_empty_path",
     "test_profile_switch_requires_restart",
     "test_remediation_progress_invariant",
     "test_remove_optional_bundle_core_boots",
+    "test_repox_cache_equivalence",
     "test_rng_stream_consistency",
     "test_server_rejects_capability_escalation",
     "test_session_spec_required_for_launch",

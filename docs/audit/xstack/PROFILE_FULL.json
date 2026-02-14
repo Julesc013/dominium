@@ -1,0 +1,1687 @@
+{
+  "cumulative": [
+    {
+      "count": 1,
+      "max_s": 1023.4632047999999,
+      "min_s": 1023.4632047999999,
+      "phase_name": "scheduler.execute_plan",
+      "total_s": 1023.4632047999999
+    },
+    {
+      "count": 1,
+      "max_s": 879.7879267000001,
+      "min_s": 879.7879267000001,
+      "phase_name": "runner.repox_runner",
+      "total_s": 879.7879267000001
+    },
+    {
+      "count": 1,
+      "max_s": 879.7717053,
+      "min_s": 879.7717053,
+      "phase_name": "subprocess.repox_runner",
+      "total_s": 879.7717053
+    },
+    {
+      "count": 1,
+      "max_s": 134.60459019999996,
+      "min_s": 134.60459019999996,
+      "phase_name": "runner.auditx.group.full.semantic",
+      "total_s": 134.60459019999996
+    },
+    {
+      "count": 1,
+      "max_s": 134.6009408000001,
+      "min_s": 134.6009408000001,
+      "phase_name": "subprocess.auditx.group.full.semantic",
+      "total_s": 134.6009408000001
+    },
+    {
+      "count": 1,
+      "max_s": 22.908743300000083,
+      "min_s": 22.908743300000083,
+      "phase_name": "runner.securex_runner",
+      "total_s": 22.908743300000083
+    },
+    {
+      "count": 1,
+      "max_s": 22.904053099999942,
+      "min_s": 22.904053099999942,
+      "phase_name": "subprocess.securex_runner",
+      "total_s": 22.904053099999942
+    },
+    {
+      "count": 1,
+      "max_s": 15.733036200000015,
+      "min_s": 15.733036200000015,
+      "phase_name": "runner.testx.group.full.verify",
+      "total_s": 15.733036200000015
+    },
+    {
+      "count": 1,
+      "max_s": 15.730027399999926,
+      "min_s": 15.730027399999926,
+      "phase_name": "subprocess.testx.group.full.verify",
+      "total_s": 15.730027399999926
+    },
+    {
+      "count": 1,
+      "max_s": 11.105608899999993,
+      "min_s": 11.105608899999993,
+      "phase_name": "runner.testx.group.runtime.verify",
+      "total_s": 11.105608899999993
+    },
+    {
+      "count": 1,
+      "max_s": 11.10325750000004,
+      "min_s": 11.10325750000004,
+      "phase_name": "subprocess.testx.group.runtime.verify",
+      "total_s": 11.10325750000004
+    },
+    {
+      "count": 1,
+      "max_s": 9.062951100000078,
+      "min_s": 9.062951100000078,
+      "phase_name": "runner.auditx.group.core.policy",
+      "total_s": 9.062951100000078
+    },
+    {
+      "count": 1,
+      "max_s": 9.059841900000038,
+      "min_s": 9.059841900000038,
+      "phase_name": "subprocess.auditx.group.core.policy",
+      "total_s": 9.059841900000038
+    },
+    {
+      "count": 1,
+      "max_s": 4.498403199999984,
+      "min_s": 4.498403199999984,
+      "phase_name": "runner.testx.group.core.invariants",
+      "total_s": 4.498403199999984
+    },
+    {
+      "count": 1,
+      "max_s": 4.4632303000000775,
+      "min_s": 4.4632303000000775,
+      "phase_name": "subprocess.testx.group.core.invariants",
+      "total_s": 4.4632303000000775
+    },
+    {
+      "count": 1,
+      "max_s": 1.0014112000000002,
+      "min_s": 1.0014112000000002,
+      "phase_name": "plan.generate",
+      "total_s": 1.0014112000000002
+    },
+    {
+      "count": 1,
+      "max_s": 0.9138951,
+      "min_s": 0.9138951,
+      "phase_name": "merkle.compute_repo_state_hash",
+      "total_s": 0.9138951
+    },
+    {
+      "count": 1,
+      "max_s": 0.34188779999999497,
+      "min_s": 0.34188779999999497,
+      "phase_name": "runner.compatx_runner",
+      "total_s": 0.34188779999999497
+    },
+    {
+      "count": 1,
+      "max_s": 0.3282815000000028,
+      "min_s": 0.3282815000000028,
+      "phase_name": "subprocess.compatx_runner",
+      "total_s": 0.3282815000000028
+    },
+    {
+      "count": 1,
+      "max_s": 0.28357169999992493,
+      "min_s": 0.28357169999992493,
+      "phase_name": "runner.performx_runner",
+      "total_s": 0.28357169999992493
+    },
+    {
+      "count": 1,
+      "max_s": 0.27883650000001126,
+      "min_s": 0.27883650000001126,
+      "phase_name": "subprocess.performx_runner",
+      "total_s": 0.27883650000001126
+    },
+    {
+      "count": 1,
+      "max_s": 0.16535490000000008,
+      "min_s": 0.16535490000000008,
+      "phase_name": "merkle.subtree.tests",
+      "total_s": 0.16535490000000008
+    },
+    {
+      "count": 1,
+      "max_s": 0.16085059999999995,
+      "min_s": 0.16085059999999995,
+      "phase_name": "merkle.subtree.docs",
+      "total_s": 0.16085059999999995
+    },
+    {
+      "count": 1,
+      "max_s": 0.105431,
+      "min_s": 0.105431,
+      "phase_name": "merkle.subtree.game",
+      "total_s": 0.105431
+    },
+    {
+      "count": 1,
+      "max_s": 0.10520230000000003,
+      "min_s": 0.10520230000000003,
+      "phase_name": "merkle.subtree.tools",
+      "total_s": 0.10520230000000003
+    },
+    {
+      "count": 1,
+      "max_s": 0.09722830000000002,
+      "min_s": 0.09722830000000002,
+      "phase_name": "merkle.subtree.engine",
+      "total_s": 0.09722830000000002
+    },
+    {
+      "count": 1,
+      "max_s": 0.0944313000000001,
+      "min_s": 0.0944313000000001,
+      "phase_name": "merkle.subtree.data",
+      "total_s": 0.0944313000000001
+    },
+    {
+      "count": 1,
+      "max_s": 0.0810139,
+      "min_s": 0.0810139,
+      "phase_name": "impact_graph.build",
+      "total_s": 0.0810139
+    },
+    {
+      "count": 1,
+      "max_s": 0.0751377,
+      "min_s": 0.0751377,
+      "phase_name": "impact_graph.changed_files",
+      "total_s": 0.0751377
+    },
+    {
+      "count": 1,
+      "max_s": 0.07440179999999999,
+      "min_s": 0.07440179999999999,
+      "phase_name": "impact_graph.git_diff",
+      "total_s": 0.07440179999999999
+    },
+    {
+      "count": 1,
+      "max_s": 0.053109799999999985,
+      "min_s": 0.053109799999999985,
+      "phase_name": "merkle.subtree.schema",
+      "total_s": 0.053109799999999985
+    },
+    {
+      "count": 1,
+      "max_s": 0.00820809999999994,
+      "min_s": 0.00820809999999994,
+      "phase_name": "merkle.subtree.scripts",
+      "total_s": 0.00820809999999994
+    },
+    {
+      "count": 1,
+      "max_s": 0.007960200000000028,
+      "min_s": 0.007960200000000028,
+      "phase_name": "merkle.subtree.client",
+      "total_s": 0.007960200000000028
+    },
+    {
+      "count": 1,
+      "max_s": 0.007106199999952878,
+      "min_s": 0.007106199999952878,
+      "phase_name": "cache.lookup.securex_runner",
+      "total_s": 0.007106199999952878
+    },
+    {
+      "count": 1,
+      "max_s": 0.005511199999999994,
+      "min_s": 0.005511199999999994,
+      "phase_name": "merkle.subtree.server",
+      "total_s": 0.005511199999999994
+    },
+    {
+      "count": 1,
+      "max_s": 0.004257000000052358,
+      "min_s": 0.004257000000052358,
+      "phase_name": "cache.lookup.compatx_runner",
+      "total_s": 0.004257000000052358
+    },
+    {
+      "count": 1,
+      "max_s": 0.0024021000000402637,
+      "min_s": 0.0024021000000402637,
+      "phase_name": "cache.lookup.testx.group.core.invariants",
+      "total_s": 0.0024021000000402637
+    },
+    {
+      "count": 1,
+      "max_s": 0.002312899999999951,
+      "min_s": 0.002312899999999951,
+      "phase_name": "merkle.subtree.repo",
+      "total_s": 0.002312899999999951
+    },
+    {
+      "count": 1,
+      "max_s": 0.002136800000016592,
+      "min_s": 0.002136800000016592,
+      "phase_name": "cache.store.testx.group.runtime.verify",
+      "total_s": 0.002136800000016592
+    },
+    {
+      "count": 1,
+      "max_s": 0.0019965000000183863,
+      "min_s": 0.0019965000000183863,
+      "phase_name": "cache.lookup.performx_runner",
+      "total_s": 0.0019965000000183863
+    },
+    {
+      "count": 1,
+      "max_s": 0.0015273999999863008,
+      "min_s": 0.0015273999999863008,
+      "phase_name": "cache.store.testx.group.core.invariants",
+      "total_s": 0.0015273999999863008
+    },
+    {
+      "count": 1,
+      "max_s": 0.0014423999999735315,
+      "min_s": 0.0014423999999735315,
+      "phase_name": "cache.store.performx_runner",
+      "total_s": 0.0014423999999735315
+    },
+    {
+      "count": 1,
+      "max_s": 0.0014138000000230022,
+      "min_s": 0.0014138000000230022,
+      "phase_name": "cache.store.testx.group.full.verify",
+      "total_s": 0.0014138000000230022
+    },
+    {
+      "count": 1,
+      "max_s": 0.001361599999995633,
+      "min_s": 0.001361599999995633,
+      "phase_name": "cache.store.repox_runner",
+      "total_s": 0.001361599999995633
+    },
+    {
+      "count": 1,
+      "max_s": 0.001188000000070133,
+      "min_s": 0.001188000000070133,
+      "phase_name": "cache.store.compatx_runner",
+      "total_s": 0.001188000000070133
+    },
+    {
+      "count": 1,
+      "max_s": 0.0011371999999028048,
+      "min_s": 0.0011371999999028048,
+      "phase_name": "cache.store.auditx.group.full.semantic",
+      "total_s": 0.0011371999999028048
+    },
+    {
+      "count": 1,
+      "max_s": 0.0011047000000417029,
+      "min_s": 0.0011047000000417029,
+      "phase_name": "cache.store.auditx.group.core.policy",
+      "total_s": 0.0011047000000417029
+    },
+    {
+      "count": 1,
+      "max_s": 0.0010344999999460924,
+      "min_s": 0.0010344999999460924,
+      "phase_name": "cache.store.securex_runner",
+      "total_s": 0.0010344999999460924
+    },
+    {
+      "count": 1,
+      "max_s": 0.0008701999999998211,
+      "min_s": 0.0008701999999998211,
+      "phase_name": "cache.lookup.repox_runner",
+      "total_s": 0.0008701999999998211
+    },
+    {
+      "count": 1,
+      "max_s": 0.0007953000000497923,
+      "min_s": 0.0007953000000497923,
+      "phase_name": "cache.lookup.auditx.group.full.semantic",
+      "total_s": 0.0007953000000497923
+    },
+    {
+      "count": 1,
+      "max_s": 0.0007468999999673542,
+      "min_s": 0.0007468999999673542,
+      "phase_name": "cache.lookup.testx.group.full.verify",
+      "total_s": 0.0007468999999673542
+    },
+    {
+      "count": 1,
+      "max_s": 0.0003413000000591637,
+      "min_s": 0.0003413000000591637,
+      "phase_name": "cache.lookup.testx.group.runtime.verify",
+      "total_s": 0.0003413000000591637
+    },
+    {
+      "count": 1,
+      "max_s": 0.00032320000002528104,
+      "min_s": 0.00032320000002528104,
+      "phase_name": "cache.lookup.auditx.group.core.policy",
+      "total_s": 0.00032320000002528104
+    }
+  ],
+  "events": [
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "gate_command": "full",
+        "requested_profile": "FULL"
+      },
+      "name": "plan.generate",
+      "parent_id": 0,
+      "phase_id": 1,
+      "t_rel_s": 1.180000000000625e-05,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "impact_graph.build",
+      "parent_id": 1,
+      "phase_id": 2,
+      "t_rel_s": 0.002182400000000001,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "impact_graph.changed_files",
+      "parent_id": 2,
+      "phase_id": 3,
+      "t_rel_s": 0.0022000000000000075,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "git",
+          "diff",
+          "--name-only",
+          "--diff-filter=ACMR",
+          "origin/main...HEAD"
+        ]
+      },
+      "name": "impact_graph.git_diff",
+      "parent_id": 3,
+      "phase_id": 4,
+      "t_rel_s": 0.0022230000000000028,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.07440179999999999,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "impact_graph.git_diff",
+      "parent_id": 3,
+      "phase_id": 4,
+      "t_rel_s": 0.07662479999999999,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.0751377,
+      "event": "end",
+      "meta": {
+        "count": 25
+      },
+      "name": "impact_graph.changed_files",
+      "parent_id": 2,
+      "phase_id": 3,
+      "t_rel_s": 0.07733770000000001,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.0810139,
+      "event": "end",
+      "meta": {
+        "auditx_groups": 2,
+        "changed_paths": 25,
+        "testx_groups": 3
+      },
+      "name": "impact_graph.build",
+      "parent_id": 1,
+      "phase_id": 2,
+      "t_rel_s": 0.0831963,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.compute_repo_state_hash",
+      "parent_id": 1,
+      "phase_id": 5,
+      "t_rel_s": 0.0832467,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.engine",
+      "parent_id": 5,
+      "phase_id": 6,
+      "t_rel_s": 0.11417369999999999,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.09722830000000002,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 649
+      },
+      "name": "merkle.subtree.engine",
+      "parent_id": 5,
+      "phase_id": 6,
+      "t_rel_s": 0.211402,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.game",
+      "parent_id": 5,
+      "phase_id": 7,
+      "t_rel_s": 0.21145719999999998,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.105431,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 618
+      },
+      "name": "merkle.subtree.game",
+      "parent_id": 5,
+      "phase_id": 7,
+      "t_rel_s": 0.31688819999999995,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.client",
+      "parent_id": 5,
+      "phase_id": 8,
+      "t_rel_s": 0.3169406,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.007960200000000028,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 46
+      },
+      "name": "merkle.subtree.client",
+      "parent_id": 5,
+      "phase_id": 8,
+      "t_rel_s": 0.3249008,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.server",
+      "parent_id": 5,
+      "phase_id": 9,
+      "t_rel_s": 0.32493249999999996,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.005511199999999994,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 44
+      },
+      "name": "merkle.subtree.server",
+      "parent_id": 5,
+      "phase_id": 9,
+      "t_rel_s": 0.3304437,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.tools",
+      "parent_id": 5,
+      "phase_id": 10,
+      "t_rel_s": 0.3304823,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.10520230000000003,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 534
+      },
+      "name": "merkle.subtree.tools",
+      "parent_id": 5,
+      "phase_id": 10,
+      "t_rel_s": 0.4356846,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.schema",
+      "parent_id": 5,
+      "phase_id": 11,
+      "t_rel_s": 0.4357518,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.053109799999999985,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 387
+      },
+      "name": "merkle.subtree.schema",
+      "parent_id": 5,
+      "phase_id": 11,
+      "t_rel_s": 0.4888616,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.data",
+      "parent_id": 5,
+      "phase_id": 12,
+      "t_rel_s": 0.4889049999999999,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.0944313000000001,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 565
+      },
+      "name": "merkle.subtree.data",
+      "parent_id": 5,
+      "phase_id": 12,
+      "t_rel_s": 0.5833363,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.docs",
+      "parent_id": 5,
+      "phase_id": 13,
+      "t_rel_s": 0.5833798,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.16085059999999995,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 1079
+      },
+      "name": "merkle.subtree.docs",
+      "parent_id": 5,
+      "phase_id": 13,
+      "t_rel_s": 0.7442304,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.scripts",
+      "parent_id": 5,
+      "phase_id": 14,
+      "t_rel_s": 0.744283,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.00820809999999994,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 46
+      },
+      "name": "merkle.subtree.scripts",
+      "parent_id": 5,
+      "phase_id": 14,
+      "t_rel_s": 0.7524911,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.repo",
+      "parent_id": 5,
+      "phase_id": 15,
+      "t_rel_s": 0.7525556,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.002312899999999951,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 11
+      },
+      "name": "merkle.subtree.repo",
+      "parent_id": 5,
+      "phase_id": 15,
+      "t_rel_s": 0.7548684999999999,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "merkle.subtree.tests",
+      "parent_id": 5,
+      "phase_id": 16,
+      "t_rel_s": 0.7549125,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.16535490000000008,
+      "event": "end",
+      "meta": {
+        "exists": true,
+        "file_count": 746
+      },
+      "name": "merkle.subtree.tests",
+      "parent_id": 5,
+      "phase_id": 16,
+      "t_rel_s": 0.9202674000000001,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.9138951,
+      "event": "end",
+      "meta": {},
+      "name": "merkle.compute_repo_state_hash",
+      "parent_id": 1,
+      "phase_id": 5,
+      "t_rel_s": 0.9971418,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "duration_s": 1.0014112000000002,
+      "event": "end",
+      "meta": {},
+      "name": "plan.generate",
+      "parent_id": 0,
+      "phase_id": 1,
+      "t_rel_s": 1.0014230000000002,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "profile": "FULL"
+      },
+      "name": "scheduler.execute_plan",
+      "parent_id": 0,
+      "phase_id": 17,
+      "t_rel_s": 1.0015544,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.repox_runner",
+      "parent_id": 17,
+      "phase_id": 18,
+      "t_rel_s": 1.0020501000000002,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.0008701999999998211,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.repox_runner",
+      "parent_id": 17,
+      "phase_id": 18,
+      "t_rel_s": 1.0029203,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "runner.repox_runner",
+      "parent_id": 17,
+      "phase_id": 19,
+      "t_rel_s": 1.0031512,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "scripts/ci/check_repox_rules.py",
+          "--repo-root",
+          "c:\\Inbox\\Git Repos\\dominium",
+          "--profile",
+          "FULL"
+        ]
+      },
+      "name": "subprocess.repox_runner",
+      "parent_id": 0,
+      "phase_id": 20,
+      "t_rel_s": 1.0189095000000001,
+      "thread_id": 170780
+    },
+    {
+      "depth": 0,
+      "duration_s": 879.7717053,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "subprocess.repox_runner",
+      "parent_id": 0,
+      "phase_id": 20,
+      "t_rel_s": 880.7906148,
+      "thread_id": 170780
+    },
+    {
+      "depth": 1,
+      "duration_s": 879.7879267000001,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.repox_runner",
+      "parent_id": 17,
+      "phase_id": 19,
+      "t_rel_s": 880.7910779,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.repox_runner",
+      "parent_id": 17,
+      "phase_id": 21,
+      "t_rel_s": 880.791145,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.001361599999995633,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.repox_runner",
+      "parent_id": 17,
+      "phase_id": 21,
+      "t_rel_s": 880.7925066,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.auditx.group.core.policy",
+      "parent_id": 17,
+      "phase_id": 22,
+      "t_rel_s": 880.7927083,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.00032320000002528104,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.auditx.group.core.policy",
+      "parent_id": 17,
+      "phase_id": 22,
+      "t_rel_s": 880.7930315,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "runner.auditx.group.core.policy",
+      "parent_id": 17,
+      "phase_id": 23,
+      "t_rel_s": 880.7932043,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.compatx_runner",
+      "parent_id": 23,
+      "phase_id": 24,
+      "t_rel_s": 880.7933532,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "tools/auditx/auditx.py",
+          "scan",
+          "--changed-only",
+          "--format",
+          "json"
+        ]
+      },
+      "name": "subprocess.auditx.group.core.policy",
+      "parent_id": 0,
+      "phase_id": 25,
+      "t_rel_s": 880.7958433,
+      "thread_id": 170780
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.004257000000052358,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.compatx_runner",
+      "parent_id": 23,
+      "phase_id": 24,
+      "t_rel_s": 880.7976102,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "runner.compatx_runner",
+      "parent_id": 23,
+      "phase_id": 26,
+      "t_rel_s": 880.7977969,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "tools/compatx/compatx.py",
+          "verify",
+          "--repo-root",
+          "c:\\Inbox\\Git Repos\\dominium"
+        ]
+      },
+      "name": "subprocess.compatx_runner",
+      "parent_id": 0,
+      "phase_id": 27,
+      "t_rel_s": 880.8109076,
+      "thread_id": 169940
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.performx_runner",
+      "parent_id": 26,
+      "phase_id": 28,
+      "t_rel_s": 880.8111107999999,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0019965000000183863,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.performx_runner",
+      "parent_id": 26,
+      "phase_id": 28,
+      "t_rel_s": 880.8131073,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "runner.performx_runner",
+      "parent_id": 26,
+      "phase_id": 29,
+      "t_rel_s": 880.813346,
+      "thread_id": 166944
+    },
+    {
+      "depth": 4,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.securex_runner",
+      "parent_id": 29,
+      "phase_id": 30,
+      "t_rel_s": 880.8147269,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "tools/performx/performx.py",
+          "run",
+          "--repo-root",
+          "c:\\Inbox\\Git Repos\\dominium"
+        ]
+      },
+      "name": "subprocess.performx_runner",
+      "parent_id": 0,
+      "phase_id": 31,
+      "t_rel_s": 880.8168769,
+      "thread_id": 175384
+    },
+    {
+      "depth": 4,
+      "duration_s": 0.007106199999952878,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.securex_runner",
+      "parent_id": 29,
+      "phase_id": 30,
+      "t_rel_s": 880.8218330999999,
+      "thread_id": 166944
+    },
+    {
+      "depth": 4,
+      "event": "start",
+      "meta": {},
+      "name": "runner.securex_runner",
+      "parent_id": 29,
+      "phase_id": 32,
+      "t_rel_s": 880.8220643999999,
+      "thread_id": 166944
+    },
+    {
+      "depth": 5,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.testx.group.core.invariants",
+      "parent_id": 32,
+      "phase_id": 33,
+      "t_rel_s": 880.8242667,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "tools/securex/securex.py",
+          "verify",
+          "--repo-root",
+          "c:\\Inbox\\Git Repos\\dominium"
+        ]
+      },
+      "name": "subprocess.securex_runner",
+      "parent_id": 0,
+      "phase_id": 34,
+      "t_rel_s": 880.8263951,
+      "thread_id": 175056
+    },
+    {
+      "depth": 5,
+      "duration_s": 0.0024021000000402637,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.testx.group.core.invariants",
+      "parent_id": 32,
+      "phase_id": 33,
+      "t_rel_s": 880.8266688,
+      "thread_id": 166944
+    },
+    {
+      "depth": 5,
+      "event": "start",
+      "meta": {},
+      "name": "runner.testx.group.core.invariants",
+      "parent_id": 32,
+      "phase_id": 35,
+      "t_rel_s": 880.8270825,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "scripts/dev/run_xstack_group_tests.py",
+          "--repo-root",
+          "c:\\Inbox\\Git Repos\\dominium",
+          "--group-id",
+          "testx.group.core.invariants"
+        ]
+      },
+      "name": "subprocess.testx.group.core.invariants",
+      "parent_id": 0,
+      "phase_id": 36,
+      "t_rel_s": 880.861961,
+      "thread_id": 175744
+    },
+    {
+      "depth": 0,
+      "duration_s": 0.27883650000001126,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "subprocess.performx_runner",
+      "parent_id": 0,
+      "phase_id": 31,
+      "t_rel_s": 881.0957134,
+      "thread_id": 175384
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.28357169999992493,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.performx_runner",
+      "parent_id": 26,
+      "phase_id": 29,
+      "t_rel_s": 881.0969177,
+      "thread_id": 166944
+    },
+    {
+      "depth": 5,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.performx_runner",
+      "parent_id": 35,
+      "phase_id": 37,
+      "t_rel_s": 881.096955,
+      "thread_id": 166944
+    },
+    {
+      "depth": 5,
+      "duration_s": 0.0014423999999735315,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.performx_runner",
+      "parent_id": 35,
+      "phase_id": 37,
+      "t_rel_s": 881.0983974,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "duration_s": 0.3282815000000028,
+      "event": "end",
+      "meta": {
+        "returncode": 2
+      },
+      "name": "subprocess.compatx_runner",
+      "parent_id": 0,
+      "phase_id": 27,
+      "t_rel_s": 881.1391891,
+      "thread_id": 169940
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.34188779999999497,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.compatx_runner",
+      "parent_id": 23,
+      "phase_id": 26,
+      "t_rel_s": 881.1396847,
+      "thread_id": 166944
+    },
+    {
+      "depth": 4,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.compatx_runner",
+      "parent_id": 35,
+      "phase_id": 38,
+      "t_rel_s": 881.1397225,
+      "thread_id": 166944
+    },
+    {
+      "depth": 4,
+      "duration_s": 0.001188000000070133,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.compatx_runner",
+      "parent_id": 35,
+      "phase_id": 38,
+      "t_rel_s": 881.1409105,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "duration_s": 4.4632303000000775,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "subprocess.testx.group.core.invariants",
+      "parent_id": 0,
+      "phase_id": 36,
+      "t_rel_s": 885.3251913,
+      "thread_id": 175744
+    },
+    {
+      "depth": 5,
+      "duration_s": 4.498403199999984,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.testx.group.core.invariants",
+      "parent_id": 32,
+      "phase_id": 35,
+      "t_rel_s": 885.3254857,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.testx.group.core.invariants",
+      "parent_id": 32,
+      "phase_id": 39,
+      "t_rel_s": 885.3255235,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0015273999999863008,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.testx.group.core.invariants",
+      "parent_id": 32,
+      "phase_id": 39,
+      "t_rel_s": 885.3270509,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.testx.group.full.verify",
+      "parent_id": 32,
+      "phase_id": 40,
+      "t_rel_s": 885.327219,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0007468999999673542,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.testx.group.full.verify",
+      "parent_id": 32,
+      "phase_id": 40,
+      "t_rel_s": 885.3279659,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "runner.testx.group.full.verify",
+      "parent_id": 32,
+      "phase_id": 41,
+      "t_rel_s": 885.3281291,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "scripts/dev/run_xstack_group_tests.py",
+          "--repo-root",
+          "c:\\Inbox\\Git Repos\\dominium",
+          "--group-id",
+          "testx.group.full.verify"
+        ]
+      },
+      "name": "subprocess.testx.group.full.verify",
+      "parent_id": 0,
+      "phase_id": 42,
+      "t_rel_s": 885.3307333,
+      "thread_id": 175384
+    },
+    {
+      "depth": 0,
+      "duration_s": 9.059841900000038,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "subprocess.auditx.group.core.policy",
+      "parent_id": 0,
+      "phase_id": 25,
+      "t_rel_s": 889.8556852,
+      "thread_id": 170780
+    },
+    {
+      "depth": 1,
+      "duration_s": 9.062951100000078,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.auditx.group.core.policy",
+      "parent_id": 17,
+      "phase_id": 23,
+      "t_rel_s": 889.8561554,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.auditx.group.core.policy",
+      "parent_id": 41,
+      "phase_id": 43,
+      "t_rel_s": 889.8561896,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0011047000000417029,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.auditx.group.core.policy",
+      "parent_id": 41,
+      "phase_id": 43,
+      "t_rel_s": 889.8572943,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.auditx.group.full.semantic",
+      "parent_id": 41,
+      "phase_id": 44,
+      "t_rel_s": 889.8574484,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0007953000000497923,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.auditx.group.full.semantic",
+      "parent_id": 41,
+      "phase_id": 44,
+      "t_rel_s": 889.8582437,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "runner.auditx.group.full.semantic",
+      "parent_id": 41,
+      "phase_id": 45,
+      "t_rel_s": 889.8584218,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "tools/auditx/auditx.py",
+          "scan",
+          "--format",
+          "json"
+        ]
+      },
+      "name": "subprocess.auditx.group.full.semantic",
+      "parent_id": 0,
+      "phase_id": 46,
+      "t_rel_s": 889.8616456999999,
+      "thread_id": 175744
+    },
+    {
+      "depth": 0,
+      "duration_s": 15.730027399999926,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "subprocess.testx.group.full.verify",
+      "parent_id": 0,
+      "phase_id": 42,
+      "t_rel_s": 901.0607607,
+      "thread_id": 175384
+    },
+    {
+      "depth": 3,
+      "duration_s": 15.733036200000015,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.testx.group.full.verify",
+      "parent_id": 32,
+      "phase_id": 41,
+      "t_rel_s": 901.0611653,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.testx.group.full.verify",
+      "parent_id": 45,
+      "phase_id": 47,
+      "t_rel_s": 901.0612011,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0014138000000230022,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.testx.group.full.verify",
+      "parent_id": 45,
+      "phase_id": 47,
+      "t_rel_s": 901.0626149,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "cache.lookup.testx.group.runtime.verify",
+      "parent_id": 45,
+      "phase_id": 48,
+      "t_rel_s": 901.0627708,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0003413000000591637,
+      "event": "end",
+      "meta": {
+        "cache_hit": false
+      },
+      "name": "cache.lookup.testx.group.runtime.verify",
+      "parent_id": 45,
+      "phase_id": 48,
+      "t_rel_s": 901.0631121,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "runner.testx.group.runtime.verify",
+      "parent_id": 45,
+      "phase_id": 49,
+      "t_rel_s": 901.0632801,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "event": "start",
+      "meta": {
+        "argv": [
+          "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
+          "scripts/dev/run_xstack_group_tests.py",
+          "--repo-root",
+          "c:\\Inbox\\Git Repos\\dominium",
+          "--group-id",
+          "testx.group.runtime.verify"
+        ]
+      },
+      "name": "subprocess.testx.group.runtime.verify",
+      "parent_id": 0,
+      "phase_id": 50,
+      "t_rel_s": 901.0653424,
+      "thread_id": 170780
+    },
+    {
+      "depth": 0,
+      "duration_s": 22.904053099999942,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "subprocess.securex_runner",
+      "parent_id": 0,
+      "phase_id": 34,
+      "t_rel_s": 903.7304482,
+      "thread_id": 175056
+    },
+    {
+      "depth": 4,
+      "duration_s": 22.908743300000083,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.securex_runner",
+      "parent_id": 29,
+      "phase_id": 32,
+      "t_rel_s": 903.7308077,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.securex_runner",
+      "parent_id": 49,
+      "phase_id": 51,
+      "t_rel_s": 903.7308414,
+      "thread_id": 166944
+    },
+    {
+      "depth": 3,
+      "duration_s": 0.0010344999999460924,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.securex_runner",
+      "parent_id": 49,
+      "phase_id": 51,
+      "t_rel_s": 903.7318759,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "duration_s": 11.10325750000004,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "subprocess.testx.group.runtime.verify",
+      "parent_id": 0,
+      "phase_id": 50,
+      "t_rel_s": 912.1685999,
+      "thread_id": 170780
+    },
+    {
+      "depth": 3,
+      "duration_s": 11.105608899999993,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.testx.group.runtime.verify",
+      "parent_id": 45,
+      "phase_id": 49,
+      "t_rel_s": 912.168889,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.testx.group.runtime.verify",
+      "parent_id": 45,
+      "phase_id": 52,
+      "t_rel_s": 912.1689096,
+      "thread_id": 166944
+    },
+    {
+      "depth": 2,
+      "duration_s": 0.002136800000016592,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.testx.group.runtime.verify",
+      "parent_id": 45,
+      "phase_id": 52,
+      "t_rel_s": 912.1710464,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "duration_s": 134.6009408000001,
+      "event": "end",
+      "meta": {
+        "returncode": 0
+      },
+      "name": "subprocess.auditx.group.full.semantic",
+      "parent_id": 0,
+      "phase_id": 46,
+      "t_rel_s": 1024.4625865,
+      "thread_id": 175744
+    },
+    {
+      "depth": 3,
+      "duration_s": 134.60459019999996,
+      "event": "end",
+      "meta": {
+        "exit_code": 0
+      },
+      "name": "runner.auditx.group.full.semantic",
+      "parent_id": 41,
+      "phase_id": 45,
+      "t_rel_s": 1024.463012,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "event": "start",
+      "meta": {},
+      "name": "cache.store.auditx.group.full.semantic",
+      "parent_id": 17,
+      "phase_id": 53,
+      "t_rel_s": 1024.4630348,
+      "thread_id": 166944
+    },
+    {
+      "depth": 1,
+      "duration_s": 0.0011371999999028048,
+      "event": "end",
+      "meta": {},
+      "name": "cache.store.auditx.group.full.semantic",
+      "parent_id": 17,
+      "phase_id": 53,
+      "t_rel_s": 1024.464172,
+      "thread_id": 166944
+    },
+    {
+      "depth": 0,
+      "duration_s": 1023.4632047999999,
+      "event": "end",
+      "meta": {},
+      "name": "scheduler.execute_plan",
+      "parent_id": 0,
+      "phase_id": 17,
+      "t_rel_s": 1024.4647592,
+      "thread_id": 166944
+    }
+  ],
+  "extra": {
+    "cache_hits": 0,
+    "cache_misses": 9,
+    "exit_code": 0,
+    "gate_kind": "full",
+    "plan_hash": "c273ec0c5f7907f8320eb6b10db0b4d1b10306bb55ccfd488fa9552cde8d7cae",
+    "profile": "FULL",
+    "total_seconds": 1023.4511165618896
+  },
+  "run_started_utc": "2026-02-14T02:57:17Z",
+  "schema_version": "1.0.0",
+  "total_runtime_s": 1024.4648703
+}
