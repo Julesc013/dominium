@@ -1,5 +1,5 @@
-Status: DERIVED
-Last Reviewed: 2026-02-13
+Status: CANONICAL
+Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 
@@ -64,6 +64,7 @@ Planner computes profile-aware DAG:
 - FAST
 - STRICT (`STRICT_LIGHT`/`STRICT_DEEP`)
 - FULL
+- FULL_ALL
 
 Plan fields:
 
@@ -104,8 +105,9 @@ Artifact classes from `data/registries/derived_artifacts.json`:
 - `gate.py verify` defaults to FAST
 - `gate.py strict` selects strict profile
 - `gate.py full` selects full profile
+- `gate.py full --full-all` selects full-all profile
 - `gate.py dist` always full
-- `gate.py full` runs impacted groups by default; set `DOM_GATE_FULL_ALL=1` for all-group execution
+- `gate.py full` runs impacted groups by default; set `DOM_GATE_FULL_ALL=1` or `--full-all` for all-group execution
 - `--trace` enables structured live logs
 - `--profile-report` includes scheduler metrics
 
