@@ -127,6 +127,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-SURVIVAL-DIEGETIC-CONTRACT`
 - `INV-MODE-AS-PROFILES`
 - `INV-UI-ENTITLEMENT-GATING`
+- `INV-AUDITX-PROMOTION-POLICY-PRESENT`
+- `INV-REPO-HEALTH-SNAPSHOT-FINALIZATION`
+- `INV-PRESENTATION-MATRIX-INTEGRITY`
 - `INV-DEFAULTS-OPTIONAL`
 - `INV-REPOX-AMBIGUOUS-DIRS`
 - `INV-ROOT-MODULE-SHIM`
@@ -352,6 +355,26 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when entitlement-sensitive UI commands are missing metadata in command registry.
 - Fails when bridge-level refusal markers for profile/entitlement checks are missing.
 - Locks HUD/overlay/console/freecam surfaces to profile-derived entitlements.
+
+### INV-PRESENTATION-MATRIX-INTEGRITY
+
+- Fails when `data/registries/presentation_matrix.json` is missing or schema-mismatched.
+- Fails when matrix rows reference unknown law profiles or lens IDs/prefixes.
+- Fails when survival rows expose nondiegetic lenses/panels.
+- Fails when console/debug overlay panels are exposed without required entitlements.
+- Requires observer law rows to declare watermark enforcement.
+
+### INV-AUDITX-PROMOTION-POLICY-PRESENT
+
+- Fails when `docs/governance/AUDITX_PROMOTION_POLICY.md` is missing.
+- Fails when the policy omits promotion thresholds, flow, sign-off requirements, or retirement contract.
+- Prevents silent promotion of AuditX findings into blocking RepoX rules.
+
+### INV-REPO-HEALTH-SNAPSHOT-FINALIZATION
+
+- Applies only when `docs/audit/system/GOVERNANCE_FINAL_REPORT.md` is part of the change.
+- Requires `docs/audit/system/REPO_HEALTH_SNAPSHOT.json` and `docs/audit/system/REPO_HEALTH_SNAPSHOT.md` in the same change.
+- Requires snapshot json to declare `artifact_class=CANONICAL` and `git_status_clean=true`.
 
 ### INV-DEFAULTS-OPTIONAL
 

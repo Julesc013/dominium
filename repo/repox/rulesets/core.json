@@ -59,6 +59,20 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-AUDITX-PROMOTION-POLICY-PRESENT",
+      "severity": "FAIL",
+      "scope_paths": ["docs/governance/AUDITX_PROMOTION_POLICY.md", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/AUDITX_PROMOTION_POLICY.md",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-REPO-HEALTH-SNAPSHOT-FINALIZATION",
+      "severity": "FAIL",
+      "scope_paths": ["docs/audit/system/GOVERNANCE_FINAL_REPORT.md", "docs/audit/system/REPO_HEALTH_SNAPSHOT.json", "tools/xstack/core/repo_health.py"],
+      "documentation": "docs/governance/GATE_THROUGHPUT_POLICY.md#repo-health-snapshot",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-ONTOLOGY-IMMUTABLE",
       "severity": "FAIL",
       "scope_paths": ["docs/governance/GOVERNANCE_ARCHITECTURE.md", "docs/architecture", "repo/canon_state.json", "scripts/ci/check_repox_rules.py"],
@@ -296,6 +310,19 @@
       "severity": "FAIL",
       "scope_paths": ["client/core/client_commands_registry.c", "client/core/client_command_bridge.c"],
       "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#entitlement-gating",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PRESENTATION-MATRIX-INTEGRITY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "schema/governance/presentation_matrix.schema",
+        "data/registries/presentation_matrix.json",
+        "data/registries/law_profiles.json",
+        "data/registries/lenses.json",
+        "client/core/client_commands_registry.c"
+      ],
+      "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#presentation-matrix-integrity",
       "exemption_policy": "deny"
     },
     {
