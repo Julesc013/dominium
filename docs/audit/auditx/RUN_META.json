@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": true,
-  "changed_paths_since_last": 20,
-  "generated_utc": "2026-02-14T03:45:49Z",
-  "graph_hash": "247f7ef11f3f23d1ac8ed4425b988acef56c58a89530a4e7e8b2d086ee84c740",
+  "changed_only": false,
+  "changed_paths_since_last": 12,
+  "generated_utc": "2026-02-14T11:27:45Z",
+  "graph_hash": "6432e8b8a4b3d2cf4a644d3cf053b168974cc6a043f53e789d1610332c2b76ae",
   "last_reviewed": "2026-02-14",
   "output_format": "json",
   "platform": "windows",
@@ -20,13 +20,13 @@
     "A6_UI_PARITY_BYPASS",
     "A7_LEGACY_CONTAMINATION",
     "A8_DERIVED_FRESHNESS_SMELL",
-    "C1",
     "C2_MODE_FLAG_SMELL",
     "C3_CAPABILITY_BYPASS_SMELL",
     "C4_TERMINOLOGY_MISUSE",
     "C5_EXPERIENCE_PROFILE_DRIFT",
     "C6_AUTHORITY_BYPASS_SMELL",
-    "C7_LENS_BYPASS_SMELL"
+    "C7_LENS_BYPASS_SMELL",
+    "C8_RUN_META_INPUT_SMELL"
   ],
   "result": "scan_complete",
   "reused_analyzers": [
@@ -35,7 +35,8 @@
     "A5_CROSS_PACK_ENTROPY",
     "A6_PROMPT_DRIFT",
     "A7_WORKSPACE_CONTAMINATION",
-    "A8_BLOCKER_RECURRENCE"
+    "A8_BLOCKER_RECURRENCE",
+    "C1"
   ],
   "status": "DERIVED",
   "workspace_id": "vs2026"

@@ -1,109 +1,164 @@
 {
   "artifact_class": "RUN_META",
-  "cache_hits": 5,
-  "cache_misses": 1,
+  "cache_hits": 0,
+  "cache_misses": 8,
   "changed_files": [
-    "data/registries/derived_artifacts.json",
-    "data/registries/gate_policy.json",
-    "data/registries/presentation_matrix.json",
-    "docs/architecture/CANON_INDEX.md",
-    "docs/audit/auditx/FINDINGS.json",
-    "docs/audit/auditx/INVARIANT_MAP.json",
-    "docs/audit/auditx/PROMOTION_CANDIDATES.json",
-    "docs/audit/auditx/RUN_META.json",
-    "docs/audit/auditx/TRENDS.json",
-    "docs/audit/identity_fingerprint.json",
-    "docs/audit/performance/RUN_META.json",
-    "docs/audit/proof_manifest.json",
-    "docs/audit/repox/REPOX_PROFILE.json",
-    "docs/audit/security/INTEGRITY_MANIFEST.json",
-    "docs/audit/security/RUN_META.json",
-    "docs/audit/testx/TESTX_RUN_META.json",
-    "docs/audit/testx/TESTX_SUMMARY.json",
-    "docs/audit/testx/TESTX_SUMMARY.md",
-    "docs/audit/xstack/PROFILE_FAST.json",
-    "docs/audit/xstack/PROFILE_FULL.json",
-    "docs/audit/xstack/PROFILE_STRICT_COLD.json",
-    "docs/audit/xstack/PROFILE_STRICT_WARM.json",
-    "docs/audit/xstack/XSTACK_SPEED_REPORT.md",
-    "docs/governance/AUDITX_PROMOTION_POLICY.md",
-    "docs/governance/GATE_THROUGHPUT_POLICY.md",
-    "docs/governance/REPOX_RULESETS.md",
-    "docs/governance/TESTX_ARCHITECTURE.md",
-    "docs/governance/XSTACK_INCREMENTAL_MODEL.md",
+    "docs/audit/repox/REPOX_SCOPE_ANALYSIS.md",
+    "docs/audit/xstack/PROFILE_AFTER_SCOPE_FIX.json",
     "docs/governance/XSTACK_PORTABILITY.md",
-    "docs/governance/XSTACK_TEMPLATE_CHECKLIST.md",
-    "repo/repox/rulesets/core.json",
-    "schema/governance/presentation_matrix.schema",
+    "docs/governance/XSTACK_SCOPE_TEMPLATE.json",
     "scripts/ci/check_repox_rules.py",
-    "scripts/dev/gate.py",
-    "scripts/dev/run_xstack_group_tests.py",
-    "tests/integration/test_gate_fast_strict_full_profiles.py",
     "tests/invariant/CMakeLists.txt",
-    "tests/invariant/test_observer_watermark_required.py",
     "tests/invariant/test_repox_cache_equivalence.py",
-    "tools/xstack/core/plan.py",
-    "tools/xstack/core/repo_health.py",
-    "tools/xstack/core/runners.py",
-    "tools/xstack/core/runners_base.py",
-    "tools/xstack/core/scheduler.py",
-    "tools/xstack/core/time_estimator.py"
+    "tests/invariant/test_repox_dep_hash_stability_when_run_meta_changes.py",
+    "tests/invariant/test_repox_run_meta_change_does_not_trigger_structure.py",
+    "tools/auditx/analyzers/__init__.py",
+    "tools/auditx/analyzers/c8_run_meta_input_smell.py",
+    "tools/xstack/core/merkle_tree.py"
   ],
-  "generated_utc": "2026-02-14T03:45:42Z",
+  "generated_utc": "2026-02-14T11:25:29Z",
   "groups": [
     {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
       "cache_hit": false,
-      "dep_hash": "9db6f8f036d949686a31d35f92b2d931edce8335055cf63ff4404bf1285b3c3e",
-      "duration_ms": 823676,
-      "group_id": "repox.core.structure",
+      "dep_hash": "45c73594307d929fd7d715b699728f8664cdd352d56387fbfede6a666e0cfacf",
+      "duration_ms": 4069,
+      "group_id": "repox.structure.code",
+      "scope_subtrees": [
+        "client",
+        "engine",
+        "game",
+        "server"
+      ],
       "violation_count": 0
     },
     {
-      "cache_hit": true,
-      "dep_hash": "3147cf42d13bc335dfca1e4d0d33281421ef073c717b235343c808fe339a3c07",
-      "duration_ms": 2782,
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": false,
+      "dep_hash": "d3b0a3e84b970e4b1ba249e8614860640e38c8f156b53c4c0ea2d86e46d80378",
+      "duration_ms": 2,
+      "group_id": "repox.structure.schema",
+      "scope_subtrees": [
+        "data",
+        "schema",
+        "tests"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": false,
+      "dep_hash": "3dd4ede1e4a120cd36b6071866b3946868f535e41f7fae0ddc629f834dbc3176",
+      "duration_ms": 862,
+      "group_id": "repox.structure.ruleset",
+      "scope_subtrees": [
+        "repo",
+        "scripts"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "ba83391a76822be4ed266a0c1c93bae2ad79c618b6b92e131e87a2dd3cc06b77",
+      "duration_ms": 2980,
       "group_id": "repox.docs.canon",
+      "scope_subtrees": [
+        "docs",
+        "repo"
+      ],
       "violation_count": 2
     },
     {
-      "cache_hit": true,
-      "dep_hash": "07c9e754e51299e217e9d5b1496822283e76e720712bc913fecb4559258cd42d",
-      "duration_ms": 1250,
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "d5162d935dfd2409f7d644c16e340076ff0c770c1bba97ade51973c1b96f7762",
+      "duration_ms": 650,
       "group_id": "repox.schema.compat",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema"
+      ],
       "violation_count": 0
     },
     {
-      "cache_hit": true,
-      "dep_hash": "cf42a675670bdf0654783bee19599bddea531189587d49aee2c3b11f67569d24",
-      "duration_ms": 556,
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "7afd7e8cc83dc843ba286f08826a11505b2296d2fcf720fe2bee60a8fc0ec63c",
+      "duration_ms": 525,
       "group_id": "repox.dist.platform",
+      "scope_subtrees": [
+        "data",
+        "dist",
+        "schema",
+        "scripts"
+      ],
       "violation_count": 0
     },
     {
-      "cache_hit": true,
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": false,
       "dep_hash": "0f6a536ba3551abc76b12c70137e97b64fb63e73be04f3bd41640a0b22befabf",
-      "duration_ms": 37609,
+      "duration_ms": 40525,
       "group_id": "repox.runtime.policy",
+      "scope_subtrees": [
+        "client",
+        "data",
+        "engine",
+        "game",
+        "schema",
+        "server"
+      ],
       "violation_count": 0
     },
     {
-      "cache_hit": true,
-      "dep_hash": "4181f7d4356b9c440247c5740c5a40c7cb2f659d22142bff8e3b6f45a4452465",
-      "duration_ms": 15100,
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "11127a33fe2fb53118b7889021a06a1845cb3862127bd074e2290cae0cc2dae9",
+      "duration_ms": 12450,
       "group_id": "repox.runtime.heavy_scans",
+      "scope_subtrees": [
+        "client",
+        "data",
+        "docs",
+        "engine",
+        "game",
+        "schema",
+        "server",
+        "tests",
+        "tools"
+      ],
       "violation_count": 0
     }
   ],
   "impacted_roots": [
-    "data",
     "docs",
-    "repo",
-    "schema",
     "scripts",
     "tests",
     "tools"
   ],
-  "profile": "STRICT",
+  "profile": "FULL",
   "status": "DERIVED",
-  "total_duration_ms": 883658
+  "total_duration_ms": 66991
 }

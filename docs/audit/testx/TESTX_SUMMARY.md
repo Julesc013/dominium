@@ -5,7 +5,7 @@ Superseded By: none
 
 # XStack Test Group Summary
 
-- group_id: `testx.group.runtime.verify`
+- group_id: `testx.group.full.verify`
 - returncode: `0`
-- selected_test_count: `9`
+- selected_test_count: `11`
 - suite_passed: `true`

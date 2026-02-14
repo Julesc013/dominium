@@ -3,39 +3,54 @@
   "category_frequency": {
     "canon_drift": 580,
     "capability_bypass_smell": 1,
-    "capability_misuse": 11,
-    "schema_usage": 80,
+    "capability_misuse": 119,
+    "derived_freshness": 120,
+    "legacy_contamination": 160,
+    "mode_flag_smell": 64,
+    "ownership_boundary": 4,
+    "reachability": 80,
+    "schema_usage": 160,
     "semantic.capability_drift": 5,
     "semantic.schema_shadowing": 120,
-    "semantic.workspace_contamination": 1
+    "semantic.workspace_contamination": 1,
+    "terminology_misuse": 1,
+    "ui_parity": 30
   },
   "delta_over_time": {
     "category_frequency": {
       "canon_drift": 0,
       "capability_bypass_smell": 0,
-      "capability_misuse": 0,
-      "reachability": -2,
-      "schema_usage": -8,
+      "capability_misuse": 108,
+      "derived_freshness": 120,
+      "legacy_contamination": 160,
+      "mode_flag_smell": 64,
+      "ownership_boundary": 4,
+      "reachability": 78,
+      "schema_usage": 76,
       "semantic.capability_drift": 0,
       "semantic.schema_shadowing": 0,
-      "semantic.workspace_contamination": 0
+      "semantic.workspace_contamination": 0,
+      "terminology_misuse": 1,
+      "ui_parity": 30
     },
     "severity_distribution": {
-      "INFO": 0,
-      "RISK": -8,
-      "WARN": -2
+      "INFO": 189,
+      "RISK": 320,
+      "VIOLATION": 64,
+      "WARN": 68
     }
   },
-  "findings_hash": "2d0232e8146b777fe9e620c7f34d96d8cb16696e3d40ba4e6430d16835e6db7b",
+  "findings_hash": "7f1fb18b1da951e37035d39bb46d945bdd77458ea19ec8e37dc491905e453a02",
   "history_reference": {
-    "previous_distinct_hash": "f244b49739479df1ec59ea48dc18696f2ea5c0f12d65c4a1e2cdecff1f3a1f3f"
+    "previous_distinct_hash": "3d7dc713789029d0c7980b73ee8b8847a31036fe9b38eb15715497af99a467fa"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 11,
-    "RISK": 1,
-    "WARN": 786
+    "INFO": 200,
+    "RISK": 325,
+    "VIOLATION": 64,
+    "WARN": 856
   },
-  "total_findings": 798
+  "total_findings": 1445
 }

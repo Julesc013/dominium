@@ -1,7 +1,9 @@
 {
   "artifact_class": "CANONICAL",
   "executed_tests": [
-    "tests/integration/test_gate_fast_strict_full_profiles.py",
+    "tests/invariant/test_gate_plan_determinism.py",
+    "tests/invariant/test_gate_cache_correctness.py",
+    "tests/invariant/test_repox_cache_equivalence.py",
     "tests/integration/test_gate_fast_strict_full_profiles.py",
     "tests/integration/test_gate_fast_strict_full_profiles.py",
     "tests/invariant/test_intent_without_authority_refused.py",
@@ -18,9 +20,11 @@
     "gate"
   ],
   "returncode": 0,
-  "selected_test_count": 9,
+  "selected_test_count": 11,
   "selected_tests": [
-    "tests/integration/test_gate_fast_strict_full_profiles.py",
+    "tests/invariant/test_gate_plan_determinism.py",
+    "tests/invariant/test_gate_cache_correctness.py",
+    "tests/invariant/test_repox_cache_equivalence.py",
     "tests/integration/test_gate_fast_strict_full_profiles.py",
     "tests/integration/test_gate_fast_strict_full_profiles.py",
     "tests/invariant/test_intent_without_authority_refused.py",
@@ -30,7 +34,7 @@
     "tests/invariant/test_survival_diegetic_only.py",
     "tests/invariant/test_observer_watermark_required.py"
   ],
-  "suite_id": "testx.group.runtime.verify",
+  "suite_id": "testx.group.full.verify",
   "suite_passed": true,
   "warnings": []
 }
