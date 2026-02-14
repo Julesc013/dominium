@@ -10,7 +10,7 @@ from typing import Dict, List, Tuple
 from .impact_graph import build_impact_graph
 from .merkle_tree import compute_repo_state_hash
 from .profiler import end_phase, start_phase
-from .runners import default_full_runner_ids, runner_metadata
+from .runners import default_full_runner_ids, runner_metadata, runner_registry_definitions
 from .time_estimator import estimate_plan
 
 
@@ -161,6 +161,7 @@ def _plan_hash_inputs(
     return {
         "repo_state_hash": str(repo_state_hash or ""),
         "profile": str(profile or ""),
+        "runner_runtime_definitions": _normalize_json(runner_registry_definitions()),
         "runner_registry_definitions": {
             "testx_groups": _registry_definition(testx_groups),
             "auditx_groups": _registry_definition(auditx_groups),
