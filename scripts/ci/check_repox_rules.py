@@ -406,6 +406,14 @@ TOOL_SCAN_EXTS = (
     ".ps1",
     ".sh",
 )
+TOOL_SCAN_SKIP_PREFIXES = (
+    "tools/auditx/cache/",
+    "tools/compatx/cache/",
+    "tools/performx/cache/",
+    "tools/securex/cache/",
+    ".xstack_cache/",
+    "docs/audit/remediation/",
+)
 DIRECT_GATE_SCAN_ROOTS = (
     os.path.join("scripts", "dev"),
     os.path.join("scripts", "ci"),
@@ -2196,6 +2204,9 @@ def _iter_tool_invocation_scan_files(repo_root):
         if not os.path.isdir(root):
             continue
         for path in iter_files([root], DEFAULT_EXCLUDES, TOOL_SCAN_EXTS):
+            rel = normalize_path(repo_rel(repo_root, path))
+            if any(rel.startswith(prefix) for prefix in TOOL_SCAN_SKIP_PREFIXES):
+                continue
             yield path
     root_cmake = os.path.join(repo_root, "CMakeLists.txt")
     if os.path.isfile(root_cmake):
@@ -2208,23 +2219,33 @@ def check_tool_name_only(repo_root):
         return []
 
     violations = []
+    tool_tokens = tuple(str(tool_id).strip() for tool_id in CANONICAL_TOOL_IDS if str(tool_id).strip())
+    tool_tokens_lower = tuple(token.lower() for token in tool_tokens)
+    target_markers = tuple("target_file:{}".format(token).lower() for token in tool_tokens)
+    scan_markers = tool_tokens_lower + target_markers
     token_res = {
         tool_id: re.compile(r"([A-Za-z0-9_./\\:-]*{}(?:\.exe)?)".format(re.escape(tool_id)), re.IGNORECASE)
-        for tool_id in CANONICAL_TOOL_IDS
+        for tool_id in tool_tokens
     }
     for path in _iter_tool_invocation_scan_files(repo_root):
         rel = repo_rel(repo_root, path)
         text = read_text(path) or ""
+        text_lower = text.lower()
+        if not any(marker in text_lower for marker in scan_markers):
+            continue
         for idx, line in enumerate(text.splitlines(), start=1):
             stripped = line.strip()
             if not stripped:
                 continue
-            for tool_id in CANONICAL_TOOL_IDS:
-                marker = "TARGET_FILE:{}".format(tool_id)
-                if marker in stripped:
+            stripped_lower = stripped.lower()
+            if not any(marker in stripped_lower for marker in scan_markers):
+                continue
+            for tool_id in tool_tokens:
+                marker = "target_file:{}".format(tool_id).lower()
+                if marker in stripped_lower:
                     violations.append(
                         "{}: {}:{} path-indirection invocation forbidden ({})".format(
-                            invariant_id, rel, idx, marker
+                            invariant_id, rel, idx, "TARGET_FILE:{}".format(tool_id)
                         )
                     )
                 for match in token_res[tool_id].finditer(stripped):

@@ -27,6 +27,8 @@ DEFAULT_SUBTREES: Tuple[str, ...] = (
 MERKLE_ROOTS_CACHE_REL = os.path.join("merkle", "roots.json")
 MERKLE_FILE_HASH_CACHE_REL = os.path.join("merkle", "file_hashes.json")
 DEFAULT_SKIP_PREFIXES: Tuple[str, ...] = (
+    "docs/audit/",
+    "docs/audit/remediation/",
     ".xstack_cache/",
     "build/",
     "dist/",
