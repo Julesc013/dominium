@@ -32,7 +32,8 @@ def main() -> int:
     first = repox._run_check_group(  # pylint: disable=protected-access
         repo_root=repo_root,
         group_id="repox.tests.cache_equiv",
-        deps=("docs",),
+        scope_subtrees=("docs",),
+        artifact_classes=("CANONICAL",),
         profile="STRICT",
         impacted_roots={"docs"},
         roots=roots,
@@ -41,7 +42,8 @@ def main() -> int:
     second = repox._run_check_group(  # pylint: disable=protected-access
         repo_root=repo_root,
         group_id="repox.tests.cache_equiv",
-        deps=("docs",),
+        scope_subtrees=("docs",),
+        artifact_classes=("CANONICAL",),
         profile="STRICT",
         impacted_roots={"docs"},
         roots=roots,
@@ -61,7 +63,8 @@ def main() -> int:
     repox._run_check_group(  # pylint: disable=protected-access
         repo_root=repo_root,
         group_id="repox.tests.cache_equiv",
-        deps=("docs",),
+        scope_subtrees=("docs",),
+        artifact_classes=("CANONICAL",),
         profile="FAST",
         impacted_roots={"docs"},
         roots=roots,
@@ -75,7 +78,8 @@ def main() -> int:
     skipped = repox._run_check_group(  # pylint: disable=protected-access
         repo_root=repo_root,
         group_id="repox.tests.cache_equiv",
-        deps=("docs",),
+        scope_subtrees=("docs",),
+        artifact_classes=("CANONICAL",),
         profile="FAST",
         impacted_roots=set(),
         roots=roots,
