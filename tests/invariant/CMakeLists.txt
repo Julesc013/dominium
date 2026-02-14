@@ -377,6 +377,12 @@ dom_add_testx(NAME test_ledger_deterministic_when_inputs_identical
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME test_failure_classification_determinism
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_failure_classification_determinism.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME test_repox_cache_equivalence
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_repox_cache_equivalence.py
         --repo-root ${CMAKE_SOURCE_DIR}

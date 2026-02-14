@@ -74,6 +74,9 @@ def store_entry(
     timestamp_utc: str,
     output: str = "",
     tool_version: str = "",
+    failure_class: str = "",
+    failure_message: str = "",
+    remediation_hint: str = "",
     cache_root: str = "",
 ) -> str:
     phase = "cache.store.{}".format(runner_id)
@@ -88,6 +91,9 @@ def store_entry(
         "output_hash": output_hash,
         "exit_code": int(exit_code),
         "output": str(output or ""),
+        "failure_class": str(failure_class or ""),
+        "failure_message": str(failure_message or ""),
+        "remediation_hint": str(remediation_hint or ""),
         "artifacts_produced": sorted(set(str(item) for item in (artifacts_produced or []) if str(item).strip())),
         "timestamp_utc": timestamp_utc,
     }

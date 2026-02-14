@@ -89,6 +89,26 @@ def profile_summary(profile_id: str, total_time_s: float, cache_hits: int, cache
     )
 
 
+def failure_summary(primary_failure_class: str, rows: Iterable[Dict[str, Any]], trace: bool = False) -> None:
+    summary_rows = [row for row in rows if isinstance(row, dict)]
+    parts = []
+    for row in summary_rows:
+        klass = str(row.get("failure_class", "")).strip()
+        count = int(row.get("count", 0))
+        if not klass:
+            continue
+        parts.append("{}={}".format(klass, count))
+    if not parts:
+        return
+    _emit(
+        {
+            "event": "failure_summary",
+            "summary": "primary={} classes={}".format(str(primary_failure_class or "none"), ",".join(parts)),
+        },
+        trace=trace,
+    )
+
+
 def escalation_trigger(reason: str, trace: bool = False) -> None:
     _emit({"event": "escalation_trigger", "summary": reason}, trace=trace)
 

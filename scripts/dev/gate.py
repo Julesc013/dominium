@@ -1339,6 +1339,9 @@ def _run_gate_xstack(
         "plan_path": os.path.relpath(plan_payload.get("plan_path", ""), repo_root).replace("\\", "/") if plan_payload.get("plan_path") else "",
         "cache_hits": result.get("cache_hits", 0),
         "cache_misses": result.get("cache_misses", 0),
+        "failure_classes": result.get("failure_classes", []),
+        "failure_summary": result.get("failure_summary", []),
+        "primary_failure_class": result.get("primary_failure_class", ""),
         "total_seconds": result.get("total_seconds", 0.0),
         "exit_code": result.get("exit_code", 1),
         "full_plan_warning": os.path.relpath(warning_path, repo_root).replace("\\", "/") if warning_path else "",
@@ -1366,7 +1369,7 @@ def _run_gate_xstack(
             cache_hits=int(result.get("cache_hits", 0)),
             cache_misses=int(result.get("cache_misses", 0)),
             artifact_hashes=canonical_ledger_artifact_hashes(repo_root, canonical_artifacts),
-            failure_class="",
+            failure_class=str(result.get("primary_failure_class", "")),
             duration_s=float(result.get("total_seconds", 0.0)),
             workspace_id=str(workspace_id or ""),
         )

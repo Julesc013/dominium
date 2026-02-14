@@ -11,6 +11,7 @@ from typing import Dict, List
 
 from . import log as xlog
 from .cache_store import load_entry, store_entry
+from .failure import aggregate_failure_classes, classify_failure
 from .profiler import end_phase, start_phase
 from .runners import resolve_adapter, result_to_dict
 from .runners_base import RunnerContext
@@ -121,14 +122,23 @@ def execute_plan(
                     if cache_entry:
                         cache_hits += 1
                         xlog.cache_event(runner_id, True, trace=trace)
+                        cached_exit = int(cache_entry.get("exit_code", 1))
+                        cached_failure = classify_failure(
+                            runner_id=runner_id,
+                            exit_code=cached_exit,
+                            output=str(cache_entry.get("output", "")),
+                        )
                         result = {
                             "node_id": node_id,
                             "runner_id": runner_id,
-                            "exit_code": int(cache_entry.get("exit_code", 1)),
+                            "exit_code": cached_exit,
                             "output_hash": str(cache_entry.get("output_hash", "")),
                             "artifacts_produced": cache_entry.get("artifacts_produced") or [],
                             "output": "cache_hit",
                             "cache_hit": True,
+                            "failure_class": str(cache_entry.get("failure_class", "")) or str(cached_failure.get("failure_class", "")),
+                            "failure_message": str(cache_entry.get("failure_message", "")) or str(cached_failure.get("failure_message", "")),
+                            "remediation_hint": str(cache_entry.get("remediation_hint", "")) or str(cached_failure.get("remediation_hint", "")),
                         }
                         completed[node_id] = result
                         results.append(result)
@@ -150,6 +160,11 @@ def execute_plan(
                     node = node_by_id[node_id]
                     runner_id = str(node.get("runner_id", "")).strip()
                     raw = future.result()
+                    runtime_failure = classify_failure(
+                        runner_id=runner_id,
+                        exit_code=int(raw.get("exit_code", 1)),
+                        output=str(raw.get("output", "")),
+                    )
                     result = {
                         "node_id": node_id,
                         "runner_id": runner_id,
@@ -158,6 +173,9 @@ def execute_plan(
                         "artifacts_produced": raw.get("artifacts_produced") or [],
                         "output": str(raw.get("output", "")),
                         "cache_hit": False,
+                        "failure_class": str(raw.get("failure_class", "")) or str(runtime_failure.get("failure_class", "")),
+                        "failure_message": str(raw.get("failure_message", "")) or str(runtime_failure.get("failure_message", "")),
+                        "remediation_hint": str(raw.get("remediation_hint", "")) or str(runtime_failure.get("remediation_hint", "")),
                     }
                     xlog.phase_end(runner_id, node_start, False, trace=trace)
                     end_phase(phase_name, {"exit_code": int(result["exit_code"])})
@@ -174,6 +192,9 @@ def execute_plan(
                         artifacts_produced=result["artifacts_produced"],
                         timestamp_utc=str(raw.get("timestamp_utc", "")),
                         output=result["output"],
+                        failure_class=result.get("failure_class", ""),
+                        failure_message=result.get("failure_message", ""),
+                        remediation_hint=result.get("remediation_hint", ""),
                         cache_root=cache_root,
                     )
 
@@ -193,6 +214,8 @@ def execute_plan(
         )
         total_s = max(0.0, time.time() - started)
         xlog.profile_summary(str(plan_payload.get("profile", "")).strip(), total_s, cache_hits, cache_misses, trace=trace)
+        failure = aggregate_failure_classes(ordered)
+        xlog.failure_summary(str(failure.get("primary_failure_class", "")), failure.get("failure_summary") or [], trace=trace)
 
         payload = {
             "plan_hash": str(plan_payload.get("plan_hash", "")),
@@ -202,6 +225,9 @@ def execute_plan(
             "cache_misses": cache_misses,
             "results": ordered,
             "exit_code": 0 if all(int(item.get("exit_code", 1)) == 0 for item in ordered) else 1,
+            "failure_classes": failure.get("failure_classes") or [],
+            "failure_summary": failure.get("failure_summary") or [],
+            "primary_failure_class": str(failure.get("primary_failure_class", "")),
         }
         if profile_report:
             payload["profile_report"] = {
