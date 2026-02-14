@@ -29,6 +29,9 @@ class RunnerResult:
     artifacts_produced: Sequence[str]
     output_hash: str
     timestamp_utc: str
+    failure_class: str
+    failure_message: str
+    remediation_hint: str
 
 
 class BaseRunner(metaclass=ABCMeta):

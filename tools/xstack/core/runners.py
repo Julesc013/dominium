@@ -10,6 +10,7 @@ import sys
 from datetime import datetime
 from typing import Dict, List, Tuple
 
+from .failure import classify_failure
 from .profiler import end_phase, start_phase
 from .runners_base import BaseRunner, RunnerContext, RunnerResult
 
@@ -178,6 +179,7 @@ def _apply_output_routing(
 
 
 def _normalize_result(runner_id: str, exit_code: int, output: str, artifacts: List[str]) -> RunnerResult:
+    failure = classify_failure(runner_id=runner_id, exit_code=exit_code, output=output)
     return RunnerResult(
         runner_id=runner_id,
         exit_code=int(exit_code),
@@ -185,6 +187,9 @@ def _normalize_result(runner_id: str, exit_code: int, output: str, artifacts: Li
         artifacts_produced=sorted(set(str(item) for item in artifacts if str(item).strip())),
         output_hash=_artifact_hash(exit_code, output, artifacts),
         timestamp_utc=datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        failure_class=str(failure.get("failure_class", "")),
+        failure_message=str(failure.get("failure_message", "")),
+        remediation_hint=str(failure.get("remediation_hint", "")),
     )
 
 
@@ -357,4 +362,7 @@ def result_to_dict(result: RunnerResult) -> Dict[str, object]:
         "artifacts_produced": list(result.artifacts_produced),
         "output_hash": result.output_hash,
         "timestamp_utc": result.timestamp_utc,
+        "failure_class": result.failure_class,
+        "failure_message": result.failure_message,
+        "remediation_hint": result.remediation_hint,
     }
