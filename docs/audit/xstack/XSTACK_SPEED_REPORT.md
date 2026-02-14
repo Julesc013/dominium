@@ -1,43 +1,44 @@
 Status: DERIVED
-Last Reviewed: 2026-02-13
+Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 
 # XStack Speed Report
 
-## Measured Baseline
+## Measured Baseline (Current Pass)
 
-Source: `docs/audit/xstack/PROFILE_BASELINE.json` (STRICT cold cache).
+Source profiles:
 
-- Total: `781.240s`
-- Dominant phase: `subprocess.repox_runner` (`769.057s`, 98.44%)
-- Remaining shards (TestX/AuditX) were sub-10s each.
+- `docs/audit/xstack/PROFILE_FAST.json`
+- `docs/audit/xstack/PROFILE_STRICT_COLD.json`
+- `docs/audit/xstack/PROFILE_STRICT_WARM.json`
+- `docs/audit/xstack/PROFILE_FULL.json`
 
-## Measured After Optimization
+Measured totals:
 
-Source: `docs/audit/xstack/PROFILE_AFTER_OPTIMIZATION.json` (STRICT warm cache).
+- FAST cold: `838.673s`
+- FAST warm: `0.003s`
+- STRICT cold: `858.536s`
+- STRICT warm: `0.053s`
+- FULL cold: `1023.451s`
 
-- Total: `1.243s`
-- Cache hits: `4/4` strict nodes
-- Runtime dominated by planner + Merkle/impact graph setup, not runner execution.
+## Bottleneck Summary
 
-## Current Lane Throughput
+- Dominant cold-path cost remains `repox_runner`.
+- Warm-path throughput is now near-instant because cache reuse is deterministic and profile-aware.
+- Test/Audit shard execution stays parallel and deterministic in FULL.
 
-- FAST (`gate.py verify`): ~`0.003s` warm (all cache hits)
-- STRICT (`gate.py strict`): ~`0.044s` warm; cold still RepoX-bound
-- FULL (`gate.py full`): ~`123s` with impacted-group selection + sharded execution
-
-## Throughput Architecture
+## Structural Improvements Active
 
 - Deterministic plan DAG (`tools/xstack/core/plan.py`)
-- Impact graph and group routing (`tools/xstack/core/impact_graph.py`)
-- Incremental Merkle hashing with derived/run-meta exclusions (`tools/xstack/core/merkle_tree.py`)
-- Content-addressed cache (`tools/xstack/core/cache_store.py`)
-- Parallel scheduler with deterministic aggregation (`tools/xstack/core/scheduler.py`)
+- Profile-aware cache input hashing (`tools/xstack/core/scheduler.py`)
+- Merkle subtree hashing (`tools/xstack/core/merkle_tree.py`)
+- Content-addressed runner cache (`tools/xstack/core/cache_store.py`)
+- Parallel shard scheduler (`tools/xstack/core/scheduler.py`)
 
 ## Operational Guidance
 
-1. Use `--trace --profile-report` on any slow run.
-2. Check cache miss reasons first; misses dominate throughput.
-3. For exhaustive all-group FULL runs, set `DOM_GATE_FULL_ALL=1`.
-4. Keep tool caches and derived artifacts out of planner input hash scope.
+1. Use `gate.py <profile> --profile-report` for timing snapshots.
+2. Run `gate.py strict` twice to separate cold and warm behavior.
+3. Use `gate.py full --full-all` only for explicit exhaustive validation.
+4. Continue reducing RepoX cold path cost by tightening per-group dependency scopes.

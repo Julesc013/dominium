@@ -18,10 +18,9 @@
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
-      "finding_count": 119,
+      "finding_count": 11,
       "recommended_actions": {
-        "ADD_RULE": 60,
-        "ADD_TEST": 59
+        "ADD_TEST": 11
       },
       "sample_findings": [
         {
@@ -51,8 +50,7 @@
         }
       ],
       "severities": {
-        "INFO": 59,
-        "WARN": 60
+        "INFO": 11
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -91,44 +89,6 @@
         "WARN": 5
       }
     },
-    "INV-CLI-CANONICAL-UI": {
-      "finding_count": 31,
-      "recommended_actions": {
-        "ADD_RULE": 9,
-        "ADD_TEST": 22
-      },
-      "sample_findings": [
-        {
-          "category": "ownership_boundary",
-          "finding_id": "A2_OWNERSHIP_BOUNDARY:0004",
-          "location": "libs/appcore/ui_bind/ui_command_binding_table.h"
-        },
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0001",
-          "location": "client_mode_gui.h"
-        },
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0002",
-          "location": "client_mode_tui.h"
-        },
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0003",
-          "location": "engine/include/domino/gui/gui.h"
-        },
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0004",
-          "location": "engine/include/domino/gui/style.h"
-        }
-      ],
-      "severities": {
-        "INFO": 21,
-        "WARN": 10
-      }
-    },
     "INV-COMMAND-CAPABILITY-DECLARED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -143,166 +103,6 @@
       ],
       "severities": {
         "RISK": 1
-      }
-    },
-    "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 120,
-      "recommended_actions": {
-        "ADD_RULE": 120
-      },
-      "sample_findings": [
-        {
-          "category": "derived_freshness",
-          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0001",
-          "location": "docs/CAPABILITY_STAGES.md"
-        },
-        {
-          "category": "derived_freshness",
-          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0002",
-          "location": "docs/CODE_CHANGE_JUSTIFICATION.md"
-        },
-        {
-          "category": "derived_freshness",
-          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0003",
-          "location": "docs/CONTRIBUTING.md"
-        },
-        {
-          "category": "derived_freshness",
-          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0004",
-          "location": "docs/FAQ.md"
-        },
-        {
-          "category": "derived_freshness",
-          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0005",
-          "location": "docs/MODDER_GUIDE.md"
-        }
-      ],
-      "severities": {
-        "INFO": 120
-      }
-    },
-    "INV-GLOSSARY-TERM-CANON": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "DOC_FIX": 1
-      },
-      "sample_findings": [
-        {
-          "category": "terminology_misuse",
-          "finding_id": "C4_TERMINOLOGY_MISUSE:0001",
-          "location": "docs/architecture/TERMINOLOGY_GLOSSARY.md"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
-    "INV-LEGACY-CODE-QUARANTINED": {
-      "finding_count": 160,
-      "recommended_actions": {
-        "ADD_TEST": 160
-      },
-      "sample_findings": [
-        {
-          "category": "legacy_contamination",
-          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
-          "location": "setup/packages/scripts/packaging/pipeline.py"
-        },
-        {
-          "category": "legacy_contamination",
-          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
-          "location": "tools/auditx/analyzers/a1_reachability_orphaned.py"
-        },
-        {
-          "category": "legacy_contamination",
-          "finding_id": "A7_LEGACY_CONTAMINATION:0003",
-          "location": "tools/auditx/analyzers/a5_capability_misuse.py"
-        },
-        {
-          "category": "legacy_contamination",
-          "finding_id": "A7_LEGACY_CONTAMINATION:0004",
-          "location": "tools/auditx/analyzers/a6_ui_parity_bypass.py"
-        },
-        {
-          "category": "legacy_contamination",
-          "finding_id": "A7_LEGACY_CONTAMINATION:0005",
-          "location": "tools/auditx/analyzers/a7_legacy_contamination.py"
-        }
-      ],
-      "severities": {
-        "RISK": 160
-      }
-    },
-    "INV-MODE-AS-PROFILES": {
-      "finding_count": 64,
-      "recommended_actions": {
-        "ADD_RULE": 64
-      },
-      "sample_findings": [
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": ".xstack_cache/repox_runner/08c11546d5688195cda22c7dfcb56f58c1d2db6d6d607822f29211c1b506bd98.json"
-        },
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0002",
-          "location": ".xstack_cache/repox_runner/447820c2af58873710c15df23894aae70323ed70523bacc66813150f8a163555.json"
-        },
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0003",
-          "location": ".xstack_cache/repox_runner/4ec236e00486166a6297cec783d803e993db8493cade1eda03b14e2ea9265618.json"
-        },
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0004",
-          "location": ".xstack_cache/repox_runner/babc83e0226c31067e8937a754522292eb9a033617ac2bed40dfd36430c2496b.json"
-        },
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0005",
-          "location": "data/registries/glossary.json"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 64
-      }
-    },
-    "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 64,
-      "recommended_actions": {
-        "ADD_RULE": 64
-      },
-      "sample_findings": [
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": ".xstack_cache/repox_runner/08c11546d5688195cda22c7dfcb56f58c1d2db6d6d607822f29211c1b506bd98.json"
-        },
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0002",
-          "location": ".xstack_cache/repox_runner/447820c2af58873710c15df23894aae70323ed70523bacc66813150f8a163555.json"
-        },
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0003",
-          "location": ".xstack_cache/repox_runner/4ec236e00486166a6297cec783d803e993db8493cade1eda03b14e2ea9265618.json"
-        },
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0004",
-          "location": ".xstack_cache/repox_runner/babc83e0226c31067e8937a754522292eb9a033617ac2bed40dfd36430c2496b.json"
-        },
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0005",
-          "location": "data/registries/glossary.json"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 64
       }
     },
     "INV-SCHEMA-SHADOWING-CONTROL": {
@@ -341,32 +141,6 @@
         "WARN": 120
       }
     },
-    "INV-SETTINGS-OWNERSHIP": {
-      "finding_count": 3,
-      "recommended_actions": {
-        "ADD_RULE": 3
-      },
-      "sample_findings": [
-        {
-          "category": "ownership_boundary",
-          "finding_id": "A2_OWNERSHIP_BOUNDARY:0001",
-          "location": "client/app/main_client.c"
-        },
-        {
-          "category": "ownership_boundary",
-          "finding_id": "A2_OWNERSHIP_BOUNDARY:0002",
-          "location": "client/shell/client_shell.c"
-        },
-        {
-          "category": "ownership_boundary",
-          "finding_id": "A2_OWNERSHIP_BOUNDARY:0003",
-          "location": "launcher/cli/launcher_ui_shell.c"
-        }
-      ],
-      "severities": {
-        "RISK": 3
-      }
-    },
     "INV-UI-ENTITLEMENT-GATING": {
       "finding_count": 1,
       "recommended_actions": {
@@ -400,75 +174,62 @@
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 80,
+      "finding_count": 2,
       "recommended_actions": {
-        "RETIRE": 80
+        "RETIRE": 2
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "app/include/dominium/app/app_runtime.h"
+          "location": "tools/xstack/core/runners.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "app/include/dominium/app/compat_report.h"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "app/include/dominium/app/readonly_adapter.h"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "app/include/dominium/app/readonly_format.h"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "app/include/dominium/app/ui_event_log.h"
+          "location": "tools/xstack/core/scheduler.py"
         }
       ],
       "severities": {
-        "WARN": 80
+        "WARN": 2
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 160,
+      "finding_count": 88,
       "recommended_actions": {
-        "ADD_RULE": 160
+        "ADD_RULE": 8,
+        "ADD_TEST": 80
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
+          "location": "tools/xstack/core/runners.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
+          "location": "tools/xstack/core/runners.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
+          "location": "tools/xstack/core/scheduler.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
+          "location": "tools/xstack/core/scheduler.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
+          "location": "tools/xstack/core/scheduler.py"
         }
       ],
       "severities": {
-        "RISK": 160
+        "RISK": 8,
+        "WARN": 80
       }
     }
   },

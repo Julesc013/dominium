@@ -3,54 +3,47 @@
   "category_frequency": {
     "canon_drift": 580,
     "capability_bypass_smell": 1,
-    "capability_misuse": 119,
-    "derived_freshness": 120,
-    "legacy_contamination": 160,
-    "mode_flag_smell": 64,
-    "ownership_boundary": 4,
-    "reachability": 80,
-    "schema_usage": 160,
+    "capability_misuse": 11,
+    "reachability": 2,
+    "schema_usage": 88,
     "semantic.capability_drift": 5,
     "semantic.schema_shadowing": 120,
-    "semantic.workspace_contamination": 1,
-    "terminology_misuse": 1,
-    "ui_parity": 30
+    "semantic.workspace_contamination": 1
   },
   "delta_over_time": {
     "category_frequency": {
       "canon_drift": 0,
       "capability_bypass_smell": 0,
-      "capability_misuse": 0,
-      "derived_freshness": 0,
-      "legacy_contamination": 0,
-      "mode_flag_smell": 0,
-      "ownership_boundary": 0,
-      "reachability": 0,
-      "schema_usage": 0,
+      "capability_misuse": -108,
+      "derived_freshness": -120,
+      "legacy_contamination": -160,
+      "mode_flag_smell": -64,
+      "ownership_boundary": -4,
+      "reachability": -78,
+      "schema_usage": -72,
       "semantic.capability_drift": 0,
       "semantic.schema_shadowing": 0,
       "semantic.workspace_contamination": 0,
-      "terminology_misuse": 0,
-      "ui_parity": 0
+      "terminology_misuse": -1,
+      "ui_parity": -30
     },
     "severity_distribution": {
-      "INFO": 0,
-      "RISK": 0,
-      "VIOLATION": 0,
-      "WARN": 0
+      "INFO": -189,
+      "RISK": -316,
+      "VIOLATION": -64,
+      "WARN": -68
     }
   },
-  "findings_hash": "e1e6b5932da0116f04843213a04b22681df8da290512611d2d7bcb1582c98812",
+  "findings_hash": "f244b49739479df1ec59ea48dc18696f2ea5c0f12d65c4a1e2cdecff1f3a1f3f",
   "history_reference": {
-    "previous_distinct_hash": "580cf75b0c2b333f5f689bed737e44d57b32eba882233057b0fe19147def1020"
+    "previous_distinct_hash": "41ad39a72d0bac36187b96899279c3d1b3effa2cda5f9fdff47a4ff98f20d70e"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 200,
-    "RISK": 325,
-    "VIOLATION": 64,
-    "WARN": 856
+    "INFO": 11,
+    "RISK": 9,
+    "WARN": 788
   },
-  "total_findings": 1445
+  "total_findings": 808
 }
