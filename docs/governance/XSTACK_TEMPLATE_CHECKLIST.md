@@ -15,6 +15,11 @@ Use this checklist when bootstrapping XStack in another repository.
 - [ ] `data/registries/xstack_components.json`
 - [ ] `data/registries/derived_artifacts.json`
 
+## Schema Checklist
+
+- [ ] `schema/governance/derived_artifact_contract.schema`
+- [ ] `schema/governance/xstack_components.schema`
+
 ## Core Module Checklist
 
 - [ ] `tools/xstack/core/impact_graph.py`
@@ -40,6 +45,13 @@ Use this checklist when bootstrapping XStack in another repository.
 - [ ] Result aggregation is deterministic
 - [ ] RUN_META artifacts are excluded from canonical determinism checks
 
+## Track/Ignore Checklist
+
+- [ ] `verify|strict|full|doctor` do not modify tracked files
+- [ ] `snapshot` is the only command allowed to write `SNAPSHOT_ONLY` artifacts
+- [ ] `.xstack_cache/` and workspace temp roots are ignored by VCS
+- [ ] `docs/governance/XSTACK_TRACK_IGNORE_POLICY.md` exists and is current
+
 ## Governance Checklist
 
 - [ ] RepoX ruleset references all enforced invariants
@@ -47,3 +59,9 @@ Use this checklist when bootstrapping XStack in another repository.
 - [ ] AuditX outputs are present and shape-validated
 - [ ] artifact contract includes canonical/derived/run-meta classification
 
+## Removability Checklist
+
+- [ ] Runtime trees (`engine/game/client/server`) contain no `tools/xstack` imports/includes
+- [ ] Runtime CMake roots contain no `tools/xstack` references
+- [ ] RepoX includes `INV-RUNTIME-NO-XSTACK-IMPORTS`
+- [ ] TestX includes `test_xstack_removal_builds_runtime`

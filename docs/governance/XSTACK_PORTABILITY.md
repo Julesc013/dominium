@@ -26,6 +26,21 @@ This guide documents how to transplant the XStack governance and gate execution 
 - `data/registries/xstack_components.json`
 - `data/registries/derived_artifacts.json`
 
+## Required Schemas and Registries
+
+Required schema surfaces:
+
+- `schema/governance/derived_artifact_contract.schema`
+- `schema/governance/xstack_components.schema`
+
+Required registry surfaces:
+
+- `data/registries/gate_policy.json`
+- `data/registries/testx_groups.json`
+- `data/registries/auditx_groups.json`
+- `data/registries/xstack_components.json`
+- `data/registries/derived_artifacts.json`
+
 ## Integration Entry Points
 
 1. Implement runner adapters conforming to `tools/xstack/core/runners_base.py`.
@@ -40,6 +55,18 @@ This guide documents how to transplant the XStack governance and gate execution 
 - Cache defaults to `.xstack_cache/`; this path should stay local and ignored by VCS.
 - Structural scope declarations should stay registry/config driven (no absolute paths).
 
+## Tracked vs Ignored Outputs
+
+- Tracked outputs are limited to canonical snapshot artifacts under `docs/audit/`.
+- Normal gate commands (`verify|strict|full|doctor`) are read-only for tracked files.
+- Run-meta outputs are written under:
+  - `.xstack_cache/`
+  - `dist/ws/<WS_ID>/tmp/`
+  - build/workspace temporary roots
+- Authoritative contract:
+  - `docs/governance/XSTACK_TRACK_IGNORE_POLICY.md`
+  - `data/registries/derived_artifacts.json`
+
 ## Runtime Decoupling Contract
 
 - Runtime product trees (`engine/`, `game/`, `client/`, `server/`) must not import or include `tools/xstack`.
@@ -47,6 +74,12 @@ This guide documents how to transplant the XStack governance and gate execution 
 - Removability proof is enforced by:
   - RepoX invariant `INV-RUNTIME-NO-XSTACK-IMPORTS`
   - TestX integration test `test_xstack_removal_builds_runtime`
+
+## Snapshot Contract
+
+- `gate.py snapshot` is the only gate command that may update `SNAPSHOT_ONLY` tracked artifacts.
+- Snapshot outputs must preserve deterministic ordering and avoid run-meta payload fields.
+- `verify|strict|full|doctor` always route runner outputs to cache/workspace roots.
 
 ### Structural Scope Configuration
 
@@ -84,3 +117,15 @@ Use `docs/governance/XSTACK_SCOPE_TEMPLATE.json` as the portable baseline for ne
 - Keep rule IDs stable when moving RepoX rulesets.
 - Re-map command invocations, not governance semantics.
 - Keep canonical roots and scope filters in data/config, not hardcoded absolute repo paths.
+
+## Portability Validation Checklist
+
+After transplanting XStack into a new repo:
+
+1. Run `python scripts/dev/gate.py verify` and confirm tracked working tree stays clean.
+2. Run `python scripts/dev/gate.py strict` to validate scoped rule and group execution.
+3. Run `python scripts/dev/gate.py snapshot` and confirm only snapshot-designated artifacts changed.
+4. Run RepoX and TestX rules for:
+   - `INV-RUNTIME-NO-XSTACK-IMPORTS`
+   - `INV-NO-TRACKED-WRITES-DURING-GATE`
+   - `test_xstack_removal_builds_runtime`
