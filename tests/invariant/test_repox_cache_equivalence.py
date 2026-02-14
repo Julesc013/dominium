@@ -13,6 +13,16 @@ def _load_repox_module(repo_root: str):
     return repox
 
 
+def _repox_cache_root(repo_root: str) -> str:
+    dev_dir = os.path.join(repo_root, "scripts", "dev")
+    if dev_dir not in sys.path:
+        sys.path.insert(0, dev_dir)
+    import env_tools_lib  # pylint: disable=import-error
+
+    ws_id = env_tools_lib.canonical_workspace_id(repo_root, env=os.environ)
+    return os.path.join(repo_root, ".xstack_cache", ws_id, "repox")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Invariant: RepoX grouped cache path is deterministic.")
     parser.add_argument("--repo-root", default=".")
@@ -20,7 +30,7 @@ def main() -> int:
     repo_root = os.path.abspath(args.repo_root)
     repox = _load_repox_module(repo_root)
 
-    cache_root = os.path.join(repo_root, ".xstack_cache", "repox")
+    cache_root = _repox_cache_root(repo_root)
     if os.path.isdir(cache_root):
         shutil.rmtree(cache_root)
 

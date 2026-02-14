@@ -12,7 +12,7 @@ from typing import Dict, Iterable, List, Tuple
 
 
 CACHE_VERSION = "1.0.0"
-CACHE_ROOT_REL = os.path.join("tools", "auditx", "cache")
+CACHE_ROOT_REL = os.path.join(".xstack_cache")
 
 
 def _norm(path: str) -> str:
@@ -112,14 +112,13 @@ def _scan_rel_files(repo_root: str) -> List[str]:
         "dist",
         "out",
         "tmp",
+        ".xstack_cache",
     }
     out: List[str] = []
     for root, dirs, files in os.walk(repo_root):
         dirs[:] = sorted([item for item in dirs if item not in skip_dirs])
         for name in sorted(files):
             rel = os.path.relpath(os.path.join(root, name), repo_root).replace("\\", "/")
-            if rel.startswith("tools/auditx/cache/"):
-                continue
             if rel.startswith("docs/audit/auditx/"):
                 continue
             ext = os.path.splitext(rel)[1].lower()
@@ -185,7 +184,7 @@ class AuditXCache:
     def __init__(self, repo_root: str, workspace_id: str):
         self.repo_root = _norm(os.path.abspath(repo_root))
         self.workspace_id = workspace_id or "default"
-        self.cache_root = _norm(os.path.join(self.repo_root, CACHE_ROOT_REL, self.workspace_id))
+        self.cache_root = _norm(os.path.join(self.repo_root, CACHE_ROOT_REL, self.workspace_id, "auditx"))
         self.entries_root = _norm(os.path.join(self.cache_root, "entries"))
         self.state_path = _norm(os.path.join(self.cache_root, "state.json"))
         os.makedirs(self.entries_root, exist_ok=True)
