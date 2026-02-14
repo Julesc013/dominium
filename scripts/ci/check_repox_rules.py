@@ -6094,13 +6094,22 @@ def _group_dep_hash(roots, deps):
     return _sha256_text("|".join(rows))
 
 
-def _run_check_group(repo_root, group_id, deps, profile, impacted_roots, roots, checks):
-    dep_hash = _group_dep_hash(roots, deps)
+def _run_check_group(
+    repo_root,
+    group_id,
+    scope_subtrees,
+    artifact_classes,
+    profile,
+    impacted_roots,
+    roots,
+    checks,
+):
+    dep_hash = _group_dep_hash(roots, scope_subtrees)
     cache_key = _sha256_text(json.dumps({"group_id": group_id, "profile": profile, "dep_hash": dep_hash}, sort_keys=True))
 
     should_execute = True
-    if profile in {"FAST", "STRICT"} and deps:
-        if not (set(dep.lower() for dep in deps) & set(impacted_roots)):
+    if profile in {"FAST", "STRICT"} and scope_subtrees:
+        if not (set(dep.lower() for dep in scope_subtrees) & set(impacted_roots)):
             should_execute = False
 
     cache_hit = False
@@ -6113,6 +6122,8 @@ def _run_check_group(repo_root, group_id, deps, profile, impacted_roots, roots, 
                 "duration_ms": int(cached.get("duration_ms", 0)),
                 "cache_hit": True,
                 "dep_hash": dep_hash,
+                "scope_subtrees": list(scope_subtrees),
+                "artifact_classes": list(artifact_classes),
                 "violations": list(cached.get("violations") or []),
             }
 
@@ -6132,6 +6143,8 @@ def _run_check_group(repo_root, group_id, deps, profile, impacted_roots, roots, 
             "schema_version": "1.0.0",
             "group_id": group_id,
             "dep_hash": dep_hash,
+            "scope_subtrees": list(scope_subtrees),
+            "artifact_classes": list(artifact_classes),
             "duration_ms": duration_ms,
             "violations": list(violations),
         },
@@ -6141,6 +6154,8 @@ def _run_check_group(repo_root, group_id, deps, profile, impacted_roots, roots, 
         "duration_ms": duration_ms,
         "cache_hit": cache_hit,
         "dep_hash": dep_hash,
+        "scope_subtrees": list(scope_subtrees),
+        "artifact_classes": list(artifact_classes),
         "violations": violations,
     }
 
@@ -6188,27 +6203,40 @@ def main() -> int:
     canon_index = load_canon_index(repo_root)
 
     groups = [
-        (
-            "repox.core.structure",
-            ("repo", "scripts", "tests"),
-            [
+        {
+            "group_id": "repox.structure.code",
+            "scope_subtrees": ("engine", "game", "client", "server"),
+            "artifact_classes": ("CANONICAL",),
+            "checks": [
+                lambda: check_authoritative_symbols(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.structure.schema",
+            "scope_subtrees": ("schema", "data", "tests"),
+            "artifact_classes": ("CANONICAL",),
+            "checks": [
+                lambda: check_failure_class_registry(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.structure.ruleset",
+            "scope_subtrees": ("repo", "scripts"),
+            "artifact_classes": ("CANONICAL",),
+            "checks": [
                 lambda: check_top_level(repo_root, allowed),
                 lambda: check_archived_paths(repo_root),
-                lambda: check_frozen_contract_modifications(repo_root, changed_files),
-                lambda: check_authoritative_symbols(repo_root),
                 lambda: check_tool_name_only(repo_root),
                 lambda: check_tools_dir_exists(repo_root),
                 lambda: check_tool_unresolvable(repo_root),
                 lambda: check_no_direct_gate_calls(repo_root),
-                lambda: check_remediation_playbooks(repo_root),
-                lambda: check_failure_class_registry(repo_root),
-                lambda: check_identity_fingerprint(repo_root),
             ],
-        ),
-        (
-            "repox.docs.canon",
-            ("docs", "repo"),
-            [
+        },
+        {
+            "group_id": "repox.docs.canon",
+            "scope_subtrees": ("docs", "repo"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
                 lambda: check_canon_index_entries(repo_root, canon_index),
                 lambda: check_canon_state(repo_root),
                 lambda: check_doc_headers(repo_root, canon_index),
@@ -6216,16 +6244,20 @@ def main() -> int:
                 lambda: check_code_doc_references(repo_root, canon_index),
                 lambda: check_glossary_term_canon(repo_root),
                 lambda: check_auditx_promotion_policy_present(repo_root),
+                lambda: check_frozen_contract_modifications(repo_root, changed_files),
+                lambda: check_remediation_playbooks(repo_root),
+                lambda: check_identity_fingerprint(repo_root),
                 lambda: check_repo_health_snapshot_finalization(repo_root, changed_files),
                 lambda: check_auditx_artifact_headers(repo_root),
                 lambda: check_auditx_promotion_candidates(repo_root),
                 lambda: check_auditx_output_staleness(repo_root),
             ],
-        ),
-        (
-            "repox.schema.compat",
-            ("schema", "data", "docs"),
-            [
+        },
+        {
+            "group_id": "repox.schema.compat",
+            "scope_subtrees": ("schema", "data", "docs"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
                 lambda: check_schema_version_bumps(repo_root),
                 lambda: check_schema_migration_routes(repo_root),
                 lambda: check_schema_no_implicit_defaults(repo_root),
@@ -6240,11 +6272,12 @@ def main() -> int:
                 lambda: check_tool_version_mismatch(repo_root),
                 lambda: check_derived_artifact_contract(repo_root),
             ],
-        ),
-        (
-            "repox.dist.platform",
-            ("data", "schema", "scripts", "dist"),
-            [
+        },
+        {
+            "group_id": "repox.dist.platform",
+            "scope_subtrees": ("data", "schema", "scripts", "dist"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
                 lambda: check_pkg_manifest_fields(repo_root),
                 lambda: check_pkg_capability_metadata(repo_root),
                 lambda: check_pkg_signature_policy(repo_root),
@@ -6260,11 +6293,12 @@ def main() -> int:
                 lambda: check_build_preset_contract(repo_root),
                 lambda: check_dist_release_lane_gate(repo_root),
             ],
-        ),
-        (
-            "repox.runtime.policy",
-            ("client", "server", "engine", "game", "data", "schema"),
-            [
+        },
+        {
+            "group_id": "repox.runtime.policy",
+            "scope_subtrees": ("client", "server", "engine", "game", "data", "schema"),
+            "artifact_classes": ("CANONICAL",),
+            "checks": [
                 lambda: check_pack_capability_metadata(repo_root),
                 lambda: check_prealpha_pack_isolation(repo_root),
                 lambda: check_bugreport_resolution(repo_root),
@@ -6291,11 +6325,12 @@ def main() -> int:
                 lambda: check_solver_registry_contracts(repo_root),
                 lambda: check_forbidden_legacy_gating_tokens(repo_root),
             ],
-        ),
-        (
-            "repox.runtime.heavy_scans",
-            ("engine", "game", "client", "server", "tools", "schema", "data", "tests", "docs"),
-            [
+        },
+        {
+            "group_id": "repox.runtime.heavy_scans",
+            "scope_subtrees": ("engine", "game", "client", "server", "tools", "schema", "data", "tests", "docs"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
                 lambda: check_forbidden_enum_tokens(repo_root),
                 lambda: check_raw_paths(repo_root),
                 lambda: check_magic_numbers(repo_root),
@@ -6316,17 +6351,22 @@ def main() -> int:
                 lambda: check_auditx_deterministic_contract(repo_root),
                 lambda: check_auditx_nonruntime_leak(repo_root),
             ],
-        ),
+        },
     ]
 
     profile = str(args.profile).strip().upper()
     group_rows = []
     violations = []
-    for group_id, deps, checks in groups:
+    for group in groups:
+        group_id = str(group.get("group_id", "")).strip()
+        scope_subtrees = tuple(group.get("scope_subtrees") or ())
+        artifact_classes = tuple(group.get("artifact_classes") or ())
+        checks = list(group.get("checks") or [])
         row = _run_check_group(
             repo_root=repo_root,
             group_id=group_id,
-            deps=deps,
+            scope_subtrees=scope_subtrees,
+            artifact_classes=artifact_classes,
             profile=profile,
             impacted_roots=impacted_roots,
             roots=roots,
@@ -6338,6 +6378,8 @@ def main() -> int:
                 "duration_ms": int(row.get("duration_ms", 0)),
                 "cache_hit": bool(row.get("cache_hit")),
                 "dep_hash": str(row.get("dep_hash", "")),
+                "scope_subtrees": sorted(set(str(item) for item in (row.get("scope_subtrees") or []) if str(item).strip())),
+                "artifact_classes": sorted(set(str(item) for item in (row.get("artifact_classes") or []) if str(item).strip())),
                 "violation_count": len(row.get("violations") or []),
             }
         )
