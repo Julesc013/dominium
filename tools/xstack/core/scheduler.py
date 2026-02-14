@@ -27,6 +27,8 @@ def _node_input_hash(node: dict, plan_payload: dict, completed: Dict[str, dict])
         dep_hashes.append("{}:{}".format(dep_id, str(dep.get("output_hash", ""))))
     payload = {
         "repo_state_hash": str(plan_payload.get("repo_state_hash", "")),
+        "plan_profile": str(plan_payload.get("profile", "")),
+        "strict_variant": str(plan_payload.get("strict_variant", "")),
         "runner_id": str(node.get("runner_id", "")),
         "group_id": str(node.get("group_id", "")),
         "command": node.get("command") or [],

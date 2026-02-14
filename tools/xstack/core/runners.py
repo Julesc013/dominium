@@ -100,6 +100,19 @@ def _resolve_env(repo_root: str, workspace_id: str = "") -> Dict[str, str]:
     return env
 
 
+def _runner_profile_arg(runner_id: str, plan_profile: str) -> str:
+    token = str(plan_profile).strip().upper() or "FAST"
+    if str(runner_id).strip() == "repox_runner":
+        if token.startswith("STRICT"):
+            return "STRICT"
+        if token.startswith("FULL"):
+            return "FULL"
+        return "FAST"
+    if token == "FULL_ALL":
+        return "FULL"
+    return token
+
+
 def _normalize_result(runner_id: str, exit_code: int, output: str, artifacts: List[str]) -> RunnerResult:
     return RunnerResult(
         runner_id=runner_id,
@@ -160,13 +173,14 @@ class CommandRunner(BaseRunner):
         if not isinstance(command, list) or not command:
             return _normalize_result(runner_id, 2, "refuse.invalid_runner_command", [])
 
+        profile_arg = _runner_profile_arg(runner_id, context.plan_profile)
         cmd = []
         for idx, token in enumerate(command):
             value = str(token)
             if idx == 0 and value in ("python", "python3"):
                 cmd.append(sys.executable)
             else:
-                cmd.append(value.format(repo_root=context.repo_root, profile=context.plan_profile))
+                cmd.append(value.format(repo_root=context.repo_root, profile=profile_arg))
 
         env = _resolve_env(context.repo_root, workspace_id=context.workspace_id)
         exit_code, output = _run(context.repo_root, cmd, env, runner_id=runner_id)

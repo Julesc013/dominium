@@ -267,12 +267,17 @@ execution artifacts and are not authoritative.
 - `docs/dev/NOW_SOON_LATER_ROADMAP.md`
 - `docs/governance/COMPATX_MODEL.md`
 - `docs/governance/CONTROLX_MODEL.md`
+- `docs/governance/AUDITX_PROMOTION_POLICY.md`
+- `docs/governance/GATE_THROUGHPUT_POLICY.md`
 - `docs/governance/PERFORMX_MODEL.md`
 - `docs/governance/PROMPT_FIREWALL_POLICY.md`
 - `docs/governance/REMEDIATION_STATE_MACHINE.md`
 - `docs/governance/SEMANTIC_ESCALATION_POLICY.md`
 - `docs/governance/TESTX_ARCHITECTURE.md`
 - `docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md`
+- `docs/governance/XSTACK_INCREMENTAL_MODEL.md`
+- `docs/governance/XSTACK_PORTABILITY.md`
+- `docs/governance/XSTACK_TEMPLATE_CHECKLIST.md`
 - `docs/launcher/LAUNCHER_SETTINGS.md`
 - `docs/guides/TOOLING_OVERVIEW.md`
 - `docs/guides/ui_editor/README.md`
