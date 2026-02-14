@@ -37,12 +37,17 @@ def _doc_header(today):
     ).format(today)
 
 
-def _output_root(repo_root):
+def _output_root(repo_root, override=""):
+    value = str(override or "").strip()
+    if value:
+        if os.path.isabs(value):
+            return os.path.normpath(value)
+        return os.path.normpath(os.path.join(repo_root, value))
     return os.path.join(repo_root, "docs", "audit", "auditx")
 
 
-def _ensure_output_dir(repo_root):
-    root = _output_root(repo_root)
+def _ensure_output_dir(repo_root, override=""):
+    root = _output_root(repo_root, override=override)
     os.makedirs(root, exist_ok=True)
     return root
 
@@ -388,9 +393,10 @@ def write_reports(
     scan_result="scan_complete",
     run_meta=None,
     cache=None,
+    output_root="",
 ):
     today = _today_utc()
-    output_dir = _ensure_output_dir(repo_root)
+    output_dir = _ensure_output_dir(repo_root, override=output_root)
     _write_readme_if_missing(output_dir, today)
 
     invariants = _build_invariant_map(findings)
@@ -419,18 +425,21 @@ def write_reports(
         _write_text(os.path.join(output_dir, "FINDINGS.md"), findings_md)
         _write_text(os.path.join(output_dir, "SUMMARY.md"), summary_md)
 
+    def _rel(path):
+        return os.path.relpath(path, repo_root).replace("\\", "/")
+
     written = [
-        "docs/audit/auditx/FINDINGS.json",
-        "docs/audit/auditx/INVARIANT_MAP.json",
-        "docs/audit/auditx/PROMOTION_CANDIDATES.json",
-        "docs/audit/auditx/TRENDS.json",
-        "docs/audit/auditx/RUN_META.json",
+        _rel(os.path.join(output_dir, "FINDINGS.json")),
+        _rel(os.path.join(output_dir, "INVARIANT_MAP.json")),
+        _rel(os.path.join(output_dir, "PROMOTION_CANDIDATES.json")),
+        _rel(os.path.join(output_dir, "TRENDS.json")),
+        _rel(os.path.join(output_dir, "RUN_META.json")),
     ]
     if output_format in ("md", "both"):
         written.extend(
             (
-                "docs/audit/auditx/FINDINGS.md",
-                "docs/audit/auditx/SUMMARY.md",
+                _rel(os.path.join(output_dir, "FINDINGS.md")),
+                _rel(os.path.join(output_dir, "SUMMARY.md")),
             )
         )
 

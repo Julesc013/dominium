@@ -42,6 +42,7 @@ def _run_node(node: dict, repo_root: str, workspace_id: str, plan_payload: dict)
     context = RunnerContext(
         repo_root=repo_root,
         workspace_id=workspace_id,
+        gate_command=str(plan_payload.get("gate_command", "")).strip(),
         node=node,
         plan_profile=str(plan_payload.get("profile", "")).strip(),
         repo_state_hash=str(plan_payload.get("repo_state_hash", "")).strip(),

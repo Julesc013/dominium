@@ -265,6 +265,7 @@ def _run_scan(args):
                 "workspace_id": ws_id,
             },
             cache=cache,
+            output_root=str(args.output_root or "").strip(),
         )
         cache.save_state(
             {
@@ -320,6 +321,7 @@ def _run_scan(args):
             "changed_paths_since_last": len(changed_since_state),
         },
         cache=cache,
+        output_root=str(args.output_root or "").strip(),
     )
     cache.save_entry(
         cache_ctx["cache_key"],
@@ -409,6 +411,7 @@ def build_parser():
     scan = sub.add_parser("scan", help="Run semantic scan.")
     scan.add_argument("--repo-root", default=".", help="Repository root path.")
     scan.add_argument("--changed-only", action="store_true", help="Limit to changed files.")
+    scan.add_argument("--output-root", default="", help="Optional output directory override.")
     scan.add_argument(
         "--format",
         choices=("json", "md", "both"),
@@ -420,6 +423,7 @@ def build_parser():
     verify = sub.add_parser("verify", help="Run scan in non-gating verify mode.")
     verify.add_argument("--repo-root", default=".", help="Repository root path.")
     verify.add_argument("--changed-only", action="store_true", help="Limit to changed files.")
+    verify.add_argument("--output-root", default="", help="Optional output directory override.")
     verify.add_argument(
         "--format",
         choices=("json", "md", "both"),

@@ -193,7 +193,11 @@ def _run_verify(args: argparse.Namespace) -> int:
     mode_errors = scan_for_hardcoded_modes(repo_root)
 
     findings = _security_findings(repo_root)
-    output_dir = os.path.join(repo_root, OUTPUT_DIR_REL)
+    output_dir = os.path.normpath(
+        os.path.abspath(args.output_dir)
+        if os.path.isabs(str(args.output_dir))
+        else os.path.join(repo_root, str(args.output_dir or OUTPUT_DIR_REL))
+    )
     findings_path = os.path.join(output_dir, FINDINGS_REL)
     run_meta_path = os.path.join(output_dir, RUN_META_REL)
     integrity_path = os.path.join(output_dir, INTEGRITY_REL)
@@ -437,6 +441,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     verify = sub.add_parser("verify", help="Run SecureX trust, boundary, and integrity checks.")
     verify.add_argument("--repo-root", default="")
+    verify.add_argument("--output-dir", default=OUTPUT_DIR_REL)
     verify.set_defaults(func=_run_verify)
 
     sign_pack_cmd = sub.add_parser("sign-pack", help="Sign a pack artifact with deterministic signature payload.")

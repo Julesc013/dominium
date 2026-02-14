@@ -13,6 +13,7 @@ class RunnerContext:
 
     repo_root: str
     workspace_id: str
+    gate_command: str
     node: Dict[str, object]
     plan_profile: str
     repo_state_hash: str
