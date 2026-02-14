@@ -1,0 +1,32 @@
+{
+  "artifact_class": "CANONICAL",
+  "canonical_artifact_hashes": {
+    "artifact.auditx.findings": "8defe71ccb399412ff0c5851a6b998990842ebf709e6af21e5767f74b2f23d6a",
+    "artifact.auditx.invariant_map": "f77e5e3b5781f6e3f15edc397312896758c7597ef71fca908e4841cfac49a236",
+    "artifact.auditx.promotion_candidates": "ae4aa447c89cb64e03455aa24fba9293912654433a672d8774ddecdd32a28441",
+    "artifact.auditx.trends": "55b42d8c0c5b0d9966ea891de0200225c1a808bf0cb87384ccfc5cf305bb834d",
+    "artifact.compatx.baseline": "c4d0385ccca0c297c8f9b7ce500a9ada1320268474ed6b39ab89e64cf6cbc7f4",
+    "artifact.identity.fingerprint": "a4ce1a42433b3c5e0490e243bda0ee6cc8256013de7d96903f6bea620eeb6b16",
+    "artifact.performx.baseline": "72306e904d890750b719d21c2867eb2e7bb294597be2c1ef5a7fd315724eecb6",
+    "artifact.performx.regressions": "a15c2831e9f0d57ead05b7e6f0154e92116c7f772be333f23ce7d094d7d73763",
+    "artifact.performx.results": "74c5f1677058f146b9e7895a99d2535765a521e37a08f73d70eed859194fe11d",
+    "artifact.pkg.index": "af0bf41d49ca3897e62c1646cb6dc00828d8477fb5db9cb2a97444ccdaa0adcd",
+    "artifact.securex.findings": "e63b0fac876e8c7adfbf90709e1be6fb512b91e1d18b5af4b12585af3b95b0d1",
+    "artifact.securex.integrity_manifest": "9404482b8a311414a1a61b21bc35fa340d36e70d38b97d4036a39f6b153399ed",
+    "artifact.testx.summary": "57a3075159c0b88e004356d6db357ac0a9686d95d584560231bc8b64798cec8f",
+    "artifact.ui.bind.table": "bacbfef256ba444ec71af3942d1f34777ae4122d919b69f38e7cdccdbd8ea8db"
+  },
+  "canonical_artifacts_missing": [],
+  "git_status_clean": true,
+  "git_status_entries": [],
+  "head_sha": "13a6ac298d1053dc07d8b70c0bd0d57a17799d9a",
+  "identity_fingerprint_hash": "a4ce1a42433b3c5e0490e243bda0ee6cc8256013de7d96903f6bea620eeb6b16",
+  "profile_report_hashes": {
+    "FAST": "b8b430591b1d705482f321c24c983c657430cca9075edadf5a814941301c3e93",
+    "FULL": "43dd765e7996c3df6e5308777df37b1a6651341c73de256a035ab86d93a27b6e",
+    "STRICT": "c2db14ac7fd015320b3338f068e17596641b1412c2dceb20dbf86c7ca5ef54ac"
+  },
+  "schema_id": "dominium.audit.repo_health_snapshot",
+  "schema_version": "1.0.0",
+  "workspace_id": "vs2026"
+}
