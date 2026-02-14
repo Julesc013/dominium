@@ -113,6 +113,70 @@ def _runner_profile_arg(runner_id: str, plan_profile: str) -> str:
     return token
 
 
+def _append_flag(cmd: List[str], flag: str, value: str) -> None:
+    if not value:
+        return
+    token = str(flag).strip()
+    if not token:
+        return
+    if token in cmd:
+        return
+    cmd.extend([token, value])
+
+
+def _runner_artifact_root(repo_root: str, runner_id: str, group_id: str, snapshot_mode: bool) -> str:
+    if snapshot_mode:
+        return ""
+    token = str(group_id or runner_id).replace("\\", "/").strip().replace("/", "_")
+    if not token:
+        token = "runner"
+    root = os.path.join(repo_root, ".xstack_cache", "artifacts", token)
+    os.makedirs(root, exist_ok=True)
+    return root
+
+
+def _apply_output_routing(
+    cmd: List[str],
+    runner_id: str,
+    group_id: str,
+    repo_root: str,
+    snapshot_mode: bool,
+) -> List[str]:
+    routed = list(cmd)
+    artifact_root = _runner_artifact_root(repo_root, runner_id, group_id, snapshot_mode)
+    if not artifact_root:
+        return routed
+
+    if runner_id == "repox_runner":
+        _append_flag(routed, "--proof-manifest-out", os.path.join(artifact_root, "proof_manifest.json").replace("\\", "/"))
+        _append_flag(routed, "--profile-out", os.path.join(artifact_root, "REPOX_PROFILE.json").replace("\\", "/"))
+        return routed
+
+    if runner_id.startswith("testx.") or runner_id == "testx_runner":
+        _append_flag(routed, "--summary-json", os.path.join(artifact_root, "TESTX_SUMMARY.json").replace("\\", "/"))
+        _append_flag(routed, "--summary-md", os.path.join(artifact_root, "TESTX_SUMMARY.md").replace("\\", "/"))
+        _append_flag(routed, "--run-meta-json", os.path.join(artifact_root, "TESTX_RUN_META.json").replace("\\", "/"))
+        return routed
+
+    if runner_id.startswith("auditx.") or runner_id == "auditx_runner":
+        _append_flag(routed, "--output-root", artifact_root.replace("\\", "/"))
+        return routed
+
+    if runner_id == "performx_runner":
+        _append_flag(routed, "--output-root", artifact_root.replace("\\", "/"))
+        return routed
+
+    if runner_id == "compatx_runner":
+        _append_flag(routed, "--output-root", artifact_root.replace("\\", "/"))
+        return routed
+
+    if runner_id == "securex_runner":
+        _append_flag(routed, "--output-dir", artifact_root.replace("\\", "/"))
+        return routed
+
+    return routed
+
+
 def _normalize_result(runner_id: str, exit_code: int, output: str, artifacts: List[str]) -> RunnerResult:
     return RunnerResult(
         runner_id=runner_id,
@@ -169,6 +233,7 @@ class CommandRunner(BaseRunner):
     def run(self, context: RunnerContext) -> RunnerResult:
         node = context.node
         runner_id = str(node.get("runner_id", "")).strip() or self.runner_id()
+        group_id = str(node.get("group_id", "")).strip()
         command = node.get("command") or []
         if not isinstance(command, list) or not command:
             return _normalize_result(runner_id, 2, "refuse.invalid_runner_command", [])
@@ -182,7 +247,17 @@ class CommandRunner(BaseRunner):
             else:
                 cmd.append(value.format(repo_root=context.repo_root, profile=profile_arg))
 
+        snapshot_mode = str(context.gate_command).strip() == "snapshot"
+        cmd = _apply_output_routing(
+            cmd=cmd,
+            runner_id=runner_id,
+            group_id=group_id,
+            repo_root=context.repo_root,
+            snapshot_mode=snapshot_mode,
+        )
         env = _resolve_env(context.repo_root, workspace_id=context.workspace_id)
+        env["DOM_XSTACK_SNAPSHOT_MODE"] = "1" if snapshot_mode else "0"
+        env["DOM_XSTACK_GATE_COMMAND"] = str(context.gate_command).strip()
         exit_code, output = _run(context.repo_root, cmd, env, runner_id=runner_id)
         exit_code, output = _coerce_optional_refusal(runner_id, exit_code, output)
         artifacts = [str(item) for item in (node.get("expected_artifacts") or []) if str(item).strip()]

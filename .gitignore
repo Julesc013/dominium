@@ -328,3 +328,14 @@ venv/
 !launcher/include/launcher/launcher_config.h
 stdout
 .xstack_cache/
+.xstack_cache/**
+dist/ws/**
+out/**
+build/**
+tmp/**
+docs/audit/**/RUN_META*.json
+docs/audit/**/PROFILE_*.json
+docs/audit/**/TESTX_SUMMARY*.json
+docs/audit/**/REPOX_PROFILE*.json
+**/*.trace
+**/*.log

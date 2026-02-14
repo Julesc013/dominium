@@ -6197,9 +6197,12 @@ def _run_check_group(
     }
 
 
-def _write_repox_profile(repo_root, profile, changed_files, impacted_roots, group_rows, total_ms):
-    out_rel = normalize_path(REPOX_PROFILE_REL)
-    out_path = os.path.join(repo_root, out_rel.replace("/", os.sep))
+def _write_repox_profile(repo_root, profile, changed_files, impacted_roots, group_rows, total_ms, out_path_override=""):
+    out_rel = normalize_path(out_path_override or REPOX_PROFILE_REL)
+    if os.path.isabs(out_rel):
+        out_path = out_rel
+    else:
+        out_path = os.path.join(repo_root, out_rel.replace("/", os.sep))
     parent = os.path.dirname(out_path)
     if parent and not os.path.isdir(parent):
         os.makedirs(parent, exist_ok=True)
@@ -6224,6 +6227,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="RepoX governance rules enforcement.")
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--proof-manifest-out", default=PROOF_MANIFEST_DEFAULT)
+    parser.add_argument("--profile-out", default=REPOX_PROFILE_REL)
     parser.add_argument("--profile", default="STRICT", choices=("FAST", "STRICT", "FULL"))
     args = parser.parse_args()
     if args.repo_root:
@@ -6442,7 +6446,15 @@ def main() -> int:
     failures, warnings = _apply_ruleset_policy(repo_root, violations)
     write_proof_manifest(repo_root, args.proof_manifest_out, warnings, failures)
     total_ms = int((datetime.utcnow() - started).total_seconds() * 1000.0)
-    _write_repox_profile(repo_root, profile, changed_files, impacted_roots, group_rows, total_ms)
+    _write_repox_profile(
+        repo_root,
+        profile,
+        changed_files,
+        impacted_roots,
+        group_rows,
+        total_ms,
+        out_path_override=args.profile_out,
+    )
 
     for item in warnings:
         print("WARN: {}".format(item))

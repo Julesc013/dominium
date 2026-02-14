@@ -231,7 +231,11 @@ def _run_verify(args: argparse.Namespace) -> int:
         print(json.dumps({"result": "refused", "refusal_codes": errors}, indent=2, sort_keys=True))
         return 2
 
-    output_root = os.path.join(repo_root, OUTPUT_ROOT_REL)
+    output_root = os.path.normpath(
+        os.path.abspath(args.output_root)
+        if os.path.isabs(str(args.output_root))
+        else os.path.join(repo_root, str(args.output_root or OUTPUT_ROOT_REL))
+    )
     baseline_json_path = os.path.join(output_root, BASELINE_JSON_REL)
     baseline_md_path = os.path.join(output_root, BASELINE_MD_REL)
 
@@ -377,6 +381,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     verify = sub.add_parser("verify", help="Run full CompatX validation and baseline generation.")
     verify.add_argument("--repo-root", default="")
+    verify.add_argument("--output-root", default=OUTPUT_ROOT_REL)
     verify.set_defaults(func=_run_verify)
 
     schema_diff = sub.add_parser("schema-diff", help="Classify schema change compatibility.")
