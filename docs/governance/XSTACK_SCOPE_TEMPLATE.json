@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "template_id": "xstack.scope.template",
+  "description": "Portable scope mapping template for RepoX structural dep-hash groups.",
+  "groups": [
+    {
+      "group_id": "repox.structure.code",
+      "scope_subtrees": [
+        "engine",
+        "game",
+        "client",
+        "server"
+      ],
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "excluded_prefixes": [
+        "docs/audit/",
+        "dist/",
+        "build/",
+        "tmp/",
+        ".xstack_cache/"
+      ]
+    },
+    {
+      "group_id": "repox.structure.schema",
+      "scope_subtrees": [
+        "schema",
+        "data",
+        "tests"
+      ],
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "excluded_prefixes": [
+        "docs/audit/",
+        "dist/",
+        "build/",
+        "tmp/",
+        ".xstack_cache/"
+      ]
+    },
+    {
+      "group_id": "repox.structure.ruleset",
+      "scope_subtrees": [
+        "repo",
+        "scripts"
+      ],
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "excluded_prefixes": [
+        "docs/audit/",
+        "dist/",
+        "build/",
+        "tmp/",
+        ".xstack_cache/"
+      ]
+    }
+  ]
+}
