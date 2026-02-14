@@ -40,6 +40,14 @@ This guide documents how to transplant the XStack governance and gate execution 
 - Cache defaults to `.xstack_cache/`; this path should stay local and ignored by VCS.
 - Structural scope declarations should stay registry/config driven (no absolute paths).
 
+## Runtime Decoupling Contract
+
+- Runtime product trees (`engine/`, `game/`, `client/`, `server/`) must not import or include `tools/xstack`.
+- Runtime CMake roots must not add `tools/xstack` include or source paths.
+- Removability proof is enforced by:
+  - RepoX invariant `INV-RUNTIME-NO-XSTACK-IMPORTS`
+  - TestX integration test `test_xstack_removal_builds_runtime`
+
 ### Structural Scope Configuration
 
 - Define scope roots per rule group (for example, `repox.structure.code` -> `engine|game|client|server`).

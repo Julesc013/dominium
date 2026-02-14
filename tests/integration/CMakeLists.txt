@@ -233,6 +233,12 @@ dom_add_testx(NAME test_gate_full_profile_shards_groups
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
 
+dom_add_testx(NAME test_xstack_removal_builds_runtime
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_xstack_removal_builds_runtime.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME client_refusal_codes
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/client_refusal_codes_tests.py
         --client $<TARGET_FILE:dominium_client>

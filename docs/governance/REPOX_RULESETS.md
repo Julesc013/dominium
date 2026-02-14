@@ -128,6 +128,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-MODE-AS-PROFILES`
 - `INV-UI-ENTITLEMENT-GATING`
 - `INV-NO-TRACKED-WRITES-DURING-GATE`
+- `INV-RUNTIME-NO-XSTACK-IMPORTS`
 - `INV-AUDITX-PROMOTION-POLICY-PRESENT`
 - `INV-REPO-HEALTH-SNAPSHOT-FINALIZATION`
 - `INV-PRESENTATION-MATRIX-INTEGRITY`
@@ -389,3 +390,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when `.xstack_cache/gate/TOUCHED_FILES_MANIFEST.json` is malformed.
 - Fails when non-snapshot gate runs report tracked file mutations.
 - Allows tracked audit writes only through `gate.py snapshot`.
+
+### INV-RUNTIME-NO-XSTACK-IMPORTS
+
+- Fails when runtime source trees (`engine/`, `game/`, `client/`, `server/`) reference `tools/xstack`.
+- Fails when runtime CMake roots reference `tools/xstack`.
+- Keeps XStack removable without affecting runtime build or runtime execution paths.
