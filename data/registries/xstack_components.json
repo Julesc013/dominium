@@ -1,9 +1,85 @@
 {
   "schema_id": "dominium.schema.governance.xstack_components",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "record": {
     "registry_id": "dominium.registry.governance.xstack_components",
-    "registry_version": "1.0.0",
+    "registry_version": "1.1.0",
+    "components": [
+      {
+        "component_id": "xstack.repox",
+        "runner_id": "repox_runner",
+        "allowed_write_roots": [
+          "cache",
+          "workspace"
+        ],
+        "canonical_outputs": []
+      },
+      {
+        "component_id": "xstack.testx",
+        "runner_id": "testx_runner",
+        "allowed_write_roots": [
+          "cache",
+          "workspace",
+          "docs_audit"
+        ],
+        "canonical_outputs": [
+          "docs/audit/testx/TESTX_SUMMARY.json"
+        ]
+      },
+      {
+        "component_id": "xstack.auditx",
+        "runner_id": "auditx_runner",
+        "allowed_write_roots": [
+          "cache",
+          "workspace",
+          "docs_audit"
+        ],
+        "canonical_outputs": [
+          "docs/audit/auditx/FINDINGS.json",
+          "docs/audit/auditx/INVARIANT_MAP.json",
+          "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+          "docs/audit/auditx/TRENDS.json"
+        ]
+      },
+      {
+        "component_id": "xstack.performx",
+        "runner_id": "performx_runner",
+        "allowed_write_roots": [
+          "cache",
+          "workspace",
+          "docs_audit"
+        ],
+        "canonical_outputs": [
+          "docs/audit/performance/PERFORMX_RESULTS.json",
+          "docs/audit/performance/PERFORMX_REGRESSIONS.json"
+        ]
+      },
+      {
+        "component_id": "xstack.compatx",
+        "runner_id": "compatx_runner",
+        "allowed_write_roots": [
+          "cache",
+          "workspace",
+          "docs_audit"
+        ],
+        "canonical_outputs": [
+          "docs/audit/compat/COMPAT_BASELINE.json"
+        ]
+      },
+      {
+        "component_id": "xstack.securex",
+        "runner_id": "securex_runner",
+        "allowed_write_roots": [
+          "cache",
+          "workspace",
+          "docs_audit"
+        ],
+        "canonical_outputs": [
+          "docs/audit/security/FINDINGS.json",
+          "docs/audit/security/INTEGRITY_MANIFEST.json"
+        ]
+      }
+    ],
     "groups": [
       {
         "group_id": "engine",
