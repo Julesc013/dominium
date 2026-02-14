@@ -127,6 +127,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-SURVIVAL-DIEGETIC-CONTRACT`
 - `INV-MODE-AS-PROFILES`
 - `INV-UI-ENTITLEMENT-GATING`
+- `INV-NO-TRACKED-WRITES-DURING-GATE`
 - `INV-AUDITX-PROMOTION-POLICY-PRESENT`
 - `INV-REPO-HEALTH-SNAPSHOT-FINALIZATION`
 - `INV-PRESENTATION-MATRIX-INTEGRITY`
@@ -381,3 +382,10 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when `bundle.core.runtime` is missing or marked optional.
 - Fails when non-core default bundles are not explicitly optional.
 - Preserves core boot viability when optional content bundles are removed.
+
+### INV-NO-TRACKED-WRITES-DURING-GATE
+
+- Fails when `gate.py verify|strict|full|doctor` tracked-write enforcement is missing.
+- Fails when `.xstack_cache/gate/TOUCHED_FILES_MANIFEST.json` is malformed.
+- Fails when non-snapshot gate runs report tracked file mutations.
+- Allows tracked audit writes only through `gate.py snapshot`.

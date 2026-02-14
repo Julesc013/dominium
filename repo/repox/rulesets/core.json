@@ -338,6 +338,13 @@
       "scope_paths": ["CMakeLists.txt", "*/CMakeLists.txt", "libs", "engine", "game", "client", "server", "launcher", "setup", "tools", "app"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-root-module-shim",
       "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-TRACKED-WRITES-DURING-GATE",
+      "severity": "FAIL",
+      "scope_paths": ["scripts/dev/gate.py", ".xstack_cache/gate/TOUCHED_FILES_MANIFEST.json"],
+      "documentation": "docs/governance/XSTACK_TRACK_IGNORE_POLICY.md#command-write-behavior",
+      "exemption_policy": "deny"
     }
   ]
 }

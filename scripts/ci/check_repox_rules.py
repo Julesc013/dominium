@@ -196,6 +196,7 @@ RULESET_ROOT = os.path.join("repo", "repox", "rulesets")
 REPOX_EXEMPTIONS_PATH = os.path.join("repo", "repox", "repox_exemptions.json")
 PROOF_MANIFEST_DEFAULT = os.path.join("docs", "audit", "proof_manifest.json")
 REPOX_PROFILE_REL = os.path.join("docs", "audit", "repox", "REPOX_PROFILE.json")
+GATE_TOUCHED_MANIFEST_REL = os.path.join(".xstack_cache", "gate", "TOUCHED_FILES_MANIFEST.json")
 STRUCTURE_SCOPE_EXCLUDED_PREFIXES = (
     "docs/audit",
     "dist",
@@ -2396,6 +2397,60 @@ def check_no_direct_gate_calls(repo_root):
                 )
 
     return sorted(set(violations))
+
+
+def check_no_tracked_writes_during_gate(repo_root):
+    invariant_id = "INV-NO-TRACKED-WRITES-DURING-GATE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    gate_rel = "scripts/dev/gate.py"
+    gate_text = read_text(os.path.join(repo_root, gate_rel.replace("/", os.sep))) or ""
+    violations = []
+    required_tokens = (
+        "TRACKED_WRITE_MANIFEST_REL",
+        "_tracked_write_violations(",
+        "refuse.tracked_write_outside_policy",
+    )
+    for token in required_tokens:
+        if token not in gate_text:
+            violations.append("{}: {} missing enforcement token '{}'".format(invariant_id, gate_rel, token))
+
+    manifest_path = os.path.join(repo_root, GATE_TOUCHED_MANIFEST_REL.replace("/", os.sep))
+    if not os.path.isfile(manifest_path):
+        return violations
+
+    payload = _load_json_file(manifest_path)
+    if not isinstance(payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, normalize_path(GATE_TOUCHED_MANIFEST_REL)))
+        return violations
+    if str(payload.get("artifact_class", "")).strip() != "RUN_META":
+        violations.append("{}: {} must declare RUN_META artifact_class".format(
+            invariant_id, normalize_path(GATE_TOUCHED_MANIFEST_REL)
+        ))
+    gate_kind = str(payload.get("gate_kind", "")).strip()
+    touched = payload.get("touched_tracked_files")
+    rows = payload.get("violations")
+    if not isinstance(touched, list):
+        violations.append("{}: touched_tracked_files must be list in {}".format(
+            invariant_id, normalize_path(GATE_TOUCHED_MANIFEST_REL)
+        ))
+        touched = []
+    if not isinstance(rows, list):
+        violations.append("{}: violations must be list in {}".format(
+            invariant_id, normalize_path(GATE_TOUCHED_MANIFEST_REL)
+        ))
+        rows = []
+    if gate_kind in {"verify", "strict", "full", "doctor"} and rows:
+        violations.append(
+            "{}: {} reports tracked-write violations for {} ({})".format(
+                invariant_id,
+                normalize_path(GATE_TOUCHED_MANIFEST_REL),
+                gate_kind,
+                ",".join(str(item) for item in rows if str(item).strip()),
+            )
+        )
+    return violations
 
 
 def _preset_cache_value(preset_map, preset_name, key):
@@ -6365,6 +6420,7 @@ def main() -> int:
                 lambda: check_capability_matrix_integrity(repo_root),
                 lambda: check_solver_registry_contracts(repo_root),
                 lambda: check_forbidden_legacy_gating_tokens(repo_root),
+                lambda: check_no_tracked_writes_during_gate(repo_root),
             ],
         },
         {
