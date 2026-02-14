@@ -383,6 +383,12 @@ dom_add_testx(NAME test_gate_cache_correctness
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
+dom_add_testx(NAME test_cache_invalidation_on_runner_change
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_cache_invalidation_on_runner_change.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
 dom_add_testx(NAME test_ledger_deterministic_when_inputs_identical
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_ledger_deterministic_when_inputs_identical.py
         --repo-root ${CMAKE_SOURCE_DIR}

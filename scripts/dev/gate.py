@@ -28,9 +28,13 @@ try:
     from tools.xstack.core.execution_ledger import (
         export_snapshot_markdown as export_ledger_snapshot_markdown,
     )
+    from tools.xstack.core.cache_store import (
+        scan_cache as scan_xstack_cache,
+    )
     from tools.xstack.core.plan import build_execution_plan
     from tools.xstack.core.profiler import export_json as export_profile_json
     from tools.xstack.core.profiler import reset as reset_profile
+    from tools.xstack.core.runners import runner_version_hash
     from tools.xstack.core.scheduler import execute_plan
 
     _XSTACK_CORE_READY = True
@@ -1439,6 +1443,7 @@ def _run_gate(
     force_full=False,
     force_full_all=False,
     ledger_export=False,
+    doctor_deep=False,
 ):
     if not only_gate_ids:
         xstack_code = _run_gate_xstack(
@@ -1511,6 +1516,7 @@ def _run_gate(
         payload = {
             "repo_root": repo_root.replace("\\", "/"),
             "tools_dir": tools_dir.replace("\\", "/"),
+            "deep": bool(doctor_deep),
             "build_dirs": {
                 k: v.replace("\\", "/")
                 for k, v in canonical_build_dirs(
@@ -1535,6 +1541,23 @@ def _run_gate(
                 }
             )
             if not resolved:
+                ok = False
+        if doctor_deep:
+            if _XSTACK_CORE_READY:
+                cache_report = scan_xstack_cache(
+                    repo_root=repo_root,
+                    cache_root=_xstack_cache_root(repo_root, workspace_id=ws_dirs.get("workspace_id", "")),
+                    version_resolver=runner_version_hash,
+                )
+                payload["cache_doctor"] = cache_report
+                if not bool(cache_report.get("ok", False)):
+                    ok = False
+            else:
+                payload["cache_doctor"] = {
+                    "ok": False,
+                    "reason": "xstack_core_unavailable",
+                    "import_error": _XSTACK_IMPORT_ERROR,
+                }
                 ok = False
         print(json.dumps(payload, indent=2, sort_keys=True))
         return 0 if ok else 2
@@ -1621,6 +1644,7 @@ def main():
     )
     parser.add_argument("--trace", action="store_true", help="Emit structured XStack trace events.")
     parser.add_argument("--profile-report", action="store_true", help="Include scheduler profile report in output.")
+    parser.add_argument("--deep", action="store_true", help="Enable deep structural scans for doctor mode.")
     parser.add_argument(
         "--ledger-export",
         action="store_true",
@@ -1645,6 +1669,7 @@ def main():
         force_full=args.full,
         force_full_all=args.full_all,
         ledger_export=args.ledger_export,
+        doctor_deep=args.deep,
     )
 
 
