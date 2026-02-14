@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-11
+Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 
@@ -9,30 +9,34 @@ Superseded By: none
 
 TestX is the behavioral proof layer for Dominium. It validates invariant compliance, determinism envelopes, workspace isolation, and regression locks using deterministic test execution contracts.
 
-## Suite Stratification
+## Execution Model
 
-TestX uses three formal suites defined in `data/registries/testx_suites.json`:
+XStack runs TestX through sharded group registries, not monolithic test targets:
 
-- `testx_fast`: manifest-driven selective suite for rapid validation.
-- `testx_verify`: full verification lane for invariants, regressions, and determinism coverage.
-- `testx_dist`: distribution-oriented lane (verify coverage + packaging compatibility coverage).
+- Group registry: `data/registries/testx_groups.json`
+- Group runner: `scripts/dev/run_xstack_group_tests.py`
+- Planner mapping: `tools/xstack/core/impact_graph.py` -> `tools/xstack/core/plan.py`
 
-`scripts/dev/gate.py` maps modes to suites:
+Gate profiles map to groups:
 
-- `gate dev` -> `testx_fast`
-- `gate verify` -> `testx_verify`
-- `gate dist` -> `testx_dist`
+- `FAST`: only impacted fast groups (plus required invariants).
+- `STRICT_LIGHT`: invariants + impacted runtime verification groups.
+- `STRICT_DEEP`: strict-light behavior when schema/governance paths are touched.
+- `FULL`: impacted shards across all required groups.
+- `FULL_ALL`: explicit all-shard execution.
 
-## Manifest-Driven Selection
+## `testx_all` Monolith Policy
 
-RepoX emits `docs/audit/proof_manifest.json`. The manifest contains:
+`testx_all` is demoted from local developer workflows.
 
-- `changed_paths`
-- `impacted_subsystems`
-- `impacted_invariants`
-- `required_test_tags`
+- Local development: use sharded gate profiles (`verify`, `strict`, `full`).
+- CI or explicit legacy request: monolith may still be used for compatibility checks.
+- Gate profiles must not call `testx_all` directly.
 
-`scripts/dev/testx_proof_engine.py` consumes the manifest and selects tests by intersecting required tags with suite registry tag mappings. If the manifest is missing, fast mode falls back to registry defaults.
+## Impact-Driven Selection
+
+RepoX emits `docs/audit/proof_manifest.json` and XStack builds an impact graph from changed paths.
+Test group selection is deterministic and reproducible for the same repo state hash.
 
 ## Determinism Envelopes
 
@@ -45,7 +49,7 @@ TestX includes dedicated envelope checks for:
 
 Envelope checks are non-semantic proofs that canonical outputs remain stable under allowed execution variance.
 
-## Derived Artifact Contract
+## Artifact Contract
 
 Determinism checks operate on canonical artifacts only. TestX ignores RUN_META artifacts during canonical hash comparisons and validates that canonical artifacts do not carry timestamp/run-meta keys.
 
