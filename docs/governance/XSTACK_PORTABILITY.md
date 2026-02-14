@@ -38,6 +38,20 @@ This guide documents how to transplant the XStack governance and gate execution 
 - The planner and impact graph assume repo-relative paths.
 - Group path patterns are glob-based and should match top-level subsystem folders.
 - Cache defaults to `.xstack_cache/`; this path should stay local and ignored by VCS.
+- Structural scope declarations should stay registry/config driven (no absolute paths).
+
+### Structural Scope Configuration
+
+- Define scope roots per rule group (for example, `repox.structure.code` -> `engine|game|client|server`).
+- Define artifact-class filters per scope (`CANONICAL` only for structural dep hashes).
+- Define explicit non-canonical prefix exclusions per scope:
+  - `docs/audit/`
+  - `dist/`
+  - `build/`
+  - `tmp/`
+  - `.xstack_cache/`
+
+Use `docs/governance/XSTACK_SCOPE_TEMPLATE.json` as the portable baseline for new repos.
 
 ## Minimal vs Full Stack
 
@@ -61,4 +75,4 @@ This guide documents how to transplant the XStack governance and gate execution 
 - Keep canonical artifact IDs stable when moving registries.
 - Keep rule IDs stable when moving RepoX rulesets.
 - Re-map command invocations, not governance semantics.
-
+- Keep canonical roots and scope filters in data/config, not hardcoded absolute repo paths.
