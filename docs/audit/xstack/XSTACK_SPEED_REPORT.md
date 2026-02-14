@@ -18,7 +18,7 @@ Measured totals:
 
 - FAST cold: `838.673s`
 - FAST warm: `0.003s`
-- STRICT cold: `858.536s`
+- STRICT cold: `897.040s`
 - STRICT warm: `0.053s`
 - FULL cold: `1023.451s`
 

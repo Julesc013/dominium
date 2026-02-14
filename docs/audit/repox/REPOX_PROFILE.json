@@ -1,11 +1,31 @@
 {
   "artifact_class": "RUN_META",
-  "cache_hits": 0,
-  "cache_misses": 6,
+  "cache_hits": 5,
+  "cache_misses": 1,
   "changed_files": [
     "data/registries/derived_artifacts.json",
     "data/registries/gate_policy.json",
     "data/registries/presentation_matrix.json",
+    "docs/architecture/CANON_INDEX.md",
+    "docs/audit/auditx/FINDINGS.json",
+    "docs/audit/auditx/INVARIANT_MAP.json",
+    "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+    "docs/audit/auditx/RUN_META.json",
+    "docs/audit/auditx/TRENDS.json",
+    "docs/audit/identity_fingerprint.json",
+    "docs/audit/performance/RUN_META.json",
+    "docs/audit/proof_manifest.json",
+    "docs/audit/repox/REPOX_PROFILE.json",
+    "docs/audit/security/INTEGRITY_MANIFEST.json",
+    "docs/audit/security/RUN_META.json",
+    "docs/audit/testx/TESTX_RUN_META.json",
+    "docs/audit/testx/TESTX_SUMMARY.json",
+    "docs/audit/testx/TESTX_SUMMARY.md",
+    "docs/audit/xstack/PROFILE_FAST.json",
+    "docs/audit/xstack/PROFILE_FULL.json",
+    "docs/audit/xstack/PROFILE_STRICT_COLD.json",
+    "docs/audit/xstack/PROFILE_STRICT_WARM.json",
+    "docs/audit/xstack/XSTACK_SPEED_REPORT.md",
     "docs/governance/AUDITX_PROMOTION_POLICY.md",
     "docs/governance/GATE_THROUGHPUT_POLICY.md",
     "docs/governance/REPOX_RULESETS.md",
@@ -29,47 +49,47 @@
     "tools/xstack/core/scheduler.py",
     "tools/xstack/core/time_estimator.py"
   ],
-  "generated_utc": "2026-02-14T03:11:57Z",
+  "generated_utc": "2026-02-14T03:45:42Z",
   "groups": [
     {
       "cache_hit": false,
       "dep_hash": "9db6f8f036d949686a31d35f92b2d931edce8335055cf63ff4404bf1285b3c3e",
-      "duration_ms": 804996,
+      "duration_ms": 823676,
       "group_id": "repox.core.structure",
       "violation_count": 0
     },
     {
-      "cache_hit": false,
+      "cache_hit": true,
       "dep_hash": "3147cf42d13bc335dfca1e4d0d33281421ef073c717b235343c808fe339a3c07",
-      "duration_ms": 3043,
+      "duration_ms": 2782,
       "group_id": "repox.docs.canon",
       "violation_count": 2
     },
     {
-      "cache_hit": false,
+      "cache_hit": true,
       "dep_hash": "07c9e754e51299e217e9d5b1496822283e76e720712bc913fecb4559258cd42d",
-      "duration_ms": 937,
+      "duration_ms": 1250,
       "group_id": "repox.schema.compat",
       "violation_count": 0
     },
     {
-      "cache_hit": false,
+      "cache_hit": true,
       "dep_hash": "cf42a675670bdf0654783bee19599bddea531189587d49aee2c3b11f67569d24",
-      "duration_ms": 522,
+      "duration_ms": 556,
       "group_id": "repox.dist.platform",
       "violation_count": 0
     },
     {
-      "cache_hit": false,
+      "cache_hit": true,
       "dep_hash": "0f6a536ba3551abc76b12c70137e97b64fb63e73be04f3bd41640a0b22befabf",
-      "duration_ms": 53919,
+      "duration_ms": 37609,
       "group_id": "repox.runtime.policy",
       "violation_count": 0
     },
     {
-      "cache_hit": false,
-      "dep_hash": "8f3c8ed4d189f76bf40a489b42299960bb655874a71b0ff5c313a53d63f0ca1a",
-      "duration_ms": 13520,
+      "cache_hit": true,
+      "dep_hash": "4181f7d4356b9c440247c5740c5a40c7cb2f659d22142bff8e3b6f45a4452465",
+      "duration_ms": 15100,
       "group_id": "repox.runtime.heavy_scans",
       "violation_count": 0
     }
@@ -83,7 +103,7 @@
     "tests",
     "tools"
   ],
-  "profile": "FULL",
+  "profile": "STRICT",
   "status": "DERIVED",
-  "total_duration_ms": 879297
+  "total_duration_ms": 883658
 }
