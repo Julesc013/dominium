@@ -1,6 +1,6 @@
 SCHEMA: governance/derived_artifact_contract.schema
 schema_id: dominium.schema.governance.derived_artifact_contract
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -30,7 +30,10 @@ record derived_artifact
     - artifact_id: id
     - path: tag
     - artifact_class: tag
+    - commit_policy: tag
+    - write_root: tag
     - producer: tag
+    - regeneration_tool: tag
     - canonical_hash_required: bool
     - regenerable: bool
     - used_for_gating: bool
