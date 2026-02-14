@@ -8,8 +8,9 @@ import os
 from typing import Any, Dict
 
 
-def cache_root(repo_root: str) -> str:
-    return os.path.join(repo_root, "tools", "performx", "cache")
+def cache_root(repo_root: str, workspace_id: str = "") -> str:
+    ws_id = str(workspace_id or "").strip() or "default"
+    return os.path.join(repo_root, ".xstack_cache", ws_id, "performx", "cache")
 
 
 def build_cache_key(context: Dict[str, Any]) -> str:
@@ -17,8 +18,8 @@ def build_cache_key(context: Dict[str, Any]) -> str:
     return hashlib.sha256(blob).hexdigest()
 
 
-def load_cache(repo_root: str, cache_key: str) -> Dict[str, Any] | None:
-    path = os.path.join(cache_root(repo_root), "{}.json".format(cache_key))
+def load_cache(repo_root: str, cache_key: str, workspace_id: str = "") -> Dict[str, Any] | None:
+    path = os.path.join(cache_root(repo_root, workspace_id=workspace_id), "{}.json".format(cache_key))
     if not os.path.isfile(path):
         return None
     try:
@@ -31,12 +32,11 @@ def load_cache(repo_root: str, cache_key: str) -> Dict[str, Any] | None:
     return payload
 
 
-def write_cache(repo_root: str, cache_key: str, payload: Dict[str, Any]) -> str:
-    root = cache_root(repo_root)
+def write_cache(repo_root: str, cache_key: str, payload: Dict[str, Any], workspace_id: str = "") -> str:
+    root = cache_root(repo_root, workspace_id=workspace_id)
     os.makedirs(root, exist_ok=True)
     path = os.path.join(root, "{}.json".format(cache_key))
     with open(path, "w", encoding="utf-8", newline="\n") as handle:
         json.dump(payload, handle, indent=2, sort_keys=True)
         handle.write("\n")
     return path
-

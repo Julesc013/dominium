@@ -69,8 +69,8 @@ def check_non_snapshot_routing(repo_root: str) -> int:
                 print("{} missing expected flag {}".format(runner_id, flag))
                 return 1
         joined = " ".join(routed).replace("\\", "/")
-        if ".xstack_cache/artifacts/" not in joined:
-            print("{} output not routed to .xstack_cache/artifacts".format(runner_id))
+        if ".xstack_cache/" not in joined or "/artifacts/" not in joined:
+            print("{} output not routed to workspace-scoped .xstack_cache/<workspace_id>/artifacts".format(runner_id))
             return 1
     return 0
 
@@ -94,4 +94,3 @@ def check_snapshot_passthrough(repo_root: str) -> int:
             print("{} should not be rewritten in snapshot mode".format(runner_id))
             return 1
     return 0
-

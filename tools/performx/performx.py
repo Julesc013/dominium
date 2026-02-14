@@ -213,15 +213,16 @@ def _run(args: argparse.Namespace) -> int:
         "envelope_registry_version": str(envelope_payload.get("record", {}).get("registry_version", "")),
     }
     cache_key = build_cache_key(cache_context)
+    workspace_id = str(ws_dirs.get("workspace_id", ""))
     cache_hit = False
     if args.cache_mode == "auto":
-        cached = load_cache(repo_root, cache_key)
+        cached = load_cache(repo_root, cache_key, workspace_id=workspace_id)
         if isinstance(cached, dict) and isinstance(cached.get("results"), list):
             results_rows = cached["results"]
             cache_hit = True
         else:
             results_rows = run_envelopes(selected, normalization_factor=factor, seed=seed)
-            write_cache(repo_root, cache_key, {"results": results_rows})
+            write_cache(repo_root, cache_key, {"results": results_rows}, workspace_id=workspace_id)
     else:
         results_rows = run_envelopes(selected, normalization_factor=factor, seed=seed)
 
@@ -349,4 +350,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

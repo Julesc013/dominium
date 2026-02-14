@@ -64,7 +64,7 @@ PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbook
 GATE_POLICY_REGISTRY_REL = os.path.join("data", "registries", "gate_policy.json")
 UI_BIND_CACHE_REL = os.path.join(VERIFY_BUILD_DIR_REL, "gate_ui_bind_cache.json")
 DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
-TRACKED_WRITE_MANIFEST_REL = os.path.join(".xstack_cache", "gate", "TOUCHED_FILES_MANIFEST.json")
+TRACKED_WRITE_MANIFEST_SUFFIX = os.path.join("gate", "TOUCHED_FILES_MANIFEST.json")
 SNAPSHOT_REPORT_REL = os.path.join("docs", "audit", "system", "SNAPSHOT_REPORT.md")
 LEDGER_SNAPSHOT_REL = os.path.join("docs", "audit", "system", "LEDGER_SNAPSHOT.md")
 
@@ -86,7 +86,7 @@ MECHANICAL_BLOCKER_TYPES = (
 # - verify defaults to FAST lane (precheck + task dependency)
 # - add explicit FULL lane for exhaustive verification
 # - short-circuit repeated invocations on identical repo state
-GATE_STATE_CACHE_REL = os.path.join("tmp", "gate_last_ok.json")
+GATE_STATE_CACHE_REL = os.path.join("gate", "gate_last_ok.json")
 DEFAULT_FAST_VERIFY = True
 
 def _repo_root(arg_value):
@@ -114,6 +114,14 @@ def _canonical_env(repo_root, base_env=None, ws_id=""):
     )
     tools_dir = env.get("DOM_CANONICAL_TOOLS_DIR", "") or env.get("DOM_TOOLS_PATH", "")
     return env, tools_dir, ws_dirs
+
+
+def _xstack_cache_root(repo_root, workspace_id=""):
+    ws_id = str(workspace_id or "").strip() or canonical_workspace_id(repo_root, env=os.environ)
+    root = os.path.join(repo_root, ".xstack_cache", ws_id)
+    if not os.path.isdir(root):
+        os.makedirs(root, exist_ok=True)
+    return root
 
 
 def _rewrite_command_paths(command, verify_build_dir):
@@ -347,8 +355,8 @@ def _snapshot_only_paths(repo_root):
     return out
 
 
-def _write_touched_manifest(repo_root, payload):
-    out_path = os.path.join(repo_root, TRACKED_WRITE_MANIFEST_REL)
+def _write_touched_manifest(repo_root, payload, workspace_id=""):
+    out_path = os.path.join(_xstack_cache_root(repo_root, workspace_id=workspace_id), TRACKED_WRITE_MANIFEST_SUFFIX)
     parent = os.path.dirname(out_path)
     if parent and not os.path.isdir(parent):
         os.makedirs(parent, exist_ok=True)
@@ -358,7 +366,7 @@ def _write_touched_manifest(repo_root, payload):
     return out_path
 
 
-def _tracked_write_violations(repo_root, gate_kind, profile, before_status, after_status, snapshot_mode):
+def _tracked_write_violations(repo_root, gate_kind, profile, before_status, after_status, snapshot_mode, workspace_id=""):
     before_status = before_status or {}
     after_status = after_status or {}
     touched = []
@@ -386,7 +394,7 @@ def _tracked_write_violations(repo_root, gate_kind, profile, before_status, afte
         "allowed_snapshot_only_files": allowed,
         "violations": violations,
     }
-    manifest_path = _write_touched_manifest(repo_root, manifest)
+    manifest_path = _write_touched_manifest(repo_root, manifest, workspace_id=workspace_id)
     return violations, manifest_path
 
 
@@ -420,12 +428,8 @@ def _changed_files_from_git(repo_root):
 
 def _state_cache_path(repo_root, ws_dirs=None):
     ws_dirs = ws_dirs or {}
-    dist_root = str(ws_dirs.get("dist_root", "")).strip()
-    if not dist_root:
-        dist_root = os.path.join(repo_root, "dist")
-    if not os.path.isabs(dist_root):
-        dist_root = os.path.join(repo_root, dist_root)
-    return os.path.join(os.path.normpath(dist_root), GATE_STATE_CACHE_REL)
+    ws_id = str(ws_dirs.get("workspace_id", "")).strip() or canonical_workspace_id(repo_root, env=os.environ)
+    return os.path.join(_xstack_cache_root(repo_root, workspace_id=ws_id), GATE_STATE_CACHE_REL)
 
 
 def _load_state_cache(repo_root, ws_dirs=None):
@@ -1234,11 +1238,11 @@ def _profile_for_command(gate_kind, force_strict=False, force_full=False, force_
     return FAST_MODE
 
 
-def _write_full_plan_warning(repo_root, plan_payload):
+def _write_full_plan_warning(repo_root, plan_payload, cache_root=""):
     estimate = plan_payload.get("estimate") or {}
     if not bool(estimate.get("warn_full_plan_too_large")):
         return ""
-    out_path = os.path.join(repo_root, ".xstack_cache", "xstack", "FULL_PLAN_TOO_LARGE.md")
+    out_path = os.path.join(cache_root or _xstack_cache_root(repo_root), "xstack", "FULL_PLAN_TOO_LARGE.md")
     parent = os.path.dirname(out_path)
     if parent and not os.path.isdir(parent):
         os.makedirs(parent, exist_ok=True)
@@ -1296,6 +1300,9 @@ def _run_gate_xstack(
         return None
 
     snapshot_mode = gate_kind == "snapshot"
+    _env, _tools_dir, ws_dirs = _canonical_env(repo_root, ws_id=workspace_id)
+    resolved_ws = str(ws_dirs.get("workspace_id", "")).strip() or canonical_workspace_id(repo_root, env=os.environ)
+    cache_root = _xstack_cache_root(repo_root, workspace_id=resolved_ws)
     tracked_before = _git_tracked_status(repo_root)
     reset_profile(trace=trace)
     profile = _profile_for_command(
@@ -1308,16 +1315,18 @@ def _run_gate_xstack(
         repo_root=repo_root,
         gate_command=gate_kind,
         requested_profile=profile,
-        workspace_id=workspace_id,
+        workspace_id=resolved_ws,
+        cache_root=cache_root,
     )
     result = execute_plan(
         repo_root=repo_root,
         plan_payload=plan_payload,
         trace=trace,
         profile_report=profile_report,
+        cache_root=cache_root,
     )
     profile_path = export_profile_json(
-        os.path.join(repo_root, ".xstack_cache", "last_profile.json"),
+        os.path.join(cache_root, "last_profile.json"),
         extra={
             "gate_kind": gate_kind,
             "profile": plan_payload.get("profile", ""),
@@ -1329,10 +1338,11 @@ def _run_gate_xstack(
         },
     )
 
-    warning_path = _write_full_plan_warning(repo_root, plan_payload)
+    warning_path = _write_full_plan_warning(repo_root, plan_payload, cache_root=cache_root)
     output = {
         "result": "xstack_plan_complete",
         "gate_kind": gate_kind,
+        "workspace_id": resolved_ws,
         "profile": plan_payload.get("profile", ""),
         "strict_variant": plan_payload.get("strict_variant", ""),
         "plan_hash": plan_payload.get("plan_hash", ""),
@@ -1371,9 +1381,9 @@ def _run_gate_xstack(
             artifact_hashes=canonical_ledger_artifact_hashes(repo_root, canonical_artifacts),
             failure_class=str(result.get("primary_failure_class", "")),
             duration_s=float(result.get("total_seconds", 0.0)),
-            workspace_id=str(workspace_id or ""),
+            workspace_id=resolved_ws,
         )
-        ledger_meta = append_ledger_entry(repo_root, ledger_entry)
+        ledger_meta = append_ledger_entry(repo_root, ledger_entry, cache_root=cache_root)
         if ledger_meta.get("entry_path"):
             output["ledger_entry"] = os.path.relpath(str(ledger_meta["entry_path"]), repo_root).replace("\\", "/")
     except Exception:
@@ -1390,6 +1400,7 @@ def _run_gate_xstack(
                 ledger_snapshot_path = export_ledger_snapshot_markdown(
                     repo_root=repo_root,
                     out_path=os.path.join(repo_root, LEDGER_SNAPSHOT_REL),
+                    cache_root=cache_root,
                 )
                 output["ledger_snapshot"] = os.path.relpath(ledger_snapshot_path, repo_root).replace("\\", "/")
             except Exception:
@@ -1403,6 +1414,7 @@ def _run_gate_xstack(
         before_status=tracked_before,
         after_status=tracked_after,
         snapshot_mode=snapshot_mode,
+        workspace_id=resolved_ws,
     )
     output["touched_manifest"] = os.path.relpath(touched_manifest, repo_root).replace("\\", "/")
     if violations:

@@ -125,13 +125,20 @@ def _append_flag(cmd: List[str], flag: str, value: str) -> None:
     cmd.extend([token, value])
 
 
-def _runner_artifact_root(repo_root: str, runner_id: str, group_id: str, snapshot_mode: bool) -> str:
+def _runner_artifact_root(
+    repo_root: str,
+    runner_id: str,
+    group_id: str,
+    snapshot_mode: bool,
+    workspace_id: str = "",
+) -> str:
     if snapshot_mode:
         return ""
+    ws_id = str(workspace_id or "").strip() or canonical_workspace_id(repo_root, env=os.environ)
     token = str(group_id or runner_id).replace("\\", "/").strip().replace("/", "_")
     if not token:
         token = "runner"
-    root = os.path.join(repo_root, ".xstack_cache", "artifacts", token)
+    root = os.path.join(repo_root, ".xstack_cache", ws_id, "artifacts", token)
     os.makedirs(root, exist_ok=True)
     return root
 
@@ -142,9 +149,16 @@ def _apply_output_routing(
     group_id: str,
     repo_root: str,
     snapshot_mode: bool,
+    workspace_id: str = "",
 ) -> List[str]:
     routed = list(cmd)
-    artifact_root = _runner_artifact_root(repo_root, runner_id, group_id, snapshot_mode)
+    artifact_root = _runner_artifact_root(
+        repo_root,
+        runner_id,
+        group_id,
+        snapshot_mode,
+        workspace_id=workspace_id,
+    )
     if not artifact_root:
         return routed
 
@@ -259,6 +273,7 @@ class CommandRunner(BaseRunner):
             group_id=group_id,
             repo_root=context.repo_root,
             snapshot_mode=snapshot_mode,
+            workspace_id=context.workspace_id,
         )
         env = _resolve_env(context.repo_root, workspace_id=context.workspace_id)
         env["DOM_XSTACK_SNAPSHOT_MODE"] = "1" if snapshot_mode else "0"

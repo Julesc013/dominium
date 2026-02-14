@@ -6,6 +6,7 @@ import os
 import platform
 import re
 import shutil
+import subprocess
 
 
 CANONICAL_TOOL_IDS = (
@@ -134,15 +135,21 @@ def canonical_workspace_id(repo_root, env=None, platform_id="", arch_id=""):
         return explicit
 
     repo_root = _norm(os.path.abspath(repo_root))
-    legacy_root = _norm(os.path.join(repo_root, "out", "build", LEGACY_WORKSPACE_ID))
-    if os.path.isdir(legacy_root):
-        return LEGACY_WORKSPACE_ID
-
-    host_platform, host_arches = detect_platform_arch()
-    use_platform = sanitize_workspace_id(platform_id or host_platform) or "host"
-    use_arch = sanitize_workspace_id(arch_id or (host_arches[0] if host_arches else "x64")) or "x64"
-    repo_hash = hashlib.sha1(repo_root.encode("utf-8")).hexdigest()[:8]
-    return "{}-{}-{}".format(use_platform, use_arch, repo_hash)
+    try:
+        proc = subprocess.run(
+            ["git", "-C", repo_root, "rev-parse", "HEAD"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            check=False,
+        )
+        head_sha = (proc.stdout or "").strip().lower() if int(proc.returncode) == 0 else "nogit"
+    except OSError:
+        head_sha = "nogit"
+    seed = "{}|{}".format(repo_root.replace("\\", "/"), head_sha)
+    digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16]
+    return "ws-{}".format(digest)
 
 
 def canonical_workspace_dirs(repo_root, ws_id="", platform_id="", arch_id=""):

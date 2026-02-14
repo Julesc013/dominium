@@ -15,6 +15,7 @@ if DEV_SCRIPT_DIR not in sys.path:
 
 from env_tools_lib import (
     WORKSPACE_ID_ENV_KEY,
+    canonical_workspace_id,
     canonicalize_env_for_workspace,
     canonical_tools_dir_details,
     detect_repo_root,
@@ -6189,7 +6190,8 @@ def _impacted_roots(changed_files):
 
 
 def _repox_cache_path(repo_root, group_id, cache_key):
-    root = os.path.join(repo_root, ".xstack_cache", "repox", normalize_path(group_id).replace("/", "_"))
+    ws_id = os.environ.get(WORKSPACE_ID_ENV_KEY, "").strip() or canonical_workspace_id(repo_root, env=os.environ)
+    root = os.path.join(repo_root, ".xstack_cache", ws_id, "repox", normalize_path(group_id).replace("/", "_"))
     if not os.path.isdir(root):
         os.makedirs(root, exist_ok=True)
     return os.path.join(root, "{}.json".format(cache_key))
