@@ -1,13 +1,13 @@
 {
-  "fingerprint_sha256": "5ff0ed6486a56b37a3edf8b9de3810baca883e785903a8c48660a12d26dda4ec",
+  "fingerprint_sha256": "b4a17fc71f9ba1a2303e01f4baa68a2e229ba3a13e20bc55f86da5ae3222e3ea",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "6afcdeb15f7cfc0c86d1ef7d536a5da7fde95961ff0f7b56b3ca7e6ae8d5cb3b"
+      "sha256": "0603a812e38e9efab440059125dac457ca3121cc71056837ef9e2674e2862889"
     },
     "gate_runner": {
       "path": "scripts/dev/gate.py",
-      "sha256": "d4a8f67baf8af06fdbf614a5a66dbb162af762f23620758dd159b8465f0d8717"
+      "sha256": "f23638716ed61ec3c4b5bd46781f797bf4a11ca378f760299a7650dd8a9c5455"
     },
     "ontology_commitment": {
       "sha256": "831a336a64022e33b1f72801c3e636cf817fc3e96c4c0223c3bd2cc2190930d7",
@@ -15,16 +15,16 @@
     },
     "repox_rulesets": {
       "path": "repo/repox/rulesets",
-      "sha256": "492f42882e71a49998505cac78fa4bd1342f28948fefffa2af1998b5d4fc0e88"
+      "sha256": "bfcedbaf42f40ccf373da21b7b57011c96cfe5974c40029808e99c548dd73df6"
     },
     "status_now_snapshot": {
       "path": "docs/STATUS_NOW.md",
       "sha256": "759a028019b67caa7112af9c6de67e419d9eeaf7020c47653b20b98854722416"
     },
     "testx_suite_set": {
-      "sha256": "fee3f2293f17d6316c0f6901d873397669b8b5d2e72d74c074175fd8ebd447c6",
+      "sha256": "60ba140d6af02f20fb18a9ad256e0eb67a35a5876f2014c52fa3293bc660f2be",
       "source_root": "tests",
-      "suite_count": 339
+      "suite_count": 344
     },
     "unbounded_doctrine": {
       "path": "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md",

@@ -4,7 +4,7 @@
     "canonical_artifact_hashes": [
       {
         "id": "artifact.auditx.findings",
-        "sha256": "7899f217cc8e72b674d51a8e7d0f2d52187e00305910d6a50918e96954c4f454",
+        "sha256": "1e812e5fe3ae5a1ee443722b5eea60b2f9c7f8ca8b49edefbcc230a221273b84",
         "source": "docs/audit/auditx/FINDINGS.json"
       },
       {
@@ -14,12 +14,12 @@
       },
       {
         "id": "artifact.identity_fingerprint",
-        "sha256": "532a47f8856d879dc636fa9076b89ed26e0b49142fda40f94192d26fb606a2fb",
+        "sha256": "9b7ff7c081eddfc0d06c1017ce0937437be4036103ad263c044e9c37fd3fce51",
         "source": "docs/audit/identity_fingerprint.json"
       }
     ],
     "extensions": {},
-    "identity_fingerprint_sha256": "5ff0ed6486a56b37a3edf8b9de3810baca883e785903a8c48660a12d26dda4ec",
+    "identity_fingerprint_sha256": "b4a17fc71f9ba1a2303e01f4baa68a2e229ba3a13e20bc55f86da5ae3222e3ea",
     "manifest_id": "securex.integrity_manifest",
     "manifest_version": "1.0.0",
     "pack_hashes": [
@@ -60,12 +60,12 @@
     "tool_hashes": [
       {
         "id": "tool.auditx",
-        "sha256": "6371771e53d5dbfa47559ad8d5c224dc67700ef93155872a0ab5cd9ecfcea5c0",
+        "sha256": "4350ab3a056da7ae0b6b3d86166d5bb165d76ed8e40372e7447835f6a789407e",
         "source": "tools/auditx/auditx.py"
       },
       {
         "id": "tool.compatx",
-        "sha256": "cca70485fda23d7d7392d1033a2bd56eb6ea633462742d1ac25ebd870af3e3cf",
+        "sha256": "09c1dde3b93df65ba1df0fba2f184fbd80fe64e57e9bd9f7a68c980774659af1",
         "source": "tools/compatx/compatx.py"
       },
       {
@@ -75,7 +75,7 @@
       },
       {
         "id": "tool.securex",
-        "sha256": "80228ecc0860ea4ed868747662a993a809cac083a4916313d4895085c5f70a32",
+        "sha256": "1c03332e38e70d462251be1db83e11f4ae7e4482f50484280347d5d075ee4da2",
         "source": "tools/securex/securex.py"
       }
     ]
