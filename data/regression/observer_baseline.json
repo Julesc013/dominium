@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "observer.mvp.galaxy_sol_earth.v1",
+  "description": "Deterministic Observer Exploration MVP baseline lock for galaxy -> sol -> earth traversal.",
+  "bundle_id": "bundle.base.lab",
+  "scenario_id": "scenario.lab.galaxy_nav",
+  "script_path": "tools/xstack/testdata/session/script.region_traversal.fixture.json",
+  "composite_hash_anchor": "3dae941c0d2310cfd4d80d814c8aa31abd4c497fba207f42c865d7d7dfffeb99",
+  "pack_lock_hash": "83e022ebf2ffc2686d0c2b8854b24b3febd5c80edbe06b3f4a0931575d8eb1b8",
+  "registry_hashes": {
+    "activation_policy_registry_hash": "6398ffcaf26b22584f69f629ab900dd5b724a0100f8e1b1152b255ed3c4cf2f9",
+    "astronomy_catalog_index_hash": "f8f4b532336e24efa06526b48ab53edc3c5caa0daa3f8ec49b37a96e5b8b2415",
+    "budget_policy_registry_hash": "1f9f967af6080f281bd3bb3ea465d154d910a0db3612be4149ce8d96afbd67d4",
+    "domain_registry_hash": "b6bca2ac2c5db685ff362383f26cc1530e90e96522f33f9133c7db4f38528537",
+    "ephemeris_registry_hash": "694eddbd245046e5e0a16bc45555ed00f6bc9f3d13104136c60b5d259ad176e8",
+    "experience_registry_hash": "43b10356eb61ff3840b0536bd37b9b01fbc65a5384c292f0a212c55844f78052",
+    "fidelity_policy_registry_hash": "f1f9a8f9eac54bc7706f328bab3136396d2c59a016feb62638993e01fad17de3",
+    "law_registry_hash": "be2f8fcfde47fdbab66caeb08de747ec7c2b9ab93264792d8de286828c74d106",
+    "lens_registry_hash": "ea487768e8912b1036ee7005e8f7c87c814a404312148493d9827514c9324b59",
+    "site_registry_index_hash": "bd58943c4947f58fe1598786714634499ed18bb1570c34ba72edaef6f7973adb",
+    "terrain_tile_registry_hash": "fe003e69d5339172ebf15bc16c18bdc5fcb7b19b21ebb6e4472cf738306ed529",
+    "ui_registry_hash": "0d3f31c76a15c9c481b29dcb2b3d4556c944d1ba8b1d4a710cb83c6202e94b05",
+    "worldgen_constraints_registry_hash": "5d3fed78f9bfd0698e2d1f3b783308e1bbb83b998296e7d5fcb8a6c56d1661f2"
+  },
+  "roi_switch_lock": {
+    "final_state_hash": "347e6b16fc202542db2a6c9521b97b2990b3fb7030be4eebbc4cdf8a977716b1",
+    "final_tick_hash": "11414dcbae69e73d0a92b0b83566c926f03d542d0abba502a9d7e02d8b055ead",
+    "transition_policy": "deterministic_process_order"
+  },
+  "update_policy": {
+    "required_commit_tag": "REGRESSION-UPDATE",
+    "notes": "Baseline changes require explicit review and deterministic revalidation."
+  }
+}
