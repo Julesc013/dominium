@@ -3,8 +3,8 @@
   "cache_mode": "incremental",
   "changed_only": false,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-15T11:36:15Z",
-  "graph_hash": "3aee567563b41174523d530f2eb96b2aebd5e79c2eb4e7880530a6c48c399943",
+  "generated_utc": "2026-02-15T14:10:49Z",
+  "graph_hash": "4d0a0d200e84655f4cf0a0d7869476de22ce1960a87f455e74d2e030228e39d4",
   "last_reviewed": "2026-02-15",
   "output_format": "both",
   "platform": "windows",
@@ -37,8 +37,10 @@
     "C7_LENS_BYPASS_SMELL",
     "C8_RUN_META_INPUT_SMELL",
     "D1_CONSTRAINT_DRIFT",
-    "D2_SEED_POLICY"
+    "D2_SEED_POLICY",
+    "E1_NET_POLICY_DRIFT",
+    "E2_TRUTH_OVER_NET_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-2e5f98fcf9b4f9af"
+  "workspace_id": "ws-1e76eb82f8f43b06"
 }

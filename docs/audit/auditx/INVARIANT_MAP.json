@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 609,
+      "finding_count": 613,
       "recommended_actions": {
-        "DOC_FIX": 609
+        "DOC_FIX": 613
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 609
+        "WARN": 613
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -141,6 +141,32 @@
         "RISK": 9
       }
     },
+    "INV-NO-TRUTH-OVER-NET": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0002",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0003",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 3
+      }
+    },
     "INV-SCHEMA-SHADOWING-CONTROL": {
       "finding_count": 120,
       "recommended_actions": {
@@ -203,6 +229,38 @@
           "category": "semantic.workspace_contamination",
           "finding_id": "A7_WORKSPACE_CONTAMINATION:0001",
           "location": "scripts/ci/check_repox_rules.py"
+        }
+      ],
+      "severities": {
+        "WARN": 1
+      }
+    },
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "RETIRE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "tools/xstack/testx/tests/testlib.py"
+        }
+      ],
+      "severities": {
+        "WARN": 1
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": "schemas/profile_trace.schema.json"
         }
       ],
       "severities": {

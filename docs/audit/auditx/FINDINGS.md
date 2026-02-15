@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 746
-- Severities: RISK=10, VIOLATION=1, WARN=735
-- Categories: canon_drift=609, capability_bypass_smell=1, derived_freshness=9, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 755
+- Severities: RISK=13, VIOLATION=1, WARN=741
+- Categories: canon_drift=613, capability_bypass_smell=1, derived_freshness=9, net.truth_over_net_smell=3, reachability=1, schema_usage=1, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
@@ -47,6 +47,18 @@ Superseded By: none
 - `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
   - Bridge is missing required capability/entitlement guard markers.
   - Missing markers: refuse.profile_not_selected
+- `E2_TRUTH_OVER_NET_SMELL:0001` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(truthmodel|truth_model).*(serialize|json|packet|socket|network|replication|delta|snapshot)"
+- `E2_TRUTH_OVER_NET_SMELL:0002` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(serialize|json|packet|socket|network|replication|delta|snapshot).*(truthmodel|truth_model)",
+- `E2_TRUTH_OVER_NET_SMELL:0003` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - message="TruthModel network serialization smell detected; transmit PerceivedModel/snapshot hashes only",
+- `A1_REACHABILITY_ORPHANED:0001` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/testx/tests/testlib.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
 - `A2_SCHEMA_SHADOWING:0001` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/domains.json)
   - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
   - Review for shadowing or override semantics.
@@ -361,16 +373,4 @@ Superseded By: none
   - Review for shadowing or override semantics.
 - `A2_SCHEMA_SHADOWING:0105` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.realistic_earth/content/refinement_plans.json)
   - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0106` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.realistic_earth/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0107` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.lib.on_planet.primitives/content/assemblies.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.assembly
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0108` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.lib.on_planet.primitives/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0109` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.lib.on_planet.primitives/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
   - Review for shadowing or override semantics.
