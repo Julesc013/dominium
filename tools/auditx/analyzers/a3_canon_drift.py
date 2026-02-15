@@ -10,6 +10,7 @@ ANALYZER_ID = "A3_CANON_DRIFT"
 HEADER_RE = re.compile(r"^#\s+(.+)$", re.MULTILINE)
 NORMATIVE_RE = re.compile(r"\b(must|required|forbid|shall|never)\b", re.IGNORECASE)
 ENFORCEMENT_RE = re.compile(r"\b(RepoX|TestX|AuditX|INV-[A-Z0-9-]+|test[s]?)\b")
+GOVERNANCE_ROOTS = ("docs/governance/",)
 
 
 def _read(path):
@@ -61,7 +62,7 @@ def run(graph, repo_root, changed_files=None):
                     ],
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="DOC_FIX",
-                    related_invariants=[],
+                    related_invariants=["INV-CANON-INDEX"],
                     related_paths=[rel],
                 )
             )
@@ -69,12 +70,18 @@ def run(graph, repo_root, changed_files=None):
     for title, paths in sorted(title_map.items()):
         if len(paths) <= 1:
             continue
+        governance_paths = [path for path in paths if path.startswith(GOVERNANCE_ROOTS)]
+        severity = "WARN"
+        confidence = 0.60
+        if len(governance_paths) > 1:
+            severity = "RISK"
+            confidence = 0.78
         findings.append(
             make_finding(
                 analyzer_id=ANALYZER_ID,
                 category="canon_drift",
-                severity="WARN",
-                confidence=0.60,
+                severity=severity,
+                confidence=confidence,
                 file_path=paths[0],
                 evidence=[
                     "Duplicate/overlapping doc title detected: {}".format(title),
@@ -89,4 +96,4 @@ def run(graph, repo_root, changed_files=None):
         if len(findings) >= 80:
             break
 
-    return sorted(findings, key=lambda item: (item.location.file, item.severity))
+    return sorted(findings, key=lambda item: (item.location.file_path, item.severity))

@@ -26,12 +26,27 @@ INSTALL_TOKENS = (
     "cache-add",
 )
 
+SIMULATION_MUTATION_TOKENS = (
+    "universe_state",
+    "truth_model",
+    "simulation_time",
+    "process_runtime",
+    "set_simulation_time",
+)
+
 USER_SETTINGS_TOKENS = (
     "user_settings",
     "settings.json",
     "client_settings",
     "launcher_settings",
     "setup_settings",
+)
+
+DISPATCH_TOKENS = (
+    "dispatch_command",
+    "command_dispatch",
+    "intent_pipeline",
+    "submit_intent",
 )
 
 
@@ -71,7 +86,7 @@ def run(graph, repo_root, changed_files=None):
                     analyzer_id=ANALYZER_ID,
                     category="ownership_boundary",
                     severity="RISK",
-                    confidence=0.75,
+                    confidence=0.78,
                     file_path=rel,
                     evidence=[
                         "Client path appears to combine install tokens with mutation operations.",
@@ -86,21 +101,21 @@ def run(graph, repo_root, changed_files=None):
 
     for rel in _find_suspect_files(graph, "launcher/"):
         text = _read_file(repo_root, rel)
-        if _contains_any(text, MUTATION_TOKENS) and _contains_any(text, INSTALL_TOKENS):
+        if _contains_any(text, MUTATION_TOKENS) and _contains_any(text, SIMULATION_MUTATION_TOKENS):
             findings.append(
                 make_finding(
                     analyzer_id=ANALYZER_ID,
                     category="ownership_boundary",
-                    severity="RISK",
-                    confidence=0.70,
+                    severity="VIOLATION",
+                    confidence=0.84,
                     file_path=rel,
                     evidence=[
-                        "Launcher path appears to directly mutate install-managed artifacts.",
-                        "Setup should be the install mutation authority.",
+                        "Launcher appears to mutate simulation state directly.",
+                        "Launcher must route mutation through canonical session/process boundaries.",
                     ],
                     suggested_classification="INVALID",
                     recommended_action="ADD_RULE",
-                    related_invariants=["INV-SETTINGS-OWNERSHIP"],
+                    related_invariants=["INV-LAUNCHER-NO-SIM-MUTATION"],
                     related_paths=[rel],
                 )
             )
@@ -114,7 +129,7 @@ def run(graph, repo_root, changed_files=None):
                         analyzer_id=ANALYZER_ID,
                         category="ownership_boundary",
                         severity="VIOLATION",
-                        confidence=0.80,
+                        confidence=0.82,
                         file_path=rel,
                         evidence=[
                             "Engine/Game path appears to reference user settings payloads directly.",
@@ -127,28 +142,31 @@ def run(graph, repo_root, changed_files=None):
                     )
                 )
 
-    for rel in _find_suspect_files(graph, "libs/"):
-        if "/ui_" not in rel and "/ui/" not in rel:
-            continue
-        text = _read_file(repo_root, rel)
-        if "dispatch_command" not in text and "command_dispatch" not in text and "command_id" in text:
-            findings.append(
-                make_finding(
-                    analyzer_id=ANALYZER_ID,
-                    category="ownership_boundary",
-                    severity="WARN",
-                    confidence=0.55,
-                    file_path=rel,
-                    evidence=[
-                        "UI-related file references command IDs but no dispatcher token was found.",
-                        "Potential UI bypass of canonical command dispatcher.",
-                    ],
-                    suggested_classification="TODO-BLOCKED",
-                    recommended_action="ADD_TEST",
-                    related_invariants=["INV-CLI-CANONICAL-UI"],
-                    related_paths=[rel],
+    ui_prefixes = ("client/", "launcher/", "tools/", "libs/")
+    for prefix in ui_prefixes:
+        for rel in _find_suspect_files(graph, prefix):
+            lowered = rel.lower()
+            if "/ui/" not in lowered and "/presentation/" not in lowered and "ui_" not in lowered:
+                continue
+            text = _read_file(repo_root, rel)
+            has_command_ref = "command_id" in text.lower() or "client." in text.lower()
+            if has_command_ref and not _contains_any(text, DISPATCH_TOKENS):
+                findings.append(
+                    make_finding(
+                        analyzer_id=ANALYZER_ID,
+                        category="ownership_boundary",
+                        severity="WARN",
+                        confidence=0.63,
+                        file_path=rel,
+                        evidence=[
+                            "UI-facing file references command IDs but dispatcher tokens were not detected.",
+                            "Potential UI bypass of canonical command dispatcher.",
+                        ],
+                        suggested_classification="TODO-BLOCKED",
+                        recommended_action="ADD_TEST",
+                        related_invariants=["INV-CLI-CANONICAL-UI"],
+                        related_paths=[rel],
+                    )
                 )
-            )
 
-    return sorted(findings, key=lambda item: (item.location.file, item.severity))
-
+    return sorted(findings, key=lambda item: (item.location.file_path, item.severity))
