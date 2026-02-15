@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.security_events",
+  "title": "Security Events",
+  "required_entitlements": [
+    "entitlement.admin.security_view"
+  ],
+  "required_lenses": [
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "security.events.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "security.events.list",
+        "type": "list",
+        "label": "Anti-Cheat Events",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "security.events"
+        }
+      }
+    ]
+  }
+}

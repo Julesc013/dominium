@@ -22,6 +22,7 @@
     "profile.lab.developer"
   ],
   "optional_pack_ids": [
+    "pack.tool.admin_security",
     "pack.tool.inspector",
     "pack.tool.navigation",
     "pack.tool.time_control",
