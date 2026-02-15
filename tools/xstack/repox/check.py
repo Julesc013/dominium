@@ -70,11 +70,16 @@ SCAN_ROOTS = (
     "data/registries/domain_registry.json",
     "data/registries/domain_contract_registry.json",
     "data/registries/solver_registry.json",
+    "data/registries/net_replication_policy_registry.json",
+    "data/registries/net_resync_strategy_registry.json",
+    "data/registries/anti_cheat_policy_registry.json",
+    "data/registries/anti_cheat_module_registry.json",
     "data/registries/worldgen_constraints_registry.json",
     "data/registries/worldgen_module_registry.json",
     "packs",
     "bundles",
     "docs/contracts",
+    "docs/net",
     "docs/testing",
     "docs/worldgen",
     "docs/architecture/registry_compile.md",
@@ -232,6 +237,33 @@ WORLDGEN_SEED_POLICY_FORBIDDEN_TOKENS = (
     "uuid.uuid4(",
     "time.time(",
     "datetime.now(",
+)
+
+MULTIPLAYER_NET_SCHEMA_NAMES = (
+    "net_intent_envelope",
+    "net_tick_intent_list",
+    "net_hash_anchor_frame",
+    "net_snapshot",
+    "net_delta",
+    "net_perceived_delta",
+    "net_handshake",
+    "net_anti_cheat_event",
+)
+
+MULTIPLAYER_POLICY_REGISTRY_FILES = (
+    "data/registries/net_replication_policy_registry.json",
+    "data/registries/net_resync_strategy_registry.json",
+    "data/registries/anti_cheat_policy_registry.json",
+    "data/registries/anti_cheat_module_registry.json",
+)
+
+NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
+    "data/registries/",
+    "docs/net/",
+    "docs/contracts/",
+    "schemas/",
+    "tools/xstack/testx/tests/",
+    "tools/auditx/",
 )
 
 AUDITX_FINDINGS_PATH = "docs/audit/auditx/FINDINGS.json"
@@ -596,6 +628,244 @@ def _append_session_pipeline_invariant_findings(
                 rule_id="INV-SESSION-READY-TIME-ZERO",
             )
         )
+
+
+def _append_multiplayer_contract_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    missing = []
+    for rel_path in MULTIPLAYER_POLICY_REGISTRY_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            missing.append(rel_path)
+    for rel_path in sorted(missing):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="required multiplayer policy registry file is missing",
+                rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+            )
+        )
+
+    try:
+        from tools.xstack.compatx.validator import validate_schema_example
+    except Exception:
+        validate_schema_example = None
+
+    if validate_schema_example is None:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/xstack/compatx/validator.py",
+                line_number=1,
+                snippet="",
+                message="unable to import schema validator for multiplayer schema checks",
+                rule_id="INV-NET-SCHEMAS-VALID",
+            )
+        )
+    else:
+        for schema_name in MULTIPLAYER_NET_SCHEMA_NAMES:
+            checked = validate_schema_example(repo_root=repo_root, schema_name=schema_name)
+            if not bool(checked.get("valid", False)):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="schemas/{}.schema.json".format(schema_name),
+                        line_number=1,
+                        snippet="",
+                        message="multiplayer schema example validation failed for '{}'".format(schema_name),
+                        rule_id="INV-NET-SCHEMAS-VALID",
+                    )
+                )
+
+    if missing:
+        return
+
+    replication_payload, replication_err = _load_json_object(repo_root, "data/registries/net_replication_policy_registry.json")
+    resync_payload, resync_err = _load_json_object(repo_root, "data/registries/net_resync_strategy_registry.json")
+    anti_cheat_policy_payload, anti_cheat_policy_err = _load_json_object(repo_root, "data/registries/anti_cheat_policy_registry.json")
+    anti_cheat_module_payload, anti_cheat_module_err = _load_json_object(repo_root, "data/registries/anti_cheat_module_registry.json")
+    if replication_err or resync_err or anti_cheat_policy_err or anti_cheat_module_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/net_replication_policy_registry.json",
+                line_number=1,
+                snippet="",
+                message="one or more multiplayer policy registries are invalid JSON",
+                rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+            )
+        )
+        return
+
+    replication_rows = (((replication_payload.get("record") or {}).get("policies")) or [])
+    resync_rows = (((resync_payload.get("record") or {}).get("strategies")) or [])
+    anti_cheat_policy_rows = (((anti_cheat_policy_payload.get("record") or {}).get("policies")) or [])
+    anti_cheat_module_rows = (((anti_cheat_module_payload.get("record") or {}).get("modules")) or [])
+    if (
+        not isinstance(replication_rows, list)
+        or not isinstance(resync_rows, list)
+        or not isinstance(anti_cheat_policy_rows, list)
+        or not isinstance(anti_cheat_module_rows, list)
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/net_replication_policy_registry.json",
+                line_number=1,
+                snippet="",
+                message="multiplayer policy registry record lists are missing",
+                rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+            )
+        )
+        return
+
+    resync_ids = set()
+    for row in resync_rows:
+        if not isinstance(row, dict):
+            continue
+        token = str(row.get("strategy_id", "")).strip()
+        if token:
+            resync_ids.add(token)
+
+    replication_ids = set()
+    for row in replication_rows:
+        if not isinstance(row, dict):
+            continue
+        policy_id = str(row.get("policy_id", "")).strip()
+        if not policy_id:
+            continue
+        replication_ids.add(policy_id)
+        strategy_id = str(row.get("resync_strategy_id", "")).strip()
+        if strategy_id and strategy_id not in resync_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/net_replication_policy_registry.json",
+                    line_number=1,
+                    snippet=policy_id,
+                    message="replication policy '{}' references missing resync strategy '{}'".format(policy_id, strategy_id),
+                    rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                )
+            )
+
+    for row in resync_rows:
+        if not isinstance(row, dict):
+            continue
+        strategy_id = str(row.get("strategy_id", "")).strip()
+        for policy_id in sorted(set(str(item).strip() for item in (row.get("supported_policies") or []) if str(item).strip())):
+            if policy_id not in replication_ids:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/net_resync_strategy_registry.json",
+                        line_number=1,
+                        snippet=strategy_id,
+                        message="resync strategy '{}' references missing replication policy '{}'".format(strategy_id, policy_id),
+                        rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                    )
+                )
+
+    module_ids = set()
+    for row in anti_cheat_module_rows:
+        if not isinstance(row, dict):
+            continue
+        token = str(row.get("module_id", "")).strip()
+        if token:
+            module_ids.add(token)
+
+    for row in anti_cheat_policy_rows:
+        if not isinstance(row, dict):
+            continue
+        policy_id = str(row.get("policy_id", "")).strip()
+        modules_enabled = sorted(set(str(item).strip() for item in (row.get("modules_enabled") or []) if str(item).strip()))
+        for module_id in modules_enabled:
+            if module_id not in module_ids:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/anti_cheat_policy_registry.json",
+                        line_number=1,
+                        snippet=policy_id,
+                        message="anti-cheat policy '{}' references missing module '{}'".format(policy_id, module_id),
+                        rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                    )
+                )
+        default_actions = row.get("default_actions")
+        if isinstance(default_actions, dict):
+            for module_id in sorted(default_actions.keys()):
+                token = str(module_id).strip()
+                if token and token not in module_ids:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path="data/registries/anti_cheat_policy_registry.json",
+                            line_number=1,
+                            snippet=policy_id,
+                            message="anti-cheat policy '{}' default_actions references missing module '{}'".format(
+                                policy_id,
+                                token,
+                            ),
+                            rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                        )
+                    )
+
+    token_severity = "warn" if profile == "FAST" else _invariant_severity(profile)
+    flag_pattern = re.compile(r"\bif\s*\([^)]*(lockstep|server_authoritative|srz_hybrid)[^)]*\)", re.IGNORECASE)
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if any(rel_norm.startswith(prefix) for prefix in NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES):
+            continue
+        _, ext = os.path.splitext(rel_norm.lower())
+        if ext not in {".py", ".c", ".cc", ".cpp", ".h", ".hpp", ".hh", ".cxx", ".hxx"}:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            if flag_pattern.search(str(line)):
+                findings.append(
+                    _finding(
+                        severity=token_severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="hardcoded network policy branch detected; select replication policy by policy_id",
+                        rule_id="INV-NO-HARDCODED-NET-POLICY-FLAGS",
+                    )
+                )
+
+    truth_net_pattern = re.compile(
+        r"(truthmodel|truth_model).*(serialize|json|packet|socket|network|replication|delta|snapshot)"
+        r"|"
+        r"(serialize|json|packet|socket|network|replication|delta|snapshot).*(truthmodel|truth_model)",
+        re.IGNORECASE,
+    )
+    for rel_path in _iter_negative_code_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if rel_norm == "tools/xstack/repox/check.py":
+            continue
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/", "tools/xstack/auditx/")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            lower = str(line).lower()
+            if "truth_snapshot_hash" in lower:
+                continue
+            if truth_net_pattern.search(str(line)):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="TruthModel network serialization smell detected; transmit PerceivedModel/snapshot hashes only",
+                        rule_id="INV-NO-TRUTH-OVER-NET",
+                    )
+                )
 
 
 def _append_domain_foundation_invariant_findings(
@@ -2002,6 +2272,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
             _append_strict_placeholder_findings(findings, rel_path, line_no, line, token)
             _append_renderer_truth_boundary_findings(findings, rel_path, line_no, line, token)
     _append_session_pipeline_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_multiplayer_contract_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

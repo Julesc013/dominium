@@ -26,6 +26,8 @@ from analyzers import c7_lens_bypass_smell
 from analyzers import c8_run_meta_input_smell
 from analyzers import d1_constraint_drift
 from analyzers import d2_seed_policy
+from analyzers import e1_net_policy_drift
+from analyzers import e2_truth_over_net_smell
 
 
 ANALYZERS = (
@@ -55,6 +57,8 @@ ANALYZERS = (
     c8_run_meta_input_smell,
     d1_constraint_drift,
     d2_seed_policy,
+    e1_net_policy_drift,
+    e2_truth_over_net_smell,
 )
 
 
