@@ -110,8 +110,12 @@ static void print_help(void)
     printf("commands:\n");
     printf("  client.*        Canonical command namespace (bridged to CLI handlers)\n");
     printf("  client.session.begin    Explicitly transition SessionReady -> SessionRunning\n");
+    printf("  client.session.stage    Print current canonical pipeline stage id\n");
     printf("  client.session.resume   Deterministic session resume path\n");
     printf("  client.session.abort    Abort active transition/run and tear down\n");
+    printf("  client.session.warmup.simulation   Explicit transition VerifyWorld -> WarmupSimulation\n");
+    printf("  client.session.warmup.presentation Explicit transition WarmupSimulation -> WarmupPresentation\n");
+    printf("  client.session.ready    Explicit transition WarmupPresentation -> SessionReady\n");
     printf("  client.session.inspect  Inspect fogged world state at SessionReady\n");
     printf("  client.session.map.open Open map panel at SessionReady\n");
     printf("  client.session.stats    Open stats panel at SessionReady\n");

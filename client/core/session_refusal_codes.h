@@ -5,13 +5,24 @@
 extern "C" {
 #endif
 
-#define CLIENT_SESSION_REFUSE_INVALID_TRANSITION "refuse.invalid_transition"
-#define CLIENT_SESSION_REFUSE_BEGIN_REQUIRES_READY "refuse.begin_requires_ready"
-#define CLIENT_SESSION_REFUSE_RESUME_REQUIRES_SUSPEND "refuse.resume_requires_suspend"
-#define CLIENT_SESSION_REFUSE_PACK_MISSING "refuse.pack_missing"
-#define CLIENT_SESSION_REFUSE_SCHEMA_INCOMPATIBLE "refuse.schema_incompatible"
-#define CLIENT_SESSION_REFUSE_WORLD_HASH_MISMATCH "refuse.world_hash_mismatch"
-#define CLIENT_SESSION_REFUSE_AUTHORITY_DENIED "refuse.authority_denied"
+#define CLIENT_SESSION_REFUSE_STAGE_INVALID_TRANSITION "refusal.stage_invalid_transition"
+#define CLIENT_SESSION_REFUSE_BEGIN_REQUIRES_READY "refusal.begin_requires_ready"
+#define CLIENT_SESSION_REFUSE_RESUME_REQUIRES_SUSPEND "refusal.resume_requires_suspend"
+#define CLIENT_SESSION_REFUSE_RESUME_INCOMPATIBLE "refusal.resume_incompatible"
+#define CLIENT_SESSION_REFUSE_RESUME_HASH_MISMATCH "refusal.resume_hash_mismatch"
+#define CLIENT_SESSION_REFUSE_RESUME_IDENTITY_VIOLATION "refusal.resume_identity_violation"
+#define CLIENT_SESSION_REFUSE_SERVER_STAGE_MISMATCH "refusal.server_stage_mismatch"
+#define CLIENT_SESSION_REFUSE_SERVER_AUTHORITY_VIOLATION "refusal.server_authority_violation"
+#define CLIENT_SESSION_REFUSE_SESSION_READY_TIME_NONZERO "refusal.session_ready_time_nonzero"
+#define CLIENT_SESSION_REFUSE_SESSION_READY_ARTIFACTS_MISSING "refusal.session_ready_artifacts_missing"
+#define CLIENT_SESSION_REFUSE_PACK_MISSING "refusal.pack_missing"
+#define CLIENT_SESSION_REFUSE_SCHEMA_INCOMPATIBLE "refusal.schema_incompatible"
+#define CLIENT_SESSION_REFUSE_WORLD_HASH_MISMATCH "refusal.world_hash_mismatch"
+#define CLIENT_SESSION_REFUSE_AUTHORITY_DENIED "refusal.authority_denied"
+#define CLIENT_SESSION_REFUSE_INVALID_TRANSITION CLIENT_SESSION_REFUSE_STAGE_INVALID_TRANSITION
+#define CLIENT_SESSION_REFUSE_LEGACY_INVALID_TRANSITION "refuse.invalid_transition"
+#define CLIENT_SESSION_REFUSE_LEGACY_BEGIN_REQUIRES_READY "refuse.begin_requires_ready"
+#define CLIENT_SESSION_REFUSE_LEGACY_RESUME_REQUIRES_SUSPEND "refuse.resume_requires_suspend"
 
 int client_session_refusal_code_known(const char* refusal_code);
 

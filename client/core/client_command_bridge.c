@@ -601,9 +601,10 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
         int map_open = state_machine ? client_state_machine_map_open(state_machine) : 0;
         int stats_visible = state_machine ? client_state_machine_stats_visible(state_machine) : 0;
         int replay_recording = state_machine ? client_state_machine_replay_recording_enabled(state_machine) : 0;
+        u32 stage_log_count = state_machine ? client_session_pipeline_stage_log_count(&state_machine->pipeline) : 0u;
         snprintf(out_message,
                  out_message_cap,
-                 "result=ok command=%s stage=%s workspace=session_transition authority_context_id=%s warmup.sim=%s warmup.presentation=%s time_advanced=%d world_ready=%d camera_placed=%d agent_actions_executed=%d map_open=%d stats_visible=%d replay_recording=%d",
+                 "result=ok command=%s stage=%s workspace=session_transition authority_context_id=%s warmup.sim=%s warmup.presentation=%s time_advanced=%d world_ready=%d camera_placed=%d agent_actions_executed=%d map_open=%d stats_visible=%d replay_recording=%d stage_log_count=%u",
                  token,
                  client_state_machine_stage_name(state_machine),
                  g_selection.authority_context_id[0] ? g_selection.authority_context_id : "ctx.unset",
@@ -615,7 +616,8 @@ client_command_bridge_result client_command_bridge_prepare(const char* raw_cmd,
                  actions_executed,
                  map_open,
                  stats_visible,
-                 replay_recording);
+                 replay_recording,
+                 (unsigned int)stage_log_count);
         return CLIENT_COMMAND_BRIDGE_SYNTHETIC_OK;
     }
     if (starts_with(token, "client.server.") ||
