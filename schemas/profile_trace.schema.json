@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Profile Trace Schema",
+  "version": "1.0.0",
+  "description": "Deterministic, non-gating profiling artifact contract for developer acceleration traces.",
+  "x-doc-ref": [
+    "docs/dev/DEVELOPER_ACCELERATION_MODEL.md",
+    "docs/dev/IMPACT_GRAPH.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "trace_id",
+    "artifact_class",
+    "deterministic",
+    "bii",
+    "bundle_id",
+    "session_id",
+    "scenario_id",
+    "pack_lock_hash",
+    "registry_hashes",
+    "metrics",
+    "capture_meta",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "trace_id": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "artifact_class": {
+      "type": "string",
+      "enum": [
+        "DERIVED"
+      ]
+    },
+    "deterministic": {
+      "type": "boolean",
+      "const": true
+    },
+    "bii": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "registry_hashes": {
+      "type": "object",
+      "required": [
+        "domain_registry_hash",
+        "law_registry_hash",
+        "experience_registry_hash",
+        "lens_registry_hash",
+        "activation_policy_registry_hash",
+        "budget_policy_registry_hash",
+        "fidelity_policy_registry_hash",
+        "worldgen_constraints_registry_hash",
+        "astronomy_catalog_index_hash",
+        "site_registry_index_hash",
+        "ephemeris_registry_hash",
+        "terrain_tile_registry_hash",
+        "ui_registry_hash"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "domain_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "law_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "experience_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "lens_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "activation_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "budget_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "fidelity_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "worldgen_constraints_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "astronomy_catalog_index_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "site_registry_index_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "ephemeris_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "terrain_tile_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "ui_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "metric_schema_version",
+        "resolved_pack_count",
+        "registry_count",
+        "estimated_compute_units",
+        "profile_ms"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "metric_schema_version": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "resolved_pack_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "registry_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "estimated_compute_units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "profile_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "capture_meta": {
+      "type": "object",
+      "required": [
+        "tool_id",
+        "tool_version",
+        "source_lockfile_path",
+        "source_registry_dir"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tool_id": {
+          "type": "string",
+          "const": "tool_profile_capture"
+        },
+        "tool_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "source_lockfile_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_registry_dir": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "trace_id": "f08280a25e2deecac16a88f394e31ceff56748990ee8da18f6ab06c400f7dc67",
+      "artifact_class": "DERIVED",
+      "deterministic": true,
+      "bii": "42",
+      "bundle_id": "bundle.base.lab",
+      "session_id": "session.dev.profile",
+      "scenario_id": "scenario.lab.galaxy_nav",
+      "pack_lock_hash": "83e022ebf2ffc2686d0c2b8854b24b3febd5c80edbe06b3f4a0931575d8eb1b8",
+      "registry_hashes": {
+        "domain_registry_hash": "b6bca2ac2c5db685ff362383f26cc1530e90e96522f33f9133c7db4f38528537",
+        "law_registry_hash": "be2f8fcfde47fdbab66caeb08de747ec7c2b9ab93264792d8de286828c74d106",
+        "experience_registry_hash": "43b10356eb61ff3840b0536bd37b9b01fbc65a5384c292f0a212c55844f78052",
+        "lens_registry_hash": "ea487768e8912b1036ee7005e8f7c87c814a404312148493d9827514c9324b59",
+        "activation_policy_registry_hash": "6398ffcaf26b22584f69f629ab900dd5b724a0100f8e1b1152b255ed3c4cf2f9",
+        "budget_policy_registry_hash": "1f9f967af6080f281bd3bb3ea465d154d910a0db3612be4149ce8d96afbd67d4",
+        "fidelity_policy_registry_hash": "f1f9a8f9eac54bc7706f328bab3136396d2c59a016feb62638993e01fad17de3",
+        "worldgen_constraints_registry_hash": "5d3fed78f9bfd0698e2d1f3b783308e1bbb83b998296e7d5fcb8a6c56d1661f2",
+        "astronomy_catalog_index_hash": "f8f4b532336e24efa06526b48ab53edc3c5caa0daa3f8ec49b37a96e5b8b2415",
+        "site_registry_index_hash": "bd58943c4947f58fe1598786714634499ed18bb1570c34ba72edaef6f7973adb",
+        "ephemeris_registry_hash": "694eddbd245046e5e0a16bc45555ed00f6bc9f3d13104136c60b5d259ad176e8",
+        "terrain_tile_registry_hash": "fe003e69d5339172ebf15bc16c18bdc5fcb7b19b21ebb6e4472cf738306ed529",
+        "ui_registry_hash": "0d3f31c76a15c9c481b29dcb2b3d4556c944d1ba8b1d4a710cb83c6202e94b05"
+      },
+      "metrics": {
+        "metric_schema_version": "1.0.0",
+        "resolved_pack_count": 20,
+        "registry_count": 13,
+        "estimated_compute_units": 933,
+        "profile_ms": 0
+      },
+      "capture_meta": {
+        "tool_id": "tool_profile_capture",
+        "tool_version": "1.0.0",
+        "source_lockfile_path": "build/lockfile.json",
+        "source_registry_dir": "build/registries"
+      },
+      "extensions": {}
+    }
+  ]
+}

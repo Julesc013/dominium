@@ -339,5 +339,7 @@ docs/audit/**/RUN_META*.json
 docs/audit/**/PROFILE_*.json
 docs/audit/**/TESTX_SUMMARY*.json
 docs/audit/**/REPOX_PROFILE*.json
+docs/audit/perf/profile_trace.sample.json
+docs/audit/perf/profile_trace.sample.md
 **/*.trace
 **/*.log
