@@ -87,6 +87,9 @@ Tool payload wrapper:
 - `refusal.net.authority_violation`
 - `refusal.net.shard_target_invalid`
 - `refusal.net.resync_required`
+- `refusal.net.resync_snapshot_missing`
+- `refusal.net.join_snapshot_invalid`
+- `refusal.net.join_policy_mismatch`
 - `refusal.ac.policy_violation`
 - `refusal.ac.rank_policy_required`
 - `refusal.ac.attestation_missing`
@@ -103,6 +106,9 @@ Tool payload wrapper:
 - `refusal.net.authority_violation`: submit intents only with allowed authority/law entitlements.
 - `refusal.net.shard_target_invalid`: route envelope to declared shard ownership scope.
 - `refusal.net.resync_required`: execute policy-specific resync strategy then retry intent stream.
+- `refusal.net.resync_snapshot_missing`: generate/request an authoritative snapshot before resync/join retry.
+- `refusal.net.join_snapshot_invalid`: run baseline sync first or request a valid snapshot_id from server.
+- `refusal.net.join_policy_mismatch`: join using the negotiated replication policy for the active session.
 - `refusal.ac.policy_violation`: inspect anti-cheat module events and satisfy declared anti-cheat policy constraints.
 - `refusal.ac.rank_policy_required`: select anti-cheat policy with `required_for_ranked=true` before ranked session entry.
 - `refusal.ac.attestation_missing`: provide client attestation artifact when policy explicitly enables attestation checks.
