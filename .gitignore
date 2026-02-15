@@ -331,6 +331,8 @@ stdout
 .xstack_cache/**
 dist/ws/**
 out/**
+tools/xstack/out/
+tools/xstack/out/**
 build/**
 tmp/**
 docs/audit/**/RUN_META*.json
