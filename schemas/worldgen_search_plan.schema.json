@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorldGen Search Plan Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic search plan artifact produced by worldgen constraints solver.",
+  "x-doc-ref": [
+    "docs/worldgen/WORLDGEN_CONSTRAINTS.md",
+    "docs/worldgen/WORLDGEN_PIPELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "plan_id",
+    "base_seed",
+    "candidate_seeds",
+    "constraints_id",
+    "module_order",
+    "scoring_summary",
+    "selected_seed",
+    "deterministic_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "plan_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "base_seed": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_seeds": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "constraints_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "module_order": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "scoring_summary": {
+      "type": "object",
+      "required": [
+        "candidate_results",
+        "hard_constraint_failures",
+        "soft_score_totals"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "candidate_results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "seed",
+              "hard_pass",
+              "hard_failures",
+              "soft_score",
+              "rank"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "seed": {
+                "type": "string"
+              },
+              "hard_pass": {
+                "type": "boolean"
+              },
+              "hard_failures": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "soft_score": {
+                "type": "integer"
+              },
+              "rank": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "hard_constraint_failures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "soft_score_totals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "seed",
+              "score"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "seed": {
+                "type": "string"
+              },
+              "score": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "selected_seed": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "plan_id": "plan.constraints.lab.navigation.default",
+      "base_seed": "seed.universe.default",
+      "candidate_seeds": [
+        "33dbcef8b6ab9ee0",
+        "96daec17b1148c00",
+        "af4a8e20dfc3a32e"
+      ],
+      "constraints_id": "constraints.lab.navigation.default",
+      "module_order": [
+        "org.dominium.worldgen.terrain_base",
+        "org.dominium.worldgen.hydrology"
+      ],
+      "scoring_summary": {
+        "candidate_results": [
+          {
+            "seed": "33dbcef8b6ab9ee0",
+            "hard_pass": true,
+            "hard_failures": [],
+            "soft_score": 1100,
+            "rank": 1
+          }
+        ],
+        "hard_constraint_failures": 0,
+        "soft_score_totals": [
+          {
+            "seed": "33dbcef8b6ab9ee0",
+            "score": 1100
+          }
+        ]
+      },
+      "selected_seed": "33dbcef8b6ab9ee0",
+      "deterministic_hash": "53eda2d58cc9f2eca6d3ed76f88bc8a1450c4f26f6f397103f0f74101dca2c31"
+    }
+  ]
+}

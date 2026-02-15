@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorldGen Constraints Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic registry of pack-provided worldgen constraints artifacts.",
+  "x-doc-ref": [
+    "docs/worldgen/WORLDGEN_CONSTRAINTS.md",
+    "docs/worldgen/WORLDGEN_PIPELINE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "constraints",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "constraints_id",
+          "description",
+          "pack_id",
+          "status",
+          "path",
+          "deterministic_seed_policy",
+          "candidate_count",
+          "tie_break_policy",
+          "refusal_codes"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "constraints_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "experimental",
+              "deprecated"
+            ]
+          },
+          "path": {
+            "type": "string"
+          },
+          "deterministic_seed_policy": {
+            "type": "string",
+            "enum": [
+              "single",
+              "multi"
+            ]
+          },
+          "candidate_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "tie_break_policy": {
+            "type": "string",
+            "enum": [
+              "lexicographic",
+              "seed_order",
+              "explicit_field"
+            ]
+          },
+          "refusal_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "constraints": [],
+      "registry_hash": "78f30ea51c9159c0fcb7428bbd13f56c61b70dcf3190ccf0205843f72fa2a95f"
+    }
+  ]
+}
