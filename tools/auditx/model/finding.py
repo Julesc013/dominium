@@ -1,6 +1,7 @@
 """AuditX finding model and deterministic validation helpers."""
 
 from dataclasses import dataclass, field
+import re
 from typing import Dict, List
 
 
@@ -14,6 +15,19 @@ VALID_CATEGORIES = (
     "legacy_contamination",
     "derived_freshness",
     "general",
+    "security.privilege_bypass",
+    "security.secret_exposure",
+    "mode_flag_smell",
+    "terminology_misuse",
+    "authority_bypass",
+    "lens_bypass",
+    "run_meta_input_smell",
+    "schema_shadowing",
+    "capability_drift",
+    "cross_pack_entropy",
+    "prompt_drift",
+    "workspace_contamination",
+    "blocker_recurrence",
 )
 
 VALID_SEVERITIES = ("INFO", "WARN", "RISK", "VIOLATION")
@@ -35,6 +49,7 @@ VALID_RECOMMENDED_ACTIONS = (
     "ADD_RULE",
     "DOC_FIX",
 )
+CATEGORY_PATTERN = re.compile(r"^[a-z0-9_.-]+$")
 
 
 @dataclass
@@ -99,7 +114,7 @@ def validate_finding_record(record: Dict[str, object]) -> List[str]:
         return errors
 
     category = str(record.get("category", ""))
-    if category not in VALID_CATEGORIES:
+    if category not in VALID_CATEGORIES and not CATEGORY_PATTERN.match(category):
         errors.append("invalid category '{}'".format(category))
 
     severity = str(record.get("severity", ""))

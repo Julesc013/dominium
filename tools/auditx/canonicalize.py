@@ -11,7 +11,6 @@ from typing import Any, Iterable, Set
 
 
 DEFAULT_FORBIDDEN_FIELDS = {
-    "created_utc",
     "generated_utc",
     "host_name",
     "last_reviewed",
@@ -84,4 +83,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
