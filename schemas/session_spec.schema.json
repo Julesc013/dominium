@@ -50,6 +50,73 @@
       "pattern": "^pipeline\\.[a-z0-9_.-]+$",
       "description": "Declared session lifecycle pipeline contract identifier."
     },
+    "network": {
+      "type": "object",
+      "description": "Optional deterministic multiplayer transport/handshake contract payload. Required when using multiplayer pipeline variants.",
+      "required": [
+        "endpoint",
+        "transport_id",
+        "client_peer_id",
+        "server_peer_id",
+        "requested_replication_policy_id",
+        "anti_cheat_policy_id",
+        "server_policy_id",
+        "securex_policy_id",
+        "schema_versions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transport_id": {
+          "type": "string",
+          "enum": [
+            "transport.loopback",
+            "transport.tcp",
+            "transport.udp"
+          ]
+        },
+        "client_peer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "server_peer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requested_replication_policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "anti_cheat_policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "server_policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "desired_law_profile_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "securex_policy_id": {
+          "type": "string"
+        },
+        "schema_versions": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
     "scenario_id": {
       "type": "string"
     },

@@ -15,6 +15,7 @@ from tools.xstack.registry_compile.constants import (
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 
 from .common import identity_hash_for_payload, norm, now_utc_iso, read_json_object, refusal, write_canonical_json
+from .net_handshake import run_loopback_handshake
 from .observation import build_truth_model, observe_truth
 from .pipeline_contract import DEFAULT_PIPELINE_ID, load_session_pipeline_contract
 from .render_model import build_render_model
@@ -27,6 +28,7 @@ REGISTRY_HASH_KEY_MAP = {
     "lens_registry_hash": "lens_registry",
     "net_replication_policy_registry_hash": "net_replication_policy_registry",
     "net_resync_strategy_registry_hash": "net_resync_strategy_registry",
+    "net_server_policy_registry_hash": "net_server_policy_registry",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy_registry",
     "anti_cheat_module_registry_hash": "anti_cheat_module_registry",
     "activation_policy_registry_hash": "activation_policy_registry",
@@ -46,6 +48,7 @@ REGISTRY_FILE_MAP = {
     "lens_registry_hash": "lens.registry.json",
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
+    "net_server_policy_registry_hash": "net_server_policy.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",
@@ -410,7 +413,12 @@ def _stage_command_for_transition(stage_id: str) -> str:
     return "client.session.stage"
 
 
-def _simulate_boot_stage_log(pipeline_contract: dict, authority_context: dict, simulation_tick: int) -> Tuple[List[dict], str, Dict[str, object]]:
+def _simulate_boot_stage_log(
+    pipeline_contract: dict,
+    authority_context: dict,
+    simulation_tick: int,
+    stage_executor=None,
+) -> Tuple[List[dict], str, Dict[str, object]]:
     pipeline = dict(pipeline_contract.get("pipeline") or {})
     stage_map = dict(pipeline_contract.get("stage_map") or {})
     stage_order = list(pipeline_contract.get("stage_order") or [])
@@ -487,6 +495,19 @@ def _simulate_boot_stage_log(pipeline_contract: dict, authority_context: dict, s
                 {"simulation_tick": str(int(simulation_tick))},
                 "$.universe_state.simulation_time.tick",
             )
+        stage_result = {"result": "complete"}
+        if stage_executor is not None:
+            stage_result = stage_executor(str(target_stage_id))
+            if not isinstance(stage_result, dict):
+                return [], "", refusal(
+                    "refusal.stage_invalid_transition",
+                    "stage executor returned invalid payload for '{}'".format(str(target_stage_id)),
+                    "Fix stage executor contract to return deterministic object payloads.",
+                    {"stage_id": str(target_stage_id)},
+                    "$.stage_executor",
+                )
+            if str(stage_result.get("result", "")).strip() != "complete":
+                return [], "", stage_result
         stage_log.append(
             {
                 "stage_index": len(stage_log),
@@ -495,6 +516,7 @@ def _simulate_boot_stage_log(pipeline_contract: dict, authority_context: dict, s
                 "to_stage_id": str(target_stage_id),
                 "status": "pass",
                 "reason_code": "",
+                "details": dict(stage_result.get("details") or {}),
                 "observer_watermark": observer_watermark,
             }
         )
@@ -662,6 +684,30 @@ def boot_session_spec(
     )
     if fidelity_policy_registry_error:
         return fidelity_policy_registry_error
+    net_replication_policy_registry, net_replication_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["net_replication_policy_registry_hash"],
+        expected_hash=str(registries.get("net_replication_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if net_replication_policy_registry_error:
+        return net_replication_policy_registry_error
+    anti_cheat_policy_registry, anti_cheat_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["anti_cheat_policy_registry_hash"],
+        expected_hash=str(registries.get("anti_cheat_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if anti_cheat_policy_registry_error:
+        return anti_cheat_policy_registry_error
+    net_server_policy_registry, net_server_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["net_server_policy_registry_hash"],
+        expected_hash=str(registries.get("net_server_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if net_server_policy_registry_error:
+        return net_server_policy_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -746,10 +792,84 @@ def boot_session_spec(
             "$.authority_context",
         )
 
+    stage_order = list(pipeline_contract.get("stage_order") or [])
+    has_network_payload = isinstance(session_spec.get("network"), dict)
+    has_net_stage = "stage.net_handshake" in stage_order
+    if has_network_payload and not has_net_stage:
+        return refusal(
+            "refusal.net.handshake_policy_not_allowed",
+            "SessionSpec includes network config but selected pipeline omits net handshake stage",
+            "Select pipeline.client.multiplayer_stub when network endpoint is declared.",
+            {"pipeline_id": selected_pipeline_id},
+            "$.pipeline_id",
+        )
+    if (not has_network_payload) and has_net_stage:
+        return refusal(
+            "refusal.net.handshake_policy_not_allowed",
+            "selected pipeline requires net stages but SessionSpec network payload is missing",
+            "Populate SessionSpec network fields or use pipeline.client.default.",
+            {"pipeline_id": selected_pipeline_id},
+            "$.network",
+        )
+
+    handshake_stage_result: Dict[str, object] = {}
+
+    def _execute_stage(stage_id: str) -> Dict[str, object]:
+        if str(stage_id) == "stage.net_handshake":
+            handshake_result = run_loopback_handshake(
+                repo_root=repo_root,
+                session_spec=session_spec,
+                lock_payload=lock_payload,
+                replication_registry=net_replication_policy_registry,
+                anti_cheat_registry=anti_cheat_policy_registry,
+                server_policy_registry=net_server_policy_registry,
+                authority_context=boot_authority_context,
+            )
+            if str(handshake_result.get("result", "")) != "complete":
+                return handshake_result
+            handshake_id = str(handshake_result.get("handshake_id", "")).strip()
+            handshake_payload = {
+                "schema_version": "1.0.0",
+                "handshake_id": handshake_id,
+                "request": dict(handshake_result.get("request") or {}),
+                "response": dict(handshake_result.get("handshake") or {}),
+                "proto_hashes": dict(handshake_result.get("proto_hashes") or {}),
+                "handshake_artifact_hash": str(handshake_result.get("handshake_artifact_hash", "")),
+                "deterministic_artifact": True,
+                "extensions": {},
+            }
+            handshake_artifact_abs = os.path.join(save_dir, "run_meta", "handshake.{}.json".format(handshake_id))
+            write_canonical_json(handshake_artifact_abs, handshake_payload)
+            handshake_result["handshake_artifact_path"] = norm(os.path.relpath(handshake_artifact_abs, repo_root))
+            handshake_stage_result.clear()
+            handshake_stage_result.update(dict(handshake_result))
+            return {
+                "result": "complete",
+                "details": {
+                    "handshake_id": handshake_id,
+                    "negotiated_replication_policy_id": str(handshake_result.get("negotiated_replication_policy_id", "")),
+                    "anti_cheat_policy_id": str(handshake_result.get("anti_cheat_policy_id", "")),
+                    "server_law_profile_id": str(handshake_result.get("server_law_profile_id", "")),
+                    "server_policy_id": str(handshake_result.get("server_policy_id", "")),
+                    "handshake_artifact_hash": str(handshake_result.get("handshake_artifact_hash", "")),
+                    "handshake_artifact_path": str(handshake_result.get("handshake_artifact_path", "")),
+                },
+            }
+        if str(stage_id) in ("stage.net_sync_baseline", "stage.net_join_world"):
+            return refusal(
+                "refusal.not_implemented.net_transport",
+                "{} is declared but not implemented in MP-2".format(str(stage_id)),
+                "Use pipeline.client.default for local runs until baseline/join stages are implemented.",
+                {"stage_id": str(stage_id)},
+                "$.pipeline",
+            )
+        return {"result": "complete", "details": {}}
+
     stage_log, final_stage_id, stage_log_error = _simulate_boot_stage_log(
         pipeline_contract=pipeline_contract,
         authority_context=boot_authority_context,
         simulation_tick=int(((_state_payload.get("simulation_time") or {}).get("tick", 0)) if isinstance(_state_payload, dict) else 0),
+        stage_executor=_execute_stage,
     )
     if stage_log_error:
         return stage_log_error
@@ -776,6 +896,10 @@ def boot_session_spec(
             }
         )
         final_stage_id = "stage.session_running"
+
+    negotiated_law_profile_id = str(handshake_stage_result.get("server_law_profile_id", "")).strip()
+    if negotiated_law_profile_id:
+        boot_authority_context["law_profile_id"] = negotiated_law_profile_id
 
     law_profile, law_profile_error = _select_law_profile(
         law_registry=law_registry,
@@ -861,6 +985,15 @@ def boot_session_spec(
     registry_hashes = dict((lock_payload.get("registries") or {}))
     start_tick = 0
     stop_tick = 0
+    handshake_summary = {
+        "executed": bool(handshake_stage_result),
+        "handshake_id": str(handshake_stage_result.get("handshake_id", "")),
+        "negotiated_replication_policy_id": str(handshake_stage_result.get("negotiated_replication_policy_id", "")),
+        "anti_cheat_policy_id": str(handshake_stage_result.get("anti_cheat_policy_id", "")),
+        "server_policy_id": str(handshake_stage_result.get("server_policy_id", "")),
+        "server_law_profile_id": str(handshake_stage_result.get("server_law_profile_id", "")),
+        "handshake_artifact_hash": str(handshake_stage_result.get("handshake_artifact_hash", "")),
+    }
     deterministic_fields = {
         "schema_version": "1.0.0",
         "save_id": save_id,
@@ -880,12 +1013,30 @@ def boot_session_spec(
         "activation_policy_id": str(activation_policy.get("policy_id", "")),
         "perceived_model_hash": perceived_hash,
         "render_model_hash": render_hash,
+        "network_handshake": handshake_summary,
         "start_tick": start_tick,
         "stop_tick": stop_tick,
         "authority_context": boot_authority_context,
     }
     deterministic_fields_hash = canonical_sha256(deterministic_fields)
     run_id = "run.{}".format(deterministic_fields_hash[:16])
+
+    handshake_artifact_rel = str(handshake_stage_result.get("handshake_artifact_path", "")).strip()
+    if handshake_stage_result and not handshake_artifact_rel:
+        handshake_id = str(handshake_summary.get("handshake_id", "")).strip() or run_id
+        handshake_payload = {
+            "schema_version": "1.0.0",
+            "handshake_id": handshake_id,
+            "request": dict(handshake_stage_result.get("request") or {}),
+            "response": dict(handshake_stage_result.get("handshake") or {}),
+            "proto_hashes": dict(handshake_stage_result.get("proto_hashes") or {}),
+            "handshake_artifact_hash": str(handshake_summary.get("handshake_artifact_hash", "")),
+            "deterministic_artifact": True,
+            "extensions": {},
+        }
+        handshake_artifact_abs = os.path.join(save_dir, "run_meta", "handshake.{}.json".format(handshake_id))
+        write_canonical_json(handshake_artifact_abs, handshake_payload)
+        handshake_artifact_rel = norm(os.path.relpath(handshake_artifact_abs, repo_root))
 
     now = now_utc_iso()
     run_meta = dict(deterministic_fields)
@@ -905,6 +1056,7 @@ def boot_session_spec(
             "reentry_detected": bool(previous_run_meta_path),
             "reentry_source_run_id": str(previous_run_meta.get("run_id", "")) if isinstance(previous_run_meta, dict) else "",
             "reentry_source_last_stage_id": previous_last_stage_id,
+            "handshake_artifact_path": handshake_artifact_rel,
             "started_utc": now,
             "stopped_utc": now_utc_iso(),
             "deterministic_fields_hash": deterministic_fields_hash,
@@ -931,6 +1083,8 @@ def boot_session_spec(
         "reentry_source_run_id": str(previous_run_meta.get("run_id", "")) if isinstance(previous_run_meta, dict) else "",
         "last_stage_id": str(final_stage_id),
         "stage_log": stage_log,
+        "network_handshake": handshake_summary,
+        "handshake_artifact_path": handshake_artifact_rel,
         "start_tick": start_tick,
         "stop_tick": stop_tick,
         "deterministic_fields_hash": deterministic_fields_hash,
