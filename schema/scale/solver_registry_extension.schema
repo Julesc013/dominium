@@ -1,0 +1,28 @@
+SCHEMA: scale/solver_registry_extension.schema
+schema_id: dominium.schema.scale.solver_registry_extension
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Extend solver registry rows with domain/contract binding metadata.
+- Enable structural transition checks for collapse/expand paths.
+
+NON-SEMANTICS:
+- Extension fields are structural metadata only.
+- Extension fields must not alter solver numerical method definitions.
+
+REQUIRED SHAPE (per solver row):
+- domain_ids: [id]
+- contract_ids: [id]
+- resolution_tags: [tag]
+- cost_class: tag
+- transition_support: [tag]
+- refusal_codes: [id]
+
+INVARIANTS:
+- Every solver row MUST bind to at least one domain and contract ID.
+- transition_support must explicitly declare supported directions.
+- Unsupported transition requests must deterministically refuse.
+
+MIGRATION:
+- New transition dimensions require schema update and validator changes.

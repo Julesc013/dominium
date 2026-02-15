@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Solver Registry Schema",
+  "version": "1.0.0",
+  "description": "Structural solver registry contract with domain/contract bindings and transition support metadata.",
+  "x-doc-ref": [
+    "docs/scale/SOLVER_DOMAIN_BINDINGS.md",
+    "schema/scale/solver_registry_extension.schema"
+  ],
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "records"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.registry.solver_registry"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "solver_id",
+          "domain_ids",
+          "contract_ids",
+          "resolution_tags",
+          "cost_class",
+          "transition_support",
+          "refusal_codes"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "solver_id": {
+            "type": "string",
+            "pattern": "^solver\\.[a-z0-9_.-]+$"
+          },
+          "domain_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^dom\\.domain\\.[a-z0-9_.-]+$"
+            }
+          },
+          "contract_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^dom\\.contract\\.[a-z0-9_.-]+$"
+            }
+          },
+          "resolution_tags": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "cost_class": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transition_support": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "collapse",
+                "expand"
+              ]
+            }
+          },
+          "refusal_codes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "resolution": {
+            "type": "string"
+          },
+          "guarantees": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "supports_transitions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numeric_bounds": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "conformance_bundle_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_id": "dominium.registry.solver_registry",
+      "schema_version": "1.0.0",
+      "records": [
+        {
+          "solver_id": "solver.collapse.macro_capsule",
+          "domain_ids": [
+            "dom.domain.gravity.macro"
+          ],
+          "contract_ids": [
+            "dom.contract.mass_conservation",
+            "dom.contract.deterministic_transition"
+          ],
+          "resolution_tags": [
+            "macro",
+            "coarse"
+          ],
+          "cost_class": "low",
+          "transition_support": [
+            "collapse",
+            "expand"
+          ],
+          "refusal_codes": [
+            "refusal.contract_violation",
+            "refusal.solver_unbound"
+          ],
+          "resolution": "macro",
+          "guarantees": [
+            "conservation.mass",
+            "deterministic.ordering"
+          ],
+          "supports_transitions": [
+            "collapse",
+            "expand"
+          ],
+          "numeric_bounds": {
+            "bounded": true,
+            "max_error": "unit.dimensionless.ratio:0.001"
+          },
+          "conformance_bundle_refs": [
+            "conformance.bundle.macro_capsule.v1"
+          ]
+        }
+      ]
+    }
+  ]
+}

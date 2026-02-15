@@ -70,6 +70,20 @@
         "1.0.0"
       ]
     },
+    "domain_foundation_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "domain_contract_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "experience_profile": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -197,6 +211,13 @@
       ]
     },
     "srz_shard": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "solver_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

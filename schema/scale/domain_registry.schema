@@ -1,0 +1,45 @@
+SCHEMA: scale/domain_registry.schema
+schema_id: dominium.schema.scale.domain_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical structural domain taxonomy records.
+- Bind domains to capability surfaces, solver kinds, and contract IDs.
+
+NON-SEMANTICS:
+- Domain records must not define solver math or simulation equations.
+- Domain records must not alter process execution semantics directly.
+
+REQUIRED SHAPE:
+record domain_registry
+  required:
+    - schema_id: id
+    - schema_version: semver
+    - records: [domain_record]
+
+record domain_record
+  required:
+    - domain_id: id
+    - human_name: text
+    - description: text
+    - scope_tags: [tag]
+    - required_capabilities: [id]
+    - provided_capabilities: [id]
+    - fields_declared: [id]
+    - processes_declared: [id]
+    - solver_kinds_allowed: [tag]
+    - contract_ids: [id]
+    - status: tag
+    - version_introduced: u32
+    - deprecated: bool
+    - extensions: map
+
+INVARIANTS:
+- domain_id MUST be stable, namespaced (`dom.domain.*`), and never reused.
+- No implicit defaults are allowed for required fields.
+- solver_kinds_allowed MUST be explicit (`macro_capsule|coarse|refined|micro`).
+- contract_ids MUST refer to declared contract registry rows.
+
+MIGRATION:
+- Breaking field changes require MAJOR bump and explicit migration/refusal path.
