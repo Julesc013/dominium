@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 818
-- Severities: RISK=60, VIOLATION=2, WARN=756
-- Categories: canon_drift=613, capability_bypass_smell=1, derived_freshness=9, mode_flag_smell=1, net.truth_over_net_smell=3, reachability=9, schema_usage=55, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 806
+- Severities: INFO=1, RISK=43, VIOLATION=2, WARN=760
+- Categories: canon_drift=614, capability_bypass_smell=1, derived_freshness=10, mode_flag_smell=1, net.truth_over_net_smell=5, reachability=10, schema_usage=38, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
@@ -20,146 +20,89 @@ Superseded By: none
 - `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/xstack/repox/check.py)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/net/net_cli.py)
-  - Detected key access without obvious schema anchor: state_path
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/routing.py)
+  - Detected key access without obvious schema anchor: parent_envelope_id
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/net/tool_net_loopback_sim.py)
-  - Detected key access without obvious schema anchor: result_hash
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: observed_entities
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/net/tool_net_loopback_sim.py)
-  - Detected key access without obvious schema anchor: report_path
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: hierarchy
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/controlx/orchestrator.py)
-  - Detected key access without obvious schema anchor: summary_path
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: network_interest
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/controlx/orchestrator.py)
-  - Detected key access without obvious schema anchor: summary_lines
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: queued_envelopes
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: history.anchor.tick.0
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: seen_envelope_ids
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: session_spec_path
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_sequence_by_peer
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: universe_identity_path
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: refusals
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: universe_state_path
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_hash_anchor
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: worldgen_search_plan_path
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_tick_hash
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: session_spec_path
+- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_composite_hash
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: universe_identity_path
+- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: hash_anchor_frames
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: universe_state_path
+- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_perceived_model
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: worldgen_search_plan_path
+- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_perceived_hash
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/runner.py)
+- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_applied_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: received_delta_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: perceived_deltas
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: global_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: network_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: queued_envelopes
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: baseline_snapshot_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: baseline_snapshot_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_perceived_model
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_perceived_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_applied_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: resync_count
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/runner.py)
   - Detected key access without obvious schema anchor: handshake_artifact_path
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
-  - Detected key access without obvious schema anchor: lock_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
-  - Detected key access without obvious schema anchor: replication_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
-  - Detected key access without obvious schema anchor: anti_cheat_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
-  - Detected key access without obvious schema anchor: server_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
-  - Detected key access without obvious schema anchor: lock_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
-  - Detected key access without obvious schema anchor: replication_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
-  - Detected key access without obvious schema anchor: anti_cheat_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
-  - Detected key access without obvious schema anchor: server_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
-  - Detected key access without obvious schema anchor: lock_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
-  - Detected key access without obvious schema anchor: replication_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
-  - Detected key access without obvious schema anchor: anti_cheat_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
-  - Detected key access without obvious schema anchor: server_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
-  - Detected key access without obvious schema anchor: lock_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
-  - Detected key access without obvious schema anchor: replication_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
-  - Detected key access without obvious schema anchor: anti_cheat_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
-  - Detected key access without obvious schema anchor: server_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
-  - Detected key access without obvious schema anchor: lock_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
-  - Detected key access without obvious schema anchor: replication_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
-  - Detected key access without obvious schema anchor: anti_cheat_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
-  - Detected key access without obvious schema anchor: server_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
-  - Detected key access without obvious schema anchor: lock_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
-  - Detected key access without obvious schema anchor: replication_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
-  - Detected key access without obvious schema anchor: anti_cheat_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
-  - Detected key access without obvious schema anchor: server_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
-  - Detected key access without obvious schema anchor: anti_cheat_module_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
-  - Detected key access without obvious schema anchor: anti_cheat_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
-  - Detected key access without obvious schema anchor: net_resync_strategy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
-  - Detected key access without obvious schema anchor: net_replication_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
-  - Detected key access without obvious schema anchor: net_replication_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
-  - Detected key access without obvious schema anchor: net_resync_strategy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
-  - Detected key access without obvious schema anchor: anti_cheat_policy_registry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
-  - Detected key access without obvious schema anchor: net_server_policy_registry
+- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_srz_hybrid_two_shard_equivalence.py)
+  - Detected key access without obvious schema anchor: default_shard_map_id
   - Best-effort heuristic; verify if schema declaration exists.
 - `A8_DERIVED_FRESHNESS_SMELL:0001` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/auditx/RUN_META.json)
   - Derived artifact listed in registry is missing on disk.
@@ -200,31 +143,40 @@ Superseded By: none
 - `E2_TRUTH_OVER_NET_SMELL:0003` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
   - Potential TruthModel network serialization smell.
   - message="TruthModel network serialization smell detected; transmit PerceivedModel/snapshot hashes only",
-- `A1_REACHABILITY_ORPHANED:0001` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/__init__.py)
+- `E2_TRUTH_OVER_NET_SMELL:0004` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(send|socket|packet|transport|wire|payload_ref).*(truth_model|truthmodel|universe_state)"
+- `E2_TRUTH_OVER_NET_SMELL:0005` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(truth_model|truthmodel|universe_state).*(send|socket|packet|transport|wire)",
+- `A1_REACHABILITY_ORPHANED:0001` WARN `A1_REACHABILITY_ORPHANED` `reachability` (src/net/policies/__init__.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0002` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/e3_handshake_policy_bypass_smell.py)
+- `A1_REACHABILITY_ORPHANED:0002` WARN `A1_REACHABILITY_ORPHANED` `reachability` (src/net/policies/policy_srz_hybrid.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0003` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/net/net_cli.py)
+- `A1_REACHABILITY_ORPHANED:0003` WARN `A1_REACHABILITY_ORPHANED` `reachability` (src/net/srz/__init__.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0004` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/net/tool_net_loopback_sim.py)
+- `A1_REACHABILITY_ORPHANED:0004` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/__init__.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0005` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/controlx/orchestrator.py)
+- `A1_REACHABILITY_ORPHANED:0005` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/e5_cross_shard_write_smell.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0006` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/compiler.py)
+- `A1_REACHABILITY_ORPHANED:0006` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/e6_shard_map_drift.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0007` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/constants.py)
+- `A1_REACHABILITY_ORPHANED:0007` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/compiler.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0008` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/lockfile.py)
+- `A1_REACHABILITY_ORPHANED:0008` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/constants.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0009` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/testx/tests/testlib.py)
+- `A1_REACHABILITY_ORPHANED:0009` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/lockfile.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0010` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/testx/tests/testlib.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
 - `A2_SCHEMA_SHADOWING:0001` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/domains.json)
@@ -373,4 +325,52 @@ Superseded By: none
   - Review for shadowing or override semantics.
 - `A2_SCHEMA_SHADOWING:0049` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.basic/pack_manifest.json)
   - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0050` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.certification/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0051` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0052` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.trade.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0053` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.units/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0054` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0055` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0056` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/knowledge_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0057` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/measurement_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0058` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/processes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0059` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/provenance_records.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0060` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/refinement_plans.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0061` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/worldgen_models.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0062` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/worldgen_models.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.worldgen_model
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0063` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0064` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/assemblies.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.assembly
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0065` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
   - Review for shadowing or override semantics.
