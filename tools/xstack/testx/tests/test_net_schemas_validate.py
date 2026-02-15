@@ -24,6 +24,7 @@ def run(repo_root: str):
         "net_perceived_delta",
         "net_handshake",
         "net_anti_cheat_event",
+        "net_server_policy_registry",
     ]
     for schema_name in schema_names:
         result = validate_schema_example(repo_root=repo_root, schema_name=schema_name)

@@ -253,6 +253,7 @@ MULTIPLAYER_NET_SCHEMA_NAMES = (
 MULTIPLAYER_POLICY_REGISTRY_FILES = (
     "data/registries/net_replication_policy_registry.json",
     "data/registries/net_resync_strategy_registry.json",
+    "data/registries/net_server_policy_registry.json",
     "data/registries/anti_cheat_policy_registry.json",
     "data/registries/anti_cheat_module_registry.json",
 )
@@ -690,9 +691,10 @@ def _append_multiplayer_contract_invariant_findings(
 
     replication_payload, replication_err = _load_json_object(repo_root, "data/registries/net_replication_policy_registry.json")
     resync_payload, resync_err = _load_json_object(repo_root, "data/registries/net_resync_strategy_registry.json")
+    server_policy_payload, server_policy_err = _load_json_object(repo_root, "data/registries/net_server_policy_registry.json")
     anti_cheat_policy_payload, anti_cheat_policy_err = _load_json_object(repo_root, "data/registries/anti_cheat_policy_registry.json")
     anti_cheat_module_payload, anti_cheat_module_err = _load_json_object(repo_root, "data/registries/anti_cheat_module_registry.json")
-    if replication_err or resync_err or anti_cheat_policy_err or anti_cheat_module_err:
+    if replication_err or resync_err or server_policy_err or anti_cheat_policy_err or anti_cheat_module_err:
         findings.append(
             _finding(
                 severity=severity,
@@ -707,11 +709,13 @@ def _append_multiplayer_contract_invariant_findings(
 
     replication_rows = (((replication_payload.get("record") or {}).get("policies")) or [])
     resync_rows = (((resync_payload.get("record") or {}).get("strategies")) or [])
+    server_policy_rows = (((server_policy_payload.get("record") or {}).get("policies")) or [])
     anti_cheat_policy_rows = (((anti_cheat_policy_payload.get("record") or {}).get("policies")) or [])
     anti_cheat_module_rows = (((anti_cheat_module_payload.get("record") or {}).get("modules")) or [])
     if (
         not isinstance(replication_rows, list)
         or not isinstance(resync_rows, list)
+        or not isinstance(server_policy_rows, list)
         or not isinstance(anti_cheat_policy_rows, list)
         or not isinstance(anti_cheat_module_rows, list)
     ):
@@ -781,10 +785,13 @@ def _append_multiplayer_contract_invariant_findings(
         if token:
             module_ids.add(token)
 
+    anti_cheat_ids = set()
     for row in anti_cheat_policy_rows:
         if not isinstance(row, dict):
             continue
         policy_id = str(row.get("policy_id", "")).strip()
+        if policy_id:
+            anti_cheat_ids.add(policy_id)
         modules_enabled = sorted(set(str(item).strip() for item in (row.get("modules_enabled") or []) if str(item).strip()))
         for module_id in modules_enabled:
             if module_id not in module_ids:
@@ -817,7 +824,120 @@ def _append_multiplayer_contract_invariant_findings(
                         )
                     )
 
+    for row in server_policy_rows:
+        if not isinstance(row, dict):
+            continue
+        server_policy_id = str(row.get("policy_id", "")).strip()
+        for policy_id in row.get("allowed_replication_policy_ids") or []:
+            token = str(policy_id).strip()
+            if token and token not in replication_ids:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/net_server_policy_registry.json",
+                        line_number=1,
+                        snippet=server_policy_id,
+                        message="server policy '{}' references missing replication policy '{}'".format(server_policy_id, token),
+                        rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                    )
+                )
+        allowed_anti_cheat_ids = []
+        for policy_id in row.get("allowed_anti_cheat_policy_ids") or []:
+            token = str(policy_id).strip()
+            if token:
+                allowed_anti_cheat_ids.append(token)
+            if token and token not in anti_cheat_ids:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/net_server_policy_registry.json",
+                        line_number=1,
+                        snippet=server_policy_id,
+                        message="server policy '{}' references missing anti-cheat policy '{}'".format(server_policy_id, token),
+                        rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                    )
+                )
+        required_anti_cheat_policy_id = str(row.get("required_anti_cheat_policy_id", "")).strip()
+        if required_anti_cheat_policy_id and required_anti_cheat_policy_id not in allowed_anti_cheat_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/net_server_policy_registry.json",
+                    line_number=1,
+                    snippet=server_policy_id,
+                    message="server policy '{}' required anti-cheat policy is not present in allowed_anti_cheat_policy_ids".format(
+                        server_policy_id
+                    ),
+                    rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                )
+            )
+
+    required_registry_refs = (
+        ("tools/xstack/sessionx/net_handshake.py", ("replication_registry", "anti_cheat_registry", "server_policy_registry")),
+    )
+    for rel_path, required_tokens in required_registry_refs:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="net handshake implementation file is missing",
+                    rule_id="INV-NET-HANDSHAKE-USES-REGISTRIES",
+                )
+            )
+            continue
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="unable to read net handshake implementation for registry-usage invariant",
+                    rule_id="INV-NET-HANDSHAKE-USES-REGISTRIES",
+                )
+            )
+            continue
+        for token in required_tokens:
+            if token not in text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="net handshake implementation is missing required registry reference token '{}'".format(token),
+                        rule_id="INV-NET-HANDSHAKE-USES-REGISTRIES",
+                    )
+                )
+
     token_severity = "warn" if profile == "FAST" else _invariant_severity(profile)
+    hardcoded_policy_literal_pattern = re.compile(r"(policy\.net\.[a-z0-9_.-]+|policy\.ac\.[a-z0-9_.-]+)", re.IGNORECASE)
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if any(rel_norm.startswith(prefix) for prefix in NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES):
+            continue
+        _, ext = os.path.splitext(rel_norm.lower())
+        if ext not in {".py", ".c", ".cc", ".cpp", ".h", ".hpp", ".hh", ".cxx", ".hxx"}:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            if hardcoded_policy_literal_pattern.search(str(line)):
+                findings.append(
+                    _finding(
+                        severity=token_severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="hardcoded network policy literal detected outside registry-governed paths",
+                        rule_id="INV-NET-HANDSHAKE-USES-REGISTRIES",
+                    )
+                )
+
     flag_pattern = re.compile(r"\bif\s*\([^)]*(lockstep|server_authoritative|srz_hybrid)[^)]*\)", re.IGNORECASE)
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)

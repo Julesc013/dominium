@@ -10,6 +10,7 @@ import tempfile
 FIXTURE_SOURCE_REGISTRY_FILES = (
     "data/registries/net_replication_policy_registry.json",
     "data/registries/net_resync_strategy_registry.json",
+    "data/registries/net_server_policy_registry.json",
     "data/registries/anti_cheat_policy_registry.json",
     "data/registries/anti_cheat_module_registry.json",
 )
