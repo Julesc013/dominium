@@ -1,0 +1,356 @@
+{
+  "schema_id": "dominium.registry.domain_registry",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "contract_ids": [
+        "dom.contract.mass_conservation",
+        "dom.contract.deterministic_transition"
+      ],
+      "deprecated": false,
+      "description": "Macro gravitational behavior and aggregate attractor orchestration.",
+      "domain_id": "dom.domain.gravity.macro",
+      "extensions": {},
+      "fields_declared": [
+        "field.gravity.vector",
+        "field.gravity.potential"
+      ],
+      "human_name": "Gravity Macro",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.gravity.macro"
+      ],
+      "required_capabilities": [
+        "capability.observation.gravity"
+      ],
+      "scope_tags": [
+        "macro",
+        "system"
+      ],
+      "solver_kinds_allowed": [
+        "macro_capsule",
+        "coarse"
+      ],
+      "status": "active",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.mass_conservation",
+        "dom.contract.energy_conservation",
+        "dom.contract.deterministic_transition"
+      ],
+      "deprecated": false,
+      "description": "Orbital trajectory and hierarchy transition orchestration.",
+      "domain_id": "dom.domain.orbital.mechanics",
+      "extensions": {},
+      "fields_declared": [
+        "field.orbit.elements",
+        "field.orbit.velocity"
+      ],
+      "human_name": "Orbital Mechanics",
+      "processes_declared": [
+        "process.camera_teleport"
+      ],
+      "provided_capabilities": [
+        "capability.domain.orbital.mechanics"
+      ],
+      "required_capabilities": [
+        "capability.navigation.object_index"
+      ],
+      "scope_tags": [
+        "system",
+        "body",
+        "region"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "refined",
+        "micro"
+      ],
+      "status": "active",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.mass_conservation",
+        "dom.contract.port_contract_preservation"
+      ],
+      "deprecated": false,
+      "description": "Terrain composition and stratification summaries for scale transitions.",
+      "domain_id": "dom.domain.geology.terrain",
+      "extensions": {},
+      "fields_declared": [
+        "field.terrain.height",
+        "field.terrain.layer"
+      ],
+      "human_name": "Geology Terrain",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.geology.terrain"
+      ],
+      "required_capabilities": [
+        "capability.observation.terrain"
+      ],
+      "scope_tags": [
+        "body",
+        "region",
+        "local"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "refined",
+        "micro"
+      ],
+      "status": "active",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.mass_conservation",
+        "dom.contract.deterministic_transition"
+      ],
+      "deprecated": false,
+      "description": "Basic fluid movement summaries for deterministic region transitions.",
+      "domain_id": "dom.domain.fluids.basic",
+      "extensions": {},
+      "fields_declared": [
+        "field.fluid.flow",
+        "field.fluid.pressure"
+      ],
+      "human_name": "Fluids Basic",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.fluids.basic"
+      ],
+      "required_capabilities": [
+        "capability.observation.fluid"
+      ],
+      "scope_tags": [
+        "region",
+        "local"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "refined"
+      ],
+      "status": "active",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.energy_conservation",
+        "dom.contract.deterministic_transition"
+      ],
+      "deprecated": false,
+      "description": "Energy accounting aggregation for macro/micro handoff.",
+      "domain_id": "dom.domain.energy.basic",
+      "extensions": {},
+      "fields_declared": [
+        "field.energy.store",
+        "field.energy.flow"
+      ],
+      "human_name": "Energy Basic",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.energy.basic"
+      ],
+      "required_capabilities": [
+        "capability.observation.energy"
+      ],
+      "scope_tags": [
+        "macro",
+        "region",
+        "local"
+      ],
+      "solver_kinds_allowed": [
+        "macro_capsule",
+        "coarse",
+        "refined"
+      ],
+      "status": "active",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.energy_conservation",
+        "dom.contract.deterministic_transition"
+      ],
+      "deprecated": false,
+      "description": "Heat transfer summaries with deterministic collapse/expand transitions.",
+      "domain_id": "dom.domain.heat.basic",
+      "extensions": {},
+      "fields_declared": [
+        "field.heat.temperature",
+        "field.heat.flow"
+      ],
+      "human_name": "Heat Basic",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.heat.basic"
+      ],
+      "required_capabilities": [
+        "capability.observation.thermal"
+      ],
+      "scope_tags": [
+        "region",
+        "local"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "refined",
+        "micro"
+      ],
+      "status": "active",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.epistemic_non_omniscience",
+        "dom.contract.port_contract_preservation"
+      ],
+      "deprecated": false,
+      "description": "Signal propagation and visibility transfer constraints.",
+      "domain_id": "dom.domain.signals.basic",
+      "extensions": {},
+      "fields_declared": [
+        "field.signal.channel",
+        "field.signal.strength"
+      ],
+      "human_name": "Signals Basic",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.signals.basic"
+      ],
+      "required_capabilities": [
+        "capability.observation.signal"
+      ],
+      "scope_tags": [
+        "system",
+        "region",
+        "local"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "refined"
+      ],
+      "status": "active",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.ledger_balance",
+        "dom.contract.deterministic_transition"
+      ],
+      "deprecated": false,
+      "description": "Economic balance and account-transfer scaffolding for future packs.",
+      "domain_id": "dom.domain.economy.basic",
+      "extensions": {},
+      "fields_declared": [
+        "field.ledger.balance",
+        "field.market.transaction"
+      ],
+      "human_name": "Economy Basic",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.economy.basic"
+      ],
+      "required_capabilities": [
+        "capability.observation.ledger"
+      ],
+      "scope_tags": [
+        "macro",
+        "region",
+        "local"
+      ],
+      "solver_kinds_allowed": [
+        "macro_capsule",
+        "coarse"
+      ],
+      "status": "experimental",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.epistemic_non_omniscience",
+        "dom.contract.deterministic_transition"
+      ],
+      "deprecated": false,
+      "description": "Social/psych aggregate behavior taxonomy for future simulation packs.",
+      "domain_id": "dom.domain.psych.social",
+      "extensions": {},
+      "fields_declared": [
+        "field.social.influence",
+        "field.social.relationship"
+      ],
+      "human_name": "Psych Social",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.psych.social"
+      ],
+      "required_capabilities": [
+        "capability.observation.social"
+      ],
+      "scope_tags": [
+        "region",
+        "local"
+      ],
+      "solver_kinds_allowed": [
+        "coarse"
+      ],
+      "status": "experimental",
+      "version_introduced": 1
+    },
+    {
+      "contract_ids": [
+        "dom.contract.epistemic_non_omniscience",
+        "dom.contract.port_contract_preservation"
+      ],
+      "deprecated": false,
+      "description": "Pack-gated domain slot for magic-like systems. Inactive until installed by pack policy.",
+      "domain_id": "dom.domain.magic.pack",
+      "extensions": {
+        "activation_default": "inactive_without_pack"
+      },
+      "fields_declared": [
+        "field.magic.affinity"
+      ],
+      "human_name": "Magic Pack",
+      "processes_declared": [
+        "process.region_management_tick"
+      ],
+      "provided_capabilities": [
+        "capability.domain.magic.pack"
+      ],
+      "required_capabilities": [
+        "capability.pack.magic.installed"
+      ],
+      "scope_tags": [
+        "region",
+        "local"
+      ],
+      "solver_kinds_allowed": [
+        "refined",
+        "micro"
+      ],
+      "status": "experimental",
+      "version_introduced": 1
+    }
+  ]
+}
