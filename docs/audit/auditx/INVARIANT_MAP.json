@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 615,
+      "finding_count": 619,
       "recommended_actions": {
-        "DOC_FIX": 615
+        "DOC_FIX": 619
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 615
+        "WARN": 619
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -106,9 +106,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 9,
+      "finding_count": 10,
       "recommended_actions": {
-        "ADD_RULE": 9
+        "ADD_RULE": 10
       },
       "sample_findings": [
         {
@@ -138,6 +138,7 @@
         }
       ],
       "severities": {
+        "INFO": 1,
         "RISK": 9
       }
     },
@@ -160,6 +161,38 @@
       ],
       "severities": {
         "WARN": 2
+      }
+    },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
@@ -264,6 +297,80 @@
       ],
       "severities": {
         "WARN": 1
+      }
+    },
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 9,
+      "recommended_actions": {
+        "RETIRE": 9
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "tools/auditx/analyzers/__init__.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "tools/auditx/analyzers/e12_signature_bypass_smell.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "tools/net/net_cli.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "tools/net/tool_export_ranked_proof_bundle.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
+          "location": "tools/net/tool_net_loopback_sim.py"
+        }
+      ],
+      "severities": {
+        "WARN": 9
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 105,
+      "recommended_actions": {
+        "ADD_RULE": 93,
+        "ADD_TEST": 12
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": "tools/net/net_cli.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0002",
+          "location": "tools/net/tool_export_ranked_proof_bundle.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0003",
+          "location": "tools/net/tool_net_loopback_sim.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0004",
+          "location": "tools/net/tool_net_loopback_sim.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0005",
+          "location": "tools/security/tool_securex_verify_lockfile.py"
+        }
+      ],
+      "severities": {
+        "RISK": 93,
+        "WARN": 12
       }
     }
   },
