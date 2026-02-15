@@ -19,13 +19,17 @@ def make_finding(
     related_paths=None,
 ):
     return Finding(
-        analyzer_id=analyzer_id,
         finding_id="",
+        analyzer_id=analyzer_id,
         category=category,
         severity=severity,
         confidence=float(confidence),
         status=status,
-        location=FindingLocation(file=file_path, line=line, end_line=end_line),
+        location=FindingLocation(
+            file_path=file_path,
+            line_start=int(line),
+            line_end=int(end_line),
+        ),
         evidence=list(evidence or []),
         suggested_classification=suggested_classification,
         recommended_action=recommended_action,

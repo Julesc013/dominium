@@ -92,7 +92,6 @@ def _normalize_finding_record(record: Dict[str, object]) -> Dict[str, object]:
     item = dict(record)
     item.pop("finding_id", None)
     item.pop("fingerprint", None)
-    item.pop("created_utc", None)
     item["analyzer_id"] = str(item.get("analyzer_id", "")).strip()
     item["category"] = str(item.get("category", "general")).strip() or "general"
     item["severity"] = str(item.get("severity", "INFO")).strip() or "INFO"
@@ -103,16 +102,19 @@ def _normalize_finding_record(record: Dict[str, object]) -> Dict[str, object]:
         item["confidence"] = 0.0
     location = item.get("location")
     if not isinstance(location, dict):
-        location = {"file": ""}
+        location = {"file_path": ""}
+    file_path = str(location.get("file_path", "")).replace("\\", "/").strip()
+    if not file_path:
+        file_path = str(location.get("file", "")).replace("\\", "/").strip()
     location = {
-        "file": str(location.get("file", "")).replace("\\", "/"),
-        "line": int(location.get("line", 0) or 0),
-        "end_line": int(location.get("end_line", 0) or 0),
+        "file_path": file_path,
+        "line_start": int(location.get("line_start", location.get("line", 0)) or 0),
+        "line_end": int(location.get("line_end", location.get("end_line", 0)) or 0),
     }
-    if not location["line"]:
-        location.pop("line", None)
-    if not location["end_line"]:
-        location.pop("end_line", None)
+    if not location["line_start"]:
+        location.pop("line_start", None)
+    if not location["line_end"]:
+        location.pop("line_end", None)
     item["location"] = location
     evidence = item.get("evidence")
     if not isinstance(evidence, list):
@@ -122,6 +124,7 @@ def _normalize_finding_record(record: Dict[str, object]) -> Dict[str, object]:
     item["recommended_action"] = str(item.get("recommended_action", "DOC_FIX")).strip() or "DOC_FIX"
     item["related_invariants"] = sorted({str(entry).strip() for entry in item.get("related_invariants", []) if str(entry).strip()})
     item["related_paths"] = sorted({str(entry).replace("\\", "/").strip() for entry in item.get("related_paths", []) if str(entry).strip()})
+    item["created_utc"] = str(item.get("created_utc", "1970-01-01T00:00:00Z")).strip() or "1970-01-01T00:00:00Z"
     return item
 
 
