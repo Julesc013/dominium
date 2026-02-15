@@ -5,6 +5,8 @@ Compatibility: Bound to LawProfile/AuthorityContext gating, server policy regist
 
 # Anti-Cheat Policy Framework
 
+Implementation Status: Implemented in `src/net/anti_cheat/anti_cheat_engine.py` and integrated with authoritative + SRZ hybrid policy paths.
+
 ## Purpose
 Define anti-cheat as modular, policy-driven components.
 No hidden enforcement actions are allowed; all outcomes are explicit and logged.
@@ -34,6 +36,7 @@ No hidden enforcement actions are allowed; all outcomes are explicit and logged.
    - `refuse`
    - `terminate`
    - `throttle`
+   - `require_attestation`
 3. Singleplayer/private scenarios may choose relaxed policies by explicit policy ID.
 4. Ranked/esports servers require strict policy declaration and deterministic audit trails.
 
@@ -68,6 +71,8 @@ No hidden enforcement actions are allowed; all outcomes are explicit and logged.
 - `data/registries/anti_cheat_module_registry.json`
 - `schemas/net_anti_cheat_event.schema.json`
 - `docs/contracts/refusal_contract.md`
+- `docs/net/ANTI_CHEAT_MODULES.md`
+- `docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`
 
 ## TODO
 
