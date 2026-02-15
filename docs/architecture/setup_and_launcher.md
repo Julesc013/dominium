@@ -20,6 +20,9 @@ Responsibilities:
 2. Compile registries + lockfile through XStack registry compile.
 3. Build deterministic dist layout.
 4. Validate dist layout hashes and lockfile consistency.
+5. Optionally run SecureX verification tools when strict server profiles are targeted:
+   - `tools/security/tool_securex_verify_pack.py`
+   - `tools/security/tool_securex_verify_lockfile.py`
 5. Emit deterministic JSON summary.
 
 No duplicated pack-resolution logic is allowed in setup; setup delegates to tooling in `tools/xstack/*`.
@@ -41,6 +44,16 @@ Responsibilities:
 6. Optionally run deterministic scripted traversal from launcher invocation.
 
 Launcher does not expose arbitrary stage-jump arguments; running transitions are constrained to canonical stage checks.
+
+## Multiplayer Governance Integration
+
+1. Session network payload carries `server_profile_id` (preferred) or legacy `server_policy_id`.
+2. Handshake enforces server profile constraints for:
+   - replication policy allow-list
+   - anti-cheat policy requirement
+   - SecureX policy requirement
+   - law profile allow/require rules
+3. Strict-ranked profiles refuse startup/handshake when required SecureX verification tooling is unavailable.
 
 ## Lockfile Enforcement
 `lockfile_enforcement` is always required for launcher run paths.
