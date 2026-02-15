@@ -60,12 +60,15 @@ Optional multiplayer stage chain:
 Rules:
 
 1. Stages are enabled only when SessionSpec selects multiplayer transport endpoint metadata.
-2. In current stub state, missing transport plugin must refuse deterministically (`refusal.not_implemented` family).
+2. Deterministic stage execution is policy-driven:
+   - `policy.net.server_authoritative`: `stage.net_sync_baseline` and `stage.net_join_world` are implemented.
+   - `policy.net.lockstep` and `policy.net.srz_hybrid`: baseline/join stages currently refuse with `refusal.not_implemented.net_transport`.
 3. Default singleplayer pipeline remains unchanged.
 4. Canonical multiplayer stub pipeline id is `pipeline.client.multiplayer_stub`.
 5. Net stage order is fixed: `stage.net_handshake -> stage.net_sync_baseline -> stage.net_join_world`.
 6. `stage.net_handshake` is executable in MP-2.
-7. `stage.net_sync_baseline` and `stage.net_join_world` remain explicit deterministic stubs that refuse with `refusal.not_implemented` until replication prompts implement baseline sync/join flow.
+7. `stage.net_sync_baseline` writes deterministic baseline artifacts (snapshot + anchor summary) before join.
+8. `stage.net_join_world` validates negotiated policy and join snapshot, then binds the client to baseline PerceivedModel state.
 
 ## CLI Surfaces
 
@@ -83,6 +86,9 @@ Rules:
 4. `refusal.net.handshake_policy_not_allowed`
 5. `refusal.net.handshake_securex_denied`
 6. `refusal.net.resync_required`
+7. `refusal.net.resync_snapshot_missing`
+8. `refusal.net.join_snapshot_invalid`
+9. `refusal.net.join_policy_mismatch`
 
 ## Refusal Mapping (Deterministic)
 

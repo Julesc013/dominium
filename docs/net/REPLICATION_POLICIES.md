@@ -14,6 +14,12 @@ Define policy IDs for canonical multiplayer replication behaviors over shared pr
 2. `policy.net.server_authoritative`
 3. `policy.net.srz_hybrid`
 
+## Implementation Status (MP-4)
+
+1. `policy.net.lockstep`: implemented as deterministic module baseline in MP-3.
+2. `policy.net.server_authoritative`: implemented in MP-4 with PerceivedModel delta + snapshot resync path.
+3. `policy.net.srz_hybrid`: declared contract only; implementation pending later prompts.
+
 ## Transmission Contracts
 
 ### `policy.net.lockstep`
@@ -38,6 +44,8 @@ Define policy IDs for canonical multiplayer replication behaviors over shared pr
    - Server commits; clients consume filtered perceived updates.
 3. Resync:
    - `resync.authoritative.snapshot`
+4. Snapshot cadence:
+   - policy-driven via `data/registries/net_replication_policy_registry.json` extensions (`snapshot_cadence_ticks`).
 
 ### `policy.net.srz_hybrid`
 
