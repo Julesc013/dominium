@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.tool.admin_security",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0",
+    "pack.tool.log_viewer@1.0.0"
+  ],
+  "contribution_types": [
+    "ui_windows"
+  ],
+  "contributions": [
+    {
+      "type": "ui_windows",
+      "id": "window.tool.security_events",
+      "path": "ui/window.security_events.json"
+    },
+    {
+      "type": "ui_windows",
+      "id": "window.tool.peer_status",
+      "path": "ui/window.peer_status.json"
+    },
+    {
+      "type": "ui_windows",
+      "id": "window.tool.enforcement_actions",
+      "path": "ui/window.enforcement_actions.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.tool.admin_security.v1",
+  "signature_status": "unsigned"
+}

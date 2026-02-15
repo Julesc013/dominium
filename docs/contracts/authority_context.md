@@ -45,6 +45,8 @@ Stable entitlement IDs used by `law.lab.unrestricted`:
 - `session.boot`: baseline session bootstrap entitlement
 - `ui.window.lab.nav`: baseline lab navigation window entitlement
 - `entitlement.teleport`: also gates lab navigator/go-to/site-browser tool windows
+- `entitlement.admin.security_view`: required for anti-cheat admin security windows
+- `entitlement.admin.kick`: required for administrative peer enforcement action controls (policy-gated)
 
 ## Example JSON (`schemas/authority_context.schema.json`)
 ```json

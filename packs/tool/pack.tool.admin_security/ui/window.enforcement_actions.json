@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.enforcement_actions",
+  "title": "Enforcement Actions",
+  "required_entitlements": [
+    "entitlement.admin.security_view",
+    "entitlement.admin.kick"
+  ],
+  "required_lenses": [
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "security.actions.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "security.actions.list",
+        "type": "list",
+        "label": "Actions",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "security.enforcement_actions"
+        }
+      }
+    ]
+  }
+}
