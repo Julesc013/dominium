@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "policy.activation.default_lab",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0",
+    "astronomy.milky_way@1.0.0",
+    "astronomy.sol@1.0.0",
+    "planet.earth@1.0.0"
+  ],
+  "contribution_types": [
+    "registry_entries"
+  ],
+  "contributions": [
+    {
+      "type": "registry_entries",
+      "id": "policy.activation.default_lab",
+      "path": "data/activation_policy.default_lab.json"
+    }
+  ],
+  "canonical_hash": "placeholder.policy.activation.default_lab.v1",
+  "signature_status": "signed"
+}

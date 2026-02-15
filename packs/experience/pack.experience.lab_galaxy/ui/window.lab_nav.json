@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "ui.window.lab.nav",
+  "title": "Lab Navigation Status",
+  "required_entitlements": [
+    "ui.window.lab.nav"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "lab_nav.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "lab_nav.header",
+        "type": "text",
+        "text": "Lab profile active"
+      },
+      {
+        "widget_id": "lab_nav.time",
+        "type": "text",
+        "label": "Time",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "time.summary"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "entry_type": "budget_policy",
+  "policy": {
+    "schema_version": "1.0.0",
+    "policy_id": "policy.budget.default_lab",
+    "activation_policy_id": "policy.activation.default_lab",
+    "max_compute_units_per_tick": 240,
+    "max_entities_micro": 180,
+    "max_regions_micro": 24,
+    "fallback_behavior": "degrade_fidelity",
+    "logging_level": 2,
+    "tier_compute_weights": {
+      "coarse": 2,
+      "medium": 5,
+      "fine": 9
+    },
+    "entity_compute_weight": 1
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "profile.lab.developer",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.domain.navigation@1.0.0",
+    "law.lab.unrestricted@1.0.0"
+  ],
+  "contribution_types": [
+    "experience_profile"
+  ],
+  "contributions": [
+    {
+      "type": "experience_profile",
+      "id": "profile.lab.developer",
+      "path": "data/experience_profile.lab.developer.json"
+    }
+  ],
+  "canonical_hash": "placeholder.profile.lab.developer.v1",
+  "signature_status": "signed"
+}

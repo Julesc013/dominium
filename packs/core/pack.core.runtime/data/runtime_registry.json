@@ -1,0 +1,9 @@
+{
+  "artifact_class": "CANONICAL",
+  "registry_id": "registry.core.runtime",
+  "registry_version": "1.0.0",
+  "entries": [
+    "entry.runtime.base"
+  ]
+}
+

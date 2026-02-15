@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.site_browser",
+  "title": "Site Browser",
+  "required_entitlements": [
+    "entitlement.teleport"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "site_browser.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "site_browser.sites",
+        "type": "list",
+        "label": "Earth Sites",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "sites.entries"
+        }
+      },
+      {
+        "widget_id": "site_browser.teleport",
+        "type": "button",
+        "label": "Teleport to Site",
+        "action_binding": {
+          "intent_id": "intent.ui.site_browser.teleport",
+          "process_id": "process.camera_teleport",
+          "payload_template": {
+            "target_site_id": "${selection.site_id}"
+          }
+        }
+      }
+    ]
+  }
+}

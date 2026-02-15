@@ -1,0 +1,72 @@
+{
+  "entry_type": "activation_policy",
+  "policy": {
+    "schema_version": "1.0.0",
+    "policy_id": "policy.activation.default_lab",
+    "interest_radius_rules": [
+      {
+        "kind": "galaxy",
+        "priority": 1,
+        "activation_distance_mm": 180000000000000000,
+        "deactivation_distance_mm": 185000000000000000,
+        "anchor_spacing_mm": 90000000000000
+      },
+      {
+        "kind": "system",
+        "priority": 5,
+        "activation_distance_mm": 60000000000000000,
+        "deactivation_distance_mm": 65000000000000000,
+        "anchor_spacing_mm": 12000000000000
+      },
+      {
+        "kind": "planet",
+        "priority": 10,
+        "activation_distance_mm": 12000000000000,
+        "deactivation_distance_mm": 14000000000000,
+        "anchor_spacing_mm": 3000000000000
+      },
+      {
+        "kind": "moon",
+        "priority": 20,
+        "activation_distance_mm": 7000000000000,
+        "deactivation_distance_mm": 9000000000000,
+        "anchor_spacing_mm": 1800000000000
+      },
+      {
+        "kind": "*",
+        "priority": 100,
+        "activation_distance_mm": 3000000000000,
+        "deactivation_distance_mm": 4500000000000,
+        "anchor_spacing_mm": 900000000000
+      }
+    ],
+    "activation_thresholds": {
+      "distance_metric": "camera_manhattan_mm",
+      "distance_bands_mm": [
+        {
+          "band_id": "near",
+          "max_distance_mm": 3000000000000
+        },
+        {
+          "band_id": "mid",
+          "max_distance_mm": 14000000000000
+        },
+        {
+          "band_id": "far",
+          "max_distance_mm": 65000000000000000
+        }
+      ]
+    },
+    "hysteresis": {
+      "enter_margin_mm": 1000000000,
+      "exit_margin_mm": 1500000000
+    },
+    "deterministic_inputs": [
+      "camera.position_mm",
+      "simulation_time.tick",
+      "astronomy.entries",
+      "budget_policy.max_regions_micro",
+      "fidelity_policy.tiers"
+    ]
+  }
+}

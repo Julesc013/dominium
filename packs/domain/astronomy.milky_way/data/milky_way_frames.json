@@ -1,0 +1,95 @@
+{
+  "entry_type": "reference_frame_collection",
+  "frames": [
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.milky_way.galactic",
+      "parent_frame_id": null,
+      "transform": {
+        "translation_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        }
+      },
+      "semantics": "galactic"
+    },
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.milky_way.arm.orion",
+      "parent_frame_id": "frame.milky_way.galactic",
+      "transform": {
+        "translation_mm": {
+          "x": 260000000000000000,
+          "y": -40000000000000000,
+          "z": 1200000000000000
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        }
+      },
+      "semantics": "local"
+    },
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.milky_way.arm.perseus",
+      "parent_frame_id": "frame.milky_way.galactic",
+      "transform": {
+        "translation_mm": {
+          "x": 90000000000000000,
+          "y": 150000000000000000,
+          "z": 1000000000000000
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        }
+      },
+      "semantics": "local"
+    },
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.milky_way.arm.sagittarius",
+      "parent_frame_id": "frame.milky_way.galactic",
+      "transform": {
+        "translation_mm": {
+          "x": -70000000000000000,
+          "y": -170000000000000000,
+          "z": -1000000000000000
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        }
+      },
+      "semantics": "local"
+    },
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.milky_way.arm.scutum_centaurus",
+      "parent_frame_id": "frame.milky_way.galactic",
+      "transform": {
+        "translation_mm": {
+          "x": -150000000000000000,
+          "y": 50000000000000000,
+          "z": 0
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        }
+      },
+      "semantics": "local"
+    }
+  ]
+}

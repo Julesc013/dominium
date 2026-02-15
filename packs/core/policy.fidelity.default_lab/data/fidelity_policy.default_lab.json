@@ -1,0 +1,44 @@
+{
+  "entry_type": "fidelity_policy",
+  "policy": {
+    "schema_version": "1.0.0",
+    "policy_id": "policy.fidelity.default_lab",
+    "tiers": [
+      {
+        "tier_id": "fine",
+        "max_distance_mm": 1200000000000,
+        "micro_entities_target": 12
+      },
+      {
+        "tier_id": "medium",
+        "max_distance_mm": 6000000000000,
+        "micro_entities_target": 6
+      },
+      {
+        "tier_id": "coarse",
+        "max_distance_mm": 65000000000000000,
+        "micro_entities_target": 2
+      }
+    ],
+    "switching_rules": {
+      "upgrade_hysteresis_mm": 1000000000,
+      "degrade_hysteresis_mm": 1000000000,
+      "degrade_order": [
+        "fine",
+        "medium",
+        "coarse"
+      ],
+      "upgrade_order": [
+        "coarse",
+        "medium",
+        "fine"
+      ]
+    },
+    "minimum_tier_by_kind": {
+      "galaxy": "coarse",
+      "system": "medium",
+      "planet": "fine",
+      "moon": "medium"
+    }
+  }
+}

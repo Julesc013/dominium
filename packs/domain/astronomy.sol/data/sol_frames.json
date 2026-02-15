@@ -1,0 +1,59 @@
+{
+  "entry_type": "reference_frame_collection",
+  "frames": [
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.sol.barycentric",
+      "parent_frame_id": "frame.milky_way.arm.orion",
+      "transform": {
+        "translation_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        }
+      },
+      "semantics": "system"
+    },
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.sol.sun.body_fixed",
+      "parent_frame_id": "frame.sol.barycentric",
+      "transform": {
+        "translation_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        }
+      },
+      "semantics": "body_fixed"
+    },
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.sol.local.ecliptic",
+      "parent_frame_id": "frame.sol.barycentric",
+      "transform": {
+        "translation_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 23440,
+          "roll": 0
+        }
+      },
+      "semantics": "local"
+    }
+  ]
+}

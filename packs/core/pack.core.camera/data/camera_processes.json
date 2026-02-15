@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0.0",
+  "processes": [
+    "process.camera_move",
+    "process.camera_teleport",
+    "process.region_management_tick",
+    "process.time_control_set_rate",
+    "process.time_pause",
+    "process.time_resume"
+  ],
+  "notes": "Camera and time-control process identifiers consumed by process-dispatch tooling."
+}

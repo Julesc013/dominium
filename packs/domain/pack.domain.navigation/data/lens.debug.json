@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "lens_id": "lens.nondiegetic.debug",
+  "lens_type": "nondiegetic",
+  "transform_description": "Expose lab diagnostic overlays while preserving lawful observation boundaries.",
+  "required_entitlements": [
+    "lens.nondiegetic.access"
+  ],
+  "epistemic_constraints": {
+    "visibility_policy": "lab_debug_overlay",
+    "max_resolution_tier": 4
+  }
+}

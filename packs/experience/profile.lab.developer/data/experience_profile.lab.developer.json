@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "experience_id": "profile.lab.developer",
+  "presentation_defaults": {
+    "default_lens_id": "lens.diegetic.sensor",
+    "hud_layout_id": "hud.lab.navigation"
+  },
+  "allowed_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "suggested_parameter_bundles": [
+    "params.lab.placeholder",
+    "params.lab.precision_nav"
+  ],
+  "allowed_transitions": [
+    "experience.lab.galaxy"
+  ],
+  "default_law_profile_id": "law.lab.unrestricted"
+}

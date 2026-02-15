@@ -1,0 +1,257 @@
+{
+  "entry_type": "site_collection",
+  "sites": [
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.north_pole",
+      "object_id": "object.earth",
+      "kind": "surface",
+      "frame_id": "frame.earth.body_fixed",
+      "position": {
+        "representation": "lat_lon_alt",
+        "lat_lon_alt": {
+          "lat_deg_x1e6": 90000000,
+          "lon_deg_x1e6": 0,
+          "alt_mm": 0
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1000
+      },
+      "search_keys": [
+        "north pole",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "surface"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.south_pole",
+      "object_id": "object.earth",
+      "kind": "surface",
+      "frame_id": "frame.earth.body_fixed",
+      "position": {
+        "representation": "lat_lon_alt",
+        "lat_lon_alt": {
+          "lat_deg_x1e6": -90000000,
+          "lon_deg_x1e6": 0,
+          "alt_mm": 0
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1000
+      },
+      "search_keys": [
+        "south pole",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "surface"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.greenwich",
+      "object_id": "object.earth",
+      "kind": "surface",
+      "frame_id": "frame.earth.local.greenwich",
+      "position": {
+        "representation": "lat_lon_alt",
+        "lat_lon_alt": {
+          "lat_deg_x1e6": 51477928,
+          "lon_deg_x1e6": 0,
+          "alt_mm": 46000
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1000
+      },
+      "search_keys": [
+        "greenwich",
+        "prime meridian",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "surface",
+        "prime_meridian"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.mt_everest",
+      "object_id": "object.earth",
+      "kind": "surface",
+      "frame_id": "frame.earth.body_fixed",
+      "position": {
+        "representation": "lat_lon_alt",
+        "lat_lon_alt": {
+          "lat_deg_x1e6": 27988056,
+          "lon_deg_x1e6": 86925000,
+          "alt_mm": 8848848
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1000
+      },
+      "search_keys": [
+        "mount everest",
+        "mt everest",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "surface",
+        "mountain"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.low_earth_orbit_reference",
+      "object_id": "object.earth",
+      "kind": "orbit",
+      "frame_id": "frame.earth.inertial",
+      "position": {
+        "representation": "local_xyz_mm",
+        "local_xyz_mm": {
+          "x": 6771000000,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 10000
+      },
+      "search_keys": [
+        "low earth orbit",
+        "leo reference",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "orbit"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.geostationary_reference",
+      "object_id": "object.earth",
+      "kind": "orbit",
+      "frame_id": "frame.earth.inertial",
+      "position": {
+        "representation": "local_xyz_mm",
+        "local_xyz_mm": {
+          "x": 42164000000,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 10000
+      },
+      "search_keys": [
+        "geostationary reference",
+        "geo reference",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "orbit"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.earth_core_center",
+      "object_id": "object.earth",
+      "kind": "interior",
+      "frame_id": "frame.earth.body_fixed",
+      "position": {
+        "representation": "local_xyz_mm",
+        "local_xyz_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1000
+      },
+      "search_keys": [
+        "earth core center",
+        "core center",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "interior"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.mantle_reference",
+      "object_id": "object.earth",
+      "kind": "interior",
+      "frame_id": "frame.earth.body_fixed",
+      "position": {
+        "representation": "local_xyz_mm",
+        "local_xyz_mm": {
+          "x": 3480000000,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1000
+      },
+      "search_keys": [
+        "mantle reference",
+        "mantle",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "interior"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.stratosphere_reference",
+      "object_id": "object.earth",
+      "kind": "atmosphere",
+      "frame_id": "frame.earth.body_fixed",
+      "position": {
+        "representation": "lat_lon_alt",
+        "lat_lon_alt": {
+          "lat_deg_x1e6": 0,
+          "lon_deg_x1e6": 0,
+          "alt_mm": 25000000
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1000
+      },
+      "search_keys": [
+        "stratosphere reference",
+        "stratosphere",
+        "reference"
+      ],
+      "tags": [
+        "earth",
+        "atmosphere"
+      ]
+    }
+  ]
+}

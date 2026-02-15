@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.law.observe_only",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0"
+  ],
+  "contribution_types": [
+    "law_profile"
+  ],
+  "contributions": [
+    {
+      "type": "law_profile",
+      "id": "law.lab.observe_only",
+      "path": "data/law_profile.observe_only.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.law.observe_only.v1",
+  "signature_status": "signed"
+}

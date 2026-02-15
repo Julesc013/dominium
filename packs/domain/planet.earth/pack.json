@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "planet.earth",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0",
+    "astronomy.sol@1.0.0"
+  ],
+  "contribution_types": [
+    "registry_entries"
+  ],
+  "contributions": [
+    {
+      "type": "registry_entries",
+      "id": "registry.astronomy.earth.body",
+      "path": "data/earth_body.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.astronomy.earth.frames",
+      "path": "data/earth_frames.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.astronomy.earth.sites",
+      "path": "data/earth_sites.json"
+    }
+  ],
+  "canonical_hash": "placeholder.planet.earth.v1",
+  "signature_status": "signed"
+}

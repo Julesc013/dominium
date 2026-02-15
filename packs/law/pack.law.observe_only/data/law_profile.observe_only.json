@@ -1,0 +1,25 @@
+{
+  "law_profile_id": "law.lab.observe_only",
+  "schema_version": "1.0.0",
+  "allowed_processes": [
+    "process.observe.telemetry"
+  ],
+  "forbidden_processes": [
+    "process.mutate.assembly"
+  ],
+  "allowed_lenses": [
+    "lens.diegetic.sensor"
+  ],
+  "epistemic_limits": {
+    "max_view_radius_km": 50000,
+    "allow_hidden_state_access": false
+  },
+  "respawn_rules": {
+    "respawn_allowed": true,
+    "respawn_delay_seconds": 30
+  },
+  "debug_allowances": {
+    "allow_nondiegetic_overlays": false,
+    "allow_time_dilation_controls": false
+  }
+}

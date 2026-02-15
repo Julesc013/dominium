@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.tool.inspector",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0"
+  ],
+  "contribution_types": [
+    "assets",
+    "ui_windows"
+  ],
+  "contributions": [
+    {
+      "type": "ui_windows",
+      "id": "window.tool.inspector",
+      "path": "ui/window.inspector.json"
+    },
+    {
+      "type": "assets",
+      "id": "assets.tool.inspector_icons",
+      "path": "assets/icons.manifest.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.tool.inspector.v1",
+  "signature_status": "unsigned"
+}

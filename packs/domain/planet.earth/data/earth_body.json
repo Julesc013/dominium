@@ -1,0 +1,31 @@
+{
+  "entry_type": "astronomy_catalog_collection",
+  "entries": [
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.earth",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.earth.inertial",
+      "physical_params": {
+        "mean_radius_km": 6371,
+        "gm_m3s2": 398600441800000.0,
+        "rotation_period_seconds": 86164
+      },
+      "orbit_params": {
+        "semi_major_axis_km": 149598023,
+        "eccentricity_x1e9": 16710000
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 6371000000
+      },
+      "search_keys": [
+        "earth",
+        "gaia",
+        "terra"
+      ],
+      "pack_id": "planet.earth"
+    }
+  ]
+}
