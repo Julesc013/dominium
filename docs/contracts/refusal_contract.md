@@ -76,6 +76,36 @@ Tool payload wrapper:
 - `REFUSE_DIST_CONTENT_HASH_MISMATCH`
 - `refusal.server_stage_mismatch`
 - `refusal.server_authority_violation`
+- `refusal.net.handshake_pack_lock_mismatch`
+- `refusal.net.handshake_registry_hash_mismatch`
+- `refusal.net.handshake_schema_version_mismatch`
+- `refusal.net.handshake_policy_not_allowed`
+- `refusal.net.handshake_securex_denied`
+- `refusal.net.envelope_invalid`
+- `refusal.net.sequence_violation`
+- `refusal.net.replay_detected`
+- `refusal.net.authority_violation`
+- `refusal.net.shard_target_invalid`
+- `refusal.net.resync_required`
+- `refusal.ac.policy_violation`
+- `refusal.ac.rank_policy_required`
+- `refusal.ac.attestation_missing`
+
+## Multiplayer Refusal Remediation Hints (MP-1)
+- `refusal.net.handshake_pack_lock_mismatch`: reconnect using identical bundle + lockfile; regenerate client dist if needed.
+- `refusal.net.handshake_registry_hash_mismatch`: rebuild registries + lockfile from same bundle input set and reconnect.
+- `refusal.net.handshake_schema_version_mismatch`: migrate payload/schema version via CompatX or downgrade to supported schema set.
+- `refusal.net.handshake_policy_not_allowed`: choose a replication policy permitted by server law/profile registry.
+- `refusal.net.handshake_securex_denied`: satisfy SecureX signing/attestation policy or connect to a less restrictive server.
+- `refusal.net.envelope_invalid`: validate `intent_envelope` schema fields and deterministic sequence metadata.
+- `refusal.net.sequence_violation`: resend envelopes with monotonic deterministic sequence ordering.
+- `refusal.net.replay_detected`: discard replayed envelope IDs and emit fresh deterministic sequence numbers.
+- `refusal.net.authority_violation`: submit intents only with allowed authority/law entitlements.
+- `refusal.net.shard_target_invalid`: route envelope to declared shard ownership scope.
+- `refusal.net.resync_required`: execute policy-specific resync strategy then retry intent stream.
+- `refusal.ac.policy_violation`: inspect anti-cheat module events and satisfy declared anti-cheat policy constraints.
+- `refusal.ac.rank_policy_required`: select anti-cheat policy with `required_for_ranked=true` before ranked session entry.
+- `refusal.ac.attestation_missing`: provide client attestation artifact when policy explicitly enables attestation checks.
 
 ## Invariants
 - Refusals do not mutate authoritative state.
