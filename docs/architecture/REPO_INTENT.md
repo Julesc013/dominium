@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-06
+Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 
@@ -33,7 +33,9 @@ Normative contracts live under `docs/architecture/` only. See `docs/architecture
 | `launcher/` | Launcher & setup integration | Orchestration-only changes | Evolving |
 | `legacy/` | Archived legacy artifacts | Archive only, no new features | Archived |
 | `libs/` | Shared libraries and contracts | Contract-preserving changes only | Frozen (contracts), Evolving (impl) |
+| `packs/` | Canonical pack manifests and data-only pack contributions | Data-only pack changes; no executable code | Evolving |
 | `schema/` | Schema contracts | Contracted schema edits only | Frozen/Evolving per `SCHEMA_STABILITY.md` |
+| `schemas/` | Generated or composed schema artifacts | Generated artifacts and schema bundle exports only | Quarantined |
 | `scripts/` | Developer scripts | Non-runtime tooling only | Evolving |
 | `sdk/` | SDK and integration surfaces | Contract-preserving changes only | Evolving |
 | `server/` | Server runtime | Code changes only when explicitly allowed by prompt | Frozen (public contracts), Evolving (internals) |
