@@ -194,11 +194,11 @@
         "run_meta_only": false,
         "extensions": {
           "transport_plugin_required": true,
-          "implementation_status": "implemented.policy.net.server_authoritative.v1",
+          "implementation_status": "implemented.policy.net.server_authoritative+srz_hybrid.v1",
           "policy_support": {
             "policy.net.server_authoritative": "implemented",
             "policy.net.lockstep": "stub.not_implemented",
-            "policy.net.srz_hybrid": "stub.not_implemented"
+            "policy.net.srz_hybrid": "implemented"
           }
         }
       },
@@ -229,11 +229,11 @@
         "run_meta_only": false,
         "extensions": {
           "transport_plugin_required": true,
-          "implementation_status": "implemented.policy.net.server_authoritative.v1",
+          "implementation_status": "implemented.policy.net.server_authoritative+srz_hybrid.v1",
           "policy_support": {
             "policy.net.server_authoritative": "implemented",
             "policy.net.lockstep": "stub.not_implemented",
-            "policy.net.srz_hybrid": "stub.not_implemented"
+            "policy.net.srz_hybrid": "implemented"
           }
         }
       },

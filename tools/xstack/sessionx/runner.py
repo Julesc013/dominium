@@ -11,6 +11,12 @@ from src.net.policies.policy_server_authoritative import (
     join_client_midstream,
     prepare_server_authoritative_baseline,
 )
+from src.net.policies.policy_srz_hybrid import (
+    POLICY_ID_SRZ_HYBRID,
+    initialize_hybrid_runtime,
+    join_client_hybrid,
+    prepare_hybrid_baseline,
+)
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -36,6 +42,8 @@ REGISTRY_HASH_KEY_MAP = {
     "net_replication_policy_registry_hash": "net_replication_policy_registry",
     "net_resync_strategy_registry_hash": "net_resync_strategy_registry",
     "net_server_policy_registry_hash": "net_server_policy_registry",
+    "shard_map_registry_hash": "shard_map_registry",
+    "perception_interest_policy_registry_hash": "perception_interest_policy_registry",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy_registry",
     "anti_cheat_module_registry_hash": "anti_cheat_module_registry",
     "activation_policy_registry_hash": "activation_policy_registry",
@@ -56,6 +64,8 @@ REGISTRY_FILE_MAP = {
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
+    "shard_map_registry_hash": "shard_map.registry.json",
+    "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",
@@ -723,6 +733,22 @@ def boot_session_spec(
     )
     if net_server_policy_registry_error:
         return net_server_policy_registry_error
+    shard_map_registry, shard_map_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["shard_map_registry_hash"],
+        expected_hash=str(registries.get("shard_map_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if shard_map_registry_error:
+        return shard_map_registry_error
+    perception_interest_policy_registry, perception_interest_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["perception_interest_policy_registry_hash"],
+        expected_hash=str(registries.get("perception_interest_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if perception_interest_policy_registry_error:
+        return perception_interest_policy_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -831,6 +857,7 @@ def boot_session_spec(
     net_sync_baseline_stage_result: Dict[str, object] = {}
     net_join_stage_result: Dict[str, object] = {}
     server_authoritative_runtime: Dict[str, object] = {}
+    hybrid_runtime: Dict[str, object] = {}
     server_authoritative_law_profile: Dict[str, object] = {}
     server_authoritative_lens_profile: Dict[str, object] = {}
 
@@ -897,6 +924,44 @@ def boot_session_spec(
         server_authoritative_runtime = dict(initialized.get("runtime") or {})
         return server_authoritative_runtime, {}
 
+    def _ensure_hybrid_runtime() -> Tuple[dict, Dict[str, object]]:
+        nonlocal hybrid_runtime
+        if hybrid_runtime:
+            return hybrid_runtime, {}
+        selected_law_profile, selected_lens_profile, selected_profile_error = _resolve_server_authoritative_profiles()
+        if selected_profile_error:
+            return {}, selected_profile_error
+        initialized = initialize_hybrid_runtime(
+            repo_root=repo_root,
+            save_id=save_id,
+            session_spec=session_spec,
+            lock_payload=lock_payload,
+            universe_identity=universe_identity,
+            universe_state=_state_payload,
+            law_profile=selected_law_profile,
+            lens_profile=selected_lens_profile,
+            authority_context=boot_authority_context,
+            anti_cheat_policy_registry=anti_cheat_policy_registry,
+            anti_cheat_module_registry=anti_cheat_module_registry,
+            replication_policy_registry=net_replication_policy_registry,
+            server_policy_registry=net_server_policy_registry,
+            shard_map_registry=shard_map_registry,
+            perception_interest_policy_registry=perception_interest_policy_registry,
+            registry_payloads={
+                "astronomy_catalog_index": astronomy_registry,
+                "site_registry_index": site_registry,
+                "ephemeris_registry": ephemeris_registry,
+                "terrain_tile_registry": terrain_tile_registry,
+                "activation_policy_registry": activation_policy_registry,
+                "budget_policy_registry": budget_policy_registry,
+                "fidelity_policy_registry": fidelity_policy_registry,
+            },
+        )
+        if str(initialized.get("result", "")) != "complete":
+            return {}, initialized
+        hybrid_runtime = dict(initialized.get("runtime") or {})
+        return hybrid_runtime, {}
+
     def _execute_stage(stage_id: str) -> Dict[str, object]:
         if str(stage_id) == "stage.net_handshake":
             handshake_result = run_loopback_handshake(
@@ -948,25 +1013,34 @@ def boot_session_spec(
                     "$.pipeline",
                 )
             negotiated_policy_id = str(handshake_stage_result.get("negotiated_replication_policy_id", "")).strip()
-            if negotiated_policy_id != POLICY_ID_SERVER_AUTHORITATIVE:
+            baseline_result: Dict[str, object] = {}
+            if negotiated_policy_id == POLICY_ID_SERVER_AUTHORITATIVE:
+                authoritative_runtime, runtime_error = _ensure_server_authoritative_runtime()
+                if runtime_error:
+                    return runtime_error
+                baseline_result = prepare_server_authoritative_baseline(
+                    repo_root=repo_root,
+                    runtime=authoritative_runtime,
+                )
+            elif negotiated_policy_id == POLICY_ID_SRZ_HYBRID:
+                selected_hybrid_runtime, runtime_error = _ensure_hybrid_runtime()
+                if runtime_error:
+                    return runtime_error
+                baseline_result = prepare_hybrid_baseline(
+                    repo_root=repo_root,
+                    runtime=selected_hybrid_runtime,
+                )
+            else:
                 return refusal(
                     "refusal.not_implemented.net_transport",
-                    "stage.net_sync_baseline supports only the negotiated server-authoritative policy in MP-4",
-                    "Select the negotiated server-authoritative policy or use local pipeline until additional policies are wired.",
+                    "stage.net_sync_baseline supports only negotiated server-authoritative or srz_hybrid policies",
+                    "Select policy.net.server_authoritative or policy.net.srz_hybrid for baseline sync.",
                     {
                         "stage_id": "stage.net_sync_baseline",
                         "negotiated_replication_policy_id": negotiated_policy_id or "<empty>",
-                        "required_replication_policy_id": POLICY_ID_SERVER_AUTHORITATIVE,
                     },
                     "$.network.requested_replication_policy_id",
                 )
-            authoritative_runtime, runtime_error = _ensure_server_authoritative_runtime()
-            if runtime_error:
-                return runtime_error
-            baseline_result = prepare_server_authoritative_baseline(
-                repo_root=repo_root,
-                runtime=authoritative_runtime,
-            )
             if str(baseline_result.get("result", "")) != "complete":
                 return baseline_result
             net_sync_baseline_stage_result.clear()
@@ -995,18 +1069,6 @@ def boot_session_spec(
                     "$.pipeline",
                 )
             negotiated_policy_id = str(handshake_stage_result.get("negotiated_replication_policy_id", "")).strip()
-            if negotiated_policy_id != POLICY_ID_SERVER_AUTHORITATIVE:
-                return refusal(
-                    "refusal.not_implemented.net_transport",
-                    "stage.net_join_world supports only the negotiated server-authoritative policy in MP-4",
-                    "Select the negotiated server-authoritative policy or use local pipeline until additional policies are wired.",
-                    {
-                        "stage_id": "stage.net_join_world",
-                        "negotiated_replication_policy_id": negotiated_policy_id or "<empty>",
-                        "required_replication_policy_id": POLICY_ID_SERVER_AUTHORITATIVE,
-                    },
-                    "$.network.requested_replication_policy_id",
-                )
             if not net_sync_baseline_stage_result:
                 return refusal(
                     "refusal.net.join_snapshot_invalid",
@@ -1015,9 +1077,6 @@ def boot_session_spec(
                     {"stage_id": "stage.net_join_world"},
                     "$.pipeline",
                 )
-            authoritative_runtime, runtime_error = _ensure_server_authoritative_runtime()
-            if runtime_error:
-                return runtime_error
             selected_law_profile, selected_lens_profile, selected_profile_error = _resolve_server_authoritative_profiles()
             if selected_profile_error:
                 return selected_profile_error
@@ -1026,22 +1085,52 @@ def boot_session_spec(
             if not peer_id:
                 return refusal(
                     "refusal.net.envelope_invalid",
-                    "SessionSpec network.client_peer_id is required for authoritative world join",
+                    "SessionSpec network.client_peer_id is required for network world join",
                     "Populate SessionSpec network client_peer_id before boot.",
                     {"schema_id": "session_spec"},
                     "$.network.client_peer_id",
                 )
             baseline_snapshot = dict(net_sync_baseline_stage_result.get("snapshot") or {})
-            join_result = join_client_midstream(
-                repo_root=repo_root,
-                runtime=authoritative_runtime,
-                peer_id=peer_id,
-                authority_context=boot_authority_context,
-                law_profile=selected_law_profile,
-                lens_profile=selected_lens_profile,
-                negotiated_policy_id=negotiated_policy_id,
-                snapshot_id=str(baseline_snapshot.get("snapshot_id", "")),
-            )
+            join_result: Dict[str, object] = {}
+            if negotiated_policy_id == POLICY_ID_SERVER_AUTHORITATIVE:
+                authoritative_runtime, runtime_error = _ensure_server_authoritative_runtime()
+                if runtime_error:
+                    return runtime_error
+                join_result = join_client_midstream(
+                    repo_root=repo_root,
+                    runtime=authoritative_runtime,
+                    peer_id=peer_id,
+                    authority_context=boot_authority_context,
+                    law_profile=selected_law_profile,
+                    lens_profile=selected_lens_profile,
+                    negotiated_policy_id=negotiated_policy_id,
+                    snapshot_id=str(baseline_snapshot.get("snapshot_id", "")),
+                )
+            elif negotiated_policy_id == POLICY_ID_SRZ_HYBRID:
+                selected_hybrid_runtime, runtime_error = _ensure_hybrid_runtime()
+                if runtime_error:
+                    return runtime_error
+                join_result = join_client_hybrid(
+                    repo_root=repo_root,
+                    runtime=selected_hybrid_runtime,
+                    peer_id=peer_id,
+                    authority_context=boot_authority_context,
+                    law_profile=selected_law_profile,
+                    lens_profile=selected_lens_profile,
+                    negotiated_policy_id=negotiated_policy_id,
+                    snapshot_id=str(baseline_snapshot.get("snapshot_id", "")),
+                )
+            else:
+                return refusal(
+                    "refusal.not_implemented.net_transport",
+                    "stage.net_join_world supports only negotiated server-authoritative or srz_hybrid policies",
+                    "Select policy.net.server_authoritative or policy.net.srz_hybrid for world join.",
+                    {
+                        "stage_id": "stage.net_join_world",
+                        "negotiated_replication_policy_id": negotiated_policy_id or "<empty>",
+                    },
+                    "$.network.requested_replication_policy_id",
+                )
             if str(join_result.get("result", "")) != "complete":
                 return join_result
             net_join_stage_result.clear()

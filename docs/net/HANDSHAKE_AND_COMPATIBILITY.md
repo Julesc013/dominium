@@ -62,13 +62,15 @@ Rules:
 1. Stages are enabled only when SessionSpec selects multiplayer transport endpoint metadata.
 2. Deterministic stage execution is policy-driven:
    - `policy.net.server_authoritative`: `stage.net_sync_baseline` and `stage.net_join_world` are implemented.
-   - `policy.net.lockstep` and `policy.net.srz_hybrid`: baseline/join stages currently refuse with `refusal.not_implemented.net_transport`.
+   - `policy.net.srz_hybrid`: `stage.net_sync_baseline` and `stage.net_join_world` are implemented using shard snapshot baseline artifacts.
+   - `policy.net.lockstep`: baseline/join stages remain stubbed and refuse with `refusal.not_implemented.net_transport`.
 3. Default singleplayer pipeline remains unchanged.
 4. Canonical multiplayer stub pipeline id is `pipeline.client.multiplayer_stub`.
 5. Net stage order is fixed: `stage.net_handshake -> stage.net_sync_baseline -> stage.net_join_world`.
 6. `stage.net_handshake` is executable in MP-2.
 7. `stage.net_sync_baseline` writes deterministic baseline artifacts (snapshot + anchor summary) before join.
 8. `stage.net_join_world` validates negotiated policy and join snapshot, then binds the client to baseline PerceivedModel state.
+9. For `policy.net.srz_hybrid`, baseline artifacts include `shard_map_id`, `perception_interest_policy_id`, and deterministic `snapshot_ids`.
 
 ## CLI Surfaces
 
@@ -89,6 +91,8 @@ Rules:
 7. `refusal.net.resync_snapshot_missing`
 8. `refusal.net.join_snapshot_invalid`
 9. `refusal.net.join_policy_mismatch`
+10. `refusal.net.cross_shard_unsupported`
+11. `refusal.net.perception_policy_missing`
 
 ## Refusal Mapping (Deterministic)
 
@@ -111,6 +115,14 @@ Remediation: request an allowed policy ID.
 5. `refusal.net.handshake_securex_denied`
 Cause: server SecureX requirements not satisfied.
 Remediation: connect with required signed-pack/security posture.
+
+6. `refusal.net.cross_shard_unsupported`
+Cause: process envelope resolves to shard ownership mismatch and cross-shard direct write path is not declared.
+Remediation: route process to owning shard or declare an explicit cross-shard transition contract.
+
+7. `refusal.net.perception_policy_missing`
+Cause: server policy does not resolve a valid perception-interest policy for SRZ hybrid replication.
+Remediation: set `extensions.perception_interest_policy_id` in server policy and rebuild registries/lockfile.
 
 ## Example
 
