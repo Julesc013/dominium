@@ -161,6 +161,27 @@
         "1.0.0"
       ]
     },
+    "session_stage": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "session_pipeline": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "session_artifacts": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "site_entry": {
       "current_version": "1.0.0",
       "migrations": {},

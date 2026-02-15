@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session Stage Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic session stage declaration contract.",
+  "x-doc-ref": [
+    "docs/client/CLIENT_LIFECYCLE_PIPELINE.md",
+    "docs/client/SESSION_READY_AND_RUNNING.md",
+    "schema/session/session_stage.schema"
+  ],
+  "type": "object",
+  "required": [
+    "stage_id",
+    "display_name",
+    "description",
+    "required_capabilities",
+    "required_artifacts",
+    "produces_artifacts",
+    "allowed_next_stage_ids",
+    "abort_allowed",
+    "resume_allowed",
+    "deterministic",
+    "run_meta_only",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "stage_id": {
+      "type": "string",
+      "pattern": "^stage\\.[a-z0-9_.-]+$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "produces_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_next_stage_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^stage\\.[a-z0-9_.-]+$"
+      }
+    },
+    "abort_allowed": {
+      "type": "boolean"
+    },
+    "resume_allowed": {
+      "type": "boolean"
+    },
+    "deterministic": {
+      "type": "boolean"
+    },
+    "run_meta_only": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "run_meta_only": {
+            "const": false
+          }
+        },
+        "required": [
+          "run_meta_only"
+        ]
+      },
+      "then": {
+        "properties": {
+          "deterministic": {
+            "const": true
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "stage_id": "stage.resolve_session",
+      "display_name": "Resolve Session",
+      "description": "Resolve SessionSpec and bind pipeline context.",
+      "required_capabilities": [
+        "session.resolve"
+      ],
+      "required_artifacts": [
+        "session_spec"
+      ],
+      "produces_artifacts": [
+        "authority_context"
+      ],
+      "allowed_next_stage_ids": [
+        "stage.acquire_world",
+        "stage.teardown_session"
+      ],
+      "abort_allowed": true,
+      "resume_allowed": false,
+      "deterministic": true,
+      "run_meta_only": false,
+      "extensions": {}
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+SCHEMA: session/session_pipeline.schema
+schema_id: dominium.schema.session.session_pipeline
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical ordered session lifecycle pipelines.
+- Ensure re-entry, ready, running, and teardown semantics are explicit and deterministic.
+
+NON-SEMANTICS:
+- Pipeline declarations do not run simulation ticks.
+- Pipeline declarations do not grant authority privileges.
+
+REQUIRED SHAPE:
+record session_pipeline
+  required:
+    - pipeline_id: id
+    - stages: [id]
+    - entry_stage_id: id
+    - ready_stage_id: id
+    - running_stage_id: id
+    - teardown_stage_id: id
+    - allowed_external_transitions: [id]
+    - version_introduced: tag
+    - extensions: map
+
+INVARIANTS:
+- stages order defines deterministic canonical traversal order.
+- entry_stage_id MUST be the first canonical stage.
+- ready_stage_id MUST represent SessionReady with simulation_time.tick == 0.
+- running_stage_id MUST be reachable only by explicit begin command.
+- teardown_stage_id MUST be reachable from abort paths and terminal transitions.
+
+MIGRATION:
+- Pipeline reordering or stage identity changes require explicit migration notes and compat checks.

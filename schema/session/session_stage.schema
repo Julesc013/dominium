@@ -1,0 +1,37 @@
+SCHEMA: session/session_stage.schema
+schema_id: dominium.schema.session.session_stage
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical deterministic session lifecycle stage records.
+- Make stage transitions and artifact contracts explicit for all products.
+
+NON-SEMANTICS:
+- Stage records orchestrate lifecycle only.
+- Stage records MUST NOT alter simulation mechanics.
+
+REQUIRED SHAPE:
+record session_stage
+  required:
+    - stage_id: id
+    - display_name: tag
+    - description: text
+    - required_capabilities: [tag]
+    - required_artifacts: [id]
+    - produces_artifacts: [id]
+    - allowed_next_stage_ids: [id]
+    - abort_allowed: bool
+    - resume_allowed: bool
+    - deterministic: bool
+    - run_meta_only: bool
+    - extensions: map
+
+INVARIANTS:
+- deterministic MUST be true for canonical stages.
+- stage_id MUST be namespaced and stable (`stage.*`).
+- allowed_next_stage_ids MUST declare all legal transitions; undeclared transitions MUST refuse.
+- required_artifacts MUST be present before stage completion.
+
+MIGRATION:
+- Breaking field changes require MAJOR schema_version bump and explicit migration/refusal route.
