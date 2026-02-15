@@ -57,11 +57,15 @@ SCAN_ROOTS = (
     "tools/xstack/performx",
     "tools/xstack/securex",
     "tools/xstack/sessionx",
+    "tools/domain",
     "tools/xstack/bundle_list.py",
     "tools/xstack/bundle_validate.py",
     "tools/xstack/session_create.py",
     "tools/xstack/session_boot.py",
     "schemas",
+    "data/registries/domain_registry.json",
+    "data/registries/domain_contract_registry.json",
+    "data/registries/solver_registry.json",
     "packs",
     "bundles",
     "docs/contracts",
@@ -101,6 +105,32 @@ SESSION_PIPELINE_REQUIRED_FILES = (
     "schemas/session_pipeline.schema.json",
     "data/registries/session_stage_registry.json",
     "data/registries/session_pipeline_registry.json",
+)
+
+DOMAIN_FOUNDATION_REQUIRED_FILES = (
+    "data/registries/domain_registry.json",
+    "data/registries/domain_contract_registry.json",
+    "data/registries/solver_registry.json",
+)
+
+CONTRACT_STABILITY_BASELINE_IDS = (
+    "dom.contract.mass_conservation",
+    "dom.contract.energy_conservation",
+    "dom.contract.charge_conservation",
+    "dom.contract.ledger_balance",
+    "dom.contract.epistemic_non_omniscience",
+    "dom.contract.deterministic_transition",
+    "dom.contract.port_contract_preservation",
+)
+
+DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
+    "data/registries/domain_registry.json",
+    "data/registries/solver_registry.json",
+    "docs/scale/",
+    "schema/scale/",
+    "schemas/domain_",
+    "schemas/solver_registry.schema.json",
+    "tools/domain/",
 )
 
 
@@ -354,6 +384,156 @@ def _append_session_pipeline_invariant_findings(
         )
 
 
+def _append_domain_foundation_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    missing = []
+    for rel_path in DOMAIN_FOUNDATION_REQUIRED_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            missing.append(rel_path)
+    for rel_path in sorted(missing):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="required domain foundation registry file is missing",
+                rule_id="INV-DOMAIN-REGISTRY-VALID",
+            )
+        )
+    if missing:
+        return
+
+    try:
+        from tools.domain.tool_domain_validate import validate_domain_foundation
+    except Exception:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/domain/tool_domain_validate.py",
+                line_number=1,
+                snippet="",
+                message="unable to import domain foundation validator",
+                rule_id="INV-DOMAIN-REGISTRY-VALID",
+            )
+        )
+        return
+
+    checked = validate_domain_foundation(repo_root=repo_root)
+    if str(checked.get("result", "")) != "complete":
+        for row in checked.get("errors") or []:
+            if not isinstance(row, dict):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=str(row.get("path", "data/registries/domain_registry.json")),
+                    line_number=1,
+                    snippet="",
+                    message=str(row.get("message", "")),
+                    rule_id="INV-DOMAIN-REGISTRY-VALID",
+                )
+            )
+
+    solver_payload, solver_err = _load_json_object(repo_root, "data/registries/solver_registry.json")
+    if solver_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/solver_registry.json",
+                line_number=1,
+                snippet="",
+                message="solver registry JSON is invalid",
+                rule_id="INV-SOLVER-DOMAIN-BINDING",
+            )
+        )
+    else:
+        rows = solver_payload.get("records")
+        if not isinstance(rows, list):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/solver_registry.json",
+                    line_number=1,
+                    snippet="",
+                    message="solver registry records list is missing",
+                    rule_id="INV-SOLVER-DOMAIN-BINDING",
+                )
+            )
+        else:
+            for idx, row in enumerate(rows):
+                if not isinstance(row, dict):
+                    continue
+                solver_id = str(row.get("solver_id", "")).strip()
+                domain_ids = [str(item).strip() for item in (row.get("domain_ids") or []) if str(item).strip()]
+                contract_ids = [str(item).strip() for item in (row.get("contract_ids") or []) if str(item).strip()]
+                if not domain_ids or not contract_ids:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path="data/registries/solver_registry.json",
+                            line_number=1,
+                            snippet="",
+                            message="solver '{}' at records[{}] must declare non-empty domain_ids and contract_ids".format(
+                                solver_id or "<unknown>",
+                                idx,
+                            ),
+                            rule_id="INV-SOLVER-DOMAIN-BINDING",
+                        )
+                    )
+
+    contract_payload, contract_err = _load_json_object(repo_root, "data/registries/domain_contract_registry.json")
+    if contract_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/domain_contract_registry.json",
+                line_number=1,
+                snippet="",
+                message="domain contract registry JSON is invalid",
+                rule_id="INV-CONTRACT-ID-STABILITY",
+            )
+        )
+        return
+    contract_rows = contract_payload.get("records")
+    if not isinstance(contract_rows, list):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/domain_contract_registry.json",
+                line_number=1,
+                snippet="",
+                message="domain contract registry records list is missing",
+                rule_id="INV-CONTRACT-ID-STABILITY",
+            )
+        )
+        return
+    current_ids = set(
+        str(row.get("contract_id", "")).strip()
+        for row in contract_rows
+        if isinstance(row, dict) and str(row.get("contract_id", "")).strip()
+    )
+    schema_version = str(contract_payload.get("schema_version", "")).strip()
+    missing_baseline = sorted(set(CONTRACT_STABILITY_BASELINE_IDS) - current_ids)
+    if schema_version == "1.0.0" and missing_baseline:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/domain_contract_registry.json",
+                line_number=1,
+                snippet="",
+                message="contract IDs removed/renamed without schema version bump: {}".format(",".join(missing_baseline)),
+                rule_id="INV-CONTRACT-ID-STABILITY",
+            )
+        )
+
+
 def _append_forbidden_identifier_findings(
     findings: List[Dict[str, object]],
     rel_path: str,
@@ -449,6 +629,34 @@ def _append_reserved_misuse_findings(
             )
 
 
+def _append_domain_token_hardcode_findings(
+    findings: List[Dict[str, object]],
+    rel_path: str,
+    line_no: int,
+    line: str,
+    profile: str,
+) -> None:
+    if rel_path == "tools/xstack/repox/check.py":
+        return
+    rel_norm = _norm(rel_path)
+    if any(rel_norm.startswith(prefix) for prefix in DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES):
+        return
+    pattern = r'["\']dom\.domain\.[A-Za-z0-9_.-]+["\']'
+    if not re.search(pattern, line):
+        return
+    severity = "warn" if profile == "FAST" else _invariant_severity(profile)
+    findings.append(
+        _finding(
+            severity=severity,
+            file_path=rel_path,
+            line_number=line_no,
+            snippet=line.strip()[:140],
+            message="hardcoded domain token literal detected outside registry-governed paths",
+            rule_id="INV-NO-HARDCODED-DOMAIN-TOKENS",
+        )
+    )
+
+
 def _append_strict_placeholder_findings(
     findings: List[Dict[str, object]],
     rel_path: str,
@@ -529,9 +737,15 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
             _append_forbidden_identifier_findings(findings, rel_path, line_no, line, token)
             _append_mode_flag_findings(findings, rel_path, line_no, line, token)
             _append_reserved_misuse_findings(findings, rel_path, line_no, line, token)
+            _append_domain_token_hardcode_findings(findings, rel_path, line_no, line, token)
             _append_strict_placeholder_findings(findings, rel_path, line_no, line, token)
             _append_renderer_truth_boundary_findings(findings, rel_path, line_no, line, token)
     _append_session_pipeline_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_domain_foundation_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
