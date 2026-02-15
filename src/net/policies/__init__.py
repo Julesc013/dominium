@@ -1,5 +1,10 @@
 """Deterministic replication policy modules."""
 
+from .policy_lockstep import (  # noqa: F401
+    POLICY_ID_LOCKSTEP,
+    refusal_from_decision,
+    validate_lockstep_envelope,
+)
 from .policy_server_authoritative import (  # noqa: F401
     POLICY_ID_SERVER_AUTHORITATIVE,
     advance_authoritative_tick,
