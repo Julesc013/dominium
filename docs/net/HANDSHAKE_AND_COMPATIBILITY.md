@@ -1,6 +1,6 @@
 Status: DERIVED
 Version: 1.0.0
-Last Reviewed: 2026-02-15
+Last Reviewed: 2026-02-16
 Compatibility: Bound to Session pipeline contract, lockfile contract, CompatX schema registry, and refusal contract.
 
 # Handshake and Compatibility
@@ -18,6 +18,28 @@ Define deterministic multiplayer compatibility handshake artifacts and refusal b
 6. `anti_cheat_policy_id`
 7. `server_law_profile_id`
 8. peer IDs and protocol version
+
+## Handshake Sequence (Deterministic)
+
+```text
+Client                                Server
+  |                                     |
+  | proto_message(handshake_request)    |
+  |------------------------------------>|
+  |                                     | validate in fixed order:
+  |                                     | 1) pack_lock_hash
+  |                                     | 2) registry hashes
+  |                                     | 3) schema versions
+  |                                     | 4) replication policy allowability
+  |                                     | 5) anti-cheat policy allowability/requirement
+  |                                     | 6) SecureX policy requirements
+  |                                     | 7) server law_profile selection
+  | proto_message(handshake_response)   |
+  |<------------------------------------|
+  |                                     |
+```
+
+Handshake result is content-driven and deterministic. Wall-clock timing must not influence accept/refuse decisions.
 
 ## Deterministic Handshake Rules
 
@@ -42,6 +64,8 @@ Rules:
 3. Default singleplayer pipeline remains unchanged.
 4. Canonical multiplayer stub pipeline id is `pipeline.client.multiplayer_stub`.
 5. Net stage order is fixed: `stage.net_handshake -> stage.net_sync_baseline -> stage.net_join_world`.
+6. `stage.net_handshake` is executable in MP-2.
+7. `stage.net_sync_baseline` and `stage.net_join_world` remain explicit deterministic stubs that refuse with `refusal.not_implemented` until replication prompts implement baseline sync/join flow.
 
 ## Refusal Codes (Compatibility)
 
@@ -51,6 +75,28 @@ Rules:
 4. `refusal.net.handshake_policy_not_allowed`
 5. `refusal.net.handshake_securex_denied`
 6. `refusal.net.resync_required`
+
+## Refusal Mapping (Deterministic)
+
+1. `refusal.net.handshake_pack_lock_mismatch`
+Cause: client/server `pack_lock_hash` differs.
+Remediation: rebuild/install matching bundle lockfile.
+
+2. `refusal.net.handshake_registry_hash_mismatch`
+Cause: any required registry hash differs.
+Remediation: recompile registries and reconnect with matching dist.
+
+3. `refusal.net.handshake_schema_version_mismatch`
+Cause: handshake-declared schema version unsupported by CompatX.
+Remediation: migrate/downgrade schema versions to supported set.
+
+4. `refusal.net.handshake_policy_not_allowed`
+Cause: requested replication or anti-cheat policy not permitted by server net policy registry.
+Remediation: request an allowed policy ID.
+
+5. `refusal.net.handshake_securex_denied`
+Cause: server SecureX requirements not satisfied.
+Remediation: connect with required signed-pack/security posture.
 
 ## Example
 
@@ -72,9 +118,12 @@ Rules:
 ## Cross-References
 
 - `schemas/net_handshake.schema.json`
+- `schemas/net_proto_message.schema.json`
 - `data/registries/session_stage_registry.json`
 - `data/registries/session_pipeline_registry.json`
+- `data/registries/net_server_policy_registry.json`
 - `docs/contracts/refusal_contract.md`
+- `docs/net/TRANSPORT_ABSTRACTION.md`
 
 ## TODO
 
