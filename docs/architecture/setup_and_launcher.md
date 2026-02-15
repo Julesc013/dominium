@@ -28,6 +28,7 @@ No duplicated pack-resolution logic is allowed in setup; setup delegates to tool
 Commands:
 - `tools/launcher/launch list-builds --root dist`
 - `tools/launcher/launch list-saves --saves-root saves`
+- `tools/launcher/launch create-session --save-id <id> --bundle bundle.base.lab --pipeline-id pipeline.client.default`
 - `tools/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json [--script <script.json>]`
 - Windows wrapper: `tools/launcher/launch.cmd`
 
@@ -36,7 +37,10 @@ Responsibilities:
 2. Validate SessionSpec schema and bundle compatibility.
 3. Enforce lockfile match (`pack_lock_hash` and registry hash map) before boot.
 4. Boot session headless using dist lockfile/registries path overrides.
-5. Optionally run deterministic scripted traversal from launcher invocation.
+5. Validate server-side stage/authority gate before any running transition.
+6. Optionally run deterministic scripted traversal from launcher invocation.
+
+Launcher does not expose arbitrary stage-jump arguments; running transitions are constrained to canonical stage checks.
 
 ## Lockfile Enforcement
 `lockfile_enforcement` is always required for launcher run paths.
@@ -54,6 +58,11 @@ Launcher forwards exact paths:
 - `--registries-dir <dist>/registries`
 
 Session boot/script tooling must consume those paths directly and must not silently fall back to `build/*`.
+
+## Pipeline Guardrails
+- Setup/build does not participate in runtime stage transitions and refuses stage-driving arguments.
+- Launcher session creation always writes explicit `pipeline_id` into SessionSpec.
+- Runtime transition requests are validated by `tools/xstack/session_server` (`refusal.server_stage_mismatch`, `refusal.server_authority_violation`).
 
 ## Example
 ```text

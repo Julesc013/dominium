@@ -17,6 +17,18 @@ if REPO_ROOT_HINT not in sys.path:
 
 from tools.xstack.compatx.validator import validate_instance  # noqa: E402
 from tools.xstack.packagingx import validate_dist_layout  # noqa: E402
+from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID  # noqa: E402
+from tools.xstack.sessionx.creator import (  # noqa: E402
+    DEFAULT_BUDGET_POLICY_ID,
+    DEFAULT_EXPERIENCE_ID,
+    DEFAULT_FIDELITY_POLICY_ID,
+    DEFAULT_LAW_PROFILE_ID,
+    DEFAULT_PARAMETER_BUNDLE_ID,
+    DEFAULT_PRIVILEGE_LEVEL,
+    DEFAULT_SCENARIO_ID,
+    create_session_spec,
+)
+from tools.xstack.sessionx.pipeline_contract import DEFAULT_PIPELINE_ID  # noqa: E402
 from tools.xstack.sessionx.runner import boot_session_spec  # noqa: E402
 from tools.xstack.sessionx.server_gate import server_validate_transition  # noqa: E402
 from tools.xstack.sessionx.script_runner import run_intent_script  # noqa: E402
@@ -328,6 +340,46 @@ def cmd_run(
     }
 
 
+def cmd_create_session(
+    repo_root: str,
+    save_id: str,
+    bundle_id: str,
+    pipeline_id: str,
+    scenario_id: str,
+    experience_id: str,
+    law_profile_id: str,
+    parameter_bundle_id: str,
+    budget_policy_id: str,
+    fidelity_policy_id: str,
+    privilege_level: str,
+    compile_outputs: bool,
+) -> Dict[str, object]:
+    return create_session_spec(
+        repo_root=repo_root,
+        save_id=str(save_id),
+        bundle_id=str(bundle_id),
+        pipeline_id=str(pipeline_id),
+        scenario_id=str(scenario_id),
+        mission_id="",
+        experience_id=str(experience_id),
+        law_profile_id=str(law_profile_id),
+        parameter_bundle_id=str(parameter_bundle_id),
+        budget_policy_id=str(budget_policy_id),
+        fidelity_policy_id=str(fidelity_policy_id),
+        rng_seed_string="seed.launcher.session.{}".format(str(save_id)),
+        rng_roots=[],
+        universe_identity_path="",
+        universe_seed_string="seed.launcher.universe.{}".format(str(save_id)),
+        universe_id="",
+        entitlements=[],
+        epistemic_scope_id="epistemic.lab.placeholder",
+        visibility_level="placeholder",
+        privilege_level=str(privilege_level),
+        compile_outputs=bool(compile_outputs),
+        saves_root_rel="saves",
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Launch deterministic lab sessions from dist bundles.")
     parser.add_argument("--repo-root", default="")
@@ -348,6 +400,19 @@ def main() -> int:
     run_cmd.add_argument("--logical-shards", type=int, default=1)
     run_cmd.add_argument("--write-state", default="off", choices=("on", "off"))
 
+    create_cmd = sub.add_parser("create-session", help="Create SessionSpec through launcher surface with declared pipeline_id")
+    create_cmd.add_argument("--save-id", required=True)
+    create_cmd.add_argument("--bundle", default=DEFAULT_BUNDLE_ID)
+    create_cmd.add_argument("--pipeline-id", default=DEFAULT_PIPELINE_ID)
+    create_cmd.add_argument("--scenario-id", default=DEFAULT_SCENARIO_ID)
+    create_cmd.add_argument("--experience-id", default=DEFAULT_EXPERIENCE_ID)
+    create_cmd.add_argument("--law-profile-id", default=DEFAULT_LAW_PROFILE_ID)
+    create_cmd.add_argument("--parameter-bundle-id", default=DEFAULT_PARAMETER_BUNDLE_ID)
+    create_cmd.add_argument("--budget-policy-id", default=DEFAULT_BUDGET_POLICY_ID)
+    create_cmd.add_argument("--fidelity-policy-id", default=DEFAULT_FIDELITY_POLICY_ID)
+    create_cmd.add_argument("--privilege-level", default=DEFAULT_PRIVILEGE_LEVEL, choices=("observer", "operator", "system"))
+    create_cmd.add_argument("--compile-outputs", default="on", choices=("on", "off"))
+
     args = parser.parse_args()
     repo_root = _repo_root(args.repo_root)
 
@@ -365,6 +430,21 @@ def main() -> int:
             logical_shards=int(args.logical_shards),
             write_state=str(args.write_state).strip().lower() != "off",
             bundle_id=str(args.bundle),
+        )
+    elif args.cmd == "create-session":
+        result = cmd_create_session(
+            repo_root=repo_root,
+            save_id=str(args.save_id),
+            bundle_id=str(args.bundle),
+            pipeline_id=str(args.pipeline_id),
+            scenario_id=str(args.scenario_id),
+            experience_id=str(args.experience_id),
+            law_profile_id=str(args.law_profile_id),
+            parameter_bundle_id=str(args.parameter_bundle_id),
+            budget_policy_id=str(args.budget_policy_id),
+            fidelity_policy_id=str(args.fidelity_policy_id),
+            privilege_level=str(args.privilege_level),
+            compile_outputs=str(args.compile_outputs).strip().lower() != "off",
         )
     else:
         parser.print_help()

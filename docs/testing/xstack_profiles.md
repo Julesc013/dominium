@@ -40,6 +40,7 @@ Related lifecycle commands:
 - `tools/xstack/srz_status saves/<save_id>/session_spec.json`
 - `tools/setup/build --bundle bundle.base.lab --out dist`
 - `tools/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json`
+- `tools/launcher/launch create-session --save-id <id> --bundle bundle.base.lab --pipeline-id pipeline.client.default`
 
 ## Deterministic Step Order
 Each profile executes deterministic step IDs:
@@ -85,6 +86,10 @@ Scope:
 - CompatX strict unknown-field guard checks across schema examples
 - Strict lockfile vs bundle composition check (`resolved_packs` equivalence)
 - RepoX strict mode-flag and placeholder checks
+- RepoX session pipeline invariants:
+  - `INV-SESSION-PIPELINE-DECLARED`
+  - `INV-NO-STAGE-SKIP`
+  - `INV-SESSION-READY-TIME-ZERO`
 - RepoX strict renderer boundary checks:
   - `repox.renderer_truth_import`
   - `repox.renderer_truth_symbol`
