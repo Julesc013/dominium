@@ -30,6 +30,8 @@ from analyzers import e1_net_policy_drift
 from analyzers import e2_truth_over_net_smell
 from analyzers import e3_handshake_policy_bypass_smell
 from analyzers import e4_authoritative_truth_leak
+from analyzers import e5_cross_shard_write_smell
+from analyzers import e6_shard_map_drift
 
 
 ANALYZERS = (
@@ -63,6 +65,8 @@ ANALYZERS = (
     e2_truth_over_net_smell,
     e3_handshake_policy_bypass_smell,
     e4_authoritative_truth_leak,
+    e5_cross_shard_write_smell,
+    e6_shard_map_drift,
 )
 
 

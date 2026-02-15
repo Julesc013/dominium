@@ -254,6 +254,8 @@ MULTIPLAYER_POLICY_REGISTRY_FILES = (
     "data/registries/net_replication_policy_registry.json",
     "data/registries/net_resync_strategy_registry.json",
     "data/registries/net_server_policy_registry.json",
+    "data/registries/shard_map_registry.json",
+    "data/registries/perception_interest_policy_registry.json",
     "data/registries/anti_cheat_policy_registry.json",
     "data/registries/anti_cheat_module_registry.json",
 )
@@ -265,6 +267,9 @@ NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
     "schemas/",
     "tools/xstack/testx/tests/",
     "tools/auditx/",
+    "tools/xstack/registry_compile/",
+    "tools/xstack/sessionx/",
+    "tools/xstack/repox/",
 )
 
 AUDITX_FINDINGS_PATH = "docs/audit/auditx/FINDINGS.json"
@@ -692,9 +697,22 @@ def _append_multiplayer_contract_invariant_findings(
     replication_payload, replication_err = _load_json_object(repo_root, "data/registries/net_replication_policy_registry.json")
     resync_payload, resync_err = _load_json_object(repo_root, "data/registries/net_resync_strategy_registry.json")
     server_policy_payload, server_policy_err = _load_json_object(repo_root, "data/registries/net_server_policy_registry.json")
+    shard_map_payload, shard_map_err = _load_json_object(repo_root, "data/registries/shard_map_registry.json")
+    perception_interest_payload, perception_interest_err = _load_json_object(
+        repo_root,
+        "data/registries/perception_interest_policy_registry.json",
+    )
     anti_cheat_policy_payload, anti_cheat_policy_err = _load_json_object(repo_root, "data/registries/anti_cheat_policy_registry.json")
     anti_cheat_module_payload, anti_cheat_module_err = _load_json_object(repo_root, "data/registries/anti_cheat_module_registry.json")
-    if replication_err or resync_err or server_policy_err or anti_cheat_policy_err or anti_cheat_module_err:
+    if (
+        replication_err
+        or resync_err
+        or server_policy_err
+        or shard_map_err
+        or perception_interest_err
+        or anti_cheat_policy_err
+        or anti_cheat_module_err
+    ):
         findings.append(
             _finding(
                 severity=severity,
@@ -710,12 +728,16 @@ def _append_multiplayer_contract_invariant_findings(
     replication_rows = (((replication_payload.get("record") or {}).get("policies")) or [])
     resync_rows = (((resync_payload.get("record") or {}).get("strategies")) or [])
     server_policy_rows = (((server_policy_payload.get("record") or {}).get("policies")) or [])
+    shard_map_rows = (((shard_map_payload.get("record") or {}).get("shard_maps")) or [])
+    perception_interest_rows = (((perception_interest_payload.get("record") or {}).get("policies")) or [])
     anti_cheat_policy_rows = (((anti_cheat_policy_payload.get("record") or {}).get("policies")) or [])
     anti_cheat_module_rows = (((anti_cheat_module_payload.get("record") or {}).get("modules")) or [])
     if (
         not isinstance(replication_rows, list)
         or not isinstance(resync_rows, list)
         or not isinstance(server_policy_rows, list)
+        or not isinstance(shard_map_rows, list)
+        or not isinstance(perception_interest_rows, list)
         or not isinstance(anti_cheat_policy_rows, list)
         or not isinstance(anti_cheat_module_rows, list)
     ):
@@ -730,6 +752,17 @@ def _append_multiplayer_contract_invariant_findings(
             )
         )
         return
+
+    shard_map_ids = set(
+        str(row.get("shard_map_id", "")).strip()
+        for row in shard_map_rows
+        if isinstance(row, dict) and str(row.get("shard_map_id", "")).strip()
+    )
+    perception_policy_ids = set(
+        str(row.get("policy_id", "")).strip()
+        for row in perception_interest_rows
+        if isinstance(row, dict) and str(row.get("policy_id", "")).strip()
+    )
 
     resync_ids = set()
     for row in resync_rows:
@@ -871,6 +904,39 @@ def _append_multiplayer_contract_invariant_findings(
                     rule_id="INV-NET-POLICY-REGISTRIES-VALID",
                 )
             )
+        allowed_replication_ids = sorted(
+            set(str(item).strip() for item in (row.get("allowed_replication_policy_ids") or []) if str(item).strip())
+        )
+        if "policy.net.srz_hybrid" in allowed_replication_ids:
+            extensions = dict(row.get("extensions") or {})
+            shard_map_id = str(extensions.get("default_shard_map_id", "")).strip()
+            if not shard_map_id or shard_map_id not in shard_map_ids:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/net_server_policy_registry.json",
+                        line_number=1,
+                        snippet=server_policy_id,
+                        message="server policy '{}' must declare a valid extensions.default_shard_map_id when srz_hybrid is allowed".format(
+                            server_policy_id
+                        ),
+                        rule_id="INV-SRZ-HYBRID-ROUTING-USES-SHARD-MAP",
+                    )
+                )
+            perception_policy_id = str(extensions.get("perception_interest_policy_id", "")).strip()
+            if not perception_policy_id or perception_policy_id not in perception_policy_ids:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/net_server_policy_registry.json",
+                        line_number=1,
+                        snippet=server_policy_id,
+                        message="server policy '{}' must declare a valid extensions.perception_interest_policy_id when srz_hybrid is allowed".format(
+                            server_policy_id
+                        ),
+                        rule_id="INV-SRZ-HYBRID-ROUTING-USES-SHARD-MAP",
+                    )
+                )
 
     required_registry_refs = (
         ("tools/xstack/sessionx/net_handshake.py", ("replication_registry", "anti_cheat_registry", "server_policy_registry")),
@@ -1038,6 +1104,79 @@ def _append_multiplayer_contract_invariant_findings(
                         rule_id="INV-AUTHORITATIVE-NO-TRUTH-TRANSMISSION",
                     )
                 )
+
+    srz_routing_rel = "src/net/srz/routing.py"
+    srz_routing_abs = os.path.join(repo_root, srz_routing_rel.replace("/", os.sep))
+    if not os.path.isfile(srz_routing_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=srz_routing_rel,
+                line_number=1,
+                snippet="",
+                message="SRZ routing module is missing",
+                rule_id="INV-SRZ-HYBRID-ROUTING-USES-SHARD-MAP",
+            )
+        )
+    else:
+        try:
+            srz_routing_text = open(srz_routing_abs, "r", encoding="utf-8").read()
+        except OSError:
+            srz_routing_text = ""
+        required_tokens = ("def route_intent_envelope", "shard_index(", "shard_map", "site_registry")
+        for token in required_tokens:
+            if token not in srz_routing_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=srz_routing_rel,
+                        line_number=1,
+                        snippet=token,
+                        message="SRZ routing must resolve targets from shard_map-driven metadata",
+                        rule_id="INV-SRZ-HYBRID-ROUTING-USES-SHARD-MAP",
+                    )
+                )
+
+    srz_coordinator_rel = "src/net/srz/shard_coordinator.py"
+    srz_coordinator_abs = os.path.join(repo_root, srz_coordinator_rel.replace("/", os.sep))
+    if not os.path.isfile(srz_coordinator_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=srz_coordinator_rel,
+                line_number=1,
+                snippet="",
+                message="SRZ shard coordinator module is missing",
+                rule_id="INV-NO-CROSS-SHARD-DIRECT-WRITES",
+            )
+        )
+    else:
+        try:
+            srz_coordinator_text = open(srz_coordinator_abs, "r", encoding="utf-8").read()
+        except OSError:
+            srz_coordinator_text = ""
+        if "owner_shard_id != target_shard_id" not in srz_coordinator_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=srz_coordinator_rel,
+                    line_number=1,
+                    snippet="owner_shard_id != target_shard_id",
+                    message="SRZ coordinator must enforce owner-target shard mismatch checks before commit",
+                    rule_id="INV-NO-CROSS-SHARD-DIRECT-WRITES",
+                )
+            )
+        if "refusal.net.cross_shard_unsupported" not in srz_coordinator_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=srz_coordinator_rel,
+                    line_number=1,
+                    snippet="refusal.net.cross_shard_unsupported",
+                    message="SRZ coordinator must refuse unsupported cross-shard direct writes deterministically",
+                    rule_id="INV-NO-CROSS-SHARD-DIRECT-WRITES",
+                )
+            )
 
 
 def _append_domain_foundation_invariant_findings(
