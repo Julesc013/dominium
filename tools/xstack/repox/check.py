@@ -141,6 +141,65 @@ DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
     "tools/domain/",
 )
 
+CONTRACT_TOKEN_ALLOWED_PATH_PREFIXES = (
+    "data/registries/domain_registry.json",
+    "data/registries/domain_contract_registry.json",
+    "data/registries/solver_registry.json",
+    "docs/scale/",
+    "schema/scale/",
+    "schemas/domain_foundation_registry.schema.json",
+    "schemas/domain_contract_registry.schema.json",
+    "schemas/solver_registry.schema.json",
+    "tools/domain/",
+    "tools/xstack/testx/tests/",
+)
+
+NEGATIVE_SCAN_ROOTS = (
+    "engine",
+    "game",
+    "client",
+    "server",
+    "tools",
+    "launcher",
+    "setup",
+)
+
+NEGATIVE_SCAN_EXCLUDED_PREFIXES = (
+    "tools/xstack/out/",
+    "tools/xstack/testdata/",
+    "tools/xstack/testx/tests/",
+    "tools/auditx/cache/",
+    "build/",
+    "dist/",
+    "docs/",
+    "data/",
+)
+
+NEGATIVE_SCAN_EXTENSIONS = {
+    ".c",
+    ".cc",
+    ".cpp",
+    ".h",
+    ".hh",
+    ".hpp",
+    ".py",
+    ".cmd",
+}
+
+SCHEMA_READ_ALLOWED_PREFIXES = (
+    "tools/xstack/compatx/",
+    "tools/xstack/schema_validate.py",
+    "tools/domain/",
+)
+
+SESSION_PIPELINE_ALLOWED_PREFIXES = (
+    "tools/xstack/sessionx/",
+    "tools/xstack/session_boot.py",
+    "tools/xstack/session_control.py",
+    "tools/xstack/session_server.py",
+    "tools/xstack/session_surface.py",
+)
+
 WORLDGEN_CONSTRAINT_REQUIRED_FILES = (
     "schemas/worldgen_constraints.schema.json",
     "schemas/worldgen_search_plan.schema.json",
@@ -286,6 +345,26 @@ def _scan_files(repo_root: str) -> List[str]:
                         out.append(rel)
         elif os.path.isfile(abs_path):
             out.append(_norm(os.path.relpath(abs_path, repo_root)))
+    return sorted(set(out))
+
+
+def _iter_negative_code_files(repo_root: str) -> List[str]:
+    out: List[str] = []
+    for root in NEGATIVE_SCAN_ROOTS:
+        abs_root = os.path.join(repo_root, root.replace("/", os.sep))
+        if not os.path.isdir(abs_root):
+            continue
+        for walk_root, dirs, files in os.walk(abs_root):
+            dirs[:] = sorted(dirs)
+            files = sorted(files)
+            for name in files:
+                _, ext = os.path.splitext(name.lower())
+                if ext not in NEGATIVE_SCAN_EXTENSIONS:
+                    continue
+                rel_path = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                if rel_path.startswith(NEGATIVE_SCAN_EXCLUDED_PREFIXES):
+                    continue
+                out.append(rel_path)
     return sorted(set(out))
 
 
@@ -1590,6 +1669,34 @@ def _append_domain_token_hardcode_findings(
     )
 
 
+def _append_contract_token_hardcode_findings(
+    findings: List[Dict[str, object]],
+    rel_path: str,
+    line_no: int,
+    line: str,
+    profile: str,
+) -> None:
+    if rel_path == "tools/xstack/repox/check.py":
+        return
+    rel_norm = _norm(rel_path)
+    if any(rel_norm.startswith(prefix) for prefix in CONTRACT_TOKEN_ALLOWED_PATH_PREFIXES):
+        return
+    pattern = r'["\']dom\.contract\.[A-Za-z0-9_.-]+["\']'
+    if not re.search(pattern, line):
+        return
+    severity = "warn" if profile == "FAST" else _invariant_severity(profile)
+    findings.append(
+        _finding(
+            severity=severity,
+            file_path=rel_path,
+            line_number=line_no,
+            snippet=line.strip()[:140],
+            message="hardcoded contract token literal detected outside registry-governed paths",
+            rule_id="INV-NO-HARDCODED-CONTRACT-TOKENS",
+        )
+    )
+
+
 def _append_strict_placeholder_findings(
     findings: List[Dict[str, object]],
     rel_path: str,
@@ -1660,6 +1767,80 @@ def _append_renderer_truth_boundary_findings(
         )
 
 
+def _append_negative_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    io_read_tokens = ("open(", "fopen(", "ifstream", "std::ifstream", "json.load(")
+    for rel_path in _iter_negative_code_files(repo_root):
+        rel_norm = _norm(rel_path)
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            lower = str(line).lower()
+
+            if rel_norm.startswith(("engine/", "game/")):
+                if ("packs/" in lower or "packs\\" in lower) and any(token in lower for token in io_read_tokens):
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="runtime code must not directly read pack files",
+                            rule_id="INV-NO-DIRECT-PACK-READS-IN-RUNTIME",
+                        )
+                    )
+
+            has_schema_token = ("schemas/" in lower) or ("schema/" in lower) or (".schema.json" in lower)
+            if has_schema_token and any(token in lower for token in io_read_tokens):
+                if not rel_norm.startswith(SCHEMA_READ_ALLOWED_PREFIXES):
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="schema file parsing must route through validation layer",
+                            rule_id="INV-NO-DIRECT-SCHEMA-PARSE-OUTSIDE-VALIDATION",
+                        )
+                    )
+
+            if rel_norm.startswith(("client/presentation/", "client/ui/")):
+                ui_bypass_tokens = (
+                    "boot_session_spec(",
+                    "create_session_spec(",
+                    "run_intent_script(",
+                    "run_process(",
+                    "execute_process(",
+                )
+                if any(token in lower for token in ui_bypass_tokens):
+                    if "command_graph" not in lower and "intent" not in lower:
+                        findings.append(
+                            _finding(
+                                severity=severity,
+                                file_path=rel_norm,
+                                line_number=line_no,
+                                snippet=str(line).strip()[:140],
+                                message="ui logic invocation must route through command graph/intents",
+                                rule_id="INV-UI-COMMAND-GRAPH-ONLY",
+                            )
+                        )
+
+            if rel_norm.startswith(("tools/launcher/", "tools/setup/", "launcher/", "setup/")):
+                if "add_argument(" in lower and re.search(r"--(from-stage|to-stage|stage-id)\b", lower):
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="session stage jump arguments are forbidden on launcher/setup surfaces",
+                            rule_id="INV-NO-SESSION-PIPELINE-BYPASS",
+                        )
+                    )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -1671,6 +1852,7 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
             _append_mode_flag_findings(findings, rel_path, line_no, line, token)
             _append_reserved_misuse_findings(findings, rel_path, line_no, line, token)
             _append_domain_token_hardcode_findings(findings, rel_path, line_no, line, token)
+            _append_contract_token_hardcode_findings(findings, rel_path, line_no, line, token)
             _append_constraint_hardcode_findings(findings, rel_path, line_no, line, token)
             _append_strict_placeholder_findings(findings, rel_path, line_no, line, token)
             _append_renderer_truth_boundary_findings(findings, rel_path, line_no, line, token)
@@ -1705,6 +1887,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_regression_lock_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_negative_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
