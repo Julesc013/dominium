@@ -1,0 +1,11 @@
+{
+  "intents": [
+    {
+      "intent_id": "intent.dev.teleport.galaxy",
+      "inputs": {
+        "target_object_id": "object.milky_way"
+      },
+      "process_id": "process.camera_teleport"
+    }
+  ]
+}
