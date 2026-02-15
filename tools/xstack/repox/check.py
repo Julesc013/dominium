@@ -264,6 +264,37 @@ REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
+CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
+CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
+    "Engine",
+    "Game",
+    "Client",
+    "Server",
+    "Launcher",
+    "Setup",
+    "Tools",
+    "Packs",
+    "Schemas",
+    "Registries",
+    "UI IR",
+    "Worldgen",
+    "SRZ",
+    "XStack (RepoX/TestX/AuditX/PerformX/CompatX/SecureX)",
+)
+CONSISTENCY_MATRIX_REQUIRED_COLUMNS = (
+    "State mutation authority",
+    "Artifact generation",
+    "Registry consumption",
+    "Schema validation",
+    "Capability enforcement",
+    "Determinism enforcement",
+    "Refusal emission",
+    "Packaging interaction",
+    "Versioning/BII stamping",
+    "Logging/run-meta",
+    "Derived artifact production",
+)
+
 RUNTIME_PATH_PREFIXES = (
     "engine/",
     "game/",
@@ -1545,6 +1576,65 @@ def _append_regression_lock_findings(
         )
 
 
+def _append_cross_system_matrix_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    matrix_abs = os.path.join(repo_root, CONSISTENCY_MATRIX_PATH.replace("/", os.sep))
+    if not os.path.isfile(matrix_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONSISTENCY_MATRIX_PATH,
+                line_number=1,
+                snippet="",
+                message="cross-system consistency matrix is missing",
+                rule_id="INV-CROSS-SYSTEM-MATRIX-PRESENT",
+            )
+        )
+        return
+    try:
+        content = open(matrix_abs, "r", encoding="utf-8").read()
+    except OSError:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONSISTENCY_MATRIX_PATH,
+                line_number=1,
+                snippet="",
+                message="unable to read cross-system consistency matrix",
+                rule_id="INV-CROSS-SYSTEM-MATRIX-PRESENT",
+            )
+        )
+        return
+    for system_name in CONSISTENCY_MATRIX_REQUIRED_SYSTEMS:
+        if str(system_name) not in content:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=CONSISTENCY_MATRIX_PATH,
+                    line_number=1,
+                    snippet=str(system_name),
+                    message="matrix is missing required system row '{}'".format(system_name),
+                    rule_id="INV-CROSS-SYSTEM-MATRIX-PRESENT",
+                )
+            )
+    for column_name in CONSISTENCY_MATRIX_REQUIRED_COLUMNS:
+        if str(column_name) not in content:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=CONSISTENCY_MATRIX_PATH,
+                    line_number=1,
+                    snippet=str(column_name),
+                    message="matrix is missing required responsibility column '{}'".format(column_name),
+                    rule_id="INV-CROSS-SYSTEM-MATRIX-PRESENT",
+                )
+            )
+
+
 def _append_forbidden_identifier_findings(
     findings: List[Dict[str, object]],
     rel_path: str,
@@ -1887,6 +1977,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_regression_lock_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_cross_system_matrix_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
