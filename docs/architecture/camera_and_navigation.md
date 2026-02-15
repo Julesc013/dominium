@@ -76,6 +76,7 @@ tools/xstack/session_script_run saves/<save_id>/session_spec.json tools/xstack/t
 Teleport resolution source is compiled registry data only:
 - `build/registries/astronomy.catalog.index.json`
 - `build/registries/site.registry.index.json`
+- `build/registries/ephemeris.registry.json` (object baseline positions)
 
 No raw pack reads are performed during process execution.
 
@@ -132,9 +133,15 @@ Reserved for future name-query flows:
   - resolves to site `frame_id` and deterministic position conversion.
 - `target_object_id`:
   - resolves to object `frame_id`
-  - default position = `+Z` at deterministic distance `max(1000, sphere_radius_mm * 2)` (or fallback `1_000_000 mm`).
+  - if ephemeris samples exist, base position uses the earliest deterministic sample for `body_id`
+  - final default position = `+Z` at deterministic distance `max(1000, sphere_radius_mm * 2)` (or fallback `1_000_000 mm`) offset from ephemeris base.
 - direct coordinates:
   - uses provided frame and transform fields verbatim after validation.
+
+## ROI Terrain Selection
+- Region management (`process.region_management_tick`) reads `build/registries/terrain.tile.registry.json`.
+- Tile candidates are sorted by `(z, x, y, tile_id)` and the selected prefix is persisted under `universe_state.performance_state.selected_terrain_tiles`.
+- Selection count is bounded by active region count and remains deterministic for identical inputs.
 
 ## Example Script Snippet
 ```json

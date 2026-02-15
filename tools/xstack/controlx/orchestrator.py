@@ -241,6 +241,8 @@ def _step_registry_compile(context: RunContext) -> Dict[str, object]:
         "build/registries/worldgen_constraints.registry.json",
         "build/registries/astronomy.catalog.index.json",
         "build/registries/site.registry.index.json",
+        "build/registries/ephemeris.registry.json",
+        "build/registries/terrain.tile.registry.json",
         "build/registries/ui.registry.json",
         "build/lockfile.json",
     ):

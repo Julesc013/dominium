@@ -29,6 +29,8 @@ Default output root: `build/registries/`
 - `worldgen_constraints.registry.json`
 - `astronomy.catalog.index.json`
 - `site.registry.index.json`
+- `ephemeris.registry.json`
+- `terrain.tile.registry.json`
 - `ui.registry.json`
 
 Default lockfile path:
@@ -71,6 +73,8 @@ Direct command equivalents:
    - `worldgen_constraints.registry.json`
    - `astronomy.catalog.index.json`
    - `site.registry.index.json`
+   - `ephemeris.registry.json`
+   - `terrain.tile.registry.json`
    - `ui.registry.json`
 6. Emit lockfile (`build/lockfile.json` by default).
 7. Store/reuse outputs through content-addressed cache.
@@ -100,6 +104,14 @@ Observation-gating fields emitted in v1:
 - `site.registry.index.json` rows include:
   - `sites[]` validated from `schemas/site_entry.schema.json`
   - `search_index` (`normalized_search_key -> sorted site_id[]`)
+- `ephemeris.registry.json` rows include:
+  - `tables[]` parsed from `entry_type: ephemeris_table_collection`
+  - required `provenance` validated by `schemas/derived_provenance.schema.json`
+  - deterministic `samples[]` ordering by `tick`
+- `terrain.tile.registry.json` rows include:
+  - `tiles[]` parsed from `entry_type: terrain_tile_pyramid`
+  - required `provenance` validated by `schemas/derived_provenance.schema.json`
+  - deterministic tile ordering by `(z, x, y, tile_id)`
 - `activation_policy.registry.json` rows include:
   - `policy_id`
   - `interest_radius_rules`
@@ -163,6 +175,7 @@ Cache behavior:
 - Required registry payload fields missing
 - Invalid astronomy/site/frame contribution payload shape
 - Missing `entry_type` arrays for `registry_entries` payloads
+- Missing or invalid `provenance` object for derived registry entries
 
 ## Domain Data Validation
 Registry compile validates domain data contributions in deterministic order:
@@ -173,6 +186,8 @@ Registry compile validates domain data contributions in deterministic order:
 5. `entry_type: budget_policy` -> payload validated against `schemas/budget_policy.schema.json`
 6. `entry_type: fidelity_policy` -> payload validated against `schemas/fidelity_policy.schema.json`
 7. `contrib_type: worldgen_constraints` -> payload validated against `schemas/worldgen_constraints.schema.json`
+8. `entry_type: ephemeris_table_collection` -> rows validated and normalized into `ephemeris.registry.json`
+9. `entry_type: terrain_tile_pyramid` -> rows validated and normalized into `terrain.tile.registry.json`
 
 Registry compile builds deterministic search maps by normalization:
 - lowercase
@@ -212,4 +227,7 @@ Registry compile builds deterministic search maps by normalization:
 - `schemas/activation_policy_registry.schema.json`
 - `schemas/budget_policy_registry.schema.json`
 - `schemas/fidelity_policy_registry.schema.json`
+- `schemas/ephemeris_registry.schema.json`
+- `schemas/terrain_tile_registry.schema.json`
+- `schemas/derived_provenance.schema.json`
 - `schemas/ui_registry.schema.json`
