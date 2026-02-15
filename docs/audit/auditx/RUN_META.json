@@ -1,12 +1,12 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": true,
-  "changed_paths_since_last": 3,
-  "generated_utc": "2026-02-14T17:18:10Z",
-  "graph_hash": "75d7c48ae8c288753abade9968fab95da9c6bf2f2bd0672eb343f12bea8fff4b",
-  "last_reviewed": "2026-02-14",
-  "output_format": "json",
+  "changed_only": false,
+  "changed_paths_since_last": 6,
+  "generated_utc": "2026-02-15T06:52:05Z",
+  "graph_hash": "a4bc6a473ca5ad9b2bf8bc1ce88302751c1fc03c81b95792564bee15180264dd",
+  "last_reviewed": "2026-02-15",
+  "output_format": "both",
   "platform": "windows",
   "python_version": "3.8.1",
   "recomputed_analyzers": [
@@ -39,5 +39,5 @@
     "C1"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-7bb944ef38ea1547"
+  "workspace_id": "ws-9c43ae0f17388d09"
 }

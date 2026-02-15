@@ -330,6 +330,26 @@ def _run_scan(args):
     return payload, 0
 
 
+def run_auditx_scan(
+    repo_root: str,
+    changed_only: bool = False,
+    output_root: str = "",
+    output_format: str = "both",
+) -> Dict[str, object]:
+    args = argparse.Namespace(
+        repo_root=repo_root,
+        changed_only=bool(changed_only),
+        output_root=str(output_root or ""),
+        format=str(output_format or "both"),
+    )
+    payload, code = _run_scan(args)
+    return {
+        "result": str(payload.get("result", "")),
+        "exit_code": int(code),
+        "payload": payload,
+    }
+
+
 def _print_scan_payload(payload, output_format):
     if output_format == "md":
         lines = [

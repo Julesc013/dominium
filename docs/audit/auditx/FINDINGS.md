@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-13
+Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
 
@@ -8,309 +8,369 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1445
-- Severities: INFO=200, RISK=325, VIOLATION=64, WARN=856
-- Categories: canon_drift=580, capability_bypass_smell=1, capability_misuse=119, derived_freshness=120, legacy_contamination=160, mode_flag_smell=64, ownership_boundary=4, reachability=80, schema_usage=160, semantic.capability_drift=5, semantic.schema_shadowing=120, semantic.workspace_contamination=1, terminology_misuse=1, ui_parity=30
+- Total findings: 1660
+- Severities: INFO=230, RISK=284, VIOLATION=145, WARN=1001
+- Categories: canon_drift=605, capability_bypass_smell=1, capability_misuse=139, derived_freshness=130, legacy_contamination=160, mode_flag_smell=64, ownership_boundary=8, reachability=80, schema_usage=160, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1, terminology_misuse=1, ui_parity=185
 
 ## Top Findings
 
-- `A1_REACHABILITY_ORPHANED:0001` WARN `reachability` (app/include/dominium/app/app_runtime.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0002` WARN `reachability` (app/include/dominium/app/compat_report.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0003` WARN `reachability` (app/include/dominium/app/readonly_adapter.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0004` WARN `reachability` (app/include/dominium/app/readonly_format.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0005` WARN `reachability` (app/include/dominium/app/ui_event_log.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0006` WARN `reachability` (app/include/dominium/app/ui_presentation.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0007` WARN `reachability` (app/src/app_runtime.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0008` WARN `reachability` (app/src/compat_report.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0009` WARN `reachability` (app/src/readonly_adapter.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0010` WARN `reachability` (app/src/readonly_format.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0011` WARN `reachability` (app/src/ui_event_log.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0012` WARN `reachability` (app/src/ui_presentation.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0013` WARN `reachability` (client/adapters/client_fs_adapter.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0014` WARN `reachability` (client/adapters/client_fs_adapter.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0015` WARN `reachability` (client/adapters/client_network_adapter.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0016` WARN `reachability` (client/adapters/client_network_adapter.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0017` WARN `reachability` (client/app/main_client.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0018` WARN `reachability` (client/core/client_command_bridge.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0019` WARN `reachability` (client/core/client_command_bridge.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0020` WARN `reachability` (client/core/client_commands_registry.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0021` WARN `reachability` (client/core/client_commands_registry.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0022` WARN `reachability` (client/core/client_models_options.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0023` WARN `reachability` (client/core/client_models_options.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0024` WARN `reachability` (client/core/client_models_server.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0025` WARN `reachability` (client/core/client_models_server.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0026` WARN `reachability` (client/core/client_models_world.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0027` WARN `reachability` (client/core/client_models_world.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0028` WARN `reachability` (client/core/client_state_machine.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0029` WARN `reachability` (client/core/client_state_machine.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0030` WARN `reachability` (client/core/session_artifacts.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0031` WARN `reachability` (client/core/session_artifacts.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0032` WARN `reachability` (client/core/session_pipeline.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0033` WARN `reachability` (client/core/session_pipeline.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0034` WARN `reachability` (client/core/session_refusal_codes.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0035` WARN `reachability` (client/core/session_refusal_codes.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0036` WARN `reachability` (client/core/session_stage_registry.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0037` WARN `reachability` (client/core/session_stage_registry.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0038` WARN `reachability` (client/gui/client_app_win32.cpp)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0039` WARN `reachability` (client/input/client_input_bindings.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0040` WARN `reachability` (client/input/client_input_bindings.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0041` WARN `reachability` (client/modes/client_mode_cli.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0042` WARN `reachability` (client/modes/client_mode_cli.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0043` WARN `reachability` (client/modes/client_mode_gui.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0044` WARN `reachability` (client/modes/client_mode_gui.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0045` WARN `reachability` (client/modes/client_mode_tui.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0046` WARN `reachability` (client/modes/client_mode_tui.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0047` WARN `reachability` (client/observability/readonly_view_model.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0048` WARN `reachability` (client/observability/readonly_view_model.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0049` WARN `reachability` (client/presentation/frame_graph_builder.cpp)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0050` WARN `reachability` (client/presentation/frame_graph_builder.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0051` WARN `reachability` (client/presentation/render_prep_system.cpp)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0052` WARN `reachability` (client/presentation/render_prep_system.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0053` WARN `reachability` (client/shell/client_shell.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0054` WARN `reachability` (client/shell/client_shell.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0055` WARN `reachability` (client/ui/client_ui_compositor.c)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0056` WARN `reachability` (client/ui/client_ui_compositor.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0057` WARN `reachability` (dominium/game_api.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0058` WARN `reachability` (domino/core.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0059` WARN `reachability` (engine/include/domino/abi.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0060` WARN `reachability` (engine/include/domino/agent.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0061` WARN `reachability` (engine/include/domino/app/runtime.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0062` WARN `reachability` (engine/include/domino/app/startup.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0063` WARN `reachability` (engine/include/domino/audio.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0064` WARN `reachability` (engine/include/domino/authority.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0065` WARN `reachability` (engine/include/domino/baseline.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0066` WARN `reachability` (engine/include/domino/build_info.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0067` WARN `reachability` (engine/include/domino/canvas.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0068` WARN `reachability` (engine/include/domino/capability.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0069` WARN `reachability` (engine/include/domino/caps.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0070` WARN `reachability` (engine/include/domino/cli/cli.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0071` WARN `reachability` (engine/include/domino/compat.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0072` WARN `reachability` (engine/include/domino/compat_modes.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0073` WARN `reachability` (engine/include/domino/control.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0074` WARN `reachability` (engine/include/domino/core.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0075` WARN `reachability` (engine/include/domino/core/d_tlv.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0076` WARN `reachability` (engine/include/domino/core/d_tlv_kv.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0077` WARN `reachability` (engine/include/domino/core/det_order.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0078` WARN `reachability` (engine/include/domino/core/det_reduce.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0079` WARN `reachability` (engine/include/domino/core/dom_deterministic_math.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0080` WARN `reachability` (engine/include/domino/core/dom_ledger.h)
-  - No non-test or non-doc incoming references found.
-  - Likely orphaned or prototype leakage candidate.
-- `A2_OWNERSHIP_BOUNDARY:0001` RISK `ownership_boundary` (client/app/main_client.c)
-  - Client path appears to combine install tokens with mutation operations.
-  - Client should remain presentation-only for install mutation.
-- `A2_OWNERSHIP_BOUNDARY:0002` RISK `ownership_boundary` (client/shell/client_shell.c)
-  - Client path appears to combine install tokens with mutation operations.
-  - Client should remain presentation-only for install mutation.
-- `A2_OWNERSHIP_BOUNDARY:0003` RISK `ownership_boundary` (launcher/cli/launcher_ui_shell.c)
-  - Launcher path appears to directly mutate install-managed artifacts.
-  - Setup should be the install mutation authority.
-- `A2_OWNERSHIP_BOUNDARY:0004` WARN `ownership_boundary` (libs/appcore/ui_bind/ui_command_binding_table.h)
-  - UI-related file references command IDs but no dispatcher token was found.
-  - Potential UI bypass of canonical command dispatcher.
-- `A2_SCHEMA_SHADOWING:0001` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0002` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/fields.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.field
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0003` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/topology_nodes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0004` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0005` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0006` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/institutions.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0007` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/processes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0008` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0009` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.scenarios.minimal/content/scenarios.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0010` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.scenarios.minimal/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0011` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0012` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/content/topology_nodes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0013` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0014` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0015` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/content/topology_nodes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0016` WARN `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
+- `A4_DERIVED_ARTIFACT_CONTRACT:0001` VIOLATION `A4_DERIVED_ARTIFACT_CONTRACT` `semantic.derived_artifact_contract` (docs/audit/auditx/FINDINGS.json)
+  - Canonical artifact contains forbidden run-meta fields.
+  - Sample keys: findings[0].created_utc, findings[1].created_utc, findings[2].created_utc, findings[3].created_utc, findings[4].created_utc
+- `A7_LEGACY_CONTAMINATION:0001` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/README.md
+- `A7_LEGACY_CONTAMINATION:0002` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/engine_has_launcher_module/launcher/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0003` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_common/common/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0004` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/CMakeLists.runtime.txt
+- `A7_LEGACY_CONTAMINATION:0005` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0006` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/README.md
+- `A7_LEGACY_CONTAMINATION:0007` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/SPEC_COMMANDS.md
+- `A7_LEGACY_CONTAMINATION:0008` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/SPEC_CONTENT.md
+- `A7_LEGACY_CONTAMINATION:0009` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/SPEC_REPLAY.md
+- `A7_LEGACY_CONTAMINATION:0010` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/SPEC_RUNTIME.md
+- `A7_LEGACY_CONTAMINATION:0011` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/SPEC_SAVE.md
+- `A7_LEGACY_CONTAMINATION:0012` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/SPEC_UI_FLOW.md
+- `A7_LEGACY_CONTAMINATION:0013` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/_legacy/sdk/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0014` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/cli/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0015` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/cli/server/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0016` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/core/client/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0017` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/core/client/input/default_bindings.json
+- `A7_LEGACY_CONTAMINATION:0018` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/gui/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0019` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/gui/dom_sdl/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0020` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned/legacy_source_game/game/rules/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0021` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/_orphaned_stage2/tools_core/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0022` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/data/tools_demo/README.txt
+- `A7_LEGACY_CONTAMINATION:0023` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_core_dominium/README.md
+- `A7_LEGACY_CONTAMINATION:0024` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_core_launcher/README.md
+- `A7_LEGACY_CONTAMINATION:0025` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0026` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/decor/compile/README.md
+- `A7_LEGACY_CONTAMINATION:0027` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/decor/model/README.md
+- `A7_LEGACY_CONTAMINATION:0028` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/render/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0029` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/render/api/ui/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0030` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/sim/_legacy/core_sim/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0031` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/sim/bus/README.md
+- `A7_LEGACY_CONTAMINATION:0032` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/sim/know/README.md
+- `A7_LEGACY_CONTAMINATION:0033` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/sim/prop/README.md
+- `A7_LEGACY_CONTAMINATION:0034` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/sim/sense/README.md
+- `A7_LEGACY_CONTAMINATION:0035` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/sim/vis/README.md
+- `A7_LEGACY_CONTAMINATION:0036` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/struct/compile/README.md
+- `A7_LEGACY_CONTAMINATION:0037` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/struct/model/README.md
+- `A7_LEGACY_CONTAMINATION:0038` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/struct/phys/README.md
+- `A7_LEGACY_CONTAMINATION:0039` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/system/core/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0040` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/system/core/audio/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0041` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/system/core/base/dom_core/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0042` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/system/core/base/shared/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0043` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/system/plat/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0044` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/system/plat/windows/win32/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0045` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/trans/compile/README.md
+- `A7_LEGACY_CONTAMINATION:0046` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/ui_codegen/tests/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0047` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/ui_ir/tests/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0048` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/engine_modules_engine/engine/world/domain/README.md
+- `A7_LEGACY_CONTAMINATION:0049` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/launcher_core_launcher/launcher/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0050` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/launcher_core_launcher/launcher/core/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0051` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/launcher_core_launcher/launcher/core/README_launcher_core.md
+- `A7_LEGACY_CONTAMINATION:0052` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0053` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0054` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/linux/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0055` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/linux/package/README.md
+- `A7_LEGACY_CONTAMINATION:0056` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/linux/package/deb/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0057` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/linux/package/pacman/README.md
+- `A7_LEGACY_CONTAMINATION:0058` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/linux/package/rpm/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0059` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/linux/package/tarball/LAYOUT.md
+- `A7_LEGACY_CONTAMINATION:0060` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/linux/package/tarball/README.md
+- `A7_LEGACY_CONTAMINATION:0061` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/macosx/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0062` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/macosx/README.md
+- `A7_LEGACY_CONTAMINATION:0063` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json
+- `A7_LEGACY_CONTAMINATION:0064` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Assets.xcassets/Contents.json
+- `A7_LEGACY_CONTAMINATION:0065` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/README_XCODE.md
+- `A7_LEGACY_CONTAMINATION:0066` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/steam/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0067` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/winnt/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0068` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/winnt/package/exe/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0069` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs/README_VS.md
+- `A7_LEGACY_CONTAMINATION:0070` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs/launch.vs.json
+- `A7_LEGACY_CONTAMINATION:0071` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/winnt/package/msi/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0072` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/adapters/winnt/wix/README.md
+- `A7_LEGACY_CONTAMINATION:0073` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/core/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0074` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/tests/CMakeLists.txt
+- `A7_LEGACY_CONTAMINATION:0075` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/tests/fixtures/manifests/conflict.json
+- `A7_LEGACY_CONTAMINATION:0076` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/tests/fixtures/manifests/minimal.json
+- `A7_LEGACY_CONTAMINATION:0077` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/tests/fixtures/manifests/upgrade_v1.json
+- `A7_LEGACY_CONTAMINATION:0078` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/tests/fixtures/manifests/upgrade_v2.json
+- `A7_LEGACY_CONTAMINATION:0079` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/tests/fixtures/payloads/base/bin/launcher.txt
+- `A7_LEGACY_CONTAMINATION:0080` VIOLATION `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/auditx/cache/vs2026/state.json)
+  - Canonical code path imports/includes a legacy path.
+  - Edge: tools/auditx/cache/vs2026/state.json -> legacy/setup_core_setup/setup/tests/fixtures/payloads/base/packs/pack.txt
+- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fc8358ec83405db/auditx/entries/6585b5a54ee7182cf00be45d3ff185a3c3fe56009c35917cdd3932154dedc9f4.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0002` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-7bb944ef38ea1547/artifacts/repox_runner/proof_manifest.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0003` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-7bb944ef38ea1547/repox_runner/9535adbdc0f7acaecbf052e8b1c04413ef2f816a4c76327dcd996d47aef5ec5a.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0004` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-9c43ae0f17388d09/auditx/entries/33a11328dff9a2912ab1ef68d06b7cf662c05f8114cf55b73191d86ea483aabb.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0005` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-9c43ae0f17388d09/auditx/entries/834f187e42fa7ce6498378fae8289a6b8bf8e750d4f762f0f0edd085f2527981.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0006` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-9c43ae0f17388d09/auditx/entries/9adddc3063a3a1a6d947c4227cbbbce819cf7e95d7c10d18752e3fe282f5807f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0007` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-9c43ae0f17388d09/auditx/entries/9b0b04b32c90968f48a0242abd89b106b7eeac525c777a83c8ec31d772cbb40a.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0008` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-9c43ae0f17388d09/auditx/entries/b27603ffd2278b00f95e87cdec5ff24001293fd019dfd57b37656bbb8673fbc8.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0009` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-9c43ae0f17388d09/auditx/entries/ecb859c1c62e8738783dac5c514bf64a8c50a4b1cf6ff48f071bd14fee648c10.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0010` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-9c43ae0f17388d09/auditx/entries/f09c8589ec4c915fa763d56a88504412fb313266926eb52036018e65aeab3900.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0011` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (data/registries/glossary.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0012` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tests/systemic/test_future_case_stress_suite.py)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0013` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/00039f76f9f9aa7612e2ac3f5a5661ef0afdfb00d60ee7df3bfe4765b0e4eefe.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0014` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/00eb8f6b63c89cffb2d004e3443eac5b795622614c250fdcd357b9caa9a3aff7.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0015` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/01ad6e641ca1fa9bb6d37309dd9aeb6e67a692d893139456b7201f867fe3db16.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0016` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/042aeda4914b6e011cfa9f1e18b04954fe505c17e8f73eacafcbeb0b2e3086ab.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0017` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/04b3f67e5b444f43b652f928f18db32c53e6490a7591a3f9d8d791d6b0086fbb.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0018` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/07c6c4a83a0b5e668c7696db8f9586697bb24b96bf09816892e3fe128f65eaca.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0019` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/0aeb0ae238c47c7da5f89dd5bb020f646d06d4a0ffaefc1696a0fca5a98e5f0e.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0020` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/0c21c569affeb1641c44b42535c24bbc64e222e255b385d22693e93934589dad.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0021` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/1140891f05cf80c35a36d0196520c8e2a02d83fc89d295c0394e0b977af64518.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0022` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/11aec9d3490898a7ed47b7d8b3deeb33f56f25075d9099f39c1b5453f364414b.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0023` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/12d4551049798ee3c73216b6ccb5c90c775c632100ebd4c4c9a2fb4adccb2b57.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0024` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/132c7e7692cfe6fd4ae720a5b6c8f5997d85b981e6df420affe582fdabc2c2b8.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0025` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/15638bc929af2db2453bb6c469c88587369ae129276e755a42f6b40c96746368.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0026` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/16efbe2fac7c24855fc8b2d2bc3bc1976ac3d65fcd8b61087496777f4530410a.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0027` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/17c97b64ca8dbe0a2087e10a13b587ba34c68686785dfce2d81c790a68cc7a1f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0028` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/192c385359ae7c670698e38ea5cc7a251ddaaf83d0d8884a2ee5d2dffc49cd18.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0029` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/1b8cbf80fc2bb2d703c3026b2f036820b795a0b01f6893e4470975eeac32f493.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0030` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/1c70aad062ba60ed6cd996a16696528e8320d5e1c46d0160867539aa25639613.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0031` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/217354f05dacf779cce2d39903c46a7ff87903b4befae2ed5b837970a74fd93f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0032` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/2245182dec2ec17c8e5cf0385b8ed5e05dc772d772063dacc862459d1beb474f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0033` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/23ef523bb479b401bb105a354d78546130fe1af34b406709df092b7ccb83d22d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0034` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/2dca8b8cfb402a0d8f727e00e0442485bcf711f037e9225879665d04ea0d0bb3.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0035` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/2e018b71b2f1fb26c6ccd94da5b9612a2ac52a5cd51cd164df228a487068ef2d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0036` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/322ea733fc7a85183baf548537929dce82c83cbd318d57ddb88a67fc326f040a.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0037` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/34a02efd9b04bed9e9040013a153b178e307aa5c3becfa1a1d9c900ad08bc4d6.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0038` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/3607ca0e5b0ce9a71f264e6b0c76d649ef21daf54ebe3f5c9a4ce10dcb41c9bb.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0039` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/auditx/cache/vs2026/entries/36ddd04f0986326f40d76d457c0127dbe4806087e855e04d7973ee4c937620e5.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
