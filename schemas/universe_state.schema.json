@@ -482,6 +482,54 @@
               }
             }
           }
+        },
+        "solver_binding_trace": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "solver_id",
+              "transition",
+              "domain_ids",
+              "contract_ids",
+              "transition_support",
+              "source"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "solver_id": {
+                "type": "string"
+              },
+              "transition": {
+                "type": "string",
+                "enum": [
+                  "collapse",
+                  "expand"
+                ]
+              },
+              "domain_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contract_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "transition_support": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "source": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     }

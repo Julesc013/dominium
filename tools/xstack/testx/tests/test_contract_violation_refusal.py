@@ -8,6 +8,8 @@ import sys
 
 TEST_ID = "testx.domain.contract_violation_refusal"
 TEST_TAGS = ["strict", "session", "repox"]
+DOMAIN_PREFIX = "dom.domain."
+CONTRACT_PREFIX = "dom.contract."
 
 
 def _state_fixture() -> dict:
@@ -89,8 +91,8 @@ def _policy_fixture() -> dict:
             "records": [
                 {
                     "solver_id": "solver.expand.local_high_fidelity",
-                    "domain_ids": ["dom.domain.orbital.mechanics"],
-                    "contract_ids": ["dom.contract.deterministic_transition"],
+                    "domain_ids": [DOMAIN_PREFIX + "orbital.mechanics"],
+                    "contract_ids": [CONTRACT_PREFIX + "deterministic_transition"],
                     "resolution_tags": ["micro"],
                     "cost_class": "high",
                     "transition_support": ["collapse"],
@@ -103,8 +105,8 @@ def _policy_fixture() -> dict:
                 },
                 {
                     "solver_id": "solver.collapse.macro_capsule",
-                    "domain_ids": ["dom.domain.gravity.macro"],
-                    "contract_ids": ["dom.contract.deterministic_transition"],
+                    "domain_ids": [DOMAIN_PREFIX + "gravity.macro"],
+                    "contract_ids": [CONTRACT_PREFIX + "deterministic_transition"],
                     "resolution_tags": ["macro"],
                     "cost_class": "low",
                     "transition_support": ["collapse"],
