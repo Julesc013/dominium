@@ -5,7 +5,7 @@
   "bundle_id": "bundle.base.lab",
   "scenario_id": "scenario.lab.galaxy_nav",
   "script_path": "tools/xstack/testdata/session/script.region_traversal.fixture.json",
-  "composite_hash_anchor": "e6d1b9a000c58fb0f66ff43987eb8fd8347e2d5a1beeb9b701f8a7388165b829",
+  "composite_hash_anchor": "b8e28e232aa136c724252c14ac8e3c205d7d7c99a997c591c5cfe7d36e980ce5",
   "pack_lock_hash": "83e022ebf2ffc2686d0c2b8854b24b3febd5c80edbe06b3f4a0931575d8eb1b8",
   "registry_hashes": {
     "activation_policy_registry_hash": "6398ffcaf26b22584f69f629ab900dd5b724a0100f8e1b1152b255ed3c4cf2f9",
@@ -19,7 +19,9 @@
     "lens_registry_hash": "ea487768e8912b1036ee7005e8f7c87c814a404312148493d9827514c9324b59",
     "net_replication_policy_registry_hash": "2054bc2aa0d60c063c16b626fdb268238dd87cefba883a00ee7675cd4b47b598",
     "net_resync_strategy_registry_hash": "2c3240a90d1c6f94ae6c6de674c2badb116f3ebd8a8dd05eef5fd3c6bbfe4f83",
-    "net_server_policy_registry_hash": "d33543b7f0144905a2e1afa7df215da3e589b4170f4cfed789da364bb8ad0ddc",
+    "net_server_policy_registry_hash": "b2e34ab6ff7ed1121658f4f99b8428328d5ff93b5c27e73a4fcee48fe8e652be",
+    "perception_interest_policy_registry_hash": "b78732c892d069b9cabd577c978655b541c59d7828b82042edbed706e1e43efc",
+    "shard_map_registry_hash": "a1ac166a2c2e78ebfbc5a9327ab301ac5a3d1a3f2d24d057b038e07082e41d7d",
     "anti_cheat_policy_registry_hash": "4b1ff35bfa22c06cd27d089b3dd0b9bc115fbcba4471915ad1570a2192c0223e",
     "anti_cheat_module_registry_hash": "a090a2e632bf1c743bccd6387d8fae74f414fde0aca5869c8c8888b184f08bc9",
     "site_registry_index_hash": "bd58943c4947f58fe1598786714634499ed18bb1570c34ba72edaef6f7973adb",
@@ -29,7 +31,7 @@
   },
   "roi_switch_lock": {
     "final_state_hash": "347e6b16fc202542db2a6c9521b97b2990b3fb7030be4eebbc4cdf8a977716b1",
-    "final_tick_hash": "2f0da38b0a6575c4aea234d4111679cb52e8bd9051a5f939ed875b9f49fb8ff7",
+    "final_tick_hash": "a5da165989d8557f587a28ac4c2edaaa9d14f47b9bc3b98b187fa436fa6ae7db",
     "transition_policy": "deterministic_process_order"
   },
   "update_policy": {

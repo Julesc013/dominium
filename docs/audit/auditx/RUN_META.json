@@ -3,8 +3,8 @@
   "cache_mode": "incremental",
   "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-15T15:24:49Z",
-  "graph_hash": "cfbcc471b5ccafac79abb6adea285f36544e83e0a493c007f0065fae10a7b667",
+  "generated_utc": "2026-02-15T19:10:17Z",
+  "graph_hash": "e929230318775d4d3e4987ee5638b5c4a8a30ca95b90a1e79c6ea9434a50bad2",
   "last_reviewed": "2026-02-15",
   "output_format": "both",
   "platform": "windows",
@@ -40,8 +40,11 @@
     "D2_SEED_POLICY",
     "E1_NET_POLICY_DRIFT",
     "E2_TRUTH_OVER_NET_SMELL",
-    "E3_HANDSHAKE_POLICY_BYPASS_SMELL"
+    "E3_HANDSHAKE_POLICY_BYPASS_SMELL",
+    "E4_AUTHORITATIVE_TRUTH_LEAK",
+    "E5_CROSS_SHARD_WRITE_SMELL",
+    "E6_SHARD_MAP_DRIFT"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-32364addcb8953df"
+  "workspace_id": "ws-4e0ade736fc66f09"
 }
