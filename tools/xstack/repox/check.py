@@ -180,6 +180,21 @@ AUDITX_RUNTIME_PROBE_OUTPUT_ROOT = ".xstack_cache/auditx/repox_probe"
 AUDITX_HIGH_RISK_CONFIDENCE = 0.85
 AUDITX_HIGH_RISK_THRESHOLD = 15
 
+CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
+CI_LANE_REQUIRED_JOBS = (
+    "ci-dev",
+    "ci-verify",
+    "ci-dist",
+)
+CI_DEV_FORBIDDEN_PACKAGING_TOKENS = (
+    "tools/setup/build",
+    "tools/setup/build.py",
+    "build_dist_layout",
+    "packaging.verify",
+    "dist/",
+    "build/dist",
+)
+
 RUNTIME_PATH_PREFIXES = (
     "engine/",
     "game/",
@@ -1260,6 +1275,84 @@ def _append_auditx_invariant_findings(
         )
 
 
+def _append_ci_lane_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    workflow_path = os.path.join(repo_root, CI_LANE_WORKFLOW_PATH.replace("/", os.sep))
+    if not os.path.isfile(workflow_path):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CI_LANE_WORKFLOW_PATH,
+                line_number=1,
+                snippet="",
+                message="required CI lane workflow is missing",
+                rule_id="INV-NO-PACKAGING-FROM-DEV-LANE",
+            )
+        )
+        return
+
+    try:
+        lines = open(workflow_path, "r", encoding="utf-8").read().splitlines()
+    except OSError:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CI_LANE_WORKFLOW_PATH,
+                line_number=1,
+                snippet="",
+                message="unable to read CI lane workflow",
+                rule_id="INV-NO-PACKAGING-FROM-DEV-LANE",
+            )
+        )
+        return
+
+    lowered = "\n".join(lines).lower()
+    for job_id in CI_LANE_REQUIRED_JOBS:
+        marker = "\n  {}:".format(job_id)
+        if marker not in ("\n" + lowered):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=CI_LANE_WORKFLOW_PATH,
+                    line_number=1,
+                    snippet=job_id,
+                    message="missing required CI lane job '{}'".format(job_id),
+                    rule_id="INV-NO-PACKAGING-FROM-DEV-LANE",
+                )
+            )
+
+    start = -1
+    end = len(lines)
+    for idx, line in enumerate(lines):
+        if line.strip().lower() == "ci-dev:" and line.startswith("  "):
+            start = idx
+            break
+    if start == -1:
+        return
+    for idx in range(start + 1, len(lines)):
+        line = lines[idx]
+        if re.match(r"^\s{2}[A-Za-z0-9_-]+:\s*$", line):
+            end = idx
+            break
+    dev_block = "\n".join(lines[start:end]).lower()
+    for token in CI_DEV_FORBIDDEN_PACKAGING_TOKENS:
+        if str(token).lower() in dev_block:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=CI_LANE_WORKFLOW_PATH,
+                    line_number=start + 1,
+                    snippet=str(token),
+                    message="ci-dev lane must not invoke packaging token '{}'".format(token),
+                    rule_id="INV-NO-PACKAGING-FROM-DEV-LANE",
+                )
+            )
+
+
 def _append_forbidden_identifier_findings(
     findings: List[Dict[str, object]],
     rel_path: str,
@@ -1489,6 +1582,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_auditx_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_ci_lane_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
