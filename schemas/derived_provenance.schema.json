@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Derived Provenance Schema",
+  "version": "1.0.0",
+  "description": "Canonical provenance header contract required for deterministic derived artifacts.",
+  "x-doc-ref": [
+    "docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "type": "object",
+  "required": [
+    "artifact_type_id",
+    "source_pack_id",
+    "source_hash",
+    "generator_tool_id",
+    "generator_tool_version",
+    "schema_version",
+    "input_merkle_hash",
+    "pack_lock_hash",
+    "deterministic"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type_id": {
+      "type": "string"
+    },
+    "source_pack_id": {
+      "type": "string"
+    },
+    "source_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generator_tool_id": {
+      "type": "string"
+    },
+    "generator_tool_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "input_merkle_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic": {
+      "type": "boolean",
+      "const": true
+    }
+  },
+  "examples": [
+    {
+      "artifact_type_id": "artifact.ephemeris.table",
+      "source_pack_id": "org.dominium.sol.spice",
+      "source_hash": "18c9b8c7451aaaea0001eb96e45a2a8d9a09003011bf57be3bf9e3d1fb363e1e",
+      "generator_tool_id": "tools/data/tool_spice_import",
+      "generator_tool_version": "1.0.0",
+      "schema_version": "1.0.0",
+      "input_merkle_hash": "295d7cb4ee9f47de5ec8c889b959a84572f22e5ebb535efb068b902e334be28b",
+      "pack_lock_hash": "placeholder.pack_lock_hash",
+      "deterministic": true
+    }
+  ]
+}
+
