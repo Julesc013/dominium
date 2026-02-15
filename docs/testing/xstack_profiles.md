@@ -42,6 +42,7 @@ Related lifecycle commands:
 - `tools/setup/build --bundle bundle.base.lab --out dist`
 - `tools/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json`
 - `tools/launcher/launch create-session --save-id <id> --bundle bundle.base.lab --pipeline-id pipeline.client.default`
+- `tools/xstack/ui_bind --check`
 
 ## Deterministic Step Order
 Each profile executes deterministic step IDs:
@@ -58,6 +59,7 @@ Each profile executes deterministic step IDs:
 11. `11.performx.check`
 12. `12.securex.check`
 13. `13.packaging.verify`
+14. `14.ui_bind.check`
 
 `duration_ms` is run-meta and does not affect pass/fail/refusal semantics.
 
@@ -112,6 +114,9 @@ Scope:
 - CLI/TUI/GUI stage parity checks:
   - `testx.session.stage_parity.status_surfaces`
   - `testx.session.stage_parity.transitions_surfaces`
+- UI binding check:
+  - `tools/xstack/ui_bind --check`
+  - `testx.ui.bind.check`
 
 ## FULL
 Scope:

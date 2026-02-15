@@ -22,6 +22,7 @@ from tools.xstack.repox import run_repox_check
 from tools.xstack.securex import run_securex_check
 from tools.xstack.sessionx import boot_session_spec, create_session_spec
 from tools.xstack.testx import run_testx_suite
+from tools.xstack.ui_bind import run_ui_bind_check
 
 from .types import RunContext
 from .utils import ensure_dir, file_sha256, norm, now_utc_iso, read_json, write_json
@@ -533,6 +534,31 @@ def _step_packaging_verify(context: RunContext) -> Dict[str, object]:
     }
 
 
+def _step_ui_bind(context: RunContext) -> Dict[str, object]:
+    checked = run_ui_bind_check(
+        repo_root=context.repo_root,
+        ui_registry_path="build/registries/ui.registry.json",
+    )
+    if checked.get("result") != "complete":
+        return {
+            "status": "refusal",
+            "message": "ui_bind check refused",
+            "findings": [
+                {
+                    "severity": "refusal",
+                    "code": str((checked.get("refusal") or {}).get("reason_code", "REFUSE_UI_BIND_CHECK_FAILED")),
+                    "message": str((checked.get("refusal") or {}).get("message", "")),
+                    "file_path": str(checked.get("ui_registry_path", "build/registries/ui.registry.json")),
+                }
+            ],
+        }
+    return {
+        "status": "pass",
+        "message": "ui_bind check passed (checked_windows={})".format(int(checked.get("checked_windows", 0) or 0)),
+        "findings": [],
+    }
+
+
 def _step_performx(context: RunContext) -> Dict[str, object]:
     return run_performx_check(repo_root=context.repo_root, profile=context.profile)
 
@@ -713,6 +739,7 @@ def _step_definitions() -> List[Tuple[str, str, StepFn]]:
         ("11.performx.check", "performx", _step_performx),
         ("12.securex.check", "securex", _step_securex),
         ("13.packaging.verify", "packagingx", _step_packaging_verify),
+        ("14.ui_bind.check", "ui_bind", _step_ui_bind),
     ]
 
 
