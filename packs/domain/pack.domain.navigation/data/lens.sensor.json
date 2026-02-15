@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "lens_id": "lens.diegetic.sensor",
+  "lens_type": "diegetic",
+  "transform_description": "Constrain perception to onboard navigation sensors and telemetry.",
+  "required_entitlements": [
+    "session.boot",
+    "ui.window.lab.nav"
+  ],
+  "epistemic_constraints": {
+    "visibility_policy": "sensor_limited",
+    "max_resolution_tier": 2
+  }
+}

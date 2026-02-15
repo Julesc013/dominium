@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "bundle_id": "bundle.base.lab",
+  "description": "Baseline Lab Galaxy bundle for deterministic out-of-game session bootstrap.",
+  "pack_ids": [
+    "pack.core.runtime",
+    "pack.core.camera",
+    "policy.activation.default_lab",
+    "policy.budget.default_lab",
+    "policy.fidelity.default_lab",
+    "pack.law.observe_only",
+    "law.lab.unrestricted",
+    "pack.domain.navigation",
+    "astronomy.milky_way",
+    "astronomy.sol",
+    "planet.earth",
+    "pack.experience.lab_galaxy",
+    "profile.lab.developer"
+  ],
+  "optional_pack_ids": [
+    "pack.tool.inspector",
+    "pack.tool.navigation",
+    "pack.tool.time_control",
+    "pack.tool.log_viewer"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.navigator",
+  "title": "Navigator",
+  "required_entitlements": [
+    "entitlement.teleport"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "navigator.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "navigator.hierarchy",
+        "type": "tree",
+        "label": "Hierarchy",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "navigation.hierarchy"
+        }
+      },
+      {
+        "widget_id": "navigator.selection",
+        "type": "text",
+        "label": "Selection",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "navigation.selection_summary"
+        }
+      },
+      {
+        "widget_id": "navigator.teleport_selected",
+        "type": "button",
+        "label": "Teleport to Selected",
+        "action_binding": {
+          "intent_id": "intent.ui.navigator.teleport",
+          "process_id": "process.camera_teleport",
+          "payload_template": {
+            "target_object_id": "${selection.object_id}"
+          }
+        }
+      }
+    ]
+  }
+}

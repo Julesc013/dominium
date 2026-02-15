@@ -1,0 +1,17 @@
+{
+  "asset_bundle_id": "assets.tool.inspector_icons",
+  "version": "1.0.0",
+  "astronomy_entries": [
+    {
+      "object_id": "astro.catalog.sol",
+      "kind": "star_system",
+      "search_keys": [
+        "sol",
+        "sun"
+      ]
+    }
+  ],
+  "files": [
+    "icon_inspect.png"
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "entry_type": "astronomy_catalog_collection",
+  "entries": [
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.sol_system",
+      "kind": "system",
+      "parent_id": "object.milky_way.arm.orion",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "system_type": "planetary"
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 45000000000000000
+      },
+      "search_keys": [
+        "sol",
+        "sol system",
+        "solar system"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.sol",
+      "kind": "star",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.sol.sun.body_fixed",
+      "physical_params": {
+        "mass_kg": 1988400000000000000000000000000,
+        "luminosity_w": 382800000000000000000000000
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 696340000000
+      },
+      "search_keys": [
+        "sol",
+        "sun"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.mercury",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "mean_radius_km": 2439
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 2439000000
+      },
+      "search_keys": [
+        "mercury"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.venus",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "mean_radius_km": 6051
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 6051000000
+      },
+      "search_keys": [
+        "venus"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.earth",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.earth.inertial",
+      "physical_params": {
+        "mean_radius_km": 6371,
+        "owner_pack": "planet.earth"
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 6371000000
+      },
+      "search_keys": [
+        "earth",
+        "terra"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.mars",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "mean_radius_km": 3389
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 3389000000
+      },
+      "search_keys": [
+        "mars"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.jupiter",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "mean_radius_km": 69911
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 69911000000
+      },
+      "search_keys": [
+        "jupiter"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.saturn",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "mean_radius_km": 58232
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 58232000000
+      },
+      "search_keys": [
+        "saturn"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.uranus",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "mean_radius_km": 25362
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 25362000000
+      },
+      "search_keys": [
+        "uranus"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.neptune",
+      "kind": "planet",
+      "parent_id": "object.sol_system",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "mean_radius_km": 24622
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 24622000000
+      },
+      "search_keys": [
+        "neptune"
+      ],
+      "pack_id": "astronomy.sol"
+    },
+    {
+      "schema_version": "1.0.0",
+      "object_id": "object.luna",
+      "kind": "moon",
+      "parent_id": "object.earth",
+      "frame_id": "frame.sol.barycentric",
+      "physical_params": {
+        "mean_radius_km": 1737
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1737000000
+      },
+      "search_keys": [
+        "luna",
+        "moon"
+      ],
+      "pack_id": "astronomy.sol"
+    }
+  ]
+}

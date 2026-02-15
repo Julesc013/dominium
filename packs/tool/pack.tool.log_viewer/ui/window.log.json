@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.log",
+  "title": "Process/Refusal Log",
+  "required_entitlements": [
+    "entitlement.inspect"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "log.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "log.process_entries",
+        "type": "list",
+        "label": "Process Log",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "process_log.entries"
+        }
+      },
+      {
+        "widget_id": "log.refusal_entries",
+        "type": "list",
+        "label": "Refusals",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "tool.log.entries"
+        }
+      }
+    ]
+  }
+}

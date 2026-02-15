@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "policy.budget.default_lab",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0",
+    "policy.activation.default_lab@1.0.0"
+  ],
+  "contribution_types": [
+    "registry_entries"
+  ],
+  "contributions": [
+    {
+      "type": "registry_entries",
+      "id": "policy.budget.default_lab",
+      "path": "data/budget_policy.default_lab.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "policy.budget.tiny_lab",
+      "path": "data/budget_policy.tiny_lab.json"
+    }
+  ],
+  "canonical_hash": "placeholder.policy.budget.default_lab.v1",
+  "signature_status": "signed"
+}

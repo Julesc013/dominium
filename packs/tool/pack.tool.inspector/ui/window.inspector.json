@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.inspector",
+  "title": "Inspector",
+  "required_entitlements": [
+    "entitlement.inspect"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "inspector.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "inspector.entities",
+        "type": "list",
+        "label": "Observed Entities",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "entities.entries"
+        }
+      },
+      {
+        "widget_id": "inspector.fields",
+        "type": "list",
+        "label": "Selected Fields",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "entities.selected_fields"
+        }
+      }
+    ]
+  }
+}

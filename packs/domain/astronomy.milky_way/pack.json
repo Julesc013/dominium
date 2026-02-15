@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "astronomy.milky_way",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0"
+  ],
+  "contribution_types": [
+    "registry_entries"
+  ],
+  "contributions": [
+    {
+      "type": "registry_entries",
+      "id": "registry.astronomy.milky_way.catalog",
+      "path": "data/milky_way_catalog.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.astronomy.milky_way.frames",
+      "path": "data/milky_way_frames.json"
+    }
+  ],
+  "canonical_hash": "placeholder.astronomy.milky_way.v1",
+  "signature_status": "signed"
+}

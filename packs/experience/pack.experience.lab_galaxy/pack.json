@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.experience.lab_galaxy",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.domain.navigation@1.0.0",
+    "pack.law.observe_only@1.0.0"
+  ],
+  "contribution_types": [
+    "experience_profile",
+    "scenario_spec",
+    "ui_windows"
+  ],
+  "contributions": [
+    {
+      "type": "experience_profile",
+      "id": "experience.lab.galaxy",
+      "path": "data/experience.profile.json"
+    },
+    {
+      "type": "scenario_spec",
+      "id": "scenario.lab.galaxy_nav",
+      "path": "scenarios/lab_galaxy_nav.json"
+    },
+    {
+      "type": "ui_windows",
+      "id": "ui.window.lab.nav",
+      "path": "ui/window.lab_nav.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.experience.lab_galaxy.v1",
+  "signature_status": "signed"
+}

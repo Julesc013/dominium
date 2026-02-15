@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "law_profile_id": "law.lab.unrestricted",
+  "allowed_processes": [
+    "process.camera_move",
+    "process.camera_teleport",
+    "process.observe.telemetry",
+    "process.region_management_tick",
+    "process.time_control_set_rate",
+    "process.time_pause",
+    "process.time_resume"
+  ],
+  "forbidden_processes": [],
+  "allowed_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "epistemic_limits": {
+    "max_view_radius_km": 1000000000,
+    "allow_hidden_state_access": true
+  },
+  "respawn_rules": {
+    "respawn_allowed": false,
+    "respawn_delay_seconds": 0
+  },
+  "debug_allowances": {
+    "allow_nondiegetic_overlays": true,
+    "allow_time_dilation_controls": true
+  },
+  "process_entitlement_requirements": {
+    "process.camera_move": "entitlement.camera_control",
+    "process.camera_teleport": "entitlement.teleport",
+    "process.region_management_tick": "session.boot",
+    "process.time_control_set_rate": "entitlement.time_control",
+    "process.time_pause": "entitlement.time_control",
+    "process.time_resume": "entitlement.time_control"
+  },
+  "process_privilege_requirements": {
+    "process.camera_move": "observer",
+    "process.camera_teleport": "operator",
+    "process.region_management_tick": "observer",
+    "process.time_control_set_rate": "operator",
+    "process.time_pause": "operator",
+    "process.time_resume": "operator"
+  }
+}

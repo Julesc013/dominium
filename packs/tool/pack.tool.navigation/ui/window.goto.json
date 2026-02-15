@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.goto",
+  "title": "Go-To",
+  "required_entitlements": [
+    "entitlement.teleport"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "goto.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "goto.query",
+        "type": "input_text",
+        "label": "Search"
+      },
+      {
+        "widget_id": "goto.results",
+        "type": "list",
+        "label": "Results",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "navigation.search_results"
+        }
+      },
+      {
+        "widget_id": "goto.teleport",
+        "type": "button",
+        "label": "Teleport",
+        "action_binding": {
+          "intent_id": "intent.ui.goto.teleport",
+          "process_id": "process.camera_teleport",
+          "payload_template": {
+            "target_site_id": "${selection.site_id}",
+            "target_object_id": "${selection.object_id}"
+          }
+        }
+      }
+    ]
+  }
+}

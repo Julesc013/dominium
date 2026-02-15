@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.time",
+  "title": "Time Control",
+  "required_entitlements": [
+    "entitlement.time_control"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "time.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "time.summary",
+        "type": "text",
+        "label": "Current Time",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "time.summary"
+        }
+      },
+      {
+        "widget_id": "time.rate_input",
+        "type": "input_number",
+        "label": "Rate (permille)"
+      },
+      {
+        "widget_id": "time.set_rate",
+        "type": "button",
+        "label": "Set Rate",
+        "action_binding": {
+          "intent_id": "intent.ui.time.set_rate",
+          "process_id": "process.time_control_set_rate",
+          "payload_template": {
+            "rate_permille": "${widget.time.rate_input}"
+          }
+        }
+      },
+      {
+        "widget_id": "time.pause",
+        "type": "button",
+        "label": "Pause",
+        "action_binding": {
+          "intent_id": "intent.ui.time.pause",
+          "process_id": "process.time_pause",
+          "payload_template": {}
+        }
+      },
+      {
+        "widget_id": "time.resume",
+        "type": "button",
+        "label": "Resume",
+        "action_binding": {
+          "intent_id": "intent.ui.time.resume",
+          "process_id": "process.time_resume",
+          "payload_template": {}
+        }
+      }
+    ]
+  }
+}
