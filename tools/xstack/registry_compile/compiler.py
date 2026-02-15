@@ -1481,7 +1481,7 @@ def _network_policy_rows(
             )
             continue
         action_rows: Dict[str, str] = {}
-        valid_actions = {"audit", "refuse", "terminate", "throttle"}
+        valid_actions = {"audit", "refuse", "terminate", "throttle", "require_attestation"}
         action_error = False
         for module_id in sorted(default_actions.keys()):
             action = str(default_actions.get(module_id, "")).strip()

@@ -87,7 +87,8 @@
                 "audit",
                 "refuse",
                 "terminate",
-                "throttle"
+                "throttle",
+                "require_attestation"
               ]
             }
           },
