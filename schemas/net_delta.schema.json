@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Delta Schema",
+  "version": "1.0.0",
+  "description": "Deterministic network delta metadata contract for tick range changes.",
+  "x-doc-ref": [
+    "docs/net/MULTIPLAYER_MODEL_OVERVIEW.md",
+    "docs/net/REPLICATION_POLICIES.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "delta_id",
+    "tick_from",
+    "tick_to",
+    "shard_id",
+    "payload_ref",
+    "delta_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "delta_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick_from": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "tick_to": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "shard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "delta_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "delta_id": "delta.shard.0.118-120",
+      "tick_from": 118,
+      "tick_to": 120,
+      "shard_id": "shard.0",
+      "payload_ref": "artifact://delta/shard.0/118-120",
+      "delta_hash": "5ff383054af9bc3486711ac35f8878f74b5d664ad698db2eb4159fce98e8dce6",
+      "extensions": {}
+    }
+  ]
+}
