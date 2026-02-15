@@ -60,6 +60,12 @@ Proof bundle is a deterministic JSON object with:
 2. deterministic Markdown summary
 3. refusal on missing required components
 
+Example:
+
+```text
+python tools/net/tool_export_ranked_proof_bundle.py --run-meta saves/<save_id>/run_meta/<run_id>.json --out-dir build/net/proofs --out-prefix ranked_proof_bundle
+```
+
 ## Cross-References
 
 - `docs/net/RANKED_SERVER_GOVERNANCE.md`
@@ -67,4 +73,3 @@ Proof bundle is a deterministic JSON object with:
 - `schemas/net_handshake.schema.json`
 - `schemas/net_hash_anchor_frame.schema.json`
 - `schemas/net_anti_cheat_event.schema.json`
-
