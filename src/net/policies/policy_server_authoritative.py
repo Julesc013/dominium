@@ -6,6 +6,23 @@ import copy
 import os
 from typing import Dict, List, Tuple
 
+from src.net.anti_cheat import (
+    action_blocks_submission,
+    action_drops_without_refusal,
+    check_authority_integrity,
+    check_behavioral_detection,
+    check_client_attestation,
+    check_input_integrity,
+    check_replay_protection,
+    check_sequence_integrity,
+    check_state_integrity,
+    default_action as anti_cheat_default_action,
+    emit_event as anti_cheat_emit_event,
+    ensure_runtime_channels,
+    export_proof_artifacts,
+    module_enabled as anti_cheat_module_enabled,
+    refusal_reason_from_action,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.sessionx.common import norm, refusal, write_canonical_json
@@ -73,19 +90,11 @@ def _write_runtime_artifact(runtime: dict, rel_path: str, payload: dict) -> str:
 
 
 def _module_enabled(runtime: dict, module_id: str) -> bool:
-    anti = dict(runtime.get("anti_cheat") or {})
-    modules = _sorted_tokens(list(anti.get("modules_enabled") or []))
-    return str(module_id).strip() in modules
+    return bool(anti_cheat_module_enabled(runtime=runtime, module_id=module_id))
 
 
 def _module_action(runtime: dict, module_id: str, fallback: str = "audit") -> str:
-    anti = dict(runtime.get("anti_cheat") or {})
-    defaults = anti.get("default_actions")
-    if isinstance(defaults, dict):
-        token = str(defaults.get(module_id, "")).strip()
-        if token:
-            return token
-    return str(fallback)
+    return str(anti_cheat_default_action(runtime=runtime, module_id=module_id, fallback=fallback))
 
 
 def _emit_anti_cheat_event(
@@ -99,47 +108,61 @@ def _emit_anti_cheat_event(
     evidence: List[str],
     default_action: str,
 ) -> dict:
-    if not _module_enabled(runtime, module_id):
-        return {}
-    server = dict(runtime.get("server") or {})
-    rows = list(server.get("anti_cheat_events") or [])
-    event_index = len(rows) + 1
-    bounded_evidence = [str(item)[:240] for item in list(evidence or []) if str(item).strip()]
-    action = _module_action(runtime, module_id=module_id, fallback=default_action)
-    fingerprint_payload = {
-        "tick": int(tick),
-        "peer_id": str(peer_id),
-        "module_id": str(module_id),
-        "severity": str(severity),
-        "reason_code": str(reason_code),
-        "evidence": bounded_evidence,
-        "recommended_action": action,
-    }
-    event = {
-        "schema_version": "1.0.0",
-        "event_id": "ac.{}.tick.{}.seq.{}".format(str(peer_id), int(tick), str(event_index).zfill(4)),
-        "tick": int(tick),
-        "peer_id": str(peer_id),
-        "module_id": str(module_id),
-        "severity": str(severity),
-        "reason_code": str(reason_code),
-        "evidence": bounded_evidence,
-        "recommended_action": action,
-        "deterministic_fingerprint": canonical_sha256(fingerprint_payload),
-        "extensions": {},
-    }
-    checked = validate_instance(
+    emitted = anti_cheat_emit_event(
         repo_root=repo_root,
-        schema_name="net_anti_cheat_event",
-        payload=event,
-        strict_top_level=True,
+        runtime=runtime,
+        tick=int(tick),
+        peer_id=str(peer_id),
+        module_id=str(module_id),
+        severity=str(severity),
+        reason_code=str(reason_code),
+        evidence=list(evidence or []),
+        default_action_token=str(default_action),
     )
-    if not bool(checked.get("valid", False)):
+    event = dict(emitted.get("event") or {})
+    if not event:
         return {}
-    rows.append(event)
-    server["anti_cheat_events"] = sorted(rows, key=lambda row: str(row.get("event_id", "")))
-    runtime["server"] = server
+    event["action"] = str(emitted.get("action", _module_action(runtime=runtime, module_id=module_id, fallback=default_action)))
     return event
+
+
+def _apply_enforcement_result(
+    action: str,
+    fallback_reason_code: str,
+    fallback_message: str,
+    fallback_remediation: str,
+    relevant_ids: dict,
+    path: str,
+) -> Dict[str, object]:
+    token = str(action).strip()
+    if action_drops_without_refusal(token):
+        return {"result": "complete", "accepted": False, "action": token}
+    reason_code = refusal_reason_from_action(token, fallback_reason_code=fallback_reason_code)
+    if reason_code == "refusal.ac.attestation_missing":
+        return refusal(
+            "refusal.ac.attestation_missing",
+            "anti-cheat policy requires client attestation artifact",
+            "Enable client attestation token exchange or use an anti-cheat policy that does not require attestation.",
+            dict(relevant_ids or {}),
+            path,
+        )
+    if token == "terminate":
+        return refusal(
+            "refusal.ac.policy_violation",
+            "anti-cheat policy escalated this peer to terminate action",
+            "Resolve anti-cheat violations and reconnect using a compliant client state.",
+            dict(relevant_ids or {}),
+            path,
+        )
+    if action_blocks_submission(token):
+        return refusal(
+            str(fallback_reason_code),
+            str(fallback_message),
+            str(fallback_remediation),
+            dict(relevant_ids or {}),
+            str(path),
+        )
+    return {"result": "complete", "accepted": False, "action": token}
 
 
 def _policy_row(registry_payload: dict, policy_id: str, key: str = "policies") -> dict:
@@ -287,6 +310,7 @@ def initialize_authoritative_runtime(
             "policy_id": anti_cheat_policy_id,
             "modules_enabled": _sorted_tokens(list(anti_cheat_policy.get("modules_enabled") or [])),
             "default_actions": dict(anti_cheat_policy.get("default_actions") or {}),
+            "extensions": dict(anti_cheat_policy.get("extensions") or {}),
             "module_registry_map": module_map,
         },
         "server": {
@@ -307,11 +331,17 @@ def initialize_authoritative_runtime(
             "snapshot_cadence_ticks": int(cadence),
             "baseline_snapshot_id": "",
             "anti_cheat_events": [],
+            "anti_cheat_enforcement_actions": [],
+            "anti_cheat_refusal_injections": [],
+            "anti_cheat_anchor_mismatches": [],
+            "anti_cheat_violation_counters": {},
+            "terminated_peers": [],
             "perceived_deltas": [],
             "refusals": [],
         },
         "clients": {},
     }
+    ensure_runtime_channels(runtime)
 
     initial_peer_id = str(network.get("client_peer_id", "")).strip()
     _register_client(
@@ -390,135 +420,154 @@ def queue_intent_envelope(repo_root: str, runtime: dict, envelope: dict) -> Dict
         strict_top_level=True,
     )
     if not bool(checked.get("valid", False)):
-        _emit_anti_cheat_event(
+        decision = check_input_integrity(
             repo_root=repo_root,
             runtime=runtime,
             tick=_as_int((runtime.get("server") or {}).get("network_tick", 0), 0),
             peer_id=str((envelope or {}).get("source_peer_id", "peer.unknown")),
-            module_id="ac.module.input_integrity",
-            severity="warn",
+            valid=False,
             reason_code="refusal.net.envelope_invalid",
             evidence=["intent envelope schema validation failed"],
-            default_action="refuse",
+            default_action_token="refuse",
         )
-        return refusal(
-            "refusal.net.envelope_invalid",
-            "intent envelope failed net_intent_envelope schema validation",
-            "Fix envelope fields and retry submission.",
-            {"schema_id": "net_intent_envelope"},
-            "$.intent_envelope",
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.envelope_invalid",
+            fallback_message="intent envelope failed net_intent_envelope schema validation",
+            fallback_remediation="Fix envelope fields and retry submission.",
+            relevant_ids={"schema_id": "net_intent_envelope"},
+            path="$.intent_envelope",
         )
 
     server = dict(runtime.get("server") or {})
     peer_id = str(envelope.get("source_peer_id", "")).strip()
     clients = dict(runtime.get("clients") or {})
     if peer_id not in clients:
-        _emit_anti_cheat_event(
+        decision = check_authority_integrity(
             repo_root=repo_root,
             runtime=runtime,
             tick=_as_int(server.get("network_tick", 0), 0),
             peer_id=peer_id,
-            module_id="ac.module.authority_integrity",
-            severity="violation",
+            allowed=False,
             reason_code="refusal.net.authority_violation",
             evidence=["source peer is not joined to authoritative runtime"],
-            default_action="refuse",
+            default_action_token="refuse",
         )
-        return refusal(
-            "refusal.net.authority_violation",
-            "source peer is not joined to server-authoritative runtime",
-            "Join peer via baseline snapshot before submitting intents.",
-            {"peer_id": peer_id or "<empty>"},
-            "$.source_peer_id",
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.authority_violation",
+            fallback_message="source peer is not joined to server-authoritative runtime",
+            fallback_remediation="Join peer via baseline snapshot before submitting intents.",
+            relevant_ids={"peer_id": peer_id or "<empty>"},
+            path="$.source_peer_id",
+        )
+
+    anti_extensions = dict((runtime.get("anti_cheat") or {}).get("extensions") or {})
+    attestation_required = bool(anti_extensions.get("require_attestation", False))
+    envelope_ext = dict(envelope.get("extensions") or {})
+    attestation_token = str(envelope_ext.get("attestation_token", "")).strip() or str(envelope.get("signature", "")).strip()
+    attestation_check = check_client_attestation(
+        repo_root=repo_root,
+        runtime=runtime,
+        tick=_as_int(server.get("network_tick", 0), 0),
+        peer_id=peer_id,
+        required=bool(attestation_required),
+        attestation_token=attestation_token,
+        default_action_token="require_attestation",
+    )
+    if str(attestation_check.get("result", "")) != "complete":
+        return _apply_enforcement_result(
+            action=str(attestation_check.get("action", "require_attestation")),
+            fallback_reason_code="refusal.ac.attestation_missing",
+            fallback_message="client attestation token is required by anti-cheat policy",
+            fallback_remediation="Provide deterministic attestation token or use a policy that does not require attestation.",
+            relevant_ids={"peer_id": peer_id or "<empty>"},
+            path="$.signature",
         )
 
     target_shard_id = str(envelope.get("target_shard_id", "")).strip()
     if target_shard_id != DEFAULT_SHARD_ID:
-        _emit_anti_cheat_event(
+        decision = check_authority_integrity(
             repo_root=repo_root,
             runtime=runtime,
             tick=_as_int(server.get("network_tick", 0), 0),
             peer_id=peer_id,
-            module_id="ac.module.authority_integrity",
-            severity="violation",
+            allowed=False,
             reason_code="refusal.net.shard_target_invalid",
             evidence=["target_shard_id must be shard.0 for current authoritative runtime"],
-            default_action="refuse",
+            default_action_token="refuse",
         )
-        return refusal(
-            "refusal.net.shard_target_invalid",
-            "target_shard_id '{}' is invalid for current authoritative runtime".format(target_shard_id or "<empty>"),
-            "Route envelopes to shard.0 until distributed SRZ replication is enabled.",
-            {"target_shard_id": target_shard_id or "<empty>"},
-            "$.target_shard_id",
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.shard_target_invalid",
+            fallback_message="target_shard_id '{}' is invalid for current authoritative runtime".format(target_shard_id or "<empty>"),
+            fallback_remediation="Route envelopes to shard.0 until distributed SRZ replication is enabled.",
+            relevant_ids={"target_shard_id": target_shard_id or "<empty>"},
+            path="$.target_shard_id",
         )
 
     expected_pack_lock = str(server.get("pack_lock_hash", "")).strip()
     if str(envelope.get("pack_lock_hash", "")).strip() != expected_pack_lock:
-        _emit_anti_cheat_event(
+        decision = check_input_integrity(
             repo_root=repo_root,
             runtime=runtime,
             tick=_as_int(server.get("network_tick", 0), 0),
             peer_id=peer_id,
-            module_id="ac.module.input_integrity",
-            severity="violation",
+            valid=False,
             reason_code="refusal.net.handshake_pack_lock_mismatch",
             evidence=["envelope pack_lock_hash mismatches server lock hash"],
-            default_action="refuse",
+            default_action_token="refuse",
         )
-        return refusal(
-            "refusal.net.handshake_pack_lock_mismatch",
-            "intent envelope pack_lock_hash does not match server lock hash",
-            "Reconnect using matching bundle lockfile and retry intent submission.",
-            {"peer_id": peer_id},
-            "$.pack_lock_hash",
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.handshake_pack_lock_mismatch",
+            fallback_message="intent envelope pack_lock_hash does not match server lock hash",
+            fallback_remediation="Reconnect using matching bundle lockfile and retry intent submission.",
+            relevant_ids={"peer_id": peer_id},
+            path="$.pack_lock_hash",
         )
 
     seen = _sorted_tokens(list(server.get("seen_envelope_ids") or []))
     envelope_id = str(envelope.get("envelope_id", "")).strip()
     if envelope_id in seen:
-        _emit_anti_cheat_event(
+        decision = check_replay_protection(
             repo_root=repo_root,
             runtime=runtime,
             tick=_as_int(server.get("network_tick", 0), 0),
             peer_id=peer_id,
-            module_id="ac.module.replay_protection",
-            severity="violation",
-            reason_code="refusal.net.replay_detected",
-            evidence=["duplicate envelope_id detected"],
-            default_action="refuse",
+            envelope_id=envelope_id,
+            seen_envelope_ids=seen,
+            default_action_token="refuse",
         )
-        return refusal(
-            "refusal.net.replay_detected",
-            "intent envelope replay detected",
-            "Generate a new deterministic envelope sequence and retry submission.",
-            {"envelope_id": envelope_id},
-            "$.envelope_id",
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.replay_detected",
+            fallback_message="intent envelope replay detected",
+            fallback_remediation="Generate a new deterministic envelope sequence and retry submission.",
+            relevant_ids={"envelope_id": envelope_id},
+            path="$.envelope_id",
         )
 
     sequence = _as_int(envelope.get("deterministic_sequence_number", 0), 0)
     last_seq_map = dict(server.get("last_sequence_by_peer") or {})
     expected_next = _as_int(last_seq_map.get(peer_id, 0), 0) + 1
     if sequence != expected_next:
-        _emit_anti_cheat_event(
+        decision = check_sequence_integrity(
             repo_root=repo_root,
             runtime=runtime,
             tick=_as_int(server.get("network_tick", 0), 0),
             peer_id=peer_id,
-            module_id="ac.module.sequence_integrity",
-            severity="violation",
-            reason_code="refusal.net.sequence_violation",
-            evidence=[
-                "expected deterministic_sequence_number={} got={}".format(expected_next, sequence),
-            ],
-            default_action="refuse",
+            sequence=int(sequence),
+            expected_sequence=int(expected_next),
+            default_action_token="refuse",
         )
-        return refusal(
-            "refusal.net.sequence_violation",
-            "deterministic_sequence_number is non-monotonic for peer '{}'".format(peer_id),
-            "Submit envelope sequence numbers monotonically per peer.",
-            {"peer_id": peer_id, "expected_sequence": str(expected_next), "received_sequence": str(sequence)},
-            "$.deterministic_sequence_number",
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.sequence_violation",
+            fallback_message="deterministic_sequence_number is non-monotonic for peer '{}'".format(peer_id),
+            fallback_remediation="Submit envelope sequence numbers monotonically per peer.",
+            relevant_ids={"peer_id": peer_id, "expected_sequence": str(expected_next), "received_sequence": str(sequence)},
+            path="$.deterministic_sequence_number",
         )
 
     queue_rows = list(server.get("intent_queue") or [])
@@ -812,32 +861,42 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
         process_id = str(payload.get("process_id", "")).strip()
         inputs = payload.get("inputs")
         if not process_id or not isinstance(inputs, dict):
-            refusal_payload = refusal(
-                "refusal.net.envelope_invalid",
-                "intent envelope payload must contain process_id and inputs",
-                "Fix envelope payload structure and resend.",
-                {"envelope_id": str(envelope.get("envelope_id", ""))},
-                "$.payload",
-            )
-            processed_rows.append(
-                {
-                    "envelope_id": str(envelope.get("envelope_id", "")),
-                    "peer_id": peer_id,
-                    "result": "refused",
-                    "refusal": dict(refusal_payload.get("refusal") or {}),
-                }
-            )
-            _emit_anti_cheat_event(
+            decision = check_input_integrity(
                 repo_root=repo_root,
                 runtime=runtime,
                 tick=int(server_tick),
                 peer_id=peer_id,
-                module_id="ac.module.input_integrity",
-                severity="warn",
+                valid=False,
                 reason_code="refusal.net.envelope_invalid",
                 evidence=["intent envelope payload shape invalid"],
-                default_action="refuse",
+                default_action_token="refuse",
             )
+            enforcement = _apply_enforcement_result(
+                action=str(decision.get("action", "refuse")),
+                fallback_reason_code="refusal.net.envelope_invalid",
+                fallback_message="intent envelope payload must contain process_id and inputs",
+                fallback_remediation="Fix envelope payload structure and resend.",
+                relevant_ids={"envelope_id": str(envelope.get("envelope_id", ""))},
+                path="$.payload",
+            )
+            if str(enforcement.get("result", "")) != "complete":
+                processed_rows.append(
+                    {
+                        "envelope_id": str(envelope.get("envelope_id", "")),
+                        "peer_id": peer_id,
+                        "result": "refused",
+                        "refusal": dict(enforcement.get("refusal") or {}),
+                    }
+                )
+            else:
+                processed_rows.append(
+                    {
+                        "envelope_id": str(envelope.get("envelope_id", "")),
+                        "peer_id": peer_id,
+                        "result": "dropped",
+                        "action": str(enforcement.get("action", "")),
+                    }
+                )
             continue
 
         executed = execute_intent(
@@ -853,44 +912,62 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
             policy_context=dict(runtime.get("registry_payloads") or {}),
         )
         if str(executed.get("result", "")) != "complete":
-            processed_rows.append(
-                {
-                    "envelope_id": str(envelope.get("envelope_id", "")),
-                    "peer_id": peer_id,
-                    "result": "refused",
-                    "refusal": dict(executed.get("refusal") or {}),
-                }
-            )
-            _emit_anti_cheat_event(
+            refusal_reason_code = str(((executed.get("refusal") or {}).get("reason_code", "refusal.net.authority_violation")))
+            decision = check_authority_integrity(
                 repo_root=repo_root,
                 runtime=runtime,
                 tick=int(server_tick),
                 peer_id=peer_id,
-                module_id="ac.module.authority_integrity",
-                severity="violation",
-                reason_code=str(((executed.get("refusal") or {}).get("reason_code", "refusal.net.authority_violation"))),
+                allowed=False,
+                reason_code=refusal_reason_code,
                 evidence=["authoritative process execution refused submitted envelope"],
-                default_action="refuse",
+                default_action_token="refuse",
             )
-            server_refusals = list((runtime.get("server") or {}).get("refusals") or [])
-            server_refusals.append(
-                {
-                    "tick": int(server_tick),
-                    "peer_id": peer_id,
-                    "envelope_id": str(envelope.get("envelope_id", "")),
-                    "reason_code": str(((executed.get("refusal") or {}).get("reason_code", ""))),
-                }
+            enforcement = _apply_enforcement_result(
+                action=str(decision.get("action", "refuse")),
+                fallback_reason_code=refusal_reason_code,
+                fallback_message="authoritative process execution refused submitted envelope",
+                fallback_remediation="Resolve authority/law violations then resend deterministic intent envelope.",
+                relevant_ids={"envelope_id": str(envelope.get("envelope_id", "")), "peer_id": peer_id},
+                path="$.payload.process_id",
             )
-            server_now = dict(runtime.get("server") or {})
-            server_now["refusals"] = sorted(
-                server_refusals,
-                key=lambda row: (
-                    int(row.get("tick", 0)),
-                    str(row.get("peer_id", "")),
-                    str(row.get("envelope_id", "")),
-                ),
-            )
-            runtime["server"] = server_now
+            if str(enforcement.get("result", "")) != "complete":
+                processed_rows.append(
+                    {
+                        "envelope_id": str(envelope.get("envelope_id", "")),
+                        "peer_id": peer_id,
+                        "result": "refused",
+                        "refusal": dict(enforcement.get("refusal") or {}),
+                    }
+                )
+                server_refusals = list((runtime.get("server") or {}).get("refusals") or [])
+                server_refusals.append(
+                    {
+                        "tick": int(server_tick),
+                        "peer_id": peer_id,
+                        "envelope_id": str(envelope.get("envelope_id", "")),
+                        "reason_code": str(((enforcement.get("refusal") or {}).get("reason_code", ""))),
+                    }
+                )
+                server_now = dict(runtime.get("server") or {})
+                server_now["refusals"] = sorted(
+                    server_refusals,
+                    key=lambda row: (
+                        int(row.get("tick", 0)),
+                        str(row.get("peer_id", "")),
+                        str(row.get("envelope_id", "")),
+                    ),
+                )
+                runtime["server"] = server_now
+            else:
+                processed_rows.append(
+                    {
+                        "envelope_id": str(envelope.get("envelope_id", "")),
+                        "peer_id": peer_id,
+                        "result": "dropped",
+                        "action": str(enforcement.get("action", "")),
+                    }
+                )
             continue
 
         processed_rows.append(
@@ -969,18 +1046,28 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
             )
         applied = _apply_delta(client_entry=client, delta_payload=delta_payload, expected_hash=perceived_hash)
         if str(applied.get("result", "")) != "complete":
-            _emit_anti_cheat_event(
+            actual_hash = canonical_sha256(dict(delta_payload.get("replace") or {}))
+            state_check = check_state_integrity(
                 repo_root=repo_root,
                 runtime=runtime,
                 tick=int(server_tick),
                 peer_id=peer_id,
-                module_id="ac.module.state_integrity",
-                severity="violation",
+                expected_hash=str(perceived_hash),
+                actual_hash=str(actual_hash),
                 reason_code="refusal.net.resync_required",
-                evidence=["perceived hash mismatch during delta apply"],
-                default_action="audit",
+                default_action_token="audit",
             )
-            return applied
+            enforcement = _apply_enforcement_result(
+                action=str(state_check.get("action", "audit")),
+                fallback_reason_code="refusal.net.resync_required",
+                fallback_message="perceived hash mismatch during delta apply",
+                fallback_remediation="Request deterministic snapshot resync and retry.",
+                relevant_ids={"peer_id": peer_id, "tick": str(server_tick)},
+                path="$.perceived_delta",
+            )
+            if str(enforcement.get("result", "")) != "complete":
+                return enforcement
+            continue
         client["last_applied_tick"] = int(server_tick)
         received = _sorted_tokens(list(client.get("received_delta_ids") or []) + [str(delta_meta.get("perceived_delta_id", ""))])
         client["received_delta_ids"] = received
@@ -1009,7 +1096,7 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
             return snapshot_result
         snapshot = dict(snapshot_result.get("snapshot") or {})
 
-    _emit_anti_cheat_event(
+    anti_cheat_emit_event(
         repo_root=repo_root,
         runtime=runtime,
         tick=int(server_tick),
@@ -1018,7 +1105,7 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
         severity="info",
         reason_code="ac.behavior.tick_complete",
         evidence=["server-authoritative tick completed"],
-        default_action="audit",
+        default_action_token="audit",
     )
     return {
         "result": "complete",
@@ -1082,12 +1169,18 @@ def run_authoritative_simulation(
 
     server = dict(runtime.get("server") or {})
     frames = list(server.get("hash_anchor_frames") or [])
+    proof = export_proof_artifacts(
+        repo_root=repo_root,
+        runtime=runtime,
+        run_id="tick.{}".format(int(server.get("network_tick", 0) or 0)),
+    )
     return {
         "result": "complete",
         "queue_results": queued,
         "steps": steps,
         "final_tick": int(server.get("network_tick", 0) or 0),
         "final_composite_hash": str((frames[-1] if frames else {}).get("composite_hash", "")),
+        "anti_cheat_proof": dict(proof),
     }
 
 
