@@ -172,6 +172,38 @@
         }
       }
     },
+    "instrument_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "assembly_id",
+          "instrument_type",
+          "reading",
+          "quality",
+          "last_update_tick"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "assembly_id": {
+            "type": "string"
+          },
+          "instrument_type": {
+            "type": "string"
+          },
+          "reading": {
+            "type": "object"
+          },
+          "quality": {
+            "type": "string"
+          },
+          "last_update_tick": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
     "time_control": {
       "type": "object",
       "required": [
@@ -579,6 +611,28 @@
             "z": 0
           },
           "lens_id": "lens.diegetic.sensor"
+        }
+      ],
+      "instrument_assemblies": [
+        {
+          "assembly_id": "instrument.clock",
+          "instrument_type": "clock",
+          "reading": {
+            "tick": 120,
+            "rate_permille": 1000,
+            "paused": false
+          },
+          "quality": "nominal",
+          "last_update_tick": 120
+        },
+        {
+          "assembly_id": "instrument.compass",
+          "instrument_type": "compass",
+          "reading": {
+            "heading_mdeg": 0
+          },
+          "quality": "nominal",
+          "last_update_tick": 120
         }
       ],
       "time_control": {

@@ -62,6 +62,46 @@ DEFAULT_CAMERA_ASSEMBLY = {
     "velocity_mm_per_tick": {"x": 0, "y": 0, "z": 0},
     "lens_id": "lens.diegetic.sensor",
 }
+DEFAULT_INSTRUMENT_ASSEMBLIES = [
+    {
+        "assembly_id": "instrument.clock",
+        "instrument_type": "clock",
+        "reading": {
+            "tick": 0,
+            "rate_permille": 1000,
+            "paused": False,
+        },
+        "quality": "nominal",
+        "last_update_tick": 0,
+    },
+    {
+        "assembly_id": "instrument.compass",
+        "instrument_type": "compass",
+        "reading": {
+            "heading_mdeg": 0,
+        },
+        "quality": "nominal",
+        "last_update_tick": 0,
+    },
+    {
+        "assembly_id": "instrument.altimeter",
+        "instrument_type": "altimeter",
+        "reading": {
+            "altitude_mm": 0,
+        },
+        "quality": "nominal",
+        "last_update_tick": 0,
+    },
+    {
+        "assembly_id": "instrument.radio",
+        "instrument_type": "radio",
+        "reading": {
+            "signal_quality_permille": 1000,
+        },
+        "quality": "nominal",
+        "last_update_tick": 0,
+    },
+]
 DEFAULT_WORLDGEN_MODULE_REGISTRY_REL = "data/registries/worldgen_module_registry.json"
 
 REGISTRY_FILE_MAP = {
@@ -449,6 +489,30 @@ def _camera_from_payload(payload: dict) -> dict:
     }
 
 
+def _instrument_assemblies_from_payload(payload: dict) -> List[dict]:
+    rows = payload.get("instrument_assemblies")
+    if not isinstance(rows, list):
+        return copy.deepcopy(DEFAULT_INSTRUMENT_ASSEMBLIES)
+    out: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
+        assembly_id = str(row.get("assembly_id", "")).strip()
+        instrument_type = str(row.get("instrument_type", "")).strip()
+        if not assembly_id or not instrument_type:
+            continue
+        out.append(
+            {
+                "assembly_id": assembly_id,
+                "instrument_type": instrument_type,
+                "reading": copy.deepcopy(row.get("reading") if isinstance(row.get("reading"), dict) else {}),
+                "quality": str(row.get("quality", "nominal")),
+                "last_update_tick": _as_int(row.get("last_update_tick", 0), 0),
+            }
+        )
+    if not out:
+        return copy.deepcopy(DEFAULT_INSTRUMENT_ASSEMBLIES)
+    return out
+
+
 def _camera_seed_from_bundle(repo_root: str, bundle_id: str) -> dict:
     loaded = load_pack_set(repo_root=repo_root, packs_root_rel="packs", schema_repo_root=repo_root)
     if loaded.get("result") != "complete":
@@ -482,6 +546,39 @@ def _camera_seed_from_bundle(repo_root: str, bundle_id: str) -> dict:
     return copy.deepcopy(DEFAULT_CAMERA_ASSEMBLY)
 
 
+def _instrument_seed_from_bundle(repo_root: str, bundle_id: str) -> List[dict]:
+    loaded = load_pack_set(repo_root=repo_root, packs_root_rel="packs", schema_repo_root=repo_root)
+    if loaded.get("result") != "complete":
+        return copy.deepcopy(DEFAULT_INSTRUMENT_ASSEMBLIES)
+
+    selected = resolve_bundle_selection(
+        bundle_id=str(bundle_id),
+        packs=loaded.get("packs") or [],
+        repo_root=repo_root,
+        schema_repo_root=repo_root,
+    )
+    if selected.get("result") != "complete":
+        return copy.deepcopy(DEFAULT_INSTRUMENT_ASSEMBLIES)
+
+    resolved = resolve_packs(loaded.get("packs") or [], bundle_selection=list(selected.get("selected_pack_ids") or []))
+    if resolved.get("result") != "complete":
+        return copy.deepcopy(DEFAULT_INSTRUMENT_ASSEMBLIES)
+
+    contrib = parse_contributions(repo_root=repo_root, packs=list(resolved.get("ordered_pack_list") or []))
+    if contrib.get("result") != "complete":
+        return copy.deepcopy(DEFAULT_INSTRUMENT_ASSEMBLIES)
+
+    for row in contrib.get("contributions") or []:
+        if str(row.get("contrib_type", "")) != "registry_entries":
+            continue
+        if str(row.get("id", "")) != "registry.instrument.assemblies":
+            continue
+        payload = row.get("payload")
+        if isinstance(payload, dict):
+            return _instrument_assemblies_from_payload(payload)
+    return copy.deepcopy(DEFAULT_INSTRUMENT_ASSEMBLIES)
+
+
 def _validate_universe_identity(repo_root: str, payload: dict) -> Dict[str, object]:
     valid = validate_instance(repo_root=repo_root, schema_name="universe_identity", payload=payload, strict_top_level=True)
     if not bool(valid.get("valid", False)):
@@ -508,12 +605,27 @@ def _initial_universe_state(
     save_id: str,
     law_profile_id: str,
     camera_assembly: dict,
+    instrument_assemblies: List[dict],
     budget_policy_id: str,
     fidelity_policy_id: str,
     activation_policy_id: str,
     max_compute_units_per_tick: int,
 ) -> dict:
     camera_payload = _camera_from_payload(camera_assembly if isinstance(camera_assembly, dict) else {})
+    instrument_rows = [
+        {
+            "assembly_id": str(row.get("assembly_id", "")),
+            "instrument_type": str(row.get("instrument_type", "")),
+            "reading": copy.deepcopy(row.get("reading") if isinstance(row.get("reading"), dict) else {}),
+            "quality": str(row.get("quality", "nominal")),
+            "last_update_tick": _as_int(row.get("last_update_tick", 0), 0),
+        }
+        for row in sorted((item for item in (instrument_assemblies or []) if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", "")))
+        if str(row.get("assembly_id", "")).strip() and str(row.get("instrument_type", "")).strip()
+    ]
+    world_assemblies = [str(camera_payload.get("assembly_id", "camera.main"))]
+    world_assemblies.extend(str(row.get("assembly_id", "")) for row in instrument_rows if str(row.get("assembly_id", "")).strip())
+    world_assemblies = sorted(set(world_assemblies))
     return {
         "schema_version": "1.0.0",
         "simulation_time": {
@@ -521,13 +633,12 @@ def _initial_universe_state(
             "timestamp_utc": DEFAULT_TIMESTAMP_UTC,
         },
         "agent_states": [],
-        "world_assemblies": [
-            str(camera_payload.get("assembly_id", "camera.main")),
-        ],
+        "world_assemblies": world_assemblies,
         "active_law_references": [str(law_profile_id)],
         "session_references": ["session.{}".format(str(save_id))],
         "history_anchors": ["history.anchor.tick.0"],
         "camera_assemblies": [camera_payload],
+        "instrument_assemblies": instrument_rows,
         "time_control": {
             "rate_permille": 1000,
             "paused": False,
@@ -904,10 +1015,12 @@ def create_session_spec(
         )
 
     camera_assembly = _camera_seed_from_bundle(repo_root=repo_root, bundle_id=str(bundle_id))
+    instrument_assemblies = _instrument_seed_from_bundle(repo_root=repo_root, bundle_id=str(bundle_id))
     state_payload = _initial_universe_state(
         save_id=save_token,
         law_profile_id=str(law_profile_id),
         camera_assembly=camera_assembly,
+        instrument_assemblies=instrument_assemblies,
         budget_policy_id=str(budget_policy.get("policy_id", "")),
         fidelity_policy_id=str(fidelity_policy.get("policy_id", "")),
         activation_policy_id=str(activation_policy.get("policy_id", "")),

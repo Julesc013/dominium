@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "instrument_assemblies": [
+    {
+      "assembly_id": "instrument.altimeter",
+      "instrument_type": "altimeter",
+      "reading": {
+        "altitude_mm": 0
+      },
+      "quality": "nominal",
+      "last_update_tick": 0
+    },
+    {
+      "assembly_id": "instrument.clock",
+      "instrument_type": "clock",
+      "reading": {
+        "tick": 0,
+        "rate_permille": 1000,
+        "paused": false
+      },
+      "quality": "nominal",
+      "last_update_tick": 0
+    },
+    {
+      "assembly_id": "instrument.compass",
+      "instrument_type": "compass",
+      "reading": {
+        "heading_mdeg": 0
+      },
+      "quality": "nominal",
+      "last_update_tick": 0
+    },
+    {
+      "assembly_id": "instrument.radio",
+      "instrument_type": "radio",
+      "reading": {
+        "signal_quality_permille": 1000,
+        "channel_id": "radio.lab.default"
+      },
+      "quality": "nominal",
+      "last_update_tick": 0
+    }
+  ]
+}
