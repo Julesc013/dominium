@@ -35,6 +35,9 @@ Define the canonical, deterministic session bootstrap payload for profile-driven
 - `bundle_id` (string)
   - Used by tooling to bind lockfile/registry preparation.
   - If omitted, tooling may use explicit CLI bundle selection (`bundle.base.lab` default).
+- `pipeline_id` (string, pattern `pipeline.*`)
+  - Declares the lifecycle pipeline contract used for stage transition enforcement.
+  - Session tooling defaults to `pipeline.client.default` when omitted by legacy payloads.
 
 ## Invariants
 - No mode flags; all behavior composition is profile data.
@@ -62,6 +65,7 @@ Define the canonical, deterministic session bootstrap payload for profile-driven
   "universe_id": "universe.f7f79f62a426e393",
   "save_id": "save.lab.bootstrap",
   "bundle_id": "bundle.base.lab",
+  "pipeline_id": "pipeline.client.default",
   "scenario_id": "scenario.lab.galaxy_nav",
   "mission_id": null,
   "experience_id": "profile.lab.developer",

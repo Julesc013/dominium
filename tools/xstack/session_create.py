@@ -25,6 +25,7 @@ from tools.xstack.sessionx.creator import (  # noqa: E402
     DEFAULT_SCENARIO_ID,
     create_session_spec,
 )
+from tools.xstack.sessionx.pipeline_contract import DEFAULT_PIPELINE_ID  # noqa: E402
 
 
 def _repo_root(value: str) -> str:
@@ -38,6 +39,7 @@ def main() -> int:
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--save-id", required=True)
     parser.add_argument("--bundle", default=DEFAULT_BUNDLE_ID)
+    parser.add_argument("--pipeline-id", default=DEFAULT_PIPELINE_ID)
     parser.add_argument("--scenario-id", default=DEFAULT_SCENARIO_ID)
     parser.add_argument("--mission-id", default="")
     parser.add_argument("--experience-id", default=DEFAULT_EXPERIENCE_ID)
@@ -63,6 +65,7 @@ def main() -> int:
         repo_root=repo_root,
         save_id=str(args.save_id),
         bundle_id=str(args.bundle),
+        pipeline_id=str(args.pipeline_id),
         scenario_id=str(args.scenario_id),
         mission_id=str(args.mission_id),
         experience_id=str(args.experience_id),

@@ -21,6 +21,9 @@ Provide deterministic out-of-game session lifecycle tooling:
 - `tools/xstack/session_create`
 - `tools/xstack/session_boot`
 - `tools/xstack/session_script_run`
+- `tools/xstack/session_control client.session.stage <session_spec>`
+- `tools/xstack/session_control client.session.abort <session_spec>`
+- `tools/xstack/session_control client.session.resume <session_spec>`
 - `tools/xstack/srz_status`
 
 ## Invariants

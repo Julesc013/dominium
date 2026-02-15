@@ -10,6 +10,7 @@
   ],
   "type": "object",
   "required": [
+    "schema_version",
     "pipeline_id",
     "stages",
     "entry_stage_id",
@@ -22,6 +23,10 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
     "pipeline_id": {
       "type": "string",
       "pattern": "^pipeline\\.[a-z0-9_.-]+$"
@@ -68,6 +73,7 @@
   },
   "examples": [
     {
+      "schema_version": "1.0.0",
       "pipeline_id": "pipeline.client.default",
       "stages": [
         "stage.resolve_session",
