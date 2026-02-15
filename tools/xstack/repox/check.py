@@ -95,6 +95,14 @@ RENDERER_TRUTH_INCLUDE_FORBIDDEN = {
     "domino/truth_model.h",
 }
 
+SESSION_PIPELINE_REQUIRED_FILES = (
+    "schemas/session_spec.schema.json",
+    "schemas/session_stage.schema.json",
+    "schemas/session_pipeline.schema.json",
+    "data/registries/session_stage_registry.json",
+    "data/registries/session_pipeline_registry.json",
+)
+
 
 def _norm(path: str) -> str:
     return str(path or "").replace("\\", "/")
@@ -172,6 +180,178 @@ def _status_from_findings(findings: List[Dict[str, object]]) -> str:
     if "fail" in severities:
         return "fail"
     return "pass"
+
+
+def _load_json_object(repo_root: str, rel_path: str) -> Tuple[dict, str]:
+    abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+    try:
+        payload = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}, "invalid json"
+    if not isinstance(payload, dict):
+        return {}, "invalid root object"
+    return payload, ""
+
+
+def _invariant_severity(profile: str) -> str:
+    return "refusal" if str(profile).strip().upper() in ("STRICT", "FULL") else "fail"
+
+
+def _append_session_pipeline_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    missing = []
+    for rel_path in SESSION_PIPELINE_REQUIRED_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            missing.append(rel_path)
+    for rel_path in sorted(missing):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="required session pipeline contract file is missing",
+                rule_id="INV-SESSION-PIPELINE-DECLARED",
+            )
+        )
+    if missing:
+        return
+
+    stage_registry, stage_err = _load_json_object(repo_root, "data/registries/session_stage_registry.json")
+    pipeline_registry, pipeline_err = _load_json_object(repo_root, "data/registries/session_pipeline_registry.json")
+    if stage_err or pipeline_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/session_pipeline_registry.json",
+                line_number=1,
+                snippet="",
+                message="session stage/pipeline registry JSON is invalid",
+                rule_id="INV-SESSION-PIPELINE-DECLARED",
+            )
+        )
+        return
+
+    stage_rows = (stage_registry.get("record") or {}).get("stages")
+    pipeline_rows = (pipeline_registry.get("record") or {}).get("pipelines")
+    if not isinstance(stage_rows, list) or not isinstance(pipeline_rows, list):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/session_pipeline_registry.json",
+                line_number=1,
+                snippet="",
+                message="session stage/pipeline registry record lists are missing",
+                rule_id="INV-SESSION-PIPELINE-DECLARED",
+            )
+        )
+        return
+
+    stage_map = {}
+    for row in stage_rows:
+        if not isinstance(row, dict):
+            continue
+        stage_id = str(row.get("stage_id", "")).strip()
+        if stage_id:
+            stage_map[stage_id] = row
+    default_pipeline = {}
+    for row in pipeline_rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("pipeline_id", "")).strip() == "pipeline.client.default":
+            default_pipeline = row
+            break
+    if not default_pipeline:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/session_pipeline_registry.json",
+                line_number=1,
+                snippet="",
+                message="default pipeline.client.default is missing",
+                rule_id="INV-SESSION-PIPELINE-DECLARED",
+            )
+        )
+        return
+
+    resolve_stage = dict(stage_map.get("stage.resolve_session") or {})
+    allowed_from_resolve = sorted(
+        set(str(item).strip() for item in (resolve_stage.get("allowed_next_stage_ids") or []) if str(item).strip())
+    )
+    if "stage.session_running" in allowed_from_resolve:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/session_stage_registry.json",
+                line_number=1,
+                snippet="",
+                message="stage.resolve_session cannot directly transition to stage.session_running",
+                rule_id="INV-NO-STAGE-SKIP",
+            )
+        )
+
+    ready_stage = dict(stage_map.get("stage.session_ready") or {})
+    allowed_from_ready = sorted(
+        set(str(item).strip() for item in (ready_stage.get("allowed_next_stage_ids") or []) if str(item).strip())
+    )
+    if "stage.session_running" not in allowed_from_ready:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/session_stage_registry.json",
+                line_number=1,
+                snippet="",
+                message="stage.session_ready must allow transition to stage.session_running",
+                rule_id="INV-NO-STAGE-SKIP",
+            )
+        )
+
+    order = [str(item).strip() for item in (default_pipeline.get("stages") or []) if str(item).strip()]
+    required_order = ["stage.resolve_session", "stage.verify_world", "stage.session_ready", "stage.session_running"]
+    if any(stage_id not in order for stage_id in required_order):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/session_pipeline_registry.json",
+                line_number=1,
+                snippet="",
+                message="pipeline.client.default is missing required canonical stages",
+                rule_id="INV-NO-STAGE-SKIP",
+            )
+        )
+    else:
+        indices = [int(order.index(stage_id)) for stage_id in required_order]
+        if indices != sorted(indices):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/session_pipeline_registry.json",
+                    line_number=1,
+                    snippet="",
+                    message="pipeline.client.default stage order allows skip relative to running transition",
+                    rule_id="INV-NO-STAGE-SKIP",
+                )
+            )
+
+    ready_extensions = dict(ready_stage.get("extensions") or {})
+    ready_tick = ready_extensions.get("ready_time_must_equal_tick")
+    if int(ready_tick if ready_tick is not None else -1) != 0:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/session_stage_registry.json",
+                line_number=1,
+                snippet="",
+                message="stage.session_ready must enforce simulation_time.tick == 0",
+                rule_id="INV-SESSION-READY-TIME-ZERO",
+            )
+        )
 
 
 def _append_forbidden_identifier_findings(
@@ -339,6 +519,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
             _append_reserved_misuse_findings(findings, rel_path, line_no, line, token)
             _append_strict_placeholder_findings(findings, rel_path, line_no, line, token)
             _append_renderer_truth_boundary_findings(findings, rel_path, line_no, line, token)
+    _append_session_pipeline_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
 
     ordered = sorted(
         findings,

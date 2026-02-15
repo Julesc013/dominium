@@ -38,7 +38,42 @@ def _as_text(payload: dict) -> str:
     )
 
 
+def _forbidden_pipeline_tokens(argv: list[str]) -> list[str]:
+    out: list[str] = []
+    for raw in argv:
+        token = str(raw).strip().lower()
+        if token in ("--from-stage", "--to-stage", "--stage-id", "client.session.begin"):
+            out.append(str(raw))
+            continue
+        if "stage.session_running" in token:
+            out.append(str(raw))
+    return sorted(set(out))
+
+
 def main() -> int:
+    forbidden = _forbidden_pipeline_tokens(list(sys.argv[1:]))
+    if forbidden:
+        refused = {
+            "result": "refused",
+            "refusal": {
+                "reason_code": "REFUSE_SETUP_PIPELINE_FORBIDDEN",
+                "message": "setup/build cannot trigger runtime session stages",
+                "remediation_hint": "Use tools/launcher/launch run for runtime transitions after setup build.",
+                "relevant_ids": {
+                    "blocked_args": ",".join(forbidden),
+                },
+            },
+            "errors": [
+                {
+                    "code": "REFUSE_SETUP_PIPELINE_FORBIDDEN",
+                    "message": "setup/build cannot trigger runtime session stages",
+                    "path": "$.args",
+                }
+            ],
+        }
+        print(json.dumps(refused, indent=2, sort_keys=True))
+        return 2
+
     parser = argparse.ArgumentParser(description="Build deterministic dist layout for a bundle.")
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--bundle", default=DEFAULT_BUNDLE_ID)
@@ -69,4 +104,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
