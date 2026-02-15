@@ -190,6 +190,20 @@ RUNTIME_PATH_PREFIXES = (
     "libs/",
 )
 
+DERIVED_PROVENANCE_REQUIRED_FIELDS = (
+    "artifact_type_id",
+    "source_pack_id",
+    "source_hash",
+    "generator_tool_id",
+    "generator_tool_version",
+    "schema_version",
+    "input_merkle_hash",
+    "pack_lock_hash",
+    "deterministic",
+)
+
+DERIVED_JSON_PATH_PREFIX = "packs/derived/"
+
 
 def _norm(path: str) -> str:
     return str(path or "").replace("\\", "/")
@@ -960,6 +974,107 @@ def _runtime_status_paths(repo_root: str) -> List[str]:
     return sorted(path for path in _git_status_paths(repo_root) if path.startswith(RUNTIME_PATH_PREFIXES))
 
 
+def _derived_artifact_files(repo_root: str) -> List[str]:
+    root = os.path.join(repo_root, "packs", "derived")
+    rows: List[str] = []
+    if not os.path.isdir(root):
+        return rows
+    for walk_root, dirs, files in os.walk(root):
+        dirs[:] = sorted(dirs)
+        for name in sorted(files):
+            if not str(name).lower().endswith(".json"):
+                continue
+            abs_path = os.path.join(walk_root, name)
+            rows.append(_norm(os.path.relpath(abs_path, repo_root)))
+    return sorted(set(rows))
+
+
+def _append_derived_provenance_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    for rel_path in _derived_artifact_files(repo_root):
+        payload, err = _load_json_object(repo_root, rel_path)
+        if err:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="derived artifact payload must be valid JSON object",
+                    rule_id="INV-DERIVED-HAS-PROVENANCE",
+                )
+            )
+            continue
+        provenance = payload.get("provenance")
+        if not isinstance(provenance, dict):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="derived artifact is missing required provenance object",
+                    rule_id="INV-DERIVED-HAS-PROVENANCE",
+                )
+            )
+            continue
+        for field in DERIVED_PROVENANCE_REQUIRED_FIELDS:
+            token = provenance.get(field)
+            if token is None or (isinstance(token, str) and not str(token).strip()):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=str(field),
+                        message="derived provenance missing required field '{}'".format(field),
+                        rule_id="INV-DERIVED-HAS-PROVENANCE",
+                    )
+                )
+        if bool(provenance.get("deterministic", False)) is not True:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="deterministic={}".format(str(provenance.get("deterministic"))),
+                    message="derived provenance deterministic flag must be true",
+                    rule_id="INV-DERIVED-HAS-PROVENANCE",
+                )
+            )
+
+        source_hash = str(provenance.get("source_hash", "")).strip()
+        input_merkle_hash = str(provenance.get("input_merkle_hash", "")).strip()
+        if source_hash.startswith("placeholder.") or input_merkle_hash.startswith("placeholder."):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="source_hash={} input_merkle_hash={}".format(source_hash, input_merkle_hash)[:140],
+                    message="derived artifact appears hand-edited (placeholder provenance hashes)",
+                    rule_id="INV-NO-HAND_EDITED-DERIVED",
+                )
+            )
+
+        generator_tool = str(provenance.get("generator_tool_id", "")).strip()
+        if generator_tool and not os.path.isfile(os.path.join(repo_root, generator_tool.replace("/", os.sep))):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=generator_tool,
+                    message="derived provenance references missing generator tool path",
+                    rule_id="INV-NO-HAND_EDITED-DERIVED",
+                )
+            )
+
+
 def _append_auditx_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -1361,6 +1476,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_worldgen_constraint_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_derived_provenance_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

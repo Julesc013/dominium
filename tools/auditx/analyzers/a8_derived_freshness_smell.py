@@ -61,6 +61,22 @@ def _derived_registry_artifacts(repo_root):
     return sorted(out, key=lambda item: (item["path"], item["artifact_id"]))
 
 
+def _derived_pack_jsons(repo_root):
+    root = os.path.join(repo_root, "packs", "derived")
+    out = []
+    if not os.path.isdir(root):
+        return out
+    for walk_root, dirs, files in os.walk(root):
+        dirs[:] = sorted(dirs)
+        for name in sorted(files):
+            if not str(name).lower().endswith(".json"):
+                continue
+            abs_path = os.path.join(walk_root, name)
+            rel_path = str(os.path.relpath(abs_path, repo_root)).replace("\\", "/")
+            out.append(rel_path)
+    return sorted(set(out))
+
+
 def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
@@ -158,6 +174,56 @@ def run(graph, repo_root, changed_files=None):
             )
 
         if len(findings) >= 220:
+            break
+
+    for rel in _derived_pack_jsons(repo_root):
+        abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
+        try:
+            payload = json.load(open(abs_path, "r", encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if not isinstance(payload, dict):
+            continue
+        provenance = payload.get("provenance")
+        if not isinstance(provenance, dict):
+            findings.append(
+                make_finding(
+                    analyzer_id=ANALYZER_ID,
+                    category="derived_freshness",
+                    severity="RISK",
+                    confidence=0.84,
+                    file_path=rel,
+                    evidence=[
+                        "Derived pack JSON artifact has no provenance object.",
+                        "Expected deterministic source->derived traceability header.",
+                    ],
+                    suggested_classification="TODO-BLOCKED",
+                    recommended_action="ADD_RULE",
+                    related_invariants=["INV-DERIVED-HAS-PROVENANCE"],
+                    related_paths=[rel],
+                )
+            )
+            continue
+        generator_tool = str(provenance.get("generator_tool_id", "")).strip()
+        if not generator_tool:
+            findings.append(
+                make_finding(
+                    analyzer_id=ANALYZER_ID,
+                    category="derived_freshness",
+                    severity="WARN",
+                    confidence=0.72,
+                    file_path=rel,
+                    evidence=[
+                        "Derived pack JSON provenance is missing generator_tool_id.",
+                        "Cannot trace deterministic regeneration tool.",
+                    ],
+                    suggested_classification="TODO-BLOCKED",
+                    recommended_action="DOC_FIX",
+                    related_invariants=["INV-DERIVED-HAS-PROVENANCE"],
+                    related_paths=[rel],
+                )
+            )
+        if len(findings) >= 260:
             break
 
     return sorted(findings, key=lambda item: (item.location.file_path, item.severity, item.confidence))

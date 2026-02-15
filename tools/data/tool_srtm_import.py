@@ -330,6 +330,20 @@ def run_import(
             "deterministic": True,
         },
     }
+    provenance_check = validate_instance(
+        repo_root=repo_root,
+        schema_name="derived_provenance",
+        payload=dict(derived_payload.get("provenance") or {}),
+        strict_top_level=True,
+    )
+    if not bool(provenance_check.get("valid", False)):
+        first = (provenance_check.get("errors") or [{}])[0]
+        return _refusal(
+            "refusal.provenance_missing",
+            "derived provenance payload failed schema validation",
+            str(first.get("path", "$.provenance")),
+            detail=str(first.get("message", "")),
+        )
 
     derived_pack_abs = os.path.join(repo_root, derived_pack.replace("/", os.sep))
     pyramid_path = os.path.join(derived_pack_abs, "data", "earth_tile_pyramid.json")
@@ -398,4 +412,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
