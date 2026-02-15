@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": true,
+  "changed_only": false,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-15T08:20:25Z",
-  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
+  "generated_utc": "2026-02-15T11:36:15Z",
+  "graph_hash": "3aee567563b41174523d530f2eb96b2aebd5e79c2eb4e7880530a6c48c399943",
   "last_reviewed": "2026-02-15",
   "output_format": "both",
   "platform": "windows",
@@ -40,5 +40,5 @@
     "D2_SEED_POLICY"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-fa74a80a2737701b"
+  "workspace_id": "ws-2e5f98fcf9b4f9af"
 }
