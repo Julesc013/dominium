@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "script_id": "script.lab.camera_nav.v1",
+  "intents": [
+    {
+      "intent_id": "intent.001",
+      "process_id": "process.camera_move",
+      "inputs": {
+        "delta_local_mm": {
+          "x": 1000,
+          "y": 0,
+          "z": 0
+        },
+        "dt_ticks": 1
+      }
+    },
+    {
+      "intent_id": "intent.002",
+      "process_id": "process.camera_move",
+      "inputs": {
+        "delta_local_mm": {
+          "x": 0,
+          "y": 500,
+          "z": -250
+        },
+        "dt_ticks": 2
+      }
+    },
+    {
+      "intent_id": "intent.003",
+      "process_id": "process.camera_teleport",
+      "inputs": {
+        "target_object_id": "object.earth"
+      }
+    },
+    {
+      "intent_id": "intent.004",
+      "process_id": "process.time_control_set_rate",
+      "inputs": {
+        "rate_permille": 1500
+      }
+    },
+    {
+      "intent_id": "intent.005",
+      "process_id": "process.time_pause",
+      "inputs": {}
+    },
+    {
+      "intent_id": "intent.006",
+      "process_id": "process.time_resume",
+      "inputs": {}
+    },
+    {
+      "intent_id": "intent.007",
+      "process_id": "process.camera_teleport",
+      "inputs": {
+        "target_site_id": "site.earth.greenwich",
+        "orientation_mdeg": {
+          "yaw": 90000,
+          "pitch": -5000,
+          "roll": 0
+        }
+      }
+    },
+    {
+      "intent_id": "intent.008",
+      "process_id": "process.camera_move",
+      "inputs": {
+        "delta_local_mm": {
+          "x": -250,
+          "y": 0,
+          "z": 100
+        },
+        "dt_ticks": 4
+      }
+    }
+  ]
+}

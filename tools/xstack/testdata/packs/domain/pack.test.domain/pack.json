@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.test.domain",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.test.base@1.0.0",
+    "pack.test.law@1.0.0"
+  ],
+  "contribution_types": [
+    "domain",
+    "lens"
+  ],
+  "contributions": [
+    {
+      "type": "domain",
+      "id": "domain.test.navigation",
+      "path": "data/domain.navigation.json"
+    },
+    {
+      "type": "lens",
+      "id": "lens.test.sensor",
+      "path": "data/lens.sensor.json"
+    },
+    {
+      "type": "lens",
+      "id": "lens.test.debug",
+      "path": "data/lens.debug.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.test.domain.v1",
+  "signature_status": "signed"
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "lens_id": "lens.test.sensor",
+  "lens_type": "diegetic",
+  "transform_description": "Test diegetic navigation sensor projection.",
+  "required_entitlements": [
+    "session.boot"
+  ],
+  "epistemic_constraints": {
+    "visibility_policy": "sensor_limited",
+    "max_resolution_tier": 1
+  }
+}

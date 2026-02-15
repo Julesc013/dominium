@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "ui.window.test.lab",
+  "title": "Fixture Lab Window",
+  "required_entitlements": [
+    "ui.map"
+  ],
+  "required_lenses": [
+    "lens.test.sensor"
+  ],
+  "widgets": {
+    "widget_id": "fixture.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "fixture.label",
+        "type": "text",
+        "text": "Fixture window"
+      }
+    ]
+  }
+}

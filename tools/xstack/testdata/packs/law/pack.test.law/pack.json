@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.test.law",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.test.base@1.0.0"
+  ],
+  "contribution_types": [
+    "law_profile"
+  ],
+  "contributions": [
+    {
+      "type": "law_profile",
+      "id": "law.test.default",
+      "path": "data/law.default.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.test.law.v1",
+  "signature_status": "signed"
+}
+

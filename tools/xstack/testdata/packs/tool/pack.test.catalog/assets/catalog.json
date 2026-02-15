@@ -1,0 +1,15 @@
+{
+  "asset_bundle_id": "assets.test.catalog",
+  "version": "1.0.0",
+  "astronomy_entries": [
+    {
+      "object_id": "astro.test.sol",
+      "kind": "star_system",
+      "search_keys": [
+        "sol",
+        "sun"
+      ]
+    }
+  ]
+}
+

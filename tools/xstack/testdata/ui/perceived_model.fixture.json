@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0.0",
+  "viewpoint_id": "viewpoint.client.fixture",
+  "lens_id": "lens.diegetic.sensor",
+  "epistemic_scope": {
+    "scope_id": "epistemic.lab.placeholder",
+    "visibility_level": "placeholder"
+  },
+  "observed_entities": [
+    "camera.main",
+    "entity.fixture.001"
+  ],
+  "observed_fields": [
+    {
+      "field_id": "simulation_time.tick",
+      "value": "0"
+    }
+  ],
+  "camera_viewpoint": {
+    "assembly_id": "camera.main",
+    "frame_id": "frame.world"
+  },
+  "time_state": {
+    "tick": 0,
+    "rate_permille": 1000,
+    "paused": false
+  },
+  "navigation": {
+    "hierarchy": [
+      {
+        "object_id": "object.milky_way",
+        "parent_id": null,
+        "kind": "galaxy",
+        "frame_id": "frame.milky_way.galactic",
+        "search_keys": [
+          "milky way"
+        ]
+      },
+      {
+        "object_id": "object.sol_system",
+        "parent_id": "object.milky_way",
+        "kind": "system",
+        "frame_id": "frame.sol.barycentric",
+        "search_keys": [
+          "sol",
+          "solar system"
+        ]
+      },
+      {
+        "object_id": "object.earth",
+        "parent_id": "object.sol_system",
+        "kind": "planet",
+        "frame_id": "frame.earth.inertial",
+        "search_keys": [
+          "earth",
+          "terra"
+        ]
+      }
+    ],
+    "search_index": {
+      "earth": [
+        "object.earth"
+      ],
+      "sol": [
+        "object.sol_system"
+      ],
+      "greenwich": [
+        "site.earth.greenwich"
+      ]
+    },
+    "search_results": [],
+    "selection_summary": ""
+  },
+  "sites": {
+    "entries": [
+      {
+        "site_id": "site.earth.greenwich",
+        "object_id": "object.earth",
+        "kind": "surface",
+        "frame_id": "frame.earth.body_fixed"
+      }
+    ],
+    "search_index": {
+      "greenwich": [
+        "site.earth.greenwich"
+      ]
+    }
+  },
+  "entities": {
+    "entries": [
+      {
+        "entity_id": "camera.main"
+      },
+      {
+        "entity_id": "entity.fixture.001"
+      }
+    ],
+    "selected_fields": []
+  },
+  "process_log": {
+    "entries": [
+      {
+        "log_index": 0,
+        "process_id": "process.camera_move",
+        "intent_id": "intent.fixture.0001",
+        "tick": 0,
+        "outcome": "complete",
+        "state_hash_anchor": "9a8d4dbdbf0901f764f1b09f0e77e61f7716e522af76696bb41f2f5074f720fd"
+      }
+    ]
+  },
+  "time": {
+    "tick": 0,
+    "rate_permille": 1000,
+    "paused": false,
+    "summary": "tick=0 rate=1000 paused=false"
+  },
+  "tool": {
+    "log": {
+      "entries": []
+    }
+  },
+  "metadata": {
+    "simulation_tick": 0,
+    "coordinate_frame": "world.global",
+    "lens_type": "diegetic",
+    "epistemic_visibility_policy": "lab.full"
+  }
+}

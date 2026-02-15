@@ -1,0 +1,25 @@
+{
+  "save_id": "save.testx.session.fixture",
+  "bundle_id": "bundle.base.lab",
+  "scenario_id": "scenario.lab.galaxy_nav",
+  "mission_id": null,
+  "experience_id": "profile.lab.developer",
+  "law_profile_id": "law.lab.unrestricted",
+  "parameter_bundle_id": "params.lab.placeholder",
+  "budget_policy_id": "policy.budget.default_lab",
+  "fidelity_policy_id": "policy.fidelity.default_lab",
+  "rng_seed_string": "seed.testx.session.fixture",
+  "universe_seed_string": "seed.testx.universe.fixture",
+  "entitlements": [
+    "session.boot",
+    "entitlement.camera_control",
+    "entitlement.teleport",
+    "entitlement.time_control",
+    "entitlement.inspect",
+    "lens.nondiegetic.access",
+    "ui.window.lab.nav"
+  ],
+  "epistemic_scope_id": "epistemic.lab.placeholder",
+  "visibility_level": "placeholder",
+  "privilege_level": "operator"
+}
