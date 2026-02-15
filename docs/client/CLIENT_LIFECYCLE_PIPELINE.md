@@ -31,6 +31,8 @@ Authoritative contracts:
 
 - Stage transitions happen only through canonical commands declared in registry-backed transition rules.
 - Direct stage jumps are refused with `refusal.stage_invalid_transition`.
+- Server-side transition checks refuse with `refusal.server_stage_mismatch` when client stage transitions skip declared order.
+- Server-side authority checks refuse with `refusal.server_authority_violation` when authority binding differs from SessionSpec.
 - `client.session.begin` is the explicit transition from `stage.session_ready` to `stage.session_running`.
 - Re-entry starts at `stage.resolve_session` and re-validates artifacts before returning to `stage.session_ready` or `stage.session_running`.
 

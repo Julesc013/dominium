@@ -32,6 +32,9 @@ Reference contracts:
 
 - Entered only by explicit `client.session.begin`.
 - `client.session.begin` is refused unless the pipeline stage is `stage.session_ready`.
+- Server transition validation (`tools/xstack/session_server`) also enforces:
+  - required canonical history through `stage.resolve_session` and `stage.verify_world`
+  - authority context compatibility with SessionSpec
 - Direct `ready -> running` bypasses are forbidden; transitions must satisfy `allowed_next_stage_ids`.
 - Abort/resume/re-entry are validated against lockfile + registry hashes + universe identity invariants.
 - Re-entry commands:
