@@ -141,6 +141,38 @@
         "RISK": 9
       }
     },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
     "INV-NO-TRUTH-OVER-NET": {
       "finding_count": 3,
       "recommended_actions": {
@@ -236,35 +268,77 @@
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 1,
+      "finding_count": 9,
       "recommended_actions": {
-        "RETIRE": 1
+        "RETIRE": 9
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "tools/xstack/testx/tests/testlib.py"
+          "location": "tools/auditx/analyzers/__init__.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "tools/auditx/analyzers/e3_handshake_policy_bypass_smell.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "tools/net/net_cli.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "tools/net/tool_net_loopback_sim.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
+          "location": "tools/xstack/controlx/orchestrator.py"
         }
       ],
       "severities": {
-        "WARN": 1
+        "WARN": 9
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 1,
+      "finding_count": 55,
       "recommended_actions": {
-        "ADD_TEST": 1
+        "ADD_RULE": 47,
+        "ADD_TEST": 8
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "schemas/profile_trace.schema.json"
+          "location": "tools/net/net_cli.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0002",
+          "location": "tools/net/tool_net_loopback_sim.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0003",
+          "location": "tools/net/tool_net_loopback_sim.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0004",
+          "location": "tools/xstack/controlx/orchestrator.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0005",
+          "location": "tools/xstack/controlx/orchestrator.py"
         }
       ],
       "severities": {
-        "WARN": 1
+        "RISK": 47,
+        "WARN": 8
       }
     }
   },

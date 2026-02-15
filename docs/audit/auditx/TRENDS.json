@@ -4,9 +4,10 @@
     "canon_drift": 613,
     "capability_bypass_smell": 1,
     "derived_freshness": 9,
+    "mode_flag_smell": 1,
     "net.truth_over_net_smell": 3,
-    "reachability": 1,
-    "schema_usage": 1,
+    "reachability": 9,
+    "schema_usage": 55,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
@@ -16,31 +17,40 @@
     "category_frequency": {
       "canon_drift": 0,
       "capability_bypass_smell": 0,
-      "derived_freshness": 0,
+      "capability_misuse": -139,
+      "derived_freshness": -120,
+      "legacy_contamination": -160,
+      "mode_flag_smell": -63,
       "net.truth_over_net_smell": 0,
-      "reachability": 1,
-      "schema_usage": 1,
+      "ownership_boundary": -9,
+      "reachability": -71,
+      "schema_usage": -105,
+      "security.boundary_io": -29,
+      "security.privilege_bypass": -636,
       "semantic.capability_drift": 0,
       "semantic.derived_artifact_contract": 0,
       "semantic.schema_shadowing": 0,
-      "semantic.workspace_contamination": 0
+      "semantic.workspace_contamination": 0,
+      "terminology_misuse": -1,
+      "ui_parity": -223
     },
     "severity_distribution": {
-      "RISK": 0,
-      "VIOLATION": 0,
-      "WARN": 2
+      "INFO": -230,
+      "RISK": -226,
+      "VIOLATION": -779,
+      "WARN": -321
     }
   },
-  "findings_hash": "04c280184871296e1f65ed32e02f39de5c41c929e6a702b73068face3001ef2d",
+  "findings_hash": "1b408f21359606d2629c206abefef35a9fddb89e79d33ecba687030ecde4bdf0",
   "history_reference": {
-    "previous_distinct_hash": "2719a4630853cace25a99ef12b6c9d28cbde3346945de122ca76ef34d740e837"
+    "previous_distinct_hash": "67e2218b80e013898ea842c6df7e5156dfb10faa21813ab1157e26121910c073"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "RISK": 13,
-    "VIOLATION": 1,
-    "WARN": 741
+    "RISK": 60,
+    "VIOLATION": 2,
+    "WARN": 756
   },
-  "total_findings": 755
+  "total_findings": 818
 }
