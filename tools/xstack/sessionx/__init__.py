@@ -8,6 +8,7 @@ from .render_model import build_render_model  # noqa: F401
 from .runner import boot_session_spec  # noqa: F401
 from .scheduler import execute_single_intent_srz, replay_intent_script_srz  # noqa: F401
 from .server_gate import server_validate_transition  # noqa: F401
+from .stage_parity import surface_abort_session, surface_resume_session, surface_stage_status  # noqa: F401
 from .session_control import abort_session_spec, resume_session_spec, session_stage_status  # noqa: F401
 from .srz import build_single_shard, validate_intent_envelope, validate_srz_shard  # noqa: F401
 from .script_runner import run_intent_script  # noqa: F401

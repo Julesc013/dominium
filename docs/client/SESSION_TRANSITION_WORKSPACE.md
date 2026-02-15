@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-10
+Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
 
@@ -34,3 +34,7 @@ Both are represented as explicit stubs and report deterministic refusal when una
 - CLI renders structured progress/events from the same stage stream.
 - TUI and GUI map the same panel model from UI IR workspace data.
 - Workspace definition lives in `client/ui/workspaces/session_transition/session_transition.default.json`.
+- Session pipeline parity adapters expose the same workspace fields:
+  - `stage_id`
+  - `stage_log`
+  - `refusal_codes`

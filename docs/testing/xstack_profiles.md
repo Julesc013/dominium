@@ -35,6 +35,7 @@ Related lifecycle commands:
 - `tools/xstack/session_control client.session.stage saves/<save_id>/session_spec.json`
 - `tools/xstack/session_control client.session.abort saves/<save_id>/session_spec.json`
 - `tools/xstack/session_control client.session.resume saves/<save_id>/session_spec.json`
+- `tools/xstack/session_surface --surface cli|tui|gui client.session.stage saves/<save_id>/session_spec.json`
 - `tools/xstack/session_server saves/<save_id>/session_spec.json --from-stage stage.session_ready --to-stage stage.session_running`
 - `tools/xstack/session_script_run saves/<save_id>/session_spec.json <script.json> [--workers N] [--logical-shards N]`
 - `tools/xstack/srz_status saves/<save_id>/session_spec.json`
@@ -108,6 +109,9 @@ Scope:
   - two deterministic dist builds compared for canonical content hash parity
   - launcher lockfile enforcement refusal checks
   - full lab build validation replay (dist -> launch -> scripted traversal -> composite hash match)
+- CLI/TUI/GUI stage parity checks:
+  - `testx.session.stage_parity.status_surfaces`
+  - `testx.session.stage_parity.transitions_surfaces`
 
 ## FULL
 Scope:
