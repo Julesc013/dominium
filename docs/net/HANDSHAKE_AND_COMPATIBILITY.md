@@ -40,6 +40,8 @@ Rules:
 1. Stages are enabled only when SessionSpec selects multiplayer transport endpoint metadata.
 2. In current stub state, missing transport plugin must refuse deterministically (`refusal.not_implemented` family).
 3. Default singleplayer pipeline remains unchanged.
+4. Canonical multiplayer stub pipeline id is `pipeline.client.multiplayer_stub`.
+5. Net stage order is fixed: `stage.net_handshake -> stage.net_sync_baseline -> stage.net_join_world`.
 
 ## Refusal Codes (Compatibility)
 

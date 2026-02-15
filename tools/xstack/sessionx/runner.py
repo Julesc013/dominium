@@ -387,6 +387,12 @@ def _stage_command_for_transition(stage_id: str) -> str:
         return "client.session.acquire.local"
     if str(stage_id) == "stage.verify_world":
         return "client.session.verify"
+    if str(stage_id) == "stage.net_handshake":
+        return "client.session.net.handshake"
+    if str(stage_id) == "stage.net_sync_baseline":
+        return "client.session.net.sync_baseline"
+    if str(stage_id) == "stage.net_join_world":
+        return "client.session.net.join_world"
     if str(stage_id) == "stage.warmup_simulation":
         return "client.session.warmup.simulation"
     if str(stage_id) == "stage.warmup_presentation":

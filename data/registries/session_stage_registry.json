@@ -75,6 +75,7 @@
           "hash_anchor"
         ],
         "allowed_next_stage_ids": [
+          "stage.net_handshake",
           "stage.warmup_simulation",
           "stage.teardown_session"
         ],
@@ -133,6 +134,98 @@
         "deterministic": true,
         "run_meta_only": false,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "stage_id": "stage.net_handshake",
+        "display_name": "Network Handshake",
+        "description": "Deterministic compatibility handshake stage for multiplayer pipeline variants.",
+        "required_capabilities": [
+          "session.net.handshake"
+        ],
+        "required_artifacts": [
+          "session_spec",
+          "lockfile",
+          "registry_bundle",
+          "authority_context"
+        ],
+        "produces_artifacts": [
+          "run_meta",
+          "stage_log"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.net_sync_baseline",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {
+          "transport_plugin_required": true,
+          "stub_refusal_code": "refusal.not_implemented.net_transport"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "stage_id": "stage.net_sync_baseline",
+        "display_name": "Network Baseline Sync",
+        "description": "Bind deterministic snapshot/delta baseline references after successful handshake.",
+        "required_capabilities": [
+          "session.net.sync_baseline"
+        ],
+        "required_artifacts": [
+          "session_spec",
+          "lockfile",
+          "registry_bundle",
+          "run_meta"
+        ],
+        "produces_artifacts": [
+          "run_meta",
+          "stage_log"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.net_join_world",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {
+          "transport_plugin_required": true,
+          "stub_refusal_code": "refusal.not_implemented.net_transport"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "stage_id": "stage.net_join_world",
+        "display_name": "Network Join World",
+        "description": "Finalize multiplayer join artifacts before deterministic warmup stages execute.",
+        "required_capabilities": [
+          "session.net.join_world"
+        ],
+        "required_artifacts": [
+          "session_spec",
+          "run_meta",
+          "authority_context"
+        ],
+        "produces_artifacts": [
+          "run_meta",
+          "stage_log"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.warmup_simulation",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {
+          "transport_plugin_required": true,
+          "stub_refusal_code": "refusal.not_implemented.net_transport"
+        }
       },
       {
         "schema_version": "1.0.0",

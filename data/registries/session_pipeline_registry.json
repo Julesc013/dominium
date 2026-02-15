@@ -43,6 +43,53 @@
         ],
         "version_introduced": "1.0.0",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "pipeline_id": "pipeline.client.multiplayer_stub",
+        "stages": [
+          "stage.resolve_session",
+          "stage.acquire_world",
+          "stage.verify_world",
+          "stage.net_handshake",
+          "stage.net_sync_baseline",
+          "stage.net_join_world",
+          "stage.warmup_simulation",
+          "stage.warmup_presentation",
+          "stage.session_ready",
+          "stage.session_running",
+          "stage.suspend_session",
+          "stage.resume_session",
+          "stage.teardown_session"
+        ],
+        "entry_stage_id": "stage.resolve_session",
+        "ready_stage_id": "stage.session_ready",
+        "running_stage_id": "stage.session_running",
+        "teardown_stage_id": "stage.teardown_session",
+        "allowed_external_transitions": [
+          "client.session.acquire.local",
+          "client.session.acquire.spec",
+          "client.session.acquire.server",
+          "client.session.acquire.macro",
+          "client.session.verify",
+          "client.session.net.handshake",
+          "client.session.net.sync_baseline",
+          "client.session.net.join_world",
+          "client.session.warmup.simulation",
+          "client.session.warmup.presentation",
+          "client.session.ready",
+          "client.session.begin",
+          "client.session.suspend",
+          "client.session.resume",
+          "client.session.abort",
+          "client.session.reentry",
+          "client.session.stage"
+        ],
+        "version_introduced": "1.0.0",
+        "extensions": {
+          "requires_transport_endpoint": true,
+          "stub_mode": "refuse.not_implemented_without_transport_plugin"
+        }
       }
     ],
     "extensions": {}
