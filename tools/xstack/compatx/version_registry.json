@@ -203,6 +203,13 @@
         "1.0.0"
       ]
     },
+    "net_proto_message": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "net_snapshot": {
       "current_version": "1.0.0",
       "migrations": {},

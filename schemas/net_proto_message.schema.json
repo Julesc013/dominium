@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Protocol Message Wrapper Schema",
+  "version": "1.0.0",
+  "description": "Deterministic transport-level protocol wrapper for handshake/refusal/payload artifacts.",
+  "x-doc-ref": [
+    "docs/net/TRANSPORT_ABSTRACTION.md",
+    "docs/net/HANDSHAKE_AND_COMPATIBILITY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "msg_type",
+    "msg_id",
+    "sequence",
+    "payload_schema_id",
+    "payload_ref",
+    "payload_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "msg_type": {
+      "type": "string",
+      "enum": [
+        "handshake_request",
+        "handshake_response",
+        "refusal",
+        "payload"
+      ]
+    },
+    "msg_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "payload_schema_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload_ref": {
+      "type": "object",
+      "required": [
+        "inline_json",
+        "binary_blob_ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "inline_json": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "binary_blob_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "payload_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "msg_type": "handshake_request",
+      "msg_id": "msg.handshake.req.0001",
+      "sequence": 1,
+      "payload_schema_id": "net_handshake@1.0.0",
+      "payload_ref": {
+        "inline_json": {
+          "client_peer_id": "peer.client.alpha",
+          "requested_replication_policy_id": "policy.net.lockstep"
+        },
+        "binary_blob_ref": ""
+      },
+      "payload_hash": "d0fda6be5fc2f2c5f333b6adf28cc9f4dc79a00e70fba9c66e6244d8456116c7",
+      "extensions": {}
+    }
+  ]
+}
