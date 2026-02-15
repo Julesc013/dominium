@@ -60,9 +60,20 @@
         "server_peer_id",
         "requested_replication_policy_id",
         "anti_cheat_policy_id",
-        "server_policy_id",
         "securex_policy_id",
         "schema_versions"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "server_profile_id"
+          ]
+        },
+        {
+          "required": [
+            "server_policy_id"
+          ]
+        }
       ],
       "additionalProperties": false,
       "properties": {
@@ -91,6 +102,10 @@
           "minLength": 1
         },
         "anti_cheat_policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "server_profile_id": {
           "type": "string",
           "minLength": 1
         },

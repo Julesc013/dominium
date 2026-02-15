@@ -16,8 +16,10 @@ Define deterministic multiplayer compatibility handshake artifacts and refusal b
 4. `requested_replication_policy_id`
 5. `negotiated_replication_policy_id`
 6. `anti_cheat_policy_id`
-7. `server_law_profile_id`
-8. peer IDs and protocol version
+7. `securex_policy_id`
+8. `server_profile_id`
+9. `server_law_profile_id`
+10. peer IDs and protocol version
 
 ## Handshake Sequence (Deterministic)
 
@@ -32,8 +34,9 @@ Client                                Server
   |                                     | 3) schema versions
   |                                     | 4) replication policy allowability
   |                                     | 5) anti-cheat policy allowability/requirement
-  |                                     | 6) SecureX policy requirements
-  |                                     | 7) server law_profile selection
+  |                                     | 6) server profile policy constraints
+  |                                     | 7) SecureX policy requirements
+  |                                     | 8) server law_profile selection
   | proto_message(handshake_response)   |
   |<------------------------------------|
   |                                     |
@@ -46,7 +49,7 @@ Handshake result is content-driven and deterministic. Wall-clock timing must not
 1. No silent negotiation:
    - Any compatibility mismatch is explicit `result=refuse`.
 2. Negotiation order is deterministic:
-   - Compare lock hash -> registries -> schema versions -> policy allowability -> securex gates.
+   - Compare lock hash -> registries -> schema versions -> policy allowability -> server profile gates -> securex gates.
 3. Handshake artifacts are immutable run records once accepted/refused.
 
 ## Session Pipeline Integration (Structural)
@@ -109,8 +112,8 @@ Cause: handshake-declared schema version unsupported by CompatX.
 Remediation: migrate/downgrade schema versions to supported set.
 
 4. `refusal.net.handshake_policy_not_allowed`
-Cause: requested replication or anti-cheat policy not permitted by server net policy registry.
-Remediation: request an allowed policy ID.
+Cause: requested replication/anti-cheat/law profile not permitted by server profile registry.
+Remediation: request values allowed by the selected `server_profile_id`.
 
 5. `refusal.net.handshake_securex_denied`
 Cause: server SecureX requirements not satisfied.
@@ -148,6 +151,8 @@ Remediation: set `extensions.perception_interest_policy_id` in server policy and
 - `data/registries/session_stage_registry.json`
 - `data/registries/session_pipeline_registry.json`
 - `data/registries/net_server_policy_registry.json`
+- `data/registries/securex_policy_registry.json`
+- `data/registries/server_profile_registry.json`
 - `docs/contracts/refusal_contract.md`
 - `docs/net/TRANSPORT_ABSTRACTION.md`
 

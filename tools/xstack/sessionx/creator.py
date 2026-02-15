@@ -695,6 +695,7 @@ def create_session_spec(
     net_server_peer_id: str = "",
     net_replication_policy_id: str = "",
     net_anti_cheat_policy_id: str = "",
+    net_server_profile_id: str = "",
     net_server_policy_id: str = "",
     net_securex_policy_id: str = "",
     net_desired_law_profile_id: str = "",
@@ -734,7 +735,6 @@ def create_session_spec(
             "server_peer_id": str(net_server_peer_id).strip(),
             "requested_replication_policy_id": str(net_replication_policy_id).strip(),
             "anti_cheat_policy_id": str(net_anti_cheat_policy_id).strip(),
-            "server_policy_id": str(net_server_policy_id).strip(),
         }
         for field, value in sorted(required_network.items(), key=lambda item: item[0]):
             if not value:
@@ -753,6 +753,16 @@ def create_session_spec(
                 {"field": "schema_versions"},
                 "$.network.schema_versions",
             )
+        server_profile_id = str(net_server_profile_id).strip()
+        server_policy_id = str(net_server_policy_id).strip()
+        if (not server_profile_id) and (not server_policy_id):
+            return refusal(
+                "REFUSE_NET_CONFIG_INVALID",
+                "network requires server_profile_id or legacy server_policy_id",
+                "Provide --net-server-profile-id (preferred) or --net-server-policy-id.",
+                {"field": "server_profile_id"},
+                "$.network",
+            )
         network_payload = {
             "endpoint": network_endpoint,
             "transport_id": required_network["transport_id"],
@@ -760,7 +770,8 @@ def create_session_spec(
             "server_peer_id": required_network["server_peer_id"],
             "requested_replication_policy_id": required_network["requested_replication_policy_id"],
             "anti_cheat_policy_id": required_network["anti_cheat_policy_id"],
-            "server_policy_id": required_network["server_policy_id"],
+            "server_profile_id": server_profile_id,
+            "server_policy_id": server_policy_id,
             "desired_law_profile_id": str(net_desired_law_profile_id).strip() or None,
             "securex_policy_id": str(net_securex_policy_id).strip(),
             "schema_versions": schema_versions,

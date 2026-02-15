@@ -1,0 +1,20 @@
+{
+  "entry_type": "server_profile_collection",
+  "profiles": [
+    {
+      "server_profile_id": "server.profile.rank_strict",
+      "securex_policy_id": "securex.policy.rank_strict",
+      "anti_cheat_policy_id": "policy.ac.rank_strict"
+    },
+    {
+      "server_profile_id": "server.profile.casual_public",
+      "securex_policy_id": "securex.policy.casual_default",
+      "anti_cheat_policy_id": "policy.ac.casual_default"
+    },
+    {
+      "server_profile_id": "server.profile.private_relaxed",
+      "securex_policy_id": "securex.policy.private_relaxed",
+      "anti_cheat_policy_id": "policy.ac.private_relaxed"
+    }
+  ]
+}

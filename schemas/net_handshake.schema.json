@@ -18,6 +18,7 @@
     "negotiated_replication_policy_id",
     "anti_cheat_policy_id",
     "server_law_profile_id",
+    "server_profile_id",
     "pack_lock_hash",
     "registry_hashes",
     "schema_versions",
@@ -61,6 +62,10 @@
       "minLength": 1
     },
     "server_law_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "server_profile_id": {
       "type": "string",
       "minLength": 1
     },
@@ -131,6 +136,7 @@
       "negotiated_replication_policy_id": "policy.net.lockstep",
       "anti_cheat_policy_id": "policy.ac.casual_default",
       "server_law_profile_id": "law.lab.unrestricted",
+      "server_profile_id": "server.profile.private_relaxed",
       "pack_lock_hash": "83e022ebf2ffc2686d0c2b8854b24b3febd5c80edbe06b3f4a0931575d8eb1b8",
       "registry_hashes": {},
       "schema_versions": {

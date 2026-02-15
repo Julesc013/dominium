@@ -64,6 +64,7 @@ def main() -> int:
     parser.add_argument("--net-server-peer-id", default="")
     parser.add_argument("--net-replication-policy-id", default="")
     parser.add_argument("--net-anti-cheat-policy-id", default="")
+    parser.add_argument("--net-server-profile-id", default="")
     parser.add_argument("--net-server-policy-id", default="")
     parser.add_argument("--net-securex-policy-id", default="")
     parser.add_argument("--net-desired-law-profile-id", default="")
@@ -102,6 +103,7 @@ def main() -> int:
         net_server_peer_id=str(args.net_server_peer_id),
         net_replication_policy_id=str(args.net_replication_policy_id),
         net_anti_cheat_policy_id=str(args.net_anti_cheat_policy_id),
+        net_server_profile_id=str(args.net_server_profile_id),
         net_server_policy_id=str(args.net_server_policy_id),
         net_securex_policy_id=str(args.net_securex_policy_id),
         net_desired_law_profile_id=str(args.net_desired_law_profile_id),

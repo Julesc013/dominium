@@ -4,6 +4,7 @@
   "description": "Baseline Lab Galaxy bundle for deterministic out-of-game session bootstrap.",
   "pack_ids": [
     "pack.core.runtime",
+    "pack.server.governance",
     "pack.core.camera",
     "pack.core.diegetic_instruments",
     "policy.activation.default_lab",

@@ -28,6 +28,8 @@ REGISTRY_FILE_MAP = {
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
+    "securex_policy_registry_hash": "securex_policy.registry.json",
+    "server_profile_registry_hash": "server_profile.registry.json",
 }
 
 
@@ -66,7 +68,7 @@ def _load_session_spec(repo_root: str, session_spec_path: str) -> Tuple[dict, di
     return payload, {}
 
 
-def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dict, dict, dict, dict]:
+def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dict, dict, dict, dict, dict, dict]:
     compiled = compile_bundle(
         repo_root=repo_root,
         bundle_id=str(bundle_id),
@@ -77,7 +79,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         use_cache=False,
     )
     if str(compiled.get("result", "")) != "complete":
-        return {}, {}, {}, {}, refusal(
+        return {}, {}, {}, {}, {}, {}, refusal(
             "refusal.net.handshake_registry_hash_mismatch",
             "failed to compile lockfile/registries for loopback simulation",
             "Resolve compile_bundle refusal details and retry.",
@@ -86,7 +88,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         )
     lock_payload, err = read_json_object(os.path.join(repo_root, "build", "lockfile.json"))
     if err:
-        return {}, {}, {}, {}, refusal(
+        return {}, {}, {}, {}, {}, {}, refusal(
             "refusal.net.handshake_pack_lock_mismatch",
             "build/lockfile.json is missing or invalid",
             "Rebuild lockfile and retry loopback simulation.",
@@ -95,7 +97,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         )
     semantic = validate_lockfile_payload(lock_payload)
     if str(semantic.get("result", "")) != "complete":
-        return {}, {}, {}, {}, refusal(
+        return {}, {}, {}, {}, {}, {}, refusal(
             "refusal.net.handshake_pack_lock_mismatch",
             "lockfile semantic validation failed",
             "Rebuild lockfile from deterministic bundle inputs.",
@@ -107,7 +109,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
     for key, filename in sorted(REGISTRY_FILE_MAP.items(), key=lambda item: item[0]):
         payload, payload_err = read_json_object(os.path.join(repo_root, "build", "registries", filename))
         if payload_err:
-            return {}, {}, {}, {}, refusal(
+            return {}, {}, {}, {}, {}, {}, refusal(
                 "refusal.net.handshake_registry_hash_mismatch",
                 "required registry '{}' is missing or invalid".format(filename),
                 "Rebuild registries and retry loopback simulation.",
@@ -117,7 +119,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         expected = str(registries.get(key, "")).strip()
         actual = str(payload.get("registry_hash", "")).strip()
         if expected != actual:
-            return {}, {}, {}, {}, refusal(
+            return {}, {}, {}, {}, {}, {}, refusal(
                 "refusal.net.handshake_registry_hash_mismatch",
                 "registry hash mismatch for '{}'".format(filename),
                 "Rebuild lockfile and registries from identical bundle inputs.",
@@ -130,6 +132,8 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         payloads.get("net_replication_policy_registry_hash", {}),
         payloads.get("anti_cheat_policy_registry_hash", {}),
         payloads.get("net_server_policy_registry_hash", {}),
+        payloads.get("securex_policy_registry_hash", {}),
+        payloads.get("server_profile_registry_hash", {}),
         {},
     )
 
@@ -146,6 +150,8 @@ def _simulate_handshakes(
     replication_registry: dict,
     anti_cheat_registry: dict,
     server_policy_registry: dict,
+    securex_policy_registry: dict,
+    server_profile_registry: dict,
     clients: int,
 ) -> Tuple[List[dict], dict]:
     base_network = dict(session_spec.get("network") or {})
@@ -170,6 +176,8 @@ def _simulate_handshakes(
             replication_registry=replication_registry,
             anti_cheat_registry=anti_cheat_registry,
             server_policy_registry=server_policy_registry,
+            securex_policy_registry=securex_policy_registry,
+            server_profile_registry=server_profile_registry,
             authority_context=dict(session_spec.get("authority_context") or {}),
         )
         row = {
@@ -215,7 +223,15 @@ def main() -> int:
         print(json.dumps(session_spec_error, indent=2, sort_keys=True))
         return 2
 
-    lock_payload, replication_registry, anti_cheat_registry, server_policy_registry, load_error = _load_lock_and_registries(
+    (
+        lock_payload,
+        replication_registry,
+        anti_cheat_registry,
+        server_policy_registry,
+        securex_policy_registry,
+        server_profile_registry,
+        load_error,
+    ) = _load_lock_and_registries(
         repo_root=repo_root,
         bundle_id=str(session_spec.get("bundle_id", "bundle.base.lab")),
     )
@@ -230,6 +246,8 @@ def main() -> int:
         replication_registry=replication_registry,
         anti_cheat_registry=anti_cheat_registry,
         server_policy_registry=server_policy_registry,
+        securex_policy_registry=securex_policy_registry,
+        server_profile_registry=server_profile_registry,
         clients=int(args.clients),
     )
     if sim_error:
