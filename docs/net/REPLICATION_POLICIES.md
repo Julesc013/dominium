@@ -14,11 +14,11 @@ Define policy IDs for canonical multiplayer replication behaviors over shared pr
 2. `policy.net.server_authoritative`
 3. `policy.net.srz_hybrid`
 
-## Implementation Status (MP-4)
+## Implementation Status (MP-5)
 
 1. `policy.net.lockstep`: implemented as deterministic module baseline in MP-3.
 2. `policy.net.server_authoritative`: implemented in MP-4 with PerceivedModel delta + snapshot resync path.
-3. `policy.net.srz_hybrid`: declared contract only; implementation pending later prompts.
+3. `policy.net.srz_hybrid`: implemented in MP-5 with deterministic shard routing, per-shard anchors, composite hash validation, and perception-interest filtered deltas.
 
 ## Transmission Contracts
 
@@ -57,6 +57,10 @@ Define policy IDs for canonical multiplayer replication behaviors over shared pr
    - Deterministic SRZ ownership map per shard.
 3. Resync:
    - `resync.hybrid.shard_snapshot`
+4. MP-5 scope:
+   - Single-process multi-shard coordinator is implemented.
+   - Cross-shard direct writes are refused unless explicitly supported by process metadata.
+   - Perception-interest filtering is policy-driven and deterministic.
 
 ## Resync/Repair Rules
 
@@ -76,6 +80,9 @@ Define policy IDs for canonical multiplayer replication behaviors over shared pr
 
 - `data/registries/net_replication_policy_registry.json`
 - `data/registries/net_resync_strategy_registry.json`
+- `data/registries/shard_map_registry.json`
+- `data/registries/perception_interest_policy_registry.json`
+- `docs/net/SRZ_HYBRID_POLICY.md`
 - `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
 - `docs/contracts/refusal_contract.md`
 
