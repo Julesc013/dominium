@@ -3,55 +3,100 @@
   "schema_version": "1.0.0",
   "records": [
     {
-      "solver_id": "solver.collapse.macro_capsule",
+      "conformance_bundle_refs": [
+        "conformance.bundle.macro_capsule.v1"
+      ],
+      "contract_ids": [
+        "dom.contract.mass_conservation",
+        "dom.contract.energy_conservation",
+        "dom.contract.deterministic_transition",
+        "dom.contract.port_contract_preservation"
+      ],
       "cost_class": "low",
-      "resolution": "macro",
+      "domain_ids": [
+        "dom.domain.gravity.macro",
+        "dom.domain.energy.basic",
+        "dom.domain.economy.basic"
+      ],
       "guarantees": [
         "conservation.mass",
         "conservation.energy",
         "deterministic.ordering"
       ],
-      "supports_transitions": [
-        "collapse",
-        "expand"
-      ],
       "numeric_bounds": {
-        "max_error": "unit.dimensionless.ratio:0.001",
-        "bounded": true
+        "bounded": true,
+        "max_error": "unit.dimensionless.ratio:0.001"
       },
       "refusal_codes": [
+        "refusal.contract_violation",
+        "refusal.solver_unbound",
         "SOLVER_REFUSE_BOUNDS",
         "SOLVER_REFUSE_INELIGIBLE",
         "SOLVER_REFUSE_BUDGET"
       ],
-      "conformance_bundle_refs": [
-        "conformance.bundle.macro_capsule.v1"
+      "resolution": "macro",
+      "resolution_tags": [
+        "macro",
+        "coarse"
+      ],
+      "solver_id": "solver.collapse.macro_capsule",
+      "supports_transitions": [
+        "collapse",
+        "expand"
+      ],
+      "transition_support": [
+        "collapse",
+        "expand"
       ]
     },
     {
-      "solver_id": "solver.expand.local_high_fidelity",
+      "conformance_bundle_refs": [
+        "conformance.bundle.local_high_fidelity.v1"
+      ],
+      "contract_ids": [
+        "dom.contract.mass_conservation",
+        "dom.contract.energy_conservation",
+        "dom.contract.charge_conservation",
+        "dom.contract.deterministic_transition",
+        "dom.contract.port_contract_preservation"
+      ],
       "cost_class": "high",
-      "resolution": "micro",
+      "domain_ids": [
+        "dom.domain.orbital.mechanics",
+        "dom.domain.geology.terrain",
+        "dom.domain.fluids.basic",
+        "dom.domain.heat.basic",
+        "dom.domain.signals.basic"
+      ],
       "guarantees": [
         "conservation.mass",
         "contract.port_consistency",
         "deterministic.ordering"
       ],
-      "supports_transitions": [
-        "expand",
-        "collapse"
-      ],
       "numeric_bounds": {
-        "max_error": "unit.dimensionless.ratio:0.0001",
-        "bounded": true
+        "bounded": true,
+        "max_error": "unit.dimensionless.ratio:0.0001"
       },
       "refusal_codes": [
+        "refusal.contract_violation",
+        "refusal.solver_unbound",
         "SOLVER_REFUSE_BOUNDS",
         "SOLVER_REFUSE_INELIGIBLE",
         "SOLVER_REFUSE_BUDGET"
       ],
-      "conformance_bundle_refs": [
-        "conformance.bundle.local_high_fidelity.v1"
+      "resolution": "micro",
+      "resolution_tags": [
+        "refined",
+        "micro"
+      ],
+      "solver_id": "solver.expand.local_high_fidelity",
+      "supports_transitions": [
+        "expand",
+        "collapse"
+      ],
+      "transition_support": [
+        "expand",
+        "collapse"
       ]
     }
   ]

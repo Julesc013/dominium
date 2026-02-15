@@ -1,0 +1,116 @@
+{
+  "schema_id": "dominium.registry.domain_contract_registry",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "conservation_tags": [
+        "mass"
+      ],
+      "contract_id": "dom.contract.mass_conservation",
+      "extensions": {},
+      "human_name": "Mass Conservation",
+      "invariant_notes": "Collapse/expand and solver transitions must preserve aggregate mass ledger under declared approximation bounds.",
+      "transition_requirements": [
+        "transition_support must include requested direction",
+        "domain/contract binding must be declared on selected solver"
+      ],
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "energy"
+      ],
+      "contract_id": "dom.contract.energy_conservation",
+      "extensions": {},
+      "human_name": "Energy Conservation",
+      "invariant_notes": "Energy-like aggregates must remain balanced during deterministic tier transitions.",
+      "transition_requirements": [
+        "transition_support must include requested direction",
+        "solver numeric bounds must be declared"
+      ],
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "charge"
+      ],
+      "contract_id": "dom.contract.charge_conservation",
+      "extensions": {},
+      "human_name": "Charge Conservation",
+      "invariant_notes": "Charge and signed quantities must preserve deterministic aggregate balance.",
+      "transition_requirements": [
+        "contract binding must exist for selected solver"
+      ],
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "ledger_balance"
+      ],
+      "contract_id": "dom.contract.ledger_balance",
+      "extensions": {},
+      "human_name": "Ledger Balance",
+      "invariant_notes": "Credit/debit ledgers must remain balanced and auditable through transitions.",
+      "transition_requirements": [
+        "domain and solver must declare ledger-bearing contract support"
+      ],
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "information_access"
+      ],
+      "contract_id": "dom.contract.epistemic_non_omniscience",
+      "extensions": {},
+      "human_name": "Epistemic Non-Omniscience",
+      "invariant_notes": "Observation outputs must not leak unavailable truth fields beyond law/lens/authority constraints.",
+      "transition_requirements": [
+        "observation projection must remain lens/law/authority gated across transitions"
+      ],
+      "violation_refusal_codes": [
+        "LENS_FORBIDDEN",
+        "ENTITLEMENT_MISSING",
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "determinism"
+      ],
+      "contract_id": "dom.contract.deterministic_transition",
+      "extensions": {},
+      "human_name": "Deterministic Transition",
+      "invariant_notes": "For identical inputs, transition ordering and resulting state hashes are stable.",
+      "transition_requirements": [
+        "sorted deterministic ordering for transition candidates",
+        "thread-count invariant resolution pipeline"
+      ],
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "port_contract"
+      ],
+      "contract_id": "dom.contract.port_contract_preservation",
+      "extensions": {},
+      "human_name": "Port Contract Preservation",
+      "invariant_notes": "Input/output port semantics must remain structurally compatible across collapse/expand transitions.",
+      "transition_requirements": [
+        "transition participants must preserve required structural ports"
+      ],
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    }
+  ]
+}
