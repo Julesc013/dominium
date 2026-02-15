@@ -98,6 +98,10 @@ Scope:
   - `INV-SOLVER-DOMAIN-BINDING`
   - `INV-NO-HARDCODED-DOMAIN-TOKENS`
   - `INV-CONTRACT-ID-STABILITY`
+- RepoX AuditX integration invariants:
+  - `INV-AUDITX-REPORT-STRUCTURE`
+  - `INV-AUDITX-RUN-DETERMINISTIC`
+  - High-confidence AuditX risk threshold warnings are non-gating.
 - RepoX strict renderer boundary checks:
   - `repox.renderer_truth_import`
   - `repox.renderer_truth_symbol`
@@ -119,6 +123,10 @@ Scope:
     - `testx.domain.report_deterministic`
     - `testx.domain.contract_violation_refusal`
     - `testx.domain.ids_not_hardcoded`
+  - includes AuditX tests:
+    - `testx.auditx.smoke`
+    - `testx.auditx.changed_only`
+    - `testx.auditx.read_only`
 - Strict packaging validation:
   - two deterministic dist builds compared for canonical content hash parity
   - launcher lockfile enforcement refusal checks
