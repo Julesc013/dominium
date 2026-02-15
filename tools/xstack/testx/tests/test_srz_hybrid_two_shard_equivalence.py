@@ -123,6 +123,9 @@ def run(repo_root: str):
             "activation_policy_registry": dict(payloads.get("activation_policy_registry_hash") or {}),
             "budget_policy_registry": dict(payloads.get("budget_policy_registry_hash") or {}),
             "fidelity_policy_registry": dict(payloads.get("fidelity_policy_registry_hash") or {}),
+            "perception_interest_policy_registry": dict(payloads.get("perception_interest_policy_registry_hash") or {}),
+            "epistemic_policy_registry": dict(payloads.get("epistemic_policy_registry_hash") or {}),
+            "retention_policy_registry": dict(payloads.get("retention_policy_registry_hash") or {}),
         },
     )
     if str(single_init.get("result", "")) != "complete":
@@ -144,4 +147,3 @@ def run(repo_root: str):
     if str(two_result.get("final_composite_hash", "")) != str(single_result.get("final_composite_hash", "")):
         return {"status": "fail", "message": "final composite hash diverged between two-shard and single-shard hybrid runs"}
     return {"status": "pass", "message": "srz hybrid two-shard equivalence check passed"}
-

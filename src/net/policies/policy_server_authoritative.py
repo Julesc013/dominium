@@ -193,6 +193,7 @@ def _register_client(
         "lens_profile": copy.deepcopy(lens_profile if isinstance(lens_profile, dict) else {}),
         "last_perceived_model": {},
         "last_perceived_hash": "",
+        "memory_state": {},
         "last_anchor_hash": "",
         "last_applied_tick": int((runtime.get("server") or {}).get("network_tick", 0)),
         "joined": True,
@@ -565,6 +566,7 @@ def _derive_perceived_for_peer(
         law_profile=dict(client_entry.get("law_profile") or {}),
         authority_context=dict(client_entry.get("authority_context") or {}),
         viewpoint_id="viewpoint.peer.{}".format(str(peer_id)),
+        memory_state=dict(client_entry.get("memory_state") or {}),
     )
     if str(observed.get("result", "")) != "complete":
         return observed
@@ -572,6 +574,9 @@ def _derive_perceived_for_peer(
         "result": "complete",
         "perceived_model": dict(observed.get("perceived_model") or {}),
         "perceived_hash": str(observed.get("perceived_model_hash", "")),
+        "memory_state": dict(observed.get("memory_state") or {}),
+        "epistemic_policy_id": str(observed.get("epistemic_policy_id", "")),
+        "retention_policy_id": str(observed.get("retention_policy_id", "")),
     }
 
 
@@ -714,6 +719,7 @@ def prepare_server_authoritative_baseline(repo_root: str, runtime: dict) -> Dict
         client = dict(clients.get(peer_id) or {})
         client["last_perceived_model"] = dict(observed.get("perceived_model") or {})
         client["last_perceived_hash"] = str(observed.get("perceived_hash", ""))
+        client["memory_state"] = dict(observed.get("memory_state") or {})
         client["last_applied_tick"] = int(tick)
         clients[peer_id] = client
     runtime["clients"] = dict((key, clients[key]) for key in sorted(clients.keys()))
@@ -911,6 +917,7 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
         client = dict(clients.get(peer_id) or {})
         perceived_model = dict(observed.get("perceived_model") or {})
         perceived_hash = str(observed.get("perceived_hash", ""))
+        client["memory_state"] = dict(observed.get("memory_state") or {})
         delta_payload = {
             "schema_version": "1.0.0",
             "perceived_delta_id": "pdelta.{}.tick.{}".format(peer_id, int(server_tick)),
@@ -932,6 +939,8 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
             "perceived_hash": perceived_hash,
             "extensions": {
                 "delta_hash": canonical_sha256(delta_payload),
+                "epistemic_policy_id": str(observed.get("epistemic_policy_id", "")),
+                "retention_policy_id": str(observed.get("retention_policy_id", "")),
             },
         }
         checked = validate_instance(
@@ -1115,6 +1124,7 @@ def request_resync_snapshot(repo_root: str, runtime: dict, peer_id: str, snapsho
     client = dict(clients.get(str(peer_id)) or {})
     client["last_perceived_model"] = dict(peer_model)
     client["last_perceived_hash"] = canonical_sha256(peer_model)
+    client["memory_state"] = {}
     client["last_applied_tick"] = int(selected_snapshot.get("tick", 0) or 0)
     client["resync_count"] = _as_int(client.get("resync_count", 0), 0) + 1
     clients[str(peer_id)] = client

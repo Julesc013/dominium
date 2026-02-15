@@ -307,6 +307,7 @@ def _derive_perceived_for_peer(runtime: dict, peer_id: str) -> Dict[str, object]
         law_profile=dict(client.get("law_profile") or {}),
         authority_context=dict(client.get("authority_context") or {}),
         viewpoint_id="viewpoint.client.{}".format(str(peer_id)),
+        memory_state=dict(client.get("memory_state") or {}),
     )
     if str(observed.get("result", "")) != "complete":
         return observed
@@ -327,6 +328,9 @@ def _derive_perceived_for_peer(runtime: dict, peer_id: str) -> Dict[str, object]
         "result": "complete",
         "perceived_model": perceived,
         "perceived_hash": canonical_sha256(perceived),
+        "memory_state": dict(observed.get("memory_state") or {}),
+        "epistemic_policy_id": str(observed.get("epistemic_policy_id", "")),
+        "retention_policy_id": str(observed.get("retention_policy_id", "")),
     }
 
 
@@ -355,6 +359,7 @@ def _register_client(runtime: dict, peer_id: str, authority_context: dict, law_p
         "lens_profile": copy.deepcopy(lens_profile if isinstance(lens_profile, dict) else {}),
         "last_perceived_model": {},
         "last_perceived_hash": "",
+        "memory_state": {},
         "last_applied_tick": int((_runtime_server(runtime).get("network_tick", 0) or 0)),
         "joined": True,
         "received_delta_ids": [],
@@ -985,6 +990,7 @@ def _emit_client_deltas(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
         client = dict(clients.get(peer_id) or {})
         perceived_model = dict(observed.get("perceived_model") or {})
         perceived_hash = str(observed.get("perceived_hash", ""))
+        client["memory_state"] = dict(observed.get("memory_state") or {})
         delta_payload = {
             "schema_version": "1.0.0",
             "perceived_delta_id": "pdelta.{}.tick.{}".format(peer_id, int(tick)),
@@ -1008,7 +1014,11 @@ def _emit_client_deltas(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
             "epistemic_scope_id": str(epistemic_scope.get("scope_id", "")) or "epistemic.unknown",
             "payload_ref": delta_ref,
             "perceived_hash": perceived_hash,
-            "extensions": {"delta_hash": canonical_sha256(delta_payload)},
+            "extensions": {
+                "delta_hash": canonical_sha256(delta_payload),
+                "epistemic_policy_id": str(observed.get("epistemic_policy_id", "")),
+                "retention_policy_id": str(observed.get("retention_policy_id", "")),
+            },
         }
         checked = validate_instance(
             repo_root=repo_root,
@@ -1295,6 +1305,7 @@ def request_hybrid_resync(repo_root: str, runtime: dict, peer_id: str, snapshot_
     client = dict(clients.get(str(peer_id)) or {})
     client["last_perceived_model"] = dict(observed.get("perceived_model") or {})
     client["last_perceived_hash"] = str(observed.get("perceived_hash", ""))
+    client["memory_state"] = dict(observed.get("memory_state") or {})
     client["last_applied_tick"] = int(selected.get("tick", 0) or 0)
     client["resync_count"] = _as_int(client.get("resync_count", 0), 0) + 1
     clients[str(peer_id)] = client
