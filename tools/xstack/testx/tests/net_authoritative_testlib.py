@@ -23,6 +23,9 @@ REGISTRY_FILE_MAP = {
     "activation_policy_registry_hash": "activation_policy.registry.json",
     "budget_policy_registry_hash": "budget_policy.registry.json",
     "fidelity_policy_registry_hash": "fidelity_policy.registry.json",
+    "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
+    "epistemic_policy_registry_hash": "epistemic_policy.registry.json",
+    "retention_policy_registry_hash": "retention_policy.registry.json",
 }
 
 
@@ -83,6 +86,9 @@ def _registry_payloads_for_runtime(payloads: Dict[str, dict]) -> Dict[str, dict]
         "activation_policy_registry": dict(payloads.get("activation_policy_registry_hash") or {}),
         "budget_policy_registry": dict(payloads.get("budget_policy_registry_hash") or {}),
         "fidelity_policy_registry": dict(payloads.get("fidelity_policy_registry_hash") or {}),
+        "perception_interest_policy_registry": dict(payloads.get("perception_interest_policy_registry_hash") or {}),
+        "epistemic_policy_registry": dict(payloads.get("epistemic_policy_registry_hash") or {}),
+        "retention_policy_registry": dict(payloads.get("retention_policy_registry_hash") or {}),
     }
 
 
