@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Intent Envelope Schema",
+  "version": "1.0.0",
+  "description": "Deterministic multiplayer intent envelope contract with shard/peer routing metadata.",
+  "x-doc-ref": [
+    "docs/net/MULTIPLAYER_MODEL_OVERVIEW.md",
+    "docs/net/REPLICATION_POLICIES.md",
+    "docs/net/HANDSHAKE_AND_COMPATIBILITY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "envelope_id",
+    "source_peer_id",
+    "source_shard_id",
+    "target_shard_id",
+    "submission_tick",
+    "deterministic_sequence_number",
+    "intent_id",
+    "payload_schema_id",
+    "payload",
+    "pack_lock_hash",
+    "signature",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "envelope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_summary": {
+      "type": "object"
+    },
+    "source_peer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_shard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_shard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "submission_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_sequence_number": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload_schema_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload": {
+      "type": "object"
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "registry_hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{64}$"
+      }
+    },
+    "signature": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "envelope_id": "env.peer.client.alpha.tick.120.seq.0001",
+      "authority_summary": {
+        "authority_origin": "client",
+        "law_profile_id": "law.lab.unrestricted"
+      },
+      "source_peer_id": "peer.client.alpha",
+      "source_shard_id": "shard.0",
+      "target_shard_id": "shard.0",
+      "submission_tick": 120,
+      "deterministic_sequence_number": 1,
+      "intent_id": "intent.camera.teleport",
+      "payload_schema_id": "dominium.intent.camera.teleport.v1",
+      "payload": {
+        "target_object_id": "object.earth"
+      },
+      "pack_lock_hash": "83e022ebf2ffc2686d0c2b8854b24b3febd5c80edbe06b3f4a0931575d8eb1b8",
+      "registry_hashes": {},
+      "signature": "",
+      "extensions": {}
+    }
+  ]
+}

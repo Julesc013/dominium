@@ -1,0 +1,26 @@
+SCHEMA: net/anti_cheat_event.schema
+schema_id: dominium.schema.net.anti_cheat_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic anti-cheat event artifacts with explicit actions.
+
+REQUIRED SHAPE:
+record net_anti_cheat_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - tick: u64
+    - peer_id: id
+    - module_id: id
+    - severity: enum(info|warn|violation)
+    - reason_code: id
+    - evidence: [text]
+    - recommended_action: enum(audit|refuse|terminate|throttle)
+    - deterministic_fingerprint: hash64
+    - extensions: map
+
+INVARIANTS:
+- No hidden actions: recommended_action must be explicit.
+- deterministic_fingerprint is reproducible for identical evidence payload.

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Tick Intent List Schema",
+  "version": "1.0.0",
+  "description": "Deterministic per-tick intent ledger artifact for multiplayer coordination.",
+  "x-doc-ref": [
+    "docs/net/MULTIPLAYER_MODEL_OVERVIEW.md",
+    "docs/net/REPLICATION_POLICIES.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tick",
+    "shard_id",
+    "ordered_envelopes",
+    "ordering_rule_id",
+    "tick_hash_anchor",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "shard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ordered_envelopes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "envelope_id",
+          "deterministic_sequence_number"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "envelope_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deterministic_sequence_number": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "ordering_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick_hash_anchor": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "tick": 120,
+      "shard_id": "shard.0",
+      "ordered_envelopes": [
+        {
+          "envelope_id": "env.peer.client.alpha.tick.120.seq.0001",
+          "deterministic_sequence_number": 1
+        }
+      ],
+      "ordering_rule_id": "ordering.net.tick.sequence_v1",
+      "tick_hash_anchor": "bca6c3af0b72cc8e3d56a8f67d2367e3b5ca552eec5e0016a7f527f46a56d878",
+      "extensions": {}
+    }
+  ]
+}

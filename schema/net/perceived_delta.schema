@@ -1,0 +1,24 @@
+SCHEMA: net/perceived_delta.schema
+schema_id: dominium.schema.net.perceived_delta
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic perceived-state transport delta metadata.
+
+REQUIRED SHAPE:
+record net_perceived_delta
+  required:
+    - schema_version: semver
+    - perceived_delta_id: id
+    - tick: u64
+    - peer_id: id
+    - lens_id: id
+    - epistemic_scope_id: id
+    - payload_ref: text
+    - perceived_hash: hash64
+    - extensions: map
+
+INVARIANTS:
+- Payload is Perceived-only; Truth serialization is forbidden.
+- perceived_hash must be reproducible from canonical payload form.

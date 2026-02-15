@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Hash Anchor Frame Schema",
+  "version": "1.0.0",
+  "description": "Deterministic per-tick shard hash frame for multiplayer verification and resync.",
+  "x-doc-ref": [
+    "docs/architecture/hash_anchors.md",
+    "docs/net/MULTIPLAYER_MODEL_OVERVIEW.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tick",
+    "shard_hashes",
+    "composite_hash",
+    "previous_composite_hash",
+    "checkpoint_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "shard_hashes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "shard_id",
+          "hash"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "shard_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "composite_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "previous_composite_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "checkpoint_id": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "tick": 120,
+      "shard_hashes": [
+        {
+          "shard_id": "shard.0",
+          "hash": "f386f4eb5bac810675f4f14690488ac925af41422485e8ec9bc033bc84b4f5cc"
+        }
+      ],
+      "composite_hash": "f386f4eb5bac810675f4f14690488ac925af41422485e8ec9bc033bc84b4f5cc",
+      "previous_composite_hash": "5bb450c188526fa457ba25a1f1b95f22f9cbf5ea2d8db0366afb1f95f95dfaf6",
+      "checkpoint_id": "",
+      "extensions": {}
+    }
+  ]
+}

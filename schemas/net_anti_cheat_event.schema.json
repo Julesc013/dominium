@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Anti-Cheat Event Schema",
+  "version": "1.0.0",
+  "description": "Deterministic anti-cheat event artifact contract.",
+  "x-doc-ref": [
+    "docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md",
+    "docs/contracts/refusal_contract.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "tick",
+    "peer_id",
+    "module_id",
+    "severity",
+    "reason_code",
+    "evidence",
+    "recommended_action",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "peer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "module_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warn",
+        "violation"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 240
+      }
+    },
+    "recommended_action": {
+      "type": "string",
+      "enum": [
+        "audit",
+        "refuse",
+        "terminate",
+        "throttle"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "event_id": "ac.peer.client.alpha.tick.120.seq.0001",
+      "tick": 120,
+      "peer_id": "peer.client.alpha",
+      "module_id": "ac.module.sequence_integrity",
+      "severity": "warn",
+      "reason_code": "refusal.net.sequence_violation",
+      "evidence": [
+        "sequence gap observed for deterministic_sequence_number"
+      ],
+      "recommended_action": "audit",
+      "deterministic_fingerprint": "83f1f2578f9a8394ec6d3b1044f53df4ccfd31d30ff0e7ab5754cbda6d288954",
+      "extensions": {}
+    }
+  ]
+}

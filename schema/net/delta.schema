@@ -1,0 +1,23 @@
+SCHEMA: net/delta.schema
+schema_id: dominium.schema.net.delta
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic delta artifact metadata for tick ranges.
+
+REQUIRED SHAPE:
+record net_delta
+  required:
+    - schema_version: semver
+    - delta_id: id
+    - tick_from: u64
+    - tick_to: u64
+    - shard_id: text
+    - payload_ref: text
+    - delta_hash: hash64
+    - extensions: map
+
+INVARIANTS:
+- tick_to >= tick_from
+- delta_hash must identify canonical delta payload bytes.

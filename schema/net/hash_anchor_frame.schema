@@ -1,0 +1,22 @@
+SCHEMA: net/hash_anchor_frame.schema
+schema_id: dominium.schema.net.hash_anchor_frame
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic per-tick shard/composite hash anchor frames.
+
+REQUIRED SHAPE:
+record net_hash_anchor_frame
+  required:
+    - schema_version: semver
+    - tick: u64
+    - shard_hashes: [map]
+    - composite_hash: hash64
+    - previous_composite_hash: hash64
+    - checkpoint_id: text
+    - extensions: map
+
+INVARIANTS:
+- shard_hashes must be stably ordered by shard_id.
+- composite_hash chain must be deterministic for identical state partitions.

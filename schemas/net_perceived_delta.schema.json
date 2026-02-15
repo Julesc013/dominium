@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Perceived Delta Schema",
+  "version": "1.0.0",
+  "description": "Deterministic perceived-state network delta contract (Truth payloads forbidden).",
+  "x-doc-ref": [
+    "docs/net/EPISTEMICS_OVER_NETWORK.md",
+    "docs/net/REPLICATION_POLICIES.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "perceived_delta_id",
+    "tick",
+    "peer_id",
+    "lens_id",
+    "epistemic_scope_id",
+    "payload_ref",
+    "perceived_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "perceived_delta_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "peer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lens_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "epistemic_scope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "perceived_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "perceived_delta_id": "pdelta.peer.client.alpha.tick.120",
+      "tick": 120,
+      "peer_id": "peer.client.alpha",
+      "lens_id": "lens.nondiegetic.debug",
+      "epistemic_scope_id": "epistemic.lab.placeholder",
+      "payload_ref": "artifact://perceived/peer.client.alpha/tick.120",
+      "perceived_hash": "cc7672cf88f98d6ef78620fd6af0ba7293f4b029e6f6eec4c1e84fb26856f94c",
+      "extensions": {}
+    }
+  ]
+}
