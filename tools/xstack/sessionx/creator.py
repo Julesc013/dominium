@@ -16,6 +16,7 @@ from tools.xstack.registry_compile.compiler import compile_bundle
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.bundle_profile import resolve_bundle_selection
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
+from worldgen.core.pipeline import run_worldgen_pipeline
 
 from .common import (
     DEFAULT_COMPATIBILITY_VERSION,
@@ -60,6 +61,7 @@ DEFAULT_CAMERA_ASSEMBLY = {
     "velocity_mm_per_tick": {"x": 0, "y": 0, "z": 0},
     "lens_id": "lens.diegetic.sensor",
 }
+DEFAULT_WORLDGEN_MODULE_REGISTRY_REL = "data/registries/worldgen_module_registry.json"
 
 REGISTRY_FILE_MAP = {
     "activation_policy_registry_hash": "activation_policy.registry.json",
@@ -83,6 +85,7 @@ def _session_paths(repo_root: str, save_id: str, saves_root_rel: str) -> Dict[st
         "session_spec_path": os.path.join(root, "session_spec.json"),
         "universe_identity_path": os.path.join(root, "universe_identity.json"),
         "universe_state_path": os.path.join(root, "universe_state.json"),
+        "worldgen_search_plan_path": os.path.join(root, "worldgen_search_plan.json"),
     }
 
 
@@ -132,6 +135,70 @@ def _domain_bindings_from_registry(repo_root: str) -> List[str]:
         if token:
             out.append(token)
     return sorted(set(out))
+
+
+def _load_worldgen_module_registry(repo_root: str) -> Tuple[dict, Dict[str, object]]:
+    registry_path = os.path.join(repo_root, DEFAULT_WORLDGEN_MODULE_REGISTRY_REL.replace("/", os.sep))
+    payload, err = read_json_object(registry_path)
+    if err:
+        return {}, refusal(
+            "REFUSE_WORLDGEN_MODULE_REGISTRY_MISSING",
+            "worldgen module registry is missing or invalid",
+            "Provide a valid data/registries/worldgen_module_registry.json artifact.",
+            {"registry_path": norm(DEFAULT_WORLDGEN_MODULE_REGISTRY_REL)},
+            "$.worldgen.module_registry",
+        )
+    return payload, {}
+
+
+def _load_constraints_payload(repo_root: str, constraints_file: str, constraints_id: str) -> Tuple[dict, Dict[str, object]]:
+    file_token = str(constraints_file).strip()
+    if not file_token:
+        return {}, refusal(
+            "REFUSE_CONSTRAINTS_FILE_MISSING",
+            "constraints_id was provided without constraints file",
+            "Provide --constraints-file when selecting constraints_id.",
+            {"constraints_id": str(constraints_id)},
+            "$.constraints_id",
+        )
+    abs_path = os.path.normpath(os.path.abspath(file_token if os.path.isabs(file_token) else os.path.join(repo_root, file_token)))
+    payload, err = read_json_object(abs_path)
+    if err:
+        return {}, refusal(
+            "REFUSE_CONSTRAINTS_INVALID_JSON",
+            "worldgen constraints file is missing or invalid JSON",
+            "Fix constraints artifact and retry session creation.",
+            {"constraints_file": norm(abs_path)},
+            "$.worldgen.constraints",
+        )
+    schema_result = validate_instance(
+        repo_root=repo_root,
+        schema_name="worldgen_constraints",
+        payload=payload,
+        strict_top_level=True,
+    )
+    if not bool(schema_result.get("valid", False)):
+        return {}, refusal(
+            "REFUSE_CONSTRAINTS_SCHEMA_INVALID",
+            "worldgen constraints payload failed schema validation",
+            "Fix constraints fields to satisfy schemas/worldgen_constraints.schema.json.",
+            {"constraints_file": norm(abs_path)},
+            "$.worldgen.constraints",
+        )
+    payload_constraints_id = str(payload.get("constraints_id", "")).strip()
+    requested_constraints_id = str(constraints_id).strip()
+    if requested_constraints_id and requested_constraints_id != payload_constraints_id:
+        return {}, refusal(
+            "REFUSE_CONSTRAINTS_ID_MISMATCH",
+            "constraints_id does not match constraints file payload",
+            "Use matching constraints_id and constraints file payload.",
+            {
+                "requested_constraints_id": requested_constraints_id,
+                "payload_constraints_id": payload_constraints_id,
+            },
+            "$.constraints_id",
+        )
+    return payload, {}
 
 
 def _load_and_validate_lockfile(repo_root: str, bundle_id: str) -> Tuple[dict, Dict[str, object]]:
@@ -384,6 +451,8 @@ def create_session_spec(
     parameter_bundle_id: str = DEFAULT_PARAMETER_BUNDLE_ID,
     budget_policy_id: str = DEFAULT_BUDGET_POLICY_ID,
     fidelity_policy_id: str = DEFAULT_FIDELITY_POLICY_ID,
+    constraints_id: str = "",
+    constraints_file: str = "",
     pipeline_id: str = DEFAULT_PIPELINE_ID,
     rng_seed_string: str = "seed.session.default",
     rng_roots: List[str] | None = None,
@@ -507,6 +576,31 @@ def create_session_spec(
             "$.deterministic_rng_roots",
         )
 
+    selected_seed = str(identity_payload.get("global_seed", ""))
+    search_plan_payload = {}
+    selected_constraints_id = str(constraints_id).strip()
+    if selected_constraints_id:
+        module_registry_payload, module_registry_error = _load_worldgen_module_registry(repo_root=repo_root)
+        if module_registry_error:
+            return module_registry_error
+        constraints_payload, constraints_error = _load_constraints_payload(
+            repo_root=repo_root,
+            constraints_file=str(constraints_file),
+            constraints_id=selected_constraints_id,
+        )
+        if constraints_error:
+            return constraints_error
+        pipeline_result = run_worldgen_pipeline(
+            repo_root=repo_root,
+            base_seed=str(identity_payload.get("global_seed", "")),
+            module_registry_payload=module_registry_payload,
+            constraints_payload=constraints_payload,
+        )
+        if pipeline_result.get("result") != "complete":
+            return pipeline_result
+        search_plan_payload = dict(pipeline_result.get("search_plan") or {})
+        selected_seed = str(pipeline_result.get("selected_seed", "")).strip() or selected_seed
+
     session_payload = {
         "schema_version": "1.0.0",
         "universe_id": calculated_universe_id,
@@ -531,8 +625,13 @@ def create_session_spec(
         "pack_lock_hash": str(lockfile_payload.get("pack_lock_hash", "")),
         "budget_policy_id": str(budget_policy_id),
         "fidelity_policy_id": str(fidelity_policy_id),
+        "selected_seed": str(selected_seed),
         "deterministic_rng_roots": rng_rows,
     }
+    if search_plan_payload:
+        session_payload["constraints_id"] = str(search_plan_payload.get("constraints_id", "")).strip() or selected_constraints_id
+        session_payload["search_plan_hash"] = str(search_plan_payload.get("deterministic_hash", "")).strip()
+
     session_valid = validate_instance(repo_root=repo_root, schema_name="session_spec", payload=session_payload, strict_top_level=True)
     if not bool(session_valid.get("valid", False)):
         return refusal(
@@ -627,6 +726,8 @@ def create_session_spec(
     write_canonical_json(paths["session_spec_path"], session_payload)
     write_canonical_json(paths["universe_identity_path"], identity_payload)
     write_canonical_json(paths["universe_state_path"], state_payload)
+    if search_plan_payload:
+        write_canonical_json(paths["worldgen_search_plan_path"], search_plan_payload)
 
     return {
         "result": "complete",
@@ -636,6 +737,12 @@ def create_session_spec(
         "universe_identity_path": norm(os.path.relpath(paths["universe_identity_path"], repo_root)),
         "universe_state_path": norm(os.path.relpath(paths["universe_state_path"], repo_root)),
         "session_spec_hash": canonical_sha256(session_payload),
+        "selected_seed": str(session_payload.get("selected_seed", "")),
+        "constraints_id": str(session_payload.get("constraints_id", "")),
+        "search_plan_hash": str(session_payload.get("search_plan_hash", "")),
+        "worldgen_search_plan_path": norm(os.path.relpath(paths["worldgen_search_plan_path"], repo_root))
+        if search_plan_payload
+        else "",
         "pack_lock_hash": str(lockfile_payload.get("pack_lock_hash", "")),
         "registry_hashes": dict((lockfile_payload.get("registries") or {})),
         "loaded_universe_identity_path": norm(identity_abs) if identity_abs else "",
