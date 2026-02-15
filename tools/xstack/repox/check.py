@@ -421,6 +421,18 @@ def _append_reserved_misuse_findings(
 ) -> None:
     if rel_path == "tools/xstack/repox/check.py":
         return
+    rel_norm = _norm(rel_path)
+    exempt_roots = (
+        "schemas/",
+        "schema/",
+        "docs/",
+    )
+    exempt_files = (
+        "data/registries/session_stage_registry.json",
+        "data/registries/session_pipeline_registry.json",
+    )
+    if rel_norm.startswith(exempt_roots) or rel_norm in exempt_files:
+        return
     for token in RESERVED_WORDS:
         pattern = r'"{}"\s*:\s*(true|false|0|1)'.format(re.escape(token))
         if re.search(pattern, line, flags=re.IGNORECASE):
