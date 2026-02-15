@@ -3,7 +3,14 @@
 from __future__ import annotations
 
 import os
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
+
+from src.net.policies.policy_server_authoritative import (
+    POLICY_ID_SERVER_AUTHORITATIVE,
+    initialize_authoritative_runtime,
+    join_client_midstream,
+    prepare_server_authoritative_baseline,
+)
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -700,6 +707,14 @@ def boot_session_spec(
     )
     if anti_cheat_policy_registry_error:
         return anti_cheat_policy_registry_error
+    anti_cheat_module_registry, anti_cheat_module_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["anti_cheat_module_registry_hash"],
+        expected_hash=str(registries.get("anti_cheat_module_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if anti_cheat_module_registry_error:
+        return anti_cheat_module_registry_error
     net_server_policy_registry, net_server_policy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["net_server_policy_registry_hash"],
@@ -813,6 +828,74 @@ def boot_session_spec(
         )
 
     handshake_stage_result: Dict[str, object] = {}
+    net_sync_baseline_stage_result: Dict[str, object] = {}
+    net_join_stage_result: Dict[str, object] = {}
+    server_authoritative_runtime: Dict[str, object] = {}
+    server_authoritative_law_profile: Dict[str, object] = {}
+    server_authoritative_lens_profile: Dict[str, object] = {}
+
+    def _resolve_server_authoritative_profiles() -> Tuple[dict, dict, Dict[str, object]]:
+        nonlocal server_authoritative_law_profile
+        nonlocal server_authoritative_lens_profile
+        if server_authoritative_law_profile and server_authoritative_lens_profile:
+            return dict(server_authoritative_law_profile), dict(server_authoritative_lens_profile), {}
+        negotiated_law_profile_id = (
+            str(handshake_stage_result.get("server_law_profile_id", "")).strip()
+            or str(boot_authority_context.get("law_profile_id", "")).strip()
+        )
+        law_profile_row, law_profile_error = _select_law_profile(
+            law_registry=law_registry,
+            law_profile_id=str(negotiated_law_profile_id),
+        )
+        if law_profile_error:
+            return {}, {}, law_profile_error
+        lens_profile_row, lens_profile_error = _select_lens_profile(
+            lens_registry=lens_registry,
+            experience_registry=experience_registry,
+            experience_id=str(session_spec.get("experience_id", "")),
+            law_profile=law_profile_row,
+        )
+        if lens_profile_error:
+            return {}, {}, lens_profile_error
+        server_authoritative_law_profile = dict(law_profile_row)
+        server_authoritative_lens_profile = dict(lens_profile_row)
+        return dict(server_authoritative_law_profile), dict(server_authoritative_lens_profile), {}
+
+    def _ensure_server_authoritative_runtime() -> Tuple[dict, Dict[str, object]]:
+        nonlocal server_authoritative_runtime
+        if server_authoritative_runtime:
+            return server_authoritative_runtime, {}
+        selected_law_profile, selected_lens_profile, selected_profile_error = _resolve_server_authoritative_profiles()
+        if selected_profile_error:
+            return {}, selected_profile_error
+        initialized = initialize_authoritative_runtime(
+            repo_root=repo_root,
+            save_id=save_id,
+            session_spec=session_spec,
+            lock_payload=lock_payload,
+            universe_identity=universe_identity,
+            universe_state=_state_payload,
+            law_profile=selected_law_profile,
+            lens_profile=selected_lens_profile,
+            authority_context=boot_authority_context,
+            anti_cheat_policy_registry=anti_cheat_policy_registry,
+            anti_cheat_module_registry=anti_cheat_module_registry,
+            replication_policy_registry=net_replication_policy_registry,
+            registry_payloads={
+                "astronomy_catalog_index": astronomy_registry,
+                "site_registry_index": site_registry,
+                "ephemeris_registry": ephemeris_registry,
+                "terrain_tile_registry": terrain_tile_registry,
+                "activation_policy_registry": activation_policy_registry,
+                "budget_policy_registry": budget_policy_registry,
+                "fidelity_policy_registry": fidelity_policy_registry,
+            },
+            snapshot_cadence_ticks=0,
+        )
+        if str(initialized.get("result", "")) != "complete":
+            return {}, initialized
+        server_authoritative_runtime = dict(initialized.get("runtime") or {})
+        return server_authoritative_runtime, {}
 
     def _execute_stage(stage_id: str) -> Dict[str, object]:
         if str(stage_id) == "stage.net_handshake":
@@ -855,14 +938,123 @@ def boot_session_spec(
                     "handshake_artifact_path": str(handshake_result.get("handshake_artifact_path", "")),
                 },
             }
-        if str(stage_id) in ("stage.net_sync_baseline", "stage.net_join_world"):
-            return refusal(
-                "refusal.not_implemented.net_transport",
-                "{} is declared but not implemented in MP-2".format(str(stage_id)),
-                "Use pipeline.client.default for local runs until baseline/join stages are implemented.",
-                {"stage_id": str(stage_id)},
-                "$.pipeline",
+        if str(stage_id) == "stage.net_sync_baseline":
+            if not handshake_stage_result:
+                return refusal(
+                    "refusal.net.join_policy_mismatch",
+                    "stage.net_sync_baseline requires completed stage.net_handshake",
+                    "Run stage.net_handshake before baseline synchronization.",
+                    {"stage_id": "stage.net_sync_baseline"},
+                    "$.pipeline",
+                )
+            negotiated_policy_id = str(handshake_stage_result.get("negotiated_replication_policy_id", "")).strip()
+            if negotiated_policy_id != POLICY_ID_SERVER_AUTHORITATIVE:
+                return refusal(
+                    "refusal.not_implemented.net_transport",
+                    "stage.net_sync_baseline supports only the negotiated server-authoritative policy in MP-4",
+                    "Select the negotiated server-authoritative policy or use local pipeline until additional policies are wired.",
+                    {
+                        "stage_id": "stage.net_sync_baseline",
+                        "negotiated_replication_policy_id": negotiated_policy_id or "<empty>",
+                        "required_replication_policy_id": POLICY_ID_SERVER_AUTHORITATIVE,
+                    },
+                    "$.network.requested_replication_policy_id",
+                )
+            authoritative_runtime, runtime_error = _ensure_server_authoritative_runtime()
+            if runtime_error:
+                return runtime_error
+            baseline_result = prepare_server_authoritative_baseline(
+                repo_root=repo_root,
+                runtime=authoritative_runtime,
             )
+            if str(baseline_result.get("result", "")) != "complete":
+                return baseline_result
+            net_sync_baseline_stage_result.clear()
+            net_sync_baseline_stage_result.update(dict(baseline_result))
+            baseline_payload = dict(baseline_result.get("baseline") or {})
+            snapshot_payload = dict(baseline_result.get("snapshot") or {})
+            return {
+                "result": "complete",
+                "details": {
+                    "policy_id": negotiated_policy_id,
+                    "baseline_tick": int(baseline_payload.get("baseline_tick", 0) or 0),
+                    "baseline_path": str(baseline_result.get("baseline_path", "")),
+                    "snapshot_id": str(snapshot_payload.get("snapshot_id", "")),
+                    "snapshot_payload_ref": str(snapshot_payload.get("payload_ref", "")),
+                    "snapshot_hash": str(snapshot_payload.get("truth_snapshot_hash", "")),
+                    "baseline_hash": canonical_sha256(baseline_payload),
+                },
+            }
+        if str(stage_id) == "stage.net_join_world":
+            if not handshake_stage_result:
+                return refusal(
+                    "refusal.net.join_policy_mismatch",
+                    "stage.net_join_world requires completed stage.net_handshake",
+                    "Run stage.net_handshake before attempting join.",
+                    {"stage_id": "stage.net_join_world"},
+                    "$.pipeline",
+                )
+            negotiated_policy_id = str(handshake_stage_result.get("negotiated_replication_policy_id", "")).strip()
+            if negotiated_policy_id != POLICY_ID_SERVER_AUTHORITATIVE:
+                return refusal(
+                    "refusal.not_implemented.net_transport",
+                    "stage.net_join_world supports only the negotiated server-authoritative policy in MP-4",
+                    "Select the negotiated server-authoritative policy or use local pipeline until additional policies are wired.",
+                    {
+                        "stage_id": "stage.net_join_world",
+                        "negotiated_replication_policy_id": negotiated_policy_id or "<empty>",
+                        "required_replication_policy_id": POLICY_ID_SERVER_AUTHORITATIVE,
+                    },
+                    "$.network.requested_replication_policy_id",
+                )
+            if not net_sync_baseline_stage_result:
+                return refusal(
+                    "refusal.net.join_snapshot_invalid",
+                    "stage.net_join_world requires stage.net_sync_baseline snapshot artifacts",
+                    "Run stage.net_sync_baseline before stage.net_join_world.",
+                    {"stage_id": "stage.net_join_world"},
+                    "$.pipeline",
+                )
+            authoritative_runtime, runtime_error = _ensure_server_authoritative_runtime()
+            if runtime_error:
+                return runtime_error
+            selected_law_profile, selected_lens_profile, selected_profile_error = _resolve_server_authoritative_profiles()
+            if selected_profile_error:
+                return selected_profile_error
+            network_payload = dict(session_spec.get("network") or {})
+            peer_id = str(network_payload.get("client_peer_id", "")).strip()
+            if not peer_id:
+                return refusal(
+                    "refusal.net.envelope_invalid",
+                    "SessionSpec network.client_peer_id is required for authoritative world join",
+                    "Populate SessionSpec network client_peer_id before boot.",
+                    {"schema_id": "session_spec"},
+                    "$.network.client_peer_id",
+                )
+            baseline_snapshot = dict(net_sync_baseline_stage_result.get("snapshot") or {})
+            join_result = join_client_midstream(
+                repo_root=repo_root,
+                runtime=authoritative_runtime,
+                peer_id=peer_id,
+                authority_context=boot_authority_context,
+                law_profile=selected_law_profile,
+                lens_profile=selected_lens_profile,
+                negotiated_policy_id=negotiated_policy_id,
+                snapshot_id=str(baseline_snapshot.get("snapshot_id", "")),
+            )
+            if str(join_result.get("result", "")) != "complete":
+                return join_result
+            net_join_stage_result.clear()
+            net_join_stage_result.update(dict(join_result))
+            return {
+                "result": "complete",
+                "details": {
+                    "policy_id": negotiated_policy_id,
+                    "peer_id": str(join_result.get("peer_id", "")),
+                    "snapshot_id": str(join_result.get("snapshot_id", "")),
+                    "perceived_hash": str(join_result.get("perceived_hash", "")),
+                },
+            }
         return {"result": "complete", "details": {}}
 
     stage_log, final_stage_id, stage_log_error = _simulate_boot_stage_log(
@@ -994,6 +1186,24 @@ def boot_session_spec(
         "server_law_profile_id": str(handshake_stage_result.get("server_law_profile_id", "")),
         "handshake_artifact_hash": str(handshake_stage_result.get("handshake_artifact_hash", "")),
     }
+    baseline_payload = dict(net_sync_baseline_stage_result.get("baseline") or {})
+    baseline_snapshot_payload = dict(net_sync_baseline_stage_result.get("snapshot") or {})
+    net_sync_baseline_summary = {
+        "executed": bool(net_sync_baseline_stage_result),
+        "policy_id": str((baseline_payload.get("policy_id", "") or handshake_summary.get("negotiated_replication_policy_id", ""))),
+        "baseline_tick": int(baseline_payload.get("baseline_tick", 0) or 0),
+        "baseline_path": str(net_sync_baseline_stage_result.get("baseline_path", "")),
+        "baseline_hash": canonical_sha256(baseline_payload) if baseline_payload else "",
+        "snapshot_id": str(baseline_snapshot_payload.get("snapshot_id", "")),
+        "snapshot_payload_ref": str(baseline_snapshot_payload.get("payload_ref", "")),
+        "truth_snapshot_hash": str(baseline_snapshot_payload.get("truth_snapshot_hash", "")),
+    }
+    net_join_summary = {
+        "executed": bool(net_join_stage_result),
+        "peer_id": str(net_join_stage_result.get("peer_id", "")),
+        "snapshot_id": str(net_join_stage_result.get("snapshot_id", "")),
+        "perceived_hash": str(net_join_stage_result.get("perceived_hash", "")),
+    }
     deterministic_fields = {
         "schema_version": "1.0.0",
         "save_id": save_id,
@@ -1014,6 +1224,8 @@ def boot_session_spec(
         "perceived_model_hash": perceived_hash,
         "render_model_hash": render_hash,
         "network_handshake": handshake_summary,
+        "network_sync_baseline": net_sync_baseline_summary,
+        "network_join_world": net_join_summary,
         "start_tick": start_tick,
         "stop_tick": stop_tick,
         "authority_context": boot_authority_context,
@@ -1084,6 +1296,8 @@ def boot_session_spec(
         "last_stage_id": str(final_stage_id),
         "stage_log": stage_log,
         "network_handshake": handshake_summary,
+        "network_sync_baseline": net_sync_baseline_summary,
+        "network_join_world": net_join_summary,
         "handshake_artifact_path": handshake_artifact_rel,
         "start_tick": start_tick,
         "stop_tick": stop_tick,
