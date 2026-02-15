@@ -18,6 +18,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.validator import validate_instance  # noqa: E402
 from tools.xstack.packagingx import validate_dist_layout  # noqa: E402
 from tools.xstack.sessionx.runner import boot_session_spec  # noqa: E402
+from tools.xstack.sessionx.server_gate import server_validate_transition  # noqa: E402
 from tools.xstack.sessionx.script_runner import run_intent_script  # noqa: E402
 
 
@@ -102,13 +103,24 @@ def _load_latest_run_meta(save_dir: str) -> dict:
     root = os.path.join(save_dir, "run_meta")
     if not os.path.isdir(root):
         return {}
-    files = sorted(name for name in os.listdir(root) if name.endswith(".json"))
-    if not files:
+    best_payload = {}
+    best_key = ("", "", "", "")
+    for name in sorted(entry for entry in os.listdir(root) if entry.endswith(".json")):
+        payload, err = _read_json(os.path.join(root, name))
+        if err:
+            continue
+        key = (
+            str(payload.get("stopped_utc", "")),
+            str(payload.get("started_utc", "")),
+            str(payload.get("run_id", "")),
+            str(name),
+        )
+        if key >= best_key:
+            best_key = key
+            best_payload = payload
+    if not best_payload:
         return {}
-    payload, err = _read_json(os.path.join(root, files[-1]))
-    if err:
-        return {}
-    return payload
+    return best_payload
 
 
 def _validate_session_vs_dist(
@@ -269,6 +281,19 @@ def cmd_run(
     if boot.get("result") != "complete":
         return boot
 
+    requested_stage = str(boot.get("last_stage_id", "")).strip()
+    if str(script_path).strip():
+        requested_stage = "stage.session_running"
+    server_gate = server_validate_transition(
+        repo_root=repo_root,
+        session_spec_path=session_spec_path,
+        from_stage_id=str(boot.get("last_stage_id", "")),
+        to_stage_id=requested_stage,
+        authority_context=dict((comp.get("session_payload") or {}).get("authority_context") or {}),
+    )
+    if server_gate.get("result") != "complete":
+        return server_gate
+
     script_result = {}
     if str(script_path).strip():
         script_result = run_intent_script(
@@ -296,6 +321,7 @@ def cmd_run(
         "pack_lock_hash": str((comp.get("lockfile_payload") or {}).get("pack_lock_hash", "")),
         "registry_hashes": dict((comp.get("lockfile_payload") or {}).get("registries") or {}),
         "boot": boot,
+        "server_gate": server_gate,
         "script": script_result,
         "launch_mode": "headless",
         "lockfile_enforcement": "required",

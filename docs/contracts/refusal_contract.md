@@ -69,6 +69,8 @@ Tool payload wrapper:
 - `REGISTRY_MISMATCH`
 - `REFUSE_DIST_MANIFEST_INVALID`
 - `REFUSE_DIST_CONTENT_HASH_MISMATCH`
+- `refusal.server_stage_mismatch`
+- `refusal.server_authority_violation`
 
 ## Invariants
 - Refusals do not mutate authoritative state.
