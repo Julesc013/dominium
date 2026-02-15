@@ -86,6 +86,8 @@ Tool payload wrapper:
 - `refusal.net.replay_detected`
 - `refusal.net.authority_violation`
 - `refusal.net.shard_target_invalid`
+- `refusal.net.cross_shard_unsupported`
+- `refusal.net.perception_policy_missing`
 - `refusal.net.resync_required`
 - `refusal.net.resync_snapshot_missing`
 - `refusal.net.join_snapshot_invalid`
@@ -105,6 +107,8 @@ Tool payload wrapper:
 - `refusal.net.replay_detected`: discard replayed envelope IDs and emit fresh deterministic sequence numbers.
 - `refusal.net.authority_violation`: submit intents only with allowed authority/law entitlements.
 - `refusal.net.shard_target_invalid`: route envelope to declared shard ownership scope.
+- `refusal.net.cross_shard_unsupported`: restrict process intent targets to a single owning shard until cross-shard transition support is declared.
+- `refusal.net.perception_policy_missing`: configure a valid `perception_interest_policy_id` on the active server policy and rebuild registries.
 - `refusal.net.resync_required`: execute policy-specific resync strategy then retry intent stream.
 - `refusal.net.resync_snapshot_missing`: generate/request an authoritative snapshot before resync/join retry.
 - `refusal.net.join_snapshot_invalid`: run baseline sync first or request a valid snapshot_id from server.
