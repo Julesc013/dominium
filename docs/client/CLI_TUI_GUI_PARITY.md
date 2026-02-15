@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-09
+Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
 
@@ -9,6 +9,14 @@ Superseded By: none
 
 CLI is canonical for command semantics.
 TUI and GUI dispatch through the same command execution path.
+
+Session pipeline parity commands:
+- `tools/xstack/session_control client.session.stage ...`
+- `tools/xstack/session_control client.session.abort ...`
+- `tools/xstack/session_control client.session.resume ...`
+- `tools/xstack/session_surface --surface cli|tui|gui client.session.stage ...`
+- `tools/xstack/session_surface --surface cli|tui|gui client.session.abort ...`
+- `tools/xstack/session_surface --surface cli|tui|gui client.session.resume ...`
 
 ## Required Behavior
 
@@ -30,10 +38,6 @@ TUI and GUI dispatch through the same command execution path.
 ## Validation
 
 TestX parity checks:
-
-- `tests/integration/client_flow_smoke_tests.py`
-- `tests/integration/client_parity_tests.py`
-- `tests/integration/server_discovery_tests.py`
-- `tests/integration/world_manager_tests.py`
-- `tests/integration/client_refusal_codes_tests.py`
-
+- `tools/xstack/testx/tests/test_stage_parity_status_surfaces.py`
+- `tools/xstack/testx/tests/test_stage_parity_transitions_surfaces.py`
+- `tools/xstack/testx/tests/test_illegal_stage_skip_refusal.py`
