@@ -28,7 +28,10 @@
         "allowed_in_singleplayer": true,
         "allowed_in_private_server": true,
         "required_for_ranked": false,
-        "extensions": {}
+        "extensions": {
+          "escalation_rules": {},
+          "require_attestation": false
+        }
       },
       {
         "policy_id": "policy.ac.casual_default",
@@ -46,12 +49,15 @@
           "ac.module.sequence_integrity": "refuse",
           "ac.module.authority_integrity": "refuse",
           "ac.module.state_integrity": "refuse",
-          "ac.module.replay_protection": "audit"
+          "ac.module.replay_protection": "refuse"
         },
         "allowed_in_singleplayer": false,
         "allowed_in_private_server": true,
         "required_for_ranked": false,
-        "extensions": {}
+        "extensions": {
+          "escalation_rules": {},
+          "require_attestation": false
+        }
       },
       {
         "policy_id": "policy.ac.rank_strict",
@@ -70,15 +76,26 @@
           "ac.module.input_integrity": "refuse",
           "ac.module.sequence_integrity": "refuse",
           "ac.module.authority_integrity": "terminate",
-          "ac.module.state_integrity": "terminate",
+          "ac.module.state_integrity": "refuse",
           "ac.module.replay_protection": "refuse",
           "ac.module.behavioral_detection": "throttle",
-          "ac.module.client_attestation": "refuse"
+          "ac.module.client_attestation": "require_attestation"
         },
         "allowed_in_singleplayer": false,
         "allowed_in_private_server": false,
         "required_for_ranked": true,
-        "extensions": {}
+        "extensions": {
+          "require_attestation": false,
+          "escalation_rules": {
+            "ac.module.state_integrity": [
+              {
+                "min_count": 2,
+                "action": "terminate",
+                "reason_code": "refusal.net.resync_required"
+              }
+            ]
+          }
+        }
       },
       {
         "policy_id": "policy.ac.private_relaxed",
@@ -97,7 +114,10 @@
         "allowed_in_singleplayer": true,
         "allowed_in_private_server": true,
         "required_for_ranked": false,
-        "extensions": {}
+        "extensions": {
+          "escalation_rules": {},
+          "require_attestation": false
+        }
       }
     ],
     "extensions": {}
