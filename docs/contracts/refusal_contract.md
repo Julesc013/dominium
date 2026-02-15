@@ -67,6 +67,11 @@ Tool payload wrapper:
 - `LOCKFILE_MISMATCH`
 - `PACK_INCOMPATIBLE`
 - `REGISTRY_MISMATCH`
+- `refusal.domain_missing`
+- `refusal.contract_missing`
+- `refusal.solver_unbound`
+- `refusal.duplicate_id`
+- `refusal.contract_violation`
 - `REFUSE_DIST_MANIFEST_INVALID`
 - `REFUSE_DIST_CONTENT_HASH_MISMATCH`
 - `refusal.server_stage_mismatch`

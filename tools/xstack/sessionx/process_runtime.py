@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
+import os
 from typing import Dict, List
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -31,6 +33,12 @@ PRIVILEGE_RANK = {
     "observer": 0,
     "operator": 1,
     "system": 2,
+}
+REPO_ROOT_HINT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
+SOLVER_REGISTRY_REL = "data/registries/solver_registry.json"
+DEFAULT_SOLVER_BINDINGS = {
+    "collapse_solver_id": "solver.collapse.macro_capsule",
+    "expand_solver_id": "solver.expand.local_high_fidelity",
 }
 
 
@@ -416,6 +424,107 @@ def _policy_payload(policy_context: dict | None, key: str) -> dict:
     if not isinstance(row, dict):
         return {}
     return row
+
+
+def _load_solver_registry(policy_context: dict | None) -> Dict[str, object]:
+    if isinstance(policy_context, dict):
+        embedded = policy_context.get("solver_registry")
+        if isinstance(embedded, dict):
+            return {"result": "complete", "payload": dict(embedded), "source": "policy_context"}
+
+    solver_path = os.path.join(REPO_ROOT_HINT, SOLVER_REGISTRY_REL.replace("/", os.sep))
+    try:
+        payload = json.load(open(solver_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return refusal(
+            "refusal.solver_unbound",
+            "solver registry is unavailable for structural transition checks",
+            "Provide policy_context.solver_registry or restore data/registries/solver_registry.json.",
+            {"registry_path": SOLVER_REGISTRY_REL},
+            "$.solver_registry",
+        )
+    if not isinstance(payload, dict):
+        return refusal(
+            "refusal.solver_unbound",
+            "solver registry payload has invalid root shape",
+            "Fix solver registry JSON root to an object with records[].",
+            {"registry_path": SOLVER_REGISTRY_REL},
+            "$.solver_registry",
+        )
+    return {"result": "complete", "payload": payload, "source": "registry_file"}
+
+
+def _solver_row_by_id(payload: dict, solver_id: str) -> dict:
+    rows = payload.get("records")
+    if not isinstance(rows, list):
+        return {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("solver_id", ""))):
+        token = str(row.get("solver_id", "")).strip()
+        if token == str(solver_id).strip():
+            return dict(row)
+    return {}
+
+
+def _check_solver_binding_for_transition(policy_context: dict | None, transition_name: str) -> Dict[str, object]:
+    loaded = _load_solver_registry(policy_context)
+    if loaded.get("result") != "complete":
+        return loaded
+
+    payload = dict(loaded.get("payload") or {})
+    solver_bindings = dict(DEFAULT_SOLVER_BINDINGS)
+    if isinstance(policy_context, dict):
+        row = policy_context.get("solver_bindings")
+        if isinstance(row, dict):
+            for key in ("collapse_solver_id", "expand_solver_id"):
+                token = str(row.get(key, "")).strip()
+                if token:
+                    solver_bindings[key] = token
+
+    binding_key = "collapse_solver_id" if str(transition_name) == "collapse" else "expand_solver_id"
+    solver_id = str(solver_bindings.get(binding_key, "")).strip()
+    solver_row = _solver_row_by_id(payload, solver_id=solver_id)
+    if not solver_row:
+        return refusal(
+            "refusal.solver_unbound",
+            "solver '{}' is missing for transition '{}'".format(solver_id, transition_name),
+            "Add/restore the requested solver row in solver_registry.json.",
+            {"solver_id": solver_id, "transition": str(transition_name)},
+            "$.solver_registry.records",
+        )
+
+    domain_ids = sorted(set(str(item).strip() for item in (solver_row.get("domain_ids") or []) if str(item).strip()))
+    contract_ids = sorted(set(str(item).strip() for item in (solver_row.get("contract_ids") or []) if str(item).strip()))
+    transition_support = sorted(
+        set(str(item).strip() for item in (solver_row.get("transition_support") or []) if str(item).strip())
+    )
+    if not domain_ids or not contract_ids:
+        return refusal(
+            "refusal.solver_unbound",
+            "solver '{}' is missing structural domain/contract bindings".format(solver_id),
+            "Declare non-empty domain_ids and contract_ids for the solver row.",
+            {"solver_id": solver_id},
+            "$.solver_registry.records",
+        )
+    if str(transition_name).strip() not in transition_support:
+        return refusal(
+            "refusal.contract_violation",
+            "solver '{}' does not support transition '{}'".format(solver_id, transition_name),
+            "Select a solver whose transition_support includes '{}'.".format(transition_name),
+            {"solver_id": solver_id, "transition": str(transition_name)},
+            "$.solver_registry.records",
+        )
+
+    return {
+        "result": "complete",
+        "trace": {
+            "solver_id": solver_id,
+            "transition": str(transition_name),
+            "domain_ids": domain_ids,
+            "contract_ids": contract_ids,
+            "transition_support": transition_support,
+            "source": str(loaded.get("source", "")),
+        },
+    }
 
 
 def _tier_rank(token: str) -> int:
@@ -832,6 +941,17 @@ def _region_management_tick(
         for region_id in desired_active.keys()
         if region_id not in current_active or str(desired_active.get(region_id, "")) != str(current_active.get(region_id, ""))
     )
+    solver_binding_trace: List[dict] = []
+    if collapse_ids:
+        collapse_check = _check_solver_binding_for_transition(policy_context=policy_context, transition_name="collapse")
+        if collapse_check.get("result") != "complete":
+            return collapse_check
+        solver_binding_trace.append(dict(collapse_check.get("trace") or {}))
+    if expand_ids:
+        expand_check = _check_solver_binding_for_transition(policy_context=policy_context, transition_name="expand")
+        if expand_check.get("result") != "complete":
+            return expand_check
+        solver_binding_trace.append(dict(expand_check.get("trace") or {}))
 
     for region_id in collapse_ids:
         row = interest_by_region.get(region_id) or {}
@@ -922,6 +1042,7 @@ def _region_management_tick(
     previous_performance = state.get("performance_state")
     if not isinstance(previous_performance, dict):
         previous_performance = {}
+    prior_solver_trace = list(previous_performance.get("solver_binding_trace") or [])
 
     performance_state = {
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
@@ -933,7 +1054,13 @@ def _region_management_tick(
         "active_region_count": int(len(desired_active)),
         "fidelity_tier_counts": tier_counts,
         "transition_log": list(previous_performance.get("transition_log") or []),
+        "solver_binding_trace": prior_solver_trace,
     }
+    for row in sorted(
+        (item for item in solver_binding_trace if isinstance(item, dict)),
+        key=lambda item: (str(item.get("transition", "")), str(item.get("solver_id", ""))),
+    ):
+        performance_state["solver_binding_trace"].append(dict(row))
     performance_state["transition_log"].append(
         {
             "tick": int(current_tick),
