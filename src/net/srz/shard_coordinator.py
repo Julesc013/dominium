@@ -563,6 +563,8 @@ def initialize_hybrid_runtime(
             "last_composite_hash": "0" * 64,
             "hash_anchor_frames": [],
             "snapshots": [],
+            "snapshot_peer_models": {},
+            "snapshot_peer_memory": {},
             "baseline_snapshot_id": "",
             "baseline_snapshot_ids": [],
             "perceived_deltas": [],
@@ -898,14 +900,31 @@ def _build_anchor_frame(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
 def _snapshot_for_tick(repo_root: str, runtime: dict, tick: int) -> Dict[str, object]:
     server = _runtime_server(runtime)
     registry_hashes = dict(server.get("registry_hashes") or {})
+    clients = _runtime_clients(runtime)
+    peer_models = {}
+    peer_hashes = {}
+    peer_memory = {}
+    peer_memory_hashes = {}
+    for peer_id in sorted(clients.keys()):
+        client = dict(clients.get(peer_id) or {})
+        perceived_model = dict(client.get("last_perceived_model") or {})
+        memory_state = dict(client.get("memory_state") or {})
+        peer_models[peer_id] = perceived_model
+        peer_hashes[peer_id] = canonical_sha256(perceived_model)
+        peer_memory[peer_id] = memory_state
+        peer_memory_hashes[peer_id] = canonical_sha256(memory_state)
     snapshots = []
     for shard in _runtime_shards(runtime):
         shard_id = str(shard.get("shard_id", "")).strip()
+        snapshot_id = "snapshot.{}.tick.{}".format(shard_id, int(tick))
         snapshot_payload = {
             "schema_version": "1.0.0",
+            "snapshot_id": snapshot_id,
             "tick": int(tick),
             "shard_id": shard_id,
             "state": dict(runtime.get("global_state") or {}),
+            "peer_hashes": dict((key, peer_hashes[key]) for key in sorted(peer_hashes.keys())),
+            "peer_memory_hashes": dict((key, peer_memory_hashes[key]) for key in sorted(peer_memory_hashes.keys())),
         }
         payload_ref = _write_runtime_artifact(
             runtime=runtime,
@@ -914,7 +933,7 @@ def _snapshot_for_tick(repo_root: str, runtime: dict, tick: int) -> Dict[str, ob
         )
         snapshot = {
             "schema_version": "1.0.0",
-            "snapshot_id": "snapshot.{}.tick.{}".format(shard_id, int(tick)),
+            "snapshot_id": snapshot_id,
             "tick": int(tick),
             "shard_id": shard_id,
             "pack_lock_hash": str(server.get("pack_lock_hash", "")),
@@ -950,6 +969,16 @@ def _snapshot_for_tick(repo_root: str, runtime: dict, tick: int) -> Dict[str, ob
             str(row.get("snapshot_id", "")),
         ),
     )
+    snapshot_models = dict(server.get("snapshot_peer_models") or {})
+    snapshot_memory = dict(server.get("snapshot_peer_memory") or {})
+    for snapshot in snapshots:
+        snapshot_id = str((snapshot or {}).get("snapshot_id", "")).strip()
+        if not snapshot_id:
+            continue
+        snapshot_models[snapshot_id] = copy.deepcopy(peer_models)
+        snapshot_memory[snapshot_id] = copy.deepcopy(peer_memory)
+    server["snapshot_peer_models"] = snapshot_models
+    server["snapshot_peer_memory"] = snapshot_memory
     runtime["server"] = server
     return {"result": "complete", "snapshots": snapshots}
 
@@ -1155,6 +1184,15 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
         "resolved_proposals": resolved,
         "hash_anchor_frame": frame,
         "perceived_deltas": list(deltas.get("perceived_deltas") or []),
+        "client_memory_hashes": dict(
+            sorted(
+                (
+                    key,
+                    canonical_sha256(dict((value or {}).get("memory_state") or {})),
+                )
+                for key, value in (runtime.get("clients") or {}).items()
+            )
+        ),
     }
 
 
@@ -1289,6 +1327,13 @@ def request_hybrid_resync(repo_root: str, runtime: dict, peer_id: str, snapshot_
                 break
     if not selected:
         selected = dict(sorted((dict(row) for row in snapshots if isinstance(row, dict)), key=lambda row: str(row.get("snapshot_id", "")))[-1])
+    snapshot_id_token = str(selected.get("snapshot_id", "")).strip()
+    snapshot_models = dict(server.get("snapshot_peer_models") or {})
+    peer_models = dict(snapshot_models.get(snapshot_id_token) or {})
+    snapshot_memory = dict(server.get("snapshot_peer_memory") or {})
+    peer_memory = dict(snapshot_memory.get(snapshot_id_token) or {})
+    peer_model = peer_models.get(str(peer_id))
+    peer_memory_state = peer_memory.get(str(peer_id))
 
     clients = _runtime_clients(runtime)
     if str(peer_id) not in clients:
@@ -1299,13 +1344,24 @@ def request_hybrid_resync(repo_root: str, runtime: dict, peer_id: str, snapshot_
             {"peer_id": str(peer_id)},
             "$.peer_id",
         )
-    observed = _derive_perceived_for_peer(runtime=runtime, peer_id=str(peer_id))
-    if str(observed.get("result", "")) != "complete":
-        return observed
+    if not isinstance(peer_model, dict):
+        observed = _derive_perceived_for_peer(runtime=runtime, peer_id=str(peer_id))
+        if str(observed.get("result", "")) != "complete":
+            return observed
+        peer_model = dict(observed.get("perceived_model") or {})
+        peer_memory_state = dict(observed.get("memory_state") or {})
+        peer_models[str(peer_id)] = dict(peer_model)
+        peer_memory[str(peer_id)] = dict(peer_memory_state)
+        snapshot_models[snapshot_id_token] = peer_models
+        snapshot_memory[snapshot_id_token] = peer_memory
+        server["snapshot_peer_models"] = snapshot_models
+        server["snapshot_peer_memory"] = snapshot_memory
+        runtime["server"] = server
+
     client = dict(clients.get(str(peer_id)) or {})
-    client["last_perceived_model"] = dict(observed.get("perceived_model") or {})
-    client["last_perceived_hash"] = str(observed.get("perceived_hash", ""))
-    client["memory_state"] = dict(observed.get("memory_state") or {})
+    client["last_perceived_model"] = dict(peer_model)
+    client["last_perceived_hash"] = canonical_sha256(peer_model)
+    client["memory_state"] = dict(peer_memory_state if isinstance(peer_memory_state, dict) else {})
     client["last_applied_tick"] = int(selected.get("tick", 0) or 0)
     client["resync_count"] = _as_int(client.get("resync_count", 0), 0) + 1
     clients[str(peer_id)] = client
@@ -1315,6 +1371,7 @@ def request_hybrid_resync(repo_root: str, runtime: dict, peer_id: str, snapshot_
         "snapshot": selected,
         "peer_id": str(peer_id),
         "perceived_hash": str(client.get("last_perceived_hash", "")),
+        "memory_state_hash": canonical_sha256(dict(client.get("memory_state") or {})),
     }
 
 
