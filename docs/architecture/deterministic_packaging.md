@@ -29,6 +29,8 @@ Expected registry files in `dist/registries/`:
 - `fidelity_policy.registry.json`
 - `astronomy.catalog.index.json`
 - `site.registry.index.json`
+- `ephemeris.registry.json`
+- `terrain.tile.registry.json`
 - `ui.registry.json`
 
 ## Build Entry
@@ -39,6 +41,8 @@ Expected registry files in `dist/registries/`:
 ## Deterministic Rules
 1. Compile input registries + lockfile via existing XStack registry compile pipeline.
 2. Copy resolved packs only, using deterministic path ordering.
+  - Source packs (`packs/source/*`) are excluded unless explicitly selected in the bundle.
+  - Derived packs (`packs/derived/*`) are included when selected in the bundle.
 3. Canonical-write JSON artifacts (`bundle.json`, registries, `lockfile.json`, `manifest.json`).
 4. Normalize text launcher/setup stubs with `\n` newlines.
 5. Remove managed dist subtrees before rebuild:

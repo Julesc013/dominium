@@ -71,6 +71,8 @@ def _derived_pack_jsons(repo_root):
         for name in sorted(files):
             if not str(name).lower().endswith(".json"):
                 continue
+            if str(name).lower() == "pack.json":
+                continue
             abs_path = os.path.join(walk_root, name)
             rel_path = str(os.path.relpath(abs_path, repo_root)).replace("\\", "/")
             out.append(rel_path)

@@ -32,6 +32,8 @@ LOCKFILE_REGISTRY_FILE_MAP = {
     "worldgen_constraints_registry_hash": "worldgen_constraints.registry.json",
     "astronomy_catalog_index_hash": "astronomy.catalog.index.json",
     "site_registry_index_hash": "site.registry.index.json",
+    "ephemeris_registry_hash": "ephemeris.registry.json",
+    "terrain_tile_registry_hash": "terrain.tile.registry.json",
     "ui_registry_hash": "ui.registry.json",
 }
 

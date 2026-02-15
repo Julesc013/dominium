@@ -984,6 +984,8 @@ def _derived_artifact_files(repo_root: str) -> List[str]:
         for name in sorted(files):
             if not str(name).lower().endswith(".json"):
                 continue
+            if str(name).lower() == "pack.json":
+                continue
             abs_path = os.path.join(walk_root, name)
             rows.append(_norm(os.path.relpath(abs_path, repo_root)))
     return sorted(set(rows))
@@ -1330,6 +1332,7 @@ def _append_reserved_misuse_findings(
         "schemas/",
         "schema/",
         "docs/",
+        "packs/derived/",
     )
     exempt_files = (
         "data/registries/session_stage_registry.json",
