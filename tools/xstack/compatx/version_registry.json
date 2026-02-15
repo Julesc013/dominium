@@ -1,0 +1,214 @@
+{
+  "schemas": {
+    "authority_context": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "astronomy_catalog_index": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "astronomy_catalog_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "activation_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "activation_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "budget_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "budget_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "bundle_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "bundle_lockfile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "domain_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "experience_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "experience_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fidelity_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fidelity_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "intent_envelope": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "law_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "law_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "lens": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "lens_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "pack_manifest": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reference_frame": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "registry_outputs": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "session_spec": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "site_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "site_registry_index": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "srz_shard": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "universe_identity": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "ui_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "ui_window": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "universe_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    }
+  }
+}
