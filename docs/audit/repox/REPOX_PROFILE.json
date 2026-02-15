@@ -1,30 +1,94 @@
 {
   "artifact_class": "RUN_META",
-  "cache_hits": 0,
-  "cache_misses": 8,
+  "cache_hits": 8,
+  "cache_misses": 0,
   "changed_files": [
-    "docs/audit/repox/REPOX_SCOPE_ANALYSIS.md",
-    "docs/audit/xstack/PROFILE_AFTER_SCOPE_FIX.json",
-    "docs/governance/XSTACK_PORTABILITY.md",
-    "docs/governance/XSTACK_SCOPE_TEMPLATE.json",
+    "data/registries/testx_groups.json",
+    "docs/architecture/CANON_INDEX.md",
+    "docs/architecture/REPO_INTENT.md",
+    "docs/architecture/coordinate_model.md",
+    "docs/architecture/deterministic_parallelism.md",
+    "docs/architecture/lockfile.md",
+    "docs/architecture/observation_kernel.md",
+    "docs/architecture/pack_system.md",
+    "docs/architecture/registry_compile.md",
+    "docs/architecture/srz_contract.md",
+    "docs/architecture/time_model.md",
+    "docs/architecture/truth_model.md",
+    "docs/audit/identity_fingerprint.json",
+    "docs/audit/proof_manifest.json",
+    "docs/audit/repox/REPOX_PROFILE.json",
+    "docs/audit/testx/TESTX_RUN_META.json",
+    "docs/audit/testx/TESTX_SUMMARY.json",
+    "docs/audit/testx/TESTX_SUMMARY.md",
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "docs/contracts/authority_context.md",
+    "docs/contracts/law_profile.md",
+    "docs/contracts/lens_contract.md",
+    "docs/contracts/refusal_contract.md",
+    "docs/contracts/session_spec.md",
+    "docs/contracts/versioning_and_migration.md",
+    "docs/roadmap/milestone_lab_galaxy.md",
+    "docs/testing/README.md",
+    "docs/testing/xstack_profiles.md",
+    "packs/",
+    "schemas/README.md",
+    "schemas/astronomy_catalog_index.schema.json",
+    "schemas/authority_context.schema.json",
+    "schemas/bundle_lockfile.schema.json",
+    "schemas/domain_registry.schema.json",
+    "schemas/examples/",
+    "schemas/experience_registry.schema.json",
+    "schemas/law_profile.schema.json",
+    "schemas/law_registry.schema.json",
+    "schemas/lens.schema.json",
+    "schemas/lens_registry.schema.json",
+    "schemas/pack_manifest.schema.json",
+    "schemas/registry_outputs.schema.json",
+    "schemas/session_spec.schema.json",
+    "schemas/ui_registry.schema.json",
+    "schemas/universe_identity.schema.json",
+    "schemas/universe_state.schema.json",
     "scripts/ci/check_repox_rules.py",
-    "tests/invariant/CMakeLists.txt",
-    "tests/invariant/test_repox_cache_equivalence.py",
-    "tests/invariant/test_repox_dep_hash_stability_when_run_meta_changes.py",
-    "tests/invariant/test_repox_run_meta_change_does_not_trigger_structure.py",
-    "tools/auditx/analyzers/__init__.py",
-    "tools/auditx/analyzers/c8_run_meta_input_smell.py",
-    "tools/xstack/core/merkle_tree.py"
+    "scripts/dev/gate.py",
+    "scripts/dev/run_xstack_group_tests.py",
+    "tests/invariant/pack_testlib.py",
+    "tests/invariant/registry_compile_testlib.py",
+    "tests/invariant/test_lockfile_validate_tamper_refusal.py",
+    "tests/invariant/test_pack_circular_dependency_refusal.py",
+    "tests/invariant/test_pack_duplicate_contribution_id_refusal.py",
+    "tests/invariant/test_pack_duplicate_pack_id_refusal.py",
+    "tests/invariant/test_pack_list_ordering_determinism.py",
+    "tests/invariant/test_pack_resolution_determinism.py",
+    "tests/invariant/test_pack_unsupported_contribution_type_refusal.py",
+    "tests/invariant/test_registry_compile_cache_hit.py",
+    "tests/invariant/test_registry_compile_conflict_refusal_deterministic.py",
+    "tests/invariant/test_registry_compile_deterministic_outputs.py",
+    "tests/invariant/test_registry_compile_input_change_hash_change.py",
+    "tools/xstack/cache_store/",
+    "tools/xstack/compatx/",
+    "tools/xstack/lockfile_build.cmd",
+    "tools/xstack/lockfile_validate.cmd",
+    "tools/xstack/pack_contrib/",
+    "tools/xstack/pack_list.cmd",
+    "tools/xstack/pack_loader/",
+    "tools/xstack/registry_compile.cmd",
+    "tools/xstack/registry_compile/",
+    "tools/xstack/run.cmd",
+    "tools/xstack/schema_validate.cmd",
+    "tools/xstack/skills/",
+    "tools/xstack/testdata/"
   ],
-  "generated_utc": "2026-02-14T11:25:29Z",
+  "generated_utc": "2026-02-14T17:15:20Z",
   "groups": [
     {
       "artifact_classes": [
         "CANONICAL"
       ],
-      "cache_hit": false,
+      "cache_hit": true,
       "dep_hash": "45c73594307d929fd7d715b699728f8664cdd352d56387fbfede6a666e0cfacf",
-      "duration_ms": 4069,
+      "duration_ms": 5101,
       "group_id": "repox.structure.code",
       "scope_subtrees": [
         "client",
@@ -38,9 +102,9 @@
       "artifact_classes": [
         "CANONICAL"
       ],
-      "cache_hit": false,
-      "dep_hash": "d3b0a3e84b970e4b1ba249e8614860640e38c8f156b53c4c0ea2d86e46d80378",
-      "duration_ms": 2,
+      "cache_hit": true,
+      "dep_hash": "772a96d5c6b5f972270e2e21c4b7ee7fa4e58baaab1b455c369f18d9b51ed669",
+      "duration_ms": 3,
       "group_id": "repox.structure.schema",
       "scope_subtrees": [
         "data",
@@ -53,11 +117,12 @@
       "artifact_classes": [
         "CANONICAL"
       ],
-      "cache_hit": false,
-      "dep_hash": "3dd4ede1e4a120cd36b6071866b3946868f535e41f7fae0ddc629f834dbc3176",
-      "duration_ms": 862,
+      "cache_hit": true,
+      "dep_hash": "89ebf1cecae6f8fac2ab4a1bd0fe633422878998dba552d3c1bcde8b1e45b591",
+      "duration_ms": 1277,
       "group_id": "repox.structure.ruleset",
       "scope_subtrees": [
+        "docs",
         "repo",
         "scripts"
       ],
@@ -68,24 +133,24 @@
         "CANONICAL",
         "DERIVED_VIEW"
       ],
-      "cache_hit": false,
-      "dep_hash": "ba83391a76822be4ed266a0c1c93bae2ad79c618b6b92e131e87a2dd3cc06b77",
-      "duration_ms": 2980,
+      "cache_hit": true,
+      "dep_hash": "8a3f634b9d7144c2d56ed281de2f490f2a5d3f8b95d9ad7831d1823c5e0813bf",
+      "duration_ms": 2779,
       "group_id": "repox.docs.canon",
       "scope_subtrees": [
         "docs",
         "repo"
       ],
-      "violation_count": 2
+      "violation_count": 3
     },
     {
       "artifact_classes": [
         "CANONICAL",
         "DERIVED_VIEW"
       ],
-      "cache_hit": false,
-      "dep_hash": "d5162d935dfd2409f7d644c16e340076ff0c770c1bba97ade51973c1b96f7762",
-      "duration_ms": 650,
+      "cache_hit": true,
+      "dep_hash": "01e5379044e4f4fd466ed922fb4727bf53900646d393775bf8124f59c84aece8",
+      "duration_ms": 928,
       "group_id": "repox.schema.compat",
       "scope_subtrees": [
         "data",
@@ -99,9 +164,9 @@
         "CANONICAL",
         "DERIVED_VIEW"
       ],
-      "cache_hit": false,
-      "dep_hash": "7afd7e8cc83dc843ba286f08826a11505b2296d2fcf720fe2bee60a8fc0ec63c",
-      "duration_ms": 525,
+      "cache_hit": true,
+      "dep_hash": "fbc93a170649307a7cfd9a9c9fa23c86ff14a81087ed9abd5a0826e6063162c9",
+      "duration_ms": 953,
       "group_id": "repox.dist.platform",
       "scope_subtrees": [
         "data",
@@ -115,9 +180,9 @@
       "artifact_classes": [
         "CANONICAL"
       ],
-      "cache_hit": false,
-      "dep_hash": "0f6a536ba3551abc76b12c70137e97b64fb63e73be04f3bd41640a0b22befabf",
-      "duration_ms": 40525,
+      "cache_hit": true,
+      "dep_hash": "263dca23dc5abae440968a9a51d9cf5a25046b38b8c6ecf27f76c1fe6449ce19",
+      "duration_ms": 38438,
       "group_id": "repox.runtime.policy",
       "scope_subtrees": [
         "client",
@@ -134,9 +199,9 @@
         "CANONICAL",
         "DERIVED_VIEW"
       ],
-      "cache_hit": false,
-      "dep_hash": "11127a33fe2fb53118b7889021a06a1845cb3862127bd074e2290cae0cc2dae9",
-      "duration_ms": 12450,
+      "cache_hit": true,
+      "dep_hash": "ba26057769f816b960d699187bfd098d6e05e390c66722e3b2216eb5017d0ef9",
+      "duration_ms": 12612,
       "group_id": "repox.runtime.heavy_scans",
       "scope_subtrees": [
         "client",
@@ -153,12 +218,14 @@
     }
   ],
   "impacted_roots": [
+    "data",
     "docs",
+    "repo",
     "scripts",
     "tests",
     "tools"
   ],
-  "profile": "FULL",
+  "profile": "STRICT",
   "status": "DERIVED",
-  "total_duration_ms": 66991
+  "total_duration_ms": 10662
 }

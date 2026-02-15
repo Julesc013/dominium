@@ -1,8 +1,8 @@
 {
   "artifact_class": "RUN_META",
-  "duration_ms": 12617,
-  "generated_utc": "2026-02-14T11:25:50Z",
+  "duration_ms": 11551,
+  "generated_utc": "2026-02-14T17:17:27Z",
   "returncode": 0,
   "status": "DERIVED",
-  "suite_id": "testx.group.full.verify"
+  "suite_id": "testx.group.core.invariants"
 }

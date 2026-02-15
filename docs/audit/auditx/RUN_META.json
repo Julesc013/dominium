@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": false,
-  "changed_paths_since_last": 12,
-  "generated_utc": "2026-02-14T11:27:45Z",
-  "graph_hash": "6432e8b8a4b3d2cf4a644d3cf053b168974cc6a043f53e789d1610332c2b76ae",
+  "changed_only": true,
+  "changed_paths_since_last": 3,
+  "generated_utc": "2026-02-14T17:18:10Z",
+  "graph_hash": "75d7c48ae8c288753abade9968fab95da9c6bf2f2bd0672eb343f12bea8fff4b",
   "last_reviewed": "2026-02-14",
   "output_format": "json",
   "platform": "windows",
@@ -39,5 +39,5 @@
     "C1"
   ],
   "status": "DERIVED",
-  "workspace_id": "vs2026"
+  "workspace_id": "ws-7bb944ef38ea1547"
 }

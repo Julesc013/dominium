@@ -1,13 +1,13 @@
 {
-  "fingerprint_sha256": "b4a17fc71f9ba1a2303e01f4baa68a2e229ba3a13e20bc55f86da5ae3222e3ea",
+  "fingerprint_sha256": "26b1b5d521092de55899d4b4fc11ae5bcce9d81158fdb0acd63cc27d719d4c57",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "0603a812e38e9efab440059125dac457ca3121cc71056837ef9e2674e2862889"
+      "sha256": "c6fba5eba65fde7ce6471e87524bac9e8425e10a23606673138630d3d0ef9164"
     },
     "gate_runner": {
       "path": "scripts/dev/gate.py",
-      "sha256": "f23638716ed61ec3c4b5bd46781f797bf4a11ca378f760299a7650dd8a9c5455"
+      "sha256": "b457cba0610cf9323b7dfdb3d781a675ad22948dadacf5589fc9a3a2c9c41831"
     },
     "ontology_commitment": {
       "sha256": "831a336a64022e33b1f72801c3e636cf817fc3e96c4c0223c3bd2cc2190930d7",
@@ -22,9 +22,9 @@
       "sha256": "759a028019b67caa7112af9c6de67e419d9eeaf7020c47653b20b98854722416"
     },
     "testx_suite_set": {
-      "sha256": "60ba140d6af02f20fb18a9ad256e0eb67a35a5876f2014c52fa3293bc660f2be",
+      "sha256": "8184302fff4b8f5fb3c0272b06b3a0bd279580b520e58c112a09f6af79214c01",
       "source_root": "tests",
-      "suite_count": 344
+      "suite_count": 350
     },
     "unbounded_doctrine": {
       "path": "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md",
