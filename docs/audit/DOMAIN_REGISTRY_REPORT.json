@@ -1,0 +1,307 @@
+{
+  "contracts": [
+    {
+      "conservation_tags": [
+        "charge"
+      ],
+      "contract_id": "dom.contract.charge_conservation",
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "determinism"
+      ],
+      "contract_id": "dom.contract.deterministic_transition",
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "energy"
+      ],
+      "contract_id": "dom.contract.energy_conservation",
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "information_access"
+      ],
+      "contract_id": "dom.contract.epistemic_non_omniscience",
+      "violation_refusal_codes": [
+        "ENTITLEMENT_MISSING",
+        "LENS_FORBIDDEN",
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "ledger_balance"
+      ],
+      "contract_id": "dom.contract.ledger_balance",
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "mass"
+      ],
+      "contract_id": "dom.contract.mass_conservation",
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "port_contract"
+      ],
+      "contract_id": "dom.contract.port_contract_preservation",
+      "violation_refusal_codes": [
+        "refusal.contract_violation"
+      ]
+    }
+  ],
+  "domains": [
+    {
+      "contract_ids": [
+        "dom.contract.deterministic_transition",
+        "dom.contract.ledger_balance"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.economy.basic",
+      "scope_tags": [
+        "local",
+        "macro",
+        "region"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "macro_capsule"
+      ],
+      "status": "experimental"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.deterministic_transition",
+        "dom.contract.energy_conservation"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.energy.basic",
+      "scope_tags": [
+        "local",
+        "macro",
+        "region"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "macro_capsule",
+        "refined"
+      ],
+      "status": "active"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.deterministic_transition",
+        "dom.contract.mass_conservation"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.fluids.basic",
+      "scope_tags": [
+        "local",
+        "region"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "refined"
+      ],
+      "status": "active"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.mass_conservation",
+        "dom.contract.port_contract_preservation"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.geology.terrain",
+      "scope_tags": [
+        "body",
+        "local",
+        "region"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "micro",
+        "refined"
+      ],
+      "status": "active"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.deterministic_transition",
+        "dom.contract.mass_conservation"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.gravity.macro",
+      "scope_tags": [
+        "macro",
+        "system"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "macro_capsule"
+      ],
+      "status": "active"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.deterministic_transition",
+        "dom.contract.energy_conservation"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.heat.basic",
+      "scope_tags": [
+        "local",
+        "region"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "micro",
+        "refined"
+      ],
+      "status": "active"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.epistemic_non_omniscience",
+        "dom.contract.port_contract_preservation"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.magic.pack",
+      "scope_tags": [
+        "local",
+        "region"
+      ],
+      "solver_kinds_allowed": [
+        "micro",
+        "refined"
+      ],
+      "status": "experimental"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.deterministic_transition",
+        "dom.contract.energy_conservation",
+        "dom.contract.mass_conservation"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.orbital.mechanics",
+      "scope_tags": [
+        "body",
+        "region",
+        "system"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "micro",
+        "refined"
+      ],
+      "status": "active"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.deterministic_transition",
+        "dom.contract.epistemic_non_omniscience"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.psych.social",
+      "scope_tags": [
+        "local",
+        "region"
+      ],
+      "solver_kinds_allowed": [
+        "coarse"
+      ],
+      "status": "experimental"
+    },
+    {
+      "contract_ids": [
+        "dom.contract.epistemic_non_omniscience",
+        "dom.contract.port_contract_preservation"
+      ],
+      "deprecated": false,
+      "domain_id": "dom.domain.signals.basic",
+      "scope_tags": [
+        "local",
+        "region",
+        "system"
+      ],
+      "solver_kinds_allowed": [
+        "coarse",
+        "refined"
+      ],
+      "status": "active"
+    }
+  ],
+  "errors": [],
+  "result": "complete",
+  "schema_version": "1.0.0",
+  "solver_bindings": [
+    {
+      "contract_ids": [
+        "dom.contract.deterministic_transition",
+        "dom.contract.energy_conservation",
+        "dom.contract.mass_conservation",
+        "dom.contract.port_contract_preservation"
+      ],
+      "domain_ids": [
+        "dom.domain.economy.basic",
+        "dom.domain.energy.basic",
+        "dom.domain.gravity.macro"
+      ],
+      "resolution_tags": [
+        "coarse",
+        "macro"
+      ],
+      "solver_id": "solver.collapse.macro_capsule",
+      "transition_support": [
+        "collapse",
+        "expand"
+      ]
+    },
+    {
+      "contract_ids": [
+        "dom.contract.charge_conservation",
+        "dom.contract.deterministic_transition",
+        "dom.contract.energy_conservation",
+        "dom.contract.mass_conservation",
+        "dom.contract.port_contract_preservation"
+      ],
+      "domain_ids": [
+        "dom.domain.fluids.basic",
+        "dom.domain.geology.terrain",
+        "dom.domain.heat.basic",
+        "dom.domain.orbital.mechanics",
+        "dom.domain.signals.basic"
+      ],
+      "resolution_tags": [
+        "micro",
+        "refined"
+      ],
+      "solver_id": "solver.expand.local_high_fidelity",
+      "transition_support": [
+        "collapse",
+        "expand"
+      ]
+    }
+  ],
+  "summary": {
+    "contract_count": 7,
+    "domain_count": 10,
+    "solver_count": 2
+  }
+}
