@@ -356,18 +356,21 @@ def _cmd_scan(args):
 def _cmd_verify(args):
     payload, code = _run_scan(args)
     _print_scan_payload(payload, args.format)
-    if code == 0:
+    if str(payload.get("result", "")) == "scan_complete":
         return 0
+    if str(payload.get("result", "")) == "refused":
+        return 2
     return 1
 
 
 def _cmd_enforce(_args):
     payload = {
         "result": "refused",
-        "refusal_code": "refuse.not_enabled",
+        "refusal_code": "refusal.not_enabled",
+        "reason": "AuditX enforcement is not enabled; promote checks via RepoX/TestX.",
     }
     print(json.dumps(payload, indent=2, sort_keys=True))
-    return 0
+    return 2
 
 
 def build_parser():

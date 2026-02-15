@@ -82,7 +82,28 @@ class AnalysisGraph:
         }
 
     def stable_hash(self):
-        payload = self.to_payload()
-        blob = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
-        return hashlib.sha256(blob).hexdigest()
-
+        digest = hashlib.sha256()
+        digest.update(b"nodes\n")
+        for node in sorted(self.nodes.values(), key=lambda item: item.node_id):
+            row = {
+                "node_id": node.node_id,
+                "node_type": node.node_type,
+                "label": node.label,
+                "data": dict(sorted(node.data.items())),
+            }
+            digest.update(json.dumps(row, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+            digest.update(b"\n")
+        digest.update(b"edges\n")
+        for edge in sorted(
+            self.edges,
+            key=lambda item: (item.edge_type, item.src, item.dst, json.dumps(item.data, sort_keys=True)),
+        ):
+            row = {
+                "edge_type": edge.edge_type,
+                "src": edge.src,
+                "dst": edge.dst,
+                "data": dict(sorted(edge.data.items())),
+            }
+            digest.update(json.dumps(row, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+            digest.update(b"\n")
+        return digest.hexdigest()
