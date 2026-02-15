@@ -6,6 +6,16 @@
   "required_entitlements": [
     "ui.debug.overlay"
   ],
+  "observation_channels": [
+    "ch.core.time",
+    "ch.camera.state",
+    "ch.core.navigation",
+    "ch.core.sites",
+    "ch.core.entities",
+    "ch.core.process_log",
+    "ch.nondiegetic.nav",
+    "ch.nondiegetic.entity_inspector"
+  ],
   "epistemic_constraints": {
     "visibility_policy": "admin_debug",
     "max_resolution_tier": 4

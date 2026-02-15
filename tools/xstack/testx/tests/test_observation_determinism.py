@@ -60,9 +60,58 @@ def run(repo_root: str):
         "epistemic_scope": {"scope_id": "epistemic.test", "visibility_level": "sensor_limited"},
         "privilege_level": "observer",
     }
+    epistemic_policy = {
+        "epistemic_policy_id": "ep.policy.test",
+        "allowed_observation_channels": [
+            "ch.camera.state",
+            "ch.core.time",
+            "ch.diegetic.altimeter",
+            "ch.diegetic.clock",
+            "ch.diegetic.compass",
+            "ch.diegetic.map_local",
+            "ch.diegetic.radio",
+        ],
+        "forbidden_channels": [],
+        "retention_policy_id": "ep.retention.test",
+        "max_precision_rules": [
+            {
+                "rule_id": "rule.camera.default",
+                "channel_id": "ch.camera.state",
+                "max_distance_mm": 1000000000,
+                "position_quantization_mm": 1,
+                "orientation_quantization_mdeg": 1,
+            }
+        ],
+        "deterministic_filters": [
+            "filter.channel_allow_deny.v1",
+            "filter.quantize_precision.v1",
+        ],
+    }
+    retention_policy = {
+        "retention_policy_id": "ep.retention.test",
+        "memory_allowed": False,
+        "max_memory_items": 0,
+        "deterministic_eviction_rule_id": "evict.none",
+    }
 
-    first = observe_truth(truth, lens, law, authority, "viewpoint.client.test")
-    second = observe_truth(truth, lens, law, authority, "viewpoint.client.test")
+    first = observe_truth(
+        truth,
+        lens,
+        law,
+        authority,
+        "viewpoint.client.test",
+        epistemic_policy=epistemic_policy,
+        retention_policy=retention_policy,
+    )
+    second = observe_truth(
+        truth,
+        lens,
+        law,
+        authority,
+        "viewpoint.client.test",
+        epistemic_policy=epistemic_policy,
+        retention_policy=retention_policy,
+    )
     if first.get("result") != "complete" or second.get("result") != "complete":
         return {"status": "fail", "message": "observation unexpectedly refused for deterministic fixture"}
     if str(first.get("perceived_model_hash", "")) != str(second.get("perceived_model_hash", "")):

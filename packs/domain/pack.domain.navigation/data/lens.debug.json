@@ -6,6 +6,18 @@
   "required_entitlements": [
     "lens.nondiegetic.access"
   ],
+  "observation_channels": [
+    "ch.core.time",
+    "ch.camera.state",
+    "ch.core.navigation",
+    "ch.core.sites",
+    "ch.core.entities",
+    "ch.core.process_log",
+    "ch.core.performance",
+    "ch.nondiegetic.nav",
+    "ch.nondiegetic.entity_inspector",
+    "ch.nondiegetic.performance_monitor"
+  ],
   "epistemic_constraints": {
     "visibility_policy": "lab_debug_overlay",
     "max_resolution_tier": 4

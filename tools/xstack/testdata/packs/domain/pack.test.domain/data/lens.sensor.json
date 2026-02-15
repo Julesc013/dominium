@@ -6,6 +6,15 @@
   "required_entitlements": [
     "session.boot"
   ],
+  "observation_channels": [
+    "ch.core.time",
+    "ch.camera.state",
+    "ch.diegetic.compass",
+    "ch.diegetic.clock",
+    "ch.diegetic.altimeter",
+    "ch.diegetic.radio",
+    "ch.diegetic.map_local"
+  ],
   "epistemic_constraints": {
     "visibility_policy": "sensor_limited",
     "max_resolution_tier": 1

@@ -14,6 +14,8 @@ FIXTURE_SOURCE_REGISTRY_FILES = (
     ("tools/xstack/testdata/registries/net_server_policy_registry.json", "data/registries/net_server_policy_registry.json"),
     ("data/registries/shard_map_registry.json", "data/registries/shard_map_registry.json"),
     ("data/registries/perception_interest_policy_registry.json", "data/registries/perception_interest_policy_registry.json"),
+    ("data/registries/epistemic_policy_registry.json", "data/registries/epistemic_policy_registry.json"),
+    ("data/registries/retention_policy_registry.json", "data/registries/retention_policy_registry.json"),
     ("data/registries/anti_cheat_policy_registry.json", "data/registries/anti_cheat_policy_registry.json"),
     ("data/registries/anti_cheat_module_registry.json", "data/registries/anti_cheat_module_registry.json"),
 )
