@@ -58,6 +58,16 @@ def main() -> int:
     parser.add_argument("--epistemic-scope-id", default="epistemic.lab.placeholder")
     parser.add_argument("--visibility-level", default="placeholder")
     parser.add_argument("--privilege-level", default=DEFAULT_PRIVILEGE_LEVEL, choices=("observer", "operator", "system"))
+    parser.add_argument("--net-endpoint", default="")
+    parser.add_argument("--net-transport-id", default="")
+    parser.add_argument("--net-client-peer-id", default="")
+    parser.add_argument("--net-server-peer-id", default="")
+    parser.add_argument("--net-replication-policy-id", default="")
+    parser.add_argument("--net-anti-cheat-policy-id", default="")
+    parser.add_argument("--net-server-policy-id", default="")
+    parser.add_argument("--net-securex-policy-id", default="")
+    parser.add_argument("--net-desired-law-profile-id", default="")
+    parser.add_argument("--net-schema-version", action="append", default=[])
     parser.add_argument("--compile-outputs", default="on", choices=("on", "off"))
     parser.add_argument("--saves-root", default="saves", help=argparse.SUPPRESS)
     args = parser.parse_args()
@@ -86,6 +96,16 @@ def main() -> int:
         epistemic_scope_id=str(args.epistemic_scope_id),
         visibility_level=str(args.visibility_level),
         privilege_level=str(args.privilege_level),
+        net_endpoint=str(args.net_endpoint),
+        net_transport_id=str(args.net_transport_id),
+        net_client_peer_id=str(args.net_client_peer_id),
+        net_server_peer_id=str(args.net_server_peer_id),
+        net_replication_policy_id=str(args.net_replication_policy_id),
+        net_anti_cheat_policy_id=str(args.net_anti_cheat_policy_id),
+        net_server_policy_id=str(args.net_server_policy_id),
+        net_securex_policy_id=str(args.net_securex_policy_id),
+        net_desired_law_profile_id=str(args.net_desired_law_profile_id),
+        net_schema_versions=list(args.net_schema_version or []),
         compile_outputs=str(args.compile_outputs).strip().lower() != "off",
         saves_root_rel=str(args.saves_root),
     )

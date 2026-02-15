@@ -8,6 +8,7 @@ from typing import Dict, List, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
+from tools.xstack.compatx.schema_registry import load_version_registry
 from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
@@ -118,6 +119,45 @@ def _parse_rng_roots(explicit_roots: List[str], rng_seed_string: str) -> List[di
             "root_seed": deterministic_seed_hex(seed, "rng.session.ui"),
         },
     ]
+
+
+def _parse_kv_rows(rows: List[str]) -> Dict[str, str]:
+    out: Dict[str, str] = {}
+    for raw in rows:
+        token = str(raw).strip()
+        if "=" not in token:
+            continue
+        key, value = token.split("=", 1)
+        key_token = str(key).strip()
+        value_token = str(value).strip()
+        if key_token and value_token:
+            out[key_token] = value_token
+    return dict((key, out[key]) for key in sorted(out.keys()))
+
+
+def _default_net_schema_versions(repo_root: str) -> Dict[str, str]:
+    payload, error = load_version_registry(repo_root=repo_root)
+    if error:
+        return {}
+    rows = (payload.get("schemas") or {}) if isinstance(payload, dict) else {}
+    if not isinstance(rows, dict):
+        return {}
+    required = (
+        "session_spec",
+        "bundle_lockfile",
+        "net_handshake",
+        "net_proto_message",
+        "net_intent_envelope",
+    )
+    out: Dict[str, str] = {}
+    for schema_name in required:
+        row = rows.get(schema_name)
+        if not isinstance(row, dict):
+            continue
+        token = str(row.get("current_version", "")).strip()
+        if token:
+            out[str(schema_name)] = token
+    return dict((key, out[key]) for key in sorted(out.keys()))
 
 
 def _domain_bindings_from_registry(repo_root: str) -> List[str]:
@@ -538,6 +578,16 @@ def create_session_spec(
     epistemic_scope_id: str = DEFAULT_SCOPE_ID,
     visibility_level: str = DEFAULT_VISIBILITY_LEVEL,
     privilege_level: str = DEFAULT_PRIVILEGE_LEVEL,
+    net_endpoint: str = "",
+    net_transport_id: str = "",
+    net_client_peer_id: str = "",
+    net_server_peer_id: str = "",
+    net_replication_policy_id: str = "",
+    net_anti_cheat_policy_id: str = "",
+    net_server_policy_id: str = "",
+    net_securex_policy_id: str = "",
+    net_desired_law_profile_id: str = "",
+    net_schema_versions: List[str] | None = None,
     compile_outputs: bool = True,
     saves_root_rel: str = "saves",
 ) -> Dict[str, object]:
@@ -561,13 +611,78 @@ def create_session_spec(
             "$.bundle_id",
         )
 
-    selected_pipeline_id = str(pipeline_id).strip() or DEFAULT_PIPELINE_ID
+    network_payload: dict = {}
+    network_endpoint = str(net_endpoint).strip()
+    if network_endpoint:
+        schema_versions = _parse_kv_rows(list(net_schema_versions or []))
+        if not schema_versions:
+            schema_versions = _default_net_schema_versions(repo_root=repo_root)
+        required_network = {
+            "transport_id": str(net_transport_id).strip(),
+            "client_peer_id": str(net_client_peer_id).strip(),
+            "server_peer_id": str(net_server_peer_id).strip(),
+            "requested_replication_policy_id": str(net_replication_policy_id).strip(),
+            "anti_cheat_policy_id": str(net_anti_cheat_policy_id).strip(),
+            "server_policy_id": str(net_server_policy_id).strip(),
+        }
+        for field, value in sorted(required_network.items(), key=lambda item: item[0]):
+            if not value:
+                return refusal(
+                    "REFUSE_NET_CONFIG_INVALID",
+                    "network field '{}' is required when --net-endpoint is provided".format(field),
+                    "Provide --{} explicitly for multiplayer session creation.".format(field.replace("_", "-")),
+                    {"field": field},
+                    "$.network.{}".format(field),
+                )
+        if not schema_versions:
+            return refusal(
+                "REFUSE_NET_CONFIG_INVALID",
+                "network schema_versions could not be resolved",
+                "Provide --net-schema-version values explicitly or restore compatx version registry.",
+                {"field": "schema_versions"},
+                "$.network.schema_versions",
+            )
+        network_payload = {
+            "endpoint": network_endpoint,
+            "transport_id": required_network["transport_id"],
+            "client_peer_id": required_network["client_peer_id"],
+            "server_peer_id": required_network["server_peer_id"],
+            "requested_replication_policy_id": required_network["requested_replication_policy_id"],
+            "anti_cheat_policy_id": required_network["anti_cheat_policy_id"],
+            "server_policy_id": required_network["server_policy_id"],
+            "desired_law_profile_id": str(net_desired_law_profile_id).strip() or None,
+            "securex_policy_id": str(net_securex_policy_id).strip(),
+            "schema_versions": schema_versions,
+        }
+
+    requested_pipeline_id = str(pipeline_id).strip() or DEFAULT_PIPELINE_ID
+    selected_pipeline_id = requested_pipeline_id
+    if network_payload and requested_pipeline_id == DEFAULT_PIPELINE_ID:
+        selected_pipeline_id = "pipeline.client.multiplayer_stub"
     pipeline_contract = load_session_pipeline_contract(
         repo_root=repo_root,
         pipeline_id=selected_pipeline_id,
     )
     if pipeline_contract.get("result") != "complete":
         return pipeline_contract
+    stage_order = list(pipeline_contract.get("stage_order") or [])
+    has_net_stage = "stage.net_handshake" in stage_order
+    if network_payload and not has_net_stage:
+        return refusal(
+            "REFUSE_NET_CONFIG_INVALID",
+            "selected pipeline does not include required net handshake stage",
+            "Use pipeline.client.multiplayer_stub when network endpoint is configured.",
+            {"pipeline_id": selected_pipeline_id},
+            "$.pipeline_id",
+        )
+    if (not network_payload) and has_net_stage:
+        return refusal(
+            "REFUSE_NET_CONFIG_INVALID",
+            "selected pipeline requires network payload but session create request did not provide one",
+            "Set --net-endpoint and required net fields, or select pipeline.client.default.",
+            {"pipeline_id": selected_pipeline_id},
+            "$.pipeline_id",
+        )
 
     compile_result = {}
     if compile_outputs:
@@ -578,7 +693,7 @@ def create_session_spec(
             lockfile_out_rel="build/lockfile.json",
             packs_root_rel="packs",
             schema_repo_root=repo_root,
-            use_cache=True,
+            use_cache=False,
         )
         if compile_result.get("result") != "complete":
             return refusal(
@@ -772,6 +887,8 @@ def create_session_spec(
         "selected_seed": str(selected_seed),
         "deterministic_rng_roots": rng_rows,
     }
+    if network_payload:
+        session_payload["network"] = dict(network_payload)
     if search_plan_payload:
         session_payload["constraints_id"] = str(search_plan_payload.get("constraints_id", "")).strip() or selected_constraints_id
         session_payload["search_plan_hash"] = str(search_plan_payload.get("deterministic_hash", "")).strip()
