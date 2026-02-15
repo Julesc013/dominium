@@ -23,6 +23,12 @@
     "fidelity_policy_id",
     "deterministic_rng_roots"
   ],
+  "dependentRequired": {
+    "constraints_id": [
+      "selected_seed",
+      "search_plan_hash"
+    ]
+  },
   "additionalProperties": false,
   "properties": {
     "schema_version": {
@@ -128,6 +134,19 @@
     "fidelity_policy_id": {
       "type": "string"
     },
+    "constraints_id": {
+      "type": "string",
+      "description": "Optional worldgen constraints artifact identifier used for deterministic multi-seed planning."
+    },
+    "selected_seed": {
+      "type": "string",
+      "description": "Deterministically selected worldgen seed (base seed when no constraints are selected)."
+    },
+    "search_plan_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$",
+      "description": "Canonical hash of worldgen search plan artifact when constraints are active."
+    },
     "deterministic_rng_roots": {
       "type": "array",
       "items": {
@@ -177,6 +196,9 @@
       "pack_lock_hash": "17a8255be7f6d082c7fce0f6bc2d0ad4cc4f95e14f7696b1ef255fca605dc04d",
       "budget_policy_id": "policy.budget.default_lab",
       "fidelity_policy_id": "policy.fidelity.default_lab",
+      "constraints_id": "constraints.lab.navigation.default",
+      "selected_seed": "33dbcef8b6ab9ee0",
+      "search_plan_hash": "53eda2d58cc9f2eca6d3ed76f88bc8a1450c4f26f6f397103f0f74101dca2c31",
       "deterministic_rng_roots": [
         {
           "stream_name": "rng.session.core",

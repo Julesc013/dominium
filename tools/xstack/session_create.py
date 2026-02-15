@@ -47,6 +47,8 @@ def main() -> int:
     parser.add_argument("--parameter-bundle-id", default=DEFAULT_PARAMETER_BUNDLE_ID)
     parser.add_argument("--budget-policy-id", default=DEFAULT_BUDGET_POLICY_ID)
     parser.add_argument("--fidelity-policy-id", default=DEFAULT_FIDELITY_POLICY_ID)
+    parser.add_argument("--constraints-id", default="")
+    parser.add_argument("--constraints-file", default="")
     parser.add_argument("--rng-root", action="append", default=[])
     parser.add_argument("--rng-seed-string", default="seed.session.default")
     parser.add_argument("--universe-identity-file", default="")
@@ -73,6 +75,8 @@ def main() -> int:
         parameter_bundle_id=str(args.parameter_bundle_id),
         budget_policy_id=str(args.budget_policy_id),
         fidelity_policy_id=str(args.fidelity_policy_id),
+        constraints_id=str(args.constraints_id),
+        constraints_file=str(args.constraints_file),
         rng_seed_string=str(args.rng_seed_string),
         rng_roots=list(args.rng_root or []),
         universe_identity_path=str(args.universe_identity_file),
