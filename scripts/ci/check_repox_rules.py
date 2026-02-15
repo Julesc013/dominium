@@ -6354,7 +6354,7 @@ def main() -> int:
         },
         {
             "group_id": "repox.structure.ruleset",
-            "scope_subtrees": ("repo", "scripts"),
+            "scope_subtrees": ("repo", "scripts", "docs"),
             "artifact_classes": ("CANONICAL",),
             "checks": [
                 lambda: check_top_level(repo_root, allowed),
