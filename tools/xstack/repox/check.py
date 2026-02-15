@@ -1052,6 +1052,130 @@ def _append_multiplayer_contract_invariant_findings(
                         rule_id="INV-NO-TRUTH-OVER-NET",
                     )
                 )
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="network payload path must remain PerceivedModel-only and avoid TruthModel serialization",
+                        rule_id="INV-NET-PERCEIVED-ONLY",
+                    )
+                )
+
+    perceived_required = (
+        ("src/net/policies/policy_server_authoritative.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
+        ("src/net/srz/shard_coordinator.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
+    )
+    for rel_path, required_tokens in perceived_required:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="network perceived-only invariant target file is missing",
+                    rule_id="INV-NET-PERCEIVED-ONLY",
+                )
+            )
+            continue
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="unable to read file for perceived-only invariant",
+                    rule_id="INV-NET-PERCEIVED-ONLY",
+                )
+            )
+            continue
+        for token in required_tokens:
+            if token not in text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="network path missing required perceived-only token '{}'".format(token),
+                        rule_id="INV-NET-PERCEIVED-ONLY",
+                    )
+                )
+
+    law_registry_path = "data/registries/law_profiles.json"
+    law_registry_payload, law_registry_err = _load_json_object(repo_root, law_registry_path)
+    law_rows = []
+    if not law_registry_err:
+        law_rows = (((law_registry_payload.get("record") or {}).get("profiles")) or [])
+        if isinstance(law_rows, list):
+            for idx, row in enumerate(law_rows):
+                if not isinstance(row, dict):
+                    continue
+                law_profile_id = str(row.get("law_profile_id", "")).strip() or "<unknown>"
+                if not str(row.get("epistemic_policy_id", "")).strip():
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=law_registry_path,
+                            line_number=1,
+                            snippet=law_profile_id,
+                            message="law profile '{}' is missing epistemic_policy_id".format(law_profile_id),
+                            rule_id="INV-EPISTEMIC-POLICY-REQUIRED",
+                        )
+                    )
+                if "survival" in law_profile_id.lower():
+                    allowed_lenses = sorted(
+                        set(str(item).strip().lower() for item in (row.get("allowed_lenses") or []) if str(item).strip())
+                    )
+                    if any("nondiegetic" in token for token in allowed_lenses):
+                        findings.append(
+                            _finding(
+                                severity="warn",
+                                file_path=law_registry_path,
+                                line_number=1,
+                                snippet=law_profile_id,
+                                message="survival profile '{}' should default to diegetic lenses only".format(law_profile_id),
+                                rule_id="INV-DIEGETIC-DEFAULTS-SURVIVAL",
+                            )
+                        )
+
+    packs_law_root = os.path.join(repo_root, "packs", "law")
+    if os.path.isdir(packs_law_root):
+        for walk_root, dirs, files in os.walk(packs_law_root):
+            dirs[:] = sorted(dirs)
+            if "pack.json" not in files:
+                continue
+            data_root = os.path.join(walk_root, "data")
+            if not os.path.isdir(data_root):
+                continue
+            for name in sorted(os.listdir(data_root)):
+                if not str(name).lower().endswith(".json"):
+                    continue
+                abs_file = os.path.join(data_root, name)
+                rel_file = _norm(os.path.relpath(abs_file, repo_root))
+                payload, err = _load_json_object(repo_root, rel_file)
+                if err:
+                    continue
+                if not str(payload.get("law_profile_id", "")).strip():
+                    continue
+                law_profile_id = str(payload.get("law_profile_id", "")).strip()
+                if not str(payload.get("epistemic_policy_id", "")).strip():
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_file,
+                            line_number=1,
+                            snippet=law_profile_id,
+                            message="pack law profile '{}' is missing epistemic_policy_id".format(law_profile_id),
+                            rule_id="INV-EPISTEMIC-POLICY-REQUIRED",
+                        )
+                    )
 
     authoritative_rel = "src/net/policies/policy_server_authoritative.py"
     authoritative_abs = os.path.join(repo_root, authoritative_rel.replace("/", os.sep))
