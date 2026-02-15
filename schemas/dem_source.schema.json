@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DEM Source Schema",
+  "version": "1.0.0",
+  "description": "Deterministic source metadata contract for SRTM-derived terrain ingestion.",
+  "x-doc-ref": [
+    "docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_id",
+    "tile_resolution",
+    "projection",
+    "vertical_datum",
+    "license",
+    "checksum"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "tile_resolution": {
+      "type": "string"
+    },
+    "projection": {
+      "type": "string"
+    },
+    "vertical_datum": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    },
+    "checksum": {
+      "type": "string"
+    },
+    "tiles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "source.earth.srtm.minimal",
+      "tile_resolution": "3arcsec",
+      "projection": "geographic_wgs84",
+      "vertical_datum": "egm96",
+      "license": "public-domain-nasa-srtm",
+      "checksum": "placeholder.source.earth.srtm.checksum",
+      "tiles": [
+        "data/raw/N00E000.asc"
+      ]
+    }
+  ]
+}
+

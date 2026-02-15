@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "org.dominium.earth.srtm",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [],
+  "contribution_types": [
+    "dem_source"
+  ],
+  "contributions": [
+    {
+      "type": "dem_source",
+      "id": "source.dem.earth.srtm",
+      "path": "data/dem_source.json"
+    }
+  ],
+  "canonical_hash": "placeholder.org.dominium.earth.srtm.v1",
+  "signature_status": "signed"
+}
+

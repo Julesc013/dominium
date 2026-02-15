@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "source.earth.srtm.minimal",
+  "tile_resolution": "3arcsec",
+  "projection": "geographic_wgs84",
+  "vertical_datum": "egm96",
+  "license": "public-domain-nasa-srtm",
+  "checksum": "placeholder.source.earth.srtm.checksum",
+  "tiles": [
+    "data/raw/N00E000.asc"
+  ]
+}
+
