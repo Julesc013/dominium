@@ -238,6 +238,7 @@ def _step_registry_compile(context: RunContext) -> Dict[str, object]:
         "build/registries/activation_policy.registry.json",
         "build/registries/budget_policy.registry.json",
         "build/registries/fidelity_policy.registry.json",
+        "build/registries/worldgen_constraints.registry.json",
         "build/registries/astronomy.catalog.index.json",
         "build/registries/site.registry.index.json",
         "build/registries/ui.registry.json",

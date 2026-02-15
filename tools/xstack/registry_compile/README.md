@@ -20,6 +20,10 @@ Compile deterministic derived registries and lockfiles from pack manifests and t
 - `law.registry.json`
 - `experience.registry.json`
 - `lens.registry.json`
+- `activation_policy.registry.json`
+- `budget_policy.registry.json`
+- `fidelity_policy.registry.json`
+- `worldgen_constraints.registry.json`
 - `astronomy.catalog.index.json`
 - `site.registry.index.json`
 - `ui.registry.json`

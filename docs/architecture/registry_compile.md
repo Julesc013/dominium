@@ -26,6 +26,7 @@ Default output root: `build/registries/`
 - `activation_policy.registry.json`
 - `budget_policy.registry.json`
 - `fidelity_policy.registry.json`
+- `worldgen_constraints.registry.json`
 - `astronomy.catalog.index.json`
 - `site.registry.index.json`
 - `ui.registry.json`
@@ -67,6 +68,7 @@ Direct command equivalents:
    - `activation_policy.registry.json`
    - `budget_policy.registry.json`
    - `fidelity_policy.registry.json`
+   - `worldgen_constraints.registry.json`
    - `astronomy.catalog.index.json`
    - `site.registry.index.json`
    - `ui.registry.json`
@@ -115,6 +117,16 @@ Observation-gating fields emitted in v1:
   - `tiers`
   - `switching_rules`
   - `minimum_tier_by_kind`
+- `worldgen_constraints.registry.json` rows include:
+  - `constraints_id`
+  - `description`
+  - `pack_id`
+  - `status`
+  - `path`
+  - `deterministic_seed_policy`
+  - `candidate_count`
+  - `tie_break_policy`
+  - `refusal_codes`
 
 ## Deterministic Ordering Rules
 - Pack set ordering: deterministic dependency sort, then lexical `pack_id`.
@@ -160,6 +172,7 @@ Registry compile validates domain data contributions in deterministic order:
 4. `entry_type: activation_policy` -> payload validated against `schemas/activation_policy.schema.json`
 5. `entry_type: budget_policy` -> payload validated against `schemas/budget_policy.schema.json`
 6. `entry_type: fidelity_policy` -> payload validated against `schemas/fidelity_policy.schema.json`
+7. `contrib_type: worldgen_constraints` -> payload validated against `schemas/worldgen_constraints.schema.json`
 
 Registry compile builds deterministic search maps by normalization:
 - lowercase

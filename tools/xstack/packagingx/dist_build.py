@@ -29,6 +29,7 @@ LOCKFILE_REGISTRY_FILE_MAP = {
     "activation_policy_registry_hash": "activation_policy.registry.json",
     "budget_policy_registry_hash": "budget_policy.registry.json",
     "fidelity_policy_registry_hash": "fidelity_policy.registry.json",
+    "worldgen_constraints_registry_hash": "worldgen_constraints.registry.json",
     "astronomy_catalog_index_hash": "astronomy.catalog.index.json",
     "site_registry_index_hash": "site.registry.index.json",
     "ui_registry_hash": "ui.registry.json",

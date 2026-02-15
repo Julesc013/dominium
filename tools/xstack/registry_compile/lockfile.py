@@ -124,6 +124,7 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "activation_policy_registry_hash",
             "budget_policy_registry_hash",
             "fidelity_policy_registry_hash",
+            "worldgen_constraints_registry_hash",
             "astronomy_catalog_index_hash",
             "site_registry_index_hash",
             "ui_registry_hash",

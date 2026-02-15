@@ -8,6 +8,7 @@
     "policy.activation.default_lab",
     "policy.budget.default_lab",
     "policy.fidelity.default_lab",
+    "constraints.worldgen.default_lab",
     "pack.law.observe_only",
     "law.lab.unrestricted",
     "pack.domain.navigation",

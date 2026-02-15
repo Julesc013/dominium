@@ -63,6 +63,7 @@
         "activation_policy_registry_hash",
         "budget_policy_registry_hash",
         "fidelity_policy_registry_hash",
+        "worldgen_constraints_registry_hash",
         "astronomy_catalog_index_hash",
         "site_registry_index_hash",
         "ui_registry_hash"
@@ -94,6 +95,10 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "fidelity_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "worldgen_constraints_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -132,6 +137,7 @@
         "activation_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "budget_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "fidelity_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "worldgen_constraints_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "astronomy_catalog_index_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "site_registry_index_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "ui_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f"
