@@ -11,9 +11,21 @@ World generation is modular, deterministic, and data-driven.
 
 1. Resolve enabled worldgen modules from registry and packs.
 2. Build deterministic module DAG from declared dependencies.
-3. Generate WorldGenPlan artifact.
-4. Execute modules with named RNG streams.
-5. Emit WorldSpec and preview layers.
+3. Generate base WorldGenPlan artifact.
+4. Resolve constraints (`stage.resolve_constraints`) when a constraints artifact is selected.
+5. Compile world artifacts (`stage.compile_world_artifacts`) using selected seed.
+6. Execute modules with named RNG streams.
+7. Emit WorldSpec and preview layers.
+
+## Constraint Stage
+
+- Constraint stage is data-driven and deterministic.
+- Hard constraints are applied before soft-score ranking.
+- Multi-seed expansion and tie breaks must be deterministic and auditable.
+- Refusal codes:
+  - `refusal.constraints_unsatisfiable`
+  - `refusal.search_exhausted`
+- When no constraints are selected, the pipeline uses base seed only and skips search expansion.
 
 ## Module Contract
 
@@ -26,4 +38,3 @@ World generation is modular, deterministic, and data-driven.
 - Stable module ordering and tie-break rules.
 - Named RNG stream derivation by plan identity and module ID.
 - Deterministic refusal paths for missing dependencies.
-
