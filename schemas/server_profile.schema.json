@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Server Profile Schema",
+  "version": "1.0.0",
+  "description": "Deterministic multiplayer server governance profile contract.",
+  "x-doc-ref": [
+    "docs/net/RANKED_SERVER_GOVERNANCE.md",
+    "docs/net/HANDSHAKE_AND_COMPATIBILITY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "server_profile_id",
+    "description",
+    "allowed_replication_policy_ids",
+    "required_replication_policy_ids",
+    "anti_cheat_policy_id",
+    "securex_policy_id",
+    "epistemic_policy_id_default",
+    "allowed_law_profile_ids",
+    "required_law_profile_id",
+    "allowed_entitlements",
+    "disallowed_entitlements",
+    "snapshot_policy_id",
+    "resync_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "server_profile_id": {
+      "type": "string",
+      "pattern": "^server\\.profile\\.[a-z0-9_.-]+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_replication_policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "required_replication_policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "anti_cheat_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "securex_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "epistemic_policy_id_default": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_law_profile_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "required_law_profile_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "allowed_entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "disallowed_entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "snapshot_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "resync_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "server_profile_id": "server.profile.rank_strict",
+      "description": "Ranked strict multiplayer governance profile.",
+      "allowed_replication_policy_ids": [
+        "policy.net.lockstep",
+        "policy.net.server_authoritative"
+      ],
+      "required_replication_policy_ids": [],
+      "anti_cheat_policy_id": "policy.ac.rank_strict",
+      "securex_policy_id": "securex.policy.rank_strict",
+      "epistemic_policy_id_default": "ep.policy.player_diegetic",
+      "allowed_law_profile_ids": [
+        "law.lab.unrestricted"
+      ],
+      "required_law_profile_id": "law.lab.unrestricted",
+      "allowed_entitlements": [],
+      "disallowed_entitlements": [
+        "entitlement.debug_view"
+      ],
+      "snapshot_policy_id": "snapshot.policy.default",
+      "resync_policy_id": "resync.authoritative.snapshot",
+      "extensions": {}
+    }
+  ]
+}

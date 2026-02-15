@@ -1,0 +1,72 @@
+{
+  "schema_id": "dominium.registry.securex_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.securex_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "securex_policy_id": "securex.policy.private_relaxed",
+        "description": "Private server baseline with relaxed signature checks and explicit unsigned acceptance.",
+        "required_signature_status": [
+          "official",
+          "signed",
+          "verified",
+          "unsigned",
+          "classroom-restricted"
+        ],
+        "allow_unsigned": true,
+        "allow_classroom_restricted": true,
+        "allowed_pack_publishers": [],
+        "signature_verification_required": false,
+        "refusal_codes": [
+          "refusal.net.handshake_securex_denied"
+        ],
+        "extensions": {
+          "warn_on_unsigned": false
+        }
+      },
+      {
+        "securex_policy_id": "securex.policy.casual_default",
+        "description": "Casual/public baseline that allows unsigned content with explicit warning posture.",
+        "required_signature_status": [
+          "official",
+          "signed",
+          "verified",
+          "unsigned"
+        ],
+        "allow_unsigned": true,
+        "allow_classroom_restricted": false,
+        "allowed_pack_publishers": [],
+        "signature_verification_required": false,
+        "refusal_codes": [
+          "refusal.net.handshake_securex_denied"
+        ],
+        "extensions": {
+          "warn_on_unsigned": true
+        }
+      },
+      {
+        "securex_policy_id": "securex.policy.rank_strict",
+        "description": "Ranked/esports strict trust policy requiring signed or official content with verification.",
+        "required_signature_status": [
+          "official",
+          "signed",
+          "verified"
+        ],
+        "allow_unsigned": false,
+        "allow_classroom_restricted": false,
+        "allowed_pack_publishers": [],
+        "signature_verification_required": true,
+        "refusal_codes": [
+          "refusal.net.handshake_securex_denied",
+          "refusal.ac.policy_violation"
+        ],
+        "extensions": {
+          "warn_on_unsigned": false
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

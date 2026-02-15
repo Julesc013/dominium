@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SecureX Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SecureX policy contract for pack signature trust enforcement.",
+  "x-doc-ref": [
+    "docs/security/SECUREX_TRUST_MODEL.md",
+    "docs/net/RANKED_SERVER_GOVERNANCE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "securex_policy_id",
+    "description",
+    "required_signature_status",
+    "allow_unsigned",
+    "allow_classroom_restricted",
+    "allowed_pack_publishers",
+    "signature_verification_required",
+    "refusal_codes",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "securex_policy_id": {
+      "type": "string",
+      "pattern": "^securex\\.policy\\.[a-z0-9_.-]+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_signature_status": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "official",
+          "signed",
+          "verified",
+          "unsigned",
+          "classroom-restricted",
+          "revoked"
+        ]
+      }
+    },
+    "allow_unsigned": {
+      "type": "boolean"
+    },
+    "allow_classroom_restricted": {
+      "type": "boolean"
+    },
+    "allowed_pack_publishers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "signature_verification_required": {
+      "type": "boolean"
+    },
+    "refusal_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "securex_policy_id": "securex.policy.rank_strict",
+      "description": "Ranked trust policy requiring signed or official content only.",
+      "required_signature_status": [
+        "official",
+        "signed",
+        "verified"
+      ],
+      "allow_unsigned": false,
+      "allow_classroom_restricted": false,
+      "allowed_pack_publishers": [],
+      "signature_verification_required": true,
+      "refusal_codes": [
+        "refusal.net.handshake_securex_denied"
+      ],
+      "extensions": {}
+    }
+  ]
+}

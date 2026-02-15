@@ -73,6 +73,8 @@
         "net_replication_policy_registry_hash",
         "net_resync_strategy_registry_hash",
         "net_server_policy_registry_hash",
+        "securex_policy_registry_hash",
+        "server_profile_registry_hash",
         "shard_map_registry_hash",
         "perception_interest_policy_registry_hash",
         "anti_cheat_policy_registry_hash",
@@ -114,6 +116,14 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "net_server_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "securex_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "server_profile_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -256,6 +266,8 @@
         "net_replication_policy_registry_hash": "9027d0f7382a8489cae77eba09be517182d08564dd779a2fafd6c823ef1e2f2b",
         "net_resync_strategy_registry_hash": "2c3240a90d1c6f94ae6c6de674c2badb116f3ebd8a8dd05eef5fd3c6bbfe4f83",
         "net_server_policy_registry_hash": "6f42f4533ce12d8c3079dc2131b34f1c6897c742a50bff1a530f0d8f4de2130a",
+        "securex_policy_registry_hash": "6f42f4533ce12d8c3079dc2131b34f1c6897c742a50bff1a530f0d8f4de2130a",
+        "server_profile_registry_hash": "6f42f4533ce12d8c3079dc2131b34f1c6897c742a50bff1a530f0d8f4de2130a",
         "shard_map_registry_hash": "a1ac166a2c2e78ebfbc5a9327ab301ac5a3d1a3f2d24d057b038e07082e41d7d",
         "perception_interest_policy_registry_hash": "b78732c892d069b9cabd577c978655b541c59d7828b82042edbed706e1e43efc",
         "anti_cheat_policy_registry_hash": "4b1ff35bfa22c06cd27d089b3dd0b9bc115fbcba4471915ad1570a2192c0223e",

@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Server Profile Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic server governance profile registry output.",
+  "x-doc-ref": [
+    "docs/net/RANKED_SERVER_GOVERNANCE.md",
+    "docs/net/HANDSHAKE_AND_COMPATIBILITY.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "profiles",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "server_profile_id",
+          "description",
+          "allowed_replication_policy_ids",
+          "required_replication_policy_ids",
+          "anti_cheat_policy_id",
+          "securex_policy_id",
+          "epistemic_policy_id_default",
+          "allowed_law_profile_ids",
+          "required_law_profile_id",
+          "allowed_entitlements",
+          "disallowed_entitlements",
+          "snapshot_policy_id",
+          "resync_policy_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "server_profile_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "allowed_replication_policy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_replication_policy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "anti_cheat_policy_id": {
+            "type": "string"
+          },
+          "securex_policy_id": {
+            "type": "string"
+          },
+          "epistemic_policy_id_default": {
+            "type": "string"
+          },
+          "allowed_law_profile_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_law_profile_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "allowed_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "disallowed_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "snapshot_policy_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "resync_policy_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "profiles": [],
+      "registry_hash": "1ac45f0a5529f60c9d87cd64f413ad3f84564da773f24126cb3a9b57e9399ca6"
+    }
+  ]
+}
