@@ -93,6 +93,11 @@ Scope:
   - `INV-SESSION-PIPELINE-DECLARED`
   - `INV-NO-STAGE-SKIP`
   - `INV-SESSION-READY-TIME-ZERO`
+- RepoX domain foundation invariants:
+  - `INV-DOMAIN-REGISTRY-VALID`
+  - `INV-SOLVER-DOMAIN-BINDING`
+  - `INV-NO-HARDCODED-DOMAIN-TOKENS`
+  - `INV-CONTRACT-ID-STABILITY`
 - RepoX strict renderer boundary checks:
   - `repox.renderer_truth_import`
   - `repox.renderer_truth_symbol`
@@ -107,6 +112,13 @@ Scope:
     - `testx.srz.logical_two_shard_consistency`
     - `testx.srz.worker_invariance`
     - `testx.srz.target_shard_invalid_refusal`
+  - includes domain foundation tests:
+    - `testx.domain.registry_valid`
+    - `testx.domain.contract_registry_valid`
+    - `testx.domain.solver_bindings_valid`
+    - `testx.domain.report_deterministic`
+    - `testx.domain.contract_violation_refusal`
+    - `testx.domain.ids_not_hardcoded`
 - Strict packaging validation:
   - two deterministic dist builds compared for canonical content hash parity
   - launcher lockfile enforcement refusal checks
