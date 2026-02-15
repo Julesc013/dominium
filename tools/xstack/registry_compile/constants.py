@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.6.0"
+COMPILER_VERSION = "1.7.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -16,6 +16,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "net_replication_policy_registry": "net_replication_policy.registry.json",
     "net_resync_strategy_registry": "net_resync_strategy.registry.json",
     "net_server_policy_registry": "net_server_policy.registry.json",
+    "securex_policy_registry": "securex_policy.registry.json",
+    "server_profile_registry": "server_profile.registry.json",
     "shard_map_registry": "shard_map.registry.json",
     "perception_interest_policy_registry": "perception_interest_policy.registry.json",
     "epistemic_policy_registry": "epistemic_policy.registry.json",

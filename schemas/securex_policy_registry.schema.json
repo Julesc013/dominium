@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SecureX Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic SecureX policy registry output.",
+  "x-doc-ref": [
+    "docs/security/SECUREX_TRUST_MODEL.md",
+    "docs/net/RANKED_SERVER_GOVERNANCE.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "securex_policy_id",
+          "description",
+          "required_signature_status",
+          "allow_unsigned",
+          "allow_classroom_restricted",
+          "allowed_pack_publishers",
+          "signature_verification_required",
+          "refusal_codes",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "securex_policy_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "required_signature_status": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allow_unsigned": {
+            "type": "boolean"
+          },
+          "allow_classroom_restricted": {
+            "type": "boolean"
+          },
+          "allowed_pack_publishers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "signature_verification_required": {
+            "type": "boolean"
+          },
+          "refusal_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "policies": [],
+      "registry_hash": "3084ea3a16bb89492396c31b5bc88a965233f78283f2bd99224f53e14adf6779"
+    }
+  ]
+}

@@ -1356,7 +1356,7 @@ def _load_registry_record(
 def _network_policy_rows(
     repo_root: str,
     known_law_profile_ids: List[str],
-) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
     law_profile_id_set = set(str(item).strip() for item in (known_law_profile_ids or []) if str(item).strip())
 
@@ -1368,7 +1368,7 @@ def _network_policy_rows(
         expected_entry_key="modules",
     )
     if module_load_errors:
-        return [], [], [], [], [], module_load_errors
+        return [], [], [], [], [], [], [], module_load_errors
 
     anti_cheat_module_rows: List[dict] = []
     module_id_set = set()
@@ -1434,7 +1434,7 @@ def _network_policy_rows(
         expected_entry_key="policies",
     )
     if policy_load_errors:
-        return [], [], [], [], [], policy_load_errors
+        return [], [], [], [], [], [], [], policy_load_errors
 
     anti_cheat_policy_rows: List[dict] = []
     anti_cheat_policy_id_set = set()
@@ -1553,7 +1553,7 @@ def _network_policy_rows(
         expected_entry_key="strategies",
     )
     if strategy_load_errors:
-        return [], [], [], [], [], strategy_load_errors
+        return [], [], [], [], [], [], [], strategy_load_errors
 
     net_resync_strategy_rows: List[dict] = []
     resync_strategy_id_set = set()
@@ -1617,7 +1617,7 @@ def _network_policy_rows(
         expected_entry_key="policies",
     )
     if replication_load_errors:
-        return [], [], [], [], [], replication_load_errors
+        return [], [], [], [], [], [], [], replication_load_errors
 
     net_replication_policy_rows: List[dict] = []
     replication_policy_id_set = set()
@@ -1709,7 +1709,7 @@ def _network_policy_rows(
         expected_entry_key="policies",
     )
     if server_policy_load_errors:
-        return [], [], [], [], [], server_policy_load_errors
+        return [], [], [], [], [], [], [], server_policy_load_errors
 
     net_server_policy_rows: List[dict] = []
     server_policy_id_set = set()
@@ -1837,12 +1837,383 @@ def _network_policy_rows(
         )
     net_server_policy_rows = sorted(net_server_policy_rows, key=lambda row: str(row.get("policy_id", "")))
 
+    _securex_record, securex_rows_raw, securex_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/securex_policy_registry.json",
+        expected_schema_id="dominium.registry.securex_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if securex_load_errors:
+        return [], [], [], [], [], [], [], securex_load_errors
+
+    securex_policy_rows: List[dict] = []
+    securex_policy_id_set = set()
+    allowed_signature_status = {
+        "official",
+        "signed",
+        "verified",
+        "unsigned",
+        "classroom-restricted",
+        "revoked",
+    }
+    for entry in sorted(securex_rows_raw, key=lambda row: str((row or {}).get("securex_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_securex_policy_entry",
+                    "message": "securex policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        securex_policy_id = str(entry.get("securex_policy_id", "")).strip()
+        required_signature_status = entry.get("required_signature_status")
+        allowed_pack_publishers = entry.get("allowed_pack_publishers")
+        refusal_codes = entry.get("refusal_codes")
+        extensions = entry.get("extensions")
+        if (
+            not securex_policy_id
+            or not isinstance(required_signature_status, list)
+            or not isinstance(allowed_pack_publishers, list)
+            or not isinstance(refusal_codes, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_securex_policy_entry",
+                    "message": "securex policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if securex_policy_id in securex_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_securex_policy_id",
+                    "message": "duplicate securex policy id '{}'".format(securex_policy_id),
+                    "path": "$.policies.securex_policy_id",
+                }
+            )
+            continue
+        signature_status_rows = _sorted_unique_strings(required_signature_status)
+        if not signature_status_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_securex_policy_entry",
+                    "message": "securex policy '{}' must declare at least one required_signature_status value".format(
+                        securex_policy_id
+                    ),
+                    "path": "$.policies.required_signature_status",
+                }
+            )
+            continue
+        unknown_status_rows = [
+            token for token in signature_status_rows if token not in allowed_signature_status
+        ]
+        if unknown_status_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.securex_policy_signature_status_invalid",
+                    "message": "securex policy '{}' includes unknown signature status values: {}".format(
+                        securex_policy_id,
+                        ",".join(sorted(unknown_status_rows)),
+                    ),
+                    "path": "$.policies.required_signature_status",
+                }
+            )
+            continue
+
+        allow_unsigned = bool(entry.get("allow_unsigned", False))
+        allow_classroom_restricted = bool(entry.get("allow_classroom_restricted", False))
+        if (not allow_unsigned) and "unsigned" in signature_status_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.securex_policy_unsigned_conflict",
+                    "message": "securex policy '{}' disallows unsigned packs but required_signature_status includes 'unsigned'".format(
+                        securex_policy_id
+                    ),
+                    "path": "$.policies.required_signature_status",
+                }
+            )
+            continue
+        if (not allow_classroom_restricted) and "classroom-restricted" in signature_status_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.securex_policy_classroom_conflict",
+                    "message": "securex policy '{}' disallows classroom-restricted packs but required_signature_status includes that value".format(
+                        securex_policy_id
+                    ),
+                    "path": "$.policies.required_signature_status",
+                }
+            )
+            continue
+
+        securex_policy_rows.append(
+            {
+                "securex_policy_id": securex_policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "required_signature_status": signature_status_rows,
+                "allow_unsigned": allow_unsigned,
+                "allow_classroom_restricted": allow_classroom_restricted,
+                "allowed_pack_publishers": _sorted_unique_strings(allowed_pack_publishers),
+                "signature_verification_required": bool(entry.get("signature_verification_required", False)),
+                "refusal_codes": _sorted_unique_strings(refusal_codes),
+                "extensions": dict(extensions),
+            }
+        )
+        securex_policy_id_set.add(securex_policy_id)
+    securex_policy_rows = sorted(securex_policy_rows, key=lambda row: str(row.get("securex_policy_id", "")))
+
+    for entry in net_server_policy_rows:
+        securex_policy_id = str(entry.get("securex_policy_id", "")).strip()
+        if securex_policy_id and securex_policy_id not in securex_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.net_server_policy_securex_missing",
+                    "message": "net server policy '{}' references unknown securex policy '{}'".format(
+                        str(entry.get("policy_id", "")),
+                        securex_policy_id,
+                    ),
+                    "path": "$.policies.securex_policy_id",
+                }
+            )
+
+    _server_profile_record, server_profile_rows_raw, server_profile_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/server_profile_registry.json",
+        expected_schema_id="dominium.registry.server_profile_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="profiles",
+    )
+    if server_profile_load_errors:
+        return [], [], [], [], [], [], [], server_profile_load_errors
+
+    server_profile_rows: List[dict] = []
+    server_profile_id_set = set()
+    for entry in sorted(server_profile_rows_raw, key=lambda row: str((row or {}).get("server_profile_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_server_profile_entry",
+                    "message": "server profile entry must be object",
+                    "path": "$.profiles",
+                }
+            )
+            continue
+        server_profile_id = str(entry.get("server_profile_id", "")).strip()
+        allowed_replication_policy_ids = entry.get("allowed_replication_policy_ids")
+        required_replication_policy_ids = entry.get("required_replication_policy_ids")
+        allowed_law_profile_ids = entry.get("allowed_law_profile_ids")
+        allowed_entitlements = entry.get("allowed_entitlements")
+        disallowed_entitlements = entry.get("disallowed_entitlements")
+        extensions = entry.get("extensions")
+        if (
+            not server_profile_id
+            or not isinstance(allowed_replication_policy_ids, list)
+            or not isinstance(required_replication_policy_ids, list)
+            or not isinstance(allowed_law_profile_ids, list)
+            or not isinstance(allowed_entitlements, list)
+            or not isinstance(disallowed_entitlements, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_server_profile_entry",
+                    "message": "server profile entry missing required fields",
+                    "path": "$.profiles",
+                }
+            )
+            continue
+        if server_profile_id in server_profile_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_server_profile_id",
+                    "message": "duplicate server profile id '{}'".format(server_profile_id),
+                    "path": "$.profiles.server_profile_id",
+                }
+            )
+            continue
+
+        allowed_replication_rows = _sorted_unique_strings(allowed_replication_policy_ids)
+        required_replication_rows = _sorted_unique_strings(required_replication_policy_ids)
+        allowed_law_rows = _sorted_unique_strings(allowed_law_profile_ids)
+        allowed_entitlement_rows = _sorted_unique_strings(allowed_entitlements)
+        disallowed_entitlement_rows = _sorted_unique_strings(disallowed_entitlements)
+        anti_cheat_policy_id = str(entry.get("anti_cheat_policy_id", "")).strip()
+        securex_policy_id = str(entry.get("securex_policy_id", "")).strip()
+        epistemic_policy_id_default = str(entry.get("epistemic_policy_id_default", "")).strip()
+        required_law_profile_raw = entry.get("required_law_profile_id")
+        required_law_profile_id = (
+            str(required_law_profile_raw).strip()
+            if required_law_profile_raw not in (None, "")
+            else ""
+        )
+        snapshot_policy_raw = entry.get("snapshot_policy_id")
+        snapshot_policy_id = str(snapshot_policy_raw).strip() if snapshot_policy_raw not in (None, "") else ""
+        resync_policy_raw = entry.get("resync_policy_id")
+        resync_policy_id = str(resync_policy_raw).strip() if resync_policy_raw not in (None, "") else ""
+
+        if not allowed_replication_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_replication_missing",
+                    "message": "server profile '{}' must declare at least one allowed replication policy".format(
+                        server_profile_id
+                    ),
+                    "path": "$.profiles.allowed_replication_policy_ids",
+                }
+            )
+            continue
+        unknown_replication = [token for token in allowed_replication_rows if token not in replication_policy_id_set]
+        if unknown_replication:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_replication_unknown",
+                    "message": "server profile '{}' references unknown replication policies: {}".format(
+                        server_profile_id,
+                        ",".join(sorted(unknown_replication)),
+                    ),
+                    "path": "$.profiles.allowed_replication_policy_ids",
+                }
+            )
+            continue
+        required_not_allowed = [token for token in required_replication_rows if token not in allowed_replication_rows]
+        if required_not_allowed:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_required_replication_unmapped",
+                    "message": "server profile '{}' required replication policies are not part of allowed list: {}".format(
+                        server_profile_id,
+                        ",".join(sorted(required_not_allowed)),
+                    ),
+                    "path": "$.profiles.required_replication_policy_ids",
+                }
+            )
+            continue
+        if anti_cheat_policy_id not in anti_cheat_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_anti_cheat_missing",
+                    "message": "server profile '{}' references unknown anti-cheat policy '{}'".format(
+                        server_profile_id,
+                        anti_cheat_policy_id or "<empty>",
+                    ),
+                    "path": "$.profiles.anti_cheat_policy_id",
+                }
+            )
+            continue
+        if securex_policy_id not in securex_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_securex_missing",
+                    "message": "server profile '{}' references unknown securex policy '{}'".format(
+                        server_profile_id,
+                        securex_policy_id or "<empty>",
+                    ),
+                    "path": "$.profiles.securex_policy_id",
+                }
+            )
+            continue
+        if not epistemic_policy_id_default:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_epistemic_policy_missing",
+                    "message": "server profile '{}' must declare epistemic_policy_id_default".format(server_profile_id),
+                    "path": "$.profiles.epistemic_policy_id_default",
+                }
+            )
+            continue
+        if not allowed_law_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_law_profile_missing",
+                    "message": "server profile '{}' must declare at least one allowed_law_profile_id".format(
+                        server_profile_id
+                    ),
+                    "path": "$.profiles.allowed_law_profile_ids",
+                }
+            )
+            continue
+        unknown_law = [token for token in allowed_law_rows if token not in law_profile_id_set]
+        if unknown_law:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_law_profile_unknown",
+                    "message": "server profile '{}' references unknown law profiles: {}".format(
+                        server_profile_id,
+                        ",".join(sorted(unknown_law)),
+                    ),
+                    "path": "$.profiles.allowed_law_profile_ids",
+                }
+            )
+            continue
+        if required_law_profile_id and required_law_profile_id not in allowed_law_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_required_law_unmapped",
+                    "message": "server profile '{}' required law profile must be included in allowed_law_profile_ids".format(
+                        server_profile_id
+                    ),
+                    "path": "$.profiles.required_law_profile_id",
+                }
+            )
+            continue
+        if resync_policy_id and resync_policy_id not in resync_strategy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_resync_policy_missing",
+                    "message": "server profile '{}' references unknown resync policy '{}'".format(
+                        server_profile_id,
+                        resync_policy_id,
+                    ),
+                    "path": "$.profiles.resync_policy_id",
+                }
+            )
+            continue
+        legacy_server_policy_id = str(extensions.get("legacy_server_policy_id", "")).strip()
+        if legacy_server_policy_id and legacy_server_policy_id not in server_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.server_profile_legacy_policy_unknown",
+                    "message": "server profile '{}' references unknown legacy server policy '{}'".format(
+                        server_profile_id,
+                        legacy_server_policy_id,
+                    ),
+                    "path": "$.profiles.extensions.legacy_server_policy_id",
+                }
+            )
+            continue
+
+        server_profile_rows.append(
+            {
+                "server_profile_id": server_profile_id,
+                "description": str(entry.get("description", "")).strip(),
+                "allowed_replication_policy_ids": allowed_replication_rows,
+                "required_replication_policy_ids": required_replication_rows,
+                "anti_cheat_policy_id": anti_cheat_policy_id,
+                "securex_policy_id": securex_policy_id,
+                "epistemic_policy_id_default": epistemic_policy_id_default,
+                "allowed_law_profile_ids": allowed_law_rows,
+                "required_law_profile_id": required_law_profile_id if required_law_profile_id else None,
+                "allowed_entitlements": allowed_entitlement_rows,
+                "disallowed_entitlements": disallowed_entitlement_rows,
+                "snapshot_policy_id": snapshot_policy_id if snapshot_policy_id else None,
+                "resync_policy_id": resync_policy_id if resync_policy_id else None,
+                "extensions": dict(extensions),
+            }
+        )
+        server_profile_id_set.add(server_profile_id)
+    server_profile_rows = sorted(server_profile_rows, key=lambda row: str(row.get("server_profile_id", "")))
+
     return (
         net_replication_policy_rows,
         net_resync_strategy_rows,
         net_server_policy_rows,
         anti_cheat_policy_rows,
         anti_cheat_module_rows,
+        securex_policy_rows,
+        server_profile_rows,
         errors,
     )
 
@@ -2461,6 +2832,8 @@ def compile_bundle(
         net_server_policy_rows,
         anti_cheat_policy_rows,
         anti_cheat_module_rows,
+        securex_policy_rows,
+        server_profile_rows,
         net_registry_errors,
     ) = _network_policy_rows(
         repo_root=repo_root,
@@ -2604,6 +2977,20 @@ def compile_bundle(
             "modules": anti_cheat_module_rows,
         }
     )
+    securex_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": securex_policy_rows,
+        }
+    )
+    server_profile_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "profiles": server_profile_rows,
+        }
+    )
     activation_policy_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -2679,6 +3066,8 @@ def compile_bundle(
         "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
         "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
         "net_server_policy_registry": ("net_server_policy_registry", net_server_policy_payload),
+        "securex_policy_registry": ("securex_policy_registry", securex_policy_payload),
+        "server_profile_registry": ("server_profile_registry", server_profile_payload),
         "shard_map_registry": ("shard_map_registry", shard_map_payload),
         "perception_interest_policy_registry": (
             "perception_interest_policy_registry",
@@ -2708,6 +3097,8 @@ def compile_bundle(
         "net_replication_policy_registry",
         "net_resync_strategy_registry",
         "net_server_policy_registry",
+        "securex_policy_registry",
+        "server_profile_registry",
         "shard_map_registry",
         "perception_interest_policy_registry",
         "epistemic_policy_registry",
@@ -2757,6 +3148,8 @@ def compile_bundle(
             "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
             "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
             "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],
+            "securex_policy_registry_hash": registry_hashes["securex_policy_registry_hash"],
+            "server_profile_registry_hash": registry_hashes["server_profile_registry_hash"],
             "shard_map_registry_hash": registry_hashes["shard_map_registry_hash"],
             "perception_interest_policy_registry_hash": registry_hashes["perception_interest_policy_registry_hash"],
             "epistemic_policy_registry_hash": registry_hashes["epistemic_policy_registry_hash"],

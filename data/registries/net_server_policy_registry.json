@@ -43,7 +43,7 @@
         ],
         "required_anti_cheat_policy_id": "policy.ac.rank_strict",
         "securex_require_signed": true,
-        "securex_policy_id": "securex.rank.require_signed",
+        "securex_policy_id": "securex.policy.rank_strict",
         "allowed_law_profile_ids": [
           "law.lab.unrestricted"
         ],
