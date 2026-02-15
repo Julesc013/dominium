@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Net Server Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic server network policy registry output for handshake compatibility gates.",
+  "x-doc-ref": [
+    "docs/net/HANDSHAKE_AND_COMPATIBILITY.md",
+    "docs/net/TRANSPORT_ABSTRACTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "human_name",
+          "description",
+          "allowed_replication_policy_ids",
+          "allowed_anti_cheat_policy_ids",
+          "required_anti_cheat_policy_id",
+          "securex_require_signed",
+          "securex_policy_id",
+          "allowed_law_profile_ids",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "human_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "allowed_replication_policy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_anti_cheat_policy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_anti_cheat_policy_id": {
+            "type": "string"
+          },
+          "securex_require_signed": {
+            "type": "boolean"
+          },
+          "securex_policy_id": {
+            "type": "string"
+          },
+          "allowed_law_profile_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "policies": [
+        {
+          "policy_id": "server.policy.private.default",
+          "human_name": "Private Server Default",
+          "description": "Private server baseline policy allowing deterministic handshake for loopback/dev sessions.",
+          "allowed_replication_policy_ids": [
+            "policy.net.lockstep"
+          ],
+          "allowed_anti_cheat_policy_ids": [
+            "policy.ac.detect_only"
+          ],
+          "required_anti_cheat_policy_id": "",
+          "securex_require_signed": false,
+          "securex_policy_id": "",
+          "allowed_law_profile_ids": [
+            "law.lab.unrestricted"
+          ],
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "ca5a8f4b605f907f75ad4336db95729138ef83fef8d90ee4b538db2dfef9150a"
+    }
+  ]
+}

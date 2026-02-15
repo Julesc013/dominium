@@ -70,6 +70,11 @@
         "law_registry_hash",
         "experience_registry_hash",
         "lens_registry_hash",
+        "net_replication_policy_registry_hash",
+        "net_resync_strategy_registry_hash",
+        "net_server_policy_registry_hash",
+        "anti_cheat_policy_registry_hash",
+        "anti_cheat_module_registry_hash",
         "activation_policy_registry_hash",
         "budget_policy_registry_hash",
         "fidelity_policy_registry_hash",
@@ -103,6 +108,10 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "net_resync_strategy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "net_server_policy_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -236,6 +245,7 @@
         "lens_registry_hash": "ea487768e8912b1036ee7005e8f7c87c814a404312148493d9827514c9324b59",
         "net_replication_policy_registry_hash": "9027d0f7382a8489cae77eba09be517182d08564dd779a2fafd6c823ef1e2f2b",
         "net_resync_strategy_registry_hash": "2c3240a90d1c6f94ae6c6de674c2badb116f3ebd8a8dd05eef5fd3c6bbfe4f83",
+        "net_server_policy_registry_hash": "6f42f4533ce12d8c3079dc2131b34f1c6897c742a50bff1a530f0d8f4de2130a",
         "anti_cheat_policy_registry_hash": "4b1ff35bfa22c06cd27d089b3dd0b9bc115fbcba4471915ad1570a2192c0223e",
         "anti_cheat_module_registry_hash": "a090a2e632bf1c743bccd6387d8fae74f414fde0aca5869c8c8888b184f08bc9",
         "activation_policy_registry_hash": "6398ffcaf26b22584f69f629ab900dd5b724a0100f8e1b1152b255ed3c4cf2f9",

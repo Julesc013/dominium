@@ -1339,8 +1339,12 @@ def _load_registry_record(
     return record, list(rows), []
 
 
-def _network_policy_rows(repo_root: str) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict]]:
+def _network_policy_rows(
+    repo_root: str,
+    known_law_profile_ids: List[str],
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
+    law_profile_id_set = set(str(item).strip() for item in (known_law_profile_ids or []) if str(item).strip())
 
     _modules_record, module_rows_raw, module_load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -1350,7 +1354,7 @@ def _network_policy_rows(repo_root: str) -> Tuple[List[dict], List[dict], List[d
         expected_entry_key="modules",
     )
     if module_load_errors:
-        return [], [], [], [], module_load_errors
+        return [], [], [], [], [], module_load_errors
 
     anti_cheat_module_rows: List[dict] = []
     module_id_set = set()
@@ -1416,9 +1420,10 @@ def _network_policy_rows(repo_root: str) -> Tuple[List[dict], List[dict], List[d
         expected_entry_key="policies",
     )
     if policy_load_errors:
-        return [], [], [], [], policy_load_errors
+        return [], [], [], [], [], policy_load_errors
 
     anti_cheat_policy_rows: List[dict] = []
+    anti_cheat_policy_id_set = set()
     for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
         if not isinstance(entry, dict):
             errors.append(
@@ -1523,6 +1528,7 @@ def _network_policy_rows(repo_root: str) -> Tuple[List[dict], List[dict], List[d
                 "extensions": dict(extensions),
             }
         )
+        anti_cheat_policy_id_set.add(policy_id)
     anti_cheat_policy_rows = sorted(anti_cheat_policy_rows, key=lambda row: str(row.get("policy_id", "")))
 
     _strategies_record, strategy_rows_raw, strategy_load_errors = _load_registry_record(
@@ -1533,7 +1539,7 @@ def _network_policy_rows(repo_root: str) -> Tuple[List[dict], List[dict], List[d
         expected_entry_key="strategies",
     )
     if strategy_load_errors:
-        return [], [], [], [], strategy_load_errors
+        return [], [], [], [], [], strategy_load_errors
 
     net_resync_strategy_rows: List[dict] = []
     resync_strategy_id_set = set()
@@ -1597,7 +1603,7 @@ def _network_policy_rows(repo_root: str) -> Tuple[List[dict], List[dict], List[d
         expected_entry_key="policies",
     )
     if replication_load_errors:
-        return [], [], [], [], replication_load_errors
+        return [], [], [], [], [], replication_load_errors
 
     net_replication_policy_rows: List[dict] = []
     replication_policy_id_set = set()
@@ -1681,7 +1687,150 @@ def _network_policy_rows(repo_root: str) -> Tuple[List[dict], List[dict], List[d
                     }
                 )
 
-    return net_replication_policy_rows, net_resync_strategy_rows, anti_cheat_policy_rows, anti_cheat_module_rows, errors
+    _server_policies_record, server_policy_rows_raw, server_policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/net_server_policy_registry.json",
+        expected_schema_id="dominium.registry.net_server_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if server_policy_load_errors:
+        return [], [], [], [], [], server_policy_load_errors
+
+    net_server_policy_rows: List[dict] = []
+    server_policy_id_set = set()
+    for entry in sorted(server_policy_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_net_server_policy_entry",
+                    "message": "net server policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        allowed_replication_ids = entry.get("allowed_replication_policy_ids")
+        allowed_anti_cheat_ids = entry.get("allowed_anti_cheat_policy_ids")
+        allowed_law_profile_ids = entry.get("allowed_law_profile_ids")
+        required_anti_cheat_policy_id = str(entry.get("required_anti_cheat_policy_id", "")).strip()
+        securex_policy_id = str(entry.get("securex_policy_id", "")).strip()
+        extensions = entry.get("extensions")
+        if (
+            not policy_id
+            or not isinstance(allowed_replication_ids, list)
+            or not isinstance(allowed_anti_cheat_ids, list)
+            or not isinstance(allowed_law_profile_ids, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_net_server_policy_entry",
+                    "message": "net server policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if policy_id in server_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_net_server_policy_id",
+                    "message": "duplicate net server policy_id '{}'".format(policy_id),
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+
+        allowed_replication_rows = _sorted_unique_strings(allowed_replication_ids)
+        allowed_anti_cheat_rows = _sorted_unique_strings(allowed_anti_cheat_ids)
+        allowed_law_rows = _sorted_unique_strings(allowed_law_profile_ids)
+
+        unknown_replication = [token for token in allowed_replication_rows if token not in replication_policy_id_set]
+        if unknown_replication:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.net_server_policy_replication_missing",
+                    "message": "net server policy '{}' references unknown replication policies: {}".format(
+                        policy_id,
+                        ",".join(unknown_replication),
+                    ),
+                    "path": "$.policies.allowed_replication_policy_ids",
+                }
+            )
+            continue
+
+        unknown_anti_cheat = [token for token in allowed_anti_cheat_rows if token and token not in anti_cheat_policy_id_set]
+        if unknown_anti_cheat:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.net_server_policy_anti_cheat_missing",
+                    "message": "net server policy '{}' references unknown anti-cheat policies: {}".format(
+                        policy_id,
+                        ",".join(unknown_anti_cheat),
+                    ),
+                    "path": "$.policies.allowed_anti_cheat_policy_ids",
+                }
+            )
+            continue
+        if required_anti_cheat_policy_id and required_anti_cheat_policy_id not in allowed_anti_cheat_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.net_server_policy_required_anti_cheat_unmapped",
+                    "message": "net server policy '{}' required anti-cheat policy must be included in allowed_anti_cheat_policy_ids".format(
+                        policy_id
+                    ),
+                    "path": "$.policies.required_anti_cheat_policy_id",
+                }
+            )
+            continue
+        unknown_law = [token for token in allowed_law_rows if token not in law_profile_id_set]
+        if unknown_law:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.net_server_policy_law_profile_missing",
+                    "message": "net server policy '{}' references unknown law profiles: {}".format(
+                        policy_id,
+                        ",".join(unknown_law),
+                    ),
+                    "path": "$.policies.allowed_law_profile_ids",
+                }
+            )
+            continue
+        if not allowed_law_rows:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.net_server_policy_law_profile_missing",
+                    "message": "net server policy '{}' must declare at least one allowed_law_profile_id".format(policy_id),
+                    "path": "$.policies.allowed_law_profile_ids",
+                }
+            )
+            continue
+
+        server_policy_id_set.add(policy_id)
+        net_server_policy_rows.append(
+            {
+                "policy_id": policy_id,
+                "human_name": str(entry.get("human_name", "")).strip(),
+                "description": str(entry.get("description", "")).strip(),
+                "allowed_replication_policy_ids": allowed_replication_rows,
+                "allowed_anti_cheat_policy_ids": allowed_anti_cheat_rows,
+                "required_anti_cheat_policy_id": required_anti_cheat_policy_id,
+                "securex_require_signed": bool(entry.get("securex_require_signed", False)),
+                "securex_policy_id": securex_policy_id,
+                "allowed_law_profile_ids": allowed_law_rows,
+                "extensions": dict(extensions),
+            }
+        )
+    net_server_policy_rows = sorted(net_server_policy_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    return (
+        net_replication_policy_rows,
+        net_resync_strategy_rows,
+        net_server_policy_rows,
+        anti_cheat_policy_rows,
+        anti_cheat_module_rows,
+        errors,
+    )
 
 
 def _ui_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict]]:
@@ -1873,11 +2022,13 @@ def compile_bundle(
     (
         net_replication_policy_rows,
         net_resync_strategy_rows,
+        net_server_policy_rows,
         anti_cheat_policy_rows,
         anti_cheat_module_rows,
         net_registry_errors,
     ) = _network_policy_rows(
         repo_root=repo_root,
+        known_law_profile_ids=[str(row.get("law_profile_id", "")) for row in law_rows if str(row.get("law_profile_id", ""))],
     )
     astronomy_rows, reference_frame_rows, site_rows, astronomy_errors = _astronomy_rows(
         contributions,
@@ -1946,6 +2097,13 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "strategies": net_resync_strategy_rows,
+        }
+    )
+    net_server_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": net_server_policy_rows,
         }
     )
     anti_cheat_policy_payload = _finalize_registry_payload(
@@ -2036,6 +2194,7 @@ def compile_bundle(
         "lens_registry": ("lens_registry", lens_payload),
         "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
         "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
+        "net_server_policy_registry": ("net_server_policy_registry", net_server_policy_payload),
         "anti_cheat_policy_registry": ("anti_cheat_policy_registry", anti_cheat_policy_payload),
         "anti_cheat_module_registry": ("anti_cheat_module_registry", anti_cheat_module_payload),
         "activation_policy_registry": ("activation_policy_registry", activation_policy_payload),
@@ -2057,6 +2216,7 @@ def compile_bundle(
         "lens_registry",
         "net_replication_policy_registry",
         "net_resync_strategy_registry",
+        "net_server_policy_registry",
         "anti_cheat_policy_registry",
         "anti_cheat_module_registry",
         "activation_policy_registry",
@@ -2101,6 +2261,7 @@ def compile_bundle(
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
             "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
             "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
+            "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],
             "anti_cheat_policy_registry_hash": registry_hashes["anti_cheat_policy_registry_hash"],
             "anti_cheat_module_registry_hash": registry_hashes["anti_cheat_module_registry_hash"],
             "activation_policy_registry_hash": registry_hashes["activation_policy_registry_hash"],
