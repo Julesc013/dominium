@@ -32,6 +32,8 @@ Prompt 19 command surface:
 - `python tools/dev/dev.py audit`
 - `python tools/dev/dev.py verify`
 - `python tools/dev/dev.py profile`
+- `python tools/dev/tool_profile_capture.py --session-id session.dev.profile --scenario-id scenario.lab.galaxy_nav`
+- `python tools/dev/tool_profile_report.py --trace docs/audit/perf/profile_trace.sample.json`
 
 Notes:
 
@@ -39,6 +41,7 @@ Notes:
 - `run <target>` routes through SessionSpec creation + boot (+ deterministic script replay for non-observer targets).
 - `audit` routes through `tools/auditx/auditx.py scan`.
 - `verify` routes through `tools/xstack/run.py strict`.
+- `profile` captures `docs/audit/perf/profile_trace.sample.json` and renders `docs/audit/perf/profile_trace.sample.md`.
 
 Supported commands:
 

@@ -357,7 +357,7 @@ def _cmd_verify(args: argparse.Namespace) -> int:
 
 def _cmd_profile(args: argparse.Namespace) -> int:
     repo_root = _repo_root(args.repo_root)
-    capture = _run_proc(
+    capture = _run_json_proc(
         repo_root=repo_root,
         argv=[
             sys.executable,
@@ -372,8 +372,62 @@ def _cmd_profile(args: argparse.Namespace) -> int:
             "docs/audit/perf/profile_trace.sample.json",
         ],
     )
-    print(str(capture.get("output", "")).rstrip())
-    return int(capture.get("exit_code", 1))
+    if int(capture.get("exit_code", 1)) != 0 or str(capture.get("json_error", "")):
+        _print(
+            {
+                "result": "refused",
+                "reason_code": "refusal.dev_profile_capture_failed",
+                "message": "tool_profile_capture failed",
+                "details": capture,
+            }
+        )
+        return 2
+
+    trace_path = str((capture.get("payload") or {}).get("trace_path", "")).strip()
+    if not trace_path:
+        _print(
+            {
+                "result": "refused",
+                "reason_code": "refusal.dev_profile_trace_missing",
+                "message": "tool_profile_capture did not return trace_path",
+                "details": capture,
+            }
+        )
+        return 2
+
+    report = _run_json_proc(
+        repo_root=repo_root,
+        argv=[
+            sys.executable,
+            os.path.join(repo_root, "tools", "dev", "tool_profile_report.py"),
+            "--repo-root",
+            repo_root,
+            "--trace",
+            trace_path,
+            "--out",
+            "docs/audit/perf/profile_trace.sample.md",
+        ],
+    )
+    if int(report.get("exit_code", 1)) != 0 or str(report.get("json_error", "")):
+        _print(
+            {
+                "result": "refused",
+                "reason_code": "refusal.dev_profile_report_failed",
+                "message": "tool_profile_report failed",
+                "details": report,
+            }
+        )
+        return 2
+
+    _print(
+        {
+            "result": "complete",
+            "command_id": "dev profile",
+            "capture": dict(capture.get("payload") or {}),
+            "report": dict(report.get("payload") or {}),
+        }
+    )
+    return 0
 
 
 def _build_parser() -> argparse.ArgumentParser:

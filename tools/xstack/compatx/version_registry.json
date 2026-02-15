@@ -182,6 +182,13 @@
         "1.0.0"
       ]
     },
+    "profile_trace": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "reference_frame": {
       "current_version": "1.0.0",
       "migrations": {},

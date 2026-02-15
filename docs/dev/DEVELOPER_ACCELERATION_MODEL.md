@@ -91,12 +91,15 @@ CI lanes consume deterministic artifacts for auditability and speed:
 - AuditX findings (`docs/audit/auditx/*`)
 - XStack reports (`tools/xstack/out/<profile>/latest/report.json`)
 - profiling traces (schema-validated, non-gating)
+  - `docs/audit/perf/profile_trace.sample.json`
+  - `docs/audit/perf/profile_trace.sample.md`
 
 ## Build Identity Identifier (BII) usage
 
 - BII is recorded in profile artifacts to tie performance traces to build/tool identity.
 - BII is diagnostic metadata only.
 - BII must not alter pass/fail decisions in FAST/STRICT/FULL.
+- Profile trace artifacts are validated against `schemas/profile_trace.schema.json` before publication.
 
 ## Intentionally slow paths
 
