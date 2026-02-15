@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorldGen Constraints Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic worldgen constraint artifact contract.",
+  "x-doc-ref": [
+    "docs/worldgen/WORLDGEN_CONSTRAINTS.md",
+    "docs/worldgen/WORLDGEN_PIPELINE.md",
+    "docs/canon/constitution_v1.md §3 A1, A5"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "constraints_id",
+    "universe_scope",
+    "hard_constraints",
+    "soft_constraints",
+    "scoring_functions",
+    "deterministic_seed_policy",
+    "candidate_count",
+    "tie_break_policy",
+    "refusal_codes",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "constraints_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "universe_scope": {
+      "type": "string",
+      "enum": [
+        "universe",
+        "system",
+        "body",
+        "region"
+      ]
+    },
+    "hard_constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/constraint_entry"
+      }
+    },
+    "soft_constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/constraint_entry"
+      }
+    },
+    "scoring_functions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/scoring_entry"
+      }
+    },
+    "deterministic_seed_policy": {
+      "type": "string",
+      "enum": [
+        "single",
+        "multi"
+      ]
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "tie_break_policy": {
+      "type": "string",
+      "enum": [
+        "lexicographic",
+        "seed_order",
+        "explicit_field"
+      ]
+    },
+    "tie_break_field": {
+      "type": "string",
+      "minLength": 1
+    },
+    "refusal_codes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "tie_break_policy": {
+            "const": "explicit_field"
+          }
+        },
+        "required": [
+          "tie_break_policy"
+        ]
+      },
+      "then": {
+        "required": [
+          "tie_break_field"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "constraint_entry": {
+      "type": "object",
+      "required": [
+        "constraint_id",
+        "target",
+        "operator",
+        "value",
+        "weight",
+        "description"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "constraint_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operator": {
+          "type": "string",
+          "enum": [
+            "eq",
+            "range",
+            "min",
+            "max",
+            "set_membership",
+            "custom_tag"
+          ]
+        },
+        "value": {},
+        "weight": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "scoring_entry": {
+      "type": "object",
+      "required": [
+        "scoring_id",
+        "metric",
+        "operator",
+        "weight",
+        "description"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "scoring_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metric": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operator": {
+          "type": "string",
+          "enum": [
+            "maximize",
+            "minimize",
+            "target"
+          ]
+        },
+        "target_value": {
+          "type": "number"
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "constraints_id": "constraints.lab.navigation.default",
+      "universe_scope": "region",
+      "hard_constraints": [
+        {
+          "constraint_id": "hard.surface_access",
+          "target": "world.layer.elevation",
+          "operator": "range",
+          "value": {
+            "min": -2000,
+            "max": 8000
+          },
+          "weight": 0,
+          "description": "Candidate must expose spawn elevation in permitted range."
+        }
+      ],
+      "soft_constraints": [
+        {
+          "constraint_id": "soft.resource_density",
+          "target": "world.layer.resources",
+          "operator": "min",
+          "value": 40,
+          "weight": 10,
+          "description": "Prefer higher resource density around target region."
+        }
+      ],
+      "scoring_functions": [
+        {
+          "scoring_id": "score.resource_density",
+          "metric": "metric.resource_density",
+          "operator": "maximize",
+          "weight": 10,
+          "description": "Higher density yields higher score."
+        }
+      ],
+      "deterministic_seed_policy": "multi",
+      "candidate_count": 8,
+      "tie_break_policy": "lexicographic",
+      "refusal_codes": [
+        "refusal.constraints_unsatisfiable",
+        "refusal.search_exhausted"
+      ],
+      "extensions": {}
+    }
+  ]
+}

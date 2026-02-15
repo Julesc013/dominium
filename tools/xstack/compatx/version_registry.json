@@ -251,6 +251,27 @@
       "supported_versions": [
         "1.0.0"
       ]
+    },
+    "worldgen_constraints": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "worldgen_constraints_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "worldgen_search_plan": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
     }
   }
 }
