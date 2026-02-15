@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Terrain Tile Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic registry for imported terrain tile pyramids.",
+  "x-doc-ref": [
+    "docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "tiles",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "tile_id",
+          "z",
+          "x",
+          "y",
+          "source_id",
+          "stats",
+          "pack_id",
+          "path",
+          "provenance"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "tile_id": {
+            "type": "string"
+          },
+          "z": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "x": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "y": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_id": {
+            "type": "string"
+          },
+          "stats": {
+            "type": "object",
+            "required": [
+              "sample_count",
+              "min_height_mm",
+              "max_height_mm",
+              "mean_height_mm"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "sample_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "min_height_mm": {
+                "type": "integer"
+              },
+              "max_height_mm": {
+                "type": "integer"
+              },
+              "mean_height_mm": {
+                "type": "integer"
+              }
+            }
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "provenance": {
+            "$ref": "derived_provenance.schema.json"
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "tiles": [],
+      "registry_hash": "54095287c6f258a29056a52def85177e99ed4598c97aaf8e3a9e7f4ab0a6ee36"
+    }
+  ]
+}
+

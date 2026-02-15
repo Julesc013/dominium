@@ -760,6 +760,294 @@ def _astronomy_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], 
     return astronomy_rows, frame_rows, site_rows, errors
 
 
+def _real_data_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict], List[dict]]:
+    ephemeris_rows: List[dict] = []
+    terrain_rows: List[dict] = []
+    errors: List[dict] = []
+    seen_body_ids: Dict[str, str] = {}
+    seen_tile_ids: Dict[str, str] = {}
+
+    def _as_int(value: object, default: int = 0) -> int:
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return int(default)
+
+    for row in contrib:
+        if str(row.get("contrib_type", "")) != "registry_entries":
+            continue
+        payload, err = _payload_from_contribution(row)
+        if err:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_real_data_payload",
+                    "message": err,
+                    "path": "$.registry_entries",
+                }
+            )
+            continue
+        entry_type = str(payload.get("entry_type", "")).strip()
+        if entry_type not in ("ephemeris_table_collection", "terrain_tile_pyramid"):
+            continue
+
+        contrib_path = str(row.get("path", "")).strip()
+        pack_id = str(row.get("pack_id", "")).strip()
+        provenance = payload.get("provenance")
+        if not isinstance(provenance, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.missing_provenance",
+                    "message": "derived payload '{}' is missing provenance object".format(contrib_path),
+                    "path": "$.provenance",
+                }
+            )
+            continue
+        provenance_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="derived_provenance",
+            payload=provenance,
+            path=contrib_path,
+        )
+        if provenance_errors:
+            errors.extend(provenance_errors)
+            continue
+
+        if entry_type == "ephemeris_table_collection":
+            tables = payload.get("tables")
+            if not isinstance(tables, list):
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.invalid_ephemeris_tables_shape",
+                        "message": "ephemeris_table_collection requires tables[] in '{}'".format(contrib_path),
+                        "path": "$.tables",
+                    }
+                )
+                continue
+            source_id = str(payload.get("source_id", "")).strip()
+            reference_frame = str(payload.get("reference_frame", "")).strip()
+            time_range = payload.get("time_range")
+            if not source_id or not reference_frame or not isinstance(time_range, dict):
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.invalid_ephemeris_header",
+                        "message": "ephemeris_table_collection in '{}' missing source_id/reference_frame/time_range".format(
+                            contrib_path
+                        ),
+                        "path": "$",
+                    }
+                )
+                continue
+            normalized_time_range = {
+                "start_tick": _as_int(time_range.get("start_tick", 0), 0),
+                "end_tick": _as_int(time_range.get("end_tick", 0), 0),
+                "step_ticks": max(1, _as_int(time_range.get("step_ticks", 1), 1)),
+            }
+            for idx, item in enumerate(tables):
+                if not isinstance(item, dict):
+                    errors.append(
+                        {
+                            "code": "refuse.registry_compile.invalid_ephemeris_table",
+                            "message": "ephemeris table entry at index {} must be object in '{}'".format(idx, contrib_path),
+                            "path": "$.tables[{}]".format(idx),
+                        }
+                    )
+                    continue
+                body_id = str(item.get("body_id", "")).strip()
+                samples = item.get("samples")
+                if not body_id or not isinstance(samples, list):
+                    errors.append(
+                        {
+                            "code": "refuse.registry_compile.invalid_ephemeris_table_fields",
+                            "message": "ephemeris table '{}' missing body_id or samples[] in '{}'".format(
+                                body_id or "<missing>",
+                                contrib_path,
+                            ),
+                            "path": "$.tables[{}]".format(idx),
+                        }
+                    )
+                    continue
+                prior = seen_body_ids.get(body_id)
+                if prior:
+                    errors.append(
+                        {
+                            "code": "refuse.registry_compile.duplicate_ephemeris_body",
+                            "message": "duplicate ephemeris body_id '{}' in '{}' and '{}'".format(
+                                body_id,
+                                prior,
+                                contrib_path,
+                            ),
+                            "path": "$.tables[{}].body_id".format(idx),
+                        }
+                    )
+                    continue
+                sample_rows: List[dict] = []
+                for sample_idx, sample in enumerate(samples):
+                    if not isinstance(sample, dict):
+                        errors.append(
+                            {
+                                "code": "refuse.registry_compile.invalid_ephemeris_sample",
+                                "message": "ephemeris sample at index {} must be object for '{}'".format(
+                                    sample_idx,
+                                    body_id,
+                                ),
+                                "path": "$.tables[{}].samples[{}]".format(idx, sample_idx),
+                            }
+                        )
+                        continue
+                    position = sample.get("position_mm")
+                    if not isinstance(position, dict):
+                        errors.append(
+                            {
+                                "code": "refuse.registry_compile.invalid_ephemeris_sample_position",
+                                "message": "ephemeris sample for '{}' is missing position_mm object".format(body_id),
+                                "path": "$.tables[{}].samples[{}].position_mm".format(idx, sample_idx),
+                            }
+                        )
+                        continue
+                    sample_rows.append(
+                        {
+                            "tick": _as_int(sample.get("tick", 0), 0),
+                            "position_mm": {
+                                "x": _as_int(position.get("x", 0), 0),
+                                "y": _as_int(position.get("y", 0), 0),
+                                "z": _as_int(position.get("z", 0), 0),
+                            },
+                        }
+                    )
+                sample_rows = sorted(sample_rows, key=lambda item: int(item.get("tick", 0)))
+                seen_body_ids[body_id] = contrib_path
+                ephemeris_rows.append(
+                    {
+                        "body_id": body_id,
+                        "reference_frame": reference_frame,
+                        "source_id": source_id,
+                        "time_range": normalized_time_range,
+                        "samples": sample_rows,
+                        "pack_id": pack_id,
+                        "path": contrib_path,
+                        "provenance": dict(provenance),
+                    }
+                )
+            continue
+
+        levels = payload.get("levels")
+        if not isinstance(levels, list):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_terrain_levels_shape",
+                    "message": "terrain_tile_pyramid requires levels[] in '{}'".format(contrib_path),
+                    "path": "$.levels",
+                }
+            )
+            continue
+        source_id = str(payload.get("source_id", "")).strip()
+        if not source_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_terrain_source_id",
+                    "message": "terrain_tile_pyramid in '{}' missing source_id".format(contrib_path),
+                    "path": "$.source_id",
+                }
+            )
+            continue
+        for level_idx, level in enumerate(levels):
+            if not isinstance(level, dict):
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.invalid_terrain_level",
+                        "message": "terrain level at index {} must be object in '{}'".format(level_idx, contrib_path),
+                        "path": "$.levels[{}]".format(level_idx),
+                    }
+                )
+                continue
+            tiles = level.get("tiles")
+            if not isinstance(tiles, list):
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.invalid_terrain_tiles",
+                        "message": "terrain level at index {} must provide tiles[] in '{}'".format(level_idx, contrib_path),
+                        "path": "$.levels[{}].tiles".format(level_idx),
+                    }
+                )
+                continue
+            for tile_idx, tile in enumerate(tiles):
+                if not isinstance(tile, dict):
+                    errors.append(
+                        {
+                            "code": "refuse.registry_compile.invalid_terrain_tile",
+                            "message": "terrain tile at index {} must be object in '{}'".format(tile_idx, contrib_path),
+                            "path": "$.levels[{}].tiles[{}]".format(level_idx, tile_idx),
+                        }
+                    )
+                    continue
+                tile_id = str(tile.get("tile_id", "")).strip()
+                if not tile_id:
+                    errors.append(
+                        {
+                            "code": "refuse.registry_compile.invalid_terrain_tile_id",
+                            "message": "terrain tile at index {} is missing tile_id in '{}'".format(tile_idx, contrib_path),
+                            "path": "$.levels[{}].tiles[{}].tile_id".format(level_idx, tile_idx),
+                        }
+                    )
+                    continue
+                prior = seen_tile_ids.get(tile_id)
+                if prior:
+                    errors.append(
+                        {
+                            "code": "refuse.registry_compile.duplicate_terrain_tile_id",
+                            "message": "duplicate terrain tile_id '{}' in '{}' and '{}'".format(
+                                tile_id,
+                                prior,
+                                contrib_path,
+                            ),
+                            "path": "$.levels[{}].tiles[{}].tile_id".format(level_idx, tile_idx),
+                        }
+                    )
+                    continue
+                stats = tile.get("stats")
+                if not isinstance(stats, dict):
+                    errors.append(
+                        {
+                            "code": "refuse.registry_compile.invalid_terrain_tile_stats",
+                            "message": "terrain tile '{}' missing stats object".format(tile_id),
+                            "path": "$.levels[{}].tiles[{}].stats".format(level_idx, tile_idx),
+                        }
+                    )
+                    continue
+                seen_tile_ids[tile_id] = contrib_path
+                terrain_rows.append(
+                    {
+                        "tile_id": tile_id,
+                        "z": _as_int(tile.get("z", level.get("z", 0)), 0),
+                        "x": _as_int(tile.get("x", 0), 0),
+                        "y": _as_int(tile.get("y", 0), 0),
+                        "source_id": source_id,
+                        "stats": {
+                            "sample_count": max(0, _as_int(stats.get("sample_count", 0), 0)),
+                            "min_height_mm": _as_int(stats.get("min_height_mm", 0), 0),
+                            "max_height_mm": _as_int(stats.get("max_height_mm", 0), 0),
+                            "mean_height_mm": _as_int(stats.get("mean_height_mm", 0), 0),
+                        },
+                        "children": _sorted_unique_strings(tile.get("children") or []),
+                        "pack_id": pack_id,
+                        "path": contrib_path,
+                        "provenance": dict(provenance),
+                    }
+                )
+
+    ephemeris_rows = sorted(ephemeris_rows, key=lambda item: (str(item.get("body_id", "")), str(item.get("pack_id", ""))))
+    terrain_rows = sorted(
+        terrain_rows,
+        key=lambda item: (
+            _as_int(item.get("z", 0), 0),
+            _as_int(item.get("x", 0), 0),
+            _as_int(item.get("y", 0), 0),
+            str(item.get("tile_id", "")),
+        ),
+    )
+    return ephemeris_rows, terrain_rows, errors
+
+
 def _policy_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
     activation_rows = []
     budget_rows = []
@@ -1150,6 +1438,10 @@ def compile_bundle(
         contributions,
         schema_root=schema_root,
     )
+    ephemeris_rows, terrain_tile_rows, real_data_errors = _real_data_rows(
+        contributions,
+        schema_root=schema_root,
+    )
     ui_rows, ui_errors = _ui_rows(contributions, schema_root=schema_root)
     all_errors = (
         domain_errors
@@ -1159,6 +1451,7 @@ def compile_bundle(
         + policy_errors
         + worldgen_constraints_errors
         + astronomy_errors
+        + real_data_errors
         + ui_errors
     )
     if all_errors:
@@ -1240,6 +1533,20 @@ def compile_bundle(
             "search_index": _search_index(site_rows, "site_id"),
         }
     )
+    ephemeris_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "tables": ephemeris_rows,
+        }
+    )
+    terrain_tile_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "tiles": terrain_tile_rows,
+        }
+    )
     ui_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -1259,6 +1566,8 @@ def compile_bundle(
         "worldgen_constraints_registry": ("worldgen_constraints_registry", worldgen_constraints_payload),
         "astronomy_catalog_index": ("astronomy_catalog_index", astronomy_payload),
         "site_registry_index": ("site_registry_index", site_payload),
+        "ephemeris_registry": ("ephemeris_registry", ephemeris_payload),
+        "terrain_tile_registry": ("terrain_tile_registry", terrain_tile_payload),
         "ui_registry": ("ui_registry", ui_payload),
     }
     registry_hashes = {}
@@ -1274,6 +1583,8 @@ def compile_bundle(
         "worldgen_constraints_registry",
         "astronomy_catalog_index",
         "site_registry_index",
+        "ephemeris_registry",
+        "terrain_tile_registry",
         "ui_registry",
     ):
         schema_name, payload = registry_payloads[registry_key]
@@ -1312,6 +1623,8 @@ def compile_bundle(
             "worldgen_constraints_registry_hash": registry_hashes["worldgen_constraints_registry_hash"],
             "astronomy_catalog_index_hash": registry_hashes["astronomy_catalog_index_hash"],
             "site_registry_index_hash": registry_hashes["site_registry_index_hash"],
+            "ephemeris_registry_hash": registry_hashes["ephemeris_registry_hash"],
+            "terrain_tile_registry_hash": registry_hashes["terrain_tile_registry_hash"],
             "ui_registry_hash": registry_hashes["ui_registry_hash"],
         },
         "compatibility_version": DEFAULT_COMPATIBILITY_VERSION,

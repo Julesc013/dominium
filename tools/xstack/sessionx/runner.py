@@ -31,6 +31,8 @@ REGISTRY_HASH_KEY_MAP = {
     "worldgen_constraints_registry_hash": "worldgen_constraints_registry",
     "astronomy_catalog_index_hash": "astronomy_catalog_index",
     "site_registry_index_hash": "site_registry_index",
+    "ephemeris_registry_hash": "ephemeris_registry",
+    "terrain_tile_registry_hash": "terrain_tile_registry",
     "ui_registry_hash": "ui_registry",
 }
 REGISTRY_FILE_MAP = {
@@ -44,6 +46,8 @@ REGISTRY_FILE_MAP = {
     "worldgen_constraints_registry_hash": "worldgen_constraints.registry.json",
     "astronomy_catalog_index_hash": "astronomy.catalog.index.json",
     "site_registry_index_hash": "site.registry.index.json",
+    "ephemeris_registry_hash": "ephemeris.registry.json",
+    "terrain_tile_registry_hash": "terrain.tile.registry.json",
     "ui_registry_hash": "ui.registry.json",
 }
 
@@ -604,6 +608,22 @@ def boot_session_spec(
     )
     if site_registry_error:
         return site_registry_error
+    ephemeris_registry, ephemeris_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["ephemeris_registry_hash"],
+        expected_hash=str(registries.get("ephemeris_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if ephemeris_registry_error:
+        return ephemeris_registry_error
+    terrain_tile_registry, terrain_tile_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["terrain_tile_registry_hash"],
+        expected_hash=str(registries.get("terrain_tile_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if terrain_tile_registry_error:
+        return terrain_tile_registry_error
     activation_policy_registry, activation_policy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["activation_policy_registry_hash"],
@@ -794,6 +814,8 @@ def boot_session_spec(
         registry_payloads={
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
+            "ephemeris_registry": ephemeris_registry,
+            "terrain_tile_registry": terrain_tile_registry,
             "activation_policy_registry": activation_policy_registry,
             "budget_policy_registry": budget_policy_registry,
             "fidelity_policy_registry": fidelity_policy_registry,

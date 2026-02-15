@@ -248,6 +248,8 @@ def _log_process(state: dict, process_id: str, intent_id: str, authority_origin:
 def _navigation_maps(navigation_indices: dict | None) -> Dict[str, dict]:
     astro = {}
     sites = {}
+    ephemeris = {}
+    terrain_tiles = {}
     if isinstance(navigation_indices, dict):
         astro_payload = navigation_indices.get("astronomy_catalog_index")
         if isinstance(astro_payload, dict):
@@ -265,7 +267,23 @@ def _navigation_maps(navigation_indices: dict | None) -> Dict[str, dict]:
                 site_id = str(item.get("site_id", "")).strip()
                 if site_id:
                     sites[site_id] = dict(item)
-    return {"objects": astro, "sites": sites}
+        ephemeris_payload = navigation_indices.get("ephemeris_registry")
+        if isinstance(ephemeris_payload, dict):
+            for item in ephemeris_payload.get("tables") or []:
+                if not isinstance(item, dict):
+                    continue
+                body_id = str(item.get("body_id", "")).strip()
+                if body_id:
+                    ephemeris[body_id] = dict(item)
+        terrain_payload = navigation_indices.get("terrain_tile_registry")
+        if isinstance(terrain_payload, dict):
+            for item in terrain_payload.get("tiles") or []:
+                if not isinstance(item, dict):
+                    continue
+                tile_id = str(item.get("tile_id", "")).strip()
+                if tile_id:
+                    terrain_tiles[tile_id] = dict(item)
+    return {"objects": astro, "sites": sites, "ephemeris": ephemeris, "terrain_tiles": terrain_tiles}
 
 
 def _as_float(value: object, default_value: float = 0.0) -> float:
@@ -322,6 +340,7 @@ def _resolve_teleport_target(inputs: dict, navigation_indices: dict | None) -> D
     maps = _navigation_maps(navigation_indices)
     object_map = maps.get("objects") or {}
     site_map = maps.get("sites") or {}
+    ephemeris_map = maps.get("ephemeris") or {}
 
     if target_site_id:
         if not site_map:
@@ -390,10 +409,29 @@ def _resolve_teleport_target(inputs: dict, navigation_indices: dict | None) -> D
                 radius_km = _as_float(physical.get("mean_radius_km", 0.0), 0.0)
                 radius_mm = int(radius_km * 1_000_000.0)
         default_distance = max(1000, int(radius_mm * 2) if radius_mm > 0 else 1_000_000)
+        ephemeris_row = ephemeris_map.get(target_object_id)
+        base_position = {"x": 0, "y": 0, "z": 0}
+        if isinstance(ephemeris_row, dict):
+            samples = ephemeris_row.get("samples")
+            if isinstance(samples, list):
+                sample_rows = [item for item in samples if isinstance(item, dict)]
+                if sample_rows:
+                    sample_rows = sorted(sample_rows, key=lambda item: _as_int(item.get("tick", 0), 0))
+                    position = sample_rows[0].get("position_mm")
+                    if isinstance(position, dict):
+                        base_position = {
+                            "x": _as_int(position.get("x", 0), 0),
+                            "y": _as_int(position.get("y", 0), 0),
+                            "z": _as_int(position.get("z", 0), 0),
+                        }
         return {
             "result": "complete",
             "frame_id": frame_id or "frame.unknown",
-            "position_mm": {"x": 0, "y": 0, "z": default_distance},
+            "position_mm": {
+                "x": int(base_position["x"]),
+                "y": int(base_position["y"]),
+                "z": int(base_position["z"]) + int(default_distance),
+            },
             "orientation_mdeg": direct_orientation or {"yaw": 0, "pitch": 0, "roll": 0},
             "resolution_source": "object",
             "resolved_id": target_object_id,
@@ -1069,6 +1107,19 @@ def _region_management_tick(
             "active_regions": sorted(desired_active.keys()),
         }
     )
+    terrain_map = _navigation_maps(navigation_indices).get("terrain_tiles") or {}
+    terrain_rows = sorted(
+        (dict(item) for item in terrain_map.values() if isinstance(item, dict)),
+        key=lambda item: (
+            _as_int(item.get("z", 0), 0),
+            _as_int(item.get("x", 0), 0),
+            _as_int(item.get("y", 0), 0),
+            str(item.get("tile_id", "")),
+        ),
+    )
+    desired_tile_count = min(len(terrain_rows), int(len(desired_active)))
+    selected_terrain_tiles = [str(item.get("tile_id", "")) for item in terrain_rows[:desired_tile_count] if str(item.get("tile_id", "")).strip()]
+    performance_state["selected_terrain_tiles"] = list(selected_terrain_tiles)
     state["performance_state"] = performance_state
 
     return {
@@ -1078,6 +1129,7 @@ def _region_management_tick(
         "active_regions": sorted(desired_active.keys()),
         "collapsed_regions": collapse_ids,
         "expanded_regions": expand_ids,
+        "selected_terrain_tiles": selected_terrain_tiles,
     }
 
 

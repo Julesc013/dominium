@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.2.0"
+COMPILER_VERSION = "1.3.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -19,5 +19,7 @@ REGISTRY_OUTPUT_FILENAMES = {
     "worldgen_constraints_registry": "worldgen_constraints.registry.json",
     "astronomy_catalog_index": "astronomy.catalog.index.json",
     "site_registry_index": "site.registry.index.json",
+    "ephemeris_registry": "ephemeris.registry.json",
+    "terrain_tile_registry": "terrain.tile.registry.json",
     "ui_registry": "ui.registry.json",
 }

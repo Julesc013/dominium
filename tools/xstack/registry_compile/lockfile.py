@@ -127,6 +127,8 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "worldgen_constraints_registry_hash",
             "astronomy_catalog_index_hash",
             "site_registry_index_hash",
+            "ephemeris_registry_hash",
+            "terrain_tile_registry_hash",
             "ui_registry_hash",
         )
         for key in expected_keys:

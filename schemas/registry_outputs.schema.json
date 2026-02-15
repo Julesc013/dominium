@@ -21,6 +21,8 @@
     "worldgen_constraints_registry_hash",
     "astronomy_catalog_index_hash",
     "site_registry_index_hash",
+    "ephemeris_registry_hash",
+    "terrain_tile_registry_hash",
     "ui_registry_hash",
     "build_timestamp"
   ],
@@ -70,6 +72,14 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "ephemeris_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "terrain_tile_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "ui_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -93,6 +103,8 @@
       "worldgen_constraints_registry_hash": "a203dcf26f3528130054fb19ccdc8f5270f5f3f2525d53c3e31c99fa6a986c9e",
       "astronomy_catalog_index_hash": "e42281a37f4e33f211f4f967fb52b4c65dbbf8708a8be3fcf76e7ec0f347529e",
       "site_registry_index_hash": "6c9ecf51aeb4f5cb3209528a6ce4a79e39257de87d2e095e5934d8ca132aeb24",
+      "ephemeris_registry_hash": "04b2f9dfdfd2a8fdd7f9e4a9278905cfe7ec9fda8a0e96df4703ec6be8937c49",
+      "terrain_tile_registry_hash": "4f45d4e0ac37c78f76f4e3d9764d38a9bf8c65424882e6c65d0452b26cd5f284",
       "ui_registry_hash": "cb9ba7bcfe954df889f9b86f6d0456e9ef22ef6b251f8d731b8c0fdb4f522f0b",
       "build_timestamp": "2026-02-14T00:00:00Z"
     }

@@ -236,6 +236,22 @@ def run_intent_script(
     )
     if site_registry_error:
         return site_registry_error
+    ephemeris_registry, ephemeris_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["ephemeris_registry_hash"],
+        expected_hash=str(registries.get("ephemeris_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if ephemeris_registry_error:
+        return ephemeris_registry_error
+    terrain_tile_registry, terrain_tile_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["terrain_tile_registry_hash"],
+        expected_hash=str(registries.get("terrain_tile_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if terrain_tile_registry_error:
+        return terrain_tile_registry_error
     activation_policy_registry, activation_policy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["activation_policy_registry_hash"],
@@ -350,6 +366,8 @@ def run_intent_script(
         navigation_indices={
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
+            "ephemeris_registry": ephemeris_registry,
+            "terrain_tile_registry": terrain_tile_registry,
         },
         policy_context={
             "activation_policy": activation_policy,
@@ -399,6 +417,8 @@ def run_intent_script(
         registry_payloads={
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
+            "ephemeris_registry": ephemeris_registry,
+            "terrain_tile_registry": terrain_tile_registry,
             "activation_policy_registry": activation_policy_registry,
             "budget_policy_registry": budget_policy_registry,
             "fidelity_policy_registry": fidelity_policy_registry,

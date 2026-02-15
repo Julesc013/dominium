@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ephemeris Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic registry for imported ephemeris body sample tables.",
+  "x-doc-ref": [
+    "docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "tables",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "body_id",
+          "reference_frame",
+          "source_id",
+          "time_range",
+          "samples",
+          "pack_id",
+          "path",
+          "provenance"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "body_id": {
+            "type": "string"
+          },
+          "reference_frame": {
+            "type": "string"
+          },
+          "source_id": {
+            "type": "string"
+          },
+          "time_range": {
+            "type": "object",
+            "required": [
+              "start_tick",
+              "end_tick",
+              "step_ticks"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "start_tick": {
+                "type": "integer"
+              },
+              "end_tick": {
+                "type": "integer"
+              },
+              "step_ticks": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "samples": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "tick",
+                "position_mm"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "tick": {
+                  "type": "integer"
+                },
+                "position_mm": {
+                  "type": "object",
+                  "required": [
+                    "x",
+                    "y",
+                    "z"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "x": {
+                      "type": "integer"
+                    },
+                    "y": {
+                      "type": "integer"
+                    },
+                    "z": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "provenance": {
+            "$ref": "derived_provenance.schema.json"
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "tables": [],
+      "registry_hash": "78a9e7f8bf94def86b9f46f1303e5f0d20c361f6b213ec34900514de405fa57c"
+    }
+  ]
+}
+

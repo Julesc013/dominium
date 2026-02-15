@@ -69,6 +69,8 @@ def _registry_payload(truth: dict, key: str) -> dict:
 
 def _navigation_view(truth: dict) -> dict:
     astronomy = _registry_payload(truth, "astronomy_catalog_index")
+    ephemeris = _registry_payload(truth, "ephemeris_registry")
+    terrain_tiles = _registry_payload(truth, "terrain_tile_registry")
     entries = astronomy.get("entries")
     rows = []
     if isinstance(entries, list):
@@ -98,11 +100,51 @@ def _navigation_view(truth: dict) -> dict:
             if not isinstance(value, list):
                 continue
             normalized_search[str(key)] = sorted(set(str(token).strip() for token in value if str(token).strip()))
+
+    ephemeris_rows = []
+    for item in ephemeris.get("tables") or []:
+        if not isinstance(item, dict):
+            continue
+        body_id = str(item.get("body_id", "")).strip()
+        if not body_id:
+            continue
+        sample_count = len(list(item.get("samples") or []))
+        ephemeris_rows.append(
+            {
+                "body_id": body_id,
+                "reference_frame": str(item.get("reference_frame", "")).strip(),
+                "sample_count": int(sample_count),
+            }
+        )
+    ephemeris_rows = sorted(ephemeris_rows, key=lambda item: str(item.get("body_id", "")))
+
+    terrain_rows = []
+    for item in terrain_tiles.get("tiles") or []:
+        if not isinstance(item, dict):
+            continue
+        tile_id = str(item.get("tile_id", "")).strip()
+        if not tile_id:
+            continue
+        terrain_rows.append(
+            {
+                "tile_id": tile_id,
+                "z": int(item.get("z", 0) or 0),
+                "x": int(item.get("x", 0) or 0),
+                "y": int(item.get("y", 0) or 0),
+                "source_id": str(item.get("source_id", "")).strip(),
+            }
+        )
+    terrain_rows = sorted(
+        terrain_rows,
+        key=lambda item: (int(item.get("z", 0)), int(item.get("x", 0)), int(item.get("y", 0)), str(item.get("tile_id", ""))),
+    )
     return {
         "hierarchy": rows,
         "search_index": normalized_search,
         "search_results": [],
         "selection_summary": "",
+        "ephemeris_tables": ephemeris_rows,
+        "terrain_tiles": terrain_rows,
     }
 
 
@@ -312,6 +354,8 @@ def build_truth_model(
             "fidelity_policy_registry_hash": str(registries.get("fidelity_policy_registry_hash", "")),
             "astronomy_catalog_index_hash": str(registries.get("astronomy_catalog_index_hash", "")),
             "site_registry_index_hash": str(registries.get("site_registry_index_hash", "")),
+            "ephemeris_registry_hash": str(registries.get("ephemeris_registry_hash", "")),
+            "terrain_tile_registry_hash": str(registries.get("terrain_tile_registry_hash", "")),
             "ui_registry_hash": str(registries.get("ui_registry_hash", "")),
         },
         "universe_identity": dict(universe_identity),
