@@ -16,6 +16,7 @@ from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 
 from .common import identity_hash_for_payload, norm, now_utc_iso, read_json_object, refusal, write_canonical_json
 from .observation import build_truth_model, observe_truth
+from .pipeline_contract import DEFAULT_PIPELINE_ID, load_session_pipeline_contract
 from .render_model import build_render_model
 
 
@@ -349,6 +350,23 @@ def boot_session_spec(
     session_spec, spec_error = _load_schema_validated(repo_root=repo_root, schema_name="session_spec", path=spec_abs)
     if spec_error:
         return spec_error
+    pipeline_contract = load_session_pipeline_contract(
+        repo_root=repo_root,
+        pipeline_id=str(session_spec.get("pipeline_id", "")),
+    )
+    if pipeline_contract.get("result") != "complete":
+        return pipeline_contract
+    selected_pipeline_id = str(pipeline_contract.get("pipeline_id", DEFAULT_PIPELINE_ID))
+    if str(session_spec.get("pipeline_id", "")).strip() and str(session_spec.get("pipeline_id", "")).strip() != selected_pipeline_id:
+        return refusal(
+            "REFUSE_SESSION_PIPELINE_UNKNOWN",
+            "SessionSpec pipeline_id does not resolve in session pipeline registry",
+            "Set SessionSpec pipeline_id to a declared pipeline identifier.",
+            {
+                "pipeline_id": str(session_spec.get("pipeline_id", "")).strip(),
+            },
+            "$.pipeline_id",
+        )
 
     bundle_token = str(bundle_id).strip() or str(session_spec.get("bundle_id", "")).strip() or DEFAULT_BUNDLE_ID
     lock_payload, lock_error = _load_lockfile(
@@ -632,9 +650,12 @@ def boot_session_spec(
         "schema_version": "1.0.0",
         "save_id": save_id,
         "bundle_id": bundle_token,
+        "pipeline_id": selected_pipeline_id,
         "session_spec_hash": session_spec_hash,
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "registry_hashes": registry_hashes,
+        "session_stage_registry_hash": str(pipeline_contract.get("stage_registry_hash", "")),
+        "session_pipeline_registry_hash": str(pipeline_contract.get("pipeline_registry_hash", "")),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
         "fidelity_policy_id": str(fidelity_policy.get("policy_id", "")),
@@ -658,6 +679,8 @@ def boot_session_spec(
             "universe_identity_path": norm(os.path.relpath(identity_path, repo_root)),
             "universe_state_path": norm(os.path.relpath(state_path, repo_root)),
             "lockfile_path": norm(os.path.relpath(lock_path_for_meta, repo_root)),
+            "session_stage_registry_path": str(pipeline_contract.get("stage_registry_path", "")),
+            "session_pipeline_registry_path": str(pipeline_contract.get("pipeline_registry_path", "")),
             "started_utc": now,
             "stopped_utc": now_utc_iso(),
             "deterministic_fields_hash": deterministic_fields_hash,
@@ -671,6 +694,7 @@ def boot_session_spec(
         "result": "complete",
         "save_id": save_id,
         "bundle_id": bundle_token,
+        "pipeline_id": selected_pipeline_id,
         "run_id": run_id,
         "run_meta_path": norm(os.path.relpath(run_meta_path, repo_root)),
         "session_spec_hash": session_spec_hash,

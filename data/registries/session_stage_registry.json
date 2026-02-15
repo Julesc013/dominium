@@ -1,0 +1,268 @@
+{
+  "schema_id": "dominium.schema.session.session_stage_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.session_stage_registry",
+    "registry_version": "1.0.0",
+    "stage_schema_ref": "session_stage@1.0.0",
+    "stages": [
+      {
+        "stage_id": "stage.resolve_session",
+        "display_name": "Resolve Session",
+        "description": "Resolve SessionSpec, pipeline contract, and initial artifact bindings.",
+        "required_capabilities": [
+          "session.resolve"
+        ],
+        "required_artifacts": [
+          "session_spec"
+        ],
+        "produces_artifacts": [
+          "authority_context"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.acquire_world",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      },
+      {
+        "stage_id": "stage.acquire_world",
+        "display_name": "Acquire World",
+        "description": "Load UniverseIdentity and UniverseState from SessionSpec save references.",
+        "required_capabilities": [
+          "session.world.acquire"
+        ],
+        "required_artifacts": [
+          "session_spec",
+          "authority_context"
+        ],
+        "produces_artifacts": [
+          "universe_identity",
+          "universe_state"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.verify_world",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      },
+      {
+        "stage_id": "stage.verify_world",
+        "display_name": "Verify World",
+        "description": "Validate lockfile and registry bundle compatibility against save/session artifacts.",
+        "required_capabilities": [
+          "session.world.verify"
+        ],
+        "required_artifacts": [
+          "session_spec",
+          "universe_identity",
+          "universe_state",
+          "lockfile",
+          "registry_bundle"
+        ],
+        "produces_artifacts": [
+          "hash_anchor"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.warmup_simulation",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      },
+      {
+        "stage_id": "stage.warmup_simulation",
+        "display_name": "Warmup Simulation",
+        "description": "Initialize deterministic simulation subsystems without advancing simulation ticks.",
+        "required_capabilities": [
+          "session.warmup.simulation"
+        ],
+        "required_artifacts": [
+          "universe_state",
+          "authority_context"
+        ],
+        "produces_artifacts": [
+          "run_meta"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.warmup_presentation",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      },
+      {
+        "stage_id": "stage.warmup_presentation",
+        "display_name": "Warmup Presentation",
+        "description": "Prepare Perceived/Render surfaces for SessionReady without mutating Truth simulation time.",
+        "required_capabilities": [
+          "session.warmup.presentation"
+        ],
+        "required_artifacts": [
+          "registry_bundle",
+          "authority_context"
+        ],
+        "produces_artifacts": [
+          "run_meta"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.session_ready",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      },
+      {
+        "stage_id": "stage.session_ready",
+        "display_name": "Session Ready",
+        "description": "Deterministic pre-run stop-state. Requires tick=0 and no simulation step execution.",
+        "required_capabilities": [
+          "session.ready"
+        ],
+        "required_artifacts": [
+          "session_spec",
+          "universe_identity",
+          "universe_state",
+          "registry_bundle",
+          "lockfile",
+          "authority_context"
+        ],
+        "produces_artifacts": [
+          "stage_log",
+          "run_meta"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.session_running",
+          "stage.suspend_session",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": true,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {
+          "ready_time_must_equal_tick": 0
+        }
+      },
+      {
+        "stage_id": "stage.session_running",
+        "display_name": "Session Running",
+        "description": "Active run stage entered only by explicit begin transition.",
+        "required_capabilities": [
+          "session.run"
+        ],
+        "required_artifacts": [
+          "session_spec",
+          "universe_state",
+          "authority_context"
+        ],
+        "produces_artifacts": [
+          "hash_anchor",
+          "run_meta"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.suspend_session",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      },
+      {
+        "stage_id": "stage.suspend_session",
+        "display_name": "Suspend Session",
+        "description": "Capture deterministic suspend snapshot and mark resumable stage boundary.",
+        "required_capabilities": [
+          "session.suspend"
+        ],
+        "required_artifacts": [
+          "run_meta",
+          "universe_state"
+        ],
+        "produces_artifacts": [
+          "run_meta",
+          "stage_log"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.resume_session",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": true,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      },
+      {
+        "stage_id": "stage.resume_session",
+        "display_name": "Resume Session",
+        "description": "Validate resume compatibility and re-enter canonical pipeline before running.",
+        "required_capabilities": [
+          "session.resume"
+        ],
+        "required_artifacts": [
+          "session_spec",
+          "run_meta",
+          "lockfile",
+          "registry_bundle",
+          "universe_identity"
+        ],
+        "produces_artifacts": [
+          "stage_log",
+          "run_meta"
+        ],
+        "allowed_next_stage_ids": [
+          "stage.resolve_session",
+          "stage.session_ready",
+          "stage.teardown_session"
+        ],
+        "abort_allowed": true,
+        "resume_allowed": true,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      },
+      {
+        "stage_id": "stage.teardown_session",
+        "display_name": "Teardown Session",
+        "description": "Canonical terminal stage for deterministic shutdown and artifact finalization.",
+        "required_capabilities": [
+          "session.teardown"
+        ],
+        "required_artifacts": [
+          "run_meta"
+        ],
+        "produces_artifacts": [
+          "run_meta",
+          "stage_log"
+        ],
+        "allowed_next_stage_ids": [],
+        "abort_allowed": false,
+        "resume_allowed": false,
+        "deterministic": true,
+        "run_meta_only": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
