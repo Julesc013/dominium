@@ -338,6 +338,120 @@ def _select_policy_entry(registry_payload: dict, key: str, policy_id: str, refus
     )
 
 
+def _stage_command_for_transition(stage_id: str) -> str:
+    if str(stage_id) == "stage.acquire_world":
+        return "client.session.acquire.local"
+    if str(stage_id) == "stage.verify_world":
+        return "client.session.verify"
+    if str(stage_id) == "stage.warmup_simulation":
+        return "client.session.warmup.simulation"
+    if str(stage_id) == "stage.warmup_presentation":
+        return "client.session.warmup.presentation"
+    if str(stage_id) == "stage.session_ready":
+        return "client.session.ready"
+    if str(stage_id) == "stage.session_running":
+        return "client.session.begin"
+    if str(stage_id) == "stage.suspend_session":
+        return "client.session.suspend"
+    if str(stage_id) == "stage.resume_session":
+        return "client.session.resume"
+    if str(stage_id) == "stage.teardown_session":
+        return "client.session.abort"
+    return "client.session.stage"
+
+
+def _simulate_boot_stage_log(pipeline_contract: dict, authority_context: dict, simulation_tick: int) -> Tuple[List[dict], str, Dict[str, object]]:
+    pipeline = dict(pipeline_contract.get("pipeline") or {})
+    stage_map = dict(pipeline_contract.get("stage_map") or {})
+    stage_order = list(pipeline_contract.get("stage_order") or [])
+    entry_stage_id = str(pipeline.get("entry_stage_id", "stage.resolve_session"))
+    ready_stage_id = str(pipeline.get("ready_stage_id", "stage.session_ready"))
+    if entry_stage_id not in stage_map or ready_stage_id not in stage_map:
+        return [], "", refusal(
+            "REFUSE_SESSION_PIPELINE_REGISTRY_INVALID",
+            "pipeline entry/ready stages are missing from stage registry map",
+            "Fix session stage and pipeline registries so canonical stage IDs resolve.",
+            {
+                "entry_stage_id": entry_stage_id,
+                "ready_stage_id": ready_stage_id,
+            },
+            "$.pipeline",
+        )
+    if entry_stage_id not in stage_order or ready_stage_id not in stage_order:
+        return [], "", refusal(
+            "REFUSE_SESSION_PIPELINE_REGISTRY_INVALID",
+            "pipeline stage order does not contain entry/ready stage IDs",
+            "Fix pipeline stage ordering in data/registries/session_pipeline_registry.json.",
+            {
+                "entry_stage_id": entry_stage_id,
+                "ready_stage_id": ready_stage_id,
+            },
+            "$.pipeline.stages",
+        )
+    start_index = int(stage_order.index(entry_stage_id))
+    stop_index = int(stage_order.index(ready_stage_id))
+    if stop_index < start_index:
+        return [], "", refusal(
+            "REFUSE_SESSION_PIPELINE_REGISTRY_INVALID",
+            "pipeline ready stage precedes entry stage",
+            "Fix stage ordering so entry precedes ready.",
+            {
+                "entry_stage_id": entry_stage_id,
+                "ready_stage_id": ready_stage_id,
+            },
+            "$.pipeline.stages",
+        )
+
+    current_stage_id = entry_stage_id
+    observer_watermark = "OBSERVER MODE" if str(authority_context.get("privilege_level", "")).strip() == "observer" else ""
+    stage_log: List[dict] = [
+        {
+            "stage_index": 0,
+            "command_id": "client.boot.start",
+            "from_stage_id": entry_stage_id,
+            "to_stage_id": entry_stage_id,
+            "status": "pass",
+            "reason_code": "",
+            "observer_watermark": observer_watermark,
+        }
+    ]
+    for target_stage_id in stage_order[start_index + 1 : stop_index + 1]:
+        stage_desc = dict(stage_map.get(current_stage_id) or {})
+        allowed = sorted(set(str(item).strip() for item in (stage_desc.get("allowed_next_stage_ids") or []) if str(item).strip()))
+        if str(target_stage_id) not in allowed:
+            return [], "", refusal(
+                "REFUSE_STAGE_INVALID_TRANSITION",
+                "stage transition '{}' -> '{}' is not allowed by stage registry".format(current_stage_id, target_stage_id),
+                "Advance only through allowed_next_stage_ids from session_stage_registry.",
+                {
+                    "from_stage_id": current_stage_id,
+                    "to_stage_id": str(target_stage_id),
+                },
+                "$.pipeline",
+            )
+        if str(target_stage_id) == "stage.session_ready" and int(simulation_tick) != 0:
+            return [], "", refusal(
+                "REFUSE_SESSION_READY_TIME_NONZERO",
+                "SessionReady requires simulation_time.tick == 0",
+                "Reset to tick=0 before entering stage.session_ready.",
+                {"simulation_tick": str(int(simulation_tick))},
+                "$.universe_state.simulation_time.tick",
+            )
+        stage_log.append(
+            {
+                "stage_index": len(stage_log),
+                "command_id": _stage_command_for_transition(str(target_stage_id)),
+                "from_stage_id": current_stage_id,
+                "to_stage_id": str(target_stage_id),
+                "status": "pass",
+                "reason_code": "",
+                "observer_watermark": observer_watermark,
+            }
+        )
+        current_stage_id = str(target_stage_id)
+    return stage_log, current_stage_id, {}
+
+
 def boot_session_spec(
     repo_root: str,
     session_spec_path: str,
@@ -564,6 +678,24 @@ def boot_session_spec(
             "$.authority_context",
         )
 
+    stage_log, final_stage_id, stage_log_error = _simulate_boot_stage_log(
+        pipeline_contract=pipeline_contract,
+        authority_context=boot_authority_context,
+        simulation_tick=int(((_state_payload.get("simulation_time") or {}).get("tick", 0)) if isinstance(_state_payload, dict) else 0),
+    )
+    if stage_log_error:
+        return stage_log_error
+    if str(final_stage_id) != str((pipeline_contract.get("pipeline") or {}).get("ready_stage_id", "")):
+        return refusal(
+            "REFUSE_STAGE_INVALID_TRANSITION",
+            "boot pipeline did not end at ready stage",
+            "Run explicit transitions until stage.session_ready before boot completion.",
+            {
+                "last_stage_id": str(final_stage_id),
+            },
+            "$.stage_log",
+        )
+
     law_profile, law_profile_error = _select_law_profile(
         law_registry=law_registry,
         law_profile_id=str(boot_authority_context.get("law_profile_id", "")),
@@ -656,6 +788,8 @@ def boot_session_spec(
         "registry_hashes": registry_hashes,
         "session_stage_registry_hash": str(pipeline_contract.get("stage_registry_hash", "")),
         "session_pipeline_registry_hash": str(pipeline_contract.get("pipeline_registry_hash", "")),
+        "stage_log": stage_log,
+        "last_stage_id": str(final_stage_id),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
         "fidelity_policy_id": str(fidelity_policy.get("policy_id", "")),
@@ -703,6 +837,8 @@ def boot_session_spec(
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "perceived_model_hash": perceived_hash,
         "render_model_hash": render_hash,
+        "last_stage_id": str(final_stage_id),
+        "stage_log": stage_log,
         "start_tick": start_tick,
         "stop_tick": stop_tick,
         "deterministic_fields_hash": deterministic_fields_hash,

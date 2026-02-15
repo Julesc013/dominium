@@ -160,7 +160,7 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
         return 1;
     }
 
-    pipeline_ok = client_session_pipeline_apply_command(&machine->pipeline, command_id);
+    pipeline_ok = client_session_pipeline_apply_command(&machine->pipeline, command_id, &machine->artifacts);
     if (!pipeline_ok) {
         copy_text(machine->last_refusal,
                   sizeof(machine->last_refusal),
@@ -210,13 +210,7 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
                                                     "server.default",
                                                     "hash.world.default");
         }
-        client_session_artifacts_warmup_simulation(&machine->artifacts);
-        client_session_artifacts_warmup_presentation(&machine->artifacts);
-        client_session_artifacts_mark_session_ready(&machine->artifacts);
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
-        if (machine->pipeline.stage_id == CLIENT_SESSION_STAGE_SESSION_READY) {
-            machine->state = CLIENT_SESSION_STATE_SESSION_READY;
-        }
         return 1;
     }
     if (strcmp(command_id, "client.session.begin") == 0) {
@@ -227,16 +221,14 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
         return 1;
     }
-    if (strcmp(command_id, "client.session.resume") == 0 ||
-        strcmp(command_id, "client.session.reentry") == 0 ||
+    if (strcmp(command_id, "client.session.resume") == 0) {
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.reentry") == 0 ||
         starts_with(command_id, "client.session.reentry.")) {
-        if (strcmp(command_id, "client.session.reentry") == 0 ||
-            starts_with(command_id, "client.session.reentry.")) {
-            client_session_artifacts_warmup_simulation(&machine->artifacts);
-            client_session_artifacts_warmup_presentation(&machine->artifacts);
-        }
-        client_session_artifacts_mark_session_ready(&machine->artifacts);
-        machine->state = CLIENT_SESSION_STATE_SESSION_READY;
+        client_session_artifacts_init(&machine->artifacts);
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
         return 1;
     }
     if (strcmp(command_id, "client.menu.quit") == 0) {
@@ -285,10 +277,32 @@ int client_state_machine_apply(client_state_machine* machine, const char* comman
             machine->state = CLIENT_SESSION_STATE_REFUSAL_ERROR;
             return 0;
         }
-        client_session_artifacts_warmup_simulation(&machine->artifacts);
-        client_session_artifacts_warmup_presentation(&machine->artifacts);
-        client_session_artifacts_mark_session_ready(&machine->artifacts);
         machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.warmup.simulation") == 0) {
+        client_session_artifacts_warmup_simulation(&machine->artifacts);
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.warmup.presentation") == 0) {
+        client_session_artifacts_warmup_presentation(&machine->artifacts);
+        machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.ready") == 0) {
+        client_session_artifacts_mark_session_ready(&machine->artifacts);
+        machine->state = CLIENT_SESSION_STATE_SESSION_READY;
+        return 1;
+    }
+    if (strcmp(command_id, "client.session.stage") == 0) {
+        if (machine->pipeline.stage_id == CLIENT_SESSION_STAGE_SESSION_READY) {
+            machine->state = CLIENT_SESSION_STATE_SESSION_READY;
+        } else if (machine->pipeline.stage_id == CLIENT_SESSION_STAGE_SESSION_RUNNING) {
+            machine->state = CLIENT_SESSION_STATE_SESSION_RUNNING;
+        } else {
+            machine->state = CLIENT_SESSION_STATE_SESSION_LAUNCHING;
+        }
         return 1;
     }
     if (strcmp(command_id, "client.session.inspect") == 0) {

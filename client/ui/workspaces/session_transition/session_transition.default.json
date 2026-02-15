@@ -17,6 +17,7 @@
         "panel_title": "Progress",
         "dock": "left",
         "command_bindings": [
+          "client.session.stage",
           "client.session.begin"
         ],
         "visibility_modes": [
@@ -58,6 +59,7 @@
         "panel_title": "Actions",
         "dock": "right",
         "command_bindings": [
+          "client.session.stage",
           "client.session.abort",
           "client.session.resume",
           "client.session.begin"
@@ -104,7 +106,7 @@
     ],
     "stage_bindings": [
       {
-        "stage_id": "ResolveSession",
+        "stage_id": "stage.resolve_session",
         "visible_panels": [
           "progress",
           "details",
@@ -114,7 +116,7 @@
         "metadata": {}
       },
       {
-        "stage_id": "AcquireWorld",
+        "stage_id": "stage.acquire_world",
         "visible_panels": [
           "progress",
           "details",
@@ -124,7 +126,7 @@
         "metadata": {}
       },
       {
-        "stage_id": "VerifyWorld",
+        "stage_id": "stage.verify_world",
         "visible_panels": [
           "progress",
           "details",
@@ -134,7 +136,7 @@
         "metadata": {}
       },
       {
-        "stage_id": "WarmupSimulation",
+        "stage_id": "stage.warmup_simulation",
         "visible_panels": [
           "progress",
           "details",
@@ -144,7 +146,7 @@
         "metadata": {}
       },
       {
-        "stage_id": "WarmupPresentation",
+        "stage_id": "stage.warmup_presentation",
         "visible_panels": [
           "progress",
           "details",
@@ -156,7 +158,7 @@
         "metadata": {}
       },
       {
-        "stage_id": "SessionReady",
+        "stage_id": "stage.session_ready",
         "visible_panels": [
           "progress",
           "details",
