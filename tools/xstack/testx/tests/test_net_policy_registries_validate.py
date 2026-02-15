@@ -32,6 +32,8 @@ def run(repo_root: str):
         "data/registries/net_replication_policy_registry.json",
         "data/registries/net_resync_strategy_registry.json",
         "data/registries/net_server_policy_registry.json",
+        "data/registries/securex_policy_registry.json",
+        "data/registries/server_profile_registry.json",
         "data/registries/anti_cheat_policy_registry.json",
         "data/registries/anti_cheat_module_registry.json",
     ]
@@ -59,6 +61,8 @@ def run(repo_root: str):
         ("build/registries/net_replication_policy.registry.json", "net_replication_policy_registry", "policies"),
         ("build/registries/net_resync_strategy.registry.json", "net_resync_strategy_registry", "strategies"),
         ("build/registries/net_server_policy.registry.json", "net_server_policy_registry", "policies"),
+        ("build/registries/securex_policy.registry.json", "securex_policy_registry", "policies"),
+        ("build/registries/server_profile.registry.json", "server_profile_registry", "profiles"),
         ("build/registries/anti_cheat_policy.registry.json", "anti_cheat_policy_registry", "policies"),
         ("build/registries/anti_cheat_module.registry.json", "anti_cheat_module_registry", "modules"),
     ]
@@ -126,6 +130,11 @@ def run(repo_root: str):
         for row in payloads["anti_cheat_policy_registry"].get("policies") or []
         if isinstance(row, dict)
     )
+    securex_ids = set(
+        str(row.get("securex_policy_id", "")).strip()
+        for row in payloads["securex_policy_registry"].get("policies") or []
+        if isinstance(row, dict)
+    )
     for row in payloads["net_server_policy_registry"].get("policies") or []:
         if not isinstance(row, dict):
             continue
@@ -138,5 +147,24 @@ def run(repo_root: str):
         required_anti_cheat = str(row.get("required_anti_cheat_policy_id", "")).strip()
         if required_anti_cheat and required_anti_cheat not in anti_cheat_ids:
             return {"status": "fail", "message": "server policy required anti-cheat policy is unknown"}
+        securex_policy_id = str(row.get("securex_policy_id", "")).strip()
+        if securex_policy_id and securex_policy_id not in securex_ids:
+            return {"status": "fail", "message": "server policy references unknown securex policy"}
+
+    for row in payloads["server_profile_registry"].get("profiles") or []:
+        if not isinstance(row, dict):
+            continue
+        for policy_id in row.get("allowed_replication_policy_ids") or []:
+            if str(policy_id).strip() not in replication_ids:
+                return {"status": "fail", "message": "server profile references unknown replication policy"}
+        for policy_id in row.get("required_replication_policy_ids") or []:
+            if str(policy_id).strip() not in replication_ids:
+                return {"status": "fail", "message": "server profile requires unknown replication policy"}
+        anti_cheat_id = str(row.get("anti_cheat_policy_id", "")).strip()
+        if anti_cheat_id not in anti_cheat_ids:
+            return {"status": "fail", "message": "server profile references unknown anti-cheat policy"}
+        securex_policy_id = str(row.get("securex_policy_id", "")).strip()
+        if securex_policy_id not in securex_ids:
+            return {"status": "fail", "message": "server profile references unknown securex policy"}
 
     return {"status": "pass", "message": "multiplayer policy registries validate and cross-link deterministically"}
