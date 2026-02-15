@@ -237,6 +237,7 @@ def _step_registry_compile(context: RunContext) -> Dict[str, object]:
         "build/registries/lens.registry.json",
         "build/registries/net_replication_policy.registry.json",
         "build/registries/net_resync_strategy.registry.json",
+        "build/registries/net_server_policy.registry.json",
         "build/registries/anti_cheat_policy.registry.json",
         "build/registries/anti_cheat_module.registry.json",
         "build/registries/activation_policy.registry.json",

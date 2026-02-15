@@ -15,6 +15,7 @@ REGISTRY_OUTPUT_FILENAMES = {
     "lens_registry": "lens.registry.json",
     "net_replication_policy_registry": "net_replication_policy.registry.json",
     "net_resync_strategy_registry": "net_resync_strategy.registry.json",
+    "net_server_policy_registry": "net_server_policy.registry.json",
     "anti_cheat_policy_registry": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry": "anti_cheat_module.registry.json",
     "activation_policy_registry": "activation_policy.registry.json",
