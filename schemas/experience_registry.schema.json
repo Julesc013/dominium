@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Experience Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic experience registry output.",
+  "x-doc-ref": [
+    "docs/architecture/registry_compile.md",
+    "docs/canon/glossary_v1.md ExperienceProfile"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "experience_profiles",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "experience_profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "experience_id",
+          "pack_id",
+          "path",
+          "default_lens_id",
+          "default_law_profile_id",
+          "presentation_defaults",
+          "allowed_lenses",
+          "suggested_parameter_bundles",
+          "allowed_transitions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "experience_id": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "default_lens_id": {
+            "type": "string"
+          },
+          "default_law_profile_id": {
+            "type": "string"
+          },
+          "presentation_defaults": {
+            "type": "object",
+            "required": [
+              "default_lens_id",
+              "hud_layout_id"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "default_lens_id": {
+                "type": "string"
+              },
+              "hud_layout_id": {
+                "type": "string"
+              }
+            }
+          },
+          "allowed_lenses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "suggested_parameter_bundles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_transitions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "experience_profiles": [],
+      "registry_hash": "8f5bac0f6d38196f7e4353733f5d58f6f2a8b9e1ad4ce2a2e91f8a772501347e"
+    }
+  ]
+}

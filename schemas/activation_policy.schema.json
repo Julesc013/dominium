@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Activation Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic interest-region activation policy contract.",
+  "x-doc-ref": [
+    "docs/architecture/interest_regions.md",
+    "docs/canon/constitution_v1.md §3 A1/A2/A5"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "interest_radius_rules",
+    "activation_thresholds",
+    "hysteresis",
+    "deterministic_inputs"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "interest_radius_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "priority",
+          "activation_distance_mm",
+          "deactivation_distance_mm",
+          "anchor_spacing_mm"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "activation_distance_mm": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "deactivation_distance_mm": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "anchor_spacing_mm": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "activation_thresholds": {
+      "type": "object",
+      "required": [
+        "distance_metric",
+        "distance_bands_mm"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "distance_metric": {
+          "type": "string",
+          "enum": [
+            "camera_manhattan_mm"
+          ]
+        },
+        "distance_bands_mm": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "band_id",
+              "max_distance_mm"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "band_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "max_distance_mm": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "hysteresis": {
+      "type": "object",
+      "required": [
+        "enter_margin_mm",
+        "exit_margin_mm"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "enter_margin_mm": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "exit_margin_mm": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "deterministic_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "policy.activation.default_lab",
+      "interest_radius_rules": [
+        {
+          "kind": "planet",
+          "priority": 10,
+          "activation_distance_mm": 6000000000,
+          "deactivation_distance_mm": 8000000000,
+          "anchor_spacing_mm": 1500000000
+        },
+        {
+          "kind": "*",
+          "priority": 100,
+          "activation_distance_mm": 2000000000,
+          "deactivation_distance_mm": 3000000000,
+          "anchor_spacing_mm": 750000000
+        }
+      ],
+      "activation_thresholds": {
+        "distance_metric": "camera_manhattan_mm",
+        "distance_bands_mm": [
+          {
+            "band_id": "near",
+            "max_distance_mm": 2000000000
+          },
+          {
+            "band_id": "mid",
+            "max_distance_mm": 8000000000
+          },
+          {
+            "band_id": "far",
+            "max_distance_mm": 20000000000
+          }
+        ]
+      },
+      "hysteresis": {
+        "enter_margin_mm": 50000000,
+        "exit_margin_mm": 50000000
+      },
+      "deterministic_inputs": [
+        "camera.position_mm",
+        "simulation_time.tick",
+        "astronomy.entries"
+      ]
+    }
+  ]
+}

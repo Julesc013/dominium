@@ -1,66 +1,82 @@
-Status: DRAFT
-Version: 1.0.0-draft
+Status: DERIVED
 Last Reviewed: 2026-02-14
-Compatibility: Derived from `schema/authority/authority_context.schema` v1.1.0 and canon v1.0.0.
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
+Compatibility: Bound to `schemas/authority_context.schema.json` v1.0.0 and CompatX `tools/xstack/compatx/version_registry.json`.
 
 # AuthorityContext Contract
 
 ## Purpose
-Define the runtime authority envelope required to evaluate intents lawfully.
+Define the canonical authority envelope required for lawful process admission and observation filtering.
 
 ## Source of Truth
-- Schema: `schema/authority/authority_context.schema`
-- Related: `docs/architecture/AUTHORITY_MODEL.md`, `docs/contracts/law_profile.md`
+- Schema: `schemas/authority_context.schema.json` (`version: 1.0.0`)
+- Related: `docs/contracts/law_profile.md`
 - Canon binding: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`
+- Session lifecycle usage: `docs/architecture/session_lifecycle.md`
 
-## Intended Contract Fields (Required)
-- `authority_context_id: id`
-- `authority_origin: enum(client|server|tool|replay)`
-- `experience_id: id`
-- `law_profile_id: id`
-- `entitlements: [id]`
-- `capability_set_hash: tag`
-- `epistemic_scope_id: id`
-- `privilege_watermark_policy: enum(none|observer|dev)`
-- `audit_required: bool`
-- `server_authoritative: bool`
-- `refusal_policy_id: id`
-- `extensions: map`
+## Required Fields (`v1.0.0`)
+- `schema_version` (`const "1.0.0"`)
+- `authority_origin` (`client|server|tool|replay`)
+- `experience_id` (string)
+- `law_profile_id` (string)
+- `entitlements` (array of strings)
+- `epistemic_scope` (object with `scope_id` and `visibility_level`)
+- `privilege_level` (`observer|operator|system`)
 
 ## Invariants
-- Intents without a valid authority context must be refused.
-- Authority context does not create capability; it binds resolved capability/law context for evaluation.
-- `authority_origin` is explicit and auditable.
-- `server_authoritative=true` does not bypass law; it selects authority location.
-- Epistemic scope and watermark policy must be carried through observation surfaces.
-- `extensions` must preserve unknown keys.
+- Authority is explicit and never bypasses law.
+- Missing or malformed authority context is refused deterministically.
+- `epistemic_scope` constrains observation surfaces and must be preserved.
+- Unknown top-level fields are refused in strict mode.
+- Headless boot path requires `authority_origin == "client"` and reconstructs context deterministically.
+- Lens gating refuses when required entitlements are missing (`ENTITLEMENT_MISSING`).
+- Process gating refuses deterministically when law/entitlement/privilege checks fail.
 
-## Example
-```yaml
-authority_context:
-  authority_context_id: authority.lab.observer
-  authority_origin: client
-  experience_id: experience.lab
-  law_profile_id: law.lab.observe_only
-  entitlements:
-    - client.ui.map
-    - client.ui.timeline
-  capability_set_hash: caphash.7f09...
-  epistemic_scope_id: epistemic.lab.sensor_limited
-  privilege_watermark_policy: observer
-  audit_required: true
-  server_authoritative: false
-  refusal_policy_id: refusal.default
-  extensions: {}
+## Entitlement Guidance (Lab v1)
+Stable entitlement IDs used by `law.lab.unrestricted`:
+- `entitlement.camera_control`: required for `process.camera_move`
+- `entitlement.teleport`: required for `process.camera_teleport`
+- `entitlement.time_control`: required for `process.time_control_set_rate`, `process.time_pause`, `process.time_resume`
+- `session.boot`: required for deterministic boot and `process.region_management_tick`
+- `entitlement.inspect`: required for lab inspector/log tool windows
+- `lens.nondiegetic.access`: required for nondiegetic lens observation
+- `session.boot`: baseline session bootstrap entitlement
+- `ui.window.lab.nav`: baseline lab navigation window entitlement
+- `entitlement.teleport`: also gates lab navigator/go-to/site-browser tool windows
+
+## Example JSON (`schemas/authority_context.schema.json`)
+```json
+{
+  "schema_version": "1.0.0",
+  "authority_origin": "client",
+  "experience_id": "profile.lab.developer",
+  "law_profile_id": "law.lab.unrestricted",
+  "entitlements": [
+    "session.boot",
+    "entitlement.camera_control",
+    "entitlement.teleport",
+    "entitlement.time_control",
+    "lens.nondiegetic.access",
+    "ui.window.lab.nav"
+  ],
+  "epistemic_scope": {
+    "scope_id": "epistemic.lab.placeholder",
+    "visibility_level": "placeholder"
+  },
+  "privilege_level": "operator"
+}
 ```
 
 ## TODO
-- Add explicit lifecycle ownership for context negotiation between launcher/client/server.
-- Add refusal matrix keyed by field-level validation failure.
-- Add deterministic hashing rule for `capability_set_hash` materialization.
+- Add canonical refusal reason mapping for each authority-origin failure class.
+- Add explicit linkage contract to entitlement registry schema once published.
+- Add migration sample once pre-`1.0.0` compatibility paths exist.
 
 ## Cross-References
 - `docs/contracts/law_profile.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/contracts/versioning_and_migration.md`
 - `docs/architecture/observation_kernel.md`
-
+- `docs/architecture/session_lifecycle.md`
+- `docs/architecture/camera_and_navigation.md`

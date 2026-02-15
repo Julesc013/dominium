@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bundle Profile Schema",
+  "version": "1.0.0",
+  "description": "Canonical declarative pack selection for deterministic bundle composition.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A4/A9",
+    "docs/canon/glossary_v1.md BundleProfile",
+    "docs/architecture/pack_system.md",
+    "docs/architecture/session_lifecycle.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "bundle_id",
+    "description",
+    "pack_ids"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pack_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "optional_pack_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "bundle_id": "bundle.base.lab",
+      "description": "Baseline lab bundle for deterministic session bootstrap.",
+      "pack_ids": [
+        "pack.core.runtime",
+        "pack.law.observe_only",
+        "pack.domain.navigation",
+        "pack.experience.lab_galaxy"
+      ],
+      "optional_pack_ids": [
+        "pack.tool.inspector"
+      ]
+    }
+  ]
+}

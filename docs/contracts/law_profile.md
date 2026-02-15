@@ -1,86 +1,117 @@
-Status: DRAFT
-Version: 1.0.0-draft
+Status: DERIVED
 Last Reviewed: 2026-02-14
-Compatibility: Derived from `schema/law/law_profile.schema` v1.2.0 and canon v1.0.0.
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
+Compatibility: Bound to `schemas/law_profile.schema.json` v1.0.0 and CompatX `tools/xstack/compatx/version_registry.json`.
 
 # LawProfile Contract
 
 ## Purpose
-Define profile-driven legal behavior using declarative capability, entitlement, epistemic, and refusal bindings.
+Define the canonical law profile payload used to allow/refuse process classes and lens access.
 
 ## Source of Truth
-- Schema: `schema/law/law_profile.schema`
-- Related: `docs/architecture/MODES_AS_PROFILES.md`, `docs/architecture/AUTHORITY_MODEL.md`
+- Schema: `schemas/law_profile.schema.json` (`version: 1.0.0`)
+- Related: `docs/contracts/lens_contract.md`
 - Canon binding: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`
 
-## Intended Contract Fields (Registry)
-`law_profile_registry` requires:
-- `registry_id: id`
-- `registry_version: semver`
-- `schema_version_ref: tag`
-- `profiles: [law_profile]`
-- `extensions: map`
-
-## Intended Contract Fields (Profile)
-`law_profile` requires:
-- `law_profile_id: id`
-- `capabilities_granted: [id]`
-- `capabilities_revoked: [id]`
-- `entitlements_granted: [id]`
-- `epistemic_policy_id: id`
-- `allowed_intent_families: [id]`
-- `forbidden_intent_families: [id]`
-- `persistence_rules: [id]`
-- `allowed_lenses: [id]`
-- `forbidden_lenses: [id]`
-- `watermark_policy: enum(none|observer|dev)`
-- `audit_required: bool`
-- `refusal_codes: [id]`
-- `extensions: map`
+## Required Fields (`v1.0.0`)
+- `schema_version` (`const "1.0.0"`)
+- `law_profile_id` (string)
+- `allowed_processes` (array of strings)
+- `forbidden_processes` (array of strings)
+- `allowed_lenses` (array of strings)
+- `epistemic_limits` (object)
+- `respawn_rules` (object)
+- `debug_allowances` (object)
 
 ## Invariants
-- LawProfile is data, not a runtime mode branch.
-- Capabilities grant attempts only; law gates determine outcomes.
-- Lens allow/deny sets must align with authority and presentation contracts.
-- Unknown fields under `extensions` must be preserved.
-- Field rename/removal requires MAJOR schema bump and migration/refusal route.
+- Law is profile data, never a runtime mode branch.
+- Allowed/forbidden process sets are explicit; no implicit fallback grants.
+- Lens access remains law-gated and authority-scoped.
+- Unknown top-level fields are refused by strict schema validation.
+- Observation execution must refuse on lens policy violations with `LENS_FORBIDDEN`.
+- Law payload used by Observation Kernel must include `allowed_lenses` and `epistemic_limits`.
+- Process execution must refuse with deterministic reason codes:
+  - `PROCESS_FORBIDDEN`
+  - `ENTITLEMENT_MISSING`
+  - `PRIVILEGE_INSUFFICIENT`
 
-## Example
-```yaml
-law_profile:
-  law_profile_id: law.lab.observe_only
-  capabilities_granted:
-    - capability.observe
-  capabilities_revoked:
-    - capability.mutate
-  entitlements_granted:
-    - client.ui.timeline
-  epistemic_policy_id: epistemic.lab.sensor_limited
-  allowed_intent_families:
-    - intent.observe
-  forbidden_intent_families:
-    - intent.mutate
-  persistence_rules:
-    - persistence.standard
-  allowed_lenses:
-    - lens.diegetic.sensor
-  forbidden_lenses:
-    - lens.nondiegetic.admin
-  watermark_policy: observer
-  audit_required: true
-  refusal_codes:
-    - REFUSE_LAW_FORBIDDEN
-    - REFUSE_CAPABILITY_MISSING
-  extensions: {}
+## Lab Process IDs (`law.lab.unrestricted`)
+- `process.camera_move`
+- `process.camera_teleport`
+- `process.region_management_tick`
+- `process.time_control_set_rate`
+- `process.time_pause`
+- `process.time_resume`
+
+## Lab Entitlement Mapping (`law.lab.unrestricted`)
+- `process.camera_move` -> `entitlement.camera_control`
+- `process.camera_teleport` -> `entitlement.teleport`
+- `process.region_management_tick` -> `session.boot`
+- `process.time_control_set_rate` -> `entitlement.time_control`
+- `process.time_pause` -> `entitlement.time_control`
+- `process.time_resume` -> `entitlement.time_control`
+
+## Example JSON (`schemas/law_profile.schema.json`)
+```json
+{
+  "schema_version": "1.0.0",
+  "law_profile_id": "law.lab.unrestricted",
+  "allowed_processes": [
+    "process.camera_move",
+    "process.camera_teleport",
+    "process.region_management_tick",
+    "process.time_control_set_rate",
+    "process.time_pause",
+    "process.time_resume"
+  ],
+  "forbidden_processes": [],
+  "allowed_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "epistemic_limits": {
+    "max_view_radius_km": 1000000000,
+    "allow_hidden_state_access": true
+  },
+  "respawn_rules": {
+    "respawn_allowed": false,
+    "respawn_delay_seconds": 0
+  },
+  "debug_allowances": {
+    "allow_nondiegetic_overlays": true,
+    "allow_time_dilation_controls": true
+  },
+  "process_entitlement_requirements": {
+    "process.camera_move": "entitlement.camera_control",
+    "process.camera_teleport": "entitlement.teleport",
+    "process.region_management_tick": "session.boot",
+    "process.time_control_set_rate": "entitlement.time_control",
+    "process.time_pause": "entitlement.time_control",
+    "process.time_resume": "entitlement.time_control"
+  },
+  "process_privilege_requirements": {
+    "process.camera_move": "observer",
+    "process.camera_teleport": "operator",
+    "process.region_management_tick": "observer",
+    "process.time_control_set_rate": "operator",
+    "process.time_pause": "operator",
+    "process.time_resume": "operator"
+  }
+}
 ```
 
 ## TODO
-- Add compatibility matrix examples for MINOR vs MAJOR law profile changes.
-- Add contract checks that detect contradictory allow/forbid intent family sets.
-- Add governance examples for controlled rollout of profile revisions.
+- Add compatibility guidance for conflicting process lists.
+- Add canonical debug allowance taxonomy once debug registry exists.
+- Add migration notes for future law-profile major bumps.
+- Add explicit policy for nondiegetic lens authorization by privilege level.
 
 ## Cross-References
 - `docs/contracts/lens_contract.md`
 - `docs/contracts/refusal_contract.md`
+- `docs/contracts/versioning_and_migration.md`
 - `docs/architecture/pack_system.md`
-
+- `docs/architecture/lens_system.md`
+- `docs/architecture/camera_and_navigation.md`

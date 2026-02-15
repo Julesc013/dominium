@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Activation Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic activation policy registry output.",
+  "x-doc-ref": [
+    "docs/architecture/interest_regions.md",
+    "docs/architecture/registry_compile.md",
+    "schemas/activation_policy.schema.json"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "activation_policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "activation_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "pack_id",
+          "path",
+          "interest_radius_rules",
+          "activation_thresholds",
+          "hysteresis",
+          "deterministic_inputs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "interest_radius_rules": {
+            "type": "array"
+          },
+          "activation_thresholds": {
+            "type": "object"
+          },
+          "hysteresis": {
+            "type": "object"
+          },
+          "deterministic_inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "activation_policies": [],
+      "registry_hash": "58445a6f5f58f675fd755d3734bbd73b3cf56c8436fb58e6342712f5bc3f2456"
+    }
+  ]
+}

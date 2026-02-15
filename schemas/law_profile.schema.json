@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Law Profile Schema",
+  "version": "1.0.0",
+  "description": "Canonical profile-driven law contract that governs allowed processes, lenses, and limits.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A3/A4",
+    "docs/canon/glossary_v1.md LawProfile",
+    "docs/contracts/law_profile.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "law_profile_id",
+    "allowed_processes",
+    "forbidden_processes",
+    "allowed_lenses",
+    "epistemic_limits",
+    "respawn_rules",
+    "debug_allowances"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "law_profile_id": {
+      "type": "string"
+    },
+    "allowed_processes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbidden_processes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_lenses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "epistemic_limits": {
+      "type": "object",
+      "required": [
+        "max_view_radius_km",
+        "allow_hidden_state_access"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "max_view_radius_km": {
+          "type": "number"
+        },
+        "allow_hidden_state_access": {
+          "type": "boolean"
+        }
+      }
+    },
+    "respawn_rules": {
+      "type": "object",
+      "required": [
+        "respawn_allowed",
+        "respawn_delay_seconds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "respawn_allowed": {
+          "type": "boolean"
+        },
+        "respawn_delay_seconds": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "debug_allowances": {
+      "type": "object",
+      "required": [
+        "allow_nondiegetic_overlays",
+        "allow_time_dilation_controls"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "allow_nondiegetic_overlays": {
+          "type": "boolean"
+        },
+        "allow_time_dilation_controls": {
+          "type": "boolean"
+        }
+      }
+    },
+    "process_entitlement_requirements": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "process_privilege_requirements": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": [
+          "observer",
+          "operator",
+          "system"
+        ]
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "law_profile_id": "law.lab.observe_only",
+      "allowed_processes": [
+        "process.region_management_tick",
+        "process.observe.telemetry",
+        "process.observe.map_ping"
+      ],
+      "forbidden_processes": [
+        "process.mutate.assembly",
+        "process.spawn.agent"
+      ],
+      "allowed_lenses": [
+        "lens.diegetic.sensor",
+        "lens.diegetic.star_map"
+      ],
+      "epistemic_limits": {
+        "max_view_radius_km": 50000,
+        "allow_hidden_state_access": false
+      },
+      "respawn_rules": {
+        "respawn_allowed": true,
+        "respawn_delay_seconds": 30
+      },
+      "debug_allowances": {
+        "allow_nondiegetic_overlays": false,
+        "allow_time_dilation_controls": false
+      },
+      "process_entitlement_requirements": {
+        "process.region_management_tick": "session.boot",
+        "process.camera_move": "entitlement.camera_control",
+        "process.camera_teleport": "entitlement.teleport",
+        "process.time_control_set_rate": "entitlement.time_control",
+        "process.time_pause": "entitlement.time_control",
+        "process.time_resume": "entitlement.time_control"
+      },
+      "process_privilege_requirements": {
+        "process.region_management_tick": "observer",
+        "process.camera_move": "observer",
+        "process.camera_teleport": "operator",
+        "process.time_control_set_rate": "operator",
+        "process.time_pause": "operator",
+        "process.time_resume": "operator"
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Registry Outputs Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic hash outputs for registry snapshots and build indexing.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §4 E7, §5 C1-C3",
+    "docs/canon/glossary_v1.md Canonical hash",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "domain_registry_hash",
+    "law_registry_hash",
+    "experience_registry_hash",
+    "lens_registry_hash",
+    "activation_policy_registry_hash",
+    "budget_policy_registry_hash",
+    "fidelity_policy_registry_hash",
+    "astronomy_catalog_index_hash",
+    "site_registry_index_hash",
+    "ui_registry_hash",
+    "build_timestamp"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "domain_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "law_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "experience_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "lens_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "activation_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "budget_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "fidelity_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "astronomy_catalog_index_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "site_registry_index_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "ui_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "build_timestamp": {
+      "type": "string",
+      "description": "Deterministic UTC timestamp representation: RFC3339 second precision only (YYYY-MM-DDTHH:MM:SSZ).",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "domain_registry_hash": "6f2e8716f2c1d7f9cf8714ac8c0bf8bb99295aa6254e6177cb1081b754adfd88",
+      "law_registry_hash": "ccf4d2cc714f257c5f161f64e59ff3b496f6a5f6c533e0f8f40261f8fbc14165",
+      "experience_registry_hash": "f353b7d70f60f286784f8e4fd31af8754e0766a93835f4dc8a5192dbf375fd22",
+      "lens_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "activation_policy_registry_hash": "69ca5b28611606173aa5874f6b6ecf0fdd558057f8d4b9b438c5f6365c37fe4a",
+      "budget_policy_registry_hash": "3816b6397243dbf13fbb25503f9012f110f8f3c4c612fc2f73d45586ef6f7f08",
+      "fidelity_policy_registry_hash": "c2e926f2262af2af9784b52bc9a9db95c85e727ad4788e4eccf3a2ecad47a70a",
+      "astronomy_catalog_index_hash": "e42281a37f4e33f211f4f967fb52b4c65dbbf8708a8be3fcf76e7ec0f347529e",
+      "site_registry_index_hash": "6c9ecf51aeb4f5cb3209528a6ce4a79e39257de87d2e095e5934d8ca132aeb24",
+      "ui_registry_hash": "cb9ba7bcfe954df889f9b86f6d0456e9ef22ef6b251f8d731b8c0fdb4f522f0b",
+      "build_timestamp": "2026-02-14T00:00:00Z"
+    }
+  ]
+}

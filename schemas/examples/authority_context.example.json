@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "authority_origin": "client",
+  "experience_id": "experience.lab.navigation",
+  "law_profile_id": "law.lab.observe_only",
+  "entitlements": [
+    "ui.map",
+    "ui.timeline"
+  ],
+  "epistemic_scope": {
+    "scope_id": "epistemic.lab.sensor_limited",
+    "visibility_level": "sensor_limited"
+  },
+  "privilege_level": "observer"
+}
+

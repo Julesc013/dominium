@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "universe_id": "universe.f7f79f62a426e393",
+  "save_id": "save.lab.bootstrap",
+  "bundle_id": "bundle.base.lab",
+  "scenario_id": "scenario.lab.galaxy_nav",
+  "mission_id": null,
+  "experience_id": "profile.lab.developer",
+  "parameter_bundle_id": "params.lab.placeholder",
+  "authority_context": {
+    "authority_origin": "client",
+    "experience_id": "profile.lab.developer",
+    "law_profile_id": "law.lab.unrestricted",
+    "entitlements": [
+      "session.boot",
+      "ui.window.lab.nav"
+    ],
+    "epistemic_scope": {
+      "scope_id": "epistemic.lab.placeholder",
+      "visibility_level": "placeholder"
+    },
+    "privilege_level": "observer"
+  },
+  "pack_lock_hash": "17a8255be7f6d082c7fce0f6bc2d0ad4cc4f95e14f7696b1ef255fca605dc04d",
+  "budget_policy_id": "policy.budget.default_lab",
+  "fidelity_policy_id": "policy.fidelity.default_lab",
+  "deterministic_rng_roots": [
+    {
+      "stream_name": "rng.session.core",
+      "root_seed": "0d34f20bbfe8d44f22573afd356fd39c784b6d0bec295f4b3032fd665a5f0a15"
+    },
+    {
+      "stream_name": "rng.session.ui",
+      "root_seed": "67b1103bc5cd75c9f868bd168e9b4eb7aeb0c0dc51b85a89f9c31fd57ec32fbc"
+    }
+  ]
+}

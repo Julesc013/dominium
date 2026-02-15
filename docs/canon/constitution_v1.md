@@ -1,8 +1,8 @@
 Status: CANONICAL
-Version: 1.0.0
 Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
+Version: 1.0.0
 Compatibility: Bound to `docs/canon/glossary_v1.md` v1.0.0.
 
 # Dominium Constitutional Architecture & Execution Contract v1
@@ -173,3 +173,6 @@ Non-Goals:
 - `schema/SCHEMA_VERSIONING.md`
 - `schema/SCHEMA_MIGRATION.md`
 
+## 10) TODO
+- Add invariant ID tags for each constitutional clause to support machine traceability.
+- Add formal contract map from each constitutional clause to enforcing RepoX/TestX checks.

@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session Specification Schema",
+  "version": "1.0.0",
+  "description": "Canonical session composition contract for deterministic run configuration.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A4, §5 C1-C4",
+    "docs/canon/glossary_v1.md SessionSpec",
+    "docs/contracts/session_spec.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "universe_id",
+    "save_id",
+    "scenario_id",
+    "mission_id",
+    "experience_id",
+    "parameter_bundle_id",
+    "authority_context",
+    "pack_lock_hash",
+    "budget_policy_id",
+    "fidelity_policy_id",
+    "deterministic_rng_roots"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "universe_id": {
+      "type": "string"
+    },
+    "save_id": {
+      "type": "string"
+    },
+    "bundle_id": {
+      "type": "string",
+      "description": "Optional bundle selection identifier used to produce lockfile and registries."
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "mission_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "experience_id": {
+      "type": "string"
+    },
+    "parameter_bundle_id": {
+      "type": "string"
+    },
+    "authority_context": {
+      "type": "object",
+      "required": [
+        "authority_origin",
+        "experience_id",
+        "law_profile_id",
+        "entitlements",
+        "epistemic_scope",
+        "privilege_level"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "authority_origin": {
+          "type": "string",
+          "enum": [
+            "client",
+            "server",
+            "tool",
+            "replay"
+          ]
+        },
+        "experience_id": {
+          "type": "string"
+        },
+        "law_profile_id": {
+          "type": "string"
+        },
+        "entitlements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "epistemic_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scope_id",
+            "visibility_level"
+          ],
+          "properties": {
+            "scope_id": {
+              "type": "string"
+            },
+            "visibility_level": {
+              "type": "string"
+            }
+          }
+        },
+        "privilege_level": {
+          "type": "string",
+          "enum": [
+            "observer",
+            "operator",
+            "system"
+          ]
+        }
+      }
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "budget_policy_id": {
+      "type": "string"
+    },
+    "fidelity_policy_id": {
+      "type": "string"
+    },
+    "deterministic_rng_roots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "stream_name",
+          "root_seed"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "stream_name": {
+            "type": "string"
+          },
+          "root_seed": {
+            "type": "string"
+          }
+        }
+      },
+      "minItems": 1
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "universe_id": "universe.f7f79f62a426e393",
+      "save_id": "save.lab.bootstrap",
+      "bundle_id": "bundle.base.lab",
+      "scenario_id": "scenario.lab.galaxy_nav",
+      "mission_id": null,
+      "experience_id": "profile.lab.developer",
+      "parameter_bundle_id": "params.lab.placeholder",
+      "authority_context": {
+        "authority_origin": "client",
+        "experience_id": "profile.lab.developer",
+        "law_profile_id": "law.lab.unrestricted",
+        "entitlements": [
+          "session.boot",
+          "ui.window.lab.nav"
+        ],
+        "epistemic_scope": {
+          "scope_id": "epistemic.lab.placeholder",
+          "visibility_level": "placeholder"
+        },
+        "privilege_level": "observer"
+      },
+      "pack_lock_hash": "17a8255be7f6d082c7fce0f6bc2d0ad4cc4f95e14f7696b1ef255fca605dc04d",
+      "budget_policy_id": "policy.budget.default_lab",
+      "fidelity_policy_id": "policy.fidelity.default_lab",
+      "deterministic_rng_roots": [
+        {
+          "stream_name": "rng.session.core",
+          "root_seed": "0d34f20bbfe8d44f22573afd356fd39c784b6d0bec295f4b3032fd665a5f0a15"
+        },
+        {
+          "stream_name": "rng.session.ui",
+          "root_seed": "67b1103bc5cd75c9f868bd168e9b4eb7aeb0c0dc51b85a89f9c31fd57ec32fbc"
+        }
+      ]
+    }
+  ]
+}

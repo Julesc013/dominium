@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fidelity Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic fidelity tier policy for interest-region activation and degradation.",
+  "x-doc-ref": [
+    "docs/architecture/fidelity_policy.md",
+    "docs/canon/constitution_v1.md §3 A1/A10"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "tiers",
+    "switching_rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tiers": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "tier_id",
+          "max_distance_mm",
+          "micro_entities_target"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "tier_id": {
+            "type": "string",
+            "enum": [
+              "coarse",
+              "medium",
+              "fine"
+            ]
+          },
+          "max_distance_mm": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "micro_entities_target": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "switching_rules": {
+      "type": "object",
+      "required": [
+        "upgrade_hysteresis_mm",
+        "degrade_hysteresis_mm",
+        "degrade_order",
+        "upgrade_order"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "upgrade_hysteresis_mm": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "degrade_hysteresis_mm": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "degrade_order": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string",
+            "enum": [
+              "fine",
+              "medium",
+              "coarse"
+            ]
+          }
+        },
+        "upgrade_order": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string",
+            "enum": [
+              "coarse",
+              "medium",
+              "fine"
+            ]
+          }
+        }
+      }
+    },
+    "minimum_tier_by_kind": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": [
+          "coarse",
+          "medium",
+          "fine"
+        ]
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "policy.fidelity.default_lab",
+      "tiers": [
+        {
+          "tier_id": "fine",
+          "max_distance_mm": 1200000000,
+          "micro_entities_target": 12
+        },
+        {
+          "tier_id": "medium",
+          "max_distance_mm": 5200000000,
+          "micro_entities_target": 6
+        },
+        {
+          "tier_id": "coarse",
+          "max_distance_mm": 20000000000,
+          "micro_entities_target": 2
+        }
+      ],
+      "switching_rules": {
+        "upgrade_hysteresis_mm": 50000000,
+        "degrade_hysteresis_mm": 50000000,
+        "degrade_order": [
+          "fine",
+          "medium",
+          "coarse"
+        ],
+        "upgrade_order": [
+          "coarse",
+          "medium",
+          "fine"
+        ]
+      },
+      "minimum_tier_by_kind": {
+        "galaxy": "coarse",
+        "system": "medium",
+        "planet": "fine"
+      }
+    }
+  ]
+}

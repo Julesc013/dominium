@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Authority Context Schema",
+  "version": "1.0.0",
+  "description": "Canonical law-gated authority envelope for process admission and observation scope.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A3/A7",
+    "docs/canon/glossary_v1.md AuthorityContext",
+    "docs/contracts/authority_context.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "authority_origin",
+    "experience_id",
+    "law_profile_id",
+    "entitlements",
+    "epistemic_scope",
+    "privilege_level"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "authority_origin": {
+      "type": "string",
+      "enum": [
+        "client",
+        "server",
+        "tool",
+        "replay"
+      ]
+    },
+    "experience_id": {
+      "type": "string"
+    },
+    "law_profile_id": {
+      "type": "string"
+    },
+    "entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "epistemic_scope": {
+      "type": "object",
+      "required": [
+        "scope_id",
+        "visibility_level"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "scope_id": {
+          "type": "string"
+        },
+        "visibility_level": {
+          "type": "string"
+        }
+      }
+    },
+    "privilege_level": {
+      "type": "string",
+      "enum": [
+        "observer",
+        "operator",
+        "system"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "authority_origin": "client",
+      "experience_id": "experience.lab.navigation",
+      "law_profile_id": "law.lab.observe_only",
+      "entitlements": [
+        "ui.map",
+        "ui.timeline"
+      ],
+      "epistemic_scope": {
+        "scope_id": "epistemic.lab.sensor_limited",
+        "visibility_level": "sensor_limited"
+      },
+      "privilege_level": "observer"
+    }
+  ]
+}
+
