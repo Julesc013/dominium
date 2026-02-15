@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "source.sol.spice.minimal",
+  "kernel_files": [
+    "data/kernels/de440s.bsp",
+    "data/kernels/naif0012.tls"
+  ],
+  "supported_bodies": [
+    "object.sol",
+    "object.mercury",
+    "object.venus",
+    "object.earth",
+    "object.mars",
+    "object.jupiter",
+    "object.saturn",
+    "object.uranus",
+    "object.neptune"
+  ],
+  "time_range": {
+    "start_tick": 0,
+    "end_tick": 1440,
+    "step_ticks": 60
+  },
+  "reference_frame": "frame.sol.barycentric",
+  "precision_notes": "Source doubles are normalized to deterministic millimeter integer tables.",
+  "license": "public-domain-naif"
+}
+

@@ -1,0 +1,4 @@
+SPICE-KERNEL:DE440S
+SUBSET:SOL_BASELINE
+NOTE:Deterministic fixture payload for importer tests.
+
