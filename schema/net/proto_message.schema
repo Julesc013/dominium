@@ -1,0 +1,24 @@
+SCHEMA: net/proto_message.schema
+schema_id: dominium.schema.net.proto_message
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic transport-level protocol message wrappers.
+
+REQUIRED SHAPE:
+record net_proto_message
+  required:
+    - schema_version: semver
+    - msg_type: enum(handshake_request|handshake_response|refusal|payload)
+    - msg_id: id
+    - sequence: u64
+    - payload_schema_id: text
+    - payload_ref: map
+    - payload_hash: hash64
+    - extensions: map
+
+INVARIANTS:
+- Canonical UTF-8 JSON framing and canonical hashing are required.
+- payload_hash MUST match canonical hash of payload_ref.
+- Message order is governed by deterministic sequence values, not transport timing.
