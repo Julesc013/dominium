@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shard Map Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SRZ shard ownership map for policy.net.srz_hybrid routing and coordination.",
+  "x-doc-ref": [
+    "docs/net/SRZ_HYBRID_POLICY.md",
+    "docs/net/REPLICATION_POLICIES.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "shard_map_id",
+    "shards",
+    "routing_rule_id",
+    "version_introduced",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "shard_map_id": {
+      "type": "string"
+    },
+    "shards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "shard_id",
+          "region_scope",
+          "authority_endpoint",
+          "status",
+          "priority"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "shard_id": {
+            "type": "string"
+          },
+          "region_scope": {
+            "type": "object",
+            "required": [
+              "object_ids",
+              "spatial_bounds"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "object_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "spatial_bounds": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "min",
+                      "max"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "min": {
+                        "type": "array",
+                        "minItems": 3,
+                        "maxItems": 3,
+                        "items": {
+                          "type": "number"
+                        }
+                      },
+                      "max": {
+                        "type": "array",
+                        "minItems": 3,
+                        "maxItems": 3,
+                        "items": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "authority_endpoint": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "draining",
+              "offline"
+            ]
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "routing_rule_id": {
+      "type": "string"
+    },
+    "version_introduced": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "shard_map_id": "shard_map.default.single_shard",
+      "shards": [
+        {
+          "shard_id": "shard.0",
+          "region_scope": {
+            "object_ids": [
+              "object.sol_system",
+              "object.earth"
+            ],
+            "spatial_bounds": null
+          },
+          "authority_endpoint": "inproc://shard.0",
+          "status": "active",
+          "priority": 0
+        }
+      ],
+      "routing_rule_id": "routing.srz.by_object_or_default_v1",
+      "version_introduced": "1.0.0",
+      "extensions": {}
+    }
+  ]
+}

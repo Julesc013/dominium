@@ -245,6 +245,13 @@
         "1.0.0"
       ]
     },
+    "perception_interest_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "law_profile": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -337,6 +344,20 @@
       ]
     },
     "site_registry_index": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "shard_map": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "shard_map_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

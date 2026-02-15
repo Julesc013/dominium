@@ -18,6 +18,8 @@
     "net_replication_policy_registry_hash",
     "net_resync_strategy_registry_hash",
     "net_server_policy_registry_hash",
+    "shard_map_registry_hash",
+    "perception_interest_policy_registry_hash",
     "anti_cheat_policy_registry_hash",
     "anti_cheat_module_registry_hash",
     "activation_policy_registry_hash",
@@ -62,6 +64,14 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "net_server_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "shard_map_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "perception_interest_policy_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
@@ -125,6 +135,8 @@
       "net_replication_policy_registry_hash": "a81c9beac6a58f5bc8a1ebf16834ac6fa4fb91b1fbc9bfad03c0d2ca952e7ff7",
       "net_resync_strategy_registry_hash": "56ad0f9538ce957276e57cdba58f5cf6f5cab43e8fbd8f2f7cf1fe498f65ccb8",
       "net_server_policy_registry_hash": "6f42f4533ce12d8c3079dc2131b34f1c6897c742a50bff1a530f0d8f4de2130a",
+      "shard_map_registry_hash": "291bb89646cb4d8f5ef8b20f269bd62a0f3f4ef83ca4ec61425864356ef018de",
+      "perception_interest_policy_registry_hash": "91a32774228747f00833598f58cb74a10cf73d2361349f39e6dc6759977d6056",
       "anti_cheat_policy_registry_hash": "f95fe9129a92ad8ecf2680f7704f84d1683fc58fa53d8b802122f9982f9b2581",
       "anti_cheat_module_registry_hash": "4e4f5e6abbdd5c9fef5f1f8560f1452f0d4f19df73673b7a5f44cbe7f8e5a740",
       "activation_policy_registry_hash": "69ca5b28611606173aa5874f6b6ecf0fdd558057f8d4b9b438c5f6365c37fe4a",
