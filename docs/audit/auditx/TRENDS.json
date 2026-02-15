@@ -1,58 +1,40 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 605,
+    "canon_drift": 607,
     "capability_bypass_smell": 1,
-    "capability_misuse": 139,
-    "derived_freshness": 130,
-    "legacy_contamination": 160,
-    "mode_flag_smell": 64,
-    "ownership_boundary": 8,
-    "reachability": 80,
-    "schema_usage": 160,
+    "derived_freshness": 10,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
-    "semantic.workspace_contamination": 1,
-    "terminology_misuse": 1,
-    "ui_parity": 185
+    "semantic.workspace_contamination": 1
   },
   "delta_over_time": {
     "category_frequency": {
-      "canon_drift": 0,
-      "capability_bypass_smell": 0,
-      "capability_misuse": 139,
-      "derived_freshness": 120,
-      "legacy_contamination": 160,
-      "mode_flag_smell": 64,
-      "ownership_boundary": 8,
-      "reachability": 77,
-      "schema_usage": 142,
-      "semantic.capability_drift": 0,
+      "canon_drift": 607,
+      "capability_bypass_smell": 1,
+      "derived_freshness": 10,
+      "semantic.capability_drift": 5,
       "semantic.derived_artifact_contract": 1,
-      "semantic.schema_shadowing": 0,
-      "semantic.workspace_contamination": 0,
-      "terminology_misuse": 1,
-      "ui_parity": 185
+      "semantic.schema_shadowing": 120,
+      "semantic.workspace_contamination": 1
     },
     "severity_distribution": {
-      "INFO": 230,
-      "RISK": 255,
-      "VIOLATION": 145,
-      "WARN": 267
+      "RISK": 11,
+      "VIOLATION": 1,
+      "WARN": 733
     }
   },
-  "findings_hash": "b7a1f4ce871031bb4999640b4a3591645a6de77e43cf354e7b98c8624a787b2c",
+  "findings_hash": "047d239795f1ca24dfac7bd84bcc8520769434bd054cb6b8b0d7624d2343160a",
   "history_reference": {
-    "previous_distinct_hash": "395af6dbc5466eec851a16de820903ba85518d31491bce0b18ab0742622b6e68"
+    "previous_distinct_hash": ""
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 230,
-    "RISK": 284,
-    "VIOLATION": 145,
-    "WARN": 1001
+    "RISK": 11,
+    "VIOLATION": 1,
+    "WARN": 733
   },
-  "total_findings": 1660
+  "total_findings": 745
 }
