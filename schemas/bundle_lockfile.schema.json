@@ -65,6 +65,8 @@
         "net_server_policy_registry_hash",
         "shard_map_registry_hash",
         "perception_interest_policy_registry_hash",
+        "epistemic_policy_registry_hash",
+        "retention_policy_registry_hash",
         "anti_cheat_policy_registry_hash",
         "anti_cheat_module_registry_hash",
         "activation_policy_registry_hash",
@@ -112,6 +114,14 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "perception_interest_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "epistemic_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "retention_policy_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -184,6 +194,8 @@
         "net_server_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "shard_map_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "perception_interest_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "epistemic_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "retention_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "anti_cheat_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "anti_cheat_module_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "activation_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",

@@ -126,6 +126,20 @@
         "1.0.0"
       ]
     },
+    "epistemic_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "epistemic_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "experience_profile": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -295,6 +309,20 @@
       ]
     },
     "reference_frame": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "retention_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "retention_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

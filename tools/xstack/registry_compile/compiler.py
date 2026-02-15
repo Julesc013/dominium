@@ -2065,6 +2065,196 @@ def _hybrid_policy_rows(
     return shard_map_rows, perception_rows, errors
 
 
+def _epistemic_policy_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+    _retention_record, retention_rows_raw, retention_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/retention_policy_registry.json",
+        expected_schema_id="dominium.registry.retention_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if retention_load_errors:
+        return [], [], retention_load_errors
+
+    retention_rows: List[dict] = []
+    retention_policy_id_set = set()
+    for entry in sorted(retention_rows_raw, key=lambda row: str((row or {}).get("retention_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_retention_policy_entry",
+                    "message": "retention policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        retention_policy_id = str(entry.get("retention_policy_id", "")).strip()
+        if not retention_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_retention_policy_entry",
+                    "message": "retention policy entry missing retention_policy_id",
+                    "path": "$.policies.retention_policy_id",
+                }
+            )
+            continue
+        if retention_policy_id in retention_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_retention_policy_id",
+                    "message": "duplicate retention_policy_id '{}'".format(retention_policy_id),
+                    "path": "$.policies.retention_policy_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="retention_policy",
+            payload=schema_payload,
+            path="data/registries/retention_policy_registry.json#{}".format(retention_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        retention_rows.append(
+            {
+                "retention_policy_id": retention_policy_id,
+                "memory_allowed": bool(entry.get("memory_allowed", False)),
+                "max_memory_items": int(entry.get("max_memory_items", 0) or 0),
+                "decay_model_id": entry.get("decay_model_id"),
+                "deterministic_eviction_rule_id": str(entry.get("deterministic_eviction_rule_id", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        retention_policy_id_set.add(retention_policy_id)
+    retention_rows = sorted(retention_rows, key=lambda row: str(row.get("retention_policy_id", "")))
+
+    _epistemic_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/epistemic_policy_registry.json",
+        expected_schema_id="dominium.registry.epistemic_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], policy_load_errors
+
+    policy_rows: List[dict] = []
+    epistemic_policy_id_set = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("epistemic_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_epistemic_policy_entry",
+                    "message": "epistemic policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        epistemic_policy_id = str(entry.get("epistemic_policy_id", "")).strip()
+        if not epistemic_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_epistemic_policy_entry",
+                    "message": "epistemic policy entry missing epistemic_policy_id",
+                    "path": "$.policies.epistemic_policy_id",
+                }
+            )
+            continue
+        if epistemic_policy_id in epistemic_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_epistemic_policy_id",
+                    "message": "duplicate epistemic_policy_id '{}'".format(epistemic_policy_id),
+                    "path": "$.policies.epistemic_policy_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="epistemic_policy",
+            payload=schema_payload,
+            path="data/registries/epistemic_policy_registry.json#{}".format(epistemic_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+
+        retention_policy_id = str(entry.get("retention_policy_id", "")).strip()
+        if retention_policy_id not in retention_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.epistemic_retention_policy_missing",
+                    "message": "epistemic policy '{}' references unknown retention_policy_id '{}'".format(
+                        epistemic_policy_id,
+                        retention_policy_id,
+                    ),
+                    "path": "$.policies.retention_policy_id",
+                }
+            )
+            continue
+
+        allowed_channels = _sorted_unique_strings(list(entry.get("allowed_observation_channels") or []))
+        forbidden_channels = _sorted_unique_strings(list(entry.get("forbidden_channels") or []))
+        channel_overlap = sorted(set(allowed_channels).intersection(set(forbidden_channels)))
+        if channel_overlap:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.epistemic_channel_conflict",
+                    "message": "epistemic policy '{}' overlaps allowed and forbidden channels: {}".format(
+                        epistemic_policy_id,
+                        ",".join(channel_overlap),
+                    ),
+                    "path": "$.policies",
+                }
+            )
+            continue
+
+        precision_rows = []
+        for item in sorted(
+            (dict(row) for row in (entry.get("max_precision_rules") or []) if isinstance(row, dict)),
+            key=lambda row: (
+                str(row.get("channel_id", "")),
+                int(row.get("max_distance_mm", 0) or 0),
+                str(row.get("rule_id", "")),
+            ),
+        ):
+            precision_rows.append(
+                {
+                    "rule_id": str(item.get("rule_id", "")).strip(),
+                    "channel_id": str(item.get("channel_id", "")).strip(),
+                    "max_distance_mm": int(item.get("max_distance_mm", 0) or 0),
+                    "position_quantization_mm": int(item.get("position_quantization_mm", 1) or 1),
+                    "orientation_quantization_mdeg": int(item.get("orientation_quantization_mdeg", 1) or 1),
+                }
+            )
+
+        policy_rows.append(
+            {
+                "epistemic_policy_id": epistemic_policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "allowed_observation_channels": allowed_channels,
+                "forbidden_channels": forbidden_channels,
+                "retention_policy_id": retention_policy_id,
+                "inference_policy_id": entry.get("inference_policy_id"),
+                "max_precision_rules": precision_rows,
+                "deterministic_filters": _sorted_unique_strings(list(entry.get("deterministic_filters") or [])),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        epistemic_policy_id_set.add(epistemic_policy_id)
+    policy_rows = sorted(policy_rows, key=lambda row: str(row.get("epistemic_policy_id", "")))
+    return policy_rows, retention_rows, errors
+
+
 def _ui_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict]]:
     selector_re = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:\[(?:\d+|\*)\])?(?:\.[A-Za-z_][A-Za-z0-9_]*(?:\[(?:\d+|\*)\])?)*$")
 
@@ -2272,6 +2462,14 @@ def compile_bundle(
         known_replication_policy_ids=[str(row.get("policy_id", "")) for row in net_replication_policy_rows],
         net_server_policy_rows=net_server_policy_rows,
     )
+    (
+        epistemic_policy_rows,
+        retention_policy_rows,
+        epistemic_registry_errors,
+    ) = _epistemic_policy_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
     astronomy_rows, reference_frame_rows, site_rows, astronomy_errors = _astronomy_rows(
         contributions,
         schema_root=schema_root,
@@ -2290,6 +2488,7 @@ def compile_bundle(
         + worldgen_constraints_errors
         + net_registry_errors
         + hybrid_registry_errors
+        + epistemic_registry_errors
         + astronomy_errors
         + real_data_errors
         + ui_errors
@@ -2361,6 +2560,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "policies": perception_interest_policy_rows,
+        }
+    )
+    epistemic_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": epistemic_policy_rows,
+        }
+    )
+    retention_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": retention_policy_rows,
         }
     )
     anti_cheat_policy_payload = _finalize_registry_payload(
@@ -2457,6 +2670,8 @@ def compile_bundle(
             "perception_interest_policy_registry",
             perception_interest_policy_payload,
         ),
+        "epistemic_policy_registry": ("epistemic_policy_registry", epistemic_policy_payload),
+        "retention_policy_registry": ("retention_policy_registry", retention_policy_payload),
         "anti_cheat_policy_registry": ("anti_cheat_policy_registry", anti_cheat_policy_payload),
         "anti_cheat_module_registry": ("anti_cheat_module_registry", anti_cheat_module_payload),
         "activation_policy_registry": ("activation_policy_registry", activation_policy_payload),
@@ -2481,6 +2696,8 @@ def compile_bundle(
         "net_server_policy_registry",
         "shard_map_registry",
         "perception_interest_policy_registry",
+        "epistemic_policy_registry",
+        "retention_policy_registry",
         "anti_cheat_policy_registry",
         "anti_cheat_module_registry",
         "activation_policy_registry",
@@ -2528,6 +2745,8 @@ def compile_bundle(
             "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],
             "shard_map_registry_hash": registry_hashes["shard_map_registry_hash"],
             "perception_interest_policy_registry_hash": registry_hashes["perception_interest_policy_registry_hash"],
+            "epistemic_policy_registry_hash": registry_hashes["epistemic_policy_registry_hash"],
+            "retention_policy_registry_hash": registry_hashes["retention_policy_registry_hash"],
             "anti_cheat_policy_registry_hash": registry_hashes["anti_cheat_policy_registry_hash"],
             "anti_cheat_module_registry_hash": registry_hashes["anti_cheat_module_registry_hash"],
             "activation_policy_registry_hash": registry_hashes["activation_policy_registry_hash"],

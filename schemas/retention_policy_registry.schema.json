@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Retention Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic retention policy registry output.",
+  "x-doc-ref": [
+    "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
+    "docs/net/EPISTEMICS_OVER_NETWORK.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "retention_policy_id",
+          "memory_allowed",
+          "max_memory_items",
+          "decay_model_id",
+          "deterministic_eviction_rule_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "retention_policy_id": {
+            "type": "string"
+          },
+          "memory_allowed": {
+            "type": "boolean"
+          },
+          "max_memory_items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "decay_model_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deterministic_eviction_rule_id": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

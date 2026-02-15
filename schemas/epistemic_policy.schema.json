@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Epistemic Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic policy contract for multiplayer/observation channel filtering and precision redaction.",
+  "x-doc-ref": [
+    "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
+    "docs/net/EPISTEMICS_OVER_NETWORK.md",
+    "docs/contracts/authority_context.md",
+    "docs/contracts/law_profile.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "epistemic_policy_id",
+    "description",
+    "allowed_observation_channels",
+    "forbidden_channels",
+    "retention_policy_id",
+    "inference_policy_id",
+    "max_precision_rules",
+    "deterministic_filters",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "epistemic_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "allowed_observation_channels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "forbidden_channels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "retention_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inference_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "max_precision_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "channel_id",
+          "max_distance_mm",
+          "position_quantization_mm",
+          "orientation_quantization_mdeg"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "channel_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "max_distance_mm": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "position_quantization_mm": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "orientation_quantization_mdeg": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "deterministic_filters": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "epistemic_policy_id": "ep.policy.player_diegetic",
+      "description": "Diegetic-only player policy with deterministic precision limits.",
+      "allowed_observation_channels": [
+        "ch.diegetic.compass",
+        "ch.diegetic.clock",
+        "ch.diegetic.altimeter",
+        "ch.diegetic.radio",
+        "ch.diegetic.map_local",
+        "ch.core.time"
+      ],
+      "forbidden_channels": [
+        "ch.nondiegetic.nav",
+        "ch.nondiegetic.entity_inspector",
+        "ch.truth.overlay.terrain_height"
+      ],
+      "retention_policy_id": "ep.retention.session_basic",
+      "inference_policy_id": "ep.infer.none",
+      "max_precision_rules": [
+        {
+          "rule_id": "precision.near",
+          "channel_id": "ch.diegetic.map_local",
+          "max_distance_mm": 1000000,
+          "position_quantization_mm": 10,
+          "orientation_quantization_mdeg": 10
+        },
+        {
+          "rule_id": "precision.far",
+          "channel_id": "ch.diegetic.map_local",
+          "max_distance_mm": 1000000000,
+          "position_quantization_mm": 1000,
+          "orientation_quantization_mdeg": 100
+        }
+      ],
+      "deterministic_filters": [
+        "filter.channel_allow_deny.v1",
+        "filter.entitlement_gate.v1",
+        "filter.precision_quantize.v1",
+        "filter.interest_cull.v1"
+      ],
+      "extensions": {}
+    }
+  ]
+}

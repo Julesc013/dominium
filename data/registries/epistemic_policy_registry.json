@@ -1,0 +1,191 @@
+{
+  "schema_id": "dominium.registry.epistemic_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.epistemic_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "epistemic_policy_id": "ep.policy.lab_broad",
+        "description": "Lab developer profile with broad channels while preserving deterministic channel contracts.",
+        "allowed_observation_channels": [
+          "ch.core.time",
+          "ch.core.navigation",
+          "ch.core.sites",
+          "ch.core.entities",
+          "ch.core.process_log",
+          "ch.core.performance",
+          "ch.camera.state",
+          "ch.diegetic.compass",
+          "ch.diegetic.clock",
+          "ch.diegetic.altimeter",
+          "ch.diegetic.radio",
+          "ch.diegetic.map_local",
+          "ch.nondiegetic.nav",
+          "ch.nondiegetic.entity_inspector",
+          "ch.nondiegetic.performance_monitor"
+        ],
+        "forbidden_channels": [],
+        "retention_policy_id": "ep.retention.session_basic",
+        "inference_policy_id": "ep.infer.none",
+        "max_precision_rules": [
+          {
+            "rule_id": "precision.lab.near",
+            "channel_id": "ch.camera.state",
+            "max_distance_mm": 5000000,
+            "position_quantization_mm": 1,
+            "orientation_quantization_mdeg": 1
+          },
+          {
+            "rule_id": "precision.lab.far",
+            "channel_id": "ch.camera.state",
+            "max_distance_mm": 1000000000000,
+            "position_quantization_mm": 100,
+            "orientation_quantization_mdeg": 10
+          }
+        ],
+        "deterministic_filters": [
+          "filter.channel_allow_deny.v1",
+          "filter.entitlement_gate.v1",
+          "filter.precision_quantize.v1",
+          "filter.interest_cull.v1",
+          "filter.redaction.v1"
+        ],
+        "extensions": {}
+      },
+      {
+        "epistemic_policy_id": "ep.policy.observer_truth",
+        "description": "Observer profile with truth-derived overlay channels when law and entitlements permit.",
+        "allowed_observation_channels": [
+          "ch.core.time",
+          "ch.core.navigation",
+          "ch.core.sites",
+          "ch.core.entities",
+          "ch.core.process_log",
+          "ch.core.performance",
+          "ch.camera.state",
+          "ch.diegetic.compass",
+          "ch.diegetic.clock",
+          "ch.diegetic.altimeter",
+          "ch.diegetic.radio",
+          "ch.truth.overlay.terrain_height",
+          "ch.truth.overlay.anchor_hash"
+        ],
+        "forbidden_channels": [],
+        "retention_policy_id": "ep.retention.session_basic",
+        "inference_policy_id": "ep.infer.none",
+        "max_precision_rules": [
+          {
+            "rule_id": "precision.observer.near",
+            "channel_id": "ch.truth.overlay.terrain_height",
+            "max_distance_mm": 50000000,
+            "position_quantization_mm": 1,
+            "orientation_quantization_mdeg": 1
+          },
+          {
+            "rule_id": "precision.observer.far",
+            "channel_id": "ch.truth.overlay.terrain_height",
+            "max_distance_mm": 1000000000000,
+            "position_quantization_mm": 1000,
+            "orientation_quantization_mdeg": 50
+          }
+        ],
+        "deterministic_filters": [
+          "filter.channel_allow_deny.v1",
+          "filter.entitlement_gate.v1",
+          "filter.precision_quantize.v1",
+          "filter.interest_cull.v1"
+        ],
+        "extensions": {}
+      },
+      {
+        "epistemic_policy_id": "ep.policy.player_diegetic",
+        "description": "Player default epistemic policy exposing diegetic channels only.",
+        "allowed_observation_channels": [
+          "ch.core.time",
+          "ch.camera.state",
+          "ch.diegetic.compass",
+          "ch.diegetic.clock",
+          "ch.diegetic.altimeter",
+          "ch.diegetic.radio",
+          "ch.diegetic.map_local"
+        ],
+        "forbidden_channels": [
+          "ch.nondiegetic.nav",
+          "ch.nondiegetic.entity_inspector",
+          "ch.nondiegetic.performance_monitor",
+          "ch.truth.overlay.terrain_height",
+          "ch.truth.overlay.anchor_hash"
+        ],
+        "retention_policy_id": "ep.retention.session_basic",
+        "inference_policy_id": "ep.infer.none",
+        "max_precision_rules": [
+          {
+            "rule_id": "precision.player.near",
+            "channel_id": "ch.camera.state",
+            "max_distance_mm": 2000000,
+            "position_quantization_mm": 10,
+            "orientation_quantization_mdeg": 10
+          },
+          {
+            "rule_id": "precision.player.far",
+            "channel_id": "ch.camera.state",
+            "max_distance_mm": 1000000000000,
+            "position_quantization_mm": 1000,
+            "orientation_quantization_mdeg": 100
+          }
+        ],
+        "deterministic_filters": [
+          "filter.channel_allow_deny.v1",
+          "filter.entitlement_gate.v1",
+          "filter.precision_quantize.v1",
+          "filter.interest_cull.v1"
+        ],
+        "extensions": {}
+      },
+      {
+        "epistemic_policy_id": "ep.policy.spectator_limited",
+        "description": "Spectator policy with limited non-diegetic navigation and no hidden overlay channels.",
+        "allowed_observation_channels": [
+          "ch.core.time",
+          "ch.core.navigation",
+          "ch.core.sites",
+          "ch.camera.state",
+          "ch.nondiegetic.nav"
+        ],
+        "forbidden_channels": [
+          "ch.nondiegetic.entity_inspector",
+          "ch.nondiegetic.performance_monitor",
+          "ch.truth.overlay.terrain_height",
+          "ch.truth.overlay.anchor_hash"
+        ],
+        "retention_policy_id": "ep.retention.none",
+        "inference_policy_id": "ep.infer.none",
+        "max_precision_rules": [
+          {
+            "rule_id": "precision.spectator.near",
+            "channel_id": "ch.nondiegetic.nav",
+            "max_distance_mm": 20000000,
+            "position_quantization_mm": 100,
+            "orientation_quantization_mdeg": 50
+          },
+          {
+            "rule_id": "precision.spectator.far",
+            "channel_id": "ch.nondiegetic.nav",
+            "max_distance_mm": 1000000000000,
+            "position_quantization_mm": 5000,
+            "orientation_quantization_mdeg": 500
+          }
+        ],
+        "deterministic_filters": [
+          "filter.channel_allow_deny.v1",
+          "filter.entitlement_gate.v1",
+          "filter.precision_quantize.v1",
+          "filter.interest_cull.v1"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

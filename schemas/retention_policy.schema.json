@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Retention Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic retention contract for PerceivedModel memory hooks.",
+  "x-doc-ref": [
+    "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
+    "docs/net/EPISTEMICS_OVER_NETWORK.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "retention_policy_id",
+    "memory_allowed",
+    "max_memory_items",
+    "decay_model_id",
+    "deterministic_eviction_rule_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "retention_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "memory_allowed": {
+      "type": "boolean"
+    },
+    "max_memory_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "decay_model_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_eviction_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "retention_policy_id": "ep.retention.session_basic",
+      "memory_allowed": true,
+      "max_memory_items": 256,
+      "decay_model_id": "decay.none",
+      "deterministic_eviction_rule_id": "evict.oldest_tick_then_channel",
+      "extensions": {}
+    }
+  ]
+}
