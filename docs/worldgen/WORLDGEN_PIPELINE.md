@@ -20,6 +20,8 @@ World generation is modular, deterministic, and data-driven.
 ## Constraint Stage
 
 - Constraint stage is data-driven and deterministic.
+- Constraints may be selected from pack-contributed registry entries (`worldgen_constraints` contributions).
+- Selected IDs must resolve through compiled registry `build/registries/worldgen_constraints.registry.json`.
 - Hard constraints are applied before soft-score ranking.
 - Multi-seed expansion and tie breaks must be deterministic and auditable.
 - Refusal codes:

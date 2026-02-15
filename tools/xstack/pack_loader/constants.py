@@ -20,6 +20,7 @@ SUPPORTED_CONTRIBUTION_TYPES = (
     "registry_entries",
     "scenario_spec",
     "ui_windows",
+    "worldgen_constraints",
 )
 
 FORBIDDEN_PACK_EXTENSIONS = {
@@ -38,4 +39,3 @@ FORBIDDEN_PACK_EXTENSIONS = {
     ".sh",
     ".so",
 }
-

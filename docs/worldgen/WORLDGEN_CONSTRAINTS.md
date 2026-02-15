@@ -60,6 +60,12 @@ It does not change simulation primitives and does not mutate runtime state direc
 - Uses selected seed to drive downstream world artifact compilation.
 - No hidden fallback to unconstrained seed once constraints are selected.
 
+4. Registry artifacts:
+- Canonical registry source: `data/registries/worldgen_constraints_registry.json`.
+- Compiled registry output: `build/registries/worldgen_constraints.registry.json`.
+- Constraints packs contribute artifacts via `contrib_type: worldgen_constraints`.
+- Removing a selected constraints pack must produce deterministic refusal (`REFUSE_WORLDGEN_CONSTRAINTS_NOT_REGISTERED`).
+
 ## Separation of Responsibilities
 
 1. Constraint specification:
@@ -97,8 +103,10 @@ It does not change simulation primitives and does not mutate runtime state direc
 ## Cross-References
 
 - `docs/worldgen/WORLDGEN_PIPELINE.md`
+- `data/registries/worldgen_constraints_registry.json`
 - `schema/worldgen/worldgen_constraints.schema`
 - `schema/worldgen/worldgen_search_plan.schema`
 - `schemas/worldgen_constraints.schema.json`
 - `schemas/worldgen_search_plan.schema.json`
+- `schemas/worldgen_constraints_registry.schema.json`
 - `docs/contracts/refusal_contract.md`

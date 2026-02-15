@@ -67,6 +67,7 @@ REGISTRY_FILE_MAP = {
     "activation_policy_registry_hash": "activation_policy.registry.json",
     "budget_policy_registry_hash": "budget_policy.registry.json",
     "fidelity_policy_registry_hash": "fidelity_policy.registry.json",
+    "worldgen_constraints_registry_hash": "worldgen_constraints.registry.json",
 }
 
 
@@ -151,17 +152,92 @@ def _load_worldgen_module_registry(repo_root: str) -> Tuple[dict, Dict[str, obje
     return payload, {}
 
 
-def _load_constraints_payload(repo_root: str, constraints_file: str, constraints_id: str) -> Tuple[dict, Dict[str, object]]:
-    file_token = str(constraints_file).strip()
-    if not file_token:
-        return {}, refusal(
-            "REFUSE_CONSTRAINTS_FILE_MISSING",
-            "constraints_id was provided without constraints file",
-            "Provide --constraints-file when selecting constraints_id.",
-            {"constraints_id": str(constraints_id)},
+def _resolve_constraints_file_from_registry(
+    repo_root: str,
+    constraints_registry_payload: dict,
+    constraints_id: str,
+) -> Tuple[str, Dict[str, object]]:
+    constraints_rows = constraints_registry_payload.get("constraints")
+    if not isinstance(constraints_rows, list):
+        return "", refusal(
+            "REFUSE_WORLDGEN_CONSTRAINTS_REGISTRY_INVALID",
+            "worldgen constraints registry payload is missing constraints list",
+            "Rebuild registries to produce a valid worldgen constraints registry.",
+            {"registry_file": REGISTRY_FILE_MAP["worldgen_constraints_registry_hash"]},
+            "$.constraints",
+        )
+    requested = str(constraints_id).strip()
+    matches = []
+    for row in sorted(
+        [item for item in constraints_rows if isinstance(item, dict)],
+        key=lambda item: (str(item.get("constraints_id", "")), str(item.get("pack_id", ""))),
+    ):
+        if str(row.get("constraints_id", "")).strip() == requested:
+            matches.append(row)
+
+    if not matches:
+        return "", refusal(
+            "REFUSE_WORLDGEN_CONSTRAINTS_NOT_REGISTERED",
+            "constraints_id is not present in compiled worldgen constraints registry",
+            "Install/select a bundle containing the requested worldgen constraints pack.",
+            {"constraints_id": requested},
             "$.constraints_id",
         )
-    abs_path = os.path.normpath(os.path.abspath(file_token if os.path.isabs(file_token) else os.path.join(repo_root, file_token)))
+    if len(matches) > 1:
+        return "", refusal(
+            "REFUSE_WORLDGEN_CONSTRAINTS_AMBIGUOUS",
+            "constraints_id resolved to multiple pack contributions",
+            "Select a unique constraints_id or remove duplicate pack contributions.",
+            {"constraints_id": requested},
+            "$.constraints_id",
+        )
+
+    path_token = str(matches[0].get("path", "")).strip()
+    if not path_token:
+        return "", refusal(
+            "REFUSE_WORLDGEN_CONSTRAINTS_PATH_MISSING",
+            "compiled worldgen constraints registry entry is missing path",
+            "Rebuild registries after fixing contribution path metadata.",
+            {"constraints_id": requested},
+            "$.constraints.path",
+        )
+    abs_path = os.path.normpath(os.path.join(repo_root, path_token.replace("/", os.sep)))
+    if not os.path.isfile(abs_path):
+        return "", refusal(
+            "REFUSE_WORLDGEN_CONSTRAINTS_PATH_MISSING",
+            "compiled worldgen constraints path is missing on disk",
+            "Restore pack contribution file and rebuild registries.",
+            {"constraints_id": requested, "constraints_path": norm(path_token)},
+            "$.constraints.path",
+        )
+    return abs_path, {}
+
+
+def _load_constraints_payload(
+    repo_root: str,
+    constraints_file: str,
+    constraints_id: str,
+    constraints_registry_payload: dict,
+) -> Tuple[dict, Dict[str, object]]:
+    requested_constraints_id = str(constraints_id).strip()
+    resolved_registry_path = ""
+    if requested_constraints_id:
+        resolved_registry_path, registry_error = _resolve_constraints_file_from_registry(
+            repo_root=repo_root,
+            constraints_registry_payload=constraints_registry_payload,
+            constraints_id=requested_constraints_id,
+        )
+        if registry_error:
+            return {}, registry_error
+
+    file_token = str(constraints_file).strip()
+    if file_token:
+        abs_path = os.path.normpath(
+            os.path.abspath(file_token if os.path.isabs(file_token) else os.path.join(repo_root, file_token))
+        )
+    else:
+        abs_path = resolved_registry_path
+
     payload, err = read_json_object(abs_path)
     if err:
         return {}, refusal(
@@ -186,7 +262,6 @@ def _load_constraints_payload(repo_root: str, constraints_file: str, constraints
             "$.worldgen.constraints",
         )
     payload_constraints_id = str(payload.get("constraints_id", "")).strip()
-    requested_constraints_id = str(constraints_id).strip()
     if requested_constraints_id and requested_constraints_id != payload_constraints_id:
         return {}, refusal(
             "REFUSE_CONSTRAINTS_ID_MISMATCH",
@@ -579,6 +654,45 @@ def create_session_spec(
     selected_seed = str(identity_payload.get("global_seed", ""))
     search_plan_payload = {}
     selected_constraints_id = str(constraints_id).strip()
+
+    registries = lockfile_payload.get("registries")
+    if not isinstance(registries, dict):
+        return refusal(
+            "REFUSE_LOCKFILE_REGISTRY_SECTION_MISSING",
+            "lockfile registries section is missing",
+            "Rebuild lockfile and retry session creation.",
+            {"bundle_id": str(bundle_id)},
+            "$.registries",
+        )
+    budget_registry, budget_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["budget_policy_registry_hash"],
+        expected_hash=str(registries.get("budget_policy_registry_hash", "")),
+    )
+    if budget_registry_error:
+        return budget_registry_error
+    fidelity_registry, fidelity_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["fidelity_policy_registry_hash"],
+        expected_hash=str(registries.get("fidelity_policy_registry_hash", "")),
+    )
+    if fidelity_registry_error:
+        return fidelity_registry_error
+    activation_registry, activation_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["activation_policy_registry_hash"],
+        expected_hash=str(registries.get("activation_policy_registry_hash", "")),
+    )
+    if activation_registry_error:
+        return activation_registry_error
+    worldgen_constraints_registry, worldgen_constraints_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["worldgen_constraints_registry_hash"],
+        expected_hash=str(registries.get("worldgen_constraints_registry_hash", "")),
+    )
+    if worldgen_constraints_registry_error:
+        return worldgen_constraints_registry_error
+
     if selected_constraints_id:
         module_registry_payload, module_registry_error = _load_worldgen_module_registry(repo_root=repo_root)
         if module_registry_error:
@@ -587,6 +701,7 @@ def create_session_spec(
             repo_root=repo_root,
             constraints_file=str(constraints_file),
             constraints_id=selected_constraints_id,
+            constraints_registry_payload=worldgen_constraints_registry,
         )
         if constraints_error:
             return constraints_error
@@ -600,6 +715,35 @@ def create_session_spec(
             return pipeline_result
         search_plan_payload = dict(pipeline_result.get("search_plan") or {})
         selected_seed = str(pipeline_result.get("selected_seed", "")).strip() or selected_seed
+
+    budget_policy, budget_policy_error = _select_policy_entry(
+        registry_payload=budget_registry,
+        key="budget_policies",
+        policy_id=str(budget_policy_id),
+        refusal_code="BUDGET_POLICY_NOT_FOUND",
+        file_name=REGISTRY_FILE_MAP["budget_policy_registry_hash"],
+    )
+    if budget_policy_error:
+        return budget_policy_error
+    fidelity_policy, fidelity_policy_error = _select_policy_entry(
+        registry_payload=fidelity_registry,
+        key="fidelity_policies",
+        policy_id=str(fidelity_policy_id),
+        refusal_code="FIDELITY_POLICY_NOT_FOUND",
+        file_name=REGISTRY_FILE_MAP["fidelity_policy_registry_hash"],
+    )
+    if fidelity_policy_error:
+        return fidelity_policy_error
+    activation_policy_id = str(budget_policy.get("activation_policy_id", "")).strip()
+    activation_policy, activation_policy_error = _select_policy_entry(
+        registry_payload=activation_registry,
+        key="activation_policies",
+        policy_id=activation_policy_id,
+        refusal_code="ACTIVATION_POLICY_NOT_FOUND",
+        file_name=REGISTRY_FILE_MAP["activation_policy_registry_hash"],
+    )
+    if activation_policy_error:
+        return activation_policy_error
 
     session_payload = {
         "schema_version": "1.0.0",
@@ -641,66 +785,6 @@ def create_session_spec(
             {"schema_id": "session_spec"},
             "$.session_spec",
         )
-
-    registries = lockfile_payload.get("registries")
-    if not isinstance(registries, dict):
-        return refusal(
-            "REFUSE_LOCKFILE_REGISTRY_SECTION_MISSING",
-            "lockfile registries section is missing",
-            "Rebuild lockfile and retry session creation.",
-            {"bundle_id": str(bundle_id)},
-            "$.registries",
-        )
-    budget_registry, budget_registry_error = _load_registry_payload(
-        repo_root=repo_root,
-        file_name=REGISTRY_FILE_MAP["budget_policy_registry_hash"],
-        expected_hash=str(registries.get("budget_policy_registry_hash", "")),
-    )
-    if budget_registry_error:
-        return budget_registry_error
-    fidelity_registry, fidelity_registry_error = _load_registry_payload(
-        repo_root=repo_root,
-        file_name=REGISTRY_FILE_MAP["fidelity_policy_registry_hash"],
-        expected_hash=str(registries.get("fidelity_policy_registry_hash", "")),
-    )
-    if fidelity_registry_error:
-        return fidelity_registry_error
-    activation_registry, activation_registry_error = _load_registry_payload(
-        repo_root=repo_root,
-        file_name=REGISTRY_FILE_MAP["activation_policy_registry_hash"],
-        expected_hash=str(registries.get("activation_policy_registry_hash", "")),
-    )
-    if activation_registry_error:
-        return activation_registry_error
-
-    budget_policy, budget_policy_error = _select_policy_entry(
-        registry_payload=budget_registry,
-        key="budget_policies",
-        policy_id=str(budget_policy_id),
-        refusal_code="BUDGET_POLICY_NOT_FOUND",
-        file_name=REGISTRY_FILE_MAP["budget_policy_registry_hash"],
-    )
-    if budget_policy_error:
-        return budget_policy_error
-    fidelity_policy, fidelity_policy_error = _select_policy_entry(
-        registry_payload=fidelity_registry,
-        key="fidelity_policies",
-        policy_id=str(fidelity_policy_id),
-        refusal_code="FIDELITY_POLICY_NOT_FOUND",
-        file_name=REGISTRY_FILE_MAP["fidelity_policy_registry_hash"],
-    )
-    if fidelity_policy_error:
-        return fidelity_policy_error
-    activation_policy_id = str(budget_policy.get("activation_policy_id", "")).strip()
-    activation_policy, activation_policy_error = _select_policy_entry(
-        registry_payload=activation_registry,
-        key="activation_policies",
-        policy_id=activation_policy_id,
-        refusal_code="ACTIVATION_POLICY_NOT_FOUND",
-        file_name=REGISTRY_FILE_MAP["activation_policy_registry_hash"],
-    )
-    if activation_policy_error:
-        return activation_policy_error
 
     camera_assembly = _camera_seed_from_bundle(repo_root=repo_root, bundle_id=str(bundle_id))
     state_payload = _initial_universe_state(

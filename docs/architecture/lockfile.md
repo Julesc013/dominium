@@ -38,6 +38,10 @@ Define deterministic bundle composition output for pack resolution and derived r
   - `law_registry_hash`
   - `experience_registry_hash`
   - `lens_registry_hash`
+  - `activation_policy_registry_hash`
+  - `budget_policy_registry_hash`
+  - `fidelity_policy_registry_hash`
+  - `worldgen_constraints_registry_hash`
   - `astronomy_catalog_index_hash`
   - `site_registry_index_hash`
   - `ui_registry_hash`
@@ -108,6 +112,10 @@ Validation rejects deterministically on:
     "law_registry_hash": "9815331875cbf9ae27bd9ad39f92b172ac5974367af0ff42751d6bde16e2ad49",
     "experience_registry_hash": "e6f832298d130c521ae93e254e0822a30df48ea63cdf6ec5c5b1d2243918ba6a",
     "lens_registry_hash": "2d1fc3eeb12dcc53d1c475f410873c1e06ae5b9047386ae3b4e5a6f6a1fc56b8",
+    "activation_policy_registry_hash": "451dfbe63ced0fcf6b9f202fdbf1e9f59326df37b91889e2fc7a2fd2db0ceab9",
+    "budget_policy_registry_hash": "e85d05339d8fcaf3a6054eb627f4dd449f8ec04ff8d10e36bf2945ad8a3067f8",
+    "fidelity_policy_registry_hash": "97d4ca73a7a36ddf5b6ce0f3eab78fbfeee7f7cbce9ea89eefe7eb8d4e5779c4",
+    "worldgen_constraints_registry_hash": "24d6357efa60df4c6ad6604ee5923077408b243ef884d8b1c4b4e89eb66ecf71",
     "astronomy_catalog_index_hash": "17d6d7e8f8fb7fb353555878beb42356ca5a5e628143ae3b4b121220c9b8e482",
     "site_registry_index_hash": "3c01c5f0bd3706be54fa2c4d7cc8a2d2255cfb3fa9b7d58808747bcd74d2718d",
     "ui_registry_hash": "c9457d0f9f67cd0deda35a90c4848136b83303ba5231dc152747dda6383294f3"

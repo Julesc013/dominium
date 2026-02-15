@@ -63,6 +63,7 @@ Supported contribution types:
 - `ui_windows`
 - `assets`
 - `scenario_spec`
+- `worldgen_constraints`
 
 Each contribution entry requires:
 - `type`

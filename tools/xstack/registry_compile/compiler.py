@@ -866,6 +866,100 @@ def _policy_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], Lis
     return activation_rows, budget_rows, fidelity_rows, errors
 
 
+def _worldgen_constraints_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict]]:
+    rows: List[dict] = []
+    errors: List[dict] = []
+    for row in contrib:
+        if str(row.get("contrib_type", "")) != "worldgen_constraints":
+            continue
+        payload, err = _payload_from_contribution(row)
+        if err:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_worldgen_constraints_payload",
+                    "message": err,
+                    "path": "$.worldgen_constraints",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="worldgen_constraints",
+            payload=payload,
+            path=str(row.get("path", "")),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+
+        constraints_id = str(payload.get("constraints_id", "")).strip()
+        contribution_id = str(row.get("id", "")).strip()
+        if constraints_id != contribution_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.worldgen_constraints_id_mismatch",
+                    "message": "constraints payload id '{}' does not match contribution id '{}'".format(
+                        constraints_id,
+                        contribution_id,
+                    ),
+                    "path": "$.worldgen_constraints.constraints_id",
+                }
+            )
+            continue
+
+        extensions = payload.get("extensions")
+        if not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.worldgen_constraints_extensions_missing",
+                    "message": "worldgen constraints '{}' must include extensions object with description/status".format(
+                        constraints_id
+                    ),
+                    "path": "$.worldgen_constraints.extensions",
+                }
+            )
+            continue
+        description = str(extensions.get("description", "")).strip()
+        status = str(extensions.get("status", "")).strip()
+        if not description:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.worldgen_constraints_description_missing",
+                    "message": "worldgen constraints '{}' must declare extensions.description".format(constraints_id),
+                    "path": "$.worldgen_constraints.extensions.description",
+                }
+            )
+            continue
+        if status not in ("active", "experimental", "deprecated"):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.worldgen_constraints_status_invalid",
+                    "message": "worldgen constraints '{}' must declare extensions.status as active|experimental|deprecated".format(
+                        constraints_id
+                    ),
+                    "path": "$.worldgen_constraints.extensions.status",
+                }
+            )
+            continue
+
+        rows.append(
+            {
+                "constraints_id": constraints_id,
+                "description": description,
+                "pack_id": str(row.get("pack_id", "")).strip(),
+                "status": status,
+                "path": str(row.get("path", "")).strip(),
+                "deterministic_seed_policy": str(payload.get("deterministic_seed_policy", "")).strip(),
+                "candidate_count": int(payload.get("candidate_count", 0) or 0),
+                "tie_break_policy": str(payload.get("tie_break_policy", "")).strip(),
+                "refusal_codes": _sorted_unique_strings(payload.get("refusal_codes") or []),
+            }
+        )
+
+    rows = sorted(rows, key=lambda item: (str(item.get("constraints_id", "")), str(item.get("pack_id", ""))))
+    return rows, errors
+
+
 def _ui_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict]]:
     selector_re = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:\[(?:\d+|\*)\])?(?:\.[A-Za-z_][A-Za-z0-9_]*(?:\[(?:\d+|\*)\])?)*$")
 
@@ -1048,6 +1142,10 @@ def compile_bundle(
         contributions,
         schema_root=schema_root,
     )
+    worldgen_constraints_rows, worldgen_constraints_errors = _worldgen_constraints_rows(
+        contributions,
+        schema_root=schema_root,
+    )
     astronomy_rows, reference_frame_rows, site_rows, astronomy_errors = _astronomy_rows(
         contributions,
         schema_root=schema_root,
@@ -1059,6 +1157,7 @@ def compile_bundle(
         + experience_errors
         + lens_errors
         + policy_errors
+        + worldgen_constraints_errors
         + astronomy_errors
         + ui_errors
     )
@@ -1117,6 +1216,13 @@ def compile_bundle(
             "fidelity_policies": fidelity_policy_rows,
         }
     )
+    worldgen_constraints_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "constraints": worldgen_constraints_rows,
+        }
+    )
     astronomy_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -1150,6 +1256,7 @@ def compile_bundle(
         "activation_policy_registry": ("activation_policy_registry", activation_policy_payload),
         "budget_policy_registry": ("budget_policy_registry", budget_policy_payload),
         "fidelity_policy_registry": ("fidelity_policy_registry", fidelity_policy_payload),
+        "worldgen_constraints_registry": ("worldgen_constraints_registry", worldgen_constraints_payload),
         "astronomy_catalog_index": ("astronomy_catalog_index", astronomy_payload),
         "site_registry_index": ("site_registry_index", site_payload),
         "ui_registry": ("ui_registry", ui_payload),
@@ -1164,6 +1271,7 @@ def compile_bundle(
         "activation_policy_registry",
         "budget_policy_registry",
         "fidelity_policy_registry",
+        "worldgen_constraints_registry",
         "astronomy_catalog_index",
         "site_registry_index",
         "ui_registry",
@@ -1201,6 +1309,7 @@ def compile_bundle(
             "activation_policy_registry_hash": registry_hashes["activation_policy_registry_hash"],
             "budget_policy_registry_hash": registry_hashes["budget_policy_registry_hash"],
             "fidelity_policy_registry_hash": registry_hashes["fidelity_policy_registry_hash"],
+            "worldgen_constraints_registry_hash": registry_hashes["worldgen_constraints_registry_hash"],
             "astronomy_catalog_index_hash": registry_hashes["astronomy_catalog_index_hash"],
             "site_registry_index_hash": registry_hashes["site_registry_index_hash"],
             "ui_registry_hash": registry_hashes["ui_registry_hash"],

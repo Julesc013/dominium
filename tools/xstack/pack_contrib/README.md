@@ -12,6 +12,7 @@ Parse, validate, and deterministically order typed contributions declared by pac
 
 ## Invariants
 - Supported contribution types are explicit.
+- Supported contribution types: `assets`, `domain`, `experience_profile`, `law_profile`, `lens`, `registry_entries`, `scenario_spec`, `ui_windows`, `worldgen_constraints`.
 - Contribution IDs are globally unique across loaded packs.
 - Contribution paths must exist inside owning pack directories.
 - Output order is deterministic by `(contrib_type, id, pack_id)`.
