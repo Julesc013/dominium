@@ -24,6 +24,8 @@ from analyzers import c5_experience_profile_drift
 from analyzers import c6_authority_bypass_smell
 from analyzers import c7_lens_bypass_smell
 from analyzers import c8_run_meta_input_smell
+from analyzers import d1_constraint_drift
+from analyzers import d2_seed_policy
 
 
 ANALYZERS = (
@@ -51,6 +53,8 @@ ANALYZERS = (
     c6_authority_bypass_smell,
     c7_lens_bypass_smell,
     c8_run_meta_input_smell,
+    d1_constraint_drift,
+    d2_seed_policy,
 )
 
 

@@ -47,6 +47,7 @@ RESERVED_WORDS = (
 SCAN_ROOTS = (
     "client/observability",
     "client/presentation",
+    "worldgen",
     "tools/xstack/compatx",
     "tools/xstack/pack_loader",
     "tools/xstack/pack_contrib",
@@ -63,14 +64,19 @@ SCAN_ROOTS = (
     "tools/xstack/bundle_validate.py",
     "tools/xstack/session_create.py",
     "tools/xstack/session_boot.py",
+    "tools/worldgen_offline",
     "schemas",
+    "schema/worldgen",
     "data/registries/domain_registry.json",
     "data/registries/domain_contract_registry.json",
     "data/registries/solver_registry.json",
+    "data/registries/worldgen_constraints_registry.json",
+    "data/registries/worldgen_module_registry.json",
     "packs",
     "bundles",
     "docs/contracts",
     "docs/testing",
+    "docs/worldgen",
     "docs/architecture/registry_compile.md",
     "docs/architecture/lockfile.md",
     "docs/architecture/pack_system.md",
@@ -89,6 +95,7 @@ TEXT_EXTENSIONS = {
     ".md",
     ".py",
     ".schema.json",
+    ".schema",
     ".txt",
     ".yaml",
     ".yml",
@@ -132,6 +139,40 @@ DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
     "schemas/domain_",
     "schemas/solver_registry.schema.json",
     "tools/domain/",
+)
+
+WORLDGEN_CONSTRAINT_REQUIRED_FILES = (
+    "schemas/worldgen_constraints.schema.json",
+    "schemas/worldgen_search_plan.schema.json",
+    "data/registries/worldgen_constraints_registry.json",
+)
+
+WORLDGEN_CONSTRAINT_LITERAL_ALLOWED_PATH_PREFIXES = (
+    "packs/",
+    "bundles/",
+    "data/registries/worldgen_constraints_registry.json",
+    "docs/worldgen/",
+    "schema/worldgen/",
+    "schemas/",
+    "schemas/worldgen_constraints.schema.json",
+    "schemas/worldgen_search_plan.schema.json",
+    "schemas/worldgen_constraints_registry.schema.json",
+    "tools/xstack/testx/tests/",
+    "tools/worldgen_offline/",
+    "worldgen/core/constraint_solver.py",
+    "worldgen/core/constraint_commands.py",
+)
+
+WORLDGEN_SEED_POLICY_FORBIDDEN_TOKENS = (
+    "import random",
+    "from random import",
+    "random.",
+    "import secrets",
+    "from secrets import",
+    "secrets.",
+    "uuid.uuid4(",
+    "time.time(",
+    "datetime.now(",
 )
 
 AUDITX_FINDINGS_PATH = "docs/audit/auditx/FINDINGS.json"
@@ -550,6 +591,349 @@ def _append_domain_foundation_invariant_findings(
         )
 
 
+def _worldgen_constraint_contributions(repo_root: str) -> List[Dict[str, str]]:
+    packs_root = os.path.join(repo_root, "packs")
+    if not os.path.isdir(packs_root):
+        return []
+
+    rows: List[Dict[str, str]] = []
+    for walk_root, dirs, files in os.walk(packs_root):
+        dirs[:] = sorted(dirs)
+        if "pack.json" not in files:
+            continue
+        rel_manifest = _norm(os.path.relpath(os.path.join(walk_root, "pack.json"), repo_root))
+        payload, err = _load_json_object(repo_root, rel_manifest)
+        if err:
+            continue
+        pack_id = str(payload.get("pack_id", "")).strip()
+        contributions = payload.get("contributions")
+        if not isinstance(contributions, list):
+            continue
+        for idx, row in enumerate(contributions):
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("type", "")).strip() != "worldgen_constraints":
+                continue
+            contribution_id = str(row.get("id", "")).strip()
+            contribution_path = str(row.get("path", "")).strip()
+            rows.append(
+                {
+                    "manifest": rel_manifest,
+                    "pack_id": pack_id,
+                    "contribution_id": contribution_id,
+                    "contribution_path": contribution_path,
+                    "contribution_index": str(idx),
+                }
+            )
+    return sorted(
+        rows,
+        key=lambda item: (
+            str(item.get("pack_id", "")),
+            str(item.get("contribution_id", "")),
+            str(item.get("contribution_path", "")),
+            str(item.get("manifest", "")),
+        ),
+    )
+
+
+def _append_worldgen_constraint_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    for rel_path in WORLDGEN_CONSTRAINT_REQUIRED_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required worldgen constraints contract file is missing",
+                    rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+                )
+            )
+
+    try:
+        from tools.xstack.compatx.validator import validate_instance
+    except Exception:
+        validate_instance = None
+
+    registry_payload, registry_error = _load_json_object(repo_root, "data/registries/worldgen_constraints_registry.json")
+    registry_entries = (((registry_payload.get("record") or {}).get("entries")) or []) if not registry_error else []
+    registry_by_id: Dict[str, Dict[str, object]] = {}
+    if registry_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/worldgen_constraints_registry.json",
+                line_number=1,
+                snippet="",
+                message="worldgen constraints registry JSON is invalid",
+                rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+            )
+        )
+    elif not isinstance(registry_entries, list):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/worldgen_constraints_registry.json",
+                line_number=1,
+                snippet="",
+                message="worldgen constraints registry entries list is missing",
+                rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+            )
+        )
+    else:
+        for idx, row in enumerate(registry_entries):
+            if not isinstance(row, dict):
+                continue
+            constraints_id = str(row.get("constraints_id", "")).strip()
+            if not constraints_id:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/worldgen_constraints_registry.json",
+                        line_number=1,
+                        snippet="",
+                        message="entry[{}] missing constraints_id".format(idx),
+                        rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+                    )
+                )
+                continue
+            if constraints_id in registry_by_id:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/worldgen_constraints_registry.json",
+                        line_number=1,
+                        snippet=constraints_id,
+                        message="duplicate constraints_id '{}' in registry".format(constraints_id),
+                        rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+                    )
+                )
+                continue
+            registry_by_id[constraints_id] = row
+
+    contributions = _worldgen_constraint_contributions(repo_root)
+    contribution_ids = set()
+    for row in contributions:
+        manifest = str(row.get("manifest", ""))
+        pack_id = str(row.get("pack_id", ""))
+        constraints_id = str(row.get("contribution_id", ""))
+        contribution_path = str(row.get("contribution_path", ""))
+        contribution_ids.add(constraints_id)
+        if constraints_id not in registry_by_id:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=manifest,
+                    line_number=1,
+                    snippet=constraints_id,
+                    message="worldgen constraints contribution id is missing from registry",
+                    rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+                )
+            )
+            continue
+        registry_entry = dict(registry_by_id.get(constraints_id) or {})
+        expected_pack_id = str(registry_entry.get("pack_id", "")).strip()
+        if expected_pack_id and pack_id and expected_pack_id != pack_id:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=manifest,
+                    line_number=1,
+                    snippet=constraints_id,
+                    message="constraints registry pack_id mismatch for '{}'".format(constraints_id),
+                    rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+                )
+            )
+
+        pack_manifest_dir = os.path.dirname(manifest)
+        payload_rel_path = _norm(os.path.join(pack_manifest_dir, contribution_path))
+        payload_abs_path = os.path.join(repo_root, payload_rel_path.replace("/", os.sep))
+        if not os.path.isfile(payload_abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=manifest,
+                    line_number=1,
+                    snippet=contribution_path,
+                    message="worldgen constraints contribution path does not exist",
+                    rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+                )
+            )
+            continue
+
+        payload, payload_error = _load_json_object(repo_root, payload_rel_path)
+        if payload_error:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=payload_rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="worldgen constraints payload JSON is invalid",
+                    rule_id="INV-CONSTRAINT-SCHEMA-VALID",
+                )
+            )
+            continue
+
+        if validate_instance is None:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="tools/xstack/compatx/validator.py",
+                    line_number=1,
+                    snippet="",
+                    message="unable to import schema validator for worldgen constraints",
+                    rule_id="INV-CONSTRAINT-SCHEMA-VALID",
+                )
+            )
+        else:
+            checked = validate_instance(
+                repo_root=repo_root,
+                schema_name="worldgen_constraints",
+                payload=payload,
+                strict_top_level=True,
+            )
+            if not bool(checked.get("valid", False)):
+                for err in list(checked.get("errors") or [])[:10]:
+                    if not isinstance(err, dict):
+                        continue
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=payload_rel_path,
+                            line_number=1,
+                            snippet=str(err.get("path", "")),
+                            message="worldgen constraints schema violation: {}".format(str(err.get("message", ""))),
+                            rule_id="INV-CONSTRAINT-SCHEMA-VALID",
+                        )
+                    )
+
+        policy = str(payload.get("deterministic_seed_policy", "")).strip()
+        try:
+            candidate_count = int(payload.get("candidate_count", 0))
+        except (TypeError, ValueError):
+            candidate_count = 0
+        refusal_codes = sorted(
+            set(str(item).strip() for item in (payload.get("refusal_codes") or []) if str(item).strip())
+        )
+        if policy not in ("single", "multi"):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=payload_rel_path,
+                    line_number=1,
+                    snippet=policy,
+                    message="deterministic_seed_policy must be single or multi",
+                    rule_id="INV-DETERMINISTIC-SEED-POLICY",
+                )
+            )
+        if policy == "single" and candidate_count != 1:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=payload_rel_path,
+                    line_number=1,
+                    snippet="candidate_count={}".format(candidate_count),
+                    message="single deterministic_seed_policy requires candidate_count == 1",
+                    rule_id="INV-DETERMINISTIC-SEED-POLICY",
+                )
+            )
+        if candidate_count < 1:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=payload_rel_path,
+                    line_number=1,
+                    snippet="candidate_count={}".format(candidate_count),
+                    message="candidate_count must be >= 1 for deterministic search",
+                    rule_id="INV-DETERMINISTIC-SEED-POLICY",
+                )
+            )
+        missing_refusals = sorted(
+            set(("refusal.constraints_unsatisfiable", "refusal.search_exhausted")) - set(refusal_codes)
+        )
+        if missing_refusals:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=payload_rel_path,
+                    line_number=1,
+                    snippet=",".join(missing_refusals),
+                    message="constraints artifact missing required refusal_codes",
+                    rule_id="INV-DETERMINISTIC-SEED-POLICY",
+                )
+            )
+
+    for constraints_id in sorted(set(registry_by_id.keys()) - set(contribution_ids)):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/worldgen_constraints_registry.json",
+                line_number=1,
+                snippet=constraints_id,
+                message="registry constraints_id has no matching worldgen_constraints pack contribution",
+                rule_id="INV-WORLDGEN-CONSTRAINTS-REGISTERED",
+            )
+        )
+
+    constraint_solver_rel = "worldgen/core/constraint_solver.py"
+    for line_no, line in _iter_lines(repo_root, constraint_solver_rel):
+        lower = str(line).lower()
+        for token in WORLDGEN_SEED_POLICY_FORBIDDEN_TOKENS:
+            if token in lower:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=constraint_solver_rel,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="forbidden nondeterministic seed source token '{}' detected".format(token),
+                        rule_id="INV-DETERMINISTIC-SEED-POLICY",
+                    )
+                )
+
+
+def _append_constraint_hardcode_findings(
+    findings: List[Dict[str, object]],
+    rel_path: str,
+    line_no: int,
+    line: str,
+    profile: str,
+) -> None:
+    if rel_path == "tools/xstack/repox/check.py":
+        return
+    rel_norm = _norm(rel_path)
+    if any(rel_norm.startswith(prefix) for prefix in WORLDGEN_CONSTRAINT_LITERAL_ALLOWED_PATH_PREFIXES):
+        return
+    match = re.search(r'["\'](constraints\.[A-Za-z0-9_.-]+)["\']', line)
+    if not match:
+        return
+    token = str(match.group(1))
+    if token.startswith("constraints.worldgen."):
+        return
+    lower = line.lower()
+    if "constraints_id" not in lower and "constraints-id" not in lower:
+        return
+    severity = "warn" if profile == "FAST" else _invariant_severity(profile)
+    findings.append(
+        _finding(
+            severity=severity,
+            file_path=rel_path,
+            line_number=line_no,
+            snippet=line.strip()[:140],
+            message="hardcoded worldgen constraints_id literal detected outside registry/pack declarations",
+            rule_id="INV-NO-HARDCODED-CONSTRAINT-LOGIC",
+        )
+    )
+
+
 def _git_status_paths(repo_root: str) -> List[str]:
     try:
         proc = subprocess.run(
@@ -963,6 +1347,7 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
             _append_mode_flag_findings(findings, rel_path, line_no, line, token)
             _append_reserved_misuse_findings(findings, rel_path, line_no, line, token)
             _append_domain_token_hardcode_findings(findings, rel_path, line_no, line, token)
+            _append_constraint_hardcode_findings(findings, rel_path, line_no, line, token)
             _append_strict_placeholder_findings(findings, rel_path, line_no, line, token)
             _append_renderer_truth_boundary_findings(findings, rel_path, line_no, line, token)
     _append_session_pipeline_invariant_findings(
@@ -971,6 +1356,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_domain_foundation_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_worldgen_constraint_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
