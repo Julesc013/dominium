@@ -1,0 +1,37 @@
+SCHEMA: scale/domain_contract.schema
+schema_id: dominium.schema.scale.domain_contract
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical structural contract rows bound to domains and solvers.
+- Declare conservation/epistemic/transition requirements and refusal behavior.
+
+NON-SEMANTICS:
+- Contract rows declare invariants only.
+- Contract rows do not implement enforcement algorithms.
+
+REQUIRED SHAPE:
+record domain_contract_registry
+  required:
+    - schema_id: id
+    - schema_version: semver
+    - records: [contract_record]
+
+record contract_record
+  required:
+    - contract_id: id
+    - human_name: text
+    - conservation_tags: [tag]
+    - invariant_notes: text
+    - violation_refusal_codes: [id]
+    - transition_requirements: [text]
+    - extensions: map
+
+INVARIANTS:
+- contract_id MUST be stable and namespaced (`dom.contract.*`).
+- violation_refusal_codes MUST be explicit and deterministic.
+- transition_requirements MUST be explicit; no implicit behavior allowed.
+
+MIGRATION:
+- Contract rename/removal requires compat workflow and schema/version updates.
