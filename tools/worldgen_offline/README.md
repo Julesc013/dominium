@@ -10,6 +10,7 @@ Tools:
 - `epistemic_simulator.py` - builds subjective snapshot metadata from knowledge.
 - `pack_diff_visualizer.py` - reports capability overlaps and refinement conflicts.
 - `world_definition_cli.py` - generates, validates, and diffs WorldDefinitions.
+- `constraints_cli.py` - deterministic command surface for constraints set/clear/preview/commit.
 
 All outputs are optional and reproducible. Delete `build/cache/assets/` at any
 time without affecting packs or saves.

@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0.0",
+  "workspace_id": "workspace.worldgen.constraints.preview",
+  "title": "WorldGen Constraints Preview",
+  "description": "UI IR fragment for deterministic constraints preview and candidate comparison.",
+  "bindings": {
+    "source": "worldgen.search.preview",
+    "ordering": "rank_then_seed"
+  },
+  "panels": [
+    {
+      "panel_id": "panel.constraints",
+      "kind": "container",
+      "layout": "vertical",
+      "children": [
+        {
+          "widget_id": "constraints.id",
+          "kind": "text",
+          "label": "Constraints ID",
+          "binding": "constraints_id"
+        },
+        {
+          "widget_id": "constraints.selected_seed",
+          "kind": "text",
+          "label": "Selected Seed",
+          "binding": "selected_seed"
+        },
+        {
+          "widget_id": "constraints.plan_hash",
+          "kind": "text",
+          "label": "Search Plan Hash",
+          "binding": "search_plan_hash"
+        }
+      ]
+    },
+    {
+      "panel_id": "panel.candidate_table",
+      "kind": "table",
+      "label": "Candidate Comparison",
+      "binding": "candidate_scores",
+      "columns": [
+        "rank",
+        "seed",
+        "hard_pass",
+        "soft_score",
+        "hard_failures"
+      ],
+      "sort_order": [
+        "rank",
+        "seed"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "action.constraints.set",
+      "command_id": "worldgen.constraints.set"
+    },
+    {
+      "action_id": "action.constraints.clear",
+      "command_id": "worldgen.constraints.clear"
+    },
+    {
+      "action_id": "action.search.preview",
+      "command_id": "worldgen.search.preview"
+    },
+    {
+      "action_id": "action.search.commit",
+      "command_id": "worldgen.search.commit"
+    }
+  ]
+}
