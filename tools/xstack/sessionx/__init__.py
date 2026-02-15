@@ -2,6 +2,7 @@
 
 from .creator import create_session_spec  # noqa: F401
 from .observation import observe_truth, perceived_model_hash  # noqa: F401
+from .pipeline_contract import load_session_pipeline_contract  # noqa: F401
 from .process_runtime import execute_intent, replay_intent_script  # noqa: F401
 from .render_model import build_render_model  # noqa: F401
 from .runner import boot_session_spec  # noqa: F401
