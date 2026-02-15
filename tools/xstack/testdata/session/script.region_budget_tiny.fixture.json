@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "script_id": "script.lab.region_budget_tiny.v1",
+  "intents": [
+    {
+      "intent_id": "intent.budget.001",
+      "process_id": "process.camera_teleport",
+      "inputs": {
+        "target_object_id": "object.milky_way"
+      }
+    },
+    {
+      "intent_id": "intent.budget.002",
+      "process_id": "process.region_management_tick",
+      "inputs": {}
+    },
+    {
+      "intent_id": "intent.budget.003",
+      "process_id": "process.camera_teleport",
+      "inputs": {
+        "target_object_id": "object.sol_system"
+      }
+    },
+    {
+      "intent_id": "intent.budget.004",
+      "process_id": "process.region_management_tick",
+      "inputs": {}
+    },
+    {
+      "intent_id": "intent.budget.005",
+      "process_id": "process.camera_teleport",
+      "inputs": {
+        "target_object_id": "object.earth"
+      }
+    },
+    {
+      "intent_id": "intent.budget.006",
+      "process_id": "process.region_management_tick",
+      "inputs": {}
+    }
+  ]
+}

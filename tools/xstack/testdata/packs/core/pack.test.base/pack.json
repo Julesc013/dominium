@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.test.base",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [],
+  "contribution_types": [
+    "registry_entries"
+  ],
+  "contributions": [
+    {
+      "type": "registry_entries",
+      "id": "registry.test.base",
+      "path": "data/registry.base.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.test.base.v1",
+  "signature_status": "verified"
+}
+

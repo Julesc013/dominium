@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "bundle_id": "bundle.base.lab",
+  "description": "Fixture bundle for testdata packs used by deterministic TestX runs.",
+  "pack_ids": [
+    "pack.test.base",
+    "pack.test.law",
+    "pack.test.domain",
+    "pack.test.experience"
+  ],
+  "optional_pack_ids": [
+    "pack.test.catalog"
+  ]
+}

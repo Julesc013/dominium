@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "universe_id": "universe.fixture.example",
+  "save_id": "save.fixture.example",
+  "bundle_id": "bundle.base.lab",
+  "scenario_id": "scenario.lab.galaxy_nav",
+  "mission_id": null,
+  "experience_id": "profile.lab.developer",
+  "parameter_bundle_id": "params.lab.placeholder",
+  "authority_context": {
+    "authority_origin": "client",
+    "experience_id": "profile.lab.developer",
+    "law_profile_id": "law.lab.unrestricted",
+    "entitlements": [
+      "session.boot",
+      "entitlement.camera_control",
+      "entitlement.teleport",
+      "entitlement.time_control",
+      "entitlement.inspect",
+      "lens.nondiegetic.access",
+      "ui.window.lab.nav"
+    ],
+    "epistemic_scope": {
+      "scope_id": "epistemic.lab.placeholder",
+      "visibility_level": "placeholder"
+    },
+    "privilege_level": "operator"
+  },
+  "pack_lock_hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "budget_policy_id": "policy.budget.default_lab",
+  "fidelity_policy_id": "policy.fidelity.default_lab",
+  "deterministic_rng_roots": [
+    {
+      "stream_name": "rng.session.core",
+      "root_seed": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ]
+}

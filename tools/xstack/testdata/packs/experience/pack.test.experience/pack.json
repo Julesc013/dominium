@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.test.experience",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.test.domain@1.0.0",
+    "pack.test.law@1.0.0"
+  ],
+  "contribution_types": [
+    "experience_profile",
+    "scenario_spec",
+    "ui_windows"
+  ],
+  "contributions": [
+    {
+      "type": "experience_profile",
+      "id": "experience.test.lab",
+      "path": "data/experience.profile.json"
+    },
+    {
+      "type": "scenario_spec",
+      "id": "scenario.test.lab",
+      "path": "scenarios/lab.json"
+    },
+    {
+      "type": "ui_windows",
+      "id": "ui.window.test.lab",
+      "path": "ui/window.lab.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.test.experience.v1",
+  "signature_status": "signed"
+}
+

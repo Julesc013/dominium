@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "lens_id": "lens.test.debug",
+  "lens_type": "nondiegetic",
+  "transform_description": "Test nondiegetic debug projection requiring explicit entitlement.",
+  "required_entitlements": [
+    "ui.debug.overlay"
+  ],
+  "epistemic_constraints": {
+    "visibility_policy": "admin_debug",
+    "max_resolution_tier": 4
+  }
+}
