@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "global_seed": "dominium.lab.galaxy.seed.0001",
+  "physical_constants": {
+    "gravitational_constant": 6.6743e-11,
+    "speed_of_light_mps": 299792458
+  },
+  "base_domain_bindings": [
+    "domain.navigation",
+    "domain.astronomy"
+  ],
+  "initial_scenario_id": "scenario.lab.galaxy_nav",
+  "compatibility_version": "1.0.0",
+  "identity_hash": "5ce1f4975ab8e443664f94f79e4a00c3d54f14ab1ec691e4d8f9f646d159c111"
+}
+

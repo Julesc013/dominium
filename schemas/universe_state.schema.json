@@ -1,0 +1,562 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Universe State Schema",
+  "version": "1.0.0",
+  "description": "Canonical mutable universe state snapshot contract for deterministic tooling.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A1/A2/A6",
+    "docs/canon/glossary_v1.md UniverseState",
+    "docs/roadmap/milestone_lab_galaxy.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "simulation_time",
+    "agent_states",
+    "world_assemblies",
+    "active_law_references",
+    "session_references",
+    "history_anchors"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "simulation_time": {
+      "type": "object",
+      "required": [
+        "tick",
+        "timestamp_utc"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        }
+      }
+    },
+    "agent_states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "agent_id",
+          "state_hash"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "agent_id": {
+            "type": "string"
+          },
+          "state_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "world_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "active_law_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "session_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "history_anchors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "camera_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "assembly_id",
+          "frame_id",
+          "position_mm",
+          "orientation_mdeg",
+          "velocity_mm_per_tick",
+          "lens_id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "assembly_id": {
+            "type": "string"
+          },
+          "frame_id": {
+            "type": "string"
+          },
+          "position_mm": {
+            "type": "object",
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "x": {
+                "type": "integer"
+              },
+              "y": {
+                "type": "integer"
+              },
+              "z": {
+                "type": "integer"
+              }
+            }
+          },
+          "orientation_mdeg": {
+            "type": "object",
+            "required": [
+              "yaw",
+              "pitch",
+              "roll"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "yaw": {
+                "type": "integer"
+              },
+              "pitch": {
+                "type": "integer"
+              },
+              "roll": {
+                "type": "integer"
+              }
+            }
+          },
+          "velocity_mm_per_tick": {
+            "type": "object",
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "x": {
+                "type": "integer"
+              },
+              "y": {
+                "type": "integer"
+              },
+              "z": {
+                "type": "integer"
+              }
+            }
+          },
+          "lens_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "time_control": {
+      "type": "object",
+      "required": [
+        "rate_permille",
+        "paused"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "rate_permille": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "paused": {
+          "type": "boolean"
+        },
+        "accumulator_permille": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        }
+      }
+    },
+    "process_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "log_index",
+          "process_id",
+          "intent_id",
+          "authority_origin",
+          "input_hash",
+          "state_hash_anchor",
+          "tick",
+          "rng_usage"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "log_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "process_id": {
+            "type": "string"
+          },
+          "intent_id": {
+            "type": "string"
+          },
+          "authority_origin": {
+            "type": "string"
+          },
+          "input_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "state_hash_anchor": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "rng_usage": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "interest_regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "region_id",
+          "anchor_object_id",
+          "active",
+          "current_fidelity_tier",
+          "last_transition_tick"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "region_id": {
+            "type": "string"
+          },
+          "anchor_object_id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "current_fidelity_tier": {
+            "type": "string",
+            "enum": [
+              "coarse",
+              "medium",
+              "fine"
+            ]
+          },
+          "last_transition_tick": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "macro_capsules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "capsule_id",
+          "covers_object_id",
+          "conserved_quantities",
+          "fidelity_representation",
+          "collapsed_micro_state_hash"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "capsule_id": {
+            "type": "string"
+          },
+          "covers_object_id": {
+            "type": "string"
+          },
+          "conserved_quantities": {
+            "type": "object",
+            "required": [
+              "mass_stub",
+              "entity_count"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "mass_stub": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "entity_count": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "fidelity_representation": {
+            "type": "object",
+            "required": [
+              "tier",
+              "summary"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "tier": {
+                "type": "string",
+                "enum": [
+                  "macro",
+                  "expanded"
+                ]
+              },
+              "summary": {
+                "type": "string"
+              }
+            }
+          },
+          "collapsed_micro_state_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "micro_regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "region_id",
+          "object_id",
+          "fidelity_tier",
+          "entity_count",
+          "mass_stub"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "region_id": {
+            "type": "string"
+          },
+          "object_id": {
+            "type": "string"
+          },
+          "fidelity_tier": {
+            "type": "string",
+            "enum": [
+              "coarse",
+              "medium",
+              "fine"
+            ]
+          },
+          "entity_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "mass_stub": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "performance_state": {
+      "type": "object",
+      "required": [
+        "budget_policy_id",
+        "fidelity_policy_id",
+        "activation_policy_id",
+        "compute_units_used",
+        "max_compute_units_per_tick",
+        "budget_outcome",
+        "active_region_count",
+        "fidelity_tier_counts",
+        "transition_log"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "budget_policy_id": {
+          "type": "string"
+        },
+        "fidelity_policy_id": {
+          "type": "string"
+        },
+        "activation_policy_id": {
+          "type": "string"
+        },
+        "compute_units_used": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_compute_units_per_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "budget_outcome": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "degraded",
+            "capped"
+          ]
+        },
+        "active_region_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fidelity_tier_counts": {
+          "type": "object",
+          "required": [
+            "coarse",
+            "medium",
+            "fine"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "coarse": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "medium": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fine": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "transition_log": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "tick",
+              "budget_outcome",
+              "compute_units_used",
+              "active_regions"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "tick": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "budget_outcome": {
+                "type": "string"
+              },
+              "compute_units_used": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "active_regions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "simulation_time": {
+        "tick": 120,
+        "timestamp_utc": "2026-02-14T00:00:00Z"
+      },
+      "agent_states": [
+        {
+          "agent_id": "agent.lab.navigator.001",
+          "state_hash": "39fca9dd8ed652017311c80aeb26d4de6a40ca8dc3ec50904e8f4ca6da7d87b2"
+        }
+      ],
+      "world_assemblies": [
+        "assembly.world.nav_sector_01"
+      ],
+      "active_law_references": [
+        "law.lab.observe_only"
+      ],
+      "session_references": [
+        "session.lab.nav.001"
+      ],
+      "history_anchors": [
+        "history.anchor.tick.120"
+      ],
+      "camera_assemblies": [
+        {
+          "assembly_id": "camera.main",
+          "frame_id": "frame.world",
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "velocity_mm_per_tick": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "lens_id": "lens.diegetic.sensor"
+        }
+      ],
+      "time_control": {
+        "rate_permille": 1000,
+        "paused": false,
+        "accumulator_permille": 0
+      },
+      "process_log": [],
+      "interest_regions": [],
+      "macro_capsules": [],
+      "micro_regions": [],
+      "performance_state": {
+        "budget_policy_id": "policy.budget.default_lab",
+        "fidelity_policy_id": "policy.fidelity.default_lab",
+        "activation_policy_id": "policy.activation.default_lab",
+        "compute_units_used": 0,
+        "max_compute_units_per_tick": 240,
+        "budget_outcome": "ok",
+        "active_region_count": 0,
+        "fidelity_tier_counts": {
+          "coarse": 0,
+          "medium": 0,
+          "fine": 0
+        },
+        "transition_log": []
+      }
+    }
+  ]
+}

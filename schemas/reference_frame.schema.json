@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reference Frame Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic reference frame contract for astronomy and site positioning.",
+  "x-doc-ref": [
+    "docs/architecture/astronomy_catalogs.md",
+    "docs/architecture/site_registry.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "frame_id",
+    "parent_frame_id",
+    "transform",
+    "semantics"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "frame_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_frame_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "translation_mm",
+        "rotation_mdeg"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "translation_mm": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "z": {
+              "type": "integer"
+            }
+          }
+        },
+        "rotation_mdeg": {
+          "type": "object",
+          "required": [
+            "yaw",
+            "pitch",
+            "roll"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "yaw": {
+              "type": "integer"
+            },
+            "pitch": {
+              "type": "integer"
+            },
+            "roll": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "semantics": {
+      "type": "string",
+      "enum": [
+        "galactic",
+        "system",
+        "body_fixed",
+        "orbital",
+        "local"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "frame_id": "frame.earth.body_fixed",
+      "parent_frame_id": "frame.sol.barycentric",
+      "transform": {
+        "translation_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        }
+      },
+      "semantics": "body_fixed"
+    }
+  ]
+}

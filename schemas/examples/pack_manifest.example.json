@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.lab.galaxy.navigation",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime"
+  ],
+  "contribution_types": [
+    "domain",
+    "ui_windows",
+    "lens"
+  ],
+  "contributions": [
+    {
+      "type": "domain",
+      "id": "domain.navigation",
+      "path": "data/domain.navigation.json"
+    },
+    {
+      "type": "lens",
+      "id": "lens.diegetic.sensor",
+      "path": "data/lens.sensor.json"
+    },
+    {
+      "type": "ui_windows",
+      "id": "ui.nav.overlay",
+      "path": "ui/nav_overlay.json"
+    }
+  ],
+  "canonical_hash": "b0121a9fcb0e9d8ac6b4bb4b58d8f89fab11802bc4f9b95dd1f17acc36af7ad6",
+  "signature_status": "signed"
+}

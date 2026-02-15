@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lens Schema",
+  "version": "1.0.0",
+  "description": "Canonical observation lens contract separating truth from presentation.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A7",
+    "docs/canon/glossary_v1.md Lens",
+    "docs/contracts/lens_contract.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "lens_id",
+    "lens_type",
+    "transform_description",
+    "required_entitlements",
+    "epistemic_constraints"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "lens_id": {
+      "type": "string"
+    },
+    "lens_type": {
+      "type": "string",
+      "enum": [
+        "diegetic",
+        "nondiegetic"
+      ]
+    },
+    "transform_description": {
+      "type": "string"
+    },
+    "required_entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "epistemic_constraints": {
+      "type": "object",
+      "required": [
+        "visibility_policy",
+        "max_resolution_tier"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "visibility_policy": {
+          "type": "string"
+        },
+        "max_resolution_tier": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "lens_id": "lens.diegetic.sensor",
+      "lens_type": "diegetic",
+      "transform_description": "Filters truth model to cockpit-grade instrument output.",
+      "required_entitlements": [
+        "ui.sensor",
+        "ui.map"
+      ],
+      "epistemic_constraints": {
+        "visibility_policy": "sensor_limited",
+        "max_resolution_tier": 2
+      }
+    }
+  ]
+}
+

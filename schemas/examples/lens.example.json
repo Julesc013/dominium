@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "lens_id": "lens.diegetic.sensor",
+  "lens_type": "diegetic",
+  "transform_description": "Filters truth model to cockpit-grade instrument output.",
+  "required_entitlements": [
+    "ui.sensor",
+    "ui.map"
+  ],
+  "epistemic_constraints": {
+    "visibility_policy": "sensor_limited",
+    "max_resolution_tier": 2
+  }
+}
+

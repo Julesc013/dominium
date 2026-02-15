@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Site Entry Schema",
+  "version": "1.0.0",
+  "description": "Canonical site registry record for deterministic teleport and navigation indexing.",
+  "x-doc-ref": [
+    "docs/architecture/site_registry.md",
+    "docs/architecture/camera_and_navigation.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "site_id",
+    "object_id",
+    "kind",
+    "frame_id",
+    "position",
+    "search_keys"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "site_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "surface",
+        "orbit",
+        "interior",
+        "atmosphere",
+        "l4",
+        "l5",
+        "custom"
+      ]
+    },
+    "frame_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "position": {
+      "type": "object",
+      "required": [
+        "representation"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "representation": {
+          "type": "string",
+          "enum": [
+            "local_xyz_mm",
+            "lat_lon_alt"
+          ]
+        },
+        "local_xyz_mm": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "z": {
+              "type": "integer"
+            }
+          }
+        },
+        "lat_lon_alt": {
+          "type": "object",
+          "required": [
+            "lat_deg_x1e6",
+            "lon_deg_x1e6",
+            "alt_mm"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "lat_deg_x1e6": {
+              "type": "integer"
+            },
+            "lon_deg_x1e6": {
+              "type": "integer"
+            },
+            "alt_mm": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "bounds": {
+      "type": "object",
+      "required": [
+        "kind",
+        "sphere_radius_mm"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "sphere"
+          ]
+        },
+        "sphere_radius_mm": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "search_keys": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "position": {
+            "properties": {
+              "representation": {
+                "const": "local_xyz_mm"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "position": {
+            "required": [
+              "local_xyz_mm"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "position": {
+            "properties": {
+              "representation": {
+                "const": "lat_lon_alt"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "position": {
+            "required": [
+              "lat_lon_alt"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "site_id": "site.earth.greenwich",
+      "object_id": "object.earth",
+      "kind": "surface",
+      "frame_id": "frame.earth.body_fixed",
+      "position": {
+        "representation": "local_xyz_mm",
+        "local_xyz_mm": {
+          "x": 6371000000,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "bounds": {
+        "kind": "sphere",
+        "sphere_radius_mm": 1000
+      },
+      "search_keys": [
+        "greenwich",
+        "prime meridian"
+      ],
+      "tags": [
+        "surface",
+        "reference"
+      ]
+    }
+  ]
+}

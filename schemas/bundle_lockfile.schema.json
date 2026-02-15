@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bundle Lockfile Schema",
+  "version": "1.0.0",
+  "description": "Deterministic bundle lockfile contract for resolved pack composition and registry hashes.",
+  "x-doc-ref": [
+    "docs/architecture/lockfile.md",
+    "docs/architecture/registry_compile.md",
+    "docs/contracts/versioning_and_migration.md"
+  ],
+  "type": "object",
+  "required": [
+    "lockfile_version",
+    "bundle_id",
+    "resolved_packs",
+    "registries",
+    "compatibility_version",
+    "pack_lock_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "lockfile_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bundle_id": {
+      "type": "string"
+    },
+    "resolved_packs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "registries": {
+      "type": "object",
+      "required": [
+        "domain_registry_hash",
+        "law_registry_hash",
+        "experience_registry_hash",
+        "lens_registry_hash",
+        "activation_policy_registry_hash",
+        "budget_policy_registry_hash",
+        "fidelity_policy_registry_hash",
+        "astronomy_catalog_index_hash",
+        "site_registry_index_hash",
+        "ui_registry_hash"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "domain_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "law_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "experience_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "lens_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "activation_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "budget_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "fidelity_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "astronomy_catalog_index_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "site_registry_index_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "ui_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        }
+      }
+    },
+    "compatibility_version": {
+      "type": "string"
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "lockfile_version": "1.0.0",
+      "bundle_id": "bundle.base.lab",
+      "resolved_packs": [],
+      "registries": {
+        "domain_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "law_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "experience_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "lens_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "activation_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "budget_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "fidelity_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "astronomy_catalog_index_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "site_registry_index_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "ui_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f"
+      },
+      "compatibility_version": "1.0.0",
+      "pack_lock_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed50ff7c9ab8f0e8c7ed8f2c8f0f64cc"
+    }
+  ]
+}

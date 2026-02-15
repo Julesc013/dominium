@@ -1,8 +1,8 @@
 Status: CANONICAL
-Version: 1.0.0 (Normative)
 Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
+Version: 1.0.0 (Normative)
 Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0.
 Scope: Dominium / Domino ecosystem vocabulary.
 
@@ -10,6 +10,25 @@ Scope: Dominium / Domino ecosystem vocabulary.
 
 This is the full canonical glossary v1.0.0.
 If terminology conflicts with local or legacy docs, this glossary wins.
+
+## Glossary Invariants
+- Terms in this document are canonical and binding for contracts, schemas, code comments, and prompts.
+- Deprecated terms must not be introduced in new runtime logic.
+- If a term is undefined here, it must not be treated as canonical until added through controlled update.
+
+## Example Usage
+```text
+Correct: "The Observation Kernel maps TruthModel through Lens and AuthorityContext."
+Incorrect: "Renderer owns truth and can mutate state."
+```
+
+## TODO
+- Add a machine-readable term registry export format.
+- Add change-control procedure for glossary term additions/deprecations.
+
+## Cross-References
+- `docs/canon/constitution_v1.md`
+- `AGENTS.md`
 
 ## A
 
@@ -568,4 +587,3 @@ Historical content pack context.
 Deterministic, Law, Authority, Lens, Canonical, Identity, Collapse, Expand, Macro, Micro, Process, Refusal.
 
 End of Glossary v1.0.0.
-

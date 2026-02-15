@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Domain Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic domain registry output.",
+  "x-doc-ref": [
+    "docs/architecture/registry_compile.md",
+    "docs/architecture/pack_system.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "domains",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "domain_id",
+          "pack_id",
+          "path",
+          "declared_version"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "domain_id": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "declared_version": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [
+        {
+          "pack_id": "pack.domain.navigation",
+          "version": "1.0.0",
+          "canonical_hash": "placeholder.pack.domain.navigation.v1",
+          "signature_status": "signed"
+        }
+      ],
+      "domains": [
+        {
+          "domain_id": "domain.navigation",
+          "pack_id": "pack.domain.navigation",
+          "path": "packs/domain/pack.domain.navigation/data/domain.navigation.json",
+          "declared_version": "1.0.0"
+        }
+      ],
+      "registry_hash": "73e6f47ec5007b3f531149097ee949b34b8af3db7d8fbc8cc2d4239f66f44526"
+    }
+  ]
+}
+

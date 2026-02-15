@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "simulation_time": {
+    "tick": 120,
+    "timestamp_utc": "2026-02-14T00:00:00Z"
+  },
+  "agent_states": [
+    {
+      "agent_id": "agent.lab.navigator.001",
+      "state_hash": "39fca9dd8ed652017311c80aeb26d4de6a40ca8dc3ec50904e8f4ca6da7d87b2"
+    }
+  ],
+  "world_assemblies": [
+    "assembly.world.nav_sector_01"
+  ],
+  "active_law_references": [
+    "law.lab.observe_only"
+  ],
+  "session_references": [
+    "session.lab.nav.001"
+  ],
+  "history_anchors": [
+    "history.anchor.tick.120"
+  ]
+}
+

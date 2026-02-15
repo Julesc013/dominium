@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lens Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic lens registry output.",
+  "x-doc-ref": [
+    "docs/architecture/registry_compile.md",
+    "docs/contracts/lens_contract.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "lenses",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "lenses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "lens_id",
+          "lens_type",
+          "pack_id",
+          "path",
+          "transform_description",
+          "required_entitlements",
+          "epistemic_constraints"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "lens_id": {
+            "type": "string"
+          },
+          "lens_type": {
+            "type": "string",
+            "enum": [
+              "diegetic",
+              "nondiegetic"
+            ]
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "transform_description": {
+            "type": "string"
+          },
+          "required_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "epistemic_constraints": {
+            "type": "object",
+            "required": [
+              "visibility_policy",
+              "max_resolution_tier"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "visibility_policy": {
+                "type": "string"
+              },
+              "max_resolution_tier": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "lenses": [],
+      "registry_hash": "f5f20a58ec67bfb9967da1377fd0329f78c0d0df77bc33f304f6cbff165e32d6"
+    }
+  ]
+}

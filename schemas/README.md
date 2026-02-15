@@ -1,28 +1,44 @@
-Status: DRAFT
-Version: 1.0.0-draft
+Status: DERIVED
+Version: 1.0.0
 Last Reviewed: 2026-02-14
-Compatibility: Canon-aligned with `docs/canon/constitution_v1.md` and schema law in `schema/`.
+Compatibility: Canon-aligned with `docs/canon/constitution_v1.md` and `tools/xstack/compatx/version_registry.json`.
 
-# Schemas Directory Placeholder
+# Canonical Schemas Directory
 
 ## Purpose
-Reserve `schemas/` for future generated, composed, or exported schema artifacts that are distinct from source-of-truth schema definitions under `schema/`.
+Host canonical JSON Schema contracts (`v1.0.0`) used by XStack CompatX validation tooling.
 
 ## Invariants
-- Source-of-truth schema definitions remain under `schema/`.
-- Any artifact placed in `schemas/` must declare provenance and source schema IDs.
-- Generated schema artifacts must not silently diverge from source schema versions.
+- Schemas in this directory are strict top-level contracts with explicit required fields.
+- Payloads are validated deterministically by `tools/xstack/compatx/validator.py`.
+- Unknown top-level fields, missing required fields, and version mismatches are refused.
+- Every schema declares `version: "1.0.0"` and requires payload `schema_version: "1.0.0"`.
 
-## Example Intended Usage
-- Compiled schema bundles for tooling distribution.
-- Snapshot exports of resolved contract sets per release.
+## Canonical Files
+- `schemas/universe_identity.schema.json`
+- `schemas/universe_state.schema.json`
+- `schemas/session_spec.schema.json`
+- `schemas/authority_context.schema.json`
+- `schemas/law_profile.schema.json`
+- `schemas/lens.schema.json`
+- `schemas/bundle_profile.schema.json`
+- `schemas/pack_manifest.schema.json`
+- `schemas/bundle_lockfile.schema.json`
+- `schemas/registry_outputs.schema.json`
+- `schemas/domain_registry.schema.json`
+- `schemas/law_registry.schema.json`
+- `schemas/experience_registry.schema.json`
+- `schemas/lens_registry.schema.json`
+- `schemas/astronomy_catalog_index.schema.json`
+- `schemas/ui_registry.schema.json`
+
+Examples are provided under `schemas/examples/*.example.json`.
 
 ## TODO
-- Define naming convention for generated schema bundles.
-- Add validation command contract for generated artifacts.
+- Add migration route implementations once post-`1.0.0` versions are introduced.
+- Add signed schema bundle export path for release packaging.
 
 ## Cross-References
 - `docs/canon/constitution_v1.md`
-- `schema/SCHEMA_VERSIONING.md`
-- `schema/SCHEMA_MIGRATION.md`
-
+- `docs/contracts/versioning_and_migration.md`
+- `tools/xstack/compatx/version_registry.json`

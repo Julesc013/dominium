@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Site Registry Index Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic site registry index output.",
+  "x-doc-ref": [
+    "docs/architecture/site_registry.md",
+    "docs/architecture/registry_compile.md",
+    "schemas/site_entry.schema.json"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "sites",
+    "search_index",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "site_id",
+          "object_id",
+          "kind",
+          "frame_id",
+          "position",
+          "search_keys",
+          "pack_id",
+          "path"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "site_id": {
+            "type": "string"
+          },
+          "object_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "frame_id": {
+            "type": "string"
+          },
+          "position": {
+            "type": "object"
+          },
+          "bounds": {
+            "type": "object"
+          },
+          "search_keys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "search_index": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "sites": [],
+      "search_index": {},
+      "registry_hash": "eb4f14afc9f76f06e70833de7f1ad6f148b1453f7f84785f82f9cb85ac23745a"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Law Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic law registry output.",
+  "x-doc-ref": [
+    "docs/architecture/registry_compile.md",
+    "docs/contracts/law_profile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "law_profiles",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "law_profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "law_profile_id",
+          "pack_id",
+          "path",
+          "allowed_processes",
+          "forbidden_processes",
+          "allowed_lenses",
+          "epistemic_limits",
+          "process_entitlement_requirements",
+          "process_privilege_requirements",
+          "debug_allowances"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "law_profile_id": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "allowed_processes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "forbidden_processes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_lenses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "epistemic_limits": {
+            "type": "object",
+            "required": [
+              "max_view_radius_km",
+              "allow_hidden_state_access"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "max_view_radius_km": {
+                "type": "number"
+              },
+              "allow_hidden_state_access": {
+                "type": "boolean"
+              }
+            }
+          },
+          "process_entitlement_requirements": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "process_privilege_requirements": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "observer",
+                "operator",
+                "system"
+              ]
+            }
+          },
+          "debug_allowances": {
+            "type": "object",
+            "required": [
+              "allow_nondiegetic_overlays",
+              "allow_time_dilation_controls"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "allow_nondiegetic_overlays": {
+                "type": "boolean"
+              },
+              "allow_time_dilation_controls": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "law_profiles": [],
+      "registry_hash": "a31c1ed7dad5e4c40d4217302ef13f3f6a39f7965bd6d3e2ae3888e2cd999db2"
+    }
+  ]
+}

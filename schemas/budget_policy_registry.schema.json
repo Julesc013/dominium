@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Budget Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic budget policy registry output.",
+  "x-doc-ref": [
+    "docs/architecture/budget_policy.md",
+    "docs/architecture/registry_compile.md",
+    "schemas/budget_policy.schema.json"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "budget_policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "budget_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "activation_policy_id",
+          "pack_id",
+          "path",
+          "max_compute_units_per_tick",
+          "max_entities_micro",
+          "max_regions_micro",
+          "fallback_behavior",
+          "logging_level",
+          "tier_compute_weights",
+          "entity_compute_weight"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "activation_policy_id": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "max_compute_units_per_tick": {
+            "type": "integer"
+          },
+          "max_entities_micro": {
+            "type": "integer"
+          },
+          "max_regions_micro": {
+            "type": "integer"
+          },
+          "fallback_behavior": {
+            "type": "string"
+          },
+          "logging_level": {
+            "type": "integer"
+          },
+          "tier_compute_weights": {
+            "type": "object"
+          },
+          "entity_compute_weight": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "budget_policies": [],
+      "registry_hash": "1f22426a7723569a710a0ffabcc875994a53c8301e5504e285f9d96bf3d9ec35"
+    }
+  ]
+}
