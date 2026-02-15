@@ -27,7 +27,7 @@ def run(graph, repo_root, changed_files=None):
     canonical_roots = ("client/", "launcher/", "setup/", "engine/", "game/", "libs/", "tools/", "app/")
 
     for edge in graph.edges:
-        if edge.edge_type not in ("include", "import"):
+        if edge.edge_type not in ("include", "import", "file_ref"):
             continue
         src = _label(edge.src)
         dst = _label(edge.dst)
@@ -88,5 +88,4 @@ def run(graph, repo_root, changed_files=None):
         if len(findings) >= 160:
             break
 
-    return sorted(findings, key=lambda item: (item.location.file, item.severity, item.confidence))
-
+    return sorted(findings, key=lambda item: (item.location.file_path, item.severity, item.confidence))

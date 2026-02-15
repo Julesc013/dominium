@@ -1,5 +1,6 @@
 """A6 UI parity/bypass analyzer."""
 
+import json
 import os
 import re
 
@@ -11,7 +12,7 @@ ANALYZER_ID = "A6_UI_PARITY_BYPASS"
 SOURCE_EXTS = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".py", ".json")
 UI_PATH_HINTS = ("/ui/", "ui/", "_gui", "_tui", "views_gui", "views_tui")
 CLI_HINTS = ("cli", "command line", "--mode cli")
-DISPATCH_HINTS = ("dispatch_command", "command_dispatch", "command_id", "command graph", "command_graph")
+DISPATCH_HINTS = ("dispatch_command", "command_dispatch", "intent_pipeline", "submit_intent")
 COMMAND_ID_RE = re.compile(r"\b(?:client|launcher|setup|server|tool)\.[a-z0-9_.-]+\b")
 
 
@@ -33,7 +34,7 @@ def _read_text(path):
 def _command_ref_map(graph):
     mapping = {}
     for edge in graph.edges:
-        if edge.edge_type != "command_ref":
+        if edge.edge_type != "ui_ir_command":
             continue
         src = edge.src.split(":", 1)[1] if ":" in edge.src else edge.src
         dst = edge.dst.split(":", 1)[1] if ":" in edge.dst else edge.dst
@@ -41,10 +42,29 @@ def _command_ref_map(graph):
     return mapping
 
 
+def _declared_command_ids(repo_root):
+    ids = set()
+    root = os.path.join(repo_root, "data", "registries")
+    if not os.path.isdir(root):
+        return ids
+    for name in sorted(os.listdir(root)):
+        if not name.endswith(".json"):
+            continue
+        abs_path = os.path.join(root, name)
+        try:
+            payload = json.load(open(abs_path, "r", encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        text = json.dumps(payload, sort_keys=True)
+        ids.update(COMMAND_ID_RE.findall(text))
+    return ids
+
+
 def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
     command_refs = _command_ref_map(graph)
+    declared_commands = _declared_command_ids(repo_root)
 
     for command_id, files in sorted(command_refs.items()):
         if not files:
@@ -86,17 +106,20 @@ def run(graph, repo_root, changed_files=None):
             continue
         if not rel.lower().endswith(SOURCE_EXTS):
             continue
-        text = _read_text(os.path.join(repo_root, rel.replace("/", os.sep))).lower()
-        has_command = bool(COMMAND_ID_RE.search(text))
-        has_dispatch = any(token in text for token in DISPATCH_HINTS)
-        has_cli_anchor = any(token in text for token in CLI_HINTS)
+        text = _read_text(os.path.join(repo_root, rel.replace("/", os.sep)))
+        lower = text.lower()
+        has_command = bool(COMMAND_ID_RE.search(lower))
+        has_dispatch = any(token in lower for token in DISPATCH_HINTS)
+        has_cli_anchor = any(token in lower for token in CLI_HINTS)
+        command_ids = sorted(set(COMMAND_ID_RE.findall(lower)))
+
         if has_command and not has_dispatch:
             findings.append(
                 make_finding(
                     analyzer_id=ANALYZER_ID,
                     category="ui_parity",
                     severity="WARN",
-                    confidence=0.65,
+                    confidence=0.66,
                     file_path=rel,
                     evidence=[
                         "UI file references command IDs but dispatcher token was not detected.",
@@ -108,6 +131,28 @@ def run(graph, repo_root, changed_files=None):
                     related_paths=[rel],
                 )
             )
+
+        for command_id in command_ids:
+            if command_id in declared_commands:
+                continue
+            findings.append(
+                make_finding(
+                    analyzer_id=ANALYZER_ID,
+                    category="ui_parity",
+                    severity="RISK",
+                    confidence=0.74,
+                    file_path=rel,
+                    evidence=[
+                        "UI references undefined command id '{}'".format(command_id),
+                        "UI IR should bind only to command IDs declared in registries.",
+                    ],
+                    suggested_classification="INVALID",
+                    recommended_action="ADD_RULE",
+                    related_invariants=["INV-CLI-CANONICAL-UI"],
+                    related_paths=[rel],
+                )
+            )
+
         if ("gui" in rel.lower() or "tui" in rel.lower()) and not has_cli_anchor:
             findings.append(
                 make_finding(
@@ -126,8 +171,7 @@ def run(graph, repo_root, changed_files=None):
                     related_paths=[rel],
                 )
             )
-        if len(findings) >= 180:
+        if len(findings) >= 220:
             break
 
-    return sorted(findings, key=lambda item: (item.location.file, item.severity, item.confidence))
-
+    return sorted(findings, key=lambda item: (item.location.file_path, item.severity, item.confidence))

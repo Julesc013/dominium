@@ -2,6 +2,7 @@
 
 import os
 import re
+import json
 
 from analyzers.base import make_finding
 
@@ -19,6 +20,7 @@ PLATFORM_CHECK_RE = re.compile(
 CAPABILITY_ID_RE = re.compile(r"\b(?:capability\.[a-z0-9_.:-]+|cap:[a-z0-9_.:-]+)\b", re.IGNORECASE)
 COMMAND_REGISTRY_HINTS = ("command_registry", "commands_registry", "command graph", "command_graph")
 REQUIRED_CAPABILITY_HINTS = ("required_capabilities", "required_capability", "capability_requirements")
+COMMAND_ID_TOKEN = "command_id"
 
 
 def _read_text(path):
@@ -155,5 +157,50 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    return sorted(findings, key=lambda item: (item.location.file, item.severity, item.confidence))
+    registries_root = os.path.join(repo_root, "data", "registries")
+    if os.path.isdir(registries_root):
+        for name in sorted(os.listdir(registries_root)):
+            if not name.endswith(".json"):
+                continue
+            rel = "data/registries/{}".format(name)
+            abs_path = os.path.join(registries_root, name)
+            try:
+                payload = json.load(open(abs_path, "r", encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            rows = []
+            if isinstance(payload, dict):
+                if isinstance(payload.get("records"), list):
+                    rows = [row for row in payload.get("records") if isinstance(row, dict)]
+                elif isinstance((payload.get("record") or {}).get("entries"), list):
+                    rows = [row for row in (payload.get("record") or {}).get("entries") if isinstance(row, dict)]
+            for row in rows:
+                if COMMAND_ID_TOKEN not in row:
+                    continue
+                command_id = str(row.get(COMMAND_ID_TOKEN, "")).strip()
+                caps = row.get("required_capabilities")
+                if isinstance(caps, list) and any(str(item).strip() for item in caps):
+                    continue
+                findings.append(
+                    make_finding(
+                        analyzer_id=ANALYZER_ID,
+                        category="capability_misuse",
+                        severity="RISK",
+                        confidence=0.72,
+                        file_path=rel,
+                        evidence=[
+                            "Command '{}' is declared without required_capabilities metadata.".format(command_id or "<unknown>"),
+                            "Commands should be capability-gated for deterministic refusal behavior.",
+                        ],
+                        suggested_classification="TODO-BLOCKED",
+                        recommended_action="ADD_RULE",
+                        related_invariants=["INV-COMMAND-CAPABILITY-DECLARED"],
+                        related_paths=[rel],
+                    )
+                )
+                if len(findings) >= 200:
+                    break
+            if len(findings) >= 200:
+                break
 
+    return sorted(findings, key=lambda item: (item.location.file_path, item.severity, item.confidence))
