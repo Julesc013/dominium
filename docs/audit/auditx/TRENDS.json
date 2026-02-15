@@ -1,13 +1,11 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 614,
+    "canon_drift": 615,
     "capability_bypass_smell": 1,
-    "derived_freshness": 10,
-    "mode_flag_smell": 1,
-    "net.truth_over_net_smell": 5,
-    "reachability": 10,
-    "schema_usage": 38,
+    "derived_freshness": 9,
+    "net.precision_leak_smell": 2,
+    "net.truth_over_net_smell": 6,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
@@ -15,36 +13,32 @@
   },
   "delta_over_time": {
     "category_frequency": {
-      "canon_drift": 0,
-      "capability_bypass_smell": 0,
-      "derived_freshness": 0,
-      "mode_flag_smell": 0,
-      "net.truth_over_net_smell": 0,
-      "reachability": 1,
-      "schema_usage": 1,
-      "semantic.capability_drift": 0,
-      "semantic.derived_artifact_contract": 0,
-      "semantic.schema_shadowing": 0,
-      "semantic.workspace_contamination": 0
+      "canon_drift": 615,
+      "capability_bypass_smell": 1,
+      "derived_freshness": 9,
+      "net.precision_leak_smell": 2,
+      "net.truth_over_net_smell": 6,
+      "semantic.capability_drift": 5,
+      "semantic.derived_artifact_contract": 1,
+      "semantic.schema_shadowing": 120,
+      "semantic.workspace_contamination": 1
     },
     "severity_distribution": {
-      "INFO": 0,
-      "RISK": 0,
-      "VIOLATION": 0,
-      "WARN": 2
+      "RISK": 16,
+      "VIOLATION": 1,
+      "WARN": 743
     }
   },
-  "findings_hash": "8ae2da70d6e5ec0f2c73cd969db7fa650065aded0d190f4f1faac084673a40ac",
+  "findings_hash": "fc50824e7118142fb096aefd04d5709d8c9d3f4b2dd0b56c1991dae74432369c",
   "history_reference": {
-    "previous_distinct_hash": "52129c42badd4c667eb6f225e8d3f4b7ab843b21eac40a3784296514c27cab1f"
+    "previous_distinct_hash": ""
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 1,
-    "RISK": 43,
-    "VIOLATION": 2,
-    "WARN": 760
+    "RISK": 16,
+    "VIOLATION": 1,
+    "WARN": 743
   },
-  "total_findings": 806
+  "total_findings": 760
 }

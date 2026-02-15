@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 614,
+      "finding_count": 615,
       "recommended_actions": {
-        "DOC_FIX": 614
+        "DOC_FIX": 615
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 614
+        "WARN": 615
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -106,9 +106,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 10,
+      "finding_count": 9,
       "recommended_actions": {
-        "ADD_RULE": 10
+        "ADD_RULE": 9
       },
       "sample_findings": [
         {
@@ -138,46 +138,34 @@
         }
       ],
       "severities": {
-        "INFO": 1,
         "RISK": 9
       }
     },
-    "INV-MODE-AS-PROFILES": {
-      "finding_count": 1,
+    "INV-EPISTEMIC-POLICY-REQUIRED": {
+      "finding_count": 2,
       "recommended_actions": {
-        "ADD_RULE": 1
+        "ADD_RULE": 2
       },
       "sample_findings": [
         {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "tools/xstack/repox/check.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 1
-      }
-    },
-    "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
+          "category": "net.precision_leak_smell",
+          "finding_id": "E8_PRECISION_LEAK_SMELL:0001",
+          "location": "data/registries/epistemic_policy_registry.json"
+        },
         {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "tools/xstack/repox/check.py"
+          "category": "net.precision_leak_smell",
+          "finding_id": "E8_PRECISION_LEAK_SMELL:0002",
+          "location": "data/registries/epistemic_policy_registry.json"
         }
       ],
       "severities": {
-        "VIOLATION": 1
+        "WARN": 2
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
-      "finding_count": 5,
+      "finding_count": 6,
       "recommended_actions": {
-        "ADD_RULE": 5
+        "ADD_RULE": 6
       },
       "sample_findings": [
         {
@@ -207,7 +195,7 @@
         }
       ],
       "severities": {
-        "RISK": 5
+        "RISK": 6
       }
     },
     "INV-SCHEMA-SHADOWING-CONTROL": {
@@ -276,80 +264,6 @@
       ],
       "severities": {
         "WARN": 1
-      }
-    },
-    "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 10,
-      "recommended_actions": {
-        "RETIRE": 10
-      },
-      "sample_findings": [
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "src/net/policies/__init__.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "src/net/policies/policy_srz_hybrid.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "src/net/srz/__init__.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "tools/auditx/analyzers/__init__.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "tools/auditx/analyzers/e5_cross_shard_write_smell.py"
-        }
-      ],
-      "severities": {
-        "WARN": 10
-      }
-    },
-    "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 38,
-      "recommended_actions": {
-        "ADD_RULE": 28,
-        "ADD_TEST": 10
-      },
-      "sample_findings": [
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "src/net/srz/routing.py"
-        },
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "src/net/srz/shard_coordinator.py"
-        },
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "src/net/srz/shard_coordinator.py"
-        },
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "src/net/srz/shard_coordinator.py"
-        },
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "src/net/srz/shard_coordinator.py"
-        }
-      ],
-      "severities": {
-        "RISK": 28,
-        "WARN": 10
       }
     }
   },
