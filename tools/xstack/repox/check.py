@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 from typing import Dict, Iterable, List, Tuple
 
@@ -131,6 +132,21 @@ DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
     "schemas/domain_",
     "schemas/solver_registry.schema.json",
     "tools/domain/",
+)
+
+AUDITX_FINDINGS_PATH = "docs/audit/auditx/FINDINGS.json"
+AUDITX_RUNTIME_PROBE_OUTPUT_ROOT = ".xstack_cache/auditx/repox_probe"
+AUDITX_HIGH_RISK_CONFIDENCE = 0.85
+AUDITX_HIGH_RISK_THRESHOLD = 15
+
+RUNTIME_PATH_PREFIXES = (
+    "engine/",
+    "game/",
+    "client/",
+    "server/",
+    "launcher/",
+    "setup/",
+    "libs/",
 )
 
 
@@ -534,6 +550,215 @@ def _append_domain_foundation_invariant_findings(
         )
 
 
+def _git_status_paths(repo_root: str) -> List[str]:
+    try:
+        proc = subprocess.run(
+            ["git", "status", "--porcelain", "-uall"],
+            cwd=repo_root,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    except OSError:
+        return []
+    if int(proc.returncode) != 0:
+        return []
+    rows = []
+    for line in (proc.stdout or "").splitlines():
+        token = str(line[3:] if len(line) >= 3 else line).strip()
+        if token:
+            rows.append(_norm(token))
+    return sorted(set(rows))
+
+
+def _runtime_status_paths(repo_root: str) -> List[str]:
+    return sorted(path for path in _git_status_paths(repo_root) if path.startswith(RUNTIME_PATH_PREFIXES))
+
+
+def _append_auditx_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    abs_path = os.path.join(repo_root, AUDITX_FINDINGS_PATH.replace("/", os.sep))
+    if os.path.isfile(abs_path):
+        payload, err = _load_json_object(repo_root, AUDITX_FINDINGS_PATH)
+        if err:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=AUDITX_FINDINGS_PATH,
+                    line_number=1,
+                    snippet="",
+                    message="AuditX findings payload is invalid JSON",
+                    rule_id="INV-AUDITX-REPORT-STRUCTURE",
+                )
+            )
+        else:
+            records = payload.get("findings")
+            if not isinstance(records, list):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=AUDITX_FINDINGS_PATH,
+                        line_number=1,
+                        snippet="",
+                        message="AuditX findings payload missing 'findings' list",
+                        rule_id="INV-AUDITX-REPORT-STRUCTURE",
+                    )
+                )
+            else:
+                try:
+                    from tools.auditx.model import validate_finding_record
+                except Exception:
+                    validate_finding_record = None
+                if validate_finding_record is None:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path="tools/auditx/model/finding.py",
+                            line_number=1,
+                            snippet="",
+                            message="unable to import AuditX finding validator",
+                            rule_id="INV-AUDITX-REPORT-STRUCTURE",
+                        )
+                    )
+                else:
+                    for idx, row in enumerate(records):
+                        if not isinstance(row, dict):
+                            findings.append(
+                                _finding(
+                                    severity=severity,
+                                    file_path=AUDITX_FINDINGS_PATH,
+                                    line_number=1,
+                                    snippet="",
+                                    message="finding at index {} is not an object".format(idx),
+                                    rule_id="INV-AUDITX-REPORT-STRUCTURE",
+                                )
+                            )
+                            continue
+                        for message in validate_finding_record(row):
+                            findings.append(
+                                _finding(
+                                    severity=severity,
+                                    file_path=AUDITX_FINDINGS_PATH,
+                                    line_number=1,
+                                    snippet="",
+                                    message="finding[{}]: {}".format(idx, message),
+                                    rule_id="INV-AUDITX-REPORT-STRUCTURE",
+                                )
+                            )
+                            if len(findings) >= 250:
+                                break
+                        if len(findings) >= 250:
+                            break
+
+                high_risk = 0
+                for row in records:
+                    if not isinstance(row, dict):
+                        continue
+                    severity_token = str(row.get("severity", "")).strip().upper()
+                    if severity_token not in ("RISK", "VIOLATION"):
+                        continue
+                    try:
+                        confidence = float(row.get("confidence", 0.0))
+                    except (TypeError, ValueError):
+                        confidence = 0.0
+                    if confidence >= AUDITX_HIGH_RISK_CONFIDENCE:
+                        high_risk += 1
+                if high_risk >= AUDITX_HIGH_RISK_THRESHOLD:
+                    findings.append(
+                        _finding(
+                            severity="warn",
+                            file_path=AUDITX_FINDINGS_PATH,
+                            line_number=1,
+                            snippet="",
+                            message="high-confidence AuditX risk findings exceed threshold ({} >= {})".format(
+                                high_risk,
+                                AUDITX_HIGH_RISK_THRESHOLD,
+                            ),
+                            rule_id="INV-AUDITX-REPORT-STRUCTURE",
+                        )
+                    )
+
+    pre_runtime = _runtime_status_paths(repo_root)
+    command = [
+        sys.executable,
+        "tools/auditx/auditx.py",
+        "scan",
+        "--repo-root",
+        repo_root,
+        "--changed-only",
+        "--format",
+        "json",
+        "--output-root",
+        AUDITX_RUNTIME_PROBE_OUTPUT_ROOT,
+    ]
+    try:
+        proc = subprocess.run(
+            command,
+            cwd=repo_root,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+    except OSError:
+        findings.append(
+            _finding(
+                severity="warn",
+                file_path="tools/auditx/auditx.py",
+                line_number=1,
+                snippet="",
+                message="AuditX probe scan unavailable in current environment",
+                rule_id="INV-AUDITX-RUN-DETERMINISTIC",
+            )
+        )
+        return
+
+    scan_output = str(proc.stdout or "")
+    if int(proc.returncode) not in (0, 2):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/auditx/auditx.py",
+                line_number=1,
+                snippet=scan_output.strip()[:140],
+                message="AuditX probe scan failed unexpectedly (exit={})".format(int(proc.returncode)),
+                rule_id="INV-AUDITX-RUN-DETERMINISTIC",
+            )
+        )
+        return
+    if "\"refusal_code\": \"refusal.git_unavailable\"" in scan_output:
+        findings.append(
+            _finding(
+                severity="warn",
+                file_path="tools/auditx/auditx.py",
+                line_number=1,
+                snippet="refusal.git_unavailable",
+                message="AuditX changed-only probe reported git unavailable",
+                rule_id="INV-AUDITX-RUN-DETERMINISTIC",
+            )
+        )
+        return
+
+    post_runtime = _runtime_status_paths(repo_root)
+    new_runtime_paths = sorted(set(post_runtime) - set(pre_runtime))
+    for rel_path in new_runtime_paths:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="AuditX scan modified tracked runtime path",
+                rule_id="INV-AUDITX-RUN-DETERMINISTIC",
+            )
+        )
+
+
 def _append_forbidden_identifier_findings(
     findings: List[Dict[str, object]],
     rel_path: str,
@@ -746,6 +971,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_domain_foundation_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_auditx_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
