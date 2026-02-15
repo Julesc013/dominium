@@ -8,6 +8,17 @@ Compatibility: Bound to Truth/Perceived/Render separation, Observation Kernel co
 ## Purpose
 Define non-leak network epistemics: transport conveys Perceived artifacts only.
 
+## Implementation Status (MP-6)
+
+1. Implemented:
+   - Epistemic policy registry gating
+   - Deterministic channel filters and precision quantization
+   - Deterministic retention/memory hooks
+   - Diegetic instrument channels over network
+2. Staged for later prompts:
+   - Embodiment-linked perception channels
+   - Expanded inference policy enforcement
+
 ## Core Rule
 
 1. Network transport must not serialize raw TruthModel state for client consumption.
@@ -53,7 +64,9 @@ Define non-leak network epistemics: transport conveys Perceived artifacts only.
 - `docs/architecture/observation_kernel.md`
 - `docs/net/MULTIPLAYER_MODEL_OVERVIEW.md`
 - `docs/net/REPLICATION_POLICIES.md`
+- `docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md`
+- `docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md`
 
 ## TODO
 
-- Add concrete Perceived channel whitelist matrix per replication policy family.
+- Add embodiment-specific diegetic channels once avatar Assemblies are introduced.
