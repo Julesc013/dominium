@@ -1248,6 +1248,442 @@ def _worldgen_constraints_rows(contrib: List[dict], schema_root: str) -> Tuple[L
     return rows, errors
 
 
+def _read_json_payload(path: str) -> Tuple[dict, str]:
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, ValueError) as exc:
+        return {}, str(exc)
+    if not isinstance(payload, dict):
+        return {}, "payload root must be object json"
+    return payload, ""
+
+
+def _load_registry_record(
+    repo_root: str,
+    registry_rel_path: str,
+    expected_schema_id: str,
+    expected_schema_version: str,
+    expected_entry_key: str,
+) -> Tuple[dict, List[dict], List[dict]]:
+    abs_path = os.path.join(repo_root, registry_rel_path.replace("/", os.sep))
+    if not os.path.isfile(abs_path):
+        return {}, [], [
+            {
+                "code": "refuse.registry_compile.source_registry_missing",
+                "message": "required source registry '{}' is missing".format(_norm(registry_rel_path)),
+                "path": "$.{}".format(expected_entry_key),
+            }
+        ]
+
+    payload, payload_err = _read_json_payload(abs_path)
+    if payload_err:
+        return {}, [], [
+            {
+                "code": "refuse.registry_compile.invalid_source_registry_payload",
+                "message": "failed to parse source registry '{}': {}".format(_norm(registry_rel_path), payload_err),
+                "path": "$",
+            }
+        ]
+
+    schema_id = str(payload.get("schema_id", "")).strip()
+    if schema_id != str(expected_schema_id):
+        return {}, [], [
+            {
+                "code": "refuse.registry_compile.source_registry_schema_id_mismatch",
+                "message": "source registry '{}' schema_id '{}' does not match '{}'".format(
+                    _norm(registry_rel_path),
+                    schema_id,
+                    expected_schema_id,
+                ),
+                "path": "$.schema_id",
+            }
+        ]
+
+    schema_version = str(payload.get("schema_version", "")).strip()
+    if schema_version != str(expected_schema_version):
+        return {}, [], [
+            {
+                "code": "refuse.registry_compile.source_registry_schema_version_mismatch",
+                "message": "source registry '{}' schema_version '{}' does not match '{}'".format(
+                    _norm(registry_rel_path),
+                    schema_version,
+                    expected_schema_version,
+                ),
+                "path": "$.schema_version",
+            }
+        ]
+
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return {}, [], [
+            {
+                "code": "refuse.registry_compile.source_registry_record_missing",
+                "message": "source registry '{}' missing object field record".format(_norm(registry_rel_path)),
+                "path": "$.record",
+            }
+        ]
+
+    rows = record.get(expected_entry_key)
+    if not isinstance(rows, list):
+        return {}, [], [
+            {
+                "code": "refuse.registry_compile.source_registry_entries_invalid",
+                "message": "source registry '{}' missing list field record.{}".format(
+                    _norm(registry_rel_path),
+                    expected_entry_key,
+                ),
+                "path": "$.record.{}".format(expected_entry_key),
+            }
+        ]
+    return record, list(rows), []
+
+
+def _network_policy_rows(repo_root: str) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _modules_record, module_rows_raw, module_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/anti_cheat_module_registry.json",
+        expected_schema_id="dominium.registry.anti_cheat_module_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="modules",
+    )
+    if module_load_errors:
+        return [], [], [], [], module_load_errors
+
+    anti_cheat_module_rows: List[dict] = []
+    module_id_set = set()
+    for entry in sorted(module_rows_raw, key=lambda row: str((row or {}).get("module_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_anti_cheat_module_entry",
+                    "message": "anti-cheat module entry must be object",
+                    "path": "$.modules",
+                }
+            )
+            continue
+        module_id = str(entry.get("module_id", "")).strip()
+        if not module_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_anti_cheat_module_entry",
+                    "message": "anti-cheat module entry missing module_id",
+                    "path": "$.modules.module_id",
+                }
+            )
+            continue
+        if module_id in module_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_anti_cheat_module_id",
+                    "message": "duplicate anti-cheat module_id '{}'".format(module_id),
+                    "path": "$.modules.module_id",
+                }
+            )
+            continue
+        inputs = entry.get("inputs")
+        outputs = entry.get("outputs")
+        extensions = entry.get("extensions")
+        if not isinstance(inputs, list) or not isinstance(outputs, list) or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_anti_cheat_module_entry",
+                    "message": "anti-cheat module '{}' missing required list/object fields".format(module_id),
+                    "path": "$.modules",
+                }
+            )
+            continue
+        module_id_set.add(module_id)
+        anti_cheat_module_rows.append(
+            {
+                "module_id": module_id,
+                "description": str(entry.get("description", "")).strip(),
+                "inputs": _sorted_unique_strings(inputs),
+                "outputs": _sorted_unique_strings(outputs),
+                "determinism_notes": str(entry.get("determinism_notes", "")).strip(),
+                "extensions": dict(extensions),
+            }
+        )
+    anti_cheat_module_rows = sorted(anti_cheat_module_rows, key=lambda row: str(row.get("module_id", "")))
+
+    _policies_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/anti_cheat_policy_registry.json",
+        expected_schema_id="dominium.registry.anti_cheat_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], [], [], policy_load_errors
+
+    anti_cheat_policy_rows: List[dict] = []
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_anti_cheat_policy_entry",
+                    "message": "anti-cheat policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        modules_enabled = entry.get("modules_enabled")
+        default_actions = entry.get("default_actions")
+        extensions = entry.get("extensions")
+        if (
+            not policy_id
+            or not isinstance(modules_enabled, list)
+            or not isinstance(default_actions, dict)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_anti_cheat_policy_entry",
+                    "message": "anti-cheat policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        module_ids = _sorted_unique_strings(modules_enabled)
+        unknown_modules = [module_id for module_id in module_ids if module_id not in module_id_set]
+        if unknown_modules:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.anti_cheat_policy_module_missing",
+                    "message": "anti-cheat policy '{}' references unknown module ids: {}".format(
+                        policy_id,
+                        ",".join(sorted(unknown_modules)),
+                    ),
+                    "path": "$.policies.modules_enabled",
+                }
+            )
+            continue
+        action_rows: Dict[str, str] = {}
+        valid_actions = {"audit", "refuse", "terminate", "throttle"}
+        action_error = False
+        for module_id in sorted(default_actions.keys()):
+            action = str(default_actions.get(module_id, "")).strip()
+            module_id_token = str(module_id).strip()
+            if module_id_token not in module_id_set:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.anti_cheat_policy_module_missing",
+                        "message": "anti-cheat policy '{}' default_actions references unknown module '{}'".format(
+                            policy_id,
+                            module_id_token,
+                        ),
+                        "path": "$.policies.default_actions",
+                    }
+                )
+                action_error = True
+                continue
+            if module_id_token not in module_ids:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.anti_cheat_policy_action_unmapped",
+                        "message": "anti-cheat policy '{}' default_actions contains module '{}' not listed in modules_enabled".format(
+                            policy_id,
+                            module_id_token,
+                        ),
+                        "path": "$.policies.default_actions",
+                    }
+                )
+                action_error = True
+                continue
+            if action not in valid_actions:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.anti_cheat_policy_action_invalid",
+                        "message": "anti-cheat policy '{}' default action '{}' is invalid".format(
+                            policy_id,
+                            action,
+                        ),
+                        "path": "$.policies.default_actions",
+                    }
+                )
+                action_error = True
+                continue
+            action_rows[module_id_token] = action
+        if action_error:
+            continue
+
+        anti_cheat_policy_rows.append(
+            {
+                "policy_id": policy_id,
+                "human_name": str(entry.get("human_name", "")).strip(),
+                "description": str(entry.get("description", "")).strip(),
+                "modules_enabled": module_ids,
+                "default_actions": dict((key, action_rows[key]) for key in sorted(action_rows.keys())),
+                "allowed_in_singleplayer": bool(entry.get("allowed_in_singleplayer", False)),
+                "allowed_in_private_server": bool(entry.get("allowed_in_private_server", False)),
+                "required_for_ranked": bool(entry.get("required_for_ranked", False)),
+                "extensions": dict(extensions),
+            }
+        )
+    anti_cheat_policy_rows = sorted(anti_cheat_policy_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    _strategies_record, strategy_rows_raw, strategy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/net_resync_strategy_registry.json",
+        expected_schema_id="dominium.registry.net_resync_strategy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="strategies",
+    )
+    if strategy_load_errors:
+        return [], [], [], [], strategy_load_errors
+
+    net_resync_strategy_rows: List[dict] = []
+    resync_strategy_id_set = set()
+    for entry in sorted(strategy_rows_raw, key=lambda row: str((row or {}).get("strategy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_net_resync_strategy_entry",
+                    "message": "net resync strategy entry must be object",
+                    "path": "$.strategies",
+                }
+            )
+            continue
+        strategy_id = str(entry.get("strategy_id", "")).strip()
+        supported_policies = entry.get("supported_policies")
+        steps = entry.get("steps")
+        refusal_codes = entry.get("refusal_codes")
+        extensions = entry.get("extensions")
+        if (
+            not strategy_id
+            or not isinstance(supported_policies, list)
+            or not isinstance(steps, list)
+            or not isinstance(refusal_codes, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_net_resync_strategy_entry",
+                    "message": "net resync strategy entry missing required fields",
+                    "path": "$.strategies",
+                }
+            )
+            continue
+        if strategy_id in resync_strategy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_net_resync_strategy_id",
+                    "message": "duplicate net resync strategy_id '{}'".format(strategy_id),
+                    "path": "$.strategies.strategy_id",
+                }
+            )
+            continue
+        resync_strategy_id_set.add(strategy_id)
+        net_resync_strategy_rows.append(
+            {
+                "strategy_id": strategy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "supported_policies": _sorted_unique_strings(supported_policies),
+                "steps": _sorted_unique_strings(steps),
+                "refusal_codes": _sorted_unique_strings(refusal_codes),
+                "extensions": dict(extensions),
+            }
+        )
+    net_resync_strategy_rows = sorted(net_resync_strategy_rows, key=lambda row: str(row.get("strategy_id", "")))
+
+    _replication_record, replication_rows_raw, replication_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/net_replication_policy_registry.json",
+        expected_schema_id="dominium.registry.net_replication_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if replication_load_errors:
+        return [], [], [], [], replication_load_errors
+
+    net_replication_policy_rows: List[dict] = []
+    replication_policy_id_set = set()
+    for entry in sorted(replication_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_net_replication_policy_entry",
+                    "message": "net replication policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        required_features = entry.get("required_features")
+        resync_strategy_id = str(entry.get("resync_strategy_id", "")).strip()
+        extensions = entry.get("extensions")
+        if (
+            not policy_id
+            or not isinstance(required_features, list)
+            or not resync_strategy_id
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_net_replication_policy_entry",
+                    "message": "net replication policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if policy_id in replication_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_net_replication_policy_id",
+                    "message": "duplicate net replication policy_id '{}'".format(policy_id),
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        if resync_strategy_id not in resync_strategy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.net_replication_resync_missing",
+                    "message": "net replication policy '{}' references missing resync strategy '{}'".format(
+                        policy_id,
+                        resync_strategy_id,
+                    ),
+                    "path": "$.policies.resync_strategy_id",
+                }
+            )
+            continue
+        replication_policy_id_set.add(policy_id)
+        net_replication_policy_rows.append(
+            {
+                "policy_id": policy_id,
+                "human_name": str(entry.get("human_name", "")).strip(),
+                "description": str(entry.get("description", "")).strip(),
+                "required_features": _sorted_unique_strings(required_features),
+                "allowed_in_singleplayer": bool(entry.get("allowed_in_singleplayer", False)),
+                "allowed_in_private_server": bool(entry.get("allowed_in_private_server", False)),
+                "allowed_in_ranked": bool(entry.get("allowed_in_ranked", False)),
+                "deterministic_ordering_rule_id": str(entry.get("deterministic_ordering_rule_id", "")).strip(),
+                "resync_strategy_id": resync_strategy_id,
+                "extensions": dict(extensions),
+            }
+        )
+    net_replication_policy_rows = sorted(net_replication_policy_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    for entry in net_resync_strategy_rows:
+        for policy_id in entry.get("supported_policies") or []:
+            if str(policy_id) not in replication_policy_id_set:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.net_resync_supported_policy_missing",
+                        "message": "resync strategy '{}' references unknown net policy '{}'".format(
+                            str(entry.get("strategy_id", "")),
+                            str(policy_id),
+                        ),
+                        "path": "$.strategies.supported_policies",
+                    }
+                )
+
+    return net_replication_policy_rows, net_resync_strategy_rows, anti_cheat_policy_rows, anti_cheat_module_rows, errors
+
+
 def _ui_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict]]:
     selector_re = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:\[(?:\d+|\*)\])?(?:\.[A-Za-z_][A-Za-z0-9_]*(?:\[(?:\d+|\*)\])?)*$")
 
@@ -1434,6 +1870,15 @@ def compile_bundle(
         contributions,
         schema_root=schema_root,
     )
+    (
+        net_replication_policy_rows,
+        net_resync_strategy_rows,
+        anti_cheat_policy_rows,
+        anti_cheat_module_rows,
+        net_registry_errors,
+    ) = _network_policy_rows(
+        repo_root=repo_root,
+    )
     astronomy_rows, reference_frame_rows, site_rows, astronomy_errors = _astronomy_rows(
         contributions,
         schema_root=schema_root,
@@ -1450,6 +1895,7 @@ def compile_bundle(
         + lens_errors
         + policy_errors
         + worldgen_constraints_errors
+        + net_registry_errors
         + astronomy_errors
         + real_data_errors
         + ui_errors
@@ -1486,6 +1932,34 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "lenses": lens_rows,
+        }
+    )
+    net_replication_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": net_replication_policy_rows,
+        }
+    )
+    net_resync_strategy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "strategies": net_resync_strategy_rows,
+        }
+    )
+    anti_cheat_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": anti_cheat_policy_rows,
+        }
+    )
+    anti_cheat_module_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "modules": anti_cheat_module_rows,
         }
     )
     activation_policy_payload = _finalize_registry_payload(
@@ -1560,6 +2034,10 @@ def compile_bundle(
         "law_registry": ("law_registry", law_payload),
         "experience_registry": ("experience_registry", experience_payload),
         "lens_registry": ("lens_registry", lens_payload),
+        "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
+        "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
+        "anti_cheat_policy_registry": ("anti_cheat_policy_registry", anti_cheat_policy_payload),
+        "anti_cheat_module_registry": ("anti_cheat_module_registry", anti_cheat_module_payload),
         "activation_policy_registry": ("activation_policy_registry", activation_policy_payload),
         "budget_policy_registry": ("budget_policy_registry", budget_policy_payload),
         "fidelity_policy_registry": ("fidelity_policy_registry", fidelity_policy_payload),
@@ -1577,6 +2055,10 @@ def compile_bundle(
         "law_registry",
         "experience_registry",
         "lens_registry",
+        "net_replication_policy_registry",
+        "net_resync_strategy_registry",
+        "anti_cheat_policy_registry",
+        "anti_cheat_module_registry",
         "activation_policy_registry",
         "budget_policy_registry",
         "fidelity_policy_registry",
@@ -1617,6 +2099,10 @@ def compile_bundle(
             "law_registry_hash": registry_hashes["law_registry_hash"],
             "experience_registry_hash": registry_hashes["experience_registry_hash"],
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
+            "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
+            "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
+            "anti_cheat_policy_registry_hash": registry_hashes["anti_cheat_policy_registry_hash"],
+            "anti_cheat_module_registry_hash": registry_hashes["anti_cheat_module_registry_hash"],
             "activation_policy_registry_hash": registry_hashes["activation_policy_registry_hash"],
             "budget_policy_registry_hash": registry_hashes["budget_policy_registry_hash"],
             "fidelity_policy_registry_hash": registry_hashes["fidelity_policy_registry_hash"],

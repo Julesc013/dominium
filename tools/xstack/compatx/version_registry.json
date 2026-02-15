@@ -35,6 +35,20 @@
         "1.0.0"
       ]
     },
+    "anti_cheat_module_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "anti_cheat_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "budget_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -197,6 +211,20 @@
       ]
     },
     "net_tick_intent_list": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "net_replication_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "net_resync_strategy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

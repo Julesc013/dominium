@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Net Resync Strategy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic multiplayer resync strategy registry output.",
+  "x-doc-ref": [
+    "docs/net/REPLICATION_POLICIES.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "strategies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "strategies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "strategy_id",
+          "description",
+          "supported_policies",
+          "steps",
+          "refusal_codes",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "strategy_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "supported_policies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "refusal_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "strategies": [],
+      "registry_hash": "166460927f783ecde68f6bca5d0b4fce9d21b3f9f3244f31f703bcf4a4e84dfb"
+    }
+  ]
+}
