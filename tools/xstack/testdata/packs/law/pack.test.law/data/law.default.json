@@ -1,6 +1,7 @@
 {
   "law_profile_id": "law.test.default",
   "schema_version": "1.0.0",
+  "epistemic_policy_id": "ep.policy.player_diegetic",
   "allowed_processes": [
     "process.observe.telemetry"
   ],

@@ -12,6 +12,7 @@
   "required": [
     "schema_version",
     "law_profile_id",
+    "epistemic_policy_id",
     "allowed_processes",
     "forbidden_processes",
     "allowed_lenses",
@@ -26,6 +27,9 @@
       "const": "1.0.0"
     },
     "law_profile_id": {
+      "type": "string"
+    },
+    "epistemic_policy_id": {
       "type": "string"
     },
     "allowed_processes": {
@@ -117,6 +121,7 @@
     {
       "schema_version": "1.0.0",
       "law_profile_id": "law.lab.observe_only",
+      "epistemic_policy_id": "ep.policy.player_diegetic",
       "allowed_processes": [
         "process.region_management_tick",
         "process.observe.telemetry",

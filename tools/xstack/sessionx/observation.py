@@ -2,11 +2,20 @@
 
 from __future__ import annotations
 
+import copy
 from typing import Dict, List, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
+
+
+CHANNEL_ENTITLEMENT_REQUIREMENTS = {
+    "ch.nondiegetic.entity_inspector": "entitlement.inspect",
+    "ch.nondiegetic.performance_monitor": "entitlement.inspect",
+    "ch.truth.overlay.terrain_height": "entitlement.debug_view",
+    "ch.truth.overlay.anchor_hash": "entitlement.debug_view",
+}
 
 
 def _sorted_unique(items: List[str]) -> List[str]:
@@ -65,6 +74,387 @@ def _registry_payload(truth: dict, key: str) -> dict:
     if not isinstance(payload, dict):
         return {}
     return payload
+
+
+def _policy_row(registry_payload: dict, policy_id: str) -> dict:
+    rows = registry_payload.get("policies")
+    if not isinstance(rows, list):
+        return {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("policy_id", ""))):
+        token = str(row.get("policy_id", "")).strip() or str(row.get("epistemic_policy_id", "")).strip()
+        if token == str(policy_id).strip():
+            return dict(row)
+    return {}
+
+
+def _resolve_epistemic_policy(
+    truth_model: dict,
+    law_profile: dict,
+    authority_context: dict,
+    explicit_policy: dict | None,
+) -> Dict[str, object]:
+    if isinstance(explicit_policy, dict):
+        policy_id = str(explicit_policy.get("epistemic_policy_id", "")).strip() or str(explicit_policy.get("policy_id", "")).strip()
+        if policy_id:
+            row = dict(explicit_policy)
+            row["epistemic_policy_id"] = policy_id
+            return {"result": "complete", "policy": row}
+
+    policy_id = str(law_profile.get("epistemic_policy_id", "")).strip()
+    scope = authority_context.get("epistemic_scope")
+    if not policy_id and isinstance(scope, dict):
+        policy_id = str(scope.get("epistemic_policy_id", "")).strip()
+    if not policy_id and isinstance(scope, dict):
+        policy_id = str(scope.get("scope_id", "")).strip()
+    if not policy_id:
+        return refusal(
+            "refusal.ep.policy_missing",
+            "epistemic policy id is missing from law profile and authority context",
+            "Declare law_profile.epistemic_policy_id or authority_context.epistemic_scope.epistemic_policy_id.",
+            {"law_profile_id": str(law_profile.get("law_profile_id", ""))},
+            "$.law_profile.epistemic_policy_id",
+        )
+
+    registry_payload = _registry_payload(truth_model, "epistemic_policy_registry")
+    rows = registry_payload.get("policies")
+    if not isinstance(rows, list):
+        return refusal(
+            "refusal.ep.policy_missing",
+            "epistemic_policy.registry is missing from loaded registry payloads",
+            "Compile registries and load epistemic_policy.registry.json before observation.",
+            {"epistemic_policy_id": policy_id},
+            "$.registry_payloads.epistemic_policy_registry",
+        )
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("epistemic_policy_id", ""))):
+        token = str(row.get("epistemic_policy_id", "")).strip() or str(row.get("policy_id", "")).strip()
+        if token == policy_id:
+            payload = dict(row)
+            payload["epistemic_policy_id"] = token
+            return {"result": "complete", "policy": payload}
+    return refusal(
+        "refusal.ep.policy_missing",
+        "epistemic policy '{}' is not present in registry payloads".format(policy_id),
+        "Use a law profile that references a registered epistemic policy.",
+        {"epistemic_policy_id": policy_id},
+        "$.law_profile.epistemic_policy_id",
+    )
+
+
+def _resolve_retention_policy(
+    truth_model: dict,
+    epistemic_policy: dict,
+    explicit_policy: dict | None,
+) -> Dict[str, object]:
+    if isinstance(explicit_policy, dict):
+        policy_id = str(explicit_policy.get("retention_policy_id", "")).strip() or str(explicit_policy.get("policy_id", "")).strip()
+        if policy_id:
+            row = dict(explicit_policy)
+            row["retention_policy_id"] = policy_id
+            return {"result": "complete", "policy": row}
+
+    retention_policy_id = str(epistemic_policy.get("retention_policy_id", "")).strip()
+    if not retention_policy_id:
+        return refusal(
+            "refusal.ep.policy_missing",
+            "epistemic policy is missing retention_policy_id",
+            "Define retention_policy_id in epistemic_policy registry entry.",
+            {"epistemic_policy_id": str(epistemic_policy.get("epistemic_policy_id", ""))},
+            "$.epistemic_policy.retention_policy_id",
+        )
+    registry_payload = _registry_payload(truth_model, "retention_policy_registry")
+    rows = registry_payload.get("policies")
+    if not isinstance(rows, list):
+        return refusal(
+            "refusal.ep.policy_missing",
+            "retention_policy.registry is missing from loaded registry payloads",
+            "Compile registries and load retention_policy.registry.json before observation.",
+            {"retention_policy_id": retention_policy_id},
+            "$.registry_payloads.retention_policy_registry",
+        )
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("retention_policy_id", ""))):
+        token = str(row.get("retention_policy_id", "")).strip() or str(row.get("policy_id", "")).strip()
+        if token == retention_policy_id:
+            payload = dict(row)
+            payload["retention_policy_id"] = token
+            return {"result": "complete", "policy": payload}
+    return refusal(
+        "refusal.ep.policy_missing",
+        "retention policy '{}' is not present in registry payloads".format(retention_policy_id),
+        "Use an epistemic policy that references a registered retention policy.",
+        {"retention_policy_id": retention_policy_id},
+        "$.epistemic_policy.retention_policy_id",
+    )
+
+
+def _default_lens_channels(lens_type: str) -> List[str]:
+    if str(lens_type).strip() == "nondiegetic":
+        return [
+            "ch.core.time",
+            "ch.camera.state",
+            "ch.core.navigation",
+            "ch.core.sites",
+            "ch.core.entities",
+            "ch.core.process_log",
+            "ch.core.performance",
+            "ch.nondiegetic.nav",
+            "ch.nondiegetic.entity_inspector",
+        ]
+    return [
+        "ch.core.time",
+        "ch.camera.state",
+        "ch.diegetic.compass",
+        "ch.diegetic.clock",
+        "ch.diegetic.altimeter",
+        "ch.diegetic.radio",
+        "ch.diegetic.map_local",
+    ]
+
+
+def _quantize_int(value: int, step: int) -> int:
+    token = int(step) if int(step) > 0 else 1
+    number = int(value)
+    if number >= 0:
+        return int(((number + (token // 2)) // token) * token)
+    return int(-(((-number + (token // 2)) // token) * token))
+
+
+def _camera_distance_mm(camera_viewpoint: dict) -> int:
+    position = camera_viewpoint.get("position_mm")
+    if not isinstance(position, dict):
+        return 0
+    x = int(position.get("x", 0) or 0)
+    y = int(position.get("y", 0) or 0)
+    z = int(position.get("z", 0) or 0)
+    return abs(x) + abs(y) + abs(z)
+
+
+def _precision_rule_for_channel(epistemic_policy: dict, channel_id: str, distance_mm: int) -> dict:
+    rows = [
+        dict(row)
+        for row in (epistemic_policy.get("max_precision_rules") or [])
+        if isinstance(row, dict) and str(row.get("channel_id", "")).strip() == str(channel_id).strip()
+    ]
+    rows = sorted(rows, key=lambda row: (int(row.get("max_distance_mm", 0) or 0), str(row.get("rule_id", ""))))
+    if not rows:
+        return {}
+    for row in rows:
+        if int(distance_mm) <= int(row.get("max_distance_mm", 0) or 0):
+            return row
+    return rows[-1]
+
+
+def _interest_cull(perceived_model: dict, max_objects: int) -> dict:
+    out = copy.deepcopy(dict(perceived_model or {}))
+    limit = max(0, int(max_objects))
+    if limit < 1:
+        out["observed_entities"] = []
+        entities = dict(out.get("entities") or {})
+        entities["entries"] = []
+        out["entities"] = entities
+        return out
+    selected = sorted(set(str(item).strip() for item in (out.get("observed_entities") or []) if str(item).strip()))[:limit]
+    selected_set = set(selected)
+    out["observed_entities"] = selected
+
+    entities = dict(out.get("entities") or {})
+    entries = entities.get("entries")
+    if isinstance(entries, list):
+        entities["entries"] = [
+            dict(item)
+            for item in sorted((row for row in entries if isinstance(row, dict)), key=lambda row: str(row.get("entity_id", "")))
+            if str(item.get("entity_id", "")).strip() in selected_set
+        ]
+    out["entities"] = entities
+
+    navigation = dict(out.get("navigation") or {})
+    hierarchy = navigation.get("hierarchy")
+    if isinstance(hierarchy, list):
+        filtered = []
+        for row in sorted((item for item in hierarchy if isinstance(item, dict)), key=lambda item: (str(item.get("kind", "")), str(item.get("object_id", "")))):
+            object_id = str(row.get("object_id", "")).strip()
+            parent_id = str(row.get("parent_id", "")).strip()
+            if object_id in selected_set or parent_id in selected_set:
+                filtered.append(dict(row))
+        navigation["hierarchy"] = filtered
+    out["navigation"] = navigation
+    return out
+
+
+def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
+    if channel_id == "ch.core.time":
+        return {"time": dict(perceived_model.get("time") or {}), "time_state": dict(perceived_model.get("time_state") or {})}
+    if channel_id == "ch.camera.state":
+        return {"camera_viewpoint": dict(perceived_model.get("camera_viewpoint") or {})}
+    if channel_id in ("ch.core.navigation", "ch.nondiegetic.nav", "ch.diegetic.map_local"):
+        return {"navigation": dict(perceived_model.get("navigation") or {})}
+    if channel_id == "ch.core.sites":
+        return {"sites": dict(perceived_model.get("sites") or {})}
+    if channel_id in ("ch.core.entities", "ch.nondiegetic.entity_inspector"):
+        return {"entities": dict(perceived_model.get("entities") or {}), "observed_entities": list(perceived_model.get("observed_entities") or [])}
+    if channel_id == "ch.core.process_log":
+        return {"process_log": dict(perceived_model.get("process_log") or {})}
+    if channel_id in ("ch.core.performance", "ch.nondiegetic.performance_monitor"):
+        return {"performance": dict(perceived_model.get("performance") or {})}
+    instruments = dict(perceived_model.get("diegetic_instruments") or {})
+    if channel_id == "ch.diegetic.compass":
+        return {"instrument.compass": dict(instruments.get("instrument.compass") or {})}
+    if channel_id == "ch.diegetic.clock":
+        return {"instrument.clock": dict(instruments.get("instrument.clock") or {})}
+    if channel_id == "ch.diegetic.altimeter":
+        return {"instrument.altimeter": dict(instruments.get("instrument.altimeter") or {})}
+    if channel_id == "ch.diegetic.radio":
+        return {"instrument.radio": dict(instruments.get("instrument.radio") or {})}
+    truth_overlay = dict(perceived_model.get("truth_overlay") or {})
+    if channel_id == "ch.truth.overlay.terrain_height":
+        return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
+    if channel_id == "ch.truth.overlay.anchor_hash":
+        return {"state_hash_anchor": truth_overlay.get("state_hash_anchor")}
+    return {}
+
+
+def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) -> dict:
+    out = copy.deepcopy(dict(perceived_model or {}))
+    allowed = set(_sorted_unique(list(requested_channels or [])))
+
+    if "ch.camera.state" not in allowed:
+        camera = dict(out.get("camera_viewpoint") or {})
+        out["camera_viewpoint"] = {
+            "assembly_id": str(camera.get("assembly_id", "camera.main")),
+            "frame_id": str(camera.get("frame_id", "frame.world")),
+        }
+
+    if not ({"ch.core.navigation", "ch.nondiegetic.nav", "ch.diegetic.map_local"} & allowed):
+        out["navigation"] = {"hierarchy": [], "search_index": {}, "search_results": [], "selection_summary": "", "ephemeris_tables": [], "terrain_tiles": []}
+    if "ch.core.sites" not in allowed:
+        out["sites"] = {"entries": [], "search_index": {}}
+    if not ({"ch.core.entities", "ch.nondiegetic.entity_inspector"} & allowed):
+        out["observed_entities"] = []
+        out["entities"] = {"entries": [], "selected_fields": []}
+    if not ({"ch.core.process_log", "ch.nondiegetic.performance_monitor"} & allowed):
+        out["process_log"] = {"entries": []}
+    if not ({"ch.core.performance", "ch.nondiegetic.performance_monitor"} & allowed):
+        out["performance"] = {"budget": {"summary": "redacted", "visible": False}, "active_regions": [], "fidelity_tiers": {"coarse": 0, "medium": 0, "fine": 0}}
+    if not ({"ch.core.time", "ch.diegetic.clock"} & allowed):
+        out["time"] = {"tick": 0, "rate_permille": 0, "paused": True, "summary": "redacted"}
+        out["time_state"] = {"tick": 0, "rate_permille": 0, "paused": True}
+
+    instruments = dict(out.get("diegetic_instruments") or {})
+    instrument_channels = {
+        "instrument.compass": "ch.diegetic.compass",
+        "instrument.clock": "ch.diegetic.clock",
+        "instrument.altimeter": "ch.diegetic.altimeter",
+        "instrument.radio": "ch.diegetic.radio",
+    }
+    for instrument_id, channel_id in sorted(instrument_channels.items()):
+        if channel_id not in allowed:
+            instruments[instrument_id] = {}
+    out["diegetic_instruments"] = instruments
+
+    truth_overlay = dict(out.get("truth_overlay") or {})
+    if "ch.truth.overlay.terrain_height" not in allowed:
+        truth_overlay.pop("terrain_height_mm", None)
+    if "ch.truth.overlay.anchor_hash" not in allowed:
+        truth_overlay.pop("state_hash_anchor", None)
+    out["truth_overlay"] = truth_overlay
+    out["channels"] = sorted(allowed)
+    return out
+
+
+def _apply_precision_quantization(perceived_model: dict, epistemic_policy: dict, channels: List[str]) -> dict:
+    out = copy.deepcopy(dict(perceived_model or {}))
+    distance_mm = _camera_distance_mm(dict(out.get("camera_viewpoint") or {}))
+    if "ch.camera.state" in channels:
+        camera = dict(out.get("camera_viewpoint") or {})
+        rule = _precision_rule_for_channel(epistemic_policy=epistemic_policy, channel_id="ch.camera.state", distance_mm=distance_mm)
+        if rule:
+            position = dict(camera.get("position_mm") or {})
+            orientation = dict(camera.get("orientation_mdeg") or {})
+            position_step = max(1, int(rule.get("position_quantization_mm", 1) or 1))
+            orientation_step = max(1, int(rule.get("orientation_quantization_mdeg", 1) or 1))
+            for axis in ("x", "y", "z"):
+                if axis in position:
+                    position[axis] = _quantize_int(int(position.get(axis, 0) or 0), position_step)
+            for axis in ("yaw", "pitch", "roll"):
+                if axis in orientation:
+                    orientation[axis] = _quantize_int(int(orientation.get(axis, 0) or 0), orientation_step)
+            camera["position_mm"] = position
+            camera["orientation_mdeg"] = orientation
+            out["camera_viewpoint"] = camera
+    return out
+
+
+def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
+    state = truth.get("universe_state")
+    if not isinstance(state, dict):
+        state = {}
+    rows = state.get("instrument_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    payload = {
+        "instrument.compass": {},
+        "instrument.clock": {},
+        "instrument.altimeter": {},
+        "instrument.radio": {},
+    }
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
+        assembly_id = str(row.get("assembly_id", "")).strip()
+        if assembly_id in payload:
+            payload[assembly_id] = {
+                "reading": copy.deepcopy(row.get("reading")),
+                "quality": str(row.get("quality", "")),
+                "last_update_tick": int(row.get("last_update_tick", simulation_tick) or simulation_tick),
+            }
+    return payload
+
+
+def _update_memory_hook(
+    perceived_model: dict,
+    retention_policy: dict,
+    memory_state: dict | None,
+) -> Tuple[dict, dict]:
+    state = dict(memory_state or {})
+    memory_allowed = bool(retention_policy.get("memory_allowed", False))
+    max_items = max(0, int(retention_policy.get("max_memory_items", 0) or 0))
+    entries = list(state.get("entries") or [])
+    channels = _sorted_unique(list(perceived_model.get("channels") or []))
+    tick = int((perceived_model.get("time") or {}).get("tick", 0) or 0)
+    if memory_allowed and max_items > 0:
+        for channel_id in channels:
+            payload = _channel_payload(perceived_model, channel_id)
+            entry = {
+                "tick": int(tick),
+                "channel_id": str(channel_id),
+                "payload_hash": canonical_sha256(payload),
+            }
+            entries.append(entry)
+        dedup = []
+        seen = set()
+        for row in sorted(
+            (dict(item) for item in entries if isinstance(item, dict)),
+            key=lambda item: (int(item.get("tick", 0) or 0), str(item.get("channel_id", "")), str(item.get("payload_hash", ""))),
+        ):
+            key = (
+                int(row.get("tick", 0) or 0),
+                str(row.get("channel_id", "")),
+                str(row.get("payload_hash", "")),
+            )
+            if key in seen:
+                continue
+            seen.add(key)
+            dedup.append(row)
+        if len(dedup) > max_items:
+            dedup = dedup[-max_items:]
+        entries = dedup
+    else:
+        entries = []
+    state["entries"] = list(entries)
+    memory_block = {
+        "retention_policy_id": str(retention_policy.get("retention_policy_id", "")),
+        "memory_allowed": bool(memory_allowed),
+        "deterministic_eviction_rule_id": str(retention_policy.get("deterministic_eviction_rule_id", "")),
+        "entries": list(entries),
+    }
+    return memory_block, state
 
 
 def _navigation_view(truth: dict) -> dict:
@@ -356,6 +746,9 @@ def build_truth_model(
             "site_registry_index_hash": str(registries.get("site_registry_index_hash", "")),
             "ephemeris_registry_hash": str(registries.get("ephemeris_registry_hash", "")),
             "terrain_tile_registry_hash": str(registries.get("terrain_tile_registry_hash", "")),
+            "perception_interest_policy_registry_hash": str(registries.get("perception_interest_policy_registry_hash", "")),
+            "epistemic_policy_registry_hash": str(registries.get("epistemic_policy_registry_hash", "")),
+            "retention_policy_registry_hash": str(registries.get("retention_policy_registry_hash", "")),
             "ui_registry_hash": str(registries.get("ui_registry_hash", "")),
         },
         "universe_identity": dict(universe_identity),
@@ -371,6 +764,10 @@ def observe_truth(
     law_profile: dict,
     authority_context: dict,
     viewpoint_id: str,
+    epistemic_policy: dict | None = None,
+    retention_policy: dict | None = None,
+    memory_state: dict | None = None,
+    perception_interest_limit: int | None = None,
 ) -> Dict[str, object]:
     """Observation Kernel contract: TruthModel x Lens x LawProfile x AuthorityContext -> PerceivedModel."""
     input_check = _required_mapping(
@@ -390,12 +787,7 @@ def observe_truth(
     )
     if lens_check.get("result") != "complete":
         return lens_check
-    law_check = _required_mapping(
-        law_profile,
-        ("law_profile_id", "allowed_lenses", "epistemic_limits"),
-        "LAW_PROFILE_INVALID",
-        "$.law_profile",
-    )
+    law_check = _required_mapping(law_profile, ("law_profile_id", "allowed_lenses", "epistemic_limits"), "LAW_PROFILE_INVALID", "$.law_profile")
     if law_check.get("result") != "complete":
         return law_check
 
@@ -453,6 +845,67 @@ def observe_truth(
             "$.authority_context.epistemic_scope",
         )
 
+    policy_result = _resolve_epistemic_policy(
+        truth_model=truth_model,
+        law_profile=law_profile,
+        authority_context=authority_context,
+        explicit_policy=epistemic_policy,
+    )
+    if str(policy_result.get("result", "")) != "complete":
+        return policy_result
+    active_epistemic_policy = dict(policy_result.get("policy") or {})
+
+    retention_result = _resolve_retention_policy(
+        truth_model=truth_model,
+        epistemic_policy=active_epistemic_policy,
+        explicit_policy=retention_policy,
+    )
+    if str(retention_result.get("result", "")) != "complete":
+        return retention_result
+    active_retention_policy = dict(retention_result.get("policy") or {})
+
+    policy_allowed_channels = _sorted_unique(list(active_epistemic_policy.get("allowed_observation_channels") or []))
+    policy_forbidden_channels = _sorted_unique(list(active_epistemic_policy.get("forbidden_channels") or []))
+    requested_channels = _sorted_unique(list(lens.get("observation_channels") or []))
+    if not requested_channels:
+        requested_channels = _default_lens_channels(lens_type=lens_type)
+
+    channel_forbidden = sorted(
+        token
+        for token in requested_channels
+        if token in set(policy_forbidden_channels) or token not in set(policy_allowed_channels)
+    )
+    if channel_forbidden:
+        return refusal(
+            "refusal.ep.channel_forbidden",
+            "requested lens channels are forbidden by active epistemic policy",
+            "Select a lens whose observation_channels are allowed by the active epistemic policy.",
+            {
+                "lens_id": lens_id,
+                "epistemic_policy_id": str(active_epistemic_policy.get("epistemic_policy_id", "")),
+                "forbidden_channels": ",".join(channel_forbidden),
+            },
+            "$.lens.observation_channels",
+        )
+
+    missing_channel_entitlements = []
+    for channel_id in requested_channels:
+        entitlement_id = str(CHANNEL_ENTITLEMENT_REQUIREMENTS.get(channel_id, "")).strip()
+        if entitlement_id and entitlement_id not in entitlements:
+            missing_channel_entitlements.append(entitlement_id)
+    missing_channel_entitlements = _sorted_unique(missing_channel_entitlements)
+    if missing_channel_entitlements:
+        return refusal(
+            "refusal.ep.entitlement_missing",
+            "authority context missing required channel entitlements",
+            "Grant required entitlements or choose a lens with lower channel requirements.",
+            {
+                "lens_id": lens_id,
+                "missing_entitlements": ",".join(missing_channel_entitlements),
+            },
+            "$.authority_context.entitlements",
+        )
+
     observed_entities = _agent_entity_ids(truth_model)
     simulation_tick = _simulation_tick(truth_model)
     time_control = _time_control(truth_model)
@@ -483,7 +936,7 @@ def observe_truth(
         "assembly_id": str(camera.get("assembly_id", "camera.main")),
         "frame_id": str(camera.get("frame_id", "frame.world")),
     }
-    if allow_hidden:
+    if allow_hidden or "ch.camera.state" in requested_channels:
         camera_viewpoint["position_mm"] = dict(camera.get("position_mm") or {"x": 0, "y": 0, "z": 0})
         camera_viewpoint["orientation_mdeg"] = dict(camera.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0})
         camera_viewpoint["lens_id"] = str(camera.get("lens_id", lens_id))
@@ -497,6 +950,16 @@ def observe_truth(
     process_log = _process_log_entries(truth_model)
     entities = _entity_view(truth_model, observed_entities=observed_entities)
     performance = _performance_view(truth_model, allow_hidden=allow_hidden)
+    diegetic_instruments = _instrument_channel_view(truth=truth_model, simulation_tick=simulation_tick)
+    state_hash_anchor = canonical_sha256(dict(truth_model.get("universe_state") or {}))
+    terrain_height_mm = int((camera_viewpoint.get("position_mm") or {}).get("z", 0) or 0)
+    filter_chain = [str(item).strip() for item in (active_epistemic_policy.get("deterministic_filters") or []) if str(item).strip()]
+    if not filter_chain:
+        filter_chain = [
+            "filter.channel_allow_deny.v1",
+            "filter.quantize_precision.v1",
+            "filter.interest_cull.v1",
+        ]
 
     perceived_model = {
         "schema_version": "1.0.0",
@@ -515,6 +978,11 @@ def observe_truth(
         "entities": entities,
         "process_log": {
             "entries": process_log,
+        },
+        "diegetic_instruments": diegetic_instruments,
+        "truth_overlay": {
+            "terrain_height_mm": terrain_height_mm,
+            "state_hash_anchor": state_hash_anchor,
         },
         "performance": performance,
         "time": {
@@ -536,13 +1004,51 @@ def observe_truth(
             "simulation_tick": simulation_tick,
             "coordinate_frame": "world.global",
             "lens_type": lens_type,
+            "epistemic_policy_id": str(active_epistemic_policy.get("epistemic_policy_id", "")),
+            "retention_policy_id": str(active_retention_policy.get("retention_policy_id", "")),
+            "deterministic_filter_chain": list(filter_chain),
             "epistemic_visibility_policy": str((lens.get("epistemic_constraints") or {}).get("visibility_policy", "")),
         },
     }
+    perceived_model = _apply_channel_filter(
+        perceived_model=perceived_model,
+        requested_channels=requested_channels,
+    )
+    perceived_model = _apply_precision_quantization(
+        perceived_model=perceived_model,
+        epistemic_policy=active_epistemic_policy,
+        channels=requested_channels,
+    )
+
+    max_objects = 0
+    for candidate in (
+        perception_interest_limit,
+        scope.get("max_objects"),
+        scope.get("max_observed_entities"),
+    ):
+        if candidate is None:
+            continue
+        try:
+            max_objects = max(max_objects, int(candidate))
+        except (TypeError, ValueError):
+            continue
+    if max_objects > 0:
+        perceived_model = _interest_cull(perceived_model=perceived_model, max_objects=max_objects)
+
+    memory_block, next_memory_state = _update_memory_hook(
+        perceived_model=perceived_model,
+        retention_policy=active_retention_policy,
+        memory_state=memory_state,
+    )
+    perceived_model["memory"] = memory_block
+    perceived_model_hash_value = canonical_sha256(perceived_model)
     return {
         "result": "complete",
         "perceived_model": perceived_model,
-        "perceived_model_hash": canonical_sha256(perceived_model),
+        "perceived_model_hash": perceived_model_hash_value,
+        "epistemic_policy_id": str(active_epistemic_policy.get("epistemic_policy_id", "")),
+        "retention_policy_id": str(active_retention_policy.get("retention_policy_id", "")),
+        "memory_state": next_memory_state,
     }
 
 

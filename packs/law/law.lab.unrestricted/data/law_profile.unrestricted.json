@@ -1,6 +1,7 @@
 {
   "schema_version": "1.0.0",
   "law_profile_id": "law.lab.unrestricted",
+  "epistemic_policy_id": "ep.policy.lab_broad",
   "allowed_processes": [
     "process.camera_move",
     "process.camera_teleport",

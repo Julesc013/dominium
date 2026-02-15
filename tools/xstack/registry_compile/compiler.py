@@ -238,9 +238,20 @@ def _law_rows(contrib: List[dict]) -> Tuple[List[dict], List[dict]]:
                 }
             )
             continue
+        epistemic_policy_id = str(payload.get("epistemic_policy_id", "")).strip()
+        if not epistemic_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.missing_epistemic_policy_id",
+                    "message": "law contribution '{}' missing epistemic_policy_id".format(law_id),
+                    "path": "$.law_profiles.epistemic_policy_id",
+                }
+            )
+            continue
         rows.append(
             {
                 "law_profile_id": law_id,
+                "epistemic_policy_id": epistemic_policy_id,
                 "pack_id": str(row.get("pack_id", "")),
                 "path": str(row.get("path", "")),
                 "allowed_processes": sorted(
@@ -498,6 +509,9 @@ def _lens_rows(contrib: List[dict]) -> Tuple[List[dict], List[dict]]:
                 "transform_description": str(payload.get("transform_description", "")).strip(),
                 "required_entitlements": sorted(
                     set(str(item).strip() for item in required_entitlements if str(item).strip())
+                ),
+                "observation_channels": sorted(
+                    set(str(item).strip() for item in (payload.get("observation_channels") or []) if str(item).strip())
                 ),
                 "epistemic_constraints": {
                     "visibility_policy": str(epistemic_constraints.get("visibility_policy", "")),

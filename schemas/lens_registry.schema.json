@@ -58,6 +58,7 @@
           "path",
           "transform_description",
           "required_entitlements",
+          "observation_channels",
           "epistemic_constraints"
         ],
         "additionalProperties": false,
@@ -82,6 +83,12 @@
             "type": "string"
           },
           "required_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "observation_channels": {
             "type": "array",
             "items": {
               "type": "string"
