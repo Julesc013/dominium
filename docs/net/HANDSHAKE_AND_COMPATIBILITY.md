@@ -67,6 +67,14 @@ Rules:
 6. `stage.net_handshake` is executable in MP-2.
 7. `stage.net_sync_baseline` and `stage.net_join_world` remain explicit deterministic stubs that refuse with `refusal.not_implemented` until replication prompts implement baseline sync/join flow.
 
+## CLI Surfaces
+
+1. `tools/net/net_cli.py --session-spec <path> net.connect --endpoint <endpoint>`
+2. `tools/net/net_cli.py --session-spec <path> net.handshake --policy <policy_id> --anti-cheat <policy_id>`
+3. `tools/net/net_cli.py --session-spec <path> net.status`
+4. `tools/net/net_cli.py --session-spec <path> net.disconnect`
+5. `tools/net/tool_net_loopback_sim.py --session-spec <path> --clients <N>`
+
 ## Refusal Codes (Compatibility)
 
 1. `refusal.net.handshake_pack_lock_mismatch`
