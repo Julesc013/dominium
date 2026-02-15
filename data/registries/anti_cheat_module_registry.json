@@ -1,0 +1,112 @@
+{
+  "schema_id": "dominium.registry.anti_cheat_module_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.anti_cheat_module_registry",
+    "registry_version": "1.0.0",
+    "modules": [
+      {
+        "module_id": "ac.module.input_integrity",
+        "description": "Validate input payload structural integrity and signed envelope shape.",
+        "inputs": [
+          "intent_envelope",
+          "authority_context"
+        ],
+        "outputs": [
+          "anti_cheat_event",
+          "refusal"
+        ],
+        "determinism_notes": "Pure payload validation with deterministic error ordering.",
+        "extensions": {}
+      },
+      {
+        "module_id": "ac.module.sequence_integrity",
+        "description": "Validate deterministic envelope sequence monotonicity and gap/duplication behavior.",
+        "inputs": [
+          "tick_intent_list",
+          "intent_envelope"
+        ],
+        "outputs": [
+          "anti_cheat_event",
+          "refusal"
+        ],
+        "determinism_notes": "Sequence checks use deterministic ordering keys only.",
+        "extensions": {}
+      },
+      {
+        "module_id": "ac.module.authority_integrity",
+        "description": "Validate intent authority against LawProfile and server authority contract.",
+        "inputs": [
+          "authority_context",
+          "law_profile"
+        ],
+        "outputs": [
+          "anti_cheat_event",
+          "refusal"
+        ],
+        "determinism_notes": "Rule lookup is registry-ordered and reproducible.",
+        "extensions": {}
+      },
+      {
+        "module_id": "ac.module.state_integrity",
+        "description": "Validate tick and composite hash anchor continuity.",
+        "inputs": [
+          "hash_anchor_frame",
+          "snapshot",
+          "delta"
+        ],
+        "outputs": [
+          "anti_cheat_event",
+          "refusal",
+          "terminate"
+        ],
+        "determinism_notes": "Hash comparison is deterministic by canonical serialization.",
+        "extensions": {}
+      },
+      {
+        "module_id": "ac.module.replay_protection",
+        "description": "Detect envelope replay or stale snapshot reuse across submission windows.",
+        "inputs": [
+          "intent_envelope",
+          "tick_intent_list"
+        ],
+        "outputs": [
+          "anti_cheat_event",
+          "refusal"
+        ],
+        "determinism_notes": "Replay windows are deterministic tick ranges.",
+        "extensions": {}
+      },
+      {
+        "module_id": "ac.module.behavioral_detection",
+        "description": "Server-side deterministic behavioral heuristics over aggregated event traces.",
+        "inputs": [
+          "anti_cheat_event",
+          "tick_ledger"
+        ],
+        "outputs": [
+          "anti_cheat_event",
+          "audit"
+        ],
+        "determinism_notes": "Heuristic thresholds are policy data; no stochastic scoring.",
+        "extensions": {}
+      },
+      {
+        "module_id": "ac.module.client_attestation",
+        "description": "Optional client attestation verification module (off by default).",
+        "inputs": [
+          "attestation_blob"
+        ],
+        "outputs": [
+          "anti_cheat_event",
+          "refusal"
+        ],
+        "determinism_notes": "Optional module; enabled only by explicit anti-cheat policy.",
+        "extensions": {
+          "default_enabled": false
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

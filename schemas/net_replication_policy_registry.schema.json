@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Net Replication Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic multiplayer replication policy registry output.",
+  "x-doc-ref": [
+    "docs/net/REPLICATION_POLICIES.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "human_name",
+          "description",
+          "required_features",
+          "allowed_in_singleplayer",
+          "allowed_in_private_server",
+          "allowed_in_ranked",
+          "deterministic_ordering_rule_id",
+          "resync_strategy_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "human_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "required_features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_in_singleplayer": {
+            "type": "boolean"
+          },
+          "allowed_in_private_server": {
+            "type": "boolean"
+          },
+          "allowed_in_ranked": {
+            "type": "boolean"
+          },
+          "deterministic_ordering_rule_id": {
+            "type": "string"
+          },
+          "resync_strategy_id": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "policies": [],
+      "registry_hash": "a2db35006d2be74d91f21db2f9a74f7fd6af4f5b0c5d54d34e07d61f865f2c52"
+    }
+  ]
+}

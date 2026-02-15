@@ -1,0 +1,105 @@
+{
+  "schema_id": "dominium.registry.anti_cheat_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.anti_cheat_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "policy_id": "policy.ac.detect_only",
+        "human_name": "Detect Only",
+        "description": "Emit anti-cheat events only; no automatic refusal/termination actions.",
+        "modules_enabled": [
+          "ac.module.input_integrity",
+          "ac.module.sequence_integrity",
+          "ac.module.authority_integrity",
+          "ac.module.state_integrity",
+          "ac.module.replay_protection",
+          "ac.module.behavioral_detection"
+        ],
+        "default_actions": {
+          "ac.module.input_integrity": "audit",
+          "ac.module.sequence_integrity": "audit",
+          "ac.module.authority_integrity": "audit",
+          "ac.module.state_integrity": "audit",
+          "ac.module.replay_protection": "audit",
+          "ac.module.behavioral_detection": "audit"
+        },
+        "allowed_in_singleplayer": true,
+        "allowed_in_private_server": true,
+        "required_for_ranked": false,
+        "extensions": {}
+      },
+      {
+        "policy_id": "policy.ac.casual_default",
+        "human_name": "Casual Default",
+        "description": "Refuse critical integrity violations while retaining audit-oriented behavior for mild anomalies.",
+        "modules_enabled": [
+          "ac.module.input_integrity",
+          "ac.module.sequence_integrity",
+          "ac.module.authority_integrity",
+          "ac.module.state_integrity",
+          "ac.module.replay_protection"
+        ],
+        "default_actions": {
+          "ac.module.input_integrity": "refuse",
+          "ac.module.sequence_integrity": "refuse",
+          "ac.module.authority_integrity": "refuse",
+          "ac.module.state_integrity": "refuse",
+          "ac.module.replay_protection": "audit"
+        },
+        "allowed_in_singleplayer": false,
+        "allowed_in_private_server": true,
+        "required_for_ranked": false,
+        "extensions": {}
+      },
+      {
+        "policy_id": "policy.ac.rank_strict",
+        "human_name": "Ranked Strict",
+        "description": "Strict anti-cheat policy for ranked/esports servers with explicit deterministic enforcement actions.",
+        "modules_enabled": [
+          "ac.module.input_integrity",
+          "ac.module.sequence_integrity",
+          "ac.module.authority_integrity",
+          "ac.module.state_integrity",
+          "ac.module.replay_protection",
+          "ac.module.behavioral_detection",
+          "ac.module.client_attestation"
+        ],
+        "default_actions": {
+          "ac.module.input_integrity": "refuse",
+          "ac.module.sequence_integrity": "refuse",
+          "ac.module.authority_integrity": "terminate",
+          "ac.module.state_integrity": "terminate",
+          "ac.module.replay_protection": "refuse",
+          "ac.module.behavioral_detection": "throttle",
+          "ac.module.client_attestation": "refuse"
+        },
+        "allowed_in_singleplayer": false,
+        "allowed_in_private_server": false,
+        "required_for_ranked": true,
+        "extensions": {}
+      },
+      {
+        "policy_id": "policy.ac.private_relaxed",
+        "human_name": "Private Relaxed",
+        "description": "Private server relaxed policy prioritizing audit and optional throttling over hard refusal.",
+        "modules_enabled": [
+          "ac.module.input_integrity",
+          "ac.module.sequence_integrity",
+          "ac.module.authority_integrity"
+        ],
+        "default_actions": {
+          "ac.module.input_integrity": "audit",
+          "ac.module.sequence_integrity": "audit",
+          "ac.module.authority_integrity": "audit"
+        },
+        "allowed_in_singleplayer": true,
+        "allowed_in_private_server": true,
+        "required_for_ranked": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

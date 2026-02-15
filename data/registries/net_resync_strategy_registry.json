@@ -1,0 +1,62 @@
+{
+  "schema_id": "dominium.registry.net_resync_strategy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.net_resync_strategy_registry",
+    "registry_version": "1.0.0",
+    "strategies": [
+      {
+        "strategy_id": "resync.lockstep.replay_intents",
+        "description": "Replay deterministic tick intent ledgers from the last agreed hash anchor checkpoint.",
+        "supported_policies": [
+          "policy.net.lockstep"
+        ],
+        "steps": [
+          "request missing tick_intent_list range",
+          "replay envelopes under ordering rule",
+          "compare recomputed hash_anchor_frame"
+        ],
+        "refusal_codes": [
+          "refusal.net.resync_required",
+          "refusal.net.sequence_violation"
+        ],
+        "extensions": {}
+      },
+      {
+        "strategy_id": "resync.authoritative.snapshot",
+        "description": "Fetch authoritative snapshot baseline and continue with deltas.",
+        "supported_policies": [
+          "policy.net.server_authoritative"
+        ],
+        "steps": [
+          "request latest compatible snapshot",
+          "verify snapshot hash and lock compatibility",
+          "resume delta stream from negotiated tick"
+        ],
+        "refusal_codes": [
+          "refusal.net.resync_required",
+          "refusal.net.handshake_registry_hash_mismatch"
+        ],
+        "extensions": {}
+      },
+      {
+        "strategy_id": "resync.hybrid.shard_snapshot",
+        "description": "Resynchronize divergent shards via shard snapshots and rebuild composite anchor.",
+        "supported_policies": [
+          "policy.net.srz_hybrid"
+        ],
+        "steps": [
+          "identify divergent shard IDs",
+          "fetch shard snapshots and validate shard hashes",
+          "recompute composite hash and resume shard envelopes"
+        ],
+        "refusal_codes": [
+          "refusal.net.resync_required",
+          "refusal.net.shard_target_invalid"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
