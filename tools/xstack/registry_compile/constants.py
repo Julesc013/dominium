@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.4.0"
+COMPILER_VERSION = "1.4.1"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
