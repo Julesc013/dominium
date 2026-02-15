@@ -6,8 +6,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import shutil
-import subprocess
 import sys
 from typing import Dict, Iterable, List, Optional, Tuple
 
@@ -28,7 +26,7 @@ from env_tools_lib import (
     canonicalize_env_for_workspace,
     detect_repo_root,
 )
-from graph import build_analysis_graph
+from graph import build_analysis_graph, resolve_changed_only_paths
 from model.serialization import compute_fingerprint, finding_to_dict, sort_findings
 from output import write_reports
 
@@ -47,45 +45,6 @@ def _canonicalize_env(repo_root: str) -> Tuple[str, Dict[str, str]]:
     env, _ = canonicalize_env_for_workspace(dict(os.environ), repo_root, ws_id=ws_id)
     os.environ.update(env)
     return ws_id, env
-
-
-def _normalize_paths(paths: Iterable[str]) -> List[str]:
-    return sorted({str(item).replace("\\", "/").strip() for item in paths if str(item).strip()})
-
-
-def _collect_changed_paths(repo_root: str):
-    git_exe = shutil.which("git")
-    if not git_exe:
-        return None, {
-            "result": "refused",
-            "refusal_code": "refuse.git_unavailable",
-            "reason": "Git executable not found for --changed-only scan.",
-        }
-
-    commands = (
-        [git_exe, "-C", repo_root, "diff", "--name-only", "--relative", "HEAD"],
-        [git_exe, "-C", repo_root, "ls-files", "--others", "--exclude-standard"],
-    )
-    paths = []
-    for command in commands:
-        proc = subprocess.run(
-            command,
-            cwd=repo_root,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            check=False,
-        )
-        if proc.returncode != 0:
-            return None, {
-                "result": "refused",
-                "refusal_code": "refuse.git_unavailable",
-                "reason": "Git command failed for --changed-only scan.",
-                "command": " ".join(command),
-                "stderr": (proc.stderr or "").strip(),
-            }
-        paths.extend(line.strip() for line in (proc.stdout or "").splitlines() if line.strip())
-    return _normalize_paths(paths), None
 
 
 def _normalize_finding_record(record: Dict[str, object]) -> Dict[str, object]:
@@ -236,9 +195,14 @@ def _run_scan(args):
     ws_id, _ = _canonicalize_env(root)
     changed_paths = None
     if args.changed_only:
-        changed_paths, refusal = _collect_changed_paths(root)
-        if refusal is not None:
-            return refusal, 2
+        changed = resolve_changed_only_paths(root, changed_only=True)
+        if changed.get("result") != "complete":
+            return {
+                "result": "refused",
+                "refusal_code": str(changed.get("reason_code", "refusal.git_unavailable")),
+                "reason": str(changed.get("message", "changed-only scan unavailable")),
+            }, 2
+        changed_paths = list(changed.get("paths") or [])
 
     cache = AuditXCache(root, ws_id)
     scan_scope = changed_paths or []
