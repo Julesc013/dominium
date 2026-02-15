@@ -1,328 +1,92 @@
-Status: CANONICAL
-Last Reviewed: 2026-02-01
+Status: DERIVED
+Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
+Version: 1.0.0
+Compatibility: Bound to `schemas/budget_policy.schema.json` v1.0.0 and `tools/xstack/sessionx/process_runtime.py`.
 
-# Budget Policy (BUDGET0)
-
-
-
-
-
-Status: binding.
-
-
-Scope: deterministic admission control and bounded per-commit work.
-
-
-
-
+# Budget Policy v1
 
 ## Purpose
-
-
-Budgets are policy-layer limits. They do not change simulation semantics.
-
-
-They only gate admission and scheduling at commit boundaries.
-
-
-
-
-
-## Canonical budget taxonomy (required)
-
-
-Scaling and macro-time admission MUST use the following budget categories:
-
-
-
-
-
-- ACTIVE_DOMAIN_BUDGET
-
-
-  - Meaning: maximum number of Tier-2 domains active at once.
-  - Also defines: max active tier-2 and max active tier-1 domain counts.
-
-
-  - Policy fields: `active_domain_budget` (if non-zero) else `max_tier2_domains`.
-
-
-
-
-
-- REFINEMENT_BUDGET
-
-
-  - Meaning: micro expansion refinement work per commit tick.
-
-
-  - Policy fields: `refinement_budget_per_tick`, `refinement_cost_units`.
-
-
-
-
-
-- COLLAPSE_BUDGET
-
-
-  - Meaning: micro -> macro collapse work per commit tick.
-
-
-  - Policy fields: `collapse_budget_per_tick`, `collapse_cost_units`.
-
-
-
-
-
-- MACRO_EVENT_BUDGET
-
-
-  - Meaning: macro events executed per commit tick.
-
-
-  - Policy fields: `macro_event_budget_per_tick`, `macro_event_cost_units`.
-
-
-
-
-
-- AGENT_PLANNING_BUDGET
-
-
-  - Meaning: planning reconstruction or macro planning steps per commit tick.
-
-
-  - Policy fields: `planning_budget_per_tick`, `planning_cost_units`.
-
-
-
-
-
-- SNAPSHOT_BUDGET
-
-
-  - Meaning: snapshot/serialization work per commit tick.
-
-
-  - Policy fields: `snapshot_budget_per_tick`, `snapshot_cost_units`.
-
-
-
-
-
-Budgets are deterministic counters scoped to a commit tick. They reset only
-
-
-when `now_tick` advances at a new commit boundary.
-
-
-
-
-
-## Admission control (hard gates)
-
-
-Before any operation that increases active simulation cost, the system MUST:
-
-
-
-
-
-1) Check budget availability deterministically.
-
-
-2) If insufficient, REFUSE or DEFER explicitly.
-
-
-3) Emit an auditable event that includes budget context.
-
-
-4) Leave authoritative state unchanged on refusal or defer.
-
-
-
-
-
-Required admission checks include:
-
-
-
-
-
-- domain expansion and Tier-2 activation
-
-
-- macro event execution
-
-
-- agent planning reconstruction
-
-
-- collapse and compaction work
-
-
-- snapshot/serialization work
-
-
-
-
-
-## No implicit budget stealing
-
-
-Budget exhaustion MUST NOT:
-
-
-
-
-
-- implicitly demote other domains
-
-
-- implicitly change fidelity tiers
-
-
-- implicitly steal budget from other work classes
-
-
-
-
-
-Any reallocation must be explicit, policy-driven, and auditable.
-
-
-
-
-
-## Deterministic deferral and backlog bounds
-
-
-Deferred work MUST be:
-
-
-
-
-
-- queued in deterministic order (domain id, operation kind, reason code)
-
-
-- bounded by policy (`deferred_queue_limit` and a hard cap)
-
-
-- explicit in the event log
-
-
-
-
-
-If the deferral queue is disabled or full, the system MUST emit a refusal
-
-
-instead of silently accumulating work.
-
-
-
-
-
-## Budget outcomes and refusal codes (scaling)
-
-
-Scaling admission MUST use explicit, stable refusal codes where possible:
-
-
-
-
-
-- REFUSE_ACTIVE_DOMAIN_LIMIT
-
-
-- REFUSE_REFINEMENT_BUDGET
-
-
-- REFUSE_MACRO_EVENT_BUDGET
-
-
-- REFUSE_AGENT_PLANNING_BUDGET
-
-
-- REFUSE_SNAPSHOT_BUDGET
-
-
-- REFUSE_COLLAPSE_BUDGET
-
-
-- REFUSE_DEFER_QUEUE_LIMIT
-
-
-
-
-
-Generic `REFUSE_BUDGET_EXCEEDED` remains valid for unclassified cases, but
-
-
-admission points SHOULD map to a specific budget refusal when available.
-
-
-
-
-
-Deferrals remain explicit, logged, and replayable:
-
-
-
-
-
-- DEFER_COLLAPSE
-
-
-- DEFER_EXPANSION
-
-
-- DEFER_MACRO_EVENT
-
-
-- DEFER_COMPACTION
-
-
-
-
-
-## Observability requirements
-
-
-Budget policy and runtime state MUST be observable:
-
-
-
-
-
-- current usage vs limits per budget category
-
-
-- deferred work count and overflow
-
-
-- refusal counts by budget class
-
-
-- budget context attached to scaling events
-
-
-
-
-
-## See also
-
-
-- `docs/architecture/CONSTANT_COST_GUARANTEE.md`
-
-
-- `docs/architecture/REFUSAL_SEMANTICS.md`
-
-
-- `docs/architecture/SCALING_MODEL.md`
-
-
-- `docs/architecture/ARCH0_CONSTITUTION.md`
+Define deterministic compute/fidelity admission bounds for region expansion during traversal.
+
+## Source of Truth
+- `schemas/budget_policy.schema.json`
+- `build/registries/budget_policy.registry.json`
+- `tools/xstack/sessionx/process_runtime.py`
+
+## Required Fields
+- `policy_id`
+- `activation_policy_id`
+- `max_compute_units_per_tick`
+- `max_entities_micro`
+- `max_regions_micro`
+- `fallback_behavior` (`degrade_fidelity|refuse`)
+- `logging_level`
+- `tier_compute_weights` (`coarse|medium|fine`)
+- `entity_compute_weight`
+
+All policy knobs are numeric/data-only; logic is not embedded in pack payloads.
+
+## Deterministic Compute Proxy
+`compute_units_used` is derived deterministically:
+- `tier_sum = sum(tier_compute_weights[tier] for each active micro region)`
+- `entity_sum = sum(micro_entities_target for each active micro region)`
+- `compute_units_used = tier_sum + entity_sum * entity_compute_weight`
+
+This proxy is used for budget gating and PerformX reporting.
+
+## Enforcement Order
+1. Select candidate regions deterministically.
+2. Apply provisional fidelity tiers.
+3. Evaluate compute/entity limits.
+4. If exceeded:
+   - `degrade_fidelity`: deterministic downgrade then cap.
+   - `refuse`: emit `BUDGET_EXCEEDED`.
+
+No silent overflow and no unbounded fallback.
+
+## Run-Meta and Perceived Visibility
+Budget outcomes are emitted to:
+- `UniverseState.performance_state`
+- script run-meta deterministic fields
+- `PerceivedModel.performance` (lab law where epistemic limits allow)
+
+## Pack-Driven Contribution
+Path:
+- `packs/core/policy.budget.default_lab/`
+
+Contribution format:
+- `type: "registry_entries"`
+- `entry_type: "budget_policy"`
+- policy payload validated by `schemas/budget_policy.schema.json`
+
+## Example
+```json
+{
+  "schema_version": "1.0.0",
+  "policy_id": "policy.budget.default_lab",
+  "activation_policy_id": "policy.activation.default_lab",
+  "max_compute_units_per_tick": 240,
+  "max_entities_micro": 180,
+  "max_regions_micro": 24,
+  "fallback_behavior": "degrade_fidelity",
+  "logging_level": 2,
+  "tier_compute_weights": {
+    "coarse": 2,
+    "medium": 5,
+    "fine": 9
+  },
+  "entity_compute_weight": 1
+}
+```
+
+## TODO
+- Add policy profile families for non-lab deployments.
+- Add explicit budget refusal telemetry aggregation contract.
+
+## Cross-References
+- `docs/architecture/interest_regions.md`
+- `docs/architecture/fidelity_policy.md`
+- `docs/architecture/macro_capsules.md`
+- `docs/contracts/refusal_contract.md`
