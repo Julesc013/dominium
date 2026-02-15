@@ -1,5 +1,6 @@
 """A8 Derived artifact freshness smell analyzer."""
 
+import json
 import os
 import re
 
@@ -31,6 +32,33 @@ def _iter_candidate_docs(graph):
         if not rel.lower().endswith(SOURCE_EXTS):
             continue
         yield rel
+
+
+def _derived_registry_artifacts(repo_root):
+    rel = "data/registries/derived_artifacts.json"
+    abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
+    if not os.path.isfile(abs_path):
+        return []
+    try:
+        payload = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    rows = (((payload.get("record") or {}).get("artifacts")) or [])
+    if not isinstance(rows, list):
+        return []
+    out = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        out.append(
+            {
+                "artifact_id": str(row.get("artifact_id", "")).strip(),
+                "path": str(row.get("path", "")).replace("\\", "/").strip(),
+                "regeneration_tool": str(row.get("regeneration_tool", "")).strip(),
+                "regenerable": bool(row.get("regenerable", False)),
+            }
+        )
+    return sorted(out, key=lambda item: (item["path"], item["artifact_id"]))
 
 
 def run(graph, repo_root, changed_files=None):
@@ -85,4 +113,51 @@ def run(graph, repo_root, changed_files=None):
         if len(findings) >= 120:
             break
 
-    return sorted(findings, key=lambda item: (item.location.file, item.severity, item.confidence))
+    registry_rows = _derived_registry_artifacts(repo_root)
+    for row in registry_rows:
+        rel = str(row.get("path", ""))
+        if not rel:
+            continue
+        abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                make_finding(
+                    analyzer_id=ANALYZER_ID,
+                    category="derived_freshness",
+                    severity="RISK",
+                    confidence=0.76,
+                    file_path=rel,
+                    evidence=[
+                        "Derived artifact listed in registry is missing on disk.",
+                        "artifact_id={}".format(str(row.get("artifact_id", ""))),
+                    ],
+                    suggested_classification="TODO-BLOCKED",
+                    recommended_action="ADD_RULE",
+                    related_invariants=["INV-DERIVED-ARTIFACT-FRESHNESS"],
+                    related_paths=[rel],
+                )
+            )
+            continue
+        if bool(row.get("regenerable", False)) and not str(row.get("regeneration_tool", "")).strip():
+            findings.append(
+                make_finding(
+                    analyzer_id=ANALYZER_ID,
+                    category="derived_freshness",
+                    severity="WARN",
+                    confidence=0.63,
+                    file_path=rel,
+                    evidence=[
+                        "Derived artifact is marked regenerable but has no regeneration_tool.",
+                        "artifact_id={}".format(str(row.get("artifact_id", ""))),
+                    ],
+                    suggested_classification="TODO-BLOCKED",
+                    recommended_action="DOC_FIX",
+                    related_invariants=["INV-DERIVED-ARTIFACT-FRESHNESS"],
+                    related_paths=[rel],
+                )
+            )
+
+        if len(findings) >= 220:
+            break
+
+    return sorted(findings, key=lambda item: (item.location.file_path, item.severity, item.confidence))
