@@ -58,6 +58,7 @@ SYMBOL_RE = re.compile(r"\b(?:def|class|struct|enum|void|int|bool|float|double|c
 COMMAND_ID_RE = re.compile(r"\b(?:client|launcher|setup|server|tool)\.[a-z0-9_.-]+\b")
 FILE_REF_RE = re.compile(r"([A-Za-z0-9_.\-/]+(?:\.json|\.md|\.py|\.schema(?:\.json)?|\.txt))")
 CTEST_NAME_RE = re.compile(r"dom_add_testx\(\s*NAME\s+([A-Za-z0-9_]+)", re.MULTILINE)
+SCHEMA_REF_RE = re.compile(r"\b([a-z0-9_.-]+(?:\.schema(?:\.json)?))\b|\b(dominium\.schema\.[a-z0-9_.-]+)\b", re.IGNORECASE)
 
 
 def _norm(path: str) -> str:
@@ -218,6 +219,17 @@ def _add_schema_nodes(graph: AnalysisGraph, repo_root: str, changed_only: bool, 
                 file_node = graph.add_node("file", rel)
                 graph.add_edge("schema_declared_in", schema_node, file_node)
                 schema_nodes[schema_id] = schema_node
+                schema_nodes[schema_id.lower()] = schema_node
+                schema_nodes[_norm(rel)] = schema_node
+                schema_nodes[_norm(rel).lower()] = schema_node
+                schema_nodes[os.path.basename(rel)] = schema_node
+                schema_nodes[os.path.basename(rel).lower()] = schema_node
+                if rel.endswith(".schema.json"):
+                    schema_nodes[os.path.basename(rel).replace(".schema.json", "")] = schema_node
+                    schema_nodes[os.path.basename(rel).replace(".schema.json", "").lower()] = schema_node
+                if rel.endswith(".schema"):
+                    schema_nodes[os.path.basename(rel).replace(".schema", "")] = schema_node
+                    schema_nodes[os.path.basename(rel).replace(".schema", "").lower()] = schema_node
     return schema_nodes
 
 
@@ -442,9 +454,18 @@ def _add_file_nodes_and_edges(
             if "/ui/" in rel or rel.startswith("docs/ui/"):
                 graph.add_edge("ui_ir_command", file_node, command_node)
 
-        for schema_id, schema_node in sorted(schema_nodes.items()):
-            if schema_id and schema_id in text:
-                graph.add_edge("file_uses_schema", file_node, schema_node)
+        schema_refs = set()
+        for left, right in SCHEMA_REF_RE.findall(text):
+            token = str(left or right or "").strip()
+            if token:
+                schema_refs.add(token)
+        for schema_ref in sorted(schema_refs):
+            schema_node = schema_nodes.get(schema_ref)
+            if not schema_node:
+                schema_node = schema_nodes.get(schema_ref.lower())
+            if not schema_node:
+                continue
+            graph.add_edge("file_uses_schema", file_node, schema_node)
 
         for match in FILE_REF_RE.findall(text):
             ref = _norm(match.strip())

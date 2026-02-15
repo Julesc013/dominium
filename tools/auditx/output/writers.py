@@ -20,6 +20,19 @@ _CANONICAL_TRENDS_SCHEMA_ID = "dominium.auditx.trends"
 _CANONICAL_SCHEMA_VERSION = "1.0.0"
 
 
+def _severity_rank(value):
+    token = str(value or "").strip().upper()
+    if token == "VIOLATION":
+        return 0
+    if token == "RISK":
+        return 1
+    if token == "WARN":
+        return 2
+    if token == "INFO":
+        return 3
+    return 9
+
+
 def _today_utc():
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -105,7 +118,7 @@ def _build_invariant_map(findings):
                     {
                         "finding_id": finding.get("finding_id", ""),
                         "category": finding.get("category", ""),
-                        "location": finding.get("location", {}).get("file", ""),
+                        "location": finding.get("location", {}).get("file_path", ""),
                     }
                 )
 
@@ -163,7 +176,7 @@ def _build_promotion_candidates(findings):
             },
         )
         paths = set(finding.get("related_paths") or [])
-        location_file = str(finding.get("location", {}).get("file", "")).strip()
+        location_file = str(finding.get("location", {}).get("file_path", "")).strip()
         if location_file:
             paths.add(location_file)
         record["evidence_paths"].update(path for path in paths if path)
@@ -322,22 +335,32 @@ def _run_meta_payload(graph_hash, changed_only, output_format, scan_result, run_
 
 
 def _render_findings_md(findings, today):
+    ordered = sorted(
+        list(findings),
+        key=lambda item: (
+            _severity_rank(item.get("severity", "")),
+            str(item.get("analyzer_id", "")),
+            str((item.get("location") or {}).get("file_path", "")),
+            str(item.get("finding_id", "")),
+        ),
+    )
     lines = [_doc_header(today), "# AuditX Findings", "", "## Summary", ""]
-    lines.append("- Total findings: {}".format(len(findings)))
-    severity_counts = _severity_counts(findings)
-    category_counts = _category_counts(findings)
+    lines.append("- Total findings: {}".format(len(ordered)))
+    severity_counts = _severity_counts(ordered)
+    category_counts = _category_counts(ordered)
     lines.append("- Severities: {}".format(", ".join("{}={}".format(k, v) for k, v in severity_counts.items()) or "none"))
     lines.append("- Categories: {}".format(", ".join("{}={}".format(k, v) for k, v in category_counts.items()) or "none"))
     lines.append("")
     lines.append("## Top Findings")
     lines.append("")
-    top = findings[: min(len(findings), 100)]
+    top = ordered[: min(len(ordered), 120)]
     for finding in top:
-        lines.append("- `{}` {} `{}` ({})".format(
+        lines.append("- `{}` {} `{}` `{}` ({})".format(
             finding.get("finding_id", ""),
             finding.get("severity", ""),
+            finding.get("analyzer_id", ""),
             finding.get("category", ""),
-            finding.get("location", {}).get("file", ""),
+            finding.get("location", {}).get("file_path", ""),
         ))
         for evidence in finding.get("evidence", [])[:2]:
             lines.append("  - {}".format(evidence))
