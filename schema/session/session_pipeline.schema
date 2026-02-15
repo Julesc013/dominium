@@ -14,6 +14,7 @@ NON-SEMANTICS:
 REQUIRED SHAPE:
 record session_pipeline
   required:
+    - schema_version: semver
     - pipeline_id: id
     - stages: [id]
     - entry_stage_id: id

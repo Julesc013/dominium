@@ -32,6 +32,9 @@ Related lifecycle commands:
 - `tools/xstack/bundle_validate <bundle.json>`
 - `tools/xstack/session_create --save-id <id> --bundle bundle.base.lab`
 - `tools/xstack/session_boot saves/<save_id>/session_spec.json [--compile-if-missing on|off]`
+- `tools/xstack/session_control client.session.stage saves/<save_id>/session_spec.json`
+- `tools/xstack/session_control client.session.abort saves/<save_id>/session_spec.json`
+- `tools/xstack/session_control client.session.resume saves/<save_id>/session_spec.json`
 - `tools/xstack/session_script_run saves/<save_id>/session_spec.json <script.json> [--workers N] [--logical-shards N]`
 - `tools/xstack/srz_status saves/<save_id>/session_spec.json`
 - `tools/setup/build --bundle bundle.base.lab --out dist`

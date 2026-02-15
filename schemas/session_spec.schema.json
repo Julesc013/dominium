@@ -39,6 +39,11 @@
       "type": "string",
       "description": "Optional bundle selection identifier used to produce lockfile and registries."
     },
+    "pipeline_id": {
+      "type": "string",
+      "pattern": "^pipeline\\.[a-z0-9_.-]+$",
+      "description": "Declared session lifecycle pipeline contract identifier."
+    },
     "scenario_id": {
       "type": "string"
     },
@@ -150,6 +155,7 @@
       "universe_id": "universe.f7f79f62a426e393",
       "save_id": "save.lab.bootstrap",
       "bundle_id": "bundle.base.lab",
+      "pipeline_id": "pipeline.client.default",
       "scenario_id": "scenario.lab.galaxy_nav",
       "mission_id": null,
       "experience_id": "profile.lab.developer",

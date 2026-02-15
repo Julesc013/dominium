@@ -27,6 +27,7 @@ from .common import (
     refusal,
     write_canonical_json,
 )
+from .pipeline_contract import DEFAULT_PIPELINE_ID, load_session_pipeline_contract
 
 
 DEFAULT_EXPERIENCE_ID = "profile.lab.developer"
@@ -383,6 +384,7 @@ def create_session_spec(
     parameter_bundle_id: str = DEFAULT_PARAMETER_BUNDLE_ID,
     budget_policy_id: str = DEFAULT_BUDGET_POLICY_ID,
     fidelity_policy_id: str = DEFAULT_FIDELITY_POLICY_ID,
+    pipeline_id: str = DEFAULT_PIPELINE_ID,
     rng_seed_string: str = "seed.session.default",
     rng_roots: List[str] | None = None,
     universe_identity_path: str = "",
@@ -414,6 +416,14 @@ def create_session_spec(
             {"bundle_id": str(bundle_id)},
             "$.bundle_id",
         )
+
+    selected_pipeline_id = str(pipeline_id).strip() or DEFAULT_PIPELINE_ID
+    pipeline_contract = load_session_pipeline_contract(
+        repo_root=repo_root,
+        pipeline_id=selected_pipeline_id,
+    )
+    if pipeline_contract.get("result") != "complete":
+        return pipeline_contract
 
     compile_result = {}
     if compile_outputs:
@@ -502,6 +512,7 @@ def create_session_spec(
         "universe_id": calculated_universe_id,
         "save_id": save_token,
         "bundle_id": str(bundle_id),
+        "pipeline_id": selected_pipeline_id,
         "scenario_id": str(scenario_id),
         "mission_id": None if str(mission_id).strip() in ("", "null", "None") else str(mission_id),
         "experience_id": str(experience_id),

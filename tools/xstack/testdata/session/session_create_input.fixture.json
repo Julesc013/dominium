@@ -1,6 +1,7 @@
 {
   "save_id": "save.testx.session.fixture",
   "bundle_id": "bundle.base.lab",
+  "pipeline_id": "pipeline.client.default",
   "scenario_id": "scenario.lab.galaxy_nav",
   "mission_id": null,
   "experience_id": "profile.lab.developer",

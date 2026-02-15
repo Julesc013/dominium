@@ -14,6 +14,7 @@ NON-SEMANTICS:
 REQUIRED SHAPE:
 record session_stage
   required:
+    - schema_version: semver
     - stage_id: id
     - display_name: tag
     - description: text

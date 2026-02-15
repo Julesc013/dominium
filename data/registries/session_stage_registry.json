@@ -7,6 +7,7 @@
     "stage_schema_ref": "session_stage@1.0.0",
     "stages": [
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.resolve_session",
         "display_name": "Resolve Session",
         "description": "Resolve SessionSpec, pipeline contract, and initial artifact bindings.",
@@ -30,6 +31,7 @@
         "extensions": {}
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.acquire_world",
         "display_name": "Acquire World",
         "description": "Load UniverseIdentity and UniverseState from SessionSpec save references.",
@@ -55,6 +57,7 @@
         "extensions": {}
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.verify_world",
         "display_name": "Verify World",
         "description": "Validate lockfile and registry bundle compatibility against save/session artifacts.",
@@ -82,6 +85,7 @@
         "extensions": {}
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.warmup_simulation",
         "display_name": "Warmup Simulation",
         "description": "Initialize deterministic simulation subsystems without advancing simulation ticks.",
@@ -106,6 +110,7 @@
         "extensions": {}
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.warmup_presentation",
         "display_name": "Warmup Presentation",
         "description": "Prepare Perceived/Render surfaces for SessionReady without mutating Truth simulation time.",
@@ -130,6 +135,7 @@
         "extensions": {}
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.session_ready",
         "display_name": "Session Ready",
         "description": "Deterministic pre-run stop-state. Requires tick=0 and no simulation step execution.",
@@ -162,6 +168,7 @@
         }
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.session_running",
         "display_name": "Session Running",
         "description": "Active run stage entered only by explicit begin transition.",
@@ -188,6 +195,7 @@
         "extensions": {}
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.suspend_session",
         "display_name": "Suspend Session",
         "description": "Capture deterministic suspend snapshot and mark resumable stage boundary.",
@@ -213,6 +221,7 @@
         "extensions": {}
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.resume_session",
         "display_name": "Resume Session",
         "description": "Validate resume compatibility and re-enter canonical pipeline before running.",
@@ -242,6 +251,7 @@
         "extensions": {}
       },
       {
+        "schema_version": "1.0.0",
         "stage_id": "stage.teardown_session",
         "display_name": "Teardown Session",
         "description": "Canonical terminal stage for deterministic shutdown and artifact finalization.",

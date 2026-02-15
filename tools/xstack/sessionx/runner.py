@@ -86,6 +86,36 @@ def _resolve_registries_dir(repo_root: str, registries_dir: str) -> str:
     return os.path.normpath(os.path.join(repo_root, token))
 
 
+def _latest_run_meta(save_dir: str) -> Tuple[dict, str]:
+    run_meta_dir = os.path.join(save_dir, "run_meta")
+    if not os.path.isdir(run_meta_dir):
+        return {}, ""
+    names = sorted(name for name in os.listdir(run_meta_dir) if str(name).endswith(".json"))
+    if not names:
+        return {}, ""
+    best_payload = {}
+    best_path = ""
+    best_key = ("", "", "", "")
+    for rel_name in names:
+        abs_path = os.path.join(run_meta_dir, rel_name)
+        payload, err = read_json_object(abs_path)
+        if err:
+            continue
+        key = (
+            str(payload.get("stopped_utc", "")),
+            str(payload.get("started_utc", "")),
+            str(payload.get("run_id", "")),
+            str(rel_name),
+        )
+        if key >= best_key:
+            best_key = key
+            best_payload = payload
+            best_path = abs_path
+    if not best_path:
+        return {}, ""
+    return best_payload, best_path
+
+
 def _load_lockfile(
     repo_root: str,
     compile_if_missing: bool,
@@ -420,7 +450,7 @@ def _simulate_boot_stage_log(pipeline_contract: dict, authority_context: dict, s
         allowed = sorted(set(str(item).strip() for item in (stage_desc.get("allowed_next_stage_ids") or []) if str(item).strip()))
         if str(target_stage_id) not in allowed:
             return [], "", refusal(
-                "REFUSE_STAGE_INVALID_TRANSITION",
+                "refusal.stage_invalid_transition",
                 "stage transition '{}' -> '{}' is not allowed by stage registry".format(current_stage_id, target_stage_id),
                 "Advance only through allowed_next_stage_ids from session_stage_registry.",
                 {
@@ -431,7 +461,7 @@ def _simulate_boot_stage_log(pipeline_contract: dict, authority_context: dict, s
             )
         if str(target_stage_id) == "stage.session_ready" and int(simulation_tick) != 0:
             return [], "", refusal(
-                "REFUSE_SESSION_READY_TIME_NONZERO",
+                "refusal.session_ready_time_nonzero",
                 "SessionReady requires simulation_time.tick == 0",
                 "Reset to tick=0 before entering stage.session_ready.",
                 {"simulation_tick": str(int(simulation_tick))},
@@ -609,6 +639,8 @@ def boot_session_spec(
     save_dir = os.path.join(repo_root, "saves", save_id)
     identity_path = os.path.join(save_dir, "universe_identity.json")
     state_path = os.path.join(save_dir, "universe_state.json")
+    previous_run_meta, previous_run_meta_path = _latest_run_meta(save_dir)
+    previous_last_stage_id = str(previous_run_meta.get("last_stage_id", "")).strip()
 
     universe_identity, identity_error = _load_schema_validated(
         repo_root=repo_root,
@@ -687,7 +719,7 @@ def boot_session_spec(
         return stage_log_error
     if str(final_stage_id) != str((pipeline_contract.get("pipeline") or {}).get("ready_stage_id", "")):
         return refusal(
-            "REFUSE_STAGE_INVALID_TRANSITION",
+            "refusal.stage_invalid_transition",
             "boot pipeline did not end at ready stage",
             "Run explicit transitions until stage.session_ready before boot completion.",
             {
@@ -695,6 +727,19 @@ def boot_session_spec(
             },
             "$.stage_log",
         )
+    if previous_last_stage_id == "stage.session_running":
+        stage_log.append(
+            {
+                "stage_index": len(stage_log),
+                "command_id": "client.session.begin",
+                "from_stage_id": str(final_stage_id),
+                "to_stage_id": "stage.session_running",
+                "status": "pass",
+                "reason_code": "",
+                "observer_watermark": "OBSERVER MODE" if str(boot_authority_context.get("privilege_level", "")).strip() == "observer" else "",
+            }
+        )
+        final_stage_id = "stage.session_running"
 
     law_profile, law_profile_error = _select_law_profile(
         law_registry=law_registry,
@@ -790,6 +835,7 @@ def boot_session_spec(
         "session_pipeline_registry_hash": str(pipeline_contract.get("pipeline_registry_hash", "")),
         "stage_log": stage_log,
         "last_stage_id": str(final_stage_id),
+        "universe_identity_hash": str(universe_identity.get("identity_hash", "")),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
         "fidelity_policy_id": str(fidelity_policy.get("policy_id", "")),
@@ -815,6 +861,12 @@ def boot_session_spec(
             "lockfile_path": norm(os.path.relpath(lock_path_for_meta, repo_root)),
             "session_stage_registry_path": str(pipeline_contract.get("stage_registry_path", "")),
             "session_pipeline_registry_path": str(pipeline_contract.get("pipeline_registry_path", "")),
+            "reentry_source_run_meta_path": norm(os.path.relpath(previous_run_meta_path, repo_root))
+            if previous_run_meta_path
+            else "",
+            "reentry_detected": bool(previous_run_meta_path),
+            "reentry_source_run_id": str(previous_run_meta.get("run_id", "")) if isinstance(previous_run_meta, dict) else "",
+            "reentry_source_last_stage_id": previous_last_stage_id,
             "started_utc": now,
             "stopped_utc": now_utc_iso(),
             "deterministic_fields_hash": deterministic_fields_hash,
@@ -837,6 +889,8 @@ def boot_session_spec(
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "perceived_model_hash": perceived_hash,
         "render_model_hash": render_hash,
+        "reentry_detected": bool(previous_run_meta_path),
+        "reentry_source_run_id": str(previous_run_meta.get("run_id", "")) if isinstance(previous_run_meta, dict) else "",
         "last_stage_id": str(final_stage_id),
         "stage_log": stage_log,
         "start_tick": start_tick,

@@ -10,6 +10,7 @@
   ],
   "type": "object",
   "required": [
+    "schema_version",
     "stage_id",
     "display_name",
     "description",
@@ -25,6 +26,10 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
     "stage_id": {
       "type": "string",
       "pattern": "^stage\\.[a-z0-9_.-]+$"
@@ -102,6 +107,7 @@
   ],
   "examples": [
     {
+      "schema_version": "1.0.0",
       "stage_id": "stage.resolve_session",
       "display_name": "Resolve Session",
       "description": "Resolve SessionSpec and bind pipeline context.",

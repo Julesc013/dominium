@@ -10,6 +10,7 @@ PURPOSE:
 REQUIRED SHAPE:
 record session_artifact
   required:
+    - schema_version: semver
     - artifact_id: id
     - canonical: bool
     - deterministic: bool
