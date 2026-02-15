@@ -1,29 +1,51 @@
 Status: DERIVED
-Last Reviewed: 2026-02-10
+Version: 1.0.0
+Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
+Compatibility: Bound to `docs/canon/constitution_v1.md` and `docs/canon/glossary_v1.md`.
 
 # Status Now
 
 ## REAL
 
-- Deterministic simulation and replay invariants are enforced by RepoX and TestX.
-- Process-only mutation guard is active and tested.
-- Canonical tool discovery is PATH-based and self-canonicalized by RepoX/TestX/gate runner.
-- Setup/Launcher/Client/Server CLI surfaces build and validate through TestX.
+1. Session pipeline contract + enforced canonical stage transitions.
+2. Domain/contract/solver registries and structural binding validation.
+3. Deterministic worldgen constraints + multi-seed search plan framework.
+4. Deterministic real-data ingestion pipelines (SPICE + SRTM) with provenance.
+5. Observer Exploration MVP (galaxy -> sol -> earth path).
+6. Deterministic impact graph and developer acceleration tooling.
+7. Deterministic packaging + lockfile enforcement + reproducible dist artifacts.
 
 ## SOON
 
-- SOON features are treated as experimental scaffolding.
-- SOON features must be removable without save/world migration.
+1. `climate_stub` policy/data surfaces (quarantined, non-canonical runtime dependency).
+2. `resources_stub` expansion tracks (quarantined, pack-driven only).
+3. Advanced solver tier rollout hardening where placeholders remain.
+4. Extended profiling coverage and trend dashboards (non-gating).
 
 ## STUB
 
-- Dist lane release packaging policies exist but remain non-release (0.0.0/BII-only).
-- Optional remediation strategies can be declared in playbooks without immediate implementation.
+1. Experimental domain policies declared but inert by default.
+2. Streaming hints registry entries not yet consumed by runtime scheduling.
+3. Future-case stress scenarios declared for FULL profile expansion.
 
 ## DEFERRED
 
-- Any feature requiring simulation semantic change.
-- Any ontology expansion beyond Assemblies/Fields/Processes/Agents/Law.
-- Any release-channel versioning or GBN allocation.
+1. Embodiment system.
+2. Full agent gameplay loops.
+3. MMO-scale distributed authority runtime.
+4. Narrative/campaign engine.
+
+## Invariant Notes
+
+1. No `SOON` item is required for canon runtime correctness.
+2. Runtime mutation remains process-only and deterministic.
+3. No mode-flag composition is permitted; profile/law/authority contracts remain the only gating surface.
+
+## Cross-References
+
+- `docs/roadmap/milestone_lab_galaxy.md`
+- `docs/architecture/EXTENSION_MAP.md`
+- `docs/audit/CANON_CONFORMANCE_REPORT.md`
+- `docs/audit/DETERMINISM_ENVELOPE_REPORT.md`
