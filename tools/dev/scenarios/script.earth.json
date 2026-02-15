@@ -1,0 +1,11 @@
+{
+  "intents": [
+    {
+      "intent_id": "intent.dev.teleport.earth",
+      "inputs": {
+        "target_object_id": "object.earth"
+      },
+      "process_id": "process.camera_teleport"
+    }
+  ]
+}

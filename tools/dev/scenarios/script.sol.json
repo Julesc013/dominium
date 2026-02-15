@@ -1,0 +1,11 @@
+{
+  "intents": [
+    {
+      "intent_id": "intent.dev.teleport.sol",
+      "inputs": {
+        "target_object_id": "object.sol"
+      },
+      "process_id": "process.camera_teleport"
+    }
+  ]
+}

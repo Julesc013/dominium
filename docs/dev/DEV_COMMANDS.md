@@ -14,6 +14,32 @@ Wrapper entrypoint:
 - `python scripts/dev/dev.py`
 - `scripts/dev/dev.cmd` (Windows convenience)
 
+Acceleration entrypoint:
+
+- `python tools/dev/dev.py`
+- `tools/dev/dev` (cross-platform launcher)
+- `tools/dev/dev.cmd` (Windows convenience)
+
+Prompt 19 command surface:
+
+- `python tools/dev/dev.py impact-graph`
+- `python tools/dev/dev.py impacted-tests`
+- `python tools/dev/dev.py impacted-build`
+- `python tools/dev/dev.py run observer`
+- `python tools/dev/dev.py run galaxy`
+- `python tools/dev/dev.py run sol`
+- `python tools/dev/dev.py run earth`
+- `python tools/dev/dev.py audit`
+- `python tools/dev/dev.py verify`
+- `python tools/dev/dev.py profile`
+
+Notes:
+
+- Impact commands write deterministic derived output to `build/impact_graph.json` by default.
+- `run <target>` routes through SessionSpec creation + boot (+ deterministic script replay for non-observer targets).
+- `audit` routes through `tools/auditx/auditx.py scan`.
+- `verify` routes through `tools/xstack/run.py strict`.
+
 Supported commands:
 
 - `python scripts/dev/dev.py tools list`
