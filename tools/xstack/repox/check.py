@@ -295,6 +295,14 @@ CONSISTENCY_MATRIX_REQUIRED_COLUMNS = (
     "Derived artifact production",
 )
 
+STATUS_NOW_PATH = "docs/STATUS_NOW.md"
+STATUS_NOW_REQUIRED_SECTIONS = (
+    "## REAL",
+    "## SOON",
+    "## STUB",
+    "## DEFERRED",
+)
+
 RUNTIME_PATH_PREFIXES = (
     "engine/",
     "game/",
@@ -1635,6 +1643,53 @@ def _append_cross_system_matrix_findings(
             )
 
 
+def _append_status_now_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    status_now_abs = os.path.join(repo_root, STATUS_NOW_PATH.replace("/", os.sep))
+    if not os.path.isfile(status_now_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=STATUS_NOW_PATH,
+                line_number=1,
+                snippet="",
+                message="status snapshot file is missing",
+                rule_id="INV-STATUS-NOW-PRESENT",
+            )
+        )
+        return
+    try:
+        content = open(status_now_abs, "r", encoding="utf-8").read()
+    except OSError:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=STATUS_NOW_PATH,
+                line_number=1,
+                snippet="",
+                message="unable to read status snapshot file",
+                rule_id="INV-STATUS-NOW-PRESENT",
+            )
+        )
+        return
+    for header in STATUS_NOW_REQUIRED_SECTIONS:
+        if header not in content:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=STATUS_NOW_PATH,
+                    line_number=1,
+                    snippet=header,
+                    message="status snapshot missing required section '{}'".format(header),
+                    rule_id="INV-STATUS-NOW-PRESENT",
+                )
+            )
+
+
 def _append_forbidden_identifier_findings(
     findings: List[Dict[str, object]],
     rel_path: str,
@@ -1982,6 +2037,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_cross_system_matrix_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_status_now_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
