@@ -19,10 +19,13 @@ add_executable(dominium_client
     modes/client_mode_gui.c
     modes/client_mode_tui.c
     observability/readonly_view_model.c
+    observability/perceived_model_v1.c
     shell/client_shell.c
     ui/client_ui_compositor.c
     presentation/frame_graph_builder.cpp
     presentation/render_prep_system.cpp
+    presentation/render_model_adapter_v1.c
+    presentation/ui_host_v1.c
 )
 target_link_libraries(dominium_client PRIVATE
     app::runtime
@@ -37,8 +40,16 @@ target_include_directories(dominium_client PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/input
     ${CMAKE_CURRENT_SOURCE_DIR}/modes
     ${CMAKE_CURRENT_SOURCE_DIR}/observability
+    ${CMAKE_CURRENT_SOURCE_DIR}/presentation
     ${CMAKE_CURRENT_SOURCE_DIR}/shell
     ${CMAKE_CURRENT_SOURCE_DIR}/ui
+)
+set_source_files_properties(
+    presentation/frame_graph_builder.cpp
+    presentation/render_prep_system.cpp
+    presentation/render_model_adapter_v1.c
+    presentation/ui_host_v1.c
+    PROPERTIES COMPILE_DEFINITIONS "DOMINIUM_RENDERER_BOUNDARY=1"
 )
 set_target_properties(dominium_client PROPERTIES
     OUTPUT_NAME "client"
@@ -49,6 +60,23 @@ set_target_properties(dominium_client PROPERTIES
 )
 add_executable(dom_client ALIAS dominium_client)
 dom_register_product(client dominium_client)
+
+get_target_property(_dom_client_sources dominium_client SOURCES)
+if(NOT _dom_client_sources OR _dom_client_sources STREQUAL "SOURCES-NOTFOUND")
+    message(FATAL_ERROR "dominium_client source list unavailable for renderer boundary checks.")
+endif()
+foreach(_dom_src IN LISTS _dom_client_sources)
+    if(_dom_src MATCHES "client[/\\\\]presentation[/\\\\]" OR _dom_src MATCHES "presentation[/\\\\]")
+        get_source_file_property(_dom_src_defs ${_dom_src} COMPILE_DEFINITIONS)
+        if(_dom_src_defs STREQUAL "NOTFOUND")
+            set(_dom_src_defs "")
+        endif()
+        string(FIND "${_dom_src_defs}" "DOMINIUM_RENDERER_BOUNDARY=1" _dom_boundary_idx)
+        if(_dom_boundary_idx EQUAL -1)
+            message(FATAL_ERROR "Renderer boundary violation: '${_dom_src}' must compile with DOMINIUM_RENDERER_BOUNDARY=1.")
+        endif()
+    endif()
+endforeach()
 
 if(WIN32)
     add_executable(client_app_win32 WIN32
