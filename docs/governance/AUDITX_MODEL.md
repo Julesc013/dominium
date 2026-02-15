@@ -1,117 +1,79 @@
 Status: DERIVED
-Last Reviewed: 2026-02-11
+Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
+Version: 1.0.0
+Compatibility: Bound to `docs/canon/constitution_v1.md` and `docs/canon/glossary_v1.md`.
 
 # AuditX Model
 
-AuditX is the semantic radar axis in the governance stack.
+## Purpose
+AuditX is Dominium's semantic health layer. It complements, but does not replace, structural enforcement and runtime proof systems.
 
-## Responsibilities
+## Responsibility Split
+- `RepoX`: structural and policy invariants, enforcement-oriented.
+- `TestX`: executable behavior verification and determinism regressions.
+- `AuditX`: semantic analysis, drift detection, architecture risk surfacing, and governance promotion candidates.
 
-- RepoX enforces structural invariants.
-- TestX validates runtime behavior.
-- AuditX reports semantic drift, debt, and ambiguity.
-
-AuditX findings are advisory by default. Promotion from finding patterns into RepoX invariants or TestX regressions is explicit governance work.
-
-## Findings Contract
-
-- Findings are deterministic and machine-readable canonical artifacts.
+## Non-Gating Default
 - AuditX is non-gating by default.
-- AuditX emits reports; it does not auto-mutate runtime code.
-- Findings include stable IDs, fingerprints, confidence, severity, classification, and recommended action.
-- Canonical findings do not carry run-time metadata (timestamps, host identifiers, scan IDs).
-
-## Finding Fields
-
-Each finding record contains:
-
-- `finding_id`
-- `category`
-- `severity`
-- `confidence`
-- `status`
-- `location`
-- `evidence`
-- `suggested_classification`
-- `recommended_action`
-- `related_invariants`
-- `related_paths`
-- `fingerprint`
-
-## Classification Buckets
-
-- `CANONICAL`
-- `SUPERSEDED`
-- `PROTOTYPE`
-- `LEGACY`
-- `INVALID`
-- `TODO-BLOCKED`
-
-## Analyzer Model
-
-Analyzers are modular plugins that consume the shared analysis graph and emit finding lists. Initial analyzers:
-
-- A1 Reachability / orphaned code
-- A2 Ownership boundary
-- A3 Canon drift
-- A4 Schema usage
-- A5 Capability misuse
-- A6 UI parity / bypass
-- A7 Legacy contamination
-- A8 Derived artifact freshness smell
-
-Expanded analyzers include:
-
-- Duplicate concept
-- Schema shadowing
-- Capability drift
-- Derived artifact contract
-- Cross-pack dependency entropy
-- Prompt drift
-- Workspace contamination
-- Blocker recurrence
-- Security boundary and secret hygiene (SecureX integration)
-
-## Shared Analysis Graph
-
-- Graph nodes: files, symbols, commands, schemas, packs, tests, products.
-- Graph edges: includes/imports, command bindings, schema usage, pack dependencies.
-- Traversal and graph hashing are deterministic.
-- Incremental caching reuses unaffected analyzer outputs when content hashes show partial changes.
-
-## Outputs
-
-`auditx scan` writes artifacts under `docs/audit/auditx/`:
-
-- `FINDINGS.json` (`CANONICAL`)
-- `INVARIANT_MAP.json` (`CANONICAL`)
-- `PROMOTION_CANDIDATES.json` (`CANONICAL`)
-- `TRENDS.json` (`CANONICAL`)
-- `RUN_META.json` (`RUN_META`)
-- `FINDINGS.md` (`DERIVED_VIEW`)
-- `SUMMARY.md` (`DERIVED_VIEW`)
-
-Canonical outputs are hash-stable and ordering-stable across rescans with identical semantic inputs.
+- AuditX findings never fail a build by themselves unless explicitly promoted into RepoX or TestX.
+- `auditx verify` returns success when scan execution succeeds, independent of findings volume/severity.
 
 ## Promotion Path
+Promotion is explicit and tracked:
+1. AuditX finding is emitted and triaged.
+2. Repeated/high-confidence findings are promoted to either:
+   - RepoX invariant (`INV-*`) for static enforcement, or
+   - TestX regression test for behavioral proof.
+3. Promotion rationale is recorded in audit artifacts.
 
-AuditX findings may drive:
+## Determinism Contract
+- Graph build traversal is deterministic.
+- Analyzer execution order is deterministic.
+- Finding ordering and fingerprint generation are deterministic.
+- JSON report serialization uses stable key ordering.
+- Nondeterministic run metadata (timestamps) is isolated and excluded from finding fingerprint computation.
 
-1. RepoX invariants for static enforcement.
-2. TestX regressions for runtime behavior.
-3. Docs updates where normative behavior lacks enforcement anchors.
+## Changed-Only Behavior
+- `auditx scan --changed-only` scopes graph/build/analyzers to changed files.
+- If git is unavailable, AuditX returns deterministic refusal:
+  - `refusal.git_unavailable`
+- Changed-only mode never mutates runtime code and never bypasses deterministic ordering.
 
-## Usage
+## Enforcement Mode Stub
+- `auditx enforce` exists as a stub only.
+- Default result: deterministic refusal `refusal.not_enabled`.
+- Future enforcement promotion must be wired through RepoX/TestX policy, not ad hoc in AuditX.
 
-- `python tools/auditx/auditx.py scan --repo-root .`
-- `python tools/auditx/auditx.py scan --repo-root . --changed-only`
-- `python tools/auditx/auditx.py verify --repo-root .`
-- `python tools/auditx/auditx.py enforce --repo-root .` (reserved, returns `refuse.not_enabled`)
+## Scope Constraints
+- AuditX does not mutate runtime semantics.
+- AuditX does not auto-fix files.
+- AuditX does not introduce simulation primitives.
 
-## Self-Containment
+## Output Contract
+Primary output root: `docs/audit/auditx/`
+- `FINDINGS.json`
+- `FINDINGS.md`
+- `SUMMARY.md`
+- `INVARIANT_MAP.json`
 
-- AuditX canonicalizes environment internally via `env_tools_lib`.
-- AuditX supports execution from arbitrary CWD and from empty caller PATH.
-- Workspace cache and trend history are stored under `tools/auditx/cache/<WS_ID>/`.
+Optional derived support artifacts may be emitted but must remain deterministic.
+
+## Analyzer Model
+- Analyzers are modular plugins over a shared repository analysis graph.
+- Minimum baseline analyzers:
+  - A1 OrphanedCodeAnalyzer
+  - A2 OwnershipBoundaryAnalyzer
+  - A3 CanonDriftAnalyzer
+  - A4 SchemaUsageAnalyzer
+  - A5 CapabilityMisuseAnalyzer
+  - A6 UIBypassAnalyzer
+  - A7 LegacyContaminationAnalyzer
+  - A8 DerivedArtifactFreshnessAnalyzer
+
+## Cross-References
+- `docs/governance/REPOX_RULESETS.md`
+- `docs/governance/TESTX_ARCHITECTURE.md`
+- `docs/testing/xstack_profiles.md`
+- `docs/audit/auditx/README.md`
