@@ -47,18 +47,25 @@ def run(graph, repo_root, changed_files=None):
         ]
         if refs:
             continue
+        severity = "WARN"
+        confidence = 0.70
+        classification = "PROTOTYPE"
+        if path.startswith(("engine/", "game/", "server/")):
+            severity = "RISK"
+            confidence = 0.82
+            classification = "LEGACY"
         findings.append(
             make_finding(
                 analyzer_id=ANALYZER_ID,
                 category="reachability",
-                severity="WARN",
-                confidence=0.70,
+                severity=severity,
+                confidence=confidence,
                 file_path=path,
                 evidence=[
                     "No non-test or non-doc incoming references found.",
                     "Likely orphaned or prototype leakage candidate.",
                 ],
-                suggested_classification="PROTOTYPE",
+                suggested_classification=classification,
                 recommended_action="RETIRE",
                 related_invariants=["NO_SINGLE_USE_CODE_PATHS"],
                 related_paths=[path],
@@ -67,4 +74,3 @@ def run(graph, repo_root, changed_files=None):
         if len(findings) >= 80:
             break
     return findings
-
