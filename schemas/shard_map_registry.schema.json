@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shard Map Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic shard map registry for SRZ hybrid replication policy.",
+  "x-doc-ref": [
+    "docs/net/SRZ_HYBRID_POLICY.md",
+    "docs/net/REPLICATION_POLICIES.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "shard_maps",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "shard_maps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "shard_map_id",
+          "shards",
+          "routing_rule_id",
+          "version_introduced",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "shard_map_id": {
+            "type": "string"
+          },
+          "shards": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "shard_id",
+                "region_scope",
+                "authority_endpoint",
+                "status",
+                "priority"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "shard_id": {
+                  "type": "string"
+                },
+                "region_scope": {
+                  "type": "object",
+                  "required": [
+                    "object_ids",
+                    "spatial_bounds"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "object_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "spatial_bounds": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "object",
+                          "required": [
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "properties": {
+                            "min": {
+                              "type": "array",
+                              "items": {
+                                "type": "number"
+                              }
+                            },
+                            "max": {
+                              "type": "array",
+                              "items": {
+                                "type": "number"
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "authority_endpoint": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "draining",
+                    "offline"
+                  ]
+                },
+                "priority": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "routing_rule_id": {
+            "type": "string"
+          },
+          "version_introduced": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "shard_maps": [],
+      "registry_hash": "8bc9c9e41227d662f50e9531929db8e44fdb84dc7f8b4c2af5f988802f4d7caf"
+    }
+  ]
+}

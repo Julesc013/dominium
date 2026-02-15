@@ -1,0 +1,73 @@
+{
+  "schema_id": "dominium.registry.shard_map_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.shard_map_registry",
+    "registry_version": "1.0.0",
+    "shard_maps": [
+      {
+        "schema_version": "1.0.0",
+        "shard_map_id": "shard_map.default.single_shard",
+        "shards": [
+          {
+            "shard_id": "shard.0",
+            "region_scope": {
+              "object_ids": [],
+              "spatial_bounds": null
+            },
+            "authority_endpoint": "inproc://shard.0",
+            "status": "active",
+            "priority": 0
+          }
+        ],
+        "routing_rule_id": "routing.srz.by_object_or_default_v1",
+        "version_introduced": "1.0.0",
+        "extensions": {
+          "scope_mode": "all"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "shard_map_id": "shard_map.default.single_process_two_shards",
+        "shards": [
+          {
+            "shard_id": "shard.0",
+            "region_scope": {
+              "object_ids": [
+                "camera.main",
+                "object.sol",
+                "object.sol_system",
+                "object.earth"
+              ],
+              "spatial_bounds": null
+            },
+            "authority_endpoint": "inproc://shard.0",
+            "status": "active",
+            "priority": 0
+          },
+          {
+            "shard_id": "shard.1",
+            "region_scope": {
+              "object_ids": [
+                "object.luna",
+                "site.earth.greenwich",
+                "site.earth.north_pole",
+                "site.earth.south_pole"
+              ],
+              "spatial_bounds": null
+            },
+            "authority_endpoint": "inproc://shard.1",
+            "status": "active",
+            "priority": 1
+          }
+        ],
+        "routing_rule_id": "routing.srz.by_object_or_default_v1",
+        "version_introduced": "1.0.0",
+        "extensions": {
+          "scope_mode": "explicit_object_ids"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

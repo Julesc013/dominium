@@ -1833,6 +1833,238 @@ def _network_policy_rows(
     )
 
 
+def _hybrid_policy_rows(
+    repo_root: str,
+    schema_root: str,
+    known_replication_policy_ids: List[str],
+    net_server_policy_rows: List[dict],
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+    replication_policy_id_set = set(str(item).strip() for item in (known_replication_policy_ids or []) if str(item).strip())
+
+    if "policy.net.srz_hybrid" not in replication_policy_id_set:
+        errors.append(
+            {
+                "code": "refuse.registry_compile.srz_hybrid_policy_missing",
+                "message": "net replication registry must declare policy.net.srz_hybrid before compiling shard/perception registries",
+                "path": "$.policies.policy_id",
+            }
+        )
+
+    _shard_map_record, shard_map_rows_raw, shard_map_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/shard_map_registry.json",
+        expected_schema_id="dominium.registry.shard_map_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="shard_maps",
+    )
+    if shard_map_load_errors:
+        return [], [], shard_map_load_errors
+
+    shard_map_rows: List[dict] = []
+    shard_map_id_set = set()
+    for entry in sorted(shard_map_rows_raw, key=lambda row: str((row or {}).get("shard_map_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_shard_map_entry",
+                    "message": "shard map entry must be object",
+                    "path": "$.shard_maps",
+                }
+            )
+            continue
+        shard_map_id = str(entry.get("shard_map_id", "")).strip()
+        if not shard_map_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_shard_map_entry",
+                    "message": "shard map entry missing shard_map_id",
+                    "path": "$.shard_maps.shard_map_id",
+                }
+            )
+            continue
+        if shard_map_id in shard_map_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_shard_map_id",
+                    "message": "duplicate shard_map_id '{}'".format(shard_map_id),
+                    "path": "$.shard_maps.shard_map_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="shard_map",
+            payload=dict(entry),
+            path="data/registries/shard_map_registry.json#{}".format(shard_map_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        shard_rows = list(entry.get("shards") or [])
+        shard_ids = []
+        for shard_row in shard_rows:
+            if not isinstance(shard_row, dict):
+                continue
+            token = str(shard_row.get("shard_id", "")).strip()
+            if token:
+                shard_ids.append(token)
+        if len(set(shard_ids)) != len(shard_ids):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_shard_id",
+                    "message": "shard_map '{}' contains duplicate shard_id values".format(shard_map_id),
+                    "path": "$.shard_maps.shards",
+                }
+            )
+            continue
+
+        shard_map_rows.append(
+            {
+                "shard_map_id": shard_map_id,
+                "shards": sorted(
+                    (dict(item) for item in shard_rows if isinstance(item, dict)),
+                    key=lambda row: (str(row.get("priority", "")), str(row.get("shard_id", ""))),
+                ),
+                "routing_rule_id": str(entry.get("routing_rule_id", "")).strip(),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        shard_map_id_set.add(shard_map_id)
+    shard_map_rows = sorted(shard_map_rows, key=lambda row: str(row.get("shard_map_id", "")))
+
+    _perception_record, perception_rows_raw, perception_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/perception_interest_policy_registry.json",
+        expected_schema_id="dominium.registry.perception_interest_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if perception_load_errors:
+        return [], [], perception_load_errors
+
+    perception_rows: List[dict] = []
+    perception_policy_id_set = set()
+    for entry in sorted(perception_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_perception_interest_policy_entry",
+                    "message": "perception interest policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        if not policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_perception_interest_policy_entry",
+                    "message": "perception interest policy entry missing policy_id",
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        if policy_id in perception_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_perception_interest_policy_id",
+                    "message": "duplicate perception interest policy_id '{}'".format(policy_id),
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        distance_bands = entry.get("distance_bands")
+        lens_visibility_rules = entry.get("lens_visibility_rules")
+        extensions = entry.get("extensions")
+        if not isinstance(distance_bands, list) or not isinstance(lens_visibility_rules, list) or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_perception_interest_policy_entry",
+                    "message": "perception interest policy '{}' missing required list/object fields".format(policy_id),
+                    "path": "$.policies",
+                }
+            )
+            continue
+        perception_rows.append(
+            {
+                "policy_id": policy_id,
+                "human_name": str(entry.get("human_name", "")).strip(),
+                "description": str(entry.get("description", "")).strip(),
+                "max_objects_per_tick": int(entry.get("max_objects_per_tick", 0) or 0),
+                "distance_bands": sorted(
+                    (dict(item) for item in distance_bands if isinstance(item, dict)),
+                    key=lambda row: (float(row.get("max_distance", 0.0) or 0.0), str(row.get("band_id", ""))),
+                ),
+                "lens_visibility_rules": sorted(
+                    (dict(item) for item in lens_visibility_rules if isinstance(item, dict)),
+                    key=lambda row: (str(row.get("lens_type", "")), float(row.get("max_objects_multiplier", 0.0) or 0.0)),
+                ),
+                "deterministic_ordering_rule_id": str(entry.get("deterministic_ordering_rule_id", "")).strip(),
+                "bandwidth_budget_units": int(entry.get("bandwidth_budget_units", 0) or 0),
+                "resync_window_ticks": int(entry.get("resync_window_ticks", 0) or 0),
+                "extensions": dict(extensions),
+            }
+        )
+        perception_policy_id_set.add(policy_id)
+    perception_rows = sorted(perception_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    for server_policy in sorted(
+        (dict(row) for row in (net_server_policy_rows or []) if isinstance(row, dict)),
+        key=lambda row: str(row.get("policy_id", "")),
+    ):
+        policy_id = str(server_policy.get("policy_id", "")).strip() or "<unknown>"
+        allowed_replication = _sorted_unique_strings(server_policy.get("allowed_replication_policy_ids") or [])
+        extensions = dict(server_policy.get("extensions") or {})
+        shard_map_id = str(extensions.get("default_shard_map_id", "")).strip()
+        perception_policy_id = str(extensions.get("perception_interest_policy_id", "")).strip()
+        if "policy.net.srz_hybrid" in allowed_replication:
+            if not shard_map_id:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.net_server_policy_shard_map_missing",
+                        "message": "server policy '{}' allows policy.net.srz_hybrid but extensions.default_shard_map_id is missing".format(
+                            policy_id
+                        ),
+                        "path": "$.policies.extensions.default_shard_map_id",
+                    }
+                )
+            elif shard_map_id not in shard_map_id_set:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.net_server_policy_shard_map_unknown",
+                        "message": "server policy '{}' references unknown shard_map_id '{}'".format(
+                            policy_id,
+                            shard_map_id,
+                        ),
+                        "path": "$.policies.extensions.default_shard_map_id",
+                    }
+                )
+            if not perception_policy_id:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.net_server_policy_perception_policy_missing",
+                        "message": "server policy '{}' allows policy.net.srz_hybrid but extensions.perception_interest_policy_id is missing".format(
+                            policy_id
+                        ),
+                        "path": "$.policies.extensions.perception_interest_policy_id",
+                    }
+                )
+            elif perception_policy_id not in perception_policy_id_set:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.net_server_policy_perception_policy_unknown",
+                        "message": "server policy '{}' references unknown perception interest policy '{}'".format(
+                            policy_id,
+                            perception_policy_id,
+                        ),
+                        "path": "$.policies.extensions.perception_interest_policy_id",
+                    }
+                )
+    return shard_map_rows, perception_rows, errors
+
+
 def _ui_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict]]:
     selector_re = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:\[(?:\d+|\*)\])?(?:\.[A-Za-z_][A-Za-z0-9_]*(?:\[(?:\d+|\*)\])?)*$")
 
@@ -2030,6 +2262,16 @@ def compile_bundle(
         repo_root=repo_root,
         known_law_profile_ids=[str(row.get("law_profile_id", "")) for row in law_rows if str(row.get("law_profile_id", ""))],
     )
+    (
+        shard_map_rows,
+        perception_interest_policy_rows,
+        hybrid_registry_errors,
+    ) = _hybrid_policy_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+        known_replication_policy_ids=[str(row.get("policy_id", "")) for row in net_replication_policy_rows],
+        net_server_policy_rows=net_server_policy_rows,
+    )
     astronomy_rows, reference_frame_rows, site_rows, astronomy_errors = _astronomy_rows(
         contributions,
         schema_root=schema_root,
@@ -2047,6 +2289,7 @@ def compile_bundle(
         + policy_errors
         + worldgen_constraints_errors
         + net_registry_errors
+        + hybrid_registry_errors
         + astronomy_errors
         + real_data_errors
         + ui_errors
@@ -2104,6 +2347,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "policies": net_server_policy_rows,
+        }
+    )
+    shard_map_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "shard_maps": shard_map_rows,
+        }
+    )
+    perception_interest_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": perception_interest_policy_rows,
         }
     )
     anti_cheat_policy_payload = _finalize_registry_payload(
@@ -2195,6 +2452,11 @@ def compile_bundle(
         "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
         "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
         "net_server_policy_registry": ("net_server_policy_registry", net_server_policy_payload),
+        "shard_map_registry": ("shard_map_registry", shard_map_payload),
+        "perception_interest_policy_registry": (
+            "perception_interest_policy_registry",
+            perception_interest_policy_payload,
+        ),
         "anti_cheat_policy_registry": ("anti_cheat_policy_registry", anti_cheat_policy_payload),
         "anti_cheat_module_registry": ("anti_cheat_module_registry", anti_cheat_module_payload),
         "activation_policy_registry": ("activation_policy_registry", activation_policy_payload),
@@ -2217,6 +2479,8 @@ def compile_bundle(
         "net_replication_policy_registry",
         "net_resync_strategy_registry",
         "net_server_policy_registry",
+        "shard_map_registry",
+        "perception_interest_policy_registry",
         "anti_cheat_policy_registry",
         "anti_cheat_module_registry",
         "activation_policy_registry",
@@ -2262,6 +2526,8 @@ def compile_bundle(
             "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
             "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
             "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],
+            "shard_map_registry_hash": registry_hashes["shard_map_registry_hash"],
+            "perception_interest_policy_registry_hash": registry_hashes["perception_interest_policy_registry_hash"],
             "anti_cheat_policy_registry_hash": registry_hashes["anti_cheat_policy_registry_hash"],
             "anti_cheat_module_registry_hash": registry_hashes["anti_cheat_module_registry_hash"],
             "activation_policy_registry_hash": registry_hashes["activation_policy_registry_hash"],

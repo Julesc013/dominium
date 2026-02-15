@@ -25,7 +25,10 @@
         "allowed_law_profile_ids": [
           "law.lab.unrestricted"
         ],
-        "extensions": {}
+        "extensions": {
+          "default_shard_map_id": "shard_map.default.single_process_two_shards",
+          "perception_interest_policy_id": "policy.perception.lab.default"
+        }
       },
       {
         "policy_id": "server.policy.ranked.strict",
@@ -44,7 +47,10 @@
         "allowed_law_profile_ids": [
           "law.lab.unrestricted"
         ],
-        "extensions": {}
+        "extensions": {
+          "default_shard_map_id": "shard_map.default.single_shard",
+          "perception_interest_policy_id": "policy.perception.lab.minimal"
+        }
       }
     ],
     "extensions": {}

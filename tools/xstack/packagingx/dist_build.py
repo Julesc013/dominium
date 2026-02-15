@@ -29,6 +29,8 @@ LOCKFILE_REGISTRY_FILE_MAP = {
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
+    "shard_map_registry_hash": "shard_map.registry.json",
+    "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",
