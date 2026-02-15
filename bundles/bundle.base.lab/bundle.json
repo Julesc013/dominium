@@ -5,6 +5,7 @@
   "pack_ids": [
     "pack.core.runtime",
     "pack.core.camera",
+    "pack.core.diegetic_instruments",
     "policy.activation.default_lab",
     "policy.budget.default_lab",
     "policy.fidelity.default_lab",

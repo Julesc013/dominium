@@ -3,6 +3,7 @@
   "schema_version": "1.0.0",
   "epistemic_policy_id": "ep.policy.player_diegetic",
   "allowed_processes": [
+    "process.instrument_tick",
     "process.observe.telemetry"
   ],
   "forbidden_processes": [
@@ -22,5 +23,13 @@
   "debug_allowances": {
     "allow_nondiegetic_overlays": false,
     "allow_time_dilation_controls": false
+  },
+  "process_entitlement_requirements": {
+    "process.instrument_tick": "session.boot",
+    "process.observe.telemetry": "session.boot"
+  },
+  "process_privilege_requirements": {
+    "process.instrument_tick": "observer",
+    "process.observe.telemetry": "observer"
   }
 }

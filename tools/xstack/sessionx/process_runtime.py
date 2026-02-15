@@ -16,6 +16,7 @@ from .common import refusal
 PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.camera_move": "entitlement.camera_control",
     "process.camera_teleport": "entitlement.teleport",
+    "process.instrument_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
     "process.time_resume": "entitlement.time_control",
@@ -24,6 +25,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
     "process.camera_teleport": "operator",
+    "process.instrument_tick": "observer",
     "process.time_control_set_rate": "operator",
     "process.time_pause": "operator",
     "process.time_resume": "operator",
@@ -120,6 +122,64 @@ def _ensure_simulation_time(state: dict) -> dict:
     payload["tick"] = max(0, _as_int(payload.get("tick", 0), 0))
     payload["timestamp_utc"] = str(payload.get("timestamp_utc", "1970-01-01T00:00:00Z"))
     return payload
+
+
+def _ensure_instrument_assemblies(state: dict) -> List[dict]:
+    rows = state.get("instrument_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    by_id = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        token = str(row.get("assembly_id", "")).strip()
+        if token:
+            by_id[token] = dict(row)
+    defaults = {
+        "instrument.compass": {
+            "assembly_id": "instrument.compass",
+            "instrument_type": "compass",
+            "reading": {"heading_mdeg": 0},
+            "quality": "nominal",
+            "last_update_tick": 0,
+        },
+        "instrument.clock": {
+            "assembly_id": "instrument.clock",
+            "instrument_type": "clock",
+            "reading": {"tick": 0, "rate_permille": 1000, "paused": False},
+            "quality": "nominal",
+            "last_update_tick": 0,
+        },
+        "instrument.altimeter": {
+            "assembly_id": "instrument.altimeter",
+            "instrument_type": "altimeter",
+            "reading": {"altitude_mm": 0},
+            "quality": "nominal",
+            "last_update_tick": 0,
+        },
+        "instrument.radio": {
+            "assembly_id": "instrument.radio",
+            "instrument_type": "radio",
+            "reading": {"signal_quality_permille": 1000},
+            "quality": "nominal",
+            "last_update_tick": 0,
+        },
+    }
+    for assembly_id in sorted(defaults.keys()):
+        if assembly_id not in by_id:
+            by_id[assembly_id] = dict(defaults[assembly_id])
+            continue
+        row = dict(by_id[assembly_id])
+        row["assembly_id"] = assembly_id
+        row["instrument_type"] = str(row.get("instrument_type", defaults[assembly_id]["instrument_type"])) or defaults[assembly_id]["instrument_type"]
+        reading = row.get("reading")
+        row["reading"] = dict(reading) if isinstance(reading, dict) else dict(defaults[assembly_id]["reading"])
+        row["quality"] = str(row.get("quality", "nominal")) or "nominal"
+        row["last_update_tick"] = max(0, _as_int(row.get("last_update_tick", 0), 0))
+        by_id[assembly_id] = row
+    normalized = [dict(by_id[key]) for key in sorted(by_id.keys())]
+    state["instrument_assemblies"] = normalized
+    return normalized
 
 
 def _append_history_anchor(state: dict, tick: int, log_index: int) -> None:
@@ -1224,6 +1284,38 @@ def execute_intent(
         camera["position_mm"] = dict(resolved_target.get("position_mm") or {"x": 0, "y": 0, "z": 0})
         camera["orientation_mdeg"] = dict(resolved_target.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0})
         camera["velocity_mm_per_tick"] = {"x": 0, "y": 0, "z": 0}
+        _advance_time(state, steps=1)
+    elif process_id == "process.instrument_tick":
+        sim = _ensure_simulation_time(state)
+        control = _ensure_time_control(state)
+        position = _vector3_int(camera.get("position_mm"), "position_mm") or {"x": 0, "y": 0, "z": 0}
+        orientation = _angles_int(camera.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+        heading = int(orientation.get("yaw", 0)) % 360000
+        rows = _ensure_instrument_assemblies(state)
+        current_tick = int(sim.get("tick", 0))
+        for row in rows:
+            assembly_id = str(row.get("assembly_id", ""))
+            if assembly_id == "instrument.compass":
+                row["reading"] = {"heading_mdeg": heading}
+            elif assembly_id == "instrument.clock":
+                row["reading"] = {
+                    "tick": current_tick,
+                    "rate_permille": int(control.get("rate_permille", 1000)),
+                    "paused": bool(control.get("paused", False)),
+                }
+            elif assembly_id == "instrument.altimeter":
+                row["reading"] = {"altitude_mm": int(position.get("z", 0))}
+            elif assembly_id == "instrument.radio":
+                row["reading"] = {
+                    "signal_quality_permille": 1000,
+                    "channel_id": "radio.lab.default",
+                }
+            row["quality"] = "nominal"
+            row["last_update_tick"] = current_tick
+        state["instrument_assemblies"] = sorted(
+            (dict(item) for item in rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
         _advance_time(state, steps=1)
     elif process_id == "process.time_control_set_rate":
         rate = _as_int(inputs.get("rate_permille", -1), -1)

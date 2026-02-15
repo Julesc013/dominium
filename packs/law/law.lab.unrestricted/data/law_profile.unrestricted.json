@@ -5,6 +5,7 @@
   "allowed_processes": [
     "process.camera_move",
     "process.camera_teleport",
+    "process.instrument_tick",
     "process.observe.telemetry",
     "process.region_management_tick",
     "process.time_control_set_rate",
@@ -31,6 +32,7 @@
   "process_entitlement_requirements": {
     "process.camera_move": "entitlement.camera_control",
     "process.camera_teleport": "entitlement.teleport",
+    "process.instrument_tick": "session.boot",
     "process.region_management_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
@@ -39,6 +41,7 @@
   "process_privilege_requirements": {
     "process.camera_move": "observer",
     "process.camera_teleport": "operator",
+    "process.instrument_tick": "observer",
     "process.region_management_tick": "observer",
     "process.time_control_set_rate": "operator",
     "process.time_pause": "operator",

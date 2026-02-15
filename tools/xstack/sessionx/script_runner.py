@@ -276,6 +276,30 @@ def run_intent_script(
     )
     if fidelity_policy_registry_error:
         return fidelity_policy_registry_error
+    perception_interest_policy_registry, perception_interest_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["perception_interest_policy_registry_hash"],
+        expected_hash=str(registries.get("perception_interest_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if perception_interest_policy_registry_error:
+        return perception_interest_policy_registry_error
+    epistemic_policy_registry, epistemic_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["epistemic_policy_registry_hash"],
+        expected_hash=str(registries.get("epistemic_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if epistemic_policy_registry_error:
+        return epistemic_policy_registry_error
+    retention_policy_registry, retention_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["retention_policy_registry_hash"],
+        expected_hash=str(registries.get("retention_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if retention_policy_registry_error:
+        return retention_policy_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -422,6 +446,9 @@ def run_intent_script(
             "activation_policy_registry": activation_policy_registry,
             "budget_policy_registry": budget_policy_registry,
             "fidelity_policy_registry": fidelity_policy_registry,
+            "perception_interest_policy_registry": perception_interest_policy_registry,
+            "epistemic_policy_registry": epistemic_policy_registry,
+            "retention_policy_registry": retention_policy_registry,
         },
     )
     observation = observe_truth(

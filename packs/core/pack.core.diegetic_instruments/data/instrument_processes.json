@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0.0",
+  "processes": [
+    "process.instrument_tick"
+  ],
+  "notes": "Diegetic instrument reading process identifiers consumed by process-dispatch tooling."
+}

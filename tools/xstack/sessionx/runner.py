@@ -44,6 +44,8 @@ REGISTRY_HASH_KEY_MAP = {
     "net_server_policy_registry_hash": "net_server_policy_registry",
     "shard_map_registry_hash": "shard_map_registry",
     "perception_interest_policy_registry_hash": "perception_interest_policy_registry",
+    "epistemic_policy_registry_hash": "epistemic_policy_registry",
+    "retention_policy_registry_hash": "retention_policy_registry",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy_registry",
     "anti_cheat_module_registry_hash": "anti_cheat_module_registry",
     "activation_policy_registry_hash": "activation_policy_registry",
@@ -66,6 +68,8 @@ REGISTRY_FILE_MAP = {
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
     "shard_map_registry_hash": "shard_map.registry.json",
     "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
+    "epistemic_policy_registry_hash": "epistemic_policy.registry.json",
+    "retention_policy_registry_hash": "retention_policy.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",
@@ -749,6 +753,22 @@ def boot_session_spec(
     )
     if perception_interest_policy_registry_error:
         return perception_interest_policy_registry_error
+    epistemic_policy_registry, epistemic_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["epistemic_policy_registry_hash"],
+        expected_hash=str(registries.get("epistemic_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if epistemic_policy_registry_error:
+        return epistemic_policy_registry_error
+    retention_policy_registry, retention_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["retention_policy_registry_hash"],
+        expected_hash=str(registries.get("retention_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if retention_policy_registry_error:
+        return retention_policy_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -916,6 +936,9 @@ def boot_session_spec(
                 "activation_policy_registry": activation_policy_registry,
                 "budget_policy_registry": budget_policy_registry,
                 "fidelity_policy_registry": fidelity_policy_registry,
+                "perception_interest_policy_registry": perception_interest_policy_registry,
+                "epistemic_policy_registry": epistemic_policy_registry,
+                "retention_policy_registry": retention_policy_registry,
             },
             snapshot_cadence_ticks=0,
         )
@@ -955,6 +978,9 @@ def boot_session_spec(
                 "activation_policy_registry": activation_policy_registry,
                 "budget_policy_registry": budget_policy_registry,
                 "fidelity_policy_registry": fidelity_policy_registry,
+                "perception_interest_policy_registry": perception_interest_policy_registry,
+                "epistemic_policy_registry": epistemic_policy_registry,
+                "retention_policy_registry": retention_policy_registry,
             },
         )
         if str(initialized.get("result", "")) != "complete":
@@ -1238,6 +1264,9 @@ def boot_session_spec(
             "activation_policy_registry": activation_policy_registry,
             "budget_policy_registry": budget_policy_registry,
             "fidelity_policy_registry": fidelity_policy_registry,
+            "perception_interest_policy_registry": perception_interest_policy_registry,
+            "epistemic_policy_registry": epistemic_policy_registry,
+            "retention_policy_registry": retention_policy_registry,
         },
     )
     observation = observe_truth(
