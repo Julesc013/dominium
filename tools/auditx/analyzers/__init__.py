@@ -29,6 +29,7 @@ from analyzers import d2_seed_policy
 from analyzers import e1_net_policy_drift
 from analyzers import e2_truth_over_net_smell
 from analyzers import e3_handshake_policy_bypass_smell
+from analyzers import e4_authoritative_truth_leak
 
 
 ANALYZERS = (
@@ -61,6 +62,7 @@ ANALYZERS = (
     e1_net_policy_drift,
     e2_truth_over_net_smell,
     e3_handshake_policy_bypass_smell,
+    e4_authoritative_truth_leak,
 )
 
 

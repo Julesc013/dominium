@@ -987,6 +987,58 @@ def _append_multiplayer_contract_invariant_findings(
                     )
                 )
 
+    authoritative_rel = "src/net/policies/policy_server_authoritative.py"
+    authoritative_abs = os.path.join(repo_root, authoritative_rel.replace("/", os.sep))
+    if not os.path.isfile(authoritative_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=authoritative_rel,
+                line_number=1,
+                snippet="",
+                message="server-authoritative policy implementation file is missing",
+                rule_id="INV-AUTHORITATIVE-USES-PERCEIVED-ONLY",
+            )
+        )
+    else:
+        try:
+            authoritative_lines = open(authoritative_abs, "r", encoding="utf-8").read().splitlines()
+        except OSError:
+            authoritative_lines = []
+        authoritative_text = "\n".join(authoritative_lines)
+        if "observe_truth(" not in authoritative_text or "schema_name=\"net_perceived_delta\"" not in authoritative_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=authoritative_rel,
+                    line_number=1,
+                    snippet="observe_truth/net_perceived_delta",
+                    message="server-authoritative policy must derive outbound state through Observation Kernel perceived deltas",
+                    rule_id="INV-AUTHORITATIVE-USES-PERCEIVED-ONLY",
+                )
+            )
+        authoritative_truth_leak_pattern = re.compile(
+            r"(send|socket|packet|transport|wire|payload_ref).*(truth_model|truthmodel|universe_state)"
+            r"|"
+            r"(truth_model|truthmodel|universe_state).*(send|socket|packet|transport|wire)",
+            re.IGNORECASE,
+        )
+        for line_no, line in enumerate(authoritative_lines, start=1):
+            lower = str(line).lower()
+            if "truth_snapshot_hash" in lower:
+                continue
+            if authoritative_truth_leak_pattern.search(str(line)):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=authoritative_rel,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="server-authoritative policy must not transmit TruthModel/universe_state payload over net path",
+                        rule_id="INV-AUTHORITATIVE-NO-TRUTH-TRANSMISSION",
+                    )
+                )
+
 
 def _append_domain_foundation_invariant_findings(
     findings: List[Dict[str, object]],
