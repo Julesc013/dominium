@@ -79,6 +79,8 @@ Scope:
 - RepoX minimal deterministic pattern scan
 - AuditX minimal drift checks (packs/registries/docs)
 - TestX tool-suite FAST selection (`tools/xstack/testx/tests/`)
+  - uses deterministic impact graph subset selection by default (`build/impact_graph.json`)
+  - fallback to full suite when impact graph coverage is incomplete or unavailable
 - PerformX and SecureX placeholder checks
 - Packaging smoke check:
   - deterministic dist build/validation via `tools/setup/build` backend (`tools/xstack/packagingx`)
@@ -209,7 +211,6 @@ tools/xstack/run full --shards 2 --shard-index 1 --cache on
 
 ## TODO
 - Promote RepoX/AuditX heuristics into richer rule registries with severity config.
-- Add impact-graph driven FAST test selection with explicit dependency metadata.
 - Add FULL multi-shard aggregate report merge artifact.
 
 ## Cross-References

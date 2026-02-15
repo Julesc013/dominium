@@ -12,13 +12,15 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
+
+from tools.dev.impact_graph import build_graph_and_write, compute_impacted_sets, detect_changed_files
 
 
 TESTS_ROOT_REL = "tools/xstack/testx/tests"
@@ -128,6 +130,107 @@ def _impacted_tags(changed: List[str]) -> List[str]:
     return sorted(tags)
 
 
+def _parse_subset_arg(raw: Optional[List[str]]) -> List[str]:
+    out: List[str] = []
+    for token in raw or []:
+        for part in str(token).split(","):
+            item = str(part).strip()
+            if item:
+                out.append(item)
+    return sorted(set(out))
+
+
+def resolve_subset_selection(
+    repo_root: str,
+    profile: str,
+    subset: Optional[List[str]] = None,
+) -> Dict[str, object]:
+    explicit_subset = _parse_subset_arg(subset)
+    token = str(profile or "").strip().upper() or "FAST"
+    if explicit_subset:
+        return {
+            "mode": "explicit_subset",
+            "run_all": False,
+            "subset_ids": explicit_subset,
+            "fallback_reason": "",
+            "changed_files": [],
+            "impact_graph_hash": "",
+            "impact_graph_path": "",
+        }
+    if token in ("STRICT", "FULL"):
+        return {
+            "mode": "full_profile",
+            "run_all": True,
+            "subset_ids": [],
+            "fallback_reason": "",
+            "changed_files": [],
+            "impact_graph_hash": "",
+            "impact_graph_path": "",
+        }
+
+    changed_result = detect_changed_files(repo_root=repo_root, base_ref="origin/main")
+    if str(changed_result.get("result", "")) != "complete":
+        return {
+            "mode": "fallback_full",
+            "run_all": True,
+            "subset_ids": [],
+            "fallback_reason": str(changed_result.get("reason_code", "refusal.git_unavailable")),
+            "changed_files": [],
+            "impact_graph_hash": "",
+            "impact_graph_path": "",
+        }
+    changed_files = list(changed_result.get("changed_files") or [])
+    try:
+        graph_result = build_graph_and_write(
+            repo_root=repo_root,
+            changed_files=changed_files,
+            out_path="build/impact_graph.json",
+        )
+    except Exception:
+        return {
+            "mode": "fallback_full",
+            "run_all": True,
+            "subset_ids": [],
+            "fallback_reason": "impact_graph_build_failed",
+            "changed_files": changed_files,
+            "impact_graph_hash": "",
+            "impact_graph_path": "",
+        }
+    payload = dict(graph_result.get("payload") or {})
+    impacted = compute_impacted_sets(graph_payload=payload, changed_files=changed_files)
+    subset_ids = list(impacted.get("impacted_test_ids") or [])
+    coverage_ok = bool(impacted.get("complete_coverage", False))
+    if (not coverage_ok) or (changed_files and not subset_ids):
+        return {
+            "mode": "fallback_full",
+            "run_all": True,
+            "subset_ids": [],
+            "fallback_reason": "impact_graph_incomplete_or_empty_subset",
+            "changed_files": changed_files,
+            "impact_graph_hash": str(graph_result.get("graph_hash", "")),
+            "impact_graph_path": str(graph_result.get("graph_path", "")),
+        }
+    if not subset_ids:
+        return {
+            "mode": "fallback_full",
+            "run_all": True,
+            "subset_ids": [],
+            "fallback_reason": "no_changed_files",
+            "changed_files": changed_files,
+            "impact_graph_hash": str(graph_result.get("graph_hash", "")),
+            "impact_graph_path": str(graph_result.get("graph_path", "")),
+        }
+    return {
+        "mode": "impact_graph",
+        "run_all": False,
+        "subset_ids": sorted(set(subset_ids)),
+        "fallback_reason": "",
+        "changed_files": changed_files,
+        "impact_graph_hash": str(graph_result.get("graph_hash", "")),
+        "impact_graph_path": str(graph_result.get("graph_path", "")),
+    }
+
+
 def _discover_tests(repo_root: str) -> List[Dict[str, object]]:
     tests_root = os.path.join(repo_root, TESTS_ROOT_REL.replace("/", os.sep))
     out: List[Dict[str, object]] = []
@@ -172,15 +275,18 @@ def _test_tags(module) -> List[str]:
     return sorted(set(tags or ["smoke"]))
 
 
-def _should_include_test(profile: str, tags: List[str], impacted: List[str]) -> bool:
+def _should_include_test(
+    profile: str,
+    test_id: str,
+    subset_ids: Optional[Set[str]],
+    run_all: bool,
+) -> bool:
     token = str(profile or "").strip().upper() or "FAST"
-    if token in ("STRICT", "FULL"):
+    if run_all or token in ("STRICT", "FULL"):
         return True
-    tag_set = set(tags)
-    impacted_set = set(impacted)
-    if "smoke" in tag_set:
-        return True
-    return bool(tag_set.intersection(impacted_set))
+    if subset_ids is None:
+        return False
+    return str(test_id) in subset_ids
 
 
 def _shard_match(test_id: str, shards: int, shard_index: int) -> bool:
@@ -245,6 +351,7 @@ def run_testx_suite(
     shards: int = 1,
     shard_index: int = 0,
     cache_enabled: bool = True,
+    subset: Optional[List[str]] = None,
 ) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     shard_count = int(shards)
@@ -276,9 +383,16 @@ def run_testx_suite(
             "tests": [],
         }
 
-    changed = _changed_files(repo_root)
+    subset_plan = resolve_subset_selection(
+        repo_root=repo_root,
+        profile=token,
+        subset=subset,
+    )
+    changed = list(subset_plan.get("changed_files") or [])
     impacted = _impacted_tags(changed)
     repo_state = _repo_state_token(repo_root, changed)
+    run_all = bool(subset_plan.get("run_all", False))
+    subset_ids = set(str(item).strip() for item in (subset_plan.get("subset_ids") or []) if str(item).strip()) if not run_all else None
     discovered = _discover_tests(repo_root)
 
     selected: List[Dict[str, object]] = []
@@ -302,7 +416,7 @@ def run_testx_suite(
             continue
         test_id = _test_id(module, rel_path)
         tags = _test_tags(module)
-        if not _should_include_test(token, tags, impacted):
+        if not _should_include_test(token, test_id=test_id, subset_ids=subset_ids, run_all=run_all):
             continue
         if not _shard_match(test_id, shard_count, index):
             continue
@@ -318,6 +432,32 @@ def run_testx_suite(
         )
 
     selected = sorted(selected, key=lambda row: str(row.get("id", "")))
+    if subset_ids and not selected:
+        return {
+            "status": "refusal",
+            "message": "explicit subset did not match any discovered tests",
+            "findings": [
+                {
+                    "severity": "refusal",
+                    "code": "refuse.testx.empty_explicit_subset",
+                    "message": "explicit subset produced zero selected tests",
+                }
+            ],
+            "tests": [],
+            "selection": {
+                "profile": token,
+                "impacted_tags": impacted,
+                "changed_files": changed,
+                "selected_count": 0,
+                "shards": shard_count,
+                "shard_index": index,
+                "cache": "on" if cache_enabled else "off",
+                "selection_mode": str(subset_plan.get("mode", "")),
+                "fallback_reason": str(subset_plan.get("fallback_reason", "")),
+                "impact_graph_hash": str(subset_plan.get("impact_graph_hash", "")),
+                "impact_graph_path": str(subset_plan.get("impact_graph_path", "")),
+            },
+        }
 
     test_rows: List[Dict[str, object]] = []
     findings: List[Dict[str, object]] = []
@@ -425,6 +565,11 @@ def run_testx_suite(
             "shards": shard_count,
             "shard_index": index,
             "cache": "on" if cache_enabled else "off",
+            "selection_mode": str(subset_plan.get("mode", "")),
+            "subset_count": len(subset_plan.get("subset_ids") or []),
+            "fallback_reason": str(subset_plan.get("fallback_reason", "")),
+            "impact_graph_hash": str(subset_plan.get("impact_graph_hash", "")),
+            "impact_graph_path": str(subset_plan.get("impact_graph_path", "")),
         },
     }
 
@@ -436,6 +581,7 @@ def main() -> int:
     parser.add_argument("--shards", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--cache", default="on", choices=("on", "off"))
+    parser.add_argument("--subset", action="append", default=[], help="comma-separated test ids to execute")
     args = parser.parse_args()
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT
@@ -445,6 +591,7 @@ def main() -> int:
         shards=int(args.shards),
         shard_index=int(args.shard_index),
         cache_enabled=str(args.cache).strip().lower() != "off",
+        subset=list(args.subset or []),
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     status = str(result.get("status", "error"))
