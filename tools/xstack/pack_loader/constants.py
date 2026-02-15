@@ -6,14 +6,18 @@ PACK_MANIFEST_NAME = "pack.json"
 PACK_CATEGORIES = (
     "core",
     "domain",
+    "derived",
     "experience",
     "law",
+    "source",
     "tool",
 )
 
 SUPPORTED_CONTRIBUTION_TYPES = (
     "assets",
+    "dem_source",
     "domain",
+    "ephemeris_source",
     "experience_profile",
     "law_profile",
     "lens",

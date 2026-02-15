@@ -1,0 +1,4 @@
+SPICE-KERNEL:NAIF0012
+SUBSET:LEAP_SECONDS_MIN
+NOTE:Deterministic fixture payload for importer tests.
+

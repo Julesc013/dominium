@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ephemeris Source Schema",
+  "version": "1.0.0",
+  "description": "Deterministic source metadata contract for SPICE-derived ephemeris ingestion.",
+  "x-doc-ref": [
+    "docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_id",
+    "kernel_files",
+    "supported_bodies",
+    "time_range",
+    "reference_frame",
+    "precision_notes",
+    "license"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "kernel_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "supported_bodies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "time_range": {
+      "type": "object",
+      "required": [
+        "start_tick",
+        "end_tick",
+        "step_ticks"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "step_ticks": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "reference_frame": {
+      "type": "string"
+    },
+    "precision_notes": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "source.sol.spice.minimal",
+      "kernel_files": [
+        "data/spice/de440s.bsp",
+        "data/spice/naif0012.tls"
+      ],
+      "supported_bodies": [
+        "object.sol",
+        "object.mercury",
+        "object.venus",
+        "object.earth",
+        "object.mars",
+        "object.jupiter",
+        "object.saturn",
+        "object.uranus",
+        "object.neptune"
+      ],
+      "time_range": {
+        "start_tick": 0,
+        "end_tick": 1440,
+        "step_ticks": 60
+      },
+      "reference_frame": "frame.sol.barycentric",
+      "precision_notes": "Provider doubles are normalized to deterministic millimeter integer samples.",
+      "license": "public-domain-naif"
+    }
+  ]
+}
+

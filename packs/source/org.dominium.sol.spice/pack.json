@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "org.dominium.sol.spice",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [],
+  "contribution_types": [
+    "ephemeris_source"
+  ],
+  "contributions": [
+    {
+      "type": "ephemeris_source",
+      "id": "source.ephemeris.sol.spice",
+      "path": "data/ephemeris_source.json"
+    }
+  ],
+  "canonical_hash": "placeholder.org.dominium.sol.spice.v1",
+  "signature_status": "signed"
+}
+

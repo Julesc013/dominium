@@ -84,6 +84,13 @@
         "1.0.0"
       ]
     },
+    "ephemeris_source": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "experience_profile": {
       "current_version": "1.0.0",
       "migrations": {},
