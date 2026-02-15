@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 745
-- Severities: RISK=11, VIOLATION=1, WARN=733
-- Categories: canon_drift=607, capability_bypass_smell=1, derived_freshness=10, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 746
+- Severities: RISK=10, VIOLATION=1, WARN=735
+- Categories: canon_drift=609, capability_bypass_smell=1, derived_freshness=9, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
@@ -38,13 +38,10 @@ Superseded By: none
 - `A8_DERIVED_FRESHNESS_SMELL:0007` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md)
   - Derived artifact listed in registry is missing on disk.
   - artifact_id=artifact.xstack.full_plan_warning
-- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/perf/profile_trace.sample.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.perf.trace.sample
-- `A8_DERIVED_FRESHNESS_SMELL:0009` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/system/LEDGER_SNAPSHOT.md)
+- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/system/LEDGER_SNAPSHOT.md)
   - Derived artifact listed in registry is missing on disk.
   - artifact_id=artifact.xstack.ledger_snapshot
-- `A8_DERIVED_FRESHNESS_SMELL:0010` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md)
+- `A8_DERIVED_FRESHNESS_SMELL:0009` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md)
   - Derived artifact listed in registry is missing on disk.
   - artifact_id=artifact.xstack.performance_ceiling_alert
 - `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
@@ -373,4 +370,7 @@ Superseded By: none
   - Review for shadowing or override semantics.
 - `A2_SCHEMA_SHADOWING:0108` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.lib.on_planet.primitives/content/capabilities.json)
   - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0109` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.lib.on_planet.primitives/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
   - Review for shadowing or override semantics.

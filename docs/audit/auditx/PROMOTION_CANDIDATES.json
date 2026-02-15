@@ -29,7 +29,6 @@
         ".xstack_cache/securex/RUN_META.json",
         ".xstack_cache/testx/TESTX_RUN_META.json",
         ".xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md",
-        "docs/audit/perf/profile_trace.sample.json",
         "docs/audit/system/LEDGER_SNAPSHOT.md",
         "docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md"
       ],

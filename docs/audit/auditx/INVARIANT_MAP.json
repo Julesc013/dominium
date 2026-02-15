@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 607,
+      "finding_count": 609,
       "recommended_actions": {
-        "DOC_FIX": 607
+        "DOC_FIX": 609
       },
       "sample_findings": [
         {
@@ -25,16 +25,16 @@
         {
           "category": "canon_drift",
           "finding_id": "A3_CANON_DRIFT:0004",
-          "location": "docs/WHAT_PLAYERS_CAN_DO.md"
+          "location": "docs/STATUS_NOW.md"
         },
         {
           "category": "canon_drift",
           "finding_id": "A3_CANON_DRIFT:0005",
-          "location": "docs/accessibility/ACCESSIBILITY_MODEL.md"
+          "location": "docs/WHAT_PLAYERS_CAN_DO.md"
         }
       ],
       "severities": {
-        "WARN": 607
+        "WARN": 609
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -106,9 +106,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 10,
+      "finding_count": 9,
       "recommended_actions": {
-        "ADD_RULE": 10
+        "ADD_RULE": 9
       },
       "sample_findings": [
         {
@@ -138,7 +138,7 @@
         }
       ],
       "severities": {
-        "RISK": 10
+        "RISK": 9
       }
     },
     "INV-SCHEMA-SHADOWING-CONTROL": {

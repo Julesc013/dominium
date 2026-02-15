@@ -1,9 +1,9 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 607,
+    "canon_drift": 609,
     "capability_bypass_smell": 1,
-    "derived_freshness": 10,
+    "derived_freshness": 9,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
@@ -11,30 +11,30 @@
   },
   "delta_over_time": {
     "category_frequency": {
-      "canon_drift": 607,
+      "canon_drift": 609,
       "capability_bypass_smell": 1,
-      "derived_freshness": 10,
+      "derived_freshness": 9,
       "semantic.capability_drift": 5,
       "semantic.derived_artifact_contract": 1,
       "semantic.schema_shadowing": 120,
       "semantic.workspace_contamination": 1
     },
     "severity_distribution": {
-      "RISK": 11,
+      "RISK": 10,
       "VIOLATION": 1,
-      "WARN": 733
+      "WARN": 735
     }
   },
-  "findings_hash": "047d239795f1ca24dfac7bd84bcc8520769434bd054cb6b8b0d7624d2343160a",
+  "findings_hash": "1b22b3e2db4c8f0df2a4c4be9d859dd9055ca9eaef1c94ea79f6d551a0fad63e",
   "history_reference": {
     "previous_distinct_hash": ""
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "RISK": 11,
+    "RISK": 10,
     "VIOLATION": 1,
-    "WARN": 733
+    "WARN": 735
   },
-  "total_findings": 745
+  "total_findings": 746
 }
