@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session Artifact Descriptor Schema",
+  "version": "1.0.0",
+  "description": "Canonical session artifact classification record used by stage contracts.",
+  "x-doc-ref": [
+    "docs/client/CLIENT_LIFECYCLE_PIPELINE.md",
+    "schema/session/session_artifacts.schema"
+  ],
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "canonical",
+    "deterministic",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "enum": [
+        "session_spec",
+        "universe_identity",
+        "universe_state",
+        "registry_bundle",
+        "lockfile",
+        "authority_context",
+        "run_meta",
+        "stage_log",
+        "hash_anchor"
+      ]
+    },
+    "canonical": {
+      "type": "boolean"
+    },
+    "deterministic": {
+      "type": "boolean"
+    },
+    "requires_schema_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "artifact_id": "session_spec",
+      "canonical": true,
+      "deterministic": true,
+      "requires_schema_id": "session_spec",
+      "extensions": {}
+    },
+    {
+      "artifact_id": "run_meta",
+      "canonical": false,
+      "deterministic": true,
+      "extensions": {
+        "run_meta_only": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+SCHEMA: session/session_artifacts.schema
+schema_id: dominium.schema.session.session_artifacts
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical artifact metadata used by session pipeline stages.
+- Distinguish canonical deterministic artifacts from run-meta artifacts.
+
+REQUIRED SHAPE:
+record session_artifact
+  required:
+    - artifact_id: id
+    - canonical: bool
+    - deterministic: bool
+    - requires_schema_id: tag
+    - extensions: map
+
+CANONICAL ARTIFACT TYPES:
+- session_spec
+- universe_identity
+- universe_state
+- registry_bundle
+- lockfile
+- authority_context
+- run_meta
+- stage_log
+- hash_anchor
+
+INVARIANTS:
+- canonical=true artifacts MUST be reproducible and schema-valid.
+- deterministic=true artifacts MUST serialize canonically for hash equivalence.
+- run_meta fields MUST NOT influence canonical simulation hashes.
+
+MIGRATION:
+- Artifact identity changes require compatibility mapping and explicit refusal path.

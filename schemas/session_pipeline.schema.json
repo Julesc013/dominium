@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session Pipeline Schema",
+  "version": "1.0.0",
+  "description": "Canonical ordered session lifecycle pipeline declaration.",
+  "x-doc-ref": [
+    "docs/client/CLIENT_LIFECYCLE_PIPELINE.md",
+    "docs/client/SESSION_READY_AND_RUNNING.md",
+    "schema/session/session_pipeline.schema"
+  ],
+  "type": "object",
+  "required": [
+    "pipeline_id",
+    "stages",
+    "entry_stage_id",
+    "ready_stage_id",
+    "running_stage_id",
+    "teardown_stage_id",
+    "allowed_external_transitions",
+    "version_introduced",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "pipeline_id": {
+      "type": "string",
+      "pattern": "^pipeline\\.[a-z0-9_.-]+$"
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^stage\\.[a-z0-9_.-]+$"
+      }
+    },
+    "entry_stage_id": {
+      "type": "string",
+      "pattern": "^stage\\.[a-z0-9_.-]+$"
+    },
+    "ready_stage_id": {
+      "type": "string",
+      "pattern": "^stage\\.[a-z0-9_.-]+$"
+    },
+    "running_stage_id": {
+      "type": "string",
+      "pattern": "^stage\\.[a-z0-9_.-]+$"
+    },
+    "teardown_stage_id": {
+      "type": "string",
+      "pattern": "^stage\\.[a-z0-9_.-]+$"
+    },
+    "allowed_external_transitions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "version_introduced": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "pipeline_id": "pipeline.client.default",
+      "stages": [
+        "stage.resolve_session",
+        "stage.acquire_world",
+        "stage.verify_world",
+        "stage.warmup_simulation",
+        "stage.warmup_presentation",
+        "stage.session_ready",
+        "stage.session_running",
+        "stage.suspend_session",
+        "stage.resume_session",
+        "stage.teardown_session"
+      ],
+      "entry_stage_id": "stage.resolve_session",
+      "ready_stage_id": "stage.session_ready",
+      "running_stage_id": "stage.session_running",
+      "teardown_stage_id": "stage.teardown_session",
+      "allowed_external_transitions": [
+        "client.session.begin",
+        "client.session.abort",
+        "client.session.resume"
+      ],
+      "version_introduced": "1.0.0",
+      "extensions": {}
+    }
+  ]
+}
