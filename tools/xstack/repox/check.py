@@ -195,6 +195,16 @@ CI_DEV_FORBIDDEN_PACKAGING_TOKENS = (
     "build/dist",
 )
 
+REGRESSION_LOCK_PATH = "data/regression/observer_baseline.json"
+REGRESSION_LOCK_REQUIRED_FIELDS = (
+    "baseline_id",
+    "bundle_id",
+    "composite_hash_anchor",
+    "pack_lock_hash",
+    "registry_hashes",
+    "update_policy",
+)
+
 RUNTIME_PATH_PREFIXES = (
     "engine/",
     "game/",
@@ -1353,6 +1363,109 @@ def _append_ci_lane_invariant_findings(
             )
 
 
+def _append_regression_lock_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    payload, err = _load_json_object(repo_root, REGRESSION_LOCK_PATH)
+    if err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="",
+                message="observer regression baseline lock file is missing or invalid",
+                rule_id="INV-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+    for field in REGRESSION_LOCK_REQUIRED_FIELDS:
+        value = payload.get(field)
+        if value is None or (isinstance(value, str) and not str(value).strip()):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=REGRESSION_LOCK_PATH,
+                    line_number=1,
+                    snippet=str(field),
+                    message="regression lock missing required field '{}'".format(field),
+                    rule_id="INV-REGRESSION-LOCK-PRESENT",
+                )
+            )
+    registry_hashes = payload.get("registry_hashes")
+    if not isinstance(registry_hashes, dict):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="registry_hashes",
+                message="regression lock registry_hashes must be an object",
+                rule_id="INV-REGRESSION-LOCK-PRESENT",
+            )
+        )
+    else:
+        for key in ("ephemeris_registry_hash", "terrain_tile_registry_hash"):
+            if not str(registry_hashes.get(key, "")).strip():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=REGRESSION_LOCK_PATH,
+                        line_number=1,
+                        snippet=key,
+                        message="regression lock missing required registry hash '{}'".format(key),
+                        rule_id="INV-REGRESSION-LOCK-PRESENT",
+                    )
+                )
+
+    update_policy = payload.get("update_policy")
+    required_tag = ""
+    if isinstance(update_policy, dict):
+        required_tag = str(update_policy.get("required_commit_tag", "")).strip()
+    if not required_tag:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="update_policy.required_commit_tag",
+                message="regression lock must declare update_policy.required_commit_tag",
+                rule_id="INV-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+
+    try:
+        proc = subprocess.run(
+            ["git", "log", "-1", "--pretty=%s", "--", REGRESSION_LOCK_PATH],
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            check=False,
+        )
+    except OSError:
+        return
+    if int(proc.returncode) != 0:
+        return
+    subject = str(proc.stdout or "").strip()
+    if subject and required_tag not in subject:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet=subject[:140],
+                message="latest baseline commit message must include '{}'".format(required_tag),
+                rule_id="INV-REGRESSION-LOCK-PRESENT",
+            )
+        )
+
+
 def _append_forbidden_identifier_findings(
     findings: List[Dict[str, object]],
     rel_path: str,
@@ -1587,6 +1700,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_ci_lane_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_regression_lock_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

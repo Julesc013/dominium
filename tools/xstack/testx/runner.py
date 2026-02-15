@@ -282,11 +282,11 @@ def _should_include_test(
     run_all: bool,
 ) -> bool:
     token = str(profile or "").strip().upper() or "FAST"
+    if subset_ids is not None:
+        return str(test_id) in subset_ids
     if run_all or token in ("STRICT", "FULL"):
         return True
-    if subset_ids is None:
-        return False
-    return str(test_id) in subset_ids
+    return False
 
 
 def _shard_match(test_id: str, shards: int, shard_index: int) -> bool:
