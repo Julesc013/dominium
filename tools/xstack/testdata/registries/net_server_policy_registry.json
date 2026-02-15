@@ -20,7 +20,10 @@
           "policy.net.srz_hybrid"
         ],
         "description": "Fixture server policy for deterministic TestX temp repositories.",
-        "extensions": {},
+        "extensions": {
+          "default_shard_map_id": "shard_map.default.single_shard",
+          "perception_interest_policy_id": "policy.perception.lab.default"
+        },
         "human_name": "Fixture Private Default",
         "policy_id": "server.policy.private.default",
         "required_anti_cheat_policy_id": "",
