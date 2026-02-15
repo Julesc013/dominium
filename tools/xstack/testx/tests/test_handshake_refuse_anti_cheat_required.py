@@ -21,8 +21,9 @@ def run(repo_root: str):
         save_id="save.testx.net.handshake.anti_cheat_required",
         requested_replication_policy_id="policy.net.lockstep",
         anti_cheat_policy_id="policy.ac.casual_default",
+        server_profile_id="server.profile.rank_strict",
         server_policy_id="server.policy.ranked.strict",
-        securex_policy_id="securex.rank.require_signed",
+        securex_policy_id="securex.policy.rank_strict",
     )
     result = run_loopback_handshake(
         repo_root=repo_root,
@@ -31,6 +32,8 @@ def run(repo_root: str):
         replication_registry=dict(fixture["replication_registry"]),
         anti_cheat_registry=dict(fixture["anti_cheat_registry"]),
         server_policy_registry=dict(fixture["server_policy_registry"]),
+        securex_policy_registry=dict(fixture["securex_policy_registry"]),
+        server_profile_registry=dict(fixture["server_profile_registry"]),
         authority_context=dict(fixture["authority_context"]),
     )
     if str(result.get("result", "")) == "complete":

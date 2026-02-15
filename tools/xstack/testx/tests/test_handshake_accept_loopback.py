@@ -31,6 +31,8 @@ def run(repo_root: str):
         replication_registry=dict(fixture["replication_registry"]),
         anti_cheat_registry=dict(fixture["anti_cheat_registry"]),
         server_policy_registry=dict(fixture["server_policy_registry"]),
+        securex_policy_registry=dict(fixture["securex_policy_registry"]),
+        server_profile_registry=dict(fixture["server_profile_registry"]),
         authority_context=dict(fixture["authority_context"]),
     )
     if str(result.get("result", "")) != "complete":

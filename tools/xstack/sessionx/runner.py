@@ -42,6 +42,8 @@ REGISTRY_HASH_KEY_MAP = {
     "net_replication_policy_registry_hash": "net_replication_policy_registry",
     "net_resync_strategy_registry_hash": "net_resync_strategy_registry",
     "net_server_policy_registry_hash": "net_server_policy_registry",
+    "securex_policy_registry_hash": "securex_policy_registry",
+    "server_profile_registry_hash": "server_profile_registry",
     "shard_map_registry_hash": "shard_map_registry",
     "perception_interest_policy_registry_hash": "perception_interest_policy_registry",
     "epistemic_policy_registry_hash": "epistemic_policy_registry",
@@ -66,6 +68,8 @@ REGISTRY_FILE_MAP = {
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
+    "securex_policy_registry_hash": "securex_policy.registry.json",
+    "server_profile_registry_hash": "server_profile.registry.json",
     "shard_map_registry_hash": "shard_map.registry.json",
     "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
     "epistemic_policy_registry_hash": "epistemic_policy.registry.json",
@@ -737,6 +741,22 @@ def boot_session_spec(
     )
     if net_server_policy_registry_error:
         return net_server_policy_registry_error
+    securex_policy_registry, securex_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["securex_policy_registry_hash"],
+        expected_hash=str(registries.get("securex_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if securex_policy_registry_error:
+        return securex_policy_registry_error
+    server_profile_registry, server_profile_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["server_profile_registry_hash"],
+        expected_hash=str(registries.get("server_profile_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if server_profile_registry_error:
+        return server_profile_registry_error
     shard_map_registry, shard_map_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["shard_map_registry_hash"],
@@ -997,6 +1017,8 @@ def boot_session_spec(
                 replication_registry=net_replication_policy_registry,
                 anti_cheat_registry=anti_cheat_policy_registry,
                 server_policy_registry=net_server_policy_registry,
+                securex_policy_registry=securex_policy_registry,
+                server_profile_registry=server_profile_registry,
                 authority_context=boot_authority_context,
             )
             if str(handshake_result.get("result", "")) != "complete":
@@ -1024,6 +1046,7 @@ def boot_session_spec(
                     "negotiated_replication_policy_id": str(handshake_result.get("negotiated_replication_policy_id", "")),
                     "anti_cheat_policy_id": str(handshake_result.get("anti_cheat_policy_id", "")),
                     "server_law_profile_id": str(handshake_result.get("server_law_profile_id", "")),
+                    "server_profile_id": str(handshake_result.get("server_profile_id", "")),
                     "server_policy_id": str(handshake_result.get("server_policy_id", "")),
                     "handshake_artifact_hash": str(handshake_result.get("handshake_artifact_hash", "")),
                     "handshake_artifact_path": str(handshake_result.get("handshake_artifact_path", "")),
@@ -1300,6 +1323,7 @@ def boot_session_spec(
         "handshake_id": str(handshake_stage_result.get("handshake_id", "")),
         "negotiated_replication_policy_id": str(handshake_stage_result.get("negotiated_replication_policy_id", "")),
         "anti_cheat_policy_id": str(handshake_stage_result.get("anti_cheat_policy_id", "")),
+        "server_profile_id": str(handshake_stage_result.get("server_profile_id", "")),
         "server_policy_id": str(handshake_stage_result.get("server_policy_id", "")),
         "server_law_profile_id": str(handshake_stage_result.get("server_law_profile_id", "")),
         "handshake_artifact_hash": str(handshake_stage_result.get("handshake_artifact_hash", "")),

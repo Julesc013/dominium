@@ -26,6 +26,8 @@ _REGISTRY_FILENAME_MAP = {
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
+    "securex_policy_registry_hash": "securex_policy.registry.json",
+    "server_profile_registry_hash": "server_profile.registry.json",
 }
 
 
@@ -113,7 +115,7 @@ def _authority_gate(session_spec: dict) -> dict:
     return {"result": "complete"}
 
 
-def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dict, dict, dict, dict]:
+def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dict, dict, dict, dict, dict, dict]:
     compiled = compile_bundle(
         repo_root=repo_root,
         bundle_id=str(bundle_id),
@@ -124,7 +126,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         use_cache=False,
     )
     if str(compiled.get("result", "")) != "complete":
-        return {}, {}, {}, {}, refusal(
+        return {}, {}, {}, {}, {}, {}, refusal(
             "refusal.net.handshake_registry_hash_mismatch",
             "failed to compile lockfile/registries for net handshake",
             "Resolve compile_bundle refusal details and retry.",
@@ -133,7 +135,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         )
     lock_payload, err = read_json_object(os.path.join(repo_root, "build", "lockfile.json"))
     if err:
-        return {}, {}, {}, {}, refusal(
+        return {}, {}, {}, {}, {}, {}, refusal(
             "refusal.net.handshake_pack_lock_mismatch",
             "build/lockfile.json is missing or invalid for net handshake",
             "Rebuild lockfile and retry handshake.",
@@ -142,7 +144,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         )
     semantic = validate_lockfile_payload(lock_payload)
     if str(semantic.get("result", "")) != "complete":
-        return {}, {}, {}, {}, refusal(
+        return {}, {}, {}, {}, {}, {}, refusal(
             "refusal.net.handshake_pack_lock_mismatch",
             "lockfile semantic validation failed for net handshake",
             "Rebuild lockfile from deterministic bundle inputs.",
@@ -154,7 +156,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
     for key, file_name in sorted(_REGISTRY_FILENAME_MAP.items(), key=lambda item: item[0]):
         payload, payload_err = read_json_object(os.path.join(repo_root, "build", "registries", file_name))
         if payload_err:
-            return {}, {}, {}, {}, refusal(
+            return {}, {}, {}, {}, {}, {}, refusal(
                 "refusal.net.handshake_registry_hash_mismatch",
                 "required registry '{}' is missing or invalid".format(file_name),
                 "Rebuild registries and retry handshake.",
@@ -162,7 +164,7 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
                 "$.registries",
             )
         if str(payload.get("registry_hash", "")).strip() != str(registries.get(key, "")).strip():
-            return {}, {}, {}, {}, refusal(
+            return {}, {}, {}, {}, {}, {}, refusal(
                 "refusal.net.handshake_registry_hash_mismatch",
                 "registry hash mismatch for '{}'".format(file_name),
                 "Rebuild client and server registries from the same lockfile inputs.",
@@ -172,7 +174,9 @@ def _load_lock_and_registries(repo_root: str, bundle_id: str) -> Tuple[dict, dic
         payloads[key] = payload
     return lock_payload, payloads.get("net_replication_policy_registry_hash", {}), payloads.get(
         "anti_cheat_policy_registry_hash", {}
-    ), payloads.get("net_server_policy_registry_hash", {}), {}
+    ), payloads.get("net_server_policy_registry_hash", {}), payloads.get(
+        "securex_policy_registry_hash", {}
+    ), payloads.get("server_profile_registry_hash", {}), {}
 
 
 def _command_connect(repo_root: str, session_spec: dict, endpoint_override: str) -> dict:
@@ -226,7 +230,15 @@ def _command_handshake(repo_root: str, session_spec: dict, policy_id: str, anti_
 
     spec_copy = dict(session_spec)
     spec_copy["network"] = network
-    lock_payload, replication_registry, anti_cheat_registry, server_policy_registry, lock_error = _load_lock_and_registries(
+    (
+        lock_payload,
+        replication_registry,
+        anti_cheat_registry,
+        server_policy_registry,
+        securex_policy_registry,
+        server_profile_registry,
+        lock_error,
+    ) = _load_lock_and_registries(
         repo_root=repo_root,
         bundle_id=str(session_spec.get("bundle_id", "bundle.base.lab")),
     )
@@ -240,6 +252,8 @@ def _command_handshake(repo_root: str, session_spec: dict, policy_id: str, anti_
         replication_registry=replication_registry,
         anti_cheat_registry=anti_cheat_registry,
         server_policy_registry=server_policy_registry,
+        securex_policy_registry=securex_policy_registry,
+        server_profile_registry=server_profile_registry,
         authority_context=dict(session_spec.get("authority_context") or {}),
     )
     save_id = str(session_spec.get("save_id", "")).strip()

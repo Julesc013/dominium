@@ -12,6 +12,8 @@ REGISTRY_FILE_MAP = {
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
+    "securex_policy_registry_hash": "securex_policy.registry.json",
+    "server_profile_registry_hash": "server_profile.registry.json",
 }
 
 
@@ -19,7 +21,7 @@ def _read_json(path: str):
     return json.load(open(path, "r", encoding="utf-8"))
 
 
-def _load_lock_and_registries(repo_root: str, lock_payload: dict) -> Tuple[dict, dict, dict]:
+def _load_lock_and_registries(repo_root: str, lock_payload: dict) -> Tuple[dict, dict, dict, dict, dict]:
     registry_hashes = dict(lock_payload.get("registries") or {})
     payloads = {}
     for hash_key, filename in sorted(REGISTRY_FILE_MAP.items(), key=lambda item: item[0]):
@@ -33,6 +35,8 @@ def _load_lock_and_registries(repo_root: str, lock_payload: dict) -> Tuple[dict,
         payloads["net_replication_policy_registry_hash"],
         payloads["anti_cheat_policy_registry_hash"],
         payloads["net_server_policy_registry_hash"],
+        payloads["securex_policy_registry_hash"],
+        payloads["server_profile_registry_hash"],
     )
 
 
@@ -43,6 +47,7 @@ def prepare_handshake_fixture(
     requested_replication_policy_id: str,
     anti_cheat_policy_id: str,
     server_policy_id: str,
+    server_profile_id: str = "",
     securex_policy_id: str = "",
     desired_law_profile_id: str = "",
 ):
@@ -77,6 +82,7 @@ def prepare_handshake_fixture(
         net_server_peer_id="peer.server.lab",
         net_replication_policy_id=str(requested_replication_policy_id),
         net_anti_cheat_policy_id=str(anti_cheat_policy_id),
+        net_server_profile_id=str(server_profile_id),
         net_server_policy_id=str(server_policy_id),
         net_securex_policy_id=str(securex_policy_id),
         net_desired_law_profile_id=str(desired_law_profile_id),
@@ -90,7 +96,13 @@ def prepare_handshake_fixture(
     session_spec_path = os.path.join(repo_root, str(created.get("session_spec_path", "")).replace("/", os.sep))
     session_spec = _read_json(session_spec_path)
     lock_payload = _read_json(os.path.join(repo_root, "build", "lockfile.json"))
-    replication_registry, anti_cheat_registry, server_policy_registry = _load_lock_and_registries(repo_root, lock_payload)
+    (
+        replication_registry,
+        anti_cheat_registry,
+        server_policy_registry,
+        securex_policy_registry,
+        server_profile_registry,
+    ) = _load_lock_and_registries(repo_root, lock_payload)
     authority_context = dict(session_spec.get("authority_context") or {})
     return {
         "session_spec": session_spec,
@@ -98,5 +110,7 @@ def prepare_handshake_fixture(
         "replication_registry": replication_registry,
         "anti_cheat_registry": anti_cheat_registry,
         "server_policy_registry": server_policy_registry,
+        "securex_policy_registry": securex_policy_registry,
+        "server_profile_registry": server_profile_registry,
         "authority_context": authority_context,
     }
