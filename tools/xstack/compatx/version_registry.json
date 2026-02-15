@@ -63,6 +63,13 @@
         "1.0.0"
       ]
     },
+    "dem_source": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "domain_registry": {
       "current_version": "1.0.0",
       "migrations": {},
