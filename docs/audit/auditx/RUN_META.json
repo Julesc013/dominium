@@ -3,8 +3,8 @@
   "cache_mode": "incremental",
   "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-15T19:10:17Z",
-  "graph_hash": "e929230318775d4d3e4987ee5638b5c4a8a30ca95b90a1e79c6ea9434a50bad2",
+  "generated_utc": "2026-02-15T20:49:35Z",
+  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
   "last_reviewed": "2026-02-15",
   "output_format": "both",
   "platform": "windows",
@@ -43,8 +43,10 @@
     "E3_HANDSHAKE_POLICY_BYPASS_SMELL",
     "E4_AUTHORITATIVE_TRUTH_LEAK",
     "E5_CROSS_SHARD_WRITE_SMELL",
-    "E6_SHARD_MAP_DRIFT"
+    "E6_SHARD_MAP_DRIFT",
+    "E7_EPISTEMIC_LEAK_SMELL",
+    "E8_PRECISION_LEAK_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-4e0ade736fc66f09"
+  "workspace_id": "ws-fbc2817c08630c02"
 }
