@@ -69,6 +69,7 @@ GATE_POLICY_REGISTRY_REL = os.path.join("data", "registries", "gate_policy.json"
 UI_BIND_CACHE_REL = os.path.join(VERIFY_BUILD_DIR_REL, "gate_ui_bind_cache.json")
 DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
 TRACKED_WRITE_MANIFEST_SUFFIX = os.path.join("gate", "TOUCHED_FILES_MANIFEST.json")
+TRACKED_WRITE_MANIFEST_REL = os.path.join(".xstack_cache", TRACKED_WRITE_MANIFEST_SUFFIX)
 SNAPSHOT_REPORT_REL = os.path.join("docs", "audit", "system", "SNAPSHOT_REPORT.md")
 LEDGER_SNAPSHOT_REL = os.path.join("docs", "audit", "system", "LEDGER_SNAPSHOT.md")
 PERFORMANCE_CEILING_ALERT_REL = os.path.join("docs", "audit", "xstack", "PERFORMANCE_CEILING_ALERT.md")

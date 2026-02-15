@@ -9,10 +9,25 @@
         "group_id": "testx.group.core.invariants",
         "paths": [
           "schema/**",
+          "schemas/**",
+          "packs/**",
+          "build/registries/**",
+          "build/lockfile.json",
+          ".xstack_cache/registry_compile_cache/**",
+          "tools/xstack/pack_loader/**",
+          "tools/xstack/pack_contrib/**",
+          "tools/xstack/registry_compile/**",
+          "tools/xstack/cache_store/**",
+          "tools/xstack/pack_list.cmd",
+          "tools/xstack/registry_compile.cmd",
+          "tools/xstack/lockfile_build.cmd",
+          "tools/xstack/lockfile_validate.cmd",
+          "tools/xstack/testdata/**",
           "data/registries/**",
           "repo/repox/**",
           "tests/invariant/**",
-          "scripts/ci/**"
+          "scripts/ci/**",
+          "scripts/dev/run_xstack_group_tests.py"
         ],
         "tags": [
           "invariant",

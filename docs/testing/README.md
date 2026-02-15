@@ -1,6 +1,8 @@
-Status: DRAFT
-Version: 1.0.0-draft
+Status: DERIVED
 Last Reviewed: 2026-02-14
+Supersedes: none
+Superseded By: none
+Version: 1.0.0-draft
 Compatibility: Bound to `docs/canon/constitution_v1.md` and `docs/canon/glossary_v1.md`.
 
 # Testing Substrate Notes
@@ -25,4 +27,3 @@ Provide a home for testing contracts and invariant-focused guidance that support
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `docs/ci/DETERMINISM_TEST_MATRIX.md`
-
