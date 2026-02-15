@@ -5,7 +5,7 @@
   "bundle_id": "bundle.base.lab",
   "scenario_id": "scenario.lab.galaxy_nav",
   "script_path": "tools/xstack/testdata/session/script.region_traversal.fixture.json",
-  "composite_hash_anchor": "3dae941c0d2310cfd4d80d814c8aa31abd4c497fba207f42c865d7d7dfffeb99",
+  "composite_hash_anchor": "1bb39e8590dc3c7a9f68f5b4495a799ab310f96f15651dfdc86aea2a4055ecff",
   "pack_lock_hash": "83e022ebf2ffc2686d0c2b8854b24b3febd5c80edbe06b3f4a0931575d8eb1b8",
   "registry_hashes": {
     "activation_policy_registry_hash": "6398ffcaf26b22584f69f629ab900dd5b724a0100f8e1b1152b255ed3c4cf2f9",
@@ -17,6 +17,10 @@
     "fidelity_policy_registry_hash": "f1f9a8f9eac54bc7706f328bab3136396d2c59a016feb62638993e01fad17de3",
     "law_registry_hash": "be2f8fcfde47fdbab66caeb08de747ec7c2b9ab93264792d8de286828c74d106",
     "lens_registry_hash": "ea487768e8912b1036ee7005e8f7c87c814a404312148493d9827514c9324b59",
+    "net_replication_policy_registry_hash": "9027d0f7382a8489cae77eba09be517182d08564dd779a2fafd6c823ef1e2f2b",
+    "net_resync_strategy_registry_hash": "2c3240a90d1c6f94ae6c6de674c2badb116f3ebd8a8dd05eef5fd3c6bbfe4f83",
+    "anti_cheat_policy_registry_hash": "4b1ff35bfa22c06cd27d089b3dd0b9bc115fbcba4471915ad1570a2192c0223e",
+    "anti_cheat_module_registry_hash": "a090a2e632bf1c743bccd6387d8fae74f414fde0aca5869c8c8888b184f08bc9",
     "site_registry_index_hash": "bd58943c4947f58fe1598786714634499ed18bb1570c34ba72edaef6f7973adb",
     "terrain_tile_registry_hash": "fe003e69d5339172ebf15bc16c18bdc5fcb7b19b21ebb6e4472cf738306ed529",
     "ui_registry_hash": "0d3f31c76a15c9c481b29dcb2b3d4556c944d1ba8b1d4a710cb83c6202e94b05",
@@ -24,7 +28,7 @@
   },
   "roi_switch_lock": {
     "final_state_hash": "347e6b16fc202542db2a6c9521b97b2990b3fb7030be4eebbc4cdf8a977716b1",
-    "final_tick_hash": "11414dcbae69e73d0a92b0b83566c926f03d542d0abba502a9d7e02d8b055ead",
+    "final_tick_hash": "844ecb088bc6c892438eb0cd1e85276d451cb9ee8978f82890ab0e461cd19e78",
     "transition_policy": "deterministic_process_order"
   },
   "update_policy": {
