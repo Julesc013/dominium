@@ -34,7 +34,9 @@
         "allowed_in_ranked": true,
         "deterministic_ordering_rule_id": "ordering.net.tick.sequence_v1",
         "resync_strategy_id": "resync.authoritative.snapshot",
-        "extensions": {}
+        "extensions": {
+          "snapshot_cadence_ticks": 2
+        }
       },
       {
         "policy_id": "policy.net.srz_hybrid",
