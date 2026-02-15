@@ -3,8 +3,8 @@
   "cache_mode": "incremental",
   "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-15T20:49:35Z",
-  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
+  "generated_utc": "2026-02-15T23:26:29Z",
+  "graph_hash": "121e78c37f0d7a0a6f7f4eb5d0a61dc62d87878b5fb32d7fa387e9b7e1bcd1c2",
   "last_reviewed": "2026-02-15",
   "output_format": "both",
   "platform": "windows",
@@ -38,6 +38,9 @@
     "C8_RUN_META_INPUT_SMELL",
     "D1_CONSTRAINT_DRIFT",
     "D2_SEED_POLICY",
+    "E10_NONDETERMINISTIC_ANTI_CHEAT_SMELL",
+    "E11_RANKED_POLICY_DRIFT",
+    "E12_SIGNATURE_BYPASS_SMELL",
     "E1_NET_POLICY_DRIFT",
     "E2_TRUTH_OVER_NET_SMELL",
     "E3_HANDSHAKE_POLICY_BYPASS_SMELL",
@@ -45,8 +48,9 @@
     "E5_CROSS_SHARD_WRITE_SMELL",
     "E6_SHARD_MAP_DRIFT",
     "E7_EPISTEMIC_LEAK_SMELL",
-    "E8_PRECISION_LEAK_SMELL"
+    "E8_PRECISION_LEAK_SMELL",
+    "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-fbc2817c08630c02"
+  "workspace_id": "ws-e1695d831a585e59"
 }

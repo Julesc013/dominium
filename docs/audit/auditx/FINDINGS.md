@@ -8,15 +8,297 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 760
-- Severities: RISK=16, VIOLATION=1, WARN=743
-- Categories: canon_drift=615, capability_bypass_smell=1, derived_freshness=9, net.precision_leak_smell=2, net.truth_over_net_smell=6, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 880
+- Severities: INFO=1, RISK=109, VIOLATION=2, WARN=768
+- Categories: canon_drift=619, capability_bypass_smell=1, derived_freshness=10, mode_flag_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, reachability=9, schema_usage=105, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
 - `A4_DERIVED_ARTIFACT_CONTRACT:0001` VIOLATION `A4_DERIVED_ARTIFACT_CONTRACT` `semantic.derived_artifact_contract` (docs/audit/auditx/FINDINGS.json)
   - Canonical artifact contains forbidden run-meta fields.
   - Sample keys: findings[0].created_utc, findings[1].created_utc, findings[2].created_utc, findings[3].created_utc, findings[4].created_utc
+- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/xstack/repox/check.py)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/net/net_cli.py)
+  - Detected key access without obvious schema anchor: state_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/net/tool_export_ranked_proof_bundle.py)
+  - Detected key access without obvious schema anchor: proof_bundle_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/net/tool_net_loopback_sim.py)
+  - Detected key access without obvious schema anchor: result_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/net/tool_net_loopback_sim.py)
+  - Detected key access without obvious schema anchor: report_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/security/tool_securex_verify_lockfile.py)
+  - Detected key access without obvious schema anchor: report_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/security/tool_securex_verify_pack.py)
+  - Detected key access without obvious schema anchor: report_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: history.anchor.tick.0
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: session_spec_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: universe_identity_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: universe_state_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: worldgen_search_plan_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: session_spec_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: universe_identity_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: universe_state_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: worldgen_search_plan_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/runner.py)
+  - Detected key access without obvious schema anchor: handshake_artifact_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_accept_loopback.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_deterministic_outputs.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_anti_cheat_required.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_pack_mismatch.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0048` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0049` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0050` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0051` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0052` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_handshake_refuse_policy_not_allowed.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0053` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: anti_cheat_module_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0054` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: anti_cheat_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0055` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: net_resync_strategy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0056` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: net_replication_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0057` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: net_replication_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0058` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: net_resync_strategy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0059` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: anti_cheat_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0060` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0061` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: net_server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0062` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_net_policy_registries_validate.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0063` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_private_accept_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0064` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_private_accept_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0065` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_private_accept_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0066` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_private_accept_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0067` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_private_accept_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0068` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_private_accept_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0069` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_proof_bundle_generated.py)
+  - Detected key access without obvious schema anchor: tool_export_ranked_proof_bundle.py
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0070` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_proof_bundle_generated.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0071` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_proof_bundle_generated.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0072` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_proof_bundle_generated.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0073` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_proof_bundle_generated.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0074` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_proof_bundle_generated.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0075` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_proof_bundle_generated.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0076` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_observer_law.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0077` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_observer_law.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0078` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_observer_law.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0079` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_observer_law.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0080` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_observer_law.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0081` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_observer_law.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0082` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0083` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0084` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0085` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0086` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0087` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_refuse_unsigned_pack.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0088` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_requires_ac_rank_strict.py)
+  - Detected key access without obvious schema anchor: lock_payload
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0089` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_requires_ac_rank_strict.py)
+  - Detected key access without obvious schema anchor: replication_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0090` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_requires_ac_rank_strict.py)
+  - Detected key access without obvious schema anchor: anti_cheat_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0091` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_requires_ac_rank_strict.py)
+  - Detected key access without obvious schema anchor: server_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0092` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_requires_ac_rank_strict.py)
+  - Detected key access without obvious schema anchor: securex_policy_registry
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0093` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_ranked_requires_ac_rank_strict.py)
+  - Detected key access without obvious schema anchor: server_profile_registry
+  - Best-effort heuristic; verify if schema declaration exists.
 - `A8_DERIVED_FRESHNESS_SMELL:0001` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/auditx/RUN_META.json)
   - Derived artifact listed in registry is missing on disk.
   - artifact_id=artifact.auditx.run_meta
@@ -65,312 +347,30 @@ Superseded By: none
 - `E2_TRUTH_OVER_NET_SMELL:0006` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
   - Potential TruthModel network serialization smell.
   - r"(truth_model|truthmodel|universe_state).*(send|socket|packet|transport|wire)",
-- `A2_SCHEMA_SHADOWING:0001` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0002` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/fields.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.field
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0003` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/topology_nodes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0004` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0005` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0006` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/institutions.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0007` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/processes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0008` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0009` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.scenarios.minimal/content/scenarios.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0010` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.scenarios.minimal/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0011` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0012` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/content/topology_nodes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0013` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0014` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0015` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/content/topology_nodes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0016` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0017` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.universe.milkyway/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0018` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.universe.milkyway/content/fields.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.field
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0019` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.universe.milkyway/content/topology_nodes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0020` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.universe.milkyway/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0021` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.content.institutions.placeholder/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0022` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.content.resources.placeholder/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0023` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.content.terrain.placeholder/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0024` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.content.worldgen.placeholder/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0025` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.assemblies.extended/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0026` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.civ_stress.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0027` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.contracts.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0028` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.ecology.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0029` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.enforcement.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0030` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.hazards.extended/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0031` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.infrastructure.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0032` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.institutions.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0033` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.instruments.extended/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0034` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.instruments.inspection/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0035` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.interaction.baseline/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0036` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.interfaces/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0037` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.law.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0038` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.materials.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0039` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.materials.extended/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0040` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.parts.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0041` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.parts.extended/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0042` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.population.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0043` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.processes.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0044` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.processes.extended/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0045` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.quality.extended/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0046` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.settlements.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0047` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.signals.baseline/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0048` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.signals.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0049` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0050` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.certification/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0051` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.extended/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0052` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.trade.basic/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0053` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.units/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0054` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0055` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0056` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/knowledge_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0057` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/measurement_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0058` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/processes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0059` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/provenance_records.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0060` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/refinement_plans.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0061` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/worldgen_models.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0062` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/worldgen_models.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.worldgen_model
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0063` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0064` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/assemblies.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.assembly
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0065` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0066` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0067` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/institutions.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0068` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/knowledge_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0069` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/measurement_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0070` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/processes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0071` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/provenance_records.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0072` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/refinement_plans.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0073` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0074` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/assemblies.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.assembly
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0075` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0076` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0077` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/institutions.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0078` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/knowledge_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0079` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/measurement_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0080` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/processes.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0081` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/provenance_records.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0082` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/refinement_plans.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0083` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0084` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0085` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0086` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/institutions.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0087` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/knowledge_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0088` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/measurement_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0089` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/provenance_records.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0090` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/refinement_plans.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0091` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0092` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0093` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/institutions.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0094` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/knowledge_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0095` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/measurement_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0096` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/provenance_records.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0097` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/refinement_plans.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0098` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/pack_manifest.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0099` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.realistic_earth/content/capabilities.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0100` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.realistic_earth/content/domains.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0101` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.realistic_earth/content/institutions.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0102` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.realistic_earth/content/knowledge_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
-  - Review for shadowing or override semantics.
-- `A2_SCHEMA_SHADOWING:0103` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.realistic_earth/content/measurement_artifacts.json)
-  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
-  - Review for shadowing or override semantics.
+- `A1_REACHABILITY_ORPHANED:0001` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/__init__.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0002` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/e12_signature_bypass_smell.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0003` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/net/net_cli.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0004` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/net/tool_export_ranked_proof_bundle.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0005` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/net/tool_net_loopback_sim.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0006` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/compiler.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0007` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/constants.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0008` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/lockfile.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0009` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/testx/tests/testlib.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.

@@ -22,15 +22,16 @@ No `ranked_mode` or similar mode flags are allowed.
 ## Governance Composition
 
 1. Server boot selects `server_profile_id` from compiled server profile registry.
-2. Server profile declares:
+2. Server governance definitions are pack-contributed data (`pack.server.governance`) and compiled into canonical registries.
+3. Server profile declares:
    - allowed replication policies
    - required anti-cheat policy
    - required SecureX policy
    - default epistemic policy
    - allowed/required law profiles
    - entitlement allow/deny lists
-3. Handshake validates client request against the selected server profile.
-4. Refusal is deterministic on the first failing gate.
+4. Handshake validates client request against the selected server profile.
+5. Refusal is deterministic on the first failing gate.
 
 ## Deterministic Acceptance Order
 
@@ -73,4 +74,3 @@ Server must emit explicit deterministic refusals for governance failures:
 - `docs/contracts/refusal_contract.md`
 - `data/registries/server_profile_registry.json`
 - `data/registries/securex_policy_registry.json`
-
