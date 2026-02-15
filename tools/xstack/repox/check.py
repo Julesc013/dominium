@@ -254,6 +254,8 @@ MULTIPLAYER_POLICY_REGISTRY_FILES = (
     "data/registries/net_replication_policy_registry.json",
     "data/registries/net_resync_strategy_registry.json",
     "data/registries/net_server_policy_registry.json",
+    "data/registries/securex_policy_registry.json",
+    "data/registries/server_profile_registry.json",
     "data/registries/shard_map_registry.json",
     "data/registries/perception_interest_policy_registry.json",
     "data/registries/anti_cheat_policy_registry.json",
@@ -718,6 +720,8 @@ def _append_multiplayer_contract_invariant_findings(
     )
     anti_cheat_policy_payload, anti_cheat_policy_err = _load_json_object(repo_root, "data/registries/anti_cheat_policy_registry.json")
     anti_cheat_module_payload, anti_cheat_module_err = _load_json_object(repo_root, "data/registries/anti_cheat_module_registry.json")
+    securex_policy_payload, securex_policy_err = _load_json_object(repo_root, "data/registries/securex_policy_registry.json")
+    server_profile_payload, server_profile_err = _load_json_object(repo_root, "data/registries/server_profile_registry.json")
     if (
         replication_err
         or resync_err
@@ -726,6 +730,8 @@ def _append_multiplayer_contract_invariant_findings(
         or perception_interest_err
         or anti_cheat_policy_err
         or anti_cheat_module_err
+        or securex_policy_err
+        or server_profile_err
     ):
         findings.append(
             _finding(
@@ -746,6 +752,8 @@ def _append_multiplayer_contract_invariant_findings(
     perception_interest_rows = (((perception_interest_payload.get("record") or {}).get("policies")) or [])
     anti_cheat_policy_rows = (((anti_cheat_policy_payload.get("record") or {}).get("policies")) or [])
     anti_cheat_module_rows = (((anti_cheat_module_payload.get("record") or {}).get("modules")) or [])
+    securex_policy_rows = (((securex_policy_payload.get("record") or {}).get("policies")) or [])
+    server_profile_rows = (((server_profile_payload.get("record") or {}).get("profiles")) or [])
     if (
         not isinstance(replication_rows, list)
         or not isinstance(resync_rows, list)
@@ -754,6 +762,8 @@ def _append_multiplayer_contract_invariant_findings(
         or not isinstance(perception_interest_rows, list)
         or not isinstance(anti_cheat_policy_rows, list)
         or not isinstance(anti_cheat_module_rows, list)
+        or not isinstance(securex_policy_rows, list)
+        or not isinstance(server_profile_rows, list)
     ):
         findings.append(
             _finding(
@@ -944,6 +954,12 @@ def _append_multiplayer_contract_invariant_findings(
             )
         )
 
+    securex_policy_ids = set(
+        str(row.get("securex_policy_id", "")).strip()
+        for row in securex_policy_rows
+        if isinstance(row, dict) and str(row.get("securex_policy_id", "")).strip()
+    )
+
     for row in server_policy_rows:
         if not isinstance(row, dict):
             continue
@@ -991,6 +1007,18 @@ def _append_multiplayer_contract_invariant_findings(
                     rule_id="INV-NET-POLICY-REGISTRIES-VALID",
                 )
             )
+        securex_policy_id = str(row.get("securex_policy_id", "")).strip()
+        if securex_policy_id and securex_policy_id not in securex_policy_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/net_server_policy_registry.json",
+                    line_number=1,
+                    snippet=server_policy_id,
+                    message="server policy '{}' references missing securex policy '{}'".format(server_policy_id, securex_policy_id),
+                    rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                )
+            )
         allowed_replication_ids = sorted(
             set(str(item).strip() for item in (row.get("allowed_replication_policy_ids") or []) if str(item).strip())
         )
@@ -1022,11 +1050,81 @@ def _append_multiplayer_contract_invariant_findings(
                             server_policy_id
                         ),
                         rule_id="INV-SRZ-HYBRID-ROUTING-USES-SHARD-MAP",
+                )
+            )
+
+    for row in server_profile_rows:
+        if not isinstance(row, dict):
+            continue
+        server_profile_id = str(row.get("server_profile_id", "")).strip()
+        securex_policy_id = str(row.get("securex_policy_id", "")).strip()
+        anti_cheat_policy_id = str(row.get("anti_cheat_policy_id", "")).strip()
+        allowed_replication_ids = sorted(
+            set(str(item).strip() for item in (row.get("allowed_replication_policy_ids") or []) if str(item).strip())
+        )
+        required_replication_ids = sorted(
+            set(str(item).strip() for item in (row.get("required_replication_policy_ids") or []) if str(item).strip())
+        )
+        allowed_law_profile_ids = sorted(
+            set(str(item).strip() for item in (row.get("allowed_law_profile_ids") or []) if str(item).strip())
+        )
+        if securex_policy_id not in securex_policy_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/server_profile_registry.json",
+                    line_number=1,
+                    snippet=server_profile_id,
+                    message="server profile '{}' references missing securex policy '{}'".format(server_profile_id, securex_policy_id),
+                    rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                )
+            )
+        if anti_cheat_policy_id not in anti_cheat_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/server_profile_registry.json",
+                    line_number=1,
+                    snippet=server_profile_id,
+                    message="server profile '{}' references missing anti-cheat policy '{}'".format(server_profile_id, anti_cheat_policy_id),
+                    rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                )
+            )
+        for policy_id in allowed_replication_ids + required_replication_ids:
+            if policy_id not in replication_ids:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/server_profile_registry.json",
+                        line_number=1,
+                        snippet=server_profile_id,
+                        message="server profile '{}' references missing replication policy '{}'".format(server_profile_id, policy_id),
+                        rule_id="INV-NET-POLICY-REGISTRIES-VALID",
                     )
                 )
+        if not allowed_law_profile_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/server_profile_registry.json",
+                    line_number=1,
+                    snippet=server_profile_id,
+                    message="server profile '{}' must declare non-empty allowed_law_profile_ids".format(server_profile_id),
+                    rule_id="INV-NET-POLICY-REGISTRIES-VALID",
+                )
+            )
 
     required_registry_refs = (
-        ("tools/xstack/sessionx/net_handshake.py", ("replication_registry", "anti_cheat_registry", "server_policy_registry")),
+        (
+            "tools/xstack/sessionx/net_handshake.py",
+            (
+                "replication_registry",
+                "anti_cheat_registry",
+                "server_policy_registry",
+                "securex_policy_registry",
+                "server_profile_registry",
+            ),
+        ),
     )
     for rel_path, required_tokens in required_registry_refs:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -2778,6 +2876,105 @@ def _append_negative_invariant_findings(
                     )
 
 
+def _append_ranked_governance_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    registry_rel = "data/registries/server_profile_registry.json"
+    registry_payload, registry_err = _load_json_object(repo_root, registry_rel)
+    if registry_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=registry_rel,
+                line_number=1,
+                snippet="",
+                message="server profile registry is missing or invalid JSON",
+                rule_id="INV-RANKED-REQUIRES-SECUREX-STRICT",
+            )
+        )
+    else:
+        profile_rows = (((registry_payload.get("record") or {}).get("profiles")) or [])
+        if not isinstance(profile_rows, list):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=registry_rel,
+                    line_number=1,
+                    snippet="",
+                    message="server profile registry record.profiles is missing",
+                    rule_id="INV-RANKED-REQUIRES-SECUREX-STRICT",
+                )
+            )
+        else:
+            ranked_profile = {}
+            for row in profile_rows:
+                if not isinstance(row, dict):
+                    continue
+                if str(row.get("server_profile_id", "")).strip() == "server.profile.rank_strict":
+                    ranked_profile = dict(row)
+                    break
+            if not ranked_profile:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=registry_rel,
+                        line_number=1,
+                        snippet="server.profile.rank_strict",
+                        message="ranked server profile is missing",
+                        rule_id="INV-RANKED-REQUIRES-SECUREX-STRICT",
+                    )
+                )
+            else:
+                securex_policy_id = str(ranked_profile.get("securex_policy_id", "")).strip()
+                anti_cheat_policy_id = str(ranked_profile.get("anti_cheat_policy_id", "")).strip()
+                if securex_policy_id != "securex.policy.rank_strict":
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=registry_rel,
+                            line_number=1,
+                            snippet=securex_policy_id,
+                            message="ranked server profile must reference securex.policy.rank_strict",
+                            rule_id="INV-RANKED-REQUIRES-SECUREX-STRICT",
+                        )
+                    )
+                if anti_cheat_policy_id != "policy.ac.rank_strict":
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=registry_rel,
+                            line_number=1,
+                            snippet=anti_cheat_policy_id,
+                            message="ranked server profile must reference policy.ac.rank_strict",
+                            rule_id="INV-RANKED-REQUIRES-SECUREX-STRICT",
+                        )
+                    )
+
+    for rel_path in _iter_negative_code_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if rel_norm == "tools/xstack/repox/check.py":
+            continue
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            lower = str(line).lower()
+            if "ranked_mode" not in lower:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=str(line).strip()[:140],
+                    message="ranked governance must be data-driven; ranked_mode flags are forbidden",
+                    rule_id="INV-NO-RANKED-FLAGS",
+                )
+            )
+
+
 def _append_hidden_ban_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -2910,6 +3107,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_multiplayer_contract_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_ranked_governance_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

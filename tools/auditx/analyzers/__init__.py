@@ -36,6 +36,8 @@ from analyzers import e7_epistemic_leak_smell
 from analyzers import e8_precision_leak_smell
 from analyzers import e9_hidden_termination_smell
 from analyzers import e10_nondeterministic_anti_cheat_smell
+from analyzers import e11_ranked_policy_drift
+from analyzers import e12_signature_bypass_smell
 
 
 ANALYZERS = (
@@ -75,6 +77,8 @@ ANALYZERS = (
     e8_precision_leak_smell,
     e9_hidden_termination_smell,
     e10_nondeterministic_anti_cheat_smell,
+    e11_ranked_policy_drift,
+    e12_signature_bypass_smell,
 )
 
 

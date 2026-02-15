@@ -25,6 +25,10 @@ def run(repo_root: str):
         "net_handshake",
         "net_anti_cheat_event",
         "net_server_policy_registry",
+        "securex_policy",
+        "securex_policy_registry",
+        "server_profile",
+        "server_profile_registry",
     ]
     for schema_name in schema_names:
         result = validate_schema_example(repo_root=repo_root, schema_name=schema_name)
