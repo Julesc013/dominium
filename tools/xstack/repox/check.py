@@ -260,6 +260,20 @@ MULTIPLAYER_POLICY_REGISTRY_FILES = (
     "data/registries/anti_cheat_module_registry.json",
 )
 
+ANTI_CHEAT_REQUIRED_POLICY_IDS = (
+    "policy.ac.detect_only",
+    "policy.ac.casual_default",
+    "policy.ac.rank_strict",
+    "policy.ac.private_relaxed",
+)
+ANTI_CHEAT_ALLOWED_ACTIONS = (
+    "audit",
+    "refuse",
+    "throttle",
+    "terminate",
+    "require_attestation",
+)
+
 NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/registries/",
     "docs/net/",
@@ -825,7 +839,30 @@ def _append_multiplayer_contract_invariant_findings(
         policy_id = str(row.get("policy_id", "")).strip()
         if policy_id:
             anti_cheat_ids.add(policy_id)
+        else:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/anti_cheat_policy_registry.json",
+                    line_number=1,
+                    snippet="",
+                    message="anti-cheat policy entry is missing policy_id",
+                    rule_id="INV-ANTI_CHEAT-POLICY-REGISTRY-VALID",
+                )
+            )
+            continue
         modules_enabled = sorted(set(str(item).strip() for item in (row.get("modules_enabled") or []) if str(item).strip()))
+        if not modules_enabled:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/anti_cheat_policy_registry.json",
+                    line_number=1,
+                    snippet=policy_id,
+                    message="anti-cheat policy '{}' must declare non-empty modules_enabled".format(policy_id),
+                    rule_id="INV-ANTI_CHEAT-POLICY-REGISTRY-VALID",
+                )
+            )
         for module_id in modules_enabled:
             if module_id not in module_ids:
                 findings.append(
@@ -856,6 +893,56 @@ def _append_multiplayer_contract_invariant_findings(
                             rule_id="INV-NET-POLICY-REGISTRIES-VALID",
                         )
                     )
+                action_token = str(default_actions.get(module_id, "")).strip()
+                if action_token and action_token not in ANTI_CHEAT_ALLOWED_ACTIONS:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path="data/registries/anti_cheat_policy_registry.json",
+                            line_number=1,
+                            snippet="{}={}".format(token, action_token),
+                            message="anti-cheat policy '{}' default action '{}' is not allowed".format(policy_id, action_token),
+                            rule_id="INV-ANTI_CHEAT-POLICY-REGISTRY-VALID",
+                        )
+                    )
+            for module_id in modules_enabled:
+                if module_id not in default_actions:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path="data/registries/anti_cheat_policy_registry.json",
+                            line_number=1,
+                            snippet=policy_id,
+                            message="anti-cheat policy '{}' is missing default action for enabled module '{}'".format(
+                                policy_id,
+                                module_id,
+                            ),
+                            rule_id="INV-ANTI_CHEAT-POLICY-REGISTRY-VALID",
+                        )
+                    )
+        else:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/anti_cheat_policy_registry.json",
+                    line_number=1,
+                    snippet=policy_id,
+                    message="anti-cheat policy '{}' default_actions must be an object".format(policy_id),
+                    rule_id="INV-ANTI_CHEAT-POLICY-REGISTRY-VALID",
+                )
+            )
+
+    for policy_id in sorted(set(ANTI_CHEAT_REQUIRED_POLICY_IDS) - set(anti_cheat_ids)):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/anti_cheat_policy_registry.json",
+                line_number=1,
+                snippet=policy_id,
+                message="required anti-cheat policy '{}' is missing".format(policy_id),
+                rule_id="INV-ANTI_CHEAT-POLICY-REGISTRY-VALID",
+            )
+        )
 
     for row in server_policy_rows:
         if not isinstance(row, dict):
@@ -2691,6 +2778,117 @@ def _append_negative_invariant_findings(
                     )
 
 
+def _append_hidden_ban_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    anti_engine_rel = "src/net/anti_cheat/anti_cheat_engine.py"
+    anti_engine_abs = os.path.join(repo_root, anti_engine_rel.replace("/", os.sep))
+    if not os.path.isfile(anti_engine_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=anti_engine_rel,
+                line_number=1,
+                snippet="",
+                message="anti-cheat engine is missing",
+                rule_id="INV-NO-HIDDEN-BAN",
+            )
+        )
+        return
+    try:
+        anti_engine_text = open(anti_engine_abs, "r", encoding="utf-8").read()
+    except OSError:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=anti_engine_rel,
+                line_number=1,
+                snippet="",
+                message="unable to read anti-cheat engine for hidden-ban invariant",
+                rule_id="INV-NO-HIDDEN-BAN",
+            )
+        )
+        return
+
+    required_tokens = (
+        "anti_cheat_events",
+        "anti_cheat_enforcement_actions",
+        "_record_refusal_injection(",
+        "terminated_peers",
+    )
+    for token in required_tokens:
+        if token not in anti_engine_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=anti_engine_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="anti-cheat termination path must emit event/action/refusal artifacts",
+                    rule_id="INV-NO-HIDDEN-BAN",
+                )
+            )
+
+    termination_paths = (
+        "src/net/policies/policy_server_authoritative.py",
+        "src/net/srz/shard_coordinator.py",
+        "src/net/policies/policy_lockstep.py",
+    )
+    for rel_path in termination_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            continue
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            continue
+        if "terminate" not in text:
+            continue
+        if rel_path.endswith("policy_lockstep.py"):
+            required = ("refusal_from_decision(",)
+        else:
+            required = ("_apply_enforcement_result(", "anti_cheat_enforcement_actions")
+        for token in required:
+            if token not in text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="terminate handling must route through explicit anti-cheat enforcement pipeline",
+                        rule_id="INV-NO-HIDDEN-BAN",
+                    )
+                )
+
+    for rel_path in _iter_negative_code_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.startswith("src/net/"):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            lower = str(line).lower()
+            if "terminated_peers" not in lower:
+                continue
+            if rel_norm == anti_engine_rel:
+                continue
+            if '"terminated_peers": []' in lower or "'terminated_peers': []" in lower:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=str(line).strip()[:140],
+                    message="peer termination must be emitted by anti-cheat engine with policy action log",
+                    rule_id="INV-NO-HIDDEN-BAN",
+                )
+            )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -2712,6 +2910,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_multiplayer_contract_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_hidden_ban_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

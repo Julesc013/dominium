@@ -34,6 +34,8 @@ from analyzers import e5_cross_shard_write_smell
 from analyzers import e6_shard_map_drift
 from analyzers import e7_epistemic_leak_smell
 from analyzers import e8_precision_leak_smell
+from analyzers import e9_hidden_termination_smell
+from analyzers import e10_nondeterministic_anti_cheat_smell
 
 
 ANALYZERS = (
@@ -71,6 +73,8 @@ ANALYZERS = (
     e6_shard_map_drift,
     e7_epistemic_leak_smell,
     e8_precision_leak_smell,
+    e9_hidden_termination_smell,
+    e10_nondeterministic_anti_cheat_smell,
 )
 
 
