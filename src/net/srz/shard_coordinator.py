@@ -6,6 +6,18 @@ import copy
 import os
 from typing import Dict, List, Tuple
 
+from src.net.anti_cheat import (
+    action_drops_without_refusal,
+    check_authority_integrity,
+    check_client_attestation,
+    check_input_integrity,
+    check_replay_protection,
+    check_sequence_integrity,
+    check_state_integrity,
+    ensure_runtime_channels,
+    export_proof_artifacts,
+    refusal_reason_from_action,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.sessionx.common import norm, refusal, write_canonical_json
@@ -145,6 +157,43 @@ def _write_runtime_artifact(runtime: dict, rel_path: str, payload: dict) -> str:
     abs_path = os.path.join(artifacts_abs, rel_path.replace("/", os.sep))
     write_canonical_json(abs_path, payload)
     return norm(os.path.relpath(abs_path, repo_root))
+
+
+def _apply_enforcement_result(
+    action: str,
+    fallback_reason_code: str,
+    fallback_message: str,
+    fallback_remediation: str,
+    relevant_ids: dict,
+    path: str,
+) -> Dict[str, object]:
+    token = str(action).strip()
+    if action_drops_without_refusal(token):
+        return {"result": "complete", "accepted": False, "action": token}
+    reason_code = refusal_reason_from_action(token, fallback_reason_code=fallback_reason_code)
+    if reason_code == "refusal.ac.attestation_missing":
+        return refusal(
+            "refusal.ac.attestation_missing",
+            "anti-cheat policy requires client attestation artifact",
+            "Enable client attestation token exchange or use an anti-cheat policy that does not require attestation.",
+            dict(relevant_ids or {}),
+            str(path),
+        )
+    if token == "terminate":
+        return refusal(
+            "refusal.ac.policy_violation",
+            "anti-cheat policy escalated this peer to terminate action",
+            "Resolve anti-cheat violations and reconnect using a compliant client state.",
+            dict(relevant_ids or {}),
+            str(path),
+        )
+    return refusal(
+        str(fallback_reason_code),
+        str(fallback_message),
+        str(fallback_remediation),
+        dict(relevant_ids or {}),
+        str(path),
+    )
 
 
 def _policy_row(registry_payload: dict, policy_id: str, key: str = "policies") -> dict:
@@ -549,6 +598,7 @@ def initialize_hybrid_runtime(
             "policy_id": anti_cheat_policy_id,
             "modules_enabled": _sorted_tokens(list(anti_cheat_policy.get("modules_enabled") or [])),
             "default_actions": dict(anti_cheat_policy.get("default_actions") or {}),
+            "extensions": dict(anti_cheat_policy.get("extensions") or {}),
             "module_registry_map": module_map,
         },
         "server": {
@@ -568,11 +618,18 @@ def initialize_hybrid_runtime(
             "baseline_snapshot_id": "",
             "baseline_snapshot_ids": [],
             "perceived_deltas": [],
+            "anti_cheat_events": [],
+            "anti_cheat_enforcement_actions": [],
+            "anti_cheat_refusal_injections": [],
+            "anti_cheat_anchor_mismatches": [],
+            "anti_cheat_violation_counters": {},
+            "terminated_peers": [],
             "refusals": [],
         },
         "shards": shard_rows,
         "clients": {},
     }
+    ensure_runtime_channels(runtime)
 
     initial_peer_id = str(network.get("client_peer_id", "")).strip()
     _register_client(
@@ -642,57 +699,133 @@ def queue_intent_envelope(repo_root: str, runtime: dict, envelope: dict) -> Dict
         strict_top_level=True,
     )
     if not bool(checked.get("valid", False)):
-        return refusal(
-            "refusal.net.envelope_invalid",
-            "intent envelope failed net_intent_envelope schema validation",
-            "Fix envelope fields and retry submission.",
-            {"schema_id": "net_intent_envelope"},
-            "$.intent_envelope",
+        decision = check_input_integrity(
+            repo_root=repo_root,
+            runtime=runtime,
+            tick=_as_int((_runtime_server(runtime).get("network_tick", 0)), 0),
+            peer_id=str((envelope or {}).get("source_peer_id", "peer.unknown")),
+            valid=False,
+            reason_code="refusal.net.envelope_invalid",
+            evidence=["intent envelope schema validation failed"],
+            default_action_token="refuse",
+        )
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.envelope_invalid",
+            fallback_message="intent envelope failed net_intent_envelope schema validation",
+            fallback_remediation="Fix envelope fields and retry submission.",
+            relevant_ids={"schema_id": "net_intent_envelope"},
+            path="$.intent_envelope",
         )
 
     server = _runtime_server(runtime)
     peer_id = str(envelope.get("source_peer_id", "")).strip()
     clients = _runtime_clients(runtime)
     if peer_id not in clients:
-        return refusal(
-            "refusal.net.authority_violation",
-            "source peer is not joined to SRZ hybrid runtime",
-            "Join peer via baseline sync before submitting intents.",
-            {"peer_id": peer_id or "<empty>"},
-            "$.source_peer_id",
+        decision = check_authority_integrity(
+            repo_root=repo_root,
+            runtime=runtime,
+            tick=_as_int(server.get("network_tick", 0), 0),
+            peer_id=peer_id,
+            allowed=False,
+            reason_code="refusal.net.authority_violation",
+            evidence=["source peer is not joined to SRZ hybrid runtime"],
+            default_action_token="refuse",
+        )
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.authority_violation",
+            fallback_message="source peer is not joined to SRZ hybrid runtime",
+            fallback_remediation="Join peer via baseline sync before submitting intents.",
+            relevant_ids={"peer_id": peer_id or "<empty>"},
+            path="$.source_peer_id",
+        )
+
+    anti_extensions = dict((runtime.get("anti_cheat") or {}).get("extensions") or {})
+    attestation_required = bool(anti_extensions.get("require_attestation", False))
+    envelope_ext = dict(envelope.get("extensions") or {})
+    attestation_token = str(envelope_ext.get("attestation_token", "")).strip() or str(envelope.get("signature", "")).strip()
+    attestation_check = check_client_attestation(
+        repo_root=repo_root,
+        runtime=runtime,
+        tick=_as_int(server.get("network_tick", 0), 0),
+        peer_id=peer_id,
+        required=bool(attestation_required),
+        attestation_token=attestation_token,
+        default_action_token="require_attestation",
+    )
+    if str(attestation_check.get("result", "")) != "complete":
+        return _apply_enforcement_result(
+            action=str(attestation_check.get("action", "require_attestation")),
+            fallback_reason_code="refusal.ac.attestation_missing",
+            fallback_message="client attestation token is required by anti-cheat policy",
+            fallback_remediation="Provide deterministic attestation token or use a policy that does not require attestation.",
+            relevant_ids={"peer_id": peer_id or "<empty>"},
+            path="$.signature",
         )
 
     expected_pack_lock = str(server.get("pack_lock_hash", "")).strip()
     if str(envelope.get("pack_lock_hash", "")).strip() != expected_pack_lock:
-        return refusal(
-            "refusal.net.handshake_pack_lock_mismatch",
-            "intent envelope pack_lock_hash does not match server lock hash",
-            "Reconnect using matching bundle lockfile and retry intent submission.",
-            {"peer_id": peer_id},
-            "$.pack_lock_hash",
+        decision = check_input_integrity(
+            repo_root=repo_root,
+            runtime=runtime,
+            tick=_as_int(server.get("network_tick", 0), 0),
+            peer_id=peer_id,
+            valid=False,
+            reason_code="refusal.net.handshake_pack_lock_mismatch",
+            evidence=["intent envelope pack_lock_hash does not match server lock hash"],
+            default_action_token="refuse",
+        )
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.handshake_pack_lock_mismatch",
+            fallback_message="intent envelope pack_lock_hash does not match server lock hash",
+            fallback_remediation="Reconnect using matching bundle lockfile and retry intent submission.",
+            relevant_ids={"peer_id": peer_id},
+            path="$.pack_lock_hash",
         )
 
     seen = _sorted_tokens(list(server.get("seen_envelope_ids") or []))
     envelope_id = str(envelope.get("envelope_id", "")).strip()
     if envelope_id in seen:
-        return refusal(
-            "refusal.net.replay_detected",
-            "intent envelope replay detected",
-            "Generate a new deterministic envelope sequence and retry submission.",
-            {"envelope_id": envelope_id},
-            "$.envelope_id",
+        decision = check_replay_protection(
+            repo_root=repo_root,
+            runtime=runtime,
+            tick=_as_int(server.get("network_tick", 0), 0),
+            peer_id=peer_id,
+            envelope_id=envelope_id,
+            seen_envelope_ids=seen,
+            default_action_token="refuse",
+        )
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.replay_detected",
+            fallback_message="intent envelope replay detected",
+            fallback_remediation="Generate a new deterministic envelope sequence and retry submission.",
+            relevant_ids={"envelope_id": envelope_id},
+            path="$.envelope_id",
         )
 
     sequence = _as_int(envelope.get("deterministic_sequence_number", 0), 0)
     last_seq_map = dict(server.get("last_sequence_by_peer") or {})
     expected_next = _as_int(last_seq_map.get(peer_id, 0), 0) + 1
     if sequence != expected_next:
-        return refusal(
-            "refusal.net.sequence_violation",
-            "deterministic_sequence_number is out of order for peer '{}'".format(peer_id),
-            "Submit envelopes with monotonic deterministic_sequence_number values.",
-            {"peer_id": peer_id, "expected_sequence": str(expected_next), "actual_sequence": str(sequence)},
-            "$.deterministic_sequence_number",
+        decision = check_sequence_integrity(
+            repo_root=repo_root,
+            runtime=runtime,
+            tick=_as_int(server.get("network_tick", 0), 0),
+            peer_id=peer_id,
+            sequence=int(sequence),
+            expected_sequence=int(expected_next),
+            default_action_token="refuse",
+        )
+        return _apply_enforcement_result(
+            action=str(decision.get("action", "refuse")),
+            fallback_reason_code="refusal.net.sequence_violation",
+            fallback_message="deterministic_sequence_number is out of order for peer '{}'".format(peer_id),
+            fallback_remediation="Submit envelopes with monotonic deterministic_sequence_number values.",
+            relevant_ids={"peer_id": peer_id, "expected_sequence": str(expected_next), "actual_sequence": str(sequence)},
+            path="$.deterministic_sequence_number",
         )
 
     site_registry = dict((runtime.get("registry_payloads") or {}).get("site_registry_index") or {})
@@ -710,12 +843,23 @@ def queue_intent_envelope(repo_root: str, runtime: dict, envelope: dict) -> Dict
     for routed_envelope in sorted((dict(row) for row in (routed.get("routed_envelopes") or []) if isinstance(row, dict)), key=_queue_sort_key):
         target = str(routed_envelope.get("target_shard_id", "")).strip()
         if target not in shard_ids:
-            return refusal(
-                "refusal.net.shard_target_invalid",
-                "routed envelope target_shard_id '{}' is not active".format(target or "<empty>"),
-                "Route to an active shard declared by shard_map registry.",
-                {"target_shard_id": target or "<empty>"},
-                "$.target_shard_id",
+            decision = check_authority_integrity(
+                repo_root=repo_root,
+                runtime=runtime,
+                tick=_as_int(server.get("network_tick", 0), 0),
+                peer_id=peer_id,
+                allowed=False,
+                reason_code="refusal.net.shard_target_invalid",
+                evidence=["routed envelope target_shard_id is not active"],
+                default_action_token="refuse",
+            )
+            return _apply_enforcement_result(
+                action=str(decision.get("action", "refuse")),
+                fallback_reason_code="refusal.net.shard_target_invalid",
+                fallback_message="routed envelope target_shard_id '{}' is not active".format(target or "<empty>"),
+                fallback_remediation="Route to an active shard declared by shard_map registry.",
+                relevant_ids={"target_shard_id": target or "<empty>"},
+                path="$.target_shard_id",
             )
         queued.append(routed_envelope)
         queued_ids.append(str(routed_envelope.get("envelope_id", "")))
@@ -1065,7 +1209,28 @@ def _emit_client_deltas(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
             )
         applied = _apply_delta(client_entry=client, delta_payload=delta_payload, expected_hash=perceived_hash)
         if str(applied.get("result", "")) != "complete":
-            return applied
+            actual_hash = canonical_sha256(dict(delta_payload.get("replace") or {}))
+            state_check = check_state_integrity(
+                repo_root=repo_root,
+                runtime=runtime,
+                tick=int(tick),
+                peer_id=peer_id,
+                expected_hash=str(perceived_hash),
+                actual_hash=str(actual_hash),
+                reason_code="refusal.net.resync_required",
+                default_action_token="audit",
+            )
+            enforcement = _apply_enforcement_result(
+                action=str(state_check.get("action", "audit")),
+                fallback_reason_code="refusal.net.resync_required",
+                fallback_message="perceived delta hash mismatch detected",
+                fallback_remediation="Request hybrid snapshot resync before continuing.",
+                relevant_ids={"peer_id": peer_id, "tick": str(tick)},
+                path="$.perceived_delta.perceived_hash",
+            )
+            if str(enforcement.get("result", "")) != "complete":
+                return enforcement
+            continue
         client["last_applied_tick"] = int(tick)
         client["received_delta_ids"] = _sorted_tokens(list(client.get("received_delta_ids") or []) + [str(delta_meta.get("perceived_delta_id", ""))])
         clients[peer_id] = client
@@ -1100,6 +1265,29 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
         built = _build_proposal(runtime=runtime, envelope=envelope, tick=int(tick))
         if str(built.get("result", "")) != "complete":
             refusal_payload = dict(built.get("refusal") or {})
+            refusal_code = str(refusal_payload.get("reason_code", "refusal.net.envelope_invalid"))
+            if refusal_code in ("refusal.net.authority_violation", "refusal.net.shard_target_invalid", "refusal.net.cross_shard_unsupported"):
+                check_authority_integrity(
+                    repo_root=repo_root,
+                    runtime=runtime,
+                    tick=int(tick),
+                    peer_id=str(envelope.get("source_peer_id", "")),
+                    allowed=False,
+                    reason_code=refusal_code,
+                    evidence=["proposal build refused deterministic envelope"],
+                    default_action_token="refuse",
+                )
+            else:
+                check_input_integrity(
+                    repo_root=repo_root,
+                    runtime=runtime,
+                    tick=int(tick),
+                    peer_id=str(envelope.get("source_peer_id", "")),
+                    valid=False,
+                    reason_code=refusal_code,
+                    evidence=["proposal build refused deterministic envelope"],
+                    default_action_token="refuse",
+                )
             processed.append(
                 {
                     "envelope_id": str(envelope.get("envelope_id", "")),
@@ -1138,6 +1326,16 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
         )
         if str(executed.get("result", "")) != "complete":
             refusal_payload = dict(executed.get("refusal") or {})
+            check_authority_integrity(
+                repo_root=repo_root,
+                runtime=runtime,
+                tick=int(tick),
+                peer_id=peer_id,
+                allowed=False,
+                reason_code=str(refusal_payload.get("reason_code", "refusal.net.authority_violation")),
+                evidence=["hybrid process execution refused submitted envelope"],
+                default_action_token="refuse",
+            )
             processed.append(
                 {
                     "envelope_id": str(proposal.get("envelope_id", "")),
@@ -1234,12 +1432,18 @@ def run_hybrid_simulation(repo_root: str, runtime: dict, envelopes: List[dict], 
 
     server = _runtime_server(runtime)
     frames = list(server.get("hash_anchor_frames") or [])
+    proof = export_proof_artifacts(
+        repo_root=repo_root,
+        runtime=runtime,
+        run_id="tick.{}".format(int(server.get("network_tick", 0) or 0)),
+    )
     return {
         "result": "complete",
         "queue_results": queue_results,
         "steps": steps,
         "final_tick": int(server.get("network_tick", 0) or 0),
         "final_composite_hash": str((frames[-1] if frames else {}).get("composite_hash", "")),
+        "anti_cheat_proof": dict(proof),
     }
 
 
