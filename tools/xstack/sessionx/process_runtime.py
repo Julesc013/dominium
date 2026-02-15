@@ -1119,7 +1119,6 @@ def _region_management_tick(
     )
     desired_tile_count = min(len(terrain_rows), int(len(desired_active)))
     selected_terrain_tiles = [str(item.get("tile_id", "")) for item in terrain_rows[:desired_tile_count] if str(item.get("tile_id", "")).strip()]
-    performance_state["selected_terrain_tiles"] = list(selected_terrain_tiles)
     state["performance_state"] = performance_state
 
     return {
@@ -1258,6 +1257,21 @@ def execute_intent(
         if tick_result.get("result") != "complete":
             return tick_result
         _advance_time(state, steps=1)
+        state_hash_anchor = _log_process(
+            state=state,
+            process_id=process_id,
+            intent_id=intent_id,
+            authority_origin=str(authority_context.get("authority_origin", "")),
+            inputs=dict(inputs),
+        )
+        return {
+            "result": "complete",
+            "state_hash_anchor": state_hash_anchor,
+            "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
+            "selected_terrain_tiles": list(tick_result.get("selected_terrain_tiles") or []),
+            "active_regions": list(tick_result.get("active_regions") or []),
+            "budget_outcome": str(tick_result.get("budget_outcome", "")),
+        }
     else:
         return refusal(
             "PROCESS_FORBIDDEN",

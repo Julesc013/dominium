@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import copy
 
 
 TEST_ID = "testx.session.earth_tile_roi_selection_determinism"
@@ -45,7 +46,8 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from tools.xstack.sessionx.creator import create_session_spec
-    from tools.xstack.sessionx.script_runner import run_intent_script
+    from tools.xstack.sessionx.process_runtime import execute_intent
+    from tools.xstack.compatx.canonical_json import canonical_sha256
 
     session_fixture = _load_fixture(repo_root, "tools/xstack/testdata/session/session_create_input.fixture.json")
     script_path = os.path.join(repo_root, "tools", "xstack", "testdata", "session", "script.region_traversal.fixture.json")
@@ -76,43 +78,105 @@ def run(repo_root: str):
     if created.get("result") != "complete":
         return {"status": "fail", "message": "session create failed before ROI terrain determinism test"}
 
-    spec_abs = os.path.join(repo_root, str(created.get("session_spec_path", "")).replace("/", os.sep))
-    first = run_intent_script(
-        repo_root=repo_root,
-        session_spec_path=spec_abs,
-        script_path=script_path,
-        bundle_id=str(session_fixture.get("bundle_id", "bundle.base.lab")),
-        compile_if_missing=False,
-        workers=1,
-        write_state=False,
-    )
-    second = run_intent_script(
-        repo_root=repo_root,
-        session_spec_path=spec_abs,
-        script_path=script_path,
-        bundle_id=str(session_fixture.get("bundle_id", "bundle.base.lab")),
-        compile_if_missing=False,
-        workers=1,
-        write_state=False,
-    )
+    session_spec_path = os.path.join(repo_root, str(created.get("session_spec_path", "")).replace("/", os.sep))
+    session_spec = _load_json(session_spec_path)
+    universe_state = _load_json(os.path.join(repo_root, str(created.get("universe_state_path", "")).replace("/", os.sep)))
+    law_registry = _load_json(os.path.join(repo_root, "build", "registries", "law.registry.json"))
+    activation_registry = _load_json(os.path.join(repo_root, "build", "registries", "activation_policy.registry.json"))
+    budget_registry = _load_json(os.path.join(repo_root, "build", "registries", "budget_policy.registry.json"))
+    fidelity_registry = _load_json(os.path.join(repo_root, "build", "registries", "fidelity_policy.registry.json"))
+    script_payload = _load_json(script_path)
+    intents = list(script_payload.get("intents") or [])
+
+    law_profile = {}
+    for row in (law_registry.get("law_profiles") or []):
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("law_profile_id", "")).strip() == str(session_spec.get("authority_context", {}).get("law_profile_id", "")).strip():
+            law_profile = dict(row)
+            break
+    if not law_profile:
+        return {"status": "fail", "message": "failed to resolve law profile for ROI terrain test"}
+
+    budget_policy = {}
+    for row in (budget_registry.get("budget_policies") or []):
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("policy_id", "")).strip() == str(session_spec.get("budget_policy_id", "")).strip():
+            budget_policy = dict(row)
+            break
+    fidelity_policy = {}
+    for row in (fidelity_registry.get("fidelity_policies") or []):
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("policy_id", "")).strip() == str(session_spec.get("fidelity_policy_id", "")).strip():
+            fidelity_policy = dict(row)
+            break
+    activation_policy = {}
+    for row in (activation_registry.get("activation_policies") or []):
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("policy_id", "")).strip() == str(budget_policy.get("activation_policy_id", "")).strip():
+            activation_policy = dict(row)
+            break
+    if not budget_policy or not fidelity_policy or not activation_policy:
+        return {"status": "fail", "message": "failed to resolve policy context for ROI terrain test"}
+
+    authority_context = dict(session_spec.get("authority_context") or {})
+    navigation_indices = {
+        "astronomy_catalog_index": _load_json(os.path.join(repo_root, "build", "registries", "astronomy.catalog.index.json")),
+        "site_registry_index": _load_json(os.path.join(repo_root, "build", "registries", "site.registry.index.json")),
+        "ephemeris_registry": _load_json(os.path.join(repo_root, "build", "registries", "ephemeris.registry.json")),
+        "terrain_tile_registry": _load_json(os.path.join(repo_root, "build", "registries", "terrain.tile.registry.json")),
+    }
+    policy_context = {
+        "activation_policy": activation_policy,
+        "budget_policy": budget_policy,
+        "fidelity_policy": fidelity_policy,
+    }
+
+    def _run_once():
+        local_state = copy.deepcopy(universe_state)
+        selections = []
+        for intent in intents:
+            if not isinstance(intent, dict):
+                return {"result": "fail", "message": "script contains non-object intent row"}
+            executed = execute_intent(
+                state=local_state,
+                intent=intent,
+                law_profile=law_profile,
+                authority_context=authority_context,
+                navigation_indices=navigation_indices,
+                policy_context=policy_context,
+            )
+            if executed.get("result") != "complete":
+                return executed
+            if str(intent.get("process_id", "")).strip() == "process.region_management_tick":
+                selections.append(list(executed.get("selected_terrain_tiles") or []))
+        return {
+            "result": "complete",
+            "final_state_hash": canonical_sha256(local_state),
+            "terrain_selections": selections,
+        }
+
+    first = _run_once()
+    second = _run_once()
     if first.get("result") != "complete" or second.get("result") != "complete":
-        return {"status": "fail", "message": "region traversal script execution failed"}
+        return {"status": "fail", "message": "region traversal execution failed for ROI terrain selection determinism"}
+    if str(first.get("final_state_hash", "")) != str(second.get("final_state_hash", "")):
+        return {"status": "fail", "message": "ROI traversal final state hash mismatch across repeated runs"}
 
-    for key in ("final_state_hash", "deterministic_fields_hash", "pack_lock_hash"):
-        if str(first.get(key, "")) != str(second.get(key, "")):
-            return {"status": "fail", "message": "ROI replay mismatch for '{}'".format(key)}
+    selections_a = list(first.get("terrain_selections") or [])
+    selections_b = list(second.get("terrain_selections") or [])
+    if not selections_a:
+        return {"status": "fail", "message": "no region-management tile selections were emitted"}
+    if selections_a != selections_b:
+        return {"status": "fail", "message": "terrain tile selections mismatch across repeated runs"}
 
-    perf_a = dict(first.get("performance_state") or {})
-    perf_b = dict(second.get("performance_state") or {})
-    tiles_a = list(perf_a.get("selected_terrain_tiles") or [])
-    tiles_b = list(perf_b.get("selected_terrain_tiles") or [])
-    if not tiles_a:
-        return {"status": "fail", "message": "no selected_terrain_tiles were emitted in performance_state"}
-    if tiles_a != tiles_b:
-        return {"status": "fail", "message": "selected_terrain_tiles mismatch across repeated traversal"}
-
-    expected_prefix = _sorted_tile_ids(repo_root)[: len(tiles_a)]
-    if tiles_a != expected_prefix:
-        return {"status": "fail", "message": "selected_terrain_tiles order mismatch against deterministic tile ordering"}
+    ordered_tile_ids = _sorted_tile_ids(repo_root)
+    for selection in selections_a:
+        expected_prefix = ordered_tile_ids[: len(selection)]
+        if list(selection) != expected_prefix:
+            return {"status": "fail", "message": "terrain selection does not match deterministic sorted tile prefix"}
 
     return {"status": "pass", "message": "Earth ROI terrain tile selection determinism passed"}
