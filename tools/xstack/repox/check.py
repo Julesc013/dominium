@@ -217,6 +217,19 @@ BODY_MUTATION_ALLOWED_PREFIXES = (
     "tools/xstack/testx/tests/",
 )
 
+REPRESENTATION_RENDER_ONLY_FILES = (
+    "tools/xstack/sessionx/render_model.py",
+)
+
+COSMETIC_SEMANTIC_FORBIDDEN_TOKENS = (
+    "collision_layer",
+    "shape_type",
+    "shape_parameters",
+    "body_move_attempt",
+    "speed_scalar",
+    "velocity_mm_per_tick",
+)
+
 PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/",
     "docs/",
@@ -3324,6 +3337,118 @@ def _append_negative_invariant_findings(
                 )
 
 
+def _append_representation_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_runtime_abs = os.path.join(repo_root, process_runtime_rel.replace("/", os.sep))
+    try:
+        process_runtime_text = open(process_runtime_abs, "r", encoding="utf-8").read()
+    except OSError:
+        process_runtime_text = ""
+
+    if not process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime is missing; cosmetic process-only representation checks cannot be verified",
+                rule_id="INV-NO-COSMETIC-SEMANTICS",
+            )
+        )
+    else:
+        required_cosmetic_tokens = (
+            "elif process_id == \"process.cosmetic_assign\":",
+            "representation_state = _representation_state(policy_context)",
+            "skip_state_log = True",
+        )
+        for token in required_cosmetic_tokens:
+            if token not in process_runtime_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=1,
+                        snippet=token,
+                        message="cosmetic assignment must remain representation-side and process-driven",
+                        rule_id="INV-NO-COSMETIC-SEMANTICS",
+                    )
+                )
+
+        for line_no, line in _iter_lines(repo_root, process_runtime_rel):
+            lower = str(line).lower()
+            if "cosmetic" not in lower:
+                continue
+            if "refusal.cosmetic" in lower:
+                continue
+            if "representation_state" in lower:
+                continue
+            if any(token in lower for token in COSMETIC_SEMANTIC_FORBIDDEN_TOKENS):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="cosmetic path must not touch authoritative movement/collision fields",
+                        rule_id="INV-NO-COSMETIC-SEMANTICS",
+                    )
+                )
+
+    truth_render_pattern = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)
+    for rel_path in REPRESENTATION_RENDER_ONLY_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="representation render adapter file is missing",
+                    rule_id="INV-REPRESENTATION-RENDER-ONLY",
+                )
+            )
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            if truth_render_pattern.search(str(line)):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="representation/render adapter must not import or reference TruthModel/universe state",
+                        rule_id="INV-REPRESENTATION-RENDER-ONLY",
+                    )
+                )
+
+    for rel_path in _iter_negative_code_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/", "docs/")):
+            continue
+        if "representation" not in rel_norm and "render_model.py" not in rel_norm:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            lower = str(line).lower()
+            if "truth_model" in lower or "truthmodel" in lower:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="representation code path references TruthModel symbol",
+                        rule_id="INV-REPRESENTATION-RENDER-ONLY",
+                    )
+                )
+
+
 def _append_ranked_governance_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -3605,6 +3730,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_status_now_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_representation_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
