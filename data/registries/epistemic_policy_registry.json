@@ -21,6 +21,7 @@
           "ch.diegetic.altimeter",
           "ch.diegetic.radio",
           "ch.diegetic.map_local",
+          "ch.watermark.observer_mode",
           "ch.nondiegetic.nav",
           "ch.nondiegetic.entity_inspector",
           "ch.nondiegetic.performance_monitor"
@@ -68,6 +69,7 @@
           "ch.diegetic.clock",
           "ch.diegetic.altimeter",
           "ch.diegetic.radio",
+          "ch.watermark.observer_mode",
           "ch.truth.overlay.terrain_height",
           "ch.truth.overlay.anchor_hash"
         ],
@@ -108,6 +110,7 @@
           "ch.diegetic.clock",
           "ch.diegetic.altimeter",
           "ch.diegetic.radio",
+          "ch.watermark.observer_mode",
           "ch.diegetic.map_local"
         ],
         "forbidden_channels": [
@@ -151,6 +154,7 @@
           "ch.core.navigation",
           "ch.core.sites",
           "ch.camera.state",
+          "ch.watermark.observer_mode",
           "ch.nondiegetic.nav"
         ],
         "forbidden_channels": [

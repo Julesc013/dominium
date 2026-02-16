@@ -400,6 +400,7 @@ def run_intent_script(
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
             "terrain_tile_registry": terrain_tile_registry,
+            "view_mode_registry": view_mode_registry,
         },
         policy_context={
             "activation_policy": activation_policy,
