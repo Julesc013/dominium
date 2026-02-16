@@ -44,6 +44,15 @@ def owned_entity_ids(universe_state: dict) -> List[str]:
             if token:
                 tokens.append(token)
 
+    controller_rows = universe_state.get("controller_assemblies")
+    if isinstance(controller_rows, list):
+        for row in controller_rows:
+            if not isinstance(row, dict):
+                continue
+            token = str(row.get("assembly_id", "")).strip()
+            if token:
+                tokens.append(token)
+
     agent_rows = universe_state.get("agent_states")
     if isinstance(agent_rows, list):
         for row in agent_rows:
@@ -141,6 +150,8 @@ def _truth_hash_subset(universe_state: dict) -> dict:
         "session_references": list(payload.get("session_references") or []),
         "history_anchors": list(payload.get("history_anchors") or []),
         "camera_assemblies": list(payload.get("camera_assemblies") or []),
+        "controller_assemblies": list(payload.get("controller_assemblies") or []),
+        "control_bindings": list(payload.get("control_bindings") or []),
         "time_control": dict(payload.get("time_control") or {}),
         "process_log": list(payload.get("process_log") or []),
         "interest_regions": list(payload.get("interest_regions") or []),
@@ -281,4 +292,3 @@ def simulation_tick(universe_state: dict) -> int:
     if not isinstance(sim, dict):
         return 0
     return max(0, _as_int(sim.get("tick", 0), 0))
-

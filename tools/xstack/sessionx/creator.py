@@ -47,6 +47,9 @@ DEFAULT_ENTITLEMENTS = (
     "entitlement.teleport",
     "entitlement.time_control",
     "entitlement.inspect",
+    "entitlement.control.camera",
+    "entitlement.control.possess",
+    "entitlement.control.lens_override",
     "lens.nondiegetic.access",
     "ui.window.lab.nav",
 )
@@ -639,6 +642,8 @@ def _initial_universe_state(
         "history_anchors": ["history.anchor.tick.0"],
         "camera_assemblies": [camera_payload],
         "instrument_assemblies": instrument_rows,
+        "controller_assemblies": [],
+        "control_bindings": [],
         "time_control": {
             "rate_permille": 1000,
             "paused": False,

@@ -204,6 +204,102 @@
         }
       }
     },
+    "controller_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "assembly_id",
+          "controller_type",
+          "owner_peer_id",
+          "allowed_actions",
+          "binding_ids",
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "assembly_id": {
+            "type": "string"
+          },
+          "controller_type": {
+            "type": "string"
+          },
+          "owner_peer_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "allowed_actions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "binding_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ]
+          }
+        }
+      }
+    },
+    "control_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "binding_id",
+          "controller_id",
+          "binding_type",
+          "target_id",
+          "created_tick",
+          "active",
+          "required_entitlements"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "binding_id": {
+            "type": "string"
+          },
+          "controller_id": {
+            "type": "string"
+          },
+          "binding_type": {
+            "type": "string",
+            "enum": [
+              "camera",
+              "possess",
+              "order"
+            ]
+          },
+          "target_id": {
+            "type": "string"
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "required_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "time_control": {
       "type": "object",
       "required": [

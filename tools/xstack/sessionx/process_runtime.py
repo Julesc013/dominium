@@ -182,6 +182,56 @@ def _ensure_instrument_assemblies(state: dict) -> List[dict]:
     return normalized
 
 
+def _ensure_controller_assemblies(state: dict) -> List[dict]:
+    rows = state.get("controller_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
+        assembly_id = str(row.get("assembly_id", "")).strip()
+        if not assembly_id:
+            continue
+        normalized.append(
+            {
+                "assembly_id": assembly_id,
+                "controller_type": str(row.get("controller_type", "script")).strip() or "script",
+                "owner_peer_id": row.get("owner_peer_id") if row.get("owner_peer_id") is None else str(row.get("owner_peer_id", "")).strip(),
+                "allowed_actions": _sorted_tokens(list(row.get("allowed_actions") or [])),
+                "binding_ids": _sorted_tokens(list(row.get("binding_ids") or [])),
+                "status": str(row.get("status", "active")).strip() or "active",
+            }
+        )
+    state["controller_assemblies"] = normalized
+    return normalized
+
+
+def _ensure_control_bindings(state: dict) -> List[dict]:
+    rows = state.get("control_bindings")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("binding_id", ""))):
+        binding_id = str(row.get("binding_id", "")).strip()
+        controller_id = str(row.get("controller_id", "")).strip()
+        binding_type = str(row.get("binding_type", "")).strip()
+        target_id = str(row.get("target_id", "")).strip()
+        if not binding_id or not controller_id or not binding_type or not target_id:
+            continue
+        normalized.append(
+            {
+                "binding_id": binding_id,
+                "controller_id": controller_id,
+                "binding_type": binding_type,
+                "target_id": target_id,
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "active": bool(row.get("active", True)),
+                "required_entitlements": _sorted_tokens(list(row.get("required_entitlements") or [])),
+            }
+        )
+    state["control_bindings"] = normalized
+    return normalized
+
+
 def _append_history_anchor(state: dict, tick: int, log_index: int) -> None:
     rows = state.get("history_anchors")
     if not isinstance(rows, list):
@@ -1253,6 +1303,8 @@ def execute_intent(
             {"assembly_id": "camera.main"},
             "$.camera_assemblies",
         )
+    _ensure_controller_assemblies(state)
+    _ensure_control_bindings(state)
 
     if process_id == "process.camera_move":
         delta = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
