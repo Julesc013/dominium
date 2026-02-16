@@ -102,6 +102,8 @@ Tool payload wrapper:
 - `refusal.control.possession_not_supported`
 - `refusal.control.lens_forbidden`
 - `refusal.control.cross_shard_possession_forbidden`
+- `refusal.control.cross_shard_collision_forbidden`
+- `refusal.contract.no_penetration_violation`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
 - `refusal.net.handshake_pack_lock_mismatch`: reconnect using identical bundle + lockfile; regenerate client dist if needed.

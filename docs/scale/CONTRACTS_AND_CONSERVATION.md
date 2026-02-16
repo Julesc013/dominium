@@ -27,6 +27,8 @@ Every contract row declares:
 - `dom.contract.ledger_balance`
 - `dom.contract.epistemic_non_omniscience`
 - `dom.contract.deterministic_transition`
+- `dom.contract.no_penetration`
+- `dom.contract.deterministic_contact_resolution`
 
 ## Refusal Semantics
 When a requested transition cannot satisfy the declared contract set:
