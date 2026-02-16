@@ -31,6 +31,22 @@ Define the modular anti-cheat execution contract used by multiplayer replication
 6. `ac.module.behavioral_detection`
 7. `ac.module.client_attestation` (optional)
 
+## Movement Integrity Signal Sources (EB-3)
+- Source processes:
+  - `process.agent_move`
+  - `process.agent_rotate`
+- Input-integrity signals:
+  - movement-envelope rate by tick window
+  - malformed movement payloads
+- Authority-integrity signals:
+  - ownership mismatch (`controller` vs `agent.owner_peer_id`)
+  - shard-target spoof for embodied movement intents
+- Behavioral-detection signals:
+  - displacement per tick above configured deterministic thresholds
+  - repeated boundary-cross attempts without transfer permission
+
+All movement signals are server-side and non-invasive. Client scanning remains out-of-scope.
+
 ## Determinism
 - Event fingerprints use canonical hash over stable fields only.
 - Module decisions are policy-driven and deterministic for identical input streams.
@@ -57,4 +73,3 @@ Per session run-meta artifacts include:
 - `data/registries/anti_cheat_policy_registry.json`
 - `data/registries/anti_cheat_module_registry.json`
 - `src/net/anti_cheat/anti_cheat_engine.py`
-
