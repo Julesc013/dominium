@@ -8,250 +8,369 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1431
-- Severities: RISK=16, VIOLATION=637, WARN=778
-- Categories: canon_drift=621, capability_bypass_smell=1, derived_freshness=9, net.precision_leak_smell=2, net.truth_over_net_smell=6, security.boundary_io=29, security.privilege_bypass=636, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 908
+- Severities: INFO=1, RISK=143, VIOLATION=2, WARN=762
+- Categories: canon_drift=624, capability_bypass_smell=1, derived_freshness=10, mode_flag_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, reachability=6, schema_usage=131, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
 - `A4_DERIVED_ARTIFACT_CONTRACT:0001` VIOLATION `A4_DERIVED_ARTIFACT_CONTRACT` `semantic.derived_artifact_contract` (docs/audit/auditx/FINDINGS.json)
   - Canonical artifact contains forbidden run-meta fields.
   - Sample keys: findings[0].created_utc, findings[1].created_utc, findings[2].created_utc, findings[3].created_utc, findings[4].created_utc
-- `C1:0001` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
-  - bypass_law_profile
-- `C1:0002` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
-  - disable_epistemic_guard
-- `C1:0003` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
-  - override_authority_state
-- `C1:0004` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/004e9e6091e72c9f2540085dee6741e349b0f8c354975941901b2e5a3aa7db70.json)
-  - bypass_law_profile
-- `C1:0005` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/004e9e6091e72c9f2540085dee6741e349b0f8c354975941901b2e5a3aa7db70.json)
-  - disable_epistemic_guard
-- `C1:0006` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/004e9e6091e72c9f2540085dee6741e349b0f8c354975941901b2e5a3aa7db70.json)
-  - override_authority_state
-- `C1:0007` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/01ad6e641ca1fa9bb6d37309dd9aeb6e67a692d893139456b7201f867fe3db16.json)
-  - bypass_law_profile
-- `C1:0008` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/01ad6e641ca1fa9bb6d37309dd9aeb6e67a692d893139456b7201f867fe3db16.json)
-  - disable_epistemic_guard
-- `C1:0009` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/01ad6e641ca1fa9bb6d37309dd9aeb6e67a692d893139456b7201f867fe3db16.json)
-  - override_authority_state
-- `C1:0010` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/037953bc604d4368af3c0be943c16311c710d65345d34f1cc0c2869400b0a50f.json)
-  - bypass_law_profile
-- `C1:0011` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/037953bc604d4368af3c0be943c16311c710d65345d34f1cc0c2869400b0a50f.json)
-  - disable_epistemic_guard
-- `C1:0012` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/037953bc604d4368af3c0be943c16311c710d65345d34f1cc0c2869400b0a50f.json)
-  - override_authority_state
-- `C1:0013` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/042aeda4914b6e011cfa9f1e18b04954fe505c17e8f73eacafcbeb0b2e3086ab.json)
-  - bypass_law_profile
-- `C1:0014` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/042aeda4914b6e011cfa9f1e18b04954fe505c17e8f73eacafcbeb0b2e3086ab.json)
-  - disable_epistemic_guard
-- `C1:0015` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/042aeda4914b6e011cfa9f1e18b04954fe505c17e8f73eacafcbeb0b2e3086ab.json)
-  - override_authority_state
-- `C1:0016` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/04319c251b514abd802d989dd828b9fada90c82e9c744c55a5dae80becb42c71.json)
-  - bypass_law_profile
-- `C1:0017` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/04319c251b514abd802d989dd828b9fada90c82e9c744c55a5dae80becb42c71.json)
-  - disable_epistemic_guard
-- `C1:0018` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/04319c251b514abd802d989dd828b9fada90c82e9c744c55a5dae80becb42c71.json)
-  - override_authority_state
-- `C1:0019` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/044b5b3ea7eb730d4ba888e1c0b5c0e2dc0f39a1e7a01e25bf79d7077284968b.json)
-  - bypass_law_profile
-- `C1:0020` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/044b5b3ea7eb730d4ba888e1c0b5c0e2dc0f39a1e7a01e25bf79d7077284968b.json)
-  - disable_epistemic_guard
-- `C1:0021` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/044b5b3ea7eb730d4ba888e1c0b5c0e2dc0f39a1e7a01e25bf79d7077284968b.json)
-  - override_authority_state
-- `C1:0022` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/048a64955855614b12b887d46f77c928514dc1672ab21516a8e54b019ad2f6e7.json)
-  - bypass_law_profile
-- `C1:0023` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/048a64955855614b12b887d46f77c928514dc1672ab21516a8e54b019ad2f6e7.json)
-  - disable_epistemic_guard
-- `C1:0024` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/048a64955855614b12b887d46f77c928514dc1672ab21516a8e54b019ad2f6e7.json)
-  - override_authority_state
-- `C1:0025` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/079117023d1cd328313f3e15341906810a0b6a7c199c9591f3eb6ad0cffc5e48.json)
-  - bypass_law_profile
-- `C1:0026` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/079117023d1cd328313f3e15341906810a0b6a7c199c9591f3eb6ad0cffc5e48.json)
-  - disable_epistemic_guard
-- `C1:0027` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/079117023d1cd328313f3e15341906810a0b6a7c199c9591f3eb6ad0cffc5e48.json)
-  - override_authority_state
-- `C1:0028` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/094fe2c2d0cd60b044f946f74d897c86549692b2e8836299040db51d378a28ef.json)
-  - bypass_law_profile
-- `C1:0029` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/094fe2c2d0cd60b044f946f74d897c86549692b2e8836299040db51d378a28ef.json)
-  - disable_epistemic_guard
-- `C1:0030` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/094fe2c2d0cd60b044f946f74d897c86549692b2e8836299040db51d378a28ef.json)
-  - override_authority_state
-- `C1:0031` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/095e8813743b195cbf52c2ad4e62e7030377274c6ec2f03254483780887f7b30.json)
-  - bypass_law_profile
-- `C1:0032` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/095e8813743b195cbf52c2ad4e62e7030377274c6ec2f03254483780887f7b30.json)
-  - disable_epistemic_guard
-- `C1:0033` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/095e8813743b195cbf52c2ad4e62e7030377274c6ec2f03254483780887f7b30.json)
-  - override_authority_state
-- `C1:0034` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0aeb0ae238c47c7da5f89dd5bb020f646d06d4a0ffaefc1696a0fca5a98e5f0e.json)
-  - bypass_law_profile
-- `C1:0035` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0aeb0ae238c47c7da5f89dd5bb020f646d06d4a0ffaefc1696a0fca5a98e5f0e.json)
-  - disable_epistemic_guard
-- `C1:0036` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0aeb0ae238c47c7da5f89dd5bb020f646d06d4a0ffaefc1696a0fca5a98e5f0e.json)
-  - override_authority_state
-- `C1:0037` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0b1b6fe83b7d28555b53242d278345f4d11f4edd8e952de0429915cdd228109c.json)
-  - bypass_law_profile
-- `C1:0038` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0b1b6fe83b7d28555b53242d278345f4d11f4edd8e952de0429915cdd228109c.json)
-  - disable_epistemic_guard
-- `C1:0039` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0b1b6fe83b7d28555b53242d278345f4d11f4edd8e952de0429915cdd228109c.json)
-  - override_authority_state
-- `C1:0040` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0c808a8d094c41a5cfc1fbaf9e130e127ff64d9eeb2ce7f6bbdaf65dbac9e6a7.json)
-  - bypass_law_profile
-- `C1:0041` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0c808a8d094c41a5cfc1fbaf9e130e127ff64d9eeb2ce7f6bbdaf65dbac9e6a7.json)
-  - disable_epistemic_guard
-- `C1:0042` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0c808a8d094c41a5cfc1fbaf9e130e127ff64d9eeb2ce7f6bbdaf65dbac9e6a7.json)
-  - override_authority_state
-- `C1:0043` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0ef94e1d19005b544c45c175654e809e74cebea4d64634fd671bf0255ff55f31.json)
-  - bypass_law_profile
-- `C1:0044` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0ef94e1d19005b544c45c175654e809e74cebea4d64634fd671bf0255ff55f31.json)
-  - disable_epistemic_guard
-- `C1:0045` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/0ef94e1d19005b544c45c175654e809e74cebea4d64634fd671bf0255ff55f31.json)
-  - override_authority_state
-- `C1:0046` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/12d4551049798ee3c73216b6ccb5c90c775c632100ebd4c4c9a2fb4adccb2b57.json)
-  - bypass_law_profile
-- `C1:0047` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/12d4551049798ee3c73216b6ccb5c90c775c632100ebd4c4c9a2fb4adccb2b57.json)
-  - disable_epistemic_guard
-- `C1:0048` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/12d4551049798ee3c73216b6ccb5c90c775c632100ebd4c4c9a2fb4adccb2b57.json)
-  - override_authority_state
-- `C1:0049` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/141f34fe976d0a93f0eb5e601784b591f5384acf00b1c9f620717a47e0157982.json)
-  - bypass_law_profile
-- `C1:0050` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/141f34fe976d0a93f0eb5e601784b591f5384acf00b1c9f620717a47e0157982.json)
-  - disable_epistemic_guard
-- `C1:0051` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/141f34fe976d0a93f0eb5e601784b591f5384acf00b1c9f620717a47e0157982.json)
-  - override_authority_state
-- `C1:0052` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/146f8c2a3090f5266ee5a6f92e77b3204809d2accb8392746523ae3fcebb9092.json)
-  - bypass_law_profile
-- `C1:0053` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/146f8c2a3090f5266ee5a6f92e77b3204809d2accb8392746523ae3fcebb9092.json)
-  - disable_epistemic_guard
-- `C1:0054` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/146f8c2a3090f5266ee5a6f92e77b3204809d2accb8392746523ae3fcebb9092.json)
-  - override_authority_state
-- `C1:0055` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1503e2d0bb4871b7c0719d253936678501d77863b655ff10093a51dbb86c7104.json)
-  - bypass_law_profile
-- `C1:0056` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1503e2d0bb4871b7c0719d253936678501d77863b655ff10093a51dbb86c7104.json)
-  - disable_epistemic_guard
-- `C1:0057` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1503e2d0bb4871b7c0719d253936678501d77863b655ff10093a51dbb86c7104.json)
-  - override_authority_state
-- `C1:0058` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/15638bc929af2db2453bb6c469c88587369ae129276e755a42f6b40c96746368.json)
-  - bypass_law_profile
-- `C1:0059` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/15638bc929af2db2453bb6c469c88587369ae129276e755a42f6b40c96746368.json)
-  - disable_epistemic_guard
-- `C1:0060` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/15638bc929af2db2453bb6c469c88587369ae129276e755a42f6b40c96746368.json)
-  - override_authority_state
-- `C1:0061` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/16e3eb99043dfc1a1a7f56c6c900f8ef74887bec27e445bc7a01a7f2ee8b4c1e.json)
-  - bypass_law_profile
-- `C1:0062` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/16e3eb99043dfc1a1a7f56c6c900f8ef74887bec27e445bc7a01a7f2ee8b4c1e.json)
-  - disable_epistemic_guard
-- `C1:0063` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/16e3eb99043dfc1a1a7f56c6c900f8ef74887bec27e445bc7a01a7f2ee8b4c1e.json)
-  - override_authority_state
-- `C1:0064` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/16efbe2fac7c24855fc8b2d2bc3bc1976ac3d65fcd8b61087496777f4530410a.json)
-  - bypass_law_profile
-- `C1:0065` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/16efbe2fac7c24855fc8b2d2bc3bc1976ac3d65fcd8b61087496777f4530410a.json)
-  - disable_epistemic_guard
-- `C1:0066` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/16efbe2fac7c24855fc8b2d2bc3bc1976ac3d65fcd8b61087496777f4530410a.json)
-  - override_authority_state
-- `C1:0067` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/179915cb21399977f302ad500877b0023088b9ab06a87f6e2a68f9bb98b5ce9f.json)
-  - bypass_law_profile
-- `C1:0068` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/179915cb21399977f302ad500877b0023088b9ab06a87f6e2a68f9bb98b5ce9f.json)
-  - disable_epistemic_guard
-- `C1:0069` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/179915cb21399977f302ad500877b0023088b9ab06a87f6e2a68f9bb98b5ce9f.json)
-  - override_authority_state
-- `C1:0070` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/17c97b64ca8dbe0a2087e10a13b587ba34c68686785dfce2d81c790a68cc7a1f.json)
-  - bypass_law_profile
-- `C1:0071` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/17c97b64ca8dbe0a2087e10a13b587ba34c68686785dfce2d81c790a68cc7a1f.json)
-  - disable_epistemic_guard
-- `C1:0072` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/17c97b64ca8dbe0a2087e10a13b587ba34c68686785dfce2d81c790a68cc7a1f.json)
-  - override_authority_state
-- `C1:0073` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/192c385359ae7c670698e38ea5cc7a251ddaaf83d0d8884a2ee5d2dffc49cd18.json)
-  - bypass_law_profile
-- `C1:0074` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/192c385359ae7c670698e38ea5cc7a251ddaaf83d0d8884a2ee5d2dffc49cd18.json)
-  - disable_epistemic_guard
-- `C1:0075` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/192c385359ae7c670698e38ea5cc7a251ddaaf83d0d8884a2ee5d2dffc49cd18.json)
-  - override_authority_state
-- `C1:0076` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/197eaa4b861d25afaf68d55fb746246acaac2fad7be7b9c7e8104a04be83b4b9.json)
-  - bypass_law_profile
-- `C1:0077` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/197eaa4b861d25afaf68d55fb746246acaac2fad7be7b9c7e8104a04be83b4b9.json)
-  - disable_epistemic_guard
-- `C1:0078` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/197eaa4b861d25afaf68d55fb746246acaac2fad7be7b9c7e8104a04be83b4b9.json)
-  - override_authority_state
-- `C1:0079` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1b8cbf80fc2bb2d703c3026b2f036820b795a0b01f6893e4470975eeac32f493.json)
-  - bypass_law_profile
-- `C1:0080` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1b8cbf80fc2bb2d703c3026b2f036820b795a0b01f6893e4470975eeac32f493.json)
-  - disable_epistemic_guard
-- `C1:0081` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1b8cbf80fc2bb2d703c3026b2f036820b795a0b01f6893e4470975eeac32f493.json)
-  - override_authority_state
-- `C1:0082` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1bd23d0d0442bc6ae61985fa6e2273026a838c6681d6cb4ea7bc2783aed407a0.json)
-  - bypass_law_profile
-- `C1:0083` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1bd23d0d0442bc6ae61985fa6e2273026a838c6681d6cb4ea7bc2783aed407a0.json)
-  - disable_epistemic_guard
-- `C1:0084` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1bd23d0d0442bc6ae61985fa6e2273026a838c6681d6cb4ea7bc2783aed407a0.json)
-  - override_authority_state
-- `C1:0085` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1c70aad062ba60ed6cd996a16696528e8320d5e1c46d0160867539aa25639613.json)
-  - bypass_law_profile
-- `C1:0086` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1c70aad062ba60ed6cd996a16696528e8320d5e1c46d0160867539aa25639613.json)
-  - disable_epistemic_guard
-- `C1:0087` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1c70aad062ba60ed6cd996a16696528e8320d5e1c46d0160867539aa25639613.json)
-  - override_authority_state
-- `C1:0088` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1c95e1e02658062f0135a4aeeae243e389229d2735df7a15f98806a30c38f6c1.json)
-  - bypass_law_profile
-- `C1:0089` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1c95e1e02658062f0135a4aeeae243e389229d2735df7a15f98806a30c38f6c1.json)
-  - disable_epistemic_guard
-- `C1:0090` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/1c95e1e02658062f0135a4aeeae243e389229d2735df7a15f98806a30c38f6c1.json)
-  - override_authority_state
-- `C1:0091` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/211d473e02fbefda595594d436b0c16a766d1d32417a820b6654b95f7668da02.json)
-  - bypass_law_profile
-- `C1:0092` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/211d473e02fbefda595594d436b0c16a766d1d32417a820b6654b95f7668da02.json)
-  - disable_epistemic_guard
-- `C1:0093` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/211d473e02fbefda595594d436b0c16a766d1d32417a820b6654b95f7668da02.json)
-  - override_authority_state
-- `C1:0094` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/217354f05dacf779cce2d39903c46a7ff87903b4befae2ed5b837970a74fd93f.json)
-  - bypass_law_profile
-- `C1:0095` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/217354f05dacf779cce2d39903c46a7ff87903b4befae2ed5b837970a74fd93f.json)
-  - disable_epistemic_guard
-- `C1:0096` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/217354f05dacf779cce2d39903c46a7ff87903b4befae2ed5b837970a74fd93f.json)
-  - override_authority_state
-- `C1:0097` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/23ef523bb479b401bb105a354d78546130fe1af34b406709df092b7ccb83d22d.json)
-  - bypass_law_profile
-- `C1:0098` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/23ef523bb479b401bb105a354d78546130fe1af34b406709df092b7ccb83d22d.json)
-  - disable_epistemic_guard
-- `C1:0099` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/23ef523bb479b401bb105a354d78546130fe1af34b406709df092b7ccb83d22d.json)
-  - override_authority_state
-- `C1:0100` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/252b9ad6c828b81c14bbc4455b8a0d9e1d91bf8b4fe56565c2c5a37040bad36b.json)
-  - bypass_law_profile
-- `C1:0101` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/252b9ad6c828b81c14bbc4455b8a0d9e1d91bf8b4fe56565c2c5a37040bad36b.json)
-  - disable_epistemic_guard
-- `C1:0102` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/252b9ad6c828b81c14bbc4455b8a0d9e1d91bf8b4fe56565c2c5a37040bad36b.json)
-  - override_authority_state
-- `C1:0103` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/2603f6ee450cd409b9bb22be177c774810fec0a4179730533311dc8bd6179907.json)
-  - bypass_law_profile
-- `C1:0104` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/2603f6ee450cd409b9bb22be177c774810fec0a4179730533311dc8bd6179907.json)
-  - disable_epistemic_guard
-- `C1:0105` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/2603f6ee450cd409b9bb22be177c774810fec0a4179730533311dc8bd6179907.json)
-  - override_authority_state
-- `C1:0106` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/265d49b4e6f6047f10fdb0ad411b66c36676c6bab81f009c6551ca56c0f889bd.json)
-  - bypass_law_profile
-- `C1:0107` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/265d49b4e6f6047f10fdb0ad411b66c36676c6bab81f009c6551ca56c0f889bd.json)
-  - disable_epistemic_guard
-- `C1:0108` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/265d49b4e6f6047f10fdb0ad411b66c36676c6bab81f009c6551ca56c0f889bd.json)
-  - override_authority_state
-- `C1:0109` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/27e915275ca5710c8af4d7fa44bdd32b532b8a24941b4b5df32ec84f5a10826d.json)
-  - bypass_law_profile
-- `C1:0110` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/27e915275ca5710c8af4d7fa44bdd32b532b8a24941b4b5df32ec84f5a10826d.json)
-  - disable_epistemic_guard
-- `C1:0111` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/27e915275ca5710c8af4d7fa44bdd32b532b8a24941b4b5df32ec84f5a10826d.json)
-  - override_authority_state
-- `C1:0112` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/293386d3c7e68eb6f0f242b55eae8bdc44e511fec0b6f4f1ad52ee97e18e9a35.json)
-  - bypass_law_profile
-- `C1:0113` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/293386d3c7e68eb6f0f242b55eae8bdc44e511fec0b6f4f1ad52ee97e18e9a35.json)
-  - disable_epistemic_guard
-- `C1:0114` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/293386d3c7e68eb6f0f242b55eae8bdc44e511fec0b6f4f1ad52ee97e18e9a35.json)
-  - override_authority_state
-- `C1:0115` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/29ae5134eece33066110f1f3c55b381db91a8bb4dc99af3c5284f48025ee48e7.json)
-  - bypass_law_profile
-- `C1:0116` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/29ae5134eece33066110f1f3c55b381db91a8bb4dc99af3c5284f48025ee48e7.json)
-  - disable_epistemic_guard
-- `C1:0117` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/29ae5134eece33066110f1f3c55b381db91a8bb4dc99af3c5284f48025ee48e7.json)
-  - override_authority_state
-- `C1:0118` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/29d31baaf4c0b7b08f379498c0ea01be4172b4bb8066c1a79cc12eccec478916.json)
-  - bypass_law_profile
-- `C1:0119` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/cache/vs2026/entries/29d31baaf4c0b7b08f379498c0ea01be4172b4bb8066c1a79cc12eccec478916.json)
-  - disable_epistemic_guard
+- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/xstack/repox/check.py)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: representation_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: max_intents_per_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: max_intents_per_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: max_displacement_mm_per_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: intent_queue
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: seen_envelope_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_sequence_by_peer
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_hash_anchor
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_tick_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_composite_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: snapshot_peer_models
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: snapshot_peer_memory
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: baseline_snapshot_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_perceived_model
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_perceived_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: memory_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_applied_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: hash_anchor_frames
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_perceived_model
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_perceived_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: refusals
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: max_displacement_mm_per_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: network_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: intent_queue
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: hash_anchor_frames
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: memory_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_applied_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: received_delta_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: perceived_deltas
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: snapshot_peer_models
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: snapshot_peer_memory
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_perceived_model
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_perceived_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: memory_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: last_applied_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/policies/policy_server_authoritative.py)
+  - Detected key access without obvious schema anchor: resync_count
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: observed_entities
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: hierarchy
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: network_interest
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: representation_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: registry_payloads
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: max_intents_per_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: max_intents_per_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: max_displacement_mm_per_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: queued_envelopes
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: seen_envelope_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_sequence_by_peer
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0048` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: refusals
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0049` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_hash_anchor
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0050` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_tick_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0051` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_composite_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0052` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: hash_anchor_frames
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0053` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: snapshot_peer_models
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0054` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: snapshot_peer_memory
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0055` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_perceived_model
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0056` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_perceived_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0057` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: memory_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0058` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_applied_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0059` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: received_delta_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0060` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: perceived_deltas
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0061` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: max_displacement_mm_per_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0062` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: global_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0063` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: network_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0064` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: queued_envelopes
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0065` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: baseline_snapshot_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0066` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: baseline_snapshot_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0067` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: snapshot_peer_models
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0068` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: snapshot_peer_memory
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0069` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_perceived_model
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0070` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_perceived_hash
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0071` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: memory_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0072` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: last_applied_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0073` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
+  - Detected key access without obvious schema anchor: resync_count
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0074` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: history.anchor.tick.0
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0075` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: session_spec_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0076` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: universe_identity_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0077` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: universe_state_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0078` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: worldgen_search_plan_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0079` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: session_spec_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0080` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: universe_identity_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0081` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: universe_state_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0082` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
+  - Detected key access without obvious schema anchor: worldgen_search_plan_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0083` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: observed_entities
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0084` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: observed_entities
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0085` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: hierarchy
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0086` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: camera_viewpoint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0087` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: observed_entities
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0088` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: time_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0089` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: watermark
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0090` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: diegetic_instruments
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0091` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: truth_overlay
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0092` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: camera_viewpoint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0093` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: lens.nondiegetic.access
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0094` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+  - Detected key access without obvious schema anchor: ch.watermark.observer_mode
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0095` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: entitlement.control.possess
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0096` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: min_x
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0097` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: max_x
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0098` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: min_y
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0099` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: max_y
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0100` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: min_z
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0101` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: max_z
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0102` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: errors
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0103` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: representation_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0104` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0105` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0106` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0107` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0108` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0109` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0110` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0111` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0112` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: compute_units
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0113` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: script_step
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0114` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/runner.py)
+  - Detected key access without obvious schema anchor: handshake_artifact_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0115` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/scheduler.py)
+  - Detected key access without obvious schema anchor: script_step
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0116` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/scheduler.py)
+  - Detected key access without obvious schema anchor: script_step
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0117` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/scheduler.py)
+  - Detected key access without obvious schema anchor: script_step
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0118` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/scheduler.py)
+  - Detected key access without obvious schema anchor: scheduler_tick
+  - Best-effort heuristic; verify if schema declaration exists.
