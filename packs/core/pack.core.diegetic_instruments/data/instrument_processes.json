@@ -1,7 +1,9 @@
 {
   "schema_version": "1.0.0",
   "processes": [
-    "process.instrument_tick"
+    "process.instrument_tick",
+    "process.instrument_notebook_add_note",
+    "process.instrument_radio_send_text"
   ],
-  "notes": "Diegetic instrument reading process identifiers consumed by process-dispatch tooling."
+  "notes": "Diegetic instrument process identifiers consumed by process-dispatch tooling."
 }

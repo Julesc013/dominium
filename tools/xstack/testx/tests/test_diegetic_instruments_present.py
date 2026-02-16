@@ -30,10 +30,11 @@ def run(repo_root: str):
                 }
             ],
             "instrument_assemblies": [
-                {"assembly_id": "instrument.compass", "reading": {"heading_mdeg": 90000}, "quality": "nominal", "last_update_tick": 5},
-                {"assembly_id": "instrument.clock", "reading": {"tick": 5}, "quality": "nominal", "last_update_tick": 5},
-                {"assembly_id": "instrument.altimeter", "reading": {"height_mm": 1200}, "quality": "nominal", "last_update_tick": 5},
-                {"assembly_id": "instrument.radio", "reading": {"signal": "clear"}, "quality": "nominal", "last_update_tick": 5},
+                {"assembly_id": "instrument.compass", "instrument_type": "compass", "reading": {"heading_mdeg": 90000}, "quality": "nominal", "quality_value": 1000, "last_update_tick": 5, "state": {}, "outputs": {"ch.diegetic.compass": {"heading_mdeg": 90000}}},
+                {"assembly_id": "instrument.clock", "instrument_type": "clock", "reading": {"tick": 5}, "quality": "nominal", "quality_value": 1000, "last_update_tick": 5, "state": {}, "outputs": {"ch.diegetic.clock": {"tick": 5}}},
+                {"assembly_id": "instrument.altimeter", "instrument_type": "altimeter", "reading": {"altitude_mm": 1200}, "quality": "nominal", "quality_value": 1000, "last_update_tick": 5, "state": {}, "outputs": {"ch.diegetic.altimeter": {"altitude_mm": 1200}}},
+                {"assembly_id": "instrument.notebook", "instrument_type": "notebook", "reading": {"entries": []}, "quality": "nominal", "quality_value": 1000, "last_update_tick": 5, "state": {"user_notes": []}, "outputs": {"ch.diegetic.notebook": {"entries": []}}},
+                {"assembly_id": "instrument.radio_text", "instrument_type": "radio_text", "reading": {"messages": []}, "quality": "nominal", "quality_value": 1000, "last_update_tick": 5, "state": {"inbox": []}, "outputs": {"ch.diegetic.radio_text": {"messages": []}}},
             ],
         }
     }
@@ -47,7 +48,8 @@ def run(repo_root: str):
             "ch.diegetic.compass",
             "ch.diegetic.clock",
             "ch.diegetic.altimeter",
-            "ch.diegetic.radio",
+            "ch.diegetic.notebook",
+            "ch.diegetic.radio_text",
         ],
         "epistemic_constraints": {"visibility_policy": "sensor_limited", "max_resolution_tier": 1},
     }
@@ -81,7 +83,8 @@ def run(repo_root: str):
             "ch.diegetic.compass",
             "ch.diegetic.clock",
             "ch.diegetic.altimeter",
-            "ch.diegetic.radio",
+            "ch.diegetic.notebook",
+            "ch.diegetic.radio_text",
         ],
         "forbidden_channels": [
             "ch.nondiegetic.nav",
@@ -112,7 +115,7 @@ def run(repo_root: str):
     spectator_policy = {
         "epistemic_policy_id": "ep.policy.spectator_limited",
         "allowed_observation_channels": ["ch.core.time", "ch.camera.state"],
-        "forbidden_channels": ["ch.diegetic.compass", "ch.diegetic.clock", "ch.diegetic.altimeter", "ch.diegetic.radio"],
+        "forbidden_channels": ["ch.diegetic.compass", "ch.diegetic.clock", "ch.diegetic.altimeter", "ch.diegetic.notebook", "ch.diegetic.radio_text"],
         "retention_policy_id": "ep.retention.none",
         "inference_policy_id": "ep.infer.none",
         "max_precision_rules": [],
@@ -134,4 +137,3 @@ def run(repo_root: str):
     if reason_code != "refusal.ep.channel_forbidden":
         return {"status": "fail", "message": "unexpected spectator diegetic refusal code '{}'".format(reason_code)}
     return {"status": "pass", "message": "diegetic instrument channels are policy-gated deterministically"}
-

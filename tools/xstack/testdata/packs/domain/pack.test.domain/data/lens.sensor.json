@@ -12,7 +12,8 @@
     "ch.diegetic.compass",
     "ch.diegetic.clock",
     "ch.diegetic.altimeter",
-    "ch.diegetic.radio",
+    "ch.diegetic.notebook",
+    "ch.diegetic.radio_text",
     "ch.diegetic.map_local"
   ],
   "epistemic_constraints": {

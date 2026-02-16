@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Dict, List, Tuple
 
+from src.diegetics import compute_diegetic_instruments
 from src.epistemics.memory import update_memory_store
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -330,7 +331,8 @@ def _default_lens_channels(lens_type: str) -> List[str]:
         "ch.diegetic.compass",
         "ch.diegetic.clock",
         "ch.diegetic.altimeter",
-        "ch.diegetic.radio",
+        "ch.diegetic.notebook",
+        "ch.diegetic.radio_text",
         "ch.diegetic.map_local",
     ]
 
@@ -410,7 +412,7 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"time": dict(perceived_model.get("time") or {}), "time_state": dict(perceived_model.get("time_state") or {})}
     if channel_id == "ch.camera.state":
         return {"camera_viewpoint": dict(perceived_model.get("camera_viewpoint") or {})}
-    if channel_id in ("ch.core.navigation", "ch.nondiegetic.nav", "ch.diegetic.map_local"):
+    if channel_id in ("ch.core.navigation", "ch.nondiegetic.nav"):
         return {"navigation": dict(perceived_model.get("navigation") or {})}
     if channel_id == "ch.core.sites":
         return {"sites": dict(perceived_model.get("sites") or {})}
@@ -433,8 +435,12 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.clock": dict(instruments.get("instrument.clock") or {})}
     if channel_id == "ch.diegetic.altimeter":
         return {"instrument.altimeter": dict(instruments.get("instrument.altimeter") or {})}
-    if channel_id == "ch.diegetic.radio":
-        return {"instrument.radio": dict(instruments.get("instrument.radio") or {})}
+    if channel_id == "ch.diegetic.map_local":
+        return {"instrument.map_local": dict(instruments.get("instrument.map_local") or {})}
+    if channel_id == "ch.diegetic.notebook":
+        return {"instrument.notebook": dict(instruments.get("instrument.notebook") or {})}
+    if channel_id == "ch.diegetic.radio_text":
+        return {"instrument.radio_text": dict(instruments.get("instrument.radio_text") or {})}
     truth_overlay = dict(perceived_model.get("truth_overlay") or {})
     if channel_id == "ch.truth.overlay.terrain_height":
         return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
@@ -483,7 +489,9 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.compass": "ch.diegetic.compass",
         "instrument.clock": "ch.diegetic.clock",
         "instrument.altimeter": "ch.diegetic.altimeter",
-        "instrument.radio": "ch.diegetic.radio",
+        "instrument.map_local": "ch.diegetic.map_local",
+        "instrument.notebook": "ch.diegetic.notebook",
+        "instrument.radio_text": "ch.diegetic.radio_text",
     }
     for instrument_id, channel_id in sorted(instrument_channels.items()):
         if channel_id not in allowed:
@@ -534,7 +542,9 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
         "instrument.compass": {},
         "instrument.clock": {},
         "instrument.altimeter": {},
-        "instrument.radio": {},
+        "instrument.map_local": {},
+        "instrument.notebook": {},
+        "instrument.radio_text": {},
     }
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
         assembly_id = str(row.get("assembly_id", "")).strip()
@@ -542,7 +552,12 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
             payload[assembly_id] = {
                 "reading": copy.deepcopy(row.get("reading")),
                 "quality": str(row.get("quality", "")),
+                "quality_value": int(row.get("quality_value", 0) or 0),
                 "last_update_tick": int(row.get("last_update_tick", simulation_tick) or simulation_tick),
+                "state": copy.deepcopy(row.get("state") if isinstance(row.get("state"), dict) else {}),
+                "outputs": copy.deepcopy(row.get("outputs") if isinstance(row.get("outputs"), dict) else {}),
+                "instrument_type": str(row.get("instrument_type", "")).strip(),
+                "instrument_type_id": str(row.get("instrument_type_id", "")).strip(),
             }
     return payload
 
@@ -1452,6 +1467,22 @@ def observe_truth(
         owner_subject_id=_memory_owner_subject_id(authority_context=authority_context, viewpoint_id=viewpoint_id),
         simulation_tick=simulation_tick,
         memory_state=memory_state,
+    )
+    instrument_rows = [
+        dict(item)
+        for item in (dict(perceived_model.get("diegetic_instruments") or {})).values()
+        if isinstance(item, dict)
+    ]
+    perceived_model["diegetic_instruments"] = compute_diegetic_instruments(
+        perceived_now=perceived_model,
+        memory_store=memory_block,
+        instrument_rows=instrument_rows,
+        requested_channels=requested_channels,
+        simulation_tick=simulation_tick,
+    )
+    perceived_model = _apply_channel_filter(
+        perceived_model=perceived_model,
+        requested_channels=requested_channels,
     )
     perceived_model["memory"] = memory_block
     perceived_model_hash_value = canonical_sha256(perceived_model)
