@@ -1,0 +1,68 @@
+{
+  "schema_id": "dominium.registry.body_shape_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.body_shape_registry",
+    "registry_version": "1.0.0",
+    "shape_types": [
+      {
+        "shape_type": "aabb",
+        "required_parameters": [
+          "half_extents_mm"
+        ],
+        "parameter_constraints": {
+          "half_extents_mm.x": {
+            "minimum": 1
+          },
+          "half_extents_mm.y": {
+            "minimum": 1
+          },
+          "half_extents_mm.z": {
+            "minimum": 1
+          }
+        },
+        "supports_dynamic": true,
+        "supports_ghost": true,
+        "notes": "Axis-aligned box primitive for deterministic broadphase and narrowphase.",
+        "extensions": {}
+      },
+      {
+        "shape_type": "capsule",
+        "required_parameters": [
+          "radius_mm",
+          "height_mm"
+        ],
+        "parameter_constraints": {
+          "height_mm": {
+            "minimum": 1
+          },
+          "radius_mm": {
+            "minimum": 1
+          }
+        },
+        "supports_dynamic": true,
+        "supports_ghost": true,
+        "notes": "Default embodiment primitive for movement and contact.",
+        "extensions": {}
+      },
+      {
+        "shape_type": "convex_hull",
+        "required_parameters": [
+          "vertex_ref_id"
+        ],
+        "parameter_constraints": {
+          "vertex_ref_id": {
+            "required": true
+          }
+        },
+        "supports_dynamic": true,
+        "supports_ghost": true,
+        "notes": "Declared for forward compatibility; narrowphase remains stubbed in EB-2.",
+        "extensions": {
+          "runtime_status": "stub"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

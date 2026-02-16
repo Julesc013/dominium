@@ -17,6 +17,7 @@
     "lens_registry_hash",
     "control_action_registry_hash",
     "controller_type_registry_hash",
+    "body_shape_registry_hash",
     "net_replication_policy_registry_hash",
     "net_resync_strategy_registry_hash",
     "net_server_policy_registry_hash",
@@ -66,6 +67,10 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "controller_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "body_shape_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
@@ -164,6 +169,7 @@
       "lens_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "control_action_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "controller_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "body_shape_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "net_replication_policy_registry_hash": "a81c9beac6a58f5bc8a1ebf16834ac6fa4fb91b1fbc9bfad03c0d2ca952e7ff7",
       "net_resync_strategy_registry_hash": "56ad0f9538ce957276e57cdba58f5cf6f5cab43e8fbd8f2f7cf1fe498f65ccb8",
       "net_server_policy_registry_hash": "6f42f4533ce12d8c3079dc2131b34f1c6897c742a50bff1a530f0d8f4de2130a",

@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Body Shape Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic body shape registry output for collision substrate.",
+  "x-doc-ref": [
+    "docs/embodiment/BODY_PRIMITIVES_AND_COLLISION.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "shape_types",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "shape_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "shape_type",
+          "required_parameters",
+          "parameter_constraints",
+          "supports_dynamic",
+          "supports_ghost",
+          "notes",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "shape_type": {
+            "type": "string",
+            "enum": [
+              "capsule",
+              "aabb",
+              "convex_hull"
+            ]
+          },
+          "required_parameters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "parameter_constraints": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "supports_dynamic": {
+            "type": "boolean"
+          },
+          "supports_ghost": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "shape_types": [
+        {
+          "shape_type": "capsule",
+          "required_parameters": [
+            "radius_mm",
+            "height_mm"
+          ],
+          "parameter_constraints": {
+            "radius_mm": {
+              "minimum": 1
+            },
+            "height_mm": {
+              "minimum": 1
+            }
+          },
+          "supports_dynamic": true,
+          "supports_ghost": true,
+          "notes": "Default embodiment primitive.",
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "b236f0b8eb1ce96f91104936f1d6eb2cebb59736f8d79db2f4fce5b906de1984"
+    }
+  ]
+}

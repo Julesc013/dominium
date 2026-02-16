@@ -142,5 +142,47 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     }
-  }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [
+        {
+          "pack_id": "law.lab.unrestricted",
+          "version": "1.0.0",
+          "canonical_hash": "placeholder.law.lab.unrestricted.v1",
+          "signature_status": "signed"
+        }
+      ],
+      "policies": [
+        {
+          "epistemic_policy_id": "ep.policy.lab_broad",
+          "description": "Broad deterministic lab observation policy.",
+          "allowed_observation_channels": [
+            "ch.diegetic.clock",
+            "ch.nondiegetic.nav"
+          ],
+          "forbidden_channels": [],
+          "retention_policy_id": "ep.retention.session_basic",
+          "inference_policy_id": null,
+          "max_precision_rules": [
+            {
+              "rule_id": "precision.near.default",
+              "channel_id": "ch.nondiegetic.nav",
+              "max_distance_mm": 500000,
+              "position_quantization_mm": 1,
+              "orientation_quantization_mdeg": 1
+            }
+          ],
+          "deterministic_filters": [
+            "filter.channel_allow_deny",
+            "filter.quantize_precision",
+            "filter.redact_forbidden"
+          ],
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "26e4dd6ed6ca8df4c8fc5d77e513fb9cc66f0959e425db165716469aca7f2272"
+    }
+  ]
 }

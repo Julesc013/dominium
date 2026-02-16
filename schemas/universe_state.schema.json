@@ -300,6 +300,187 @@
         }
       }
     },
+    "body_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "assembly_id",
+          "owner_assembly_id",
+          "shape_type",
+          "shape_parameters",
+          "collision_layer",
+          "dynamic",
+          "ghost",
+          "transform_mm",
+          "orientation_mdeg",
+          "velocity_mm_per_tick"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "assembly_id": {
+            "type": "string"
+          },
+          "owner_assembly_id": {
+            "type": "string"
+          },
+          "shape_type": {
+            "type": "string",
+            "enum": [
+              "capsule",
+              "aabb",
+              "convex_hull"
+            ]
+          },
+          "shape_parameters": {
+            "type": "object",
+            "required": [
+              "radius_mm",
+              "height_mm",
+              "half_extents_mm",
+              "vertex_ref_id"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "radius_mm": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "height_mm": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "half_extents_mm": {
+                "type": "object",
+                "required": [
+                  "x",
+                  "y",
+                  "z"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "x": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "y": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "z": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              },
+              "vertex_ref_id": {
+                "type": "string"
+              }
+            }
+          },
+          "collision_layer": {
+            "type": "string"
+          },
+          "dynamic": {
+            "type": "boolean"
+          },
+          "ghost": {
+            "type": "boolean"
+          },
+          "transform_mm": {
+            "type": "object",
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "x": {
+                "type": "integer"
+              },
+              "y": {
+                "type": "integer"
+              },
+              "z": {
+                "type": "integer"
+              }
+            }
+          },
+          "orientation_mdeg": {
+            "type": "object",
+            "required": [
+              "yaw",
+              "pitch",
+              "roll"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "yaw": {
+                "type": "integer"
+              },
+              "pitch": {
+                "type": "integer"
+              },
+              "roll": {
+                "type": "integer"
+              }
+            }
+          },
+          "velocity_mm_per_tick": {
+            "type": "object",
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "x": {
+                "type": "integer"
+              },
+              "y": {
+                "type": "integer"
+              },
+              "z": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "collision_state": {
+      "type": "object",
+      "required": [
+        "last_tick_resolved_pairs",
+        "last_tick_unresolved_pairs",
+        "last_tick_pair_count",
+        "last_tick_anchor"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "last_tick_resolved_pairs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_tick_unresolved_pairs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_tick_pair_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_tick_anchor": {
+          "type": "string"
+        }
+      }
+    },
     "time_control": {
       "type": "object",
       "required": [
@@ -735,6 +916,13 @@
         "rate_permille": 1000,
         "paused": false,
         "accumulator_permille": 0
+      },
+      "body_assemblies": [],
+      "collision_state": {
+        "last_tick_resolved_pairs": [],
+        "last_tick_unresolved_pairs": [],
+        "last_tick_pair_count": 0,
+        "last_tick_anchor": ""
       },
       "process_log": [],
       "interest_regions": [],
