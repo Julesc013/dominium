@@ -39,15 +39,19 @@ Define deterministic session lifecycle flow for lab bootstrap and scripted execu
 5. **Boot**
    - `tools/xstack/session_boot saves/<save_id>/session_spec.json`
    - Validates SessionSpec, identity/state payloads, lockfile, and registry hashes.
-6. **Scripted execution (SRZ scheduler)**
+6. **Controller/Binding pre-ready setup**
+   - Control bindings (camera/possession/order channels) are resolved before `stage.session_ready`.
+   - Binding transitions are process-driven and authority/law gated.
+   - This setup must not advance simulation time; `stage.session_ready` remains tick `0`.
+7. **Scripted execution (SRZ scheduler)**
    - `tools/xstack/session_script_run <session_spec> <script> [--workers N] [--logical-shards N]`
    - Input flow:
      - Input script row -> Intent Envelope -> Scheduler (`read -> propose -> resolve -> commit`) -> Process runtime.
    - Process mutations are commit-phase only.
-7. **SRZ status inspection**
+8. **SRZ status inspection**
    - `tools/xstack/srz_status saves/<save_id>/session_spec.json`
    - Reports shard ownership counts and last hash anchor.
-8. **Run-meta**
+9. **Run-meta**
    - `saves/<save_id>/run_meta/<run_id>.json`
    - Includes:
      - `pack_lock_hash`
@@ -57,7 +61,7 @@ Define deterministic session lifecycle flow for lab bootstrap and scripted execu
      - per-tick `tick_hash_anchors`
      - `checkpoint_hashes`
      - final `composite_hash`
-9. **Shutdown**
+10. **Shutdown**
    - v1 remains bounded/headless; no unbounded simulation loop.
 
 ## Scheduler Phase Semantics
