@@ -1,0 +1,116 @@
+{
+  "schema_id": "dominium.registry.view_mode_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.view_mode_registry",
+    "registry_version": "1.0.0",
+    "view_modes": [
+      {
+        "view_mode_id": "view.first_person.player",
+        "description": "First-person camera bound to an embodied target body.",
+        "allowed_lens_ids": [
+          "lens.diegetic.sensor"
+        ],
+        "requires_embodiment": true,
+        "allowed_in_policies": [
+          "authoritative",
+          "hybrid",
+          "lockstep"
+        ],
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "watermark_policy_id": null,
+        "extensions": {
+          "spectator_pattern": "none"
+        }
+      },
+      {
+        "view_mode_id": "view.third_person.player",
+        "description": "Third-person offset camera bound to an embodied target body.",
+        "allowed_lens_ids": [
+          "lens.diegetic.sensor"
+        ],
+        "requires_embodiment": true,
+        "allowed_in_policies": [
+          "authoritative",
+          "hybrid",
+          "lockstep"
+        ],
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "watermark_policy_id": null,
+        "extensions": {
+          "spectator_pattern": "none"
+        }
+      },
+      {
+        "view_mode_id": "view.follow.spectator",
+        "description": "Spectator follow mode tracking a target without granting extra channels.",
+        "allowed_lens_ids": [
+          "lens.diegetic.sensor",
+          "lens.nondiegetic.debug"
+        ],
+        "requires_embodiment": false,
+        "allowed_in_policies": [
+          "authoritative",
+          "hybrid",
+          "lockstep"
+        ],
+        "required_entitlements": [
+          "entitlement.view.follow",
+          "entitlement.view.spectator"
+        ],
+        "watermark_policy_id": null,
+        "extensions": {
+          "spectator_pattern": "follow_agent"
+        }
+      },
+      {
+        "view_mode_id": "view.free.lab",
+        "description": "Detached lab free camera with no implicit truth-channel grant.",
+        "allowed_lens_ids": [
+          "lens.diegetic.sensor",
+          "lens.nondiegetic.debug"
+        ],
+        "requires_embodiment": false,
+        "allowed_in_policies": [
+          "authoritative",
+          "hybrid",
+          "lockstep"
+        ],
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "watermark_policy_id": null,
+        "extensions": {
+          "spectator_pattern": "orbit_body"
+        }
+      },
+      {
+        "view_mode_id": "view.free.observer_truth",
+        "description": "Detached observer truth view with mandatory watermark and elevated entitlement.",
+        "allowed_lens_ids": [
+          "lens.nondiegetic.debug"
+        ],
+        "requires_embodiment": false,
+        "allowed_in_policies": [
+          "authoritative",
+          "hybrid",
+          "lockstep"
+        ],
+        "required_entitlements": [
+          "entitlement.control.camera",
+          "entitlement.control.lens_override",
+          "entitlement.observer.truth"
+        ],
+        "watermark_policy_id": "watermark.observer.required",
+        "extensions": {
+          "spectator_pattern": "observer_truth"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

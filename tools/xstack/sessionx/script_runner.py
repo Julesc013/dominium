@@ -300,6 +300,14 @@ def run_intent_script(
     )
     if retention_policy_registry_error:
         return retention_policy_registry_error
+    view_mode_registry, view_mode_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["view_mode_registry_hash"],
+        expected_hash=str(registries.get("view_mode_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if view_mode_registry_error:
+        return view_mode_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -449,6 +457,7 @@ def run_intent_script(
             "perception_interest_policy_registry": perception_interest_policy_registry,
             "epistemic_policy_registry": epistemic_policy_registry,
             "retention_policy_registry": retention_policy_registry,
+            "view_mode_registry": view_mode_registry,
         },
     )
     observation = observe_truth(

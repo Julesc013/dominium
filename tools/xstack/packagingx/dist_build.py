@@ -29,6 +29,7 @@ LOCKFILE_REGISTRY_FILE_MAP = {
     "control_action_registry_hash": "control_action.registry.json",
     "controller_type_registry_hash": "controller_type.registry.json",
     "body_shape_registry_hash": "body_shape.registry.json",
+    "view_mode_registry_hash": "view_mode.registry.json",
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
