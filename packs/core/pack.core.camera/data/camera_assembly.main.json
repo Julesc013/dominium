@@ -19,6 +19,19 @@
       "y": 0,
       "z": 0
     },
-    "lens_id": "lens.diegetic.sensor"
+    "lens_id": "lens.diegetic.sensor",
+    "binding_id": null,
+    "view_mode_id": "view.free.lab",
+    "owner_peer_id": null,
+    "target_id": null,
+    "target_type": "none",
+    "offset_params": {
+      "x_mm": 0,
+      "y_mm": 0,
+      "z_mm": 0,
+      "yaw_mdeg": 0,
+      "pitch_mdeg": 0,
+      "roll_mdeg": 0
+    }
   }
 }

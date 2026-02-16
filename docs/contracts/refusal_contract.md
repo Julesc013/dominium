@@ -103,6 +103,12 @@ Tool payload wrapper:
 - `refusal.control.lens_forbidden`
 - `refusal.control.cross_shard_possession_forbidden`
 - `refusal.control.cross_shard_collision_forbidden`
+- `refusal.view.mode_forbidden`
+- `refusal.view.requires_embodiment`
+- `refusal.view.target_invalid`
+- `refusal.view.entitlement_missing`
+- `refusal.view.watermark_required`
+- `refusal.view.cross_shard_follow_forbidden`
 - `refusal.agent.unembodied`
 - `refusal.agent.ownership_violation`
 - `refusal.agent.boundary_cross_forbidden`
@@ -131,6 +137,12 @@ Tool payload wrapper:
 - `refusal.agent.unembodied`: bind/create body assembly for the agent before movement.
 - `refusal.agent.ownership_violation`: submit movement with matching controller/owner peer authority context.
 - `refusal.agent.boundary_cross_forbidden`: route move to owning shard or perform explicit `process.srz_transfer_entity` first.
+- `refusal.view.mode_forbidden`: choose a view mode permitted by the active law/server control policy and replication context.
+- `refusal.view.requires_embodiment`: bind to an embodied body/agent before entering embodiment-required view modes.
+- `refusal.view.target_invalid`: provide valid `target_type` + `target_id` for camera binding/view mode requests.
+- `refusal.view.entitlement_missing`: grant required view/lens entitlements or use a less-privileged mode.
+- `refusal.view.watermark_required`: observer truth-capable modes require observer entitlement and watermark channel emission.
+- `refusal.view.cross_shard_follow_forbidden`: keep follow target in the same shard or enable cross-shard spectator follow policy.
 
 ## Invariants
 - Refusals do not mutate authoritative state.

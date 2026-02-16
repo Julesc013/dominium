@@ -25,6 +25,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.control_possess_agent": "entitlement.control.possess",
     "process.control_release_agent": "entitlement.control.possess",
     "process.control_set_view_lens": "entitlement.control.lens_override",
+    "process.camera_bind_target": "entitlement.control.camera",
+    "process.camera_unbind_target": "entitlement.control.camera",
+    "process.camera_set_view_mode": "entitlement.control.camera",
+    "process.camera_set_lens": "entitlement.control.lens_override",
     "process.body_move_attempt": "entitlement.control.possess",
     "process.instrument_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
@@ -43,6 +47,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.control_possess_agent": "operator",
     "process.control_release_agent": "operator",
     "process.control_set_view_lens": "operator",
+    "process.camera_bind_target": "observer",
+    "process.camera_unbind_target": "observer",
+    "process.camera_set_view_mode": "observer",
+    "process.camera_set_lens": "operator",
     "process.body_move_attempt": "operator",
     "process.instrument_tick": "observer",
     "process.time_control_set_rate": "operator",
@@ -70,6 +78,10 @@ CONTROL_PROCESS_IDS = {
     "process.control_possess_agent",
     "process.control_release_agent",
     "process.control_set_view_lens",
+    "process.camera_bind_target",
+    "process.camera_unbind_target",
+    "process.camera_set_view_mode",
+    "process.camera_set_lens",
     "process.body_move_attempt",
 }
 CONTROL_GATE_REASON_MAP = {
@@ -469,6 +481,157 @@ def _camera_exists(state: dict, camera_id: str) -> bool:
         if str(row.get("assembly_id", "")).strip() == token:
             return True
     return False
+
+
+def _camera_row(state: dict, camera_id: str) -> dict:
+    token = str(camera_id).strip()
+    rows = state.get("camera_assemblies")
+    if not isinstance(rows, list):
+        return {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("assembly_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _camera_defaults(camera_row: dict) -> None:
+    if not isinstance(camera_row, dict):
+        return
+    if "view_mode_id" not in camera_row or not str(camera_row.get("view_mode_id", "")).strip():
+        camera_row["view_mode_id"] = "view.free.lab"
+    if "binding_id" not in camera_row:
+        camera_row["binding_id"] = None
+    if "owner_peer_id" not in camera_row:
+        camera_row["owner_peer_id"] = None
+    if "target_id" not in camera_row:
+        camera_row["target_id"] = None
+    if "target_type" not in camera_row or not str(camera_row.get("target_type", "")).strip():
+        camera_row["target_type"] = "none"
+    if "offset_params" not in camera_row or not isinstance(camera_row.get("offset_params"), dict):
+        camera_row["offset_params"] = _camera_binding_offset({})
+
+
+def _view_mode_entries(navigation_indices: dict | None) -> Dict[str, dict]:
+    rows: Dict[str, dict] = {}
+    if not isinstance(navigation_indices, dict):
+        return rows
+    payload = navigation_indices.get("view_mode_registry")
+    if not isinstance(payload, dict):
+        return rows
+    for item in payload.get("view_modes") or []:
+        if not isinstance(item, dict):
+            continue
+        view_mode_id = str(item.get("view_mode_id", "")).strip()
+        if view_mode_id:
+            rows[view_mode_id] = dict(item)
+    return rows
+
+
+def _camera_binding_offset(offset_payload: object) -> Dict[str, int]:
+    payload = dict(offset_payload) if isinstance(offset_payload, dict) else {}
+    return {
+        "x_mm": _as_int(payload.get("x_mm", 0), 0),
+        "y_mm": _as_int(payload.get("y_mm", 0), 0),
+        "z_mm": _as_int(payload.get("z_mm", 0), 0),
+        "yaw_mdeg": _as_int(payload.get("yaw_mdeg", 0), 0),
+        "pitch_mdeg": _as_int(payload.get("pitch_mdeg", 0), 0),
+        "roll_mdeg": _as_int(payload.get("roll_mdeg", 0), 0),
+    }
+
+
+def _replication_policy_tag(policy_context: dict | None) -> str:
+    if not isinstance(policy_context, dict):
+        return ""
+    token = str(policy_context.get("replication_policy_id", "")).strip()
+    mapping = {
+        "policy.net.lockstep": "lockstep",
+        "policy.net.server_authoritative": "authoritative",
+        "policy.net.srz_hybrid": "hybrid",
+    }
+    if token in mapping:
+        return mapping[token]
+    if token in ("lockstep", "authoritative", "hybrid"):
+        return token
+    return ""
+
+
+def _camera_target_exists(
+    state: dict,
+    target_type: str,
+    target_id: str,
+    navigation_indices: dict | None,
+) -> bool:
+    token_type = str(target_type).strip()
+    token_id = str(target_id).strip()
+    if token_type == "none":
+        return True
+    if not token_id:
+        return False
+    if token_type == "agent":
+        return bool(_find_agent(agent_rows=_ensure_agent_states(state), agent_id=token_id))
+    if token_type == "body":
+        return bool(_find_body(body_rows=_ensure_body_assemblies(state), body_id=token_id))
+    if token_type == "site":
+        maps = _navigation_maps(navigation_indices)
+        return token_id in set((maps.get("sites") or {}).keys())
+    return False
+
+
+def _is_embodied_target(state: dict, target_type: str, target_id: str) -> bool:
+    token_type = str(target_type).strip()
+    token_id = str(target_id).strip()
+    if not token_id:
+        return False
+    if token_type == "body":
+        return bool(_find_body(body_rows=_ensure_body_assemblies(state), body_id=token_id))
+    if token_type == "agent":
+        agent = _find_agent(agent_rows=_ensure_agent_states(state), agent_id=token_id)
+        if not agent:
+            return False
+        body_id = _agent_body_id(agent_row=agent, body_rows=_ensure_body_assemblies(state), agent_id=token_id)
+        return bool(body_id)
+    return False
+
+
+def _view_mode_allowed_in_replication(view_mode: dict, policy_context: dict | None) -> bool:
+    allowed = _sorted_tokens(list((view_mode or {}).get("allowed_in_policies") or []))
+    if not allowed:
+        return True
+    token = _replication_policy_tag(policy_context)
+    if not token:
+        return True
+    return token in set(allowed)
+
+
+def _camera_target_owner_shard(
+    state: dict,
+    target_type: str,
+    target_id: str,
+    shard_map: dict,
+    navigation_indices: dict | None,
+) -> str:
+    token_type = str(target_type).strip()
+    token_id = str(target_id).strip()
+    if not token_id:
+        return ""
+    if token_type == "agent":
+        agent = _find_agent(agent_rows=_ensure_agent_states(state), agent_id=token_id)
+        return str((agent or {}).get("shard_id", "")).strip() or _owner_shard_for_object(shard_map=shard_map, object_id=token_id)
+    if token_type == "body":
+        body = _find_body(body_rows=_ensure_body_assemblies(state), body_id=token_id)
+        owner_agent_id = str((body or {}).get("owner_agent_id", "")).strip()
+        return (
+            str((body or {}).get("shard_id", "")).strip()
+            or _owner_shard_for_object(shard_map=shard_map, object_id=owner_agent_id or token_id)
+        )
+    if token_type == "site":
+        maps = _navigation_maps(navigation_indices)
+        site = dict((maps.get("sites") or {}).get(token_id) or {})
+        object_id = str(site.get("object_id", "")).strip()
+        return _owner_shard_for_object(shard_map=shard_map, object_id=object_id or token_id)
+    return ""
 
 
 def _ensure_body_assemblies(state: dict) -> List[dict]:
@@ -1252,6 +1415,7 @@ def _navigation_maps(navigation_indices: dict | None) -> Dict[str, dict]:
     sites = {}
     ephemeris = {}
     terrain_tiles = {}
+    view_modes = {}
     if isinstance(navigation_indices, dict):
         astro_payload = navigation_indices.get("astronomy_catalog_index")
         if isinstance(astro_payload, dict):
@@ -1285,7 +1449,21 @@ def _navigation_maps(navigation_indices: dict | None) -> Dict[str, dict]:
                 tile_id = str(item.get("tile_id", "")).strip()
                 if tile_id:
                     terrain_tiles[tile_id] = dict(item)
-    return {"objects": astro, "sites": sites, "ephemeris": ephemeris, "terrain_tiles": terrain_tiles}
+        view_mode_payload = navigation_indices.get("view_mode_registry")
+        if isinstance(view_mode_payload, dict):
+            for item in view_mode_payload.get("view_modes") or []:
+                if not isinstance(item, dict):
+                    continue
+                view_mode_id = str(item.get("view_mode_id", "")).strip()
+                if view_mode_id:
+                    view_modes[view_mode_id] = dict(item)
+    return {
+        "objects": astro,
+        "sites": sites,
+        "ephemeris": ephemeris,
+        "terrain_tiles": terrain_tiles,
+        "view_modes": view_modes,
+    }
 
 
 def _as_float(value: object, default_value: float = 0.0) -> float:
@@ -2490,25 +2668,170 @@ def execute_intent(
             key=lambda item: str(item.get("assembly_id", "")),
         )
         _advance_time(state, steps=1)
-    elif process_id == "process.control_bind_camera":
+    elif process_id in ("process.control_bind_camera", "process.camera_bind_target"):
+        legacy = str(process_id) == "process.control_bind_camera"
         controller_id = str(inputs.get("controller_id", "")).strip()
-        camera_id = str(inputs.get("camera_id", "") or inputs.get("target_id", "")).strip()
+        camera_id = str(inputs.get("camera_id", "")).strip() or "camera.main"
+        if legacy and not str(inputs.get("camera_id", "")).strip():
+            camera_id = str(inputs.get("target_id", "")).strip() or "camera.main"
+        target_type = str(inputs.get("target_type", "none")).strip() or "none"
+        target_id: str | None = None
+        if legacy:
+            target_type = "none"
+            target_id = None
+        else:
+            raw_target_id = inputs.get("target_id")
+            if raw_target_id is not None and str(raw_target_id).strip():
+                target_id = str(raw_target_id).strip()
         if not controller_id or not camera_id:
             return refusal(
-                "refusal.control.target_invalid",
-                "process.control_bind_camera requires controller_id and camera_id",
+                "refusal.view.target_invalid",
+                "{} requires controller_id and camera_id".format(process_id),
                 "Provide controller_id and camera_id in the process inputs.",
                 {"process_id": process_id},
                 "$.intent.inputs",
             )
         if not _camera_exists(state=state, camera_id=camera_id):
             return refusal(
-                "refusal.control.target_invalid",
+                "refusal.view.target_invalid",
                 "camera target '{}' does not exist".format(camera_id),
                 "Bind to an existing camera assembly id.",
                 {"camera_id": camera_id},
                 "$.intent.inputs.camera_id",
             )
+        if target_type not in ("agent", "body", "site", "none"):
+            return refusal(
+                "refusal.view.target_invalid",
+                "target_type '{}' is unsupported".format(target_type),
+                "Use target_type in {agent,body,site,none}.",
+                {"target_type": target_type},
+                "$.intent.inputs.target_type",
+            )
+        if target_type != "none" and not str(target_id or "").strip():
+            return refusal(
+                "refusal.view.target_invalid",
+                "target_id is required when target_type is '{}'".format(target_type),
+                "Provide target_id for non-none camera bindings.",
+                {"target_type": target_type},
+                "$.intent.inputs.target_id",
+            )
+        if not _camera_target_exists(
+            state=state,
+            target_type=target_type,
+            target_id=str(target_id or ""),
+            navigation_indices=navigation_indices,
+        ):
+            return refusal(
+                "refusal.view.target_invalid",
+                "camera target does not exist for type '{}' and id '{}'".format(target_type, str(target_id or "")),
+                "Select an existing camera target or use target_type='none'.",
+                {"target_type": target_type, "target_id": str(target_id or "")},
+                "$.intent.inputs.target_id",
+            )
+
+        camera_row = _camera_row(state=state, camera_id=camera_id)
+        _camera_defaults(camera_row)
+        view_mode_id = str(inputs.get("view_mode_id", "")).strip() or str(camera_row.get("view_mode_id", "view.free.lab")).strip()
+        control_policy = dict((policy_context or {}).get("control_policy") or {})
+        allowed_view_modes = _sorted_tokens(list(control_policy.get("allowed_view_modes") or []))
+        if allowed_view_modes and view_mode_id not in allowed_view_modes:
+            return refusal(
+                "refusal.view.mode_forbidden",
+                "view mode '{}' is forbidden by active control policy".format(view_mode_id),
+                "Select a view mode listed in control_policy.allowed_view_modes.",
+                {"view_mode_id": view_mode_id},
+                "$.intent.inputs.view_mode_id",
+            )
+        view_modes = _view_mode_entries(navigation_indices)
+        if not view_modes:
+            maps = _navigation_maps(navigation_indices)
+            view_modes = dict(maps.get("view_modes") or {})
+        view_mode = dict(view_modes.get(view_mode_id) or {})
+        if not view_mode:
+            return refusal(
+                "refusal.view.mode_forbidden",
+                "view mode '{}' is not declared in view mode registry".format(view_mode_id),
+                "Use a view_mode_id present in view_mode.registry.json.",
+                {"view_mode_id": view_mode_id},
+                "$.intent.inputs.view_mode_id",
+            )
+        if not _view_mode_allowed_in_replication(view_mode=view_mode, policy_context=policy_context):
+            return refusal(
+                "refusal.view.mode_forbidden",
+                "view mode '{}' is not permitted for active replication policy".format(view_mode_id),
+                "Choose a view mode allowed by view_mode.allowed_in_policies.",
+                {"view_mode_id": view_mode_id, "replication_policy": _replication_policy_tag(policy_context)},
+                "$.intent.inputs.view_mode_id",
+            )
+        mode_entitlements = _sorted_tokens(list(view_mode.get("required_entitlements") or []))
+        caller_entitlements = _sorted_tokens(list(authority_context.get("entitlements") or []))
+        missing_mode_entitlements = [token for token in mode_entitlements if token not in caller_entitlements]
+        if missing_mode_entitlements:
+            return refusal(
+                "refusal.view.entitlement_missing",
+                "camera bind requires additional entitlements for view mode '{}'".format(view_mode_id),
+                "Grant missing entitlements or choose a less privileged view mode.",
+                {"missing_entitlements": ",".join(sorted(missing_mode_entitlements))},
+                "$.authority_context.entitlements",
+            )
+        if bool(view_mode.get("requires_embodiment", False)) and not _is_embodied_target(
+            state=state,
+            target_type=target_type,
+            target_id=str(target_id or ""),
+        ):
+            return refusal(
+                "refusal.view.requires_embodiment",
+                "view mode '{}' requires embodied target".format(view_mode_id),
+                "Bind camera to embodied agent/body or choose a non-embodiment-required view mode.",
+                {"view_mode_id": view_mode_id, "target_type": target_type, "target_id": str(target_id or "")},
+                "$.intent.inputs",
+            )
+        shard_map = dict((policy_context or {}).get("shard_map") or {})
+        active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+        control_policy = dict((policy_context or {}).get("control_policy") or {})
+        allow_cross_shard_follow = bool(control_policy.get("allow_cross_shard_follow", False))
+        target_owner_shard = _camera_target_owner_shard(
+            state=state,
+            target_type=target_type,
+            target_id=str(target_id or ""),
+            shard_map=shard_map,
+            navigation_indices=navigation_indices,
+        )
+        if active_shard_id and target_owner_shard and target_owner_shard != active_shard_id:
+            spectator_pattern = str((view_mode.get("extensions") or {}).get("spectator_pattern", "")).strip()
+            if spectator_pattern != "follow_agent" or not allow_cross_shard_follow:
+                return refusal(
+                    "refusal.view.cross_shard_follow_forbidden",
+                    "camera target shard '{}' does not match active shard '{}'".format(target_owner_shard, active_shard_id),
+                    "Use same-shard camera target or enable cross-shard spectator follow policy.",
+                    {
+                        "camera_id": camera_id,
+                        "view_mode_id": view_mode_id,
+                        "active_shard_id": active_shard_id,
+                        "target_shard_id": target_owner_shard,
+                    },
+                    "$.intent.inputs.target_id",
+                )
+        allowed_lenses = _sorted_tokens(list(view_mode.get("allowed_lens_ids") or []))
+        current_lens = str(camera_row.get("lens_id", "")).strip()
+        if allowed_lenses and current_lens and current_lens not in allowed_lenses:
+            return refusal(
+                "refusal.view.mode_forbidden",
+                "camera lens '{}' is not permitted for view mode '{}'".format(current_lens, view_mode_id),
+                "Set a lens declared by view_mode.allowed_lens_ids.",
+                {"view_mode_id": view_mode_id, "lens_id": current_lens},
+                "$.camera_assemblies",
+            )
+        watermark_policy_id = view_mode.get("watermark_policy_id")
+        if watermark_policy_id is not None and str(watermark_policy_id).strip():
+            if "entitlement.observer.truth" not in set(caller_entitlements):
+                return refusal(
+                    "refusal.view.watermark_required",
+                    "observer truth view requires entitlement.observer.truth",
+                    "Grant entitlement.observer.truth or choose non-observer view mode.",
+                    {"view_mode_id": view_mode_id},
+                    "$.intent.inputs.view_mode_id",
+                )
 
         controller = _upsert_controller(
             controllers=controllers,
@@ -2543,22 +2866,33 @@ def execute_intent(
             binding["active"] = True
             binding["created_tick"] = max(0, _as_int(binding.get("created_tick", current_tick), current_tick))
             binding["required_entitlements"] = _required_entitlements_for_binding("camera")
+        camera_row["binding_id"] = binding_id
+        camera_row["view_mode_id"] = view_mode_id
+        camera_row["target_id"] = str(target_id or "").strip() if target_type != "none" else None
+        camera_row["target_type"] = target_type
+        camera_row["offset_params"] = _camera_binding_offset(inputs.get("offset_params"))
+        camera_row["owner_peer_id"] = controller.get("owner_peer_id")
+
+        state["camera_assemblies"] = sorted(
+            (dict(item) for item in (state.get("camera_assemblies") or []) if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
         _advance_time(state, steps=1)
-    elif process_id == "process.control_unbind_camera":
+    elif process_id in ("process.control_unbind_camera", "process.camera_unbind_target"):
         controller_id = str(inputs.get("controller_id", "")).strip()
         camera_id = str(inputs.get("camera_id", "") or inputs.get("target_id", "")).strip()
         if not controller_id or not camera_id:
             return refusal(
-                "refusal.control.target_invalid",
-                "process.control_unbind_camera requires controller_id and camera_id",
+                "refusal.view.target_invalid",
+                "{} requires controller_id and camera_id".format(process_id),
                 "Provide controller_id and camera_id in the process inputs.",
                 {"process_id": process_id},
                 "$.intent.inputs",
             )
         if not _camera_exists(state=state, camera_id=camera_id):
             return refusal(
-                "refusal.control.target_invalid",
+                "refusal.view.target_invalid",
                 "camera target '{}' does not exist".format(camera_id),
                 "Unbind from an existing camera assembly id.",
                 {"camera_id": camera_id},
@@ -2572,6 +2906,177 @@ def execute_intent(
             if str(row.get("target_id", "")) != camera_id:
                 continue
             row["active"] = False
+        camera_row = _camera_row(state=state, camera_id=camera_id)
+        if camera_row:
+            _camera_defaults(camera_row)
+            camera_row["binding_id"] = None
+            camera_row["target_id"] = None
+            camera_row["target_type"] = "none"
+            camera_row["offset_params"] = _camera_binding_offset({})
+        _store_control_state(state=state, controllers=controllers, bindings=bindings)
+        _advance_time(state, steps=1)
+    elif process_id == "process.camera_set_view_mode":
+        controller_id = str(inputs.get("controller_id", "")).strip()
+        camera_id = str(inputs.get("camera_id", "camera.main")).strip() or "camera.main"
+        view_mode_id = str(inputs.get("view_mode_id", "")).strip()
+        if not controller_id or not view_mode_id:
+            return refusal(
+                "refusal.view.target_invalid",
+                "process.camera_set_view_mode requires controller_id and view_mode_id",
+                "Provide controller_id and view_mode_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if not _camera_exists(state=state, camera_id=camera_id):
+            return refusal(
+                "refusal.view.target_invalid",
+                "camera target '{}' does not exist".format(camera_id),
+                "Select an existing camera assembly id before changing view mode.",
+                {"camera_id": camera_id},
+                "$.intent.inputs.camera_id",
+            )
+        view_modes = _view_mode_entries(navigation_indices)
+        mode_row = dict(view_modes.get(view_mode_id) or {})
+        if not mode_row:
+            return refusal(
+                "refusal.view.mode_forbidden",
+                "view mode '{}' is not registered".format(view_mode_id),
+                "Use a view_mode_id present in view_mode.registry.json.",
+                {"view_mode_id": view_mode_id},
+                "$.intent.inputs.view_mode_id",
+            )
+        if not _view_mode_allowed_in_replication(view_mode=mode_row, policy_context=policy_context):
+            return refusal(
+                "refusal.view.mode_forbidden",
+                "view mode '{}' is not permitted for active replication policy".format(view_mode_id),
+                "Choose a view mode allowed by view_mode.allowed_in_policies.",
+                {"view_mode_id": view_mode_id, "replication_policy": _replication_policy_tag(policy_context)},
+                "$.intent.inputs.view_mode_id",
+            )
+        control_policy = dict((policy_context or {}).get("control_policy") or {})
+        allowed_view_modes = _sorted_tokens(list(control_policy.get("allowed_view_modes") or []))
+        if allowed_view_modes and view_mode_id not in allowed_view_modes:
+            return refusal(
+                "refusal.view.mode_forbidden",
+                "view mode '{}' is forbidden by active control policy".format(view_mode_id),
+                "Select a view mode listed in control_policy.allowed_view_modes.",
+                {"view_mode_id": view_mode_id},
+                "$.intent.inputs.view_mode_id",
+            )
+        caller_entitlements = _sorted_tokens(list(authority_context.get("entitlements") or []))
+        required_entitlements = _sorted_tokens(list(mode_row.get("required_entitlements") or []))
+        missing_entitlements = [token for token in required_entitlements if token not in caller_entitlements]
+        if missing_entitlements:
+            return refusal(
+                "refusal.view.entitlement_missing",
+                "view mode '{}' requires additional entitlements".format(view_mode_id),
+                "Grant missing entitlements or choose another view mode.",
+                {"missing_entitlements": ",".join(sorted(missing_entitlements))},
+                "$.authority_context.entitlements",
+            )
+        watermark_policy_id = str(mode_row.get("watermark_policy_id", "") or "").strip()
+        if watermark_policy_id and "entitlement.observer.truth" not in set(caller_entitlements):
+            return refusal(
+                "refusal.view.watermark_required",
+                "observer truth view mode requires entitlement.observer.truth",
+                "Grant entitlement.observer.truth or select non-observer view mode.",
+                {"view_mode_id": view_mode_id},
+                "$.intent.inputs.view_mode_id",
+            )
+
+        camera_row = _camera_row(state=state, camera_id=camera_id)
+        _camera_defaults(camera_row)
+        target_type = str(inputs.get("target_type", camera_row.get("target_type", "none"))).strip() or "none"
+        if target_type not in ("agent", "body", "site", "none"):
+            return refusal(
+                "refusal.view.target_invalid",
+                "target_type '{}' is unsupported".format(target_type),
+                "Use target_type in {agent,body,site,none}.",
+                {"target_type": target_type},
+                "$.intent.inputs.target_type",
+            )
+        target_id = str(inputs.get("target_id", "") or camera_row.get("target_id", "") or "").strip()
+        if target_type != "none" and not target_id:
+            return refusal(
+                "refusal.view.target_invalid",
+                "target_id is required when target_type is '{}'".format(target_type),
+                "Provide target_id for non-none camera target type.",
+                {"target_type": target_type},
+                "$.intent.inputs.target_id",
+            )
+        if not _camera_target_exists(
+            state=state,
+            target_type=target_type,
+            target_id=target_id,
+            navigation_indices=navigation_indices,
+        ):
+            return refusal(
+                "refusal.view.target_invalid",
+                "camera target does not exist for type '{}' and id '{}'".format(target_type, target_id),
+                "Bind camera to an existing target before switching mode.",
+                {"target_type": target_type, "target_id": target_id},
+                "$.intent.inputs.target_id",
+            )
+        if bool(mode_row.get("requires_embodiment", False)) and not _is_embodied_target(
+            state=state,
+            target_type=target_type,
+            target_id=target_id,
+        ):
+            return refusal(
+                "refusal.view.requires_embodiment",
+                "view mode '{}' requires embodied target".format(view_mode_id),
+                "Bind or set an embodied agent/body target before switching mode.",
+                {"view_mode_id": view_mode_id, "target_type": target_type, "target_id": target_id},
+                "$.intent.inputs.view_mode_id",
+            )
+        shard_map = dict((policy_context or {}).get("shard_map") or {})
+        active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+        allow_cross_shard_follow = bool(control_policy.get("allow_cross_shard_follow", False))
+        target_owner_shard = _camera_target_owner_shard(
+            state=state,
+            target_type=target_type,
+            target_id=target_id,
+            shard_map=shard_map,
+            navigation_indices=navigation_indices,
+        )
+        if active_shard_id and target_owner_shard and target_owner_shard != active_shard_id:
+            spectator_pattern = str((mode_row.get("extensions") or {}).get("spectator_pattern", "")).strip()
+            if spectator_pattern != "follow_agent" or not allow_cross_shard_follow:
+                return refusal(
+                    "refusal.view.cross_shard_follow_forbidden",
+                    "camera target shard '{}' does not match active shard '{}'".format(target_owner_shard, active_shard_id),
+                    "Use same-shard camera target or enable cross-shard spectator follow policy.",
+                    {
+                        "camera_id": camera_id,
+                        "view_mode_id": view_mode_id,
+                        "active_shard_id": active_shard_id,
+                        "target_shard_id": target_owner_shard,
+                    },
+                    "$.intent.inputs.target_id",
+                )
+        allowed_lenses = _sorted_tokens(list(mode_row.get("allowed_lens_ids") or []))
+        current_lens = str(camera_row.get("lens_id", "")).strip()
+        if allowed_lenses and current_lens and current_lens not in allowed_lenses:
+            return refusal(
+                "refusal.view.mode_forbidden",
+                "camera lens '{}' is incompatible with requested view mode '{}'".format(current_lens, view_mode_id),
+                "Set a compatible lens before switching view mode.",
+                {"view_mode_id": view_mode_id, "lens_id": current_lens},
+                "$.intent.inputs.view_mode_id",
+            )
+        _upsert_controller(
+            controllers=controllers,
+            controller_id=controller_id,
+            controller_type=str(inputs.get("controller_type", "script")).strip() or "script",
+            owner_peer_id=inputs.get("owner_peer_id", authority_context.get("authority_origin")),
+        )
+        camera_row["view_mode_id"] = view_mode_id
+        camera_row["target_type"] = target_type
+        camera_row["target_id"] = target_id if target_type != "none" else None
+        state["camera_assemblies"] = sorted(
+            (dict(item) for item in (state.get("camera_assemblies") or []) if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
         _advance_time(state, steps=1)
     elif process_id == "process.control_possess_agent":
@@ -2669,21 +3174,21 @@ def execute_intent(
             row["active"] = False
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
         _advance_time(state, steps=1)
-    elif process_id == "process.control_set_view_lens":
+    elif process_id in ("process.control_set_view_lens", "process.camera_set_lens"):
         controller_id = str(inputs.get("controller_id", "")).strip()
         lens_id = str(inputs.get("lens_id", "")).strip()
         camera_id = str(inputs.get("camera_id", "camera.main")).strip() or "camera.main"
         if not controller_id or not lens_id:
             return refusal(
-                "refusal.control.target_invalid",
-                "process.control_set_view_lens requires controller_id and lens_id",
+                "refusal.view.target_invalid",
+                "{} requires controller_id and lens_id".format(process_id),
                 "Provide controller_id and lens_id in the process inputs.",
                 {"process_id": process_id},
                 "$.intent.inputs",
             )
         if not _camera_exists(state=state, camera_id=camera_id):
             return refusal(
-                "refusal.control.target_invalid",
+                "refusal.view.target_invalid",
                 "camera target '{}' does not exist".format(camera_id),
                 "Select an existing camera assembly id for lens override.",
                 {"camera_id": camera_id},
@@ -2701,7 +3206,7 @@ def execute_intent(
         entitlements = _sorted_tokens(list(authority_context.get("entitlements") or []))
         if lens_id.startswith("lens.nondiegetic") and "lens.nondiegetic.access" not in entitlements:
             return refusal(
-                "refusal.control.lens_forbidden",
+                "refusal.view.entitlement_missing",
                 "nondiegetic lens '{}' requires lens.nondiegetic.access entitlement".format(lens_id),
                 "Grant lens.nondiegetic.access or use a diegetic lens.",
                 {"lens_id": lens_id},
@@ -2721,6 +3226,20 @@ def execute_intent(
                 continue
             if str(row.get("assembly_id", "")).strip() != camera_id:
                 continue
+            _camera_defaults(row)
+            view_mode_id = str(row.get("view_mode_id", "")).strip()
+            if view_mode_id:
+                view_modes = _view_mode_entries(navigation_indices)
+                mode_row = dict(view_modes.get(view_mode_id) or {})
+                allowed_lenses = _sorted_tokens(list(mode_row.get("allowed_lens_ids") or []))
+                if allowed_lenses and lens_id not in allowed_lenses:
+                    return refusal(
+                        "refusal.view.mode_forbidden",
+                        "lens '{}' is not permitted by active view mode '{}'".format(lens_id, view_mode_id),
+                        "Choose a lens listed in view_mode.allowed_lens_ids for current mode.",
+                        {"view_mode_id": view_mode_id, "lens_id": lens_id},
+                        "$.intent.inputs.lens_id",
+                    )
             row["lens_id"] = lens_id
         state["camera_assemblies"] = sorted(
             (dict(item) for item in camera_rows if isinstance(item, dict)),
