@@ -17,6 +17,9 @@ from .common import refusal
 PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.camera_move": "entitlement.camera_control",
     "process.camera_teleport": "entitlement.teleport",
+    "process.agent_move": "entitlement.agent.move",
+    "process.agent_rotate": "entitlement.agent.rotate",
+    "process.srz_transfer_entity": "entitlement.control.admin",
     "process.control_bind_camera": "entitlement.control.camera",
     "process.control_unbind_camera": "entitlement.control.camera",
     "process.control_possess_agent": "entitlement.control.possess",
@@ -32,6 +35,9 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
     "process.camera_teleport": "operator",
+    "process.agent_move": "operator",
+    "process.agent_rotate": "operator",
+    "process.srz_transfer_entity": "system",
     "process.control_bind_camera": "observer",
     "process.control_unbind_camera": "observer",
     "process.control_possess_agent": "operator",
@@ -56,6 +62,9 @@ DEFAULT_SOLVER_BINDINGS = {
     "expand_solver_id": "solver.expand.local_high_fidelity",
 }
 CONTROL_PROCESS_IDS = {
+    "process.agent_move",
+    "process.agent_rotate",
+    "process.srz_transfer_entity",
     "process.control_bind_camera",
     "process.control_unbind_camera",
     "process.control_possess_agent",
@@ -557,6 +566,145 @@ def _find_agent(agent_rows: List[dict], agent_id: str) -> dict:
     return {}
 
 
+def _active_possession_binding(bindings: List[dict], agent_id: str) -> dict:
+    token = str(agent_id).strip()
+    for row in sorted((item for item in bindings if isinstance(item, dict)), key=lambda item: str(item.get("binding_id", ""))):
+        if str(row.get("binding_type", "")).strip() != "possess":
+            continue
+        if not bool(row.get("active", True)):
+            continue
+        if str(row.get("target_id", "")).strip() != token:
+            continue
+        return row
+    return {}
+
+
+def _agent_body_id(agent_row: dict, body_rows: List[dict], agent_id: str) -> str:
+    token = str((agent_row or {}).get("body_id", "")).strip()
+    if token:
+        return token
+    agent_token = str(agent_id).strip()
+    for row in sorted((item for item in body_rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
+        owner_agent = str(row.get("owner_agent_id", "")).strip()
+        owner_assembly = str(row.get("owner_assembly_id", "")).strip()
+        if owner_agent == agent_token or owner_assembly == agent_token:
+            body_id = str(row.get("assembly_id", "")).strip()
+            if body_id:
+                return body_id
+    return ""
+
+
+def _movement_world_delta(local_delta: dict, yaw_mdeg: int) -> Dict[str, int]:
+    local = _vector3_int(local_delta, "move_vector_local") or {"x": 0, "y": 0, "z": 0}
+    yaw_norm = int(yaw_mdeg) % 360000
+    quadrant = int((yaw_norm + 45000) // 90000) % 4
+    x = int(local["x"])
+    y = int(local["y"])
+    z = int(local["z"])
+    if quadrant == 0:
+        return {"x": x, "y": y, "z": z}
+    if quadrant == 1:
+        return {"x": -y, "y": x, "z": z}
+    if quadrant == 2:
+        return {"x": -x, "y": -y, "z": z}
+    return {"x": y, "y": -x, "z": z}
+
+
+def _movement_context(
+    agents: List[dict],
+    controllers: List[dict],
+    bindings: List[dict],
+    agent_id: str,
+    inputs: dict,
+    authority_context: dict,
+) -> Dict[str, object]:
+    agent = _find_agent(agent_rows=agents, agent_id=agent_id)
+    if not agent:
+        return refusal(
+            "refusal.control.target_invalid",
+            "agent '{}' does not exist".format(str(agent_id)),
+            "Use an agent_id present in universe_state.agent_states.",
+            {"agent_id": str(agent_id)},
+            "$.intent.inputs.agent_id",
+        )
+    entitlements = _sorted_tokens(list(authority_context.get("entitlements") or []))
+    admin_override = "entitlement.control.admin" in set(entitlements)
+    controller_id = str(inputs.get("controller_id", "")).strip()
+    if not controller_id:
+        controller_id = str(agent.get("controller_id", "")).strip()
+    if not controller_id:
+        bound = _active_possession_binding(bindings=bindings, agent_id=agent_id)
+        controller_id = str(bound.get("controller_id", "")).strip()
+    controller = _find_controller(controllers=controllers, controller_id=controller_id) if controller_id else {}
+    if controller_id and not controller and not admin_override:
+        return refusal(
+            "refusal.agent.ownership_violation",
+            "controller '{}' was not found for movement request".format(controller_id),
+            "Bind a valid controller before issuing movement or rotate intents.",
+            {"agent_id": str(agent_id), "controller_id": controller_id},
+            "$.intent.inputs.controller_id",
+        )
+    if not controller_id and not admin_override:
+        return refusal(
+            "refusal.agent.ownership_violation",
+            "movement requires active possession binding or controller_id",
+            "Possess the agent first or issue movement with entitlement.control.admin.",
+            {"agent_id": str(agent_id)},
+            "$.intent.inputs",
+        )
+
+    claimed_owner = str(inputs.get("owner_peer_id", "")).strip()
+    controller_owner = str((controller or {}).get("owner_peer_id", "")).strip()
+    agent_owner = str(agent.get("owner_peer_id", "")).strip()
+    if not agent_owner and controller_owner:
+        agent_owner = controller_owner
+    if not admin_override:
+        if controller_owner and agent_owner and controller_owner != agent_owner:
+            return refusal(
+                "refusal.agent.ownership_violation",
+                "controller owner and agent owner mismatch for movement request",
+                "Keep controller.owner_peer_id and agent.owner_peer_id aligned or use admin override.",
+                {
+                    "agent_id": str(agent_id),
+                    "controller_id": controller_id,
+                    "agent_owner_peer_id": agent_owner,
+                    "controller_owner_peer_id": controller_owner,
+                },
+                "$.intent.inputs.agent_id",
+            )
+        if claimed_owner and agent_owner and claimed_owner != agent_owner:
+            return refusal(
+                "refusal.agent.ownership_violation",
+                "claimed owner_peer_id does not match agent owner",
+                "Send owner_peer_id matching agent.owner_peer_id or remove owner_peer_id claim.",
+                {"agent_id": str(agent_id), "owner_peer_id": claimed_owner, "agent_owner_peer_id": agent_owner},
+                "$.intent.inputs.owner_peer_id",
+            )
+    return {
+        "result": "complete",
+        "agent": agent,
+        "controller": controller,
+        "controller_id": controller_id,
+        "owner_peer_id": claimed_owner or agent_owner or controller_owner,
+        "admin_override": bool(admin_override),
+    }
+
+
+def _refresh_agent_state_hash(agent_row: dict, body_row: dict | None) -> None:
+    body = dict(body_row or {})
+    payload = {
+        "agent_id": str(agent_row.get("agent_id", "")).strip(),
+        "body_id": str(agent_row.get("body_id", "")).strip(),
+        "owner_peer_id": str(agent_row.get("owner_peer_id", "")).strip(),
+        "controller_id": str(agent_row.get("controller_id", "")).strip(),
+        "shard_id": str(agent_row.get("shard_id", "")).strip(),
+        "orientation_mdeg": dict(agent_row.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0}),
+        "body_transform_mm": dict(body.get("transform_mm") or {}),
+        "body_orientation_mdeg": dict(body.get("orientation_mdeg") or {}),
+    }
+    agent_row["state_hash"] = canonical_sha256(payload)
+
+
 def _shape_half_extents_mm(body_row: dict) -> Dict[str, int]:
     params = dict(body_row.get("shape_parameters") or {})
     shape_type = str(body_row.get("shape_type", "")).strip()
@@ -731,8 +879,14 @@ def _resolve_body_collisions(
             and (str(moved_body_id).strip() in (str(left_id), str(right_id)))
             and not allow_cross_shard_collision
         ):
-            owner_a = _owner_shard_for_object(shard_map=shard_map, object_id=str(body_a.get("owner_assembly_id", left_id)))
-            owner_b = _owner_shard_for_object(shard_map=shard_map, object_id=str(body_b.get("owner_assembly_id", right_id)))
+            owner_a = str(body_a.get("shard_id", "")).strip() or _owner_shard_for_object(
+                shard_map=shard_map,
+                object_id=str(body_a.get("owner_assembly_id", left_id)),
+            )
+            owner_b = str(body_b.get("shard_id", "")).strip() or _owner_shard_for_object(
+                shard_map=shard_map,
+                object_id=str(body_b.get("owner_assembly_id", right_id)),
+            )
             if owner_a and owner_b and owner_a != owner_b:
                 return refusal(
                     "refusal.control.cross_shard_collision_forbidden",
@@ -823,6 +977,128 @@ def _resolve_body_collisions(
         "unresolved_pairs": list(collision_state["last_tick_unresolved_pairs"]),
         "pair_count": int(collision_state["last_tick_pair_count"]),
         "collision_anchor": str(collision_state["last_tick_anchor"]),
+    }
+
+
+def _apply_body_move_attempt(
+    state: dict,
+    body_rows: List[dict],
+    inputs: dict,
+    policy_context: dict | None,
+    *,
+    body_id_override: str = "",
+    delta_override: dict | None = None,
+    dt_ticks_override: int | None = None,
+    orientation_delta_override: dict | None = None,
+    ghost_collisions_enabled_override: bool | None = None,
+) -> Dict[str, object]:
+    body_id = str(body_id_override or inputs.get("body_id", "")).strip()
+    if not body_id:
+        body_id = str(inputs.get("target_body_id", "")).strip()
+    if not body_id:
+        return refusal(
+            "PROCESS_INPUT_INVALID",
+            "process.body_move_attempt requires body_id",
+            "Provide body_id and delta_transform_mm in the process inputs.",
+            {"process_id": "process.body_move_attempt"},
+            "$.intent.inputs.body_id",
+        )
+    body = _find_body(body_rows=body_rows, body_id=body_id)
+    if not body:
+        return refusal(
+            "refusal.control.target_invalid",
+            "body '{}' does not exist".format(body_id),
+            "Use a body_id present in universe_state.body_assemblies.",
+            {"body_id": body_id},
+            "$.intent.inputs.body_id",
+        )
+    if not bool(body.get("dynamic", False)):
+        return refusal(
+            "refusal.control.target_invalid",
+            "body '{}' is static and cannot be moved by process.body_move_attempt".format(body_id),
+            "Set body.dynamic=true or use a static placement process.",
+            {"body_id": body_id},
+            "$.intent.inputs.body_id",
+        )
+    delta = delta_override if isinstance(delta_override, dict) else _vector3_int(inputs.get("delta_transform_mm"), "delta_transform_mm")
+    if delta is None:
+        delta = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
+    dt_ticks = max(1, _as_int(inputs.get("dt_ticks", 1), 1))
+    if dt_ticks_override is not None:
+        dt_ticks = max(1, _as_int(dt_ticks_override, 1))
+    if delta is None:
+        return refusal(
+            "PROCESS_INPUT_INVALID",
+            "process.body_move_attempt requires delta_transform_mm{x,y,z}",
+            "Provide integer delta_transform_mm and optional dt_ticks.",
+            {"process_id": "process.body_move_attempt"},
+            "$.intent.inputs.delta_transform_mm",
+        )
+    orientation_delta = (
+        orientation_delta_override
+        if isinstance(orientation_delta_override, dict)
+        else _angles_int(inputs.get("delta_orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+    )
+    if not isinstance(orientation_delta, dict):
+        orientation_delta = {"yaw": 0, "pitch": 0, "roll": 0}
+    ghost_collisions_enabled = bool(inputs.get("ghost_collisions_enabled", False))
+    if ghost_collisions_enabled_override is not None:
+        ghost_collisions_enabled = bool(ghost_collisions_enabled_override)
+
+    transform = _vector3_int(body.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+    orientation = _angles_int(body.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+    velocity = _vector3_int(body.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}
+    transform["x"] = int(transform["x"]) + int(delta["x"]) * int(dt_ticks)
+    transform["y"] = int(transform["y"]) + int(delta["y"]) * int(dt_ticks)
+    transform["z"] = int(transform["z"]) + int(delta["z"]) * int(dt_ticks)
+    orientation["yaw"] = int(orientation["yaw"]) + int(_as_int(orientation_delta.get("yaw", 0), 0))
+    orientation["pitch"] = int(orientation["pitch"]) + int(_as_int(orientation_delta.get("pitch", 0), 0))
+    orientation["roll"] = int(orientation["roll"]) + int(_as_int(orientation_delta.get("roll", 0), 0))
+    velocity["x"] = int(delta["x"])
+    velocity["y"] = int(delta["y"])
+    velocity["z"] = int(delta["z"])
+    body["transform_mm"] = transform
+    body["orientation_mdeg"] = orientation
+    body["velocity_mm_per_tick"] = velocity
+
+    if bool(body.get("ghost", False)) and not ghost_collisions_enabled:
+        collision_state = _ensure_collision_state(state)
+        collision_state["last_tick_pair_count"] = 0
+        collision_state["last_tick_resolved_pairs"] = []
+        collision_state["last_tick_unresolved_pairs"] = []
+        collision_state["last_tick_anchor"] = canonical_sha256(
+            {
+                "pair_count": 0,
+                "resolved": [],
+                "unresolved": [],
+            }
+        )
+        state["collision_state"] = collision_state
+        state["body_assemblies"] = sorted(
+            (dict(item) for item in body_rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+    else:
+        resolved = _resolve_body_collisions(
+            state=state,
+            moved_body_id=body_id,
+            ghost_collisions_enabled=ghost_collisions_enabled,
+            policy_context=policy_context,
+        )
+        if resolved.get("result") != "complete":
+            return resolved
+    return {
+        "result": "complete",
+        "body_id": body_id,
+        "dt_ticks": int(dt_ticks),
+        "delta_transform_mm": {
+            "x": int(delta["x"]),
+            "y": int(delta["y"]),
+            "z": int(delta["z"]),
+        },
+        "final_transform_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
+        "final_orientation_mdeg": dict(body.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0}),
+        "final_velocity_mm_per_tick": dict(body.get("velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}),
     }
 
 
@@ -1959,6 +2235,243 @@ def execute_intent(
         camera["orientation_mdeg"] = dict(resolved_target.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0})
         camera["velocity_mm_per_tick"] = {"x": 0, "y": 0, "z": 0}
         _advance_time(state, steps=1)
+    elif process_id == "process.agent_move":
+        agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
+        if not agent_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.agent_move requires agent_id",
+                "Provide agent_id and move_vector_local in the process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.agent_id",
+            )
+        move_ctx = _movement_context(
+            agents=agents,
+            controllers=controllers,
+            bindings=bindings,
+            agent_id=agent_id,
+            inputs=dict(inputs),
+            authority_context=authority_context,
+        )
+        if move_ctx.get("result") != "complete":
+            return move_ctx
+        agent = move_ctx.get("agent")
+        if not isinstance(agent, dict):
+            return refusal(
+                "refusal.control.target_invalid",
+                "agent payload is invalid for movement",
+                "Ensure agent_id resolves to an object in universe_state.agent_states.",
+                {"agent_id": agent_id},
+                "$.intent.inputs.agent_id",
+            )
+        body_id = _agent_body_id(agent_row=agent, body_rows=bodies, agent_id=agent_id)
+        if not body_id:
+            return refusal(
+                "refusal.agent.unembodied",
+                "agent '{}' has no embodied body_id".format(agent_id),
+                "Attach a body assembly to this agent before issuing movement intents.",
+                {"agent_id": agent_id},
+                "$.intent.inputs.agent_id",
+            )
+        body = _find_body(body_rows=bodies, body_id=body_id)
+        if not body:
+            return refusal(
+                "refusal.agent.unembodied",
+                "agent '{}' body '{}' is missing".format(agent_id, body_id),
+                "Create body assembly and set agent.body_id before movement.",
+                {"agent_id": agent_id, "body_id": body_id},
+                "$.intent.inputs.agent_id",
+            )
+        local_move = _vector3_int(inputs.get("move_vector_local"), "move_vector_local")
+        if local_move is None:
+            local_move = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
+        if local_move is None:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.agent_move requires move_vector_local{x,y,z}",
+                "Provide integer move_vector_local payload for kinematic movement.",
+                {"process_id": process_id},
+                "$.intent.inputs.move_vector_local",
+            )
+        speed_scalar = max(0, min(10000, _as_int(inputs.get("speed_scalar", 1000), 1000)))
+        dt_ticks = max(1, _as_int(inputs.get("tick_duration", inputs.get("dt_ticks", 1)), 1))
+        scaled_local = {
+            "x": int(int(local_move["x"]) * int(speed_scalar) // 1000),
+            "y": int(int(local_move["y"]) * int(speed_scalar) // 1000),
+            "z": int(int(local_move["z"]) * int(speed_scalar) // 1000),
+        }
+        orientation = _angles_int(agent.get("orientation_mdeg")) or _angles_int(body.get("orientation_mdeg")) or {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0,
+        }
+        world_delta = _movement_world_delta(local_delta=scaled_local, yaw_mdeg=_as_int(orientation.get("yaw", 0), 0))
+        policy_payload = dict(policy_context or {})
+        shard_map = dict(policy_payload.get("shard_map") or {})
+        active_shard_id = str(policy_payload.get("active_shard_id", "")).strip()
+        owner_shard_id = (
+            str(agent.get("shard_id", "")).strip()
+            or str(body.get("shard_id", "")).strip()
+            or _owner_shard_for_object(shard_map=shard_map, object_id=agent_id)
+            or _owner_shard_for_object(shard_map=shard_map, object_id=body_id)
+        )
+        if active_shard_id and owner_shard_id and owner_shard_id != active_shard_id:
+            return refusal(
+                "refusal.agent.boundary_cross_forbidden",
+                "agent movement owner shard '{}' does not match active shard '{}'".format(owner_shard_id, active_shard_id),
+                "Route movement intent to owning shard or run explicit SRZ transfer process first.",
+                {"agent_id": agent_id, "owner_shard_id": owner_shard_id, "active_shard_id": active_shard_id},
+                "$.intent.inputs.agent_id",
+            )
+        moved = _apply_body_move_attempt(
+            state=state,
+            body_rows=bodies,
+            inputs=dict(inputs),
+            policy_context=policy_context,
+            body_id_override=body_id,
+            delta_override=world_delta,
+            dt_ticks_override=int(dt_ticks),
+        )
+        if moved.get("result") != "complete":
+            return moved
+        refreshed_body = _find_body(body_rows=bodies, body_id=body_id)
+        controller_id = str(move_ctx.get("controller_id", "")).strip()
+        owner_peer_id = str(move_ctx.get("owner_peer_id", "")).strip()
+        if owner_peer_id:
+            agent["owner_peer_id"] = owner_peer_id
+        if controller_id:
+            agent["controller_id"] = controller_id
+        agent["body_id"] = body_id
+        shard_id = owner_shard_id or str((refreshed_body or {}).get("shard_id", "")).strip() or "shard.0"
+        agent["shard_id"] = shard_id
+        if isinstance(refreshed_body, dict):
+            refreshed_body["owner_agent_id"] = agent_id
+            refreshed_body["shard_id"] = shard_id
+        _refresh_agent_state_hash(agent_row=agent, body_row=refreshed_body if isinstance(refreshed_body, dict) else None)
+        state["agent_states"] = sorted((dict(item) for item in agents if isinstance(item, dict)), key=lambda item: str(item.get("agent_id", "")))
+        state["body_assemblies"] = sorted(
+            (dict(item) for item in bodies if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        _advance_time(state, steps=int(dt_ticks))
+    elif process_id == "process.agent_rotate":
+        agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
+        if not agent_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.agent_rotate requires agent_id",
+                "Provide agent_id with yaw_delta/pitch_delta/roll_delta.",
+                {"process_id": process_id},
+                "$.intent.inputs.agent_id",
+            )
+        move_ctx = _movement_context(
+            agents=agents,
+            controllers=controllers,
+            bindings=bindings,
+            agent_id=agent_id,
+            inputs=dict(inputs),
+            authority_context=authority_context,
+        )
+        if move_ctx.get("result") != "complete":
+            return move_ctx
+        agent = move_ctx.get("agent")
+        if not isinstance(agent, dict):
+            return refusal(
+                "refusal.control.target_invalid",
+                "agent payload is invalid for rotation",
+                "Ensure agent_id resolves to an object in universe_state.agent_states.",
+                {"agent_id": agent_id},
+                "$.intent.inputs.agent_id",
+            )
+        orientation = _angles_int(agent.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+        delta_payload = _angles_int(inputs.get("delta_orientation_mdeg")) or {
+            "yaw": _as_int(inputs.get("yaw_delta", 0), 0),
+            "pitch": _as_int(inputs.get("pitch_delta", 0), 0),
+            "roll": _as_int(inputs.get("roll_delta", 0), 0),
+        }
+        orientation["yaw"] = int(orientation["yaw"]) + int(_as_int(delta_payload.get("yaw", 0), 0))
+        orientation["pitch"] = int(orientation["pitch"]) + int(_as_int(delta_payload.get("pitch", 0), 0))
+        orientation["roll"] = int(orientation["roll"]) + int(_as_int(delta_payload.get("roll", 0), 0))
+        agent["orientation_mdeg"] = dict(orientation)
+        controller_id = str(move_ctx.get("controller_id", "")).strip()
+        owner_peer_id = str(move_ctx.get("owner_peer_id", "")).strip()
+        if controller_id:
+            agent["controller_id"] = controller_id
+        if owner_peer_id:
+            agent["owner_peer_id"] = owner_peer_id
+        body_id = _agent_body_id(agent_row=agent, body_rows=bodies, agent_id=agent_id)
+        if body_id:
+            body = _find_body(body_rows=bodies, body_id=body_id)
+            if isinstance(body, dict):
+                body["orientation_mdeg"] = dict(orientation)
+                body["owner_agent_id"] = agent_id
+            agent["body_id"] = body_id
+            _refresh_agent_state_hash(agent_row=agent, body_row=body if isinstance(body, dict) else None)
+        else:
+            _refresh_agent_state_hash(agent_row=agent, body_row=None)
+        state["agent_states"] = sorted((dict(item) for item in agents if isinstance(item, dict)), key=lambda item: str(item.get("agent_id", "")))
+        state["body_assemblies"] = sorted(
+            (dict(item) for item in bodies if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        _advance_time(state, steps=1)
+    elif process_id == "process.srz_transfer_entity":
+        agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "")).strip()
+        target_shard_id = str(inputs.get("target_shard_id", "")).strip()
+        if not agent_id or not target_shard_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.srz_transfer_entity requires agent_id and target_shard_id",
+                "Provide explicit agent_id and target_shard_id for deterministic SRZ transfer.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        policy_payload = dict(policy_context or {})
+        control_policy = dict(policy_payload.get("control_policy") or {})
+        allow_transfer = bool(policy_payload.get("allow_srz_transfer", False) or control_policy.get("allow_srz_transfer", False))
+        if not allow_transfer:
+            return refusal(
+                "refusal.agent.boundary_cross_forbidden",
+                "SRZ transfer is disabled by active control policy",
+                "Enable control_policy.allow_srz_transfer in server policy or keep movement inside one shard.",
+                {"agent_id": agent_id, "target_shard_id": target_shard_id},
+                "$.intent.inputs.target_shard_id",
+            )
+        shard_map = dict(policy_payload.get("shard_map") or {})
+        shard_rows = shard_map.get("shards")
+        if isinstance(shard_rows, list):
+            known_shards = _sorted_tokens(list((row or {}).get("shard_id", "") for row in shard_rows if isinstance(row, dict)))
+            if target_shard_id not in known_shards:
+                return refusal(
+                    "refusal.net.shard_target_invalid",
+                    "target_shard_id '{}' is not declared by active shard map".format(target_shard_id),
+                    "Select target_shard_id present in shard_map.registry entries.",
+                    {"target_shard_id": target_shard_id},
+                    "$.intent.inputs.target_shard_id",
+                )
+        agent = _find_agent(agent_rows=agents, agent_id=agent_id)
+        if not agent:
+            return refusal(
+                "refusal.control.target_invalid",
+                "agent '{}' does not exist for SRZ transfer".format(agent_id),
+                "Provide an existing agent_id before requesting SRZ transfer.",
+                {"agent_id": agent_id},
+                "$.intent.inputs.agent_id",
+            )
+        body_id = _agent_body_id(agent_row=agent, body_rows=bodies, agent_id=agent_id)
+        agent["shard_id"] = target_shard_id
+        agent["body_id"] = body_id or agent.get("body_id")
+        body = _find_body(body_rows=bodies, body_id=body_id) if body_id else {}
+        if isinstance(body, dict) and body:
+            body["shard_id"] = target_shard_id
+            body["owner_agent_id"] = agent_id
+        _refresh_agent_state_hash(agent_row=agent, body_row=body if isinstance(body, dict) else None)
+        state["agent_states"] = sorted((dict(item) for item in agents if isinstance(item, dict)), key=lambda item: str(item.get("agent_id", "")))
+        state["body_assemblies"] = sorted(
+            (dict(item) for item in bodies if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        _advance_time(state, steps=1)
     elif process_id == "process.control_bind_camera":
         controller_id = str(inputs.get("controller_id", "")).strip()
         camera_id = str(inputs.get("camera_id", "") or inputs.get("target_id", "")).strip()
@@ -2198,90 +2711,15 @@ def execute_intent(
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
         _advance_time(state, steps=1)
     elif process_id == "process.body_move_attempt":
-        body_id = str(inputs.get("body_id", "")).strip()
-        if not body_id:
-            return refusal(
-                "PROCESS_INPUT_INVALID",
-                "process.body_move_attempt requires body_id",
-                "Provide body_id and delta_transform_mm in the process inputs.",
-                {"process_id": process_id},
-                "$.intent.inputs.body_id",
-            )
-        body = _find_body(body_rows=bodies, body_id=body_id)
-        if not body:
-            return refusal(
-                "refusal.control.target_invalid",
-                "body '{}' does not exist".format(body_id),
-                "Use a body_id present in universe_state.body_assemblies.",
-                {"body_id": body_id},
-                "$.intent.inputs.body_id",
-            )
-        if not bool(body.get("dynamic", False)):
-            return refusal(
-                "refusal.control.target_invalid",
-                "body '{}' is static and cannot be moved by process.body_move_attempt".format(body_id),
-                "Set body.dynamic=true or use a static placement process.",
-                {"body_id": body_id},
-                "$.intent.inputs.body_id",
-            )
-        delta = _vector3_int(inputs.get("delta_transform_mm"), "delta_transform_mm")
-        if delta is None:
-            delta = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
-        dt_ticks = max(1, _as_int(inputs.get("dt_ticks", 1), 1))
-        if delta is None:
-            return refusal(
-                "PROCESS_INPUT_INVALID",
-                "process.body_move_attempt requires delta_transform_mm{x,y,z}",
-                "Provide integer delta_transform_mm and optional dt_ticks.",
-                {"process_id": process_id},
-                "$.intent.inputs.delta_transform_mm",
-            )
-        orientation_delta = _angles_int(inputs.get("delta_orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
-        ghost_collisions_enabled = bool(inputs.get("ghost_collisions_enabled", False))
-
-        transform = _vector3_int(body.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
-        orientation = _angles_int(body.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
-        velocity = _vector3_int(body.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}
-        transform["x"] = int(transform["x"]) + int(delta["x"]) * int(dt_ticks)
-        transform["y"] = int(transform["y"]) + int(delta["y"]) * int(dt_ticks)
-        transform["z"] = int(transform["z"]) + int(delta["z"]) * int(dt_ticks)
-        orientation["yaw"] = int(orientation["yaw"]) + int(orientation_delta["yaw"])
-        orientation["pitch"] = int(orientation["pitch"]) + int(orientation_delta["pitch"])
-        orientation["roll"] = int(orientation["roll"]) + int(orientation_delta["roll"])
-        velocity["x"] = int(delta["x"])
-        velocity["y"] = int(delta["y"])
-        velocity["z"] = int(delta["z"])
-        body["transform_mm"] = transform
-        body["orientation_mdeg"] = orientation
-        body["velocity_mm_per_tick"] = velocity
-
-        if bool(body.get("ghost", False)) and not ghost_collisions_enabled:
-            collision_state = _ensure_collision_state(state)
-            collision_state["last_tick_pair_count"] = 0
-            collision_state["last_tick_resolved_pairs"] = []
-            collision_state["last_tick_unresolved_pairs"] = []
-            collision_state["last_tick_anchor"] = canonical_sha256(
-                {
-                    "pair_count": 0,
-                    "resolved": [],
-                    "unresolved": [],
-                }
-            )
-            state["collision_state"] = collision_state
-            state["body_assemblies"] = sorted(
-                (dict(item) for item in bodies if isinstance(item, dict)),
-                key=lambda item: str(item.get("assembly_id", "")),
-            )
-        else:
-            resolved = _resolve_body_collisions(
-                state=state,
-                moved_body_id=body_id,
-                ghost_collisions_enabled=ghost_collisions_enabled,
-                policy_context=policy_context,
-            )
-            if resolved.get("result") != "complete":
-                return resolved
-        _advance_time(state, steps=int(dt_ticks))
+        moved = _apply_body_move_attempt(
+            state=state,
+            body_rows=bodies,
+            inputs=dict(inputs),
+            policy_context=policy_context,
+        )
+        if moved.get("result") != "complete":
+            return moved
+        _advance_time(state, steps=int(moved.get("dt_ticks", 1)))
     elif process_id == "process.instrument_tick":
         sim = _ensure_simulation_time(state)
         control = _ensure_time_control(state)
