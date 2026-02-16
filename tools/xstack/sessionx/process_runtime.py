@@ -5,8 +5,9 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
 import os
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -21,6 +22,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.control_possess_agent": "entitlement.control.possess",
     "process.control_release_agent": "entitlement.control.possess",
     "process.control_set_view_lens": "entitlement.control.lens_override",
+    "process.body_move_attempt": "entitlement.control.possess",
     "process.instrument_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
@@ -35,6 +37,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.control_possess_agent": "operator",
     "process.control_release_agent": "operator",
     "process.control_set_view_lens": "operator",
+    "process.body_move_attempt": "operator",
     "process.instrument_tick": "observer",
     "process.time_control_set_rate": "operator",
     "process.time_pause": "operator",
@@ -58,6 +61,7 @@ CONTROL_PROCESS_IDS = {
     "process.control_possess_agent",
     "process.control_release_agent",
     "process.control_set_view_lens",
+    "process.body_move_attempt",
 }
 CONTROL_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.control.law_forbidden",
@@ -407,6 +411,358 @@ def _camera_exists(state: dict, camera_id: str) -> bool:
         if str(row.get("assembly_id", "")).strip() == token:
             return True
     return False
+
+
+def _ensure_body_assemblies(state: dict) -> List[dict]:
+    rows = state.get("body_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
+        assembly_id = str(row.get("assembly_id", "")).strip()
+        if not assembly_id:
+            continue
+        shape_type = str(row.get("shape_type", "capsule")).strip() or "capsule"
+        if shape_type not in ("capsule", "aabb", "convex_hull"):
+            shape_type = "capsule"
+        params_raw = row.get("shape_parameters")
+        if not isinstance(params_raw, dict):
+            params_raw = row.get("parameters")
+        params = dict(params_raw) if isinstance(params_raw, dict) else {}
+        half_extents = _vector3_int(params.get("half_extents_mm"), "half_extents_mm") or {"x": 0, "y": 0, "z": 0}
+        position = _vector3_int(row.get("transform_mm"), "transform_mm")
+        if position is None:
+            position = _vector3_int(row.get("position_mm"), "position_mm")
+        velocity = _vector3_int(row.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}
+        orientation = _angles_int(row.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+        normalized.append(
+            {
+                "assembly_id": assembly_id,
+                "owner_assembly_id": str(row.get("owner_assembly_id", "")).strip() or assembly_id,
+                "shape_type": shape_type,
+                "shape_parameters": {
+                    "radius_mm": max(0, _as_int(params.get("radius_mm", 0), 0)),
+                    "height_mm": max(0, _as_int(params.get("height_mm", 0), 0)),
+                    "half_extents_mm": {
+                        "x": max(0, _as_int(half_extents.get("x", 0), 0)),
+                        "y": max(0, _as_int(half_extents.get("y", 0), 0)),
+                        "z": max(0, _as_int(half_extents.get("z", 0), 0)),
+                    },
+                    "vertex_ref_id": str(params.get("vertex_ref_id", "")).strip(),
+                },
+                "collision_layer": str(row.get("collision_layer", "layer.default")).strip() or "layer.default",
+                "dynamic": bool(row.get("dynamic", False)),
+                "ghost": bool(row.get("ghost", False)),
+                "transform_mm": {
+                    "x": _as_int((position or {}).get("x", 0), 0),
+                    "y": _as_int((position or {}).get("y", 0), 0),
+                    "z": _as_int((position or {}).get("z", 0), 0),
+                },
+                "orientation_mdeg": {
+                    "yaw": _as_int((orientation or {}).get("yaw", 0), 0),
+                    "pitch": _as_int((orientation or {}).get("pitch", 0), 0),
+                    "roll": _as_int((orientation or {}).get("roll", 0), 0),
+                },
+                "velocity_mm_per_tick": {
+                    "x": _as_int((velocity or {}).get("x", 0), 0),
+                    "y": _as_int((velocity or {}).get("y", 0), 0),
+                    "z": _as_int((velocity or {}).get("z", 0), 0),
+                },
+            }
+        )
+    state["body_assemblies"] = normalized
+    return normalized
+
+
+def _ensure_collision_state(state: dict) -> dict:
+    payload = state.get("collision_state")
+    if not isinstance(payload, dict):
+        payload = {}
+    payload = {
+        "last_tick_resolved_pairs": _sorted_tokens(list(payload.get("last_tick_resolved_pairs") or [])),
+        "last_tick_unresolved_pairs": _sorted_tokens(list(payload.get("last_tick_unresolved_pairs") or [])),
+        "last_tick_pair_count": max(0, _as_int(payload.get("last_tick_pair_count", 0), 0)),
+        "last_tick_anchor": str(payload.get("last_tick_anchor", "")),
+    }
+    state["collision_state"] = payload
+    return payload
+
+
+def _find_body(body_rows: List[dict], body_id: str) -> dict:
+    token = str(body_id).strip()
+    for row in body_rows:
+        if str(row.get("assembly_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _shape_half_extents_mm(body_row: dict) -> Dict[str, int]:
+    params = dict(body_row.get("shape_parameters") or {})
+    shape_type = str(body_row.get("shape_type", "")).strip()
+    if shape_type == "aabb":
+        half_extents = _vector3_int(params.get("half_extents_mm"), "half_extents_mm") or {"x": 0, "y": 0, "z": 0}
+        return {
+            "x": max(0, _as_int(half_extents.get("x", 0), 0)),
+            "y": max(0, _as_int(half_extents.get("y", 0), 0)),
+            "z": max(0, _as_int(half_extents.get("z", 0), 0)),
+        }
+    radius = max(0, _as_int(params.get("radius_mm", 0), 0))
+    height = max(0, _as_int(params.get("height_mm", 0), 0))
+    return {
+        "x": radius,
+        "y": radius,
+        "z": max(radius, radius + int(height // 2)),
+    }
+
+
+def _shape_aabb_mm(body_row: dict) -> dict:
+    center = _vector3_int(body_row.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+    half = _shape_half_extents_mm(body_row)
+    return {
+        "min_x": int(center["x"]) - int(half["x"]),
+        "max_x": int(center["x"]) + int(half["x"]),
+        "min_y": int(center["y"]) - int(half["y"]),
+        "max_y": int(center["y"]) + int(half["y"]),
+        "min_z": int(center["z"]) - int(half["z"]),
+        "max_z": int(center["z"]) + int(half["z"]),
+    }
+
+
+def _broadphase_pairs(body_rows: List[dict], cell_size_mm: int = 2000) -> List[Tuple[str, str]]:
+    cell_size = max(1, _as_int(cell_size_mm, 2000))
+    by_id = {
+        str(row.get("assembly_id", "")).strip(): dict(row)
+        for row in body_rows
+        if isinstance(row, dict) and str(row.get("assembly_id", "")).strip()
+    }
+    grid: Dict[Tuple[int, int, int], List[str]] = {}
+    for body_id in sorted(by_id.keys()):
+        row = by_id[body_id]
+        aabb = _shape_aabb_mm(row)
+        min_cx = int(math.floor(int(aabb["min_x"]) / float(cell_size)))
+        max_cx = int(math.floor(int(aabb["max_x"]) / float(cell_size)))
+        min_cy = int(math.floor(int(aabb["min_y"]) / float(cell_size)))
+        max_cy = int(math.floor(int(aabb["max_y"]) / float(cell_size)))
+        min_cz = int(math.floor(int(aabb["min_z"]) / float(cell_size)))
+        max_cz = int(math.floor(int(aabb["max_z"]) / float(cell_size)))
+        for cx in range(min_cx, max_cx + 1):
+            for cy in range(min_cy, max_cy + 1):
+                for cz in range(min_cz, max_cz + 1):
+                    key = (int(cx), int(cy), int(cz))
+                    grid.setdefault(key, []).append(body_id)
+
+    pair_set = set()
+    for cell_key in sorted(grid.keys()):
+        cell_ids = _sorted_tokens(list(grid.get(cell_key) or []))
+        for left_index, left_id in enumerate(cell_ids):
+            for right_id in cell_ids[left_index + 1 :]:
+                if left_id == right_id:
+                    continue
+                pair = tuple(sorted((left_id, right_id)))
+                pair_set.add(pair)
+    return sorted(list(pair_set), key=lambda item: (str(item[0]), str(item[1])))
+
+
+def _shape_pair_supported(shape_a: str, shape_b: str) -> bool:
+    pair = tuple(sorted((str(shape_a), str(shape_b))))
+    return pair in (
+        ("aabb", "aabb"),
+        ("aabb", "capsule"),
+        ("capsule", "capsule"),
+    )
+
+
+def _overlap_mtv_aabb_proxy(body_a: dict, body_b: dict) -> Dict[str, int] | None:
+    center_a = _vector3_int(body_a.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+    center_b = _vector3_int(body_b.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+    half_a = _shape_half_extents_mm(body_a)
+    half_b = _shape_half_extents_mm(body_b)
+    dx = int(center_b["x"]) - int(center_a["x"])
+    dy = int(center_b["y"]) - int(center_a["y"])
+    dz = int(center_b["z"]) - int(center_a["z"])
+    overlap_x = int(half_a["x"]) + int(half_b["x"]) - abs(int(dx))
+    overlap_y = int(half_a["y"]) + int(half_b["y"]) - abs(int(dy))
+    overlap_z = int(half_a["z"]) + int(half_b["z"]) - abs(int(dz))
+    if overlap_x <= 0 or overlap_y <= 0 or overlap_z <= 0:
+        return None
+    candidates = [
+        ("x", int(overlap_x), int(dx), 0),
+        ("y", int(overlap_y), int(dy), 1),
+        ("z", int(overlap_z), int(dz), 2),
+    ]
+    axis, overlap, delta, _ = sorted(candidates, key=lambda row: (int(row[1]), int(row[3])))[0]
+    direction = -1 if int(delta) >= 0 else 1
+    mtv = {"x": 0, "y": 0, "z": 0}
+    mtv[str(axis)] = int(direction) * int(overlap)
+    return mtv
+
+
+def _pair_id(body_id_a: str, body_id_b: str) -> str:
+    left = str(body_id_a).strip()
+    right = str(body_id_b).strip()
+    if left <= right:
+        return "{}::{}".format(left, right)
+    return "{}::{}".format(right, left)
+
+
+def _owner_shard_for_object(shard_map: dict, object_id: str) -> str:
+    token = str(object_id).strip()
+    if not token:
+        return ""
+    indexed = dict(shard_map.get("object_owner") or {})
+    owner = str(indexed.get(token, "")).strip()
+    if owner:
+        return owner
+    rows = shard_map.get("shards")
+    if not isinstance(rows, list):
+        return ""
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("shard_id", ""))):
+        shard_id = str(row.get("shard_id", "")).strip()
+        scope = row.get("region_scope")
+        if not shard_id or not isinstance(scope, dict):
+            continue
+        object_ids = _sorted_tokens(list(scope.get("object_ids") or []))
+        if token in object_ids:
+            return shard_id
+    return ""
+
+
+def _resolve_body_collisions(
+    state: dict,
+    moved_body_id: str,
+    ghost_collisions_enabled: bool,
+    policy_context: dict | None,
+) -> Dict[str, object]:
+    bodies = _ensure_body_assemblies(state)
+    by_id = {
+        str(row.get("assembly_id", "")).strip(): row
+        for row in bodies
+        if isinstance(row, dict) and str(row.get("assembly_id", "")).strip()
+    }
+    pairs = _broadphase_pairs(list(by_id.values()))
+    collidable_pairs: List[str] = []
+    resolved_pairs: List[str] = []
+    unresolved_pairs: List[str] = []
+
+    policy = dict(policy_context or {})
+    shard_map = dict(policy.get("shard_map") or {})
+    active_shard_id = str(policy.get("active_shard_id", "")).strip()
+    allow_cross_shard_collision = bool(policy.get("allow_cross_shard_collision", False))
+
+    for left_id, right_id in pairs:
+        body_a = by_id.get(str(left_id))
+        body_b = by_id.get(str(right_id))
+        if not isinstance(body_a, dict) or not isinstance(body_b, dict):
+            continue
+        if str(body_a.get("collision_layer", "")).strip() != str(body_b.get("collision_layer", "")).strip():
+            continue
+        if (bool(body_a.get("ghost", False)) or bool(body_b.get("ghost", False))) and not bool(ghost_collisions_enabled):
+            continue
+        shape_a = str(body_a.get("shape_type", "")).strip()
+        shape_b = str(body_b.get("shape_type", "")).strip()
+        if not _shape_pair_supported(shape_a=shape_a, shape_b=shape_b):
+            continue
+
+        pair_id = _pair_id(left_id, right_id)
+        collidable_pairs.append(pair_id)
+        if (
+            active_shard_id
+            and (str(moved_body_id).strip() in (str(left_id), str(right_id)))
+            and not allow_cross_shard_collision
+        ):
+            owner_a = _owner_shard_for_object(shard_map=shard_map, object_id=str(body_a.get("owner_assembly_id", left_id)))
+            owner_b = _owner_shard_for_object(shard_map=shard_map, object_id=str(body_b.get("owner_assembly_id", right_id)))
+            if owner_a and owner_b and owner_a != owner_b:
+                return refusal(
+                    "refusal.control.cross_shard_collision_forbidden",
+                    "collision pair '{}' spans shards '{}' and '{}'".format(pair_id, owner_a, owner_b),
+                    "Keep colliding bodies in one shard or enable allow_cross_shard_collision policy.",
+                    {
+                        "pair_id": pair_id,
+                        "owner_shard_a": owner_a,
+                        "owner_shard_b": owner_b,
+                        "active_shard_id": active_shard_id,
+                    },
+                    "$.intent.inputs.body_id",
+                )
+
+        mtv = _overlap_mtv_aabb_proxy(body_a=body_a, body_b=body_b)
+        if mtv is None:
+            continue
+
+        dynamic_a = bool(body_a.get("dynamic", False)) and not bool(body_a.get("ghost", False))
+        dynamic_b = bool(body_b.get("dynamic", False)) and not bool(body_b.get("ghost", False))
+        a_transform = _vector3_int(body_a.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+        b_transform = _vector3_int(body_b.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+        if dynamic_a and dynamic_b:
+            for axis in ("x", "y", "z"):
+                full = int(mtv[axis])
+                a_step = int(full // 2)
+                b_step = int(-(full - a_step))
+                a_transform[axis] = int(a_transform[axis]) + int(a_step)
+                b_transform[axis] = int(b_transform[axis]) + int(b_step)
+            body_a["transform_mm"] = dict(a_transform)
+            body_b["transform_mm"] = dict(b_transform)
+            resolved_pairs.append(pair_id)
+        elif dynamic_a and not dynamic_b:
+            for axis in ("x", "y", "z"):
+                a_transform[axis] = int(a_transform[axis]) + int(mtv[axis])
+            body_a["transform_mm"] = dict(a_transform)
+            resolved_pairs.append(pair_id)
+        elif dynamic_b and not dynamic_a:
+            for axis in ("x", "y", "z"):
+                b_transform[axis] = int(b_transform[axis]) - int(mtv[axis])
+            body_b["transform_mm"] = dict(b_transform)
+            resolved_pairs.append(pair_id)
+        else:
+            unresolved_pairs.append(pair_id)
+
+    for pair_id in _sorted_tokens(collidable_pairs):
+        left_id, right_id = pair_id.split("::", 1)
+        body_a = by_id.get(str(left_id))
+        body_b = by_id.get(str(right_id))
+        if not isinstance(body_a, dict) or not isinstance(body_b, dict):
+            continue
+        if _overlap_mtv_aabb_proxy(body_a=body_a, body_b=body_b) is not None:
+            unresolved_pairs.append(pair_id)
+
+    collision_state = _ensure_collision_state(state)
+    collision_state["last_tick_resolved_pairs"] = _sorted_tokens(list(resolved_pairs))
+    collision_state["last_tick_unresolved_pairs"] = _sorted_tokens(list(unresolved_pairs))
+    collision_state["last_tick_pair_count"] = len(_sorted_tokens(collidable_pairs))
+    collision_state["last_tick_anchor"] = canonical_sha256(
+        {
+            "pair_count": int(collision_state["last_tick_pair_count"]),
+            "resolved": list(collision_state["last_tick_resolved_pairs"]),
+            "unresolved": list(collision_state["last_tick_unresolved_pairs"]),
+        }
+    )
+    state["collision_state"] = collision_state
+    state["body_assemblies"] = sorted(
+        (
+            dict(item)
+            for item in by_id.values()
+            if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()
+        ),
+        key=lambda item: str(item.get("assembly_id", "")),
+    )
+    if bool(policy.get("strict_contracts", False)) and collision_state["last_tick_unresolved_pairs"]:
+        return refusal(
+            "refusal.contract.no_penetration_violation",
+            "collision resolution left unresolved overlap pairs",
+            "Reduce movement delta or increase separation before applying movement in strict contract mode.",
+            {
+                "unresolved_pairs": list(collision_state["last_tick_unresolved_pairs"]),
+            },
+            "$.body_assemblies",
+        )
+    return {
+        "result": "complete",
+        "resolved_pairs": list(collision_state["last_tick_resolved_pairs"]),
+        "unresolved_pairs": list(collision_state["last_tick_unresolved_pairs"]),
+        "pair_count": int(collision_state["last_tick_pair_count"]),
+        "collision_anchor": str(collision_state["last_tick_anchor"]),
+    }
 
 
 def _control_gate_refusal(gate_payload: dict) -> dict:
@@ -1506,6 +1862,8 @@ def execute_intent(
         )
     controllers = _ensure_controller_assemblies(state)
     bindings = _ensure_control_bindings(state)
+    bodies = _ensure_body_assemblies(state)
+    _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
 
     if process_id == "process.camera_move":
@@ -1777,6 +2135,91 @@ def execute_intent(
         )
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
         _advance_time(state, steps=1)
+    elif process_id == "process.body_move_attempt":
+        body_id = str(inputs.get("body_id", "")).strip()
+        if not body_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.body_move_attempt requires body_id",
+                "Provide body_id and delta_transform_mm in the process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.body_id",
+            )
+        body = _find_body(body_rows=bodies, body_id=body_id)
+        if not body:
+            return refusal(
+                "refusal.control.target_invalid",
+                "body '{}' does not exist".format(body_id),
+                "Use a body_id present in universe_state.body_assemblies.",
+                {"body_id": body_id},
+                "$.intent.inputs.body_id",
+            )
+        if not bool(body.get("dynamic", False)):
+            return refusal(
+                "refusal.control.target_invalid",
+                "body '{}' is static and cannot be moved by process.body_move_attempt".format(body_id),
+                "Set body.dynamic=true or use a static placement process.",
+                {"body_id": body_id},
+                "$.intent.inputs.body_id",
+            )
+        delta = _vector3_int(inputs.get("delta_transform_mm"), "delta_transform_mm")
+        if delta is None:
+            delta = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
+        dt_ticks = max(1, _as_int(inputs.get("dt_ticks", 1), 1))
+        if delta is None:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.body_move_attempt requires delta_transform_mm{x,y,z}",
+                "Provide integer delta_transform_mm and optional dt_ticks.",
+                {"process_id": process_id},
+                "$.intent.inputs.delta_transform_mm",
+            )
+        orientation_delta = _angles_int(inputs.get("delta_orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+        ghost_collisions_enabled = bool(inputs.get("ghost_collisions_enabled", False))
+
+        transform = _vector3_int(body.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+        orientation = _angles_int(body.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+        velocity = _vector3_int(body.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}
+        transform["x"] = int(transform["x"]) + int(delta["x"]) * int(dt_ticks)
+        transform["y"] = int(transform["y"]) + int(delta["y"]) * int(dt_ticks)
+        transform["z"] = int(transform["z"]) + int(delta["z"]) * int(dt_ticks)
+        orientation["yaw"] = int(orientation["yaw"]) + int(orientation_delta["yaw"])
+        orientation["pitch"] = int(orientation["pitch"]) + int(orientation_delta["pitch"])
+        orientation["roll"] = int(orientation["roll"]) + int(orientation_delta["roll"])
+        velocity["x"] = int(delta["x"])
+        velocity["y"] = int(delta["y"])
+        velocity["z"] = int(delta["z"])
+        body["transform_mm"] = transform
+        body["orientation_mdeg"] = orientation
+        body["velocity_mm_per_tick"] = velocity
+
+        if bool(body.get("ghost", False)) and not ghost_collisions_enabled:
+            collision_state = _ensure_collision_state(state)
+            collision_state["last_tick_pair_count"] = 0
+            collision_state["last_tick_resolved_pairs"] = []
+            collision_state["last_tick_unresolved_pairs"] = []
+            collision_state["last_tick_anchor"] = canonical_sha256(
+                {
+                    "pair_count": 0,
+                    "resolved": [],
+                    "unresolved": [],
+                }
+            )
+            state["collision_state"] = collision_state
+            state["body_assemblies"] = sorted(
+                (dict(item) for item in bodies if isinstance(item, dict)),
+                key=lambda item: str(item.get("assembly_id", "")),
+            )
+        else:
+            resolved = _resolve_body_collisions(
+                state=state,
+                moved_body_id=body_id,
+                ghost_collisions_enabled=ghost_collisions_enabled,
+                policy_context=policy_context,
+            )
+            if resolved.get("result") != "complete":
+                return resolved
+        _advance_time(state, steps=int(dt_ticks))
     elif process_id == "process.instrument_tick":
         sim = _ensure_simulation_time(state)
         control = _ensure_time_control(state)

@@ -37,6 +37,7 @@ PROCESS_PRIORITY = {
     "process.control_release_agent": 25,
     "process.control_set_view_lens": 25,
     "process.camera_teleport": 30,
+    "process.body_move_attempt": 35,
     "process.camera_move": 40,
 }
 
@@ -51,6 +52,7 @@ PROCESS_ENTITY_SCOPE = {
     "process.control_release_agent": "controller.binding.possess",
     "process.control_set_view_lens": "camera.main",
     "process.camera_teleport": "camera.main",
+    "process.body_move_attempt": "body.unknown",
     "process.camera_move": "camera.main",
 }
 
@@ -65,6 +67,7 @@ PROCESS_FIELD_SCOPE = {
     "process.control_release_agent": "control.binding.possess",
     "process.control_set_view_lens": "camera.lens",
     "process.camera_teleport": "camera.transform",
+    "process.body_move_attempt": "body.transform",
     "process.camera_move": "camera.transform",
 }
 
@@ -102,6 +105,11 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
     if not isinstance(inputs, dict):
         inputs = {}
     intent_id = str(envelope.get("intent_id", ""))
+    entity_scope = str(PROCESS_ENTITY_SCOPE.get(process_id, "entity.unknown"))
+    if process_id == "process.body_move_attempt":
+        body_id = str(inputs.get("body_id", "") or inputs.get("target_body_id", "")).strip()
+        if body_id:
+            entity_scope = body_id
     return {
         "envelope_id": str(envelope.get("envelope_id", "")),
         "script_step": int(script_step),
@@ -113,7 +121,7 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
             "inputs": dict(inputs),
         },
         "priority": int(PROCESS_PRIORITY.get(process_id, 999)),
-        "entity_id": str(PROCESS_ENTITY_SCOPE.get(process_id, "entity.unknown")),
+        "entity_id": entity_scope,
         "field_scope": str(PROCESS_FIELD_SCOPE.get(process_id, "scope.{}".format(process_id))),
     }
 
