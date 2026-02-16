@@ -3336,6 +3336,95 @@ def _append_negative_invariant_findings(
                     )
                 )
 
+    memory_kernel_rel = "src/epistemics/memory/memory_kernel.py"
+    memory_kernel_abs = os.path.join(repo_root, memory_kernel_rel.replace("/", os.sep))
+    if not os.path.isfile(memory_kernel_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=memory_kernel_rel,
+                line_number=1,
+                snippet="",
+                message="memory kernel is missing; cannot verify memory truth-separation invariants",
+                rule_id="INV-MEMORY-NO-TRUTH",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=memory_kernel_rel,
+                line_number=1,
+                snippet="",
+                message="memory kernel is missing; cannot verify tick-based decay invariants",
+                rule_id="INV-MEMORY-TICK-BASED",
+            )
+        )
+    else:
+        try:
+            memory_kernel_text = open(memory_kernel_abs, "r", encoding="utf-8").read()
+        except OSError:
+            memory_kernel_text = ""
+        if not memory_kernel_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=memory_kernel_rel,
+                    line_number=1,
+                    snippet="",
+                    message="memory kernel is unreadable; cannot verify invariants",
+                    rule_id="INV-MEMORY-NO-TRUTH",
+                )
+            )
+        else:
+            truth_token_pattern = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)
+            for line_no, line in _iter_lines(repo_root, memory_kernel_rel):
+                if truth_token_pattern.search(str(line)):
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=memory_kernel_rel,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="memory subsystem must not reference TruthModel/universe state payloads",
+                            rule_id="INV-MEMORY-NO-TRUTH",
+                        )
+                    )
+
+            wall_clock_pattern = re.compile(
+                r"(time\.time|time\.perf_counter|time\.monotonic|datetime\.|utcnow\(|now\()",
+                re.IGNORECASE,
+            )
+            for line_no, line in _iter_lines(repo_root, memory_kernel_rel):
+                if wall_clock_pattern.search(str(line)):
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=memory_kernel_rel,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="memory decay/eviction must be tick-based and must not use wall-clock APIs",
+                            rule_id="INV-MEMORY-TICK-BASED",
+                        )
+                    )
+
+            tick_tokens = (
+                "tick_delta",
+                "ttl_ticks",
+                "last_refresh_tick",
+            )
+            for token in tick_tokens:
+                if token not in memory_kernel_text:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=memory_kernel_rel,
+                            line_number=1,
+                            snippet=token,
+                            message="memory kernel must use deterministic tick-based ttl accounting",
+                            rule_id="INV-MEMORY-TICK-BASED",
+                        )
+                    )
+
 
 def _append_representation_invariant_findings(
     findings: List[Dict[str, object]],

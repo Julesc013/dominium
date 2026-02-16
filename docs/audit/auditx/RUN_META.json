@@ -3,8 +3,8 @@
   "cache_mode": "incremental",
   "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-16T12:04:21Z",
-  "graph_hash": "77023a48b7475d00bcb1f2320b1a34054d931f7a19a3176188ac2461515c9238",
+  "generated_utc": "2026-02-16T14:14:58Z",
+  "graph_hash": "fbaff0d9fc4cda704862ca19070a872bbe3e0559ba1cc08864b9369cf21f1d32",
   "last_reviewed": "2026-02-16",
   "output_format": "both",
   "platform": "windows",
@@ -51,6 +51,8 @@
     "E1_NET_POLICY_DRIFT",
     "E20_COSMETIC_SEMANTICS_SMELL",
     "E21_UNAUTHORIZED_COSMETIC_PACK_SMELL",
+    "E22_MEMORY_TRUTH_LEAK_SMELL",
+    "E23_MEMORY_NONDETERMINISM_SMELL",
     "E2_TRUTH_OVER_NET_SMELL",
     "E3_HANDSHAKE_POLICY_BYPASS_SMELL",
     "E4_AUTHORITATIVE_TRUTH_LEAK",
@@ -61,5 +63,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-ec7f4e77023cfe29"
+  "workspace_id": "ws-a1f9daf55483d32c"
 }

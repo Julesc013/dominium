@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 908
-- Severities: INFO=1, RISK=143, VIOLATION=2, WARN=762
-- Categories: canon_drift=624, capability_bypass_smell=1, derived_freshness=10, mode_flag_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, reachability=6, schema_usage=131, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 888
+- Severities: INFO=3, RISK=107, VIOLATION=2, WARN=776
+- Categories: canon_drift=625, capability_bypass_smell=1, derived_freshness=12, mode_flag_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, reachability=10, schema_usage=104, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
@@ -239,138 +239,138 @@ Superseded By: none
 - `A4_SCHEMA_USAGE:0073` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/net/srz/shard_coordinator.py)
   - Detected key access without obvious schema anchor: resync_count
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0074` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: history.anchor.tick.0
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0075` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: session_spec_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0076` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: universe_identity_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0077` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: universe_state_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0078` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: worldgen_search_plan_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0079` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: session_spec_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0080` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: universe_identity_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0081` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: universe_state_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0082` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/creator.py)
-  - Detected key access without obvious schema anchor: worldgen_search_plan_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0083` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0074` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: observed_entities
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0084` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0075` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: observed_entities
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0085` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0076` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: hierarchy
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0086` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0077` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: camera_viewpoint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0087` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0078` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: observed_entities
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0088` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0079` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: time_state
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0089` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0080` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: watermark
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0090` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0081` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: diegetic_instruments
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0091` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0082` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: truth_overlay
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0092` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0083` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: camera_viewpoint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0093` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0084` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: lens.nondiegetic.access
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0094` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
+- `A4_SCHEMA_USAGE:0085` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/observation.py)
   - Detected key access without obvious schema anchor: ch.watermark.observer_mode
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0095` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: entitlement.control.possess
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0096` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: min_x
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0097` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: max_x
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0098` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: min_y
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0099` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: max_y
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0100` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: min_z
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0101` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: max_z
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0102` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: errors
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0103` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: representation_state
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0104` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0105` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0106` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0107` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0108` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0109` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0110` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0111` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0112` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: compute_units
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0113` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: script_step
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0114` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/runner.py)
+- `A4_SCHEMA_USAGE:0086` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/runner.py)
   - Detected key access without obvious schema anchor: handshake_artifact_path
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0115` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/scheduler.py)
-  - Detected key access without obvious schema anchor: script_step
+- `A4_SCHEMA_USAGE:0087` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_memory_determinism.py)
+  - Detected key access without obvious schema anchor: lens.memory.test
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0116` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/scheduler.py)
-  - Detected key access without obvious schema anchor: script_step
+- `A4_SCHEMA_USAGE:0088` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_memory_eviction_deterministic.py)
+  - Detected key access without obvious schema anchor: lens.memory.evict
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0117` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/scheduler.py)
-  - Detected key access without obvious schema anchor: script_step
+- `A4_SCHEMA_USAGE:0089` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_memory_policy_channel_forbidden.py)
+  - Detected key access without obvious schema anchor: lens.memory.allowed_only
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0118` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/scheduler.py)
-  - Detected key access without obvious schema anchor: scheduler_tick
+- `A4_SCHEMA_USAGE:0090` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_memory_store_hash_audit.py)
+  - Detected key access without obvious schema anchor: ac.module.state_integrity
   - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0091` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/testx/tests/test_srz_hybrid_two_shard_equivalence.py)
+  - Detected key access without obvious schema anchor: default_shard_map_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A8_DERIVED_FRESHNESS_SMELL:0001` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/auditx/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.auditx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0002` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/performx/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.performx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0003` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/REPOX_PROFILE.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.repox.profile
+- `A8_DERIVED_FRESHNESS_SMELL:0004` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/proof_manifest.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.repox.proof_manifest
+- `A8_DERIVED_FRESHNESS_SMELL:0005` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/securex/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.securex.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0006` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/testx/TESTX_RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.testx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0007` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.full_plan_warning
+- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/system/LEDGER_SNAPSHOT.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.ledger_snapshot
+- `A8_DERIVED_FRESHNESS_SMELL:0009` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.performance_ceiling_alert
+- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
+  - Bridge is missing required capability/entitlement guard markers.
+  - Missing markers: refuse.profile_not_selected
+- `E2_TRUTH_OVER_NET_SMELL:0001` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(truthmodel|truth_model).*(serialize|json|packet|socket|network|replication|delta|snapshot)"
+- `E2_TRUTH_OVER_NET_SMELL:0002` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(serialize|json|packet|socket|network|replication|delta|snapshot).*(truthmodel|truth_model)",
+- `E2_TRUTH_OVER_NET_SMELL:0003` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - message="TruthModel network serialization smell detected; transmit PerceivedModel/snapshot hashes only",
+- `E2_TRUTH_OVER_NET_SMELL:0004` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - message="network payload path must remain PerceivedModel-only and avoid TruthModel serialization",
+- `E2_TRUTH_OVER_NET_SMELL:0005` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(send|socket|packet|transport|wire|payload_ref).*(truth_model|truthmodel|universe_state)"
+- `E2_TRUTH_OVER_NET_SMELL:0006` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(truth_model|truthmodel|universe_state).*(send|socket|packet|transport|wire)",
+- `A1_REACHABILITY_ORPHANED:0001` WARN `A1_REACHABILITY_ORPHANED` `reachability` (src/epistemics/__init__.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0002` WARN `A1_REACHABILITY_ORPHANED` `reachability` (src/epistemics/memory/__init__.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0003` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/__init__.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0004` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/e22_memory_truth_leak_smell.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0005` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/auditx/analyzers/e23_memory_nondeterminism_smell.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0006` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/compiler.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0007` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/constants.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0008` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/registry_compile/lockfile.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0009` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/sessionx/script_runner.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0010` WARN `A1_REACHABILITY_ORPHANED` `reachability` (tools/xstack/testx/tests/testlib.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A2_SCHEMA_SHADOWING:0001` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.

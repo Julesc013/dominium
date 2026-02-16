@@ -47,6 +47,8 @@ from analyzers import e18_view_mode_bypass_smell
 from analyzers import e19_watermark_missing_smell
 from analyzers import e20_cosmetic_semantics_smell
 from analyzers import e21_unauthorized_cosmetic_pack_smell
+from analyzers import e22_memory_truth_leak_smell
+from analyzers import e23_memory_nondeterminism_smell
 
 
 ANALYZERS = (
@@ -97,6 +99,8 @@ ANALYZERS = (
     e19_watermark_missing_smell,
     e20_cosmetic_semantics_smell,
     e21_unauthorized_cosmetic_pack_smell,
+    e22_memory_truth_leak_smell,
+    e23_memory_nondeterminism_smell,
 )
 
 
