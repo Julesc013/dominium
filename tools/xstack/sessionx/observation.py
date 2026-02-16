@@ -16,6 +16,8 @@ CHANNEL_ENTITLEMENT_REQUIREMENTS = {
     "ch.truth.overlay.terrain_height": "entitlement.debug_view",
     "ch.truth.overlay.anchor_hash": "entitlement.debug_view",
 }
+DEFAULT_RENDER_PROXY_ID = "render.proxy.pill_default"
+DEFAULT_COSMETIC_ID = "cosmetic.default.pill"
 
 
 def _sorted_unique(items: List[str]) -> List[str]:
@@ -359,7 +361,7 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         out["sites"] = {"entries": [], "search_index": {}}
     if not ({"ch.core.entities", "ch.nondiegetic.entity_inspector"} & allowed):
         out["observed_entities"] = []
-        out["entities"] = {"entries": [], "selected_fields": []}
+        out["entities"] = {"entries": [], "assignments": [], "selected_fields": []}
     if "ch.nondiegetic.entity_inspector" not in allowed:
         out["control"] = {"controllers": [], "bindings": [], "possession_graph": [], "summary": "redacted"}
     if not ({"ch.core.process_log", "ch.nondiegetic.performance_monitor"} & allowed):
@@ -635,12 +637,112 @@ def _process_log_entries(truth: dict) -> list:
     return sorted(out, key=lambda item: (int(item.get("log_index", 0)), str(item.get("intent_id", ""))))
 
 
+def _id_index(rows: list, id_keys: Tuple[str, ...]) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(id_keys[0], ""))):
+        for key in id_keys:
+            token = str(row.get(key, "")).strip()
+            if token:
+                out[token] = dict(row)
+    return out
+
+
+def _representation_indexes(truth: dict) -> Dict[str, Dict[str, dict]]:
+    cosmetic_registry = _registry_payload(truth, "cosmetic_registry")
+    render_proxy_registry = _registry_payload(truth, "render_proxy_registry")
+    cosmetic_rows = list(cosmetic_registry.get("cosmetics") or [])
+    render_proxy_rows = list(render_proxy_registry.get("render_proxies") or [])
+    return {
+        "cosmetics": _id_index(cosmetic_rows, ("cosmetic_id",)),
+        "render_proxies": _id_index(render_proxy_rows, ("render_proxy_id",)),
+    }
+
+
+def _representation_assignments(truth: dict) -> Dict[str, dict]:
+    payload = _registry_payload(truth, "representation_state")
+    assignments = payload.get("assignments")
+    if isinstance(assignments, dict):
+        out = {}
+        for key in sorted(assignments.keys()):
+            token = str(key).strip()
+            row = assignments.get(key)
+            if token and isinstance(row, dict):
+                out[token] = dict(row)
+        return out
+    if isinstance(assignments, list):
+        out = {}
+        for row in sorted((item for item in assignments if isinstance(item, dict)), key=lambda item: str(item.get("target_agent_id", ""))):
+            token = str(row.get("target_agent_id", "")).strip()
+            if token:
+                out[token] = dict(row)
+        return out
+    return {}
+
+
 def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
     state = truth.get("universe_state")
     if not isinstance(state, dict):
         return {"entries": [], "selected_fields": []}
     known = sorted(set(str(item).strip() for item in observed_entities if str(item).strip()))
-    entries = [{"entity_id": token} for token in known]
+    agent_rows = list(state.get("agent_states") or [])
+    body_rows = list(state.get("body_assemblies") or [])
+    agent_index = _id_index(agent_rows, ("agent_id", "entity_id"))
+    body_index = _id_index(body_rows, ("assembly_id", "body_id"))
+    representation_index = _representation_indexes(truth)
+    cosmetic_rows = dict(representation_index.get("cosmetics") or {})
+    render_proxy_rows = dict(representation_index.get("render_proxies") or {})
+    assignments = _representation_assignments(truth)
+    entries = []
+    assignment_rows = []
+    for token in known:
+        agent = dict(agent_index.get(token) or {})
+        body_id = str(agent.get("body_id", "") or "").strip()
+        body = dict(body_index.get(body_id) or {}) if body_id else {}
+        shape_type = str(body.get("shape_type", "")).strip() or "capsule"
+        assignment = dict(assignments.get(token) or {})
+        cosmetic_id = str(assignment.get("cosmetic_id", "")).strip() or DEFAULT_COSMETIC_ID
+        cosmetic = dict(cosmetic_rows.get(cosmetic_id) or {})
+        proxy_id = str(cosmetic.get("render_proxy_id", "")).strip() or DEFAULT_RENDER_PROXY_ID
+        proxy = dict(render_proxy_rows.get(proxy_id) or {})
+        supported_shapes = sorted(
+            set(str(item).strip() for item in (proxy.get("supported_body_shapes") or []) if str(item).strip())
+        )
+        used_fallback = False
+        if not proxy or (supported_shapes and shape_type not in set(supported_shapes)):
+            proxy_id = DEFAULT_RENDER_PROXY_ID
+            proxy = dict(render_proxy_rows.get(proxy_id) or {})
+            used_fallback = True
+        mesh_ref = str(cosmetic.get("mesh_ref_override") or "").strip() or str(proxy.get("mesh_ref", "")).strip() or "asset.mesh.pill.default"
+        material_ref = str(cosmetic.get("material_ref_override") or "").strip() or str(proxy.get("material_ref", "")).strip() or "asset.material.pill.default"
+        entry = {
+            "entity_id": token,
+            "agent_id": str(agent.get("agent_id", "")).strip() or token,
+            "body_id": body_id,
+            "owner_peer_id": str(agent.get("owner_peer_id", "")).strip() if agent.get("owner_peer_id") is not None else None,
+            "representation": {
+                "shape_type": shape_type,
+                "cosmetic_id": cosmetic_id,
+                "render_proxy_id": proxy_id,
+                "mesh_ref": mesh_ref,
+                "material_ref": material_ref,
+                "lod_set_ref": str(proxy.get("lod_set_ref", "")).strip() if proxy.get("lod_set_ref") is not None else None,
+                "fallback_proxy_id": DEFAULT_RENDER_PROXY_ID,
+                "fallback_used": bool(used_fallback),
+            },
+            "transform_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
+        }
+        entries.append(entry)
+        if assignment:
+            assignment_rows.append(
+                {
+                    "assignment_id": str(assignment.get("assignment_id", "")).strip() or "cosmetic.assignment.{}".format(token),
+                    "target_agent_id": token,
+                    "cosmetic_id": cosmetic_id,
+                    "applied_tick": int(assignment.get("applied_tick", 0) or 0),
+                    "policy_id": str(assignment.get("policy_id", "")).strip(),
+                    "pack_id": str(assignment.get("pack_id", "")).strip(),
+                }
+            )
     for camera in state.get("camera_assemblies") or []:
         if not isinstance(camera, dict):
             continue
@@ -648,11 +750,38 @@ def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
         if not assembly_id:
             continue
         if assembly_id not in known:
-            entries.append({"entity_id": assembly_id})
+            entries.append(
+                {
+                    "entity_id": assembly_id,
+                    "representation": {
+                        "shape_type": "none",
+                        "cosmetic_id": DEFAULT_COSMETIC_ID,
+                        "render_proxy_id": DEFAULT_RENDER_PROXY_ID,
+                        "mesh_ref": "asset.mesh.pill.default",
+                        "material_ref": "asset.material.pill.default",
+                        "lod_set_ref": None,
+                        "fallback_proxy_id": DEFAULT_RENDER_PROXY_ID,
+                        "fallback_used": True,
+                    },
+                    "transform_mm": dict(camera.get("position_mm") or {"x": 0, "y": 0, "z": 0}),
+                }
+            )
     entries = sorted(entries, key=lambda item: str(item.get("entity_id", "")))
+    assignment_rows = sorted(
+        assignment_rows,
+        key=lambda item: (
+            str(item.get("target_agent_id", "")),
+            str(item.get("assignment_id", "")),
+        ),
+    )
     return {
         "entries": entries,
-        "selected_fields": [],
+        "assignments": assignment_rows,
+        "selected_fields": [
+            "representation.shape_type",
+            "representation.cosmetic_id",
+            "representation.render_proxy_id",
+        ],
     }
 
 
@@ -860,6 +989,9 @@ def build_truth_model(
             "control_action_registry_hash": str(registries.get("control_action_registry_hash", "")),
             "controller_type_registry_hash": str(registries.get("controller_type_registry_hash", "")),
             "view_mode_registry_hash": str(registries.get("view_mode_registry_hash", "")),
+            "render_proxy_registry_hash": str(registries.get("render_proxy_registry_hash", "")),
+            "cosmetic_registry_hash": str(registries.get("cosmetic_registry_hash", "")),
+            "cosmetic_policy_registry_hash": str(registries.get("cosmetic_policy_registry_hash", "")),
             "activation_policy_registry_hash": str(registries.get("activation_policy_registry_hash", "")),
             "budget_policy_registry_hash": str(registries.get("budget_policy_registry_hash", "")),
             "fidelity_policy_registry_hash": str(registries.get("fidelity_policy_registry_hash", "")),
