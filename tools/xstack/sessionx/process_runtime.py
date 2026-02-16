@@ -2203,6 +2203,7 @@ def execute_intent(
     bodies = _ensure_body_assemblies(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+    result_metadata: Dict[str, object] = {}
 
     if process_id == "process.camera_move":
         delta = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
@@ -2353,6 +2354,13 @@ def execute_intent(
             (dict(item) for item in bodies if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()),
             key=lambda item: str(item.get("assembly_id", "")),
         )
+        result_metadata = {
+            "agent_id": agent_id,
+            "body_id": body_id,
+            "movement_delta_mm": dict(world_delta),
+            "movement_distance_mm": int(abs(int(world_delta["x"])) + abs(int(world_delta["y"])) + abs(int(world_delta["z"]))),
+            "dt_ticks": int(dt_ticks),
+        }
         _advance_time(state, steps=int(dt_ticks))
     elif process_id == "process.agent_rotate":
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
@@ -2409,6 +2417,14 @@ def execute_intent(
             _refresh_agent_state_hash(agent_row=agent, body_row=body if isinstance(body, dict) else None)
         else:
             _refresh_agent_state_hash(agent_row=agent, body_row=None)
+        result_metadata = {
+            "agent_id": agent_id,
+            "rotation_delta_mdeg": {
+                "yaw": int(_as_int(delta_payload.get("yaw", 0), 0)),
+                "pitch": int(_as_int(delta_payload.get("pitch", 0), 0)),
+                "roll": int(_as_int(delta_payload.get("roll", 0), 0)),
+            },
+        }
         state["agent_states"] = sorted((dict(item) for item in agents if isinstance(item, dict)), key=lambda item: str(item.get("agent_id", "")))
         state["body_assemblies"] = sorted(
             (dict(item) for item in bodies if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()),
@@ -2719,6 +2735,16 @@ def execute_intent(
         )
         if moved.get("result") != "complete":
             return moved
+        result_metadata = {
+            "body_id": str(moved.get("body_id", "")),
+            "movement_delta_mm": dict(moved.get("delta_transform_mm") or {"x": 0, "y": 0, "z": 0}),
+            "movement_distance_mm": int(
+                abs(_as_int((moved.get("delta_transform_mm") or {}).get("x", 0), 0))
+                + abs(_as_int((moved.get("delta_transform_mm") or {}).get("y", 0), 0))
+                + abs(_as_int((moved.get("delta_transform_mm") or {}).get("z", 0), 0))
+            ),
+            "dt_ticks": int(moved.get("dt_ticks", 1)),
+        }
         _advance_time(state, steps=int(moved.get("dt_ticks", 1)))
     elif process_id == "process.instrument_tick":
         sim = _ensure_simulation_time(state)
@@ -2815,11 +2841,14 @@ def execute_intent(
         authority_origin=str(authority_context.get("authority_origin", "")),
         inputs=dict(inputs),
     )
-    return {
+    result_payload = {
         "result": "complete",
         "state_hash_anchor": state_hash_anchor,
         "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
     }
+    if isinstance(result_metadata, dict) and result_metadata:
+        result_payload.update(dict(result_metadata))
+    return result_payload
 
 
 def replay_intent_script(
