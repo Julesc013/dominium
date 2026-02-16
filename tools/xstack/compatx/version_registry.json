@@ -35,6 +35,20 @@
         "1.0.0"
       ]
     },
+    "agent_move_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "agent_rotate_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "anti_cheat_module_registry": {
       "current_version": "1.0.0",
       "migrations": {},
