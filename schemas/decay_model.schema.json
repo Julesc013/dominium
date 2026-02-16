@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Epistemic Decay Model Schema",
+  "version": "1.0.0",
+  "description": "Deterministic tick-based decay model for memory retention.",
+  "x-doc-ref": [
+    "docs/epistemics/MEMORY_AND_FOG_OF_WAR.md",
+    "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "decay_model_id",
+    "description",
+    "ttl_rules",
+    "refresh_rules",
+    "eviction_rule_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "decay_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ttl_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "channel_id",
+          "subject_kind",
+          "ttl_ticks"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "channel_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subject_kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ttl_ticks": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "refresh_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "channel_id",
+          "subject_kind",
+          "refresh_on_observed"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "channel_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subject_kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "refresh_on_observed": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "eviction_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "decay_model_id": "ep.decay.session_basic",
+      "description": "Session memory with bounded decay windows by channel.",
+      "ttl_rules": [
+        {
+          "rule_id": "ttl.default",
+          "channel_id": "*",
+          "subject_kind": "*",
+          "ttl_ticks": 240
+        },
+        {
+          "rule_id": "ttl.entities",
+          "channel_id": "ch.core.entities",
+          "subject_kind": "entity",
+          "ttl_ticks": 600
+        }
+      ],
+      "refresh_rules": [
+        {
+          "rule_id": "refresh.default",
+          "channel_id": "*",
+          "subject_kind": "*",
+          "refresh_on_observed": true
+        }
+      ],
+      "eviction_rule_id": "evict.oldest_first",
+      "extensions": {}
+    }
+  ]
+}

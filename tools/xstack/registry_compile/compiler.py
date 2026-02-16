@@ -3019,8 +3019,167 @@ def _hybrid_policy_rows(
 def _epistemic_policy_rows(
     repo_root: str,
     schema_root: str,
-) -> Tuple[List[dict], List[dict], List[dict]]:
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
+    _eviction_record, eviction_rows_raw, eviction_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/eviction_rule_registry.json",
+        expected_schema_id="dominium.registry.eviction_rule_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="eviction_rules",
+    )
+    if eviction_load_errors:
+        return [], [], [], [], eviction_load_errors
+
+    eviction_rows: List[dict] = []
+    eviction_rule_id_set = set()
+    for entry in sorted(eviction_rows_raw, key=lambda row: str((row or {}).get("eviction_rule_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_eviction_rule_entry",
+                    "message": "eviction rule entry must be object",
+                    "path": "$.eviction_rules",
+                }
+            )
+            continue
+        eviction_rule_id = str(entry.get("eviction_rule_id", "")).strip()
+        if not eviction_rule_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_eviction_rule_entry",
+                    "message": "eviction rule entry missing eviction_rule_id",
+                    "path": "$.eviction_rules.eviction_rule_id",
+                }
+            )
+            continue
+        if eviction_rule_id in eviction_rule_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_eviction_rule_id",
+                    "message": "duplicate eviction_rule_id '{}'".format(eviction_rule_id),
+                    "path": "$.eviction_rules.eviction_rule_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="eviction_rule",
+            payload=schema_payload,
+            path="data/registries/eviction_rule_registry.json#{}".format(eviction_rule_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        eviction_rows.append(
+            {
+                "eviction_rule_id": eviction_rule_id,
+                "description": str(entry.get("description", "")).strip(),
+                "algorithm_id": str(entry.get("algorithm_id", "")).strip(),
+                "priority_by_channel": dict(entry.get("priority_by_channel") or {}),
+                "priority_by_subject_kind": dict(entry.get("priority_by_subject_kind") or {}),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        eviction_rule_id_set.add(eviction_rule_id)
+    eviction_rows = sorted(eviction_rows, key=lambda row: str(row.get("eviction_rule_id", "")))
+
+    _decay_record, decay_rows_raw, decay_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/decay_model_registry.json",
+        expected_schema_id="dominium.registry.decay_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="decay_models",
+    )
+    if decay_load_errors:
+        return [], [], [], [], decay_load_errors
+
+    decay_rows: List[dict] = []
+    decay_model_id_set = set()
+    for entry in sorted(decay_rows_raw, key=lambda row: str((row or {}).get("decay_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_decay_model_entry",
+                    "message": "decay model entry must be object",
+                    "path": "$.decay_models",
+                }
+            )
+            continue
+        decay_model_id = str(entry.get("decay_model_id", "")).strip()
+        if not decay_model_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_decay_model_entry",
+                    "message": "decay model entry missing decay_model_id",
+                    "path": "$.decay_models.decay_model_id",
+                }
+            )
+            continue
+        if decay_model_id in decay_model_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_decay_model_id",
+                    "message": "duplicate decay_model_id '{}'".format(decay_model_id),
+                    "path": "$.decay_models.decay_model_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="decay_model",
+            payload=schema_payload,
+            path="data/registries/decay_model_registry.json#{}".format(decay_model_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        eviction_rule_id = str(entry.get("eviction_rule_id", "")).strip()
+        if eviction_rule_id not in eviction_rule_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.decay_eviction_rule_missing",
+                    "message": "decay model '{}' references unknown eviction_rule_id '{}'".format(
+                        decay_model_id,
+                        eviction_rule_id or "<empty>",
+                    ),
+                    "path": "$.decay_models.eviction_rule_id",
+                }
+            )
+            continue
+        decay_rows.append(
+            {
+                "decay_model_id": decay_model_id,
+                "description": str(entry.get("description", "")).strip(),
+                "ttl_rules": sorted(
+                    (dict(row) for row in (entry.get("ttl_rules") or []) if isinstance(row, dict)),
+                    key=lambda row: (
+                        str(row.get("channel_id", "")),
+                        str(row.get("subject_kind", "")),
+                        str(row.get("rule_id", "")),
+                        str(row.get("ttl_ticks", "")),
+                    ),
+                ),
+                "refresh_rules": sorted(
+                    (dict(row) for row in (entry.get("refresh_rules") or []) if isinstance(row, dict)),
+                    key=lambda row: (
+                        str(row.get("channel_id", "")),
+                        str(row.get("subject_kind", "")),
+                        str(row.get("rule_id", "")),
+                        str(row.get("refresh_on_observed", "")),
+                    ),
+                ),
+                "eviction_rule_id": eviction_rule_id,
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        decay_model_id_set.add(decay_model_id)
+    decay_rows = sorted(decay_rows, key=lambda row: str(row.get("decay_model_id", "")))
+
     _retention_record, retention_rows_raw, retention_load_errors = _load_registry_record(
         repo_root=repo_root,
         registry_rel_path="data/registries/retention_policy_registry.json",
@@ -3029,7 +3188,7 @@ def _epistemic_policy_rows(
         expected_entry_key="policies",
     )
     if retention_load_errors:
-        return [], [], retention_load_errors
+        return [], [], [], [], retention_load_errors
 
     retention_rows: List[dict] = []
     retention_policy_id_set = set()
@@ -3073,13 +3232,52 @@ def _epistemic_policy_rows(
         if schema_errors:
             errors.extend(schema_errors)
             continue
+        decay_model_id = str(entry.get("decay_model_id", "")).strip()
+        if decay_model_id and decay_model_id not in decay_model_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.retention_decay_model_missing",
+                    "message": "retention policy '{}' references unknown decay_model_id '{}'".format(
+                        retention_policy_id,
+                        decay_model_id,
+                    ),
+                    "path": "$.policies.decay_model_id",
+                }
+            )
+            continue
+        eviction_rule_id = (
+            str(entry.get("eviction_rule_id", "")).strip()
+            or str(entry.get("deterministic_eviction_rule_id", "")).strip()
+        )
+        if not eviction_rule_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.retention_eviction_rule_missing",
+                    "message": "retention policy '{}' must declare eviction_rule_id".format(retention_policy_id),
+                    "path": "$.policies.eviction_rule_id",
+                }
+            )
+            continue
+        if eviction_rule_id not in eviction_rule_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.retention_eviction_rule_missing",
+                    "message": "retention policy '{}' references unknown eviction_rule_id '{}'".format(
+                        retention_policy_id,
+                        eviction_rule_id,
+                    ),
+                    "path": "$.policies.eviction_rule_id",
+                }
+            )
+            continue
         retention_rows.append(
             {
                 "retention_policy_id": retention_policy_id,
                 "memory_allowed": bool(entry.get("memory_allowed", False)),
                 "max_memory_items": int(entry.get("max_memory_items", 0) or 0),
-                "decay_model_id": entry.get("decay_model_id"),
-                "deterministic_eviction_rule_id": str(entry.get("deterministic_eviction_rule_id", "")).strip(),
+                "decay_model_id": decay_model_id if decay_model_id else None,
+                "eviction_rule_id": eviction_rule_id,
+                "deterministic_eviction_rule_id": eviction_rule_id,
                 "extensions": dict(entry.get("extensions") or {}),
             }
         )
@@ -3094,7 +3292,7 @@ def _epistemic_policy_rows(
         expected_entry_key="policies",
     )
     if policy_load_errors:
-        return [], [], policy_load_errors
+        return [], [], [], [], policy_load_errors
 
     policy_rows: List[dict] = []
     epistemic_policy_id_set = set()
@@ -3203,7 +3401,7 @@ def _epistemic_policy_rows(
         )
         epistemic_policy_id_set.add(epistemic_policy_id)
     policy_rows = sorted(policy_rows, key=lambda row: str(row.get("epistemic_policy_id", "")))
-    return policy_rows, retention_rows, errors
+    return policy_rows, retention_rows, decay_rows, eviction_rows, errors
 
 
 def _ui_rows(contrib: List[dict], schema_root: str) -> Tuple[List[dict], List[dict]]:
@@ -3436,6 +3634,8 @@ def compile_bundle(
     (
         epistemic_policy_rows,
         retention_policy_rows,
+        decay_model_rows,
+        eviction_rule_rows,
         epistemic_registry_errors,
     ) = _epistemic_policy_rows(
         repo_root=repo_root,
@@ -3600,6 +3800,20 @@ def compile_bundle(
             "policies": retention_policy_rows,
         }
     )
+    decay_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "decay_models": decay_model_rows,
+        }
+    )
+    eviction_rule_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "eviction_rules": eviction_rule_rows,
+        }
+    )
     anti_cheat_policy_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -3719,6 +3933,8 @@ def compile_bundle(
         ),
         "epistemic_policy_registry": ("epistemic_policy_registry", epistemic_policy_payload),
         "retention_policy_registry": ("retention_policy_registry", retention_policy_payload),
+        "decay_model_registry": ("decay_model_registry", decay_model_payload),
+        "eviction_rule_registry": ("eviction_rule_registry", eviction_rule_payload),
         "anti_cheat_policy_registry": ("anti_cheat_policy_registry", anti_cheat_policy_payload),
         "anti_cheat_module_registry": ("anti_cheat_module_registry", anti_cheat_module_payload),
         "activation_policy_registry": ("activation_policy_registry", activation_policy_payload),
@@ -3754,6 +3970,8 @@ def compile_bundle(
         "perception_interest_policy_registry",
         "epistemic_policy_registry",
         "retention_policy_registry",
+        "decay_model_registry",
+        "eviction_rule_registry",
         "anti_cheat_policy_registry",
         "anti_cheat_module_registry",
         "activation_policy_registry",
@@ -3812,6 +4030,8 @@ def compile_bundle(
             "perception_interest_policy_registry_hash": registry_hashes["perception_interest_policy_registry_hash"],
             "epistemic_policy_registry_hash": registry_hashes["epistemic_policy_registry_hash"],
             "retention_policy_registry_hash": registry_hashes["retention_policy_registry_hash"],
+            "decay_model_registry_hash": registry_hashes["decay_model_registry_hash"],
+            "eviction_rule_registry_hash": registry_hashes["eviction_rule_registry_hash"],
             "anti_cheat_policy_registry_hash": registry_hashes["anti_cheat_policy_registry_hash"],
             "anti_cheat_module_registry_hash": registry_hashes["anti_cheat_module_registry_hash"],
             "activation_policy_registry_hash": registry_hashes["activation_policy_registry_hash"],

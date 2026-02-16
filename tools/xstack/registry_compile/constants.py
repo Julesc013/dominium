@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.10.0"
+COMPILER_VERSION = "1.11.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -29,6 +29,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "cosmetic_policy_registry": "cosmetic_policy.registry.json",
     "epistemic_policy_registry": "epistemic_policy.registry.json",
     "retention_policy_registry": "retention_policy.registry.json",
+    "decay_model_registry": "decay_model.registry.json",
+    "eviction_rule_registry": "eviction_rule.registry.json",
     "anti_cheat_policy_registry": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry": "anti_cheat_module.registry.json",
     "activation_policy_registry": "activation_policy.registry.json",

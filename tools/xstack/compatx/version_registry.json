@@ -175,6 +175,20 @@
         "1.0.0"
       ]
     },
+    "decay_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "decay_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "dem_source": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -246,6 +260,20 @@
       ]
     },
     "experience_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "eviction_rule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "eviction_rule_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -351,6 +379,20 @@
       ]
     },
     "net_server_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "memory_item": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "memory_store": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

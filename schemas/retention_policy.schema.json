@@ -14,6 +14,7 @@
     "memory_allowed",
     "max_memory_items",
     "decay_model_id",
+    "eviction_rule_id",
     "deterministic_eviction_rule_id",
     "extensions"
   ],
@@ -40,6 +41,10 @@
         "null"
       ]
     },
+    "eviction_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "deterministic_eviction_rule_id": {
       "type": "string",
       "minLength": 1
@@ -55,8 +60,9 @@
       "retention_policy_id": "ep.retention.session_basic",
       "memory_allowed": true,
       "max_memory_items": 256,
-      "decay_model_id": "decay.none",
-      "deterministic_eviction_rule_id": "evict.oldest_tick_then_channel",
+      "decay_model_id": "ep.decay.session_basic",
+      "eviction_rule_id": "evict.oldest_first",
+      "deterministic_eviction_rule_id": "evict.oldest_first",
       "extensions": {}
     }
   ]
