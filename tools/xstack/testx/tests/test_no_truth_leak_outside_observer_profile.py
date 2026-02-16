@@ -69,6 +69,8 @@ def run(repo_root: str):
         "site_registry_index": _load_json(os.path.join(repo_root, "build", "registries", "site.registry.index.json")),
         "ephemeris_registry": _load_json(os.path.join(repo_root, "build", "registries", "ephemeris.registry.json")),
         "terrain_tile_registry": _load_json(os.path.join(repo_root, "build", "registries", "terrain.tile.registry.json")),
+        "epistemic_policy_registry": _load_json(os.path.join(repo_root, "build", "registries", "epistemic_policy.registry.json")),
+        "retention_policy_registry": _load_json(os.path.join(repo_root, "build", "registries", "retention_policy.registry.json")),
     }
 
     # Populate hidden-state candidates in local state copy; observe_only law must still redact them.
@@ -108,10 +110,9 @@ def run(repo_root: str):
         return {"status": "fail", "message": "observe_truth failed for no-truth-leak test"}
 
     perceived = dict(observed.get("perceived_model") or {})
-    camera_viewpoint = dict(perceived.get("camera_viewpoint") or {})
-    for field in ("position_mm", "orientation_mdeg", "lens_id"):
-        if field in camera_viewpoint:
-            return {"status": "fail", "message": "camera_viewpoint leaked hidden field '{}' under observe_only law".format(field)}
+    truth_overlay = dict(perceived.get("truth_overlay") or {})
+    if truth_overlay:
+        return {"status": "fail", "message": "truth_overlay channels leaked under observe_only law"}
 
     observed_fields = list(perceived.get("observed_fields") or [])
     field_ids = sorted(str(item.get("field_id", "")).strip() for item in observed_fields if isinstance(item, dict))

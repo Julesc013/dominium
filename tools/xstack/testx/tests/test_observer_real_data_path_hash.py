@@ -69,6 +69,8 @@ def run(repo_root: str):
         "site_registry_index": _load_json(os.path.join(repo_root, "build", "registries", "site.registry.index.json")),
         "ephemeris_registry": _load_json(os.path.join(repo_root, "build", "registries", "ephemeris.registry.json")),
         "terrain_tile_registry": _load_json(os.path.join(repo_root, "build", "registries", "terrain.tile.registry.json")),
+        "epistemic_policy_registry": _load_json(os.path.join(repo_root, "build", "registries", "epistemic_policy.registry.json")),
+        "retention_policy_registry": _load_json(os.path.join(repo_root, "build", "registries", "retention_policy.registry.json")),
     }
     truth_model = build_truth_model(
         universe_identity=universe_identity,
