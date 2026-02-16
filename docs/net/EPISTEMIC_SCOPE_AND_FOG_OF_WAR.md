@@ -8,6 +8,9 @@ Compatibility: Bound to AuthorityContext, LawProfile, Lens, and Observation Kern
 ## Purpose
 Define deterministic multiplayer epistemics so clients receive only lawful PerceivedModel channels.
 
+## Implementation Status
+Epistemic memory is implemented with deterministic retention/decay/eviction and store-hash auditing.
+
 ## Canonical Inputs
 
 1. `AuthorityContext.epistemic_scope`
