@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.controller_status",
+  "title": "Controller Status",
+  "required_entitlements": [
+    "entitlement.inspect"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "control.status.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "control.status.summary",
+        "type": "text",
+        "label": "Summary",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "control.summary"
+        }
+      },
+      {
+        "widget_id": "control.status.controllers",
+        "type": "list",
+        "label": "Controllers",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "control.controllers"
+        }
+      },
+      {
+        "widget_id": "control.status.bindings",
+        "type": "list",
+        "label": "Bindings",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "control.bindings"
+        }
+      },
+      {
+        "widget_id": "control.status.refusals",
+        "type": "list",
+        "label": "Refusals",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "tool.log.entries"
+        }
+      }
+    ]
+  }
+}

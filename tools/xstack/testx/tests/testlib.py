@@ -13,9 +13,11 @@ FIXTURE_SOURCE_REGISTRY_FILES = (
     # Fixture uses law.test.default; copy fixture-specific server policy registry to keep compile deterministic.
     ("tools/xstack/testdata/registries/net_server_policy_registry.json", "data/registries/net_server_policy_registry.json"),
     ("data/registries/securex_policy_registry.json", "data/registries/securex_policy_registry.json"),
-    ("data/registries/server_profile_registry.json", "data/registries/server_profile_registry.json"),
+    ("tools/xstack/testdata/registries/server_profile_registry.json", "data/registries/server_profile_registry.json"),
     ("data/registries/shard_map_registry.json", "data/registries/shard_map_registry.json"),
     ("data/registries/perception_interest_policy_registry.json", "data/registries/perception_interest_policy_registry.json"),
+    ("data/registries/control_action_registry.json", "data/registries/control_action_registry.json"),
+    ("data/registries/controller_type_registry.json", "data/registries/controller_type_registry.json"),
     ("data/registries/epistemic_policy_registry.json", "data/registries/epistemic_policy_registry.json"),
     ("data/registries/retention_policy_registry.json", "data/registries/retention_policy_registry.json"),
     ("data/registries/anti_cheat_policy_registry.json", "data/registries/anti_cheat_policy_registry.json"),

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.possession_graph",
+  "title": "Possession Graph",
+  "required_entitlements": [
+    "entitlement.control.possess"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "control.possession.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "control.possession.controller_id",
+        "type": "input_text",
+        "label": "Controller ID"
+      },
+      {
+        "widget_id": "control.possession.agent_id",
+        "type": "input_text",
+        "label": "Agent ID"
+      },
+      {
+        "widget_id": "control.possession.current",
+        "type": "list",
+        "label": "Active Possessions",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "control.possession_graph"
+        }
+      },
+      {
+        "widget_id": "control.possession.possess",
+        "type": "button",
+        "label": "Possess",
+        "action_binding": {
+          "intent_id": "intent.ui.control.possess",
+          "process_id": "process.control_possess_agent",
+          "payload_template": {
+            "controller_id": "${widget.control.possession.controller_id}",
+            "agent_id": "${widget.control.possession.agent_id}"
+          }
+        }
+      },
+      {
+        "widget_id": "control.possession.release",
+        "type": "button",
+        "label": "Release",
+        "action_binding": {
+          "intent_id": "intent.ui.control.release",
+          "process_id": "process.control_release_agent",
+          "payload_template": {
+            "controller_id": "${widget.control.possession.controller_id}",
+            "agent_id": "${widget.control.possession.agent_id}"
+          }
+        }
+      }
+    ]
+  }
+}

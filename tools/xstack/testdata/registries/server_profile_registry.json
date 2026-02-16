@@ -1,0 +1,104 @@
+{
+  "schema_id": "dominium.registry.server_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.server_profile_registry",
+    "registry_version": "1.0.0",
+    "profiles": [
+      {
+        "server_profile_id": "server.profile.rank_strict",
+        "description": "Fixture ranked profile for deterministic test compile validation.",
+        "allowed_replication_policy_ids": [
+          "policy.net.lockstep",
+          "policy.net.server_authoritative"
+        ],
+        "required_replication_policy_ids": [],
+        "anti_cheat_policy_id": "policy.ac.rank_strict",
+        "securex_policy_id": "securex.policy.rank_strict",
+        "epistemic_policy_id_default": "ep.policy.player_diegetic",
+        "allowed_law_profile_ids": [
+          "law.test.default"
+        ],
+        "required_law_profile_id": "law.test.default",
+        "allowed_entitlements": [
+          "entitlement.inspect",
+          "entitlement.teleport",
+          "entitlement.time_control"
+        ],
+        "disallowed_entitlements": [
+          "entitlement.debug_view",
+          "entitlement.truth_overlay"
+        ],
+        "snapshot_policy_id": "snapshot.policy.default",
+        "resync_policy_id": "resync.authoritative.snapshot",
+        "extensions": {
+          "legacy_server_policy_id": "server.policy.private.default",
+          "default_shard_map_id": "shard_map.default.single_shard",
+          "perception_interest_policy_id": "policy.perception.lab.minimal"
+        }
+      },
+      {
+        "server_profile_id": "server.profile.casual_public",
+        "description": "Fixture casual profile for deterministic test compile validation.",
+        "allowed_replication_policy_ids": [
+          "policy.net.lockstep",
+          "policy.net.server_authoritative",
+          "policy.net.srz_hybrid"
+        ],
+        "required_replication_policy_ids": [],
+        "anti_cheat_policy_id": "policy.ac.casual_default",
+        "securex_policy_id": "securex.policy.casual_default",
+        "epistemic_policy_id_default": "ep.policy.spectator_limited",
+        "allowed_law_profile_ids": [
+          "law.test.default"
+        ],
+        "required_law_profile_id": null,
+        "allowed_entitlements": [
+          "entitlement.inspect",
+          "entitlement.teleport",
+          "entitlement.time_control"
+        ],
+        "disallowed_entitlements": [],
+        "snapshot_policy_id": "snapshot.policy.default",
+        "resync_policy_id": "resync.authoritative.snapshot",
+        "extensions": {
+          "legacy_server_policy_id": "server.policy.private.default",
+          "default_shard_map_id": "shard_map.default.single_process_two_shards",
+          "perception_interest_policy_id": "policy.perception.lab.default"
+        }
+      },
+      {
+        "server_profile_id": "server.profile.private_relaxed",
+        "description": "Fixture private profile for deterministic test compile validation.",
+        "allowed_replication_policy_ids": [
+          "policy.net.lockstep",
+          "policy.net.server_authoritative",
+          "policy.net.srz_hybrid"
+        ],
+        "required_replication_policy_ids": [],
+        "anti_cheat_policy_id": "policy.ac.private_relaxed",
+        "securex_policy_id": "securex.policy.private_relaxed",
+        "epistemic_policy_id_default": "ep.policy.lab_broad",
+        "allowed_law_profile_ids": [
+          "law.test.default"
+        ],
+        "required_law_profile_id": null,
+        "allowed_entitlements": [
+          "entitlement.inspect",
+          "entitlement.teleport",
+          "entitlement.time_control",
+          "entitlement.debug_view"
+        ],
+        "disallowed_entitlements": [],
+        "snapshot_policy_id": "snapshot.policy.default",
+        "resync_policy_id": "resync.hybrid.shard_snapshot",
+        "extensions": {
+          "legacy_server_policy_id": "server.policy.private.default",
+          "default_shard_map_id": "shard_map.default.single_process_two_shards",
+          "perception_interest_policy_id": "policy.perception.lab.default"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
