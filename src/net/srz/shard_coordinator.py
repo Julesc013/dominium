@@ -1589,13 +1589,18 @@ def _emit_client_deltas(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
         perceived_model = dict(observed.get("perceived_model") or {})
         perceived_hash = str(observed.get("perceived_hash", ""))
         client["memory_state"] = dict(observed.get("memory_state") or {})
+        memory_state = dict(client.get("memory_state") or {})
+        memory_store_hash = str(memory_state.get("store_hash", ""))
         delta_payload = {
             "schema_version": "1.0.0",
             "perceived_delta_id": "pdelta.{}.tick.{}".format(peer_id, int(tick)),
             "tick": int(tick),
             "replace": perceived_model,
             "previous_hash": str(client.get("last_perceived_hash", "")),
-            "extensions": {},
+            "extensions": {
+                "memory_store_hash": memory_store_hash,
+                "memory_state_hash": canonical_sha256(memory_state),
+            },
         }
         delta_ref = _write_runtime_artifact(
             runtime=runtime,
@@ -1616,6 +1621,8 @@ def _emit_client_deltas(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
                 "delta_hash": canonical_sha256(delta_payload),
                 "epistemic_policy_id": str(observed.get("epistemic_policy_id", "")),
                 "retention_policy_id": str(observed.get("retention_policy_id", "")),
+                "memory_store_hash": memory_store_hash,
+                "memory_state_hash": canonical_sha256(memory_state),
             },
         }
         checked = validate_instance(

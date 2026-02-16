@@ -24,6 +24,8 @@ REGISTRY_FILE_MAP = {
     "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
     "epistemic_policy_registry_hash": "epistemic_policy.registry.json",
     "retention_policy_registry_hash": "retention_policy.registry.json",
+    "decay_model_registry_hash": "decay_model.registry.json",
+    "eviction_rule_registry_hash": "eviction_rule.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
     "astronomy_catalog_index_hash": "astronomy.catalog.index.json",
@@ -101,6 +103,8 @@ def _registry_payloads_for_runtime(payloads: Dict[str, dict]) -> Dict[str, dict]
         "perception_interest_policy_registry": dict(payloads.get("perception_interest_policy_registry_hash") or {}),
         "epistemic_policy_registry": dict(payloads.get("epistemic_policy_registry_hash") or {}),
         "retention_policy_registry": dict(payloads.get("retention_policy_registry_hash") or {}),
+        "decay_model_registry": dict(payloads.get("decay_model_registry_hash") or {}),
+        "eviction_rule_registry": dict(payloads.get("eviction_rule_registry_hash") or {}),
     }
 
 
