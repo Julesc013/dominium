@@ -1353,6 +1353,150 @@ def _load_registry_record(
     return record, list(rows), []
 
 
+def _control_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _action_record, action_rows_raw, action_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/control_action_registry.json",
+        expected_schema_id="dominium.registry.control_action_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="actions",
+    )
+    if action_load_errors:
+        return [], [], action_load_errors
+
+    control_action_rows: List[dict] = []
+    action_id_set = set()
+    for entry in sorted(action_rows_raw, key=lambda row: str((row or {}).get("action_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_control_action_entry",
+                    "message": "control action entry must be object",
+                    "path": "$.actions",
+                }
+            )
+            continue
+        action_id = str(entry.get("action_id", "")).strip()
+        required_entitlements = entry.get("required_entitlements")
+        extensions = entry.get("extensions")
+        if (
+            not action_id
+            or not isinstance(required_entitlements, list)
+            or not str(entry.get("produces_intent_id", "")).strip()
+            or not str(entry.get("payload_schema_id", "")).strip()
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_control_action_entry",
+                    "message": "control action entry missing required fields",
+                    "path": "$.actions",
+                }
+            )
+            continue
+        if action_id in action_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_control_action_id",
+                    "message": "duplicate control action_id '{}'".format(action_id),
+                    "path": "$.actions.action_id",
+                }
+            )
+            continue
+        action_id_set.add(action_id)
+        control_action_rows.append(
+            {
+                "action_id": action_id,
+                "description": str(entry.get("description", "")).strip(),
+                "required_entitlements": _sorted_unique_strings(required_entitlements),
+                "produces_intent_id": str(entry.get("produces_intent_id", "")).strip(),
+                "payload_schema_id": str(entry.get("payload_schema_id", "")).strip(),
+                "extensions": dict(extensions),
+            }
+        )
+    control_action_rows = sorted(control_action_rows, key=lambda row: str(row.get("action_id", "")))
+
+    _controller_record, controller_rows_raw, controller_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/controller_type_registry.json",
+        expected_schema_id="dominium.registry.controller_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="controller_types",
+    )
+    if controller_load_errors:
+        return [], [], controller_load_errors
+
+    controller_type_rows: List[dict] = []
+    controller_type_set = set()
+    for entry in sorted(controller_rows_raw, key=lambda row: str((row or {}).get("controller_type", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_controller_type_entry",
+                    "message": "controller type entry must be object",
+                    "path": "$.controller_types",
+                }
+            )
+            continue
+        controller_type = str(entry.get("controller_type", "")).strip()
+        allowed_actions = entry.get("allowed_actions")
+        default_bindings = entry.get("default_bindings")
+        extensions = entry.get("extensions")
+        if (
+            not controller_type
+            or not isinstance(allowed_actions, list)
+            or not isinstance(default_bindings, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_controller_type_entry",
+                    "message": "controller type entry missing required fields",
+                    "path": "$.controller_types",
+                }
+            )
+            continue
+        if controller_type in controller_type_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_controller_type",
+                    "message": "duplicate controller_type '{}'".format(controller_type),
+                    "path": "$.controller_types.controller_type",
+                }
+            )
+            continue
+        action_tokens = _sorted_unique_strings(allowed_actions)
+        unknown_actions = [token for token in action_tokens if token not in action_id_set]
+        if unknown_actions:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.controller_type_action_missing",
+                    "message": "controller type '{}' references unknown control actions: {}".format(
+                        controller_type,
+                        ",".join(sorted(unknown_actions)),
+                    ),
+                    "path": "$.controller_types.allowed_actions",
+                }
+            )
+            continue
+        controller_type_set.add(controller_type)
+        controller_type_rows.append(
+            {
+                "controller_type": controller_type,
+                "description": str(entry.get("description", "")).strip(),
+                "allowed_actions": action_tokens,
+                "default_bindings": _sorted_unique_strings(default_bindings),
+                "extensions": dict(extensions),
+            }
+        )
+    controller_type_rows = sorted(controller_type_rows, key=lambda row: str(row.get("controller_type", "")))
+    return control_action_rows, controller_type_rows, errors
+
+
 def _network_policy_rows(
     repo_root: str,
     known_law_profile_ids: List[str],
@@ -2826,6 +2970,9 @@ def compile_bundle(
         contributions,
         schema_root=schema_root,
     )
+    control_action_rows, controller_type_rows, control_registry_errors = _control_registry_rows(
+        repo_root=repo_root,
+    )
     (
         net_replication_policy_rows,
         net_resync_strategy_rows,
@@ -2873,6 +3020,7 @@ def compile_bundle(
         + lens_errors
         + policy_errors
         + worldgen_constraints_errors
+        + control_registry_errors
         + net_registry_errors
         + hybrid_registry_errors
         + epistemic_registry_errors
@@ -2912,6 +3060,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "lenses": lens_rows,
+        }
+    )
+    control_action_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "actions": control_action_rows,
+        }
+    )
+    controller_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "controller_types": controller_type_rows,
         }
     )
     net_replication_policy_payload = _finalize_registry_payload(
@@ -3063,6 +3225,8 @@ def compile_bundle(
         "law_registry": ("law_registry", law_payload),
         "experience_registry": ("experience_registry", experience_payload),
         "lens_registry": ("lens_registry", lens_payload),
+        "control_action_registry": ("control_action_registry", control_action_payload),
+        "controller_type_registry": ("controller_type_registry", controller_type_payload),
         "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
         "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
         "net_server_policy_registry": ("net_server_policy_registry", net_server_policy_payload),
@@ -3094,6 +3258,8 @@ def compile_bundle(
         "law_registry",
         "experience_registry",
         "lens_registry",
+        "control_action_registry",
+        "controller_type_registry",
         "net_replication_policy_registry",
         "net_resync_strategy_registry",
         "net_server_policy_registry",
@@ -3145,6 +3311,8 @@ def compile_bundle(
             "law_registry_hash": registry_hashes["law_registry_hash"],
             "experience_registry_hash": registry_hashes["experience_registry_hash"],
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
+            "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
+            "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
             "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
             "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
             "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],

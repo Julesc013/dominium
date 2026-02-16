@@ -1,0 +1,72 @@
+{
+  "schema_id": "dominium.registry.controller_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.controller_type_registry",
+    "registry_version": "1.0.0",
+    "controller_types": [
+      {
+        "controller_type": "admin",
+        "description": "Administrative controller with broad binding authority under law gating.",
+        "allowed_actions": [
+          "control.action.bind_camera",
+          "control.action.possess_agent",
+          "control.action.release_agent",
+          "control.action.set_view_lens",
+          "control.action.unbind_camera"
+        ],
+        "default_bindings": [],
+        "extensions": {}
+      },
+      {
+        "controller_type": "ai_policy",
+        "description": "AI policy driven controller for deterministic automation.",
+        "allowed_actions": [
+          "control.action.possess_agent",
+          "control.action.release_agent"
+        ],
+        "default_bindings": [],
+        "extensions": {}
+      },
+      {
+        "controller_type": "player_input",
+        "description": "Primary local or network peer input controller.",
+        "allowed_actions": [
+          "control.action.bind_camera",
+          "control.action.possess_agent",
+          "control.action.release_agent",
+          "control.action.unbind_camera"
+        ],
+        "default_bindings": [
+          "camera.main"
+        ],
+        "extensions": {}
+      },
+      {
+        "controller_type": "script",
+        "description": "Scripted controller for deterministic automation and testing.",
+        "allowed_actions": [
+          "control.action.bind_camera",
+          "control.action.possess_agent",
+          "control.action.release_agent",
+          "control.action.unbind_camera"
+        ],
+        "default_bindings": [],
+        "extensions": {}
+      },
+      {
+        "controller_type": "spectator",
+        "description": "Camera-only controller type with no possession privileges by default.",
+        "allowed_actions": [
+          "control.action.bind_camera",
+          "control.action.unbind_camera"
+        ],
+        "default_bindings": [
+          "camera.main"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

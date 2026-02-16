@@ -40,6 +40,11 @@ Define the canonical law profile payload used to allow/refuse process classes an
 ## Lab Process IDs (`law.lab.unrestricted`)
 - `process.camera_move`
 - `process.camera_teleport`
+- `process.control_bind_camera`
+- `process.control_unbind_camera`
+- `process.control_possess_agent`
+- `process.control_release_agent`
+- `process.control_set_view_lens`
 - `process.region_management_tick`
 - `process.time_control_set_rate`
 - `process.time_pause`
@@ -48,6 +53,11 @@ Define the canonical law profile payload used to allow/refuse process classes an
 ## Lab Entitlement Mapping (`law.lab.unrestricted`)
 - `process.camera_move` -> `entitlement.camera_control`
 - `process.camera_teleport` -> `entitlement.teleport`
+- `process.control_bind_camera` -> `entitlement.control.camera`
+- `process.control_unbind_camera` -> `entitlement.control.camera`
+- `process.control_possess_agent` -> `entitlement.control.possess`
+- `process.control_release_agent` -> `entitlement.control.possess`
+- `process.control_set_view_lens` -> `entitlement.control.lens_override`
 - `process.region_management_tick` -> `session.boot`
 - `process.time_control_set_rate` -> `entitlement.time_control`
 - `process.time_pause` -> `entitlement.time_control`
@@ -61,6 +71,11 @@ Define the canonical law profile payload used to allow/refuse process classes an
   "allowed_processes": [
     "process.camera_move",
     "process.camera_teleport",
+    "process.control_bind_camera",
+    "process.control_unbind_camera",
+    "process.control_possess_agent",
+    "process.control_release_agent",
+    "process.control_set_view_lens",
     "process.region_management_tick",
     "process.time_control_set_rate",
     "process.time_pause",
@@ -86,6 +101,11 @@ Define the canonical law profile payload used to allow/refuse process classes an
   "process_entitlement_requirements": {
     "process.camera_move": "entitlement.camera_control",
     "process.camera_teleport": "entitlement.teleport",
+    "process.control_bind_camera": "entitlement.control.camera",
+    "process.control_unbind_camera": "entitlement.control.camera",
+    "process.control_possess_agent": "entitlement.control.possess",
+    "process.control_release_agent": "entitlement.control.possess",
+    "process.control_set_view_lens": "entitlement.control.lens_override",
     "process.region_management_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
@@ -94,6 +114,11 @@ Define the canonical law profile payload used to allow/refuse process classes an
   "process_privilege_requirements": {
     "process.camera_move": "observer",
     "process.camera_teleport": "operator",
+    "process.control_bind_camera": "observer",
+    "process.control_unbind_camera": "observer",
+    "process.control_possess_agent": "operator",
+    "process.control_release_agent": "operator",
+    "process.control_set_view_lens": "operator",
     "process.region_management_tick": "observer",
     "process.time_control_set_rate": "operator",
     "process.time_pause": "operator",

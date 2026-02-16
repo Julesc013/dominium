@@ -45,6 +45,10 @@ Stable entitlement IDs used by `law.lab.unrestricted`:
 - `session.boot`: baseline session bootstrap entitlement
 - `ui.window.lab.nav`: baseline lab navigation window entitlement
 - `entitlement.teleport`: also gates lab navigator/go-to/site-browser tool windows
+- `entitlement.control.camera`: required for controller camera bind/unbind processes
+- `entitlement.control.possess`: required for controller possess/release processes
+- `entitlement.control.lens_override`: required for controller lens override process
+- `entitlement.control.admin`: administrative control entitlement reserved for server/admin law profiles
 - `entitlement.admin.security_view`: required for anti-cheat admin security windows
 - `entitlement.admin.kick`: required for administrative peer enforcement action controls (policy-gated)
 

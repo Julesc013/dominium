@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control Action Schema",
+  "version": "1.0.0",
+  "description": "Canonical control action to process/intent mapping contract.",
+  "x-doc-ref": [
+    "docs/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
+    "docs/contracts/law_profile.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "action_id",
+    "description",
+    "required_entitlements",
+    "produces_intent_id",
+    "payload_schema_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "required_entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "produces_intent_id": {
+      "type": "string"
+    },
+    "payload_schema_id": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "action_id": "control.action.bind_camera",
+      "description": "Bind a controller to a camera target.",
+      "required_entitlements": [
+        "entitlement.control.camera"
+      ],
+      "produces_intent_id": "intent.control.bind_camera",
+      "payload_schema_id": "dominium.control.bind_camera.payload.v1",
+      "extensions": {}
+    }
+  ]
+}

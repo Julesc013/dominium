@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Controller Type Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic controller type capability registry output.",
+  "x-doc-ref": [
+    "docs/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "controller_types",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "controller_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "controller_type",
+          "description",
+          "allowed_actions",
+          "default_bindings",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "controller_type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "allowed_actions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "default_bindings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "controller_types": [],
+      "registry_hash": "bbce8dc47229e4d95f15ce2872f8e4f8aa1592d9802ff22445da7719d2cb1732"
+    }
+  ]
+}
