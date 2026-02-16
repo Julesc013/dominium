@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.spectator.scoreboard_stub",
+  "title": "Spectator Board",
+  "required_entitlements": [
+    "entitlement.view.spectator"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "spectator.scoreboard.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "spectator.scoreboard.entities",
+        "type": "list",
+        "label": "Visible Entities",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "entities.entries"
+        }
+      }
+    ]
+  }
+}
