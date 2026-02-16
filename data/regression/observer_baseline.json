@@ -5,7 +5,7 @@
   "bundle_id": "bundle.base.lab",
   "scenario_id": "scenario.lab.galaxy_nav",
   "script_path": "tools/xstack/testdata/session/script.region_traversal.fixture.json",
-  "composite_hash_anchor": "d2fe4f5aac879406fe69d7f63344cd5e97ad5f8b92b9b38b9b5485f161317b2c",
+  "composite_hash_anchor": "a76e8312aafc333fbd6ef93bde01625eb0967a3adab5da6162139d6c078b958f",
   "pack_lock_hash": "8207f29d2f9ad4af3d6c9463eb1f9840f5db8a446709b3ebc026cd8bf4a1afc2",
   "registry_hashes": {
     "activation_policy_registry_hash": "34c9c6a43486637aa5dcba58ba6453ab2827d1c166fe4217a2db0f6e63a6321b",
@@ -18,14 +18,14 @@
     "controller_type_registry_hash": "bb5f5790344be4e19b4586e1060a1990a8c82c9df1997d3626e9659d1e682296",
     "domain_registry_hash": "8aea9623aea215b9196ebe4661093d5b51623db33196e27eb98d2fb738a95ed4",
     "ephemeris_registry_hash": "c2f1dc826bcfbdf1eaf3d72df24a9d79423a24aaddc9cb8774aa56ed53c29524",
-    "epistemic_policy_registry_hash": "17f9607009a657d9987728fe347454b4d2aa015dc0dd84b235dad04d7bb291c4",
+    "epistemic_policy_registry_hash": "63ed7bc1c345e73467d7169ddf4e3bf896e8caa9bef8e53fa04569564e7db773",
     "experience_registry_hash": "da1db8fba9f0581c7c1cc9a01ab9961e2217a9dd318c6b28955f21f46e92d16c",
     "fidelity_policy_registry_hash": "f5d26c9c1feff2cc986c8632cd551c01adf655c773eb855c795e26cac33d3048",
-    "law_registry_hash": "1cdcfb24783c028c159813d73558532ff70c5434448e60f44d33313536fe8b0c",
+    "law_registry_hash": "3788c32f605babef87d48231f0b193a01f76562db919979f5295ca7cd33955eb",
     "lens_registry_hash": "3a276405c2d9f6925accd994857acb579b28727956cc25534ec0477fb1848b73",
     "net_replication_policy_registry_hash": "2ab239fbd58759017f5149594860809ad2f95dd8b36f088fddd74992bab5af15",
     "net_resync_strategy_registry_hash": "909381a9b7492731db2c66c321fc297bb0a3eb8cf3c9e19196d62bcc6d8dc1b1",
-    "net_server_policy_registry_hash": "1c5ed185f5783306058c0632db1ded78c4307249a4e410545793e352c2c53aa9",
+    "net_server_policy_registry_hash": "72d2579d922ed0af1854eee75dbc6d30aa596762c2be0238e7d4768758b8a702",
     "perception_interest_policy_registry_hash": "bceacf12025e39f6472518ef5a36645e853757dce8b71eb2243ca096fc65d258",
     "retention_policy_registry_hash": "452b111275d3222bf29457f22bb94b0cfb6248d5802e7c2d7610de5f15a0e99b",
     "securex_policy_registry_hash": "c5b31e9ef3a81de1655cea4a1507547af0c5cecf45efadbefdd20ef572532855",
@@ -33,12 +33,13 @@
     "shard_map_registry_hash": "5de76589beab65eca34e0978521a13f340435265f00bf04b473e4ee3174d57f6",
     "site_registry_index_hash": "e6317328de498ef397dca4f419a6ff6dd3f79078daf38bd874a2774dd497dd63",
     "terrain_tile_registry_hash": "d7f7cafd9731d3e4527ba76cc81a9d801a0380013292c4ca12fd2768af1fe52a",
-    "ui_registry_hash": "62cd8bb394984e0ea3d60b1b48a0f333dfda9d57eb14b906a3006031079347d9",
+    "ui_registry_hash": "674f1554830d43cbf9e500890ef9fb69af28ecd076499e9fce29b41743504b32",
+    "view_mode_registry_hash": "0743fc5ad6065abc0a43736964647e7342089c347a87f3dd7552561aa13a4663",
     "worldgen_constraints_registry_hash": "0b4c33b9de80c33a4bcccb957ca2a28fe395c45ceb4caf8e030036c11ba20664"
   },
   "roi_switch_lock": {
-    "final_state_hash": "8ccf3d034aa24cbad26111c0762638c8363568f8168e751d0a4b402ebf769da1",
-    "final_tick_hash": "2581918acf1097f67b49074fce62362a1cc4d9c1f5c56edd25e7cc4dd653964c",
+    "final_state_hash": "afa538a1c772119576e4969a494152686362fe297d34a58c058c8cfc9c6bc4b7",
+    "final_tick_hash": "d6fae41281ee6fb00a91868c54d9f559b6c0aa385e22c7f6ab258b8c39e5aa56",
     "transition_policy": "deterministic_process_order"
   },
   "update_policy": {
