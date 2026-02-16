@@ -66,6 +66,19 @@ DEFAULT_CAMERA_ASSEMBLY = {
     "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
     "velocity_mm_per_tick": {"x": 0, "y": 0, "z": 0},
     "lens_id": "lens.diegetic.sensor",
+    "binding_id": None,
+    "view_mode_id": "view.free.lab",
+    "owner_peer_id": None,
+    "target_id": None,
+    "target_type": "none",
+    "offset_params": {
+        "x_mm": 0,
+        "y_mm": 0,
+        "z_mm": 0,
+        "yaw_mdeg": 0,
+        "pitch_mdeg": 0,
+        "roll_mdeg": 0,
+    },
 }
 DEFAULT_INSTRUMENT_ASSEMBLIES = [
     {
@@ -472,6 +485,9 @@ def _camera_from_payload(payload: dict) -> dict:
     position = source.get("position_mm") if isinstance(source, dict) else {}
     orientation = source.get("orientation_mdeg") if isinstance(source, dict) else {}
     velocity = source.get("velocity_mm_per_tick") if isinstance(source, dict) else {}
+    offset_source = source.get("offset_params") if isinstance(source, dict) else {}
+    if not isinstance(offset_source, dict):
+        offset_source = {}
     return {
         "assembly_id": str((source.get("assembly_id") if isinstance(source, dict) else "") or "camera.main"),
         "frame_id": str((source.get("frame_id") if isinstance(source, dict) else "") or "frame.world"),
@@ -491,6 +507,25 @@ def _camera_from_payload(payload: dict) -> dict:
             "z": _as_int((velocity or {}).get("z", 0), 0),
         },
         "lens_id": str((source.get("lens_id") if isinstance(source, dict) else "") or "lens.diegetic.sensor"),
+        "binding_id": None
+        if not isinstance(source, dict) or source.get("binding_id") is None
+        else str(source.get("binding_id", "")).strip() or None,
+        "view_mode_id": str((source.get("view_mode_id") if isinstance(source, dict) else "") or "view.free.lab"),
+        "owner_peer_id": None
+        if not isinstance(source, dict) or source.get("owner_peer_id") is None
+        else str(source.get("owner_peer_id", "")).strip() or None,
+        "target_id": None
+        if not isinstance(source, dict) or source.get("target_id") is None
+        else str(source.get("target_id", "")).strip() or None,
+        "target_type": str((source.get("target_type") if isinstance(source, dict) else "") or "none"),
+        "offset_params": {
+            "x_mm": _as_int(offset_source.get("x_mm", 0), 0),
+            "y_mm": _as_int(offset_source.get("y_mm", 0), 0),
+            "z_mm": _as_int(offset_source.get("z_mm", 0), 0),
+            "yaw_mdeg": _as_int(offset_source.get("yaw_mdeg", 0), 0),
+            "pitch_mdeg": _as_int(offset_source.get("pitch_mdeg", 0), 0),
+            "roll_mdeg": _as_int(offset_source.get("roll_mdeg", 0), 0),
+        },
     }
 
 

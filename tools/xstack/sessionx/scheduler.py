@@ -37,6 +37,10 @@ PROCESS_PRIORITY = {
     "process.control_possess_agent": 25,
     "process.control_release_agent": 25,
     "process.control_set_view_lens": 25,
+    "process.camera_bind_target": 25,
+    "process.camera_unbind_target": 25,
+    "process.camera_set_view_mode": 25,
+    "process.camera_set_lens": 25,
     "process.camera_teleport": 30,
     "process.agent_rotate": 33,
     "process.agent_move": 34,
@@ -55,6 +59,10 @@ PROCESS_ENTITY_SCOPE = {
     "process.control_possess_agent": "controller.binding.possess",
     "process.control_release_agent": "controller.binding.possess",
     "process.control_set_view_lens": "camera.main",
+    "process.camera_bind_target": "controller.binding.camera",
+    "process.camera_unbind_target": "controller.binding.camera",
+    "process.camera_set_view_mode": "camera.main",
+    "process.camera_set_lens": "camera.main",
     "process.camera_teleport": "camera.main",
     "process.agent_rotate": "agent.unknown",
     "process.agent_move": "agent.unknown",
@@ -73,6 +81,10 @@ PROCESS_FIELD_SCOPE = {
     "process.control_possess_agent": "control.binding.possess",
     "process.control_release_agent": "control.binding.possess",
     "process.control_set_view_lens": "camera.lens",
+    "process.camera_bind_target": "control.binding.camera",
+    "process.camera_unbind_target": "control.binding.camera",
+    "process.camera_set_view_mode": "camera.view_mode",
+    "process.camera_set_lens": "camera.lens",
     "process.camera_teleport": "camera.transform",
     "process.agent_rotate": "agent.orientation",
     "process.agent_move": "body.transform",
@@ -123,6 +135,17 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
         if agent_id:
             entity_scope = agent_id
+    if process_id in (
+        "process.control_bind_camera",
+        "process.control_unbind_camera",
+        "process.control_set_view_lens",
+        "process.camera_bind_target",
+        "process.camera_unbind_target",
+        "process.camera_set_view_mode",
+        "process.camera_set_lens",
+    ):
+        camera_id = str(inputs.get("camera_id", "")).strip() or "camera.main"
+        entity_scope = camera_id
     return {
         "envelope_id": str(envelope.get("envelope_id", "")),
         "script_step": int(script_step),

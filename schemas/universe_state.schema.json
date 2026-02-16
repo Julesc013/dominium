@@ -215,6 +215,68 @@
           },
           "lens_id": {
             "type": "string"
+          },
+          "binding_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "view_mode_id": {
+            "type": "string"
+          },
+          "owner_peer_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target_type": {
+            "type": "string",
+            "enum": [
+              "agent",
+              "body",
+              "site",
+              "none"
+            ]
+          },
+          "offset_params": {
+            "type": "object",
+            "required": [
+              "x_mm",
+              "y_mm",
+              "z_mm",
+              "yaw_mdeg",
+              "pitch_mdeg",
+              "roll_mdeg"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "x_mm": {
+                "type": "integer"
+              },
+              "y_mm": {
+                "type": "integer"
+              },
+              "z_mm": {
+                "type": "integer"
+              },
+              "yaw_mdeg": {
+                "type": "integer"
+              },
+              "pitch_mdeg": {
+                "type": "integer"
+              },
+              "roll_mdeg": {
+                "type": "integer"
+              }
+            }
           }
         }
       }
@@ -953,7 +1015,20 @@
             "y": 0,
             "z": 0
           },
-          "lens_id": "lens.diegetic.sensor"
+          "lens_id": "lens.diegetic.sensor",
+          "binding_id": null,
+          "view_mode_id": "view.free.lab",
+          "owner_peer_id": null,
+          "target_id": null,
+          "target_type": "none",
+          "offset_params": {
+            "x_mm": 0,
+            "y_mm": 0,
+            "z_mm": 0,
+            "yaw_mdeg": 0,
+            "pitch_mdeg": 0,
+            "roll_mdeg": 0
+          }
         }
       ],
       "instrument_assemblies": [
