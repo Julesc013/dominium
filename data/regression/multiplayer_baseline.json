@@ -5,13 +5,13 @@
   "bundle_id": "bundle.base.lab",
   "policy_baselines": {
     "policy.net.lockstep": {
-      "final_composite_hash": "a4bbf271133a3b910e78287c876ec4e65f9ba270383f235ffdb9de06219d6866"
+      "final_composite_hash": "0d844530fae673076b5b770f96b4198fe7c3a0da9baa4f158de45327402baf3d"
     },
     "policy.net.server_authoritative": {
-      "final_composite_hash": "58ea866e6f6c1c9c65feb8948c436cb127a9d1e06c3e471ca34be3c76e4aa078"
+      "final_composite_hash": "7cbb13836a0a9db2842798a8023c08d302dfb4b692051d9e53ec9eb7724c1399"
     },
     "policy.net.srz_hybrid": {
-      "final_composite_hash": "3e763583dcef6d953e9cc37b5da5c2f16a8c232b14c0dfbeaaf04f363445fe40"
+      "final_composite_hash": "e1ba3c52ff38a72c318444a432d8c75617883c92f2d7ef970e5e16a922e151f6"
     }
   },
   "ranked_handshake_matrix_hash": "1926e51d42b7bca86246ca523439c0674245e19f9f141662021d54394f366fb6",
