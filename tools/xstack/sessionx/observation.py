@@ -76,6 +76,30 @@ def _registry_payload(truth: dict, key: str) -> dict:
     return payload
 
 
+def _view_mode_registry(truth: dict) -> dict:
+    return _registry_payload(truth, "view_mode_registry")
+
+
+def _observer_watermark_payload(truth: dict, camera: dict) -> dict:
+    view_mode_id = str((camera or {}).get("view_mode_id", "")).strip()
+    watermark_policy_id = ""
+    registry = _view_mode_registry(truth)
+    rows = registry.get("view_modes")
+    if isinstance(rows, list) and view_mode_id:
+        for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("view_mode_id", ""))):
+            if str(row.get("view_mode_id", "")).strip() != view_mode_id:
+                continue
+            watermark_policy_id = str(row.get("watermark_policy_id", "") or "").strip()
+            break
+    required = bool(watermark_policy_id)
+    return {
+        "active": bool(required),
+        "view_mode_id": view_mode_id,
+        "watermark_policy_id": watermark_policy_id,
+        "text": "OBSERVER MODE" if required else "",
+    }
+
+
 def _policy_row(registry_payload: dict, policy_id: str) -> dict:
     rows = registry_payload.get("policies")
     if not isinstance(rows, list):
@@ -299,6 +323,8 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"process_log": dict(perceived_model.get("process_log") or {})}
     if channel_id in ("ch.core.performance", "ch.nondiegetic.performance_monitor"):
         return {"performance": dict(perceived_model.get("performance") or {})}
+    if channel_id == "ch.watermark.observer_mode":
+        return {"watermark": dict(perceived_model.get("watermark") or {})}
     instruments = dict(perceived_model.get("diegetic_instruments") or {})
     if channel_id == "ch.diegetic.compass":
         return {"instrument.compass": dict(instruments.get("instrument.compass") or {})}
@@ -343,6 +369,13 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
     if not ({"ch.core.time", "ch.diegetic.clock"} & allowed):
         out["time"] = {"tick": 0, "rate_permille": 0, "paused": True, "summary": "redacted"}
         out["time_state"] = {"tick": 0, "rate_permille": 0, "paused": True}
+    if "ch.watermark.observer_mode" not in allowed:
+        out["watermark"] = {
+            "active": False,
+            "view_mode_id": "",
+            "watermark_policy_id": "",
+            "text": "",
+        }
 
     instruments = dict(out.get("diegetic_instruments") or {})
     instrument_channels = {
@@ -923,6 +956,17 @@ def observe_truth(
             "$.authority_context.entitlements",
         )
 
+    camera = _camera_main(truth_model)
+    watermark_payload = _observer_watermark_payload(truth=truth_model, camera=camera)
+    if bool(watermark_payload.get("active", False)) and "entitlement.observer.truth" not in set(entitlements):
+        return refusal(
+            "refusal.ep.entitlement_missing",
+            "observer truth view mode requires entitlement.observer.truth",
+            "Grant entitlement.observer.truth or switch to non-observer view mode.",
+            {"view_mode_id": str(watermark_payload.get("view_mode_id", ""))},
+            "$.authority_context.entitlements",
+        )
+
     scope = authority_context.get("epistemic_scope")
     if not isinstance(scope, dict):
         return refusal(
@@ -957,6 +1001,8 @@ def observe_truth(
     requested_channels = _sorted_unique(list(lens.get("observation_channels") or []))
     if not requested_channels:
         requested_channels = _default_lens_channels(lens_type=lens_type)
+    if bool(watermark_payload.get("active", False)):
+        requested_channels = _sorted_unique(list(requested_channels) + ["ch.watermark.observer_mode"])
 
     channel_forbidden = sorted(
         token
@@ -997,7 +1043,6 @@ def observe_truth(
     observed_entities = _agent_entity_ids(truth_model)
     simulation_tick = _simulation_tick(truth_model)
     time_control = _time_control(truth_model)
-    camera = _camera_main(truth_model)
     epistemic_limits = law_profile.get("epistemic_limits")
     allow_hidden = bool((epistemic_limits or {}).get("allow_hidden_state_access", False)) if isinstance(epistemic_limits, dict) else False
     observed_fields = [
@@ -1023,6 +1068,7 @@ def observe_truth(
     camera_viewpoint = {
         "assembly_id": str(camera.get("assembly_id", "camera.main")),
         "frame_id": str(camera.get("frame_id", "frame.world")),
+        "view_mode_id": str(camera.get("view_mode_id", "")),
     }
     if allow_hidden or "ch.camera.state" in requested_channels:
         camera_viewpoint["position_mm"] = dict(camera.get("position_mm") or {"x": 0, "y": 0, "z": 0})
@@ -1099,6 +1145,7 @@ def observe_truth(
             "deterministic_filter_chain": list(filter_chain),
             "epistemic_visibility_policy": str((lens.get("epistemic_constraints") or {}).get("visibility_policy", "")),
         },
+        "watermark": watermark_payload,
     }
     perceived_model = _apply_channel_filter(
         perceived_model=perceived_model,
