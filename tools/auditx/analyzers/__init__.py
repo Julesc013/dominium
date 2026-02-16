@@ -41,6 +41,8 @@ from analyzers import e12_signature_bypass_smell
 from analyzers import e13_player_special_case_smell
 from analyzers import e14_control_bypass_smell
 from analyzers import e15_collision_nondeterministic_smell
+from analyzers import e16_movement_bypass_smell
+from analyzers import e17_ownership_bypass_smell
 
 
 ANALYZERS = (
@@ -85,6 +87,8 @@ ANALYZERS = (
     e13_player_special_case_smell,
     e14_control_bypass_smell,
     e15_collision_nondeterministic_smell,
+    e16_movement_bypass_smell,
+    e17_ownership_bypass_smell,
 )
 
 

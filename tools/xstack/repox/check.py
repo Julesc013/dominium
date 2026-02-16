@@ -3128,6 +3128,26 @@ def _append_negative_invariant_findings(
                 rule_id="INV-CONTROL-ENTITLEMENT-GATED",
             )
         )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="movement runtime is missing; cannot verify agent_move dispatches through process.body_move_attempt",
+                rule_id="INV-MOVE-USES-BODY_MOVE_ATTEMPT",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="movement ownership guards are missing; cannot verify ownership enforcement for embodied movement",
+                rule_id="INV-OWNERSHIP-CHECK-REQUIRED",
+            )
+        )
     else:
         required_control_entitlements = (
             ("process.control_bind_camera", "entitlement.control.camera"),
@@ -3163,6 +3183,40 @@ def _append_negative_invariant_findings(
                         snippet=token,
                         message="collision broadphase must preserve deterministic pair ordering",
                         rule_id="INV-DETERMINISTIC-PAIR-ORDER",
+                    )
+                )
+
+        movement_tokens = (
+            "elif process_id == \"process.agent_move\":",
+            "moved = _apply_body_move_attempt(",
+        )
+        for token in movement_tokens:
+            if token not in process_runtime_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=1,
+                        snippet=token,
+                        message="agent movement must route through process.body_move_attempt and avoid direct transform mutation",
+                        rule_id="INV-MOVE-USES-BODY_MOVE_ATTEMPT",
+                    )
+                )
+
+        ownership_tokens = (
+            "def _movement_context(",
+            "refusal.agent.ownership_violation",
+        )
+        for token in ownership_tokens:
+            if token not in process_runtime_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=1,
+                        snippet=token,
+                        message="embodied movement must enforce deterministic ownership checks in multiplayer contexts",
+                        rule_id="INV-OWNERSHIP-CHECK-REQUIRED",
                     )
                 )
 
