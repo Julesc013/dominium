@@ -318,6 +318,16 @@ REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
+MULTIPLAYER_REGRESSION_LOCK_PATH = "data/regression/multiplayer_baseline.json"
+MULTIPLAYER_REGRESSION_LOCK_REQUIRED_FIELDS = (
+    "baseline_id",
+    "bundle_id",
+    "policy_baselines",
+    "ranked_handshake_matrix_hash",
+    "anti_cheat_fingerprint_hashes",
+    "update_policy",
+)
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -2470,6 +2480,152 @@ def _append_regression_lock_findings(
                 snippet=subject[:140],
                 message="latest baseline commit message must include '{}'".format(required_tag),
                 rule_id="INV-REGRESSION-LOCK-PRESENT",
+            )
+        )
+
+    mp_payload, mp_err = _load_json_object(repo_root, MULTIPLAYER_REGRESSION_LOCK_PATH)
+    if mp_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="",
+                message="multiplayer regression baseline lock file is missing or invalid",
+                rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+
+    for field in MULTIPLAYER_REGRESSION_LOCK_REQUIRED_FIELDS:
+        value = mp_payload.get(field)
+        if value is None or (isinstance(value, str) and not str(value).strip()):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                    line_number=1,
+                    snippet=str(field),
+                    message="multiplayer regression lock missing required field '{}'".format(field),
+                    rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+                )
+            )
+
+    policy_rows = mp_payload.get("policy_baselines")
+    if not isinstance(policy_rows, dict):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="policy_baselines",
+                message="multiplayer regression lock policy_baselines must be an object",
+                rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+            )
+        )
+    else:
+        for policy_id in (
+            "policy.net.lockstep",
+            "policy.net.server_authoritative",
+            "policy.net.srz_hybrid",
+        ):
+            row = policy_rows.get(policy_id)
+            if not isinstance(row, dict):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                        line_number=1,
+                        snippet=policy_id,
+                        message="multiplayer regression lock missing policy baseline '{}'".format(policy_id),
+                        rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+                    )
+                )
+                continue
+            final_hash = str(row.get("final_composite_hash", "")).strip()
+            if not final_hash:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                        line_number=1,
+                        snippet=policy_id,
+                        message="multiplayer regression lock requires final_composite_hash for '{}'".format(policy_id),
+                        rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+                    )
+                )
+
+    fp_rows = mp_payload.get("anti_cheat_fingerprint_hashes")
+    if not isinstance(fp_rows, dict):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="anti_cheat_fingerprint_hashes",
+                message="multiplayer regression lock anti_cheat_fingerprint_hashes must be an object",
+                rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+            )
+        )
+    else:
+        for key in (
+            "detect_only_event_fingerprint_hash",
+            "rank_strict_event_fingerprint_hash",
+            "rank_strict_action_fingerprint_hash",
+        ):
+            if not str(fp_rows.get(key, "")).strip():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                        line_number=1,
+                        snippet=key,
+                        message="multiplayer regression lock missing anti-cheat fingerprint hash '{}'".format(key),
+                        rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+                    )
+                )
+
+    mp_update_policy = mp_payload.get("update_policy")
+    mp_required_tag = ""
+    if isinstance(mp_update_policy, dict):
+        mp_required_tag = str(mp_update_policy.get("required_commit_tag", "")).strip()
+    if not mp_required_tag:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="update_policy.required_commit_tag",
+                message="multiplayer regression lock must declare update_policy.required_commit_tag",
+                rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+
+    try:
+        mp_proc = subprocess.run(
+            ["git", "log", "-1", "--pretty=%s", "--", MULTIPLAYER_REGRESSION_LOCK_PATH],
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            check=False,
+        )
+    except OSError:
+        return
+    if int(mp_proc.returncode) != 0:
+        return
+    mp_subject = str(mp_proc.stdout or "").strip()
+    if mp_subject and mp_required_tag not in mp_subject:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MULTIPLAYER_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet=mp_subject[:140],
+                message="latest multiplayer baseline commit message must include '{}'".format(mp_required_tag),
+                rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
             )
         )
 
