@@ -1199,13 +1199,18 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
         perceived_model = dict(observed.get("perceived_model") or {})
         perceived_hash = str(observed.get("perceived_hash", ""))
         client["memory_state"] = dict(observed.get("memory_state") or {})
+        memory_state = dict(client.get("memory_state") or {})
+        memory_store_hash = str(memory_state.get("store_hash", ""))
         delta_payload = {
             "schema_version": "1.0.0",
             "perceived_delta_id": "pdelta.{}.tick.{}".format(peer_id, int(server_tick)),
             "tick": int(server_tick),
             "replace": perceived_model,
             "previous_hash": str(client.get("last_perceived_hash", "")),
-            "extensions": {},
+            "extensions": {
+                "memory_store_hash": memory_store_hash,
+                "memory_state_hash": canonical_sha256(memory_state),
+            },
         }
         delta_rel = norm(os.path.join("deltas", str(peer_id), "tick.{}.json".format(int(server_tick))))
         delta_ref = _write_runtime_artifact(runtime=runtime, rel_path=delta_rel, payload=delta_payload)
@@ -1222,6 +1227,8 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
                 "delta_hash": canonical_sha256(delta_payload),
                 "epistemic_policy_id": str(observed.get("epistemic_policy_id", "")),
                 "retention_policy_id": str(observed.get("retention_policy_id", "")),
+                "memory_store_hash": memory_store_hash,
+                "memory_state_hash": canonical_sha256(memory_state),
             },
         }
         checked = validate_instance(

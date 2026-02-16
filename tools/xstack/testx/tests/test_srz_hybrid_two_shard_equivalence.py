@@ -126,6 +126,8 @@ def run(repo_root: str):
             "perception_interest_policy_registry": dict(payloads.get("perception_interest_policy_registry_hash") or {}),
             "epistemic_policy_registry": dict(payloads.get("epistemic_policy_registry_hash") or {}),
             "retention_policy_registry": dict(payloads.get("retention_policy_registry_hash") or {}),
+            "decay_model_registry": dict(payloads.get("decay_model_registry_hash") or {}),
+            "eviction_rule_registry": dict(payloads.get("eviction_rule_registry_hash") or {}),
         },
     )
     if str(single_init.get("result", "")) != "complete":
