@@ -91,5 +91,29 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     }
-  }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [
+        {
+          "pack_id": "law.lab.unrestricted",
+          "version": "1.0.0",
+          "canonical_hash": "placeholder.law.lab.unrestricted.v1",
+          "signature_status": "signed"
+        }
+      ],
+      "policies": [
+        {
+          "retention_policy_id": "ep.retention.session_basic",
+          "memory_allowed": true,
+          "max_memory_items": 2048,
+          "decay_model_id": null,
+          "deterministic_eviction_rule_id": "evict.oldest_tick_first",
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "399c87506d16897eb97cfd78c8484fce75f4b7f61686d13195ecf2658500ffeb"
+    }
+  ]
 }

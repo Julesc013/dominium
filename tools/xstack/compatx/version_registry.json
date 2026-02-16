@@ -77,6 +77,20 @@
         "1.0.0"
       ]
     },
+    "body_primitive": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "body_shape_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "control_action": {
       "current_version": "1.0.0",
       "migrations": {},
