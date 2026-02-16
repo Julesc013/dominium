@@ -7,8 +7,10 @@ import os
 from typing import Dict, List, Tuple
 
 from src.net.anti_cheat import (
+    action_blocks_submission,
     action_drops_without_refusal,
     check_authority_integrity,
+    check_behavioral_detection,
     check_client_attestation,
     check_input_integrity,
     check_replay_protection,
@@ -82,6 +84,8 @@ PROCESS_PRIORITY = {
     "process.camera_move": 40,
 }
 
+MOVEMENT_PROCESS_IDS = ("process.agent_move", "process.agent_rotate")
+
 
 def _as_int(value: object, default_value: int = 0) -> int:
     try:
@@ -99,6 +103,38 @@ def _as_float(value: object, default_value: float = 0.0) -> float:
 
 def _sorted_tokens(items: List[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in (items or []) if str(item).strip()))
+
+
+def _vector3_int(payload: object) -> dict:
+    row = dict(payload) if isinstance(payload, dict) else {}
+    return {
+        "x": _as_int(row.get("x", 0), 0),
+        "y": _as_int(row.get("y", 0), 0),
+        "z": _as_int(row.get("z", 0), 0),
+    }
+
+
+def _movement_limits(runtime: dict) -> dict:
+    ext = dict((runtime.get("anti_cheat") or {}).get("extensions") or {})
+    return {
+        "max_intents_per_tick": max(1, _as_int(ext.get("movement_intents_per_tick_max", 3), 3)),
+        "max_displacement_mm_per_tick": max(1, _as_int(ext.get("movement_max_displacement_mm_per_tick", 8000), 8000)),
+    }
+
+
+def _movement_requested_distance(inputs: dict) -> Tuple[int, int]:
+    payload = dict(inputs if isinstance(inputs, dict) else {})
+    local = _vector3_int(payload.get("move_vector_local"))
+    if local == {"x": 0, "y": 0, "z": 0}:
+        local = _vector3_int(payload.get("delta_local_mm"))
+    speed_scalar = max(0, _as_int(payload.get("speed_scalar", 1000), 1000))
+    dt_ticks = max(1, _as_int(payload.get("tick_duration", payload.get("dt_ticks", 1)), 1))
+    scaled = {
+        "x": int(int(local["x"]) * int(speed_scalar) // 1000),
+        "y": int(int(local["y"]) * int(speed_scalar) // 1000),
+        "z": int(int(local["z"]) * int(speed_scalar) // 1000),
+    }
+    return int(abs(scaled["x"]) + abs(scaled["y"]) + abs(scaled["z"])), int(dt_ticks)
 
 
 def _queue_sort_key(envelope: dict) -> Tuple[int, str, str, int, str]:
@@ -931,6 +967,87 @@ def queue_intent_envelope(repo_root: str, runtime: dict, envelope: dict) -> Dict
             path="$.deterministic_sequence_number",
         )
 
+    payload = dict(envelope.get("payload") or {})
+    process_id = str(payload.get("process_id", "")).strip()
+    if process_id in MOVEMENT_PROCESS_IDS:
+        limits = _movement_limits(runtime=runtime)
+        movement_inputs = dict(payload.get("inputs") or {})
+        submission_tick = _as_int(envelope.get("submission_tick", 0), 0)
+        existing_movement_count = 0
+        for queued in list(server.get("queued_envelopes") or []):
+            if not isinstance(queued, dict):
+                continue
+            if str(queued.get("source_peer_id", "")).strip() != peer_id:
+                continue
+            if _as_int(queued.get("submission_tick", 0), 0) != int(submission_tick):
+                continue
+            queued_process = str((dict(queued.get("payload") or {})).get("process_id", "")).strip()
+            if queued_process in MOVEMENT_PROCESS_IDS:
+                existing_movement_count += 1
+        if int(existing_movement_count) >= int(limits["max_intents_per_tick"]):
+            decision = check_input_integrity(
+                repo_root=repo_root,
+                runtime=runtime,
+                tick=_as_int(server.get("network_tick", 0), 0),
+                peer_id=peer_id,
+                valid=False,
+                reason_code="ac.movement.intent_rate_exceeded",
+                evidence=[
+                    "movement intent frequency exceeded deterministic per-tick limit",
+                    "submission_tick={},current_count={},max_count={}".format(
+                        int(submission_tick),
+                        int(existing_movement_count),
+                        int(limits["max_intents_per_tick"]),
+                    ),
+                ],
+                default_action_token="throttle",
+            )
+            action = str(decision.get("action", "throttle"))
+            if action_blocks_submission(action):
+                return _apply_enforcement_result(
+                    action=action,
+                    fallback_reason_code="refusal.ac.policy_violation",
+                    fallback_message="movement intent rate exceeds deterministic anti-cheat threshold",
+                    fallback_remediation="Reduce movement intent frequency per tick or adjust anti-cheat policy thresholds.",
+                    relevant_ids={"peer_id": peer_id, "process_id": process_id},
+                    path="$.payload.process_id",
+                )
+            if str(action).strip() == "throttle":
+                return {"result": "complete", "accepted": False, "action": "throttle"}
+
+        requested_distance_mm, requested_dt_ticks = _movement_requested_distance(movement_inputs)
+        max_distance_mm = int(limits["max_displacement_mm_per_tick"]) * int(max(1, requested_dt_ticks))
+        if int(requested_distance_mm) > int(max_distance_mm):
+            behavior = check_behavioral_detection(
+                repo_root=repo_root,
+                runtime=runtime,
+                tick=_as_int(server.get("network_tick", 0), 0),
+                peer_id=peer_id,
+                suspicious=True,
+                reason_code="ac.movement.requested_displacement_exceeded",
+                evidence=[
+                    "movement request exceeds deterministic displacement threshold",
+                    "requested_distance_mm={},max_distance_mm={},dt_ticks={}".format(
+                        int(requested_distance_mm),
+                        int(max_distance_mm),
+                        int(max(1, requested_dt_ticks)),
+                    ),
+                ],
+                default_action_token="throttle",
+            )
+            action = str(behavior.get("action", "throttle"))
+            if action_blocks_submission(action):
+                return _apply_enforcement_result(
+                    action=action,
+                    fallback_reason_code="refusal.ac.policy_violation",
+                    fallback_message="movement request exceeds deterministic displacement threshold",
+                    fallback_remediation="Reduce requested movement delta per tick or adjust anti-cheat movement thresholds.",
+                    relevant_ids={"peer_id": peer_id, "process_id": process_id},
+                    path="$.payload.inputs.move_vector_local",
+                )
+            if str(action).strip() == "throttle":
+                return {"result": "complete", "accepted": False, "action": "throttle"}
+
     site_registry = dict((runtime.get("registry_payloads") or {}).get("site_registry_index") or {})
     routed = route_intent_envelope(
         envelope=dict(envelope),
@@ -1520,6 +1637,32 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                 refusal_payload=refusal_payload,
             )
             continue
+
+        process_id = str(proposal.get("process_id", "")).strip()
+        if process_id in MOVEMENT_PROCESS_IDS:
+            limits = _movement_limits(runtime=runtime)
+            moved_distance_mm = max(0, _as_int(executed.get("movement_distance_mm", 0), 0))
+            moved_dt_ticks = max(1, _as_int(executed.get("dt_ticks", 1), 1))
+            max_distance_mm = int(limits["max_displacement_mm_per_tick"]) * int(moved_dt_ticks)
+            check_behavioral_detection(
+                repo_root=repo_root,
+                runtime=runtime,
+                tick=int(tick),
+                peer_id=peer_id,
+                suspicious=bool(int(moved_distance_mm) > int(max_distance_mm)),
+                reason_code="ac.movement.actual_displacement_exceeded",
+                evidence=[
+                    "movement displacement exceeded deterministic threshold after hybrid execution",
+                    "agent_id={},moved_distance_mm={},max_distance_mm={},dt_ticks={}".format(
+                        str(executed.get("agent_id", "")),
+                        int(moved_distance_mm),
+                        int(max_distance_mm),
+                        int(moved_dt_ticks),
+                    ),
+                ],
+                default_action_token="audit",
+            )
+
         processed.append(
             {
                 "envelope_id": str(proposal.get("envelope_id", "")),

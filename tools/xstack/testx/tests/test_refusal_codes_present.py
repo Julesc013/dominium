@@ -34,6 +34,9 @@ def run(repo_root: str):
         "refusal.ac.policy_violation",
         "refusal.ac.rank_policy_required",
         "refusal.ac.attestation_missing",
+        "refusal.agent.unembodied",
+        "refusal.agent.ownership_violation",
+        "refusal.agent.boundary_cross_forbidden",
     ]
     for code in required_codes:
         if code not in text:

@@ -6,6 +6,7 @@ from typing import Dict
 
 from src.net.anti_cheat import (
     check_authority_integrity,
+    check_behavioral_detection,
     check_input_integrity,
     check_replay_protection,
     check_sequence_integrity,
@@ -15,6 +16,7 @@ from tools.xstack.sessionx.common import refusal
 
 
 POLICY_ID_LOCKSTEP = "policy.net.lockstep"
+MOVEMENT_PROCESS_IDS = ("process.agent_move", "process.agent_rotate")
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -22,6 +24,38 @@ def _as_int(value: object, default_value: int = 0) -> int:
         return int(value)
     except (TypeError, ValueError):
         return int(default_value)
+
+
+def _vector3_int(payload: object) -> dict:
+    row = dict(payload) if isinstance(payload, dict) else {}
+    return {
+        "x": _as_int(row.get("x", 0), 0),
+        "y": _as_int(row.get("y", 0), 0),
+        "z": _as_int(row.get("z", 0), 0),
+    }
+
+
+def _movement_limits(runtime: dict) -> dict:
+    ext = dict((runtime.get("anti_cheat") or {}).get("extensions") or {})
+    return {
+        "max_intents_per_tick": max(1, _as_int(ext.get("movement_intents_per_tick_max", 3), 3)),
+        "max_displacement_mm_per_tick": max(1, _as_int(ext.get("movement_max_displacement_mm_per_tick", 8000), 8000)),
+    }
+
+
+def _movement_requested_distance(inputs: dict) -> tuple[int, int]:
+    payload = dict(inputs if isinstance(inputs, dict) else {})
+    local = _vector3_int(payload.get("move_vector_local"))
+    if local == {"x": 0, "y": 0, "z": 0}:
+        local = _vector3_int(payload.get("delta_local_mm"))
+    speed_scalar = max(0, _as_int(payload.get("speed_scalar", 1000), 1000))
+    dt_ticks = max(1, _as_int(payload.get("tick_duration", payload.get("dt_ticks", 1)), 1))
+    scaled = {
+        "x": int(int(local["x"]) * int(speed_scalar) // 1000),
+        "y": int(int(local["y"]) * int(speed_scalar) // 1000),
+        "z": int(int(local["z"]) * int(speed_scalar) // 1000),
+    }
+    return int(abs(scaled["x"]) + abs(scaled["y"]) + abs(scaled["z"])), int(dt_ticks)
 
 
 def validate_lockstep_envelope(
@@ -114,6 +148,65 @@ def validate_lockstep_envelope(
     if str(sequence_check.get("result", "")) != "complete":
         return sequence_check
 
+    payload = dict(envelope.get("payload") or {})
+    process_id = str(payload.get("process_id", "")).strip()
+    if process_id in MOVEMENT_PROCESS_IDS:
+        limits = _movement_limits(runtime=runtime)
+        movement_inputs = dict(payload.get("inputs") or {})
+        submission_tick = _as_int(envelope.get("submission_tick", 0), 0)
+        queued_rows = list((runtime.get("server") or {}).get("intent_queue") or [])
+        movement_count = 0
+        for queued in queued_rows:
+            if not isinstance(queued, dict):
+                continue
+            if str(queued.get("source_peer_id", "")).strip() != peer_id:
+                continue
+            if _as_int(queued.get("submission_tick", 0), 0) != int(submission_tick):
+                continue
+            queued_payload = dict(queued.get("payload") or {})
+            queued_process = str(queued_payload.get("process_id", "")).strip()
+            if queued_process in MOVEMENT_PROCESS_IDS:
+                movement_count += 1
+        if int(movement_count) >= int(limits["max_intents_per_tick"]):
+            return check_input_integrity(
+                repo_root=repo_root,
+                runtime=runtime,
+                tick=int(max(0, current_tick)),
+                peer_id=peer_id,
+                valid=False,
+                reason_code="ac.movement.intent_rate_exceeded",
+                evidence=[
+                    "movement intent frequency exceeded deterministic per-tick limit",
+                    "submission_tick={},current_count={},max_count={}".format(
+                        int(submission_tick),
+                        int(movement_count),
+                        int(limits["max_intents_per_tick"]),
+                    ),
+                ],
+                default_action_token="throttle",
+            )
+
+        requested_distance_mm, requested_dt_ticks = _movement_requested_distance(movement_inputs)
+        max_distance_mm = int(limits["max_displacement_mm_per_tick"]) * int(max(1, requested_dt_ticks))
+        if int(requested_distance_mm) > int(max_distance_mm):
+            return check_behavioral_detection(
+                repo_root=repo_root,
+                runtime=runtime,
+                tick=int(max(0, current_tick)),
+                peer_id=peer_id,
+                suspicious=True,
+                reason_code="ac.movement.requested_displacement_exceeded",
+                evidence=[
+                    "movement request exceeds deterministic displacement threshold",
+                    "requested_distance_mm={},max_distance_mm={},dt_ticks={}".format(
+                        int(requested_distance_mm),
+                        int(max_distance_mm),
+                        int(max(1, requested_dt_ticks)),
+                    ),
+                ],
+                default_action_token="throttle",
+            )
+
     return {"result": "complete", "action": "audit"}
 
 
@@ -141,4 +234,3 @@ def refusal_from_decision(
         {"peer_id": str(peer_id)},
         str(path),
     )
-
