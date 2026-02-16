@@ -26,6 +26,7 @@
           "law.lab.unrestricted"
         ],
         "extensions": {
+          "allow_cross_shard_possession": false,
           "default_shard_map_id": "shard_map.default.single_process_two_shards",
           "perception_interest_policy_id": "policy.perception.lab.default"
         }
@@ -48,6 +49,7 @@
           "law.lab.unrestricted"
         ],
         "extensions": {
+          "allow_cross_shard_possession": false,
           "default_shard_map_id": "shard_map.default.single_shard",
           "perception_interest_policy_id": "policy.perception.lab.minimal"
         }

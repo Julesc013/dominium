@@ -1043,6 +1043,7 @@ def boot_session_spec(
             handshake_result["handshake_artifact_path"] = norm(os.path.relpath(handshake_artifact_abs, repo_root))
             handshake_stage_result.clear()
             handshake_stage_result.update(dict(handshake_result))
+            control_capabilities = dict(handshake_result.get("control_capabilities") or {})
             return {
                 "result": "complete",
                 "details": {
@@ -1052,6 +1053,11 @@ def boot_session_spec(
                     "server_law_profile_id": str(handshake_result.get("server_law_profile_id", "")),
                     "server_profile_id": str(handshake_result.get("server_profile_id", "")),
                     "server_policy_id": str(handshake_result.get("server_policy_id", "")),
+                    "control_capabilities": {
+                        "camera_bind_allowed": bool(control_capabilities.get("camera_bind_allowed", False)),
+                        "possession_allowed": bool(control_capabilities.get("possession_allowed", False)),
+                        "lens_override_allowed": bool(control_capabilities.get("lens_override_allowed", False)),
+                    },
                     "handshake_artifact_hash": str(handshake_result.get("handshake_artifact_hash", "")),
                     "handshake_artifact_path": str(handshake_result.get("handshake_artifact_path", "")),
                 },
@@ -1322,6 +1328,7 @@ def boot_session_spec(
     registry_hashes = dict((lock_payload.get("registries") or {}))
     start_tick = 0
     stop_tick = 0
+    handshake_control_capabilities = dict(handshake_stage_result.get("control_capabilities") or {})
     handshake_summary = {
         "executed": bool(handshake_stage_result),
         "handshake_id": str(handshake_stage_result.get("handshake_id", "")),
@@ -1330,6 +1337,11 @@ def boot_session_spec(
         "server_profile_id": str(handshake_stage_result.get("server_profile_id", "")),
         "server_policy_id": str(handshake_stage_result.get("server_policy_id", "")),
         "server_law_profile_id": str(handshake_stage_result.get("server_law_profile_id", "")),
+        "control_capabilities": {
+            "camera_bind_allowed": bool(handshake_control_capabilities.get("camera_bind_allowed", False)),
+            "possession_allowed": bool(handshake_control_capabilities.get("possession_allowed", False)),
+            "lens_override_allowed": bool(handshake_control_capabilities.get("lens_override_allowed", False)),
+        },
         "handshake_artifact_hash": str(handshake_stage_result.get("handshake_artifact_hash", "")),
     }
     baseline_payload = dict(net_sync_baseline_stage_result.get("baseline") or {})

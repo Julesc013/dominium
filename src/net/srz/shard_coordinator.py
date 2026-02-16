@@ -33,6 +33,11 @@ PROCESS_SCOPE_BY_ID = {
     "process.time_control_set_rate": "time.control",
     "process.time_pause": "time.control",
     "process.time_resume": "time.control",
+    "process.control_bind_camera": "control.binding.camera",
+    "process.control_unbind_camera": "control.binding.camera",
+    "process.control_possess_agent": "control.binding.possess",
+    "process.control_release_agent": "control.binding.possess",
+    "process.control_set_view_lens": "camera.lens",
     "process.camera_teleport": "camera.transform",
     "process.camera_move": "camera.transform",
 }
@@ -42,6 +47,11 @@ PROCESS_OWNER_OBJECT = {
     "process.time_control_set_rate": "camera.main",
     "process.time_pause": "camera.main",
     "process.time_resume": "camera.main",
+    "process.control_bind_camera": "camera.main",
+    "process.control_unbind_camera": "camera.main",
+    "process.control_possess_agent": "camera.main",
+    "process.control_release_agent": "camera.main",
+    "process.control_set_view_lens": "camera.main",
     "process.camera_teleport": "camera.main",
     "process.camera_move": "camera.main",
 }
@@ -51,6 +61,11 @@ PROCESS_PRIORITY = {
     "process.time_control_set_rate": 20,
     "process.time_pause": 20,
     "process.time_resume": 20,
+    "process.control_bind_camera": 25,
+    "process.control_unbind_camera": 25,
+    "process.control_possess_agent": 25,
+    "process.control_release_agent": 25,
+    "process.control_set_view_lens": 25,
     "process.camera_teleport": 30,
     "process.camera_move": 40,
 }
@@ -396,6 +411,38 @@ def _entity_owner_shard(shard_map: dict, entity_id: str) -> str:
     return DEFAULT_SHARD_ID
 
 
+def _first_input_token(inputs: dict, keys: Tuple[str, ...], default_value: str = "") -> str:
+    payload = dict(inputs if isinstance(inputs, dict) else {})
+    for key in keys:
+        token = str(payload.get(str(key), "")).strip()
+        if token:
+            return token
+    return str(default_value or "").strip()
+
+
+def _proposal_owner_object_id(process_id: str, inputs: dict) -> str:
+    token = str(process_id).strip()
+    if token in ("process.control_bind_camera", "process.control_unbind_camera"):
+        return _first_input_token(
+            inputs,
+            ("camera_id", "target_camera_id", "target_id"),
+            "camera.main",
+        ) or "camera.main"
+    if token in ("process.control_possess_agent", "process.control_release_agent"):
+        return _first_input_token(
+            inputs,
+            ("agent_id", "target_agent_id", "target_id"),
+            "camera.main",
+        ) or "camera.main"
+    if token == "process.control_set_view_lens":
+        return _first_input_token(
+            inputs,
+            ("camera_id", "target_camera_id", "target_id"),
+            "camera.main",
+        ) or "camera.main"
+    return str(PROCESS_OWNER_OBJECT.get(token, "camera.main"))
+
+
 def _register_client(runtime: dict, peer_id: str, authority_context: dict, law_profile: dict, lens_profile: dict) -> None:
     clients = _runtime_clients(runtime)
     token = str(peer_id).strip()
@@ -540,6 +587,7 @@ def initialize_hybrid_runtime(
             {"policy_id": perception_policy_id},
             "$.perception_interest_policy",
         )
+    allow_cross_shard_possession = bool(server_ext.get("allow_cross_shard_possession", False))
 
     shard_rows = []
     for row in sorted((shard_map.get("shards") or []), key=lambda item: (_as_int((item or {}).get("priority", 0), 0), str((item or {}).get("shard_id", "")))):
@@ -593,6 +641,9 @@ def initialize_hybrid_runtime(
         "global_state": copy.deepcopy(universe_state if isinstance(universe_state, dict) else {}),
         "shard_map_id": shard_map_id,
         "shard_map": shard_map,
+        "control_policy": {
+            "allow_cross_shard_possession": bool(allow_cross_shard_possession),
+        },
         "perception_interest_policy": perception_policy,
         "anti_cheat": {
             "policy_id": anti_cheat_policy_id,
@@ -898,8 +949,43 @@ def _build_proposal(runtime: dict, envelope: dict, tick: int) -> Dict[str, objec
         )
     target_shard_id = str(envelope.get("target_shard_id", "")).strip()
     source_shard_id = str(envelope.get("source_shard_id", DEFAULT_SHARD_ID)).strip() or DEFAULT_SHARD_ID
-    owner_object_id = str(PROCESS_OWNER_OBJECT.get(process_id, "camera.main"))
-    owner_shard_id = _entity_owner_shard(dict(runtime.get("shard_map") or {}), owner_object_id)
+    shard_map = dict(runtime.get("shard_map") or {})
+    owner_object_id = _proposal_owner_object_id(process_id=process_id, inputs=dict(inputs))
+    owner_shard_id = _entity_owner_shard(shard_map, owner_object_id)
+    if process_id in ("process.control_possess_agent", "process.control_release_agent"):
+        controller_id = _first_input_token(
+            dict(inputs),
+            ("controller_id", "target_controller_id"),
+        )
+        agent_id = _first_input_token(
+            dict(inputs),
+            ("agent_id", "target_agent_id", "target_id"),
+        )
+        controller_shard_id = _entity_owner_shard(shard_map, controller_id or owner_object_id)
+        agent_shard_id = _entity_owner_shard(shard_map, agent_id or owner_object_id)
+        control_policy = dict(runtime.get("control_policy") or {})
+        allow_cross = bool(control_policy.get("allow_cross_shard_possession", False))
+        if controller_id and agent_id and controller_shard_id != agent_shard_id and not allow_cross:
+            return refusal(
+                "refusal.control.cross_shard_possession_forbidden",
+                "controller '{}' and agent '{}' resolve to different shards ('{}' vs '{}')".format(
+                    controller_id,
+                    agent_id,
+                    controller_shard_id,
+                    agent_shard_id,
+                ),
+                "Route controller and possessed agent to the same shard, or enable allow_cross_shard_possession in server policy.",
+                {
+                    "controller_id": controller_id,
+                    "agent_id": agent_id,
+                    "controller_shard_id": controller_shard_id,
+                    "agent_shard_id": agent_shard_id,
+                },
+                "$.intent_envelope.payload.inputs",
+            )
+        if agent_id:
+            owner_object_id = str(agent_id)
+            owner_shard_id = str(agent_shard_id)
     if owner_shard_id != target_shard_id:
         return refusal(
             "refusal.net.cross_shard_unsupported",
@@ -1266,7 +1352,12 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
         if str(built.get("result", "")) != "complete":
             refusal_payload = dict(built.get("refusal") or {})
             refusal_code = str(refusal_payload.get("reason_code", "refusal.net.envelope_invalid"))
-            if refusal_code in ("refusal.net.authority_violation", "refusal.net.shard_target_invalid", "refusal.net.cross_shard_unsupported"):
+            if refusal_code in (
+                "refusal.net.authority_violation",
+                "refusal.net.shard_target_invalid",
+                "refusal.net.cross_shard_unsupported",
+                "refusal.control.cross_shard_possession_forbidden",
+            ):
                 check_authority_integrity(
                     repo_root=repo_root,
                     runtime=runtime,

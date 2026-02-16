@@ -22,12 +22,16 @@
         "required_law_profile_id": "law.lab.unrestricted",
         "allowed_entitlements": [
           "entitlement.inspect",
+          "entitlement.control.camera",
           "entitlement.teleport",
           "entitlement.time_control"
         ],
         "disallowed_entitlements": [
           "entitlement.debug_view",
-          "entitlement.truth_overlay"
+          "entitlement.truth_overlay",
+          "entitlement.control.possess",
+          "entitlement.control.lens_override",
+          "entitlement.control.admin"
         ],
         "snapshot_policy_id": "snapshot.policy.default",
         "resync_policy_id": "resync.authoritative.snapshot",
@@ -55,6 +59,8 @@
         "required_law_profile_id": null,
         "allowed_entitlements": [
           "entitlement.inspect",
+          "entitlement.control.camera",
+          "entitlement.control.possess",
           "entitlement.teleport",
           "entitlement.time_control"
         ],
@@ -84,10 +90,14 @@
         ],
         "required_law_profile_id": null,
         "allowed_entitlements": [
+          "entitlement.control.admin",
+          "entitlement.control.camera",
+          "entitlement.control.lens_override",
+          "entitlement.control.possess",
+          "entitlement.debug_view",
           "entitlement.inspect",
           "entitlement.teleport",
-          "entitlement.time_control",
-          "entitlement.debug_view"
+          "entitlement.time_control"
         ],
         "disallowed_entitlements": [],
         "snapshot_policy_id": "snapshot.policy.default",
