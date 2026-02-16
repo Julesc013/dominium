@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "cosmetic_pack_id": "pack.representation.base",
+  "provided_cosmetic_ids": [
+    "cosmetic.default.pill",
+    "cosmetic.humanoid.lowpoly.default",
+    "cosmetic.humanoid.highdetail.default"
+  ],
+  "required_securex_policy_id": "securex.policy.rank_strict",
+  "allowed_server_profiles": [
+    "server.profile.rank_strict",
+    "server.profile.casual_public",
+    "server.profile.private_relaxed"
+  ],
+  "extensions": {}
+}

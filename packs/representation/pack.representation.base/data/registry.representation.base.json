@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.representation.base",
+  "registry_entries": [
+    {
+      "registry_id": "dominium.registry.render_proxy_registry",
+      "entry_ids": [
+        "render.proxy.pill_default",
+        "render.proxy.humanoid_lowpoly",
+        "render.proxy.humanoid_highdetail"
+      ]
+    },
+    {
+      "registry_id": "dominium.registry.cosmetic_registry",
+      "entry_ids": [
+        "cosmetic.default.pill",
+        "cosmetic.humanoid.lowpoly.default",
+        "cosmetic.humanoid.highdetail.default"
+      ]
+    }
+  ],
+  "extensions": {}
+}

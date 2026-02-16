@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "asset_pack_id": "pack.representation.base",
+  "assets": [
+    {
+      "asset_id": "asset.mesh.pill.default",
+      "asset_type": "mesh",
+      "path": "assets/mesh/pill_default.glb"
+    },
+    {
+      "asset_id": "asset.material.pill.default",
+      "asset_type": "material",
+      "path": "assets/material/pill_default.mat.json"
+    },
+    {
+      "asset_id": "asset.mesh.humanoid.lowpoly",
+      "asset_type": "mesh",
+      "path": "assets/mesh/humanoid_lowpoly.glb"
+    },
+    {
+      "asset_id": "asset.material.humanoid.lowpoly",
+      "asset_type": "material",
+      "path": "assets/material/humanoid_lowpoly.mat.json"
+    },
+    {
+      "asset_id": "asset.mesh.humanoid.highdetail",
+      "asset_type": "mesh",
+      "path": "assets/mesh/humanoid_highdetail.glb"
+    },
+    {
+      "asset_id": "asset.material.humanoid.highdetail",
+      "asset_type": "material",
+      "path": "assets/material/humanoid_highdetail.mat.json"
+    }
+  ],
+  "extensions": {}
+}
