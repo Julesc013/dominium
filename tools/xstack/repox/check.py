@@ -3425,6 +3425,161 @@ def _append_negative_invariant_findings(
                         )
                     )
 
+    instrument_kernel_rel = "src/diegetics/instrument_kernel.py"
+    instrument_kernel_abs = os.path.join(repo_root, instrument_kernel_rel.replace("/", os.sep))
+    if not os.path.isfile(instrument_kernel_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=instrument_kernel_rel,
+                line_number=1,
+                snippet="",
+                message="diegetic instrument kernel is missing; cannot verify perceived-only invariant",
+                rule_id="INV-INSTRUMENTS-PERCEIVED-ONLY",
+            )
+        )
+    else:
+        try:
+            instrument_kernel_text = open(instrument_kernel_abs, "r", encoding="utf-8").read()
+        except OSError:
+            instrument_kernel_text = ""
+        truth_token_pattern = re.compile(r"\b(truth_model|truthmodel|universe_state|registry_payloads)\b", re.IGNORECASE)
+        for line_no, line in _iter_lines(repo_root, instrument_kernel_rel):
+            if truth_token_pattern.search(str(line)):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=instrument_kernel_rel,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="diegetic instrument kernel must derive from Perceived.now/memory only",
+                        rule_id="INV-INSTRUMENTS-PERCEIVED-ONLY",
+                    )
+                )
+        if "compute_diegetic_instruments(" not in instrument_kernel_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=instrument_kernel_rel,
+                    line_number=1,
+                    snippet="compute_diegetic_instruments(",
+                    message="diegetic kernel entrypoint is missing",
+                    rule_id="INV-INSTRUMENTS-PERCEIVED-ONLY",
+                )
+            )
+
+    observation_text = ""
+    if os.path.isfile(observation_abs):
+        try:
+            observation_text = open(observation_abs, "r", encoding="utf-8").read()
+        except OSError:
+            observation_text = ""
+    required_instrument_tokens = (
+        "compute_diegetic_instruments(",
+        "perceived_now=perceived_model",
+        "memory_store=memory_block",
+    )
+    for token in required_instrument_tokens:
+        if token in observation_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=observation_rel,
+                line_number=1,
+                snippet=token,
+                message="observation kernel must route instrument derivation from Perceived.now and Perceived.memory",
+                rule_id="INV-INSTRUMENTS-PERCEIVED-ONLY",
+            )
+        )
+
+    instrument_registry_rel = "data/registries/instrument_type_registry.json"
+    instrument_registry_payload, instrument_registry_err = _load_json_object(repo_root, instrument_registry_rel)
+    declared_diegetic_channels = set()
+    required_runtime_channels = set()
+    if instrument_registry_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=instrument_registry_rel,
+                line_number=1,
+                snippet="",
+                message="instrument type registry is missing/invalid; cannot validate diegetic channel declarations",
+                rule_id="INV-DIEGETIC-CHANNELS-REGISTRY-DRIVEN",
+            )
+        )
+    else:
+        rows = (((instrument_registry_payload.get("record") or {}).get("instrument_types")) or [])
+        if not isinstance(rows, list):
+            rows = []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            produced = row.get("produced_channels_out")
+            if not isinstance(produced, list):
+                continue
+            runtime_status = str((dict(row.get("extensions") or {})).get("runtime_status", "")).strip().lower()
+            is_stub = runtime_status == "stub"
+            for channel_id in produced:
+                token = str(channel_id).strip()
+                if not token.startswith("ch.diegetic."):
+                    continue
+                declared_diegetic_channels.add(token)
+                if not is_stub:
+                    required_runtime_channels.add(token)
+
+    if required_runtime_channels:
+        for channel_id in sorted(required_runtime_channels):
+            if channel_id in observation_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=observation_rel,
+                    line_number=1,
+                    snippet=channel_id,
+                    message="non-stub diegetic channel declared in registry is not surfaced in observation pipeline",
+                    rule_id="INV-DIEGETIC-CHANNELS-REGISTRY-DRIVEN",
+                )
+            )
+
+    channel_token_pattern = re.compile(r"\bch\.diegetic\.[a-z0-9_.-]+\b")
+    discovered_tokens = set(channel_token_pattern.findall(str(observation_text or "")))
+    policy_registry_rel = "data/registries/epistemic_policy_registry.json"
+    policy_registry_payload, _policy_registry_err = _load_json_object(repo_root, policy_registry_rel)
+    policy_text = ""
+    if isinstance(policy_registry_payload, dict):
+        try:
+            policy_text = json.dumps(policy_registry_payload, sort_keys=True)
+        except (TypeError, ValueError):
+            policy_text = ""
+    discovered_tokens.update(channel_token_pattern.findall(str(policy_text)))
+
+    lens_registry_rel = "packs/domain/pack.domain.navigation/data/lens.sensor.json"
+    lens_abs = os.path.join(repo_root, lens_registry_rel.replace("/", os.sep))
+    lens_text = ""
+    if os.path.isfile(lens_abs):
+        try:
+            lens_text = open(lens_abs, "r", encoding="utf-8").read()
+        except OSError:
+            lens_text = ""
+    discovered_tokens.update(channel_token_pattern.findall(str(lens_text)))
+
+    if declared_diegetic_channels:
+        for token in sorted(discovered_tokens):
+            if token in declared_diegetic_channels:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=observation_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="diegetic channel token is used outside instrument registry declarations",
+                    rule_id="INV-DIEGETIC-CHANNELS-REGISTRY-DRIVEN",
+                )
+            )
+
 
 def _append_representation_invariant_findings(
     findings: List[Dict[str, object]],

@@ -49,6 +49,8 @@ from analyzers import e20_cosmetic_semantics_smell
 from analyzers import e21_unauthorized_cosmetic_pack_smell
 from analyzers import e22_memory_truth_leak_smell
 from analyzers import e23_memory_nondeterminism_smell
+from analyzers import e24_instrument_truth_leak_smell
+from analyzers import e25_omniscient_map_smell
 
 
 ANALYZERS = (
@@ -101,6 +103,8 @@ ANALYZERS = (
     e21_unauthorized_cosmetic_pack_smell,
     e22_memory_truth_leak_smell,
     e23_memory_nondeterminism_smell,
+    e24_instrument_truth_leak_smell,
+    e25_omniscient_map_smell,
 )
 
 
