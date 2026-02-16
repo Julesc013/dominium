@@ -69,6 +69,8 @@ def run(repo_root: str):
             "INV-CONTROL-ENTITLEMENT-GATED",
             "INV-MOVE-USES-BODY_MOVE_ATTEMPT",
             "INV-OWNERSHIP-CHECK-REQUIRED",
+            "INV-VIEW-MODES-REGISTRY-DRIVEN",
+            "INV-WATERMARK-ENFORCED",
         }
         missing = sorted(rule for rule in required if rule not in rule_ids)
         if missing:

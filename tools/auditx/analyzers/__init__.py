@@ -43,6 +43,8 @@ from analyzers import e14_control_bypass_smell
 from analyzers import e15_collision_nondeterministic_smell
 from analyzers import e16_movement_bypass_smell
 from analyzers import e17_ownership_bypass_smell
+from analyzers import e18_view_mode_bypass_smell
+from analyzers import e19_watermark_missing_smell
 
 
 ANALYZERS = (
@@ -89,6 +91,8 @@ ANALYZERS = (
     e15_collision_nondeterministic_smell,
     e16_movement_bypass_smell,
     e17_ownership_bypass_smell,
+    e18_view_mode_bypass_smell,
+    e19_watermark_missing_smell,
 )
 
 

@@ -3148,6 +3148,26 @@ def _append_negative_invariant_findings(
                 rule_id="INV-OWNERSHIP-CHECK-REQUIRED",
             )
         )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="camera/view runtime is missing; cannot verify registry-driven view mode selection",
+                rule_id="INV-VIEW-MODES-REGISTRY-DRIVEN",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="camera/view runtime is missing; cannot verify observer watermark enforcement",
+                rule_id="INV-WATERMARK-ENFORCED",
+            )
+        )
     else:
         required_control_entitlements = (
             ("process.control_bind_camera", "entitlement.control.camera"),
@@ -3217,6 +3237,89 @@ def _append_negative_invariant_findings(
                         snippet=token,
                         message="embodied movement must enforce deterministic ownership checks in multiplayer contexts",
                         rule_id="INV-OWNERSHIP-CHECK-REQUIRED",
+                    )
+                )
+
+        required_view_tokens = (
+            "_view_mode_entries(navigation_indices)",
+            "view mode '{}' is not declared in view mode registry",
+            "control_policy.allowed_view_modes",
+        )
+        for token in required_view_tokens:
+            if token not in process_runtime_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=1,
+                        snippet=token,
+                        message="camera/view validation must resolve view modes from registry payloads and control policy",
+                        rule_id="INV-VIEW-MODES-REGISTRY-DRIVEN",
+                    )
+                )
+
+        if "refusal.view.watermark_required" not in process_runtime_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet="refusal.view.watermark_required",
+                    message="observer truth-capable view modes must enforce watermark entitlement refusal",
+                    rule_id="INV-WATERMARK-ENFORCED",
+                )
+            )
+
+        hardcoded_view_branch = re.compile(
+            r"if\s+.*(?:==|!=|in\s*\()\s*[\"']view\.[a-z0-9_.-]+[\"']",
+            re.IGNORECASE,
+        )
+        for line_no, line in _iter_lines(repo_root, process_runtime_rel):
+            if hardcoded_view_branch.search(str(line)):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="hardcoded view mode branch detected; resolve view rules through view_mode registry data",
+                        rule_id="INV-VIEW-MODES-REGISTRY-DRIVEN",
+                    )
+                )
+
+    observation_rel = "tools/xstack/sessionx/observation.py"
+    observation_abs = os.path.join(repo_root, observation_rel.replace("/", os.sep))
+    try:
+        observation_text = open(observation_abs, "r", encoding="utf-8").read()
+    except OSError:
+        observation_text = ""
+    if not observation_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=observation_rel,
+                line_number=1,
+                snippet="",
+                message="observation kernel is missing; cannot verify observer watermark channel enforcement",
+                rule_id="INV-WATERMARK-ENFORCED",
+            )
+        )
+    else:
+        watermark_tokens = (
+            "_observer_watermark_payload(",
+            "ch.watermark.observer_mode",
+            "refusal.ep.entitlement_missing",
+        )
+        for token in watermark_tokens:
+            if token not in observation_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=observation_rel,
+                        line_number=1,
+                        snippet=token,
+                        message="observer truth view path must emit watermark channel and enforce entitlement checks",
+                        rule_id="INV-WATERMARK-ENFORCED",
                     )
                 )
 
