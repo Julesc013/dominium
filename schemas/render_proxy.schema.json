@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Render Proxy Schema",
+  "version": "1.0.0",
+  "description": "Canonical render-only proxy definition for mapping body primitives to presentation assets.",
+  "x-doc-ref": [
+    "docs/embodiment/REPRESENTATION_LAYER.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "render_proxy_id",
+    "supported_body_shapes",
+    "mesh_ref",
+    "material_ref",
+    "lod_set_ref",
+    "bounds_override",
+    "attachments_allowed",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "render_proxy_id": {
+      "type": "string"
+    },
+    "supported_body_shapes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "capsule",
+          "aabb",
+          "convex_hull"
+        ]
+      }
+    },
+    "mesh_ref": {
+      "type": "string"
+    },
+    "material_ref": {
+      "type": "string"
+    },
+    "lod_set_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bounds_override": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "x_mm",
+        "y_mm",
+        "z_mm"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "x_mm": {
+          "type": "integer"
+        },
+        "y_mm": {
+          "type": "integer"
+        },
+        "z_mm": {
+          "type": "integer"
+        }
+      }
+    },
+    "attachments_allowed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "render_proxy_id": "render.proxy.pill_default",
+      "supported_body_shapes": [
+        "capsule",
+        "aabb",
+        "convex_hull"
+      ],
+      "mesh_ref": "asset.mesh.pill.default",
+      "material_ref": "asset.material.pill.default",
+      "lod_set_ref": null,
+      "bounds_override": null,
+      "attachments_allowed": [],
+      "extensions": {}
+    }
+  ]
+}

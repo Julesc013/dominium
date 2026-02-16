@@ -1,0 +1,61 @@
+{
+  "schema_id": "dominium.registry.render_proxy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.render_proxy_registry",
+    "registry_version": "1.0.0",
+    "render_proxies": [
+      {
+        "render_proxy_id": "render.proxy.humanoid_highdetail",
+        "supported_body_shapes": [
+          "capsule"
+        ],
+        "mesh_ref": "asset.mesh.humanoid.highdetail",
+        "material_ref": "asset.material.humanoid.highdetail",
+        "lod_set_ref": "asset.lod.humanoid.highdetail",
+        "bounds_override": null,
+        "attachments_allowed": [
+          "attachment.head",
+          "attachment.back"
+        ],
+        "extensions": {
+          "fallback_rank": 2
+        }
+      },
+      {
+        "render_proxy_id": "render.proxy.humanoid_lowpoly",
+        "supported_body_shapes": [
+          "capsule"
+        ],
+        "mesh_ref": "asset.mesh.humanoid.lowpoly",
+        "material_ref": "asset.material.humanoid.lowpoly",
+        "lod_set_ref": "asset.lod.humanoid.lowpoly",
+        "bounds_override": null,
+        "attachments_allowed": [
+          "attachment.head",
+          "attachment.back"
+        ],
+        "extensions": {
+          "fallback_rank": 1
+        }
+      },
+      {
+        "render_proxy_id": "render.proxy.pill_default",
+        "supported_body_shapes": [
+          "aabb",
+          "capsule",
+          "convex_hull"
+        ],
+        "mesh_ref": "asset.mesh.pill.default",
+        "material_ref": "asset.material.pill.default",
+        "lod_set_ref": null,
+        "bounds_override": null,
+        "attachments_allowed": [],
+        "extensions": {
+          "fallback_rank": 0
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

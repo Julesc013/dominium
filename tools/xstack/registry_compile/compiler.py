@@ -1655,6 +1655,270 @@ def _view_mode_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     return sorted(rows, key=lambda row: str(row.get("view_mode_id", ""))), errors
 
 
+def _representation_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _render_record, render_rows_raw, render_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/render_proxy_registry.json",
+        expected_schema_id="dominium.registry.render_proxy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="render_proxies",
+    )
+    if render_load_errors:
+        return [], [], [], render_load_errors
+
+    render_proxy_rows: List[dict] = []
+    render_proxy_id_set = set()
+    for entry in sorted(render_rows_raw, key=lambda row: str((row or {}).get("render_proxy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_render_proxy_entry",
+                    "message": "render proxy entry must be object",
+                    "path": "$.render_proxies",
+                }
+            )
+            continue
+        render_proxy_id = str(entry.get("render_proxy_id", "")).strip()
+        if not render_proxy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_render_proxy_entry",
+                    "message": "render proxy entry missing render_proxy_id",
+                    "path": "$.render_proxies.render_proxy_id",
+                }
+            )
+            continue
+        if render_proxy_id in render_proxy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_render_proxy_id",
+                    "message": "duplicate render_proxy_id '{}'".format(render_proxy_id),
+                    "path": "$.render_proxies.render_proxy_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="render_proxy",
+            payload=schema_payload,
+            path="data/registries/render_proxy_registry.json#{}".format(render_proxy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+
+        bounds_override = entry.get("bounds_override")
+        if isinstance(bounds_override, dict):
+            bounds_row = {
+                "x_mm": int(bounds_override.get("x_mm", 0) or 0),
+                "y_mm": int(bounds_override.get("y_mm", 0) or 0),
+                "z_mm": int(bounds_override.get("z_mm", 0) or 0),
+            }
+        else:
+            bounds_row = None
+        lod_set_ref = entry.get("lod_set_ref")
+        if lod_set_ref is not None:
+            lod_set_ref = str(lod_set_ref).strip() or None
+        render_proxy_rows.append(
+            {
+                "render_proxy_id": render_proxy_id,
+                "supported_body_shapes": _sorted_unique_strings(list(entry.get("supported_body_shapes") or [])),
+                "mesh_ref": str(entry.get("mesh_ref", "")).strip(),
+                "material_ref": str(entry.get("material_ref", "")).strip(),
+                "lod_set_ref": lod_set_ref,
+                "bounds_override": bounds_row,
+                "attachments_allowed": _sorted_unique_strings(list(entry.get("attachments_allowed") or [])),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        render_proxy_id_set.add(render_proxy_id)
+    render_proxy_rows = sorted(render_proxy_rows, key=lambda row: str(row.get("render_proxy_id", "")))
+
+    _cosmetic_record, cosmetic_rows_raw, cosmetic_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/cosmetic_registry.json",
+        expected_schema_id="dominium.registry.cosmetic_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="cosmetics",
+    )
+    if cosmetic_load_errors:
+        return [], [], [], cosmetic_load_errors
+
+    cosmetic_rows: List[dict] = []
+    cosmetic_id_set = set()
+    for entry in sorted(cosmetic_rows_raw, key=lambda row: str((row or {}).get("cosmetic_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_cosmetic_entry",
+                    "message": "cosmetic entry must be object",
+                    "path": "$.cosmetics",
+                }
+            )
+            continue
+        cosmetic_id = str(entry.get("cosmetic_id", "")).strip()
+        render_proxy_id = str(entry.get("render_proxy_id", "")).strip()
+        attachments = entry.get("attachments")
+        tags = entry.get("tags")
+        extensions = entry.get("extensions")
+        if (
+            not cosmetic_id
+            or not render_proxy_id
+            or not isinstance(attachments, list)
+            or not isinstance(tags, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_cosmetic_entry",
+                    "message": "cosmetic entry missing required fields",
+                    "path": "$.cosmetics",
+                }
+            )
+            continue
+        if cosmetic_id in cosmetic_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_cosmetic_id",
+                    "message": "duplicate cosmetic_id '{}'".format(cosmetic_id),
+                    "path": "$.cosmetics.cosmetic_id",
+                }
+            )
+            continue
+        if render_proxy_id not in render_proxy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.cosmetic_render_proxy_missing",
+                    "message": "cosmetic '{}' references unknown render_proxy_id '{}'".format(
+                        cosmetic_id,
+                        render_proxy_id,
+                    ),
+                    "path": "$.cosmetics.render_proxy_id",
+                }
+            )
+            continue
+        mesh_ref_override = entry.get("mesh_ref_override")
+        if mesh_ref_override is not None:
+            mesh_ref_override = str(mesh_ref_override).strip() or None
+        material_ref_override = entry.get("material_ref_override")
+        if material_ref_override is not None:
+            material_ref_override = str(material_ref_override).strip() or None
+        cosmetic_rows.append(
+            {
+                "cosmetic_id": cosmetic_id,
+                "render_proxy_id": render_proxy_id,
+                "mesh_ref_override": mesh_ref_override,
+                "material_ref_override": material_ref_override,
+                "attachments": _sorted_unique_strings(attachments),
+                "tags": _sorted_unique_strings(tags),
+                "extensions": dict(extensions),
+            }
+        )
+        cosmetic_id_set.add(cosmetic_id)
+    cosmetic_rows = sorted(cosmetic_rows, key=lambda row: str(row.get("cosmetic_id", "")))
+
+    _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/cosmetic_policy_registry.json",
+        expected_schema_id="dominium.registry.cosmetic_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], [], policy_load_errors
+
+    cosmetic_policy_rows: List[dict] = []
+    policy_id_set = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_cosmetic_policy_entry",
+                    "message": "cosmetic policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        allowed_cosmetic_ids = entry.get("allowed_cosmetic_ids")
+        allowed_pack_ids = entry.get("allowed_pack_ids")
+        refusal_codes = entry.get("refusal_codes")
+        extensions = entry.get("extensions")
+        if (
+            not policy_id
+            or not isinstance(allowed_cosmetic_ids, list)
+            or not isinstance(allowed_pack_ids, list)
+            or not isinstance(refusal_codes, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_cosmetic_policy_entry",
+                    "message": "cosmetic policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if policy_id in policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_cosmetic_policy_id",
+                    "message": "duplicate cosmetic policy_id '{}'".format(policy_id),
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        allow_unsigned_packs = bool(entry.get("allow_unsigned_packs", False))
+        require_signed_packs = bool(entry.get("require_signed_packs", False))
+        if allow_unsigned_packs and require_signed_packs:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_cosmetic_policy_signing",
+                    "message": "cosmetic policy '{}' cannot allow unsigned and require signed packs simultaneously".format(
+                        policy_id
+                    ),
+                    "path": "$.policies",
+                }
+            )
+            continue
+        allowed_cosmetics = _sorted_unique_strings(allowed_cosmetic_ids)
+        unknown_cosmetics = [token for token in allowed_cosmetics if token not in cosmetic_id_set]
+        if unknown_cosmetics:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.cosmetic_policy_cosmetic_missing",
+                    "message": "cosmetic policy '{}' references unknown cosmetic ids: {}".format(
+                        policy_id,
+                        ",".join(sorted(unknown_cosmetics)),
+                    ),
+                    "path": "$.policies.allowed_cosmetic_ids",
+                }
+            )
+            continue
+        cosmetic_policy_rows.append(
+            {
+                "policy_id": policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "allow_unsigned_packs": allow_unsigned_packs,
+                "require_signed_packs": require_signed_packs,
+                "allowed_cosmetic_ids": allowed_cosmetics,
+                "allowed_pack_ids": _sorted_unique_strings(allowed_pack_ids),
+                "refusal_codes": _sorted_unique_strings(refusal_codes),
+                "extensions": dict(extensions),
+            }
+        )
+        policy_id_set.add(policy_id)
+    cosmetic_policy_rows = sorted(cosmetic_policy_rows, key=lambda row: str(row.get("policy_id", "")))
+    return render_proxy_rows, cosmetic_rows, cosmetic_policy_rows, errors
+
+
 def _network_policy_rows(
     repo_root: str,
     known_law_profile_ids: List[str],
@@ -3138,6 +3402,15 @@ def compile_bundle(
         repo_root=repo_root,
     )
     (
+        render_proxy_rows,
+        cosmetic_rows,
+        cosmetic_policy_rows,
+        representation_registry_errors,
+    ) = _representation_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         net_replication_policy_rows,
         net_resync_strategy_rows,
         net_server_policy_rows,
@@ -3187,6 +3460,7 @@ def compile_bundle(
         + control_registry_errors
         + body_shape_registry_errors
         + view_mode_registry_errors
+        + representation_registry_errors
         + net_registry_errors
         + hybrid_registry_errors
         + epistemic_registry_errors
@@ -3254,6 +3528,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "view_modes": view_mode_rows,
+        }
+    )
+    render_proxy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "render_proxies": render_proxy_rows,
+        }
+    )
+    cosmetic_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "cosmetics": cosmetic_rows,
+        }
+    )
+    cosmetic_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": cosmetic_policy_rows,
         }
     )
     net_replication_policy_payload = _finalize_registry_payload(
@@ -3409,6 +3704,9 @@ def compile_bundle(
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
         "body_shape_registry": ("body_shape_registry", body_shape_payload),
         "view_mode_registry": ("view_mode_registry", view_mode_payload),
+        "render_proxy_registry": ("render_proxy_registry", render_proxy_payload),
+        "cosmetic_registry": ("cosmetic_registry", cosmetic_payload),
+        "cosmetic_policy_registry": ("cosmetic_policy_registry", cosmetic_policy_payload),
         "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
         "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
         "net_server_policy_registry": ("net_server_policy_registry", net_server_policy_payload),
@@ -3444,6 +3742,9 @@ def compile_bundle(
         "controller_type_registry",
         "body_shape_registry",
         "view_mode_registry",
+        "render_proxy_registry",
+        "cosmetic_registry",
+        "cosmetic_policy_registry",
         "net_replication_policy_registry",
         "net_resync_strategy_registry",
         "net_server_policy_registry",
@@ -3499,6 +3800,9 @@ def compile_bundle(
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
             "body_shape_registry_hash": registry_hashes["body_shape_registry_hash"],
             "view_mode_registry_hash": registry_hashes["view_mode_registry_hash"],
+            "render_proxy_registry_hash": registry_hashes["render_proxy_registry_hash"],
+            "cosmetic_registry_hash": registry_hashes["cosmetic_registry_hash"],
+            "cosmetic_policy_registry_hash": registry_hashes["cosmetic_policy_registry_hash"],
             "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
             "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
             "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],

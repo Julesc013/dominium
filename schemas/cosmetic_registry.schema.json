@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cosmetic Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic cosmetic registry output.",
+  "x-doc-ref": [
+    "docs/embodiment/REPRESENTATION_LAYER.md",
+    "docs/net/RANKED_SERVER_GOVERNANCE.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "cosmetics",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "cosmetics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "cosmetic_id",
+          "render_proxy_id",
+          "mesh_ref_override",
+          "material_ref_override",
+          "attachments",
+          "tags",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "cosmetic_id": {
+            "type": "string"
+          },
+          "render_proxy_id": {
+            "type": "string"
+          },
+          "mesh_ref_override": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "material_ref_override": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "cosmetics": [],
+      "registry_hash": "86bc6c4f63e805fe995d67963b8cdf90df8cf194b25b2fded0e8a31558b92131"
+    }
+  ]
+}

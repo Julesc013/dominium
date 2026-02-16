@@ -1,0 +1,47 @@
+{
+  "schema_id": "dominium.registry.cosmetic_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.cosmetic_registry",
+    "registry_version": "1.0.0",
+    "cosmetics": [
+      {
+        "cosmetic_id": "cosmetic.default.pill",
+        "render_proxy_id": "render.proxy.pill_default",
+        "mesh_ref_override": null,
+        "material_ref_override": null,
+        "attachments": [],
+        "tags": [
+          "default",
+          "readable"
+        ],
+        "extensions": {}
+      },
+      {
+        "cosmetic_id": "cosmetic.humanoid.highdetail.default",
+        "render_proxy_id": "render.proxy.humanoid_highdetail",
+        "mesh_ref_override": null,
+        "material_ref_override": null,
+        "attachments": [],
+        "tags": [
+          "humanoid",
+          "highdetail"
+        ],
+        "extensions": {}
+      },
+      {
+        "cosmetic_id": "cosmetic.humanoid.lowpoly.default",
+        "render_proxy_id": "render.proxy.humanoid_lowpoly",
+        "mesh_ref_override": null,
+        "material_ref_override": null,
+        "attachments": [],
+        "tags": [
+          "humanoid",
+          "lowpoly"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

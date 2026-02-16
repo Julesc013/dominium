@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.registry.cosmetic_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.cosmetic_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "policy_id": "policy.cosmetics.private_relaxed",
+        "description": "Private sessions allow unsigned cosmetic packs and broad cosmetic selection.",
+        "allow_unsigned_packs": true,
+        "require_signed_packs": false,
+        "allowed_cosmetic_ids": [],
+        "allowed_pack_ids": [],
+        "refusal_codes": [
+          "refusal.cosmetic.forbidden"
+        ],
+        "extensions": {
+          "warn_on_unsigned": false
+        }
+      },
+      {
+        "policy_id": "policy.cosmetics.casual_default",
+        "description": "Casual sessions permit unsigned cosmetics with deterministic fallback behavior.",
+        "allow_unsigned_packs": true,
+        "require_signed_packs": false,
+        "allowed_cosmetic_ids": [],
+        "allowed_pack_ids": [],
+        "refusal_codes": [
+          "refusal.cosmetic.forbidden"
+        ],
+        "extensions": {
+          "warn_on_unsigned": true
+        }
+      },
+      {
+        "policy_id": "policy.cosmetics.rank_strict",
+        "description": "Ranked sessions require signed cosmetic packs and an explicit allow-list.",
+        "allow_unsigned_packs": false,
+        "require_signed_packs": true,
+        "allowed_cosmetic_ids": [
+          "cosmetic.default.pill",
+          "cosmetic.humanoid.lowpoly.default"
+        ],
+        "allowed_pack_ids": [
+          "pack.representation.base"
+        ],
+        "refusal_codes": [
+          "refusal.cosmetic.unsigned_not_allowed",
+          "refusal.cosmetic.not_in_whitelist"
+        ],
+        "extensions": {
+          "warn_on_unsigned": false
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
