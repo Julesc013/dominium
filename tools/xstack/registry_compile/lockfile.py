@@ -123,6 +123,7 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "lens_registry_hash",
             "control_action_registry_hash",
             "controller_type_registry_hash",
+            "body_shape_registry_hash",
             "net_replication_policy_registry_hash",
             "net_resync_strategy_registry_hash",
             "net_server_policy_registry_hash",

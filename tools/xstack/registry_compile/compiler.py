@@ -1497,6 +1497,77 @@ def _control_registry_rows(
     return control_action_rows, controller_type_rows, errors
 
 
+def _body_shape_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
+    _body_record, body_rows_raw, load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/body_shape_registry.json",
+        expected_schema_id="dominium.registry.body_shape_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="shape_types",
+    )
+    if load_errors:
+        return [], load_errors
+
+    errors: List[dict] = []
+    rows: List[dict] = []
+    seen = set()
+    for entry in sorted(body_rows_raw, key=lambda row: str((row or {}).get("shape_type", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_body_shape_entry",
+                    "message": "body shape entry must be object",
+                    "path": "$.shape_types",
+                }
+            )
+            continue
+        shape_type = str(entry.get("shape_type", "")).strip()
+        required_parameters = entry.get("required_parameters")
+        parameter_constraints = entry.get("parameter_constraints")
+        extensions = entry.get("extensions")
+        if (
+            shape_type not in ("capsule", "aabb", "convex_hull")
+            or not isinstance(required_parameters, list)
+            or not isinstance(parameter_constraints, dict)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_body_shape_entry",
+                    "message": "body shape '{}' missing required fields".format(shape_type or "<missing>"),
+                    "path": "$.shape_types",
+                }
+            )
+            continue
+        if shape_type in seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_body_shape_type",
+                    "message": "duplicate body shape_type '{}'".format(shape_type),
+                    "path": "$.shape_types.shape_type",
+                }
+            )
+            continue
+        seen.add(shape_type)
+        constraints_row: Dict[str, dict] = {}
+        for key in sorted(parameter_constraints.keys()):
+            value = parameter_constraints.get(key)
+            if isinstance(value, dict):
+                constraints_row[str(key)] = dict(value)
+        rows.append(
+            {
+                "shape_type": shape_type,
+                "required_parameters": _sorted_unique_strings(required_parameters),
+                "parameter_constraints": constraints_row,
+                "supports_dynamic": bool(entry.get("supports_dynamic", True)),
+                "supports_ghost": bool(entry.get("supports_ghost", True)),
+                "notes": str(entry.get("notes", "")).strip(),
+                "extensions": dict(extensions),
+            }
+        )
+    return sorted(rows, key=lambda row: str(row.get("shape_type", ""))), errors
+
+
 def _network_policy_rows(
     repo_root: str,
     known_law_profile_ids: List[str],
@@ -2973,6 +3044,9 @@ def compile_bundle(
     control_action_rows, controller_type_rows, control_registry_errors = _control_registry_rows(
         repo_root=repo_root,
     )
+    body_shape_rows, body_shape_registry_errors = _body_shape_registry_rows(
+        repo_root=repo_root,
+    )
     (
         net_replication_policy_rows,
         net_resync_strategy_rows,
@@ -3021,6 +3095,7 @@ def compile_bundle(
         + policy_errors
         + worldgen_constraints_errors
         + control_registry_errors
+        + body_shape_registry_errors
         + net_registry_errors
         + hybrid_registry_errors
         + epistemic_registry_errors
@@ -3074,6 +3149,13 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "controller_types": controller_type_rows,
+        }
+    )
+    body_shape_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "shape_types": body_shape_rows,
         }
     )
     net_replication_policy_payload = _finalize_registry_payload(
@@ -3227,6 +3309,7 @@ def compile_bundle(
         "lens_registry": ("lens_registry", lens_payload),
         "control_action_registry": ("control_action_registry", control_action_payload),
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
+        "body_shape_registry": ("body_shape_registry", body_shape_payload),
         "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
         "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
         "net_server_policy_registry": ("net_server_policy_registry", net_server_policy_payload),
@@ -3260,6 +3343,7 @@ def compile_bundle(
         "lens_registry",
         "control_action_registry",
         "controller_type_registry",
+        "body_shape_registry",
         "net_replication_policy_registry",
         "net_resync_strategy_registry",
         "net_server_policy_registry",
@@ -3313,6 +3397,7 @@ def compile_bundle(
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
+            "body_shape_registry_hash": registry_hashes["body_shape_registry_hash"],
             "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
             "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
             "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],
