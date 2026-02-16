@@ -5,7 +5,7 @@
   "bundle_id": "bundle.base.lab",
   "scenario_id": "scenario.lab.galaxy_nav",
   "script_path": "tools/xstack/testdata/session/script.region_traversal.fixture.json",
-  "composite_hash_anchor": "0aae7396633ef9e0835e4ebd1fb17a4bcf69dcbc2540d35c5a46ae51dfbc6383",
+  "composite_hash_anchor": "7e6bc5ac0d482b46aaccd8d29c1ebd698a971f9efb927de8b7ae629d10a1451a",
   "pack_lock_hash": "ce8561692fb0c820a07d90990344270d766bad2c620c57e0f6188de6df7b219e",
   "registry_hashes": {
     "activation_policy_registry_hash": "efca5d2402cb17f2f48728ec4c51afd618b5f0c89f86038fd195bb5c3e21344d",
@@ -14,6 +14,7 @@
     "astronomy_catalog_index_hash": "35c9633ed37ecc176e69b2fb18dc974a40de31656372c6d513c7c849d16bc64c",
     "body_shape_registry_hash": "bbceb7b6024d27d180d0e582a24240c0c174adb2a727ca82d4a9f2fb3e64b126",
     "budget_policy_registry_hash": "2cbcd59cb7fe2f43bf9ba2446cf1018c68b6cfdc224cc0a0f2e48e27c4482e84",
+    "calibration_model_registry_hash": "dbb6dd933603884afe16cdec0c7ac0bd322c6bfb73f88e323710e7a542afe522",
     "control_action_registry_hash": "10afe8334e096cdcd1ddf07d5815c8ae56518c93a2c3d7c5e5f2f1f66f314bbe",
     "controller_type_registry_hash": "67af61c2fde4057ea498a8afbad907ff252826e179cfeb126a825a796d48fbd2",
     "cosmetic_policy_registry_hash": "16b3162b4f74b12bcb85c32071c9383287d5660267709dd9b254aefb20850ebe",
@@ -25,6 +26,7 @@
     "eviction_rule_registry_hash": "62b3feabba0932e2f9cfe0d0cad1868d1c8be6894fbc17332362385a1380ec13",
     "experience_registry_hash": "17f933ba9a7a97ff00cea21366809fd1a489b5b0dcc88d19b82dc028cd7e3c81",
     "fidelity_policy_registry_hash": "5200189ab102c7f3f92a8f1200c6486433ee76aca4dfba32b5dd56f8976c4f52",
+    "instrument_type_registry_hash": "2dfeff3ba92cc9aa87d3c2907676dca8ec53acaad9e5f77a223cb95eaa21be98",
     "law_registry_hash": "ef18577cd231b0679cc3f4ddf7ef9f1aa1304d93f73594519fbaa98e69c342c0",
     "lens_registry_hash": "61c23d087bc159e4d540ced7148c9d40f5ee53a13a7fcc9d2cc68246db2d89c4",
     "net_replication_policy_registry_hash": "147a043b889d66fc943b36c7777421870dc6fb01c9b05208349ce6d6c49005b6",
@@ -43,12 +45,12 @@
     "worldgen_constraints_registry_hash": "cefb8d7e3376376cc4ba66b9e952fe3a58b2925448637036756e979b8a4e5359"
   },
   "roi_switch_lock": {
-    "final_state_hash": "afa538a1c772119576e4969a494152686362fe297d34a58c058c8cfc9c6bc4b7",
-    "final_tick_hash": "09b996229cfa3c8d2ecc6d0b30309b4ff632313b00de55257d5616fe24b05d55",
+    "final_state_hash": "3108938891f29c59bef88640f907ed53f6bdb6bc4e37d7a846a4ebbb2331afcf",
+    "final_tick_hash": "10f327cfb89ee0ee43b7a78a04269cb1b466a6993be4e4a999b68f95a43de5a8",
     "transition_policy": "deterministic_process_order"
   },
   "update_policy": {
     "required_commit_tag": "REGRESSION-UPDATE",
-    "notes": "Baseline changes require explicit review and deterministic revalidation. Updated under REGRESSION-UPDATE on 2026-02-16 (ED1 memory integration)."
+    "notes": "Baseline changes require explicit review and deterministic revalidation. Updated under REGRESSION-UPDATE on 2026-02-16 (ED2 diegetic instrument ecosystem integration)."
   }
 }

@@ -5,13 +5,13 @@
   "bundle_id": "bundle.base.lab",
   "policy_baselines": {
     "policy.net.lockstep": {
-      "final_composite_hash": "155fbb73526dc6e724b0e2e74bcdf82e937191b609789ae370aafb024eae7c2d"
+      "final_composite_hash": "38e13ffe1fa0bc1deea819c58642fae1ec774bff27d896da43613458c8cb2cce"
     },
     "policy.net.server_authoritative": {
-      "final_composite_hash": "6dbc178fb7a660c2775dd02e41a6425d73a4ca899ebfac989351e9c06b778b2f"
+      "final_composite_hash": "fa0d05e34bf623c938b536e383ad9ecbb97965652ff5616b7d7573fd887abc6b"
     },
     "policy.net.srz_hybrid": {
-      "final_composite_hash": "dad643631ef78ea9115894a417eaa1b87841dad8178aefe1962840f0e581b821"
+      "final_composite_hash": "016ea42f0c2a7fceb2d87002bce4791221de93594dd3ee5d1af47fa8a17c56ed"
     }
   },
   "ranked_handshake_matrix_hash": "1926e51d42b7bca86246ca523439c0674245e19f9f141662021d54394f366fb6",
@@ -22,6 +22,6 @@
   },
   "update_policy": {
     "required_commit_tag": "MULTIPLAYER-REGRESSION-UPDATE",
-    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-16 (ED1 memory integration)."
+    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-16 (ED2 diegetic instrument ecosystem integration)."
   }
 }
