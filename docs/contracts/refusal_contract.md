@@ -103,6 +103,9 @@ Tool payload wrapper:
 - `refusal.control.lens_forbidden`
 - `refusal.control.cross_shard_possession_forbidden`
 - `refusal.control.cross_shard_collision_forbidden`
+- `refusal.agent.unembodied`
+- `refusal.agent.ownership_violation`
+- `refusal.agent.boundary_cross_forbidden`
 - `refusal.contract.no_penetration_violation`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
@@ -125,6 +128,9 @@ Tool payload wrapper:
 - `refusal.ac.policy_violation`: inspect anti-cheat module events and satisfy declared anti-cheat policy constraints.
 - `refusal.ac.rank_policy_required`: select anti-cheat policy with `required_for_ranked=true` before ranked session entry.
 - `refusal.ac.attestation_missing`: provide client attestation artifact when policy explicitly enables attestation checks.
+- `refusal.agent.unembodied`: bind/create body assembly for the agent before movement.
+- `refusal.agent.ownership_violation`: submit movement with matching controller/owner peer authority context.
+- `refusal.agent.boundary_cross_forbidden`: route move to owning shard or perform explicit `process.srz_transfer_entity` first.
 
 ## Invariants
 - Refusals do not mutate authoritative state.
