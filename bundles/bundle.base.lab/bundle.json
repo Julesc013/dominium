@@ -13,6 +13,10 @@
     "constraints.worldgen.default_lab",
     "pack.law.observe_only",
     "law.lab.unrestricted",
+    "law.player.diegetic_default",
+    "law.spectator.limited",
+    "law.observer.truth",
+    "law.admin.lab",
     "pack.domain.navigation",
     "astronomy.milky_way",
     "astronomy.sol",
@@ -20,7 +24,10 @@
     "org.dominium.sol.ephemeris",
     "org.dominium.earth.tiles",
     "pack.experience.lab_galaxy",
-    "profile.lab.developer"
+    "profile.lab.developer",
+    "profile.player.default",
+    "profile.spectator.default",
+    "profile.observer.exploration"
   ],
   "optional_pack_ids": [
     "pack.tool.admin_security",

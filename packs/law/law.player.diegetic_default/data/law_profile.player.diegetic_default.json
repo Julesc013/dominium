@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0.0",
+  "law_profile_id": "law.player.diegetic_default",
+  "epistemic_policy_id": "ep.policy.player_diegetic",
+  "allowed_processes": [
+    "process.agent_move",
+    "process.agent_rotate",
+    "process.body_move_attempt",
+    "process.camera_bind_target",
+    "process.camera_set_view_mode",
+    "process.camera_unbind_target",
+    "process.control_possess_agent",
+    "process.control_release_agent",
+    "process.instrument_notebook_add_note",
+    "process.instrument_radio_send_text",
+    "process.instrument_tick"
+  ],
+  "forbidden_processes": [
+    "process.camera_move",
+    "process.camera_set_lens",
+    "process.camera_teleport",
+    "process.control_set_view_lens",
+    "process.observe.telemetry",
+    "process.time_control_set_rate",
+    "process.time_pause",
+    "process.time_resume"
+  ],
+  "allowed_lenses": [
+    "lens.diegetic.sensor"
+  ],
+  "epistemic_limits": {
+    "max_view_radius_km": 50000,
+    "allow_hidden_state_access": false
+  },
+  "respawn_rules": {
+    "respawn_allowed": true,
+    "respawn_delay_seconds": 15
+  },
+  "debug_allowances": {
+    "allow_nondiegetic_overlays": false,
+    "allow_time_dilation_controls": false
+  },
+  "process_entitlement_requirements": {
+    "process.agent_move": "entitlement.agent.move",
+    "process.agent_rotate": "entitlement.agent.rotate",
+    "process.body_move_attempt": "entitlement.agent.move",
+    "process.camera_bind_target": "entitlement.control.camera",
+    "process.camera_set_view_mode": "entitlement.control.camera",
+    "process.camera_unbind_target": "entitlement.control.camera",
+    "process.control_possess_agent": "entitlement.control.possess",
+    "process.control_release_agent": "entitlement.control.possess",
+    "process.instrument_notebook_add_note": "entitlement.diegetic.notebook_write",
+    "process.instrument_radio_send_text": "entitlement.diegetic.radio_use",
+    "process.instrument_tick": "session.boot"
+  },
+  "process_privilege_requirements": {
+    "process.agent_move": "operator",
+    "process.agent_rotate": "operator",
+    "process.body_move_attempt": "operator",
+    "process.camera_bind_target": "observer",
+    "process.camera_set_view_mode": "observer",
+    "process.camera_unbind_target": "observer",
+    "process.control_possess_agent": "operator",
+    "process.control_release_agent": "operator",
+    "process.instrument_notebook_add_note": "observer",
+    "process.instrument_radio_send_text": "observer",
+    "process.instrument_tick": "observer"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0",
+  "law_profile_id": "law.observer.truth",
+  "epistemic_policy_id": "ep.policy.observer_truth",
+  "allowed_processes": [
+    "process.camera_bind_target",
+    "process.camera_move",
+    "process.camera_set_lens",
+    "process.camera_set_view_mode",
+    "process.camera_teleport",
+    "process.camera_unbind_target",
+    "process.control_bind_camera",
+    "process.control_set_view_lens",
+    "process.control_unbind_camera",
+    "process.instrument_notebook_add_note",
+    "process.instrument_radio_send_text",
+    "process.instrument_tick",
+    "process.observe.telemetry",
+    "process.time_control_set_rate",
+    "process.time_pause",
+    "process.time_resume"
+  ],
+  "forbidden_processes": [],
+  "allowed_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "epistemic_limits": {
+    "max_view_radius_km": 1000000000,
+    "allow_hidden_state_access": true
+  },
+  "respawn_rules": {
+    "respawn_allowed": false,
+    "respawn_delay_seconds": 0
+  },
+  "debug_allowances": {
+    "allow_nondiegetic_overlays": true,
+    "allow_time_dilation_controls": true
+  },
+  "process_entitlement_requirements": {
+    "process.camera_bind_target": "entitlement.control.camera",
+    "process.camera_move": "entitlement.camera_control",
+    "process.camera_set_lens": "entitlement.control.lens_override",
+    "process.camera_set_view_mode": "entitlement.control.camera",
+    "process.camera_teleport": "entitlement.teleport",
+    "process.camera_unbind_target": "entitlement.control.camera",
+    "process.control_bind_camera": "entitlement.control.camera",
+    "process.control_set_view_lens": "entitlement.control.lens_override",
+    "process.control_unbind_camera": "entitlement.control.camera",
+    "process.instrument_notebook_add_note": "entitlement.diegetic.notebook_write",
+    "process.instrument_radio_send_text": "entitlement.diegetic.radio_use",
+    "process.instrument_tick": "session.boot",
+    "process.observe.telemetry": "entitlement.inspect",
+    "process.time_control_set_rate": "entitlement.time_control",
+    "process.time_pause": "entitlement.time_control",
+    "process.time_resume": "entitlement.time_control"
+  },
+  "process_privilege_requirements": {
+    "process.camera_bind_target": "observer",
+    "process.camera_move": "observer",
+    "process.camera_set_lens": "operator",
+    "process.camera_set_view_mode": "observer",
+    "process.camera_teleport": "operator",
+    "process.camera_unbind_target": "observer",
+    "process.control_bind_camera": "observer",
+    "process.control_set_view_lens": "operator",
+    "process.control_unbind_camera": "observer",
+    "process.instrument_notebook_add_note": "observer",
+    "process.instrument_radio_send_text": "observer",
+    "process.instrument_tick": "observer",
+    "process.observe.telemetry": "observer",
+    "process.time_control_set_rate": "operator",
+    "process.time_pause": "operator",
+    "process.time_resume": "operator"
+  }
+}
