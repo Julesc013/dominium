@@ -1655,6 +1655,163 @@ def _view_mode_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     return sorted(rows, key=lambda row: str(row.get("view_mode_id", ""))), errors
 
 
+def _diegetic_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _calib_record, calibration_rows_raw, calibration_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/calibration_model_registry.json",
+        expected_schema_id="dominium.registry.calibration_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="calibration_models",
+    )
+    if calibration_load_errors:
+        return [], [], calibration_load_errors
+
+    calibration_rows: List[dict] = []
+    calibration_model_id_set = set()
+    for entry in sorted(calibration_rows_raw, key=lambda row: str((row or {}).get("calibration_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_calibration_model_entry",
+                    "message": "calibration model entry must be object",
+                    "path": "$.calibration_models",
+                }
+            )
+            continue
+        calibration_model_id = str(entry.get("calibration_model_id", "")).strip()
+        if not calibration_model_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_calibration_model_entry",
+                    "message": "calibration model entry missing calibration_model_id",
+                    "path": "$.calibration_models.calibration_model_id",
+                }
+            )
+            continue
+        if calibration_model_id in calibration_model_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_calibration_model_id",
+                    "message": "duplicate calibration_model_id '{}'".format(calibration_model_id),
+                    "path": "$.calibration_models.calibration_model_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="calibration_model",
+            payload=schema_payload,
+            path="data/registries/calibration_model_registry.json#{}".format(calibration_model_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        parameters = entry.get("parameters")
+        if not isinstance(parameters, dict):
+            parameters = {}
+        calibration_rows.append(
+            {
+                "calibration_model_id": calibration_model_id,
+                "description": str(entry.get("description", "")).strip(),
+                "model_kind": str(entry.get("model_kind", "")).strip(),
+                "parameters": dict((str(key), parameters[key]) for key in sorted(parameters.keys())),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        calibration_model_id_set.add(calibration_model_id)
+    calibration_rows = sorted(calibration_rows, key=lambda row: str(row.get("calibration_model_id", "")))
+
+    _instrument_record, instrument_rows_raw, instrument_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/instrument_type_registry.json",
+        expected_schema_id="dominium.registry.instrument_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="instrument_types",
+    )
+    if instrument_load_errors:
+        return [], [], instrument_load_errors
+
+    instrument_rows: List[dict] = []
+    instrument_type_id_set = set()
+    for entry in sorted(instrument_rows_raw, key=lambda row: str((row or {}).get("instrument_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_instrument_type_entry",
+                    "message": "instrument type entry must be object",
+                    "path": "$.instrument_types",
+                }
+            )
+            continue
+        instrument_type_id = str(entry.get("instrument_type_id", "")).strip()
+        if not instrument_type_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_instrument_type_entry",
+                    "message": "instrument type entry missing instrument_type_id",
+                    "path": "$.instrument_types.instrument_type_id",
+                }
+            )
+            continue
+        if instrument_type_id in instrument_type_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_instrument_type_id",
+                    "message": "duplicate instrument_type_id '{}'".format(instrument_type_id),
+                    "path": "$.instrument_types.instrument_type_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="instrument_type",
+            payload=schema_payload,
+            path="data/registries/instrument_type_registry.json#{}".format(instrument_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        calibration_model_id = entry.get("calibration_model_id")
+        calibration_model_token = None
+        if calibration_model_id is not None:
+            calibration_model_token = str(calibration_model_id).strip() or None
+        if calibration_model_token and calibration_model_token not in calibration_model_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.instrument_calibration_model_missing",
+                    "message": "instrument type '{}' references unknown calibration_model_id '{}'".format(
+                        instrument_type_id,
+                        calibration_model_token,
+                    ),
+                    "path": "$.instrument_types.calibration_model_id",
+                }
+            )
+            continue
+        instrument_rows.append(
+            {
+                "instrument_type_id": instrument_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "required_channels_in": _sorted_unique_strings(list(entry.get("required_channels_in") or [])),
+                "produced_channels_out": _sorted_unique_strings(list(entry.get("produced_channels_out") or [])),
+                "update_process_id": str(entry.get("update_process_id", "")).strip(),
+                "calibration_model_id": calibration_model_token,
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        instrument_type_id_set.add(instrument_type_id)
+    instrument_rows = sorted(instrument_rows, key=lambda row: str(row.get("instrument_type_id", "")))
+    return instrument_rows, calibration_rows, errors
+
+
 def _representation_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -3600,6 +3757,14 @@ def compile_bundle(
         repo_root=repo_root,
     )
     (
+        instrument_type_rows,
+        calibration_model_rows,
+        diegetic_registry_errors,
+    ) = _diegetic_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         render_proxy_rows,
         cosmetic_rows,
         cosmetic_policy_rows,
@@ -3660,6 +3825,7 @@ def compile_bundle(
         + control_registry_errors
         + body_shape_registry_errors
         + view_mode_registry_errors
+        + diegetic_registry_errors
         + representation_registry_errors
         + net_registry_errors
         + hybrid_registry_errors
@@ -3728,6 +3894,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "view_modes": view_mode_rows,
+        }
+    )
+    instrument_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "instrument_types": instrument_type_rows,
+        }
+    )
+    calibration_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "calibration_models": calibration_model_rows,
         }
     )
     render_proxy_payload = _finalize_registry_payload(
@@ -3918,6 +4098,8 @@ def compile_bundle(
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
         "body_shape_registry": ("body_shape_registry", body_shape_payload),
         "view_mode_registry": ("view_mode_registry", view_mode_payload),
+        "instrument_type_registry": ("instrument_type_registry", instrument_type_payload),
+        "calibration_model_registry": ("calibration_model_registry", calibration_model_payload),
         "render_proxy_registry": ("render_proxy_registry", render_proxy_payload),
         "cosmetic_registry": ("cosmetic_registry", cosmetic_payload),
         "cosmetic_policy_registry": ("cosmetic_policy_registry", cosmetic_policy_payload),
@@ -3958,6 +4140,8 @@ def compile_bundle(
         "controller_type_registry",
         "body_shape_registry",
         "view_mode_registry",
+        "instrument_type_registry",
+        "calibration_model_registry",
         "render_proxy_registry",
         "cosmetic_registry",
         "cosmetic_policy_registry",
@@ -4018,6 +4202,8 @@ def compile_bundle(
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
             "body_shape_registry_hash": registry_hashes["body_shape_registry_hash"],
             "view_mode_registry_hash": registry_hashes["view_mode_registry_hash"],
+            "instrument_type_registry_hash": registry_hashes["instrument_type_registry_hash"],
+            "calibration_model_registry_hash": registry_hashes["calibration_model_registry_hash"],
             "render_proxy_registry_hash": registry_hashes["render_proxy_registry_hash"],
             "cosmetic_registry_hash": registry_hashes["cosmetic_registry_hash"],
             "cosmetic_policy_registry_hash": registry_hashes["cosmetic_policy_registry_hash"],

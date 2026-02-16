@@ -133,6 +133,20 @@
         "1.0.0"
       ]
     },
+    "calibration_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "calibration_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "cosmetic_assignment": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -294,6 +308,27 @@
         "1.0.0"
       ]
     },
+    "instrument_instance": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "instrument_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "instrument_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "intent_envelope": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -379,6 +414,13 @@
       ]
     },
     "net_server_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "message": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

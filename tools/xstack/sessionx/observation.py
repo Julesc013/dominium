@@ -1080,6 +1080,8 @@ def build_truth_model(
             "control_action_registry_hash": str(registries.get("control_action_registry_hash", "")),
             "controller_type_registry_hash": str(registries.get("controller_type_registry_hash", "")),
             "view_mode_registry_hash": str(registries.get("view_mode_registry_hash", "")),
+            "instrument_type_registry_hash": str(registries.get("instrument_type_registry_hash", "")),
+            "calibration_model_registry_hash": str(registries.get("calibration_model_registry_hash", "")),
             "render_proxy_registry_hash": str(registries.get("render_proxy_registry_hash", "")),
             "cosmetic_registry_hash": str(registries.get("cosmetic_registry_hash", "")),
             "cosmetic_policy_registry_hash": str(registries.get("cosmetic_policy_registry_hash", "")),

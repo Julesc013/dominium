@@ -324,6 +324,22 @@ def run_intent_script(
     )
     if view_mode_registry_error:
         return view_mode_registry_error
+    instrument_type_registry, instrument_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["instrument_type_registry_hash"],
+        expected_hash=str(registries.get("instrument_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if instrument_type_registry_error:
+        return instrument_type_registry_error
+    calibration_model_registry, calibration_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["calibration_model_registry_hash"],
+        expected_hash=str(registries.get("calibration_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if calibration_model_registry_error:
+        return calibration_model_registry_error
     render_proxy_registry, render_proxy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["render_proxy_registry_hash"],
@@ -512,6 +528,8 @@ def run_intent_script(
             "decay_model_registry": decay_model_registry,
             "eviction_rule_registry": eviction_rule_registry,
             "view_mode_registry": view_mode_registry,
+            "instrument_type_registry": instrument_type_registry,
+            "calibration_model_registry": calibration_model_registry,
             "render_proxy_registry": render_proxy_registry,
             "cosmetic_registry": cosmetic_registry,
             "cosmetic_policy_registry": cosmetic_policy_registry,
