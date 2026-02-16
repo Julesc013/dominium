@@ -47,6 +47,7 @@ def _seed_bodies(runtime: dict) -> None:
         {
             "assembly_id": "body.local",
             "owner_assembly_id": "object.earth",
+            "shard_id": "shard.0",
             "shape_type": "capsule",
             "shape_parameters": {
                 "radius_mm": 500,
@@ -64,6 +65,7 @@ def _seed_bodies(runtime: dict) -> None:
         {
             "assembly_id": "body.foreign",
             "owner_assembly_id": "object.luna",
+            "shard_id": "shard.1",
             "shape_type": "capsule",
             "shape_parameters": {
                 "radius_mm": 500,
@@ -162,4 +164,3 @@ def run(repo_root: str):
     if first_hash != second_hash:
         return {"status": "fail", "message": "cross-shard collision refusal path must preserve deterministic final hash"}
     return {"status": "pass", "message": "cross-shard collision refusal determinism check passed"}
-
