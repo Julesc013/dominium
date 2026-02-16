@@ -23,6 +23,11 @@
       "type": "ui_windows",
       "id": "window.tool.possession_graph",
       "path": "ui/window.possession_graph.json"
+    },
+    {
+      "type": "ui_windows",
+      "id": "window.tool.spectator_controls",
+      "path": "ui/window.spectator_controls.json"
     }
   ],
   "canonical_hash": "placeholder.pack.tool.control_debug.v1",
