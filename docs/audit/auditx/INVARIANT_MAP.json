@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 625,
+      "finding_count": 628,
       "recommended_actions": {
-        "DOC_FIX": 625
+        "DOC_FIX": 628
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 625
+        "WARN": 628
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -106,9 +106,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 12,
+      "finding_count": 9,
       "recommended_actions": {
-        "ADD_RULE": 12
+        "ADD_RULE": 9
       },
       "sample_findings": [
         {
@@ -138,7 +138,6 @@
         }
       ],
       "severities": {
-        "INFO": 3,
         "RISK": 9
       }
     },
@@ -300,77 +299,72 @@
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 10,
+      "finding_count": 4,
       "recommended_actions": {
-        "RETIRE": 10
+        "RETIRE": 4
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "src/epistemics/__init__.py"
+          "location": "src/diegetics/__init__.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "src/epistemics/memory/__init__.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
           "location": "tools/auditx/analyzers/__init__.py"
         },
         {
           "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "tools/auditx/analyzers/e22_memory_truth_leak_smell.py"
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "tools/auditx/analyzers/e24_instrument_truth_leak_smell.py"
         },
         {
           "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "tools/auditx/analyzers/e23_memory_nondeterminism_smell.py"
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "tools/auditx/analyzers/e25_omniscient_map_smell.py"
         }
       ],
       "severities": {
-        "WARN": 10
+        "WARN": 4
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 104,
+      "finding_count": 58,
       "recommended_actions": {
-        "ADD_RULE": 91,
-        "ADD_TEST": 13
+        "ADD_RULE": 55,
+        "ADD_TEST": 3
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "src/net/policies/policy_server_authoritative.py"
+          "location": "src/diegetics/__init__.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "src/net/policies/policy_server_authoritative.py"
+          "location": "src/diegetics/instrument_kernel.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "src/net/policies/policy_server_authoritative.py"
+          "location": "src/diegetics/instrument_kernel.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "src/net/policies/policy_server_authoritative.py"
+          "location": "src/diegetics/instrument_kernel.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "src/net/policies/policy_server_authoritative.py"
+          "location": "src/diegetics/instrument_kernel.py"
         }
       ],
       "severities": {
-        "RISK": 91,
-        "WARN": 13
+        "RISK": 55,
+        "WARN": 3
       }
     }
   },
