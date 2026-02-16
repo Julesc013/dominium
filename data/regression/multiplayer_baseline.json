@@ -5,13 +5,13 @@
   "bundle_id": "bundle.base.lab",
   "policy_baselines": {
     "policy.net.lockstep": {
-      "final_composite_hash": "0d844530fae673076b5b770f96b4198fe7c3a0da9baa4f158de45327402baf3d"
+      "final_composite_hash": "155fbb73526dc6e724b0e2e74bcdf82e937191b609789ae370aafb024eae7c2d"
     },
     "policy.net.server_authoritative": {
-      "final_composite_hash": "7cbb13836a0a9db2842798a8023c08d302dfb4b692051d9e53ec9eb7724c1399"
+      "final_composite_hash": "6dbc178fb7a660c2775dd02e41a6425d73a4ca899ebfac989351e9c06b778b2f"
     },
     "policy.net.srz_hybrid": {
-      "final_composite_hash": "e1ba3c52ff38a72c318444a432d8c75617883c92f2d7ef970e5e16a922e151f6"
+      "final_composite_hash": "dad643631ef78ea9115894a417eaa1b87841dad8178aefe1962840f0e581b821"
     }
   },
   "ranked_handshake_matrix_hash": "1926e51d42b7bca86246ca523439c0674245e19f9f141662021d54394f366fb6",
@@ -22,6 +22,6 @@
   },
   "update_policy": {
     "required_commit_tag": "MULTIPLAYER-REGRESSION-UPDATE",
-    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-16."
+    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-16 (ED1 memory integration)."
   }
 }
