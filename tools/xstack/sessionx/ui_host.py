@@ -90,6 +90,14 @@ def _window_by_id(ui_registry: dict, window_id: str) -> dict:
     return {}
 
 
+def _is_nondiegetic_window(window: dict) -> bool:
+    required_lenses = _sorted_tokens(list(window.get("required_lenses") or []))
+    for lens_id in required_lenses:
+        if str(lens_id).startswith("lens.nondiegetic."):
+            return True
+    return False
+
+
 def _gating_failure(window: dict, law_profile: dict, authority_context: dict, perceived_model: dict) -> dict:
     lens_id = str((perceived_model.get("lens_id") if isinstance(perceived_model, dict) else "") or "")
     required_lenses = _sorted_tokens(list(window.get("required_lenses") or []))
@@ -105,8 +113,25 @@ def _gating_failure(window: dict, law_profile: dict, authority_context: dict, pe
                 "lens_id": lens_id,
             },
         }
+    window_is_nondiegetic = _is_nondiegetic_window(window)
+    required_entitlements = _sorted_tokens(list(window.get("required_entitlements") or []))
+    if window_is_nondiegetic and not required_entitlements:
+        return {
+            "reason_code": "ENTITLEMENT_MISSING",
+            "message": "window '{}' must declare required_entitlements for non-diegetic access".format(
+                str(window.get("window_id", ""))
+            ),
+            "relevant_ids": {
+                "window_id": str(window.get("window_id", "")),
+                "law_profile_id": str(law_profile.get("law_profile_id", "")),
+            },
+        }
     debug_allowances = law_profile.get("debug_allowances")
-    if isinstance(debug_allowances, dict) and not bool(debug_allowances.get("allow_nondiegetic_overlays", False)):
+    if (
+        window_is_nondiegetic
+        and isinstance(debug_allowances, dict)
+        and not bool(debug_allowances.get("allow_nondiegetic_overlays", False))
+    ):
         return {
             "reason_code": "LENS_FORBIDDEN",
             "message": "window '{}' unavailable under current law debug allowances".format(str(window.get("window_id", ""))),
@@ -115,7 +140,6 @@ def _gating_failure(window: dict, law_profile: dict, authority_context: dict, pe
                 "law_profile_id": str(law_profile.get("law_profile_id", "")),
             },
         }
-    required_entitlements = _sorted_tokens(list(window.get("required_entitlements") or []))
     entitlements = _sorted_tokens(list(authority_context.get("entitlements") or []))
     missing = [token for token in required_entitlements if token not in entitlements]
     if missing:
