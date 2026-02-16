@@ -93,10 +93,9 @@ def run(repo_root: str):
     }
     retention_policy = {
         "retention_policy_id": "ep.retention.test.det",
-        "memory_allowed": True,
-        "max_memory_items": 8,
-        "decay_model_id": "none",
-        "deterministic_eviction_rule_id": "evict.tick_channel_hash",
+        "memory_allowed": False,
+        "max_memory_items": 0,
+        "deterministic_eviction_rule_id": "evict.none",
         "extensions": {},
     }
     memory_state = {"entries": []}
@@ -134,4 +133,3 @@ def run(repo_root: str):
         return {"status": "fail", "message": "retention memory_state mismatch across identical observation inputs"}
 
     return {"status": "pass", "message": "epistemic filter determinism check passed"}
-

@@ -1,14 +1,14 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 624,
+    "canon_drift": 625,
     "capability_bypass_smell": 1,
-    "derived_freshness": 10,
+    "derived_freshness": 12,
     "mode_flag_smell": 1,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
-    "reachability": 6,
-    "schema_usage": 131,
+    "reachability": 10,
+    "schema_usage": 104,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
@@ -36,17 +36,17 @@
       "WARN": 1
     }
   },
-  "findings_hash": "6117702098ab9eaed1f7d143ab47af4229a7d86e152b0a9d3dc62cc879ce28a8",
+  "findings_hash": "23798fda4f04eb9ed7889978f091a55e643ba119fd525b3dc8ad4567945e9de4",
   "history_reference": {
-    "previous_distinct_hash": "a95783c2a23a458abf21744bc825ae755b441d3605c8c99b666aa20b04eddbff"
+    "previous_distinct_hash": "17e42ca9ae6da72b2f4e1ceea56a139f21319eef206ad19a232ab7c777e23a44"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 1,
-    "RISK": 143,
+    "INFO": 3,
+    "RISK": 107,
     "VIOLATION": 2,
-    "WARN": 762
+    "WARN": 776
   },
-  "total_findings": 908
+  "total_findings": 888
 }

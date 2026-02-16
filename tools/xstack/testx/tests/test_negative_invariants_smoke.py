@@ -71,6 +71,8 @@ def run(repo_root: str):
             "INV-OWNERSHIP-CHECK-REQUIRED",
             "INV-VIEW-MODES-REGISTRY-DRIVEN",
             "INV-WATERMARK-ENFORCED",
+            "INV-MEMORY-NO-TRUTH",
+            "INV-MEMORY-TICK-BASED",
             "INV-NO-COSMETIC-SEMANTICS",
             "INV-REPRESENTATION-RENDER-ONLY",
         }

@@ -116,6 +116,7 @@ Tool payload wrapper:
 - `refusal.cosmetic.unsigned_not_allowed`
 - `refusal.cosmetic.not_in_whitelist`
 - `refusal.contract.no_penetration_violation`
+- `refusal.ep.memory_policy_violation`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
 - `refusal.net.handshake_pack_lock_mismatch`: reconnect using identical bundle + lockfile; regenerate client dist if needed.
@@ -149,6 +150,7 @@ Tool payload wrapper:
 - `refusal.cosmetic.forbidden`: assign only cosmetics allowed by active cosmetic policy and authority context.
 - `refusal.cosmetic.unsigned_not_allowed`: use signed cosmetic packs or switch to non-strict cosmetic policy where permitted.
 - `refusal.cosmetic.not_in_whitelist`: select cosmetic IDs and pack IDs present in the ranked/active policy allow-list.
+- `refusal.ep.memory_policy_violation`: ensure memory payload channels/precision comply with active epistemic + retention policy chain.
 
 ## Invariants
 - Refusals do not mutate authoritative state.

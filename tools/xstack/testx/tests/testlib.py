@@ -25,6 +25,8 @@ FIXTURE_SOURCE_REGISTRY_FILES = (
     ("data/registries/cosmetic_policy_registry.json", "data/registries/cosmetic_policy_registry.json"),
     ("data/registries/epistemic_policy_registry.json", "data/registries/epistemic_policy_registry.json"),
     ("data/registries/retention_policy_registry.json", "data/registries/retention_policy_registry.json"),
+    ("data/registries/decay_model_registry.json", "data/registries/decay_model_registry.json"),
+    ("data/registries/eviction_rule_registry.json", "data/registries/eviction_rule_registry.json"),
     ("data/registries/anti_cheat_policy_registry.json", "data/registries/anti_cheat_policy_registry.json"),
     ("data/registries/anti_cheat_module_registry.json", "data/registries/anti_cheat_module_registry.json"),
 )

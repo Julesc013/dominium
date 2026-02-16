@@ -71,6 +71,8 @@ def run(repo_root: str):
         "terrain_tile_registry": _load_json(os.path.join(repo_root, "build", "registries", "terrain.tile.registry.json")),
         "epistemic_policy_registry": _load_json(os.path.join(repo_root, "build", "registries", "epistemic_policy.registry.json")),
         "retention_policy_registry": _load_json(os.path.join(repo_root, "build", "registries", "retention_policy.registry.json")),
+        "decay_model_registry": _load_json(os.path.join(repo_root, "build", "registries", "decay_model.registry.json")),
+        "eviction_rule_registry": _load_json(os.path.join(repo_root, "build", "registries", "eviction_rule.registry.json")),
     }
 
     # Populate hidden-state candidates in local state copy; observe_only law must still redact them.
