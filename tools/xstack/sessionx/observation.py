@@ -739,6 +739,8 @@ def build_truth_model(
             "law_registry_hash": str(registries.get("law_registry_hash", "")),
             "experience_registry_hash": str(registries.get("experience_registry_hash", "")),
             "lens_registry_hash": str(registries.get("lens_registry_hash", "")),
+            "control_action_registry_hash": str(registries.get("control_action_registry_hash", "")),
+            "controller_type_registry_hash": str(registries.get("controller_type_registry_hash", "")),
             "activation_policy_registry_hash": str(registries.get("activation_policy_registry_hash", "")),
             "budget_policy_registry_hash": str(registries.get("budget_policy_registry_hash", "")),
             "fidelity_policy_registry_hash": str(registries.get("fidelity_policy_registry_hash", "")),

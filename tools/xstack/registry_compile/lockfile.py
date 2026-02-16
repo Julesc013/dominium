@@ -121,6 +121,8 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "law_registry_hash",
             "experience_registry_hash",
             "lens_registry_hash",
+            "control_action_registry_hash",
+            "controller_type_registry_hash",
             "net_replication_policy_registry_hash",
             "net_resync_strategy_registry_hash",
             "net_server_policy_registry_hash",

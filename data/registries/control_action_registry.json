@@ -1,0 +1,71 @@
+{
+  "schema_id": "dominium.registry.control_action_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.control_action_registry",
+    "registry_version": "1.0.0",
+    "actions": [
+      {
+        "action_id": "control.action.bind_camera",
+        "description": "Bind a controller to a camera assembly.",
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "produces_intent_id": "intent.control.bind_camera",
+        "payload_schema_id": "dominium.control.payload.bind_camera.v1",
+        "extensions": {
+          "process_id": "process.control_bind_camera"
+        }
+      },
+      {
+        "action_id": "control.action.unbind_camera",
+        "description": "Remove a camera binding from a controller.",
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "produces_intent_id": "intent.control.unbind_camera",
+        "payload_schema_id": "dominium.control.payload.unbind_camera.v1",
+        "extensions": {
+          "process_id": "process.control_unbind_camera"
+        }
+      },
+      {
+        "action_id": "control.action.possess_agent",
+        "description": "Bind a controller as possessor for an agent target.",
+        "required_entitlements": [
+          "entitlement.control.possess"
+        ],
+        "produces_intent_id": "intent.control.possess_agent",
+        "payload_schema_id": "dominium.control.payload.possess_agent.v1",
+        "extensions": {
+          "process_id": "process.control_possess_agent"
+        }
+      },
+      {
+        "action_id": "control.action.release_agent",
+        "description": "Release a possession binding from an agent target.",
+        "required_entitlements": [
+          "entitlement.control.possess"
+        ],
+        "produces_intent_id": "intent.control.release_agent",
+        "payload_schema_id": "dominium.control.payload.release_agent.v1",
+        "extensions": {
+          "process_id": "process.control_release_agent"
+        }
+      },
+      {
+        "action_id": "control.action.set_view_lens",
+        "description": "Override current view lens for a controller viewpoint.",
+        "required_entitlements": [
+          "entitlement.control.lens_override"
+        ],
+        "produces_intent_id": "intent.control.set_view_lens",
+        "payload_schema_id": "dominium.control.payload.set_view_lens.v1",
+        "extensions": {
+          "process_id": "process.control_set_view_lens"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

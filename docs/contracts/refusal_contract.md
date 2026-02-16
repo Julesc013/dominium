@@ -95,6 +95,13 @@ Tool payload wrapper:
 - `refusal.ac.policy_violation`
 - `refusal.ac.rank_policy_required`
 - `refusal.ac.attestation_missing`
+- `refusal.control.entitlement_missing`
+- `refusal.control.law_forbidden`
+- `refusal.control.target_invalid`
+- `refusal.control.already_possessed`
+- `refusal.control.possession_not_supported`
+- `refusal.control.lens_forbidden`
+- `refusal.control.cross_shard_possession_forbidden`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
 - `refusal.net.handshake_pack_lock_mismatch`: reconnect using identical bundle + lockfile; regenerate client dist if needed.

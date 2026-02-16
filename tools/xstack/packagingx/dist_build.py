@@ -26,6 +26,8 @@ LOCKFILE_REGISTRY_FILE_MAP = {
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
     "lens_registry_hash": "lens.registry.json",
+    "control_action_registry_hash": "control_action.registry.json",
+    "controller_type_registry_hash": "controller_type.registry.json",
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
