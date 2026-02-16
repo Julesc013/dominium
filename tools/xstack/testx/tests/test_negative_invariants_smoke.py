@@ -73,6 +73,8 @@ def run(repo_root: str):
             "INV-WATERMARK-ENFORCED",
             "INV-MEMORY-NO-TRUTH",
             "INV-MEMORY-TICK-BASED",
+            "INV-INSTRUMENTS-PERCEIVED-ONLY",
+            "INV-DIEGETIC-CHANNELS-REGISTRY-DRIVEN",
             "INV-NO-COSMETIC-SEMANTICS",
             "INV-REPRESENTATION-RENDER-ONLY",
         }
