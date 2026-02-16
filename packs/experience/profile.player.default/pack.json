@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "profile.player.default",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.domain.navigation@1.0.0",
+    "law.player.diegetic_default@1.0.0"
+  ],
+  "contribution_types": [
+    "experience_profile"
+  ],
+  "contributions": [
+    {
+      "type": "experience_profile",
+      "id": "profile.player.default",
+      "path": "data/experience_profile.player.default.json"
+    }
+  ],
+  "canonical_hash": "placeholder.profile.player.default.v1",
+  "signature_status": "signed"
+}

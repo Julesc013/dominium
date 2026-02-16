@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "law_profile_id": "law.spectator.limited",
+  "epistemic_policy_id": "ep.policy.spectator_limited",
+  "allowed_processes": [
+    "process.camera_bind_target",
+    "process.camera_set_view_mode",
+    "process.camera_unbind_target",
+    "process.instrument_tick"
+  ],
+  "forbidden_processes": [
+    "process.agent_move",
+    "process.agent_rotate",
+    "process.camera_move",
+    "process.camera_teleport",
+    "process.control_possess_agent",
+    "process.control_release_agent",
+    "process.control_set_view_lens",
+    "process.time_control_set_rate",
+    "process.time_pause",
+    "process.time_resume"
+  ],
+  "allowed_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "epistemic_limits": {
+    "max_view_radius_km": 200000,
+    "allow_hidden_state_access": false
+  },
+  "respawn_rules": {
+    "respawn_allowed": false,
+    "respawn_delay_seconds": 0
+  },
+  "debug_allowances": {
+    "allow_nondiegetic_overlays": true,
+    "allow_time_dilation_controls": false
+  },
+  "process_entitlement_requirements": {
+    "process.camera_bind_target": "entitlement.view.follow",
+    "process.camera_set_view_mode": "entitlement.view.follow",
+    "process.camera_unbind_target": "entitlement.view.follow",
+    "process.instrument_tick": "session.boot"
+  },
+  "process_privilege_requirements": {
+    "process.camera_bind_target": "observer",
+    "process.camera_set_view_mode": "observer",
+    "process.camera_unbind_target": "observer",
+    "process.instrument_tick": "observer"
+  }
+}

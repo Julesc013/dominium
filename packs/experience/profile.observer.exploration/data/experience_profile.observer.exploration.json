@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "experience_id": "profile.observer.exploration",
+  "presentation_defaults": {
+    "default_lens_id": "lens.nondiegetic.debug",
+    "hud_layout_id": "hud.observer.exploration"
+  },
+  "allowed_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "suggested_parameter_bundles": [
+    "params.lab.placeholder",
+    "params.lab.precision_nav"
+  ],
+  "allowed_transitions": [
+    "profile.spectator.default",
+    "profile.lab.developer"
+  ],
+  "default_law_profile_id": "law.observer.truth"
+}
