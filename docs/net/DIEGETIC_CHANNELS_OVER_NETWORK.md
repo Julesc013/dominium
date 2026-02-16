@@ -34,6 +34,13 @@ Non-diegetic and observer channels remain separate and law-gated.
 2. Outgoing deltas include channel-filtered data only.
 3. No direct truth payloads are transmitted for instrument channels.
 
+## Camera/View Interaction
+
+1. Camera view modes affect selection of relevant perceived channels, not channel permissions.
+2. Camera mode never grants channels that are forbidden by LawProfile, EpistemicPolicy, or entitlements.
+3. Observer truth-capable views must emit `ch.watermark.observer_mode`.
+4. Ranked/strict server profiles may refuse free observer-style camera modes through registry policy.
+
 ## Determinism Requirements
 
 1. Channel ordering is stable and registry-driven.
