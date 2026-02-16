@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-15
+Last Reviewed: 2026-02-16
 Supersedes: none
 Superseded By: none
 
@@ -8,21 +8,21 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 1
-- RISK: 109
+- INFO: 4
+- RISK: 81
 - VIOLATION: 2
-- WARN: 768
+- WARN: 764
 
 ## Counts By Category
 
-- canon_drift: 619
+- canon_drift: 620
 - capability_bypass_smell: 1
-- derived_freshness: 10
+- derived_freshness: 13
 - mode_flag_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
-- reachability: 9
-- schema_usage: 105
+- reachability: 8
+- schema_usage: 73
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120

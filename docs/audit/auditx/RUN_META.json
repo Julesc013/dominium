@@ -3,9 +3,9 @@
   "cache_mode": "incremental",
   "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-15T23:26:29Z",
-  "graph_hash": "121e78c37f0d7a0a6f7f4eb5d0a61dc62d87878b5fb32d7fa387e9b7e1bcd1c2",
-  "last_reviewed": "2026-02-15",
+  "generated_utc": "2026-02-16T04:21:20Z",
+  "graph_hash": "ee9f004f8610882543183ceb8870f39a33c6054a81d764254e41e3495a7ab4c4",
+  "last_reviewed": "2026-02-16",
   "output_format": "both",
   "platform": "windows",
   "python_version": "3.8.1",
@@ -41,6 +41,9 @@
     "E10_NONDETERMINISTIC_ANTI_CHEAT_SMELL",
     "E11_RANKED_POLICY_DRIFT",
     "E12_SIGNATURE_BYPASS_SMELL",
+    "E13_PLAYER_SPECIAL_CASE_SMELL",
+    "E14_CONTROL_BYPASS_SMELL",
+    "E15_COLLISION_NONDETERMINISTIC_SMELL",
     "E1_NET_POLICY_DRIFT",
     "E2_TRUTH_OVER_NET_SMELL",
     "E3_HANDSHAKE_POLICY_BYPASS_SMELL",
@@ -52,5 +55,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-e1695d831a585e59"
+  "workspace_id": "ws-5a0cd047f83ec70a"
 }

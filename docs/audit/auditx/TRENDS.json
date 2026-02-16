@@ -1,14 +1,14 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 619,
+    "canon_drift": 620,
     "capability_bypass_smell": 1,
-    "derived_freshness": 10,
+    "derived_freshness": 13,
     "mode_flag_smell": 1,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
-    "reachability": 9,
-    "schema_usage": 105,
+    "reachability": 8,
+    "schema_usage": 73,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
@@ -18,35 +18,35 @@
     "category_frequency": {
       "canon_drift": 0,
       "capability_bypass_smell": 0,
-      "derived_freshness": 1,
+      "derived_freshness": 0,
       "mode_flag_smell": 0,
       "net.precision_leak_smell": 0,
       "net.truth_over_net_smell": 0,
       "reachability": 0,
-      "schema_usage": 0,
+      "schema_usage": 2,
       "semantic.capability_drift": 0,
       "semantic.derived_artifact_contract": 0,
       "semantic.schema_shadowing": 0,
       "semantic.workspace_contamination": 0
     },
     "severity_distribution": {
-      "INFO": 1,
+      "INFO": 0,
       "RISK": 0,
       "VIOLATION": 0,
-      "WARN": 0
+      "WARN": 2
     }
   },
-  "findings_hash": "de5ad6648d64b4959ee4270ffffa26d8e3262675592d57a65a2a8949c717cd32",
+  "findings_hash": "f8a4e0334e9bae1cf0cb6e975aad7f8764723198389ce571b585fe181b271fcc",
   "history_reference": {
-    "previous_distinct_hash": "9941cb906c30477f589b51e6cc4babd2df376192f7a2ec6732d47041f8749003"
+    "previous_distinct_hash": "a29bc56fad75101ba36af9dfa18adfe27dd2471c099d20d9a797d2477d4bcd6d"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 1,
-    "RISK": 109,
+    "INFO": 4,
+    "RISK": 81,
     "VIOLATION": 2,
-    "WARN": 768
+    "WARN": 764
   },
-  "total_findings": 880
+  "total_findings": 851
 }
