@@ -4,40 +4,125 @@
     {
       "assembly_id": "instrument.altimeter",
       "instrument_type": "altimeter",
+      "instrument_type_id": "instr.altimeter",
+      "carrier_agent_id": null,
+      "station_site_id": null,
       "reading": {
         "altitude_mm": 0
       },
+      "state": {},
+      "outputs": {
+        "ch.diegetic.altimeter": {
+          "altitude_mm": 0
+        }
+      },
       "quality": "nominal",
+      "quality_value": 1000,
       "last_update_tick": 0
     },
     {
       "assembly_id": "instrument.clock",
       "instrument_type": "clock",
+      "instrument_type_id": "instr.clock",
+      "carrier_agent_id": null,
+      "station_site_id": null,
       "reading": {
         "tick": 0,
         "rate_permille": 1000,
         "paused": false
       },
+      "state": {},
+      "outputs": {
+        "ch.diegetic.clock": {
+          "tick": 0,
+          "rate_permille": 1000,
+          "paused": false
+        }
+      },
       "quality": "nominal",
+      "quality_value": 1000,
       "last_update_tick": 0
     },
     {
       "assembly_id": "instrument.compass",
       "instrument_type": "compass",
+      "instrument_type_id": "instr.compass",
+      "carrier_agent_id": null,
+      "station_site_id": null,
       "reading": {
         "heading_mdeg": 0
       },
+      "state": {},
+      "outputs": {
+        "ch.diegetic.compass": {
+          "heading_mdeg": 0
+        }
+      },
       "quality": "nominal",
+      "quality_value": 1000,
       "last_update_tick": 0
     },
     {
-      "assembly_id": "instrument.radio",
-      "instrument_type": "radio",
+      "assembly_id": "instrument.map_local",
+      "instrument_type": "map_local",
+      "instrument_type_id": "instr.map_local",
+      "carrier_agent_id": null,
+      "station_site_id": null,
       "reading": {
-        "signal_quality_permille": 1000,
-        "channel_id": "radio.lab.default"
+        "entries": []
+      },
+      "state": {
+        "entries": []
+      },
+      "outputs": {
+        "ch.diegetic.map_local": {
+          "entries": []
+        }
       },
       "quality": "nominal",
+      "quality_value": 1000,
+      "last_update_tick": 0
+    },
+    {
+      "assembly_id": "instrument.notebook",
+      "instrument_type": "notebook",
+      "instrument_type_id": "instr.notebook",
+      "carrier_agent_id": null,
+      "station_site_id": null,
+      "reading": {
+        "entries": []
+      },
+      "state": {
+        "user_notes": []
+      },
+      "outputs": {
+        "ch.diegetic.notebook": {
+          "entries": []
+        }
+      },
+      "quality": "nominal",
+      "quality_value": 1000,
+      "last_update_tick": 0
+    },
+    {
+      "assembly_id": "instrument.radio_text",
+      "instrument_type": "radio_text",
+      "instrument_type_id": "instr.radio_text",
+      "carrier_agent_id": null,
+      "station_site_id": null,
+      "reading": {
+        "messages": []
+      },
+      "state": {
+        "inbox": []
+      },
+      "outputs": {
+        "ch.diegetic.radio_text": {
+          "messages": []
+        }
+      },
+      "quality": "nominal",
+      "quality_value": 1000,
       "last_update_tick": 0
     }
   ]

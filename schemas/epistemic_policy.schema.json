@@ -116,7 +116,8 @@
         "ch.diegetic.compass",
         "ch.diegetic.clock",
         "ch.diegetic.altimeter",
-        "ch.diegetic.radio",
+            "ch.diegetic.radio_text",
+            "ch.diegetic.notebook",
         "ch.diegetic.map_local",
         "ch.core.time"
       ],

@@ -32,6 +32,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.cosmetic_assign": "entitlement.cosmetic.assign",
     "process.body_move_attempt": "entitlement.control.possess",
     "process.instrument_tick": "session.boot",
+    "process.instrument_notebook_add_note": "entitlement.diegetic.notebook_write",
+    "process.instrument_radio_send_text": "entitlement.diegetic.radio_use",
     "process.time_control_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
     "process.time_resume": "entitlement.time_control",
@@ -55,6 +57,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.cosmetic_assign": "operator",
     "process.body_move_attempt": "operator",
     "process.instrument_tick": "observer",
+    "process.instrument_notebook_add_note": "observer",
+    "process.instrument_radio_send_text": "observer",
     "process.time_control_set_rate": "operator",
     "process.time_pause": "operator",
     "process.time_resume": "operator",
@@ -85,6 +89,8 @@ CONTROL_PROCESS_IDS = {
     "process.camera_set_view_mode",
     "process.camera_set_lens",
     "process.cosmetic_assign",
+    "process.instrument_notebook_add_note",
+    "process.instrument_radio_send_text",
     "process.body_move_attempt",
 }
 CAMERA_REQUIRED_PROCESS_IDS = {
@@ -140,6 +146,20 @@ CONTROLLER_ACTIONS_BY_TYPE = {
         "control.action.unbind_camera",
     ],
 }
+DIEGETIC_NOTE_MAX_CHARS = 280
+DIEGETIC_RADIO_MAX_CHARS = 280
+DIEGETIC_NOTEBOOK_MAX_ITEMS = 128
+DIEGETIC_RADIO_MAX_ITEMS = 64
+DIEGETIC_MAP_MAX_ITEMS = 128
+INSTRUMENT_TYPE_ID_BY_TYPE = {
+    "altimeter": "instr.altimeter",
+    "clock": "instr.clock",
+    "compass": "instr.compass",
+    "map_local": "instr.map_local",
+    "notebook": "instr.notebook",
+    "radio_text": "instr.radio_text",
+}
+INSTRUMENT_TYPE_BY_ID = dict((value, key) for key, value in INSTRUMENT_TYPE_ID_BY_TYPE.items())
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -234,32 +254,82 @@ def _ensure_instrument_assemblies(state: dict) -> List[dict]:
         if token:
             by_id[token] = dict(row)
     defaults = {
-        "instrument.compass": {
-            "assembly_id": "instrument.compass",
-            "instrument_type": "compass",
-            "reading": {"heading_mdeg": 0},
+        "instrument.altimeter": {
+            "assembly_id": "instrument.altimeter",
+            "instrument_type": "altimeter",
+            "instrument_type_id": "instr.altimeter",
+            "carrier_agent_id": None,
+            "station_site_id": None,
+            "reading": {"altitude_mm": 0},
+            "state": {},
+            "outputs": {"ch.diegetic.altimeter": {"altitude_mm": 0}},
             "quality": "nominal",
+            "quality_value": 1000,
             "last_update_tick": 0,
         },
         "instrument.clock": {
             "assembly_id": "instrument.clock",
             "instrument_type": "clock",
+            "instrument_type_id": "instr.clock",
+            "carrier_agent_id": None,
+            "station_site_id": None,
             "reading": {"tick": 0, "rate_permille": 1000, "paused": False},
+            "state": {},
+            "outputs": {"ch.diegetic.clock": {"tick": 0, "rate_permille": 1000, "paused": False}},
             "quality": "nominal",
+            "quality_value": 1000,
             "last_update_tick": 0,
         },
-        "instrument.altimeter": {
-            "assembly_id": "instrument.altimeter",
-            "instrument_type": "altimeter",
-            "reading": {"altitude_mm": 0},
+        "instrument.compass": {
+            "assembly_id": "instrument.compass",
+            "instrument_type": "compass",
+            "instrument_type_id": "instr.compass",
+            "carrier_agent_id": None,
+            "station_site_id": None,
+            "reading": {"heading_mdeg": 0},
+            "state": {},
+            "outputs": {"ch.diegetic.compass": {"heading_mdeg": 0}},
             "quality": "nominal",
+            "quality_value": 1000,
             "last_update_tick": 0,
         },
-        "instrument.radio": {
-            "assembly_id": "instrument.radio",
-            "instrument_type": "radio",
-            "reading": {"signal_quality_permille": 1000},
+        "instrument.map_local": {
+            "assembly_id": "instrument.map_local",
+            "instrument_type": "map_local",
+            "instrument_type_id": "instr.map_local",
+            "carrier_agent_id": None,
+            "station_site_id": None,
+            "reading": {"entries": []},
+            "state": {"entries": []},
+            "outputs": {"ch.diegetic.map_local": {"entries": []}},
             "quality": "nominal",
+            "quality_value": 1000,
+            "last_update_tick": 0,
+        },
+        "instrument.notebook": {
+            "assembly_id": "instrument.notebook",
+            "instrument_type": "notebook",
+            "instrument_type_id": "instr.notebook",
+            "carrier_agent_id": None,
+            "station_site_id": None,
+            "reading": {"entries": []},
+            "state": {"user_notes": []},
+            "outputs": {"ch.diegetic.notebook": {"entries": []}},
+            "quality": "nominal",
+            "quality_value": 1000,
+            "last_update_tick": 0,
+        },
+        "instrument.radio_text": {
+            "assembly_id": "instrument.radio_text",
+            "instrument_type": "radio_text",
+            "instrument_type_id": "instr.radio_text",
+            "carrier_agent_id": None,
+            "station_site_id": None,
+            "reading": {"messages": []},
+            "state": {"inbox": []},
+            "outputs": {"ch.diegetic.radio_text": {"messages": []}},
+            "quality": "nominal",
+            "quality_value": 1000,
             "last_update_tick": 0,
         },
     }
@@ -270,14 +340,131 @@ def _ensure_instrument_assemblies(state: dict) -> List[dict]:
         row = dict(by_id[assembly_id])
         row["assembly_id"] = assembly_id
         row["instrument_type"] = str(row.get("instrument_type", defaults[assembly_id]["instrument_type"])) or defaults[assembly_id]["instrument_type"]
+        row["instrument_type_id"] = str(row.get("instrument_type_id", defaults[assembly_id]["instrument_type_id"])) or defaults[assembly_id]["instrument_type_id"]
+        row["carrier_agent_id"] = None if row.get("carrier_agent_id") is None else str(row.get("carrier_agent_id", "")).strip() or None
+        row["station_site_id"] = None if row.get("station_site_id") is None else str(row.get("station_site_id", "")).strip() or None
         reading = row.get("reading")
         row["reading"] = dict(reading) if isinstance(reading, dict) else dict(defaults[assembly_id]["reading"])
+        state_payload = row.get("state")
+        row["state"] = dict(state_payload) if isinstance(state_payload, dict) else dict(defaults[assembly_id]["state"])
+        outputs_payload = row.get("outputs")
+        row["outputs"] = dict(outputs_payload) if isinstance(outputs_payload, dict) else dict(defaults[assembly_id]["outputs"])
         row["quality"] = str(row.get("quality", "nominal")) or "nominal"
+        row["quality_value"] = max(0, _as_int(row.get("quality_value", defaults[assembly_id]["quality_value"]), defaults[assembly_id]["quality_value"]))
         row["last_update_tick"] = max(0, _as_int(row.get("last_update_tick", 0), 0))
         by_id[assembly_id] = row
     normalized = [dict(by_id[key]) for key in sorted(by_id.keys())]
     state["instrument_assemblies"] = normalized
     return normalized
+
+
+def _author_subject_id(authority_context: dict) -> str:
+    peer_id = str(authority_context.get("peer_id", "")).strip()
+    if peer_id:
+        return "peer.{}".format(peer_id)
+    origin = str(authority_context.get("authority_origin", "")).strip()
+    if origin:
+        return "origin.{}".format(origin)
+    return "origin.unknown"
+
+
+def _instrument_row_by_id(rows: List[dict], assembly_id: str) -> dict:
+    token = str(assembly_id).strip()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("assembly_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _map_entries_sorted(rows: object, max_items: int = DIEGETIC_MAP_MAX_ITEMS) -> List[dict]:
+    if not isinstance(rows, list):
+        return []
+    normalized = []
+    for item in rows:
+        if not isinstance(item, dict):
+            continue
+        region_key = str(item.get("region_key", "")).strip()
+        if not region_key:
+            region_key = str(item.get("tile_key", "")).strip()
+        if not region_key:
+            region_key = "region.{}".format(canonical_sha256(item)[:16])
+        normalized.append(
+            {
+                "region_key": region_key,
+                "discovered": bool(item.get("discovered", True)),
+                "confidence_permille": max(0, min(1000, _as_int(item.get("confidence_permille", 1000), 1000))),
+                "last_seen_tick": max(0, _as_int(item.get("last_seen_tick", 0), 0)),
+                "precision_tag": str(item.get("precision_tag", "medium") or "medium"),
+                "terrain_class": str(item.get("terrain_class", "")).strip() or None,
+            }
+        )
+    normalized = sorted(
+        normalized,
+        key=lambda item: (
+            str(item.get("region_key", "")),
+            int(item.get("last_seen_tick", 0)),
+            int(item.get("confidence_permille", 0)),
+            canonical_sha256(item),
+        ),
+    )
+    limit = max(0, int(max_items))
+    if limit > 0:
+        normalized = normalized[:limit]
+    else:
+        normalized = []
+    return normalized
+
+
+def _message_rows_sorted(rows: object, channel_id: str, max_items: int) -> List[dict]:
+    if not isinstance(rows, list):
+        return []
+    normalized = []
+    for item in rows:
+        if not isinstance(item, dict):
+            continue
+        item_channel = str(item.get("channel_id", "")).strip()
+        if item_channel and item_channel != str(channel_id):
+            continue
+        payload = item.get("payload")
+        payload_obj = dict(payload) if isinstance(payload, dict) else {}
+        message_id = str(item.get("message_id", "")).strip()
+        if not message_id:
+            digest = canonical_sha256(
+                {
+                    "author_subject_id": str(item.get("author_subject_id", "")).strip(),
+                    "created_tick": _as_int(item.get("created_tick", 0), 0),
+                    "channel_id": str(channel_id),
+                    "payload": payload_obj,
+                }
+            )
+            message_id = "{}.{}".format(str(channel_id), digest[:16]).replace("msg.", "msg.")
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "message_id": message_id,
+                "author_subject_id": str(item.get("author_subject_id", "")).strip() or "origin.unknown",
+                "created_tick": max(0, _as_int(item.get("created_tick", 0), 0)),
+                "channel_id": str(channel_id),
+                "payload": payload_obj,
+                "signature": item.get("signature") if item.get("signature") is None else str(item.get("signature", "")),
+                "extensions": dict(item.get("extensions") or {}) if isinstance(item.get("extensions"), dict) else {},
+            }
+        )
+    normalized = sorted(
+        normalized,
+        key=lambda item: (
+            int(item.get("created_tick", 0)),
+            str(item.get("author_subject_id", "")),
+            str(item.get("message_id", "")),
+            canonical_sha256(dict(item.get("payload") or {})),
+        ),
+    )
+    limit = max(0, int(max_items))
+    if limit > 0:
+        return normalized[-limit:]
+    return []
 
 
 def _is_sha256_hex(token: object) -> bool:
@@ -3526,28 +3713,281 @@ def execute_intent(
         rows = _ensure_instrument_assemblies(state)
         current_tick = int(sim.get("tick", 0))
         for row in rows:
-            assembly_id = str(row.get("assembly_id", ""))
+            assembly_id = str(row.get("assembly_id", "")).strip()
+            instrument_type = str(row.get("instrument_type", "")).strip()
+            instrument_type_id = str(row.get("instrument_type_id", "")).strip()
+            if (not instrument_type) and instrument_type_id:
+                instrument_type = str(INSTRUMENT_TYPE_BY_ID.get(instrument_type_id, "")).strip()
+            if instrument_type and (not instrument_type_id):
+                instrument_type_id = str(INSTRUMENT_TYPE_ID_BY_TYPE.get(instrument_type, "")).strip()
+            row["instrument_type"] = instrument_type
+            row["instrument_type_id"] = instrument_type_id
+            state_payload = dict(row.get("state") or {}) if isinstance(row.get("state"), dict) else {}
+            outputs_payload = dict(row.get("outputs") or {}) if isinstance(row.get("outputs"), dict) else {}
             if assembly_id == "instrument.compass":
-                row["reading"] = {"heading_mdeg": heading}
+                reading = {"heading_mdeg": heading}
+                outputs_payload["ch.diegetic.compass"] = dict(reading)
             elif assembly_id == "instrument.clock":
-                row["reading"] = {
+                reading = {
                     "tick": current_tick,
                     "rate_permille": int(control.get("rate_permille", 1000)),
                     "paused": bool(control.get("paused", False)),
                 }
+                outputs_payload["ch.diegetic.clock"] = dict(reading)
             elif assembly_id == "instrument.altimeter":
-                row["reading"] = {"altitude_mm": int(position.get("z", 0))}
-            elif assembly_id == "instrument.radio":
-                row["reading"] = {
-                    "signal_quality_permille": 1000,
-                    "channel_id": "radio.lab.default",
+                reading = {"altitude_mm": int(position.get("z", 0))}
+                outputs_payload["ch.diegetic.altimeter"] = dict(reading)
+            elif assembly_id == "instrument.map_local":
+                map_entries = _map_entries_sorted(state_payload.get("entries"), DIEGETIC_MAP_MAX_ITEMS)
+                state_payload["entries"] = list(map_entries)
+                reading = {
+                    "entries": list(map_entries),
+                    "entry_count": len(map_entries),
                 }
+                outputs_payload["ch.diegetic.map_local"] = {
+                    "entries": list(map_entries),
+                    "entry_count": len(map_entries),
+                }
+            elif assembly_id == "instrument.notebook":
+                notes = _message_rows_sorted(state_payload.get("user_notes"), "msg.notebook", DIEGETIC_NOTEBOOK_MAX_ITEMS)
+                state_payload["user_notes"] = list(notes)
+                entries = [
+                    {
+                        "entry_id": str(item.get("message_id", "")),
+                        "kind": "note",
+                        "created_tick": int(item.get("created_tick", 0)),
+                        "author_subject_id": str(item.get("author_subject_id", "")),
+                        "text": str((dict(item.get("payload") or {})).get("text", ""))[:DIEGETIC_NOTE_MAX_CHARS],
+                    }
+                    for item in notes
+                ]
+                reading = {
+                    "entries": entries,
+                    "entry_count": len(entries),
+                }
+                outputs_payload["ch.diegetic.notebook"] = {
+                    "entries": entries,
+                    "entry_count": len(entries),
+                }
+            elif assembly_id == "instrument.radio_text":
+                inbox = _message_rows_sorted(state_payload.get("inbox"), "msg.radio", DIEGETIC_RADIO_MAX_ITEMS)
+                state_payload["inbox"] = list(inbox)
+                reading = {
+                    "messages": [dict(item) for item in inbox],
+                    "message_count": len(inbox),
+                }
+                outputs_payload["ch.diegetic.radio_text"] = {
+                    "messages": [dict(item) for item in inbox],
+                    "message_count": len(inbox),
+                }
+            else:
+                reading = dict(row.get("reading") or {})
+            row["state"] = state_payload
+            row["reading"] = reading
+            row["outputs"] = outputs_payload
             row["quality"] = "nominal"
+            row["quality_value"] = max(0, _as_int(row.get("quality_value", 1000), 1000))
             row["last_update_tick"] = current_tick
         state["instrument_assemblies"] = sorted(
             (dict(item) for item in rows if isinstance(item, dict)),
             key=lambda item: str(item.get("assembly_id", "")),
         )
+        _advance_time(state, steps=1)
+    elif process_id == "process.instrument_notebook_add_note":
+        note_text = str(inputs.get("text", "") or inputs.get("note", "")).strip()
+        if not note_text:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.instrument_notebook_add_note requires text",
+                "Provide note text in intent.inputs.text.",
+                {"process_id": process_id},
+                "$.intent.inputs.text",
+            )
+        if len(note_text) > DIEGETIC_NOTE_MAX_CHARS:
+            return refusal(
+                "refusal.diegetic.message_too_large",
+                "notebook note exceeds deterministic character budget",
+                "Reduce note payload length to {} characters or less.".format(DIEGETIC_NOTE_MAX_CHARS),
+                {"max_chars": DIEGETIC_NOTE_MAX_CHARS},
+                "$.intent.inputs.text",
+            )
+        rows = _ensure_instrument_assemblies(state)
+        notebook_row = _instrument_row_by_id(rows, "instrument.notebook")
+        if not notebook_row:
+            return refusal(
+                "refusal.diegetic.radio_forbidden",
+                "notebook instrument assembly is unavailable",
+                "Enable pack.core.diegetic_instruments and retry.",
+                {"assembly_id": "instrument.notebook"},
+                "$.universe_state.instrument_assemblies",
+            )
+        current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+        state_payload = dict(notebook_row.get("state") or {}) if isinstance(notebook_row.get("state"), dict) else {}
+        notes = _message_rows_sorted(state_payload.get("user_notes"), "msg.notebook", DIEGETIC_NOTEBOOK_MAX_ITEMS)
+        author_subject_id = _author_subject_id(authority_context)
+        message_id = "msg.notebook.{}".format(
+            canonical_sha256(
+                {
+                    "author_subject_id": author_subject_id,
+                    "created_tick": current_tick,
+                    "payload": {"text": note_text},
+                }
+            )[:16]
+        )
+        note_message = {
+            "schema_version": "1.0.0",
+            "message_id": message_id,
+            "author_subject_id": author_subject_id,
+            "created_tick": current_tick,
+            "channel_id": "msg.notebook",
+            "payload": {"text": note_text},
+            "signature": None,
+            "extensions": {
+                "controller_id": str(inputs.get("controller_id", "")).strip() or None,
+            },
+        }
+        notes.append(note_message)
+        notes = _message_rows_sorted(notes, "msg.notebook", DIEGETIC_NOTEBOOK_MAX_ITEMS)
+        state_payload["user_notes"] = list(notes)
+        entries = [
+            {
+                "entry_id": str(item.get("message_id", "")),
+                "kind": "note",
+                "created_tick": int(item.get("created_tick", 0)),
+                "author_subject_id": str(item.get("author_subject_id", "")),
+                "text": str((dict(item.get("payload") or {})).get("text", ""))[:DIEGETIC_NOTE_MAX_CHARS],
+            }
+            for item in notes
+        ]
+        notebook_row["state"] = state_payload
+        notebook_row["reading"] = {
+            "entries": entries,
+            "entry_count": len(entries),
+        }
+        outputs_payload = dict(notebook_row.get("outputs") or {}) if isinstance(notebook_row.get("outputs"), dict) else {}
+        outputs_payload["ch.diegetic.notebook"] = {
+            "entries": entries,
+            "entry_count": len(entries),
+        }
+        notebook_row["outputs"] = outputs_payload
+        notebook_row["quality"] = "nominal"
+        notebook_row["quality_value"] = max(0, _as_int(notebook_row.get("quality_value", 1000), 1000))
+        notebook_row["last_update_tick"] = current_tick
+        state["instrument_assemblies"] = sorted(
+            (dict(item) for item in rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        result_metadata = {
+            "message_id": message_id,
+            "channel_id": "msg.notebook",
+            "entry_count": len(entries),
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.instrument_radio_send_text":
+        recipient_subject_id = str(
+            inputs.get("to", "")
+            or inputs.get("recipient_subject_id", "")
+            or inputs.get("target_subject_id", "")
+        ).strip()
+        payload = inputs.get("payload")
+        payload_text = ""
+        if isinstance(payload, dict):
+            payload_text = str(payload.get("text", "")).strip()
+        elif payload is not None:
+            payload_text = str(payload).strip()
+        if not payload_text:
+            payload_text = str(inputs.get("text", "")).strip()
+        if not recipient_subject_id:
+            return refusal(
+                "refusal.diegetic.radio_forbidden",
+                "radio send requires a recipient subject id",
+                "Provide intent.inputs.to or intent.inputs.recipient_subject_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.to",
+            )
+        if not payload_text:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.instrument_radio_send_text requires payload text",
+                "Provide text payload in intent.inputs.payload.text or intent.inputs.text.",
+                {"process_id": process_id},
+                "$.intent.inputs.payload",
+            )
+        if len(payload_text) > DIEGETIC_RADIO_MAX_CHARS:
+            return refusal(
+                "refusal.diegetic.message_too_large",
+                "radio payload exceeds deterministic character budget",
+                "Reduce radio payload length to {} characters or less.".format(DIEGETIC_RADIO_MAX_CHARS),
+                {"max_chars": DIEGETIC_RADIO_MAX_CHARS},
+                "$.intent.inputs.payload",
+            )
+        rows = _ensure_instrument_assemblies(state)
+        radio_row = _instrument_row_by_id(rows, "instrument.radio_text")
+        if not radio_row:
+            return refusal(
+                "refusal.diegetic.radio_forbidden",
+                "radio instrument assembly is unavailable",
+                "Enable pack.core.diegetic_instruments and retry.",
+                {"assembly_id": "instrument.radio_text"},
+                "$.universe_state.instrument_assemblies",
+            )
+        current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+        state_payload = dict(radio_row.get("state") or {}) if isinstance(radio_row.get("state"), dict) else {}
+        inbox = _message_rows_sorted(state_payload.get("inbox"), "msg.radio", DIEGETIC_RADIO_MAX_ITEMS)
+        author_subject_id = _author_subject_id(authority_context)
+        message_payload = {
+            "to": recipient_subject_id,
+            "text": payload_text,
+        }
+        message_id = "msg.radio.{}".format(
+            canonical_sha256(
+                {
+                    "author_subject_id": author_subject_id,
+                    "recipient_subject_id": recipient_subject_id,
+                    "created_tick": current_tick,
+                    "payload": message_payload,
+                }
+            )[:16]
+        )
+        message = {
+            "schema_version": "1.0.0",
+            "message_id": message_id,
+            "author_subject_id": author_subject_id,
+            "created_tick": current_tick,
+            "channel_id": "msg.radio",
+            "payload": message_payload,
+            "signature": None,
+            "extensions": {
+                "delivery_policy": str(inputs.get("delivery_policy", "same_shard_instant")).strip() or "same_shard_instant",
+            },
+        }
+        inbox.append(message)
+        inbox = _message_rows_sorted(inbox, "msg.radio", DIEGETIC_RADIO_MAX_ITEMS)
+        state_payload["inbox"] = list(inbox)
+        radio_row["state"] = state_payload
+        radio_row["reading"] = {
+            "messages": [dict(item) for item in inbox],
+            "message_count": len(inbox),
+        }
+        outputs_payload = dict(radio_row.get("outputs") or {}) if isinstance(radio_row.get("outputs"), dict) else {}
+        outputs_payload["ch.diegetic.radio_text"] = {
+            "messages": [dict(item) for item in inbox],
+            "message_count": len(inbox),
+        }
+        radio_row["outputs"] = outputs_payload
+        radio_row["quality"] = "nominal"
+        radio_row["quality_value"] = max(0, _as_int(radio_row.get("quality_value", 1000), 1000))
+        radio_row["last_update_tick"] = current_tick
+        state["instrument_assemblies"] = sorted(
+            (dict(item) for item in rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        result_metadata = {
+            "message_id": message_id,
+            "channel_id": "msg.radio",
+            "recipient_subject_id": recipient_subject_id,
+            "delivered_count": len(inbox),
+        }
         _advance_time(state, steps=1)
     elif process_id == "process.time_control_set_rate":
         rate = _as_int(inputs.get("rate_permille", -1), -1)

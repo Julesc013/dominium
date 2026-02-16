@@ -53,6 +53,8 @@ DEFAULT_ENTITLEMENTS = (
     "entitlement.control.possess",
     "entitlement.control.lens_override",
     "entitlement.cosmetic.assign",
+    "entitlement.diegetic.notebook_write",
+    "entitlement.diegetic.radio_use",
     "lens.nondiegetic.access",
     "ui.window.lab.nav",
 )
@@ -81,43 +83,138 @@ DEFAULT_CAMERA_ASSEMBLY = {
         "roll_mdeg": 0,
     },
 }
+INSTRUMENT_TYPE_ID_BY_TYPE = {
+    "altimeter": "instr.altimeter",
+    "clock": "instr.clock",
+    "compass": "instr.compass",
+    "map_local": "instr.map_local",
+    "notebook": "instr.notebook",
+    "radio_text": "instr.radio_text",
+}
+INSTRUMENT_TYPE_BY_ID = dict((value, key) for key, value in INSTRUMENT_TYPE_ID_BY_TYPE.items())
 DEFAULT_INSTRUMENT_ASSEMBLIES = [
+    {
+        "assembly_id": "instrument.altimeter",
+        "instrument_type": "altimeter",
+        "instrument_type_id": "instr.altimeter",
+        "carrier_agent_id": None,
+        "station_site_id": None,
+        "reading": {
+            "altitude_mm": 0
+        },
+        "state": {},
+        "outputs": {
+            "ch.diegetic.altimeter": {
+                "altitude_mm": 0
+            }
+        },
+        "quality": "nominal",
+        "quality_value": 1000,
+        "last_update_tick": 0,
+    },
     {
         "assembly_id": "instrument.clock",
         "instrument_type": "clock",
+        "instrument_type_id": "instr.clock",
+        "carrier_agent_id": None,
+        "station_site_id": None,
         "reading": {
             "tick": 0,
             "rate_permille": 1000,
             "paused": False,
         },
+        "state": {},
+        "outputs": {
+            "ch.diegetic.clock": {
+                "tick": 0,
+                "rate_permille": 1000,
+                "paused": False
+            }
+        },
         "quality": "nominal",
+        "quality_value": 1000,
         "last_update_tick": 0,
     },
     {
         "assembly_id": "instrument.compass",
         "instrument_type": "compass",
+        "instrument_type_id": "instr.compass",
+        "carrier_agent_id": None,
+        "station_site_id": None,
         "reading": {
             "heading_mdeg": 0,
         },
+        "state": {},
+        "outputs": {
+            "ch.diegetic.compass": {
+                "heading_mdeg": 0
+            }
+        },
         "quality": "nominal",
+        "quality_value": 1000,
         "last_update_tick": 0,
     },
     {
-        "assembly_id": "instrument.altimeter",
-        "instrument_type": "altimeter",
+        "assembly_id": "instrument.map_local",
+        "instrument_type": "map_local",
+        "instrument_type_id": "instr.map_local",
+        "carrier_agent_id": None,
+        "station_site_id": None,
         "reading": {
-            "altitude_mm": 0,
+            "entries": []
+        },
+        "state": {
+            "entries": []
+        },
+        "outputs": {
+            "ch.diegetic.map_local": {
+                "entries": []
+            }
         },
         "quality": "nominal",
+        "quality_value": 1000,
         "last_update_tick": 0,
     },
     {
-        "assembly_id": "instrument.radio",
-        "instrument_type": "radio",
+        "assembly_id": "instrument.notebook",
+        "instrument_type": "notebook",
+        "instrument_type_id": "instr.notebook",
+        "carrier_agent_id": None,
+        "station_site_id": None,
         "reading": {
-            "signal_quality_permille": 1000,
+            "entries": []
+        },
+        "state": {
+            "user_notes": []
+        },
+        "outputs": {
+            "ch.diegetic.notebook": {
+                "entries": []
+            }
         },
         "quality": "nominal",
+        "quality_value": 1000,
+        "last_update_tick": 0,
+    },
+    {
+        "assembly_id": "instrument.radio_text",
+        "instrument_type": "radio_text",
+        "instrument_type_id": "instr.radio_text",
+        "carrier_agent_id": None,
+        "station_site_id": None,
+        "reading": {
+            "messages": []
+        },
+        "state": {
+            "inbox": []
+        },
+        "outputs": {
+            "ch.diegetic.radio_text": {
+                "messages": []
+            }
+        },
+        "quality": "nominal",
+        "quality_value": 1000,
         "last_update_tick": 0,
     },
 ]
@@ -538,14 +635,25 @@ def _instrument_assemblies_from_payload(payload: dict) -> List[dict]:
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
         assembly_id = str(row.get("assembly_id", "")).strip()
         instrument_type = str(row.get("instrument_type", "")).strip()
+        instrument_type_id = str(row.get("instrument_type_id", "")).strip()
+        if (not instrument_type) and instrument_type_id:
+            instrument_type = str(INSTRUMENT_TYPE_BY_ID.get(instrument_type_id, "")).strip()
+        if instrument_type and (not instrument_type_id):
+            instrument_type_id = str(INSTRUMENT_TYPE_ID_BY_TYPE.get(instrument_type, "")).strip()
         if not assembly_id or not instrument_type:
             continue
         out.append(
             {
                 "assembly_id": assembly_id,
                 "instrument_type": instrument_type,
+                "instrument_type_id": instrument_type_id or str(INSTRUMENT_TYPE_ID_BY_TYPE.get(instrument_type, "")),
+                "carrier_agent_id": None if row.get("carrier_agent_id") is None else str(row.get("carrier_agent_id", "")).strip() or None,
+                "station_site_id": None if row.get("station_site_id") is None else str(row.get("station_site_id", "")).strip() or None,
                 "reading": copy.deepcopy(row.get("reading") if isinstance(row.get("reading"), dict) else {}),
+                "state": copy.deepcopy(row.get("state") if isinstance(row.get("state"), dict) else {}),
+                "outputs": copy.deepcopy(row.get("outputs") if isinstance(row.get("outputs"), dict) else {}),
                 "quality": str(row.get("quality", "nominal")),
+                "quality_value": max(0, _as_int(row.get("quality_value", 1000), 1000)),
                 "last_update_tick": _as_int(row.get("last_update_tick", 0), 0),
             }
         )
@@ -657,8 +765,14 @@ def _initial_universe_state(
         {
             "assembly_id": str(row.get("assembly_id", "")),
             "instrument_type": str(row.get("instrument_type", "")),
+            "instrument_type_id": str(row.get("instrument_type_id", "")),
+            "carrier_agent_id": None if row.get("carrier_agent_id") is None else str(row.get("carrier_agent_id", "")).strip() or None,
+            "station_site_id": None if row.get("station_site_id") is None else str(row.get("station_site_id", "")).strip() or None,
             "reading": copy.deepcopy(row.get("reading") if isinstance(row.get("reading"), dict) else {}),
+            "state": copy.deepcopy(row.get("state") if isinstance(row.get("state"), dict) else {}),
+            "outputs": copy.deepcopy(row.get("outputs") if isinstance(row.get("outputs"), dict) else {}),
             "quality": str(row.get("quality", "nominal")),
+            "quality_value": max(0, _as_int(row.get("quality_value", 1000), 1000)),
             "last_update_tick": _as_int(row.get("last_update_tick", 0), 0),
         }
         for row in sorted((item for item in (instrument_assemblies or []) if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", "")))

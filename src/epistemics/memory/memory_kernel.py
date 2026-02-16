@@ -94,7 +94,7 @@ def _channel_payload(perceived_now: dict, channel_id: str) -> dict:
         }
     if channel_id == "ch.camera.state":
         return {"camera_viewpoint": dict(perceived_now.get("camera_viewpoint") or {})}
-    if channel_id in ("ch.core.navigation", "ch.nondiegetic.nav", "ch.diegetic.map_local"):
+    if channel_id in ("ch.core.navigation", "ch.nondiegetic.nav"):
         return {"navigation": dict(perceived_now.get("navigation") or {})}
     if channel_id == "ch.core.sites":
         return {"sites": dict(perceived_now.get("sites") or {})}
@@ -117,8 +117,12 @@ def _channel_payload(perceived_now: dict, channel_id: str) -> dict:
         return {"instrument.clock": dict(instruments.get("instrument.clock") or {})}
     if channel_id == "ch.diegetic.altimeter":
         return {"instrument.altimeter": dict(instruments.get("instrument.altimeter") or {})}
-    if channel_id == "ch.diegetic.radio":
-        return {"instrument.radio": dict(instruments.get("instrument.radio") or {})}
+    if channel_id == "ch.diegetic.map_local":
+        return {"instrument.map_local": dict(instruments.get("instrument.map_local") or {})}
+    if channel_id == "ch.diegetic.notebook":
+        return {"instrument.notebook": dict(instruments.get("instrument.notebook") or {})}
+    if channel_id == "ch.diegetic.radio_text":
+        return {"instrument.radio_text": dict(instruments.get("instrument.radio_text") or {})}
     truth_overlay = dict(perceived_now.get("truth_overlay") or {})
     if channel_id == "ch.truth.overlay.terrain_height":
         return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
@@ -169,7 +173,7 @@ def _extract_candidates(perceived_now: dict, tick: int) -> List[dict]:
                 )
             continue
 
-        if channel_id in ("ch.core.navigation", "ch.nondiegetic.nav", "ch.diegetic.map_local"):
+        if channel_id in ("ch.core.navigation", "ch.nondiegetic.nav"):
             hierarchy_rows = sorted(
                 (dict(item) for item in (((payload.get("navigation") or {}).get("hierarchy")) or []) if isinstance(item, dict)),
                 key=lambda row: (
@@ -197,6 +201,117 @@ def _extract_candidates(perceived_now: dict, tick: int) -> List[dict]:
                         "subject_kind": "region",
                         "subject_id": _string_or_none(nav_row.get("object_id")),
                         "payload": {"navigation_row": nav_row},
+                        "precision_tag": _default_precision_tag(channel_id),
+                        "source_tick": int(tick),
+                    }
+                )
+            continue
+
+        if channel_id == "ch.diegetic.map_local":
+            map_rows = sorted(
+                (
+                    dict(item)
+                    for item in (((payload.get("instrument.map_local") or {}).get("reading") or {}).get("entries") or [])
+                    if isinstance(item, dict)
+                ),
+                key=lambda row: (
+                    str(row.get("region_key", "")),
+                    _as_int(row.get("last_seen_tick", 0), 0),
+                ),
+            )
+            if not map_rows:
+                rows.append(
+                    {
+                        "channel_id": channel_id,
+                        "subject_kind": "region",
+                        "subject_id": None,
+                        "payload": payload,
+                        "precision_tag": _default_precision_tag(channel_id),
+                        "source_tick": int(tick),
+                    }
+                )
+                continue
+            for map_row in map_rows:
+                rows.append(
+                    {
+                        "channel_id": channel_id,
+                        "subject_kind": "region",
+                        "subject_id": _string_or_none(map_row.get("region_key")),
+                        "payload": {"map_row": map_row},
+                        "precision_tag": _default_precision_tag(channel_id),
+                        "source_tick": int(tick),
+                    }
+                )
+            continue
+
+        if channel_id == "ch.diegetic.notebook":
+            notebook_rows = sorted(
+                (
+                    dict(item)
+                    for item in (((payload.get("instrument.notebook") or {}).get("reading") or {}).get("entries") or [])
+                    if isinstance(item, dict)
+                ),
+                key=lambda row: (
+                    _as_int(row.get("created_tick", 0), 0),
+                    str(row.get("entry_id", "")),
+                ),
+            )
+            if not notebook_rows:
+                rows.append(
+                    {
+                        "channel_id": channel_id,
+                        "subject_kind": "event",
+                        "subject_id": None,
+                        "payload": payload,
+                        "precision_tag": _default_precision_tag(channel_id),
+                        "source_tick": int(tick),
+                    }
+                )
+                continue
+            for notebook_row in notebook_rows:
+                rows.append(
+                    {
+                        "channel_id": channel_id,
+                        "subject_kind": "event",
+                        "subject_id": _string_or_none(notebook_row.get("entry_id")),
+                        "payload": {"notebook_entry": notebook_row},
+                        "precision_tag": _default_precision_tag(channel_id),
+                        "source_tick": int(tick),
+                    }
+                )
+            continue
+
+        if channel_id == "ch.diegetic.radio_text":
+            message_rows = sorted(
+                (
+                    dict(item)
+                    for item in (((payload.get("instrument.radio_text") or {}).get("reading") or {}).get("messages") or [])
+                    if isinstance(item, dict)
+                ),
+                key=lambda row: (
+                    _as_int(row.get("created_tick", 0), 0),
+                    str(row.get("message_id", "")),
+                ),
+            )
+            if not message_rows:
+                rows.append(
+                    {
+                        "channel_id": channel_id,
+                        "subject_kind": "signal",
+                        "subject_id": None,
+                        "payload": payload,
+                        "precision_tag": _default_precision_tag(channel_id),
+                        "source_tick": int(tick),
+                    }
+                )
+                continue
+            for message_row in message_rows:
+                rows.append(
+                    {
+                        "channel_id": channel_id,
+                        "subject_kind": "signal",
+                        "subject_id": _string_or_none(message_row.get("message_id")),
+                        "payload": {"radio_message": message_row},
                         "precision_tag": _default_precision_tag(channel_id),
                         "source_tick": int(tick),
                     }
@@ -526,4 +641,3 @@ def update_memory_store(
         "memory_store": dict(memory_store),
         "memory_state": dict(memory_store),
     }
-

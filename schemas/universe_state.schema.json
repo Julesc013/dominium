@@ -300,11 +300,36 @@
           "instrument_type": {
             "type": "string"
           },
+          "instrument_type_id": {
+            "type": "string"
+          },
+          "carrier_agent_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "station_site_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "reading": {
+            "type": "object"
+          },
+          "state": {
+            "type": "object"
+          },
+          "outputs": {
             "type": "object"
           },
           "quality": {
             "type": "string"
+          },
+          "quality_value": {
+            "type": "integer",
+            "minimum": 0
           },
           "last_update_tick": {
             "type": "integer",
@@ -1035,21 +1060,43 @@
         {
           "assembly_id": "instrument.clock",
           "instrument_type": "clock",
+          "instrument_type_id": "instr.clock",
+          "carrier_agent_id": null,
+          "station_site_id": null,
           "reading": {
             "tick": 120,
             "rate_permille": 1000,
             "paused": false
           },
+          "state": {},
+          "outputs": {
+            "ch.diegetic.clock": {
+              "tick": 120,
+              "rate_permille": 1000,
+              "paused": false
+            }
+          },
           "quality": "nominal",
+          "quality_value": 1000,
           "last_update_tick": 120
         },
         {
           "assembly_id": "instrument.compass",
           "instrument_type": "compass",
+          "instrument_type_id": "instr.compass",
+          "carrier_agent_id": null,
+          "station_site_id": null,
           "reading": {
             "heading_mdeg": 0
           },
+          "state": {},
+          "outputs": {
+            "ch.diegetic.compass": {
+              "heading_mdeg": 0
+            }
+          },
           "quality": "nominal",
+          "quality_value": 1000,
           "last_update_tick": 120
         }
       ],
