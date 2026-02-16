@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Camera Binding Schema",
+  "version": "1.0.0",
+  "description": "Canonical camera target binding contract for deterministic camera/view processes.",
+  "x-doc-ref": [
+    "docs/embodiment/CAMERA_AND_VIEW_LENSES.md",
+    "docs/contracts/refusal_contract.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "binding_id",
+    "camera_id",
+    "target_type",
+    "target_id",
+    "view_mode_id",
+    "offset_params",
+    "created_tick",
+    "active",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "binding_id": {
+      "type": "string"
+    },
+    "camera_id": {
+      "type": "string"
+    },
+    "target_type": {
+      "type": "string",
+      "enum": [
+        "agent",
+        "body",
+        "site",
+        "none"
+      ]
+    },
+    "target_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "view_mode_id": {
+      "type": "string"
+    },
+    "offset_params": {
+      "type": "object",
+      "required": [
+        "x_mm",
+        "y_mm",
+        "z_mm",
+        "yaw_mdeg",
+        "pitch_mdeg",
+        "roll_mdeg"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "x_mm": {
+          "type": "integer"
+        },
+        "y_mm": {
+          "type": "integer"
+        },
+        "z_mm": {
+          "type": "integer"
+        },
+        "yaw_mdeg": {
+          "type": "integer"
+        },
+        "pitch_mdeg": {
+          "type": "integer"
+        },
+        "roll_mdeg": {
+          "type": "integer"
+        }
+      }
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "binding_id": "camera.binding.camera.main",
+      "camera_id": "camera.main",
+      "target_type": "none",
+      "target_id": null,
+      "view_mode_id": "view.free.lab",
+      "offset_params": {
+        "x_mm": 0,
+        "y_mm": 0,
+        "z_mm": 0,
+        "yaw_mdeg": 0,
+        "pitch_mdeg": 0,
+        "roll_mdeg": 0
+      },
+      "created_tick": 0,
+      "active": true,
+      "extensions": {}
+    }
+  ]
+}

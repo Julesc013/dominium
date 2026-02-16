@@ -42,6 +42,7 @@ REGISTRY_HASH_KEY_MAP = {
     "control_action_registry_hash": "control_action_registry",
     "controller_type_registry_hash": "controller_type_registry",
     "body_shape_registry_hash": "body_shape_registry",
+    "view_mode_registry_hash": "view_mode_registry",
     "net_replication_policy_registry_hash": "net_replication_policy_registry",
     "net_resync_strategy_registry_hash": "net_resync_strategy_registry",
     "net_server_policy_registry_hash": "net_server_policy_registry",
@@ -71,6 +72,7 @@ REGISTRY_FILE_MAP = {
     "control_action_registry_hash": "control_action.registry.json",
     "controller_type_registry_hash": "controller_type.registry.json",
     "body_shape_registry_hash": "body_shape.registry.json",
+    "view_mode_registry_hash": "view_mode.registry.json",
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
@@ -795,6 +797,14 @@ def boot_session_spec(
     )
     if retention_policy_registry_error:
         return retention_policy_registry_error
+    view_mode_registry, view_mode_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["view_mode_registry_hash"],
+        expected_hash=str(registries.get("view_mode_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if view_mode_registry_error:
+        return view_mode_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -965,6 +975,7 @@ def boot_session_spec(
                 "perception_interest_policy_registry": perception_interest_policy_registry,
                 "epistemic_policy_registry": epistemic_policy_registry,
                 "retention_policy_registry": retention_policy_registry,
+                "view_mode_registry": view_mode_registry,
             },
             snapshot_cadence_ticks=0,
         )
@@ -1007,6 +1018,7 @@ def boot_session_spec(
                 "perception_interest_policy_registry": perception_interest_policy_registry,
                 "epistemic_policy_registry": epistemic_policy_registry,
                 "retention_policy_registry": retention_policy_registry,
+                "view_mode_registry": view_mode_registry,
             },
         )
         if str(initialized.get("result", "")) != "complete":
@@ -1302,6 +1314,7 @@ def boot_session_spec(
             "perception_interest_policy_registry": perception_interest_policy_registry,
             "epistemic_policy_registry": epistemic_policy_registry,
             "retention_policy_registry": retention_policy_registry,
+            "view_mode_registry": view_mode_registry,
         },
     )
     observation = observe_truth(

@@ -126,6 +126,13 @@
         "1.0.0"
       ]
     },
+    "camera_binding": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "controller": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -519,6 +526,20 @@
       ]
     },
     "ui_window": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "view_mode": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "view_mode_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

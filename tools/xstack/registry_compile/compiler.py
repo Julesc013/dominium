@@ -1568,6 +1568,93 @@ def _body_shape_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     return sorted(rows, key=lambda row: str(row.get("shape_type", ""))), errors
 
 
+def _view_mode_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
+    _view_record, view_rows_raw, load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/view_mode_registry.json",
+        expected_schema_id="dominium.registry.view_mode_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="view_modes",
+    )
+    if load_errors:
+        return [], load_errors
+
+    errors: List[dict] = []
+    rows: List[dict] = []
+    seen = set()
+    allowed_policy_values = {"lockstep", "authoritative", "hybrid"}
+    for entry in sorted(view_rows_raw, key=lambda row: str((row or {}).get("view_mode_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_view_mode_entry",
+                    "message": "view mode entry must be object",
+                    "path": "$.view_modes",
+                }
+            )
+            continue
+        view_mode_id = str(entry.get("view_mode_id", "")).strip()
+        allowed_lens_ids = entry.get("allowed_lens_ids")
+        allowed_in_policies = entry.get("allowed_in_policies")
+        required_entitlements = entry.get("required_entitlements")
+        extensions = entry.get("extensions")
+        if (
+            not view_mode_id
+            or not isinstance(allowed_lens_ids, list)
+            or not isinstance(allowed_in_policies, list)
+            or not isinstance(required_entitlements, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_view_mode_entry",
+                    "message": "view mode '{}' missing required fields".format(view_mode_id or "<missing>"),
+                    "path": "$.view_modes",
+                }
+            )
+            continue
+        if view_mode_id in seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_view_mode_id",
+                    "message": "duplicate view_mode_id '{}'".format(view_mode_id),
+                    "path": "$.view_modes.view_mode_id",
+                }
+            )
+            continue
+        policy_tokens = _sorted_unique_strings(allowed_in_policies)
+        unknown_policies = [token for token in policy_tokens if token not in allowed_policy_values]
+        if unknown_policies:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_view_mode_policy",
+                    "message": "view mode '{}' references unknown policy tags: {}".format(
+                        view_mode_id,
+                        ",".join(sorted(unknown_policies)),
+                    ),
+                    "path": "$.view_modes.allowed_in_policies",
+                }
+            )
+            continue
+        seen.add(view_mode_id)
+        watermark_policy_id = entry.get("watermark_policy_id")
+        if watermark_policy_id is not None:
+            watermark_policy_id = str(watermark_policy_id).strip() or None
+        rows.append(
+            {
+                "view_mode_id": view_mode_id,
+                "description": str(entry.get("description", "")).strip(),
+                "allowed_lens_ids": _sorted_unique_strings(allowed_lens_ids),
+                "requires_embodiment": bool(entry.get("requires_embodiment", False)),
+                "allowed_in_policies": policy_tokens,
+                "required_entitlements": _sorted_unique_strings(required_entitlements),
+                "watermark_policy_id": watermark_policy_id,
+                "extensions": dict(extensions),
+            }
+        )
+    return sorted(rows, key=lambda row: str(row.get("view_mode_id", ""))), errors
+
+
 def _network_policy_rows(
     repo_root: str,
     known_law_profile_ids: List[str],
@@ -3047,6 +3134,9 @@ def compile_bundle(
     body_shape_rows, body_shape_registry_errors = _body_shape_registry_rows(
         repo_root=repo_root,
     )
+    view_mode_rows, view_mode_registry_errors = _view_mode_registry_rows(
+        repo_root=repo_root,
+    )
     (
         net_replication_policy_rows,
         net_resync_strategy_rows,
@@ -3096,6 +3186,7 @@ def compile_bundle(
         + worldgen_constraints_errors
         + control_registry_errors
         + body_shape_registry_errors
+        + view_mode_registry_errors
         + net_registry_errors
         + hybrid_registry_errors
         + epistemic_registry_errors
@@ -3156,6 +3247,13 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "shape_types": body_shape_rows,
+        }
+    )
+    view_mode_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "view_modes": view_mode_rows,
         }
     )
     net_replication_policy_payload = _finalize_registry_payload(
@@ -3310,6 +3408,7 @@ def compile_bundle(
         "control_action_registry": ("control_action_registry", control_action_payload),
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
         "body_shape_registry": ("body_shape_registry", body_shape_payload),
+        "view_mode_registry": ("view_mode_registry", view_mode_payload),
         "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
         "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
         "net_server_policy_registry": ("net_server_policy_registry", net_server_policy_payload),
@@ -3344,6 +3443,7 @@ def compile_bundle(
         "control_action_registry",
         "controller_type_registry",
         "body_shape_registry",
+        "view_mode_registry",
         "net_replication_policy_registry",
         "net_resync_strategy_registry",
         "net_server_policy_registry",
@@ -3398,6 +3498,7 @@ def compile_bundle(
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
             "body_shape_registry_hash": registry_hashes["body_shape_registry_hash"],
+            "view_mode_registry_hash": registry_hashes["view_mode_registry_hash"],
             "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
             "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
             "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],
