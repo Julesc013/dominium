@@ -49,12 +49,28 @@ No `ranked_mode` or similar mode flags are allowed.
    - Requires strict anti-cheat policy.
    - Requires strict SecureX policy.
    - Forbids observer-truth law profiles.
+   - Requires strict cosmetic policy (signed + allow-listed cosmetic packs only).
 2. `server.profile.casual_public`
    - Uses casual anti-cheat/SecureX policy.
    - Allows broader replication options.
+   - Uses default cosmetic policy with deterministic fallback to pill proxy for missing/denied cosmetics.
 3. `server.profile.private_relaxed`
    - Allows relaxed SecureX and anti-cheat posture by explicit policy.
    - May allow observer tooling when law profile permits.
+   - May allow unsigned cosmetic packs based on explicit cosmetic policy.
+
+## Cosmetic Governance
+
+1. Cosmetic acceptance is policy-driven (`cosmetic_policy_id`) and linked from server profile data.
+2. Cosmetic requests are treated as intents and must pass:
+   - entitlement checks
+   - server profile policy checks
+   - SecureX signature policy checks (for strict profiles)
+3. Cosmetic refusals are deterministic and auditable:
+   - `refusal.cosmetic.forbidden`
+   - `refusal.cosmetic.unsigned_not_allowed`
+   - `refusal.cosmetic.not_in_whitelist`
+4. Cosmetic policy never grants simulation advantage. Collision and movement remain authoritative from Truth body primitives.
 
 ## Refusal Behavior
 Server must emit explicit deterministic refusals for governance failures:
