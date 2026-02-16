@@ -30,6 +30,8 @@ LOCKFILE_REGISTRY_FILE_MAP = {
     "controller_type_registry_hash": "controller_type.registry.json",
     "body_shape_registry_hash": "body_shape.registry.json",
     "view_mode_registry_hash": "view_mode.registry.json",
+    "instrument_type_registry_hash": "instrument_type.registry.json",
+    "calibration_model_registry_hash": "calibration_model.registry.json",
     "render_proxy_registry_hash": "render_proxy.registry.json",
     "cosmetic_registry_hash": "cosmetic.registry.json",
     "cosmetic_policy_registry_hash": "cosmetic_policy.registry.json",
