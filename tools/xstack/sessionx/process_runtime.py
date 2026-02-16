@@ -29,6 +29,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.camera_unbind_target": "entitlement.control.camera",
     "process.camera_set_view_mode": "entitlement.control.camera",
     "process.camera_set_lens": "entitlement.control.lens_override",
+    "process.cosmetic_assign": "entitlement.cosmetic.assign",
     "process.body_move_attempt": "entitlement.control.possess",
     "process.instrument_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
@@ -51,6 +52,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_unbind_target": "observer",
     "process.camera_set_view_mode": "observer",
     "process.camera_set_lens": "operator",
+    "process.cosmetic_assign": "operator",
     "process.body_move_attempt": "operator",
     "process.instrument_tick": "observer",
     "process.time_control_set_rate": "operator",
@@ -82,12 +84,30 @@ CONTROL_PROCESS_IDS = {
     "process.camera_unbind_target",
     "process.camera_set_view_mode",
     "process.camera_set_lens",
+    "process.cosmetic_assign",
     "process.body_move_attempt",
+}
+CAMERA_REQUIRED_PROCESS_IDS = {
+    "process.camera_move",
+    "process.camera_teleport",
+    "process.control_bind_camera",
+    "process.control_unbind_camera",
+    "process.control_set_view_lens",
+    "process.camera_bind_target",
+    "process.camera_unbind_target",
+    "process.camera_set_view_mode",
+    "process.camera_set_lens",
 }
 CONTROL_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.control.law_forbidden",
     "ENTITLEMENT_MISSING": "refusal.control.entitlement_missing",
 }
+COSMETIC_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": "refusal.cosmetic.forbidden",
+    "ENTITLEMENT_MISSING": "refusal.cosmetic.forbidden",
+}
+DEFAULT_COSMETIC_ID = "cosmetic.default.pill"
+DEFAULT_RENDER_PROXY_ID = "render.proxy.pill_default"
 CONTROLLER_ACTIONS_BY_TYPE = {
     "admin": [
         "control.action.bind_camera",
@@ -95,6 +115,7 @@ CONTROLLER_ACTIONS_BY_TYPE = {
         "control.action.possess_agent",
         "control.action.release_agent",
         "control.action.set_view_lens",
+        "control.action.assign_cosmetic",
     ],
     "ai_policy": [
         "control.action.possess_agent",
@@ -112,6 +133,7 @@ CONTROLLER_ACTIONS_BY_TYPE = {
         "control.action.possess_agent",
         "control.action.release_agent",
         "control.action.set_view_lens",
+        "control.action.assign_cosmetic",
     ],
     "spectator": [
         "control.action.bind_camera",
@@ -1265,11 +1287,12 @@ def _apply_body_move_attempt(
     }
 
 
-def _control_gate_refusal(gate_payload: dict) -> dict:
+def _control_gate_refusal(gate_payload: dict, reason_map: dict | None = None) -> dict:
     payload = dict(gate_payload or {})
     refusal_payload = dict(payload.get("refusal") or {})
     reason_code = str(refusal_payload.get("reason_code", "")).strip()
-    mapped = str(CONTROL_GATE_REASON_MAP.get(reason_code, "")).strip()
+    map_payload = dict(reason_map if isinstance(reason_map, dict) else CONTROL_GATE_REASON_MAP)
+    mapped = str(map_payload.get(reason_code, "")).strip()
     if not mapped:
         return payload
     refusal_payload["reason_code"] = mapped
@@ -1642,6 +1665,95 @@ def _policy_payload(policy_context: dict | None, key: str) -> dict:
     if not isinstance(row, dict):
         return {}
     return row
+
+
+def _registry_rows_by_id(registry_payload: dict, key: str, id_key: str) -> Dict[str, dict]:
+    rows = registry_payload.get(key)
+    if not isinstance(rows, list):
+        return {}
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(id_key, ""))):
+        token = str(row.get(id_key, "")).strip()
+        if token:
+            out[token] = dict(row)
+    return out
+
+
+def _policy_id_from_context(policy_context: dict | None) -> str:
+    if not isinstance(policy_context, dict):
+        return ""
+    direct = str(policy_context.get("cosmetic_policy_id", "")).strip()
+    if direct:
+        return direct
+    control_policy = dict(policy_context.get("control_policy") or {})
+    from_control = str(control_policy.get("cosmetic_policy_id", "")).strip()
+    if from_control:
+        return from_control
+    server_profile = dict(policy_context.get("server_profile") or {})
+    from_profile = str((server_profile.get("extensions") or {}).get("cosmetic_policy_id", "")).strip()
+    if from_profile:
+        return from_profile
+    server_policy = dict(policy_context.get("server_policy") or {})
+    return str((server_policy.get("extensions") or {}).get("cosmetic_policy_id", "")).strip()
+
+
+def _resolve_cosmetic_policy(policy_context: dict | None) -> Dict[str, object]:
+    policy_registry = _policy_payload(policy_context, "cosmetic_policy_registry")
+    policies = _registry_rows_by_id(policy_registry, "policies", "policy_id")
+    policy_id = _policy_id_from_context(policy_context)
+    if not policy_id:
+        return refusal(
+            "refusal.cosmetic.forbidden",
+            "cosmetic assignment requires an explicit cosmetic policy id",
+            "Configure control/server policy with a cosmetic_policy_id before assigning cosmetics.",
+            {"policy_id": "<missing>"},
+            "$.intent.inputs.cosmetic_id",
+        )
+    policy = dict(policies.get(policy_id) or {})
+    if not policy:
+        return refusal(
+            "refusal.cosmetic.forbidden",
+            "cosmetic policy '{}' is unavailable in compiled registry".format(policy_id),
+            "Add cosmetic policy to cosmetic_policy.registry.json and rebuild registries.",
+            {"policy_id": policy_id},
+            "$.intent.inputs.cosmetic_id",
+        )
+    return {"result": "complete", "policy": policy}
+
+
+def _representation_state(policy_context: dict | None) -> dict:
+    if not isinstance(policy_context, dict):
+        return {"assignments": {}, "events": []}
+    state = policy_context.get("representation_state")
+    if not isinstance(state, dict):
+        state = {}
+        policy_context["representation_state"] = state
+    assignments = state.get("assignments")
+    if not isinstance(assignments, dict):
+        assignments = {}
+    events = state.get("events")
+    if not isinstance(events, list):
+        events = []
+    state["assignments"] = dict(
+        (str(key).strip(), dict(value))
+        for key, value in sorted(assignments.items(), key=lambda item: str(item[0]))
+        if str(key).strip() and isinstance(value, dict)
+    )
+    state["events"] = sorted(
+        (dict(item) for item in events if isinstance(item, dict)),
+        key=lambda item: (
+            int(item.get("applied_tick", 0) or 0),
+            str(item.get("target_agent_id", "")),
+            str(item.get("cosmetic_id", "")),
+            str(item.get("assignment_id", "")),
+        ),
+    )
+    return state
+
+
+def _cosmetic_pack_id(cosmetic_row: dict) -> str:
+    ext = dict(cosmetic_row.get("extensions") or {})
+    return str(ext.get("pack_id", "")).strip()
 
 
 def _load_solver_registry(policy_context: dict | None) -> Dict[str, object]:
@@ -2359,22 +2471,26 @@ def execute_intent(
 
     gate = _gate_process(process_id, law_profile, authority_context)
     if gate.get("result") != "complete":
+        if process_id == "process.cosmetic_assign":
+            return _control_gate_refusal(gate, reason_map=COSMETIC_GATE_REASON_MAP)
         if process_id in CONTROL_PROCESS_IDS:
             return _control_gate_refusal(gate)
         return gate
 
-    camera_result = _require_camera_main(state)
-    if camera_result.get("result") != "complete":
-        return camera_result
-    camera = camera_result.get("camera")
-    if not isinstance(camera, dict):
-        return refusal(
-            "PROCESS_INPUT_INVALID",
-            "camera payload is invalid",
-            "Initialize camera.main in universe state.",
-            {"assembly_id": "camera.main"},
-            "$.camera_assemblies",
-        )
+    camera: dict = {}
+    if process_id in CAMERA_REQUIRED_PROCESS_IDS:
+        camera_result = _require_camera_main(state)
+        if camera_result.get("result") != "complete":
+            return camera_result
+        camera = camera_result.get("camera")
+        if not isinstance(camera, dict):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "camera payload is invalid",
+                "Initialize camera.main in universe state.",
+                {"assembly_id": "camera.main"},
+                "$.camera_assemblies",
+            )
     agents = _ensure_agent_states(state)
     controllers = _ensure_controller_assemblies(state)
     bindings = _ensure_control_bindings(state)
@@ -2382,6 +2498,7 @@ def execute_intent(
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     result_metadata: Dict[str, object] = {}
+    skip_state_log = False
 
     if process_id == "process.camera_move":
         delta = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
@@ -3247,6 +3364,139 @@ def execute_intent(
         )
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
         _advance_time(state, steps=1)
+    elif process_id == "process.cosmetic_assign":
+        agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
+        cosmetic_id = str(inputs.get("cosmetic_id", "")).strip()
+        if not agent_id or not cosmetic_id:
+            return refusal(
+                "refusal.cosmetic.forbidden",
+                "process.cosmetic_assign requires agent_id and cosmetic_id",
+                "Provide deterministic agent_id and cosmetic_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        agent_row = _find_agent(agent_rows=agents, agent_id=agent_id)
+        if not agent_row:
+            return refusal(
+                "refusal.cosmetic.forbidden",
+                "agent '{}' is not available for cosmetic assignment".format(agent_id),
+                "Select an existing agent_id before assigning cosmetics.",
+                {"agent_id": agent_id},
+                "$.intent.inputs.agent_id",
+            )
+
+        cosmetic_registry = _policy_payload(policy_context, "cosmetic_registry")
+        cosmetic_rows = _registry_rows_by_id(cosmetic_registry, "cosmetics", "cosmetic_id")
+        cosmetic_row = dict(cosmetic_rows.get(cosmetic_id) or {})
+        if not cosmetic_row:
+            return refusal(
+                "refusal.cosmetic.forbidden",
+                "cosmetic '{}' is not defined in cosmetic registry".format(cosmetic_id),
+                "Use a cosmetic_id from cosmetic.registry.json.",
+                {"cosmetic_id": cosmetic_id},
+                "$.intent.inputs.cosmetic_id",
+            )
+
+        policy_check = _resolve_cosmetic_policy(policy_context)
+        if policy_check.get("result") != "complete":
+            return policy_check
+        cosmetic_policy = dict(policy_check.get("policy") or {})
+        policy_id = str(cosmetic_policy.get("policy_id", "")).strip()
+        allow_unsigned = bool(cosmetic_policy.get("allow_unsigned_packs", True))
+        require_signed = bool(cosmetic_policy.get("require_signed_packs", False))
+        allowed_cosmetics = _sorted_tokens(list(cosmetic_policy.get("allowed_cosmetic_ids") or []))
+        allowed_pack_ids = _sorted_tokens(list(cosmetic_policy.get("allowed_pack_ids") or []))
+
+        if allowed_cosmetics and cosmetic_id not in set(allowed_cosmetics):
+            return refusal(
+                "refusal.cosmetic.not_in_whitelist",
+                "cosmetic '{}' is not permitted by policy '{}'".format(cosmetic_id, policy_id),
+                "Select a cosmetic_id listed in cosmetic policy allow-list.",
+                {"policy_id": policy_id, "cosmetic_id": cosmetic_id},
+                "$.intent.inputs.cosmetic_id",
+            )
+
+        resolved_packs = [
+            dict(row)
+            for row in list((policy_context or {}).get("resolved_packs") or [])
+            if isinstance(row, dict)
+        ]
+        pack_map = dict(
+            (
+                str(row.get("pack_id", "")).strip(),
+                dict(row),
+            )
+            for row in sorted(resolved_packs, key=lambda row: str(row.get("pack_id", "")))
+            if str(row.get("pack_id", "")).strip()
+        )
+        pack_id = _cosmetic_pack_id(cosmetic_row)
+        if allowed_pack_ids and (not pack_id or pack_id not in set(allowed_pack_ids)):
+            return refusal(
+                "refusal.cosmetic.not_in_whitelist",
+                "cosmetic '{}' pack '{}' is not permitted by policy '{}'".format(
+                    cosmetic_id,
+                    pack_id or "<missing>",
+                    policy_id,
+                ),
+                "Assign a cosmetic from an allowed pack.",
+                {"policy_id": policy_id, "cosmetic_id": cosmetic_id, "pack_id": pack_id or "<missing>"},
+                "$.intent.inputs.cosmetic_id",
+            )
+
+        pack_row = dict(pack_map.get(pack_id) or {}) if pack_id else {}
+        signature_status = str(pack_row.get("signature_status", "")).strip().lower()
+        signed_status = signature_status in ("signed", "verified", "official")
+        if (require_signed or not allow_unsigned) and not signed_status:
+            return refusal(
+                "refusal.cosmetic.unsigned_not_allowed",
+                "cosmetic '{}' requires signed pack under policy '{}'".format(cosmetic_id, policy_id),
+                "Use signed cosmetic packs or relax cosmetic policy on private/casual server profiles.",
+                {
+                    "policy_id": policy_id,
+                    "cosmetic_id": cosmetic_id,
+                    "pack_id": pack_id or "<missing>",
+                    "signature_status": signature_status or "<missing>",
+                },
+                "$.intent.inputs.cosmetic_id",
+            )
+
+        representation_state = _representation_state(policy_context)
+        assignments = dict(representation_state.get("assignments") or {})
+        assignment_id = "cosmetic.assignment.{}".format(agent_id)
+        assignment_row = {
+            "assignment_id": assignment_id,
+            "target_agent_id": agent_id,
+            "cosmetic_id": cosmetic_id,
+            "applied_tick": int(current_tick),
+            "authority_origin": str(authority_context.get("authority_origin", "")),
+            "policy_id": policy_id,
+            "pack_id": pack_id,
+        }
+        assignments[agent_id] = assignment_row
+        representation_state["assignments"] = dict(
+            (token, dict(assignments[token]))
+            for token in sorted(assignments.keys())
+            if str(token).strip()
+        )
+        events = list(representation_state.get("events") or [])
+        events.append(dict(assignment_row))
+        representation_state["events"] = sorted(
+            (dict(item) for item in events if isinstance(item, dict)),
+            key=lambda item: (
+                int(item.get("applied_tick", 0) or 0),
+                str(item.get("target_agent_id", "")),
+                str(item.get("cosmetic_id", "")),
+                str(item.get("assignment_id", "")),
+            ),
+        )
+        result_metadata = {
+            "assignment_id": assignment_id,
+            "target_agent_id": agent_id,
+            "cosmetic_id": cosmetic_id,
+            "policy_id": policy_id,
+            "pack_id": pack_id,
+        }
+        skip_state_log = True
     elif process_id == "process.body_move_attempt":
         moved = _apply_body_move_attempt(
             state=state,
@@ -3355,13 +3605,16 @@ def execute_intent(
             "$.intent.process_id",
         )
 
-    state_hash_anchor = _log_process(
-        state=state,
-        process_id=process_id,
-        intent_id=intent_id,
-        authority_origin=str(authority_context.get("authority_origin", "")),
-        inputs=dict(inputs),
-    )
+    if bool(skip_state_log):
+        state_hash_anchor = canonical_sha256(state)
+    else:
+        state_hash_anchor = _log_process(
+            state=state,
+            process_id=process_id,
+            intent_id=intent_id,
+            authority_origin=str(authority_context.get("authority_origin", "")),
+            inputs=dict(inputs),
+        )
     result_payload = {
         "result": "complete",
         "state_hash_anchor": state_hash_anchor,

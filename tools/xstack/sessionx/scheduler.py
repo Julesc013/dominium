@@ -37,6 +37,7 @@ PROCESS_PRIORITY = {
     "process.control_possess_agent": 25,
     "process.control_release_agent": 25,
     "process.control_set_view_lens": 25,
+    "process.cosmetic_assign": 25,
     "process.camera_bind_target": 25,
     "process.camera_unbind_target": 25,
     "process.camera_set_view_mode": 25,
@@ -59,6 +60,7 @@ PROCESS_ENTITY_SCOPE = {
     "process.control_possess_agent": "controller.binding.possess",
     "process.control_release_agent": "controller.binding.possess",
     "process.control_set_view_lens": "camera.main",
+    "process.cosmetic_assign": "agent.unknown",
     "process.camera_bind_target": "controller.binding.camera",
     "process.camera_unbind_target": "controller.binding.camera",
     "process.camera_set_view_mode": "camera.main",
@@ -81,6 +83,7 @@ PROCESS_FIELD_SCOPE = {
     "process.control_possess_agent": "control.binding.possess",
     "process.control_release_agent": "control.binding.possess",
     "process.control_set_view_lens": "camera.lens",
+    "process.cosmetic_assign": "representation.cosmetic",
     "process.camera_bind_target": "control.binding.camera",
     "process.camera_unbind_target": "control.binding.camera",
     "process.camera_set_view_mode": "camera.view_mode",
@@ -146,6 +149,10 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
     ):
         camera_id = str(inputs.get("camera_id", "")).strip() or "camera.main"
         entity_scope = camera_id
+    if process_id == "process.cosmetic_assign":
+        agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
+        if agent_id:
+            entity_scope = agent_id
     return {
         "envelope_id": str(envelope.get("envelope_id", "")),
         "script_step": int(script_step),

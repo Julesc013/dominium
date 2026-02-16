@@ -112,6 +112,9 @@ Tool payload wrapper:
 - `refusal.agent.unembodied`
 - `refusal.agent.ownership_violation`
 - `refusal.agent.boundary_cross_forbidden`
+- `refusal.cosmetic.forbidden`
+- `refusal.cosmetic.unsigned_not_allowed`
+- `refusal.cosmetic.not_in_whitelist`
 - `refusal.contract.no_penetration_violation`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
@@ -143,6 +146,9 @@ Tool payload wrapper:
 - `refusal.view.entitlement_missing`: grant required view/lens entitlements or use a less-privileged mode.
 - `refusal.view.watermark_required`: observer truth-capable modes require observer entitlement and watermark channel emission.
 - `refusal.view.cross_shard_follow_forbidden`: keep follow target in the same shard or enable cross-shard spectator follow policy.
+- `refusal.cosmetic.forbidden`: assign only cosmetics allowed by active cosmetic policy and authority context.
+- `refusal.cosmetic.unsigned_not_allowed`: use signed cosmetic packs or switch to non-strict cosmetic policy where permitted.
+- `refusal.cosmetic.not_in_whitelist`: select cosmetic IDs and pack IDs present in the ranked/active policy allow-list.
 
 ## Invariants
 - Refusals do not mutate authoritative state.
