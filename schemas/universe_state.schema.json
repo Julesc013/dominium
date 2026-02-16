@@ -58,6 +58,53 @@
           "state_hash": {
             "type": "string",
             "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "body_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "owner_peer_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "controller_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shard_id": {
+            "type": "string"
+          },
+          "intent_scope_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "orientation_mdeg": {
+            "type": "object",
+            "required": [
+              "yaw",
+              "pitch",
+              "roll"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "yaw": {
+                "type": "integer"
+              },
+              "pitch": {
+                "type": "integer"
+              },
+              "roll": {
+                "type": "integer"
+              }
+            }
           }
         }
       }
@@ -322,6 +369,15 @@
             "type": "string"
           },
           "owner_assembly_id": {
+            "type": "string"
+          },
+          "owner_agent_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shard_id": {
             "type": "string"
           },
           "shape_type": {
@@ -853,7 +909,17 @@
       "agent_states": [
         {
           "agent_id": "agent.lab.navigator.001",
-          "state_hash": "39fca9dd8ed652017311c80aeb26d4de6a40ca8dc3ec50904e8f4ca6da7d87b2"
+          "state_hash": "39fca9dd8ed652017311c80aeb26d4de6a40ca8dc3ec50904e8f4ca6da7d87b2",
+          "body_id": null,
+          "owner_peer_id": "peer.client.hybrid.alpha",
+          "controller_id": "controller.agent.lab.navigator.001",
+          "shard_id": "shard.0",
+          "intent_scope_id": null,
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          }
         }
       ],
       "world_assemblies": [

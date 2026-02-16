@@ -237,6 +237,55 @@ def _ensure_instrument_assemblies(state: dict) -> List[dict]:
     return normalized
 
 
+def _is_sha256_hex(token: object) -> bool:
+    text = str(token or "").strip()
+    if len(text) != 64:
+        return False
+    for char in text:
+        if char.lower() not in "0123456789abcdef":
+            return False
+    return True
+
+
+def _ensure_agent_states(state: dict) -> List[dict]:
+    rows = state.get("agent_states")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("agent_id", ""))):
+        agent_id = str(row.get("agent_id", "")).strip() or str(row.get("entity_id", "")).strip()
+        if not agent_id:
+            continue
+        state_hash = str(row.get("state_hash", "")).strip()
+        if not _is_sha256_hex(state_hash):
+            state_hash = canonical_sha256({"agent_id": agent_id})
+        orientation = _angles_int(row.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+        normalized.append(
+            {
+                "agent_id": agent_id,
+                "state_hash": state_hash,
+                "body_id": row.get("body_id") if row.get("body_id") is None else str(row.get("body_id", "")).strip(),
+                "owner_peer_id": row.get("owner_peer_id")
+                if row.get("owner_peer_id") is None
+                else str(row.get("owner_peer_id", "")).strip(),
+                "controller_id": row.get("controller_id")
+                if row.get("controller_id") is None
+                else str(row.get("controller_id", "")).strip(),
+                "shard_id": str(row.get("shard_id", "")).strip(),
+                "intent_scope_id": row.get("intent_scope_id")
+                if row.get("intent_scope_id") is None
+                else str(row.get("intent_scope_id", "")).strip(),
+                "orientation_mdeg": {
+                    "yaw": _as_int((orientation or {}).get("yaw", 0), 0),
+                    "pitch": _as_int((orientation or {}).get("pitch", 0), 0),
+                    "roll": _as_int((orientation or {}).get("roll", 0), 0),
+                },
+            }
+        )
+    state["agent_states"] = normalized
+    return normalized
+
+
 def _ensure_controller_assemblies(state: dict) -> List[dict]:
     rows = state.get("controller_assemblies")
     if not isinstance(rows, list):
@@ -439,6 +488,10 @@ def _ensure_body_assemblies(state: dict) -> List[dict]:
             {
                 "assembly_id": assembly_id,
                 "owner_assembly_id": str(row.get("owner_assembly_id", "")).strip() or assembly_id,
+                "owner_agent_id": row.get("owner_agent_id")
+                if row.get("owner_agent_id") is None
+                else str(row.get("owner_agent_id", "")).strip(),
+                "shard_id": str(row.get("shard_id", "")).strip() or "shard.0",
                 "shape_type": shape_type,
                 "shape_parameters": {
                     "radius_mm": max(0, _as_int(params.get("radius_mm", 0), 0)),
@@ -492,6 +545,14 @@ def _find_body(body_rows: List[dict], body_id: str) -> dict:
     token = str(body_id).strip()
     for row in body_rows:
         if str(row.get("assembly_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _find_agent(agent_rows: List[dict], agent_id: str) -> dict:
+    token = str(agent_id).strip()
+    for row in agent_rows:
+        if str(row.get("agent_id", "")).strip() == token:
             return row
     return {}
 
@@ -1860,6 +1921,7 @@ def execute_intent(
             {"assembly_id": "camera.main"},
             "$.camera_assemblies",
         )
+    agents = _ensure_agent_states(state)
     controllers = _ensure_controller_assemblies(state)
     bindings = _ensure_control_bindings(state)
     bodies = _ensure_body_assemblies(state)
