@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Epistemic Memory Store Schema",
+  "version": "1.0.0",
+  "description": "Deterministic memory store composed of policy-filtered memory items.",
+  "x-doc-ref": [
+    "docs/epistemics/MEMORY_AND_FOG_OF_WAR.md",
+    "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "store_id",
+    "owner_subject_id",
+    "retention_policy_id",
+    "items",
+    "store_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "store_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retention_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "memory_item_id",
+          "owner_subject_id",
+          "source_tick",
+          "last_refresh_tick",
+          "channel_id",
+          "subject_kind",
+          "subject_id",
+          "payload",
+          "precision_tag",
+          "ttl_ticks",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "memory_item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "owner_subject_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "last_refresh_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "channel_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subject_kind": {
+            "type": "string"
+          },
+          "subject_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "precision_tag": {
+            "type": "string"
+          },
+          "ttl_ticks": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "store_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "store_id": "memory.store.peer.client.alpha",
+      "owner_subject_id": "peer.client.alpha",
+      "retention_policy_id": "ep.retention.session_basic",
+      "items": [],
+      "store_hash": "32b4fa44db7e8456f9089e2f52998f5f6f8fdcc77f7bc0a8f8ec272df4ccdc03",
+      "extensions": {}
+    }
+  ]
+}

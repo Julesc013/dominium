@@ -42,6 +42,8 @@ LOCKFILE_REGISTRY_FILE_MAP = {
     "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
     "epistemic_policy_registry_hash": "epistemic_policy.registry.json",
     "retention_policy_registry_hash": "retention_policy.registry.json",
+    "decay_model_registry_hash": "decay_model.registry.json",
+    "eviction_rule_registry_hash": "eviction_rule.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",

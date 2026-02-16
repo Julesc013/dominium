@@ -1,0 +1,119 @@
+{
+  "schema_id": "dominium.registry.decay_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.decay_model_registry",
+    "registry_version": "1.0.0",
+    "decay_models": [
+      {
+        "decay_model_id": "ep.decay.none",
+        "description": "No decay model for memory-disabled or permanent-memory profiles.",
+        "ttl_rules": [
+          {
+            "rule_id": "ttl.none.default",
+            "channel_id": "*",
+            "subject_kind": "*",
+            "ttl_ticks": null
+          }
+        ],
+        "refresh_rules": [
+          {
+            "rule_id": "refresh.none.default",
+            "channel_id": "*",
+            "subject_kind": "*",
+            "refresh_on_observed": false
+          }
+        ],
+        "eviction_rule_id": "evict.none",
+        "extensions": {}
+      },
+      {
+        "decay_model_id": "ep.decay.session_basic",
+        "description": "Session memory with moderate TTL windows and deterministic refresh.",
+        "ttl_rules": [
+          {
+            "rule_id": "ttl.session.default",
+            "channel_id": "*",
+            "subject_kind": "*",
+            "ttl_ticks": 240
+          },
+          {
+            "rule_id": "ttl.session.entities",
+            "channel_id": "ch.core.entities",
+            "subject_kind": "entity",
+            "ttl_ticks": 600
+          },
+          {
+            "rule_id": "ttl.session.events",
+            "channel_id": "ch.core.process_log",
+            "subject_kind": "event",
+            "ttl_ticks": 128
+          }
+        ],
+        "refresh_rules": [
+          {
+            "rule_id": "refresh.session.default",
+            "channel_id": "*",
+            "subject_kind": "*",
+            "refresh_on_observed": true
+          }
+        ],
+        "eviction_rule_id": "evict.oldest_first",
+        "extensions": {}
+      },
+      {
+        "decay_model_id": "ep.decay.session_strict",
+        "description": "Short-lived memory windows for strict information-decay scenarios.",
+        "ttl_rules": [
+          {
+            "rule_id": "ttl.strict.default",
+            "channel_id": "*",
+            "subject_kind": "*",
+            "ttl_ticks": 96
+          },
+          {
+            "rule_id": "ttl.strict.entities",
+            "channel_id": "ch.core.entities",
+            "subject_kind": "entity",
+            "ttl_ticks": 160
+          }
+        ],
+        "refresh_rules": [
+          {
+            "rule_id": "refresh.strict.default",
+            "channel_id": "*",
+            "subject_kind": "*",
+            "refresh_on_observed": true
+          }
+        ],
+        "eviction_rule_id": "evict.lowest_priority",
+        "extensions": {}
+      },
+      {
+        "decay_model_id": "ep.decay.long_stub",
+        "description": "Long-memory stub for future historical systems.",
+        "ttl_rules": [
+          {
+            "rule_id": "ttl.long.default",
+            "channel_id": "*",
+            "subject_kind": "*",
+            "ttl_ticks": 4096
+          }
+        ],
+        "refresh_rules": [
+          {
+            "rule_id": "refresh.long.default",
+            "channel_id": "*",
+            "subject_kind": "*",
+            "refresh_on_observed": true
+          }
+        ],
+        "eviction_rule_id": "evict.lowest_priority",
+        "extensions": {
+          "status": "stub"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

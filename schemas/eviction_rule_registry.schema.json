@@ -1,17 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Retention Policy Registry Schema",
+  "title": "Eviction Rule Registry Schema",
   "version": "1.0.0",
-  "description": "Derived deterministic retention policy registry output.",
+  "description": "Derived deterministic eviction rule registry output.",
   "x-doc-ref": [
-    "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
-    "docs/net/EPISTEMICS_OVER_NETWORK.md"
+    "docs/epistemics/MEMORY_AND_FOG_OF_WAR.md"
   ],
   "type": "object",
   "required": [
     "format_version",
     "generated_from",
-    "policies",
+    "eviction_rules",
     "registry_hash"
   ],
   "additionalProperties": false,
@@ -47,42 +46,42 @@
         }
       }
     },
-    "policies": {
+    "eviction_rules": {
       "type": "array",
       "items": {
         "type": "object",
         "required": [
-          "retention_policy_id",
-          "memory_allowed",
-          "max_memory_items",
-          "decay_model_id",
           "eviction_rule_id",
-          "deterministic_eviction_rule_id",
+          "description",
+          "algorithm_id",
+          "priority_by_channel",
+          "priority_by_subject_kind",
           "extensions"
         ],
         "additionalProperties": false,
         "properties": {
-          "retention_policy_id": {
-            "type": "string"
-          },
-          "memory_allowed": {
-            "type": "boolean"
-          },
-          "max_memory_items": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "decay_model_id": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
           "eviction_rule_id": {
             "type": "string"
           },
-          "deterministic_eviction_rule_id": {
+          "description": {
             "type": "string"
+          },
+          "algorithm_id": {
+            "type": "string"
+          },
+          "priority_by_channel": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "priority_by_subject_kind": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
           },
           "extensions": {
             "type": "object",
@@ -107,18 +106,17 @@
           "signature_status": "signed"
         }
       ],
-      "policies": [
+      "eviction_rules": [
         {
-          "retention_policy_id": "ep.retention.session_basic",
-          "memory_allowed": true,
-          "max_memory_items": 2048,
-          "decay_model_id": "ep.decay.session_basic",
           "eviction_rule_id": "evict.oldest_first",
-          "deterministic_eviction_rule_id": "evict.oldest_first",
+          "description": "Evict oldest records first by source tick and memory item id.",
+          "algorithm_id": "evict.oldest_first",
+          "priority_by_channel": {},
+          "priority_by_subject_kind": {},
           "extensions": {}
         }
       ],
-      "registry_hash": "399c87506d16897eb97cfd78c8484fce75f4b7f61686d13195ecf2658500ffeb"
+      "registry_hash": "e20827ce5d0de3c2e4dd5ce61e2f0dff53b2dd5a6713bd88ff2f29d0876ebfd4"
     }
   ]
 }

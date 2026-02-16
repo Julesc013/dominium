@@ -9,15 +9,17 @@
         "retention_policy_id": "ep.retention.long",
         "memory_allowed": true,
         "max_memory_items": 4096,
-        "decay_model_id": "decay.stub.long",
-        "deterministic_eviction_rule_id": "evict.oldest_tick_then_channel",
+        "decay_model_id": "ep.decay.long_stub",
+        "eviction_rule_id": "evict.lowest_priority",
+        "deterministic_eviction_rule_id": "evict.lowest_priority",
         "extensions": {}
       },
       {
         "retention_policy_id": "ep.retention.none",
         "memory_allowed": false,
         "max_memory_items": 0,
-        "decay_model_id": "decay.none",
+        "decay_model_id": "ep.decay.none",
+        "eviction_rule_id": "evict.none",
         "deterministic_eviction_rule_id": "evict.none",
         "extensions": {}
       },
@@ -25,8 +27,9 @@
         "retention_policy_id": "ep.retention.session_basic",
         "memory_allowed": true,
         "max_memory_items": 256,
-        "decay_model_id": "decay.none",
-        "deterministic_eviction_rule_id": "evict.oldest_tick_then_channel",
+        "decay_model_id": "ep.decay.session_basic",
+        "eviction_rule_id": "evict.oldest_first",
+        "deterministic_eviction_rule_id": "evict.oldest_first",
         "extensions": {}
       }
     ],

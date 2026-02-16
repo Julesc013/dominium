@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Epistemic Eviction Rule Schema",
+  "version": "1.0.0",
+  "description": "Deterministic eviction rule for bounded memory stores.",
+  "x-doc-ref": [
+    "docs/epistemics/MEMORY_AND_FOG_OF_WAR.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "eviction_rule_id",
+    "description",
+    "algorithm_id",
+    "priority_by_channel",
+    "priority_by_subject_kind",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "eviction_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "algorithm_id": {
+      "type": "string",
+      "enum": [
+        "evict.none",
+        "evict.oldest_first",
+        "evict.lowest_priority"
+      ]
+    },
+    "priority_by_channel": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "priority_by_subject_kind": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "eviction_rule_id": "evict.oldest_first",
+      "description": "Evict oldest observations first by source tick, then memory item id.",
+      "algorithm_id": "evict.oldest_first",
+      "priority_by_channel": {},
+      "priority_by_subject_kind": {},
+      "extensions": {}
+    }
+  ]
+}
