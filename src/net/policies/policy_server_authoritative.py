@@ -208,6 +208,16 @@ def _policy_row(registry_payload: dict, policy_id: str, key: str = "policies") -
     return {}
 
 
+def _server_profile_row(registry_payload: dict, server_profile_id: str) -> dict:
+    rows = registry_payload.get("profiles")
+    if not isinstance(rows, list):
+        return {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("server_profile_id", ""))):
+        if str(row.get("server_profile_id", "")).strip() == str(server_profile_id).strip():
+            return dict(row)
+    return {}
+
+
 def _module_registry_map(module_registry_payload: dict) -> Dict[str, dict]:
     rows = module_registry_payload.get("modules")
     if not isinstance(rows, list):
@@ -330,18 +340,37 @@ def initialize_authoritative_runtime(
             dict(registry_payloads.get("net_server_policy_registry") or {}),
             server_policy_id,
         )
+    server_profile = {}
+    server_profile_id = str(network.get("server_profile_id", "")).strip()
+    if isinstance(registry_payloads, dict):
+        server_profile = _server_profile_row(
+            dict(registry_payloads.get("server_profile_registry") or {}),
+            server_profile_id,
+        )
+    server_profile_extensions = dict(server_profile.get("extensions") or {})
     server_extensions = dict(server_policy.get("extensions") or {})
+    cosmetic_policy_id = (
+        str(server_profile_extensions.get("cosmetic_policy_id", "")).strip()
+        or str(server_extensions.get("cosmetic_policy_id", "")).strip()
+    )
     control_policy = {
         "allowed_view_modes": _sorted_tokens(list(server_extensions.get("allowed_view_modes") or [])),
         "allow_cross_shard_follow": bool(server_extensions.get("allow_cross_shard_follow", False)),
         "allow_cross_shard_collision": bool(server_extensions.get("allow_cross_shard_collision", False)),
         "allow_cross_shard_possession": bool(server_extensions.get("allow_cross_shard_possession", False)),
         "allow_srz_transfer": bool(server_extensions.get("allow_srz_transfer", False)),
+        "cosmetic_policy_id": cosmetic_policy_id,
     }
 
     cadence = _snapshot_cadence(replication_policy_row, explicit=int(snapshot_cadence_ticks))
     registry_hashes = _registry_hashes(lock_payload)
     artifacts_rel = norm(os.path.join("build", "net", "authoritative", str(save_id)))
+    registry_payloads_copy = copy.deepcopy(registry_payloads if isinstance(registry_payloads, dict) else {})
+    representation_state = {
+        "assignments": {},
+        "events": [],
+    }
+    registry_payloads_copy["representation_state"] = representation_state
 
     runtime = {
         "schema_version": "1.0.0",
@@ -351,11 +380,14 @@ def initialize_authoritative_runtime(
         "artifacts_rel": artifacts_rel,
         "session_spec": copy.deepcopy(session_spec if isinstance(session_spec, dict) else {}),
         "lock_payload": copy.deepcopy(lock_payload if isinstance(lock_payload, dict) else {}),
-        "registry_payloads": copy.deepcopy(registry_payloads if isinstance(registry_payloads, dict) else {}),
+        "registry_payloads": registry_payloads_copy,
         "universe_identity": copy.deepcopy(universe_identity if isinstance(universe_identity, dict) else {}),
         "identity_ref": norm(os.path.join("saves", str(save_id), "universe_identity.json")),
         "state_ref": norm(os.path.join("saves", str(save_id), "universe_state.json")),
+        "server_policy": dict(server_policy),
+        "server_profile": dict(server_profile),
         "control_policy": control_policy,
+        "representation_state": representation_state,
         "anti_cheat": {
             "policy_id": anti_cheat_policy_id,
             "modules_enabled": _sorted_tokens(list(anti_cheat_policy.get("modules_enabled") or [])),
@@ -1043,6 +1075,10 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
             policy_context={
                 **dict(runtime.get("registry_payloads") or {}),
                 "control_policy": dict(runtime.get("control_policy") or {}),
+                "cosmetic_policy_id": str((runtime.get("control_policy") or {}).get("cosmetic_policy_id", "")),
+                "server_policy": dict(runtime.get("server_policy") or {}),
+                "server_profile": dict(runtime.get("server_profile") or {}),
+                "resolved_packs": list(((runtime.get("lock_payload") or {}).get("resolved_packs") or [])),
             },
         )
         if str(executed.get("result", "")) != "complete":

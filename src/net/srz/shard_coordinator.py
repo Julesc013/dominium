@@ -41,6 +41,7 @@ PROCESS_SCOPE_BY_ID = {
     "process.control_possess_agent": "control.binding.possess",
     "process.control_release_agent": "control.binding.possess",
     "process.control_set_view_lens": "camera.lens",
+    "process.cosmetic_assign": "representation.cosmetic",
     "process.camera_bind_target": "control.binding.camera",
     "process.camera_unbind_target": "control.binding.camera",
     "process.camera_set_view_mode": "camera.view_mode",
@@ -63,6 +64,7 @@ PROCESS_OWNER_OBJECT = {
     "process.control_possess_agent": "camera.main",
     "process.control_release_agent": "camera.main",
     "process.control_set_view_lens": "camera.main",
+    "process.cosmetic_assign": "agent.unknown",
     "process.camera_bind_target": "camera.main",
     "process.camera_unbind_target": "camera.main",
     "process.camera_set_view_mode": "camera.main",
@@ -85,6 +87,7 @@ PROCESS_PRIORITY = {
     "process.control_possess_agent": 25,
     "process.control_release_agent": 25,
     "process.control_set_view_lens": 25,
+    "process.cosmetic_assign": 25,
     "process.camera_bind_target": 25,
     "process.camera_unbind_target": 25,
     "process.camera_set_view_mode": 25,
@@ -277,6 +280,16 @@ def _policy_row(registry_payload: dict, policy_id: str, key: str = "policies") -
         return {}
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("policy_id", ""))):
         if str(row.get("policy_id", "")).strip() == str(policy_id).strip():
+            return dict(row)
+    return {}
+
+
+def _server_profile_row(registry_payload: dict, server_profile_id: str) -> dict:
+    rows = registry_payload.get("profiles")
+    if not isinstance(rows, list):
+        return {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("server_profile_id", ""))):
+        if str(row.get("server_profile_id", "")).strip() == str(server_profile_id).strip():
             return dict(row)
     return {}
 
@@ -581,6 +594,12 @@ def _proposal_owner_object_id(process_id: str, inputs: dict) -> str:
             ("agent_id", "target_agent_id", "target_id"),
             "camera.main",
         ) or "camera.main"
+    if token == "process.cosmetic_assign":
+        return _first_input_token(
+            inputs,
+            ("agent_id", "target_agent_id", "target_id"),
+            "agent.unknown",
+        ) or "agent.unknown"
     if token == "process.control_set_view_lens":
         return _first_input_token(
             inputs,
@@ -711,6 +730,18 @@ def initialize_hybrid_runtime(
         )
 
     server_ext = dict(server_policy.get("extensions") or {})
+    server_profile = {}
+    server_profile_id = str(network.get("server_profile_id", "")).strip()
+    if isinstance(registry_payloads, dict):
+        server_profile = _server_profile_row(
+            dict(registry_payloads.get("server_profile_registry") or {}),
+            server_profile_id,
+        )
+    server_profile_ext = dict(server_profile.get("extensions") or {})
+    cosmetic_policy_id = (
+        str(server_profile_ext.get("cosmetic_policy_id", "")).strip()
+        or str(server_ext.get("cosmetic_policy_id", "")).strip()
+    )
     shard_map_id = str(server_ext.get("default_shard_map_id", "shard_map.default.single_shard")).strip() or "shard_map.default.single_shard"
     shard_map = _shard_map_row(shard_map_registry, shard_map_id)
     if not shard_map:
@@ -802,6 +833,13 @@ def initialize_hybrid_runtime(
             "allow_cross_shard_follow": bool(server_ext.get("allow_cross_shard_follow", False)),
             "allow_srz_transfer": bool(allow_srz_transfer),
             "allowed_view_modes": _sorted_tokens(list(server_ext.get("allowed_view_modes") or [])),
+            "cosmetic_policy_id": cosmetic_policy_id,
+        },
+        "server_policy": dict(server_policy),
+        "server_profile": dict(server_profile),
+        "representation_state": {
+            "assignments": {},
+            "events": [],
         },
         "perception_interest_policy": perception_policy,
         "anti_cheat": {
@@ -839,6 +877,9 @@ def initialize_hybrid_runtime(
         "shards": shard_rows,
         "clients": {},
     }
+    runtime_registry_payloads = dict(runtime.get("registry_payloads") or {})
+    runtime_registry_payloads["representation_state"] = runtime.get("representation_state")
+    runtime["registry_payloads"] = runtime_registry_payloads
     ensure_runtime_channels(runtime)
 
     initial_peer_id = str(network.get("client_peer_id", "")).strip()
@@ -1722,6 +1763,10 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                 "allow_cross_shard_collision": bool(
                     (runtime.get("control_policy") or {}).get("allow_cross_shard_collision", False)
                 ),
+                "cosmetic_policy_id": str((runtime.get("control_policy") or {}).get("cosmetic_policy_id", "")),
+                "server_policy": dict(runtime.get("server_policy") or {}),
+                "server_profile": dict(runtime.get("server_profile") or {}),
+                "resolved_packs": list(((runtime.get("lock_payload") or {}).get("resolved_packs") or [])),
             },
         )
         if str(executed.get("result", "")) != "complete":
