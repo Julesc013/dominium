@@ -8,21 +8,19 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 4
-- RISK: 81
-- VIOLATION: 2
-- WARN: 764
+- RISK: 16
+- VIOLATION: 637
+- WARN: 778
 
 ## Counts By Category
 
-- canon_drift: 620
+- canon_drift: 621
 - capability_bypass_smell: 1
-- derived_freshness: 13
-- mode_flag_smell: 1
+- derived_freshness: 9
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
-- reachability: 8
-- schema_usage: 73
+- security.boundary_io: 29
+- security.privilege_bypass: 636
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120
