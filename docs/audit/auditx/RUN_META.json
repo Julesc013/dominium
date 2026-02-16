@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": false,
+  "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-16T06:01:26Z",
-  "graph_hash": "6cddfb6a8ff3104ec334c491c8073013949244944168cc402eba2a2cde7b4e52",
+  "generated_utc": "2026-02-16T12:04:21Z",
+  "graph_hash": "77023a48b7475d00bcb1f2320b1a34054d931f7a19a3176188ac2461515c9238",
   "last_reviewed": "2026-02-16",
   "output_format": "both",
   "platform": "windows",
@@ -46,7 +46,11 @@
     "E15_COLLISION_NONDETERMINISTIC_SMELL",
     "E16_MOVEMENT_BYPASS_SMELL",
     "E17_OWNERSHIP_BYPASS_SMELL",
+    "E18_VIEW_MODE_BYPASS_SMELL",
+    "E19_WATERMARK_MISSING_SMELL",
     "E1_NET_POLICY_DRIFT",
+    "E20_COSMETIC_SEMANTICS_SMELL",
+    "E21_UNAUTHORIZED_COSMETIC_PACK_SMELL",
     "E2_TRUTH_OVER_NET_SMELL",
     "E3_HANDSHAKE_POLICY_BYPASS_SMELL",
     "E4_AUTHORITATIVE_TRUTH_LEAK",
@@ -57,5 +61,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-38e303d215b2d106"
+  "workspace_id": "ws-ec7f4e77023cfe29"
 }
