@@ -81,6 +81,10 @@ Scope:
 - TestX tool-suite FAST selection (`tools/xstack/testx/tests/`)
   - uses deterministic impact graph subset selection by default (`build/impact_graph.json`)
   - fallback to full suite when impact graph coverage is incomplete or unavailable
+  - multiplayer mapping:
+    - net/runtime/policy changes trigger impacted `testx.net.*` suites
+    - net policy registry changes trigger handshake/policy matrix suites
+    - securex/server-profile changes trigger ranked governance suites
 - PerformX and SecureX placeholder checks
 - Packaging smoke check:
   - deterministic dist build/validation via `tools/setup/build` backend (`tools/xstack/packagingx`)
@@ -129,6 +133,16 @@ Scope:
     - `testx.auditx.smoke`
     - `testx.auditx.changed_only`
     - `testx.auditx.read_only`
+  - includes multiplayer full-stack determinism suites:
+    - `testx.net.mp_lockstep_full_stack`
+    - `testx.net.mp_authoritative_full_stack`
+    - `testx.net.mp_srz_hybrid_full_stack`
+  - includes multiplayer adversarial and compatibility suites:
+    - `testx.net.ac_adversarial_detect_only`
+    - `testx.net.ac_adversarial_rank_strict`
+    - `testx.net.handshake_matrix_ranked`
+    - `testx.net.handshake_schema_version_refusal`
+    - `testx.regression.multiplayer_baseline_hash`
 - Strict packaging validation:
   - two deterministic dist builds compared for canonical content hash parity
   - launcher lockfile enforcement refusal checks
@@ -150,6 +164,7 @@ Scope:
   - `--cache on` (default)
   - `--cache off`
 - FULL bounds come from sharding and cache usage, not hardcoded runtime timeouts.
+- FULL adds multiplayer disorder profile expansion and sharded execution for `testx.net.*` suites.
 
 ## Exit Codes
 - `0` success

@@ -401,6 +401,7 @@ def build_graph(repo_root: str, changed_files: Optional[List[str]] = None) -> Di
         reg_name = rel.split("/")[-1].replace(".json", "")
         nodes.append(_node(_registry_node_id(reg_name), "registry", reg_name, rel))
         edges.append(_edge("references", _file_node_id(rel), _registry_node_id(reg_name)))
+        edges.append(_edge("depends_on", _registry_node_id(reg_name), _file_node_id(rel)))
 
     # Pack nodes and dependency edges
     pack_rows = _collect_pack_manifests(repo_root)
@@ -459,6 +460,29 @@ def build_graph(repo_root: str, changed_files: Optional[List[str]] = None) -> Di
         if "pack" in tags or "bundle" in tags:
             for pack_id in pack_ids:
                 edges.append(_edge("validates", _test_node_id(test_id), _pack_node_id(pack_id)))
+
+        # Explicit deterministic multiplayer impact mapping for FAST subset selection.
+        if test_id.startswith("testx.net.") or test_id.startswith("testx.regression.multiplayer"):
+            for registry_name in (
+                "net_replication_policy_registry",
+                "net_resync_strategy_registry",
+                "net_server_policy_registry",
+                "server_profile_registry",
+                "securex_policy_registry",
+                "anti_cheat_policy_registry",
+                "anti_cheat_module_registry",
+                "shard_map_registry",
+                "perception_interest_policy_registry",
+            ):
+                edges.append(_edge("depends_on", _test_node_id(test_id), _registry_node_id(registry_name)))
+
+        lower_test_id = test_id.lower()
+        if "ranked" in lower_test_id or "handshake" in lower_test_id:
+            for registry_name in ("server_profile_registry", "securex_policy_registry", "net_server_policy_registry"):
+                edges.append(_edge("depends_on", _test_node_id(test_id), _registry_node_id(registry_name)))
+        if ".ac_" in lower_test_id or ".ac" in lower_test_id or "anti_cheat" in lower_test_id:
+            for registry_name in ("anti_cheat_policy_registry", "anti_cheat_module_registry"):
+                edges.append(_edge("depends_on", _test_node_id(test_id), _registry_node_id(registry_name)))
 
     # Domain + solver nodes and edges
     domain_rows = _load_registry_rows(repo_root, "data/registries/domain_registry.json", "records")
