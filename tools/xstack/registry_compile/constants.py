@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.11.0"
+COMPILER_VERSION = "1.13.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -24,6 +24,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "controller_type_registry": "controller_type.registry.json",
     "body_shape_registry": "body_shape.registry.json",
     "view_mode_registry": "view_mode.registry.json",
+    "instrument_type_registry": "instrument_type.registry.json",
+    "calibration_model_registry": "calibration_model.registry.json",
     "render_proxy_registry": "render_proxy.registry.json",
     "cosmetic_registry": "cosmetic.registry.json",
     "cosmetic_policy_registry": "cosmetic_policy.registry.json",

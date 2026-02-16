@@ -1,0 +1,31 @@
+{
+  "schema_id": "dominium.registry.calibration_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.calibration_model_registry",
+    "registry_version": "1.0.0",
+    "calibration_models": [
+      {
+        "calibration_model_id": "calib.none",
+        "description": "No calibration adjustment; instrument output is passed through deterministically.",
+        "model_kind": "none",
+        "parameters": {},
+        "extensions": {}
+      },
+      {
+        "calibration_model_id": "calib.quality_linear_stub",
+        "description": "Deterministic quality-based linear degradation stub for future sensor model tiers.",
+        "model_kind": "quality_linear_stub",
+        "parameters": {
+          "quality_min": 0,
+          "quality_max": 1000,
+          "precision_floor_permille": 100
+        },
+        "extensions": {
+          "runtime_status": "stub"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

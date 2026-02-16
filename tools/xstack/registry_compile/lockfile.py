@@ -125,6 +125,8 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "controller_type_registry_hash",
             "body_shape_registry_hash",
             "view_mode_registry_hash",
+            "instrument_type_registry_hash",
+            "calibration_model_registry_hash",
             "render_proxy_registry_hash",
             "cosmetic_registry_hash",
             "cosmetic_policy_registry_hash",

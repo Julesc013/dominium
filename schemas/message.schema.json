@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Diegetic Message Schema",
+  "version": "1.0.0",
+  "description": "Deterministic diegetic message artifact contract for notebook/radio scaffolding.",
+  "x-doc-ref": [
+    "docs/diegetics/COMMUNICATION_CHANNELS_OVERVIEW.md",
+    "docs/diegetics/MAP_AND_NOTEBOOK_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "message_id",
+    "author_subject_id",
+    "created_tick",
+    "channel_id",
+    "payload",
+    "signature",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "message_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "author_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "channel_id": {
+      "type": "string",
+      "enum": [
+        "msg.radio",
+        "msg.notebook"
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "message_id": "msg.notebook.00000001",
+      "author_subject_id": "peer.client.alpha",
+      "created_tick": 42,
+      "channel_id": "msg.notebook",
+      "payload": {
+        "text": "Waypoint marker recorded."
+      },
+      "signature": null,
+      "extensions": {}
+    }
+  ]
+}

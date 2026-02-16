@@ -20,6 +20,8 @@ FIXTURE_SOURCE_REGISTRY_FILES = (
     ("data/registries/controller_type_registry.json", "data/registries/controller_type_registry.json"),
     ("data/registries/body_shape_registry.json", "data/registries/body_shape_registry.json"),
     ("data/registries/view_mode_registry.json", "data/registries/view_mode_registry.json"),
+    ("data/registries/instrument_type_registry.json", "data/registries/instrument_type_registry.json"),
+    ("data/registries/calibration_model_registry.json", "data/registries/calibration_model_registry.json"),
     ("data/registries/render_proxy_registry.json", "data/registries/render_proxy_registry.json"),
     ("data/registries/cosmetic_registry.json", "data/registries/cosmetic_registry.json"),
     ("data/registries/cosmetic_policy_registry.json", "data/registries/cosmetic_policy_registry.json"),

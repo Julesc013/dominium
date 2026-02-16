@@ -1,0 +1,108 @@
+{
+  "schema_id": "dominium.registry.instrument_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.instrument_type_registry",
+    "registry_version": "1.0.0",
+    "instrument_types": [
+      {
+        "instrument_type_id": "instr.altimeter",
+        "description": "Diegetic altimeter from camera/perceived altitude cues.",
+        "required_channels_in": [
+          "ch.camera.state"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.altimeter"
+        ],
+        "update_process_id": "process.instrument_update.altimeter",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.clock",
+        "description": "Diegetic local clock based on perceived simulation tick/time state.",
+        "required_channels_in": [
+          "ch.core.time"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.clock"
+        ],
+        "update_process_id": "process.instrument_update.clock",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.compass",
+        "description": "Compass heading derived from perceived camera orientation.",
+        "required_channels_in": [
+          "ch.camera.state"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.compass"
+        ],
+        "update_process_id": "process.instrument_update.compass",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.map_local",
+        "description": "Non-omniscient local map from perceived memory and nearby observations.",
+        "required_channels_in": [
+          "ch.camera.state",
+          "ch.diegetic.map_local"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.map_local"
+        ],
+        "update_process_id": "process.instrument_update.map_local",
+        "calibration_model_id": "calib.quality_linear_stub",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.notebook",
+        "description": "Deterministic notebook log of observed events/messages and optional authored notes.",
+        "required_channels_in": [
+          "ch.core.process_log",
+          "ch.core.time"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.notebook"
+        ],
+        "update_process_id": "process.instrument_update.notebook",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.radio_text",
+        "description": "Structured radio text scaffold with deterministic message ordering.",
+        "required_channels_in": [
+          "ch.core.time"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.radio_text"
+        ],
+        "update_process_id": "process.instrument_update.radio_text",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "signals_status": "stub"
+        }
+      },
+      {
+        "instrument_type_id": "instr.rangefinder",
+        "description": "Rangefinder stub for future domain sensor channels.",
+        "required_channels_in": [
+          "ch.camera.state"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.rangefinder"
+        ],
+        "update_process_id": "process.instrument_update.rangefinder",
+        "calibration_model_id": "calib.quality_linear_stub",
+        "extensions": {
+          "runtime_status": "stub"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
