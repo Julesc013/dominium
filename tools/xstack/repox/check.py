@@ -239,6 +239,40 @@ PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
     "tools/xstack/repox/check.py",
 )
 
+PLAYER_DIEGETIC_REQUIRED_FILES = (
+    "packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json",
+    "packs/experience/profile.player.default/data/experience_profile.player.default.json",
+    "packs/tool/workspace.player.diegetic_default/pack.json",
+)
+
+PLAYER_DEBUG_WINDOW_PREFIXES = (
+    "window.tool.",
+    "window.observer.",
+)
+
+PLAYER_DEBUG_WINDOW_IDS = (
+    "window.spectator.follow_controls",
+    "window.spectator.scoreboard_stub",
+)
+
+PLAYER_DEFAULT_FORBIDDEN_PROCESSES = (
+    "process.camera_teleport",
+    "process.control_set_view_lens",
+    "process.observe.telemetry",
+    "process.time_control_set_rate",
+    "process.time_pause",
+    "process.time_resume",
+)
+
+PLAYER_DEBUG_FORBIDDEN_ENTITLEMENTS = (
+    "entitlement.control.admin",
+    "entitlement.debug_view",
+    "entitlement.inspect",
+    "entitlement.teleport",
+    "entitlement.time_control",
+    "lens.nondiegetic.access",
+)
+
 WORLDGEN_CONSTRAINT_REQUIRED_FILES = (
     "schemas/worldgen_constraints.schema.json",
     "schemas/worldgen_search_plan.schema.json",
@@ -3577,6 +3611,299 @@ def _append_negative_invariant_findings(
                     snippet=token,
                     message="diegetic channel token is used outside instrument registry declarations",
                     rule_id="INV-DIEGETIC-CHANNELS-REGISTRY-DRIVEN",
+                )
+            )
+
+    missing_player_diegetic_files = []
+    for rel_path in PLAYER_DIEGETIC_REQUIRED_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        missing_player_diegetic_files.append(rel_path)
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="required diegetic-first player baseline artifact is missing",
+                rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+            )
+        )
+    if missing_player_diegetic_files:
+        return
+
+    player_law_rel = "packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json"
+    player_law_payload, player_law_err = _load_json_object(repo_root, player_law_rel)
+    if player_law_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=player_law_rel,
+                line_number=1,
+                snippet="",
+                message="player diegetic default law profile is missing or invalid JSON",
+                rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+            )
+        )
+    else:
+        law_profile_id = str(player_law_payload.get("law_profile_id", "")).strip()
+        if law_profile_id != "law.player.diegetic_default":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_law_rel,
+                    line_number=1,
+                    snippet=law_profile_id,
+                    message="player law profile id must be law.player.diegetic_default",
+                    rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+                )
+            )
+        allowed_lenses = sorted(set(str(item).strip() for item in (player_law_payload.get("allowed_lenses") or []) if str(item).strip()))
+        if any(token.startswith("lens.nondiegetic.") for token in allowed_lenses):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_law_rel,
+                    line_number=1,
+                    snippet="allowed_lenses",
+                    message="player diegetic default law must not allow nondiegetic lenses",
+                    rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+                )
+            )
+        debug_allowances = dict(player_law_payload.get("debug_allowances") or {})
+        if bool(debug_allowances.get("allow_nondiegetic_overlays", False)):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_law_rel,
+                    line_number=1,
+                    snippet="allow_nondiegetic_overlays",
+                    message="player diegetic default law must keep allow_nondiegetic_overlays disabled",
+                    rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+                )
+            )
+        forbidden_processes = set(
+            str(item).strip()
+            for item in (player_law_payload.get("forbidden_processes") or [])
+            if str(item).strip()
+        )
+        for process_id in PLAYER_DEFAULT_FORBIDDEN_PROCESSES:
+            if process_id in forbidden_processes:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_law_rel,
+                    line_number=1,
+                    snippet=process_id,
+                    message="player diegetic default law must forbid debug/non-diegetic process surfaces",
+                    rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+                )
+            )
+
+    player_experience_rel = "packs/experience/profile.player.default/data/experience_profile.player.default.json"
+    player_experience_payload, player_experience_err = _load_json_object(repo_root, player_experience_rel)
+    if player_experience_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=player_experience_rel,
+                line_number=1,
+                snippet="",
+                message="player default experience profile is missing or invalid JSON",
+                rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+            )
+        )
+    else:
+        experience_id = str(player_experience_payload.get("experience_id", "")).strip()
+        if experience_id != "profile.player.default":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_experience_rel,
+                    line_number=1,
+                    snippet=experience_id,
+                    message="player default experience id must be profile.player.default",
+                    rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+                )
+            )
+        default_law_profile_id = str(player_experience_payload.get("default_law_profile_id", "")).strip()
+        if default_law_profile_id != "law.player.diegetic_default":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_experience_rel,
+                    line_number=1,
+                    snippet=default_law_profile_id,
+                    message="player default experience must bind law.player.diegetic_default",
+                    rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+                )
+            )
+        default_lens_id = str((dict(player_experience_payload.get("presentation_defaults") or {})).get("default_lens_id", "")).strip()
+        if default_lens_id.startswith("lens.nondiegetic."):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_experience_rel,
+                    line_number=1,
+                    snippet=default_lens_id,
+                    message="player default experience must not default to nondiegetic lens",
+                    rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+                )
+            )
+
+    player_workspace_rel = "packs/tool/workspace.player.diegetic_default/pack.json"
+    player_workspace_payload, player_workspace_err = _load_json_object(repo_root, player_workspace_rel)
+    if player_workspace_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=player_workspace_rel,
+                line_number=1,
+                snippet="",
+                message="player diegetic workspace pack is missing or invalid JSON",
+                rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+            )
+        )
+    else:
+        workspace_pack_id = str(player_workspace_payload.get("pack_id", "")).strip()
+        if workspace_pack_id != "workspace.player.diegetic_default":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_workspace_rel,
+                    line_number=1,
+                    snippet=workspace_pack_id,
+                    message="player workspace pack id must be workspace.player.diegetic_default",
+                    rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+                )
+            )
+        contributions = list(player_workspace_payload.get("contributions") or [])
+        if not contributions:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=player_workspace_rel,
+                    line_number=1,
+                    snippet="contributions",
+                    message="player diegetic workspace pack must declare instrument window contributions",
+                    rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+                )
+            )
+        for row in sorted((item for item in contributions if isinstance(item, dict)), key=lambda item: str(item.get("id", ""))):
+            window_id = str(row.get("id", "")).strip()
+            if not window_id.startswith("window.player.instrument."):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=player_workspace_rel,
+                        line_number=1,
+                        snippet=window_id,
+                        message="player diegetic workspace must expose only window.player.instrument.* entries",
+                        rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+                    )
+                )
+            if window_id in PLAYER_DEBUG_WINDOW_IDS or any(window_id.startswith(prefix) for prefix in PLAYER_DEBUG_WINDOW_PREFIXES):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=player_workspace_rel,
+                        line_number=1,
+                        snippet=window_id,
+                        message="player workspace includes forbidden debug/non-diegetic window",
+                        rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+                    )
+                )
+            rel_path = str(row.get("path", "")).strip()
+            if not rel_path:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=player_workspace_rel,
+                        line_number=1,
+                        snippet=window_id,
+                        message="player workspace contribution is missing path",
+                        rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+                    )
+                )
+                continue
+            window_rel = "packs/tool/workspace.player.diegetic_default/{}".format(rel_path)
+            window_payload, window_err = _load_json_object(repo_root, window_rel)
+            if window_err:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=window_rel,
+                        line_number=1,
+                        snippet=window_id,
+                        message="player workspace window descriptor is missing or invalid JSON",
+                        rule_id="INV-DIEGETIC-DEFAULT-PROFILE-PRESENT",
+                    )
+                )
+                continue
+            required_lenses = sorted(set(str(item).strip() for item in (window_payload.get("required_lenses") or []) if str(item).strip()))
+            if any(token.startswith("lens.nondiegetic.") for token in required_lenses):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=window_rel,
+                        line_number=1,
+                        snippet="required_lenses",
+                        message="player workspace windows must not require nondiegetic lenses",
+                        rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+                    )
+                )
+            required_entitlements = sorted(
+                set(str(item).strip() for item in (window_payload.get("required_entitlements") or []) if str(item).strip())
+            )
+            forbidden_entitlements = [token for token in required_entitlements if token in PLAYER_DEBUG_FORBIDDEN_ENTITLEMENTS]
+            if forbidden_entitlements:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=window_rel,
+                        line_number=1,
+                        snippet=forbidden_entitlements[0],
+                        message="player workspace window requires forbidden debug entitlement",
+                        rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+                    )
+                )
+
+    ui_host_rel = "tools/xstack/sessionx/ui_host.py"
+    ui_host_abs = os.path.join(repo_root, ui_host_rel.replace("/", os.sep))
+    if not os.path.isfile(ui_host_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=ui_host_rel,
+                line_number=1,
+                snippet="",
+                message="ui host is missing; cannot verify diegetic player debug-surface gating",
+                rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
+            )
+        )
+    else:
+        try:
+            ui_host_text = open(ui_host_abs, "r", encoding="utf-8").read()
+        except OSError:
+            ui_host_text = ""
+        required_ui_tokens = (
+            "def _is_nondiegetic_window(",
+            "allow_nondiegetic_overlays",
+            "window_is_nondiegetic",
+        )
+        for token in required_ui_tokens:
+            if token in ui_host_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=ui_host_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="ui host must gate non-diegetic windows for player default laws",
+                    rule_id="INV-NO-PLAYER_DEBUG_SURFACES",
                 )
             )
 

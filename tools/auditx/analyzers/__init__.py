@@ -51,6 +51,8 @@ from analyzers import e22_memory_truth_leak_smell
 from analyzers import e23_memory_nondeterminism_smell
 from analyzers import e24_instrument_truth_leak_smell
 from analyzers import e25_omniscient_map_smell
+from analyzers import e26_diegetic_bypass_smell
+from analyzers import e27_hidden_nondiegetic_window_smell
 
 
 ANALYZERS = (
@@ -105,6 +107,8 @@ ANALYZERS = (
     e23_memory_nondeterminism_smell,
     e24_instrument_truth_leak_smell,
     e25_omniscient_map_smell,
+    e26_diegetic_bypass_smell,
+    e27_hidden_nondiegetic_window_smell,
 )
 
 
