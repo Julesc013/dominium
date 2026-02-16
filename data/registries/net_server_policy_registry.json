@@ -23,6 +23,10 @@
         "securex_require_signed": false,
         "securex_policy_id": "",
         "allowed_law_profile_ids": [
+          "law.player.diegetic_default",
+          "law.spectator.limited",
+          "law.observer.truth",
+          "law.admin.lab",
           "law.lab.unrestricted"
         ],
         "extensions": {
@@ -55,7 +59,8 @@
         "securex_require_signed": true,
         "securex_policy_id": "securex.policy.rank_strict",
         "allowed_law_profile_ids": [
-          "law.lab.unrestricted"
+          "law.player.diegetic_default",
+          "law.spectator.limited"
         ],
         "extensions": {
           "allow_cross_shard_possession": false,
