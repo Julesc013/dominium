@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "workspace.spectator.limited",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0",
+    "pack.domain.navigation@1.0.0"
+  ],
+  "contribution_types": [
+    "ui_windows"
+  ],
+  "contributions": [
+    {
+      "type": "ui_windows",
+      "id": "window.spectator.follow_controls",
+      "path": "ui/window.spectator.follow_controls.json"
+    },
+    {
+      "type": "ui_windows",
+      "id": "window.spectator.scoreboard_stub",
+      "path": "ui/window.spectator.scoreboard_stub.json"
+    }
+  ],
+  "canonical_hash": "placeholder.workspace.spectator.limited.v1",
+  "signature_status": "signed"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.player.instrument.radio_text",
+  "title": "Radio",
+  "required_entitlements": [
+    "session.boot"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor"
+  ],
+  "widgets": {
+    "widget_id": "player.radio.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "player.radio.messages",
+        "type": "list",
+        "label": "Messages",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "diegetic_instruments"
+        }
+      }
+    ]
+  }
+}

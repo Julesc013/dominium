@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.spectator.follow_controls",
+  "title": "Spectator Follow",
+  "required_entitlements": [
+    "entitlement.view.follow",
+    "entitlement.view.spectator"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "spectator.follow.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "spectator.follow.hierarchy",
+        "type": "tree",
+        "label": "Targets",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "navigation.hierarchy"
+        }
+      },
+      {
+        "widget_id": "spectator.follow.selection",
+        "type": "text",
+        "label": "Selection",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "navigation.selection_summary"
+        }
+      }
+    ]
+  }
+}

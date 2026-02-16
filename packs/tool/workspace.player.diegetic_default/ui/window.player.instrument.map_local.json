@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.player.instrument.map_local",
+  "title": "Map (Local)",
+  "required_entitlements": [
+    "session.boot"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor"
+  ],
+  "widgets": {
+    "widget_id": "player.map.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "player.map.entries",
+        "type": "list",
+        "label": "Known Tiles",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "memory.items"
+        }
+      }
+    ]
+  }
+}

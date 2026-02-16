@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.player.instrument.clock",
+  "title": "Clock",
+  "required_entitlements": [
+    "session.boot"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor"
+  ],
+  "widgets": {
+    "widget_id": "player.clock.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "player.clock.summary",
+        "type": "text",
+        "label": "Time",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "time.summary"
+        }
+      }
+    ]
+  }
+}

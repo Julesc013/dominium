@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.player.instrument.notebook",
+  "title": "Notebook",
+  "required_entitlements": [
+    "session.boot"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor"
+  ],
+  "widgets": {
+    "widget_id": "player.notebook.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "player.notebook.entries",
+        "type": "list",
+        "label": "Entries",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "memory.items"
+        }
+      }
+    ]
+  }
+}

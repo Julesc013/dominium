@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "workspace.observer.truth",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0",
+    "pack.domain.navigation@1.0.0"
+  ],
+  "contribution_types": [
+    "ui_windows"
+  ],
+  "contributions": [
+    {
+      "type": "ui_windows",
+      "id": "window.observer.watermark",
+      "path": "ui/window.observer.watermark.json"
+    }
+  ],
+  "canonical_hash": "placeholder.workspace.observer.truth.v1",
+  "signature_status": "signed"
+}

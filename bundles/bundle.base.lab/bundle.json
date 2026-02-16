@@ -36,6 +36,9 @@
     "pack.tool.navigation",
     "pack.tool.time_control",
     "pack.tool.log_viewer",
+    "workspace.player.diegetic_default",
+    "workspace.spectator.limited",
+    "workspace.observer.truth",
     "pack.representation.base"
   ]
 }
