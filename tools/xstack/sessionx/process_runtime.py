@@ -2335,6 +2335,8 @@ def execute_intent(
         )
         if moved.get("result") != "complete":
             return moved
+        # body_move_attempt can rebuild state.body_assemblies; reload to avoid stale pre-collision rows.
+        bodies = _ensure_body_assemblies(state)
         refreshed_body = _find_body(body_rows=bodies, body_id=body_id)
         controller_id = str(move_ctx.get("controller_id", "")).strip()
         owner_peer_id = str(move_ctx.get("owner_peer_id", "")).strip()
