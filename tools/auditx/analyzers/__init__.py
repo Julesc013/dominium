@@ -45,6 +45,8 @@ from analyzers import e16_movement_bypass_smell
 from analyzers import e17_ownership_bypass_smell
 from analyzers import e18_view_mode_bypass_smell
 from analyzers import e19_watermark_missing_smell
+from analyzers import e20_cosmetic_semantics_smell
+from analyzers import e21_unauthorized_cosmetic_pack_smell
 
 
 ANALYZERS = (
@@ -93,6 +95,8 @@ ANALYZERS = (
     e17_ownership_bypass_smell,
     e18_view_mode_bypass_smell,
     e19_watermark_missing_smell,
+    e20_cosmetic_semantics_smell,
+    e21_unauthorized_cosmetic_pack_smell,
 )
 
 

@@ -37,6 +37,9 @@ def run(repo_root: str):
         "refusal.agent.unembodied",
         "refusal.agent.ownership_violation",
         "refusal.agent.boundary_cross_forbidden",
+        "refusal.cosmetic.forbidden",
+        "refusal.cosmetic.unsigned_not_allowed",
+        "refusal.cosmetic.not_in_whitelist",
     ]
     for code in required_codes:
         if code not in text:
