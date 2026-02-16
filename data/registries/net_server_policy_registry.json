@@ -30,6 +30,7 @@
           "allow_cross_shard_follow": true,
           "default_shard_map_id": "shard_map.default.single_process_two_shards",
           "perception_interest_policy_id": "policy.perception.lab.default",
+          "cosmetic_policy_id": "policy.cosmetics.private_relaxed",
           "allowed_view_modes": [
             "view.first_person.player",
             "view.third_person.player",
@@ -61,6 +62,7 @@
           "allow_cross_shard_follow": false,
           "default_shard_map_id": "shard_map.default.single_shard",
           "perception_interest_policy_id": "policy.perception.lab.minimal",
+          "cosmetic_policy_id": "policy.cosmetics.rank_strict",
           "allowed_view_modes": [
             "view.first_person.player",
             "view.third_person.player",

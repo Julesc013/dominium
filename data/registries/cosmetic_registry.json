@@ -15,7 +15,9 @@
           "default",
           "readable"
         ],
-        "extensions": {}
+        "extensions": {
+          "pack_id": "pack.representation.base"
+        }
       },
       {
         "cosmetic_id": "cosmetic.humanoid.highdetail.default",
@@ -27,7 +29,9 @@
           "humanoid",
           "highdetail"
         ],
-        "extensions": {}
+        "extensions": {
+          "pack_id": "pack.representation.base"
+        }
       },
       {
         "cosmetic_id": "cosmetic.humanoid.lowpoly.default",
@@ -39,7 +43,9 @@
           "humanoid",
           "lowpoly"
         ],
-        "extensions": {}
+        "extensions": {
+          "pack_id": "pack.representation.base"
+        }
       }
     ],
     "extensions": {}

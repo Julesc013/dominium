@@ -9,6 +9,7 @@ PACK_CATEGORIES = (
     "derived",
     "experience",
     "law",
+    "representation",
     "source",
     "tool",
 )
