@@ -205,6 +205,21 @@ SESSION_PIPELINE_ALLOWED_PREFIXES = (
     "tools/xstack/session_surface.py",
 )
 
+CONTROL_MUTATION_ALLOWED_PREFIXES = (
+    "tools/xstack/sessionx/process_runtime.py",
+    "tools/xstack/sessionx/creator.py",
+    "tools/xstack/testx/tests/",
+)
+
+PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
+    "data/",
+    "docs/",
+    "schemas/",
+    "tools/auditx/",
+    "tools/xstack/testx/tests/",
+    "tools/xstack/repox/check.py",
+)
+
 WORLDGEN_CONSTRAINT_REQUIRED_FILES = (
     "schemas/worldgen_constraints.schema.json",
     "schemas/worldgen_search_plan.schema.json",
@@ -3030,6 +3045,78 @@ def _append_negative_invariant_findings(
                             rule_id="INV-NO-SESSION-PIPELINE-BYPASS",
                         )
                     )
+
+            if not rel_norm.startswith(CONTROL_MUTATION_ALLOWED_PREFIXES):
+                control_state_write = re.search(
+                    r"state\s*\[\s*[\"'](control_bindings|controller_assemblies)[\"']\s*\]\s*=",
+                    str(line),
+                )
+                control_collection_mutation = re.search(
+                    r"\b(control_bindings|controller_assemblies)\s*\.\s*(append|extend|insert|pop|remove|clear)\s*\(",
+                    str(line),
+                )
+                if control_state_write or control_collection_mutation:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="control bindings/controller assemblies must mutate only through control processes",
+                            rule_id="INV-CONTROL-PROCESSES-ONLY",
+                        )
+                    )
+
+            if not any(rel_norm.startswith(prefix) for prefix in PLAYER_LITERAL_ALLOWED_PATH_PREFIXES):
+                if re.search(r"[\"']player(?:\.[a-z0-9_.-]+)?[\"']", lower):
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="hardcoded single-player literal detected; control substrate must stay controller-agnostic",
+                            rule_id="INV-NO-HARDCODED-PLAYER",
+                        )
+                    )
+
+    process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_runtime_abs = os.path.join(repo_root, process_runtime_rel.replace("/", os.sep))
+    try:
+        process_runtime_text = open(process_runtime_abs, "r", encoding="utf-8").read()
+    except OSError:
+        process_runtime_text = ""
+    if not process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="control process runtime is missing; entitlement gate checks cannot be verified",
+                rule_id="INV-CONTROL-ENTITLEMENT-GATED",
+            )
+        )
+    else:
+        required_control_entitlements = (
+            ("process.control_bind_camera", "entitlement.control.camera"),
+            ("process.control_unbind_camera", "entitlement.control.camera"),
+            ("process.control_possess_agent", "entitlement.control.possess"),
+            ("process.control_release_agent", "entitlement.control.possess"),
+            ("process.control_set_view_lens", "entitlement.control.lens_override"),
+        )
+        for process_id, entitlement_id in required_control_entitlements:
+            if process_id not in process_runtime_text or entitlement_id not in process_runtime_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=1,
+                        snippet="{} -> {}".format(process_id, entitlement_id),
+                        message="control process entitlement mapping is missing or incomplete",
+                        rule_id="INV-CONTROL-ENTITLEMENT-GATED",
+                    )
+                )
 
 
 def _append_ranked_governance_invariant_findings(

@@ -41,6 +41,14 @@ def run(repo_root: str):
                 os.path.join(temp_root, "tools", "xstack", "pack_loader", "bad_contract_literal.py"),
                 'token = "dom.contract.mass_conservation"\n',
             ),
+            (
+                os.path.join(temp_root, "server", "bad_control_mutation.py"),
+                'state["control_bindings"] = []\n',
+            ),
+            (
+                os.path.join(temp_root, "engine", "bad_player_literal.cpp"),
+                'const char* who = "player.main";\n',
+            ),
         ]
         for abs_path, line in paths_and_lines:
             os.makedirs(os.path.dirname(abs_path), exist_ok=True)
@@ -56,6 +64,9 @@ def run(repo_root: str):
             "INV-UI-COMMAND-GRAPH-ONLY",
             "INV-NO-SESSION-PIPELINE-BYPASS",
             "INV-NO-HARDCODED-CONTRACT-TOKENS",
+            "INV-CONTROL-PROCESSES-ONLY",
+            "INV-NO-HARDCODED-PLAYER",
+            "INV-CONTROL-ENTITLEMENT-GATED",
         }
         missing = sorted(rule for rule in required if rule not in rule_ids)
         if missing:

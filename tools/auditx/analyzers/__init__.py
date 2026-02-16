@@ -38,6 +38,8 @@ from analyzers import e9_hidden_termination_smell
 from analyzers import e10_nondeterministic_anti_cheat_smell
 from analyzers import e11_ranked_policy_drift
 from analyzers import e12_signature_bypass_smell
+from analyzers import e13_player_special_case_smell
+from analyzers import e14_control_bypass_smell
 
 
 ANALYZERS = (
@@ -79,6 +81,8 @@ ANALYZERS = (
     e10_nondeterministic_anti_cheat_smell,
     e11_ranked_policy_drift,
     e12_signature_bypass_smell,
+    e13_player_special_case_smell,
+    e14_control_bypass_smell,
 )
 
 
