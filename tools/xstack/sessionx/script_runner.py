@@ -300,6 +300,22 @@ def run_intent_script(
     )
     if retention_policy_registry_error:
         return retention_policy_registry_error
+    decay_model_registry, decay_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["decay_model_registry_hash"],
+        expected_hash=str(registries.get("decay_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if decay_model_registry_error:
+        return decay_model_registry_error
+    eviction_rule_registry, eviction_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["eviction_rule_registry_hash"],
+        expected_hash=str(registries.get("eviction_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if eviction_rule_registry_error:
+        return eviction_rule_registry_error
     view_mode_registry, view_mode_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["view_mode_registry_hash"],
@@ -493,6 +509,8 @@ def run_intent_script(
             "perception_interest_policy_registry": perception_interest_policy_registry,
             "epistemic_policy_registry": epistemic_policy_registry,
             "retention_policy_registry": retention_policy_registry,
+            "decay_model_registry": decay_model_registry,
+            "eviction_rule_registry": eviction_rule_registry,
             "view_mode_registry": view_mode_registry,
             "render_proxy_registry": render_proxy_registry,
             "cosmetic_registry": cosmetic_registry,

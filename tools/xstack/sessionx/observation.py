@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Dict, List, Tuple
 
+from src.epistemics.memory import update_memory_store
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -210,6 +211,104 @@ def _resolve_retention_policy(
         {"retention_policy_id": retention_policy_id},
         "$.epistemic_policy.retention_policy_id",
     )
+
+
+def _resolve_decay_model(
+    truth_model: dict,
+    retention_policy: dict,
+) -> Dict[str, object]:
+    decay_model_id = str(retention_policy.get("decay_model_id", "")).strip()
+    if not decay_model_id:
+        return refusal(
+            "refusal.ep.policy_missing",
+            "retention policy is missing decay_model_id",
+            "Define decay_model_id in retention_policy registry entry.",
+            {"retention_policy_id": str(retention_policy.get("retention_policy_id", ""))},
+            "$.retention_policy.decay_model_id",
+        )
+    registry_payload = _registry_payload(truth_model, "decay_model_registry")
+    rows = registry_payload.get("decay_models")
+    if not isinstance(rows, list):
+        return refusal(
+            "refusal.ep.policy_missing",
+            "decay_model.registry is missing from loaded registry payloads",
+            "Compile registries and load decay_model.registry.json before observation.",
+            {"decay_model_id": decay_model_id},
+            "$.registry_payloads.decay_model_registry",
+        )
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("decay_model_id", ""))):
+        token = str(row.get("decay_model_id", "")).strip()
+        if token != decay_model_id:
+            continue
+        payload = dict(row)
+        payload["decay_model_id"] = token
+        return {"result": "complete", "decay_model": payload}
+    return refusal(
+        "refusal.ep.policy_missing",
+        "decay model '{}' is not present in registry payloads".format(decay_model_id),
+        "Use a retention policy that references a registered decay model.",
+        {"decay_model_id": decay_model_id},
+        "$.retention_policy.decay_model_id",
+    )
+
+
+def _resolve_eviction_rule(
+    truth_model: dict,
+    retention_policy: dict,
+    decay_model: dict,
+) -> Dict[str, object]:
+    eviction_rule_id = (
+        str(retention_policy.get("eviction_rule_id", "")).strip()
+        or str(retention_policy.get("deterministic_eviction_rule_id", "")).strip()
+        or str(decay_model.get("eviction_rule_id", "")).strip()
+    )
+    if not eviction_rule_id:
+        return refusal(
+            "refusal.ep.policy_missing",
+            "retention policy is missing eviction rule id",
+            "Define eviction_rule_id in retention_policy or decay_model registry entry.",
+            {"retention_policy_id": str(retention_policy.get("retention_policy_id", ""))},
+            "$.retention_policy.eviction_rule_id",
+        )
+    registry_payload = _registry_payload(truth_model, "eviction_rule_registry")
+    rows = registry_payload.get("eviction_rules")
+    if not isinstance(rows, list):
+        return refusal(
+            "refusal.ep.policy_missing",
+            "eviction_rule.registry is missing from loaded registry payloads",
+            "Compile registries and load eviction_rule.registry.json before observation.",
+            {"eviction_rule_id": eviction_rule_id},
+            "$.registry_payloads.eviction_rule_registry",
+        )
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("eviction_rule_id", ""))):
+        token = str(row.get("eviction_rule_id", "")).strip()
+        if token != eviction_rule_id:
+            continue
+        payload = dict(row)
+        payload["eviction_rule_id"] = token
+        return {"result": "complete", "eviction_rule": payload}
+    return refusal(
+        "refusal.ep.policy_missing",
+        "eviction rule '{}' is not present in registry payloads".format(eviction_rule_id),
+        "Use a retention policy that references a registered eviction rule.",
+        {"eviction_rule_id": eviction_rule_id},
+        "$.retention_policy.eviction_rule_id",
+    )
+
+
+def _memory_owner_subject_id(authority_context: dict, viewpoint_id: str) -> str:
+    scope = authority_context.get("epistemic_scope")
+    if isinstance(scope, dict):
+        scope_subject_id = str(scope.get("subject_id", "")).strip()
+        if scope_subject_id:
+            return scope_subject_id
+        scope_id = str(scope.get("scope_id", "")).strip()
+        if scope_id:
+            return "scope.{}".format(scope_id)
+    peer_id = str(authority_context.get("peer_id", "")).strip()
+    if peer_id:
+        return "peer.{}".format(peer_id)
+    return "viewpoint.{}".format(str(viewpoint_id).strip() or "unknown")
 
 
 def _default_lens_channels(lens_type: str) -> List[str]:
@@ -451,50 +550,42 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
 def _update_memory_hook(
     perceived_model: dict,
     retention_policy: dict,
+    decay_model: dict,
+    eviction_rule: dict,
+    owner_subject_id: str,
+    simulation_tick: int,
     memory_state: dict | None,
 ) -> Tuple[dict, dict]:
-    state = dict(memory_state or {})
-    memory_allowed = bool(retention_policy.get("memory_allowed", False))
-    max_items = max(0, int(retention_policy.get("max_memory_items", 0) or 0))
-    entries = list(state.get("entries") or [])
-    channels = _sorted_unique(list(perceived_model.get("channels") or []))
-    tick = int((perceived_model.get("time") or {}).get("tick", 0) or 0)
-    if memory_allowed and max_items > 0:
-        for channel_id in channels:
-            payload = _channel_payload(perceived_model, channel_id)
-            entry = {
-                "tick": int(tick),
-                "channel_id": str(channel_id),
-                "payload_hash": canonical_sha256(payload),
-            }
-            entries.append(entry)
-        dedup = []
-        seen = set()
-        for row in sorted(
-            (dict(item) for item in entries if isinstance(item, dict)),
-            key=lambda item: (int(item.get("tick", 0) or 0), str(item.get("channel_id", "")), str(item.get("payload_hash", ""))),
-        ):
-            key = (
-                int(row.get("tick", 0) or 0),
-                str(row.get("channel_id", "")),
-                str(row.get("payload_hash", "")),
-            )
-            if key in seen:
-                continue
-            seen.add(key)
-            dedup.append(row)
-        if len(dedup) > max_items:
-            dedup = dedup[-max_items:]
-        entries = dedup
-    else:
-        entries = []
-    state["entries"] = list(entries)
-    memory_block = {
-        "retention_policy_id": str(retention_policy.get("retention_policy_id", "")),
-        "memory_allowed": bool(memory_allowed),
-        "deterministic_eviction_rule_id": str(retention_policy.get("deterministic_eviction_rule_id", "")),
-        "entries": list(entries),
-    }
+    result = update_memory_store(
+        perceived_now=dict(perceived_model or {}),
+        owner_subject_id=str(owner_subject_id).strip() or "subject.unknown",
+        retention_policy=dict(retention_policy or {}),
+        decay_model=dict(decay_model or {}),
+        eviction_rule=dict(eviction_rule or {}),
+        previous_store=dict(memory_state or {}),
+        tick=int(simulation_tick),
+    )
+    if str(result.get("result", "")) != "complete":
+        empty_store = {
+            "schema_version": "1.0.0",
+            "store_id": "memory.store.subject.unknown",
+            "owner_subject_id": "subject.unknown",
+            "retention_policy_id": str(retention_policy.get("retention_policy_id", "")),
+            "items": [],
+            "store_hash": canonical_sha256(
+                {
+                    "owner_subject_id": "subject.unknown",
+                    "retention_policy_id": str(retention_policy.get("retention_policy_id", "")),
+                    "items": [],
+                }
+            ),
+            "extensions": {
+                "memory_allowed": False,
+            },
+        }
+        return empty_store, empty_store
+    memory_block = dict(result.get("memory_store") or {})
+    state = dict(result.get("memory_state") or {})
     return memory_block, state
 
 
@@ -1002,6 +1093,8 @@ def build_truth_model(
             "perception_interest_policy_registry_hash": str(registries.get("perception_interest_policy_registry_hash", "")),
             "epistemic_policy_registry_hash": str(registries.get("epistemic_policy_registry_hash", "")),
             "retention_policy_registry_hash": str(registries.get("retention_policy_registry_hash", "")),
+            "decay_model_registry_hash": str(registries.get("decay_model_registry_hash", "")),
+            "eviction_rule_registry_hash": str(registries.get("eviction_rule_registry_hash", "")),
             "ui_registry_hash": str(registries.get("ui_registry_hash", "")),
         },
         "universe_identity": dict(universe_identity),
@@ -1127,6 +1220,49 @@ def observe_truth(
     if str(retention_result.get("result", "")) != "complete":
         return retention_result
     active_retention_policy = dict(retention_result.get("policy") or {})
+    memory_allowed = bool(active_retention_policy.get("memory_allowed", False))
+    active_decay_model = {}
+    active_eviction_rule = {}
+    if memory_allowed:
+        decay_result = _resolve_decay_model(
+            truth_model=truth_model,
+            retention_policy=active_retention_policy,
+        )
+        if str(decay_result.get("result", "")) != "complete":
+            return decay_result
+        active_decay_model = dict(decay_result.get("decay_model") or {})
+        eviction_result = _resolve_eviction_rule(
+            truth_model=truth_model,
+            retention_policy=active_retention_policy,
+            decay_model=active_decay_model,
+        )
+        if str(eviction_result.get("result", "")) != "complete":
+            return eviction_result
+        active_eviction_rule = dict(eviction_result.get("eviction_rule") or {})
+    else:
+        active_decay_model = {
+            "decay_model_id": str(active_retention_policy.get("decay_model_id", "")).strip()
+            or "ep.decay.none",
+            "ttl_rules": [],
+            "refresh_rules": [],
+            "eviction_rule_id": str(active_retention_policy.get("eviction_rule_id", "")).strip()
+            or str(active_retention_policy.get("deterministic_eviction_rule_id", "")).strip()
+            or "evict.none",
+            "extensions": {
+                "memory_disabled": True,
+            },
+        }
+        active_eviction_rule = {
+            "eviction_rule_id": str(active_retention_policy.get("eviction_rule_id", "")).strip()
+            or str(active_retention_policy.get("deterministic_eviction_rule_id", "")).strip()
+            or "evict.none",
+            "algorithm_id": "evict.none",
+            "priority_by_channel": {},
+            "priority_by_subject_kind": {},
+            "extensions": {
+                "memory_disabled": True,
+            },
+        }
 
     policy_allowed_channels = _sorted_unique(list(active_epistemic_policy.get("allowed_observation_channels") or []))
     policy_forbidden_channels = _sorted_unique(list(active_epistemic_policy.get("forbidden_channels") or []))
@@ -1274,6 +1410,8 @@ def observe_truth(
             "lens_type": lens_type,
             "epistemic_policy_id": str(active_epistemic_policy.get("epistemic_policy_id", "")),
             "retention_policy_id": str(active_retention_policy.get("retention_policy_id", "")),
+            "decay_model_id": str(active_decay_model.get("decay_model_id", "")),
+            "eviction_rule_id": str(active_eviction_rule.get("eviction_rule_id", "")),
             "deterministic_filter_chain": list(filter_chain),
             "epistemic_visibility_policy": str((lens.get("epistemic_constraints") or {}).get("visibility_policy", "")),
         },
@@ -1307,6 +1445,10 @@ def observe_truth(
     memory_block, next_memory_state = _update_memory_hook(
         perceived_model=perceived_model,
         retention_policy=active_retention_policy,
+        decay_model=active_decay_model,
+        eviction_rule=active_eviction_rule,
+        owner_subject_id=_memory_owner_subject_id(authority_context=authority_context, viewpoint_id=viewpoint_id),
+        simulation_tick=simulation_tick,
         memory_state=memory_state,
     )
     perceived_model["memory"] = memory_block
