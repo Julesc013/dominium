@@ -53,6 +53,18 @@ def owned_entity_ids(universe_state: dict) -> List[str]:
             if token:
                 tokens.append(token)
 
+    body_rows = universe_state.get("body_assemblies")
+    if isinstance(body_rows, list):
+        for row in body_rows:
+            if not isinstance(row, dict):
+                continue
+            token = str(row.get("assembly_id", "")).strip()
+            if token:
+                tokens.append(token)
+            owner = str(row.get("owner_assembly_id", "")).strip()
+            if owner:
+                tokens.append(owner)
+
     agent_rows = universe_state.get("agent_states")
     if isinstance(agent_rows, list):
         for row in agent_rows:
@@ -141,7 +153,7 @@ def validate_srz_shard(repo_root: str, shard: dict) -> Dict[str, object]:
 
 def _truth_hash_subset(universe_state: dict) -> dict:
     payload = dict(universe_state if isinstance(universe_state, dict) else {})
-    return {
+    subset = {
         "schema_version": str(payload.get("schema_version", "")),
         "simulation_time": dict(payload.get("simulation_time") or {}),
         "agent_states": list(payload.get("agent_states") or []),
@@ -159,6 +171,17 @@ def _truth_hash_subset(universe_state: dict) -> dict:
         "micro_regions": list(payload.get("micro_regions") or []),
         "performance_state": dict(payload.get("performance_state") or {}),
     }
+    body_rows = list(payload.get("body_assemblies") or [])
+    if body_rows:
+        subset["body_assemblies"] = body_rows
+    collision_state = dict(payload.get("collision_state") or {})
+    if collision_state:
+        pair_count = _as_int(collision_state.get("last_tick_pair_count", 0), 0)
+        resolved = list(collision_state.get("last_tick_resolved_pairs") or [])
+        unresolved = list(collision_state.get("last_tick_unresolved_pairs") or [])
+        if pair_count > 0 or resolved or unresolved:
+            subset["collision_state"] = collision_state
+    return subset
 
 
 def active_shard_summary(shards: List[dict]) -> List[dict]:

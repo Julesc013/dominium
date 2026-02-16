@@ -39,6 +39,7 @@ PROCESS_SCOPE_BY_ID = {
     "process.control_release_agent": "control.binding.possess",
     "process.control_set_view_lens": "camera.lens",
     "process.camera_teleport": "camera.transform",
+    "process.body_move_attempt": "body.transform",
     "process.camera_move": "camera.transform",
 }
 
@@ -53,6 +54,7 @@ PROCESS_OWNER_OBJECT = {
     "process.control_release_agent": "camera.main",
     "process.control_set_view_lens": "camera.main",
     "process.camera_teleport": "camera.main",
+    "process.body_move_attempt": "body.unknown",
     "process.camera_move": "camera.main",
 }
 
@@ -67,6 +69,7 @@ PROCESS_PRIORITY = {
     "process.control_release_agent": 25,
     "process.control_set_view_lens": 25,
     "process.camera_teleport": 30,
+    "process.body_move_attempt": 35,
     "process.camera_move": 40,
 }
 
@@ -440,6 +443,12 @@ def _proposal_owner_object_id(process_id: str, inputs: dict) -> str:
             ("camera_id", "target_camera_id", "target_id"),
             "camera.main",
         ) or "camera.main"
+    if token == "process.body_move_attempt":
+        return _first_input_token(
+            inputs,
+            ("body_id", "target_body_id", "target_id"),
+            "body.unknown",
+        ) or "body.unknown"
     return str(PROCESS_OWNER_OBJECT.get(token, "camera.main"))
 
 
@@ -1357,6 +1366,7 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                 "refusal.net.shard_target_invalid",
                 "refusal.net.cross_shard_unsupported",
                 "refusal.control.cross_shard_possession_forbidden",
+                "refusal.control.cross_shard_collision_forbidden",
             ):
                 check_authority_integrity(
                     repo_root=repo_root,
@@ -1413,7 +1423,14 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
             law_profile=dict(client.get("law_profile") or {}),
             authority_context=dict(client.get("authority_context") or {}),
             navigation_indices=dict(runtime.get("registry_payloads") or {}),
-            policy_context=dict(runtime.get("registry_payloads") or {}),
+            policy_context={
+                **dict(runtime.get("registry_payloads") or {}),
+                "shard_map": dict(runtime.get("shard_map") or {}),
+                "active_shard_id": str(proposal.get("target_shard_id", "")),
+                "allow_cross_shard_collision": bool(
+                    (runtime.get("control_policy") or {}).get("allow_cross_shard_collision", False)
+                ),
+            },
         )
         if str(executed.get("result", "")) != "complete":
             refusal_payload = dict(executed.get("refusal") or {})
