@@ -71,7 +71,9 @@ def _handshake_payload(
     result: str,
     refusal_payload: dict,
     server_policy_id: str,
+    control_capabilities: dict | None = None,
 ) -> dict:
+    capabilities = dict(control_capabilities if isinstance(control_capabilities, dict) else {})
     return {
         "schema_version": HANDSHAKE_SCHEMA_VERSION,
         "handshake_id": str(handshake_id),
@@ -91,6 +93,11 @@ def _handshake_payload(
         "refusal": dict(refusal_payload or _empty_refusal()),
         "extensions": {
             "server_policy_id": str(server_policy_id),
+            "control_capabilities": {
+                "camera_bind_allowed": bool(capabilities.get("camera_bind_allowed", False)),
+                "possession_allowed": bool(capabilities.get("possession_allowed", False)),
+                "lens_override_allowed": bool(capabilities.get("lens_override_allowed", False)),
+            },
         },
     }
 
@@ -165,6 +172,28 @@ def _policy_map(rows: object, key: str = "policy_id") -> Dict[str, dict]:
     return out
 
 
+def _control_capabilities_from_server_profile(server_profile: dict) -> dict:
+    profile = dict(server_profile if isinstance(server_profile, dict) else {})
+    allowed = set(_sorted_unique_strings(profile.get("allowed_entitlements") or []))
+    disallowed = set(_sorted_unique_strings(profile.get("disallowed_entitlements") or []))
+
+    def _enabled(entitlement_id: str) -> bool:
+        token = str(entitlement_id).strip()
+        if not token:
+            return False
+        if token in disallowed:
+            return False
+        if not allowed:
+            return False
+        return token in allowed
+
+    return {
+        "camera_bind_allowed": _enabled("entitlement.control.camera"),
+        "possession_allowed": _enabled("entitlement.control.possess"),
+        "lens_override_allowed": _enabled("entitlement.control.lens_override"),
+    }
+
+
 def _securex_verification_tool_available(repo_root: str) -> bool:
     verify_lockfile = os.path.join(repo_root, "tools", "security", "tool_securex_verify_lockfile.py")
     verify_pack = os.path.join(repo_root, "tools", "security", "tool_securex_verify_pack.py")
@@ -206,6 +235,11 @@ def _server_response(
 
     selected_server_profile_id = ""
     selected_server_policy_id = requested_server_policy_id
+    control_capabilities = {
+        "camera_bind_allowed": False,
+        "possession_allowed": False,
+        "lens_override_allowed": False,
+    }
 
     def refuse(
         reason_code: str,
@@ -233,6 +267,7 @@ def _server_response(
             result="refuse",
             refusal_payload=_validation_refusal(reason_code, message, remediation_hint, relevant_ids),
             server_policy_id=selected_server_policy_id or requested_server_policy_id,
+            control_capabilities=control_capabilities,
         )
 
     if str(request_payload.get("pack_lock_hash", "")).strip() != pack_lock_hash:
@@ -274,6 +309,7 @@ def _server_response(
             result="refuse",
             refusal_payload=schema_refusal,
             server_policy_id=requested_server_policy_id,
+            control_capabilities=control_capabilities,
         )
 
     server_profile = dict(server_profile_map.get(requested_server_profile_id) or {})
@@ -328,6 +364,7 @@ def _server_response(
     selected_server_policy_id = str((server_profile.get("extensions") or {}).get("legacy_server_policy_id", "")).strip()
     if requested_server_policy_id:
         selected_server_policy_id = requested_server_policy_id
+    control_capabilities = _control_capabilities_from_server_profile(server_profile)
 
     if requested_policy_id not in replication_map:
         return refuse(
@@ -552,6 +589,7 @@ def _server_response(
         result="accept",
         refusal_payload=_empty_refusal(),
         server_policy_id=selected_server_policy_id,
+        control_capabilities=control_capabilities,
     )
 
 
@@ -854,6 +892,7 @@ def run_loopback_handshake(
         "anti_cheat_policy_id": str(response_proto_payload.get("anti_cheat_policy_id", "")),
         "server_profile_id": str(response_proto_payload.get("server_profile_id", "")),
         "server_policy_id": str(network_payload.get("server_policy_id", "")),
+        "control_capabilities": dict(((response_proto_payload.get("extensions") or {}).get("control_capabilities") or {})),
         "handshake_artifact_hash": canonical_sha256(
             {
                 "request": request_payload,

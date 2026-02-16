@@ -73,7 +73,16 @@ def _payload_inputs(envelope: dict) -> dict:
 def _routing_targets_from_payload(payload: dict, inputs: dict) -> Tuple[List[str], List[str]]:
     object_ids: List[str] = []
     site_ids: List[str] = []
-    for key in ("object_id", "target_object_id"):
+    for key in (
+        "object_id",
+        "target_object_id",
+        "agent_id",
+        "target_agent_id",
+        "camera_id",
+        "target_camera_id",
+        "controller_id",
+        "target_controller_id",
+    ):
         token = str(payload.get(key, "")).strip()
         if token:
             object_ids.append(token)
@@ -226,4 +235,3 @@ def route_intent_envelope(
         "result": "complete",
         "routed_envelopes": sorted(routed_rows, key=_envelope_sort_key),
     }
-
