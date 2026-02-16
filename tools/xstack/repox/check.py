@@ -211,6 +211,12 @@ CONTROL_MUTATION_ALLOWED_PREFIXES = (
     "tools/xstack/testx/tests/",
 )
 
+BODY_MUTATION_ALLOWED_PREFIXES = (
+    "tools/xstack/sessionx/process_runtime.py",
+    "tools/xstack/sessionx/creator.py",
+    "tools/xstack/testx/tests/",
+)
+
 PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/",
     "docs/",
@@ -3067,6 +3073,31 @@ def _append_negative_invariant_findings(
                         )
                     )
 
+            if not rel_norm.startswith(BODY_MUTATION_ALLOWED_PREFIXES):
+                body_state_write = re.search(
+                    r"state\s*\[\s*[\"']body_assemblies[\"']\s*\]\s*=",
+                    str(line),
+                )
+                body_collection_mutation = re.search(
+                    r"\bbody_assemblies\s*\.\s*(append|extend|insert|pop|remove|clear)\s*\(",
+                    str(line),
+                )
+                body_transform_mutation = re.search(
+                    r"\bbody\w*\s*\[\s*[\"']transform_mm[\"']\s*\]\s*=",
+                    str(line),
+                )
+                if body_state_write or body_collection_mutation or body_transform_mutation:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="body assemblies and body transforms must mutate only through deterministic processes",
+                            rule_id="INV-BODY-MUTATION-PROCESS-ONLY",
+                        )
+                    )
+
             if not any(rel_norm.startswith(prefix) for prefix in PLAYER_LITERAL_ALLOWED_PATH_PREFIXES):
                 if re.search(r"[\"']player(?:\.[a-z0-9_.-]+)?[\"']", lower):
                     findings.append(
@@ -3115,6 +3146,23 @@ def _append_negative_invariant_findings(
                         snippet="{} -> {}".format(process_id, entitlement_id),
                         message="control process entitlement mapping is missing or incomplete",
                         rule_id="INV-CONTROL-ENTITLEMENT-GATED",
+                    )
+                )
+        deterministic_pair_tokens = (
+            "def _broadphase_pairs(",
+            "for cell_key in sorted(grid.keys()):",
+            "return sorted(list(pair_set)",
+        )
+        for token in deterministic_pair_tokens:
+            if token not in process_runtime_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=1,
+                        snippet=token,
+                        message="collision broadphase must preserve deterministic pair ordering",
+                        rule_id="INV-DETERMINISTIC-PAIR-ORDER",
                     )
                 )
 
