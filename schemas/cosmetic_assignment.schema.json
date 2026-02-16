@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cosmetic Assignment Schema",
+  "version": "1.0.0",
+  "description": "Canonical server/tool-authored cosmetic assignment contract for representation-only state.",
+  "x-doc-ref": [
+    "docs/embodiment/REPRESENTATION_LAYER.md",
+    "docs/net/RANKED_SERVER_GOVERNANCE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "assignment_id",
+    "target_agent_id",
+    "cosmetic_id",
+    "applied_tick",
+    "authority_origin",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "assignment_id": {
+      "type": "string"
+    },
+    "target_agent_id": {
+      "type": "string"
+    },
+    "cosmetic_id": {
+      "type": "string"
+    },
+    "applied_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "authority_origin": {
+      "type": "string",
+      "enum": [
+        "server",
+        "tool"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "assignment_id": "cosmetic.assignment.agent.alpha",
+      "target_agent_id": "agent.alpha",
+      "cosmetic_id": "cosmetic.default.pill",
+      "applied_tick": 0,
+      "authority_origin": "server",
+      "extensions": {}
+    }
+  ]
+}

@@ -133,6 +133,34 @@
         "1.0.0"
       ]
     },
+    "cosmetic_assignment": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cosmetic_pack": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cosmetic_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cosmetic_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "controller": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -379,6 +407,20 @@
       ]
     },
     "reference_frame": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_proxy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_proxy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

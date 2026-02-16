@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cosmetic Pack Schema",
+  "version": "1.0.0",
+  "description": "Pack contribution contract for cosmetic definitions and governance constraints.",
+  "x-doc-ref": [
+    "docs/embodiment/REPRESENTATION_LAYER.md",
+    "docs/net/RANKED_SERVER_GOVERNANCE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "cosmetic_pack_id",
+    "provided_cosmetic_ids",
+    "required_securex_policy_id",
+    "allowed_server_profiles",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "cosmetic_pack_id": {
+      "type": "string"
+    },
+    "provided_cosmetic_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_securex_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "allowed_server_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "cosmetic_pack_id": "pack.representation.base",
+      "provided_cosmetic_ids": [
+        "cosmetic.default.pill"
+      ],
+      "required_securex_policy_id": null,
+      "allowed_server_profiles": [
+        "server.profile.private_relaxed",
+        "server.profile.casual_public",
+        "server.profile.rank_strict"
+      ],
+      "extensions": {}
+    }
+  ]
+}
