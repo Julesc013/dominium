@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "window_id": "window.tool.spectator_controls",
+  "title": "Spectator Controls",
+  "required_entitlements": [
+    "entitlement.view.spectator",
+    "entitlement.view.follow",
+    "entitlement.control.camera"
+  ],
+  "required_lenses": [
+    "lens.diegetic.sensor",
+    "lens.nondiegetic.debug"
+  ],
+  "widgets": {
+    "widget_id": "spectator.controls.root",
+    "type": "container",
+    "layout": "vertical",
+    "children": [
+      {
+        "widget_id": "spectator.controls.status",
+        "type": "text",
+        "label": "Current Camera",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "camera_viewpoint.view_mode_id"
+        }
+      },
+      {
+        "widget_id": "spectator.controls.entities",
+        "type": "list",
+        "label": "Observed Entities",
+        "data_binding": {
+          "source": "perceived_model",
+          "selector": "entities.entries"
+        }
+      },
+      {
+        "widget_id": "spectator.controls.follow",
+        "type": "button",
+        "label": "Follow Selected",
+        "action_binding": {
+          "intent_id": "intent.ui.spectator.follow",
+          "process_id": "process.camera_bind_target",
+          "payload_template": {
+            "controller_id": "controller.client.default",
+            "camera_id": "camera.main",
+            "target_type": "agent",
+            "target_id": "${selection.entity_id}",
+            "view_mode_id": "view.follow.spectator"
+          }
+        }
+      },
+      {
+        "widget_id": "spectator.controls.detach",
+        "type": "button",
+        "label": "Detach",
+        "action_binding": {
+          "intent_id": "intent.ui.spectator.detach",
+          "process_id": "process.camera_set_view_mode",
+          "payload_template": {
+            "controller_id": "controller.client.default",
+            "camera_id": "camera.main",
+            "view_mode_id": "view.free.lab",
+            "target_type": "none"
+          }
+        }
+      }
+    ]
+  }
+}
