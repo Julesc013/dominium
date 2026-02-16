@@ -30,6 +30,7 @@ from .routing import DEFAULT_SHARD_ID, route_intent_envelope, shard_index
 
 PROCESS_SCOPE_BY_ID = {
     "process.region_management_tick": "region.state",
+    "process.srz_transfer_entity": "agent.shard",
     "process.time_control_set_rate": "time.control",
     "process.time_pause": "time.control",
     "process.time_resume": "time.control",
@@ -39,12 +40,15 @@ PROCESS_SCOPE_BY_ID = {
     "process.control_release_agent": "control.binding.possess",
     "process.control_set_view_lens": "camera.lens",
     "process.camera_teleport": "camera.transform",
+    "process.agent_rotate": "agent.orientation",
+    "process.agent_move": "body.transform",
     "process.body_move_attempt": "body.transform",
     "process.camera_move": "camera.transform",
 }
 
 PROCESS_OWNER_OBJECT = {
     "process.region_management_tick": "camera.main",
+    "process.srz_transfer_entity": "agent.unknown",
     "process.time_control_set_rate": "camera.main",
     "process.time_pause": "camera.main",
     "process.time_resume": "camera.main",
@@ -54,12 +58,15 @@ PROCESS_OWNER_OBJECT = {
     "process.control_release_agent": "camera.main",
     "process.control_set_view_lens": "camera.main",
     "process.camera_teleport": "camera.main",
+    "process.agent_rotate": "agent.unknown",
+    "process.agent_move": "agent.unknown",
     "process.body_move_attempt": "body.unknown",
     "process.camera_move": "camera.main",
 }
 
 PROCESS_PRIORITY = {
     "process.region_management_tick": 10,
+    "process.srz_transfer_entity": 15,
     "process.time_control_set_rate": 20,
     "process.time_pause": 20,
     "process.time_resume": 20,
@@ -69,6 +76,8 @@ PROCESS_PRIORITY = {
     "process.control_release_agent": 25,
     "process.control_set_view_lens": 25,
     "process.camera_teleport": 30,
+    "process.agent_rotate": 33,
+    "process.agent_move": 34,
     "process.body_move_attempt": 35,
     "process.camera_move": 40,
 }
@@ -401,9 +410,33 @@ def _derive_perceived_for_peer(runtime: dict, peer_id: str) -> Dict[str, object]
     }
 
 
-def _entity_owner_shard(shard_map: dict, entity_id: str) -> str:
+def _entity_owner_shard(runtime: dict, shard_map: dict, entity_id: str) -> str:
+    token = str(entity_id).strip()
+    state = dict(runtime.get("global_state") or {})
+    if token and isinstance(state, dict):
+        agent_rows = state.get("agent_states")
+        if isinstance(agent_rows, list):
+            for row in sorted((item for item in agent_rows if isinstance(item, dict)), key=lambda item: str(item.get("agent_id", ""))):
+                if str(row.get("agent_id", "")).strip() != token:
+                    continue
+                owner = str(row.get("shard_id", "")).strip()
+                if owner:
+                    return owner
+                break
+        body_rows = state.get("body_assemblies")
+        if isinstance(body_rows, list):
+            for row in sorted((item for item in body_rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
+                body_id = str(row.get("assembly_id", "")).strip()
+                owner_agent_id = str(row.get("owner_agent_id", "")).strip()
+                owner_assembly_id = str(row.get("owner_assembly_id", "")).strip()
+                if token not in (body_id, owner_agent_id, owner_assembly_id):
+                    continue
+                owner = str(row.get("shard_id", "")).strip()
+                if owner:
+                    return owner
+                break
     index = shard_index(shard_map)
-    owner = str((index.get("object_owner") or {}).get(str(entity_id).strip(), "")).strip()
+    owner = str((index.get("object_owner") or {}).get(token, "")).strip()
     if owner:
         return owner
     shard_ids = list(index.get("shard_ids") or [])
@@ -425,6 +458,12 @@ def _first_input_token(inputs: dict, keys: Tuple[str, ...], default_value: str =
 
 def _proposal_owner_object_id(process_id: str, inputs: dict) -> str:
     token = str(process_id).strip()
+    if token in ("process.agent_move", "process.agent_rotate", "process.srz_transfer_entity"):
+        return _first_input_token(
+            inputs,
+            ("agent_id", "target_agent_id", "target_id"),
+            "agent.unknown",
+        ) or "agent.unknown"
     if token in ("process.control_bind_camera", "process.control_unbind_camera"):
         return _first_input_token(
             inputs,
@@ -597,6 +636,8 @@ def initialize_hybrid_runtime(
             "$.perception_interest_policy",
         )
     allow_cross_shard_possession = bool(server_ext.get("allow_cross_shard_possession", False))
+    allow_cross_shard_collision = bool(server_ext.get("allow_cross_shard_collision", False))
+    allow_srz_transfer = bool(server_ext.get("allow_srz_transfer", False))
 
     shard_rows = []
     for row in sorted((shard_map.get("shards") or []), key=lambda item: (_as_int((item or {}).get("priority", 0), 0), str((item or {}).get("shard_id", "")))):
@@ -652,6 +693,8 @@ def initialize_hybrid_runtime(
         "shard_map": shard_map,
         "control_policy": {
             "allow_cross_shard_possession": bool(allow_cross_shard_possession),
+            "allow_cross_shard_collision": bool(allow_cross_shard_collision),
+            "allow_srz_transfer": bool(allow_srz_transfer),
         },
         "perception_interest_policy": perception_policy,
         "anti_cheat": {
@@ -960,7 +1003,7 @@ def _build_proposal(runtime: dict, envelope: dict, tick: int) -> Dict[str, objec
     source_shard_id = str(envelope.get("source_shard_id", DEFAULT_SHARD_ID)).strip() or DEFAULT_SHARD_ID
     shard_map = dict(runtime.get("shard_map") or {})
     owner_object_id = _proposal_owner_object_id(process_id=process_id, inputs=dict(inputs))
-    owner_shard_id = _entity_owner_shard(shard_map, owner_object_id)
+    owner_shard_id = _entity_owner_shard(runtime=runtime, shard_map=shard_map, entity_id=owner_object_id)
     if process_id in ("process.control_possess_agent", "process.control_release_agent"):
         controller_id = _first_input_token(
             dict(inputs),
@@ -970,8 +1013,8 @@ def _build_proposal(runtime: dict, envelope: dict, tick: int) -> Dict[str, objec
             dict(inputs),
             ("agent_id", "target_agent_id", "target_id"),
         )
-        controller_shard_id = _entity_owner_shard(shard_map, controller_id or owner_object_id)
-        agent_shard_id = _entity_owner_shard(shard_map, agent_id or owner_object_id)
+        controller_shard_id = _entity_owner_shard(runtime=runtime, shard_map=shard_map, entity_id=controller_id or owner_object_id)
+        agent_shard_id = _entity_owner_shard(runtime=runtime, shard_map=shard_map, entity_id=agent_id or owner_object_id)
         control_policy = dict(runtime.get("control_policy") or {})
         allow_cross = bool(control_policy.get("allow_cross_shard_possession", False))
         if controller_id and agent_id and controller_shard_id != agent_shard_id and not allow_cross:
@@ -995,16 +1038,32 @@ def _build_proposal(runtime: dict, envelope: dict, tick: int) -> Dict[str, objec
         if agent_id:
             owner_object_id = str(agent_id)
             owner_shard_id = str(agent_shard_id)
+    if process_id == "process.srz_transfer_entity":
+        control_policy = dict(runtime.get("control_policy") or {})
+        if not bool(control_policy.get("allow_srz_transfer", False)):
+            return refusal(
+                "refusal.agent.boundary_cross_forbidden",
+                "SRZ transfer process is disabled by active server control policy",
+                "Enable allow_srz_transfer in server policy extensions to permit deterministic shard transfers.",
+                {"process_id": process_id},
+                "$.intent_envelope.payload.process_id",
+            )
     if owner_shard_id != target_shard_id:
+        reason_code = "refusal.net.cross_shard_unsupported"
+        message = "process '{}' owner '{}' resolves to shard '{}' but routed envelope targets '{}'".format(
+            process_id,
+            owner_object_id,
+            owner_shard_id,
+            target_shard_id or "<empty>",
+        )
+        remediation = "Use deterministic routing so process owner and target shard match, or implement declared cross-shard process metadata."
+        if process_id in ("process.agent_move", "process.agent_rotate"):
+            reason_code = "refusal.net.shard_target_invalid"
+            remediation = "Route movement intents to the owning agent shard."
         return refusal(
-            "refusal.net.cross_shard_unsupported",
-            "process '{}' owner '{}' resolves to shard '{}' but routed envelope targets '{}'".format(
-                process_id,
-                owner_object_id,
-                owner_shard_id,
-                target_shard_id or "<empty>",
-            ),
-            "Use deterministic routing so process owner and target shard match, or implement declared cross-shard process metadata.",
+            reason_code,
+            message,
+            remediation,
             {
                 "process_id": process_id,
                 "owner_object_id": owner_object_id,
@@ -1365,6 +1424,7 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                 "refusal.net.authority_violation",
                 "refusal.net.shard_target_invalid",
                 "refusal.net.cross_shard_unsupported",
+                "refusal.agent.boundary_cross_forbidden",
                 "refusal.control.cross_shard_possession_forbidden",
                 "refusal.control.cross_shard_collision_forbidden",
             ):

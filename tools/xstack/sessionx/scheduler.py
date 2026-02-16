@@ -28,6 +28,7 @@ from .srz import (
 
 PROCESS_PRIORITY = {
     "process.region_management_tick": 10,
+    "process.srz_transfer_entity": 15,
     "process.time_control_set_rate": 20,
     "process.time_pause": 20,
     "process.time_resume": 20,
@@ -37,12 +38,15 @@ PROCESS_PRIORITY = {
     "process.control_release_agent": 25,
     "process.control_set_view_lens": 25,
     "process.camera_teleport": 30,
+    "process.agent_rotate": 33,
+    "process.agent_move": 34,
     "process.body_move_attempt": 35,
     "process.camera_move": 40,
 }
 
 PROCESS_ENTITY_SCOPE = {
     "process.region_management_tick": "region.manager",
+    "process.srz_transfer_entity": "agent.transfer",
     "process.time_control_set_rate": "time.control",
     "process.time_pause": "time.control",
     "process.time_resume": "time.control",
@@ -52,12 +56,15 @@ PROCESS_ENTITY_SCOPE = {
     "process.control_release_agent": "controller.binding.possess",
     "process.control_set_view_lens": "camera.main",
     "process.camera_teleport": "camera.main",
+    "process.agent_rotate": "agent.unknown",
+    "process.agent_move": "agent.unknown",
     "process.body_move_attempt": "body.unknown",
     "process.camera_move": "camera.main",
 }
 
 PROCESS_FIELD_SCOPE = {
     "process.region_management_tick": "region.state",
+    "process.srz_transfer_entity": "agent.shard",
     "process.time_control_set_rate": "time.control",
     "process.time_pause": "time.control",
     "process.time_resume": "time.control",
@@ -67,6 +74,8 @@ PROCESS_FIELD_SCOPE = {
     "process.control_release_agent": "control.binding.possess",
     "process.control_set_view_lens": "camera.lens",
     "process.camera_teleport": "camera.transform",
+    "process.agent_rotate": "agent.orientation",
+    "process.agent_move": "body.transform",
     "process.body_move_attempt": "body.transform",
     "process.camera_move": "camera.transform",
 }
@@ -110,6 +119,10 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
         body_id = str(inputs.get("body_id", "") or inputs.get("target_body_id", "")).strip()
         if body_id:
             entity_scope = body_id
+    if process_id in ("process.agent_move", "process.agent_rotate", "process.srz_transfer_entity"):
+        agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
+        if agent_id:
+            entity_scope = agent_id
     return {
         "envelope_id": str(envelope.get("envelope_id", "")),
         "script_step": int(script_step),
