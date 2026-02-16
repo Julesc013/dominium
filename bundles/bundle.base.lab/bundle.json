@@ -28,6 +28,7 @@
     "pack.tool.inspector",
     "pack.tool.navigation",
     "pack.tool.time_control",
-    "pack.tool.log_viewer"
+    "pack.tool.log_viewer",
+    "pack.representation.base"
   ]
 }

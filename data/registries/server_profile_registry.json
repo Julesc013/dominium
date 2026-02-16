@@ -38,7 +38,8 @@
         "extensions": {
           "legacy_server_policy_id": "server.policy.ranked.strict",
           "default_shard_map_id": "shard_map.default.single_shard",
-          "perception_interest_policy_id": "policy.perception.lab.minimal"
+          "perception_interest_policy_id": "policy.perception.lab.minimal",
+          "cosmetic_policy_id": "policy.cosmetics.rank_strict"
         }
       },
       {
@@ -70,7 +71,8 @@
         "extensions": {
           "legacy_server_policy_id": "server.policy.private.default",
           "default_shard_map_id": "shard_map.default.single_process_two_shards",
-          "perception_interest_policy_id": "policy.perception.lab.default"
+          "perception_interest_policy_id": "policy.perception.lab.default",
+          "cosmetic_policy_id": "policy.cosmetics.casual_default"
         }
       },
       {
@@ -105,7 +107,8 @@
         "extensions": {
           "legacy_server_policy_id": "server.policy.private.default",
           "default_shard_map_id": "shard_map.default.single_process_two_shards",
-          "perception_interest_policy_id": "policy.perception.lab.default"
+          "perception_interest_policy_id": "policy.perception.lab.default",
+          "cosmetic_policy_id": "policy.cosmetics.private_relaxed"
         }
       }
     ],
