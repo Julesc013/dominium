@@ -27,6 +27,31 @@ TOOL_VERSION = "1.0.0"
 LOCKFILE_REL = "build/lockfile.json"
 REGISTRY_DIR_REL = "build/registries"
 
+PROFILE_TRACE_REGISTRY_KEYS = (
+    "domain_registry_hash",
+    "law_registry_hash",
+    "experience_registry_hash",
+    "lens_registry_hash",
+    "net_replication_policy_registry_hash",
+    "net_resync_strategy_registry_hash",
+    "net_server_policy_registry_hash",
+    "securex_policy_registry_hash",
+    "server_profile_registry_hash",
+    "shard_map_registry_hash",
+    "perception_interest_policy_registry_hash",
+    "anti_cheat_policy_registry_hash",
+    "anti_cheat_module_registry_hash",
+    "activation_policy_registry_hash",
+    "budget_policy_registry_hash",
+    "fidelity_policy_registry_hash",
+    "worldgen_constraints_registry_hash",
+    "astronomy_catalog_index_hash",
+    "site_registry_index_hash",
+    "ephemeris_registry_hash",
+    "terrain_tile_registry_hash",
+    "ui_registry_hash",
+)
+
 
 def _norm(path: str) -> str:
     return str(path or "").replace("\\", "/")
@@ -105,6 +130,12 @@ def capture_profile_trace(
     scenario_id: str,
     out_rel: str,
     bii: str,
+    multiplayer_policy_id: str = "",
+    multiplayer_client_count: int = 0,
+    multiplayer_shard_count: int = 0,
+    multiplayer_resync_count: int = 0,
+    multiplayer_message_units_per_tick: int = 0,
+    multiplayer_perceived_delta_units: int = 0,
 ) -> Dict[str, object]:
     compile_result = compile_bundle(
         repo_root=repo_root,
@@ -155,7 +186,11 @@ def capture_profile_trace(
             "errors": list(lock_semantic.get("errors") or []),
         }
 
-    registry_hashes = dict(lock_payload.get("registries") or {})
+    lock_registry_hashes = dict(lock_payload.get("registries") or {})
+    registry_hashes = dict(
+        (key, str(lock_registry_hashes.get(key, "")).strip())
+        for key in PROFILE_TRACE_REGISTRY_KEYS
+    )
     resolved_packs = list(lock_payload.get("resolved_packs") or [])
     estimated_units = int(len(resolved_packs) * 45 + len(registry_hashes) * 3)
     profile_bii = _resolve_bii(repo_root=repo_root, explicit_bii=bii)
@@ -195,6 +230,16 @@ def capture_profile_trace(
         },
         "extensions": {},
     }
+    policy_token = str(multiplayer_policy_id or "").strip()
+    if policy_token:
+        trace_payload["extensions"]["multiplayer_metrics"] = {
+            "policy_id": policy_token,
+            "client_count": max(0, int(multiplayer_client_count)),
+            "shard_count": max(0, int(multiplayer_shard_count)),
+            "resync_count": max(0, int(multiplayer_resync_count)),
+            "message_units_per_tick": max(0, int(multiplayer_message_units_per_tick)),
+            "perceived_delta_units": max(0, int(multiplayer_perceived_delta_units)),
+        }
     trace_schema_check = validate_instance(
         repo_root=repo_root,
         schema_name="profile_trace",
@@ -232,6 +277,12 @@ def main() -> int:
     parser.add_argument("--scenario-id", required=True)
     parser.add_argument("--bii", default="")
     parser.add_argument("--out", default="docs/audit/perf/profile_trace.sample.json")
+    parser.add_argument("--multiplayer-policy-id", default="")
+    parser.add_argument("--multiplayer-client-count", type=int, default=0)
+    parser.add_argument("--multiplayer-shard-count", type=int, default=0)
+    parser.add_argument("--multiplayer-resync-count", type=int, default=0)
+    parser.add_argument("--multiplayer-message-units-per-tick", type=int, default=0)
+    parser.add_argument("--multiplayer-perceived-delta-units", type=int, default=0)
     args = parser.parse_args()
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT
@@ -242,6 +293,12 @@ def main() -> int:
         scenario_id=str(args.scenario_id),
         out_rel=str(args.out),
         bii=str(args.bii),
+        multiplayer_policy_id=str(args.multiplayer_policy_id),
+        multiplayer_client_count=int(args.multiplayer_client_count),
+        multiplayer_shard_count=int(args.multiplayer_shard_count),
+        multiplayer_resync_count=int(args.multiplayer_resync_count),
+        multiplayer_message_units_per_tick=int(args.multiplayer_message_units_per_tick),
+        multiplayer_perceived_delta_units=int(args.multiplayer_perceived_delta_units),
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     token = str(result.get("result", "error"))
