@@ -45,6 +45,7 @@ Define the canonical law profile payload used to allow/refuse process classes an
 - `process.control_possess_agent`
 - `process.control_release_agent`
 - `process.control_set_view_lens`
+- `process.body_move_attempt`
 - `process.region_management_tick`
 - `process.time_control_set_rate`
 - `process.time_pause`
@@ -58,6 +59,7 @@ Define the canonical law profile payload used to allow/refuse process classes an
 - `process.control_possess_agent` -> `entitlement.control.possess`
 - `process.control_release_agent` -> `entitlement.control.possess`
 - `process.control_set_view_lens` -> `entitlement.control.lens_override`
+- `process.body_move_attempt` -> `entitlement.control.possess`
 - `process.region_management_tick` -> `session.boot`
 - `process.time_control_set_rate` -> `entitlement.time_control`
 - `process.time_pause` -> `entitlement.time_control`
@@ -76,6 +78,7 @@ Define the canonical law profile payload used to allow/refuse process classes an
     "process.control_possess_agent",
     "process.control_release_agent",
     "process.control_set_view_lens",
+    "process.body_move_attempt",
     "process.region_management_tick",
     "process.time_control_set_rate",
     "process.time_pause",
@@ -106,6 +109,7 @@ Define the canonical law profile payload used to allow/refuse process classes an
     "process.control_possess_agent": "entitlement.control.possess",
     "process.control_release_agent": "entitlement.control.possess",
     "process.control_set_view_lens": "entitlement.control.lens_override",
+    "process.body_move_attempt": "entitlement.control.possess",
     "process.region_management_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
@@ -119,6 +123,7 @@ Define the canonical law profile payload used to allow/refuse process classes an
     "process.control_possess_agent": "operator",
     "process.control_release_agent": "operator",
     "process.control_set_view_lens": "operator",
+    "process.body_move_attempt": "operator",
     "process.region_management_tick": "observer",
     "process.time_control_set_rate": "operator",
     "process.time_pause": "operator",
