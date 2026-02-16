@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "multiplayer.policy_abc.v1",
+  "description": "Deterministic multiplayer baseline lock across lockstep, server-authoritative, and SRZ hybrid policies.",
+  "bundle_id": "bundle.base.lab",
+  "policy_baselines": {
+    "policy.net.lockstep": {
+      "final_composite_hash": "e4125db1d2db222078f4c0aa63c72f886208c98b0bfb2d5fa3e3a1cdbb9a2e75"
+    },
+    "policy.net.server_authoritative": {
+      "final_composite_hash": "558eb169a19781783830d1c7eaca45ed1f775f9feffd80086c8d788644ca18f8"
+    },
+    "policy.net.srz_hybrid": {
+      "final_composite_hash": "9cffe44fe9c5e6d2eaa48c5bde618efb4b38fb583829dac64d0b1beef928ce48"
+    }
+  },
+  "ranked_handshake_matrix_hash": "1926e51d42b7bca86246ca523439c0674245e19f9f141662021d54394f366fb6",
+  "anti_cheat_fingerprint_hashes": {
+    "detect_only_event_fingerprint_hash": "34a73a21bd5ce366293f07ea103b6243135a6b8413a72d22d41be71509787f25",
+    "rank_strict_event_fingerprint_hash": "27fbff163195f511c6954db020ebd322b8c8b7e19df88767c672ef66d6583310",
+    "rank_strict_action_fingerprint_hash": "cf92fe074e9c07a526f45867534eee0bccc4c4008e24866d04e568f5c453d2cb"
+  },
+  "update_policy": {
+    "required_commit_tag": "MULTIPLAYER-REGRESSION-UPDATE",
+    "notes": "Baseline updates require explicit multiplayer determinism review and approval."
+  }
+}
