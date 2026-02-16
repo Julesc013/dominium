@@ -54,6 +54,18 @@
         }
       },
       {
+        "action_id": "control.action.assign_cosmetic",
+        "description": "Assign cosmetic render profile metadata to an agent target.",
+        "required_entitlements": [
+          "entitlement.cosmetic.assign"
+        ],
+        "produces_intent_id": "intent.control.assign_cosmetic",
+        "payload_schema_id": "dominium.control.payload.assign_cosmetic.v1",
+        "extensions": {
+          "process_id": "process.cosmetic_assign"
+        }
+      },
+      {
         "action_id": "control.action.set_view_lens",
         "description": "Override current view lens for a controller viewpoint.",
         "required_entitlements": [

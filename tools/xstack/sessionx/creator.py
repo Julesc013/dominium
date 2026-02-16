@@ -52,6 +52,7 @@ DEFAULT_ENTITLEMENTS = (
     "entitlement.control.camera",
     "entitlement.control.possess",
     "entitlement.control.lens_override",
+    "entitlement.cosmetic.assign",
     "lens.nondiegetic.access",
     "ui.window.lab.nav",
 )
