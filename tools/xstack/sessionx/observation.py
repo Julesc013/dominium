@@ -290,7 +290,11 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
     if channel_id == "ch.core.sites":
         return {"sites": dict(perceived_model.get("sites") or {})}
     if channel_id in ("ch.core.entities", "ch.nondiegetic.entity_inspector"):
-        return {"entities": dict(perceived_model.get("entities") or {}), "observed_entities": list(perceived_model.get("observed_entities") or [])}
+        return {
+            "entities": dict(perceived_model.get("entities") or {}),
+            "observed_entities": list(perceived_model.get("observed_entities") or []),
+            "control": dict(perceived_model.get("control") or {}),
+        }
     if channel_id == "ch.core.process_log":
         return {"process_log": dict(perceived_model.get("process_log") or {})}
     if channel_id in ("ch.core.performance", "ch.nondiegetic.performance_monitor"):
@@ -330,6 +334,8 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
     if not ({"ch.core.entities", "ch.nondiegetic.entity_inspector"} & allowed):
         out["observed_entities"] = []
         out["entities"] = {"entries": [], "selected_fields": []}
+    if "ch.nondiegetic.entity_inspector" not in allowed:
+        out["control"] = {"controllers": [], "bindings": [], "possession_graph": [], "summary": "redacted"}
     if not ({"ch.core.process_log", "ch.nondiegetic.performance_monitor"} & allowed):
         out["process_log"] = {"entries": []}
     if not ({"ch.core.performance", "ch.nondiegetic.performance_monitor"} & allowed):
@@ -614,6 +620,85 @@ def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
     return {
         "entries": entries,
         "selected_fields": [],
+    }
+
+
+def _control_view(truth: dict) -> dict:
+    state = truth.get("universe_state")
+    if not isinstance(state, dict):
+        return {"controllers": [], "bindings": [], "possession_graph": [], "summary": ""}
+
+    controllers = state.get("controller_assemblies")
+    if not isinstance(controllers, list):
+        controllers = []
+    normalized_controllers = []
+    for row in controllers:
+        if not isinstance(row, dict):
+            continue
+        controller_id = str(row.get("assembly_id", "")).strip()
+        if not controller_id:
+            continue
+        normalized_controllers.append(
+            {
+                "controller_id": controller_id,
+                "controller_type": str(row.get("controller_type", "")),
+                "owner_peer_id": row.get("owner_peer_id"),
+                "binding_ids": sorted(
+                    set(
+                        str(item).strip()
+                        for item in (row.get("binding_ids") or [])
+                        if str(item).strip()
+                    )
+                ),
+                "status": str(row.get("status", "")),
+            }
+        )
+    normalized_controllers = sorted(normalized_controllers, key=lambda item: str(item.get("controller_id", "")))
+
+    bindings = state.get("control_bindings")
+    if not isinstance(bindings, list):
+        bindings = []
+    normalized_bindings = []
+    possession_graph = []
+    for row in sorted((item for item in bindings if isinstance(item, dict)), key=lambda item: str(item.get("binding_id", ""))):
+        binding_id = str(row.get("binding_id", "")).strip()
+        controller_id = str(row.get("controller_id", "")).strip()
+        binding_type = str(row.get("binding_type", "")).strip()
+        target_id = str(row.get("target_id", "")).strip()
+        if not binding_id or not controller_id or not binding_type or not target_id:
+            continue
+        normalized = {
+            "binding_id": binding_id,
+            "controller_id": controller_id,
+            "binding_type": binding_type,
+            "target_id": target_id,
+            "created_tick": int(row.get("created_tick", 0) or 0),
+            "active": bool(row.get("active", True)),
+        }
+        normalized_bindings.append(normalized)
+        if binding_type == "possess" and bool(normalized.get("active", False)):
+            possession_graph.append(
+                {
+                    "agent_id": target_id,
+                    "controller_id": controller_id,
+                    "binding_id": binding_id,
+                }
+            )
+
+    possession_graph = sorted(
+        possession_graph,
+        key=lambda item: (str(item.get("agent_id", "")), str(item.get("controller_id", ""))),
+    )
+    summary = "controllers={} active_bindings={} active_possessions={}".format(
+        len(normalized_controllers),
+        len([row for row in normalized_bindings if bool(row.get("active", False))]),
+        len(possession_graph),
+    )
+    return {
+        "controllers": normalized_controllers,
+        "bindings": normalized_bindings,
+        "possession_graph": possession_graph,
+        "summary": summary,
     }
 
 
@@ -951,6 +1036,7 @@ def observe_truth(
     sites = _site_view(truth_model)
     process_log = _process_log_entries(truth_model)
     entities = _entity_view(truth_model, observed_entities=observed_entities)
+    control = _control_view(truth_model)
     performance = _performance_view(truth_model, allow_hidden=allow_hidden)
     diegetic_instruments = _instrument_channel_view(truth=truth_model, simulation_tick=simulation_tick)
     state_hash_anchor = canonical_sha256(dict(truth_model.get("universe_state") or {}))
@@ -978,6 +1064,7 @@ def observe_truth(
         "navigation": navigation,
         "sites": sites,
         "entities": entities,
+        "control": control,
         "process_log": {
             "entries": process_log,
         },
