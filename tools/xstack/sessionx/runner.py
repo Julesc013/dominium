@@ -55,6 +55,8 @@ REGISTRY_HASH_KEY_MAP = {
     "perception_interest_policy_registry_hash": "perception_interest_policy_registry",
     "epistemic_policy_registry_hash": "epistemic_policy_registry",
     "retention_policy_registry_hash": "retention_policy_registry",
+    "decay_model_registry_hash": "decay_model_registry",
+    "eviction_rule_registry_hash": "eviction_rule_registry",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy_registry",
     "anti_cheat_module_registry_hash": "anti_cheat_module_registry",
     "activation_policy_registry_hash": "activation_policy_registry",
@@ -88,6 +90,8 @@ REGISTRY_FILE_MAP = {
     "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
     "epistemic_policy_registry_hash": "epistemic_policy.registry.json",
     "retention_policy_registry_hash": "retention_policy.registry.json",
+    "decay_model_registry_hash": "decay_model.registry.json",
+    "eviction_rule_registry_hash": "eviction_rule.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",
@@ -803,6 +807,22 @@ def boot_session_spec(
     )
     if retention_policy_registry_error:
         return retention_policy_registry_error
+    decay_model_registry, decay_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["decay_model_registry_hash"],
+        expected_hash=str(registries.get("decay_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if decay_model_registry_error:
+        return decay_model_registry_error
+    eviction_rule_registry, eviction_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["eviction_rule_registry_hash"],
+        expected_hash=str(registries.get("eviction_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if eviction_rule_registry_error:
+        return eviction_rule_registry_error
     view_mode_registry, view_mode_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["view_mode_registry_hash"],
@@ -1005,6 +1025,8 @@ def boot_session_spec(
                 "perception_interest_policy_registry": perception_interest_policy_registry,
                 "epistemic_policy_registry": epistemic_policy_registry,
                 "retention_policy_registry": retention_policy_registry,
+                "decay_model_registry": decay_model_registry,
+                "eviction_rule_registry": eviction_rule_registry,
                 "view_mode_registry": view_mode_registry,
                 "render_proxy_registry": render_proxy_registry,
                 "cosmetic_registry": cosmetic_registry,
@@ -1053,6 +1075,8 @@ def boot_session_spec(
                 "perception_interest_policy_registry": perception_interest_policy_registry,
                 "epistemic_policy_registry": epistemic_policy_registry,
                 "retention_policy_registry": retention_policy_registry,
+                "decay_model_registry": decay_model_registry,
+                "eviction_rule_registry": eviction_rule_registry,
                 "view_mode_registry": view_mode_registry,
                 "render_proxy_registry": render_proxy_registry,
                 "cosmetic_registry": cosmetic_registry,
@@ -1354,6 +1378,8 @@ def boot_session_spec(
             "perception_interest_policy_registry": perception_interest_policy_registry,
             "epistemic_policy_registry": epistemic_policy_registry,
             "retention_policy_registry": retention_policy_registry,
+            "decay_model_registry": decay_model_registry,
+            "eviction_rule_registry": eviction_rule_registry,
             "view_mode_registry": view_mode_registry,
             "render_proxy_registry": render_proxy_registry,
             "cosmetic_registry": cosmetic_registry,
