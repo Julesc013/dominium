@@ -16,6 +16,11 @@ from .common import refusal
 PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.camera_move": "entitlement.camera_control",
     "process.camera_teleport": "entitlement.teleport",
+    "process.control_bind_camera": "entitlement.control.camera",
+    "process.control_unbind_camera": "entitlement.control.camera",
+    "process.control_possess_agent": "entitlement.control.possess",
+    "process.control_release_agent": "entitlement.control.possess",
+    "process.control_set_view_lens": "entitlement.control.lens_override",
     "process.instrument_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
@@ -25,6 +30,11 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
     "process.camera_teleport": "operator",
+    "process.control_bind_camera": "observer",
+    "process.control_unbind_camera": "observer",
+    "process.control_possess_agent": "operator",
+    "process.control_release_agent": "operator",
+    "process.control_set_view_lens": "operator",
     "process.instrument_tick": "observer",
     "process.time_control_set_rate": "operator",
     "process.time_pause": "operator",
@@ -41,6 +51,47 @@ SOLVER_REGISTRY_REL = "data/registries/solver_registry.json"
 DEFAULT_SOLVER_BINDINGS = {
     "collapse_solver_id": "solver.collapse.macro_capsule",
     "expand_solver_id": "solver.expand.local_high_fidelity",
+}
+CONTROL_PROCESS_IDS = {
+    "process.control_bind_camera",
+    "process.control_unbind_camera",
+    "process.control_possess_agent",
+    "process.control_release_agent",
+    "process.control_set_view_lens",
+}
+CONTROL_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": "refusal.control.law_forbidden",
+    "ENTITLEMENT_MISSING": "refusal.control.entitlement_missing",
+}
+CONTROLLER_ACTIONS_BY_TYPE = {
+    "admin": [
+        "control.action.bind_camera",
+        "control.action.unbind_camera",
+        "control.action.possess_agent",
+        "control.action.release_agent",
+        "control.action.set_view_lens",
+    ],
+    "ai_policy": [
+        "control.action.possess_agent",
+        "control.action.release_agent",
+    ],
+    "player_input": [
+        "control.action.bind_camera",
+        "control.action.unbind_camera",
+        "control.action.possess_agent",
+        "control.action.release_agent",
+    ],
+    "script": [
+        "control.action.bind_camera",
+        "control.action.unbind_camera",
+        "control.action.possess_agent",
+        "control.action.release_agent",
+        "control.action.set_view_lens",
+    ],
+    "spectator": [
+        "control.action.bind_camera",
+        "control.action.unbind_camera",
+    ],
 }
 
 
@@ -230,6 +281,154 @@ def _ensure_control_bindings(state: dict) -> List[dict]:
         )
     state["control_bindings"] = normalized
     return normalized
+
+
+def _controller_actions_for_type(controller_type: str) -> List[str]:
+    token = str(controller_type).strip()
+    rows = CONTROLLER_ACTIONS_BY_TYPE.get(token)
+    if not isinstance(rows, list):
+        rows = CONTROLLER_ACTIONS_BY_TYPE.get("script") or []
+    return _sorted_tokens(list(rows))
+
+
+def _find_controller(controllers: List[dict], controller_id: str) -> dict:
+    token = str(controller_id).strip()
+    for row in controllers:
+        if str(row.get("assembly_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _upsert_controller(
+    controllers: List[dict],
+    controller_id: str,
+    controller_type: str,
+    owner_peer_id: object,
+) -> dict:
+    token = str(controller_id).strip()
+    existing = _find_controller(controllers, token)
+    normalized_owner = owner_peer_id if owner_peer_id is None else str(owner_peer_id).strip()
+    controller_type_token = str(controller_type).strip() or "script"
+    if existing:
+        existing["controller_type"] = controller_type_token
+        existing["owner_peer_id"] = normalized_owner
+        existing["allowed_actions"] = _controller_actions_for_type(controller_type_token)
+        existing["status"] = str(existing.get("status", "active")).strip() or "active"
+        return existing
+    created = {
+        "assembly_id": token,
+        "controller_type": controller_type_token,
+        "owner_peer_id": normalized_owner,
+        "allowed_actions": _controller_actions_for_type(controller_type_token),
+        "binding_ids": [],
+        "status": "active",
+    }
+    controllers.append(created)
+    return created
+
+
+def _binding_id(controller_id: str, binding_type: str, target_id: str) -> str:
+    digest = canonical_sha256(
+        {
+            "controller_id": str(controller_id).strip(),
+            "binding_type": str(binding_type).strip(),
+            "target_id": str(target_id).strip(),
+        }
+    )
+    return "binding.control.{}".format(digest[:24])
+
+
+def _find_binding(bindings: List[dict], binding_id: str) -> dict:
+    token = str(binding_id).strip()
+    for row in bindings:
+        if str(row.get("binding_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _required_entitlements_for_binding(binding_type: str) -> List[str]:
+    token = str(binding_type).strip()
+    if token == "camera":
+        return ["entitlement.control.camera"]
+    if token == "possess":
+        return ["entitlement.control.possess"]
+    return []
+
+
+def _sync_controller_binding_ids(controllers: List[dict], bindings: List[dict]) -> None:
+    active_by_controller: Dict[str, List[str]] = {}
+    for binding in bindings:
+        if not isinstance(binding, dict):
+            continue
+        if not bool(binding.get("active", True)):
+            continue
+        controller_id = str(binding.get("controller_id", "")).strip()
+        binding_id = str(binding.get("binding_id", "")).strip()
+        if not controller_id or not binding_id:
+            continue
+        active_by_controller.setdefault(controller_id, []).append(binding_id)
+    for controller in controllers:
+        controller_id = str(controller.get("assembly_id", "")).strip()
+        controller["binding_ids"] = _sorted_tokens(list(active_by_controller.get(controller_id, [])))
+
+
+def _store_control_state(state: dict, controllers: List[dict], bindings: List[dict]) -> None:
+    _sync_controller_binding_ids(controllers=controllers, bindings=bindings)
+    state["controller_assemblies"] = sorted(
+        (
+            dict(item)
+            for item in controllers
+            if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()
+        ),
+        key=lambda item: str(item.get("assembly_id", "")),
+    )
+    state["control_bindings"] = sorted(
+        (
+            dict(item)
+            for item in bindings
+            if isinstance(item, dict)
+            and str(item.get("binding_id", "")).strip()
+            and str(item.get("controller_id", "")).strip()
+            and str(item.get("binding_type", "")).strip()
+            and str(item.get("target_id", "")).strip()
+        ),
+        key=lambda item: str(item.get("binding_id", "")),
+    )
+
+
+def _camera_exists(state: dict, camera_id: str) -> bool:
+    token = str(camera_id).strip()
+    rows = state.get("camera_assemblies")
+    if not isinstance(rows, list):
+        return False
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("assembly_id", "")).strip() == token:
+            return True
+    return False
+
+
+def _control_gate_refusal(gate_payload: dict) -> dict:
+    payload = dict(gate_payload or {})
+    refusal_payload = dict(payload.get("refusal") or {})
+    reason_code = str(refusal_payload.get("reason_code", "")).strip()
+    mapped = str(CONTROL_GATE_REASON_MAP.get(reason_code, "")).strip()
+    if not mapped:
+        return payload
+    refusal_payload["reason_code"] = mapped
+    payload["refusal"] = refusal_payload
+    rows = payload.get("errors")
+    if isinstance(rows, list):
+        updated = []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            changed = dict(row)
+            changed["code"] = mapped
+            updated.append(changed)
+        payload["errors"] = updated
+    return payload
 
 
 def _append_history_anchor(state: dict, tick: int, log_index: int) -> None:
@@ -1289,6 +1488,8 @@ def execute_intent(
 
     gate = _gate_process(process_id, law_profile, authority_context)
     if gate.get("result") != "complete":
+        if process_id in CONTROL_PROCESS_IDS:
+            return _control_gate_refusal(gate)
         return gate
 
     camera_result = _require_camera_main(state)
@@ -1303,8 +1504,9 @@ def execute_intent(
             {"assembly_id": "camera.main"},
             "$.camera_assemblies",
         )
-    _ensure_controller_assemblies(state)
-    _ensure_control_bindings(state)
+    controllers = _ensure_controller_assemblies(state)
+    bindings = _ensure_control_bindings(state)
+    current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
 
     if process_id == "process.camera_move":
         delta = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
@@ -1336,6 +1538,244 @@ def execute_intent(
         camera["position_mm"] = dict(resolved_target.get("position_mm") or {"x": 0, "y": 0, "z": 0})
         camera["orientation_mdeg"] = dict(resolved_target.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0})
         camera["velocity_mm_per_tick"] = {"x": 0, "y": 0, "z": 0}
+        _advance_time(state, steps=1)
+    elif process_id == "process.control_bind_camera":
+        controller_id = str(inputs.get("controller_id", "")).strip()
+        camera_id = str(inputs.get("camera_id", "") or inputs.get("target_id", "")).strip()
+        if not controller_id or not camera_id:
+            return refusal(
+                "refusal.control.target_invalid",
+                "process.control_bind_camera requires controller_id and camera_id",
+                "Provide controller_id and camera_id in the process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if not _camera_exists(state=state, camera_id=camera_id):
+            return refusal(
+                "refusal.control.target_invalid",
+                "camera target '{}' does not exist".format(camera_id),
+                "Bind to an existing camera assembly id.",
+                {"camera_id": camera_id},
+                "$.intent.inputs.camera_id",
+            )
+
+        controller = _upsert_controller(
+            controllers=controllers,
+            controller_id=controller_id,
+            controller_type=str(inputs.get("controller_type", "script")).strip() or "script",
+            owner_peer_id=inputs.get("owner_peer_id", authority_context.get("authority_origin")),
+        )
+        controller["status"] = "active"
+        for row in bindings:
+            if str(row.get("binding_type", "")) != "camera":
+                continue
+            if not bool(row.get("active", True)):
+                continue
+            if str(row.get("controller_id", "")) == controller_id or str(row.get("target_id", "")) == camera_id:
+                row["active"] = False
+
+        binding_id = _binding_id(controller_id=controller_id, binding_type="camera", target_id=camera_id)
+        binding = _find_binding(bindings=bindings, binding_id=binding_id)
+        if not binding:
+            bindings.append(
+                {
+                    "binding_id": binding_id,
+                    "controller_id": controller_id,
+                    "binding_type": "camera",
+                    "target_id": camera_id,
+                    "created_tick": int(current_tick),
+                    "active": True,
+                    "required_entitlements": _required_entitlements_for_binding("camera"),
+                }
+            )
+        else:
+            binding["active"] = True
+            binding["created_tick"] = max(0, _as_int(binding.get("created_tick", current_tick), current_tick))
+            binding["required_entitlements"] = _required_entitlements_for_binding("camera")
+        _store_control_state(state=state, controllers=controllers, bindings=bindings)
+        _advance_time(state, steps=1)
+    elif process_id == "process.control_unbind_camera":
+        controller_id = str(inputs.get("controller_id", "")).strip()
+        camera_id = str(inputs.get("camera_id", "") or inputs.get("target_id", "")).strip()
+        if not controller_id or not camera_id:
+            return refusal(
+                "refusal.control.target_invalid",
+                "process.control_unbind_camera requires controller_id and camera_id",
+                "Provide controller_id and camera_id in the process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if not _camera_exists(state=state, camera_id=camera_id):
+            return refusal(
+                "refusal.control.target_invalid",
+                "camera target '{}' does not exist".format(camera_id),
+                "Unbind from an existing camera assembly id.",
+                {"camera_id": camera_id},
+                "$.intent.inputs.camera_id",
+            )
+        for row in bindings:
+            if str(row.get("binding_type", "")) != "camera":
+                continue
+            if str(row.get("controller_id", "")) != controller_id:
+                continue
+            if str(row.get("target_id", "")) != camera_id:
+                continue
+            row["active"] = False
+        _store_control_state(state=state, controllers=controllers, bindings=bindings)
+        _advance_time(state, steps=1)
+    elif process_id == "process.control_possess_agent":
+        controller_id = str(inputs.get("controller_id", "")).strip()
+        agent_id = str(inputs.get("agent_id", "") or inputs.get("target_id", "")).strip()
+        if not controller_id or not agent_id:
+            return refusal(
+                "refusal.control.target_invalid",
+                "process.control_possess_agent requires controller_id and agent_id",
+                "Provide controller_id and agent_id in the process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if bool(inputs.get("possession_supported", True)) is False:
+            return refusal(
+                "refusal.control.possession_not_supported",
+                "possession is explicitly disabled for this request payload",
+                "Set possession_supported=true or use a process that does not require possession support.",
+                {"agent_id": agent_id},
+                "$.intent.inputs.possession_supported",
+            )
+
+        for row in bindings:
+            if str(row.get("binding_type", "")) != "possess":
+                continue
+            if not bool(row.get("active", True)):
+                continue
+            if str(row.get("target_id", "")) != agent_id:
+                continue
+            if str(row.get("controller_id", "")) != controller_id:
+                return refusal(
+                    "refusal.control.already_possessed",
+                    "agent '{}' is already possessed by controller '{}'".format(
+                        agent_id,
+                        str(row.get("controller_id", "")),
+                    ),
+                    "Release existing possession before binding a new controller.",
+                    {"agent_id": agent_id, "controller_id": str(row.get("controller_id", ""))},
+                    "$.intent.inputs.agent_id",
+                )
+
+        controller = _upsert_controller(
+            controllers=controllers,
+            controller_id=controller_id,
+            controller_type=str(inputs.get("controller_type", "script")).strip() or "script",
+            owner_peer_id=inputs.get("owner_peer_id", authority_context.get("authority_origin")),
+        )
+        controller["status"] = "active"
+        for row in bindings:
+            if str(row.get("binding_type", "")) != "possess":
+                continue
+            if not bool(row.get("active", True)):
+                continue
+            if str(row.get("controller_id", "")) == controller_id and str(row.get("target_id", "")) != agent_id:
+                row["active"] = False
+
+        binding_id = _binding_id(controller_id=controller_id, binding_type="possess", target_id=agent_id)
+        binding = _find_binding(bindings=bindings, binding_id=binding_id)
+        if not binding:
+            bindings.append(
+                {
+                    "binding_id": binding_id,
+                    "controller_id": controller_id,
+                    "binding_type": "possess",
+                    "target_id": agent_id,
+                    "created_tick": int(current_tick),
+                    "active": True,
+                    "required_entitlements": _required_entitlements_for_binding("possess"),
+                }
+            )
+        else:
+            binding["active"] = True
+            binding["created_tick"] = max(0, _as_int(binding.get("created_tick", current_tick), current_tick))
+            binding["required_entitlements"] = _required_entitlements_for_binding("possess")
+        _store_control_state(state=state, controllers=controllers, bindings=bindings)
+        _advance_time(state, steps=1)
+    elif process_id == "process.control_release_agent":
+        controller_id = str(inputs.get("controller_id", "")).strip()
+        agent_id = str(inputs.get("agent_id", "") or inputs.get("target_id", "")).strip()
+        if not controller_id or not agent_id:
+            return refusal(
+                "refusal.control.target_invalid",
+                "process.control_release_agent requires controller_id and agent_id",
+                "Provide controller_id and agent_id in the process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        for row in bindings:
+            if str(row.get("binding_type", "")) != "possess":
+                continue
+            if str(row.get("controller_id", "")) != controller_id:
+                continue
+            if str(row.get("target_id", "")) != agent_id:
+                continue
+            row["active"] = False
+        _store_control_state(state=state, controllers=controllers, bindings=bindings)
+        _advance_time(state, steps=1)
+    elif process_id == "process.control_set_view_lens":
+        controller_id = str(inputs.get("controller_id", "")).strip()
+        lens_id = str(inputs.get("lens_id", "")).strip()
+        camera_id = str(inputs.get("camera_id", "camera.main")).strip() or "camera.main"
+        if not controller_id or not lens_id:
+            return refusal(
+                "refusal.control.target_invalid",
+                "process.control_set_view_lens requires controller_id and lens_id",
+                "Provide controller_id and lens_id in the process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if not _camera_exists(state=state, camera_id=camera_id):
+            return refusal(
+                "refusal.control.target_invalid",
+                "camera target '{}' does not exist".format(camera_id),
+                "Select an existing camera assembly id for lens override.",
+                {"camera_id": camera_id},
+                "$.intent.inputs.camera_id",
+            )
+        allowed_lenses = _sorted_tokens(list(law_profile.get("allowed_lenses") or []))
+        if lens_id not in allowed_lenses:
+            return refusal(
+                "refusal.control.lens_forbidden",
+                "lens '{}' is forbidden by active law profile".format(lens_id),
+                "Select a lens listed in law_profile.allowed_lenses.",
+                {"lens_id": lens_id, "law_profile_id": str(law_profile.get("law_profile_id", ""))},
+                "$.intent.inputs.lens_id",
+            )
+        entitlements = _sorted_tokens(list(authority_context.get("entitlements") or []))
+        if lens_id.startswith("lens.nondiegetic") and "lens.nondiegetic.access" not in entitlements:
+            return refusal(
+                "refusal.control.lens_forbidden",
+                "nondiegetic lens '{}' requires lens.nondiegetic.access entitlement".format(lens_id),
+                "Grant lens.nondiegetic.access or use a diegetic lens.",
+                {"lens_id": lens_id},
+                "$.intent.inputs.lens_id",
+            )
+        _upsert_controller(
+            controllers=controllers,
+            controller_id=controller_id,
+            controller_type=str(inputs.get("controller_type", "script")).strip() or "script",
+            owner_peer_id=inputs.get("owner_peer_id", authority_context.get("authority_origin")),
+        )
+        camera_rows = state.get("camera_assemblies")
+        if not isinstance(camera_rows, list):
+            camera_rows = []
+        for row in camera_rows:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("assembly_id", "")).strip() != camera_id:
+                continue
+            row["lens_id"] = lens_id
+        state["camera_assemblies"] = sorted(
+            (dict(item) for item in camera_rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        _store_control_state(state=state, controllers=controllers, bindings=bindings)
         _advance_time(state, steps=1)
     elif process_id == "process.instrument_tick":
         sim = _ensure_simulation_time(state)
