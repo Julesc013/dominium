@@ -811,6 +811,30 @@ def boot_session_spec(
     )
     if view_mode_registry_error:
         return view_mode_registry_error
+    render_proxy_registry, render_proxy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["render_proxy_registry_hash"],
+        expected_hash=str(registries.get("render_proxy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if render_proxy_registry_error:
+        return render_proxy_registry_error
+    cosmetic_registry, cosmetic_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["cosmetic_registry_hash"],
+        expected_hash=str(registries.get("cosmetic_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if cosmetic_registry_error:
+        return cosmetic_registry_error
+    cosmetic_policy_registry, cosmetic_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["cosmetic_policy_registry_hash"],
+        expected_hash=str(registries.get("cosmetic_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if cosmetic_policy_registry_error:
+        return cosmetic_policy_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -982,6 +1006,11 @@ def boot_session_spec(
                 "epistemic_policy_registry": epistemic_policy_registry,
                 "retention_policy_registry": retention_policy_registry,
                 "view_mode_registry": view_mode_registry,
+                "render_proxy_registry": render_proxy_registry,
+                "cosmetic_registry": cosmetic_registry,
+                "cosmetic_policy_registry": cosmetic_policy_registry,
+                "server_profile_registry": server_profile_registry,
+                "net_server_policy_registry": net_server_policy_registry,
             },
             snapshot_cadence_ticks=0,
         )
@@ -1025,6 +1054,11 @@ def boot_session_spec(
                 "epistemic_policy_registry": epistemic_policy_registry,
                 "retention_policy_registry": retention_policy_registry,
                 "view_mode_registry": view_mode_registry,
+                "render_proxy_registry": render_proxy_registry,
+                "cosmetic_registry": cosmetic_registry,
+                "cosmetic_policy_registry": cosmetic_policy_registry,
+                "server_profile_registry": server_profile_registry,
+                "net_server_policy_registry": net_server_policy_registry,
             },
         )
         if str(initialized.get("result", "")) != "complete":
@@ -1321,6 +1355,9 @@ def boot_session_spec(
             "epistemic_policy_registry": epistemic_policy_registry,
             "retention_policy_registry": retention_policy_registry,
             "view_mode_registry": view_mode_registry,
+            "render_proxy_registry": render_proxy_registry,
+            "cosmetic_registry": cosmetic_registry,
+            "cosmetic_policy_registry": cosmetic_policy_registry,
         },
     )
     observation = observe_truth(

@@ -308,6 +308,30 @@ def run_intent_script(
     )
     if view_mode_registry_error:
         return view_mode_registry_error
+    render_proxy_registry, render_proxy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["render_proxy_registry_hash"],
+        expected_hash=str(registries.get("render_proxy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if render_proxy_registry_error:
+        return render_proxy_registry_error
+    cosmetic_registry, cosmetic_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["cosmetic_registry_hash"],
+        expected_hash=str(registries.get("cosmetic_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if cosmetic_registry_error:
+        return cosmetic_registry_error
+    cosmetic_policy_registry, cosmetic_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["cosmetic_policy_registry_hash"],
+        expected_hash=str(registries.get("cosmetic_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if cosmetic_policy_registry_error:
+        return cosmetic_policy_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -389,6 +413,21 @@ def run_intent_script(
     script_payload, intents, script_error = _load_script(script_abs)
     if script_error:
         return script_error
+    representation_state = {
+        "assignments": {},
+        "events": [],
+    }
+    script_policy_context = {
+        "activation_policy": activation_policy,
+        "budget_policy": budget_policy,
+        "fidelity_policy": fidelity_policy,
+        "render_proxy_registry": render_proxy_registry,
+        "cosmetic_registry": cosmetic_registry,
+        "cosmetic_policy_registry": cosmetic_policy_registry,
+        "cosmetic_policy_id": "policy.cosmetics.private_relaxed",
+        "representation_state": representation_state,
+        "resolved_packs": list(lock_payload.get("resolved_packs") or []),
+    }
     script_result = replay_intent_script_srz(
         repo_root=repo_root,
         universe_state=universe_state,
@@ -402,11 +441,7 @@ def run_intent_script(
             "terrain_tile_registry": terrain_tile_registry,
             "view_mode_registry": view_mode_registry,
         },
-        policy_context={
-            "activation_policy": activation_policy,
-            "budget_policy": budget_policy,
-            "fidelity_policy": fidelity_policy,
-        },
+        policy_context=script_policy_context,
         pack_lock_hash=str(lock_payload.get("pack_lock_hash", "")),
         registry_hashes=dict(registries),
         worker_count=int(worker_count),
@@ -459,6 +494,10 @@ def run_intent_script(
             "epistemic_policy_registry": epistemic_policy_registry,
             "retention_policy_registry": retention_policy_registry,
             "view_mode_registry": view_mode_registry,
+            "render_proxy_registry": render_proxy_registry,
+            "cosmetic_registry": cosmetic_registry,
+            "cosmetic_policy_registry": cosmetic_policy_registry,
+            "representation_state": dict(representation_state),
         },
     )
     observation = observe_truth(
