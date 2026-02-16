@@ -5,7 +5,7 @@
   "bundle_id": "bundle.base.lab",
   "scenario_id": "scenario.lab.galaxy_nav",
   "script_path": "tools/xstack/testdata/session/script.region_traversal.fixture.json",
-  "composite_hash_anchor": "04a004a22e17625f87b29a332200b010d886a89ac438adc6b4af2aa7d3503153",
+  "composite_hash_anchor": "0aae7396633ef9e0835e4ebd1fb17a4bcf69dcbc2540d35c5a46ae51dfbc6383",
   "pack_lock_hash": "ce8561692fb0c820a07d90990344270d766bad2c620c57e0f6188de6df7b219e",
   "registry_hashes": {
     "activation_policy_registry_hash": "efca5d2402cb17f2f48728ec4c51afd618b5f0c89f86038fd195bb5c3e21344d",
@@ -18,9 +18,11 @@
     "controller_type_registry_hash": "67af61c2fde4057ea498a8afbad907ff252826e179cfeb126a825a796d48fbd2",
     "cosmetic_policy_registry_hash": "16b3162b4f74b12bcb85c32071c9383287d5660267709dd9b254aefb20850ebe",
     "cosmetic_registry_hash": "e87969abeb95fdbaf1aab0004c8e2ba7d4b2b0499593e26e406bcd1a90af5a4b",
+    "decay_model_registry_hash": "989b53f0ec18b3a6ab509dfca91d1280e610412da1a729f0c2e93c47b3e7675e",
     "domain_registry_hash": "1353d401f3f0c9f0ab6c7f9734ffd5e764b0868021e573e2727f1feac29c09cc",
     "ephemeris_registry_hash": "d4211122e51658959e4a1eea75f797308acb9a955c7a099ced6a7f8080bd6b1a",
     "epistemic_policy_registry_hash": "3952159115ce7f4ed668ebde23cc80d663887a82bd5eef41768a06676603cfef",
+    "eviction_rule_registry_hash": "62b3feabba0932e2f9cfe0d0cad1868d1c8be6894fbc17332362385a1380ec13",
     "experience_registry_hash": "17f933ba9a7a97ff00cea21366809fd1a489b5b0dcc88d19b82dc028cd7e3c81",
     "fidelity_policy_registry_hash": "5200189ab102c7f3f92a8f1200c6486433ee76aca4dfba32b5dd56f8976c4f52",
     "law_registry_hash": "ef18577cd231b0679cc3f4ddf7ef9f1aa1304d93f73594519fbaa98e69c342c0",
@@ -30,7 +32,7 @@
     "net_server_policy_registry_hash": "8a167bcf5c40bcdebf140de178065f1af3f002611df2917a31a1cf35df2ef745",
     "perception_interest_policy_registry_hash": "10552727d8fa9a388616c73a053556e4fa3ebf15338f77e3daab036e6b6cbcbf",
     "render_proxy_registry_hash": "4eedc43b1b9d80281a6c279444ef1bbf59f1e40b4edc71b2715d6c8d5f84eb49",
-    "retention_policy_registry_hash": "dac3280675b182afa8154a85b52dc1c9e9b1c251276a5cbbcb174fcbc5ac096e",
+    "retention_policy_registry_hash": "7c81e0f5413591fa07857d0492cd762ba3736cda375a0869058d993a7d1ecc5b",
     "securex_policy_registry_hash": "e64f1440b828c1718d66a216ce3b526ebd768efda07628668c8f7fc909a56363",
     "server_profile_registry_hash": "97196c5e70f6f1036aa0be6dfc2da5ac66d9800537d577de93bf5ac47543e8dd",
     "shard_map_registry_hash": "2797170f6c6448161de74c2bc04e720c3cd4393621c13ff1657da92ec99de146",
@@ -42,11 +44,11 @@
   },
   "roi_switch_lock": {
     "final_state_hash": "afa538a1c772119576e4969a494152686362fe297d34a58c058c8cfc9c6bc4b7",
-    "final_tick_hash": "9c31dc8543f162873c5af2b108d749896c535f57fd7107429af769605a6ee131",
+    "final_tick_hash": "09b996229cfa3c8d2ecc6d0b30309b4ff632313b00de55257d5616fe24b05d55",
     "transition_policy": "deterministic_process_order"
   },
   "update_policy": {
     "required_commit_tag": "REGRESSION-UPDATE",
-    "notes": "Baseline changes require explicit review and deterministic revalidation. Updated under REGRESSION-UPDATE on 2026-02-16."
+    "notes": "Baseline changes require explicit review and deterministic revalidation. Updated under REGRESSION-UPDATE on 2026-02-16 (ED1 memory integration)."
   }
 }
