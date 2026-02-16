@@ -96,6 +96,13 @@ def _routing_targets_from_payload(payload: dict, inputs: dict) -> Tuple[List[str
         token_inputs = str(inputs.get(key, "")).strip()
         if token_inputs:
             site_ids.append(token_inputs)
+    target_type = str(payload.get("target_type", "") or inputs.get("target_type", "")).strip()
+    target_id = str(payload.get("target_id", "") or inputs.get("target_id", "")).strip()
+    if target_id:
+        if target_type == "site":
+            site_ids.append(target_id)
+        else:
+            object_ids.append(target_id)
     for key in ("target_object_ids", "object_ids"):
         rows = payload.get(key)
         if isinstance(rows, list):

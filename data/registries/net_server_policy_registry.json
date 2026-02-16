@@ -27,8 +27,16 @@
         ],
         "extensions": {
           "allow_cross_shard_possession": false,
+          "allow_cross_shard_follow": true,
           "default_shard_map_id": "shard_map.default.single_process_two_shards",
-          "perception_interest_policy_id": "policy.perception.lab.default"
+          "perception_interest_policy_id": "policy.perception.lab.default",
+          "allowed_view_modes": [
+            "view.first_person.player",
+            "view.third_person.player",
+            "view.follow.spectator",
+            "view.free.lab",
+            "view.free.observer_truth"
+          ]
         }
       },
       {
@@ -50,8 +58,14 @@
         ],
         "extensions": {
           "allow_cross_shard_possession": false,
+          "allow_cross_shard_follow": false,
           "default_shard_map_id": "shard_map.default.single_shard",
-          "perception_interest_policy_id": "policy.perception.lab.minimal"
+          "perception_interest_policy_id": "policy.perception.lab.minimal",
+          "allowed_view_modes": [
+            "view.first_person.player",
+            "view.third_person.player",
+            "view.follow.spectator"
+          ]
         }
       }
     ],

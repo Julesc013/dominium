@@ -41,6 +41,10 @@ PROCESS_SCOPE_BY_ID = {
     "process.control_possess_agent": "control.binding.possess",
     "process.control_release_agent": "control.binding.possess",
     "process.control_set_view_lens": "camera.lens",
+    "process.camera_bind_target": "control.binding.camera",
+    "process.camera_unbind_target": "control.binding.camera",
+    "process.camera_set_view_mode": "camera.view_mode",
+    "process.camera_set_lens": "camera.lens",
     "process.camera_teleport": "camera.transform",
     "process.agent_rotate": "agent.orientation",
     "process.agent_move": "body.transform",
@@ -59,6 +63,10 @@ PROCESS_OWNER_OBJECT = {
     "process.control_possess_agent": "camera.main",
     "process.control_release_agent": "camera.main",
     "process.control_set_view_lens": "camera.main",
+    "process.camera_bind_target": "camera.main",
+    "process.camera_unbind_target": "camera.main",
+    "process.camera_set_view_mode": "camera.main",
+    "process.camera_set_lens": "camera.main",
     "process.camera_teleport": "camera.main",
     "process.agent_rotate": "agent.unknown",
     "process.agent_move": "agent.unknown",
@@ -77,6 +85,10 @@ PROCESS_PRIORITY = {
     "process.control_possess_agent": 25,
     "process.control_release_agent": 25,
     "process.control_set_view_lens": 25,
+    "process.camera_bind_target": 25,
+    "process.camera_unbind_target": 25,
+    "process.camera_set_view_mode": 25,
+    "process.camera_set_lens": 25,
     "process.camera_teleport": 30,
     "process.agent_rotate": 33,
     "process.agent_move": 34,
@@ -319,6 +331,27 @@ def _distance_bands(policy: dict) -> List[dict]:
     return sorted(out, key=lambda row: (_as_float(row.get("max_distance", 0.0), 0.0), str(row.get("band_id", ""))))
 
 
+def _view_mode_row(runtime: dict, view_mode_id: str) -> dict:
+    token = str(view_mode_id).strip()
+    if not token:
+        return {}
+    registry_payloads = dict(runtime.get("registry_payloads") or {})
+    view_mode_registry = dict(registry_payloads.get("view_mode_registry") or {})
+    rows = view_mode_registry.get("view_modes")
+    if not isinstance(rows, list):
+        return {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("view_mode_id", ""))):
+        if str(row.get("view_mode_id", "")).strip() == token:
+            return dict(row)
+    return {}
+
+
+def _is_follow_view_mode(runtime: dict, view_mode_id: str) -> bool:
+    row = _view_mode_row(runtime=runtime, view_mode_id=view_mode_id)
+    ext = dict(row.get("extensions") or {})
+    return str(ext.get("spectator_pattern", "")).strip() == "follow_agent"
+
+
 def _interest_sort_key(token: str, band_rows: List[dict]) -> Tuple[int, str]:
     if not band_rows:
         return (0, str(token))
@@ -504,6 +537,42 @@ def _proposal_owner_object_id(process_id: str, inputs: dict) -> str:
         return _first_input_token(
             inputs,
             ("camera_id", "target_camera_id", "target_id"),
+            "camera.main",
+        ) or "camera.main"
+    if token in ("process.camera_bind_target", "process.camera_unbind_target"):
+        target_type = str((inputs or {}).get("target_type", "")).strip()
+        if target_type in ("agent", "body", "site"):
+            target = _first_input_token(
+                inputs,
+                ("target_id",),
+                "",
+            )
+            if target:
+                return target
+        return _first_input_token(
+            inputs,
+            ("camera_id", "target_camera_id"),
+            "camera.main",
+        ) or "camera.main"
+    if token == "process.camera_set_view_mode":
+        target_type = str((inputs or {}).get("target_type", "")).strip()
+        if target_type in ("agent", "body", "site"):
+            target = _first_input_token(
+                inputs,
+                ("target_id",),
+                "",
+            )
+            if target:
+                return target
+        return _first_input_token(
+            inputs,
+            ("camera_id", "target_camera_id"),
+            "camera.main",
+        ) or "camera.main"
+    if token == "process.camera_set_lens":
+        return _first_input_token(
+            inputs,
+            ("camera_id", "target_camera_id"),
             "camera.main",
         ) or "camera.main"
     if token in ("process.control_possess_agent", "process.control_release_agent"):
@@ -730,7 +799,9 @@ def initialize_hybrid_runtime(
         "control_policy": {
             "allow_cross_shard_possession": bool(allow_cross_shard_possession),
             "allow_cross_shard_collision": bool(allow_cross_shard_collision),
+            "allow_cross_shard_follow": bool(server_ext.get("allow_cross_shard_follow", False)),
             "allow_srz_transfer": bool(allow_srz_transfer),
+            "allowed_view_modes": _sorted_tokens(list(server_ext.get("allowed_view_modes") or [])),
         },
         "perception_interest_policy": perception_policy,
         "anti_cheat": {
@@ -1155,6 +1226,48 @@ def _build_proposal(runtime: dict, envelope: dict, tick: int) -> Dict[str, objec
         if agent_id:
             owner_object_id = str(agent_id)
             owner_shard_id = str(agent_shard_id)
+    if process_id in ("process.control_bind_camera", "process.camera_bind_target", "process.camera_set_view_mode"):
+        camera_id = _first_input_token(
+            dict(inputs),
+            ("camera_id", "target_camera_id", "target_id"),
+            "camera.main",
+        ) or "camera.main"
+        target_type = str((inputs or {}).get("target_type", "none")).strip() or "none"
+        target_id = _first_input_token(
+            dict(inputs),
+            ("target_id",),
+            "",
+        )
+        camera_shard_id = _entity_owner_shard(runtime=runtime, shard_map=shard_map, entity_id=camera_id)
+        target_owner_shard_id = ""
+        if target_type in ("agent", "body", "site") and target_id:
+            target_owner_shard_id = _entity_owner_shard(runtime=runtime, shard_map=shard_map, entity_id=target_id)
+        control_policy = dict(runtime.get("control_policy") or {})
+        allow_cross_shard_follow = bool(control_policy.get("allow_cross_shard_follow", False))
+        requested_view_mode = str((inputs or {}).get("view_mode_id", "")).strip()
+        if camera_shard_id and target_owner_shard_id and camera_shard_id != target_owner_shard_id:
+            if not _is_follow_view_mode(runtime=runtime, view_mode_id=requested_view_mode) or not allow_cross_shard_follow:
+                return refusal(
+                    "refusal.view.cross_shard_follow_forbidden",
+                    "camera '{}' and target '{}' resolve to different shards ('{}' vs '{}')".format(
+                        camera_id,
+                        target_id,
+                        camera_shard_id,
+                        target_owner_shard_id,
+                    ),
+                    "Use same-shard follow target or enable cross-shard spectator follow policy.",
+                    {
+                        "camera_id": camera_id,
+                        "target_id": target_id,
+                        "camera_shard_id": camera_shard_id,
+                        "target_shard_id": target_owner_shard_id,
+                        "view_mode_id": requested_view_mode or "<unspecified>",
+                    },
+                    "$.intent_envelope.payload.inputs",
+                )
+        if target_owner_shard_id:
+            owner_object_id = str(target_id)
+            owner_shard_id = str(target_owner_shard_id)
     if process_id == "process.srz_transfer_entity":
         control_policy = dict(runtime.get("control_policy") or {})
         if not bool(control_policy.get("allow_srz_transfer", False)):
@@ -1544,6 +1657,7 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                 "refusal.agent.boundary_cross_forbidden",
                 "refusal.control.cross_shard_possession_forbidden",
                 "refusal.control.cross_shard_collision_forbidden",
+                "refusal.view.cross_shard_follow_forbidden",
             ):
                 check_authority_integrity(
                     repo_root=repo_root,
@@ -1604,6 +1718,7 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                 **dict(runtime.get("registry_payloads") or {}),
                 "shard_map": dict(runtime.get("shard_map") or {}),
                 "active_shard_id": str(proposal.get("target_shard_id", "")),
+                "control_policy": dict(runtime.get("control_policy") or {}),
                 "allow_cross_shard_collision": bool(
                     (runtime.get("control_policy") or {}).get("allow_cross_shard_collision", False)
                 ),

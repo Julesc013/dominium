@@ -13,7 +13,9 @@ REGISTRY_FILE_MAP = {
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
     "lens_registry_hash": "lens.registry.json",
+    "view_mode_registry_hash": "view_mode.registry.json",
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
+    "net_server_policy_registry_hash": "net_server_policy.registry.json",
     "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
     "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
     "astronomy_catalog_index_hash": "astronomy.catalog.index.json",
@@ -79,6 +81,8 @@ def _select_lens_profile(payloads: Dict[str, dict], experience_id: str, law_prof
 
 def _registry_payloads_for_runtime(payloads: Dict[str, dict]) -> Dict[str, dict]:
     return {
+        "view_mode_registry": dict(payloads.get("view_mode_registry_hash") or {}),
+        "net_server_policy_registry": dict(payloads.get("net_server_policy_registry_hash") or {}),
         "astronomy_catalog_index": dict(payloads.get("astronomy_catalog_index_hash") or {}),
         "site_registry_index": dict(payloads.get("site_registry_index_hash") or {}),
         "ephemeris_registry": dict(payloads.get("ephemeris_registry_hash") or {}),

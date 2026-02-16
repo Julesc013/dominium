@@ -323,6 +323,22 @@ def initialize_authoritative_runtime(
     if isinstance(replication_policy_registry, dict):
         replication_policy_row = _policy_row(replication_policy_registry, POLICY_ID_SERVER_AUTHORITATIVE)
 
+    server_policy_id = str(network.get("server_policy_id", "")).strip()
+    server_policy = {}
+    if isinstance(registry_payloads, dict):
+        server_policy = _policy_row(
+            dict(registry_payloads.get("net_server_policy_registry") or {}),
+            server_policy_id,
+        )
+    server_extensions = dict(server_policy.get("extensions") or {})
+    control_policy = {
+        "allowed_view_modes": _sorted_tokens(list(server_extensions.get("allowed_view_modes") or [])),
+        "allow_cross_shard_follow": bool(server_extensions.get("allow_cross_shard_follow", False)),
+        "allow_cross_shard_collision": bool(server_extensions.get("allow_cross_shard_collision", False)),
+        "allow_cross_shard_possession": bool(server_extensions.get("allow_cross_shard_possession", False)),
+        "allow_srz_transfer": bool(server_extensions.get("allow_srz_transfer", False)),
+    }
+
     cadence = _snapshot_cadence(replication_policy_row, explicit=int(snapshot_cadence_ticks))
     registry_hashes = _registry_hashes(lock_payload)
     artifacts_rel = norm(os.path.join("build", "net", "authoritative", str(save_id)))
@@ -339,6 +355,7 @@ def initialize_authoritative_runtime(
         "universe_identity": copy.deepcopy(universe_identity if isinstance(universe_identity, dict) else {}),
         "identity_ref": norm(os.path.join("saves", str(save_id), "universe_identity.json")),
         "state_ref": norm(os.path.join("saves", str(save_id), "universe_state.json")),
+        "control_policy": control_policy,
         "anti_cheat": {
             "policy_id": anti_cheat_policy_id,
             "modules_enabled": _sorted_tokens(list(anti_cheat_policy.get("modules_enabled") or [])),
@@ -1023,7 +1040,10 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
             law_profile=dict(client.get("law_profile") or {}),
             authority_context=dict(client.get("authority_context") or {}),
             navigation_indices=dict(runtime.get("registry_payloads") or {}),
-            policy_context=dict(runtime.get("registry_payloads") or {}),
+            policy_context={
+                **dict(runtime.get("registry_payloads") or {}),
+                "control_policy": dict(runtime.get("control_policy") or {}),
+            },
         )
         if str(executed.get("result", "")) != "complete":
             refusal_reason_code = str(((executed.get("refusal") or {}).get("reason_code", "refusal.net.authority_violation")))
