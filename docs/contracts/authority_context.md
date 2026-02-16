@@ -48,6 +48,8 @@ Stable entitlement IDs used by `law.lab.unrestricted`:
 - `entitlement.control.camera`: required for controller camera bind/unbind processes
 - `entitlement.control.possess`: required for controller possess/release processes
 - `entitlement.control.lens_override`: required for controller lens override process
+- `entitlement.agent.move`: required for `process.agent_move`
+- `entitlement.agent.rotate`: required for `process.agent_rotate`
 - `entitlement.control.admin`: administrative control entitlement reserved for server/admin law profiles
 - `entitlement.admin.security_view`: required for anti-cheat admin security windows
 - `entitlement.admin.kick`: required for administrative peer enforcement action controls (policy-gated)

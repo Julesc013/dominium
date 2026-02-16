@@ -47,6 +47,8 @@ DEFAULT_ENTITLEMENTS = (
     "entitlement.teleport",
     "entitlement.time_control",
     "entitlement.inspect",
+    "entitlement.agent.move",
+    "entitlement.agent.rotate",
     "entitlement.control.camera",
     "entitlement.control.possess",
     "entitlement.control.lens_override",

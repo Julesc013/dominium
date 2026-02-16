@@ -40,6 +40,9 @@ Define the canonical law profile payload used to allow/refuse process classes an
 ## Lab Process IDs (`law.lab.unrestricted`)
 - `process.camera_move`
 - `process.camera_teleport`
+- `process.agent_move`
+- `process.agent_rotate`
+- `process.srz_transfer_entity`
 - `process.control_bind_camera`
 - `process.control_unbind_camera`
 - `process.control_possess_agent`
@@ -54,6 +57,9 @@ Define the canonical law profile payload used to allow/refuse process classes an
 ## Lab Entitlement Mapping (`law.lab.unrestricted`)
 - `process.camera_move` -> `entitlement.camera_control`
 - `process.camera_teleport` -> `entitlement.teleport`
+- `process.agent_move` -> `entitlement.agent.move`
+- `process.agent_rotate` -> `entitlement.agent.rotate`
+- `process.srz_transfer_entity` -> `entitlement.control.admin`
 - `process.control_bind_camera` -> `entitlement.control.camera`
 - `process.control_unbind_camera` -> `entitlement.control.camera`
 - `process.control_possess_agent` -> `entitlement.control.possess`
@@ -73,6 +79,9 @@ Define the canonical law profile payload used to allow/refuse process classes an
   "allowed_processes": [
     "process.camera_move",
     "process.camera_teleport",
+    "process.agent_move",
+    "process.agent_rotate",
+    "process.srz_transfer_entity",
     "process.control_bind_camera",
     "process.control_unbind_camera",
     "process.control_possess_agent",
@@ -104,6 +113,9 @@ Define the canonical law profile payload used to allow/refuse process classes an
   "process_entitlement_requirements": {
     "process.camera_move": "entitlement.camera_control",
     "process.camera_teleport": "entitlement.teleport",
+    "process.agent_move": "entitlement.agent.move",
+    "process.agent_rotate": "entitlement.agent.rotate",
+    "process.srz_transfer_entity": "entitlement.control.admin",
     "process.control_bind_camera": "entitlement.control.camera",
     "process.control_unbind_camera": "entitlement.control.camera",
     "process.control_possess_agent": "entitlement.control.possess",
@@ -118,6 +130,9 @@ Define the canonical law profile payload used to allow/refuse process classes an
   "process_privilege_requirements": {
     "process.camera_move": "observer",
     "process.camera_teleport": "operator",
+    "process.agent_move": "operator",
+    "process.agent_rotate": "operator",
+    "process.srz_transfer_entity": "system",
     "process.control_bind_camera": "observer",
     "process.control_unbind_camera": "observer",
     "process.control_possess_agent": "operator",

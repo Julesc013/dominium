@@ -126,6 +126,8 @@ def prepare_authoritative_runtime_fixture(
             "entitlement.teleport",
             "entitlement.camera_control",
             "entitlement.time_control",
+            "entitlement.agent.move",
+            "entitlement.agent.rotate",
             "ui.window.lab.nav",
             "lens.nondiegetic.access",
         ],
