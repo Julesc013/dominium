@@ -14,8 +14,12 @@ REGISTRY_FILE_MAP = {
     "experience_registry_hash": "experience.registry.json",
     "lens_registry_hash": "lens.registry.json",
     "view_mode_registry_hash": "view_mode.registry.json",
+    "render_proxy_registry_hash": "render_proxy.registry.json",
+    "cosmetic_registry_hash": "cosmetic.registry.json",
+    "cosmetic_policy_registry_hash": "cosmetic_policy.registry.json",
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
+    "server_profile_registry_hash": "server_profile.registry.json",
     "shard_map_registry_hash": "shard_map.registry.json",
     "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
     "epistemic_policy_registry_hash": "epistemic_policy.registry.json",
@@ -83,6 +87,10 @@ def _select_lens_profile(payloads: Dict[str, dict], experience_id: str, law_prof
 def _registry_payloads_for_runtime(payloads: Dict[str, dict]) -> Dict[str, dict]:
     return {
         "view_mode_registry": dict(payloads.get("view_mode_registry_hash") or {}),
+        "render_proxy_registry": dict(payloads.get("render_proxy_registry_hash") or {}),
+        "cosmetic_registry": dict(payloads.get("cosmetic_registry_hash") or {}),
+        "cosmetic_policy_registry": dict(payloads.get("cosmetic_policy_registry_hash") or {}),
+        "server_profile_registry": dict(payloads.get("server_profile_registry_hash") or {}),
         "astronomy_catalog_index": dict(payloads.get("astronomy_catalog_index_hash") or {}),
         "site_registry_index": dict(payloads.get("site_registry_index_hash") or {}),
         "ephemeris_registry": dict(payloads.get("ephemeris_registry_hash") or {}),
