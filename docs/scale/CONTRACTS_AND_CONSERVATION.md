@@ -29,6 +29,9 @@ Every contract row declares:
 - `dom.contract.deterministic_transition`
 - `dom.contract.no_penetration`
 - `dom.contract.deterministic_contact_resolution`
+- `dom.contract.epistemic_invariance_lod`
+- `dom.contract.no_precision_leak`
+- `dom.contract.no_hidden_state_leak`
 
 ## Refusal Semantics
 When a requested transition cannot satisfy the declared contract set:
