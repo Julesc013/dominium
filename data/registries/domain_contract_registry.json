@@ -83,6 +83,57 @@
     },
     {
       "conservation_tags": [
+        "information_access",
+        "lod_invariance"
+      ],
+      "contract_id": "dom.contract.epistemic_invariance_lod",
+      "extensions": {},
+      "human_name": "Epistemic Invariance Under LOD",
+      "invariant_notes": "Refinement/collapse transitions must preserve observer-visible knowledge under active law/lens/authority policy envelopes.",
+      "transition_requirements": [
+        "solver tier transitions must pass through deterministic redaction before perceived emission",
+        "collapse/expand checks must compare pre/post perceived outputs under same policy envelope"
+      ],
+      "violation_refusal_codes": [
+        "refusal.ep.lod_information_gain"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "precision",
+        "information_access"
+      ],
+      "contract_id": "dom.contract.no_precision_leak",
+      "extensions": {},
+      "human_name": "No Precision Leak",
+      "invariant_notes": "Solver refinement must not increase delivered spatial/value precision beyond deterministic policy quantization envelopes.",
+      "transition_requirements": [
+        "distance-based quantization must remain stable across solver tier transitions",
+        "micro-native precision fields must be clamped or redacted before perceived emission"
+      ],
+      "violation_refusal_codes": [
+        "refusal.ep.lod_information_gain"
+      ]
+    },
+    {
+      "conservation_tags": [
+        "information_access",
+        "hidden_state"
+      ],
+      "contract_id": "dom.contract.no_hidden_state_leak",
+      "extensions": {},
+      "human_name": "No Hidden State Leak",
+      "invariant_notes": "Internal or hidden state produced by refinement must remain unavailable unless exposed by allowed channels and entitlements.",
+      "transition_requirements": [
+        "hidden/internal fields must be removed unless explicitly policy-authorized",
+        "perceived channel set must remain bounded to allowed observation channels"
+      ],
+      "violation_refusal_codes": [
+        "refusal.ep.lod_information_gain"
+      ]
+    },
+    {
+      "conservation_tags": [
         "determinism"
       ],
       "contract_id": "dom.contract.deterministic_transition",

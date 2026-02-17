@@ -5,7 +5,9 @@
     {
       "contract_ids": [
         "dom.contract.mass_conservation",
-        "dom.contract.deterministic_transition"
+        "dom.contract.deterministic_transition",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_precision_leak"
       ],
       "deprecated": false,
       "description": "Macro gravitational behavior and aggregate attractor orchestration.",
@@ -40,7 +42,9 @@
       "contract_ids": [
         "dom.contract.mass_conservation",
         "dom.contract.energy_conservation",
-        "dom.contract.deterministic_transition"
+        "dom.contract.deterministic_transition",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_precision_leak"
       ],
       "deprecated": false,
       "description": "Orbital trajectory and hierarchy transition orchestration.",
@@ -76,7 +80,10 @@
     {
       "contract_ids": [
         "dom.contract.mass_conservation",
-        "dom.contract.port_contract_preservation"
+        "dom.contract.port_contract_preservation",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_precision_leak",
+        "dom.contract.no_hidden_state_leak"
       ],
       "deprecated": false,
       "description": "Terrain composition and stratification summaries for scale transitions.",
@@ -112,7 +119,10 @@
     {
       "contract_ids": [
         "dom.contract.mass_conservation",
-        "dom.contract.deterministic_transition"
+        "dom.contract.deterministic_transition",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_precision_leak",
+        "dom.contract.no_hidden_state_leak"
       ],
       "deprecated": false,
       "description": "Basic fluid movement summaries for deterministic region transitions.",
@@ -146,7 +156,10 @@
     {
       "contract_ids": [
         "dom.contract.energy_conservation",
-        "dom.contract.deterministic_transition"
+        "dom.contract.deterministic_transition",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_precision_leak",
+        "dom.contract.no_hidden_state_leak"
       ],
       "deprecated": false,
       "description": "Energy accounting aggregation for macro/micro handoff.",
@@ -182,7 +195,10 @@
     {
       "contract_ids": [
         "dom.contract.energy_conservation",
-        "dom.contract.deterministic_transition"
+        "dom.contract.deterministic_transition",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_precision_leak",
+        "dom.contract.no_hidden_state_leak"
       ],
       "deprecated": false,
       "description": "Heat transfer summaries with deterministic collapse/expand transitions.",
@@ -217,7 +233,10 @@
     {
       "contract_ids": [
         "dom.contract.epistemic_non_omniscience",
-        "dom.contract.port_contract_preservation"
+        "dom.contract.port_contract_preservation",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_precision_leak",
+        "dom.contract.no_hidden_state_leak"
       ],
       "deprecated": false,
       "description": "Signal propagation and visibility transfer constraints.",
@@ -252,7 +271,9 @@
     {
       "contract_ids": [
         "dom.contract.ledger_balance",
-        "dom.contract.deterministic_transition"
+        "dom.contract.deterministic_transition",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_hidden_state_leak"
       ],
       "deprecated": false,
       "description": "Economic balance and account-transfer scaffolding for future packs.",
@@ -287,7 +308,9 @@
     {
       "contract_ids": [
         "dom.contract.epistemic_non_omniscience",
-        "dom.contract.deterministic_transition"
+        "dom.contract.deterministic_transition",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_hidden_state_leak"
       ],
       "deprecated": false,
       "description": "Social/psych aggregate behavior taxonomy for future simulation packs.",
@@ -320,7 +343,10 @@
     {
       "contract_ids": [
         "dom.contract.epistemic_non_omniscience",
-        "dom.contract.port_contract_preservation"
+        "dom.contract.port_contract_preservation",
+        "dom.contract.epistemic_invariance_lod",
+        "dom.contract.no_precision_leak",
+        "dom.contract.no_hidden_state_leak"
       ],
       "deprecated": false,
       "description": "Pack-gated domain slot for magic-like systems. Inactive until installed by pack policy.",
