@@ -5,23 +5,23 @@
   "bundle_id": "bundle.base.lab",
   "policy_baselines": {
     "policy.net.lockstep": {
-      "final_composite_hash": "38e13ffe1fa0bc1deea819c58642fae1ec774bff27d896da43613458c8cb2cce"
+      "final_composite_hash": "1a3823b973d2a237f0e93ab7448aeddcec53027eb2a204a6191c599bbfc100bf"
     },
     "policy.net.server_authoritative": {
-      "final_composite_hash": "fa0d05e34bf623c938b536e383ad9ecbb97965652ff5616b7d7573fd887abc6b"
+      "final_composite_hash": "287e43d4d7137528dc58ec7b3c66a8dad8d2a59217f5c7dd8c61a308520e448f"
     },
     "policy.net.srz_hybrid": {
-      "final_composite_hash": "016ea42f0c2a7fceb2d87002bce4791221de93594dd3ee5d1af47fa8a17c56ed"
+      "final_composite_hash": "cff7a2e97cd06dfa37a423d39bb67a0a7ab36ace6e442567cbaf6bc5ffdeab0e"
     }
   },
   "ranked_handshake_matrix_hash": "1926e51d42b7bca86246ca523439c0674245e19f9f141662021d54394f366fb6",
   "anti_cheat_fingerprint_hashes": {
     "detect_only_event_fingerprint_hash": "34a73a21bd5ce366293f07ea103b6243135a6b8413a72d22d41be71509787f25",
-    "rank_strict_event_fingerprint_hash": "27fbff163195f511c6954db020ebd322b8c8b7e19df88767c672ef66d6583310",
-    "rank_strict_action_fingerprint_hash": "cf92fe074e9c07a526f45867534eee0bccc4c4008e24866d04e568f5c453d2cb"
+    "rank_strict_action_fingerprint_hash": "cf92fe074e9c07a526f45867534eee0bccc4c4008e24866d04e568f5c453d2cb",
+    "rank_strict_event_fingerprint_hash": "27fbff163195f511c6954db020ebd322b8c8b7e19df88767c672ef66d6583310"
   },
   "update_policy": {
     "required_commit_tag": "MULTIPLAYER-REGRESSION-UPDATE",
-    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-16 (ED2 diegetic instrument ecosystem integration)."
+    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-17 (CIV2 recovery and deterministic hash refresh)."
   }
 }
