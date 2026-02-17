@@ -25,6 +25,23 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.control_possess_agent": "entitlement.control.possess",
     "process.control_release_agent": "entitlement.control.possess",
     "process.control_set_view_lens": "entitlement.control.lens_override",
+    "process.faction_create": "entitlement.civ.create_faction",
+    "process.faction_dissolve": "entitlement.civ.dissolve_faction",
+    "process.affiliation_join": "entitlement.civ.affiliation",
+    "process.affiliation_leave": "entitlement.civ.affiliation",
+    "process.territory_claim": "entitlement.civ.claim",
+    "process.territory_release": "entitlement.civ.claim",
+    "process.diplomacy_set_relation": "entitlement.civ.diplomacy",
+    "process.cohort_create": "entitlement.civ.admin",
+    "process.cohort_expand_to_micro": "entitlement.civ.admin",
+    "process.cohort_collapse_from_micro": "entitlement.civ.admin",
+    "process.affiliation_change_micro": "entitlement.civ.affiliation",
+    "process.order_create": "entitlement.civ.order",
+    "process.order_cancel": "entitlement.civ.order",
+    "process.order_tick": "entitlement.civ.order",
+    "process.cohort_relocate": "entitlement.civ.order",
+    "process.role_assign": "entitlement.civ.role_assign",
+    "process.role_revoke": "entitlement.civ.role_assign",
     "process.camera_bind_target": "entitlement.control.camera",
     "process.camera_unbind_target": "entitlement.control.camera",
     "process.camera_set_view_mode": "entitlement.control.camera",
@@ -38,6 +55,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.time_pause": "entitlement.time_control",
     "process.time_resume": "entitlement.time_control",
     "process.region_management_tick": "session.boot",
+    "process.region_expand": "session.boot",
+    "process.region_collapse": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -50,6 +69,23 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.control_possess_agent": "operator",
     "process.control_release_agent": "operator",
     "process.control_set_view_lens": "operator",
+    "process.faction_create": "operator",
+    "process.faction_dissolve": "operator",
+    "process.affiliation_join": "observer",
+    "process.affiliation_leave": "observer",
+    "process.territory_claim": "operator",
+    "process.territory_release": "operator",
+    "process.diplomacy_set_relation": "operator",
+    "process.cohort_create": "operator",
+    "process.cohort_expand_to_micro": "operator",
+    "process.cohort_collapse_from_micro": "operator",
+    "process.affiliation_change_micro": "observer",
+    "process.order_create": "operator",
+    "process.order_cancel": "operator",
+    "process.order_tick": "operator",
+    "process.cohort_relocate": "operator",
+    "process.role_assign": "operator",
+    "process.role_revoke": "operator",
     "process.camera_bind_target": "observer",
     "process.camera_unbind_target": "observer",
     "process.camera_set_view_mode": "observer",
@@ -63,6 +99,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.time_pause": "operator",
     "process.time_resume": "operator",
     "process.region_management_tick": "observer",
+    "process.region_expand": "observer",
+    "process.region_collapse": "observer",
 }
 PRIVILEGE_RANK = {
     "observer": 0,
@@ -93,6 +131,25 @@ CONTROL_PROCESS_IDS = {
     "process.instrument_radio_send_text",
     "process.body_move_attempt",
 }
+CIV_PROCESS_IDS = {
+    "process.faction_create",
+    "process.faction_dissolve",
+    "process.affiliation_join",
+    "process.affiliation_leave",
+    "process.territory_claim",
+    "process.territory_release",
+    "process.diplomacy_set_relation",
+    "process.cohort_create",
+    "process.cohort_expand_to_micro",
+    "process.cohort_collapse_from_micro",
+    "process.affiliation_change_micro",
+    "process.order_create",
+    "process.order_cancel",
+    "process.order_tick",
+    "process.cohort_relocate",
+    "process.role_assign",
+    "process.role_revoke",
+}
 CAMERA_REQUIRED_PROCESS_IDS = {
     "process.camera_move",
     "process.camera_teleport",
@@ -111,6 +168,10 @@ CONTROL_GATE_REASON_MAP = {
 COSMETIC_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.cosmetic.forbidden",
     "ENTITLEMENT_MISSING": "refusal.cosmetic.forbidden",
+}
+CIV_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": "refusal.civ.law_forbidden",
+    "ENTITLEMENT_MISSING": "refusal.civ.entitlement_missing",
 }
 DEFAULT_COSMETIC_ID = "cosmetic.default.pill"
 DEFAULT_RENDER_PROXY_ID = "render.proxy.pill_default"
@@ -171,6 +232,18 @@ def _as_int(value: object, default_value: int = 0) -> int:
 
 def _sorted_tokens(items: List[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in (items or []) if str(item).strip()))
+
+
+def _ordered_unique_tokens(items: List[object]) -> List[str]:
+    out: List[str] = []
+    seen: set[str] = set()
+    for item in list(items or []):
+        token = str(item).strip()
+        if not token or token in seen:
+            continue
+        seen.add(token)
+        out.append(token)
+    return out
 
 
 def _vector3_int(payload: object, field_name: str) -> Dict[str, int] | None:
@@ -505,6 +578,12 @@ def _ensure_agent_states(state: dict) -> List[dict]:
                 "intent_scope_id": row.get("intent_scope_id")
                 if row.get("intent_scope_id") is None
                 else str(row.get("intent_scope_id", "")).strip(),
+                "parent_cohort_id": row.get("parent_cohort_id")
+                if row.get("parent_cohort_id") is None
+                else str(row.get("parent_cohort_id", "")).strip(),
+                "location_ref": row.get("location_ref")
+                if row.get("location_ref") is None
+                else str(row.get("location_ref", "")).strip(),
                 "orientation_mdeg": {
                     "yaw": _as_int((orientation or {}).get("yaw", 0), 0),
                     "pitch": _as_int((orientation or {}).get("pitch", 0), 0),
@@ -841,6 +920,999 @@ def _camera_target_owner_shard(
         object_id = str(site.get("object_id", "")).strip()
         return _owner_shard_for_object(shard_map=shard_map, object_id=object_id or token_id)
     return ""
+
+
+def _ensure_faction_assemblies(state: dict) -> List[dict]:
+    rows = state.get("faction_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("faction_id", ""))):
+        faction_id = str(row.get("faction_id", "")).strip() or str(row.get("assembly_id", "")).strip()
+        if not faction_id:
+            continue
+        status = str(row.get("status", "active")).strip() or "active"
+        if status not in ("active", "dissolved"):
+            status = "active"
+        diplomatic_relations = row.get("diplomatic_relations")
+        relation_map: Dict[str, str] = {}
+        if isinstance(diplomatic_relations, dict):
+            for peer_id in sorted(diplomatic_relations.keys()):
+                peer_token = str(peer_id).strip()
+                relation_token = str(diplomatic_relations.get(peer_id, "")).strip()
+                if peer_token and relation_token:
+                    relation_map[peer_token] = relation_token
+        normalized.append(
+            {
+                "faction_id": faction_id,
+                "human_name": str(row.get("human_name", "")).strip() or faction_id,
+                "description": str(row.get("description", "")).strip(),
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "founder_agent_id": row.get("founder_agent_id")
+                if row.get("founder_agent_id") is None
+                else str(row.get("founder_agent_id", "")).strip() or None,
+                "governance_type_id": str(row.get("governance_type_id", "gov.none")).strip() or "gov.none",
+                "territory_ids": _sorted_tokens(list(row.get("territory_ids") or [])),
+                "diplomatic_relations": relation_map,
+                "status": status,
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["faction_assemblies"] = normalized
+    return normalized
+
+
+def _ensure_affiliations(state: dict) -> List[dict]:
+    rows = state.get("affiliations")
+    if not isinstance(rows, list):
+        rows = []
+    by_subject: Dict[str, dict] = {}
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (
+            str(item.get("subject_id", "")),
+            _as_int(item.get("joined_tick", 0), 0),
+            str(item.get("faction_id", "")),
+            str(item.get("role_id", "")),
+        ),
+    ):
+        subject_id = str(row.get("subject_id", "")).strip()
+        if not subject_id:
+            continue
+        faction_value = row.get("faction_id")
+        faction_id = None if faction_value is None else str(faction_value).strip() or None
+        by_subject[subject_id] = {
+            "subject_id": subject_id,
+            "faction_id": faction_id,
+            "joined_tick": max(0, _as_int(row.get("joined_tick", 0), 0)),
+            "role_id": str(row.get("role_id", "role.member")).strip() or "role.member",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+    normalized = [dict(by_subject[token]) for token in sorted(by_subject.keys())]
+    state["affiliations"] = normalized
+    return normalized
+
+
+def _ensure_territory_assemblies(state: dict) -> List[dict]:
+    rows = state.get("territory_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("territory_id", ""))):
+        territory_id = str(row.get("territory_id", "")).strip()
+        if not territory_id:
+            continue
+        claim_status = str(row.get("claim_status", "unclaimed")).strip() or "unclaimed"
+        if claim_status not in ("unclaimed", "claimed", "contested"):
+            claim_status = "unclaimed"
+        owner = row.get("owner_faction_id")
+        owner_faction_id = None if owner is None else str(owner).strip() or None
+        normalized.append(
+            {
+                "territory_id": territory_id,
+                "region_scope": dict(row.get("region_scope") or {}) if isinstance(row.get("region_scope"), dict) else {},
+                "owner_faction_id": owner_faction_id,
+                "claim_status": claim_status,
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["territory_assemblies"] = normalized
+    return normalized
+
+
+def _canonical_faction_pair(faction_a: str, faction_b: str) -> Tuple[str, str]:
+    left = str(faction_a).strip()
+    right = str(faction_b).strip()
+    if left <= right:
+        return left, right
+    return right, left
+
+
+def _ensure_diplomatic_relations(state: dict) -> List[dict]:
+    rows = state.get("diplomatic_relations")
+    if not isinstance(rows, list):
+        rows = []
+    by_pair: Dict[Tuple[str, str], dict] = {}
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (
+            str(item.get("faction_a", "")),
+            str(item.get("faction_b", "")),
+            _as_int(item.get("updated_tick", 0), 0),
+            str(item.get("relation_state", "")),
+        ),
+    ):
+        faction_a = str(row.get("faction_a", "")).strip()
+        faction_b = str(row.get("faction_b", "")).strip()
+        if not faction_a or not faction_b or faction_a == faction_b:
+            continue
+        left, right = _canonical_faction_pair(faction_a=faction_a, faction_b=faction_b)
+        by_pair[(left, right)] = {
+            "faction_a": left,
+            "faction_b": right,
+            "relation_state": str(row.get("relation_state", "neutral")).strip() or "neutral",
+            "updated_tick": max(0, _as_int(row.get("updated_tick", 0), 0)),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+    normalized = [dict(by_pair[key]) for key in sorted(by_pair.keys())]
+    state["diplomatic_relations"] = normalized
+    return normalized
+
+
+def _ensure_cohort_assemblies(state: dict) -> List[dict]:
+    rows = state.get("cohort_assemblies")
+    if not isinstance(rows, list):
+        rows = state.get("cohort_states")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("cohort_id", ""))):
+        cohort_id = str(row.get("cohort_id", "")).strip() or str(row.get("subject_id", "")).strip()
+        if not cohort_id:
+            continue
+        size = max(0, _as_int(row.get("size", 0), 0))
+        faction_raw = row.get("faction_id")
+        territory_raw = row.get("territory_id")
+        faction_id = None if faction_raw is None else str(faction_raw).strip() or None
+        territory_id = None if territory_raw is None else str(territory_raw).strip() or None
+        refinement_state = str(row.get("refinement_state", "macro")).strip() or "macro"
+        if refinement_state not in ("macro", "micro", "mixed"):
+            refinement_state = "macro"
+        normalized.append(
+            {
+                "cohort_id": cohort_id,
+                "size": int(size),
+                "faction_id": faction_id,
+                "territory_id": territory_id,
+                "location_ref": str(row.get("location_ref", "")).strip(),
+                "demographic_tags": dict(row.get("demographic_tags") or {}) if isinstance(row.get("demographic_tags"), dict) else {},
+                "skill_distribution": dict(row.get("skill_distribution") or {})
+                if isinstance(row.get("skill_distribution"), dict)
+                else {},
+                "refinement_state": refinement_state,
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["cohort_assemblies"] = normalized
+    return normalized
+
+
+def _normalize_order_status(token: object) -> str:
+    value = str(token or "").strip() or "created"
+    if value not in ("created", "queued", "executing", "completed", "failed", "refused", "cancelled"):
+        return "created"
+    return value
+
+
+def _ensure_order_assemblies(state: dict) -> List[dict]:
+    rows = state.get("order_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("order_id", ""))):
+        order_id = str(row.get("order_id", "")).strip()
+        if not order_id:
+            continue
+        target_kind = str(row.get("target_kind", "")).strip()
+        if target_kind not in ("agent", "cohort", "faction", "territory"):
+            target_kind = "cohort"
+        normalized.append(
+            {
+                "order_id": order_id,
+                "order_type_id": str(row.get("order_type_id", "")).strip(),
+                "issuer_subject_id": str(row.get("issuer_subject_id", "")).strip(),
+                "target_kind": target_kind,
+                "target_id": str(row.get("target_id", "")).strip(),
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "last_update_tick": max(0, _as_int(row.get("last_update_tick", row.get("created_tick", 0)), 0)),
+                "status": _normalize_order_status(row.get("status", "created")),
+                "priority": max(0, _as_int(row.get("priority", 0), 0)),
+                "payload": dict(row.get("payload") or {}) if isinstance(row.get("payload"), dict) else {},
+                "required_entitlements": _sorted_tokens(list(row.get("required_entitlements") or [])),
+                "refusal": dict(row.get("refusal") or {}) if isinstance(row.get("refusal"), dict) else None,
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["order_assemblies"] = normalized
+    return normalized
+
+
+def _queue_id_for_owner(owner_kind: str, owner_id: str) -> str:
+    kind = str(owner_kind).strip() or "global"
+    token = str(owner_id).strip() or "global"
+    return "queue.{}.{}".format(kind, token)
+
+
+def _ensure_order_queue_assemblies(state: dict) -> List[dict]:
+    rows = state.get("order_queue_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("queue_id", ""))):
+        queue_id = str(row.get("queue_id", "")).strip()
+        if not queue_id:
+            continue
+        owner_kind = str(row.get("owner_kind", "")).strip()
+        if owner_kind not in ("faction", "controller", "cohort", "global"):
+            owner_kind = "global"
+        owner_id = str(row.get("owner_id", "")).strip()
+        if not owner_id:
+            owner_id = "global"
+        normalized.append(
+            {
+                "queue_id": queue_id,
+                "owner_kind": owner_kind,
+                "owner_id": owner_id,
+                "order_ids": _ordered_unique_tokens(list(row.get("order_ids") or [])),
+                "last_update_tick": max(0, _as_int(row.get("last_update_tick", 0), 0)),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["order_queue_assemblies"] = normalized
+    return normalized
+
+
+def _ensure_institution_assemblies(state: dict) -> List[dict]:
+    rows = state.get("institution_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("institution_id", ""))):
+        institution_id = str(row.get("institution_id", "")).strip()
+        if not institution_id:
+            continue
+        faction_value = row.get("faction_id")
+        faction_id = None if faction_value is None else str(faction_value).strip() or None
+        status = str(row.get("status", "active")).strip() or "active"
+        if status not in ("active", "dissolved"):
+            status = "active"
+        normalized.append(
+            {
+                "institution_id": institution_id,
+                "institution_type_id": str(row.get("institution_type_id", "")).strip(),
+                "faction_id": faction_id,
+                "status": status,
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["institution_assemblies"] = normalized
+    return normalized
+
+
+def _ensure_role_assignment_assemblies(state: dict) -> List[dict]:
+    rows = state.get("role_assignment_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assignment_id", ""))):
+        assignment_id = str(row.get("assignment_id", "")).strip()
+        if not assignment_id:
+            continue
+        normalized.append(
+            {
+                "assignment_id": assignment_id,
+                "institution_id": str(row.get("institution_id", "")).strip(),
+                "subject_id": str(row.get("subject_id", "")).strip(),
+                "role_id": str(row.get("role_id", "")).strip(),
+                "granted_entitlements": _sorted_tokens(list(row.get("granted_entitlements") or [])),
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["role_assignment_assemblies"] = normalized
+    return normalized
+
+
+def _find_cohort(cohort_rows: List[dict], cohort_id: str) -> dict:
+    token = str(cohort_id).strip()
+    for row in cohort_rows:
+        if str(row.get("cohort_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _find_order(order_rows: List[dict], order_id: str) -> dict:
+    token = str(order_id).strip()
+    for row in order_rows:
+        if str(row.get("order_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _find_order_queue(queue_rows: List[dict], queue_id: str) -> dict:
+    token = str(queue_id).strip()
+    for row in queue_rows:
+        if str(row.get("queue_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _find_institution(institution_rows: List[dict], institution_id: str) -> dict:
+    token = str(institution_id).strip()
+    for row in institution_rows:
+        if str(row.get("institution_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _find_role_assignment(role_assignment_rows: List[dict], assignment_id: str) -> dict:
+    token = str(assignment_id).strip()
+    for row in role_assignment_rows:
+        if str(row.get("assignment_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _find_faction(faction_rows: List[dict], faction_id: str) -> dict:
+    token = str(faction_id).strip()
+    for row in faction_rows:
+        if str(row.get("faction_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _find_affiliation(affiliation_rows: List[dict], subject_id: str) -> dict:
+    token = str(subject_id).strip()
+    for row in affiliation_rows:
+        if str(row.get("subject_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _find_territory(territory_rows: List[dict], territory_id: str) -> dict:
+    token = str(territory_id).strip()
+    for row in territory_rows:
+        if str(row.get("territory_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _authority_peer_token(authority_context: dict) -> str:
+    peer_id = str(authority_context.get("peer_id", "")).strip()
+    if peer_id:
+        return peer_id
+    return str(authority_context.get("authority_origin", "")).strip()
+
+
+def _civ_admin_override(authority_context: dict) -> bool:
+    entitlements = _sorted_tokens(list(authority_context.get("entitlements") or []))
+    if "entitlement.control.admin" in set(entitlements):
+        return True
+    if "entitlement.civ.admin" in set(entitlements):
+        return True
+    return False
+
+
+def _faction_owner_peer_id(faction_row: dict) -> str:
+    ext = dict(faction_row.get("extensions") or {}) if isinstance(faction_row.get("extensions"), dict) else {}
+    return str(ext.get("owner_peer_id", "")).strip()
+
+
+def _source_registry_rows(registry_rel: str, entry_key: str, id_key: str) -> Dict[str, dict]:
+    abs_path = os.path.join(REPO_ROOT_HINT, registry_rel.replace("/", os.sep))
+    try:
+        payload = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(payload, dict):
+        return {}
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return {}
+    rows = record.get(entry_key)
+    if not isinstance(rows, list):
+        return {}
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(id_key, ""))):
+        token = str(row.get(id_key, "")).strip()
+        if token:
+            out[token] = dict(row)
+    return out
+
+
+def _governance_type_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "governance_type_registry")
+    rows = _registry_rows_by_id(payload, "governance_types", "governance_type_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/governance_type_registry.json",
+        entry_key="governance_types",
+        id_key="governance_type_id",
+    )
+
+
+def _diplomatic_state_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "diplomatic_state_registry")
+    rows = _registry_rows_by_id(payload, "states", "relation_state")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/diplomatic_state_registry.json",
+        entry_key="states",
+        id_key="relation_state",
+    )
+
+
+def _cohort_mapping_policy_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "cohort_mapping_policy_registry")
+    rows = _registry_rows_by_id(payload, "policies", "mapping_policy_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/cohort_mapping_policy_registry.json",
+        entry_key="policies",
+        id_key="mapping_policy_id",
+    )
+
+
+def _order_type_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "order_type_registry")
+    rows = _registry_rows_by_id(payload, "order_types", "order_type_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/order_type_registry.json",
+        entry_key="order_types",
+        id_key="order_type_id",
+    )
+
+
+def _role_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "role_registry")
+    rows = _registry_rows_by_id(payload, "roles", "role_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/role_registry.json",
+        entry_key="roles",
+        id_key="role_id",
+    )
+
+
+def _institution_type_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "institution_type_registry")
+    rows = _registry_rows_by_id(payload, "institution_types", "institution_type_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/institution_type_registry.json",
+        entry_key="institution_types",
+        id_key="institution_type_id",
+    )
+
+
+def _cohort_policy_id(cohort_row: dict, fallback: str = "") -> str:
+    token = str(cohort_row.get("mapping_policy_id", "")).strip()
+    if token:
+        return token
+    extensions = dict(cohort_row.get("extensions") or {}) if isinstance(cohort_row.get("extensions"), dict) else {}
+    token = str(extensions.get("mapping_policy_id", "")).strip()
+    if token:
+        return token
+    return str(fallback).strip()
+
+
+def _deterministic_cohort_id(faction_id: object, location_ref: object, created_tick: int, size_bucket: int) -> str:
+    digest = canonical_sha256(
+        {
+            "faction_id": str(faction_id or "").strip(),
+            "location_ref": str(location_ref or "").strip(),
+            "created_tick": int(created_tick),
+            "size_bucket": int(size_bucket),
+        }
+    )
+    return "cohort.{}".format(digest[:16])
+
+
+def _cohort_seed_material(
+    cohort_id: str,
+    tick: int,
+    policy_context: dict | None,
+    mapping_policy_id: str,
+    interest_region_id: str,
+) -> str:
+    pack_lock_hash = ""
+    if isinstance(policy_context, dict):
+        pack_lock_hash = str(policy_context.get("pack_lock_hash", "")).strip()
+    digest = canonical_sha256(
+        {
+            "cohort_id": str(cohort_id).strip(),
+            "tick": int(tick),
+            "pack_lock_hash": pack_lock_hash,
+            "mapping_policy_id": str(mapping_policy_id).strip(),
+            "interest_region_id": str(interest_region_id).strip(),
+        }
+    )
+    return "seed.cohort.{}".format(digest[:24])
+
+
+def _deterministic_faction_id(founder_agent_id: object, created_tick: int) -> str:
+    digest = canonical_sha256(
+        {
+            "founder_agent_id": str(founder_agent_id or "").strip(),
+            "created_tick": int(created_tick),
+        }
+    )
+    return "faction.{}".format(digest[:16])
+
+
+def _order_sort_key(order_row: dict) -> Tuple[int, int, str]:
+    return (
+        -max(0, _as_int(order_row.get("priority", 0), 0)),
+        max(0, _as_int(order_row.get("created_tick", 0), 0)),
+        str(order_row.get("order_id", "")),
+    )
+
+
+def _effective_civ_entitlements(
+    state: dict,
+    authority_context: dict,
+    *,
+    subject_id: str = "",
+) -> List[str]:
+    entitlements = set(_sorted_tokens(list(authority_context.get("entitlements") or [])))
+    subject_token = str(subject_id).strip() or _author_subject_id(authority_context)
+    role_rows = _ensure_role_assignment_assemblies(state)
+    for row in role_rows:
+        if str(row.get("subject_id", "")).strip() != subject_token:
+            continue
+        for entitlement_id in _sorted_tokens(list(row.get("granted_entitlements") or [])):
+            entitlements.add(str(entitlement_id))
+    return sorted(entitlements)
+
+
+def _order_queue_owner(state: dict, target_kind: str, target_id: str, inputs: dict) -> Tuple[str, str]:
+    kind = str(target_kind).strip()
+    token = str(target_id).strip()
+    if kind == "faction" and token:
+        return "faction", token
+    if kind == "cohort" and token:
+        return "cohort", token
+    if kind == "agent" and token:
+        agent = _find_agent(_ensure_agent_states(state), token)
+        if isinstance(agent, dict) and agent:
+            parent_cohort_id = str(agent.get("parent_cohort_id", "")).strip()
+            if parent_cohort_id:
+                return "cohort", parent_cohort_id
+            controller_id = str(agent.get("controller_id", "")).strip()
+            if controller_id:
+                return "controller", controller_id
+    controller_id = str((inputs or {}).get("controller_id", "")).strip()
+    if controller_id:
+        return "controller", controller_id
+    return "global", "global"
+
+
+def _order_target_shards(state: dict, target_kind: str, target_id: str, shard_map: dict) -> List[str]:
+    kind = str(target_kind).strip()
+    token = str(target_id).strip()
+    if not token:
+        return []
+    if kind == "cohort":
+        row = _find_cohort(_ensure_cohort_assemblies(state), token)
+        if isinstance(row, dict) and row:
+            return _sorted_tokens([_cohort_owner_shard_id(row, shard_map)])
+        return []
+    if kind == "agent":
+        row = _find_agent(_ensure_agent_states(state), token)
+        if isinstance(row, dict) and row:
+            shard_id = str(row.get("shard_id", "")).strip() or _owner_shard_for_object(shard_map, token)
+            return _sorted_tokens([shard_id]) if shard_id else []
+        return []
+    if kind == "territory":
+        shard_id = _owner_shard_for_object(shard_map, token)
+        return _sorted_tokens([shard_id]) if shard_id else []
+    if kind == "faction":
+        cohort_rows = _ensure_cohort_assemblies(state)
+        out: List[str] = []
+        for row in cohort_rows:
+            if str(row.get("faction_id", "")).strip() != token:
+                continue
+            owner = _cohort_owner_shard_id(row, shard_map)
+            if owner:
+                out.append(owner)
+        return _sorted_tokens(out)
+    return []
+
+
+def _upsert_order_queue(queue_rows: List[dict], owner_kind: str, owner_id: str, current_tick: int) -> dict:
+    queue_id = _queue_id_for_owner(owner_kind, owner_id)
+    row = _find_order_queue(queue_rows=queue_rows, queue_id=queue_id)
+    if row:
+        row["owner_kind"] = str(owner_kind).strip() or "global"
+        row["owner_id"] = str(owner_id).strip() or "global"
+        row["last_update_tick"] = int(current_tick)
+        if not isinstance(row.get("extensions"), dict):
+            row["extensions"] = {}
+        return row
+    row = {
+        "queue_id": queue_id,
+        "owner_kind": str(owner_kind).strip() or "global",
+        "owner_id": str(owner_id).strip() or "global",
+        "order_ids": [],
+        "last_update_tick": int(current_tick),
+        "extensions": {},
+    }
+    queue_rows.append(row)
+    return row
+
+
+def _refresh_queue_order_ids(queue_row: dict, order_rows: List[dict]) -> None:
+    order_map = {}
+    for row in order_rows:
+        order_id = str((row or {}).get("order_id", "")).strip()
+        if order_id:
+            order_map[order_id] = row
+    active_status = {"created", "queued", "executing"}
+    queued_ids = []
+    for order_id in _ordered_unique_tokens(list((queue_row or {}).get("order_ids") or [])):
+        row = order_map.get(order_id)
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("status", "")).strip() not in active_status:
+            continue
+        queued_ids.append(order_id)
+    queue_row["order_ids"] = sorted(
+        set(queued_ids),
+        key=lambda order_id: _order_sort_key(dict(order_map.get(order_id) or {"order_id": order_id})),
+    )
+
+
+def _remove_order_from_all_queues(queue_rows: List[dict], order_id: str) -> None:
+    token = str(order_id).strip()
+    if not token:
+        return
+    for row in queue_rows:
+        if not isinstance(row, dict):
+            continue
+        row["order_ids"] = [entry for entry in _ordered_unique_tokens(list(row.get("order_ids") or [])) if entry != token]
+
+
+def _run_order_tick(
+    *,
+    state: dict,
+    order_rows: List[dict],
+    queue_rows: List[dict],
+    cohorts: List[dict],
+    agents: List[dict],
+    current_tick: int,
+    authority_context: dict,
+    policy_context: dict | None,
+    max_orders_override: int | None = None,
+) -> Dict[str, object]:
+    budget = max(
+        1,
+        _as_int(
+            max_orders_override if max_orders_override is not None else (policy_context or {}).get("order_tick_budget", 8),
+            8,
+        ),
+    )
+    order_type_map = _order_type_rows(policy_context)
+    shard_map = dict((policy_context or {}).get("shard_map") or {})
+    active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+    affiliations = _ensure_affiliations(state)
+    faction_rows = _ensure_faction_assemblies(state)
+
+    processed_ids: List[str] = []
+    completed_ids: List[str] = []
+    failed_ids: List[str] = []
+
+    def _fail(order_row: dict, code: str, reason: str, extra: dict | None = None) -> None:
+        order_id = str(order_row.get("order_id", "")).strip()
+        order_row["status"] = "failed"
+        payload = {"code": str(code), "reason": str(reason)}
+        if isinstance(extra, dict) and extra:
+            payload.update(dict(extra))
+        order_row["refusal"] = payload
+        order_row["last_update_tick"] = int(current_tick)
+        failed_ids.append(order_id)
+        _remove_order_from_all_queues(queue_rows=queue_rows, order_id=order_id)
+
+    for queue_row in queue_rows:
+        _refresh_queue_order_ids(queue_row=queue_row, order_rows=order_rows)
+
+    queued = [
+        row
+        for row in sorted((item for item in order_rows if isinstance(item, dict)), key=_order_sort_key)
+        if str(row.get("status", "")).strip() in {"created", "queued", "executing"}
+    ]
+    for order_row in queued:
+        if len(processed_ids) >= int(budget):
+            break
+        order_id = str(order_row.get("order_id", "")).strip()
+        if not order_id:
+            continue
+        processed_ids.append(order_id)
+        order_row["status"] = "executing"
+        order_row["last_update_tick"] = int(current_tick)
+        order_type_id = str(order_row.get("order_type_id", "")).strip()
+        target_kind = str(order_row.get("target_kind", "")).strip()
+        target_id = str(order_row.get("target_id", "")).strip()
+        payload = dict(order_row.get("payload") or {}) if isinstance(order_row.get("payload"), dict) else {}
+        order_type_row = dict(order_type_map.get(order_type_id) or {})
+        if not order_type_row:
+            _fail(order_row, "PROCESS_INPUT_INVALID", "order_type_not_registered", {"order_type_id": order_type_id})
+            continue
+
+        target_shards = _order_target_shards(state=state, target_kind=target_kind, target_id=target_id, shard_map=shard_map)
+        if active_shard_id and target_shards:
+            if len(target_shards) > 1 or active_shard_id not in set(target_shards):
+                _fail(
+                    order_row,
+                    "refusal.civ.order_cross_shard_not_supported",
+                    "target_shard_span_unsupported",
+                    {"active_shard_id": active_shard_id, "target_shards": list(target_shards)},
+                )
+                continue
+
+        if order_type_id in ("order.move", "order.migrate"):
+            destination = str(payload.get("destination", "") or payload.get("site_id", "") or payload.get("region_id", "")).strip()
+            if not destination:
+                _fail(order_row, "PROCESS_INPUT_INVALID", "destination_missing")
+                continue
+            if target_kind == "cohort":
+                cohort_row = _find_cohort(cohort_rows=cohorts, cohort_id=target_id)
+                if not cohort_row:
+                    _fail(order_row, "refusal.control.target_invalid", "cohort_missing", {"target_id": target_id})
+                    continue
+                cohort_row["location_ref"] = destination
+            elif target_kind == "faction":
+                moved = 0
+                for cohort_row in sorted(cohorts, key=lambda item: str(item.get("cohort_id", ""))):
+                    if str(cohort_row.get("faction_id", "")).strip() != target_id:
+                        continue
+                    cohort_row["location_ref"] = destination
+                    moved += 1
+                if moved <= 0:
+                    _fail(order_row, "refusal.control.target_invalid", "faction_has_no_cohorts", {"target_id": target_id})
+                    continue
+            else:
+                _fail(
+                    order_row,
+                    "refusal.civ.order_requires_pathing_not_supported",
+                    "micro_pathing_not_implemented",
+                    {"target_kind": target_kind},
+                )
+                continue
+            order_row["status"] = "completed"
+            order_row["last_update_tick"] = int(current_tick)
+            completed_ids.append(order_id)
+            _remove_order_from_all_queues(queue_rows=queue_rows, order_id=order_id)
+            continue
+
+        if order_type_id == "order.assimilate":
+            issuer_subject_id = str(order_row.get("issuer_subject_id", "")).strip()
+            effective_entitlements = set(
+                _effective_civ_entitlements(
+                    state=state,
+                    authority_context=authority_context,
+                    subject_id=issuer_subject_id,
+                )
+            )
+            if "entitlement.civ.assimilate" not in effective_entitlements:
+                _fail(order_row, "refusal.civ.entitlement_missing", "entitlement.civ.assimilate required")
+                continue
+            faction_id = str(payload.get("target_faction_id", "")).strip()
+            if faction_id and not _find_faction(faction_rows=faction_rows, faction_id=faction_id):
+                _fail(order_row, "refusal.civ.claim_forbidden", "target_faction_missing", {"target_faction_id": faction_id})
+                continue
+            if target_kind == "cohort":
+                cohort_row = _find_cohort(cohort_rows=cohorts, cohort_id=target_id)
+                if not cohort_row:
+                    _fail(order_row, "refusal.control.target_invalid", "cohort_missing")
+                    continue
+                cohort_row["faction_id"] = faction_id or None
+                _apply_affiliation_change(
+                    affiliation_rows=affiliations,
+                    subject_id=target_id,
+                    faction_id=faction_id or None,
+                    current_tick=int(current_tick),
+                )
+            elif target_kind == "agent":
+                if not _find_agent(agent_rows=agents, agent_id=target_id):
+                    _fail(order_row, "refusal.control.target_invalid", "agent_missing")
+                    continue
+                _apply_affiliation_change(
+                    affiliation_rows=affiliations,
+                    subject_id=target_id,
+                    faction_id=faction_id or None,
+                    current_tick=int(current_tick),
+                )
+            order_row["status"] = "completed"
+            order_row["last_update_tick"] = int(current_tick)
+            completed_ids.append(order_id)
+            _remove_order_from_all_queues(queue_rows=queue_rows, order_id=order_id)
+            continue
+
+        if order_type_id == "order.communicate":
+            text = str(payload.get("text", "") or payload.get("message", "") or payload.get("notes", "")).strip()
+            if not text:
+                _fail(order_row, "PROCESS_INPUT_INVALID", "message_text_missing")
+                continue
+            recipient_subject_id = str(payload.get("to", "") or target_id).strip()
+            message_payload = {"to": recipient_subject_id, "text": text}
+            message_id = "msg.radio.{}".format(
+                canonical_sha256(
+                    {
+                        "order_id": order_id,
+                        "created_tick": int(current_tick),
+                        "payload": message_payload,
+                    }
+                )[:16]
+            )
+            extensions = dict(order_row.get("extensions") or {}) if isinstance(order_row.get("extensions"), dict) else {}
+            extensions["message_artifact"] = {
+                "message_id": message_id,
+                "author_subject_id": str(order_row.get("issuer_subject_id", "")),
+                "created_tick": int(current_tick),
+                "channel_id": "msg.radio",
+                "payload": message_payload,
+            }
+            order_row["extensions"] = extensions
+            order_row["status"] = "completed"
+            order_row["last_update_tick"] = int(current_tick)
+            completed_ids.append(order_id)
+            _remove_order_from_all_queues(queue_rows=queue_rows, order_id=order_id)
+            continue
+
+        if order_type_id == "order.build_plan":
+            blueprint_id = str(payload.get("blueprint_id", "")).strip()
+            site_id = str(payload.get("site_id", "")).strip()
+            plan_id = "plan.{}".format(
+                canonical_sha256(
+                    {
+                        "order_id": order_id,
+                        "target_id": target_id,
+                        "blueprint_id": blueprint_id,
+                        "site_id": site_id,
+                        "created_tick": int(current_tick),
+                    }
+                )[:16]
+            )
+            extensions = dict(order_row.get("extensions") or {}) if isinstance(order_row.get("extensions"), dict) else {}
+            extensions["plan_artifact"] = {
+                "plan_id": plan_id,
+                "order_id": order_id,
+                "target_id": target_id,
+                "blueprint_id": blueprint_id,
+                "site_id": site_id,
+                "notes": str(payload.get("notes", "")),
+                "created_tick": int(current_tick),
+                "status": "planned",
+            }
+            order_row["extensions"] = extensions
+            order_row["status"] = "completed"
+            order_row["last_update_tick"] = int(current_tick)
+            completed_ids.append(order_id)
+            _remove_order_from_all_queues(queue_rows=queue_rows, order_id=order_id)
+            continue
+
+        _fail(
+            order_row,
+            "refusal.civ.order_requires_pathing_not_supported",
+            "order_executor_stub_missing",
+            {"order_type_id": order_type_id},
+        )
+
+    for queue_row in queue_rows:
+        _refresh_queue_order_ids(queue_row=queue_row, order_rows=order_rows)
+    return {
+        "processed_order_ids": list(processed_ids),
+        "completed_order_ids": list(completed_ids),
+        "failed_order_ids": list(failed_ids),
+    }
+
+
+def _persist_civ_state(
+    state: dict,
+    faction_rows: List[dict],
+    affiliation_rows: List[dict],
+    territory_rows: List[dict],
+    diplomatic_rows: List[dict],
+    cohort_rows: List[dict] | None = None,
+    order_rows: List[dict] | None = None,
+    queue_rows: List[dict] | None = None,
+    institution_rows: List[dict] | None = None,
+    role_assignment_rows: List[dict] | None = None,
+) -> None:
+    state["faction_assemblies"] = [dict(row) for row in list(faction_rows or []) if isinstance(row, dict)]
+    state["affiliations"] = [dict(row) for row in list(affiliation_rows or []) if isinstance(row, dict)]
+    state["territory_assemblies"] = [dict(row) for row in list(territory_rows or []) if isinstance(row, dict)]
+    state["diplomatic_relations"] = [dict(row) for row in list(diplomatic_rows or []) if isinstance(row, dict)]
+    if cohort_rows is not None:
+        state["cohort_assemblies"] = [dict(row) for row in list(cohort_rows or []) if isinstance(row, dict)]
+    if order_rows is not None:
+        state["order_assemblies"] = [dict(row) for row in list(order_rows or []) if isinstance(row, dict)]
+    if queue_rows is not None:
+        state["order_queue_assemblies"] = [dict(row) for row in list(queue_rows or []) if isinstance(row, dict)]
+    if institution_rows is not None:
+        state["institution_assemblies"] = [dict(row) for row in list(institution_rows or []) if isinstance(row, dict)]
+    if role_assignment_rows is not None:
+        state["role_assignment_assemblies"] = [
+            dict(row) for row in list(role_assignment_rows or []) if isinstance(row, dict)
+        ]
+    _ensure_faction_assemblies(state)
+    _ensure_affiliations(state)
+    _ensure_territory_assemblies(state)
+    _ensure_diplomatic_relations(state)
+    _ensure_cohort_assemblies(state)
+    _ensure_order_assemblies(state)
+    _ensure_order_queue_assemblies(state)
+    _ensure_institution_assemblies(state)
+    _ensure_role_assignment_assemblies(state)
+
+
+def _subject_exists(state: dict, subject_id: str) -> bool:
+    token = str(subject_id).strip()
+    if not token:
+        return False
+    if _find_agent(agent_rows=_ensure_agent_states(state), agent_id=token):
+        return True
+    if _find_cohort(cohort_rows=_ensure_cohort_assemblies(state), cohort_id=token):
+        return True
+    return False
+
+
+def _require_faction_owner_authority(faction_row: dict, authority_context: dict) -> Dict[str, object]:
+    owner_peer_id = _faction_owner_peer_id(faction_row)
+    if not owner_peer_id:
+        return {"result": "complete"}
+    if _civ_admin_override(authority_context):
+        return {"result": "complete"}
+    caller_peer_id = _authority_peer_token(authority_context)
+    if caller_peer_id and caller_peer_id == owner_peer_id:
+        return {"result": "complete"}
+    return refusal(
+        "refusal.civ.ownership_violation",
+        "caller peer '{}' cannot mutate faction owned by '{}'".format(caller_peer_id or "<unknown>", owner_peer_id),
+        "Use authority context owned by faction owner or grant admin override entitlement.",
+        {
+            "owner_peer_id": owner_peer_id,
+            "caller_peer_id": caller_peer_id or "<unknown>",
+            "faction_id": str(faction_row.get("faction_id", "")),
+        },
+        "$.authority_context.peer_id",
+    )
+
+
+def _add_faction_territory(faction_row: dict, territory_id: str) -> None:
+    rows = _sorted_tokens(list(faction_row.get("territory_ids") or []))
+    token = str(territory_id).strip()
+    if token and token not in rows:
+        rows.append(token)
+    faction_row["territory_ids"] = _sorted_tokens(rows)
+
+
+def _drop_faction_territory(faction_row: dict, territory_id: str) -> None:
+    token = str(territory_id).strip()
+    if not token:
+        return
+    rows = [str(item).strip() for item in (faction_row.get("territory_ids") or []) if str(item).strip() and str(item).strip() != token]
+    faction_row["territory_ids"] = _sorted_tokens(rows)
 
 
 def _ensure_body_assemblies(state: dict) -> List[dict]:
@@ -1206,6 +2278,210 @@ def _owner_shard_for_object(shard_map: dict, object_id: str) -> str:
         if token in object_ids:
             return shard_id
     return ""
+
+
+def _cohort_owner_shard_id(cohort_row: dict, shard_map: dict) -> str:
+    token = str((cohort_row or {}).get("location_ref", "")).strip()
+    if not token:
+        token = str((cohort_row or {}).get("cohort_id", "")).strip()
+    return _owner_shard_for_object(shard_map=shard_map, object_id=token) or "shard.0"
+
+
+def _cohort_micro_agents(agent_rows: List[dict], cohort_id: str) -> List[dict]:
+    token = str(cohort_id).strip()
+    if not token:
+        return []
+    out = []
+    for row in sorted((item for item in agent_rows if isinstance(item, dict)), key=lambda item: str(item.get("agent_id", ""))):
+        if str(row.get("parent_cohort_id", "")).strip() == token:
+            out.append(row)
+    return out
+
+
+def _cohort_refinement_state(total_size: int, expanded_count: int) -> str:
+    total = max(0, int(total_size))
+    expanded = max(0, int(expanded_count))
+    if expanded <= 0:
+        return "macro"
+    if expanded >= total:
+        return "micro"
+    return "mixed"
+
+
+def _apply_affiliation_change(
+    affiliation_rows: List[dict],
+    subject_id: str,
+    faction_id: str | None,
+    current_tick: int,
+) -> dict:
+    row = _find_affiliation(affiliation_rows=affiliation_rows, subject_id=subject_id)
+    if not row:
+        row = {
+            "subject_id": str(subject_id).strip(),
+            "faction_id": faction_id,
+            "joined_tick": int(current_tick),
+            "role_id": "role.member",
+            "extensions": {},
+        }
+        affiliation_rows.append(row)
+    else:
+        row["faction_id"] = faction_id
+        row["joined_tick"] = int(current_tick)
+        row["role_id"] = str(row.get("role_id", "role.member")).strip() or "role.member"
+        if not isinstance(row.get("extensions"), dict):
+            row["extensions"] = {}
+    return row
+
+
+def _expand_cohort_to_micro_internal(
+    state: dict,
+    cohort_row: dict,
+    cohort_rows: List[dict],
+    affiliation_rows: List[dict],
+    interest_region_id: str,
+    max_micro_agents: int,
+    mapping_policy_id: str,
+    policy_context: dict | None,
+    current_tick: int,
+    deterministic_seed: str,
+) -> Dict[str, object]:
+    del cohort_rows
+    mapping_rows = _cohort_mapping_policy_rows(policy_context)
+    mapping_policy = dict(mapping_rows.get(str(mapping_policy_id).strip()) or {})
+    spawn_distribution_rules = dict(mapping_policy.get("spawn_distribution_rules") or {})
+    anonymous_micro_agents = bool(mapping_policy.get("anonymous_micro_agents", False))
+    identity_exposure = str(spawn_distribution_rules.get("identity_exposure", "")).strip()
+    if not identity_exposure:
+        identity_exposure = "anonymous_unless_entitled" if anonymous_micro_agents else "standard"
+    agents = _ensure_agent_states(state)
+    cohort_id = str(cohort_row.get("cohort_id", "")).strip()
+    cohort_size = max(0, _as_int(cohort_row.get("size", 0), 0))
+    target_micro = min(
+        max(0, int(max_micro_agents)),
+        int(cohort_size),
+    )
+    current_micro_rows = _cohort_micro_agents(agent_rows=agents, cohort_id=cohort_id)
+    current_micro = len(current_micro_rows)
+    needed = max(0, int(target_micro) - int(current_micro))
+    created_ids: List[str] = []
+    if needed > 0:
+        existing_ids = set(str(row.get("agent_id", "")).strip() for row in agents if isinstance(row, dict))
+        owner_shard = _cohort_owner_shard_id(cohort_row=cohort_row, shard_map=dict((policy_context or {}).get("shard_map") or {}))
+        cohort_faction = cohort_row.get("faction_id")
+        faction_id = None if cohort_faction is None else str(cohort_faction).strip() or None
+        for slot in range(int(current_micro), int(current_micro + needed)):
+            agent_id = "agent.{}".format(canonical_sha256({"cohort_id": cohort_id, "slot": int(slot)})[:24])
+            if agent_id in existing_ids:
+                continue
+            existing_ids.add(agent_id)
+            location_seed = _stable_positive_int("{}|{}".format(deterministic_seed, slot), 1_000_000, minimum=0)
+            agent_row = {
+                "agent_id": agent_id,
+                "state_hash": canonical_sha256(
+                    {
+                        "agent_id": agent_id,
+                        "cohort_id": cohort_id,
+                        "slot": int(slot),
+                        "seed": deterministic_seed,
+                    }
+                ),
+                "body_id": None,
+                "owner_peer_id": None,
+                "controller_id": None,
+                "shard_id": owner_shard,
+                "intent_scope_id": None,
+                "parent_cohort_id": cohort_id,
+                "location_ref": str(interest_region_id).strip() or str(cohort_row.get("location_ref", "")).strip(),
+                "orientation_mdeg": {"yaw": int(location_seed % 360_000), "pitch": 0, "roll": 0},
+            }
+            agents.append(agent_row)
+            created_ids.append(agent_id)
+            _apply_affiliation_change(
+                affiliation_rows=affiliation_rows,
+                subject_id=agent_id,
+                faction_id=faction_id,
+                current_tick=int(current_tick),
+            )
+    agents = sorted(
+        (dict(item) for item in agents if isinstance(item, dict)),
+        key=lambda item: str(item.get("agent_id", "")),
+    )
+    state["agent_states"] = agents
+    _ensure_affiliations(state)
+    final_micro_rows = _cohort_micro_agents(agent_rows=agents, cohort_id=cohort_id)
+    final_micro = len(final_micro_rows)
+    cohort_row["refinement_state"] = _cohort_refinement_state(total_size=cohort_size, expanded_count=final_micro)
+    extensions = dict(cohort_row.get("extensions") or {}) if isinstance(cohort_row.get("extensions"), dict) else {}
+    extensions["mapping_policy_id"] = mapping_policy_id
+    extensions["anonymous_micro_agents"] = bool(anonymous_micro_agents)
+    extensions["identity_exposure"] = identity_exposure
+    extensions["expanded_micro_count"] = int(final_micro)
+    extensions["last_interest_region_id"] = str(interest_region_id).strip()
+    extensions["last_refinement_tick"] = int(current_tick)
+    extensions["last_refinement_seed"] = str(deterministic_seed)
+    cohort_row["extensions"] = extensions
+    return {
+        "result": "complete",
+        "cohort_id": cohort_id,
+        "expanded_micro_count": int(final_micro),
+        "created_agent_ids": _sorted_tokens(created_ids),
+    }
+
+
+def _collapse_cohort_from_micro_internal(
+    state: dict,
+    cohort_row: dict,
+    affiliation_rows: List[dict],
+    current_tick: int,
+) -> Dict[str, object]:
+    agents = _ensure_agent_states(state)
+    cohort_id = str(cohort_row.get("cohort_id", "")).strip()
+    micro_rows = _cohort_micro_agents(agent_rows=agents, cohort_id=cohort_id)
+    micro_ids = _sorted_tokens([str(row.get("agent_id", "")).strip() for row in micro_rows if str(row.get("agent_id", "")).strip()])
+    extensions = dict(cohort_row.get("extensions") or {}) if isinstance(cohort_row.get("extensions"), dict) else {}
+    expanded_before = max(0, _as_int(extensions.get("expanded_micro_count", len(micro_ids)), len(micro_ids)))
+    prior_size = max(0, _as_int(cohort_row.get("size", 0), 0))
+    macro_remainder = max(0, int(prior_size) - int(expanded_before))
+    new_size = int(macro_remainder) + len(micro_ids)
+
+    faction_counts: Dict[str, int] = {}
+    for subject_id in micro_ids:
+        row = _find_affiliation(affiliation_rows=affiliation_rows, subject_id=subject_id)
+        token = ""
+        if isinstance(row, dict):
+            raw = row.get("faction_id")
+            token = "" if raw is None else str(raw).strip()
+        faction_counts[token] = int(faction_counts.get(token, 0)) + 1
+    if faction_counts:
+        best_faction = sorted(faction_counts.items(), key=lambda item: (-int(item[1]), str(item[0])))[0][0]
+        cohort_row["faction_id"] = best_faction or None
+
+    remaining_agents = [
+        dict(row)
+        for row in agents
+        if isinstance(row, dict) and str(row.get("agent_id", "")).strip() not in set(micro_ids)
+    ]
+    state["agent_states"] = sorted(remaining_agents, key=lambda item: str(item.get("agent_id", "")))
+    state["affiliations"] = sorted(
+        [
+            dict(row)
+            for row in affiliation_rows
+            if isinstance(row, dict) and str(row.get("subject_id", "")).strip() not in set(micro_ids)
+        ],
+        key=lambda row: str(row.get("subject_id", "")),
+    )
+    cohort_row["size"] = int(new_size)
+    cohort_row["refinement_state"] = "macro"
+    extensions["expanded_micro_count"] = 0
+    extensions["last_collapse_tick"] = int(current_tick)
+    extensions["collapsed_micro_count"] = len(micro_ids)
+    cohort_row["extensions"] = extensions
+    return {
+        "result": "complete",
+        "cohort_id": cohort_id,
+        "collapsed_agent_ids": micro_ids,
+        "size": int(new_size),
+    }
 
 
 def _resolve_body_collisions(
@@ -2193,6 +3469,175 @@ def _tier_weight(budget_policy: dict, tier: str) -> int:
     return max(0, _as_int(weights.get(str(tier), 0), 0))
 
 
+def _apply_roi_cohort_refinement(
+    state: dict,
+    policy_context: dict | None,
+    active_region_ids: List[str],
+    budget_max_entities: int,
+    current_tick: int,
+) -> Dict[str, object]:
+    cohort_rows = _ensure_cohort_assemblies(state)
+    if not cohort_rows:
+        return {"result": "complete", "cohort_refinement": []}
+
+    mapping_rows = _cohort_mapping_policy_rows(policy_context)
+    if not mapping_rows:
+        return refusal(
+            "refusal.civ.policy_missing",
+            "cohort mapping policy registry is unavailable",
+            "Compile cohort_mapping_policy_registry and provide it via policy_context.",
+            {"registry": "cohort_mapping_policy_registry"},
+            "$.policy_context.cohort_mapping_policy_registry",
+        )
+
+    shard_map = dict((policy_context or {}).get("shard_map") or {})
+    active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+    active_set = set(_sorted_tokens(active_region_ids))
+    camera_distance = _camera_distance_mm(state)
+    affiliation_rows = _ensure_affiliations(state)
+    decisions: List[dict] = []
+
+    for cohort_row in sorted(cohort_rows, key=lambda row: str(row.get("cohort_id", ""))):
+        cohort_id = str(cohort_row.get("cohort_id", "")).strip()
+        location_ref = str(cohort_row.get("location_ref", "")).strip()
+        if not cohort_id:
+            continue
+        micro_rows = _cohort_micro_agents(agent_rows=_ensure_agent_states(state), cohort_id=cohort_id)
+        expanded_count = len(micro_rows)
+        if location_ref in active_set:
+            continue
+        if expanded_count <= 0:
+            continue
+        collapsed = _collapse_cohort_from_micro_internal(
+            state=state,
+            cohort_row=cohort_row,
+            affiliation_rows=affiliation_rows,
+            current_tick=int(current_tick),
+        )
+        if collapsed.get("result") != "complete":
+            return collapsed
+        decisions.append(
+            {
+                "cohort_id": cohort_id,
+                "location_ref": location_ref,
+                "action": "collapse",
+                "collapsed_count": len(list(collapsed.get("collapsed_agent_ids") or [])),
+            }
+        )
+
+    candidates = []
+    for cohort_row in cohort_rows:
+        cohort_id = str(cohort_row.get("cohort_id", "")).strip()
+        location_ref = str(cohort_row.get("location_ref", "")).strip()
+        if not cohort_id or not location_ref or location_ref not in active_set:
+            continue
+        faction_id = str(cohort_row.get("faction_id", "")).strip()
+        size = max(0, _as_int(cohort_row.get("size", 0), 0))
+        anchor_mm = _stable_positive_int("cohort|{}".format(location_ref), 4096, minimum=0) * 1000
+        distance_quantized = max(0, abs(int(camera_distance) - int(anchor_mm)) // 1000)
+        candidates.append(
+            (
+                str(cohort_id),
+                str(faction_id),
+                int(size),
+                int(distance_quantized),
+            )
+        )
+    candidates = sorted(candidates, key=lambda row: (row[0], row[1], row[2], row[3]))
+
+    for cohort_id, _faction_id, _size, _distance in candidates:
+        cohort_row = _find_cohort(cohort_rows=cohort_rows, cohort_id=cohort_id)
+        if not cohort_row:
+            continue
+        mapping_policy_id = _cohort_policy_id(cohort_row=cohort_row, fallback="")
+        if not mapping_policy_id:
+            return refusal(
+                "refusal.civ.policy_missing",
+                "cohort '{}' has no mapping policy id".format(cohort_id),
+                "Set cohort.extensions.mapping_policy_id to a registered mapping policy.",
+                {"cohort_id": cohort_id},
+                "$.cohort_assemblies",
+            )
+        mapping_policy = dict(mapping_rows.get(mapping_policy_id) or {})
+        if not mapping_policy:
+            return refusal(
+                "refusal.civ.policy_missing",
+                "mapping policy '{}' is not registered".format(mapping_policy_id),
+                "Use a mapping_policy_id from cohort_mapping_policy_registry.",
+                {"cohort_id": cohort_id, "mapping_policy_id": mapping_policy_id},
+                "$.cohort_assemblies",
+            )
+        owner_shard = _cohort_owner_shard_id(cohort_row=cohort_row, shard_map=shard_map)
+        if active_shard_id and owner_shard and owner_shard != active_shard_id:
+            return refusal(
+                "refusal.civ.cohort_cross_shard_forbidden",
+                "cohort '{}' belongs to shard '{}' but active shard is '{}'".format(cohort_id, owner_shard, active_shard_id),
+                "Route refinement to owning shard or perform deterministic transfer first.",
+                {"cohort_id": cohort_id, "owner_shard_id": owner_shard, "active_shard_id": active_shard_id},
+                "$.policy_context.active_shard_id",
+            )
+
+        cohort_size = max(0, _as_int(cohort_row.get("size", 0), 0))
+        policy_max = max(0, _as_int(mapping_policy.get("max_micro_agents_per_cohort", cohort_size), cohort_size))
+        desired_target = min(int(cohort_size), int(policy_max))
+        current_micro = len(_cohort_micro_agents(agent_rows=_ensure_agent_states(state), cohort_id=cohort_id))
+        current_total_micro = len(
+            [
+                row
+                for row in _ensure_agent_states(state)
+                if isinstance(row, dict) and str(row.get("parent_cohort_id", "")).strip()
+            ]
+        )
+        available_budget = max(0, int(budget_max_entities) - int(current_total_micro))
+        additional_needed = max(0, int(desired_target) - int(current_micro))
+        additional_allowed = min(int(additional_needed), int(available_budget))
+        target_micro = int(current_micro + additional_allowed)
+        deterministic_seed = _cohort_seed_material(
+            cohort_id=cohort_id,
+            tick=int(current_tick),
+            policy_context=policy_context,
+            mapping_policy_id=mapping_policy_id,
+            interest_region_id=str(cohort_row.get("location_ref", "")).strip(),
+        )
+        expanded = _expand_cohort_to_micro_internal(
+            state=state,
+            cohort_row=cohort_row,
+            cohort_rows=cohort_rows,
+            affiliation_rows=affiliation_rows,
+            interest_region_id=str(cohort_row.get("location_ref", "")).strip(),
+            max_micro_agents=int(target_micro),
+            mapping_policy_id=mapping_policy_id,
+            policy_context=policy_context,
+            current_tick=int(current_tick),
+            deterministic_seed=deterministic_seed,
+        )
+        if expanded.get("result") != "complete":
+            return expanded
+        decisions.append(
+            {
+                "cohort_id": cohort_id,
+                "location_ref": str(cohort_row.get("location_ref", "")).strip(),
+                "action": "expand",
+                "mapping_policy_id": mapping_policy_id,
+                "seed": deterministic_seed,
+                "target_micro_agents": int(target_micro),
+                "expanded_micro_count": int(expanded.get("expanded_micro_count", 0)),
+                "partial": bool(int(target_micro) < int(desired_target)),
+                "created_agent_ids": list(expanded.get("created_agent_ids") or []),
+            }
+        )
+
+    state["cohort_assemblies"] = sorted(
+        (dict(row) for row in cohort_rows if isinstance(row, dict)),
+        key=lambda row: str(row.get("cohort_id", "")),
+    )
+    state["affiliations"] = sorted(
+        (dict(row) for row in affiliation_rows if isinstance(row, dict)),
+        key=lambda row: str(row.get("subject_id", "")),
+    )
+    return {"result": "complete", "cohort_refinement": decisions}
+
+
 def _total_conserved_mass(state: dict) -> int:
     total = 0
     for row in state.get("macro_capsules") or []:
@@ -2223,6 +3668,9 @@ def _region_management_tick(
     state: dict,
     navigation_indices: dict | None,
     policy_context: dict | None,
+    forced_expand_region_ids: List[str] | None = None,
+    forced_collapse_region_ids: List[str] | None = None,
+    forced_expand_tiers: Dict[str, str] | None = None,
 ) -> Dict[str, object]:
     activation_policy = _policy_payload(policy_context, "activation_policy")
     budget_policy = _policy_payload(policy_context, "budget_policy")
@@ -2447,6 +3895,40 @@ def _region_management_tick(
         if bool(row.get("active", False)):
             current_active[region_id] = str(row.get("current_fidelity_tier", "coarse"))
     desired_active = dict(selected)
+    forced_expand_ids = _sorted_tokens(list(forced_expand_region_ids or []))
+    forced_collapse_ids = _sorted_tokens(list(forced_collapse_region_ids or []))
+    forced_tiers = dict(forced_expand_tiers or {})
+    for region_id in forced_collapse_ids + forced_expand_ids:
+        if region_id not in interest_by_region:
+            return refusal(
+                "refusal.control.target_invalid",
+                "region '{}' is not known to region management".format(region_id),
+                "Use a region_id produced by deterministic region mapping (region.<object_id>).",
+                {"region_id": region_id},
+                "$.intent.inputs.region_id",
+            )
+    for region_id in forced_collapse_ids:
+        desired_active.pop(region_id, None)
+    for region_id in forced_expand_ids:
+        forced_tier = str(forced_tiers.get(region_id, "")).strip()
+        if forced_tier not in _tier_tokens():
+            forced_tier = str(desired_active.get(region_id, "") or current_active.get(region_id, "")).strip() or "coarse"
+        if forced_tier not in _tier_tokens():
+            forced_tier = "coarse"
+        desired_active[region_id] = forced_tier
+    usage = budget_usage(desired_active)
+    if usage["compute_units"] > max_compute or usage["entity_count"] > max_entities:
+        return refusal(
+            "BUDGET_EXCEEDED",
+            "forced region transition exceeds deterministic budget envelope",
+            "Reduce forced expand set or use a budget policy with higher limits.",
+            {
+                "forced_expand_region_ids": ",".join(forced_expand_ids),
+                "compute_units_used": str(usage["compute_units"]),
+                "max_compute_units_per_tick": str(max_compute),
+            },
+            "$.budget_policy",
+        )
 
     collapse_ids = sorted(
         region_id
@@ -2599,6 +4081,23 @@ def _region_management_tick(
     desired_tile_count = min(len(terrain_rows), int(len(desired_active)))
     selected_terrain_tiles = [str(item.get("tile_id", "")) for item in terrain_rows[:desired_tile_count] if str(item.get("tile_id", "")).strip()]
     state["performance_state"] = performance_state
+    cohort_refinement_result = _apply_roi_cohort_refinement(
+        state=state,
+        policy_context=policy_context,
+        active_region_ids=sorted(desired_active.keys()),
+        budget_max_entities=max_entities,
+        current_tick=current_tick,
+    )
+    if cohort_refinement_result.get("result") != "complete":
+        return cohort_refinement_result
+    cohort_refinement = sorted(
+        (dict(item) for item in list(cohort_refinement_result.get("cohort_refinement") or []) if isinstance(item, dict)),
+        key=lambda item: (
+            str(item.get("cohort_id", "")),
+            str(item.get("action", "")),
+            str(item.get("location_ref", "")),
+        ),
+    )
 
     return {
         "result": "complete",
@@ -2607,7 +4106,423 @@ def _region_management_tick(
         "active_regions": sorted(desired_active.keys()),
         "collapsed_regions": collapse_ids,
         "expanded_regions": expand_ids,
+        "forced_expand_region_ids": forced_expand_ids,
+        "forced_collapse_region_ids": forced_collapse_ids,
         "selected_terrain_tiles": selected_terrain_tiles,
+        "cohort_refinement": cohort_refinement,
+    }
+
+
+def _registry_payloads_for_lod(
+    navigation_indices: dict | None,
+    policy_context: dict | None,
+) -> dict:
+    payloads: Dict[str, dict] = {}
+    if isinstance(navigation_indices, dict):
+        for key, value in sorted(navigation_indices.items(), key=lambda item: str(item[0])):
+            if isinstance(value, dict):
+                payloads[str(key)] = dict(value)
+    if isinstance(policy_context, dict):
+        keys = (
+            "epistemic_policy_registry",
+            "retention_policy_registry",
+            "decay_model_registry",
+            "eviction_rule_registry",
+            "perception_interest_policy_registry",
+            "view_mode_registry",
+            "instrument_type_registry",
+            "calibration_model_registry",
+            "render_proxy_registry",
+            "cosmetic_registry",
+            "cosmetic_policy_registry",
+            "representation_state",
+        )
+        for key in keys:
+            row = policy_context.get(key)
+            if isinstance(row, dict):
+                payloads[str(key)] = dict(row)
+    return payloads
+
+
+def _default_lod_lens(
+    state: dict,
+    law_profile: dict,
+    lod_observation: dict,
+    epistemic_policy: dict,
+) -> dict:
+    explicit_lens = lod_observation.get("lens")
+    if isinstance(explicit_lens, dict):
+        required = ("lens_id", "lens_type", "required_entitlements", "epistemic_constraints")
+        if all(token in explicit_lens for token in required):
+            lens = dict(explicit_lens)
+            channels = lens.get("observation_channels")
+            if not isinstance(channels, list) or not channels:
+                lens["observation_channels"] = _sorted_tokens(list(epistemic_policy.get("allowed_observation_channels") or []))
+            return lens
+
+    lens_id = str(lod_observation.get("lens_id", "")).strip()
+    if not lens_id:
+        allowed_lenses = _sorted_tokens(list(law_profile.get("allowed_lenses") or []))
+        lens_id = allowed_lenses[0] if allowed_lenses else ""
+    if not lens_id:
+        camera_rows = list(state.get("camera_assemblies") or [])
+        for row in sorted((item for item in camera_rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
+            candidate = str(row.get("lens_id", "")).strip()
+            if candidate:
+                lens_id = candidate
+                break
+    lens_type = str(lod_observation.get("lens_type", "")).strip() or "diegetic"
+    channels = _sorted_tokens(list(lod_observation.get("observation_channels") or []))
+    if not channels:
+        channels = _sorted_tokens(list(epistemic_policy.get("allowed_observation_channels") or []))
+    if not channels:
+        channels = ["ch.core.time", "ch.camera.state", "ch.core.entities"]
+    return {
+        "lens_id": lens_id or "lens.diegetic.sensor",
+        "lens_type": lens_type,
+        "required_entitlements": _sorted_tokens(list(lod_observation.get("required_entitlements") or [])),
+        "observation_channels": channels,
+        "epistemic_constraints": dict(
+            lod_observation.get("epistemic_constraints")
+            if isinstance(lod_observation.get("epistemic_constraints"), dict)
+            else {"visibility_policy": "sensor_limited", "max_resolution_tier": 1}
+        ),
+    }
+
+
+def _normalized_lod_authority_context(authority_context: dict, law_profile: dict) -> dict:
+    scope = dict(authority_context.get("epistemic_scope") or {})
+    if not scope:
+        scope = {"scope_id": "scope.runtime", "visibility_level": "diegetic"}
+    return {
+        "authority_origin": str(authority_context.get("authority_origin", "")).strip() or "client",
+        "experience_id": str(authority_context.get("experience_id", "")).strip() or "profile.runtime",
+        "law_profile_id": str(authority_context.get("law_profile_id", "")).strip()
+        or str(law_profile.get("law_profile_id", "")).strip()
+        or "law.runtime",
+        "entitlements": _sorted_tokens(list(authority_context.get("entitlements") or [])),
+        "epistemic_scope": scope,
+        "privilege_level": str(authority_context.get("privilege_level", "")).strip() or "observer",
+    }
+
+
+def _normalized_lod_law_profile(law_profile: dict, lens_id: str) -> dict:
+    out = dict(law_profile or {})
+    allowed_lenses = _sorted_tokens(list(out.get("allowed_lenses") or []))
+    if lens_id and lens_id not in set(allowed_lenses):
+        allowed_lenses.append(lens_id)
+        allowed_lenses = sorted(set(allowed_lenses))
+    out["allowed_lenses"] = allowed_lenses
+    epistemic_limits = out.get("epistemic_limits")
+    if not isinstance(epistemic_limits, dict):
+        out["epistemic_limits"] = {}
+    return out
+
+
+def _observe_lod_snapshot(
+    state: dict,
+    law_profile: dict,
+    authority_context: dict,
+    navigation_indices: dict | None,
+    policy_context: dict | None,
+    lod_observation: dict,
+    memory_state: dict | None,
+) -> Dict[str, object]:
+    from .observation import observe_truth
+
+    explicit_epistemic_policy = dict(lod_observation.get("epistemic_policy") or {})
+    explicit_retention_policy = dict(lod_observation.get("retention_policy") or {})
+    lens = _default_lod_lens(
+        state=state,
+        law_profile=law_profile,
+        lod_observation=lod_observation,
+        epistemic_policy=explicit_epistemic_policy,
+    )
+    normalized_law = _normalized_lod_law_profile(law_profile=law_profile, lens_id=str(lens.get("lens_id", "")))
+    normalized_authority = _normalized_lod_authority_context(authority_context=authority_context, law_profile=normalized_law)
+    observed = observe_truth(
+        truth_model={
+            "schema_version": "1.0.0",
+            "universe_state": copy.deepcopy(state if isinstance(state, dict) else {}),
+            "registry_payloads": _registry_payloads_for_lod(
+                navigation_indices=navigation_indices,
+                policy_context=policy_context,
+            ),
+        },
+        lens=lens,
+        law_profile=normalized_law,
+        authority_context=normalized_authority,
+        viewpoint_id=str(lod_observation.get("viewpoint_id", "viewpoint.lod.invariance")).strip() or "viewpoint.lod.invariance",
+        epistemic_policy=explicit_epistemic_policy if explicit_epistemic_policy else None,
+        retention_policy=explicit_retention_policy if explicit_retention_policy else None,
+        memory_state=dict(memory_state or {}),
+        perception_interest_limit=_as_int(lod_observation.get("perception_interest_limit", 0), 0) or None,
+    )
+    return dict(observed if isinstance(observed, dict) else {})
+
+
+def _memory_item_ids(perceived_model: dict) -> List[str]:
+    memory = dict(perceived_model.get("memory") or {})
+    rows = memory.get("items")
+    if not isinstance(rows, list):
+        return []
+    return _sorted_tokens(
+        [
+            str(row.get("memory_item_id", "")).strip()
+            for row in rows
+            if isinstance(row, dict)
+        ]
+    )
+
+
+def _lod_sensitive_key_paths(payload: object, prefix: str = "$") -> List[str]:
+    suspicious = ("hidden_inventory", "internal_state", "micro_solver", "native_precision")
+    rows: List[str] = []
+    if isinstance(payload, dict):
+        for key in sorted(payload.keys()):
+            token = str(key)
+            path = "{}.{}".format(prefix, token)
+            lowered = token.lower()
+            if any(marker in lowered for marker in suspicious):
+                rows.append(path)
+            rows.extend(_lod_sensitive_key_paths(payload.get(key), prefix=path))
+    elif isinstance(payload, list):
+        for index, item in enumerate(payload):
+            rows.extend(_lod_sensitive_key_paths(item, prefix="{}[{}]".format(prefix, index)))
+    return rows
+
+
+def _entity_entry_map(perceived_model: dict) -> Dict[str, dict]:
+    entities = dict(perceived_model.get("entities") or {})
+    rows = entities.get("entries")
+    if not isinstance(rows, list):
+        return {}
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("entity_id", ""))):
+        token = str(row.get("entity_id", "")).strip()
+        if token:
+            out[token] = dict(row)
+    return out
+
+
+def _lod_invariance_delta(
+    before_perceived: dict,
+    after_perceived: dict,
+    allowed_new_channels: List[str],
+    allowed_new_entity_ids: List[str],
+) -> Dict[str, object]:
+    before_channels = set(_sorted_tokens(list(before_perceived.get("channels") or [])))
+    after_channels = set(_sorted_tokens(list(after_perceived.get("channels") or [])))
+    allowed_channel_set = set(_sorted_tokens(list(allowed_new_channels or [])))
+    new_channels = sorted(after_channels - before_channels - allowed_channel_set)
+
+    before_entities = _entity_entry_map(before_perceived)
+    after_entities = _entity_entry_map(after_perceived)
+    allowed_entities = set(_sorted_tokens(list(allowed_new_entity_ids or [])))
+    new_entities = sorted(set(after_entities.keys()) - set(before_entities.keys()) - allowed_entities)
+    changed_entities = sorted(
+        entity_id
+        for entity_id in sorted(set(after_entities.keys()) & set(before_entities.keys()))
+        if canonical_sha256(dict(after_entities.get(entity_id) or {}))
+        != canonical_sha256(dict(before_entities.get(entity_id) or {}))
+    )
+    precision_gain = canonical_sha256(dict(before_perceived.get("camera_viewpoint") or {})) != canonical_sha256(
+        dict(after_perceived.get("camera_viewpoint") or {})
+    )
+    sensitive_paths = sorted(set(_lod_sensitive_key_paths(after_perceived)))
+    invariant_ok = (
+        not new_channels
+        and not new_entities
+        and not changed_entities
+        and not precision_gain
+        and not sensitive_paths
+    )
+    return {
+        "invariant_ok": bool(invariant_ok),
+        "before_hash": canonical_sha256(before_perceived),
+        "after_hash": canonical_sha256(after_perceived),
+        "new_channels": list(new_channels),
+        "new_entities": list(new_entities),
+        "changed_entities": list(changed_entities),
+        "precision_gain": bool(precision_gain),
+        "sensitive_paths": list(sensitive_paths),
+    }
+
+
+def _append_lod_invariance_log(state: dict, row: dict) -> None:
+    performance_state = state.get("performance_state")
+    if not isinstance(performance_state, dict):
+        performance_state = {}
+    log_rows = performance_state.get("lod_invariance_log")
+    if not isinstance(log_rows, list):
+        log_rows = []
+    log_rows.append(dict(row))
+    performance_state["lod_invariance_log"] = sorted(
+        (dict(item) for item in log_rows if isinstance(item, dict)),
+        key=lambda item: (
+            int(item.get("tick", 0) or 0),
+            str(item.get("process_id", "")),
+            str(item.get("region_id", "")),
+            str(item.get("before_hash", "")),
+            str(item.get("after_hash", "")),
+        ),
+    )
+    state["performance_state"] = performance_state
+
+
+def _run_region_transition_with_lod_invariance(
+    state: dict,
+    process_id: str,
+    inputs: dict,
+    law_profile: dict,
+    authority_context: dict,
+    navigation_indices: dict | None,
+    policy_context: dict | None,
+) -> Dict[str, object]:
+    region_id = str(inputs.get("region_id", "") or inputs.get("target_region_id", "")).strip()
+    if not region_id:
+        return refusal(
+            "PROCESS_INPUT_INVALID",
+            "{} requires region_id".format(process_id),
+            "Provide intent.inputs.region_id formatted as region.<object_id>.",
+            {"process_id": process_id},
+            "$.intent.inputs.region_id",
+        )
+    desired_tier = str(inputs.get("desired_tier", "")).strip() or "coarse"
+    if desired_tier not in _tier_tokens():
+        desired_tier = "coarse"
+    strict_contracts = bool((policy_context or {}).get("strict_contracts", False))
+    enforce_lod_invariance = bool(inputs.get("enforce_lod_invariance", True))
+    lod_observation = dict(inputs.get("lod_observation") or {})
+    before_observation = {}
+    after_observation = {}
+    memory_state = dict(lod_observation.get("memory_state") or {})
+    if enforce_lod_invariance:
+        before_observation = _observe_lod_snapshot(
+            state=state,
+            law_profile=law_profile,
+            authority_context=authority_context,
+            navigation_indices=navigation_indices,
+            policy_context=policy_context,
+            lod_observation=lod_observation,
+            memory_state=memory_state,
+        )
+        if str(before_observation.get("result", "")) == "complete":
+            memory_state = dict(before_observation.get("memory_state") or {})
+        elif strict_contracts:
+            return dict(before_observation)
+
+    forced_expand_ids = [region_id] if process_id == "process.region_expand" else []
+    forced_collapse_ids = [region_id] if process_id == "process.region_collapse" else []
+    forced_tiers = {region_id: desired_tier} if process_id == "process.region_expand" else {}
+    tick_result = _region_management_tick(
+        state=state,
+        navigation_indices=navigation_indices,
+        policy_context=policy_context,
+        forced_expand_region_ids=forced_expand_ids,
+        forced_collapse_region_ids=forced_collapse_ids,
+        forced_expand_tiers=forced_tiers,
+    )
+    if str(tick_result.get("result", "")) != "complete":
+        return tick_result
+
+    lod_summary = {
+        "status": "skipped",
+        "before_hash": "",
+        "after_hash": "",
+        "new_channels": [],
+        "new_entities": [],
+        "changed_entities": [],
+        "precision_gain": False,
+        "sensitive_paths": [],
+        "missing_memory_item_ids": [],
+    }
+    if enforce_lod_invariance and str(before_observation.get("result", "")) == "complete":
+        after_observation = _observe_lod_snapshot(
+            state=state,
+            law_profile=law_profile,
+            authority_context=authority_context,
+            navigation_indices=navigation_indices,
+            policy_context=policy_context,
+            lod_observation=lod_observation,
+            memory_state=memory_state,
+        )
+        if str(after_observation.get("result", "")) != "complete":
+            if strict_contracts:
+                return dict(after_observation)
+        else:
+            after_perceived = dict(after_observation.get("perceived_model") or {})
+            if bool(inputs.get("test_force_lod_information_gain", False)) or bool(
+                (policy_context or {}).get("test_force_lod_information_gain", False)
+            ):
+                entities_payload = dict(after_perceived.get("entities") or {})
+                extensions_payload = dict(entities_payload.get("extensions") or {})
+                extensions_payload["micro_internal_state"] = "forced.test.leak"
+                entities_payload["extensions"] = extensions_payload
+                after_perceived["entities"] = entities_payload
+
+            delta = _lod_invariance_delta(
+                before_perceived=dict(before_observation.get("perceived_model") or {}),
+                after_perceived=after_perceived,
+                allowed_new_channels=_sorted_tokens(list(lod_observation.get("allowed_new_channels") or [])),
+                allowed_new_entity_ids=_sorted_tokens(list(lod_observation.get("allowed_new_entity_ids") or [])),
+            )
+            missing_memory_item_ids: List[str] = []
+            if process_id == "process.region_collapse":
+                before_memory = set(
+                    _memory_item_ids(dict(before_observation.get("perceived_model") or {}))
+                )
+                after_memory = set(_memory_item_ids(after_perceived))
+                missing_memory_item_ids = sorted(before_memory - after_memory)
+            violation = (not bool(delta.get("invariant_ok", False))) or bool(missing_memory_item_ids)
+            lod_summary = {
+                "status": "violation" if violation else "ok",
+                "before_hash": str(delta.get("before_hash", "")),
+                "after_hash": str(delta.get("after_hash", "")),
+                "new_channels": list(delta.get("new_channels") or []),
+                "new_entities": list(delta.get("new_entities") or []),
+                "changed_entities": list(delta.get("changed_entities") or []),
+                "precision_gain": bool(delta.get("precision_gain", False)),
+                "sensitive_paths": list(delta.get("sensitive_paths") or []),
+                "missing_memory_item_ids": list(missing_memory_item_ids),
+            }
+            _append_lod_invariance_log(
+                state=state,
+                row={
+                    "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
+                    "process_id": process_id,
+                    "region_id": region_id,
+                    "status": str(lod_summary.get("status", "")),
+                    "before_hash": str(lod_summary.get("before_hash", "")),
+                    "after_hash": str(lod_summary.get("after_hash", "")),
+                    "new_channels": list(lod_summary.get("new_channels") or []),
+                    "new_entities": list(lod_summary.get("new_entities") or []),
+                    "changed_entities": list(lod_summary.get("changed_entities") or []),
+                    "precision_gain": bool(lod_summary.get("precision_gain", False)),
+                    "missing_memory_item_ids": list(lod_summary.get("missing_memory_item_ids") or []),
+                },
+            )
+            if violation and strict_contracts:
+                return refusal(
+                    "refusal.ep.lod_information_gain",
+                    "solver-tier transition exposed epistemic information beyond allowed policy envelope",
+                    "Apply redaction/precision rules or adjust entitlements before expand/collapse transition.",
+                    {
+                        "process_id": process_id,
+                        "region_id": region_id,
+                        "new_channels": ",".join(list(lod_summary.get("new_channels") or [])),
+                        "new_entities": ",".join(list(lod_summary.get("new_entities") or [])),
+                        "missing_memory_item_ids": ",".join(list(lod_summary.get("missing_memory_item_ids") or [])),
+                    },
+                    "$.perceived_model",
+                )
+
+    return {
+        "result": "complete",
+        "tick_result": tick_result,
+        "lod_invariance": lod_summary,
+        "region_id": region_id,
+        "forced_tier": desired_tier if process_id == "process.region_expand" else "",
     }
 
 
@@ -2660,6 +4575,8 @@ def execute_intent(
     if gate.get("result") != "complete":
         if process_id == "process.cosmetic_assign":
             return _control_gate_refusal(gate, reason_map=COSMETIC_GATE_REASON_MAP)
+        if process_id in CIV_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=CIV_GATE_REASON_MAP)
         if process_id in CONTROL_PROCESS_IDS:
             return _control_gate_refusal(gate)
         return gate
@@ -2682,6 +4599,11 @@ def execute_intent(
     controllers = _ensure_controller_assemblies(state)
     bindings = _ensure_control_bindings(state)
     bodies = _ensure_body_assemblies(state)
+    cohorts = _ensure_cohort_assemblies(state)
+    order_rows = _ensure_order_assemblies(state)
+    queue_rows = _ensure_order_queue_assemblies(state)
+    institution_rows = _ensure_institution_assemblies(state)
+    role_assignment_rows = _ensure_role_assignment_assemblies(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     result_metadata: Dict[str, object] = {}
@@ -3478,6 +5400,1412 @@ def execute_intent(
             row["active"] = False
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
         _advance_time(state, steps=1)
+    elif process_id == "process.faction_create":
+        founder_agent_raw = inputs.get("founder_agent_id")
+        founder_agent_id = None if founder_agent_raw is None else str(founder_agent_raw).strip() or None
+        if founder_agent_id and not _find_agent(agent_rows=agents, agent_id=founder_agent_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "founder_agent_id '{}' does not exist".format(founder_agent_id),
+                "Provide existing founder_agent_id or null founder_agent_id.",
+                {"founder_agent_id": founder_agent_id},
+                "$.intent.inputs.founder_agent_id",
+            )
+        governance_type_id = str(inputs.get("governance_type_id", "gov.none")).strip() or "gov.none"
+        governance_rows = _governance_type_rows(policy_context)
+        if governance_rows and governance_type_id not in governance_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "governance_type_id '{}' is not registered".format(governance_type_id),
+                "Use governance_type_id from governance_type_registry.",
+                {"governance_type_id": governance_type_id},
+                "$.intent.inputs.governance_type_id",
+            )
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        faction_id = str(inputs.get("faction_id", "")).strip() or _deterministic_faction_id(
+            founder_agent_id=founder_agent_id,
+            created_tick=current_tick,
+        )
+        if _find_faction(faction_rows=faction_rows, faction_id=faction_id):
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "faction_id '{}' already exists".format(faction_id),
+                "Use a different founder/tick or provide unique faction_id override.",
+                {"faction_id": faction_id},
+                "$.intent.inputs.faction_id",
+            )
+        owner_peer_id = _authority_peer_token(authority_context)
+        extensions = dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), dict) else {}
+        if owner_peer_id and "owner_peer_id" not in extensions:
+            extensions["owner_peer_id"] = owner_peer_id
+        faction_rows.append(
+            {
+                "faction_id": faction_id,
+                "human_name": str(inputs.get("human_name", "")).strip() or faction_id,
+                "description": str(inputs.get("description", "")).strip(),
+                "created_tick": int(current_tick),
+                "founder_agent_id": founder_agent_id,
+                "governance_type_id": governance_type_id,
+                "territory_ids": [],
+                "diplomatic_relations": {},
+                "status": "active",
+                "extensions": extensions,
+            }
+        )
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+        )
+        result_metadata = {
+            "faction_id": faction_id,
+            "governance_type_id": governance_type_id,
+            "founder_agent_id": founder_agent_id,
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.faction_dissolve":
+        faction_id = str(inputs.get("faction_id", "")).strip()
+        if not faction_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.faction_dissolve requires faction_id",
+                "Provide faction_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.faction_id",
+            )
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        faction_row = _find_faction(faction_rows=faction_rows, faction_id=faction_id)
+        if not faction_row:
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "faction '{}' does not exist".format(faction_id),
+                "Use existing faction_id for dissolution.",
+                {"faction_id": faction_id},
+                "$.intent.inputs.faction_id",
+            )
+        ownership_check = _require_faction_owner_authority(faction_row=faction_row, authority_context=authority_context)
+        if ownership_check.get("result") != "complete":
+            return ownership_check
+
+        released_territory_ids: List[str] = []
+        for territory_row in territory_rows:
+            if str(territory_row.get("owner_faction_id", "")).strip() != faction_id:
+                continue
+            territory_row["owner_faction_id"] = None
+            territory_row["claim_status"] = "unclaimed"
+            ext = dict(territory_row.get("extensions") or {}) if isinstance(territory_row.get("extensions"), dict) else {}
+            if "contested_by_faction_ids" in ext:
+                ext.pop("contested_by_faction_ids", None)
+            territory_row["extensions"] = ext
+            released_territory_ids.append(str(territory_row.get("territory_id", "")).strip())
+
+        cleared_subject_ids: List[str] = []
+        for affiliation_row in affiliation_rows:
+            if str(affiliation_row.get("faction_id", "")).strip() != faction_id:
+                continue
+            affiliation_row["faction_id"] = None
+            affiliation_row["joined_tick"] = int(current_tick)
+            cleared_subject_ids.append(str(affiliation_row.get("subject_id", "")).strip())
+
+        diplomatic_rows = [
+            dict(row)
+            for row in diplomatic_rows
+            if isinstance(row, dict)
+            and str(row.get("faction_a", "")).strip() != faction_id
+            and str(row.get("faction_b", "")).strip() != faction_id
+        ]
+        for row in faction_rows:
+            row_id = str(row.get("faction_id", "")).strip()
+            relation_map = dict(row.get("diplomatic_relations") or {}) if isinstance(row.get("diplomatic_relations"), dict) else {}
+            if faction_id in relation_map:
+                relation_map.pop(faction_id, None)
+            if row_id == faction_id:
+                row["status"] = "dissolved"
+                row["territory_ids"] = []
+                row["diplomatic_relations"] = {}
+            else:
+                row["diplomatic_relations"] = dict((token, relation_map[token]) for token in sorted(relation_map.keys()))
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+        )
+        result_metadata = {
+            "faction_id": faction_id,
+            "released_territory_ids": _sorted_tokens(released_territory_ids),
+            "cleared_subject_ids": _sorted_tokens(cleared_subject_ids),
+            "status": "dissolved",
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.affiliation_join":
+        subject_id = str(inputs.get("subject_id", "")).strip()
+        faction_id = str(inputs.get("faction_id", "")).strip()
+        if not subject_id or not faction_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.affiliation_join requires subject_id and faction_id",
+                "Provide subject_id and faction_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if not _subject_exists(state=state, subject_id=subject_id):
+            return refusal(
+                "refusal.control.target_invalid",
+                "subject '{}' does not exist".format(subject_id),
+                "Use subject_id from known agent/cohort records.",
+                {"subject_id": subject_id},
+                "$.intent.inputs.subject_id",
+            )
+        caller_peer_id = _authority_peer_token(authority_context)
+        admin_override = _civ_admin_override(authority_context)
+        subject_agent = _find_agent(agent_rows=agents, agent_id=subject_id)
+        subject_owner_peer_id = str((subject_agent or {}).get("owner_peer_id", "")).strip()
+        if subject_owner_peer_id and (not admin_override) and caller_peer_id != subject_owner_peer_id:
+            return refusal(
+                "refusal.civ.ownership_violation",
+                "caller peer '{}' cannot mutate subject '{}' owned by '{}'".format(
+                    caller_peer_id or "<unknown>",
+                    subject_id,
+                    subject_owner_peer_id,
+                ),
+                "Use subject owner authority context or admin override entitlement.",
+                {
+                    "subject_id": subject_id,
+                    "caller_peer_id": caller_peer_id or "<unknown>",
+                    "owner_peer_id": subject_owner_peer_id,
+                },
+                "$.authority_context.peer_id",
+            )
+
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        faction_row = _find_faction(faction_rows=faction_rows, faction_id=faction_id)
+        if not faction_row or str(faction_row.get("status", "")).strip() != "active":
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "faction '{}' is unavailable for affiliation".format(faction_id),
+                "Join an active faction_id.",
+                {"faction_id": faction_id},
+                "$.intent.inputs.faction_id",
+            )
+        ownership_check = _require_faction_owner_authority(faction_row=faction_row, authority_context=authority_context)
+        if ownership_check.get("result") != "complete":
+            return ownership_check
+
+        existing_affiliation = _find_affiliation(affiliation_rows=affiliation_rows, subject_id=subject_id)
+        if existing_affiliation and str(existing_affiliation.get("faction_id", "")).strip():
+            return refusal(
+                "refusal.civ.already_affiliated",
+                "subject '{}' is already affiliated with faction '{}'".format(
+                    subject_id,
+                    str(existing_affiliation.get("faction_id", "")).strip(),
+                ),
+                "Leave current faction before joining another.",
+                {
+                    "subject_id": subject_id,
+                    "faction_id": str(existing_affiliation.get("faction_id", "")).strip(),
+                },
+                "$.intent.inputs.subject_id",
+            )
+        if not existing_affiliation:
+            existing_affiliation = {
+                "subject_id": subject_id,
+                "faction_id": None,
+                "joined_tick": int(current_tick),
+                "role_id": "role.member",
+                "extensions": {},
+            }
+            affiliation_rows.append(existing_affiliation)
+        existing_affiliation["faction_id"] = faction_id
+        existing_affiliation["joined_tick"] = int(current_tick)
+        existing_affiliation["role_id"] = str(inputs.get("role_id", "role.member")).strip() or "role.member"
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+        )
+        result_metadata = {
+            "subject_id": subject_id,
+            "faction_id": faction_id,
+            "role_id": str(existing_affiliation.get("role_id", "")),
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.affiliation_leave":
+        subject_id = str(inputs.get("subject_id", "")).strip()
+        if not subject_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.affiliation_leave requires subject_id",
+                "Provide subject_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.subject_id",
+            )
+        if not _subject_exists(state=state, subject_id=subject_id):
+            return refusal(
+                "refusal.control.target_invalid",
+                "subject '{}' does not exist".format(subject_id),
+                "Use subject_id from known agent/cohort records.",
+                {"subject_id": subject_id},
+                "$.intent.inputs.subject_id",
+            )
+        caller_peer_id = _authority_peer_token(authority_context)
+        admin_override = _civ_admin_override(authority_context)
+        subject_agent = _find_agent(agent_rows=agents, agent_id=subject_id)
+        subject_owner_peer_id = str((subject_agent or {}).get("owner_peer_id", "")).strip()
+        if subject_owner_peer_id and (not admin_override) and caller_peer_id != subject_owner_peer_id:
+            return refusal(
+                "refusal.civ.ownership_violation",
+                "caller peer '{}' cannot clear affiliation for subject '{}' owned by '{}'".format(
+                    caller_peer_id or "<unknown>",
+                    subject_id,
+                    subject_owner_peer_id,
+                ),
+                "Use subject owner authority context or admin override entitlement.",
+                {
+                    "subject_id": subject_id,
+                    "caller_peer_id": caller_peer_id or "<unknown>",
+                    "owner_peer_id": subject_owner_peer_id,
+                },
+                "$.authority_context.peer_id",
+            )
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        affiliation_row = _find_affiliation(affiliation_rows=affiliation_rows, subject_id=subject_id)
+        left_faction_id = ""
+        if affiliation_row:
+            left_faction_id = str(affiliation_row.get("faction_id", "")).strip()
+            affiliation_row["faction_id"] = None
+            affiliation_row["joined_tick"] = int(current_tick)
+            affiliation_row["role_id"] = str(affiliation_row.get("role_id", "role.member")).strip() or "role.member"
+        else:
+            affiliation_rows.append(
+                {
+                    "subject_id": subject_id,
+                    "faction_id": None,
+                    "joined_tick": int(current_tick),
+                    "role_id": "role.member",
+                    "extensions": {},
+                }
+            )
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+        )
+        result_metadata = {
+            "subject_id": subject_id,
+            "left_faction_id": left_faction_id,
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.territory_claim":
+        faction_id = str(inputs.get("faction_id", "")).strip()
+        territory_id = str(inputs.get("territory_id", "")).strip()
+        region_scope = dict(inputs.get("region_scope") or {}) if isinstance(inputs.get("region_scope"), dict) else {}
+        if not faction_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.territory_claim requires faction_id",
+                "Provide faction_id and territory_id or region_scope in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.faction_id",
+            )
+        if not territory_id and not region_scope:
+            return refusal(
+                "refusal.civ.territory_invalid",
+                "territory claim requires territory_id or region_scope descriptor",
+                "Provide territory_id or deterministic region_scope payload.",
+                {"faction_id": faction_id},
+                "$.intent.inputs",
+            )
+        if not territory_id:
+            territory_id = "territory.{}".format(canonical_sha256(region_scope)[:16])
+
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        faction_row = _find_faction(faction_rows=faction_rows, faction_id=faction_id)
+        if not faction_row or str(faction_row.get("status", "")).strip() != "active":
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "faction '{}' cannot claim territory".format(faction_id),
+                "Use active faction_id with territory claim entitlement.",
+                {"faction_id": faction_id},
+                "$.intent.inputs.faction_id",
+            )
+        ownership_check = _require_faction_owner_authority(faction_row=faction_row, authority_context=authority_context)
+        if ownership_check.get("result") != "complete":
+            return ownership_check
+
+        territory_row = _find_territory(territory_rows=territory_rows, territory_id=territory_id)
+        if not territory_row:
+            territory_row = {
+                "territory_id": territory_id,
+                "region_scope": dict(region_scope),
+                "owner_faction_id": None,
+                "claim_status": "unclaimed",
+                "created_tick": int(current_tick),
+                "extensions": {},
+            }
+            territory_rows.append(territory_row)
+        elif (not territory_row.get("region_scope")) and region_scope:
+            territory_row["region_scope"] = dict(region_scope)
+
+        owner_before_raw = territory_row.get("owner_faction_id")
+        owner_before = "" if owner_before_raw is None else str(owner_before_raw).strip()
+        owner_after = owner_before
+        claim_status = str(territory_row.get("claim_status", "unclaimed")).strip() or "unclaimed"
+        territory_extensions = (
+            dict(territory_row.get("extensions") or {}) if isinstance(territory_row.get("extensions"), dict) else {}
+        )
+        if not owner_before:
+            owner_after = faction_id
+            claim_status = "claimed"
+            territory_extensions.pop("contested_by_faction_ids", None)
+        elif owner_before == faction_id:
+            owner_after = faction_id
+            claim_status = "claimed"
+            territory_extensions.pop("contested_by_faction_ids", None)
+        else:
+            owner_after = sorted([owner_before, faction_id])[0]
+            claim_status = "contested"
+            contested_by = _sorted_tokens(list(territory_extensions.get("contested_by_faction_ids") or []))
+            if owner_before and owner_before not in contested_by:
+                contested_by.append(owner_before)
+            if faction_id not in contested_by:
+                contested_by.append(faction_id)
+            territory_extensions["contested_by_faction_ids"] = _sorted_tokens(contested_by)
+        territory_row["owner_faction_id"] = owner_after if owner_after else None
+        territory_row["claim_status"] = claim_status
+        territory_row["extensions"] = territory_extensions
+
+        for row in faction_rows:
+            row_id = str(row.get("faction_id", "")).strip()
+            if row_id == owner_after:
+                _add_faction_territory(row, territory_id=territory_id)
+            else:
+                _drop_faction_territory(row, territory_id=territory_id)
+
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+        )
+        result_metadata = {
+            "faction_id": faction_id,
+            "territory_id": territory_id,
+            "claim_status": claim_status,
+            "owner_faction_id": owner_after or "",
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.territory_release":
+        faction_id = str(inputs.get("faction_id", "")).strip()
+        territory_id = str(inputs.get("territory_id", "")).strip()
+        if not faction_id or not territory_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.territory_release requires faction_id and territory_id",
+                "Provide faction_id and territory_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        faction_row = _find_faction(faction_rows=faction_rows, faction_id=faction_id)
+        if not faction_row or str(faction_row.get("status", "")).strip() != "active":
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "faction '{}' cannot release territory".format(faction_id),
+                "Use active owning faction for territory release.",
+                {"faction_id": faction_id},
+                "$.intent.inputs.faction_id",
+            )
+        ownership_check = _require_faction_owner_authority(faction_row=faction_row, authority_context=authority_context)
+        if ownership_check.get("result") != "complete":
+            return ownership_check
+
+        territory_row = _find_territory(territory_rows=territory_rows, territory_id=territory_id)
+        if not territory_row:
+            return refusal(
+                "refusal.civ.territory_invalid",
+                "territory '{}' does not exist".format(territory_id),
+                "Use existing territory_id for release.",
+                {"territory_id": territory_id},
+                "$.intent.inputs.territory_id",
+            )
+        owner_faction_raw = territory_row.get("owner_faction_id")
+        owner_faction_id = "" if owner_faction_raw is None else str(owner_faction_raw).strip()
+        if owner_faction_id != faction_id:
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "faction '{}' is not owner of territory '{}'".format(faction_id, territory_id),
+                "Only owner faction may release a claimed territory.",
+                {
+                    "faction_id": faction_id,
+                    "territory_id": territory_id,
+                    "owner_faction_id": owner_faction_id,
+                },
+                "$.intent.inputs.faction_id",
+            )
+        territory_row["owner_faction_id"] = None
+        territory_row["claim_status"] = "unclaimed"
+        territory_extensions = (
+            dict(territory_row.get("extensions") or {}) if isinstance(territory_row.get("extensions"), dict) else {}
+        )
+        territory_extensions.pop("contested_by_faction_ids", None)
+        territory_row["extensions"] = territory_extensions
+        for row in faction_rows:
+            _drop_faction_territory(row, territory_id=territory_id)
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+        )
+        result_metadata = {
+            "faction_id": faction_id,
+            "territory_id": territory_id,
+            "claim_status": "unclaimed",
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.diplomacy_set_relation":
+        faction_a = str(inputs.get("faction_a", "")).strip()
+        faction_b = str(inputs.get("faction_b", "")).strip()
+        relation_state = str(inputs.get("relation_state", "")).strip()
+        if not faction_a or not faction_b or not relation_state or faction_a == faction_b:
+            return refusal(
+                "refusal.civ.relation_invalid",
+                "diplomacy update requires faction_a, faction_b, relation_state and distinct faction ids",
+                "Provide valid relation update payload and distinct faction ids.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        relation_rows = _diplomatic_state_rows(policy_context)
+        if not relation_rows or relation_state not in relation_rows:
+            return refusal(
+                "refusal.civ.relation_invalid",
+                "relation_state '{}' is not registered".format(relation_state),
+                "Use relation_state from diplomatic_state_registry.",
+                {"relation_state": relation_state},
+                "$.intent.inputs.relation_state",
+            )
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        faction_a_row = _find_faction(faction_rows=faction_rows, faction_id=faction_a)
+        faction_b_row = _find_faction(faction_rows=faction_rows, faction_id=faction_b)
+        if not faction_a_row or not faction_b_row:
+            return refusal(
+                "refusal.civ.relation_invalid",
+                "faction pair '{}'/'{}' is invalid".format(faction_a, faction_b),
+                "Use existing faction ids for diplomacy updates.",
+                {"faction_a": faction_a, "faction_b": faction_b},
+                "$.intent.inputs",
+            )
+        if str(faction_a_row.get("status", "")).strip() != "active" or str(faction_b_row.get("status", "")).strip() != "active":
+            return refusal(
+                "refusal.civ.relation_invalid",
+                "diplomacy update requires active factions",
+                "Reactivate factions or use active faction ids.",
+                {"faction_a": faction_a, "faction_b": faction_b},
+                "$.intent.inputs",
+            )
+        ownership_check = _require_faction_owner_authority(faction_row=faction_a_row, authority_context=authority_context)
+        if ownership_check.get("result") != "complete":
+            return ownership_check
+
+        left, right = _canonical_faction_pair(faction_a=faction_a, faction_b=faction_b)
+        relation_row = {}
+        for row in diplomatic_rows:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("faction_a", "")).strip() == left and str(row.get("faction_b", "")).strip() == right:
+                relation_row = row
+                break
+        if not relation_row:
+            relation_row = {
+                "faction_a": left,
+                "faction_b": right,
+                "relation_state": relation_state,
+                "updated_tick": int(current_tick),
+                "extensions": {},
+            }
+            diplomatic_rows.append(relation_row)
+        relation_row["relation_state"] = relation_state
+        relation_row["updated_tick"] = int(current_tick)
+        if not isinstance(relation_row.get("extensions"), dict):
+            relation_row["extensions"] = {}
+
+        for row in faction_rows:
+            faction_id = str(row.get("faction_id", "")).strip()
+            relation_map = dict(row.get("diplomatic_relations") or {}) if isinstance(row.get("diplomatic_relations"), dict) else {}
+            if faction_id == left:
+                relation_map[right] = relation_state
+            elif faction_id == right:
+                relation_map[left] = relation_state
+            row["diplomatic_relations"] = dict((token, relation_map[token]) for token in sorted(relation_map.keys()))
+
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+        )
+        result_metadata = {
+            "faction_a": left,
+            "faction_b": right,
+            "relation_state": relation_state,
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.cohort_create":
+        size = _as_int(inputs.get("size", -1), -1)
+        if size <= 0:
+            return refusal(
+                "refusal.civ.invalid_size",
+                "cohort creation requires size > 0",
+                "Provide positive integer size in intent.inputs.size.",
+                {"size": str(size)},
+                "$.intent.inputs.size",
+            )
+        location_ref = str(inputs.get("location_ref", "") or inputs.get("region_id", "")).strip()
+        if not location_ref:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.cohort_create requires location_ref",
+                "Provide deterministic location_ref (site_id or region_id).",
+                {"process_id": process_id},
+                "$.intent.inputs.location_ref",
+            )
+        mapping_policy_id = str(inputs.get("mapping_policy_id", "")).strip()
+        policy_rows = _cohort_mapping_policy_rows(policy_context)
+        if not mapping_policy_id or mapping_policy_id not in policy_rows:
+            return refusal(
+                "refusal.civ.policy_missing",
+                "cohort mapping policy '{}' is unavailable".format(mapping_policy_id or "<missing>"),
+                "Provide mapping_policy_id from cohort_mapping_policy_registry.",
+                {"mapping_policy_id": mapping_policy_id or "<missing>"},
+                "$.intent.inputs.mapping_policy_id",
+            )
+        faction_value = inputs.get("faction_id")
+        faction_id = None if faction_value is None else str(faction_value).strip() or None
+        territory_value = inputs.get("territory_id")
+        territory_id = None if territory_value is None else str(territory_value).strip() or None
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        if faction_id:
+            faction_row = _find_faction(faction_rows=faction_rows, faction_id=faction_id)
+            if not faction_row or str(faction_row.get("status", "")).strip() != "active":
+                return refusal(
+                    "refusal.civ.claim_forbidden",
+                    "cohort faction '{}' is unavailable".format(faction_id),
+                    "Use active faction_id for cohort creation or null faction_id.",
+                    {"faction_id": faction_id},
+                    "$.intent.inputs.faction_id",
+                )
+            ownership_check = _require_faction_owner_authority(faction_row=faction_row, authority_context=authority_context)
+            if ownership_check.get("result") != "complete":
+                return ownership_check
+        size_bucket = max(1, int(size))
+        cohort_id = str(inputs.get("cohort_id", "")).strip() or _deterministic_cohort_id(
+            faction_id=faction_id,
+            location_ref=location_ref,
+            created_tick=current_tick,
+            size_bucket=size_bucket,
+        )
+        if _find_cohort(cohort_rows=cohorts, cohort_id=cohort_id):
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "cohort_id '{}' already exists".format(cohort_id),
+                "Use a distinct cohort_id or deterministic input tuple.",
+                {"cohort_id": cohort_id},
+                "$.intent.inputs.cohort_id",
+            )
+        cohort_row = {
+            "cohort_id": cohort_id,
+            "size": int(size),
+            "faction_id": faction_id,
+            "territory_id": territory_id,
+            "location_ref": location_ref,
+            "demographic_tags": dict(inputs.get("demographic_tags") or {}) if isinstance(inputs.get("demographic_tags"), dict) else {},
+            "skill_distribution": dict(inputs.get("skill_distribution") or {})
+            if isinstance(inputs.get("skill_distribution"), dict)
+            else {},
+            "refinement_state": "macro",
+            "created_tick": int(current_tick),
+            "extensions": {
+                "mapping_policy_id": mapping_policy_id,
+                "expanded_micro_count": 0,
+            },
+        }
+        cohorts.append(cohort_row)
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+            cohort_rows=cohorts,
+        )
+        result_metadata = {
+            "cohort_id": cohort_id,
+            "size": int(size),
+            "location_ref": location_ref,
+            "mapping_policy_id": mapping_policy_id,
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.cohort_expand_to_micro":
+        cohort_id = str(inputs.get("cohort_id", "")).strip()
+        if not cohort_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.cohort_expand_to_micro requires cohort_id",
+                "Provide cohort_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.cohort_id",
+            )
+        cohort_row = _find_cohort(cohort_rows=cohorts, cohort_id=cohort_id)
+        if not cohort_row:
+            return refusal(
+                "refusal.control.target_invalid",
+                "cohort '{}' does not exist".format(cohort_id),
+                "Use an existing cohort_id from cohort assemblies.",
+                {"cohort_id": cohort_id},
+                "$.intent.inputs.cohort_id",
+            )
+        interest_region_id = str(inputs.get("interest_region_id", "")).strip() or str(cohort_row.get("location_ref", "")).strip()
+        mapping_policy_id = _cohort_policy_id(
+            cohort_row=cohort_row,
+            fallback=str(inputs.get("mapping_policy_id", "")).strip(),
+        )
+        policy_rows = _cohort_mapping_policy_rows(policy_context)
+        mapping_policy = dict(policy_rows.get(mapping_policy_id) or {})
+        if not mapping_policy:
+            return refusal(
+                "refusal.civ.policy_missing",
+                "mapping policy '{}' is unavailable".format(mapping_policy_id or "<missing>"),
+                "Provide cohort mapping policy registry entry and valid mapping_policy_id.",
+                {"mapping_policy_id": mapping_policy_id or "<missing>", "cohort_id": cohort_id},
+                "$.intent.inputs.mapping_policy_id",
+            )
+        requested_max = _as_int(inputs.get("max_micro_agents", -1), -1)
+        if requested_max < -1:
+            return refusal(
+                "refusal.civ.invalid_size",
+                "max_micro_agents must be >= 0 when provided",
+                "Set max_micro_agents to non-negative integer or omit it.",
+                {"max_micro_agents": str(requested_max)},
+                "$.intent.inputs.max_micro_agents",
+            )
+        policy_max = max(0, _as_int(mapping_policy.get("max_micro_agents_per_cohort", 0), 0))
+        if requested_max >= 0:
+            target_max = min(policy_max, int(requested_max))
+        else:
+            target_max = int(policy_max)
+        shard_map = dict((policy_context or {}).get("shard_map") or {})
+        active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+        owner_shard_id = _cohort_owner_shard_id(cohort_row=cohort_row, shard_map=shard_map)
+        if active_shard_id and owner_shard_id and owner_shard_id != active_shard_id:
+            return refusal(
+                "refusal.civ.cohort_cross_shard_forbidden",
+                "cohort '{}' belongs to shard '{}' not active shard '{}'".format(cohort_id, owner_shard_id, active_shard_id),
+                "Route expansion to owning shard or transfer cohort deterministically first.",
+                {"cohort_id": cohort_id, "owner_shard_id": owner_shard_id, "active_shard_id": active_shard_id},
+                "$.policy_context.active_shard_id",
+            )
+        deterministic_seed = _cohort_seed_material(
+            cohort_id=cohort_id,
+            tick=int(current_tick),
+            policy_context=policy_context,
+            mapping_policy_id=mapping_policy_id,
+            interest_region_id=interest_region_id,
+        )
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        expanded = _expand_cohort_to_micro_internal(
+            state=state,
+            cohort_row=cohort_row,
+            cohort_rows=cohorts,
+            affiliation_rows=affiliation_rows,
+            interest_region_id=interest_region_id,
+            max_micro_agents=max(0, int(target_max)),
+            mapping_policy_id=mapping_policy_id,
+            policy_context=policy_context,
+            current_tick=int(current_tick),
+            deterministic_seed=deterministic_seed,
+        )
+        if expanded.get("result") != "complete":
+            return expanded
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+            cohort_rows=cohorts,
+        )
+        expanded_micro_count = int(expanded.get("expanded_micro_count", 0))
+        cohort_size = max(0, _as_int(cohort_row.get("size", 0), 0))
+        result_metadata = {
+            "cohort_id": cohort_id,
+            "interest_region_id": interest_region_id,
+            "mapping_policy_id": mapping_policy_id,
+            "deterministic_seed": deterministic_seed,
+            "expanded_micro_count": expanded_micro_count,
+            "partial_expansion": bool(expanded_micro_count < min(cohort_size, max(0, int(target_max)))),
+            "created_agent_ids": list(expanded.get("created_agent_ids") or []),
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.cohort_collapse_from_micro":
+        cohort_id = str(inputs.get("cohort_id", "")).strip()
+        if not cohort_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.cohort_collapse_from_micro requires cohort_id",
+                "Provide cohort_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.cohort_id",
+            )
+        cohort_row = _find_cohort(cohort_rows=cohorts, cohort_id=cohort_id)
+        if not cohort_row:
+            return refusal(
+                "refusal.control.target_invalid",
+                "cohort '{}' does not exist".format(cohort_id),
+                "Use an existing cohort_id from cohort assemblies.",
+                {"cohort_id": cohort_id},
+                "$.intent.inputs.cohort_id",
+            )
+        shard_map = dict((policy_context or {}).get("shard_map") or {})
+        active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+        owner_shard_id = _cohort_owner_shard_id(cohort_row=cohort_row, shard_map=shard_map)
+        if active_shard_id and owner_shard_id and owner_shard_id != active_shard_id:
+            return refusal(
+                "refusal.civ.cohort_cross_shard_forbidden",
+                "cohort '{}' belongs to shard '{}' not active shard '{}'".format(cohort_id, owner_shard_id, active_shard_id),
+                "Route collapse to owning shard or transfer cohort deterministically first.",
+                {"cohort_id": cohort_id, "owner_shard_id": owner_shard_id, "active_shard_id": active_shard_id},
+                "$.policy_context.active_shard_id",
+            )
+        faction_rows = _ensure_faction_assemblies(state)
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        collapsed = _collapse_cohort_from_micro_internal(
+            state=state,
+            cohort_row=cohort_row,
+            affiliation_rows=affiliation_rows,
+            current_tick=int(current_tick),
+        )
+        if collapsed.get("result") != "complete":
+            return collapsed
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+            cohort_rows=cohorts,
+        )
+        result_metadata = {
+            "cohort_id": cohort_id,
+            "collapsed_agent_ids": list(collapsed.get("collapsed_agent_ids") or []),
+            "size": int(collapsed.get("size", 0)),
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.affiliation_change_micro":
+        subject_id = str(inputs.get("subject_id", "")).strip()
+        if not subject_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.affiliation_change_micro requires subject_id",
+                "Provide micro agent subject_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.subject_id",
+            )
+        subject_row = _find_agent(agent_rows=agents, agent_id=subject_id)
+        if not subject_row or not str(subject_row.get("parent_cohort_id", "")).strip():
+            return refusal(
+                "refusal.control.target_invalid",
+                "subject '{}' is not a micro cohort agent".format(subject_id),
+                "Use an expanded micro agent id with parent_cohort_id.",
+                {"subject_id": subject_id},
+                "$.intent.inputs.subject_id",
+            )
+        faction_value = inputs.get("faction_id")
+        faction_id = None if faction_value is None else str(faction_value).strip() or None
+        faction_rows = _ensure_faction_assemblies(state)
+        if faction_id:
+            faction_row = _find_faction(faction_rows=faction_rows, faction_id=faction_id)
+            if not faction_row or str(faction_row.get("status", "")).strip() != "active":
+                return refusal(
+                    "refusal.civ.claim_forbidden",
+                    "faction '{}' is unavailable for micro affiliation update".format(faction_id),
+                    "Use active faction_id or null to clear affiliation.",
+                    {"faction_id": faction_id},
+                    "$.intent.inputs.faction_id",
+                )
+        affiliation_rows = _ensure_affiliations(state)
+        territory_rows = _ensure_territory_assemblies(state)
+        diplomatic_rows = _ensure_diplomatic_relations(state)
+        updated = _apply_affiliation_change(
+            affiliation_rows=affiliation_rows,
+            subject_id=subject_id,
+            faction_id=faction_id,
+            current_tick=int(current_tick),
+        )
+        _persist_civ_state(
+            state=state,
+            faction_rows=faction_rows,
+            affiliation_rows=affiliation_rows,
+            territory_rows=territory_rows,
+            diplomatic_rows=diplomatic_rows,
+            cohort_rows=cohorts,
+        )
+        result_metadata = {
+            "subject_id": subject_id,
+            "faction_id": updated.get("faction_id"),
+            "joined_tick": int(updated.get("joined_tick", 0)),
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.order_create":
+        order_type_id = str(inputs.get("order_type_id", "")).strip()
+        target_kind = str(inputs.get("target_kind", "")).strip()
+        target_id = str(inputs.get("target_id", "")).strip()
+        payload = dict(inputs.get("payload") or {}) if isinstance(inputs.get("payload"), dict) else {}
+        if not order_type_id or not target_kind or not target_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.order_create requires order_type_id, target_kind, and target_id",
+                "Provide deterministic order target fields and payload in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if target_kind not in ("agent", "cohort", "faction", "territory"):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "target_kind '{}' is unsupported".format(target_kind),
+                "Use target_kind in {agent,cohort,faction,territory}.",
+                {"target_kind": target_kind},
+                "$.intent.inputs.target_kind",
+            )
+        order_type_map = _order_type_rows(policy_context)
+        order_type_row = dict(order_type_map.get(order_type_id) or {})
+        if not order_type_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "order_type_id '{}' is not registered".format(order_type_id),
+                "Use order_type_id from order_type_registry.",
+                {"order_type_id": order_type_id},
+                "$.intent.inputs.order_type_id",
+            )
+        allowed_target_kinds = _sorted_tokens(list(order_type_row.get("allowed_target_kinds") or []))
+        if allowed_target_kinds and target_kind not in set(allowed_target_kinds):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "target_kind '{}' is forbidden for order_type_id '{}'".format(target_kind, order_type_id),
+                "Use allowed_target_kinds from order_type_registry for this order.",
+                {"order_type_id": order_type_id, "target_kind": target_kind},
+                "$.intent.inputs.target_kind",
+            )
+
+        target_exists = False
+        if target_kind == "agent":
+            target_exists = bool(_find_agent(agents, target_id))
+        elif target_kind == "cohort":
+            target_exists = bool(_find_cohort(cohorts, target_id))
+        elif target_kind == "faction":
+            target_exists = bool(_find_faction(_ensure_faction_assemblies(state), target_id))
+        elif target_kind == "territory":
+            target_exists = bool(_find_territory(_ensure_territory_assemblies(state), target_id))
+        if not target_exists:
+            return refusal(
+                "refusal.control.target_invalid",
+                "order target '{}' does not exist for kind '{}'".format(target_id, target_kind),
+                "Use target ids present in current universe assemblies.",
+                {"target_kind": target_kind, "target_id": target_id},
+                "$.intent.inputs.target_id",
+            )
+
+        issuer_subject_id = str(inputs.get("issuer_subject_id", "")).strip() or _author_subject_id(authority_context)
+        effective_entitlements = set(
+            _effective_civ_entitlements(
+                state=state,
+                authority_context=authority_context,
+                subject_id=issuer_subject_id,
+            )
+        )
+        required_caps = _sorted_tokens(list(order_type_row.get("required_capabilities") or []))
+        missing_caps = [token for token in required_caps if token not in effective_entitlements]
+        if missing_caps:
+            return refusal(
+                "refusal.civ.entitlement_missing",
+                "issuer subject is missing order capabilities required by order type",
+                "Grant required entitlements or assign a role with delegation before order_create.",
+                {"missing_entitlements": ",".join(sorted(missing_caps)), "issuer_subject_id": issuer_subject_id},
+                "$.intent.inputs.order_type_id",
+            )
+
+        shard_map = dict((policy_context or {}).get("shard_map") or {})
+        active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+        target_shards = _order_target_shards(state=state, target_kind=target_kind, target_id=target_id, shard_map=shard_map)
+        if active_shard_id and target_shards:
+            if len(target_shards) > 1 or active_shard_id not in set(target_shards):
+                return refusal(
+                    "refusal.civ.order_cross_shard_not_supported",
+                    "order target spans unsupported shards for current execution shard",
+                    "Route to a single owning shard or split into deterministic per-shard orders.",
+                    {
+                        "active_shard_id": active_shard_id,
+                        "target_shards": list(target_shards),
+                        "target_kind": target_kind,
+                        "target_id": target_id,
+                    },
+                    "$.intent.inputs.target_id",
+                )
+
+        created_tick = int(current_tick)
+        payload_hash = canonical_sha256(payload)
+        order_id = str(inputs.get("order_id", "")).strip() or "order.{}".format(
+            canonical_sha256(
+                {
+                    "issuer_subject_id": issuer_subject_id,
+                    "target_kind": target_kind,
+                    "target_id": target_id,
+                    "order_type_id": order_type_id,
+                    "created_tick": created_tick,
+                    "payload_hash": payload_hash,
+                }
+            )[:16]
+        )
+        if _find_order(order_rows=order_rows, order_id=order_id):
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "order_id '{}' already exists".format(order_id),
+                "Use deterministic order id generation or provide a unique override.",
+                {"order_id": order_id},
+                "$.intent.inputs.order_id",
+            )
+        priority = max(0, _as_int(inputs.get("priority", order_type_row.get("default_priority", 0)), 0))
+        row = {
+            "order_id": order_id,
+            "order_type_id": order_type_id,
+            "issuer_subject_id": issuer_subject_id,
+            "target_kind": target_kind,
+            "target_id": target_id,
+            "created_tick": created_tick,
+            "last_update_tick": created_tick,
+            "status": "queued",
+            "priority": int(priority),
+            "payload": dict(payload),
+            "required_entitlements": required_caps,
+            "refusal": None,
+            "extensions": {"payload_hash": payload_hash, "shard_targets": list(target_shards)},
+        }
+        order_rows.append(row)
+
+        owner_kind, owner_id = _order_queue_owner(state=state, target_kind=target_kind, target_id=target_id, inputs=inputs)
+        queue_row = _upsert_order_queue(
+            queue_rows=queue_rows,
+            owner_kind=owner_kind,
+            owner_id=owner_id,
+            current_tick=created_tick,
+        )
+        queue_order_ids = _ordered_unique_tokens(list(queue_row.get("order_ids") or []))
+        queue_order_ids.append(order_id)
+        queue_row["order_ids"] = queue_order_ids
+        _refresh_queue_order_ids(queue_row=queue_row, order_rows=order_rows)
+
+        _persist_civ_state(
+            state=state,
+            faction_rows=_ensure_faction_assemblies(state),
+            affiliation_rows=_ensure_affiliations(state),
+            territory_rows=_ensure_territory_assemblies(state),
+            diplomatic_rows=_ensure_diplomatic_relations(state),
+            cohort_rows=cohorts,
+            order_rows=order_rows,
+            queue_rows=queue_rows,
+            institution_rows=institution_rows,
+            role_assignment_rows=role_assignment_rows,
+        )
+        result_metadata = {
+            "order_id": order_id,
+            "order_type_id": order_type_id,
+            "queue_id": str(queue_row.get("queue_id", "")),
+            "status": "queued",
+            "priority": int(priority),
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.order_cancel":
+        order_id = str(inputs.get("order_id", "")).strip()
+        if not order_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.order_cancel requires order_id",
+                "Provide order_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.order_id",
+            )
+        order_row = _find_order(order_rows=order_rows, order_id=order_id)
+        if not order_row:
+            return refusal(
+                "refusal.control.target_invalid",
+                "order '{}' does not exist".format(order_id),
+                "Use order_id from order assemblies.",
+                {"order_id": order_id},
+                "$.intent.inputs.order_id",
+            )
+        caller_subject_id = _author_subject_id(authority_context)
+        admin_override = _civ_admin_override(authority_context)
+        issuer_subject_id = str(order_row.get("issuer_subject_id", "")).strip()
+        if (not admin_override) and issuer_subject_id and caller_subject_id != issuer_subject_id:
+            return refusal(
+                "refusal.civ.ownership_violation",
+                "caller subject cannot cancel order created by another issuer",
+                "Cancel with issuer authority or use civ admin override entitlement.",
+                {
+                    "caller_subject_id": caller_subject_id,
+                    "issuer_subject_id": issuer_subject_id,
+                    "order_id": order_id,
+                },
+                "$.intent.inputs.order_id",
+            )
+        order_row["status"] = "refused"
+        order_row["last_update_tick"] = int(current_tick)
+        order_row["refusal"] = {
+            "code": "refusal.civ.order_cancelled",
+            "reason": "cancelled_by_issuer_or_admin",
+            "issuer_subject_id": caller_subject_id,
+            "cancel_tick": int(current_tick),
+        }
+        _remove_order_from_all_queues(queue_rows=queue_rows, order_id=order_id)
+        for queue_row in queue_rows:
+            _refresh_queue_order_ids(queue_row=queue_row, order_rows=order_rows)
+        _persist_civ_state(
+            state=state,
+            faction_rows=_ensure_faction_assemblies(state),
+            affiliation_rows=_ensure_affiliations(state),
+            territory_rows=_ensure_territory_assemblies(state),
+            diplomatic_rows=_ensure_diplomatic_relations(state),
+            cohort_rows=cohorts,
+            order_rows=order_rows,
+            queue_rows=queue_rows,
+            institution_rows=institution_rows,
+            role_assignment_rows=role_assignment_rows,
+        )
+        result_metadata = {
+            "order_id": order_id,
+            "status": "refused",
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.cohort_relocate":
+        cohort_id = str(inputs.get("cohort_id", "")).strip()
+        destination = str(inputs.get("destination", "") or inputs.get("location_ref", "")).strip()
+        if not cohort_id or not destination:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.cohort_relocate requires cohort_id and destination",
+                "Provide deterministic cohort_id and destination in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        cohort_row = _find_cohort(cohort_rows=cohorts, cohort_id=cohort_id)
+        if not cohort_row:
+            return refusal(
+                "refusal.control.target_invalid",
+                "cohort '{}' does not exist".format(cohort_id),
+                "Use an existing cohort_id from cohort assemblies.",
+                {"cohort_id": cohort_id},
+                "$.intent.inputs.cohort_id",
+            )
+        shard_map = dict((policy_context or {}).get("shard_map") or {})
+        active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+        owner_shard_id = _cohort_owner_shard_id(cohort_row=cohort_row, shard_map=shard_map)
+        if active_shard_id and owner_shard_id and owner_shard_id != active_shard_id:
+            return refusal(
+                "refusal.civ.order_cross_shard_not_supported",
+                "cohort relocate must execute on owning shard",
+                "Route order to owning shard or split into deterministic per-shard orders.",
+                {"cohort_id": cohort_id, "owner_shard_id": owner_shard_id, "active_shard_id": active_shard_id},
+                "$.policy_context.active_shard_id",
+            )
+        cohort_row["location_ref"] = destination
+        extensions = dict(cohort_row.get("extensions") or {}) if isinstance(cohort_row.get("extensions"), dict) else {}
+        extensions["last_relocate_tick"] = int(current_tick)
+        extensions["last_relocate_destination"] = destination
+        cohort_row["extensions"] = extensions
+        _persist_civ_state(
+            state=state,
+            faction_rows=_ensure_faction_assemblies(state),
+            affiliation_rows=_ensure_affiliations(state),
+            territory_rows=_ensure_territory_assemblies(state),
+            diplomatic_rows=_ensure_diplomatic_relations(state),
+            cohort_rows=cohorts,
+            order_rows=order_rows,
+            queue_rows=queue_rows,
+            institution_rows=institution_rows,
+            role_assignment_rows=role_assignment_rows,
+        )
+        result_metadata = {
+            "cohort_id": cohort_id,
+            "destination": destination,
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.order_tick":
+        tick_summary = _run_order_tick(
+            state=state,
+            order_rows=order_rows,
+            queue_rows=queue_rows,
+            cohorts=cohorts,
+            agents=agents,
+            current_tick=int(current_tick),
+            authority_context=authority_context,
+            policy_context=policy_context,
+            max_orders_override=_as_int(inputs.get("max_orders_per_tick", 0), 0) or None,
+        )
+        _persist_civ_state(
+            state=state,
+            faction_rows=_ensure_faction_assemblies(state),
+            affiliation_rows=_ensure_affiliations(state),
+            territory_rows=_ensure_territory_assemblies(state),
+            diplomatic_rows=_ensure_diplomatic_relations(state),
+            cohort_rows=cohorts,
+            order_rows=order_rows,
+            queue_rows=queue_rows,
+            institution_rows=institution_rows,
+            role_assignment_rows=role_assignment_rows,
+        )
+        result_metadata = {
+            "processed_count": len(list(tick_summary.get("processed_order_ids") or [])),
+            "processed_order_ids": list(tick_summary.get("processed_order_ids") or []),
+            "completed_order_ids": list(tick_summary.get("completed_order_ids") or []),
+            "failed_order_ids": list(tick_summary.get("failed_order_ids") or []),
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.role_assign":
+        if law_profile.get("allow_role_delegation") is False:
+            return refusal(
+                "refusal.civ.law_forbidden",
+                "active law profile forbids role delegation",
+                "Enable role delegation in law profile or use direct entitlements.",
+                {"law_profile_id": str(law_profile.get("law_profile_id", ""))},
+                "$.law_profile.allow_role_delegation",
+            )
+        subject_id = str(inputs.get("subject_id", "")).strip()
+        role_id = str(inputs.get("role_id", "")).strip()
+        institution_id = str(inputs.get("institution_id", "")).strip()
+        institution_type_id = str(inputs.get("institution_type_id", "inst.band_council")).strip() or "inst.band_council"
+        faction_raw = inputs.get("faction_id")
+        faction_id = None if faction_raw is None else str(faction_raw).strip() or None
+        if not subject_id or not role_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.role_assign requires subject_id and role_id",
+                "Provide deterministic subject_id and role_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        role_map = _role_rows(policy_context)
+        role_row = dict(role_map.get(role_id) or {})
+        if not role_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "role_id '{}' is not registered".format(role_id),
+                "Use role_id from role_registry.",
+                {"role_id": role_id},
+                "$.intent.inputs.role_id",
+            )
+        institution_type_map = _institution_type_rows(policy_context)
+        institution_row = _find_institution(institution_rows=institution_rows, institution_id=institution_id) if institution_id else {}
+        if not institution_row:
+            institution_type_row = dict(institution_type_map.get(institution_type_id) or {})
+            if not institution_type_row:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "institution_type_id '{}' is not registered".format(institution_type_id),
+                    "Use institution_type_id from institution_type_registry.",
+                    {"institution_type_id": institution_type_id},
+                    "$.intent.inputs.institution_type_id",
+                )
+            if not institution_id:
+                institution_id = "institution.{}".format(
+                    canonical_sha256(
+                        {
+                            "institution_type_id": institution_type_id,
+                            "faction_id": faction_id,
+                            "created_tick": int(current_tick),
+                        }
+                    )[:16]
+                )
+            institution_row = {
+                "institution_id": institution_id,
+                "institution_type_id": institution_type_id,
+                "faction_id": faction_id,
+                "status": "active",
+                "created_tick": int(current_tick),
+                "extensions": {},
+            }
+            institution_rows.append(institution_row)
+        institution_type_id = str(institution_row.get("institution_type_id", "")).strip() or institution_type_id
+        institution_type_row = dict(institution_type_map.get(institution_type_id) or {})
+        allowed_role_ids = _sorted_tokens(list(institution_type_row.get("allowed_role_ids") or []))
+        if allowed_role_ids and role_id not in set(allowed_role_ids):
+            return refusal(
+                "refusal.civ.relation_invalid",
+                "role_id '{}' is not allowed by institution type '{}'".format(role_id, institution_type_id),
+                "Choose a role listed in institution_type_registry.allowed_role_ids.",
+                {"institution_type_id": institution_type_id, "role_id": role_id},
+                "$.intent.inputs.role_id",
+            )
+        granted_entitlements = _sorted_tokens(list(role_row.get("granted_entitlements") or []))
+        delegable = law_profile.get("delegable_entitlements")
+        if isinstance(delegable, list) and delegable:
+            allowed_delegable = set(_sorted_tokens(list(delegable)))
+            granted_entitlements = [token for token in granted_entitlements if token in allowed_delegable]
+        disallowed = set(_sorted_tokens(list((policy_context or {}).get("disallowed_role_entitlements") or [])))
+        if disallowed:
+            granted_entitlements = [token for token in granted_entitlements if token not in disallowed]
+        assignment_id = str(inputs.get("assignment_id", "")).strip() or "role_assignment.{}".format(
+            canonical_sha256(
+                {
+                    "institution_id": institution_id,
+                    "subject_id": subject_id,
+                    "role_id": role_id,
+                    "created_tick": int(current_tick),
+                }
+            )[:16]
+        )
+        assignment_row = _find_role_assignment(role_assignment_rows=role_assignment_rows, assignment_id=assignment_id)
+        if assignment_row:
+            assignment_row["institution_id"] = institution_id
+            assignment_row["subject_id"] = subject_id
+            assignment_row["role_id"] = role_id
+            assignment_row["granted_entitlements"] = list(granted_entitlements)
+            assignment_row["created_tick"] = int(current_tick)
+            if not isinstance(assignment_row.get("extensions"), dict):
+                assignment_row["extensions"] = {}
+        else:
+            role_assignment_rows.append(
+                {
+                    "assignment_id": assignment_id,
+                    "institution_id": institution_id,
+                    "subject_id": subject_id,
+                    "role_id": role_id,
+                    "granted_entitlements": list(granted_entitlements),
+                    "created_tick": int(current_tick),
+                    "extensions": {},
+                }
+            )
+        affiliation_row = _find_affiliation(affiliation_rows=_ensure_affiliations(state), subject_id=subject_id)
+        if isinstance(affiliation_row, dict) and affiliation_row:
+            affiliation_row["role_id"] = role_id
+        _persist_civ_state(
+            state=state,
+            faction_rows=_ensure_faction_assemblies(state),
+            affiliation_rows=_ensure_affiliations(state),
+            territory_rows=_ensure_territory_assemblies(state),
+            diplomatic_rows=_ensure_diplomatic_relations(state),
+            cohort_rows=cohorts,
+            order_rows=order_rows,
+            queue_rows=queue_rows,
+            institution_rows=institution_rows,
+            role_assignment_rows=role_assignment_rows,
+        )
+        result_metadata = {
+            "assignment_id": assignment_id,
+            "institution_id": institution_id,
+            "subject_id": subject_id,
+            "role_id": role_id,
+        }
+        _advance_time(state, steps=1)
+    elif process_id == "process.role_revoke":
+        assignment_id = str(inputs.get("assignment_id", "")).strip()
+        if not assignment_id:
+            subject_id = str(inputs.get("subject_id", "")).strip()
+            institution_id = str(inputs.get("institution_id", "")).strip()
+            role_id = str(inputs.get("role_id", "")).strip()
+            for row in sorted(role_assignment_rows, key=lambda item: str(item.get("assignment_id", ""))):
+                if subject_id and str(row.get("subject_id", "")).strip() != subject_id:
+                    continue
+                if institution_id and str(row.get("institution_id", "")).strip() != institution_id:
+                    continue
+                if role_id and str(row.get("role_id", "")).strip() != role_id:
+                    continue
+                assignment_id = str(row.get("assignment_id", "")).strip()
+                break
+        if not assignment_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.role_revoke requires assignment_id or deterministic match fields",
+                "Provide assignment_id or subject_id/institution_id(/role_id).",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        assignment_row = _find_role_assignment(role_assignment_rows=role_assignment_rows, assignment_id=assignment_id)
+        if not assignment_row:
+            return refusal(
+                "refusal.control.target_invalid",
+                "role assignment '{}' does not exist".format(assignment_id),
+                "Use assignment_id from role_assignment assemblies.",
+                {"assignment_id": assignment_id},
+                "$.intent.inputs.assignment_id",
+            )
+        subject_id = str(assignment_row.get("subject_id", "")).strip()
+        role_id = str(assignment_row.get("role_id", "")).strip()
+        role_assignment_rows[:] = [
+            dict(row)
+            for row in role_assignment_rows
+            if isinstance(row, dict) and str(row.get("assignment_id", "")).strip() != assignment_id
+        ]
+        affiliation_row = _find_affiliation(affiliation_rows=_ensure_affiliations(state), subject_id=subject_id)
+        if isinstance(affiliation_row, dict) and affiliation_row and str(affiliation_row.get("role_id", "")).strip() == role_id:
+            affiliation_row["role_id"] = "role.member"
+        _persist_civ_state(
+            state=state,
+            faction_rows=_ensure_faction_assemblies(state),
+            affiliation_rows=_ensure_affiliations(state),
+            territory_rows=_ensure_territory_assemblies(state),
+            diplomatic_rows=_ensure_diplomatic_relations(state),
+            cohort_rows=cohorts,
+            order_rows=order_rows,
+            queue_rows=queue_rows,
+            institution_rows=institution_rows,
+            role_assignment_rows=role_assignment_rows,
+        )
+        result_metadata = {
+            "assignment_id": assignment_id,
+            "subject_id": subject_id,
+            "role_id": role_id,
+            "revoked": True,
+        }
+        _advance_time(state, steps=1)
     elif process_id in ("process.control_set_view_lens", "process.camera_set_lens"):
         controller_id = str(inputs.get("controller_id", "")).strip()
         lens_id = str(inputs.get("lens_id", "")).strip()
@@ -4012,6 +7340,40 @@ def execute_intent(
         control = _ensure_time_control(state)
         control["paused"] = False
         _advance_time(state, steps=1)
+    elif process_id in ("process.region_expand", "process.region_collapse"):
+        transition = _run_region_transition_with_lod_invariance(
+            state=state,
+            process_id=process_id,
+            inputs=dict(inputs),
+            law_profile=law_profile,
+            authority_context=authority_context,
+            navigation_indices=navigation_indices,
+            policy_context=policy_context,
+        )
+        if str(transition.get("result", "")) != "complete":
+            return transition
+        tick_result = dict(transition.get("tick_result") or {})
+        lod_summary = dict(transition.get("lod_invariance") or {})
+        _advance_time(state, steps=1)
+        state_hash_anchor = _log_process(
+            state=state,
+            process_id=process_id,
+            intent_id=intent_id,
+            authority_origin=str(authority_context.get("authority_origin", "")),
+            inputs=dict(inputs),
+        )
+        return {
+            "result": "complete",
+            "state_hash_anchor": state_hash_anchor,
+            "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
+            "selected_terrain_tiles": list(tick_result.get("selected_terrain_tiles") or []),
+            "active_regions": list(tick_result.get("active_regions") or []),
+            "budget_outcome": str(tick_result.get("budget_outcome", "")),
+            "forced_expand_region_ids": list(tick_result.get("forced_expand_region_ids") or []),
+            "forced_collapse_region_ids": list(tick_result.get("forced_collapse_region_ids") or []),
+            "cohort_refinement": list(tick_result.get("cohort_refinement") or []),
+            "lod_invariance": lod_summary,
+        }
     elif process_id == "process.region_management_tick":
         tick_result = _region_management_tick(
             state=state,
@@ -4035,6 +7397,7 @@ def execute_intent(
             "selected_terrain_tiles": list(tick_result.get("selected_terrain_tiles") or []),
             "active_regions": list(tick_result.get("active_regions") or []),
             "budget_outcome": str(tick_result.get("budget_outcome", "")),
+            "cohort_refinement": list(tick_result.get("cohort_refinement") or []),
         }
     else:
         return refusal(
