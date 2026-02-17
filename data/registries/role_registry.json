@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.registry.role_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.role_registry",
+    "registry_version": "1.0.0",
+    "roles": [
+      {
+        "role_id": "role.envoy",
+        "description": "Delegated diplomacy and communication role scaffold.",
+        "granted_entitlements": [
+          "entitlement.civ.diplomacy",
+          "entitlement.civ.order",
+          "entitlement.civ.view_orders"
+        ],
+        "extensions": {}
+      },
+      {
+        "role_id": "role.guard",
+        "description": "Security/guard role scaffold for future defence behaviors.",
+        "granted_entitlements": [
+          "entitlement.civ.order"
+        ],
+        "extensions": {}
+      },
+      {
+        "role_id": "role.leader",
+        "description": "Primary leadership role for council/institution delegation.",
+        "granted_entitlements": [
+          "entitlement.civ.order",
+          "entitlement.civ.assimilate",
+          "entitlement.civ.view_orders",
+          "entitlement.civ.role_assign"
+        ],
+        "extensions": {}
+      },
+      {
+        "role_id": "role.worker",
+        "description": "Operational worker role scaffold.",
+        "granted_entitlements": [
+          "entitlement.civ.order"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

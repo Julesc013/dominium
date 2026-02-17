@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order Type Schema",
+  "version": "1.0.0",
+  "description": "Canonical CIV-3 order type contract record.",
+  "x-doc-ref": [
+    "docs/civilisation/ORDER_LANGUAGE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "order_type_id",
+    "description",
+    "payload_schema_id",
+    "allowed_target_kinds",
+    "default_priority",
+    "required_capabilities",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "order_type_id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "payload_schema_id": {
+      "type": "string"
+    },
+    "allowed_target_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "agent",
+          "cohort",
+          "faction",
+          "territory"
+        ]
+      }
+    },
+    "default_priority": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "order_type_id": "order.move",
+      "description": "Deterministic movement order for micro agents or cohorts.",
+      "payload_schema_id": "dominium.schema.civilisation.order_move",
+      "allowed_target_kinds": [
+        "agent",
+        "cohort"
+      ],
+      "default_priority": 60,
+      "required_capabilities": [
+        "entitlement.civ.order"
+      ],
+      "extensions": {}
+    }
+  ]
+}

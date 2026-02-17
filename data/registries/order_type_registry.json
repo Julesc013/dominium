@@ -1,0 +1,99 @@
+{
+  "schema_id": "dominium.registry.order_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.order_type_registry",
+    "registry_version": "1.0.0",
+    "order_types": [
+      {
+        "order_type_id": "order.assimilate",
+        "description": "Assimilation/recruitment order stub. CIV-3 applies affiliation changes only when law permits.",
+        "payload_schema_id": "dominium.schema.civilisation.order_assimilate",
+        "allowed_target_kinds": [
+          "agent",
+          "cohort",
+          "faction"
+        ],
+        "default_priority": 80,
+        "required_capabilities": [
+          "entitlement.civ.order",
+          "entitlement.civ.assimilate"
+        ],
+        "extensions": {}
+      },
+      {
+        "order_type_id": "order.build_plan",
+        "description": "Build plan order stub. Produces deterministic plan artifacts without material execution.",
+        "payload_schema_id": "dominium.schema.civilisation.order_build_plan",
+        "allowed_target_kinds": [
+          "cohort",
+          "faction",
+          "territory"
+        ],
+        "default_priority": 20,
+        "required_capabilities": [
+          "entitlement.civ.order"
+        ],
+        "extensions": {}
+      },
+      {
+        "order_type_id": "order.communicate",
+        "description": "Structured communication order bridged to ED-2 message artifacts.",
+        "payload_schema_id": "dominium.schema.diegetics.message",
+        "allowed_target_kinds": [
+          "agent",
+          "cohort",
+          "faction"
+        ],
+        "default_priority": 50,
+        "required_capabilities": [
+          "entitlement.civ.order"
+        ],
+        "extensions": {}
+      },
+      {
+        "order_type_id": "order.migrate",
+        "description": "Deterministic macro migration order for cohorts/factions.",
+        "payload_schema_id": "dominium.schema.civilisation.order_move",
+        "allowed_target_kinds": [
+          "cohort",
+          "faction"
+        ],
+        "default_priority": 70,
+        "required_capabilities": [
+          "entitlement.civ.order"
+        ],
+        "extensions": {}
+      },
+      {
+        "order_type_id": "order.move",
+        "description": "Deterministic movement order for micro agents or cohorts.",
+        "payload_schema_id": "dominium.schema.civilisation.order_move",
+        "allowed_target_kinds": [
+          "agent",
+          "cohort"
+        ],
+        "default_priority": 60,
+        "required_capabilities": [
+          "entitlement.civ.order"
+        ],
+        "extensions": {}
+      },
+      {
+        "order_type_id": "order.patrol",
+        "description": "Patrol/guard order stub. CIV-3 does not execute pathing logic.",
+        "payload_schema_id": "dominium.schema.civilisation.order_move",
+        "allowed_target_kinds": [
+          "agent",
+          "cohort"
+        ],
+        "default_priority": 40,
+        "required_capabilities": [
+          "entitlement.civ.order"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

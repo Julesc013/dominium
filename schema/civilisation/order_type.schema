@@ -1,0 +1,24 @@
+SCHEMA: civilisation/order_type.schema
+schema_id: dominium.schema.civilisation.order_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic CIV-3 order type registry rows.
+
+REQUIRED SHAPE:
+record order_type
+  required:
+    - schema_version: semver
+    - order_type_id: id
+    - description: string
+    - payload_schema_id: id
+    - allowed_target_kinds: list[enum(agent|cohort|faction|territory)]
+    - default_priority: u32
+    - required_capabilities: list[id]
+    - extensions: map
+
+INVARIANTS:
+- order_type_id is stable and unique in registry.
+- allowed_target_kinds drives deterministic target validation.
+- payload_schema_id is explicit (no hidden payload defaults).

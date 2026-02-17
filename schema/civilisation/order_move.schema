@@ -1,0 +1,19 @@
+SCHEMA: civilisation/order_move.schema
+schema_id: dominium.schema.civilisation.order_move
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic payload for `order.move` and `order.migrate`.
+
+REQUIRED SHAPE:
+record order_move
+  required:
+    - schema_version: semver
+    - destination: id
+    - speed_policy_id: id
+    - extensions: map
+
+INVARIANTS:
+- destination is explicit and deterministic (site_id or region_id).
+- speed policy is declarative, not computed from wall-clock runtime state.

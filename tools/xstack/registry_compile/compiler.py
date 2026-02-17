@@ -1497,6 +1497,411 @@ def _control_registry_rows(
     return control_action_rows, controller_type_rows, errors
 
 
+def _civilisation_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _governance_record, governance_rows_raw, governance_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/governance_type_registry.json",
+        expected_schema_id="dominium.registry.governance_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="governance_types",
+    )
+    if governance_load_errors:
+        return [], [], [], [], [], [], governance_load_errors
+
+    governance_rows: List[dict] = []
+    governance_seen = set()
+    for entry in sorted(governance_rows_raw, key=lambda row: str((row or {}).get("governance_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_governance_type_entry",
+                    "message": "governance type entry must be object",
+                    "path": "$.governance_types",
+                }
+            )
+            continue
+        governance_type_id = str(entry.get("governance_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if not governance_type_id or not description or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_governance_type_entry",
+                    "message": "governance type entry missing required fields",
+                    "path": "$.governance_types",
+                }
+            )
+            continue
+        if governance_type_id in governance_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_governance_type_id",
+                    "message": "duplicate governance_type_id '{}'".format(governance_type_id),
+                    "path": "$.governance_types.governance_type_id",
+                }
+            )
+            continue
+        governance_seen.add(governance_type_id)
+        governance_rows.append(
+            {
+                "governance_type_id": governance_type_id,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    governance_rows = sorted(governance_rows, key=lambda row: str(row.get("governance_type_id", "")))
+
+    _diplomatic_record, diplomatic_rows_raw, diplomatic_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/diplomatic_state_registry.json",
+        expected_schema_id="dominium.registry.diplomatic_state_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="states",
+    )
+    if diplomatic_load_errors:
+        return [], [], [], [], [], [], diplomatic_load_errors
+
+    diplomatic_rows: List[dict] = []
+    diplomatic_seen = set()
+    for entry in sorted(diplomatic_rows_raw, key=lambda row: str((row or {}).get("relation_state", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_diplomatic_state_entry",
+                    "message": "diplomatic state entry must be object",
+                    "path": "$.states",
+                }
+            )
+            continue
+        relation_state = str(entry.get("relation_state", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if not relation_state or not description or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_diplomatic_state_entry",
+                    "message": "diplomatic state entry missing required fields",
+                    "path": "$.states",
+                }
+            )
+            continue
+        if relation_state in diplomatic_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_diplomatic_state",
+                    "message": "duplicate relation_state '{}'".format(relation_state),
+                    "path": "$.states.relation_state",
+                }
+            )
+            continue
+        diplomatic_seen.add(relation_state)
+        diplomatic_rows.append(
+            {
+                "relation_state": relation_state,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    diplomatic_rows = sorted(diplomatic_rows, key=lambda row: str(row.get("relation_state", "")))
+
+    _cohort_record, cohort_rows_raw, cohort_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/cohort_mapping_policy_registry.json",
+        expected_schema_id="dominium.registry.cohort_mapping_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if cohort_load_errors:
+        return [], [], [], [], [], [], cohort_load_errors
+
+    cohort_rows: List[dict] = []
+    cohort_seen = set()
+    for entry in sorted(cohort_rows_raw, key=lambda row: str((row or {}).get("mapping_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_cohort_mapping_policy_entry",
+                    "message": "cohort mapping policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        mapping_policy_id = str(entry.get("mapping_policy_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        max_micro_agents_per_cohort = int(entry.get("max_micro_agents_per_cohort", 0) or 0)
+        spawn_distribution_rules = entry.get("spawn_distribution_rules")
+        collapse_aggregation_rules = entry.get("collapse_aggregation_rules")
+        anonymous_micro_agents = entry.get("anonymous_micro_agents")
+        extensions = entry.get("extensions")
+        if (
+            not mapping_policy_id
+            or not description
+            or max_micro_agents_per_cohort < 0
+            or not isinstance(spawn_distribution_rules, dict)
+            or not isinstance(collapse_aggregation_rules, dict)
+            or not isinstance(anonymous_micro_agents, bool)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_cohort_mapping_policy_entry",
+                    "message": "cohort mapping policy '{}' missing required fields".format(
+                        mapping_policy_id or "<missing>"
+                    ),
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if mapping_policy_id in cohort_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_cohort_mapping_policy_id",
+                    "message": "duplicate mapping_policy_id '{}'".format(mapping_policy_id),
+                    "path": "$.policies.mapping_policy_id",
+                }
+            )
+            continue
+        cohort_seen.add(mapping_policy_id)
+        cohort_rows.append(
+            {
+                "mapping_policy_id": mapping_policy_id,
+                "description": description,
+                "max_micro_agents_per_cohort": int(max_micro_agents_per_cohort),
+                "spawn_distribution_rules": dict(
+                    (str(key), spawn_distribution_rules[key]) for key in sorted(spawn_distribution_rules.keys())
+                ),
+                "collapse_aggregation_rules": dict(
+                    (str(key), collapse_aggregation_rules[key]) for key in sorted(collapse_aggregation_rules.keys())
+                ),
+                "anonymous_micro_agents": bool(anonymous_micro_agents),
+                "extensions": dict(extensions),
+            }
+        )
+    cohort_rows = sorted(cohort_rows, key=lambda row: str(row.get("mapping_policy_id", "")))
+
+    _order_type_record, order_type_rows_raw, order_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/order_type_registry.json",
+        expected_schema_id="dominium.registry.order_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="order_types",
+    )
+    if order_type_load_errors:
+        return [], [], [], [], [], [], order_type_load_errors
+
+    order_type_rows: List[dict] = []
+    order_type_seen = set()
+    allowed_target_kind_set = {"agent", "cohort", "faction", "territory"}
+    for entry in sorted(order_type_rows_raw, key=lambda row: str((row or {}).get("order_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_order_type_entry",
+                    "message": "order type entry must be object",
+                    "path": "$.order_types",
+                }
+            )
+            continue
+        order_type_id = str(entry.get("order_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        payload_schema_id = str(entry.get("payload_schema_id", "")).strip()
+        allowed_target_kinds = entry.get("allowed_target_kinds")
+        required_capabilities = entry.get("required_capabilities")
+        extensions = entry.get("extensions")
+        try:
+            default_priority = int(entry.get("default_priority", -1) or 0)
+        except (TypeError, ValueError):
+            default_priority = -1
+        if (
+            not order_type_id
+            or not description
+            or not payload_schema_id
+            or default_priority < 0
+            or not isinstance(allowed_target_kinds, list)
+            or not isinstance(required_capabilities, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_order_type_entry",
+                    "message": "order type '{}' missing required fields".format(order_type_id or "<missing>"),
+                    "path": "$.order_types",
+                }
+            )
+            continue
+        if order_type_id in order_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_order_type_id",
+                    "message": "duplicate order_type_id '{}'".format(order_type_id),
+                    "path": "$.order_types.order_type_id",
+                }
+            )
+            continue
+        target_kinds = _sorted_unique_strings(allowed_target_kinds)
+        if not target_kinds or any(token not in allowed_target_kind_set for token in target_kinds):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_order_type_targets",
+                    "message": "order type '{}' has invalid allowed_target_kinds".format(order_type_id),
+                    "path": "$.order_types.allowed_target_kinds",
+                }
+            )
+            continue
+        order_type_seen.add(order_type_id)
+        order_type_rows.append(
+            {
+                "order_type_id": order_type_id,
+                "description": description,
+                "payload_schema_id": payload_schema_id,
+                "allowed_target_kinds": target_kinds,
+                "default_priority": int(default_priority),
+                "required_capabilities": _sorted_unique_strings(required_capabilities),
+                "extensions": dict(extensions),
+            }
+        )
+    order_type_rows = sorted(order_type_rows, key=lambda row: str(row.get("order_type_id", "")))
+
+    _role_record, role_rows_raw, role_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/role_registry.json",
+        expected_schema_id="dominium.registry.role_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="roles",
+    )
+    if role_load_errors:
+        return [], [], [], [], [], [], role_load_errors
+
+    role_rows: List[dict] = []
+    role_seen = set()
+    for entry in sorted(role_rows_raw, key=lambda row: str((row or {}).get("role_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_role_entry",
+                    "message": "role entry must be object",
+                    "path": "$.roles",
+                }
+            )
+            continue
+        role_id = str(entry.get("role_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        granted_entitlements = entry.get("granted_entitlements")
+        extensions = entry.get("extensions")
+        if not role_id or not description or not isinstance(granted_entitlements, list) or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_role_entry",
+                    "message": "role '{}' missing required fields".format(role_id or "<missing>"),
+                    "path": "$.roles",
+                }
+            )
+            continue
+        if role_id in role_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_role_id",
+                    "message": "duplicate role_id '{}'".format(role_id),
+                    "path": "$.roles.role_id",
+                }
+            )
+            continue
+        role_seen.add(role_id)
+        role_rows.append(
+            {
+                "role_id": role_id,
+                "description": description,
+                "granted_entitlements": _sorted_unique_strings(granted_entitlements),
+                "extensions": dict(extensions),
+            }
+        )
+    role_rows = sorted(role_rows, key=lambda row: str(row.get("role_id", "")))
+
+    _institution_record, institution_rows_raw, institution_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/institution_type_registry.json",
+        expected_schema_id="dominium.registry.institution_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="institution_types",
+    )
+    if institution_load_errors:
+        return [], [], [], [], [], [], institution_load_errors
+
+    role_id_set = set(str(row.get("role_id", "")).strip() for row in role_rows)
+    institution_rows: List[dict] = []
+    institution_seen = set()
+    for entry in sorted(institution_rows_raw, key=lambda row: str((row or {}).get("institution_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_institution_type_entry",
+                    "message": "institution type entry must be object",
+                    "path": "$.institution_types",
+                }
+            )
+            continue
+        institution_type_id = str(entry.get("institution_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        allowed_role_ids = entry.get("allowed_role_ids")
+        extensions = entry.get("extensions")
+        if not institution_type_id or not description or not isinstance(allowed_role_ids, list) or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_institution_type_entry",
+                    "message": "institution type '{}' missing required fields".format(institution_type_id or "<missing>"),
+                    "path": "$.institution_types",
+                }
+            )
+            continue
+        if institution_type_id in institution_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_institution_type_id",
+                    "message": "duplicate institution_type_id '{}'".format(institution_type_id),
+                    "path": "$.institution_types.institution_type_id",
+                }
+            )
+            continue
+        allowed_roles = _sorted_unique_strings(allowed_role_ids)
+        missing_roles = [token for token in allowed_roles if token not in role_id_set]
+        if missing_roles:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.institution_type_role_missing",
+                    "message": "institution type '{}' references unknown role ids: {}".format(
+                        institution_type_id,
+                        ",".join(sorted(missing_roles)),
+                    ),
+                    "path": "$.institution_types.allowed_role_ids",
+                }
+            )
+            continue
+        institution_seen.add(institution_type_id)
+        institution_rows.append(
+            {
+                "institution_type_id": institution_type_id,
+                "description": description,
+                "allowed_role_ids": allowed_roles,
+                "extensions": dict(extensions),
+            }
+        )
+    institution_rows = sorted(institution_rows, key=lambda row: str(row.get("institution_type_id", "")))
+
+    return (
+        governance_rows,
+        diplomatic_rows,
+        cohort_rows,
+        order_type_rows,
+        role_rows,
+        institution_rows,
+        errors,
+    )
+
+
 def _body_shape_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     _body_record, body_rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -3723,15 +4128,37 @@ def compile_bundle(
     if use_cache and cache_hit(repo_root, key):
         restored = restore_cache_entry(repo_root, key, out_dir=out_dir, lockfile_path=lockfile_out)
         if restored.get("result") == "complete":
-            return {
-                "result": "complete",
-                "bundle_id": bundle_id,
-                "cache_key": key,
-                "cache_hit": True,
-                "out_dir": _norm(os.path.relpath(out_dir, repo_root)),
-                "lockfile_path": _norm(os.path.relpath(lockfile_out, repo_root)),
-                "ordered_pack_ids": [str(row.get("pack_id", "")) for row in ordered_packs],
-            }
+            restored_lockfile_payload = {}
+            restored_lockfile_error = "invalid json"
+            try:
+                restored_lockfile_payload = json.load(open(lockfile_out, "r", encoding="utf-8"))
+                if isinstance(restored_lockfile_payload, dict):
+                    restored_lockfile_error = ""
+                else:
+                    restored_lockfile_error = "invalid root object"
+            except (OSError, ValueError):
+                restored_lockfile_payload = {}
+                restored_lockfile_error = "invalid json"
+            if not restored_lockfile_error:
+                lockfile_schema_status = validate_instance(
+                    repo_root=schema_root,
+                    schema_name="bundle_lockfile",
+                    payload=restored_lockfile_payload,
+                    strict_top_level=True,
+                )
+                lockfile_semantic_status = validate_lockfile_payload(restored_lockfile_payload)
+                if bool(lockfile_schema_status.get("valid", False)) and lockfile_semantic_status.get("result") == "complete":
+                    return {
+                        "result": "complete",
+                        "bundle_id": bundle_id,
+                        "cache_key": key,
+                        "cache_hit": True,
+                        "out_dir": _norm(os.path.relpath(out_dir, repo_root)),
+                        "lockfile_path": _norm(os.path.relpath(lockfile_out, repo_root)),
+                        "ordered_pack_ids": [str(row.get("pack_id", "")) for row in ordered_packs],
+                        "registry_hashes": dict(restored_lockfile_payload.get("registries") or {}),
+                        "pack_lock_hash": str(restored_lockfile_payload.get("pack_lock_hash", "")),
+                    }
 
     generated_from = _generated_from_rows(ordered_packs)
 
@@ -3748,6 +4175,17 @@ def compile_bundle(
         schema_root=schema_root,
     )
     control_action_rows, controller_type_rows, control_registry_errors = _control_registry_rows(
+        repo_root=repo_root,
+    )
+    (
+        governance_type_rows,
+        diplomatic_state_rows,
+        cohort_mapping_policy_rows,
+        order_type_rows,
+        role_rows,
+        institution_type_rows,
+        civilisation_registry_errors,
+    ) = _civilisation_registry_rows(
         repo_root=repo_root,
     )
     body_shape_rows, body_shape_registry_errors = _body_shape_registry_rows(
@@ -3823,6 +4261,7 @@ def compile_bundle(
         + policy_errors
         + worldgen_constraints_errors
         + control_registry_errors
+        + civilisation_registry_errors
         + body_shape_registry_errors
         + view_mode_registry_errors
         + diegetic_registry_errors
@@ -3880,6 +4319,48 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "controller_types": controller_type_rows,
+        }
+    )
+    governance_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "governance_types": governance_type_rows,
+        }
+    )
+    diplomatic_state_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "states": diplomatic_state_rows,
+        }
+    )
+    cohort_mapping_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": cohort_mapping_policy_rows,
+        }
+    )
+    order_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "order_types": order_type_rows,
+        }
+    )
+    role_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "roles": role_rows,
+        }
+    )
+    institution_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "institution_types": institution_type_rows,
         }
     )
     body_shape_payload = _finalize_registry_payload(
@@ -4096,6 +4577,12 @@ def compile_bundle(
         "lens_registry": ("lens_registry", lens_payload),
         "control_action_registry": ("control_action_registry", control_action_payload),
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
+        "governance_type_registry": ("governance_type_registry", governance_type_payload),
+        "diplomatic_state_registry": ("diplomatic_state_registry", diplomatic_state_payload),
+        "cohort_mapping_policy_registry": ("cohort_mapping_policy_registry", cohort_mapping_policy_payload),
+        "order_type_registry": ("order_type_registry", order_type_payload),
+        "role_registry": ("role_registry", role_payload),
+        "institution_type_registry": ("institution_type_registry", institution_type_payload),
         "body_shape_registry": ("body_shape_registry", body_shape_payload),
         "view_mode_registry": ("view_mode_registry", view_mode_payload),
         "instrument_type_registry": ("instrument_type_registry", instrument_type_payload),
@@ -4138,6 +4625,12 @@ def compile_bundle(
         "lens_registry",
         "control_action_registry",
         "controller_type_registry",
+        "governance_type_registry",
+        "diplomatic_state_registry",
+        "cohort_mapping_policy_registry",
+        "order_type_registry",
+        "role_registry",
+        "institution_type_registry",
         "body_shape_registry",
         "view_mode_registry",
         "instrument_type_registry",
@@ -4200,6 +4693,12 @@ def compile_bundle(
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
+            "governance_type_registry_hash": registry_hashes["governance_type_registry_hash"],
+            "diplomatic_state_registry_hash": registry_hashes["diplomatic_state_registry_hash"],
+            "cohort_mapping_policy_registry_hash": registry_hashes["cohort_mapping_policy_registry_hash"],
+            "order_type_registry_hash": registry_hashes["order_type_registry_hash"],
+            "role_registry_hash": registry_hashes["role_registry_hash"],
+            "institution_type_registry_hash": registry_hashes["institution_type_registry_hash"],
             "body_shape_registry_hash": registry_hashes["body_shape_registry_hash"],
             "view_mode_registry_hash": registry_hashes["view_mode_registry_hash"],
             "instrument_type_registry_hash": registry_hashes["instrument_type_registry_hash"],
