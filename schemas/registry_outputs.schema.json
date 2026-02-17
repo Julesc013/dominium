@@ -17,6 +17,12 @@
     "lens_registry_hash",
     "control_action_registry_hash",
     "controller_type_registry_hash",
+    "governance_type_registry_hash",
+    "diplomatic_state_registry_hash",
+    "cohort_mapping_policy_registry_hash",
+    "order_type_registry_hash",
+    "role_registry_hash",
+    "institution_type_registry_hash",
     "body_shape_registry_hash",
     "view_mode_registry_hash",
     "instrument_type_registry_hash",
@@ -75,6 +81,30 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "controller_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "governance_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "diplomatic_state_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "cohort_mapping_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "order_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "role_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "institution_type_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
@@ -209,6 +239,12 @@
       "lens_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "control_action_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "controller_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "governance_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "diplomatic_state_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "cohort_mapping_policy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "order_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "role_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "institution_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "body_shape_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "view_mode_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "instrument_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",

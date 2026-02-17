@@ -49,6 +49,13 @@
         "1.0.0"
       ]
     },
+    "affiliation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "anti_cheat_module_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -189,6 +196,27 @@
         "1.0.0"
       ]
     },
+    "cohort": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cohort_refinement": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cohort_mapping_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "decay_model": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -232,6 +260,20 @@
       ]
     },
     "domain_contract_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "diplomatic_relation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "diplomatic_state_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -302,6 +344,27 @@
       ]
     },
     "fidelity_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "faction": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "governance_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "institution_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -420,6 +483,48 @@
         "1.0.0"
       ]
     },
+    "order": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "order_assimilate": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "order_build_plan": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "order_move": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "order_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "order_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "message": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -505,6 +610,13 @@
       ]
     },
     "render_proxy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "role_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -631,6 +743,13 @@
       ]
     },
     "terrain_tile_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "territory": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

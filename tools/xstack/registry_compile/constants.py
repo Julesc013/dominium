@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.13.0"
+COMPILER_VERSION = "1.15.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -22,6 +22,12 @@ REGISTRY_OUTPUT_FILENAMES = {
     "perception_interest_policy_registry": "perception_interest_policy.registry.json",
     "control_action_registry": "control_action.registry.json",
     "controller_type_registry": "controller_type.registry.json",
+    "governance_type_registry": "governance_type.registry.json",
+    "diplomatic_state_registry": "diplomatic_state.registry.json",
+    "cohort_mapping_policy_registry": "cohort_mapping_policy.registry.json",
+    "order_type_registry": "order_type.registry.json",
+    "role_registry": "role.registry.json",
+    "institution_type_registry": "institution_type.registry.json",
     "body_shape_registry": "body_shape.registry.json",
     "view_mode_registry": "view_mode.registry.json",
     "instrument_type_registry": "instrument_type.registry.json",

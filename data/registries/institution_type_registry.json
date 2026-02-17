@@ -1,0 +1,44 @@
+{
+  "schema_id": "dominium.registry.institution_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.institution_type_registry",
+    "registry_version": "1.0.0",
+    "institution_types": [
+      {
+        "institution_type_id": "inst.band_council",
+        "description": "Small-band governance council scaffold.",
+        "allowed_role_ids": [
+          "role.leader",
+          "role.envoy",
+          "role.worker",
+          "role.guard"
+        ],
+        "extensions": {}
+      },
+      {
+        "institution_type_id": "inst.city_admin",
+        "description": "City administration scaffold for future civic workflows.",
+        "allowed_role_ids": [
+          "role.leader",
+          "role.envoy",
+          "role.worker",
+          "role.guard"
+        ],
+        "extensions": {}
+      },
+      {
+        "institution_type_id": "inst.tribe_council",
+        "description": "Tribal council scaffold with explicit delegation roles.",
+        "allowed_role_ids": [
+          "role.leader",
+          "role.envoy",
+          "role.worker",
+          "role.guard"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
