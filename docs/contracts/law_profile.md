@@ -43,6 +43,13 @@ Define the canonical law profile payload used to allow/refuse process classes an
 - `process.agent_move`
 - `process.agent_rotate`
 - `process.srz_transfer_entity`
+- `process.faction_create`
+- `process.faction_dissolve`
+- `process.affiliation_join`
+- `process.affiliation_leave`
+- `process.territory_claim`
+- `process.territory_release`
+- `process.diplomacy_set_relation`
 - `process.control_bind_camera`
 - `process.control_unbind_camera`
 - `process.control_possess_agent`
@@ -60,6 +67,13 @@ Define the canonical law profile payload used to allow/refuse process classes an
 - `process.agent_move` -> `entitlement.agent.move`
 - `process.agent_rotate` -> `entitlement.agent.rotate`
 - `process.srz_transfer_entity` -> `entitlement.control.admin`
+- `process.faction_create` -> `entitlement.civ.create_faction`
+- `process.faction_dissolve` -> `entitlement.civ.dissolve_faction`
+- `process.affiliation_join` -> `entitlement.civ.affiliation`
+- `process.affiliation_leave` -> `entitlement.civ.affiliation`
+- `process.territory_claim` -> `entitlement.civ.claim`
+- `process.territory_release` -> `entitlement.civ.claim`
+- `process.diplomacy_set_relation` -> `entitlement.civ.diplomacy`
 - `process.control_bind_camera` -> `entitlement.control.camera`
 - `process.control_unbind_camera` -> `entitlement.control.camera`
 - `process.control_possess_agent` -> `entitlement.control.possess`
@@ -82,6 +96,13 @@ Define the canonical law profile payload used to allow/refuse process classes an
     "process.agent_move",
     "process.agent_rotate",
     "process.srz_transfer_entity",
+    "process.faction_create",
+    "process.faction_dissolve",
+    "process.affiliation_join",
+    "process.affiliation_leave",
+    "process.territory_claim",
+    "process.territory_release",
+    "process.diplomacy_set_relation",
     "process.control_bind_camera",
     "process.control_unbind_camera",
     "process.control_possess_agent",
@@ -116,6 +137,13 @@ Define the canonical law profile payload used to allow/refuse process classes an
     "process.agent_move": "entitlement.agent.move",
     "process.agent_rotate": "entitlement.agent.rotate",
     "process.srz_transfer_entity": "entitlement.control.admin",
+    "process.faction_create": "entitlement.civ.create_faction",
+    "process.faction_dissolve": "entitlement.civ.dissolve_faction",
+    "process.affiliation_join": "entitlement.civ.affiliation",
+    "process.affiliation_leave": "entitlement.civ.affiliation",
+    "process.territory_claim": "entitlement.civ.claim",
+    "process.territory_release": "entitlement.civ.claim",
+    "process.diplomacy_set_relation": "entitlement.civ.diplomacy",
     "process.control_bind_camera": "entitlement.control.camera",
     "process.control_unbind_camera": "entitlement.control.camera",
     "process.control_possess_agent": "entitlement.control.possess",
@@ -133,6 +161,13 @@ Define the canonical law profile payload used to allow/refuse process classes an
     "process.agent_move": "operator",
     "process.agent_rotate": "operator",
     "process.srz_transfer_entity": "system",
+    "process.faction_create": "operator",
+    "process.faction_dissolve": "operator",
+    "process.affiliation_join": "observer",
+    "process.affiliation_leave": "observer",
+    "process.territory_claim": "operator",
+    "process.territory_release": "operator",
+    "process.diplomacy_set_relation": "operator",
     "process.control_bind_camera": "observer",
     "process.control_unbind_camera": "observer",
     "process.control_possess_agent": "operator",

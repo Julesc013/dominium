@@ -86,6 +86,18 @@
               "null"
             ]
           },
+          "parent_cohort_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "location_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "orientation_mdeg": {
             "type": "object",
             "required": [
@@ -430,6 +442,478 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      }
+    },
+    "faction_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "faction_id",
+          "human_name",
+          "description",
+          "created_tick",
+          "founder_agent_id",
+          "governance_type_id",
+          "territory_ids",
+          "diplomatic_relations",
+          "status",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "faction_id": {
+            "type": "string"
+          },
+          "human_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "founder_agent_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "governance_type_id": {
+            "type": "string"
+          },
+          "territory_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "diplomatic_relations": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "dissolved"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "affiliations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "subject_id",
+          "faction_id",
+          "joined_tick",
+          "role_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "subject_id": {
+            "type": "string"
+          },
+          "faction_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "joined_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "role_id": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "territory_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "territory_id",
+          "region_scope",
+          "owner_faction_id",
+          "claim_status",
+          "created_tick",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "territory_id": {
+            "type": "string"
+          },
+          "region_scope": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "owner_faction_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "claim_status": {
+            "type": "string",
+            "enum": [
+              "unclaimed",
+              "claimed",
+              "contested"
+            ]
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "diplomatic_relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "faction_a",
+          "faction_b",
+          "relation_state",
+          "updated_tick",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "faction_a": {
+            "type": "string"
+          },
+          "faction_b": {
+            "type": "string"
+          },
+          "relation_state": {
+            "type": "string"
+          },
+          "updated_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "cohort_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "cohort_id",
+          "size",
+          "faction_id",
+          "territory_id",
+          "location_ref",
+          "demographic_tags",
+          "skill_distribution",
+          "refinement_state",
+          "created_tick",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "cohort_id": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "faction_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "territory_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "location_ref": {
+            "type": "string"
+          },
+          "demographic_tags": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "skill_distribution": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "refinement_state": {
+            "type": "string",
+            "enum": [
+              "macro",
+              "micro",
+              "mixed"
+            ]
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "order_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "order_id",
+          "order_type_id",
+          "issuer_subject_id",
+          "target_kind",
+          "target_id",
+          "created_tick",
+          "last_update_tick",
+          "status",
+          "priority",
+          "payload",
+          "required_entitlements",
+          "refusal",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "order_id": {
+            "type": "string"
+          },
+          "order_type_id": {
+            "type": "string"
+          },
+          "issuer_subject_id": {
+            "type": "string"
+          },
+          "target_kind": {
+            "type": "string",
+            "enum": [
+              "agent",
+              "cohort",
+              "faction",
+              "territory"
+            ]
+          },
+          "target_id": {
+            "type": "string"
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "last_update_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "queued",
+              "executing",
+              "completed",
+              "failed",
+              "refused",
+              "cancelled"
+            ]
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "required_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "refusal": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "order_queue_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "queue_id",
+          "owner_kind",
+          "owner_id",
+          "order_ids",
+          "last_update_tick",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "queue_id": {
+            "type": "string"
+          },
+          "owner_kind": {
+            "type": "string",
+            "enum": [
+              "faction",
+              "controller",
+              "cohort",
+              "global"
+            ]
+          },
+          "owner_id": {
+            "type": "string"
+          },
+          "order_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_update_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "institution_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "institution_id",
+          "institution_type_id",
+          "faction_id",
+          "status",
+          "created_tick",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "institution_id": {
+            "type": "string"
+          },
+          "institution_type_id": {
+            "type": "string"
+          },
+          "faction_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "dissolved"
+            ]
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "role_assignment_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "assignment_id",
+          "institution_id",
+          "subject_id",
+          "role_id",
+          "granted_entitlements",
+          "created_tick",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "assignment_id": {
+            "type": "string"
+          },
+          "institution_id": {
+            "type": "string"
+          },
+          "subject_id": {
+            "type": "string"
+          },
+          "role_id": {
+            "type": "string"
+          },
+          "granted_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
           }
         }
       }

@@ -1263,6 +1263,13 @@ def build_truth_model(
             "render_proxy_registry_hash": str(registries.get("render_proxy_registry_hash", "")),
             "cosmetic_registry_hash": str(registries.get("cosmetic_registry_hash", "")),
             "cosmetic_policy_registry_hash": str(registries.get("cosmetic_policy_registry_hash", "")),
+            "render_primitive_registry_hash": str(registries.get("render_primitive_registry_hash", "")),
+            "procedural_material_template_registry_hash": str(
+                registries.get("procedural_material_template_registry_hash", "")
+            ),
+            "label_policy_registry_hash": str(registries.get("label_policy_registry_hash", "")),
+            "lod_policy_registry_hash": str(registries.get("lod_policy_registry_hash", "")),
+            "representation_rule_registry_hash": str(registries.get("representation_rule_registry_hash", "")),
             "activation_policy_registry_hash": str(registries.get("activation_policy_registry_hash", "")),
             "budget_policy_registry_hash": str(registries.get("budget_policy_registry_hash", "")),
             "fidelity_policy_registry_hash": str(registries.get("fidelity_policy_registry_hash", "")),

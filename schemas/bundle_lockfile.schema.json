@@ -75,6 +75,11 @@
         "render_proxy_registry_hash",
         "cosmetic_registry_hash",
         "cosmetic_policy_registry_hash",
+        "render_primitive_registry_hash",
+        "procedural_material_template_registry_hash",
+        "label_policy_registry_hash",
+        "lod_policy_registry_hash",
+        "representation_rule_registry_hash",
         "net_replication_policy_registry_hash",
         "net_resync_strategy_registry_hash",
         "net_server_policy_registry_hash",
@@ -173,6 +178,26 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "cosmetic_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "render_primitive_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "procedural_material_template_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "label_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "lod_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "representation_rule_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -299,6 +324,11 @@
         "render_proxy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "cosmetic_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "cosmetic_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "render_primitive_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "procedural_material_template_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "label_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "lod_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "representation_rule_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "net_replication_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "net_resync_strategy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "net_server_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",

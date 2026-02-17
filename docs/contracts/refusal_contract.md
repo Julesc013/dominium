@@ -116,7 +116,15 @@ Tool payload wrapper:
 - `refusal.cosmetic.unsigned_not_allowed`
 - `refusal.cosmetic.not_in_whitelist`
 - `refusal.contract.no_penetration_violation`
+- `refusal.ep.lod_information_gain`
 - `refusal.ep.memory_policy_violation`
+- `refusal.civ.entitlement_missing`
+- `refusal.civ.law_forbidden`
+- `refusal.civ.already_affiliated`
+- `refusal.civ.territory_invalid`
+- `refusal.civ.claim_forbidden`
+- `refusal.civ.relation_invalid`
+- `refusal.civ.ownership_violation`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
 - `refusal.net.handshake_pack_lock_mismatch`: reconnect using identical bundle + lockfile; regenerate client dist if needed.
@@ -150,7 +158,15 @@ Tool payload wrapper:
 - `refusal.cosmetic.forbidden`: assign only cosmetics allowed by active cosmetic policy and authority context.
 - `refusal.cosmetic.unsigned_not_allowed`: use signed cosmetic packs or switch to non-strict cosmetic policy where permitted.
 - `refusal.cosmetic.not_in_whitelist`: select cosmetic IDs and pack IDs present in the ranked/active policy allow-list.
+- `refusal.ep.lod_information_gain`: enforce solver-tier redaction and precision envelopes before emitting PerceivedModel output.
 - `refusal.ep.memory_policy_violation`: ensure memory payload channels/precision comply with active epistemic + retention policy chain.
+- `refusal.civ.entitlement_missing`: grant CIV entitlement for faction/affiliation/territory/diplomacy process request.
+- `refusal.civ.law_forbidden`: active law profile forbids requested CIV process; switch profile or update policy pack.
+- `refusal.civ.already_affiliated`: subject must leave current faction before joining another faction.
+- `refusal.civ.territory_invalid`: use valid territory_id or deterministic region_scope descriptor for claim/release requests.
+- `refusal.civ.claim_forbidden`: faction is not eligible/owner for requested claim mutation; use owning faction authority.
+- `refusal.civ.relation_invalid`: relation payload must use registered diplomatic state and valid active faction IDs.
+- `refusal.civ.ownership_violation`: submit CIV mutation using authority context matching faction/subject ownership or admin override.
 
 ## Invariants
 - Refusals do not mutate authoritative state.

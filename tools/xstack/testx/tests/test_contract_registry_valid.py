@@ -18,6 +18,9 @@ BASELINE_IDS = (
     "dom.contract.epistemic_non_omniscience",
     "dom.contract.deterministic_transition",
     "dom.contract.port_contract_preservation",
+    "dom.contract.epistemic_invariance_lod",
+    "dom.contract.no_precision_leak",
+    "dom.contract.no_hidden_state_leak",
 )
 
 

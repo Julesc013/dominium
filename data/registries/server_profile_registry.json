@@ -40,7 +40,8 @@
           "legacy_server_policy_id": "server.policy.ranked.strict",
           "default_shard_map_id": "shard_map.default.single_shard",
           "perception_interest_policy_id": "policy.perception.lab.minimal",
-          "cosmetic_policy_id": "policy.cosmetics.rank_strict"
+          "cosmetic_policy_id": "policy.cosmetics.rank_strict",
+          "enforce_lod_invariance_strict": true
         }
       },
       {
@@ -76,7 +77,8 @@
           "legacy_server_policy_id": "server.policy.private.default",
           "default_shard_map_id": "shard_map.default.single_process_two_shards",
           "perception_interest_policy_id": "policy.perception.lab.default",
-          "cosmetic_policy_id": "policy.cosmetics.casual_default"
+          "cosmetic_policy_id": "policy.cosmetics.casual_default",
+          "enforce_lod_invariance_strict": false
         }
       },
       {
@@ -116,7 +118,8 @@
           "legacy_server_policy_id": "server.policy.private.default",
           "default_shard_map_id": "shard_map.default.single_process_two_shards",
           "perception_interest_policy_id": "policy.perception.lab.default",
-          "cosmetic_policy_id": "policy.cosmetics.private_relaxed"
+          "cosmetic_policy_id": "policy.cosmetics.private_relaxed",
+          "enforce_lod_invariance_strict": false
         }
       }
     ],

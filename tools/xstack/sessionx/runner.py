@@ -41,6 +41,12 @@ REGISTRY_HASH_KEY_MAP = {
     "lens_registry_hash": "lens_registry",
     "control_action_registry_hash": "control_action_registry",
     "controller_type_registry_hash": "controller_type_registry",
+    "governance_type_registry_hash": "governance_type_registry",
+    "diplomatic_state_registry_hash": "diplomatic_state_registry",
+    "cohort_mapping_policy_registry_hash": "cohort_mapping_policy_registry",
+    "order_type_registry_hash": "order_type_registry",
+    "role_registry_hash": "role_registry",
+    "institution_type_registry_hash": "institution_type_registry",
     "body_shape_registry_hash": "body_shape_registry",
     "view_mode_registry_hash": "view_mode_registry",
     "instrument_type_registry_hash": "instrument_type_registry",
@@ -48,6 +54,11 @@ REGISTRY_HASH_KEY_MAP = {
     "render_proxy_registry_hash": "render_proxy_registry",
     "cosmetic_registry_hash": "cosmetic_registry",
     "cosmetic_policy_registry_hash": "cosmetic_policy_registry",
+    "render_primitive_registry_hash": "render_primitive_registry",
+    "procedural_material_template_registry_hash": "procedural_material_template_registry",
+    "label_policy_registry_hash": "label_policy_registry",
+    "lod_policy_registry_hash": "lod_policy_registry",
+    "representation_rule_registry_hash": "representation_rule_registry",
     "net_replication_policy_registry_hash": "net_replication_policy_registry",
     "net_resync_strategy_registry_hash": "net_resync_strategy_registry",
     "net_server_policy_registry_hash": "net_server_policy_registry",
@@ -78,6 +89,12 @@ REGISTRY_FILE_MAP = {
     "lens_registry_hash": "lens.registry.json",
     "control_action_registry_hash": "control_action.registry.json",
     "controller_type_registry_hash": "controller_type.registry.json",
+    "governance_type_registry_hash": "governance_type.registry.json",
+    "diplomatic_state_registry_hash": "diplomatic_state.registry.json",
+    "cohort_mapping_policy_registry_hash": "cohort_mapping_policy.registry.json",
+    "order_type_registry_hash": "order_type.registry.json",
+    "role_registry_hash": "role.registry.json",
+    "institution_type_registry_hash": "institution_type.registry.json",
     "body_shape_registry_hash": "body_shape.registry.json",
     "view_mode_registry_hash": "view_mode.registry.json",
     "instrument_type_registry_hash": "instrument_type.registry.json",
@@ -85,6 +102,11 @@ REGISTRY_FILE_MAP = {
     "render_proxy_registry_hash": "render_proxy.registry.json",
     "cosmetic_registry_hash": "cosmetic.registry.json",
     "cosmetic_policy_registry_hash": "cosmetic_policy.registry.json",
+    "render_primitive_registry_hash": "render_primitive.registry.json",
+    "procedural_material_template_registry_hash": "procedural_material_template.registry.json",
+    "label_policy_registry_hash": "label_policy.registry.json",
+    "lod_policy_registry_hash": "lod_policy.registry.json",
+    "representation_rule_registry_hash": "representation_rule.registry.json",
     "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
     "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
     "net_server_policy_registry_hash": "net_server_policy.registry.json",
@@ -675,6 +697,54 @@ def boot_session_spec(
     )
     if experience_registry_error:
         return experience_registry_error
+    governance_type_registry, governance_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["governance_type_registry_hash"],
+        expected_hash=str(registries.get("governance_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if governance_type_registry_error:
+        return governance_type_registry_error
+    diplomatic_state_registry, diplomatic_state_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["diplomatic_state_registry_hash"],
+        expected_hash=str(registries.get("diplomatic_state_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if diplomatic_state_registry_error:
+        return diplomatic_state_registry_error
+    cohort_mapping_policy_registry, cohort_mapping_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["cohort_mapping_policy_registry_hash"],
+        expected_hash=str(registries.get("cohort_mapping_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if cohort_mapping_policy_registry_error:
+        return cohort_mapping_policy_registry_error
+    order_type_registry, order_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["order_type_registry_hash"],
+        expected_hash=str(registries.get("order_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if order_type_registry_error:
+        return order_type_registry_error
+    role_registry, role_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["role_registry_hash"],
+        expected_hash=str(registries.get("role_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if role_registry_error:
+        return role_registry_error
+    institution_type_registry, institution_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["institution_type_registry_hash"],
+        expected_hash=str(registries.get("institution_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if institution_type_registry_error:
+        return institution_type_registry_error
     astronomy_registry, astronomy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["astronomy_catalog_index_hash"],
@@ -875,6 +945,46 @@ def boot_session_spec(
     )
     if cosmetic_policy_registry_error:
         return cosmetic_policy_registry_error
+    render_primitive_registry, render_primitive_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["render_primitive_registry_hash"],
+        expected_hash=str(registries.get("render_primitive_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if render_primitive_registry_error:
+        return render_primitive_registry_error
+    procedural_material_template_registry, procedural_material_template_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["procedural_material_template_registry_hash"],
+        expected_hash=str(registries.get("procedural_material_template_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if procedural_material_template_registry_error:
+        return procedural_material_template_registry_error
+    label_policy_registry, label_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["label_policy_registry_hash"],
+        expected_hash=str(registries.get("label_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if label_policy_registry_error:
+        return label_policy_registry_error
+    lod_policy_registry, lod_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["lod_policy_registry_hash"],
+        expected_hash=str(registries.get("lod_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if lod_policy_registry_error:
+        return lod_policy_registry_error
+    representation_rule_registry, representation_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["representation_rule_registry_hash"],
+        expected_hash=str(registries.get("representation_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if representation_rule_registry_error:
+        return representation_rule_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -1039,6 +1149,12 @@ def boot_session_spec(
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
                 "terrain_tile_registry": terrain_tile_registry,
+                "governance_type_registry": governance_type_registry,
+                "diplomatic_state_registry": diplomatic_state_registry,
+                "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
+                "order_type_registry": order_type_registry,
+                "role_registry": role_registry,
+                "institution_type_registry": institution_type_registry,
                 "activation_policy_registry": activation_policy_registry,
                 "budget_policy_registry": budget_policy_registry,
                 "fidelity_policy_registry": fidelity_policy_registry,
@@ -1051,6 +1167,11 @@ def boot_session_spec(
                 "render_proxy_registry": render_proxy_registry,
                 "cosmetic_registry": cosmetic_registry,
                 "cosmetic_policy_registry": cosmetic_policy_registry,
+                "render_primitive_registry": render_primitive_registry,
+                "procedural_material_template_registry": procedural_material_template_registry,
+                "label_policy_registry": label_policy_registry,
+                "lod_policy_registry": lod_policy_registry,
+                "representation_rule_registry": representation_rule_registry,
                 "server_profile_registry": server_profile_registry,
                 "net_server_policy_registry": net_server_policy_registry,
             },
@@ -1089,6 +1210,12 @@ def boot_session_spec(
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
                 "terrain_tile_registry": terrain_tile_registry,
+                "governance_type_registry": governance_type_registry,
+                "diplomatic_state_registry": diplomatic_state_registry,
+                "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
+                "order_type_registry": order_type_registry,
+                "role_registry": role_registry,
+                "institution_type_registry": institution_type_registry,
                 "activation_policy_registry": activation_policy_registry,
                 "budget_policy_registry": budget_policy_registry,
                 "fidelity_policy_registry": fidelity_policy_registry,
@@ -1101,6 +1228,11 @@ def boot_session_spec(
                 "render_proxy_registry": render_proxy_registry,
                 "cosmetic_registry": cosmetic_registry,
                 "cosmetic_policy_registry": cosmetic_policy_registry,
+                "render_primitive_registry": render_primitive_registry,
+                "procedural_material_template_registry": procedural_material_template_registry,
+                "label_policy_registry": label_policy_registry,
+                "lod_policy_registry": lod_policy_registry,
+                "representation_rule_registry": representation_rule_registry,
                 "server_profile_registry": server_profile_registry,
                 "net_server_policy_registry": net_server_policy_registry,
             },
@@ -1392,6 +1524,12 @@ def boot_session_spec(
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
             "terrain_tile_registry": terrain_tile_registry,
+            "governance_type_registry": governance_type_registry,
+            "diplomatic_state_registry": diplomatic_state_registry,
+            "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
+            "order_type_registry": order_type_registry,
+            "role_registry": role_registry,
+            "institution_type_registry": institution_type_registry,
             "activation_policy_registry": activation_policy_registry,
             "budget_policy_registry": budget_policy_registry,
             "fidelity_policy_registry": fidelity_policy_registry,
@@ -1406,6 +1544,11 @@ def boot_session_spec(
             "render_proxy_registry": render_proxy_registry,
             "cosmetic_registry": cosmetic_registry,
             "cosmetic_policy_registry": cosmetic_policy_registry,
+            "render_primitive_registry": render_primitive_registry,
+            "procedural_material_template_registry": procedural_material_template_registry,
+            "label_policy_registry": label_policy_registry,
+            "lod_policy_registry": lod_policy_registry,
+            "representation_rule_registry": representation_rule_registry,
         },
     )
     observation = observe_truth(
@@ -1419,7 +1562,18 @@ def boot_session_spec(
         return observation
     perceived_model = dict(observation.get("perceived_model") or {})
     perceived_hash = str(observation.get("perceived_model_hash", ""))
-    render = build_render_model(perceived_model)
+    render = build_render_model(
+        perceived_model,
+        registry_payloads={
+            "render_primitive_registry": render_primitive_registry,
+            "procedural_material_template_registry": procedural_material_template_registry,
+            "label_policy_registry": label_policy_registry,
+            "lod_policy_registry": lod_policy_registry,
+            "representation_rule_registry": representation_rule_registry,
+        },
+        pack_lock_hash=str(lock_payload.get("pack_lock_hash", "")),
+        physics_profile_id=str(universe_identity.get("physics_profile_id", "")),
+    )
     if render.get("result") != "complete":
         return refusal(
             "RENDER_MODEL_BUILD_FAILED",

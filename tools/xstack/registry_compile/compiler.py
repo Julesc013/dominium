@@ -2220,7 +2220,7 @@ def _diegetic_registry_rows(
 def _representation_registry_rows(
     repo_root: str,
     schema_root: str,
-) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
 
     _render_record, render_rows_raw, render_load_errors = _load_registry_record(
@@ -2231,7 +2231,7 @@ def _representation_registry_rows(
         expected_entry_key="render_proxies",
     )
     if render_load_errors:
-        return [], [], [], render_load_errors
+        return [], [], [], [], [], [], [], [], render_load_errors
 
     render_proxy_rows: List[dict] = []
     render_proxy_id_set = set()
@@ -2311,7 +2311,7 @@ def _representation_registry_rows(
         expected_entry_key="cosmetics",
     )
     if cosmetic_load_errors:
-        return [], [], [], cosmetic_load_errors
+        return [], [], [], [], [], [], [], [], cosmetic_load_errors
 
     cosmetic_rows: List[dict] = []
     cosmetic_id_set = set()
@@ -2394,7 +2394,7 @@ def _representation_registry_rows(
         expected_entry_key="policies",
     )
     if policy_load_errors:
-        return [], [], [], policy_load_errors
+        return [], [], [], [], [], [], [], [], policy_load_errors
 
     cosmetic_policy_rows: List[dict] = []
     policy_id_set = set()
@@ -2478,7 +2478,416 @@ def _representation_registry_rows(
         )
         policy_id_set.add(policy_id)
     cosmetic_policy_rows = sorted(cosmetic_policy_rows, key=lambda row: str(row.get("policy_id", "")))
-    return render_proxy_rows, cosmetic_rows, cosmetic_policy_rows, errors
+
+    _primitive_record, primitive_rows_raw, primitive_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/render_primitive_registry.json",
+        expected_schema_id="dominium.registry.render_primitive_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="primitives",
+    )
+    if primitive_load_errors:
+        return [], [], [], [], [], [], [], [], primitive_load_errors
+
+    render_primitive_rows: List[dict] = []
+    render_primitive_id_set = set()
+    for entry in sorted(primitive_rows_raw, key=lambda row: str((row or {}).get("primitive_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_render_primitive_entry",
+                    "message": "render primitive entry must be object",
+                    "path": "$.primitives",
+                }
+            )
+            continue
+        primitive_id = str(entry.get("primitive_id", "")).strip()
+        if not primitive_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_render_primitive_entry",
+                    "message": "render primitive entry missing primitive_id",
+                    "path": "$.primitives.primitive_id",
+                }
+            )
+            continue
+        if primitive_id in render_primitive_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_render_primitive_id",
+                    "message": "duplicate render primitive id '{}'".format(primitive_id),
+                    "path": "$.primitives.primitive_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="render_primitive",
+            payload=schema_payload,
+            path="data/registries/render_primitive_registry.json#{}".format(primitive_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        render_primitive_rows.append(
+            {
+                "primitive_id": primitive_id,
+                "primitive_type": str(entry.get("primitive_type", "")).strip(),
+                "parameters": dict(entry.get("parameters") or {}),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        render_primitive_id_set.add(primitive_id)
+    render_primitive_rows = sorted(render_primitive_rows, key=lambda row: str(row.get("primitive_id", "")))
+
+    _template_record, template_rows_raw, template_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/procedural_material_template_registry.json",
+        expected_schema_id="dominium.registry.procedural_material_template_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="material_templates",
+    )
+    if template_load_errors:
+        return [], [], [], [], [], [], [], [], template_load_errors
+
+    material_template_rows: List[dict] = []
+    material_template_id_set = set()
+    for entry in sorted(template_rows_raw, key=lambda row: str((row or {}).get("template_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_material_template_entry",
+                    "message": "material template entry must be object",
+                    "path": "$.material_templates",
+                }
+            )
+            continue
+        template_id = str(entry.get("template_id", "")).strip()
+        if not template_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_material_template_entry",
+                    "message": "material template entry missing template_id",
+                    "path": "$.material_templates.template_id",
+                }
+            )
+            continue
+        if template_id in material_template_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_material_template_id",
+                    "message": "duplicate material template id '{}'".format(template_id),
+                    "path": "$.material_templates.template_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="material_template",
+            payload=schema_payload,
+            path="data/registries/procedural_material_template_registry.json#{}".format(template_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        material_template_rows.append(
+            {
+                "template_id": template_id,
+                "base_color_rule": dict(entry.get("base_color_rule") or {}),
+                "roughness_rule": dict(entry.get("roughness_rule") or {}),
+                "metallic_rule": dict(entry.get("metallic_rule") or {}),
+                "emission_rule": dict(entry.get("emission_rule") or {}),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        material_template_id_set.add(template_id)
+    material_template_rows = sorted(material_template_rows, key=lambda row: str(row.get("template_id", "")))
+
+    _label_record, label_rows_raw, label_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/label_policy_registry.json",
+        expected_schema_id="dominium.registry.label_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="label_policies",
+    )
+    if label_load_errors:
+        return [], [], [], [], [], [], [], [], label_load_errors
+
+    label_policy_rows: List[dict] = []
+    label_policy_id_set = set()
+    for entry in sorted(label_rows_raw, key=lambda row: str((row or {}).get("label_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_label_policy_entry",
+                    "message": "label policy entry must be object",
+                    "path": "$.label_policies",
+                }
+            )
+            continue
+        label_policy_id = str(entry.get("label_policy_id", "")).strip()
+        label_source = str(entry.get("label_source", "")).strip()
+        if (
+            not label_policy_id
+            or label_source not in ("none", "semantic_id", "entity_id", "faction_tag", "custom")
+            or not isinstance(entry.get("show_label"), bool)
+            or not isinstance(entry.get("extensions"), dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_label_policy_entry",
+                    "message": "label policy entry missing required fields",
+                    "path": "$.label_policies",
+                }
+            )
+            continue
+        if label_policy_id in label_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_label_policy_id",
+                    "message": "duplicate label policy id '{}'".format(label_policy_id),
+                    "path": "$.label_policies.label_policy_id",
+                }
+            )
+            continue
+        label_policy_rows.append(
+            {
+                "label_policy_id": label_policy_id,
+                "show_label": bool(entry.get("show_label", False)),
+                "label_source": label_source,
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        label_policy_id_set.add(label_policy_id)
+    label_policy_rows = sorted(label_policy_rows, key=lambda row: str(row.get("label_policy_id", "")))
+
+    _lod_record, lod_rows_raw, lod_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/lod_policy_registry.json",
+        expected_schema_id="dominium.registry.lod_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="lod_policies",
+    )
+    if lod_load_errors:
+        return [], [], [], [], [], [], [], [], lod_load_errors
+
+    lod_policy_rows: List[dict] = []
+    lod_policy_id_set = set()
+    for entry in sorted(lod_rows_raw, key=lambda row: str((row or {}).get("lod_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_lod_policy_entry",
+                    "message": "lod policy entry must be object",
+                    "path": "$.lod_policies",
+                }
+            )
+            continue
+        lod_policy_id = str(entry.get("lod_policy_id", "")).strip()
+        bands = entry.get("distance_bands_mm")
+        if (
+            not lod_policy_id
+            or not isinstance(bands, list)
+            or not isinstance(entry.get("default_hint"), str)
+            or not isinstance(entry.get("extensions"), dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_lod_policy_entry",
+                    "message": "lod policy entry missing required fields",
+                    "path": "$.lod_policies",
+                }
+            )
+            continue
+        if lod_policy_id in lod_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_lod_policy_id",
+                    "message": "duplicate lod policy id '{}'".format(lod_policy_id),
+                    "path": "$.lod_policies.lod_policy_id",
+                }
+            )
+            continue
+        normalized_bands = []
+        valid_bands = True
+        for value in bands:
+            try:
+                numeric = int(value)
+            except (TypeError, ValueError):
+                valid_bands = False
+                break
+            if numeric < 0:
+                valid_bands = False
+                break
+            normalized_bands.append(numeric)
+        if not valid_bands:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_lod_policy_entry",
+                    "message": "lod policy '{}' has invalid distance_bands_mm".format(lod_policy_id),
+                    "path": "$.lod_policies.distance_bands_mm",
+                }
+            )
+            continue
+        lod_policy_rows.append(
+            {
+                "lod_policy_id": lod_policy_id,
+                "distance_bands_mm": sorted(set(normalized_bands)),
+                "default_hint": str(entry.get("default_hint", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        lod_policy_id_set.add(lod_policy_id)
+    lod_policy_rows = sorted(lod_policy_rows, key=lambda row: str(row.get("lod_policy_id", "")))
+
+    _representation_rule_record, rule_rows_raw, rule_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/representation_rule_registry.json",
+        expected_schema_id="dominium.registry.representation_rule_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="representation_rules",
+    )
+    if rule_load_errors:
+        return [], [], [], [], [], [], [], [], rule_load_errors
+
+    representation_rule_rows: List[dict] = []
+    representation_rule_id_set = set()
+    for entry in sorted(rule_rows_raw, key=lambda row: str((row or {}).get("rule_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_representation_rule_entry",
+                    "message": "representation rule entry must be object",
+                    "path": "$.representation_rules",
+                }
+            )
+            continue
+        rule_id = str(entry.get("rule_id", "")).strip()
+        if not rule_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_representation_rule_entry",
+                    "message": "representation rule entry missing rule_id",
+                    "path": "$.representation_rules.rule_id",
+                }
+            )
+            continue
+        if rule_id in representation_rule_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_representation_rule_id",
+                    "message": "duplicate representation rule id '{}'".format(rule_id),
+                    "path": "$.representation_rules.rule_id",
+                }
+            )
+            continue
+        schema_payload = dict(entry)
+        schema_payload["schema_version"] = "1.0.0"
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="representation_rule",
+            payload=schema_payload,
+            path="data/registries/representation_rule_registry.json#{}".format(rule_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        match_row = dict(entry.get("match") or {})
+        output_row = dict(entry.get("output") or {})
+        primitive_id = str(output_row.get("primitive_id", "")).strip()
+        template_id = str(output_row.get("procedural_material_template_id", "")).strip()
+        label_policy_id = str(output_row.get("label_policy_id", "")).strip()
+        lod_policy_id = str(output_row.get("lod_policy_id", "")).strip()
+        if primitive_id not in render_primitive_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.representation_rule_primitive_missing",
+                    "message": "representation rule '{}' references unknown primitive '{}'".format(
+                        rule_id,
+                        primitive_id,
+                    ),
+                    "path": "$.representation_rules.output.primitive_id",
+                }
+            )
+            continue
+        if template_id not in material_template_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.representation_rule_template_missing",
+                    "message": "representation rule '{}' references unknown template '{}'".format(
+                        rule_id,
+                        template_id,
+                    ),
+                    "path": "$.representation_rules.output.procedural_material_template_id",
+                }
+            )
+            continue
+        if label_policy_id not in label_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.representation_rule_label_policy_missing",
+                    "message": "representation rule '{}' references unknown label policy '{}'".format(
+                        rule_id,
+                        label_policy_id,
+                    ),
+                    "path": "$.representation_rules.output.label_policy_id",
+                }
+            )
+            continue
+        if lod_policy_id not in lod_policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.representation_rule_lod_policy_missing",
+                    "message": "representation rule '{}' references unknown lod policy '{}'".format(
+                        rule_id,
+                        lod_policy_id,
+                    ),
+                    "path": "$.representation_rules.output.lod_policy_id",
+                }
+            )
+            continue
+        representation_rule_rows.append(
+            {
+                "rule_id": rule_id,
+                "match": {
+                    "entity_kind": match_row.get("entity_kind"),
+                    "material_tag": match_row.get("material_tag"),
+                    "domain_id": match_row.get("domain_id"),
+                    "faction_id": match_row.get("faction_id"),
+                    "view_mode_id": match_row.get("view_mode_id"),
+                    "body_shape": match_row.get("body_shape"),
+                },
+                "output": {
+                    "primitive_id": primitive_id,
+                    "procedural_material_template_id": template_id,
+                    "label_policy_id": label_policy_id,
+                    "lod_policy_id": lod_policy_id,
+                },
+                "priority": int(entry.get("priority", 0) or 0),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+        representation_rule_id_set.add(rule_id)
+    representation_rule_rows = sorted(
+        representation_rule_rows,
+        key=lambda row: (int(row.get("priority", 0) or 0) * -1, str(row.get("rule_id", ""))),
+    )
+
+    return (
+        render_proxy_rows,
+        cosmetic_rows,
+        cosmetic_policy_rows,
+        render_primitive_rows,
+        material_template_rows,
+        label_policy_rows,
+        lod_policy_rows,
+        representation_rule_rows,
+        errors,
+    )
 
 
 def _network_policy_rows(
@@ -4206,6 +4615,11 @@ def compile_bundle(
         render_proxy_rows,
         cosmetic_rows,
         cosmetic_policy_rows,
+        render_primitive_rows,
+        material_template_rows,
+        label_policy_rows,
+        lod_policy_rows,
+        representation_rule_rows,
         representation_registry_errors,
     ) = _representation_registry_rows(
         repo_root=repo_root,
@@ -4412,6 +4826,41 @@ def compile_bundle(
             "policies": cosmetic_policy_rows,
         }
     )
+    render_primitive_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "primitives": render_primitive_rows,
+        }
+    )
+    procedural_material_template_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "material_templates": material_template_rows,
+        }
+    )
+    label_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "label_policies": label_policy_rows,
+        }
+    )
+    lod_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "lod_policies": lod_policy_rows,
+        }
+    )
+    representation_rule_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "representation_rules": representation_rule_rows,
+        }
+    )
     net_replication_policy_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -4590,6 +5039,14 @@ def compile_bundle(
         "render_proxy_registry": ("render_proxy_registry", render_proxy_payload),
         "cosmetic_registry": ("cosmetic_registry", cosmetic_payload),
         "cosmetic_policy_registry": ("cosmetic_policy_registry", cosmetic_policy_payload),
+        "render_primitive_registry": ("render_primitive_registry", render_primitive_payload),
+        "procedural_material_template_registry": (
+            "procedural_material_template_registry",
+            procedural_material_template_payload,
+        ),
+        "label_policy_registry": ("label_policy_registry", label_policy_payload),
+        "lod_policy_registry": ("lod_policy_registry", lod_policy_payload),
+        "representation_rule_registry": ("representation_rule_registry", representation_rule_payload),
         "net_replication_policy_registry": ("net_replication_policy_registry", net_replication_policy_payload),
         "net_resync_strategy_registry": ("net_resync_strategy_registry", net_resync_strategy_payload),
         "net_server_policy_registry": ("net_server_policy_registry", net_server_policy_payload),
@@ -4638,6 +5095,11 @@ def compile_bundle(
         "render_proxy_registry",
         "cosmetic_registry",
         "cosmetic_policy_registry",
+        "render_primitive_registry",
+        "procedural_material_template_registry",
+        "label_policy_registry",
+        "lod_policy_registry",
+        "representation_rule_registry",
         "net_replication_policy_registry",
         "net_resync_strategy_registry",
         "net_server_policy_registry",
@@ -4706,6 +5168,11 @@ def compile_bundle(
             "render_proxy_registry_hash": registry_hashes["render_proxy_registry_hash"],
             "cosmetic_registry_hash": registry_hashes["cosmetic_registry_hash"],
             "cosmetic_policy_registry_hash": registry_hashes["cosmetic_policy_registry_hash"],
+            "render_primitive_registry_hash": registry_hashes["render_primitive_registry_hash"],
+            "procedural_material_template_registry_hash": registry_hashes["procedural_material_template_registry_hash"],
+            "label_policy_registry_hash": registry_hashes["label_policy_registry_hash"],
+            "lod_policy_registry_hash": registry_hashes["lod_policy_registry_hash"],
+            "representation_rule_registry_hash": registry_hashes["representation_rule_registry_hash"],
             "net_replication_policy_registry_hash": registry_hashes["net_replication_policy_registry_hash"],
             "net_resync_strategy_registry_hash": registry_hashes["net_resync_strategy_registry_hash"],
             "net_server_policy_registry_hash": registry_hashes["net_server_policy_registry_hash"],

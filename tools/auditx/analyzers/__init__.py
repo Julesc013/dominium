@@ -61,6 +61,8 @@ from analyzers import e32_cohort_leak_smell
 from analyzers import e33_nondeterministic_cohort_mapping_smell
 from analyzers import e34_order_bypass_smell
 from analyzers import e35_role_escalation_smell
+from analyzers import e36_render_truth_leak_smell
+from analyzers import e37_hardcoded_representation_smell
 
 
 ANALYZERS = (
@@ -125,6 +127,8 @@ ANALYZERS = (
     e33_nondeterministic_cohort_mapping_smell,
     e34_order_bypass_smell,
     e35_role_escalation_smell,
+    e36_render_truth_leak_smell,
+    e37_hardcoded_representation_smell,
 )
 
 

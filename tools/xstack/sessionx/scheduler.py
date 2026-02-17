@@ -32,6 +32,23 @@ PROCESS_PRIORITY = {
     "process.time_control_set_rate": 20,
     "process.time_pause": 20,
     "process.time_resume": 20,
+    "process.faction_create": 22,
+    "process.faction_dissolve": 22,
+    "process.affiliation_join": 23,
+    "process.affiliation_leave": 23,
+    "process.affiliation_change_micro": 23,
+    "process.cohort_create": 24,
+    "process.cohort_expand_to_micro": 24,
+    "process.cohort_collapse_from_micro": 24,
+    "process.territory_claim": 24,
+    "process.territory_release": 24,
+    "process.diplomacy_set_relation": 25,
+    "process.order_create": 25,
+    "process.order_cancel": 25,
+    "process.order_tick": 26,
+    "process.cohort_relocate": 26,
+    "process.role_assign": 26,
+    "process.role_revoke": 26,
     "process.control_bind_camera": 25,
     "process.control_unbind_camera": 25,
     "process.control_possess_agent": 25,
@@ -55,6 +72,23 @@ PROCESS_ENTITY_SCOPE = {
     "process.time_control_set_rate": "time.control",
     "process.time_pause": "time.control",
     "process.time_resume": "time.control",
+    "process.faction_create": "faction.create",
+    "process.faction_dissolve": "faction.unknown",
+    "process.affiliation_join": "subject.unknown",
+    "process.affiliation_leave": "subject.unknown",
+    "process.affiliation_change_micro": "subject.unknown",
+    "process.cohort_create": "cohort.create",
+    "process.cohort_expand_to_micro": "cohort.unknown",
+    "process.cohort_collapse_from_micro": "cohort.unknown",
+    "process.territory_claim": "territory.unknown",
+    "process.territory_release": "territory.unknown",
+    "process.diplomacy_set_relation": "diplomacy.unknown",
+    "process.order_create": "order.queue",
+    "process.order_cancel": "order.queue",
+    "process.order_tick": "order.queue",
+    "process.cohort_relocate": "cohort.unknown",
+    "process.role_assign": "institution.unknown",
+    "process.role_revoke": "institution.unknown",
     "process.control_bind_camera": "controller.binding.camera",
     "process.control_unbind_camera": "controller.binding.camera",
     "process.control_possess_agent": "controller.binding.possess",
@@ -78,6 +112,23 @@ PROCESS_FIELD_SCOPE = {
     "process.time_control_set_rate": "time.control",
     "process.time_pause": "time.control",
     "process.time_resume": "time.control",
+    "process.faction_create": "civ.faction.state",
+    "process.faction_dissolve": "civ.faction.state",
+    "process.affiliation_join": "civ.affiliation.state",
+    "process.affiliation_leave": "civ.affiliation.state",
+    "process.affiliation_change_micro": "civ.affiliation.state",
+    "process.cohort_create": "civ.cohort.state",
+    "process.cohort_expand_to_micro": "civ.cohort.state",
+    "process.cohort_collapse_from_micro": "civ.cohort.state",
+    "process.territory_claim": "civ.territory.state",
+    "process.territory_release": "civ.territory.state",
+    "process.diplomacy_set_relation": "civ.diplomacy.state",
+    "process.order_create": "civ.order.state",
+    "process.order_cancel": "civ.order.state",
+    "process.order_tick": "civ.order.state",
+    "process.cohort_relocate": "civ.cohort.state",
+    "process.role_assign": "civ.institution.state",
+    "process.role_revoke": "civ.institution.state",
     "process.control_bind_camera": "control.binding.camera",
     "process.control_unbind_camera": "control.binding.camera",
     "process.control_possess_agent": "control.binding.possess",
@@ -153,6 +204,69 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
         if agent_id:
             entity_scope = agent_id
+    if process_id == "process.faction_create":
+        founder_agent_id = str(inputs.get("founder_agent_id", "")).strip()
+        if founder_agent_id:
+            entity_scope = "faction.create.{}".format(founder_agent_id)
+    if process_id == "process.faction_dissolve":
+        faction_id = str(inputs.get("faction_id", "")).strip()
+        if faction_id:
+            entity_scope = faction_id
+    if process_id in ("process.affiliation_join", "process.affiliation_leave"):
+        subject_id = str(inputs.get("subject_id", "")).strip()
+        if subject_id:
+            entity_scope = subject_id
+    if process_id == "process.affiliation_change_micro":
+        subject_id = str(inputs.get("subject_id", "")).strip()
+        if subject_id:
+            entity_scope = subject_id
+    if process_id in ("process.cohort_expand_to_micro", "process.cohort_collapse_from_micro"):
+        cohort_id = str(inputs.get("cohort_id", "")).strip()
+        if cohort_id:
+            entity_scope = cohort_id
+    if process_id == "process.cohort_create":
+        cohort_id = str(inputs.get("cohort_id", "")).strip()
+        if cohort_id:
+            entity_scope = cohort_id
+        else:
+            location_ref = str(inputs.get("location_ref", "") or inputs.get("region_id", "")).strip()
+            if location_ref:
+                entity_scope = "cohort.create.{}".format(location_ref)
+    if process_id in ("process.territory_claim", "process.territory_release"):
+        territory_id = str(inputs.get("territory_id", "")).strip()
+        if territory_id:
+            entity_scope = territory_id
+    if process_id == "process.diplomacy_set_relation":
+        faction_a = str(inputs.get("faction_a", "")).strip()
+        faction_b = str(inputs.get("faction_b", "")).strip()
+        if faction_a and faction_b:
+            left = faction_a if faction_a <= faction_b else faction_b
+            right = faction_b if faction_a <= faction_b else faction_a
+            entity_scope = "diplo.{}::{}".format(left, right)
+    if process_id == "process.order_create":
+        target_kind = str(inputs.get("target_kind", "")).strip()
+        target_id = str(inputs.get("target_id", "")).strip()
+        if target_kind and target_id:
+            entity_scope = "{}.{}".format(target_kind, target_id)
+    if process_id == "process.order_cancel":
+        order_id = str(inputs.get("order_id", "")).strip()
+        if order_id:
+            entity_scope = order_id
+    if process_id == "process.order_tick":
+        entity_scope = "order.tick"
+    if process_id == "process.cohort_relocate":
+        cohort_id = str(inputs.get("cohort_id", "")).strip()
+        if cohort_id:
+            entity_scope = cohort_id
+    if process_id == "process.role_assign":
+        institution_id = str(inputs.get("institution_id", "")).strip()
+        subject_id = str(inputs.get("subject_id", "")).strip()
+        if institution_id and subject_id:
+            entity_scope = "role_assign.{}::{}".format(institution_id, subject_id)
+    if process_id == "process.role_revoke":
+        assignment_id = str(inputs.get("assignment_id", "")).strip()
+        if assignment_id:
+            entity_scope = assignment_id
     return {
         "envelope_id": str(envelope.get("envelope_id", "")),
         "script_step": int(script_step),

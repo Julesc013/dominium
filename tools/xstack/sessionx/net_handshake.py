@@ -72,6 +72,7 @@ def _handshake_payload(
     refusal_payload: dict,
     server_policy_id: str,
     control_capabilities: dict | None = None,
+    enforce_lod_invariance_strict: bool = False,
 ) -> dict:
     capabilities = dict(control_capabilities if isinstance(control_capabilities, dict) else {})
     return {
@@ -98,6 +99,7 @@ def _handshake_payload(
                 "possession_allowed": bool(capabilities.get("possession_allowed", False)),
                 "lens_override_allowed": bool(capabilities.get("lens_override_allowed", False)),
             },
+            "enforce_lod_invariance_strict": bool(enforce_lod_invariance_strict),
         },
     }
 
@@ -240,6 +242,7 @@ def _server_response(
         "possession_allowed": False,
         "lens_override_allowed": False,
     }
+    enforce_lod_invariance_strict = False
 
     def refuse(
         reason_code: str,
@@ -268,6 +271,7 @@ def _server_response(
             refusal_payload=_validation_refusal(reason_code, message, remediation_hint, relevant_ids),
             server_policy_id=selected_server_policy_id or requested_server_policy_id,
             control_capabilities=control_capabilities,
+            enforce_lod_invariance_strict=enforce_lod_invariance_strict,
         )
 
     if str(request_payload.get("pack_lock_hash", "")).strip() != pack_lock_hash:
@@ -310,6 +314,7 @@ def _server_response(
             refusal_payload=schema_refusal,
             server_policy_id=requested_server_policy_id,
             control_capabilities=control_capabilities,
+            enforce_lod_invariance_strict=enforce_lod_invariance_strict,
         )
 
     server_profile = dict(server_profile_map.get(requested_server_profile_id) or {})
@@ -365,6 +370,7 @@ def _server_response(
     if requested_server_policy_id:
         selected_server_policy_id = requested_server_policy_id
     control_capabilities = _control_capabilities_from_server_profile(server_profile)
+    enforce_lod_invariance_strict = bool((server_profile.get("extensions") or {}).get("enforce_lod_invariance_strict", False))
 
     if requested_policy_id not in replication_map:
         return refuse(
@@ -590,6 +596,7 @@ def _server_response(
         refusal_payload=_empty_refusal(),
         server_policy_id=selected_server_policy_id,
         control_capabilities=control_capabilities,
+        enforce_lod_invariance_strict=enforce_lod_invariance_strict,
     )
 
 

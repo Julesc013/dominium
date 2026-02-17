@@ -220,6 +220,54 @@ def run_intent_script(
     )
     if experience_registry_error:
         return experience_registry_error
+    governance_type_registry, governance_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["governance_type_registry_hash"],
+        expected_hash=str(registries.get("governance_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if governance_type_registry_error:
+        return governance_type_registry_error
+    diplomatic_state_registry, diplomatic_state_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["diplomatic_state_registry_hash"],
+        expected_hash=str(registries.get("diplomatic_state_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if diplomatic_state_registry_error:
+        return diplomatic_state_registry_error
+    cohort_mapping_policy_registry, cohort_mapping_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["cohort_mapping_policy_registry_hash"],
+        expected_hash=str(registries.get("cohort_mapping_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if cohort_mapping_policy_registry_error:
+        return cohort_mapping_policy_registry_error
+    order_type_registry, order_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["order_type_registry_hash"],
+        expected_hash=str(registries.get("order_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if order_type_registry_error:
+        return order_type_registry_error
+    role_registry, role_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["role_registry_hash"],
+        expected_hash=str(registries.get("role_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if role_registry_error:
+        return role_registry_error
+    institution_type_registry, institution_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["institution_type_registry_hash"],
+        expected_hash=str(registries.get("institution_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if institution_type_registry_error:
+        return institution_type_registry_error
     astronomy_registry, astronomy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["astronomy_catalog_index_hash"],
@@ -364,6 +412,46 @@ def run_intent_script(
     )
     if cosmetic_policy_registry_error:
         return cosmetic_policy_registry_error
+    render_primitive_registry, render_primitive_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["render_primitive_registry_hash"],
+        expected_hash=str(registries.get("render_primitive_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if render_primitive_registry_error:
+        return render_primitive_registry_error
+    procedural_material_template_registry, procedural_material_template_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["procedural_material_template_registry_hash"],
+        expected_hash=str(registries.get("procedural_material_template_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if procedural_material_template_registry_error:
+        return procedural_material_template_registry_error
+    label_policy_registry, label_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["label_policy_registry_hash"],
+        expected_hash=str(registries.get("label_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if label_policy_registry_error:
+        return label_policy_registry_error
+    lod_policy_registry, lod_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["lod_policy_registry_hash"],
+        expected_hash=str(registries.get("lod_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if lod_policy_registry_error:
+        return lod_policy_registry_error
+    representation_rule_registry, representation_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["representation_rule_registry_hash"],
+        expected_hash=str(registries.get("representation_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if representation_rule_registry_error:
+        return representation_rule_registry_error
 
     save_id = str(session_spec.get("save_id", "")).strip()
     if not save_id:
@@ -453,9 +541,20 @@ def run_intent_script(
         "activation_policy": activation_policy,
         "budget_policy": budget_policy,
         "fidelity_policy": fidelity_policy,
+        "governance_type_registry": governance_type_registry,
+        "diplomatic_state_registry": diplomatic_state_registry,
+        "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
+        "order_type_registry": order_type_registry,
+        "role_registry": role_registry,
+        "institution_type_registry": institution_type_registry,
         "render_proxy_registry": render_proxy_registry,
         "cosmetic_registry": cosmetic_registry,
         "cosmetic_policy_registry": cosmetic_policy_registry,
+        "render_primitive_registry": render_primitive_registry,
+        "procedural_material_template_registry": procedural_material_template_registry,
+        "label_policy_registry": label_policy_registry,
+        "lod_policy_registry": lod_policy_registry,
+        "representation_rule_registry": representation_rule_registry,
         "cosmetic_policy_id": "policy.cosmetics.private_relaxed",
         "representation_state": representation_state,
         "resolved_packs": list(lock_payload.get("resolved_packs") or []),
@@ -519,6 +618,12 @@ def run_intent_script(
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
             "terrain_tile_registry": terrain_tile_registry,
+            "governance_type_registry": governance_type_registry,
+            "diplomatic_state_registry": diplomatic_state_registry,
+            "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
+            "order_type_registry": order_type_registry,
+            "role_registry": role_registry,
+            "institution_type_registry": institution_type_registry,
             "activation_policy_registry": activation_policy_registry,
             "budget_policy_registry": budget_policy_registry,
             "fidelity_policy_registry": fidelity_policy_registry,
@@ -533,6 +638,11 @@ def run_intent_script(
             "render_proxy_registry": render_proxy_registry,
             "cosmetic_registry": cosmetic_registry,
             "cosmetic_policy_registry": cosmetic_policy_registry,
+            "render_primitive_registry": render_primitive_registry,
+            "procedural_material_template_registry": procedural_material_template_registry,
+            "label_policy_registry": label_policy_registry,
+            "lod_policy_registry": lod_policy_registry,
+            "representation_rule_registry": representation_rule_registry,
             "representation_state": dict(representation_state),
         },
     )
@@ -547,7 +657,18 @@ def run_intent_script(
         return observation
     perceived_model = dict(observation.get("perceived_model") or {})
     perceived_hash = str(observation.get("perceived_model_hash", ""))
-    render = build_render_model(perceived_model)
+    render = build_render_model(
+        perceived_model,
+        registry_payloads={
+            "render_primitive_registry": render_primitive_registry,
+            "procedural_material_template_registry": procedural_material_template_registry,
+            "label_policy_registry": label_policy_registry,
+            "lod_policy_registry": lod_policy_registry,
+            "representation_rule_registry": representation_rule_registry,
+        },
+        pack_lock_hash=str(lock_payload.get("pack_lock_hash", "")),
+        physics_profile_id=str(universe_identity.get("physics_profile_id", "")),
+    )
     if render.get("result") != "complete":
         return refusal(
             "RENDER_MODEL_BUILD_FAILED",
