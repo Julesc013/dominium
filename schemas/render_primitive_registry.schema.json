@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Render Primitive Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic render primitive registry output.",
+  "x-doc-ref": [
+    "docs/render/RENDERMODEL_CONTRACT.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "primitives",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "primitives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "primitive_id",
+          "primitive_type",
+          "parameters",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "primitive_id": {
+            "type": "string"
+          },
+          "primitive_type": {
+            "type": "string",
+            "enum": [
+              "capsule",
+              "box",
+              "cylinder",
+              "sphere",
+              "plane",
+              "line",
+              "billboard",
+              "glyph"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "primitives": [],
+      "registry_hash": "6bb8fce47808ecf7f6f123baf95f949ef8be4d4381057f78e0e5de4d6f4f77f0"
+    }
+  ]
+}

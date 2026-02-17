@@ -1,0 +1,15 @@
+schema_id: dominium.render.render_model
+schema_version: 1.0.0
+stability: stable
+description: Canonical RenderModel artifact derived from PerceivedModel only.
+fields:
+  - render_model_id
+  - tick
+  - viewpoint_id
+  - pack_lock_hash
+  - physics_profile_id
+  - perceived_hash
+  - renderables
+  - overlays
+  - render_model_hash
+  - extensions

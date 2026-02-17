@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Label Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic label policy registry output.",
+  "x-doc-ref": [
+    "docs/render/PROCEDURAL_RENDERING_DEFAULTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "label_policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "label_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "label_policy_id",
+          "show_label",
+          "label_source",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "label_policy_id": {
+            "type": "string"
+          },
+          "show_label": {
+            "type": "boolean"
+          },
+          "label_source": {
+            "type": "string",
+            "enum": [
+              "none",
+              "semantic_id",
+              "entity_id",
+              "faction_tag",
+              "custom"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "label_policies": [],
+      "registry_hash": "8a9884aa0506d7728ba1d2cbd6ca2b4d6e03df94a876d468d3941cd6f87a0b88"
+    }
+  ]
+}

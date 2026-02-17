@@ -1,0 +1,33 @@
+{
+  "schema_id": "dominium.registry.label_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.label_policy_registry",
+    "registry_version": "1.0.0",
+    "label_policies": [
+      {
+        "label_policy_id": "label.debug_ids",
+        "show_label": true,
+        "label_source": "semantic_id",
+        "extensions": {
+          "requires_debug_entitlement": true
+        }
+      },
+      {
+        "label_policy_id": "label.none",
+        "show_label": false,
+        "label_source": "none",
+        "extensions": {}
+      },
+      {
+        "label_policy_id": "label.player_minimal",
+        "show_label": true,
+        "label_source": "custom",
+        "extensions": {
+          "format": "minimal"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

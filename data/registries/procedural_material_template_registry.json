@@ -1,0 +1,106 @@
+{
+  "schema_id": "dominium.registry.procedural_material_template_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.procedural_material_template_registry",
+    "registry_version": "1.0.0",
+    "material_templates": [
+      {
+        "template_id": "mat.template.default_by_id_hash",
+        "base_color_rule": {
+          "mode": "hash_of_id",
+          "source": "semantic_id"
+        },
+        "roughness_rule": {
+          "mode": "fixed",
+          "value": 650
+        },
+        "metallic_rule": {
+          "mode": "fixed",
+          "value": 80
+        },
+        "emission_rule": {
+          "mode": "none"
+        },
+        "extensions": {}
+      },
+      {
+        "template_id": "mat.template.metal_like",
+        "base_color_rule": {
+          "mode": "palette",
+          "palette_id": "palette.metal"
+        },
+        "roughness_rule": {
+          "mode": "fixed",
+          "value": 350
+        },
+        "metallic_rule": {
+          "mode": "fixed",
+          "value": 900
+        },
+        "emission_rule": {
+          "mode": "none"
+        },
+        "extensions": {}
+      },
+      {
+        "template_id": "mat.template.stone_like",
+        "base_color_rule": {
+          "mode": "palette",
+          "palette_id": "palette.stone"
+        },
+        "roughness_rule": {
+          "mode": "fixed",
+          "value": 800
+        },
+        "metallic_rule": {
+          "mode": "fixed",
+          "value": 50
+        },
+        "emission_rule": {
+          "mode": "none"
+        },
+        "extensions": {}
+      },
+      {
+        "template_id": "mat.template.water_like",
+        "base_color_rule": {
+          "mode": "palette",
+          "palette_id": "palette.water"
+        },
+        "roughness_rule": {
+          "mode": "fixed",
+          "value": 120
+        },
+        "metallic_rule": {
+          "mode": "fixed",
+          "value": 150
+        },
+        "emission_rule": {
+          "mode": "none"
+        },
+        "extensions": {}
+      },
+      {
+        "template_id": "mat.template.wood_like",
+        "base_color_rule": {
+          "mode": "palette",
+          "palette_id": "palette.wood"
+        },
+        "roughness_rule": {
+          "mode": "fixed",
+          "value": 700
+        },
+        "metallic_rule": {
+          "mode": "fixed",
+          "value": 20
+        },
+        "emission_rule": {
+          "mode": "none"
+        },
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

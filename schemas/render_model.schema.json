@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Render Model Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic RenderModel artifact derived from PerceivedModel.",
+  "x-doc-ref": [
+    "docs/render/RENDERMODEL_CONTRACT.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "render_model_id",
+    "tick",
+    "viewpoint_id",
+    "pack_lock_hash",
+    "physics_profile_id",
+    "perceived_hash",
+    "renderables",
+    "overlays",
+    "render_model_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "render_model_id": {
+      "type": "string"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "viewpoint_id": {
+      "type": "string"
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "physics_profile_id": {
+      "type": "string"
+    },
+    "perceived_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "renderables": {
+      "type": "array",
+      "items": {
+        "$ref": "./renderable.schema.json"
+      }
+    },
+    "overlays": {
+      "type": "array",
+      "items": {
+        "$ref": "./renderable.schema.json"
+      }
+    },
+    "render_model_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "render_model_id": "render_model.viewpoint.main.tick.0",
+      "tick": 0,
+      "viewpoint_id": "viewpoint.main",
+      "pack_lock_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed50ff7c9ab8f0e8c7ed8f2c8f0f64cc",
+      "physics_profile_id": "physics.null",
+      "perceived_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed50ff7c9ab8f0e8c7ed8f2c8f0f64cc",
+      "renderables": [],
+      "overlays": [],
+      "render_model_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed50ff7c9ab8f0e8c7ed8f2c8f0f64cc",
+      "extensions": {}
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Procedural Material Schema",
+  "version": "1.0.0",
+  "description": "Deterministic procedural material payload for render adapters.",
+  "x-doc-ref": [
+    "docs/render/PROCEDURAL_RENDERING_DEFAULTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "material_id",
+    "base_color",
+    "roughness",
+    "metallic",
+    "emission",
+    "transparency",
+    "pattern_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "material_id": {
+      "type": "string"
+    },
+    "base_color": {
+      "type": "object",
+      "required": [
+        "r",
+        "g",
+        "b"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "r": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "g": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "b": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        }
+      }
+    },
+    "roughness": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "metallic": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "emission": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "r",
+        "g",
+        "b",
+        "strength"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "r": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "g": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "b": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "strength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      }
+    },
+    "transparency": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "pattern_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "material_id": "mat.agent.agent.alpha",
+      "base_color": {
+        "r": 120,
+        "g": 180,
+        "b": 220
+      },
+      "roughness": 600,
+      "metallic": 100,
+      "emission": null,
+      "transparency": null,
+      "pattern_id": null,
+      "extensions": {}
+    }
+  ]
+}

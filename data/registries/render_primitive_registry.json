@@ -1,0 +1,75 @@
+{
+  "schema_id": "dominium.registry.render_primitive_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.render_primitive_registry",
+    "registry_version": "1.0.0",
+    "primitives": [
+      {
+        "primitive_id": "prim.box.default",
+        "primitive_type": "box",
+        "parameters": {
+          "half_extents_mm": {
+            "x": 450,
+            "y": 450,
+            "z": 900
+          }
+        },
+        "extensions": {}
+      },
+      {
+        "primitive_id": "prim.capsule.default",
+        "primitive_type": "capsule",
+        "parameters": {
+          "height_mm": 1800,
+          "radius_mm": 450
+        },
+        "extensions": {}
+      },
+      {
+        "primitive_id": "prim.cylinder.default",
+        "primitive_type": "cylinder",
+        "parameters": {
+          "height_mm": 1800,
+          "radius_mm": 450
+        },
+        "extensions": {}
+      },
+      {
+        "primitive_id": "prim.glyph.label",
+        "primitive_type": "glyph",
+        "parameters": {
+          "font_id": "font.default.mono",
+          "size_px": 14
+        },
+        "extensions": {}
+      },
+      {
+        "primitive_id": "prim.line.debug",
+        "primitive_type": "line",
+        "parameters": {
+          "width_px": 1
+        },
+        "extensions": {}
+      },
+      {
+        "primitive_id": "prim.plane.ground",
+        "primitive_type": "plane",
+        "parameters": {
+          "normal_axis": "z",
+          "size_mm": 50000
+        },
+        "extensions": {}
+      },
+      {
+        "primitive_id": "prim.sphere.default",
+        "primitive_type": "sphere",
+        "parameters": {
+          "radius_mm": 500
+        },
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

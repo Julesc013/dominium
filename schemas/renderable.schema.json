@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Renderable Schema",
+  "version": "1.0.0",
+  "description": "Deterministic renderable output row for RenderModel.",
+  "x-doc-ref": [
+    "docs/render/RENDERMODEL_CONTRACT.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "renderable_id",
+    "semantic_id",
+    "primitive_id",
+    "transform",
+    "material_id",
+    "layer_tags",
+    "label",
+    "lod_hint",
+    "flags",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "renderable_id": {
+      "type": "string"
+    },
+    "semantic_id": {
+      "type": "string"
+    },
+    "primitive_id": {
+      "type": "string"
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "position_mm",
+        "orientation_mdeg",
+        "scale_permille"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "position_mm": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "z": {
+              "type": "integer"
+            }
+          }
+        },
+        "orientation_mdeg": {
+          "type": "object",
+          "required": [
+            "yaw",
+            "pitch",
+            "roll"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "yaw": {
+              "type": "integer"
+            },
+            "pitch": {
+              "type": "integer"
+            },
+            "roll": {
+              "type": "integer"
+            }
+          }
+        },
+        "scale_permille": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "material_id": {
+      "type": "string"
+    },
+    "layer_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "world",
+          "ui",
+          "overlay",
+          "debug"
+        ]
+      }
+    },
+    "label": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lod_hint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "flags": {
+      "type": "object",
+      "required": [
+        "selectable",
+        "highlighted"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "selectable": {
+          "type": "boolean"
+        },
+        "highlighted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "renderable_id": "renderable.agent.alpha",
+      "semantic_id": "agent.alpha",
+      "primitive_id": "prim.capsule.default",
+      "transform": {
+        "position_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "orientation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        },
+        "scale_permille": 1000
+      },
+      "material_id": "mat.agent.agent.alpha",
+      "layer_tags": [
+        "world"
+      ],
+      "label": null,
+      "lod_hint": "lod.band.near",
+      "flags": {
+        "selectable": true,
+        "highlighted": false
+      },
+      "extensions": {}
+    }
+  ]
+}
