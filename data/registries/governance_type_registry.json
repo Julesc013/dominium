@@ -1,0 +1,36 @@
+{
+  "schema_id": "dominium.registry.governance_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance_type_registry",
+    "registry_version": "1.0.0",
+    "governance_types": [
+      {
+        "governance_type_id": "gov.none",
+        "description": "No formal governance; structural placeholder for ungoverned groups.",
+        "extensions": {}
+      },
+      {
+        "governance_type_id": "gov.band",
+        "description": "Small loosely coordinated group governance stub.",
+        "extensions": {}
+      },
+      {
+        "governance_type_id": "gov.tribe",
+        "description": "Tribal governance stub for future social process integration.",
+        "extensions": {}
+      },
+      {
+        "governance_type_id": "gov.city_state",
+        "description": "City-state governance stub with no CIV-1 semantic effects.",
+        "extensions": {}
+      },
+      {
+        "governance_type_id": "gov.empire",
+        "description": "Empire governance stub for macro-scale future expansion.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

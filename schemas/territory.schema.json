@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Territory Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic territory assembly record.",
+  "x-doc-ref": [
+    "docs/civilisation/TERRITORY_AND_CLAIMS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "territory_id",
+    "region_scope",
+    "owner_faction_id",
+    "claim_status",
+    "created_tick",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "territory_id": {
+      "type": "string"
+    },
+    "region_scope": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "owner_faction_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claim_status": {
+      "type": "string",
+      "enum": [
+        "unclaimed",
+        "claimed",
+        "contested"
+      ]
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "territory_id": "territory.seed.001",
+      "region_scope": {
+        "object_ids": [
+          "object.earth"
+        ],
+        "bounds": {}
+      },
+      "owner_faction_id": null,
+      "claim_status": "unclaimed",
+      "created_tick": 0,
+      "extensions": {}
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Diplomatic Relation Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic faction relation record.",
+  "x-doc-ref": [
+    "docs/civilisation/DIPLOMACY_STUBS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "faction_a",
+    "faction_b",
+    "relation_state",
+    "updated_tick",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "faction_a": {
+      "type": "string"
+    },
+    "faction_b": {
+      "type": "string"
+    },
+    "relation_state": {
+      "type": "string"
+    },
+    "updated_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "faction_a": "faction.a",
+      "faction_b": "faction.b",
+      "relation_state": "neutral",
+      "updated_tick": 20,
+      "extensions": {}
+    }
+  ]
+}
