@@ -46,8 +46,24 @@ def run(repo_root: str):
                 'state["control_bindings"] = []\n',
             ),
             (
+                os.path.join(temp_root, "server", "bad_civ_mutation.py"),
+                'state["faction_assemblies"] = []\n',
+            ),
+            (
                 os.path.join(temp_root, "engine", "bad_player_literal.cpp"),
                 'const char* who = "player.main";\n',
+            ),
+            (
+                os.path.join(temp_root, "engine", "bad_player_faction_literal.cpp"),
+                'const char* side = "player_faction";\n',
+            ),
+            (
+                os.path.join(temp_root, "engine", "bad_order_bypass.py"),
+                'result = execute_order("order.bad")\n',
+            ),
+            (
+                os.path.join(temp_root, "server", "bad_role_delegation_mutation.py"),
+                'state["role_assignment_assemblies"] = []\n',
             ),
         ]
         for abs_path, line in paths_and_lines:
@@ -66,11 +82,18 @@ def run(repo_root: str):
             "INV-NO-HARDCODED-CONTRACT-TOKENS",
             "INV-CONTROL-PROCESSES-ONLY",
             "INV-NO-HARDCODED-PLAYER",
+            "INV-NO-PLAYER-FACTION-SPECIALCASE",
             "INV-CONTROL-ENTITLEMENT-GATED",
             "INV-MOVE-USES-BODY_MOVE_ATTEMPT",
             "INV-OWNERSHIP-CHECK-REQUIRED",
             "INV-VIEW-MODES-REGISTRY-DRIVEN",
             "INV-WATERMARK-ENFORCED",
+            "INV-CIV-PROCESSES-ONLY-MUTATION",
+            "INV-FACTION-ID-STABLE",
+            "INV-COHORT-EXPAND-COLLAPSE-PROCESS-ONLY",
+            "INV-COHORT-MAPPING-POLICY-DECLARED",
+            "INV-ORDERS-AS-INTENTS",
+            "INV-ROLE-DELEGATION-GATED",
             "INV-MEMORY-NO-TRUTH",
             "INV-MEMORY-TICK-BASED",
             "INV-INSTRUMENTS-PERCEIVED-ONLY",
