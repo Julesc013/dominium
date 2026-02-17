@@ -53,6 +53,14 @@ from analyzers import e24_instrument_truth_leak_smell
 from analyzers import e25_omniscient_map_smell
 from analyzers import e26_diegetic_bypass_smell
 from analyzers import e27_hidden_nondiegetic_window_smell
+from analyzers import e28_precision_leak_on_refinement_smell
+from analyzers import e29_hidden_state_leak_smell
+from analyzers import e30_faction_orphan_smell
+from analyzers import e31_territory_ownership_drift_smell
+from analyzers import e32_cohort_leak_smell
+from analyzers import e33_nondeterministic_cohort_mapping_smell
+from analyzers import e34_order_bypass_smell
+from analyzers import e35_role_escalation_smell
 
 
 ANALYZERS = (
@@ -109,6 +117,14 @@ ANALYZERS = (
     e25_omniscient_map_smell,
     e26_diegetic_bypass_smell,
     e27_hidden_nondiegetic_window_smell,
+    e28_precision_leak_on_refinement_smell,
+    e29_hidden_state_leak_smell,
+    e30_faction_orphan_smell,
+    e31_territory_ownership_drift_smell,
+    e32_cohort_leak_smell,
+    e33_nondeterministic_cohort_mapping_smell,
+    e34_order_bypass_smell,
+    e35_role_escalation_smell,
 )
 
 

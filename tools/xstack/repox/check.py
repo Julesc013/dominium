@@ -217,6 +217,12 @@ BODY_MUTATION_ALLOWED_PREFIXES = (
     "tools/xstack/testx/tests/",
 )
 
+CIV_MUTATION_ALLOWED_PREFIXES = (
+    "tools/xstack/sessionx/process_runtime.py",
+    "tools/xstack/sessionx/creator.py",
+    "tools/xstack/testx/tests/",
+)
+
 REPRESENTATION_RENDER_ONLY_FILES = (
     "tools/xstack/sessionx/render_model.py",
 )
@@ -231,6 +237,15 @@ COSMETIC_SEMANTIC_FORBIDDEN_TOKENS = (
 )
 
 PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
+    "data/",
+    "docs/",
+    "schemas/",
+    "tools/auditx/",
+    "tools/xstack/testx/tests/",
+    "tools/xstack/repox/check.py",
+)
+
+PLAYER_FACTION_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/",
     "docs/",
     "schemas/",
@@ -3145,6 +3160,84 @@ def _append_negative_invariant_findings(
                         )
                     )
 
+            if not rel_norm.startswith(CIV_MUTATION_ALLOWED_PREFIXES):
+                civ_state_write = re.search(
+                    r"state\s*\[\s*[\"'](faction_assemblies|affiliations|territory_assemblies|diplomatic_relations)[\"']\s*\]\s*=",
+                    str(line),
+                )
+                civ_collection_mutation = re.search(
+                    r"\b(faction_assemblies|affiliations|territory_assemblies|diplomatic_relations)\s*\.\s*(append|extend|insert|pop|remove|clear)\s*\(",
+                    str(line),
+                )
+                if civ_state_write or civ_collection_mutation:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="civilisation state must mutate only through deterministic CIV processes",
+                            rule_id="INV-CIV-PROCESSES-ONLY-MUTATION",
+                        )
+                    )
+                order_state_write = re.search(
+                    r"state\s*\[\s*[\"'](order_assemblies|order_queue_assemblies)[\"']\s*\]\s*=",
+                    str(line),
+                )
+                order_collection_mutation = re.search(
+                    r"\b(order_assemblies|order_queue_assemblies)\s*\.\s*(append|extend|insert|pop|remove|clear)\s*\(",
+                    str(line),
+                )
+                if order_state_write or order_collection_mutation:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="orders must be created/cancelled/executed through deterministic order intents and process handlers",
+                            rule_id="INV-ORDERS-AS-INTENTS",
+                        )
+                    )
+                role_state_write = re.search(
+                    r"state\s*\[\s*[\"'](institution_assemblies|role_assignment_assemblies)[\"']\s*\]\s*=",
+                    str(line),
+                )
+                role_collection_mutation = re.search(
+                    r"\b(institution_assemblies|role_assignment_assemblies)\s*\.\s*(append|extend|insert|pop|remove|clear)\s*\(",
+                    str(line),
+                )
+                if role_state_write or role_collection_mutation:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="institution/role delegation state must mutate only through gated role assignment processes",
+                            rule_id="INV-ROLE-DELEGATION-GATED",
+                        )
+                    )
+                cohort_state_write = re.search(
+                    r"state\s*\[\s*[\"']cohort_assemblies[\"']\s*\]\s*=",
+                    str(line),
+                )
+                cohort_collection_mutation = re.search(
+                    r"\bcohort_assemblies\s*\.\s*(append|extend|insert|pop|remove|clear)\s*\(",
+                    str(line),
+                )
+                if cohort_state_write or cohort_collection_mutation:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="cohort expand/collapse state must mutate only through deterministic cohort processes",
+                            rule_id="INV-COHORT-EXPAND-COLLAPSE-PROCESS-ONLY",
+                        )
+                    )
+
             if not any(rel_norm.startswith(prefix) for prefix in PLAYER_LITERAL_ALLOWED_PATH_PREFIXES):
                 if re.search(r"[\"']player(?:\.[a-z0-9_.-]+)?[\"']", lower):
                     findings.append(
@@ -3155,6 +3248,22 @@ def _append_negative_invariant_findings(
                             snippet=str(line).strip()[:140],
                             message="hardcoded single-player literal detected; control substrate must stay controller-agnostic",
                             rule_id="INV-NO-HARDCODED-PLAYER",
+                        )
+                    )
+
+            if not any(rel_norm.startswith(prefix) for prefix in PLAYER_FACTION_LITERAL_ALLOWED_PATH_PREFIXES):
+                if re.search(
+                    r"(player[_\s\.-]*faction|faction[_\s\.-]*player|faction\.player|player\.faction)",
+                    lower,
+                ):
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="hardcoded player-faction special casing is forbidden; faction handling must stay registry/process driven",
+                            rule_id="INV-NO-PLAYER-FACTION-SPECIALCASE",
                         )
                     )
 
@@ -3215,6 +3324,66 @@ def _append_negative_invariant_findings(
                 rule_id="INV-WATERMARK-ENFORCED",
             )
         )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="CIV process runtime is missing; cannot verify process-only civilisation mutation invariant",
+                rule_id="INV-CIV-PROCESSES-ONLY-MUTATION",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="CIV process runtime is missing; cannot verify deterministic faction id generation contract",
+                rule_id="INV-FACTION-ID-STABLE",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="CIV process runtime is missing; cannot verify cohort expand/collapse process-only mutation invariant",
+                rule_id="INV-COHORT-EXPAND-COLLAPSE-PROCESS-ONLY",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="CIV process runtime is missing; cannot verify cohort mapping policy declaration invariant",
+                rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="CIV process runtime is missing; cannot verify orders execute strictly via intent/process pipeline",
+                rule_id="INV-ORDERS-AS-INTENTS",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="CIV process runtime is missing; cannot verify role delegation law-gating",
+                rule_id="INV-ROLE-DELEGATION-GATED",
+            )
+        )
     else:
         required_control_entitlements = (
             ("process.control_bind_camera", "entitlement.control.camera"),
@@ -3270,6 +3439,134 @@ def _append_negative_invariant_findings(
                     )
                 )
 
+        civ_process_tokens = (
+            "elif process_id == \"process.faction_create\":",
+            "elif process_id == \"process.faction_dissolve\":",
+            "elif process_id == \"process.affiliation_join\":",
+            "elif process_id == \"process.affiliation_leave\":",
+            "elif process_id == \"process.territory_claim\":",
+            "elif process_id == \"process.territory_release\":",
+            "elif process_id == \"process.diplomacy_set_relation\":",
+            "_persist_civ_state(",
+        )
+        for token in civ_process_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="civilisation runtime mutations must be implemented through deterministic CIV process handlers",
+                    rule_id="INV-CIV-PROCESSES-ONLY-MUTATION",
+                )
+            )
+
+        order_process_tokens = (
+            "elif process_id == \"process.order_create\":",
+            "elif process_id == \"process.order_cancel\":",
+            "elif process_id == \"process.order_tick\":",
+            "_run_order_tick(",
+            "_order_type_rows(",
+        )
+        for token in order_process_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="order execution must remain process-driven (orders as intents) with registry-backed type resolution",
+                    rule_id="INV-ORDERS-AS-INTENTS",
+                )
+            )
+
+        role_delegation_tokens = (
+            "elif process_id == \"process.role_assign\":",
+            "elif process_id == \"process.role_revoke\":",
+            "allow_role_delegation",
+            "delegable_entitlements",
+            "_role_rows(",
+            "_institution_type_rows(",
+        )
+        for token in role_delegation_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="role delegation must be law/profile-gated and registry-driven",
+                    rule_id="INV-ROLE-DELEGATION-GATED",
+                )
+            )
+
+        cohort_process_tokens = (
+            "elif process_id == \"process.cohort_create\":",
+            "elif process_id == \"process.cohort_expand_to_micro\":",
+            "elif process_id == \"process.cohort_collapse_from_micro\":",
+            "_ensure_cohort_assemblies(",
+            "_expand_cohort_to_micro_internal(",
+            "_collapse_cohort_from_micro_internal(",
+        )
+        for token in cohort_process_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="cohort runtime mutations must be implemented through deterministic expand/collapse process handlers",
+                    rule_id="INV-COHORT-EXPAND-COLLAPSE-PROCESS-ONLY",
+                )
+            )
+
+        cohort_policy_tokens = (
+            "_cohort_mapping_policy_rows(",
+            "cohort_mapping_policy_registry",
+            "mapping_policy_id",
+        )
+        for token in cohort_policy_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="cohort mapping policy must be resolved from declared registry data",
+                    rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
+                )
+            )
+
+        faction_id_tokens = (
+            "def _deterministic_faction_id(",
+            "\"founder_agent_id\"",
+            "\"created_tick\"",
+            "_deterministic_faction_id(",
+        )
+        for token in faction_id_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="faction identity generation must remain deterministic and founder/tick stable",
+                    rule_id="INV-FACTION-ID-STABLE",
+                )
+            )
+
         ownership_tokens = (
             "def _movement_context(",
             "refusal.agent.ownership_violation",
@@ -3317,6 +3614,26 @@ def _append_negative_invariant_findings(
                 )
             )
 
+        lod_transition_tokens = (
+            "process.region_expand",
+            "process.region_collapse",
+            "_run_region_transition_with_lod_invariance(",
+            "refusal.ep.lod_information_gain",
+        )
+        for token in lod_transition_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="solver tier transitions must execute LOD epistemic invariance checks through redaction-aware process paths",
+                    rule_id="INV-SOLVER-TIER-REDACTION-REQUIRED",
+                )
+            )
+
         hardcoded_view_branch = re.compile(
             r"if\s+.*(?:==|!=|in\s*\()\s*[\"']view\.[a-z0-9_.-]+[\"']",
             re.IGNORECASE,
@@ -3333,6 +3650,74 @@ def _append_negative_invariant_findings(
                         rule_id="INV-VIEW-MODES-REGISTRY-DRIVEN",
                     )
                 )
+
+    cohort_policy_registry_rel = "data/registries/cohort_mapping_policy_registry.json"
+    cohort_policy_registry_payload, cohort_policy_registry_err = _load_json_object(repo_root, cohort_policy_registry_rel)
+    if cohort_policy_registry_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=cohort_policy_registry_rel,
+                line_number=1,
+                snippet="",
+                message="cohort mapping policy registry is missing or invalid JSON",
+                rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
+            )
+        )
+    else:
+        policy_rows = (((cohort_policy_registry_payload.get("record") or {}).get("policies")) or [])
+        if not isinstance(policy_rows, list) or not policy_rows:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=cohort_policy_registry_rel,
+                    line_number=1,
+                    snippet="record.policies",
+                    message="cohort mapping policy registry must declare at least one mapping policy",
+                    rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
+                )
+            )
+        else:
+            for row in policy_rows:
+                if not isinstance(row, dict):
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=cohort_policy_registry_rel,
+                            line_number=1,
+                            snippet="record.policies[]",
+                            message="cohort mapping policy entries must be object rows",
+                            rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
+                        )
+                    )
+                    continue
+                mapping_policy_id = str(row.get("mapping_policy_id", "")).strip()
+                if not mapping_policy_id:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=cohort_policy_registry_rel,
+                            line_number=1,
+                            snippet="mapping_policy_id",
+                            message="cohort mapping policy entries must declare mapping_policy_id",
+                            rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
+                        )
+                    )
+                try:
+                    max_micro_agents = int(row.get("max_micro_agents_per_cohort", -1))
+                except (TypeError, ValueError):
+                    max_micro_agents = -1
+                if max_micro_agents < 0:
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=cohort_policy_registry_rel,
+                            line_number=1,
+                            snippet=mapping_policy_id or "max_micro_agents_per_cohort",
+                            message="cohort mapping policy must declare non-negative max_micro_agents_per_cohort",
+                            rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
+                        )
+                    )
 
     observation_rel = "tools/xstack/sessionx/observation.py"
     observation_abs = os.path.join(repo_root, observation_rel.replace("/", os.sep))
@@ -3366,7 +3751,62 @@ def _append_negative_invariant_findings(
                         line_number=1,
                         snippet=token,
                         message="observer truth view path must emit watermark channel and enforce entitlement checks",
-                        rule_id="INV-WATERMARK-ENFORCED",
+                    rule_id="INV-WATERMARK-ENFORCED",
+                )
+            )
+
+        lod_observation_tokens = (
+            "def _apply_lod_invariance_redaction(",
+            "perceived_model = _apply_lod_invariance_redaction(",
+            "lod_redaction_rule_id",
+        )
+        for token in lod_observation_tokens:
+            if token in observation_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=observation_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="observation kernel must apply deterministic LOD redaction before perceived output emission",
+                    rule_id="INV-SOLVER-TIER-REDACTION-REQUIRED",
+                )
+            )
+
+        micro_leak_pattern = re.compile(
+            r"\b(micro_regions?|micro_solver|hidden_inventory|internal_state)\b",
+            re.IGNORECASE,
+        )
+        micro_scan_paths = (
+            observation_rel,
+            "src/net/policies/policy_server_authoritative.py",
+            "src/net/srz/shard_coordinator.py",
+        )
+        for rel_path in micro_scan_paths:
+            for line_no, line in _iter_lines(repo_root, rel_path):
+                lowered = str(line).lower()
+                if not micro_leak_pattern.search(str(line)):
+                    continue
+                if "lod_redaction" in lowered or "refusal.ep.lod_information_gain" in lowered:
+                    continue
+                if "test_force_lod_information_gain" in lowered:
+                    continue
+                if rel_path == observation_rel and "_lod_redaction_" in lowered:
+                    continue
+                stripped = str(line).strip()
+                if rel_path == observation_rel and stripped.startswith(("'", '"')):
+                    token = stripped.strip().strip(",").strip("'").strip('"').strip().lower()
+                    if token in ("hidden_inventory", "internal_state", "micro_solver", "native_precision"):
+                        continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="micro/internal solver state must not flow directly into perceived/network payloads without redaction",
+                        rule_id="INV-NO-DIRECT-MICRO-TO-PERCEIVED",
                     )
                 )
 
