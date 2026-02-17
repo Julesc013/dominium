@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Procedural Material Template Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic procedural material template registry output.",
+  "x-doc-ref": [
+    "docs/render/PROCEDURAL_RENDERING_DEFAULTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "material_templates",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "material_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "template_id",
+          "base_color_rule",
+          "roughness_rule",
+          "metallic_rule",
+          "emission_rule",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "template_id": {
+            "type": "string"
+          },
+          "base_color_rule": {
+            "type": "object",
+            "required": [
+              "mode"
+            ],
+            "additionalProperties": true
+          },
+          "roughness_rule": {
+            "type": "object",
+            "required": [
+              "mode"
+            ],
+            "additionalProperties": true
+          },
+          "metallic_rule": {
+            "type": "object",
+            "required": [
+              "mode"
+            ],
+            "additionalProperties": true
+          },
+          "emission_rule": {
+            "type": "object",
+            "required": [
+              "mode"
+            ],
+            "additionalProperties": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "material_templates": [],
+      "registry_hash": "94c0817d79d1314ac21f5534a8eeb95ad8a5744d8e330f1b58e983b31b2b1864"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+schema_id: dominium.render.material_template
+schema_version: 1.0.0
+stability: stable
+description: Procedural material template with deterministic parameter generation rules.
+fields:
+  - template_id
+  - base_color_rule
+  - roughness_rule
+  - metallic_rule
+  - emission_rule
+  - extensions

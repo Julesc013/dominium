@@ -1,0 +1,13 @@
+schema_id: dominium.render.procedural_material
+schema_version: 1.0.0
+stability: stable
+description: Deterministic procedural material parameters for renderer backends.
+fields:
+  - material_id
+  - base_color
+  - roughness
+  - metallic
+  - emission
+  - transparency
+  - pattern_id
+  - extensions

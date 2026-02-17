@@ -1,0 +1,144 @@
+{
+  "schema_id": "dominium.registry.representation_rule_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.representation_rule_registry",
+    "registry_version": "1.0.0",
+    "representation_rules": [
+      {
+        "rule_id": "rule.representation.body_capsule",
+        "match": {
+          "entity_kind": null,
+          "material_tag": null,
+          "domain_id": null,
+          "faction_id": null,
+          "view_mode_id": null,
+          "body_shape": "capsule"
+        },
+        "output": {
+          "primitive_id": "prim.capsule.default",
+          "procedural_material_template_id": "mat.template.default_by_id_hash",
+          "label_policy_id": "label.none",
+          "lod_policy_id": "lod.distance_bands"
+        },
+        "priority": 200,
+        "extensions": {}
+      },
+      {
+        "rule_id": "rule.representation.material_metal",
+        "match": {
+          "entity_kind": null,
+          "material_tag": "metal",
+          "domain_id": null,
+          "faction_id": null,
+          "view_mode_id": null,
+          "body_shape": null
+        },
+        "output": {
+          "primitive_id": "prim.box.default",
+          "procedural_material_template_id": "mat.template.metal_like",
+          "label_policy_id": "label.none",
+          "lod_policy_id": "lod.distance_bands"
+        },
+        "priority": 120,
+        "extensions": {}
+      },
+      {
+        "rule_id": "rule.representation.material_stone",
+        "match": {
+          "entity_kind": null,
+          "material_tag": "stone",
+          "domain_id": null,
+          "faction_id": null,
+          "view_mode_id": null,
+          "body_shape": null
+        },
+        "output": {
+          "primitive_id": "prim.box.default",
+          "procedural_material_template_id": "mat.template.stone_like",
+          "label_policy_id": "label.none",
+          "lod_policy_id": "lod.distance_bands"
+        },
+        "priority": 110,
+        "extensions": {}
+      },
+      {
+        "rule_id": "rule.representation.material_water",
+        "match": {
+          "entity_kind": null,
+          "material_tag": "water",
+          "domain_id": null,
+          "faction_id": null,
+          "view_mode_id": null,
+          "body_shape": null
+        },
+        "output": {
+          "primitive_id": "prim.plane.ground",
+          "procedural_material_template_id": "mat.template.water_like",
+          "label_policy_id": "label.none",
+          "lod_policy_id": "lod.distance_bands"
+        },
+        "priority": 115,
+        "extensions": {}
+      },
+      {
+        "rule_id": "rule.representation.material_wood",
+        "match": {
+          "entity_kind": null,
+          "material_tag": "wood",
+          "domain_id": null,
+          "faction_id": null,
+          "view_mode_id": null,
+          "body_shape": null
+        },
+        "output": {
+          "primitive_id": "prim.box.default",
+          "procedural_material_template_id": "mat.template.wood_like",
+          "label_policy_id": "label.none",
+          "lod_policy_id": "lod.distance_bands"
+        },
+        "priority": 110,
+        "extensions": {}
+      },
+      {
+        "rule_id": "rule.representation.view_mode_debug_label",
+        "match": {
+          "entity_kind": null,
+          "material_tag": null,
+          "domain_id": null,
+          "faction_id": null,
+          "view_mode_id": "view.free.observer_truth",
+          "body_shape": null
+        },
+        "output": {
+          "primitive_id": "prim.box.default",
+          "procedural_material_template_id": "mat.template.default_by_id_hash",
+          "label_policy_id": "label.debug_ids",
+          "lod_policy_id": "lod.distance_bands"
+        },
+        "priority": 160,
+        "extensions": {}
+      },
+      {
+        "rule_id": "rule.representation.default",
+        "match": {
+          "entity_kind": null,
+          "material_tag": null,
+          "domain_id": null,
+          "faction_id": null,
+          "view_mode_id": null,
+          "body_shape": null
+        },
+        "output": {
+          "primitive_id": "prim.box.default",
+          "procedural_material_template_id": "mat.template.default_by_id_hash",
+          "label_policy_id": "label.none",
+          "lod_policy_id": "lod.null"
+        },
+        "priority": 0,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

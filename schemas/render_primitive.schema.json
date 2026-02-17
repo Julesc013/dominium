@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Render Primitive Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic render primitive descriptor.",
+  "x-doc-ref": [
+    "docs/render/RENDERMODEL_CONTRACT.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "primitive_id",
+    "primitive_type",
+    "parameters",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "primitive_id": {
+      "type": "string"
+    },
+    "primitive_type": {
+      "type": "string",
+      "enum": [
+        "capsule",
+        "box",
+        "cylinder",
+        "sphere",
+        "plane",
+        "line",
+        "billboard",
+        "glyph"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "primitive_id": "prim.capsule.default",
+      "primitive_type": "capsule",
+      "parameters": {
+        "radius_mm": 450,
+        "height_mm": 1800
+      },
+      "extensions": {}
+    }
+  ]
+}

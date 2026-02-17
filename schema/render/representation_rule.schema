@@ -1,0 +1,10 @@
+schema_id: dominium.render.representation_rule
+schema_version: 1.0.0
+stability: stable
+description: Deterministic rule for mapping perceived semantic records to render outputs.
+fields:
+  - rule_id
+  - match
+  - output
+  - priority
+  - extensions

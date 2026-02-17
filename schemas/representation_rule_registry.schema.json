@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Representation Rule Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic representation resolver rule registry output.",
+  "x-doc-ref": [
+    "docs/render/RENDERMODEL_CONTRACT.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "representation_rules",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "representation_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "match",
+          "output",
+          "priority",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string"
+          },
+          "match": {
+            "type": "object",
+            "required": [
+              "entity_kind",
+              "material_tag",
+              "domain_id",
+              "faction_id",
+              "view_mode_id",
+              "body_shape"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "entity_kind": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "material_tag": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "domain_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "faction_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "view_mode_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "body_shape": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "capsule",
+                  "aabb",
+                  "convex_hull",
+                  "none",
+                  null
+                ]
+              }
+            }
+          },
+          "output": {
+            "type": "object",
+            "required": [
+              "primitive_id",
+              "procedural_material_template_id",
+              "label_policy_id",
+              "lod_policy_id"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "primitive_id": {
+                "type": "string"
+              },
+              "procedural_material_template_id": {
+                "type": "string"
+              },
+              "label_policy_id": {
+                "type": "string"
+              },
+              "lod_policy_id": {
+                "type": "string"
+              }
+            }
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "representation_rules": [],
+      "registry_hash": "875f78c598a0ea9c0f783f28031a856ccda5ed0d4264e9faf4f5183686bcf143"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-"""STRICT test: RenderModel adapter falls back deterministically to pill proxy when assets are missing."""
+"""STRICT test: RenderModel adapter degrades deterministically without external assets."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import copy
 import sys
 
 
-TEST_ID = "testx.representation.render_proxy_fallback"
+TEST_ID = "testx.representation.no_assets_required"
 TEST_TAGS = ["strict", "session", "representation", "render"]
 
 
@@ -47,7 +47,7 @@ def run(repo_root: str):
 
     from tools.xstack.sessionx.render_model import build_render_model
 
-    render = build_render_model(copy.deepcopy(_perceived_model()))
+    render = build_render_model(copy.deepcopy(_perceived_model()), registry_payloads={})
     if str(render.get("result", "")) != "complete":
         return {"status": "fail", "message": "render model build failed for deterministic fallback test"}
     render_model = dict(render.get("render_model") or {})
@@ -58,11 +58,13 @@ def run(repo_root: str):
     if len(rows) != 1:
         return {"status": "fail", "message": "expected single renderable for fallback test"}
     row = rows[0]
-    if str(row.get("render_proxy_id", "")) != "render.proxy.pill_default":
-        return {"status": "fail", "message": "missing-asset renderable did not fallback to pill proxy id"}
-    if str(row.get("mesh_ref", "")) != "asset.mesh.pill.default":
-        return {"status": "fail", "message": "missing-asset renderable did not fallback to pill mesh"}
-    if str(row.get("material_ref", "")) != "asset.material.pill.default":
-        return {"status": "fail", "message": "missing-asset renderable did not fallback to pill material"}
-    return {"status": "pass", "message": "render proxy fallback path is deterministic"}
-
+    if str(row.get("primitive_id", "")) != "prim.capsule.default":
+        return {"status": "fail", "message": "missing-asset renderable did not resolve to deterministic capsule primitive"}
+    material_id = str(row.get("material_id", "")).strip()
+    if not material_id:
+        return {"status": "fail", "message": "renderable missing procedural material_id"}
+    extension_materials = list((dict(render_model.get("extensions") or {})).get("materials") or [])
+    material_rows = [dict(item) for item in extension_materials if isinstance(item, dict)]
+    if not any(str(item.get("material_id", "")) == material_id for item in material_rows):
+        return {"status": "fail", "message": "procedural material payload is missing for resolved renderable"}
+    return {"status": "pass", "message": "render model no-assets fallback is deterministic"}

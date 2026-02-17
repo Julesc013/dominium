@@ -1,0 +1,9 @@
+schema_id: dominium.render.render_primitive
+schema_version: 1.0.0
+stability: stable
+description: Primitive geometry descriptor for asset-free and deterministic rendering.
+fields:
+  - primitive_id
+  - primitive_type
+  - parameters
+  - extensions

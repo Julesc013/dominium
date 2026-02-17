@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LOD Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic render LOD policy registry output.",
+  "x-doc-ref": [
+    "docs/render/PROCEDURAL_RENDERING_DEFAULTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "lod_policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "lod_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "lod_policy_id",
+          "distance_bands_mm",
+          "default_hint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "lod_policy_id": {
+            "type": "string"
+          },
+          "distance_bands_mm": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "default_hint": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "lod_policies": [],
+      "registry_hash": "c9ad4750f599244d83f8f3a5f96587f1d860cf07ad067732b4dd72a997f80472"
+    }
+  ]
+}

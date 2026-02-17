@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Representation Rule Schema",
+  "version": "1.0.0",
+  "description": "Deterministic rule for PerceivedModel semantic row to render representation mapping.",
+  "x-doc-ref": [
+    "docs/render/RENDERMODEL_CONTRACT.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "rule_id",
+    "match",
+    "output",
+    "priority",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "rule_id": {
+      "type": "string"
+    },
+    "match": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_kind",
+        "material_tag",
+        "domain_id",
+        "faction_id",
+        "view_mode_id",
+        "body_shape"
+      ],
+      "properties": {
+        "entity_kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "material_tag": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "domain_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "faction_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "view_mode_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "body_shape": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "capsule",
+            "aabb",
+            "convex_hull",
+            "none",
+            null
+          ]
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "primitive_id",
+        "procedural_material_template_id",
+        "label_policy_id",
+        "lod_policy_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "primitive_id": {
+          "type": "string"
+        },
+        "procedural_material_template_id": {
+          "type": "string"
+        },
+        "label_policy_id": {
+          "type": "string"
+        },
+        "lod_policy_id": {
+          "type": "string"
+        }
+      }
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "rule_id": "rule.representation.default",
+      "match": {
+        "entity_kind": null,
+        "material_tag": null,
+        "domain_id": null,
+        "faction_id": null,
+        "view_mode_id": null,
+        "body_shape": null
+      },
+      "output": {
+        "primitive_id": "prim.box.default",
+        "procedural_material_template_id": "mat.template.default_by_id_hash",
+        "label_policy_id": "label.none",
+        "lod_policy_id": "lod.null"
+      },
+      "priority": 0,
+      "extensions": {}
+    }
+  ]
+}

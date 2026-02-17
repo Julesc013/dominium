@@ -1,0 +1,15 @@
+schema_id: dominium.render.renderable
+schema_version: 1.0.0
+stability: stable
+description: Deterministic renderable record resolved from a perceived semantic item.
+fields:
+  - renderable_id
+  - semantic_id
+  - primitive_id
+  - transform
+  - material_id
+  - layer_tags
+  - label
+  - lod_hint
+  - flags
+  - extensions

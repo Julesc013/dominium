@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material Template Schema",
+  "version": "1.0.0",
+  "description": "Deterministic procedural material template rule definition.",
+  "x-doc-ref": [
+    "docs/render/PROCEDURAL_RENDERING_DEFAULTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "template_id",
+    "base_color_rule",
+    "roughness_rule",
+    "metallic_rule",
+    "emission_rule",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "template_id": {
+      "type": "string"
+    },
+    "base_color_rule": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "hash_of_id",
+            "fixed",
+            "palette"
+          ]
+        }
+      }
+    },
+    "roughness_rule": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "hash_band"
+          ]
+        }
+      }
+    },
+    "metallic_rule": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "hash_band"
+          ]
+        }
+      }
+    },
+    "emission_rule": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "fixed",
+            "hash_band"
+          ]
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "template_id": "mat.template.default_by_id_hash",
+      "base_color_rule": {
+        "mode": "hash_of_id",
+        "source": "semantic_id"
+      },
+      "roughness_rule": {
+        "mode": "fixed",
+        "value": 650
+      },
+      "metallic_rule": {
+        "mode": "fixed",
+        "value": 100
+      },
+      "emission_rule": {
+        "mode": "none"
+      },
+      "extensions": {}
+    }
+  ]
+}
