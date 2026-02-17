@@ -50,6 +50,12 @@ Stable entitlement IDs used by `law.lab.unrestricted`:
 - `entitlement.control.lens_override`: required for controller lens override process
 - `entitlement.agent.move`: required for `process.agent_move`
 - `entitlement.agent.rotate`: required for `process.agent_rotate`
+- `entitlement.civ.create_faction`: required for `process.faction_create`
+- `entitlement.civ.dissolve_faction`: required for `process.faction_dissolve`
+- `entitlement.civ.affiliation`: required for `process.affiliation_join` and `process.affiliation_leave`
+- `entitlement.civ.claim`: required for `process.territory_claim` and `process.territory_release`
+- `entitlement.civ.diplomacy`: required for `process.diplomacy_set_relation`
+- `entitlement.civ.admin`: optional CIV admin override for ownership-gated faction/territory/diplomacy mutations
 - `entitlement.control.admin`: administrative control entitlement reserved for server/admin law profiles
 - `entitlement.admin.security_view`: required for anti-cheat admin security windows
 - `entitlement.admin.kick`: required for administrative peer enforcement action controls (policy-gated)

@@ -20,6 +20,7 @@ Define deterministic multiplayer compatibility handshake artifacts and refusal b
 8. `server_profile_id`
 9. `server_law_profile_id`
 10. peer IDs and protocol version
+11. `extensions.enforce_lod_invariance_strict` (server-profile governed, deterministic boolean)
 
 ## Handshake Sequence (Deterministic)
 
@@ -51,6 +52,8 @@ Handshake result is content-driven and deterministic. Wall-clock timing must not
 2. Negotiation order is deterministic:
    - Compare lock hash -> registries -> schema versions -> policy allowability -> server profile gates -> securex gates.
 3. Handshake artifacts are immutable run records once accepted/refused.
+4. Ranked/server-governed LOD epistemic strictness is advertised by handshake extension:
+   - `extensions.enforce_lod_invariance_strict=true` means server expects strict `refusal.ep.lod_information_gain` behavior on violations.
 
 ## Session Pipeline Integration (Structural)
 

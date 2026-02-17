@@ -224,7 +224,16 @@ CIV_MUTATION_ALLOWED_PREFIXES = (
 )
 
 REPRESENTATION_RENDER_ONLY_FILES = (
+    "src/client/render/render_model_adapter.py",
+    "src/client/render/representation_resolver.py",
     "tools/xstack/sessionx/render_model.py",
+)
+
+REPRESENTATION_DATA_DRIVEN_FILE = "src/client/render/representation_resolver.py"
+REPRESENTATION_DATA_DRIVEN_REQUIRED_TOKENS = (
+    "representation_rule_registry",
+    "_rule_rows(",
+    "_select_rule(",
 )
 
 COSMETIC_SEMANTIC_FORBIDDEN_TOKENS = (
@@ -4421,8 +4430,8 @@ def _append_representation_invariant_findings(
                     file_path=rel_path,
                     line_number=1,
                     snippet="",
-                    message="representation render adapter file is missing",
-                    rule_id="INV-REPRESENTATION-RENDER-ONLY",
+                    message="render adapter/resolver file is missing",
+                    rule_id="INV-RENDERER-TRUTH-ISOLATION",
                 )
             )
             continue
@@ -4434,8 +4443,8 @@ def _append_representation_invariant_findings(
                         file_path=rel_path,
                         line_number=line_no,
                         snippet=str(line).strip()[:140],
-                        message="representation/render adapter must not import or reference TruthModel/universe state",
-                        rule_id="INV-REPRESENTATION-RENDER-ONLY",
+                        message="render adapter/resolver must not import or reference TruthModel/universe state",
+                        rule_id="INV-RENDERER-TRUTH-ISOLATION",
                     )
                 )
 
@@ -4455,9 +4464,41 @@ def _append_representation_invariant_findings(
                         line_number=line_no,
                         snippet=str(line).strip()[:140],
                         message="representation code path references TruthModel symbol",
-                        rule_id="INV-REPRESENTATION-RENDER-ONLY",
+                        rule_id="INV-RENDERER-TRUTH-ISOLATION",
                     )
                 )
+
+    resolver_abs = os.path.join(repo_root, REPRESENTATION_DATA_DRIVEN_FILE.replace("/", os.sep))
+    resolver_text = ""
+    try:
+        resolver_text = open(resolver_abs, "r", encoding="utf-8").read()
+    except OSError:
+        resolver_text = ""
+    if not resolver_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=REPRESENTATION_DATA_DRIVEN_FILE,
+                line_number=1,
+                snippet="",
+                message="representation resolver is missing; cannot verify data-driven rule mapping",
+                rule_id="INV-REPRESENTATION-RULES-DATA-DRIVEN",
+            )
+        )
+    else:
+        for token in REPRESENTATION_DATA_DRIVEN_REQUIRED_TOKENS:
+            if token in resolver_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=REPRESENTATION_DATA_DRIVEN_FILE,
+                    line_number=1,
+                    snippet=token,
+                    message="representation resolver must consume registry-driven rules, not hardcoded maps",
+                    rule_id="INV-REPRESENTATION-RULES-DATA-DRIVEN",
+                )
+            )
 
 
 def _append_ranked_governance_invariant_findings(
