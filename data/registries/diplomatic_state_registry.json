@@ -1,0 +1,36 @@
+{
+  "schema_id": "dominium.registry.diplomatic_state_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.diplomatic_state_registry",
+    "registry_version": "1.0.0",
+    "states": [
+      {
+        "relation_state": "neutral",
+        "description": "Default neutral diplomatic relation.",
+        "extensions": {}
+      },
+      {
+        "relation_state": "allied",
+        "description": "Alliance relation stub with no CIV-1 gameplay semantics.",
+        "extensions": {}
+      },
+      {
+        "relation_state": "hostile",
+        "description": "Hostile relation stub with no CIV-1 combat semantics.",
+        "extensions": {}
+      },
+      {
+        "relation_state": "trade",
+        "description": "Trade relation stub; economic effects deferred.",
+        "extensions": {}
+      },
+      {
+        "relation_state": "non_aggression_pact",
+        "description": "Non-aggression pact relation stub for future treaty systems.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

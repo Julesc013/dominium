@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.registry.cohort_mapping_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.cohort_mapping_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "mapping_policy_id": "cohort.map.default",
+        "description": "Default deterministic cohort mapping policy for balanced macro-to-micro expansion.",
+        "max_micro_agents_per_cohort": 256,
+        "spawn_distribution_rules": {
+          "algorithm_id": "spawn.distribution.radial_deterministic.v1",
+          "identity_exposure": "standard",
+          "stable_sort_key": "cohort_id_then_slot"
+        },
+        "collapse_aggregation_rules": {
+          "algorithm_id": "collapse.aggregate.sum_and_modes.v1",
+          "preserve_remainder_macro": true,
+          "stable_sort_key": "agent_id_lexicographic"
+        },
+        "anonymous_micro_agents": false,
+        "extensions": {}
+      },
+      {
+        "mapping_policy_id": "cohort.map.rank_strict",
+        "description": "Ranked-safe deterministic mapping policy with stricter epistemic anonymity defaults.",
+        "max_micro_agents_per_cohort": 192,
+        "spawn_distribution_rules": {
+          "algorithm_id": "spawn.distribution.radial_deterministic.v1",
+          "identity_exposure": "anonymous_unless_entitled",
+          "stable_sort_key": "cohort_id_then_slot"
+        },
+        "collapse_aggregation_rules": {
+          "algorithm_id": "collapse.aggregate.sum_and_modes.v1",
+          "preserve_remainder_macro": true,
+          "stable_sort_key": "agent_id_lexicographic"
+        },
+        "anonymous_micro_agents": true,
+        "extensions": {
+          "epistemic_safety": "strict"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
+

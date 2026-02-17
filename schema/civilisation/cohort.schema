@@ -1,0 +1,28 @@
+SCHEMA: civilisation/cohort.schema
+schema_id: dominium.schema.civilisation.cohort
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic macro population cohort assembly records for CIV-2.
+
+REQUIRED SHAPE:
+record cohort
+  required:
+    - schema_version: semver
+    - cohort_id: id
+    - size: u64
+    - faction_id: nullable_id
+    - territory_id: nullable_id
+    - location_ref: id
+    - demographic_tags: map
+    - skill_distribution: map
+    - refinement_state: enum(macro|micro|mixed)
+    - created_tick: u64
+    - extensions: map
+
+INVARIANTS:
+- cohort_id is stable and deterministic.
+- size is non-negative and mutation is process-only.
+- refinement_state transitions are deterministic and policy-governed.
+
