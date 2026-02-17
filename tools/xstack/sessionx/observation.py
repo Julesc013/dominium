@@ -531,6 +531,64 @@ def _apply_precision_quantization(perceived_model: dict, epistemic_policy: dict,
     return out
 
 
+_LOD_REDACTION_EXACT_KEYS = {
+    "exact_hidden_inventory",
+    "hidden_inventory",
+    "internal_state",
+    "internal_stress_state",
+    "micro_internal_state",
+    "micro_solver_native_payload",
+    "native_precision_payload",
+}
+_LOD_REDACTION_SUBSTRINGS = (
+    "hidden_inventory",
+    "internal_state",
+    "micro_solver",
+    "native_precision",
+)
+
+
+def _redact_lod_sensitive_payload(value: object) -> Tuple[object, int]:
+    if isinstance(value, dict):
+        out: Dict[str, object] = {}
+        redacted = 0
+        for key in sorted(value.keys()):
+            token = str(key)
+            lowered = token.lower()
+            if lowered in _LOD_REDACTION_EXACT_KEYS or any(snippet in lowered for snippet in _LOD_REDACTION_SUBSTRINGS):
+                redacted += 1
+                continue
+            next_value, nested_redacted = _redact_lod_sensitive_payload(value.get(key))
+            out[token] = next_value
+            redacted += int(nested_redacted)
+        return out, redacted
+    if isinstance(value, list):
+        rows: List[object] = []
+        redacted = 0
+        for item in value:
+            next_value, nested_redacted = _redact_lod_sensitive_payload(item)
+            rows.append(next_value)
+            redacted += int(nested_redacted)
+        return rows, redacted
+    return value, 0
+
+
+def _apply_lod_invariance_redaction(perceived_model: dict, epistemic_policy: dict, channels: List[str]) -> dict:
+    out = copy.deepcopy(dict(perceived_model or {}))
+    redacted_payload, redacted_count = _redact_lod_sensitive_payload(out)
+    out = dict(redacted_payload if isinstance(redacted_payload, dict) else {})
+    metadata = dict(out.get("metadata") or {})
+    metadata["lod_redaction_rule_id"] = "filter.lod_epistemic_redaction.v1"
+    metadata["lod_redaction_applied"] = True
+    metadata["lod_redacted_field_count"] = int(redacted_count)
+    metadata["lod_precision_envelope_id"] = str(
+        (dict(epistemic_policy.get("extensions") or {})).get("lod_precision_envelope_id", "ep.envelope.default")
+    ).strip() or "ep.envelope.default"
+    metadata["lod_channel_count"] = int(len(_sorted_unique(list(channels or []))))
+    out["metadata"] = metadata
+    return out
+
+
 def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
     state = truth.get("universe_state")
     if not isinstance(state, dict):
@@ -891,10 +949,19 @@ def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
     }
 
 
-def _control_view(truth: dict) -> dict:
+def _control_view(truth: dict, *, allow_order_visibility: bool = False) -> dict:
     state = truth.get("universe_state")
     if not isinstance(state, dict):
-        return {"controllers": [], "bindings": [], "possession_graph": [], "summary": ""}
+        return {
+            "controllers": [],
+            "bindings": [],
+            "possession_graph": [],
+            "orders": [],
+            "order_queues": [],
+            "institutions": [],
+            "role_assignments": [],
+            "summary": "",
+        }
 
     controllers = state.get("controller_assemblies")
     if not isinstance(controllers, list):
@@ -962,10 +1029,100 @@ def _control_view(truth: dict) -> dict:
         len([row for row in normalized_bindings if bool(row.get("active", False))]),
         len(possession_graph),
     )
+    visible_orders: List[dict] = []
+    visible_queues: List[dict] = []
+    visible_institutions: List[dict] = []
+    visible_role_assignments: List[dict] = []
+    if bool(allow_order_visibility):
+        order_rows = state.get("order_assemblies")
+        if isinstance(order_rows, list):
+            for row in sorted((item for item in order_rows if isinstance(item, dict)), key=lambda item: str(item.get("order_id", ""))):
+                order_id = str(row.get("order_id", "")).strip()
+                if not order_id:
+                    continue
+                visible_orders.append(
+                    {
+                        "order_id": order_id,
+                        "order_type_id": str(row.get("order_type_id", "")).strip(),
+                        "issuer_subject_id": str(row.get("issuer_subject_id", "")).strip(),
+                        "target_kind": str(row.get("target_kind", "")).strip(),
+                        "target_id": str(row.get("target_id", "")).strip(),
+                        "status": str(row.get("status", "")).strip(),
+                        "priority": int(row.get("priority", 0) or 0),
+                        "created_tick": int(row.get("created_tick", 0) or 0),
+                    }
+                )
+        queue_rows = state.get("order_queue_assemblies")
+        if isinstance(queue_rows, list):
+            for row in sorted((item for item in queue_rows if isinstance(item, dict)), key=lambda item: str(item.get("queue_id", ""))):
+                queue_id = str(row.get("queue_id", "")).strip()
+                if not queue_id:
+                    continue
+                visible_queues.append(
+                    {
+                        "queue_id": queue_id,
+                        "owner_kind": str(row.get("owner_kind", "")).strip(),
+                        "owner_id": str(row.get("owner_id", "")).strip(),
+                        "order_ids": sorted(
+                            set(
+                                str(item).strip()
+                                for item in (row.get("order_ids") or [])
+                                if str(item).strip()
+                            )
+                        ),
+                        "last_update_tick": int(row.get("last_update_tick", 0) or 0),
+                    }
+                )
+        institution_rows = state.get("institution_assemblies")
+        if isinstance(institution_rows, list):
+            for row in sorted((item for item in institution_rows if isinstance(item, dict)), key=lambda item: str(item.get("institution_id", ""))):
+                institution_id = str(row.get("institution_id", "")).strip()
+                if not institution_id:
+                    continue
+                visible_institutions.append(
+                    {
+                        "institution_id": institution_id,
+                        "institution_type_id": str(row.get("institution_type_id", "")).strip(),
+                        "faction_id": row.get("faction_id"),
+                        "status": str(row.get("status", "")).strip(),
+                        "created_tick": int(row.get("created_tick", 0) or 0),
+                    }
+                )
+        role_rows = state.get("role_assignment_assemblies")
+        if isinstance(role_rows, list):
+            for row in sorted((item for item in role_rows if isinstance(item, dict)), key=lambda item: str(item.get("assignment_id", ""))):
+                assignment_id = str(row.get("assignment_id", "")).strip()
+                if not assignment_id:
+                    continue
+                visible_role_assignments.append(
+                    {
+                        "assignment_id": assignment_id,
+                        "institution_id": str(row.get("institution_id", "")).strip(),
+                        "subject_id": str(row.get("subject_id", "")).strip(),
+                        "role_id": str(row.get("role_id", "")).strip(),
+                        "granted_entitlements": sorted(
+                            set(
+                                str(item).strip()
+                                for item in (row.get("granted_entitlements") or [])
+                                if str(item).strip()
+                            )
+                        ),
+                        "created_tick": int(row.get("created_tick", 0) or 0),
+                    }
+                )
+        summary = "{} visible_orders={} visible_role_assignments={}".format(
+            summary,
+            len(visible_orders),
+            len(visible_role_assignments),
+        )
     return {
         "controllers": normalized_controllers,
         "bindings": normalized_bindings,
         "possession_graph": possession_graph,
+        "orders": visible_orders,
+        "order_queues": visible_queues,
+        "institutions": visible_institutions,
+        "role_assignments": visible_role_assignments,
         "summary": summary,
     }
 
@@ -1094,6 +1251,12 @@ def build_truth_model(
             "lens_registry_hash": str(registries.get("lens_registry_hash", "")),
             "control_action_registry_hash": str(registries.get("control_action_registry_hash", "")),
             "controller_type_registry_hash": str(registries.get("controller_type_registry_hash", "")),
+            "governance_type_registry_hash": str(registries.get("governance_type_registry_hash", "")),
+            "diplomatic_state_registry_hash": str(registries.get("diplomatic_state_registry_hash", "")),
+            "cohort_mapping_policy_registry_hash": str(registries.get("cohort_mapping_policy_registry_hash", "")),
+            "order_type_registry_hash": str(registries.get("order_type_registry_hash", "")),
+            "role_registry_hash": str(registries.get("role_registry_hash", "")),
+            "institution_type_registry_hash": str(registries.get("institution_type_registry_hash", "")),
             "view_mode_registry_hash": str(registries.get("view_mode_registry_hash", "")),
             "instrument_type_registry_hash": str(registries.get("instrument_type_registry_hash", "")),
             "calibration_model_registry_hash": str(registries.get("calibration_model_registry_hash", "")),
@@ -1368,7 +1531,10 @@ def observe_truth(
     sites = _site_view(truth_model)
     process_log = _process_log_entries(truth_model)
     entities = _entity_view(truth_model, observed_entities=observed_entities)
-    control = _control_view(truth_model)
+    control = _control_view(
+        truth_model,
+        allow_order_visibility=("entitlement.civ.view_orders" in set(entitlements)),
+    )
     performance = _performance_view(truth_model, allow_hidden=allow_hidden)
     diegetic_instruments = _instrument_channel_view(truth=truth_model, simulation_tick=simulation_tick)
     state_hash_anchor = canonical_sha256(dict(truth_model.get("universe_state") or {}))
@@ -1458,6 +1624,11 @@ def observe_truth(
             continue
     if max_objects > 0:
         perceived_model = _interest_cull(perceived_model=perceived_model, max_objects=max_objects)
+    perceived_model = _apply_lod_invariance_redaction(
+        perceived_model=perceived_model,
+        epistemic_policy=active_epistemic_policy,
+        channels=requested_channels,
+    )
 
     memory_block, next_memory_state = _update_memory_hook(
         perceived_model=perceived_model,
