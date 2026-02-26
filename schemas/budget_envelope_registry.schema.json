@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Budget Envelope Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic registry output for RS-5 budget envelopes.",
+  "x-doc-ref": [
+    "docs/reality/PERFORMANCE_CONSTITUTION.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "envelopes",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "envelopes": {
+      "type": "array",
+      "items": {
+        "$ref": "./budget_envelope.schema.json"
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "envelopes": [],
+      "registry_hash": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ]
+}

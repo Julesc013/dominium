@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Budget Envelope Schema",
+  "version": "1.0.0",
+  "description": "Deterministic RS-5 workload envelope for shard-level micro simulation and inspection limits.",
+  "x-doc-ref": [
+    "docs/reality/PERFORMANCE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "envelope_id",
+    "max_micro_entities_per_shard",
+    "max_micro_regions_per_shard",
+    "max_solver_cost_units_per_tick",
+    "max_inspection_cost_units_per_tick",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "envelope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_micro_entities_per_shard": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "max_micro_regions_per_shard": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "max_solver_cost_units_per_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "max_inspection_cost_units_per_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "envelope_id": "budget.default_realistic",
+      "max_micro_entities_per_shard": 100000,
+      "max_micro_regions_per_shard": 128,
+      "max_solver_cost_units_per_tick": 250000,
+      "max_inspection_cost_units_per_tick": 25000,
+      "extensions": {}
+    }
+  ]
+}

@@ -23,6 +23,9 @@ record universe_physics_profile
     - tier_taxonomy_id: id
     - time_model_id: id
     - boundary_model_id: id
+    - budget_envelope_id: id
+    - arbitration_policy_id: id
+    - inspection_cache_policy_id: id
     - error_budget: map
     - version_introduced: tag
     - deprecated: bool

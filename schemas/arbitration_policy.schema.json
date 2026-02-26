@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Arbitration Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic RS-5 arbitration policy for capacity contention.",
+  "x-doc-ref": [
+    "docs/reality/PERFORMANCE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "arbitration_policy_id",
+    "mode",
+    "weight_source",
+    "tie_break_rule_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "arbitration_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "equal_share",
+        "weighted",
+        "server_authoritative_priority"
+      ]
+    },
+    "weight_source": {
+      "type": "string"
+    },
+    "tie_break_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "arbitration_policy_id": "arb.equal_share",
+      "mode": "equal_share",
+      "weight_source": "none",
+      "tie_break_rule_id": "tie.player_region_tick",
+      "extensions": {}
+    }
+  ]
+}

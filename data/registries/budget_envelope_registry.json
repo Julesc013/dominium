@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.registry.budget_envelope_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.budget_envelope_registry",
+    "registry_version": "1.0.0",
+    "envelopes": [
+      {
+        "schema_version": "1.0.0",
+        "envelope_id": "budget.null",
+        "max_micro_entities_per_shard": 0,
+        "max_micro_regions_per_shard": 0,
+        "max_solver_cost_units_per_tick": 0,
+        "max_inspection_cost_units_per_tick": 0,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "envelope_id": "budget.default_realistic",
+        "max_micro_entities_per_shard": 100000,
+        "max_micro_regions_per_shard": 128,
+        "max_solver_cost_units_per_tick": 250000,
+        "max_inspection_cost_units_per_tick": 25000,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "envelope_id": "budget.rank_strict",
+        "max_micro_entities_per_shard": 50000,
+        "max_micro_regions_per_shard": 64,
+        "max_solver_cost_units_per_tick": 125000,
+        "max_inspection_cost_units_per_tick": 10000,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

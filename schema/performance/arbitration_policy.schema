@@ -1,0 +1,21 @@
+SCHEMA: performance/arbitration_policy.schema
+schema_id: dominium.schema.performance.arbitration_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic contention arbitration policy when performance demand exceeds envelope capacity.
+
+REQUIRED SHAPE:
+record arbitration_policy
+  required:
+    - schema_version: semver
+    - arbitration_policy_id: id
+    - mode: enum(equal_share|weighted|server_authoritative_priority)
+    - weight_source: text
+    - tie_break_rule_id: id
+    - extensions: map
+
+INVARIANTS:
+- Arbitration ordering must be deterministic.
+- No wall-clock signal is allowed in policy interpretation.

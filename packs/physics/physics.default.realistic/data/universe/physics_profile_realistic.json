@@ -11,6 +11,9 @@
     "tier_taxonomy_id": "tiers.standard",
     "time_model_id": "time.single_axis_branching_allowed",
     "boundary_model_id": "boundary.procedural_infinite_closed",
+    "budget_envelope_id": "budget.default_realistic",
+    "arbitration_policy_id": "arb.distance_priority",
+    "inspection_cache_policy_id": "cache.default",
     "error_budget": {
       "energy": 0,
       "mass": 0

@@ -1,0 +1,44 @@
+{
+  "schema_id": "dominium.registry.inspection_cache_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.inspection_cache_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "cache_policy_id": "cache.default",
+        "enable_caching": true,
+        "invalidation_rules": [
+          "invalidate.on_target_truth_hash_change",
+          "invalidate.on_policy_context_hash_change"
+        ],
+        "max_cache_entries": 1024,
+        "eviction_rule_id": "evict.deterministic_lru",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "cache_policy_id": "cache.strict_small",
+        "enable_caching": true,
+        "invalidation_rules": [
+          "invalidate.on_target_truth_hash_change",
+          "invalidate.on_policy_context_hash_change"
+        ],
+        "max_cache_entries": 256,
+        "eviction_rule_id": "evict.deterministic_lru",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "cache_policy_id": "cache.off",
+        "enable_caching": false,
+        "invalidation_rules": [],
+        "max_cache_entries": 0,
+        "eviction_rule_id": "evict.none",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

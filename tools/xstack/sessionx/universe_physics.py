@@ -112,6 +112,35 @@ _NULL_ARBITRATION_RULE = {
     "extensions": {},
 }
 
+_NULL_BUDGET_ENVELOPE = {
+    "schema_version": "1.0.0",
+    "envelope_id": "budget.null",
+    "max_micro_entities_per_shard": 0,
+    "max_micro_regions_per_shard": 0,
+    "max_solver_cost_units_per_tick": 0,
+    "max_inspection_cost_units_per_tick": 0,
+    "extensions": {},
+}
+
+_NULL_ARBITRATION_POLICY = {
+    "schema_version": "1.0.0",
+    "arbitration_policy_id": "arb.equal_share",
+    "mode": "equal_share",
+    "weight_source": "none",
+    "tie_break_rule_id": "tie.player_region_tick",
+    "extensions": {},
+}
+
+_NULL_INSPECTION_CACHE_POLICY = {
+    "schema_version": "1.0.0",
+    "cache_policy_id": "cache.off",
+    "enable_caching": False,
+    "invalidation_rules": [],
+    "max_cache_entries": 0,
+    "eviction_rule_id": "evict.none",
+    "extensions": {},
+}
+
 _NULL_BOUNDARY_MODEL = {
     "schema_version": "1.0.0",
     "boundary_model_id": "procedural_infinite",
@@ -131,6 +160,9 @@ _NULL_PHYSICS_PROFILE = {
     "tier_taxonomy_id": "tiers.null",
     "time_model_id": "default_single_tick",
     "boundary_model_id": "procedural_infinite",
+    "budget_envelope_id": "budget.null",
+    "arbitration_policy_id": "arb.equal_share",
+    "inspection_cache_policy_id": "cache.off",
     "error_budget": {},
     "version_introduced": "1.0.0",
     "deprecated": False,
@@ -442,6 +474,9 @@ _NULL_REGISTRY_LIST_KEYS = {
     "institution_type_registry": "institution_types",
     "transition_policy_registry": "policies",
     "arbitration_rule_registry": "rules",
+    "budget_envelope_registry": "envelopes",
+    "arbitration_policy_registry": "policies",
+    "inspection_cache_policy_registry": "policies",
     "demography_policy_registry": "policies",
     "death_model_registry": "death_models",
     "birth_model_registry": "birth_models",
@@ -534,6 +569,9 @@ def default_null_runtime_registries() -> Dict[str, dict]:
     payloads["tier_taxonomy_registry"]["taxonomies"] = [copy.deepcopy(_NULL_TIER_TAXONOMY)]
     payloads["transition_policy_registry"]["policies"] = [copy.deepcopy(_NULL_TRANSITION_POLICY)]
     payloads["arbitration_rule_registry"]["rules"] = [copy.deepcopy(_NULL_ARBITRATION_RULE)]
+    payloads["budget_envelope_registry"]["envelopes"] = [copy.deepcopy(_NULL_BUDGET_ENVELOPE)]
+    payloads["arbitration_policy_registry"]["policies"] = [copy.deepcopy(_NULL_ARBITRATION_POLICY)]
+    payloads["inspection_cache_policy_registry"]["policies"] = [copy.deepcopy(_NULL_INSPECTION_CACHE_POLICY)]
     payloads["boundary_model_registry"]["boundary_models"] = [copy.deepcopy(_NULL_BOUNDARY_MODEL)]
     payloads["quantity_registry"]["quantities"] = [copy.deepcopy(row) for row in _NULL_QUANTITIES]
     payloads["exception_type_registry"]["exception_types"] = [copy.deepcopy(row) for row in _NULL_EXCEPTION_TYPES]
