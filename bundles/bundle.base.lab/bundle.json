@@ -30,6 +30,7 @@
     "profile.observer.exploration"
   ],
   "optional_pack_ids": [
+    "physics.default.realistic",
     "pack.tool.admin_security",
     "pack.tool.control_debug",
     "pack.tool.inspector",

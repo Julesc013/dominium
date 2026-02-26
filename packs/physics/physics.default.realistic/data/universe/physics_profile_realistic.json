@@ -1,0 +1,22 @@
+{
+  "entry_type": "universe_physics_profile",
+  "profile": {
+    "schema_version": "1.0.0",
+    "physics_profile_id": "physics.default.realistic",
+    "description": "Optional realistic baseline profile provided by pack.",
+    "enabled_domain_ids": [],
+    "conservation_contract_set_id": "contracts.default.realistic",
+    "allowed_exception_types": [],
+    "numeric_precision_policy_id": "precision.fixed_point_default",
+    "tier_taxonomy_id": "tiers.standard",
+    "time_model_id": "time.single_axis_branching_allowed",
+    "boundary_model_id": "boundary.procedural_infinite_closed",
+    "error_budget": {
+      "energy": 0,
+      "mass": 0
+    },
+    "version_introduced": "1.0.0",
+    "deprecated": false,
+    "extensions": {}
+  }
+}
