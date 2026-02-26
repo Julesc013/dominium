@@ -249,6 +249,7 @@ INSTRUMENT_TYPE_BY_ID = dict((value, key) for key, value in INSTRUMENT_TYPE_ID_B
 CONSERVATION_DEFAULT_QUANTITY_ID = "quantity.mass_energy_total"
 CONSERVATION_DEFAULT_DOMAIN_ID = "domain.reality"
 CONSERVATION_CONTROL_DOMAIN_ID = "domain.control"
+ZERO_HASH = "0" * 64
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -4066,6 +4067,170 @@ def _degrade_one_tier(current_tier: str, degrade_order: List[str]) -> str:
     return next_tier if next_tier in _tier_tokens() else token
 
 
+def _cohort_population_total(rows: List[dict]) -> int:
+    total = 0
+    for row in list(rows or []):
+        if not isinstance(row, dict):
+            continue
+        total += max(0, _as_int(row.get("size", 0), 0))
+    return int(total)
+
+
+def _transition_check_status(measured_value: int, tolerance: int, strict_contracts: bool) -> str:
+    if abs(int(measured_value)) <= int(max(0, tolerance)):
+        return "pass"
+    if bool(strict_contracts):
+        return "fail"
+    return "warn"
+
+
+def _transition_check_row(
+    *,
+    tick: int,
+    region_id: str,
+    invariant_id: str,
+    status: str,
+    measured_value: int,
+    tolerance: int,
+    extensions: dict | None = None,
+) -> dict:
+    base = {
+        "tick": int(max(0, tick)),
+        "region_id": str(region_id),
+        "invariant_id": str(invariant_id),
+        "status": str(status),
+        "measured_value": int(measured_value),
+        "tolerance": int(max(0, tolerance)),
+    }
+    check_id = "check.{}".format(canonical_sha256(base)[:16])
+    return {
+        "schema_version": "1.0.0",
+        "check_id": check_id,
+        "domain_id": CONSERVATION_DEFAULT_DOMAIN_ID,
+        "invariant_id": str(invariant_id),
+        "status": str(status),
+        "measured_value": int(measured_value),
+        "tolerance": int(max(0, tolerance)),
+        "extensions": dict(extensions or {}),
+    }
+
+
+def _transition_event_row(
+    *,
+    tick: int,
+    shard_id: str,
+    region_id: str,
+    solver_id: str,
+    from_tier: str,
+    to_tier: str,
+    reason: str,
+    invariant_checks: List[dict],
+    process_id: str,
+    fidelity_from: str,
+    fidelity_to: str,
+    ledger_hash: str = ZERO_HASH,
+    extensions: dict | None = None,
+) -> dict:
+    reason_token = str(reason).strip() or "interest"
+    if reason_token not in ("interest", "budget", "user_request", "server_policy"):
+        reason_token = "interest"
+    seed = {
+        "tick": int(max(0, tick)),
+        "shard_id": str(shard_id),
+        "region_id": str(region_id),
+        "from_tier": str(from_tier),
+        "to_tier": str(to_tier),
+        "reason": reason_token,
+        "process_id": str(process_id),
+        "fidelity_from": str(fidelity_from),
+        "fidelity_to": str(fidelity_to),
+        "solver_id": str(solver_id),
+    }
+    event_id = "transition.{}".format(canonical_sha256(seed)[:16])
+    row = {
+        "schema_version": "1.0.0",
+        "event_id": event_id,
+        "tick": int(max(0, tick)),
+        "shard_id": str(shard_id).strip() or "shard.0",
+        "region_id": str(region_id),
+        "domain_id": CONSERVATION_DEFAULT_DOMAIN_ID,
+        "solver_id": str(solver_id).strip() or None,
+        "from_tier": str(from_tier).strip() or "macro",
+        "to_tier": str(to_tier).strip() or "macro",
+        "reason": reason_token,
+        "invariant_checks": [
+            dict(item)
+            for item in sorted(
+                (entry for entry in list(invariant_checks or []) if isinstance(entry, dict)),
+                key=lambda item: (
+                    str(item.get("invariant_id", "")),
+                    str(item.get("check_id", "")),
+                ),
+            )
+        ],
+        "ledger_hash": str(ledger_hash).strip() or ZERO_HASH,
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "process_id": str(process_id),
+            "fidelity_from": str(fidelity_from),
+            "fidelity_to": str(fidelity_to),
+            **dict(extensions or {}),
+        },
+    }
+    fingerprint_payload = dict(row)
+    fingerprint_payload.pop("deterministic_fingerprint", None)
+    row["deterministic_fingerprint"] = canonical_sha256(fingerprint_payload)
+    return row
+
+
+def _merge_transition_events(existing_rows: List[dict], new_rows: List[dict]) -> List[dict]:
+    by_id: Dict[str, dict] = {}
+    for row in list(existing_rows or []):
+        if not isinstance(row, dict):
+            continue
+        event_id = str(row.get("event_id", "")).strip()
+        if event_id:
+            by_id[event_id] = dict(row)
+    for row in list(new_rows or []):
+        if not isinstance(row, dict):
+            continue
+        event_id = str(row.get("event_id", "")).strip()
+        if event_id:
+            by_id[event_id] = dict(row)
+    return sorted(
+        (dict(item) for item in by_id.values()),
+        key=lambda item: (
+            int(item.get("tick", 0) or 0),
+            str(item.get("shard_id", "")),
+            str(item.get("region_id", "")),
+            str(item.get("event_id", "")),
+        ),
+    )
+
+
+def _transition_events_with_ledger_hash(rows: List[dict], ledger_hash: str) -> List[dict]:
+    ledger_token = str(ledger_hash).strip() or ZERO_HASH
+    updated_rows = []
+    for item in list(rows or []):
+        if not isinstance(item, dict):
+            continue
+        row = dict(item)
+        row["ledger_hash"] = ledger_token
+        fingerprint_payload = dict(row)
+        fingerprint_payload.pop("deterministic_fingerprint", None)
+        row["deterministic_fingerprint"] = canonical_sha256(fingerprint_payload)
+        updated_rows.append(row)
+    return sorted(
+        updated_rows,
+        key=lambda item: (
+            int(item.get("tick", 0) or 0),
+            str(item.get("shard_id", "")),
+            str(item.get("region_id", "")),
+            str(item.get("event_id", "")),
+        ),
+    )
+
+
 def _region_management_tick(
     state: dict,
     navigation_indices: dict | None,
@@ -4100,6 +4265,10 @@ def _region_management_tick(
             "refuse_thresholds": {},
             "extensions": {},
         }
+    strict_contracts = bool((policy_context or {}).get("strict_contracts", False))
+    transition_extensions = dict(transition_policy.get("extensions") or {})
+    invariant_tolerances = dict(transition_extensions.get("invariant_tolerances") or {})
+    force_transition_invariant_failure = bool((policy_context or {}).get("test_force_transition_invariant_failure", False))
 
     entries = _astronomy_entries(navigation_indices)
     if not entries:
@@ -4185,6 +4354,20 @@ def _region_management_tick(
             "micro_regions": list(micro_by_region.values()),
         }
     )
+    cohort_total_before = _cohort_population_total(_ensure_cohort_assemblies(state))
+    region_mass_before: Dict[str, int] = {}
+    capsule_mass_before: Dict[str, int] = {}
+    for entry in entries:
+        object_id = str(entry.get("object_id", "")).strip()
+        if not object_id:
+            continue
+        region_id = "region.{}".format(object_id)
+        capsule = dict(capsule_by_object.get(object_id) or {})
+        conserved = dict(capsule.get("conserved_quantities") or {})
+        capsule_mass = max(0, _as_int(conserved.get("mass_stub", 0), 0))
+        micro_mass = max(0, _as_int((micro_by_region.get(region_id) or {}).get("mass_stub", 0), 0))
+        capsule_mass_before[region_id] = int(capsule_mass)
+        region_mass_before[region_id] = int(capsule_mass + micro_mass)
 
     camera_distance = _camera_distance_mm(state)
     hysteresis = dict(activation_policy.get("hysteresis") or {})
@@ -4233,6 +4416,18 @@ def _region_management_tick(
     entity_weight = max(0, _as_int(budget_policy.get("entity_compute_weight", 0), 0))
     tier_weight_by_tier = dict((tier, int(_tier_weight(budget_policy, tier))) for tier in _tier_tokens())
     tier_entity_target_by_tier = dict((tier, int(_tier_entity_target(fidelity_policy, tier))) for tier in _tier_tokens())
+
+    def _selection_usage(selection: Dict[str, str]) -> Dict[str, int]:
+        tier_sum = 0
+        entity_sum = 0
+        for region_id in sorted(selection.keys()):
+            tier = str(selection.get(region_id, "coarse")).strip() or "coarse"
+            tier_sum += int(tier_weight_by_tier.get(tier, 0))
+            entity_sum += int(tier_entity_target_by_tier.get(tier, 0))
+        return {
+            "compute_units": int(tier_sum + (entity_sum * int(entity_weight))),
+            "entity_count": int(entity_sum),
+        }
 
     current_active = {}
     for region_id, row in interest_by_region.items():
@@ -4354,6 +4549,178 @@ def _region_management_tick(
         row["current_fidelity_tier"] = str(desired_active.get(region_id, "coarse"))
         interest_by_region[region_id] = row
 
+    local_mass_after = _total_conserved_mass(
+        {
+            "macro_capsules": list(capsule_by_object.values()),
+            "micro_regions": list(micro_by_region.values()),
+        }
+    )
+    mass_delta = int(local_mass_after) - int(mass_before)
+    mass_delta_for_check = int(mass_delta)
+    if force_transition_invariant_failure:
+        mass_delta_for_check += 1
+
+    cohort_total_after = _cohort_population_total(_ensure_cohort_assemblies(state))
+    cohort_delta = int(cohort_total_after) - int(cohort_total_before)
+    cohort_tolerance = max(0, _as_int(invariant_tolerances.get("cohort_size", 0), 0))
+    mass_tolerance = max(0, _as_int(invariant_tolerances.get("mass_energy_total", 0), 0))
+    expand_tolerance = max(0, _as_int(invariant_tolerances.get("expand_materialization", 0), 0))
+
+    changed_regions = sorted(set(list(collapse_ids) + list(expand_ids)))
+    transition_reason = "interest"
+    if process_id in ("process.region_expand", "process.region_collapse"):
+        transition_reason = "user_request"
+    elif str(budget_outcome) in ("degraded", "capped"):
+        transition_reason = "budget"
+
+    solver_id_by_transition: Dict[str, str] = {}
+    for trace in list(solver_binding_trace or []):
+        if not isinstance(trace, dict):
+            continue
+        transition_name = str(trace.get("transition", "")).strip()
+        solver_id = str(trace.get("solver_id", "")).strip()
+        if transition_name and solver_id:
+            solver_id_by_transition[transition_name] = solver_id
+
+    transition_events: List[dict] = []
+    failing_checks: List[dict] = []
+    warning_checks: List[dict] = []
+    for region_id in changed_regions:
+        row_after = dict(interest_by_region.get(region_id) or {})
+        object_id = str(row_after.get("anchor_object_id", "")).strip()
+        capsule_after = dict(capsule_by_object.get(object_id) or {})
+        conserved_after = dict(capsule_after.get("conserved_quantities") or {})
+        capsule_mass = max(0, _as_int(conserved_after.get("mass_stub", 0), 0))
+        micro_mass = max(0, _as_int((micro_by_region.get(region_id) or {}).get("mass_stub", 0), 0))
+        region_mass_after = int(capsule_mass + micro_mass)
+        region_delta = int(region_mass_after) - int(region_mass_before.get(region_id, 0))
+        if force_transition_invariant_failure:
+            region_delta += 1
+
+        mass_status = _transition_check_status(
+            measured_value=int(region_delta),
+            tolerance=int(mass_tolerance),
+            strict_contracts=bool(strict_contracts),
+        )
+        mass_check = _transition_check_row(
+            tick=int(current_tick),
+            region_id=region_id,
+            invariant_id="inv.conservation.mass_energy_total",
+            status=mass_status,
+            measured_value=int(region_delta),
+            tolerance=int(mass_tolerance),
+            extensions={
+                "quantity_id": CONSERVATION_DEFAULT_QUANTITY_ID,
+                "global_mass_delta": int(mass_delta_for_check),
+            },
+        )
+        if mass_status == "fail":
+            failing_checks.append(dict(mass_check))
+        elif mass_status == "warn":
+            warning_checks.append(dict(mass_check))
+
+        cohort_status = _transition_check_status(
+            measured_value=int(cohort_delta),
+            tolerance=int(cohort_tolerance),
+            strict_contracts=bool(strict_contracts),
+        )
+        cohort_check = _transition_check_row(
+            tick=int(current_tick),
+            region_id=region_id,
+            invariant_id="inv.civ.cohort_size_conservation",
+            status=cohort_status,
+            measured_value=int(cohort_delta),
+            tolerance=int(cohort_tolerance),
+            extensions={
+                "cohort_total_before": int(cohort_total_before),
+                "cohort_total_after": int(cohort_total_after),
+            },
+        )
+        if cohort_status == "fail":
+            failing_checks.append(dict(cohort_check))
+        elif cohort_status == "warn":
+            warning_checks.append(dict(cohort_check))
+
+        expand_deficit = 0
+        if region_id in set(expand_ids):
+            expand_deficit = max(
+                0,
+                int((micro_by_region.get(region_id) or {}).get("mass_stub", 0) or 0) - int(capsule_mass_before.get(region_id, 0)),
+            )
+            if force_transition_invariant_failure:
+                expand_deficit += 1
+        expand_status = _transition_check_status(
+            measured_value=int(expand_deficit),
+            tolerance=int(expand_tolerance),
+            strict_contracts=bool(strict_contracts),
+        )
+        expand_check = _transition_check_row(
+            tick=int(current_tick),
+            region_id=region_id,
+            invariant_id="inv.transition.expand_materialization",
+            status=expand_status,
+            measured_value=int(expand_deficit),
+            tolerance=int(expand_tolerance),
+            extensions={
+                "capsule_mass_before": int(capsule_mass_before.get(region_id, 0)),
+                "micro_mass_after": int((micro_by_region.get(region_id) or {}).get("mass_stub", 0) or 0),
+            },
+        )
+        if expand_status == "fail":
+            failing_checks.append(dict(expand_check))
+        elif expand_status == "warn":
+            warning_checks.append(dict(expand_check))
+
+        was_active = region_id in current_active
+        now_active = region_id in desired_active
+        fidelity_from = str(current_active.get(region_id, "coarse")).strip() if was_active else "coarse"
+        fidelity_to = str(desired_active.get(region_id, "coarse")).strip() if now_active else "coarse"
+        from_tier = "micro" if was_active else "macro"
+        to_tier = "micro" if now_active else "macro"
+        solver_id = ""
+        if region_id in set(expand_ids):
+            solver_id = str(solver_id_by_transition.get("expand", "")).strip()
+        elif region_id in set(collapse_ids):
+            solver_id = str(solver_id_by_transition.get("collapse", "")).strip()
+        transition_events.append(
+            _transition_event_row(
+                tick=int(current_tick),
+                shard_id=str((policy_context or {}).get("active_shard_id", "")).strip() or "shard.0",
+                region_id=region_id,
+                solver_id=solver_id,
+                from_tier=from_tier,
+                to_tier=to_tier,
+                reason=transition_reason,
+                invariant_checks=[mass_check, cohort_check, expand_check],
+                process_id=str(process_id),
+                fidelity_from=fidelity_from,
+                fidelity_to=fidelity_to,
+                ledger_hash=ZERO_HASH,
+                extensions={
+                    "mass_before": int(region_mass_before.get(region_id, 0)),
+                    "mass_after": int(region_mass_after),
+                    "mass_delta": int(region_delta),
+                },
+            )
+        )
+
+    if failing_checks and bool(strict_contracts):
+        first = dict(failing_checks[0])
+        return refusal(
+            "refusal.transition.invariant_violation",
+            "tier transition invariant check failed under strict contract mode",
+            "Relax transition policy tolerances or resolve conservation mismatch before transition.",
+            {
+                "process_id": str(process_id),
+                "invariant_id": str(first.get("invariant_id", "")),
+                "measured_value": str(first.get("measured_value", "")),
+                "tolerance": str(first.get("tolerance", "")),
+            },
+            "$.transition_event",
+        )
+    if warning_checks and str(budget_outcome) == "ok":
+        budget_outcome = "degraded"
+
     state["interest_regions"] = sorted(
         (dict(item) for item in interest_by_region.values()),
         key=lambda item: str(item.get("region_id", "")),
@@ -4367,8 +4734,9 @@ def _region_management_tick(
         key=lambda item: str(item.get("region_id", "")),
     )
 
-    mass_after = _total_conserved_mass(state)
-    mass_delta = int(mass_after) - int(mass_before)
+    if str(budget_outcome) == "degraded":
+        usage = _selection_usage(desired_active)
+
     if collapse_ids or expand_ids:
         _ledger_emit_exception(
             policy_context=policy_context,
@@ -4380,7 +4748,7 @@ def _region_management_tick(
             reason_code="conservation.lod.quantization",
             evidence=[
                 "mass_before={}".format(int(mass_before)),
-                "mass_after={}".format(int(mass_after)),
+                "mass_after={}".format(int(local_mass_after)),
                 "collapsed_regions={}".format(len(collapse_ids)),
                 "expanded_regions={}".format(len(expand_ids)),
             ],
@@ -4401,6 +4769,7 @@ def _region_management_tick(
     if not isinstance(previous_performance, dict):
         previous_performance = {}
     prior_solver_trace = list(previous_performance.get("solver_binding_trace") or [])
+    prior_transition_events = list(previous_performance.get("transition_events") or [])
 
     performance_state = {
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
@@ -4413,6 +4782,7 @@ def _region_management_tick(
         "fidelity_tier_counts": tier_counts,
         "transition_log": list(previous_performance.get("transition_log") or []),
         "solver_binding_trace": prior_solver_trace,
+        "transition_events": _merge_transition_events(prior_transition_events, transition_events),
     }
     for row in sorted(
         (item for item in solver_binding_trace if isinstance(item, dict)),
@@ -4469,6 +4839,10 @@ def _region_management_tick(
         "forced_collapse_region_ids": forced_collapse_ids,
         "selected_terrain_tiles": selected_terrain_tiles,
         "cohort_refinement": cohort_refinement,
+        "transition_events": [dict(item) for item in list(transition_events or []) if isinstance(item, dict)],
+        "transition_event_ids": _sorted_tokens([str(item.get("event_id", "")) for item in list(transition_events or []) if isinstance(item, dict)]),
+        "invariant_fail_count": int(len(failing_checks)),
+        "invariant_warn_count": int(len(warning_checks)),
     }
 
 
@@ -8009,6 +8383,10 @@ def execute_intent(
         )
         if str(conservation_result.get("result", "")) != "complete":
             return conservation_result
+        transition_events_out = _transition_events_with_ledger_hash(
+            rows=list(tick_result.get("transition_events") or []),
+            ledger_hash=str(conservation_result.get("ledger_hash", "")),
+        )
         state_hash_anchor = _log_process(
             state=state,
             process_id=process_id,
@@ -8027,6 +8405,9 @@ def execute_intent(
             "forced_expand_region_ids": list(tick_result.get("forced_expand_region_ids") or []),
             "forced_collapse_region_ids": list(tick_result.get("forced_collapse_region_ids") or []),
             "cohort_refinement": list(tick_result.get("cohort_refinement") or []),
+            "transition_events": transition_events_out,
+            "invariant_fail_count": int(tick_result.get("invariant_fail_count", 0) or 0),
+            "invariant_warn_count": int(tick_result.get("invariant_warn_count", 0) or 0),
             "lod_invariance": lod_summary,
         }
     elif process_id == "process.region_management_tick":
@@ -8046,6 +8427,10 @@ def execute_intent(
         )
         if str(conservation_result.get("result", "")) != "complete":
             return conservation_result
+        transition_events_out = _transition_events_with_ledger_hash(
+            rows=list(tick_result.get("transition_events") or []),
+            ledger_hash=str(conservation_result.get("ledger_hash", "")),
+        )
         state_hash_anchor = _log_process(
             state=state,
             process_id=process_id,
@@ -8062,6 +8447,9 @@ def execute_intent(
             "active_regions": list(tick_result.get("active_regions") or []),
             "budget_outcome": str(tick_result.get("budget_outcome", "")),
             "cohort_refinement": list(tick_result.get("cohort_refinement") or []),
+            "transition_events": transition_events_out,
+            "invariant_fail_count": int(tick_result.get("invariant_fail_count", 0) or 0),
+            "invariant_warn_count": int(tick_result.get("invariant_warn_count", 0) or 0),
         }
     else:
         return refusal(
