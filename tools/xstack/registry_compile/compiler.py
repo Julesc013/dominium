@@ -14,6 +14,7 @@ from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
+from tools.xstack.sessionx.universe_physics import write_null_boot_artifacts
 
 from .bundle_profile import resolve_bundle_selection
 from .constants import (
@@ -2215,6 +2216,7 @@ def _civilisation_registry_rows(
 def _universe_physics_registry_rows(
     repo_root: str,
     schema_root: str,
+    contributions: List[dict] | None = None,
 ) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
 
@@ -2267,6 +2269,53 @@ def _universe_physics_registry_rows(
     )
     if profile_load_errors:
         return [], [], [], [], [], profile_load_errors
+
+    contributed_profile_rows: List[dict] = []
+    for row in sorted(
+        [item for item in (contributions or []) if isinstance(item, dict)],
+        key=lambda item: (str(item.get("id", "")), str(item.get("pack_id", ""))),
+    ):
+        if str(row.get("contrib_type", "")) != "registry_entries":
+            continue
+        payload, err = _payload_from_contribution(row)
+        if err:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_universe_physics_profile_entry",
+                    "message": err,
+                    "path": "$.physics_profiles",
+                }
+            )
+            continue
+        if str(payload.get("entry_type", "")).strip() != "universe_physics_profile":
+            continue
+        profile_payload = payload.get("profile")
+        if not isinstance(profile_payload, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_universe_physics_profile_entry",
+                    "message": "registry_entries contribution '{}' must include object field profile".format(
+                        str(row.get("id", ""))
+                    ),
+                    "path": "$.physics_profiles",
+                }
+            )
+            continue
+        contribution_id = str(row.get("id", "")).strip()
+        profile_id = str(profile_payload.get("physics_profile_id", "")).strip()
+        if contribution_id and profile_id and contribution_id != profile_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.universe_physics_profile_id_mismatch",
+                    "message": "physics profile id '{}' does not match contribution id '{}'".format(
+                        profile_id,
+                        contribution_id,
+                    ),
+                    "path": "$.physics_profiles.physics_profile_id",
+                }
+            )
+            continue
+        contributed_profile_rows.append(dict(profile_payload))
 
     time_rows: List[dict] = []
     time_seen = set()
@@ -2451,7 +2500,8 @@ def _universe_physics_registry_rows(
 
     profile_rows: List[dict] = []
     profile_seen = set()
-    for entry in sorted(profile_rows_raw, key=lambda row: str((row or {}).get("physics_profile_id", ""))):
+    profile_rows_input = list(profile_rows_raw) + list(contributed_profile_rows)
+    for entry in sorted(profile_rows_input, key=lambda row: str((row or {}).get("physics_profile_id", ""))):
         if not isinstance(entry, dict):
             errors.append(
                 {
@@ -5188,6 +5238,28 @@ def compile_bundle(
                         "pack_lock_hash": str(restored_lockfile_payload.get("pack_lock_hash", "")),
                     }
 
+    if not ordered_packs:
+        null_result = write_null_boot_artifacts(
+            repo_root=repo_root,
+            out_dir_rel=out_dir_rel,
+            lockfile_out_rel=lockfile_out_rel,
+            bundle_id=str(bundle_id),
+            schema_repo_root=schema_root,
+        )
+        if str(null_result.get("result", "")) != "complete":
+            return null_result
+        return {
+            "result": "complete",
+            "bundle_id": str(bundle_id),
+            "cache_key": key,
+            "cache_hit": False,
+            "out_dir": _norm(os.path.relpath(out_dir, repo_root)),
+            "lockfile_path": _norm(os.path.relpath(lockfile_out, repo_root)),
+            "ordered_pack_ids": [],
+            "registry_hashes": dict(null_result.get("registry_hashes") or {}),
+            "pack_lock_hash": str(null_result.get("pack_lock_hash", "")),
+        }
+
     generated_from = _generated_from_rows(ordered_packs)
 
     domain_rows, domain_errors = _domain_rows(contributions)
@@ -5230,6 +5302,7 @@ def compile_bundle(
     ) = _universe_physics_registry_rows(
         repo_root=repo_root,
         schema_root=schema_root,
+        contributions=contributions,
     )
     body_shape_rows, body_shape_registry_errors = _body_shape_registry_rows(
         repo_root=repo_root,
