@@ -120,6 +120,25 @@
         "extensions": {}
       },
       {
+        "rule_id": "rule.representation.view_mode_spectator_label",
+        "match": {
+          "entity_kind": null,
+          "material_tag": null,
+          "domain_id": null,
+          "faction_id": null,
+          "view_mode_id": "view.follow.spectator",
+          "body_shape": null
+        },
+        "output": {
+          "primitive_id": "prim.box.default",
+          "procedural_material_template_id": "mat.template.default_by_id_hash",
+          "label_policy_id": "label.player_minimal",
+          "lod_policy_id": "lod.distance_bands"
+        },
+        "priority": 145,
+        "extensions": {}
+      },
+      {
         "rule_id": "rule.representation.faction_overlay",
         "match": {
           "entity_kind": null,

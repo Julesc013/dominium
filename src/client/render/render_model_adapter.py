@@ -82,9 +82,18 @@ def _entity_rows(perceived_model: dict) -> List[dict]:
     return [{"entity_id": token} for token in observed]
 
 
+def _view_mode_allows_diegetic_overlays(view_mode_id: str) -> bool:
+    token = str(view_mode_id).strip()
+    if token in ("view.first_person.player", "view.third_person.player", "view.follow.spectator"):
+        return True
+    return False
+
+
 def _overlay_rows(perceived_model: dict, view_mode_id: str) -> Tuple[List[dict], List[dict]]:
     overlays: List[dict] = []
     materials: List[dict] = []
+    if not _view_mode_allows_diegetic_overlays(view_mode_id):
+        return overlays, materials
     instruments = dict(perceived_model.get("diegetic_instruments") or {})
 
     def add_overlay(overlay_id: str, label: str) -> None:
