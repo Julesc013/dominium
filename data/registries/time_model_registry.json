@@ -1,0 +1,29 @@
+{
+  "schema_id": "dominium.registry.time_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.time_model_registry",
+    "registry_version": "1.0.0",
+    "time_models": [
+      {
+        "schema_version": "1.0.0",
+        "time_model_id": "default_single_tick",
+        "single_tick_axis": true,
+        "allow_variable_dt": false,
+        "allow_branching": false,
+        "allow_retroactive_mutation": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "time_model_id": "time.single_axis_branching_allowed",
+        "single_tick_axis": true,
+        "allow_variable_dt": false,
+        "allow_branching": true,
+        "allow_retroactive_mutation": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

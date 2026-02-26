@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time Model Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic time model registry output.",
+  "x-doc-ref": [
+    "docs/reality/UNIVERSE_PHYSICS_PROFILE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "time_models",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "time_models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "time_model_id",
+          "single_tick_axis",
+          "allow_variable_dt",
+          "allow_branching",
+          "allow_retroactive_mutation",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "time_model_id": {
+            "type": "string"
+          },
+          "single_tick_axis": {
+            "type": "boolean"
+          },
+          "allow_variable_dt": {
+            "type": "boolean"
+          },
+          "allow_branching": {
+            "type": "boolean"
+          },
+          "allow_retroactive_mutation": {
+            "type": "boolean"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

@@ -1,5 +1,10 @@
 {
   "schema_version": "1.0.0",
+  "universe_physics_profile_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+  "time_model_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+  "numeric_precision_policy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+  "tier_taxonomy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+  "boundary_model_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
   "domain_registry_hash": "6f2e8716f2c1d7f9cf8714ac8c0bf8bb99295aa6254e6177cb1081b754adfd88",
   "law_registry_hash": "ccf4d2cc714f257c5f161f64e59ff3b496f6a5f6c533e0f8f40261f8fbc14165",
   "experience_registry_hash": "f353b7d70f60f286784f8e4fd31af8754e0766a93835f4dc8a5192dbf375fd22",
