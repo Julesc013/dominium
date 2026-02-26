@@ -1,0 +1,24 @@
+SCHEMA: render/frame_summary.schema
+schema_id: dominium.render.frame_summary
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic renderer frame summary metadata derived from RenderModel.
+
+REQUIRED SHAPE:
+record frame_summary
+  required:
+    - schema_version: semver
+    - render_model_hash: hash_hex
+    - primitive_counts: map
+    - layer_counts: map
+    - label_count: u32
+    - deterministic_fingerprint: hash_hex
+    - extensions: map
+  optional:
+    - bounding_box: map
+
+INVARIANTS:
+- Summary fields and fingerprint must be deterministic for identical input RenderModel.
+- Summary content is presentation metadata and cannot include hidden truth channels.

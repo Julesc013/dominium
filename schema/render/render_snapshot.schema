@@ -1,0 +1,31 @@
+SCHEMA: render/render_snapshot.schema
+schema_id: dominium.render.render_snapshot
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define derived render snapshot artifacts produced by renderer capture tools.
+
+REQUIRED SHAPE:
+record render_snapshot
+  required:
+    - schema_version: semver
+    - snapshot_id: id
+    - tick: u64
+    - viewpoint_id: id
+    - render_model_hash: hash_hex
+    - pack_lock_hash: hash_hex
+    - physics_profile_id: id
+    - renderer_id: enum(null|software)
+    - image_width: u32
+    - image_height: u32
+    - pixel_format: string
+    - summary_hash: hash_hex
+    - outputs: map
+    - extensions: map
+  optional:
+    - pixel_hash: hash_hex
+
+INVARIANTS:
+- Render snapshots are DERIVED artifacts and cannot mutate simulation truth.
+- Summary hash must be deterministic for identical render model and renderer settings.
