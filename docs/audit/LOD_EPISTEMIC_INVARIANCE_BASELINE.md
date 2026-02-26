@@ -1,6 +1,6 @@
 Status: DERIVED
 Version: 1.0.0
-Last Reviewed: 2026-02-16
+Last Reviewed: 2026-02-26
 Scope: ED-4/4 epistemic invariance under LOD switching.
 
 # LOD Epistemic Invariance Baseline
@@ -52,4 +52,24 @@ Violation refusal code:
 1. Approximation deltas inside the same quantization envelope are allowed.
 2. Current invariant checks focus on perceived channels/entities/camera precision and sensitive key-path tokens.
 3. Future expansion can add stronger symbolic derivability checks for macro-to-micro transitions.
+
+## Gate Execution (2026-02-26)
+
+1. RepoX:
+   - command: `tools/xstack/repox/check.py --repo-root . --profile STRICT`
+   - result: PASS (`findings=0`)
+2. AuditX:
+   - command: `tools/auditx/auditx.py scan --repo-root . --format json`
+   - result: COMPLETE (`findings_count=1516`, non-gating semantic scan)
+3. TestX (LOD invariance suite):
+   - command: `tools/xstack/testx_all.py --repo-root . --profile STRICT --cache off --subset testx.epistemics.lod_macro_to_micro_no_precision_gain,testx.epistemics.lod_precision_quantization_stable,testx.epistemics.lod_hidden_inventory_not_exposed,testx.epistemics.lod_memory_preserved_on_collapse,testx.epistemics.lod_strict_mode_violation_refusal`
+   - result: PASS (`selected_tests=5`)
+4. strict build:
+   - configure: `cmake -S . -B out/build/vs2026/verify -G "Visual Studio 17 2022" -A x64` + verify-equivalent cache variables
+   - build: `cmake --build out/build/vs2026/verify --config Debug --target domino_engine dominium_game dominium_client`
+   - result: PASS
+5. `ui_bind --check`:
+   - pre-step: `tools/xstack/registry_compile/registry_compile.py --repo-root . --out-dir build/registries --lockfile-out build/lockfile.json`
+   - command: `tools/xstack/ui_bind.py --repo-root . --check`
+   - result: PASS (`checked_windows=21`)
 

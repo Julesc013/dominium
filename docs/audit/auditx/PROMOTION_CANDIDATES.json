@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 6,
+  "candidate_count": 12,
   "candidates": [
     {
       "evidence_paths": [
@@ -13,11 +13,24 @@
     },
     {
       "evidence_paths": [
+        "data/registries/glossary.json",
+        "tests/systemic/test_future_case_stress_suite.py",
         "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
       "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/auditx/analyzers/c1_security_boundary.py",
+        "tools/securex/core/boundary_validator.py",
+        "tools/securex/securex.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.9,
+      "rule_type": "TEST_REGRESSION",
       "suggested_ruleset": "core.json"
     },
     {
@@ -40,10 +53,60 @@
     },
     {
       "evidence_paths": [
+        "data/registries/glossary.json",
+        "docs/architecture/TERMINOLOGY_GLOSSARY.md"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.6,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
         "tools/xstack/sessionx/observation.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.6,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "client/ui/workspaces/session_transition/session_transition.default.json",
+        "packs/tool/pack.tool.admin_security/ui/window.enforcement_actions.json",
+        "packs/tool/pack.tool.admin_security/ui/window.peer_status.json",
+        "packs/tool/pack.tool.admin_security/ui/window.security_events.json",
+        "packs/tool/pack.tool.control_debug/ui/window.controller_status.json",
+        "packs/tool/pack.tool.control_debug/ui/window.possession_graph.json",
+        "packs/tool/pack.tool.control_debug/ui/window.spectator_controls.json",
+        "packs/tool/pack.tool.inspector/ui/window.inspector.json",
+        "packs/tool/pack.tool.log_viewer/ui/window.log.json",
+        "packs/tool/pack.tool.navigation/ui/window.goto.json",
+        "packs/tool/pack.tool.navigation/ui/window.navigator.json",
+        "packs/tool/pack.tool.navigation/ui/window.site_browser.json",
+        "packs/tool/pack.tool.time_control/ui/window.time.json",
+        "tools/launcher/ui/doc/launcher_ui_doc.json",
+        "tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp",
+        "tools/launcher/ui/registry/launcher_actions_registry.json",
+        "tools/launcher/ui/scripts/minecraft_launcher_v1.ops.json",
+        "tools/setup/ui/doc/setup_ui_doc.json",
+        "tools/setup/ui/gen/ui_setup_ui_actions_gen.cpp",
+        "tools/setup/ui/registry/setup_actions_registry.json",
+        "tools/setup/ui/scripts/minecraft_setup_v1.ops.json",
+        "tools/xstack/testdata/ui/perceived_model.fixture.json"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.6,
+      "rule_type": "TEST_REGRESSION",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "client/app/main_client.c",
+        "client/shell/client_shell.c"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.585,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -56,6 +119,8 @@
         ".xstack_cache/securex/RUN_META.json",
         ".xstack_cache/testx/TESTX_RUN_META.json",
         ".xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md",
+        "dist/pkg/winnt/x86_64/index/pkg_index.json",
+        "docs/audit/perf/profile_trace.sample.json",
         "docs/audit/system/LEDGER_SNAPSHOT.md",
         "docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md"
       ],
@@ -63,6 +128,56 @@
       "risk_score": 0.57,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "derived.json"
+    },
+    {
+      "evidence_paths": [
+        "client/gui/client_app_win32.cpp",
+        "client/ui/workspaces/session_transition/session_transition.default.json",
+        "launcher/gui/launcher_app_win32.cpp",
+        "launcher/gui/win32/launcher_app_win32.cpp",
+        "packs/tool/pack.tool.admin_security/ui/window.enforcement_actions.json",
+        "packs/tool/pack.tool.admin_security/ui/window.peer_status.json",
+        "packs/tool/pack.tool.admin_security/ui/window.security_events.json",
+        "packs/tool/pack.tool.control_debug/ui/window.controller_status.json",
+        "packs/tool/pack.tool.control_debug/ui/window.possession_graph.json",
+        "packs/tool/pack.tool.control_debug/ui/window.spectator_controls.json",
+        "packs/tool/pack.tool.inspector/ui/window.inspector.json",
+        "packs/tool/pack.tool.log_viewer/ui/window.log.json",
+        "packs/tool/pack.tool.navigation/ui/window.goto.json",
+        "packs/tool/pack.tool.navigation/ui/window.navigator.json",
+        "packs/tool/pack.tool.navigation/ui/window.site_browser.json",
+        "packs/tool/pack.tool.time_control/ui/window.time.json",
+        "server/gui/server_app_win32.cpp",
+        "setup/gui/setup_app_win32.cpp",
+        "setup/gui/win32/setup_app_win32.cpp",
+        "tools/launcher/ui/doc/launcher_ui_doc.json",
+        "tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp",
+        "tools/launcher/ui/registry/launcher_actions_registry.json",
+        "tools/launcher/ui/scripts/minecraft_launcher_v1.ops.json",
+        "tools/setup/ui/doc/setup_ui_doc.json",
+        "tools/setup/ui/gen/ui_setup_ui_actions_gen.cpp",
+        "tools/setup/ui/registry/setup_actions_registry.json",
+        "tools/setup/ui/scripts/minecraft_setup_v1.ops.json",
+        "tools/xstack/testdata/ui/perceived_model.fixture.json"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.555,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "setup/packages/scripts/packaging/pipeline.py",
+        "tools/auditx/analyzers/a1_reachability_orphaned.py",
+        "tools/auditx/analyzers/a5_capability_misuse.py",
+        "tools/auditx/analyzers/a6_ui_parity_bypass.py",
+        "tools/auditx/analyzers/a7_legacy_contamination.py",
+        "tools/auditx/analyzers/c2_mode_flag_smell.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.525,
+      "rule_type": "TEST_REGRESSION",
+      "suggested_ruleset": "core.json"
     }
   ],
   "schema_id": "dominium.auditx.promotion_candidates",
