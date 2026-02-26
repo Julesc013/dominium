@@ -5304,6 +5304,203 @@ def _append_time_constitution_invariant_findings(
                 )
 
 
+def _append_tier_transition_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    transition_controller_rel = "src/reality/transitions/transition_controller.py"
+    transition_controller_abs = os.path.join(repo_root, transition_controller_rel.replace("/", os.sep))
+    try:
+        transition_controller_text = open(transition_controller_abs, "r", encoding="utf-8").read()
+    except OSError:
+        transition_controller_text = ""
+    if not transition_controller_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transition_controller_rel,
+                line_number=1,
+                snippet="",
+                message="transition controller is missing or unreadable",
+                rule_id="INV-TRANSITIONS-POLICY-DRIVEN",
+            )
+        )
+        return
+
+    required_policy_tokens = (
+        "compute_transition_plan(",
+        "transition_policy",
+        "hysteresis_rules",
+        "min_transition_interval_ticks",
+        "arbitration_rule_id",
+        "_candidate_sort_key(",
+        "_quantize_distance(",
+    )
+    for token in required_policy_tokens:
+        if token in transition_controller_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transition_controller_rel,
+                line_number=1,
+                snippet=token,
+                message="transition selection must be policy-driven and deterministic",
+                rule_id="INV-TRANSITIONS-POLICY-DRIVEN",
+            )
+        )
+
+    process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_runtime_abs = os.path.join(repo_root, process_runtime_rel.replace("/", os.sep))
+    try:
+        process_runtime_text = open(process_runtime_abs, "r", encoding="utf-8").read()
+    except OSError:
+        process_runtime_text = ""
+    if not process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime missing; cannot verify transition pipeline invariants",
+                rule_id="INV-TRANSITIONS-POLICY-DRIVEN",
+            )
+        )
+        return
+
+    required_runtime_tokens = (
+        "_region_management_tick(",
+        "_policy_payload(policy_context, \"transition_policy\")",
+        "compute_transition_plan(",
+        "transition_policy_id",
+        "process.region_management_tick",
+    )
+    for token in required_runtime_tokens:
+        if token in process_runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="transition runtime path must resolve transition policy through policy context",
+                rule_id="INV-TRANSITIONS-POLICY-DRIVEN",
+            )
+        )
+
+    required_transition_event_tokens = (
+        "_transition_event_row(",
+        "_merge_transition_events(",
+        "transition_events",
+        "transition_event_ids",
+        "deterministic_fingerprint",
+        "invariant_checks",
+    )
+    for token in required_transition_event_tokens:
+        if token in process_runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="transition events must be recorded for each expand/collapse/degrade path",
+                rule_id="INV-TRANSITION-EVENT-RECORDED",
+            )
+        )
+
+    transition_event_schema_rel = "schema/reality/transition_event.schema"
+    transition_event_schema_abs = os.path.join(repo_root, transition_event_schema_rel.replace("/", os.sep))
+    try:
+        transition_event_schema_text = open(transition_event_schema_abs, "r", encoding="utf-8").read()
+    except OSError:
+        transition_event_schema_text = ""
+    if not transition_event_schema_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transition_event_schema_rel,
+                line_number=1,
+                snippet="",
+                message="transition_event schema is missing or unreadable",
+                rule_id="INV-TRANSITION-EVENT-RECORDED",
+            )
+        )
+    else:
+        for token in ("event_id", "tick", "from_tier", "to_tier", "invariant_checks", "deterministic_fingerprint"):
+            if token in transition_event_schema_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=transition_event_schema_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="transition_event schema must include canonical deterministic transition fields",
+                    rule_id="INV-TRANSITION-EVENT-RECORDED",
+                )
+            )
+
+    universe_state_schema_rel = "schemas/universe_state.schema.json"
+    universe_state_schema_abs = os.path.join(repo_root, universe_state_schema_rel.replace("/", os.sep))
+    try:
+        universe_state_schema_text = open(universe_state_schema_abs, "r", encoding="utf-8").read()
+    except OSError:
+        universe_state_schema_text = ""
+    if not universe_state_schema_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=universe_state_schema_rel,
+                line_number=1,
+                snippet="",
+                message="universe_state schema missing; cannot verify transition event projection",
+                rule_id="INV-TRANSITION-EVENT-RECORDED",
+            )
+        )
+    elif "transition_events" not in universe_state_schema_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=universe_state_schema_rel,
+                line_number=1,
+                snippet="transition_events",
+                message="universe_state schema must surface performance_state.transition_events",
+                rule_id="INV-TRANSITION-EVENT-RECORDED",
+            )
+        )
+
+    for rel_path in (transition_controller_rel, process_runtime_rel):
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            lowered = str(line).lower()
+            if (
+                "time.time(" not in lowered
+                and "datetime.now(" not in lowered
+                and "datetime.utcnow(" not in lowered
+                and "time.perf_counter(" not in lowered
+                and "time.monotonic(" not in lowered
+                and "time.sleep(" not in lowered
+                and "os.times(" not in lowered
+            ):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=str(line).strip()[:140],
+                    message="transition selection and transition pipeline must not use wall-clock APIs",
+                    rule_id="INV-NO-WALLCLOCK-IN-TRANSITION",
+                )
+            )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -5350,6 +5547,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_time_constitution_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_tier_transition_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
