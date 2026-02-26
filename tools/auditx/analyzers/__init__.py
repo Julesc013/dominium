@@ -67,6 +67,8 @@ from analyzers import e38_demography_leak_smell
 from analyzers import e39_nondeterministic_rate_usage_smell
 from analyzers import e40_physics_assumption_smell
 from analyzers import e41_implicit_default_profile_smell
+from analyzers import e42_unaccounted_violation_smell
+from analyzers import e43_excessive_numeric_loss_smell
 
 
 ANALYZERS = (
@@ -137,6 +139,8 @@ ANALYZERS = (
     e39_nondeterministic_rate_usage_smell,
     e40_physics_assumption_smell,
     e41_implicit_default_profile_smell,
+    e42_unaccounted_violation_smell,
+    e43_excessive_numeric_loss_smell,
 )
 
 
