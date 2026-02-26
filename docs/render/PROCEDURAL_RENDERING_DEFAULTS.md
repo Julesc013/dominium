@@ -2,38 +2,47 @@
 
 Status: normative
 Version: 1.0.0
+Scope: RND-1 defaults
 
-## Deterministic Color Mapping
-- Default color rule:
-  - `base_color = hash(material_id or semantic_id) -> HSL -> RGB`
-- Hash source precedence:
+## 1) Deterministic Color Mapping
+
+- Default rule: `base_color = hash(material_id or type/semantic id) -> HSL -> RGB`.
+- Hash precedence:
   1. resolved `material_id`
-  2. resolved semantic/entity ID
+  2. semantic/entity id
 - Category clamps:
-  - saturation/value ranges are fixed by category and policy.
+  - saturation/value ranges are fixed by template/category policy.
 
-## Deterministic Primitive Selection
-- Selection precedence:
-  1. explicit representation rule match
-  2. body-shape-derived primitive
-  3. semantic fallback by entity kind
-  4. global fallback (`prim.box.default`)
-- Missing shape/material data does not refuse; it degrades deterministically.
+## 2) Deterministic Primitive Selection
 
-## Labels
+Selection precedence:
+
+1. explicit representation-rule match
+2. body-shape-derived primitive
+3. semantic fallback by entity kind
+4. global fallback (`prim.box.default`)
+
+Missing shape/material metadata must degrade deterministically and must not refuse.
+
+## 3) Label Policy Defaults
+
 - Labels are policy-driven and optional.
-- Player-default diegetic profiles may hide labels.
-- Debug/spectator/observer profiles may enable label expansion by entitlement/law.
+- `label.none` for minimal diegetic/player defaults.
+- `label.debug_ids` for debug/observer-style visibility.
+- `label.player_minimal` for compact player-readable labels when allowed by policy.
 
-## LOD and Highlighting
+## 4) LOD and Highlight Defaults
+
 - LOD hints are presentation-only and deterministic from:
-  - policy
+  - selected LOD policy
   - view mode
-  - distance bands (quantized inputs)
-- Highlight layers are presentation-only:
-  - no authority changes
-  - no truth channel expansion
+  - quantized distance bands
+- Highlight layers are presentation-only and must not:
+  - alter authority
+  - reveal hidden truth
 
-## Null-Asset Baseline
+## 5) Null-Asset Baseline
+
 - Primitive geometry + procedural material parameters are sufficient for valid output.
-- Texture/sound packs are optional extensions, not runtime assumptions.
+- Texture/sound packs are optional extensions.
+- No runtime path may assume external assets exist.
