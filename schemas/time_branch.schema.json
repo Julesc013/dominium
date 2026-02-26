@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time Branch Schema",
+  "version": "1.0.0",
+  "description": "Deterministic RS-3 branch lineage artifact.",
+  "x-doc-ref": [
+    "docs/reality/TIME_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "branch_id",
+    "parent_save_id",
+    "parent_checkpoint_id",
+    "divergence_tick",
+    "new_save_id",
+    "reason",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "branch_id": {
+      "type": "string"
+    },
+    "parent_save_id": {
+      "type": "string"
+    },
+    "parent_checkpoint_id": {
+      "type": "string"
+    },
+    "divergence_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "new_save_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "branch_id": "branch.save.lab.1024",
+      "parent_save_id": "save.lab",
+      "parent_checkpoint_id": "checkpoint.save.lab.tick.1024",
+      "divergence_tick": 1024,
+      "new_save_id": "save.lab.branch.01",
+      "reason": "user.tool.branch",
+      "extensions": {}
+    }
+  ]
+}

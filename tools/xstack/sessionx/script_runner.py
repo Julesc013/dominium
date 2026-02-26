@@ -22,6 +22,7 @@ from .runner import (
     _select_law_profile,
     _select_lens_profile,
     _select_policy_entry,
+    _select_time_control_policy,
     _validate_registry_hashes,
 )
 from .scheduler import replay_intent_script_srz
@@ -213,6 +214,30 @@ def run_intent_script(
     )
     if time_model_registry_error:
         return time_model_registry_error
+    time_control_policy_registry, time_control_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["time_control_policy_registry_hash"],
+        expected_hash=str(registries.get("time_control_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if time_control_policy_registry_error:
+        return time_control_policy_registry_error
+    dt_quantization_rule_registry, dt_quantization_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["dt_quantization_rule_registry_hash"],
+        expected_hash=str(registries.get("dt_quantization_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if dt_quantization_rule_registry_error:
+        return dt_quantization_rule_registry_error
+    compaction_policy_registry, compaction_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["compaction_policy_registry_hash"],
+        expected_hash=str(registries.get("compaction_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if compaction_policy_registry_error:
+        return compaction_policy_registry_error
     numeric_precision_policy_registry, numeric_precision_policy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["numeric_precision_policy_registry_hash"],
@@ -597,6 +622,23 @@ def run_intent_script(
     identity_conservation_contract_set_id = (
         str(selected_physics_profile.get("conservation_contract_set_id", "")).strip() or "contracts.null"
     )
+    identity_time_control_policy_id = str(session_spec.get("time_control_policy_id", "")).strip()
+    (
+        selected_time_control_policy,
+        selected_dt_quantization_rule,
+        selected_compaction_policy,
+        selected_time_model,
+        selected_time_control_policy_error,
+    ) = _select_time_control_policy(
+        time_control_policy_registry=time_control_policy_registry,
+        dt_quantization_rule_registry=dt_quantization_rule_registry,
+        compaction_policy_registry=compaction_policy_registry,
+        time_model_registry=time_model_registry,
+        selected_physics_profile=selected_physics_profile,
+        requested_time_control_policy_id=identity_time_control_policy_id,
+    )
+    if selected_time_control_policy_error:
+        return selected_time_control_policy_error
     universe_state, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
         return state_error
@@ -656,11 +698,22 @@ def run_intent_script(
     script_policy_context = {
         "physics_profile_id": identity_physics_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,
+        "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
+        "dt_quantization_rule_id": str(selected_dt_quantization_rule.get("dt_rule_id", "")),
+        "compaction_policy_id": str(selected_compaction_policy.get("compaction_policy_id", "")),
+        "time_model_id": str(selected_time_model.get("time_model_id", "")),
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "active_shard_id": "shard.0",
         "activation_policy": activation_policy,
         "budget_policy": budget_policy,
         "fidelity_policy": fidelity_policy,
+        "time_control_policy": selected_time_control_policy,
+        "dt_quantization_rule": selected_dt_quantization_rule,
+        "compaction_policy": selected_compaction_policy,
+        "time_model": selected_time_model,
+        "time_control_policy_registry": time_control_policy_registry,
+        "dt_quantization_rule_registry": dt_quantization_rule_registry,
+        "compaction_policy_registry": compaction_policy_registry,
         "conservation_contract_set_registry": conservation_contract_set_registry,
         "quantity_registry": quantity_registry,
         "exception_type_registry": exception_type_registry,
@@ -744,6 +797,9 @@ def run_intent_script(
         registry_payloads={
             "universe_physics_profile_registry": universe_physics_profile_registry,
             "time_model_registry": time_model_registry,
+            "time_control_policy_registry": time_control_policy_registry,
+            "dt_quantization_rule_registry": dt_quantization_rule_registry,
+            "compaction_policy_registry": compaction_policy_registry,
             "numeric_precision_policy_registry": numeric_precision_policy_registry,
             "tier_taxonomy_registry": tier_taxonomy_registry,
             "boundary_model_registry": boundary_model_registry,
@@ -841,6 +897,10 @@ def run_intent_script(
         "final_state_hash": final_state_hash,
         "physics_profile_id": identity_physics_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,
+        "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
+        "dt_quantization_rule_id": str(selected_dt_quantization_rule.get("dt_rule_id", "")),
+        "compaction_policy_id": str(selected_compaction_policy.get("compaction_policy_id", "")),
+        "time_model_id": str(selected_time_model.get("time_model_id", "")),
         "performance_state": dict(updated_state.get("performance_state") or {}),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
@@ -889,6 +949,7 @@ def run_intent_script(
         "registry_hashes": registry_hashes,
         "physics_profile_id": identity_physics_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,
+        "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "state_hash_anchors": state_hash_anchors,
         "tick_hash_anchors": tick_hash_anchors,
         "checkpoint_hashes": checkpoint_hashes,

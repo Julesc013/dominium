@@ -210,6 +210,20 @@
         "1.0.0"
       ]
     },
+    "compaction_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compaction_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "conservation_contract_set": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -330,6 +344,20 @@
       ]
     },
     "domain_contract_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dt_quantization_rule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dt_quantization_rule_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -477,6 +505,13 @@
       ]
     },
     "instrument_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "intent_log": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -967,6 +1002,34 @@
       ]
     },
     "tier_taxonomy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "time_branch": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "time_checkpoint": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "time_control_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "time_control_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

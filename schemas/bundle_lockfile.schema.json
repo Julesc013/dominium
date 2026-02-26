@@ -61,6 +61,9 @@
         "exception_type_registry_hash",
         "universe_physics_profile_registry_hash",
         "time_model_registry_hash",
+        "time_control_policy_registry_hash",
+        "dt_quantization_rule_registry_hash",
+        "compaction_policy_registry_hash",
         "numeric_precision_policy_registry_hash",
         "tier_taxonomy_registry_hash",
         "boundary_model_registry_hash",
@@ -134,6 +137,18 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "time_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "time_control_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "dt_quantization_rule_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "compaction_policy_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -367,6 +382,9 @@
       "registries": {
         "universe_physics_profile_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "time_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "time_control_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "dt_quantization_rule_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "compaction_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "numeric_precision_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "tier_taxonomy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "boundary_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",

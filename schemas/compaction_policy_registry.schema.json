@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Compaction Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic registry output for save compaction policies.",
+  "x-doc-ref": [
+    "docs/reality/TIME_CONSTITUTION.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "compaction_policy_id",
+          "rules",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "compaction_policy_id": {
+            "type": "string"
+          },
+          "rules": {
+            "type": "object",
+            "required": [
+              "keep_every_nth_checkpoint",
+              "merge_intent_logs",
+              "prune_old_run_meta"
+            ],
+            "additionalProperties": true,
+            "properties": {
+              "keep_every_nth_checkpoint": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "merge_intent_logs": {
+                "type": "boolean"
+              },
+              "prune_old_run_meta": {
+                "type": "boolean"
+              }
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

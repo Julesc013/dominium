@@ -1,0 +1,47 @@
+{
+  "schema_id": "dominium.registry.dt_quantization_rule_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.dt_quantization_rule_registry",
+    "registry_version": "1.0.0",
+    "rules": [
+      {
+        "schema_version": "1.0.0",
+        "dt_rule_id": "dt.rule.rank_strict",
+        "allowed_dt_values": [
+          750,
+          1000,
+          1250
+        ],
+        "default_dt": 1000,
+        "deterministic_rounding_rule": "round.nearest.lower_tie",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dt_rule_id": "dt.rule.single_tick",
+        "allowed_dt_values": [
+          1000
+        ],
+        "default_dt": 1000,
+        "deterministic_rounding_rule": "round.exact_only",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dt_rule_id": "dt.rule.standard",
+        "allowed_dt_values": [
+          250,
+          500,
+          1000,
+          2000,
+          4000
+        ],
+        "default_dt": 1000,
+        "deterministic_rounding_rule": "round.nearest.lower_tie",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
