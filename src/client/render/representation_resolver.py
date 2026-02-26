@@ -277,6 +277,8 @@ def _normalize_candidate(entity_row: dict, view_mode_id: str) -> dict:
     representation = dict(row.get("representation") or {})
     semantic_id = str(row.get("semantic_id", "")).strip() or str(row.get("entity_id", "")).strip()
     material_ref = str(representation.get("material_ref", "")).strip().lower()
+    material_id = str(representation.get("material_id", "")).strip()
+    type_id = str(row.get("type_id", "")).strip() or str(row.get("entity_kind", "")).strip()
     explicit_tags = _sorted_unique_strings(row.get("material_tags") or [])
     parsed_tags = []
     for token in ("wood", "metal", "stone", "water"):
@@ -289,6 +291,8 @@ def _normalize_candidate(entity_row: dict, view_mode_id: str) -> dict:
     return {
         "semantic_id": semantic_id,
         "entity_kind": entity_kind,
+        "type_id": type_id,
+        "material_id": material_id,
         "material_tags": material_tags,
         "domain_id": str(row.get("domain_id", "")).strip() or None,
         "faction_id": faction_id,
@@ -298,22 +302,38 @@ def _normalize_candidate(entity_row: dict, view_mode_id: str) -> dict:
     }
 
 
+def _matches_scalar(expected: object, actual: object) -> bool:
+    if expected is None:
+        return True
+    token = str(expected).strip()
+    if not token:
+        return True
+    actual_token = str(actual or "").strip()
+    if token in ("*", "__any__"):
+        return True
+    if token == "__present__":
+        return bool(actual_token)
+    if token == "__absent__":
+        return not bool(actual_token)
+    return actual_token == token
+
+
 def _rule_matches(rule: dict, candidate: dict) -> bool:
     match_row = dict(rule.get("match") or {})
     for key in ("entity_kind", "domain_id", "faction_id", "view_mode_id", "body_shape"):
-        expected = match_row.get(key)
-        if expected is None:
-            continue
-        token = str(expected).strip()
-        if not token:
-            continue
-        if str(candidate.get(key, "")).strip() != token:
+        if not _matches_scalar(match_row.get(key), candidate.get(key)):
             return False
     expected_material_tag = match_row.get("material_tag")
-    if expected_material_tag is not None:
-        token = str(expected_material_tag).strip()
-        if token and token not in set(candidate.get("material_tags") or []):
-            return False
+    if expected_material_tag in ("*", "__any__", None):
+        return True
+    token = str(expected_material_tag).strip()
+    material_tags = set(candidate.get("material_tags") or [])
+    if token == "__present__":
+        return bool(material_tags)
+    if token == "__absent__":
+        return not bool(material_tags)
+    if token and token not in material_tags:
+        return False
     return True
 
 
@@ -340,7 +360,12 @@ def _material_from_template(
         )
     )
     semantic_id = str(candidate.get("semantic_id", "")).strip() or "semantic.unknown"
-    source_token = str(candidate.get("faction_id", "")).strip() or semantic_id
+    type_id = str(candidate.get("type_id", "")).strip()
+    material_id = str(candidate.get("material_id", "")).strip()
+    source_token = material_id or type_id or semantic_id
+    if not source_token:
+        source_token = "semantic.unknown"
+    faction_id = str(candidate.get("faction_id", "")).strip()
 
     base_color_rule = dict(template.get("base_color_rule") or {})
     base_color_mode = str(base_color_rule.get("mode", "hash_of_id")).strip()
@@ -406,6 +431,9 @@ def _material_from_template(
         "pattern_id": None,
         "extensions": {
             "template_id": str(template.get("template_id", DEFAULT_TEMPLATE_ID)),
+            "secondary_color": _hash_color(seed="faction.{}".format(faction_id), saturation=700, value=820)
+            if faction_id
+            else None,
         },
     }
 
