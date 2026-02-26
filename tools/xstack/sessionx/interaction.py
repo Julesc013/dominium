@@ -49,6 +49,7 @@ def execute_affordance(
     submission_tick: int = 0,
     source_shard_id: str = "shard.0",
     target_shard_id: str = "shard.0",
+    repo_root: str = "",
 ) -> Dict[str, object]:
     return _execute_affordance(
         state=dict(state or {}),
@@ -64,6 +65,7 @@ def execute_affordance(
         submission_tick=int(submission_tick),
         source_shard_id=str(source_shard_id or "shard.0"),
         target_shard_id=str(target_shard_id or "shard.0"),
+        repo_root=str(repo_root or ""),
     )
 
 
@@ -83,6 +85,8 @@ def run_interaction_command(
     peer_id: str = "",
     deterministic_sequence_number: int = 0,
     submission_tick: int = 0,
+    source_shard_id: str = "shard.0",
+    target_shard_id: str = "shard.0",
     include_disabled: bool = True,
     repo_root: str = "",
 ) -> Dict[str, object]:
@@ -101,6 +105,8 @@ def run_interaction_command(
         peer_id=str(peer_id or ""),
         deterministic_sequence_number=int(deterministic_sequence_number),
         submission_tick=int(submission_tick),
+        source_shard_id=str(source_shard_id or "shard.0"),
+        target_shard_id=str(target_shard_id or "shard.0"),
         include_disabled=bool(include_disabled),
         repo_root=str(repo_root or ""),
     )

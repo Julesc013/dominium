@@ -4,12 +4,22 @@ from __future__ import annotations
 
 from typing import Dict, List
 
+from src.net.anti_cheat.anti_cheat_engine import (
+    check_authority_integrity,
+    check_input_integrity,
+)
+from src.net.policies.policy_lockstep import POLICY_ID_LOCKSTEP
+from src.net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE
+from src.net.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .affordance_generator import build_affordance_list
 from .inspection_overlays import build_inspection_overlays
 from .interaction_panel import build_interaction_panel, build_selection_overlay
 from .preview_generator import generate_interaction_preview
+
+
+_DEFAULT_INTERACTION_MAX_PER_TICK = 24
 
 
 def _sorted_unique_strings(values: List[object]) -> List[str]:
@@ -40,6 +50,128 @@ def _canonical_parameters(payload: object):
     if isinstance(payload, (str, int, float, bool)):
         return payload
     return str(payload)
+
+
+def _mp_policy_id(policy_context: dict | None) -> str:
+    payload = dict(policy_context or {})
+    return (
+        str(payload.get("net_policy_id", "")).strip()
+        or str(payload.get("policy_id", "")).strip()
+        or str(payload.get("multiplayer_policy_id", "")).strip()
+    )
+
+
+def _policy_submission_tick(
+    *,
+    policy_context: dict | None,
+    current_tick: int,
+    requested_submission_tick: int,
+) -> int:
+    policy_id = _mp_policy_id(policy_context)
+    requested = int(max(0, _to_int(requested_submission_tick, current_tick)))
+    base_tick = int(max(0, _to_int(current_tick, 0)))
+    if policy_id == POLICY_ID_LOCKSTEP:
+        lead = max(1, _to_int((dict(policy_context or {})).get("lockstep_intent_lead_ticks", 1), 1))
+        return int(max(requested, base_tick + int(lead)))
+    if policy_id == POLICY_ID_SERVER_AUTHORITATIVE:
+        return int(max(requested, base_tick))
+    if policy_id == POLICY_ID_SRZ_HYBRID:
+        return int(max(requested, base_tick))
+    return int(max(requested, base_tick))
+
+
+def _authority_peer_id(authority_context: dict | None, fallback: str = "peer.local") -> str:
+    payload = dict(authority_context or {})
+    token = str(payload.get("peer_id", "")).strip()
+    if token:
+        return token
+    return str(fallback or "peer.local")
+
+
+def _anti_cheat_runtime(policy_context: dict | None) -> dict | None:
+    payload = dict(policy_context or {})
+    runtime = payload.get("anti_cheat_runtime")
+    if isinstance(runtime, dict):
+        return runtime
+    return None
+
+
+def _record_input_violation(
+    *,
+    repo_root: str,
+    policy_context: dict | None,
+    authority_context: dict,
+    tick: int,
+    reason_code: str,
+    evidence: list[str],
+) -> dict:
+    runtime = _anti_cheat_runtime(policy_context)
+    if not runtime:
+        return {}
+    if not str(repo_root).strip():
+        return {}
+    return check_input_integrity(
+        repo_root=str(repo_root),
+        runtime=runtime,
+        tick=int(tick),
+        peer_id=_authority_peer_id(authority_context),
+        valid=False,
+        reason_code=str(reason_code),
+        evidence=[str(item) for item in list(evidence or [])],
+        default_action_token="refuse",
+    )
+
+
+def _record_authority_violation(
+    *,
+    repo_root: str,
+    policy_context: dict | None,
+    authority_context: dict,
+    tick: int,
+    reason_code: str,
+    evidence: list[str],
+) -> dict:
+    runtime = _anti_cheat_runtime(policy_context)
+    if not runtime:
+        return {}
+    if not str(repo_root).strip():
+        return {}
+    return check_authority_integrity(
+        repo_root=str(repo_root),
+        runtime=runtime,
+        tick=int(tick),
+        peer_id=_authority_peer_id(authority_context),
+        allowed=False,
+        reason_code=str(reason_code),
+        evidence=[str(item) for item in list(evidence or [])],
+        default_action_token="refuse",
+    )
+
+
+def _check_interaction_rate_limit(
+    *,
+    policy_context: dict | None,
+    authority_context: dict,
+    tick: int,
+) -> Dict[str, object]:
+    payload = dict(policy_context or {})
+    state = dict(payload.get("interaction_spam_state") or {})
+    max_per_tick = max(1, _to_int(payload.get("interaction_max_per_tick", _DEFAULT_INTERACTION_MAX_PER_TICK), _DEFAULT_INTERACTION_MAX_PER_TICK))
+    peer_id = _authority_peer_id(authority_context)
+    key = "{}|{}".format(peer_id, int(tick))
+    count = int(max(0, _to_int(state.get(key, 0), 0))) + 1
+    state[key] = count
+    if isinstance(policy_context, dict):
+        policy_context["interaction_spam_state"] = dict((str(k), int(max(0, _to_int(v, 0)))) for k, v in sorted(state.items()))
+    if count <= max_per_tick:
+        return {"result": "complete"}
+    return _refusal(
+        "refusal.net.input_rate_exceeded",
+        "interaction intent rate exceeded deterministic per-tick limit",
+        "Throttle interaction submissions or increase interaction_max_per_tick in server policy.",
+        {"peer_id": peer_id, "tick": str(tick), "max_per_tick": str(max_per_tick)},
+        "$.interaction",
+    )
 
 
 def _refusal(
@@ -234,9 +366,18 @@ def execute_affordance(
     submission_tick: int = 0,
     source_shard_id: str = "shard.0",
     target_shard_id: str = "shard.0",
+    repo_root: str = "",
 ) -> Dict[str, object]:
     affordance_row = _find_affordance(affordance_list=affordance_list, affordance_id=affordance_id)
     if not affordance_row:
+        _record_input_violation(
+            repo_root=repo_root,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            tick=int(max(0, _to_int((dict((dict(state or {})).get("simulation_time") or {})).get("tick", 0), 0))),
+            reason_code="refusal.interaction.affordance_unknown",
+            evidence=["interaction execute requested unknown affordance id"],
+        )
         return _refusal(
             "refusal.interaction.affordance_unknown",
             "requested affordance_id is not present in deterministic affordance list",
@@ -254,6 +395,14 @@ def execute_affordance(
             reason_code = "ENTITLEMENT_MISSING"
         elif missing_channels:
             reason_code = "refusal.ep.channel_forbidden"
+        _record_authority_violation(
+            repo_root=repo_root,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            tick=int(max(0, _to_int((dict((dict(state or {})).get("simulation_time") or {})).get("tick", 0), 0))),
+            reason_code=str(reason_code),
+            evidence=["interaction execute attempted disabled affordance"],
+        )
         return _refusal(
             reason_code,
             "selected affordance is disabled for current law/authority/lens context",
@@ -267,6 +416,21 @@ def execute_affordance(
         )
 
     tick = int(max(0, _to_int((dict((dict(state or {})).get("simulation_time") or {})).get("tick", 0), 0)))
+    rate_limit = _check_interaction_rate_limit(
+        policy_context=policy_context,
+        authority_context=authority_context,
+        tick=tick,
+    )
+    if str(rate_limit.get("result", "")) != "complete":
+        _record_input_violation(
+            repo_root=repo_root,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            tick=int(tick),
+            reason_code="refusal.net.input_rate_exceeded",
+            evidence=["interaction spam threshold exceeded"],
+        )
+        return rate_limit
     built_intent = build_interaction_intent(
         affordance_row=affordance_row,
         parameters=dict(parameters or {}),
@@ -277,6 +441,27 @@ def execute_affordance(
         return built_intent
     intent = dict(built_intent.get("intent") or {})
 
+    policy_id = _mp_policy_id(policy_context)
+    active_shard_id = str((dict(policy_context or {})).get("active_shard_id", "shard.0")).strip() or "shard.0"
+    source_shard = str(source_shard_id or active_shard_id).strip() or active_shard_id
+    target_shard = str(target_shard_id or source_shard).strip() or source_shard
+    if policy_id == POLICY_ID_SRZ_HYBRID and source_shard != target_shard:
+        _record_authority_violation(
+            repo_root=repo_root,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            tick=int(tick),
+            reason_code="refusal.civ.order_cross_shard_not_supported",
+            evidence=["interaction target shard differs from source shard under hybrid policy"],
+        )
+        return _refusal(
+            "refusal.civ.order_cross_shard_not_supported",
+            "cross-shard interaction dispatch is not supported by current hybrid routing path",
+            "Route interaction to local shard target or split into deterministic shard-local commands.",
+            {"source_shard_id": source_shard, "target_shard_id": target_shard},
+            "$.target_shard_id",
+        )
+
     built_envelope = build_interaction_envelope(
         peer_id=str(peer_id),
         intent=intent,
@@ -284,9 +469,13 @@ def execute_affordance(
         pack_lock_hash=str((dict(policy_context or {})).get("pack_lock_hash", "")),
         registry_hashes=dict((dict(policy_context or {})).get("registry_hashes") or {}),
         deterministic_sequence_number=int(max(0, _to_int(deterministic_sequence_number, 0))),
-        submission_tick=int(max(0, _to_int(submission_tick, tick))),
-        source_shard_id=str(source_shard_id or "shard.0"),
-        target_shard_id=str(target_shard_id or "shard.0"),
+        submission_tick=_policy_submission_tick(
+            policy_context=policy_context,
+            current_tick=int(tick),
+            requested_submission_tick=int(max(0, _to_int(submission_tick, tick))),
+        ),
+        source_shard_id=source_shard,
+        target_shard_id=target_shard,
     )
     if str(built_envelope.get("result", "")) != "complete":
         return built_envelope
@@ -335,6 +524,7 @@ def execute_affordance(
         "intent": intent,
         "envelope": envelope,
         "execution": dict(execution),
+        "multiplayer_policy_id": policy_id,
     }
     if interaction_overlay_payload:
         out["inspection_overlays"] = interaction_overlay_payload
@@ -358,6 +548,8 @@ def run_interaction_command(
     peer_id: str = "",
     deterministic_sequence_number: int = 0,
     submission_tick: int = 0,
+    source_shard_id: str = "shard.0",
+    target_shard_id: str = "shard.0",
     include_disabled: bool = True,
     repo_root: str = "",
 ) -> Dict[str, object]:
@@ -450,6 +642,9 @@ def run_interaction_command(
             peer_id=peer_id,
             deterministic_sequence_number=int(deterministic_sequence_number),
             submission_tick=int(submission_tick),
+            source_shard_id=str(source_shard_id or "shard.0"),
+            target_shard_id=str(target_shard_id or "shard.0"),
+            repo_root=repo_root,
         )
         if str(executed.get("result", "")) != "complete":
             return executed

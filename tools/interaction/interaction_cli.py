@@ -56,6 +56,16 @@ def _parse_params(params_inline: str, params_file: str) -> tuple[dict, str]:
     return payload, ""
 
 
+def _parse_policy_context(policy_context_file: str) -> tuple[dict, str]:
+    token = str(policy_context_file or "").strip()
+    if not token:
+        return {}, ""
+    payload, err = _read_json(token)
+    if err:
+        return {}, err
+    return payload, ""
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Deterministic interaction command surface.")
     parser.add_argument(
@@ -79,6 +89,13 @@ def main() -> int:
     parser.add_argument("--peer-id", default="")
     parser.add_argument("--sequence", type=int, default=0)
     parser.add_argument("--submission-tick", type=int, default=0)
+    parser.add_argument("--policy-context-file", default="")
+    parser.add_argument("--policy-id", default="")
+    parser.add_argument("--server-profile-id", default="")
+    parser.add_argument("--active-shard-id", default="shard.0")
+    parser.add_argument("--source-shard-id", default="shard.0")
+    parser.add_argument("--target-shard-id", default="shard.0")
+    parser.add_argument("--interaction-max-per-tick", type=int, default=24)
     parser.add_argument("--include-disabled", action="store_true")
     args = parser.parse_args()
 
@@ -124,6 +141,18 @@ def main() -> int:
         )
         return 1
 
+    file_policy_context, file_policy_error = _parse_policy_context(args.policy_context_file)
+    if file_policy_error:
+        print(json.dumps({"result": "refused", "message": file_policy_error}, indent=2, sort_keys=True))
+        return 1
+    policy_context = dict(file_policy_context)
+    if str(args.policy_id or "").strip():
+        policy_context["net_policy_id"] = str(args.policy_id).strip()
+    if str(args.server_profile_id or "").strip():
+        policy_context["server_profile_id"] = str(args.server_profile_id).strip()
+    policy_context["active_shard_id"] = str(args.active_shard_id or "shard.0").strip() or "shard.0"
+    policy_context["interaction_max_per_tick"] = int(max(1, int(args.interaction_max_per_tick)))
+
     result = run_interaction_command(
         command=str(args.command),
         perceived_model=perceived_model,
@@ -135,10 +164,12 @@ def main() -> int:
         parameters=params,
         state=state_payload,
         navigation_indices={},
-        policy_context={},
+        policy_context=policy_context,
         peer_id=str(args.peer_id or ""),
         deterministic_sequence_number=int(args.sequence),
         submission_tick=int(args.submission_tick),
+        source_shard_id=str(args.source_shard_id or "shard.0"),
+        target_shard_id=str(args.target_shard_id or "shard.0"),
         include_disabled=bool(args.include_disabled),
         repo_root=repo_root,
     )

@@ -158,6 +158,22 @@ def _validate_preview(repo_root: str, payload: dict) -> Dict[str, object]:
     )
 
 
+def _ranked_redact_preview(runtime: dict, payload: dict) -> dict:
+    profile_id = str((dict(runtime or {})).get("server_profile_id", "")).strip()
+    if profile_id != "server.profile.rank_strict":
+        return dict(payload)
+    redacted = dict(payload)
+    predicted = dict(redacted.get("predicted_effects") or {})
+    summary = str(predicted.get("summary", "")).strip() or "preview redacted by ranked profile"
+    redacted["predicted_effects"] = {"summary": summary}
+    redacted["extensions"] = {
+        "preview_capability": str((dict(redacted.get("extensions") or {})).get("preview_capability", "")),
+        "ranked_redacted": True,
+    }
+    redacted["preview_hash"] = _preview_hash_payload(redacted)
+    return redacted
+
+
 def generate_interaction_preview(
     *,
     perceived_model: dict,
@@ -184,6 +200,7 @@ def generate_interaction_preview(
             predicted_effects={"summary": "no preview available"},
         )
         payload["extensions"] = {"preview_capability": "none"}
+        payload = _ranked_redact_preview(runtime=runtime, payload=payload)
         valid = _validate_preview(repo_root=repo_root, payload=payload)
         if str(valid.get("result", "")) != "complete":
             return valid
@@ -208,6 +225,7 @@ def generate_interaction_preview(
         payload["extensions"] = {
             "preview_capability": "cheap",
         }
+        payload = _ranked_redact_preview(runtime=runtime, payload=payload)
         valid = _validate_preview(repo_root=repo_root, payload=payload)
         if str(valid.get("result", "")) != "complete":
             return valid
@@ -330,6 +348,7 @@ def generate_interaction_preview(
         "evicted_cache_keys": _sorted_unique_strings(list(cache_result.get("evicted_keys") or [])),
         "inspection_cost_units": int(requested_cost_units),
     }
+    payload = _ranked_redact_preview(runtime=runtime, payload=payload)
     valid = _validate_preview(repo_root=repo_root, payload=payload)
     if str(valid.get("result", "")) != "complete":
         return valid
@@ -339,4 +358,3 @@ def generate_interaction_preview(
         "preview_hash": str(payload.get("preview_hash", "")),
         "preview_runtime": runtime,
     }
-
