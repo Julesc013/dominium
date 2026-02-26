@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Conservation Exception Entry Schema",
+  "version": "1.0.0",
+  "description": "Canonical RS-2 exception ledger entry.",
+  "x-doc-ref": [
+    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entry_id",
+    "tick",
+    "shard_id",
+    "quantity_id",
+    "exception_type_id",
+    "domain_id",
+    "process_id",
+    "delta",
+    "reason_code",
+    "evidence",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "entry_id": {
+      "type": "string"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "shard_id": {
+      "type": "string"
+    },
+    "quantity_id": {
+      "type": "string"
+    },
+    "exception_type_id": {
+      "type": "string"
+    },
+    "domain_id": {
+      "type": "string"
+    },
+    "process_id": {
+      "type": "string"
+    },
+    "delta": {
+      "type": "integer"
+    },
+    "reason_code": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "entry_id": "exc.shard.0.tick.10.0001",
+      "tick": 10,
+      "shard_id": "shard.0",
+      "quantity_id": "quantity.mass_energy_total",
+      "exception_type_id": "exception.numeric_error_budget",
+      "domain_id": "domain.reality",
+      "process_id": "process.region_expand",
+      "delta": 0,
+      "reason_code": "numeric_quantization",
+      "evidence": [
+        "region.region.sol"
+      ],
+      "deterministic_fingerprint": "0c37966d2f75d4afebf0adf11f95f3e7e4f50fcbf6f972f9ac96cbf4f4a95a23",
+      "extensions": {}
+    }
+  ]
+}

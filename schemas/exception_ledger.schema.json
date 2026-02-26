@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Conservation Exception Ledger Schema",
+  "version": "1.0.0",
+  "description": "Canonical RS-2 per-tick exception ledger artifact.",
+  "x-doc-ref": [
+    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "ledger_id",
+    "tick",
+    "shard_id",
+    "pack_lock_hash",
+    "physics_profile_id",
+    "contract_set_id",
+    "totals",
+    "entries",
+    "ledger_hash",
+    "previous_ledger_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "ledger_id": {
+      "type": "string"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "shard_id": {
+      "type": "string"
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "physics_profile_id": {
+      "type": "string"
+    },
+    "contract_set_id": {
+      "type": "string"
+    },
+    "totals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "quantity_id",
+          "net_delta"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "quantity_id": {
+            "type": "string"
+          },
+          "net_delta": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/exception_entry"
+      }
+    },
+    "ledger_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "previous_ledger_hash": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "definitions": {
+    "exception_entry": {
+      "type": "object",
+      "required": [
+        "entry_id",
+        "tick",
+        "shard_id",
+        "quantity_id",
+        "exception_type_id",
+        "domain_id",
+        "process_id",
+        "delta",
+        "reason_code",
+        "evidence",
+        "deterministic_fingerprint"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "entry_id": {"type": "string"},
+        "tick": {"type": "integer", "minimum": 0},
+        "shard_id": {"type": "string"},
+        "quantity_id": {"type": "string"},
+        "exception_type_id": {"type": "string"},
+        "domain_id": {"type": "string"},
+        "process_id": {"type": "string"},
+        "delta": {"type": "integer"},
+        "reason_code": {"type": "string"},
+        "evidence": {"type": "array", "items": {"type": "string"}},
+        "deterministic_fingerprint": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "ledger_id": "ledger.shard.0.tick.10",
+      "tick": 10,
+      "shard_id": "shard.0",
+      "pack_lock_hash": "b048cf0341fce60f68f89f1f7b5f0a98f87ec2ecf8bf7af5f2d5af5184f47f0b",
+      "physics_profile_id": "physics.null",
+      "contract_set_id": "contracts.null",
+      "totals": [
+        {
+          "quantity_id": "quantity.mass_energy_total",
+          "net_delta": 0
+        }
+      ],
+      "entries": [],
+      "ledger_hash": "a5a1b6a59336c3647c097d53db8ecfd6c38dbc9ca71f53d03b9f2dd4f1f54626",
+      "previous_ledger_hash": null,
+      "extensions": {}
+    }
+  ]
+}

@@ -66,13 +66,120 @@ _NULL_PHYSICS_PROFILE = {
     "physics_profile_id": NULL_PHYSICS_PROFILE_ID,
     "description": "Built-in null profile for deterministic zero-pack boot.",
     "enabled_domain_ids": [],
-    "conservation_contract_set_id": "none",
+    "conservation_contract_set_id": "contracts.null",
     "allowed_exception_types": [],
     "numeric_precision_policy_id": "default_null",
     "tier_taxonomy_id": "default_minimal",
     "time_model_id": "default_single_tick",
     "boundary_model_id": "procedural_infinite",
     "error_budget": {},
+    "version_introduced": "1.0.0",
+    "deprecated": False,
+    "extensions": {},
+}
+
+_NULL_QUANTITIES = [
+    {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass_energy_total",
+        "description": "Null profile combined mass-energy channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.mass_energy.stub",
+        "extensions": {},
+    },
+    {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.charge_total",
+        "description": "Null profile aggregate charge channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.charge.stub",
+        "extensions": {},
+    },
+    {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.entropy_metric",
+        "description": "Null profile tracked entropy metric channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.entropy.stub",
+        "extensions": {},
+    },
+    {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.ledger_balance",
+        "description": "Null profile tracked ledger balance channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.ledger_balance.stub",
+        "extensions": {},
+    },
+]
+
+_NULL_EXCEPTION_TYPES = [
+    {
+        "exception_type_id": "exception.boundary_flux",
+        "description": "Declared boundary flux event.",
+        "extensions": {},
+    },
+    {
+        "exception_type_id": "exception.field_exchange",
+        "description": "Declared field exchange event.",
+        "extensions": {},
+    },
+    {
+        "exception_type_id": "exception.creation_annihilation",
+        "description": "Declared creation/annihilation event.",
+        "extensions": {},
+    },
+    {
+        "exception_type_id": "exception.coordinate_gauge",
+        "description": "Declared coordinate/gauge event.",
+        "extensions": {},
+    },
+    {
+        "exception_type_id": "exception.numeric_error_budget",
+        "description": "Declared numeric error budget event.",
+        "extensions": {},
+    },
+    {
+        "exception_type_id": "exception.meta_law_override",
+        "description": "Declared meta-law override event.",
+        "extensions": {},
+    },
+]
+
+_NULL_CONSERVATION_CONTRACT_SET = {
+    "schema_version": "1.0.0",
+    "contract_set_id": "contracts.null",
+    "description": "Null boot conservation contract set.",
+    "quantities": [
+        {
+            "quantity_id": "quantity.mass_energy_total",
+            "mode": "ignore",
+            "tolerance": 0,
+            "allowed_exception_types": [],
+            "notes": "Null boot ignores mass-energy conservation enforcement.",
+        },
+        {
+            "quantity_id": "quantity.charge_total",
+            "mode": "ignore",
+            "tolerance": 0,
+            "allowed_exception_types": [],
+            "notes": "Null boot ignores charge conservation enforcement.",
+        },
+        {
+            "quantity_id": "quantity.entropy_metric",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": ["exception.numeric_error_budget"],
+            "notes": "Tracked-only entropy metric in null profile.",
+        },
+        {
+            "quantity_id": "quantity.ledger_balance",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": ["exception.numeric_error_budget"],
+            "notes": "Tracked-only ledger balance in null profile.",
+        },
+    ],
     "version_introduced": "1.0.0",
     "deprecated": False,
     "extensions": {},
@@ -258,6 +365,9 @@ _NULL_EVICTION_RULE = {
 }
 
 _NULL_REGISTRY_LIST_KEYS = {
+    "conservation_contract_set_registry": "contract_sets",
+    "quantity_registry": "quantities",
+    "exception_type_registry": "exception_types",
     "domain_registry": "domains",
     "law_registry": "law_profiles",
     "experience_registry": "experience_profiles",
@@ -358,6 +468,9 @@ def default_null_runtime_registries() -> Dict[str, dict]:
     payloads["numeric_precision_policy_registry"]["precision_policies"] = [copy.deepcopy(_NULL_PRECISION_POLICY)]
     payloads["tier_taxonomy_registry"]["taxonomies"] = [copy.deepcopy(_NULL_TIER_TAXONOMY)]
     payloads["boundary_model_registry"]["boundary_models"] = [copy.deepcopy(_NULL_BOUNDARY_MODEL)]
+    payloads["quantity_registry"]["quantities"] = [copy.deepcopy(row) for row in _NULL_QUANTITIES]
+    payloads["exception_type_registry"]["exception_types"] = [copy.deepcopy(row) for row in _NULL_EXCEPTION_TYPES]
+    payloads["conservation_contract_set_registry"]["contract_sets"] = [copy.deepcopy(_NULL_CONSERVATION_CONTRACT_SET)]
 
     payloads["law_registry"]["law_profiles"] = [copy.deepcopy(_NULL_LAW_PROFILE)]
     payloads["experience_registry"]["experience_profiles"] = [copy.deepcopy(_NULL_EXPERIENCE_PROFILE)]

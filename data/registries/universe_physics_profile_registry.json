@@ -10,7 +10,7 @@
         "physics_profile_id": "physics.null",
         "description": "Built-in null profile for deterministic zero-pack boot.",
         "enabled_domain_ids": [],
-        "conservation_contract_set_id": "none",
+        "conservation_contract_set_id": "contracts.null",
         "allowed_exception_types": [],
         "numeric_precision_policy_id": "default_null",
         "tier_taxonomy_id": "default_minimal",

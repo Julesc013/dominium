@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Conservation Contract Set Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic conservation contract-set registry output.",
+  "x-doc-ref": [
+    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "contract_sets",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {"type": "string", "const": "1.0.0"},
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pack_id", "version", "canonical_hash", "signature_status"],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {"type": "string"},
+          "version": {"type": "string"},
+          "canonical_hash": {"type": "string"},
+          "signature_status": {"type": "string"}
+        }
+      }
+    },
+    "contract_sets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "contract_set_id",
+          "description",
+          "quantities",
+          "version_introduced",
+          "deprecated",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "contract_set_id": {"type": "string"},
+          "description": {"type": "string"},
+          "quantities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["quantity_id", "mode", "tolerance", "allowed_exception_types", "notes"],
+              "additionalProperties": false,
+              "properties": {
+                "quantity_id": {"type": "string"},
+                "mode": {
+                  "type": "string",
+                  "enum": ["enforce_strict", "enforce_local", "allow_with_ledger", "track_only", "ignore"]
+                },
+                "tolerance": {"type": "integer"},
+                "allowed_exception_types": {"type": "array", "items": {"type": "string"}},
+                "notes": {"type": "string"}
+              }
+            }
+          },
+          "version_introduced": {"type": "string"},
+          "deprecated": {"type": "boolean"},
+          "extensions": {"type": "object", "additionalProperties": true}
+        }
+      }
+    },
+    "registry_hash": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "contract_sets": [],
+      "registry_hash": "0b729651f61f44999ea54e22e6eb6efcf3cbf7ab5590f1ffcbf5aa4f27c34bea"
+    }
+  ]
+}

@@ -56,6 +56,9 @@
     "registries": {
       "type": "object",
       "required": [
+        "conservation_contract_set_registry_hash",
+        "quantity_registry_hash",
+        "exception_type_registry_hash",
         "universe_physics_profile_registry_hash",
         "time_model_registry_hash",
         "numeric_precision_policy_registry_hash",
@@ -114,6 +117,18 @@
       ],
       "additionalProperties": false,
       "properties": {
+        "conservation_contract_set_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "quantity_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "exception_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
         "universe_physics_profile_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"

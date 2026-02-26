@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Conserved Quantity Schema",
+  "version": "1.0.0",
+  "description": "Canonical RS-2 conserved quantity definition.",
+  "x-doc-ref": [
+    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "quantity_id",
+    "description",
+    "numeric_type",
+    "units_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "quantity_id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "numeric_type": {
+      "type": "string",
+      "const": "fixed_point"
+    },
+    "units_id": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "quantity_id": "quantity.mass_energy_total",
+      "description": "Combined mass-energy accounting channel.",
+      "numeric_type": "fixed_point",
+      "units_id": "unit.mass_energy.stub",
+      "extensions": {}
+    }
+  ]
+}
