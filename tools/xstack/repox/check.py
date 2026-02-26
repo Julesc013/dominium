@@ -3393,6 +3393,26 @@ def _append_negative_invariant_findings(
                 rule_id="INV-ROLE-DELEGATION-GATED",
             )
         )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="CIV process runtime is missing; cannot verify demography process policy/model resolution invariants",
+                rule_id="INV-DEMOGRAPHY-POLICY-REGISTRY-DRIVEN",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="CIV process runtime is missing; cannot verify no individual-level sex simulation scope guard",
+                rule_id="INV-NO-INDIVIDUAL_SEX_SIM_YET",
+            )
+        )
     else:
         required_control_entitlements = (
             ("process.control_bind_camera", "entitlement.control.camera"),
@@ -3553,6 +3573,49 @@ def _append_negative_invariant_findings(
                     snippet=token,
                     message="cohort mapping policy must be resolved from declared registry data",
                     rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
+                )
+            )
+
+        demography_tokens = (
+            "elif process_id == \"process.demography_tick\":",
+            "_demography_policy_rows(",
+            "_birth_model_rows(",
+            "_death_model_rows(",
+            "refusal.civ.births_forbidden_by_law",
+        )
+        for token in demography_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="demography execution must remain registry-driven with explicit birth/death model gating",
+                    rule_id="INV-DEMOGRAPHY-POLICY-REGISTRY-DRIVEN",
+                )
+            )
+
+        sex_scope_forbidden_tokens = (
+            "pregnancy",
+            "pregnant",
+            "sexual_intercourse",
+            "insemination",
+            "fertility_cycle",
+        )
+        for line_no, line in _iter_lines(repo_root, process_runtime_rel):
+            lowered = str(line).lower()
+            if not any(token in lowered for token in sex_scope_forbidden_tokens):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=line_no,
+                    snippet=str(line).strip()[:140],
+                    message="individual-level sex simulation semantics are out of scope for CIV-4 demography scaffold",
+                    rule_id="INV-NO-INDIVIDUAL_SEX_SIM_YET",
                 )
             )
 
@@ -3727,6 +3790,124 @@ def _append_negative_invariant_findings(
                             rule_id="INV-COHORT-MAPPING-POLICY-DECLARED",
                         )
                     )
+
+    demography_policy_registry_rel = "data/registries/demography_policy_registry.json"
+    demography_policy_payload, demography_policy_err = _load_json_object(repo_root, demography_policy_registry_rel)
+    if demography_policy_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=demography_policy_registry_rel,
+                line_number=1,
+                snippet="",
+                message="demography policy registry is missing or invalid JSON",
+                rule_id="INV-DEMOGRAPHY-POLICY-REGISTRY-DRIVEN",
+            )
+        )
+    else:
+        policy_rows = (((demography_policy_payload.get("record") or {}).get("policies")) or [])
+        if not isinstance(policy_rows, list) or not policy_rows:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=demography_policy_registry_rel,
+                    line_number=1,
+                    snippet="record.policies",
+                    message="demography policy registry must declare at least one policy entry",
+                    rule_id="INV-DEMOGRAPHY-POLICY-REGISTRY-DRIVEN",
+                )
+            )
+        else:
+            observed_policy_ids = sorted(
+                set(
+                    str(item.get("demography_policy_id", "")).strip()
+                    for item in policy_rows
+                    if isinstance(item, dict) and str(item.get("demography_policy_id", "")).strip()
+                )
+            )
+            for required_policy_id in (
+                "demo.policy.none",
+                "demo.policy.stable_no_birth",
+                "demo.policy.basic_births",
+            ):
+                if required_policy_id in set(observed_policy_ids):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=demography_policy_registry_rel,
+                        line_number=1,
+                        snippet=required_policy_id,
+                        message="demography policy registry is missing required baseline policy '{}'".format(required_policy_id),
+                        rule_id="INV-DEMOGRAPHY-POLICY-REGISTRY-DRIVEN",
+                    )
+                )
+
+    parameter_bundle_registry_rel = "data/registries/parameter_bundles.json"
+    parameter_bundle_payload, parameter_bundle_err = _load_json_object(repo_root, parameter_bundle_registry_rel)
+    if parameter_bundle_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=parameter_bundle_registry_rel,
+                line_number=1,
+                snippet="",
+                message="parameter bundle registry is missing or invalid JSON",
+                rule_id="INV-DEMOGRAPHY-POLICY-REGISTRY-DRIVEN",
+            )
+        )
+    else:
+        bundle_rows = (((parameter_bundle_payload.get("record") or {}).get("bundles")) or [])
+        bundle_ids = sorted(
+            set(
+                str(item.get("parameter_bundle_id", "")).strip()
+                for item in bundle_rows
+                if isinstance(item, dict) and str(item.get("parameter_bundle_id", "")).strip()
+            )
+        )
+        for required_bundle_id in ("params.civ.nobirths", "params.civ.basic_births"):
+            if required_bundle_id in set(bundle_ids):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=parameter_bundle_registry_rel,
+                    line_number=1,
+                    snippet=required_bundle_id,
+                    message="demography parameter bundle '{}' is missing".format(required_bundle_id),
+                    rule_id="INV-DEMOGRAPHY-POLICY-REGISTRY-DRIVEN",
+                )
+            )
+
+    demography_doc_rel = "docs/civilisation/DEMOGRAPHY_OPTIONALITY.md"
+    demography_doc_abs = os.path.join(repo_root, demography_doc_rel.replace("/", os.sep))
+    try:
+        demography_doc_text = open(demography_doc_abs, "r", encoding="utf-8").read().lower()
+    except OSError:
+        demography_doc_text = ""
+    if not demography_doc_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=demography_doc_rel,
+                line_number=1,
+                snippet="",
+                message="demography doctrine doc is missing; CIV-4 scope guard cannot be verified",
+                rule_id="INV-NO-INDIVIDUAL_SEX_SIM_YET",
+            )
+        )
+    else:
+        if "no explicit sex" not in demography_doc_text and "no individual-level reproduction" not in demography_doc_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=demography_doc_rel,
+                    line_number=1,
+                    snippet="no explicit sex simulation",
+                    message="demography doctrine must explicitly state no individual-level sex simulation scope in CIV-4",
+                    rule_id="INV-NO-INDIVIDUAL_SEX_SIM_YET",
+                )
+            )
 
     observation_rel = "tools/xstack/sessionx/observation.py"
     observation_abs = os.path.join(repo_root, observation_rel.replace("/", os.sep))
