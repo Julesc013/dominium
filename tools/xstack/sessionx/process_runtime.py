@@ -16,6 +16,15 @@ from src.reality.ledger import (
     last_ledger_hash,
     record_unaccounted_delta,
 )
+from src.time.time_engine import (
+    advance_time as time_advance,
+    clamp_rate_to_policy as time_clamp_rate_to_policy,
+    ensure_simulation_time as time_ensure_simulation_time,
+    ensure_time_control as time_ensure_time_control,
+    policy_allows_pause as time_policy_allows_pause,
+    policy_allows_rate_change as time_policy_allows_rate_change,
+    policy_rate_bounds as time_policy_rate_bounds,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -60,6 +69,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.instrument_notebook_add_note": "entitlement.diegetic.notebook_write",
     "process.instrument_radio_send_text": "entitlement.diegetic.radio_use",
     "process.time_control_set_rate": "entitlement.time_control",
+    "process.time_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
     "process.time_resume": "entitlement.time_control",
     "process.region_management_tick": "session.boot",
@@ -105,6 +115,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.instrument_notebook_add_note": "observer",
     "process.instrument_radio_send_text": "observer",
     "process.time_control_set_rate": "operator",
+    "process.time_set_rate": "operator",
     "process.time_pause": "operator",
     "process.time_resume": "operator",
     "process.region_management_tick": "observer",
@@ -309,24 +320,11 @@ def _require_camera_main(state: dict) -> Dict[str, object]:
 
 
 def _ensure_time_control(state: dict) -> dict:
-    payload = state.get("time_control")
-    if not isinstance(payload, dict):
-        payload = {"rate_permille": 1000, "paused": False, "accumulator_permille": 0}
-        state["time_control"] = payload
-    payload["rate_permille"] = max(0, _as_int(payload.get("rate_permille", 1000), 1000))
-    payload["paused"] = bool(payload.get("paused", False))
-    payload["accumulator_permille"] = max(0, _as_int(payload.get("accumulator_permille", 0), 0))
-    return payload
+    return time_ensure_time_control(state)
 
 
 def _ensure_simulation_time(state: dict) -> dict:
-    payload = state.get("simulation_time")
-    if not isinstance(payload, dict):
-        payload = {"tick": 0, "timestamp_utc": "1970-01-01T00:00:00Z"}
-        state["simulation_time"] = payload
-    payload["tick"] = max(0, _as_int(payload.get("tick", 0), 0))
-    payload["timestamp_utc"] = str(payload.get("timestamp_utc", "1970-01-01T00:00:00Z"))
-    return payload
+    return time_ensure_simulation_time(state)
 
 
 def _ensure_instrument_assemblies(state: dict) -> List[dict]:
@@ -3078,18 +3076,8 @@ def _append_history_anchor(state: dict, tick: int, log_index: int) -> None:
     rows.append("history.anchor.tick.{}.log.{}".format(int(tick), int(log_index)))
 
 
-def _advance_time(state: dict, steps: int = 1) -> None:
-    sim = _ensure_simulation_time(state)
-    control = _ensure_time_control(state)
-    for _ in range(max(0, int(steps))):
-        if bool(control.get("paused", False)):
-            continue
-        rate = max(0, _as_int(control.get("rate_permille", 1000), 1000))
-        accumulator = max(0, _as_int(control.get("accumulator_permille", 0), 0))
-        total = accumulator + rate
-        delta = int(total // 1000)
-        control["accumulator_permille"] = int(total % 1000)
-        sim["tick"] = int(sim.get("tick", 0)) + delta
+def _advance_time(state: dict, steps: int = 1, policy_context: dict | None = None) -> dict:
+    return time_advance(state=state, policy_context=policy_context, steps=max(0, int(steps)))
 
 
 def _entitlement_requirement(process_id: str, law_profile: dict) -> str:
@@ -3186,6 +3174,8 @@ def _log_process(state: dict, process_id: str, intent_id: str, authority_origin:
             "input_hash": input_hash,
             "state_hash_anchor": state_hash_anchor,
             "tick": int(sim.get("tick", 0)),
+            "dt_sim_permille": int(sim.get("last_dt_permille", 0)),
+            "sim_time_permille": int(sim.get("sim_time_permille", 0)),
             "rng_usage": [],
         }
     )
@@ -5055,7 +5045,7 @@ def execute_intent(
         velocity["z"] = int(delta["z"])
         camera["position_mm"] = pos
         camera["velocity_mm_per_tick"] = velocity
-        _advance_time(state, steps=int(dt_ticks))
+        _advance_time(state, steps=int(dt_ticks), policy_context=policy_context)
     elif process_id == "process.camera_teleport":
         resolved_target = _resolve_teleport_target(inputs=inputs, navigation_indices=navigation_indices)
         if resolved_target.get("result") != "complete":
@@ -5076,7 +5066,7 @@ def execute_intent(
                 "target_frame_id={}".format(str(resolved_target.get("frame_id", ""))),
             ],
         )
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.agent_move":
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
         if not agent_id:
@@ -5204,7 +5194,7 @@ def execute_intent(
             "movement_distance_mm": int(abs(int(world_delta["x"])) + abs(int(world_delta["y"])) + abs(int(world_delta["z"]))),
             "dt_ticks": int(dt_ticks),
         }
-        _advance_time(state, steps=int(dt_ticks))
+        _advance_time(state, steps=int(dt_ticks), policy_context=policy_context)
     elif process_id == "process.agent_rotate":
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
         if not agent_id:
@@ -5273,7 +5263,7 @@ def execute_intent(
             (dict(item) for item in bodies if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()),
             key=lambda item: str(item.get("assembly_id", "")),
         )
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.srz_transfer_entity":
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "")).strip()
         target_shard_id = str(inputs.get("target_shard_id", "")).strip()
@@ -5330,7 +5320,7 @@ def execute_intent(
             (dict(item) for item in bodies if isinstance(item, dict) and str(item.get("assembly_id", "")).strip()),
             key=lambda item: str(item.get("assembly_id", "")),
         )
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id in ("process.control_bind_camera", "process.camera_bind_target"):
         legacy = str(process_id) == "process.control_bind_camera"
         controller_id = str(inputs.get("controller_id", "")).strip()
@@ -5541,7 +5531,7 @@ def execute_intent(
             key=lambda item: str(item.get("assembly_id", "")),
         )
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id in ("process.control_unbind_camera", "process.camera_unbind_target"):
         controller_id = str(inputs.get("controller_id", "")).strip()
         camera_id = str(inputs.get("camera_id", "") or inputs.get("target_id", "")).strip()
@@ -5577,7 +5567,7 @@ def execute_intent(
             camera_row["target_type"] = "none"
             camera_row["offset_params"] = _camera_binding_offset({})
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.camera_set_view_mode":
         controller_id = str(inputs.get("controller_id", "")).strip()
         camera_id = str(inputs.get("camera_id", "camera.main")).strip() or "camera.main"
@@ -5741,7 +5731,7 @@ def execute_intent(
             key=lambda item: str(item.get("assembly_id", "")),
         )
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.control_possess_agent":
         controller_id = str(inputs.get("controller_id", "")).strip()
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_id", "")).strip()
@@ -5815,7 +5805,7 @@ def execute_intent(
             binding["created_tick"] = max(0, _as_int(binding.get("created_tick", current_tick), current_tick))
             binding["required_entitlements"] = _required_entitlements_for_binding("possess")
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.control_release_agent":
         controller_id = str(inputs.get("controller_id", "")).strip()
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_id", "")).strip()
@@ -5836,7 +5826,7 @@ def execute_intent(
                 continue
             row["active"] = False
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.faction_create":
         founder_agent_raw = inputs.get("founder_agent_id")
         founder_agent_id = None if founder_agent_raw is None else str(founder_agent_raw).strip() or None
@@ -5904,7 +5894,7 @@ def execute_intent(
             "governance_type_id": governance_type_id,
             "founder_agent_id": founder_agent_id,
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.faction_dissolve":
         faction_id = str(inputs.get("faction_id", "")).strip()
         if not faction_id:
@@ -5983,7 +5973,7 @@ def execute_intent(
             "cleared_subject_ids": _sorted_tokens(cleared_subject_ids),
             "status": "dissolved",
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.affiliation_join":
         subject_id = str(inputs.get("subject_id", "")).strip()
         faction_id = str(inputs.get("faction_id", "")).strip()
@@ -6080,7 +6070,7 @@ def execute_intent(
             "faction_id": faction_id,
             "role_id": str(existing_affiliation.get("role_id", "")),
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.affiliation_leave":
         subject_id = str(inputs.get("subject_id", "")).strip()
         if not subject_id:
@@ -6151,7 +6141,7 @@ def execute_intent(
             "subject_id": subject_id,
             "left_faction_id": left_faction_id,
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.territory_claim":
         faction_id = str(inputs.get("faction_id", "")).strip()
         territory_id = str(inputs.get("territory_id", "")).strip()
@@ -6254,7 +6244,7 @@ def execute_intent(
             "claim_status": claim_status,
             "owner_faction_id": owner_after or "",
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.territory_release":
         faction_id = str(inputs.get("faction_id", "")).strip()
         territory_id = str(inputs.get("territory_id", "")).strip()
@@ -6327,7 +6317,7 @@ def execute_intent(
             "territory_id": territory_id,
             "claim_status": "unclaimed",
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.diplomacy_set_relation":
         faction_a = str(inputs.get("faction_a", "")).strip()
         faction_b = str(inputs.get("faction_b", "")).strip()
@@ -6418,7 +6408,7 @@ def execute_intent(
             "faction_b": right,
             "relation_state": relation_state,
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.cohort_create":
         size = _as_int(inputs.get("size", -1), -1)
         if size <= 0:
@@ -6516,7 +6506,7 @@ def execute_intent(
             "location_ref": location_ref,
             "mapping_policy_id": mapping_policy_id,
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.cohort_expand_to_micro":
         cohort_id = str(inputs.get("cohort_id", "")).strip()
         if not cohort_id:
@@ -6620,7 +6610,7 @@ def execute_intent(
             "partial_expansion": bool(expanded_micro_count < min(cohort_size, max(0, int(target_max)))),
             "created_agent_ids": list(expanded.get("created_agent_ids") or []),
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.cohort_collapse_from_micro":
         cohort_id = str(inputs.get("cohort_id", "")).strip()
         if not cohort_id:
@@ -6676,7 +6666,7 @@ def execute_intent(
             "collapsed_agent_ids": list(collapsed.get("collapsed_agent_ids") or []),
             "size": int(collapsed.get("size", 0)),
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.affiliation_change_micro":
         subject_id = str(inputs.get("subject_id", "")).strip()
         if not subject_id:
@@ -6731,7 +6721,7 @@ def execute_intent(
             "faction_id": updated.get("faction_id"),
             "joined_tick": int(updated.get("joined_tick", 0)),
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.order_create":
         order_type_id = str(inputs.get("order_type_id", "")).strip()
         target_kind = str(inputs.get("target_kind", "")).strip()
@@ -6899,7 +6889,7 @@ def execute_intent(
             "status": "queued",
             "priority": int(priority),
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.order_cancel":
         order_id = str(inputs.get("order_id", "")).strip()
         if not order_id:
@@ -6961,7 +6951,7 @@ def execute_intent(
             "order_id": order_id,
             "status": "refused",
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.demography_tick":
         demography_policy_id = str(
             inputs.get("demography_policy_id", "")
@@ -7106,7 +7096,7 @@ def execute_intent(
             "parameter_bundle_id": bundle_id,
             "cohort_deltas": cohort_deltas,
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.cohort_relocate":
         cohort_id = str(inputs.get("cohort_id", "")).strip()
         destination = str(inputs.get("destination", "") or inputs.get("location_ref", "")).strip()
@@ -7188,7 +7178,7 @@ def execute_intent(
             "arrival_tick": int(relocate_result.get("arrival_tick", int(current_tick))),
             "in_transit": bool(relocate_result.get("in_transit", False)),
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.order_tick":
         tick_summary = _run_order_tick(
             state=state,
@@ -7219,7 +7209,7 @@ def execute_intent(
             "completed_order_ids": list(tick_summary.get("completed_order_ids") or []),
             "failed_order_ids": list(tick_summary.get("failed_order_ids") or []),
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.role_assign":
         if law_profile.get("allow_role_delegation") is False:
             return refusal(
@@ -7355,7 +7345,7 @@ def execute_intent(
             "subject_id": subject_id,
             "role_id": role_id,
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.role_revoke":
         assignment_id = str(inputs.get("assignment_id", "")).strip()
         if not assignment_id:
@@ -7416,7 +7406,7 @@ def execute_intent(
             "role_id": role_id,
             "revoked": True,
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id in ("process.control_set_view_lens", "process.camera_set_lens"):
         controller_id = str(inputs.get("controller_id", "")).strip()
         lens_id = str(inputs.get("lens_id", "")).strip()
@@ -7489,7 +7479,7 @@ def execute_intent(
             key=lambda item: str(item.get("assembly_id", "")),
         )
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.cosmetic_assign":
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
         cosmetic_id = str(inputs.get("cosmetic_id", "")).strip()
@@ -7642,7 +7632,7 @@ def execute_intent(
             ),
             "dt_ticks": int(moved.get("dt_ticks", 1)),
         }
-        _advance_time(state, steps=int(moved.get("dt_ticks", 1)))
+        _advance_time(state, steps=int(moved.get("dt_ticks", 1)), policy_context=policy_context)
     elif process_id == "process.instrument_tick":
         sim = _ensure_simulation_time(state)
         control = _ensure_time_control(state)
@@ -7731,7 +7721,7 @@ def execute_intent(
             (dict(item) for item in rows if isinstance(item, dict)),
             key=lambda item: str(item.get("assembly_id", "")),
         )
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.instrument_notebook_add_note":
         note_text = str(inputs.get("text", "") or inputs.get("note", "")).strip()
         if not note_text:
@@ -7821,7 +7811,7 @@ def execute_intent(
             "channel_id": "msg.notebook",
             "entry_count": len(entries),
         }
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.instrument_radio_send_text":
         recipient_subject_id = str(
             inputs.get("to", "")
@@ -7927,30 +7917,72 @@ def execute_intent(
             "recipient_subject_id": recipient_subject_id,
             "delivered_count": len(inbox),
         }
-        _advance_time(state, steps=1)
-    elif process_id == "process.time_control_set_rate":
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id in ("process.time_control_set_rate", "process.time_set_rate"):
+        ranked_policy_enforced = str((policy_context or {}).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
+        if str((policy_context or {}).get("time_control_policy_id", "")).strip() == "time.policy.rank_strict":
+            ranked_policy_enforced = True
         rate = _as_int(inputs.get("rate_permille", -1), -1)
         if rate < 0 or rate > 10000:
             return refusal(
                 "PROCESS_INPUT_INVALID",
-                "process.time_control_set_rate requires rate_permille in [0,10000]",
+                "{} requires rate_permille in [0,10000]".format(process_id),
                 "Provide a valid integer rate_permille in the intent inputs.",
                 {"process_id": process_id},
                 "$.intent.inputs.rate_permille",
             )
+        if ranked_policy_enforced and (not time_policy_allows_rate_change(policy_context)):
+            return refusal(
+                "refusal.time.rate_change_forbidden_by_policy",
+                "time control policy forbids runtime rate changes",
+                "Use a time_control_policy_id that allows rate changes, or keep rate at policy default.",
+                {"process_id": process_id},
+                "$.intent.inputs.rate_permille",
+            )
+        min_rate, max_rate = time_policy_rate_bounds(policy_context)
+        if ranked_policy_enforced and (int(rate) < int(min_rate) or int(rate) > int(max_rate)):
+            return refusal(
+                "refusal.time.rate_out_of_range",
+                "requested rate_permille is outside policy allowed range",
+                "Choose a rate within [{}, {}] for the active time policy.".format(int(min_rate), int(max_rate)),
+                {"process_id": process_id},
+                "$.intent.inputs.rate_permille",
+            )
         control = _ensure_time_control(state)
-        control["rate_permille"] = int(rate)
+        control["rate_permille"] = int(time_clamp_rate_to_policy(policy_context, int(rate)))
         if int(rate) == 0:
             control["paused"] = True
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.time_pause":
+        ranked_policy_enforced = str((policy_context or {}).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
+        if str((policy_context or {}).get("time_control_policy_id", "")).strip() == "time.policy.rank_strict":
+            ranked_policy_enforced = True
+        if ranked_policy_enforced and (not time_policy_allows_pause(policy_context)):
+            return refusal(
+                "refusal.time.pause_forbidden_by_policy",
+                "time control policy forbids pause",
+                "Use a time_control_policy_id that allows pause, or continue running at fixed rate.",
+                {"process_id": process_id},
+                "$.intent.process_id",
+            )
         control = _ensure_time_control(state)
         control["paused"] = True
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.time_resume":
+        ranked_policy_enforced = str((policy_context or {}).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
+        if str((policy_context or {}).get("time_control_policy_id", "")).strip() == "time.policy.rank_strict":
+            ranked_policy_enforced = True
+        if ranked_policy_enforced and (not time_policy_allows_pause(policy_context)):
+            return refusal(
+                "refusal.time.pause_forbidden_by_policy",
+                "time control policy forbids pause/resume transitions",
+                "Use a time_control_policy_id that allows pause before issuing resume.",
+                {"process_id": process_id},
+                "$.intent.process_id",
+            )
         control = _ensure_time_control(state)
         control["paused"] = False
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id in ("process.region_expand", "process.region_collapse"):
         transition = _run_region_transition_with_lod_invariance(
             state=state,
@@ -7965,7 +7997,7 @@ def execute_intent(
             return transition
         tick_result = dict(transition.get("tick_result") or {})
         lod_summary = dict(transition.get("lod_invariance") or {})
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
         conservation_result = _finalize_conservation_or_refusal(
             state=state,
             process_id=process_id,
@@ -8002,7 +8034,7 @@ def execute_intent(
         )
         if tick_result.get("result") != "complete":
             return tick_result
-        _advance_time(state, steps=1)
+        _advance_time(state, steps=1, policy_context=policy_context)
         conservation_result = _finalize_conservation_or_refusal(
             state=state,
             process_id=process_id,

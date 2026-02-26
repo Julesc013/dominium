@@ -39,6 +39,14 @@
         "timestamp_utc": {
           "type": "string",
           "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "sim_time_permille": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_dt_permille": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },
@@ -1128,6 +1136,21 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 999
+        },
+        "current_rate_permille": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "current_dt_permille": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "time_control_policy_id": {
+          "type": "string"
+        },
+        "dt_rule_id": {
+          "type": "string"
         }
       }
     },
@@ -1172,11 +1195,58 @@
             "type": "integer",
             "minimum": 0
           },
+          "dt_sim_permille": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sim_time_permille": {
+            "type": "integer",
+            "minimum": 0
+          },
           "rng_usage": {
             "type": "array",
             "items": {
               "type": "string"
             }
+          }
+        }
+      }
+    },
+    "time_tick_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "tick",
+          "dt_sim_permille",
+          "rate_permille",
+          "paused",
+          "time_control_policy_id",
+          "dt_rule_id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "dt_sim_permille": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "rate_permille": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "paused": {
+            "type": "boolean"
+          },
+          "time_control_policy_id": {
+            "type": "string"
+          },
+          "dt_rule_id": {
+            "type": "string"
           }
         }
       }

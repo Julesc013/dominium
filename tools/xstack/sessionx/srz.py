@@ -165,6 +165,7 @@ def _truth_hash_subset(universe_state: dict) -> dict:
         "controller_assemblies": list(payload.get("controller_assemblies") or []),
         "control_bindings": list(payload.get("control_bindings") or []),
         "time_control": dict(payload.get("time_control") or {}),
+        "time_tick_log": list(payload.get("time_tick_log") or []),
         "process_log": list(payload.get("process_log") or []),
         "interest_regions": list(payload.get("interest_regions") or []),
         "macro_capsules": list(payload.get("macro_capsules") or []),
