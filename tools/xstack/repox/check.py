@@ -229,6 +229,24 @@ REPRESENTATION_RENDER_ONLY_FILES = (
     "tools/xstack/sessionx/render_model.py",
 )
 
+RENDERER_RENDERMODEL_ONLY_FILES = (
+    "src/client/render/render_model_adapter.py",
+    "src/client/render/representation_resolver.py",
+    "src/client/render/snapshot_capture.py",
+    "src/client/render/renderers/null_renderer.py",
+    "src/client/render/renderers/software_renderer.py",
+    "tools/xstack/sessionx/render_model.py",
+    "tools/render/tool_render_capture.py",
+    "tools/render/render_cli.py",
+)
+
+RENDER_SNAPSHOT_DERIVED_FILES = (
+    "src/client/render/snapshot_capture.py",
+    "src/client/render/renderers/null_renderer.py",
+    "src/client/render/renderers/software_renderer.py",
+    "tools/render/tool_render_capture.py",
+)
+
 REPRESENTATION_DATA_DRIVEN_FILE = "src/client/render/representation_resolver.py"
 REPRESENTATION_DATA_DRIVEN_REQUIRED_TOKENS = (
     "representation_rule_registry",
@@ -4690,6 +4708,104 @@ def _append_representation_invariant_findings(
                     rule_id="INV-REPRESENTATION-RULES-DATA-DRIVEN",
                 )
             )
+
+    renderer_truth_pattern = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)
+    renderer_mutation_pattern = re.compile(r"\b(process_runtime|apply_intent|authority_context|process_id)\b", re.IGNORECASE)
+    for rel_path in RENDERER_RENDERMODEL_ONLY_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="renderer contract file is missing",
+                    rule_id="INV-RENDERER-CONSUMES-RENDERMODEL-ONLY",
+                )
+            )
+            continue
+        has_render_model_token = False
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line)
+            lower_token = token.lower()
+            if "render_model" in lower_token or "rendermodel" in lower_token:
+                has_render_model_token = True
+            if renderer_truth_pattern.search(token):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="renderer path references forbidden truth symbol",
+                        rule_id="INV-RENDERER-CONSUMES-RENDERMODEL-ONLY",
+                    )
+                )
+            if renderer_mutation_pattern.search(token):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="renderer path must not couple to process mutation surfaces",
+                        rule_id="INV-RENDERER-CONSUMES-RENDERMODEL-ONLY",
+                    )
+                )
+        if not has_render_model_token:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="render_model",
+                    message="renderer path must consume RenderModel payloads",
+                    rule_id="INV-RENDERER-CONSUMES-RENDERMODEL-ONLY",
+                )
+            )
+
+    derived_anchor_found = False
+    for rel_path in RENDER_SNAPSHOT_DERIVED_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="render snapshot derived artifact file is missing",
+                    rule_id="INV-RENDER_SNAPSHOTS_DERIVED_ONLY",
+                )
+            )
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            lower = str(line).lower()
+            if "run_meta" in lower and "render_snapshots" in lower:
+                derived_anchor_found = True
+            if "process_runtime" in lower or "truth_model" in lower or "truthmodel" in lower:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="render snapshot pipeline must remain derived-only and truth-isolated",
+                        rule_id="INV-RENDER_SNAPSHOTS_DERIVED_ONLY",
+                    )
+                )
+    if not derived_anchor_found:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/render/tool_render_capture.py",
+                line_number=1,
+                snippet="run_meta/render_snapshots",
+                message="render snapshot pipeline must define deterministic derived storage root",
+                rule_id="INV-RENDER_SNAPSHOTS_DERIVED_ONLY",
+            )
+        )
 
 
 def _append_ranked_governance_invariant_findings(

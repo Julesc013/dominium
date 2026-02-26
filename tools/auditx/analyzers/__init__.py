@@ -75,6 +75,8 @@ from analyzers import e46_transition_thrash_smell
 from analyzers import e47_nondeterministic_arbitration_smell
 from analyzers import e48_performance_nondeterminism_smell
 from analyzers import e49_unbounded_micro_expansion_smell
+from analyzers import e50_renderer_truth_leak_smell
+from analyzers import e51_render_snapshot_misclassified_smell
 
 
 ANALYZERS = (
@@ -153,6 +155,8 @@ ANALYZERS = (
     e47_nondeterministic_arbitration_smell,
     e48_performance_nondeterminism_smell,
     e49_unbounded_micro_expansion_smell,
+    e50_renderer_truth_leak_smell,
+    e51_render_snapshot_misclassified_smell,
 )
 
 
