@@ -421,7 +421,11 @@ def replay_intent_script_srz(
     last_checkpoint_hash = ""
     scheduler_tick = 0
     activation_policy = dict((policy_context or {}).get("activation_policy") or {})
-    checkpoint_interval = checkpoint_interval_from_policy(activation_policy)
+    time_control_policy = dict((policy_context or {}).get("time_control_policy") or {})
+    checkpoint_interval = checkpoint_interval_from_policy(
+        activation_policy,
+        time_control_policy=time_control_policy,
+    )
 
     groups = _queue_groups(envelopes)
     envelope_to_step: Dict[str, int] = {}
