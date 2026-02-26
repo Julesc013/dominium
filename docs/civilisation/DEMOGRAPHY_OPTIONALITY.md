@@ -39,6 +39,13 @@ Version: 1.0.0
   - pairing semantics are abstracted and non-diegetic to CIV-4
   - no individual-level reproduction simulation is introduced
 
+## Micro Agent Extension (Intentional Stub)
+- CIV-4 does not simulate individual-level reproduction.
+- If micro agents are currently expanded:
+  - demography still mutates parent cohort aggregates
+  - new individuals appear only on later deterministic cohort expansion
+- This keeps macro and micro representations consistent without adding pregnancy/sex semantics.
+
 ## Determinism Requirements
 - Cohorts are processed in stable order (`cohort_id` ascending).
 - Rounding is deterministic (`floor` with fixed multiplier pipeline).
@@ -49,4 +56,3 @@ Version: 1.0.0
 - No survival loop semantics (hunger/thirst/injury).
 - No inventory/crafting/economy solvers.
 - No explicit violence model.
-
