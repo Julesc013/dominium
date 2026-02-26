@@ -622,6 +622,74 @@ def _select_time_control_policy(
     return selected_policy, selected_dt_rule, selected_compaction_policy, selected_time_model, {}
 
 
+def _select_transition_policy(
+    *,
+    transition_policy_registry: dict,
+    selected_physics_profile: dict,
+    requested_transition_policy_id: str = "",
+) -> Tuple[dict, Dict[str, object]]:
+    policy_rows = list(transition_policy_registry.get("policies") or [])
+    if not isinstance(policy_rows, list):
+        return {}, refusal(
+            "REFUSE_TRANSITION_POLICY_NOT_FOUND",
+            "transition policy registry is missing policies list",
+            "Rebuild registries and ensure transition policies are present.",
+            {"registry_file": REGISTRY_FILE_MAP["transition_policy_registry_hash"]},
+            "$.policies",
+        )
+
+    profile_extensions = dict((selected_physics_profile or {}).get("extensions") or {})
+    requested_policy_id = str(requested_transition_policy_id or "").strip()
+    default_policy_id = str(profile_extensions.get("default_transition_policy_id", "")).strip()
+    policy_id = requested_policy_id or default_policy_id or "transition.policy.null"
+
+    selected_policy = {}
+    for row in sorted(
+        (item for item in policy_rows if isinstance(item, dict)),
+        key=lambda item: str(item.get("transition_policy_id", "")),
+    ):
+        if str(row.get("transition_policy_id", "")).strip() == policy_id:
+            selected_policy = dict(row)
+            break
+
+    if not selected_policy and (not requested_policy_id):
+        for row in sorted(
+            (item for item in policy_rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("transition_policy_id", "")),
+        ):
+            selected_policy = dict(row)
+            policy_id = str(selected_policy.get("transition_policy_id", "")).strip()
+            if policy_id:
+                break
+
+    if not selected_policy:
+        return {}, refusal(
+            "REFUSE_TRANSITION_POLICY_NOT_FOUND",
+            "transition policy '{}' is not present in compiled registry".format(policy_id or "<empty>"),
+            "Select a policy ID listed in '{}'.".format(REGISTRY_FILE_MAP["transition_policy_registry_hash"]),
+            {"transition_policy_id": policy_id},
+            "$.transition_policy_id",
+        )
+
+    allowed_policy_ids = sorted(
+        set(str(item).strip() for item in (profile_extensions.get("allowed_transition_policy_ids") or []) if str(item).strip())
+    )
+    selected_policy_id = str(selected_policy.get("transition_policy_id", "")).strip()
+    if allowed_policy_ids and selected_policy_id not in set(allowed_policy_ids):
+        return {}, refusal(
+            "REFUSE_TRANSITION_POLICY_NOT_ALLOWED_BY_PHYSICS",
+            "transition policy '{}' is not allowed by the selected physics profile".format(selected_policy_id),
+            "Select a transition policy listed in profile.extensions.allowed_transition_policy_ids.",
+            {
+                "transition_policy_id": selected_policy_id,
+                "physics_profile_id": str((selected_physics_profile or {}).get("physics_profile_id", "")),
+            },
+            "$.transition_policy_id",
+        )
+
+    return selected_policy, {}
+
+
 def _stage_command_for_transition(stage_id: str) -> str:
     if str(stage_id) == "stage.acquire_world":
         return "client.session.acquire.local"

@@ -23,6 +23,7 @@ from .runner import (
     _select_lens_profile,
     _select_policy_entry,
     _select_time_control_policy,
+    _select_transition_policy,
     _validate_registry_hashes,
 )
 from .scheduler import replay_intent_script_srz
@@ -835,6 +836,13 @@ def run_intent_script(
     )
     if selected_time_control_policy_error:
         return selected_time_control_policy_error
+    selected_transition_policy, selected_transition_policy_error = _select_transition_policy(
+        transition_policy_registry=transition_policy_registry,
+        selected_physics_profile=selected_physics_profile,
+        requested_transition_policy_id="",
+    )
+    if selected_transition_policy_error:
+        return selected_transition_policy_error
     universe_state, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
         return state_error
@@ -899,15 +907,20 @@ def run_intent_script(
         "dt_quantization_rule_id": str(selected_dt_quantization_rule.get("dt_rule_id", "")),
         "compaction_policy_id": str(selected_compaction_policy.get("compaction_policy_id", "")),
         "time_model_id": str(selected_time_model.get("time_model_id", "")),
+        "tier_taxonomy_id": str(selected_physics_profile.get("tier_taxonomy_id", "")),
+        "transition_policy_id": str(selected_transition_policy.get("transition_policy_id", "")),
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "active_shard_id": "shard.0",
         "activation_policy": activation_policy,
         "budget_policy": budget_policy,
         "fidelity_policy": fidelity_policy,
+        "transition_policy": selected_transition_policy,
         "time_control_policy": selected_time_control_policy,
         "dt_quantization_rule": selected_dt_quantization_rule,
         "compaction_policy": selected_compaction_policy,
         "time_model": selected_time_model,
+        "transition_policy_registry": transition_policy_registry,
+        "arbitration_rule_registry": arbitration_rule_registry,
         "time_control_policy_registry": time_control_policy_registry,
         "dt_quantization_rule_registry": dt_quantization_rule_registry,
         "compaction_policy_registry": compaction_policy_registry,
