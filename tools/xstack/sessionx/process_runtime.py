@@ -40,6 +40,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.order_cancel": "entitlement.civ.order",
     "process.order_tick": "entitlement.civ.order",
     "process.cohort_relocate": "entitlement.civ.order",
+    "process.demography_tick": "session.boot",
     "process.role_assign": "entitlement.civ.role_assign",
     "process.role_revoke": "entitlement.civ.role_assign",
     "process.camera_bind_target": "entitlement.control.camera",
@@ -84,6 +85,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.order_cancel": "operator",
     "process.order_tick": "operator",
     "process.cohort_relocate": "operator",
+    "process.demography_tick": "observer",
     "process.role_assign": "operator",
     "process.role_revoke": "operator",
     "process.camera_bind_target": "observer",
@@ -147,6 +149,7 @@ CIV_PROCESS_IDS = {
     "process.order_cancel",
     "process.order_tick",
     "process.cohort_relocate",
+    "process.demography_tick",
     "process.role_assign",
     "process.role_revoke",
 }
@@ -1405,6 +1408,101 @@ def _institution_type_rows(policy_context: dict | None) -> Dict[str, dict]:
     )
 
 
+def _demography_policy_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "demography_policy_registry")
+    rows = _registry_rows_by_id(payload, "policies", "demography_policy_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/demography_policy_registry.json",
+        entry_key="policies",
+        id_key="demography_policy_id",
+    )
+
+
+def _death_model_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "death_model_registry")
+    rows = _registry_rows_by_id(payload, "death_models", "death_model_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/death_model_registry.json",
+        entry_key="death_models",
+        id_key="death_model_id",
+    )
+
+
+def _birth_model_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "birth_model_registry")
+    rows = _registry_rows_by_id(payload, "birth_models", "birth_model_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/birth_model_registry.json",
+        entry_key="birth_models",
+        id_key="birth_model_id",
+    )
+
+
+def _migration_model_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "migration_model_registry")
+    rows = _registry_rows_by_id(payload, "migration_models", "migration_model_id")
+    if rows:
+        return rows
+    return _source_registry_rows(
+        registry_rel="data/registries/migration_model_registry.json",
+        entry_key="migration_models",
+        id_key="migration_model_id",
+    )
+
+
+def _parameter_bundle_rows(policy_context: dict | None) -> Dict[str, dict]:
+    if isinstance(policy_context, dict):
+        payload = policy_context.get("parameter_bundle_registry")
+        if isinstance(payload, dict):
+            rows = _registry_rows_by_id(payload, "bundles", "parameter_bundle_id")
+            if rows:
+                return rows
+        rows = policy_context.get("parameter_bundles")
+        if isinstance(rows, list):
+            out: Dict[str, dict] = {}
+            for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("parameter_bundle_id", ""))):
+                token = str(row.get("parameter_bundle_id", "")).strip()
+                if token:
+                    out[token] = dict(row)
+            if out:
+                return out
+    abs_path = os.path.join(REPO_ROOT_HINT, "data", "registries", "parameter_bundles.json")
+    try:
+        payload = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(payload, dict):
+        return {}
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return {}
+    rows = record.get("bundles")
+    if not isinstance(rows, list):
+        return {}
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("parameter_bundle_id", ""))):
+        token = str(row.get("parameter_bundle_id", "")).strip()
+        if token:
+            out[token] = dict(row)
+    return out
+
+
+def _active_parameter_bundle(policy_context: dict | None) -> dict:
+    if not isinstance(policy_context, dict):
+        return {}
+    bundle_id = str(policy_context.get("parameter_bundle_id", "")).strip()
+    if not bundle_id:
+        return {}
+    rows = _parameter_bundle_rows(policy_context)
+    return dict(rows.get(bundle_id) or {})
+
+
 def _cohort_policy_id(cohort_row: dict, fallback: str = "") -> str:
     token = str(cohort_row.get("mapping_policy_id", "")).strip()
     if token:
@@ -1448,6 +1546,144 @@ def _cohort_seed_material(
         }
     )
     return "seed.cohort.{}".format(digest[:24])
+
+
+def _deterministic_location_distance_mm(source_ref: str, destination_ref: str) -> int:
+    source_token = str(source_ref).strip()
+    destination_token = str(destination_ref).strip()
+    if not source_token or not destination_token or source_token == destination_token:
+        return 0
+    digest = canonical_sha256({"source": source_token, "destination": destination_token})
+    return 1 + (int(digest[:8], 16) % 100000)
+
+
+def _migration_distance_bands(migration_model: dict) -> List[dict]:
+    extensions = dict(migration_model.get("extensions") or {}) if isinstance(migration_model.get("extensions"), dict) else {}
+    rows = extensions.get("distance_bands_mm")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        max_distance_mm = max(0, _as_int(row.get("max_distance_mm", 0), 0))
+        travel_ticks = max(0, _as_int(row.get("travel_ticks", 0), 0))
+        normalized.append(
+            {
+                "max_distance_mm": int(max_distance_mm),
+                "travel_ticks": int(travel_ticks),
+            }
+        )
+    return sorted(normalized, key=lambda item: (int(item.get("max_distance_mm", 0)), int(item.get("travel_ticks", 0))))
+
+
+def _migration_travel_ticks(
+    migration_model: dict,
+    source_ref: str,
+    destination_ref: str,
+    delay_multiplier: float,
+) -> int:
+    if str(source_ref).strip() == str(destination_ref).strip():
+        return 0
+    travel_time_policy_id = str(migration_model.get("travel_time_policy_id", "")).strip()
+    extensions = dict(migration_model.get("extensions") or {}) if isinstance(migration_model.get("extensions"), dict) else {}
+    if bool(extensions.get("instant", False)) or travel_time_policy_id == "travel.instant":
+        return 0
+    distance_mm = _deterministic_location_distance_mm(source_ref=source_ref, destination_ref=destination_ref)
+    bands = _migration_distance_bands(migration_model)
+    base_ticks = 0
+    for row in bands:
+        if distance_mm <= int(row.get("max_distance_mm", 0)):
+            base_ticks = int(row.get("travel_ticks", 0))
+            break
+    if not bands:
+        base_ticks = 0
+    elif base_ticks <= 0:
+        base_ticks = int(bands[-1].get("travel_ticks", 0))
+    multiplier = max(0.0, float(delay_multiplier))
+    return max(0, int(math.floor(float(base_ticks) * multiplier)))
+
+
+def _apply_pending_cohort_arrivals(cohort_rows: List[dict], current_tick: int) -> List[str]:
+    arrived: List[str] = []
+    for cohort_row in sorted((item for item in cohort_rows if isinstance(item, dict)), key=lambda item: str(item.get("cohort_id", ""))):
+        extensions = dict(cohort_row.get("extensions") or {}) if isinstance(cohort_row.get("extensions"), dict) else {}
+        migration = dict(extensions.get("migration") or {}) if isinstance(extensions.get("migration"), dict) else {}
+        pending_destination = str(migration.get("pending_destination", "")).strip()
+        in_transit_until_tick = max(0, _as_int(migration.get("in_transit_until_tick", 0), 0))
+        if not pending_destination or int(current_tick) < int(in_transit_until_tick):
+            continue
+        cohort_row["location_ref"] = pending_destination
+        migration["in_transit"] = False
+        migration["pending_destination"] = ""
+        migration["in_transit_until_tick"] = 0
+        migration["last_completed_destination"] = pending_destination
+        migration["arrived_tick"] = int(current_tick)
+        extensions["migration"] = migration
+        cohort_row["extensions"] = extensions
+        arrived.append(str(cohort_row.get("cohort_id", "")).strip())
+    return sorted(set(token for token in arrived if token))
+
+
+def _cohort_relocate_internal(
+    *,
+    cohort_row: dict,
+    destination: str,
+    migration_model_id: str,
+    migration_model_rows: Dict[str, dict],
+    current_tick: int,
+    migration_delay_multiplier: float,
+) -> Dict[str, object]:
+    model = dict(migration_model_rows.get(str(migration_model_id).strip()) or {})
+    if not model:
+        return refusal(
+            "refusal.civ.migration_model_missing",
+            "migration_model_id '{}' is not registered".format(str(migration_model_id).strip()),
+            "Use migration_model_id from migration_model_registry.",
+            {"migration_model_id": str(migration_model_id).strip()},
+            "$.intent.inputs.migration_model_id",
+        )
+    source_ref = str(cohort_row.get("location_ref", "")).strip()
+    destination_ref = str(destination).strip()
+    travel_ticks = _migration_travel_ticks(
+        migration_model=model,
+        source_ref=source_ref,
+        destination_ref=destination_ref,
+        delay_multiplier=float(migration_delay_multiplier),
+    )
+    extensions = dict(cohort_row.get("extensions") or {}) if isinstance(cohort_row.get("extensions"), dict) else {}
+    migration = dict(extensions.get("migration") or {}) if isinstance(extensions.get("migration"), dict) else {}
+    migration["migration_model_id"] = str(migration_model_id).strip()
+    migration["source_location_ref"] = source_ref
+    migration["requested_destination"] = destination_ref
+    migration["requested_tick"] = int(current_tick)
+    migration["travel_ticks"] = int(travel_ticks)
+    if int(travel_ticks) <= 0:
+        cohort_row["location_ref"] = destination_ref
+        migration["in_transit"] = False
+        migration["pending_destination"] = ""
+        migration["in_transit_until_tick"] = 0
+        migration["last_completed_destination"] = destination_ref
+        migration["arrived_tick"] = int(current_tick)
+    else:
+        migration["in_transit"] = True
+        migration["pending_destination"] = destination_ref
+        migration["in_transit_until_tick"] = int(current_tick) + int(travel_ticks)
+        migration["arrived_tick"] = 0
+    extensions["migration"] = migration
+    extensions["last_relocate_tick"] = int(current_tick)
+    extensions["last_relocate_destination"] = destination_ref
+    extensions["last_relocate_model_id"] = str(migration_model_id).strip()
+    cohort_row["extensions"] = extensions
+    return {
+        "result": "complete",
+        "migration_model_id": str(migration_model_id).strip(),
+        "travel_ticks": int(travel_ticks),
+        "arrival_tick": int(current_tick) + int(travel_ticks),
+        "in_transit": bool(int(travel_ticks) > 0),
+        "source_location_ref": source_ref,
+        "destination": destination_ref,
+    }
 
 
 def _deterministic_faction_id(founder_agent_id: object, created_tick: int) -> str:
@@ -1616,6 +1852,12 @@ def _run_order_tick(
     active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
     affiliations = _ensure_affiliations(state)
     faction_rows = _ensure_faction_assemblies(state)
+    migration_model_map = _migration_model_rows(policy_context)
+    bundle_params = dict((_active_parameter_bundle(policy_context).get("parameters") or {}))
+    migration_delay_multiplier = max(
+        0.0,
+        _as_float(bundle_params.get("civ.migration.delay_multiplier", 1.0), 1.0),
+    )
 
     processed_ids: List[str] = []
     completed_ids: List[str] = []
@@ -1679,14 +1921,58 @@ def _run_order_tick(
                 if not cohort_row:
                     _fail(order_row, "refusal.control.target_invalid", "cohort_missing", {"target_id": target_id})
                     continue
-                cohort_row["location_ref"] = destination
+                if order_type_id == "order.migrate":
+                    migration_model_id = str(payload.get("migration_model_id", "")).strip() or "demo.migration.instant"
+                    relocate_result = _cohort_relocate_internal(
+                        cohort_row=cohort_row,
+                        destination=destination,
+                        migration_model_id=migration_model_id,
+                        migration_model_rows=migration_model_map,
+                        current_tick=int(current_tick),
+                        migration_delay_multiplier=float(migration_delay_multiplier),
+                    )
+                    if str(relocate_result.get("result", "")) != "complete":
+                        refusal_payload = dict(relocate_result.get("refusal") or {})
+                        _fail(
+                            order_row,
+                            str(refusal_payload.get("reason_code", "refusal.civ.migration_model_missing")),
+                            str(refusal_payload.get("reason", "migration_model_missing")),
+                            {"migration_model_id": migration_model_id},
+                        )
+                        continue
+                else:
+                    cohort_row["location_ref"] = destination
             elif target_kind == "faction":
                 moved = 0
+                migration_failed = False
                 for cohort_row in sorted(cohorts, key=lambda item: str(item.get("cohort_id", ""))):
                     if str(cohort_row.get("faction_id", "")).strip() != target_id:
                         continue
-                    cohort_row["location_ref"] = destination
+                    if order_type_id == "order.migrate":
+                        migration_model_id = str(payload.get("migration_model_id", "")).strip() or "demo.migration.instant"
+                        relocate_result = _cohort_relocate_internal(
+                            cohort_row=cohort_row,
+                            destination=destination,
+                            migration_model_id=migration_model_id,
+                            migration_model_rows=migration_model_map,
+                            current_tick=int(current_tick),
+                            migration_delay_multiplier=float(migration_delay_multiplier),
+                        )
+                        if str(relocate_result.get("result", "")) != "complete":
+                            refusal_payload = dict(relocate_result.get("refusal") or {})
+                            _fail(
+                                order_row,
+                                str(refusal_payload.get("reason_code", "refusal.civ.migration_model_missing")),
+                                str(refusal_payload.get("reason", "migration_model_missing")),
+                                {"migration_model_id": migration_model_id},
+                            )
+                            migration_failed = True
+                            break
+                    else:
+                        cohort_row["location_ref"] = destination
                     moved += 1
+                if migration_failed:
+                    continue
                 if moved <= 0:
                     _fail(order_row, "refusal.control.target_invalid", "faction_has_no_cohorts", {"target_id": target_id})
                     continue
@@ -4606,6 +4892,7 @@ def execute_intent(
     role_assignment_rows = _ensure_role_assignment_assemblies(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+    arrived_cohort_ids = _apply_pending_cohort_arrivals(cohorts, current_tick)
     result_metadata: Dict[str, object] = {}
     skip_state_log = False
 
@@ -6525,6 +6812,151 @@ def execute_intent(
             "status": "refused",
         }
         _advance_time(state, steps=1)
+    elif process_id == "process.demography_tick":
+        demography_policy_id = str(
+            inputs.get("demography_policy_id", "")
+            or (policy_context or {}).get("demography_policy_id", "")
+            or "demo.policy.none"
+        ).strip()
+        policy_rows = _demography_policy_rows(policy_context)
+        policy_row = dict(policy_rows.get(demography_policy_id) or {})
+        if not policy_row:
+            return refusal(
+                "refusal.civ.demography_policy_missing",
+                "demography policy '{}' is not registered".format(demography_policy_id),
+                "Use demography_policy_id from demography_policy_registry.",
+                {"demography_policy_id": demography_policy_id},
+                "$.intent.inputs.demography_policy_id",
+            )
+        death_model_rows = _death_model_rows(policy_context)
+        birth_model_rows = _birth_model_rows(policy_context)
+        death_model_id = str(policy_row.get("death_model_id", "")).strip()
+        birth_model_id = str(policy_row.get("birth_model_id", "")).strip()
+        death_model = dict(death_model_rows.get(death_model_id) or {})
+        birth_model = dict(birth_model_rows.get(birth_model_id) or {})
+        if not death_model or not birth_model:
+            return refusal(
+                "refusal.civ.demography_policy_missing",
+                "demography policy references missing birth/death models",
+                "Ensure demography policy model references exist in birth/death model registries.",
+                {
+                    "demography_policy_id": demography_policy_id,
+                    "death_model_id": death_model_id,
+                    "birth_model_id": birth_model_id,
+                },
+                "$.intent.inputs.demography_policy_id",
+            )
+        births_enabled = bool(policy_row.get("births_enabled", False))
+        law_births_forbidden = (
+            law_profile.get("births_enabled_override") is False
+            or law_profile.get("births_allowed") is False
+            or law_profile.get("demography_births_allowed") is False
+        )
+        if births_enabled and law_births_forbidden:
+            return refusal(
+                "refusal.civ.births_forbidden_by_law",
+                "births are enabled by demography policy but forbidden by law",
+                "Set births_enabled=false in demography policy or allow births in law profile.",
+                {
+                    "demography_policy_id": demography_policy_id,
+                    "law_profile_id": str(law_profile.get("law_profile_id", "")),
+                },
+                "$.law_profile",
+            )
+        tick_rate = max(1, _as_int(policy_row.get("tick_rate", 1), 1))
+        due = (int(current_tick) % int(tick_rate)) == 0
+        bundle = _active_parameter_bundle(policy_context)
+        bundle_id = str(bundle.get("parameter_bundle_id", "")).strip() if isinstance(bundle, dict) else ""
+        bundle_parameters = dict(bundle.get("parameters") or {}) if isinstance(bundle, dict) else {}
+        birth_multiplier = max(0.0, _as_float(bundle_parameters.get("civ.demography.birth_multiplier", 1.0), 1.0))
+        death_multiplier = max(0.0, _as_float(bundle_parameters.get("civ.demography.death_multiplier", 1.0), 1.0))
+        max_growth_per_interval = max(
+            0,
+            _as_int(bundle_parameters.get("civ.demography.max_cohort_growth_per_interval", 0), 0),
+        )
+        cohort_ids = _sorted_tokens(
+            list(
+                inputs.get("applies_to")
+                or inputs.get("cohort_ids")
+                or []
+            )
+        )
+        cohort_id_filter = set(cohort_ids)
+        shard_map = dict((policy_context or {}).get("shard_map") or {})
+        active_shard_id = str((policy_context or {}).get("active_shard_id", "")).strip()
+        target_rows: List[dict] = []
+        for cohort_row in sorted(cohorts, key=lambda item: str(item.get("cohort_id", ""))):
+            cohort_token = str(cohort_row.get("cohort_id", "")).strip()
+            if cohort_id_filter and cohort_token not in cohort_id_filter:
+                continue
+            if active_shard_id:
+                owner_shard = _cohort_owner_shard_id(cohort_row=cohort_row, shard_map=shard_map)
+                if owner_shard and owner_shard != active_shard_id:
+                    continue
+            target_rows.append(cohort_row)
+        base_birth_rate = max(0.0, _as_float(birth_model.get("base_birth_rate_per_tick", 0.0), 0.0))
+        base_death_rate = max(0.0, _as_float(death_model.get("base_death_rate_per_tick", 0.0), 0.0))
+        cohort_deltas: List[dict] = []
+        total_births = 0
+        total_deaths = 0
+        if due:
+            for cohort_row in target_rows:
+                size_before = max(0, _as_int(cohort_row.get("size", 0), 0))
+                births = 0
+                if births_enabled:
+                    births = max(0, int(math.floor(float(size_before) * float(base_birth_rate) * float(birth_multiplier))))
+                    if int(max_growth_per_interval) > 0:
+                        births = min(int(births), int(max_growth_per_interval))
+                deaths = max(0, int(math.floor(float(size_before) * float(base_death_rate) * float(death_multiplier))))
+                size_after = max(0, int(size_before) + int(births) - int(deaths))
+                cohort_row["size"] = int(size_after)
+                extensions = dict(cohort_row.get("extensions") or {}) if isinstance(cohort_row.get("extensions"), dict) else {}
+                totals = dict(extensions.get("demography_totals") or {}) if isinstance(extensions.get("demography_totals"), dict) else {}
+                totals["births"] = max(0, _as_int(totals.get("births", 0), 0) + int(births))
+                totals["deaths"] = max(0, _as_int(totals.get("deaths", 0), 0) + int(deaths))
+                extensions["demography_policy_id"] = demography_policy_id
+                extensions["demography_last_tick"] = int(current_tick)
+                extensions["demography_last_births"] = int(births)
+                extensions["demography_last_deaths"] = int(deaths)
+                extensions["demography_totals"] = totals
+                cohort_row["extensions"] = extensions
+                total_births += int(births)
+                total_deaths += int(deaths)
+                cohort_deltas.append(
+                    {
+                        "cohort_id": str(cohort_row.get("cohort_id", "")),
+                        "size_before": int(size_before),
+                        "births": int(births),
+                        "deaths": int(deaths),
+                        "size_after": int(size_after),
+                    }
+                )
+            _persist_civ_state(
+                state=state,
+                faction_rows=_ensure_faction_assemblies(state),
+                affiliation_rows=_ensure_affiliations(state),
+                territory_rows=_ensure_territory_assemblies(state),
+                diplomatic_rows=_ensure_diplomatic_relations(state),
+                cohort_rows=cohorts,
+                order_rows=order_rows,
+                queue_rows=queue_rows,
+                institution_rows=institution_rows,
+                role_assignment_rows=role_assignment_rows,
+            )
+        result_metadata = {
+            "demography_policy_id": demography_policy_id,
+            "tick_rate": int(tick_rate),
+            "applied": bool(due),
+            "processed_cohort_count": len(list(target_rows)),
+            "total_births": int(total_births),
+            "total_deaths": int(total_deaths),
+            "births_enabled": bool(births_enabled),
+            "birth_model_id": birth_model_id,
+            "death_model_id": death_model_id,
+            "parameter_bundle_id": bundle_id,
+            "cohort_deltas": cohort_deltas,
+        }
+        _advance_time(state, steps=1)
     elif process_id == "process.cohort_relocate":
         cohort_id = str(inputs.get("cohort_id", "")).strip()
         destination = str(inputs.get("destination", "") or inputs.get("location_ref", "")).strip()
@@ -6556,11 +6988,36 @@ def execute_intent(
                 {"cohort_id": cohort_id, "owner_shard_id": owner_shard_id, "active_shard_id": active_shard_id},
                 "$.policy_context.active_shard_id",
             )
-        cohort_row["location_ref"] = destination
-        extensions = dict(cohort_row.get("extensions") or {}) if isinstance(cohort_row.get("extensions"), dict) else {}
-        extensions["last_relocate_tick"] = int(current_tick)
-        extensions["last_relocate_destination"] = destination
-        cohort_row["extensions"] = extensions
+        if law_profile.get("migration_allowed") is False:
+            return refusal(
+                "refusal.civ.claim_forbidden",
+                "active law profile forbids migration processes",
+                "Enable migration in law profile or use a law profile that allows process.cohort_relocate.",
+                {"law_profile_id": str(law_profile.get("law_profile_id", ""))},
+                "$.law_profile",
+            )
+        migration_model_id = str(
+            inputs.get("migration_model_id", "")
+            or (policy_context or {}).get("migration_model_id", "")
+            or "demo.migration.instant"
+        ).strip()
+        migration_model_rows = _migration_model_rows(policy_context)
+        bundle = _active_parameter_bundle(policy_context)
+        bundle_parameters = dict(bundle.get("parameters") or {}) if isinstance(bundle, dict) else {}
+        migration_delay_multiplier = max(
+            0.0,
+            _as_float(bundle_parameters.get("civ.migration.delay_multiplier", 1.0), 1.0),
+        )
+        relocate_result = _cohort_relocate_internal(
+            cohort_row=cohort_row,
+            destination=destination,
+            migration_model_id=migration_model_id,
+            migration_model_rows=migration_model_rows,
+            current_tick=int(current_tick),
+            migration_delay_multiplier=float(migration_delay_multiplier),
+        )
+        if str(relocate_result.get("result", "")) != "complete":
+            return relocate_result
         _persist_civ_state(
             state=state,
             faction_rows=_ensure_faction_assemblies(state),
@@ -6576,6 +7033,10 @@ def execute_intent(
         result_metadata = {
             "cohort_id": cohort_id,
             "destination": destination,
+            "migration_model_id": str(relocate_result.get("migration_model_id", "")),
+            "travel_ticks": int(relocate_result.get("travel_ticks", 0)),
+            "arrival_tick": int(relocate_result.get("arrival_tick", int(current_tick))),
+            "in_transit": bool(relocate_result.get("in_transit", False)),
         }
         _advance_time(state, steps=1)
     elif process_id == "process.order_tick":
@@ -7423,6 +7884,8 @@ def execute_intent(
         "state_hash_anchor": state_hash_anchor,
         "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
     }
+    if arrived_cohort_ids:
+        result_payload["arrived_cohort_ids"] = list(arrived_cohort_ids)
     if isinstance(result_metadata, dict) and result_metadata:
         result_payload.update(dict(result_metadata))
     return result_payload
