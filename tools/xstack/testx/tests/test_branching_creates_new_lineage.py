@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 import sys
 
 
@@ -27,6 +28,10 @@ def run(repo_root: str):
 
     parent_save_id = "save.testx.time.branch_parent"
     child_save_id = "save.testx.time.branch_child"
+    child_save_abs = os.path.join(repo_root, "saves", child_save_id.replace("/", os.sep))
+    if os.path.isdir(child_save_abs):
+        shutil.rmtree(child_save_abs, ignore_errors=True)
+
     fixture, created = create_session(
         repo_root=repo_root,
         save_id=parent_save_id,
