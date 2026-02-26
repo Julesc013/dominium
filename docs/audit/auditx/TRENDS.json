@@ -1,14 +1,14 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 642,
+    "canon_drift": 643,
     "capability_bypass_smell": 1,
     "capability_misuse": 139,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
     "derived_freshness": 131,
     "epistemics.hidden_state_leak_smell": 6,
     "legacy_contamination": 6,
-    "mode_flag_smell": 51,
+    "mode_flag_smell": 54,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
     "ownership_boundary": 9,
@@ -32,7 +32,7 @@
       "derived_freshness": 120,
       "epistemics.hidden_state_leak_smell": 0,
       "legacy_contamination": 6,
-      "mode_flag_smell": 51,
+      "mode_flag_smell": 54,
       "net.precision_leak_smell": 0,
       "net.truth_over_net_smell": 0,
       "ownership_boundary": 9,
@@ -50,21 +50,21 @@
     "severity_distribution": {
       "INFO": 230,
       "RISK": 219,
-      "VIOLATION": 60,
+      "VIOLATION": 63,
       "WARN": 302
     }
   },
-  "findings_hash": "89b0a3fb28e46f64a99e8693ca8cbf26459ff2e7fc2df628104c982d19ef6396",
+  "findings_hash": "d8f4ea414ada3e67a4f274a2948d9a61382e5fe5659079f2bdf7e8a71d6ce4a6",
   "history_reference": {
-    "previous_distinct_hash": "0a56715d2c349bb4aeb20f1b8d3aaa18396da2d414727b027e81a652a5f0ccb0"
+    "previous_distinct_hash": "8a7ebf5489a86f1aae891c141528a1537f155f9636b8063bdab6f13255a43969"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 230,
     "RISK": 243,
-    "VIOLATION": 61,
-    "WARN": 1073
+    "VIOLATION": 64,
+    "WARN": 1074
   },
-  "total_findings": 1607
+  "total_findings": 1611
 }
