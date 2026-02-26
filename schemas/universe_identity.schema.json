@@ -11,11 +11,15 @@
   "type": "object",
   "required": [
     "schema_version",
+    "universe_id",
     "global_seed",
-    "physical_constants",
-    "base_domain_bindings",
-    "initial_scenario_id",
-    "compatibility_version",
+    "domain_binding_ids",
+    "physics_profile_id",
+    "base_scenario_id",
+    "initial_pack_set_hash_expectation",
+    "compatibility_schema_refs",
+    "immutable_after_create",
+    "extensions",
     "identity_hash"
   ],
   "additionalProperties": false,
@@ -25,6 +29,10 @@
       "const": "1.0.0",
       "description": "Payload schema version for CompatX routing."
     },
+    "universe_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "global_seed": {
       "type": [
         "string",
@@ -32,35 +40,36 @@
       ],
       "description": "Deterministic seed root; explicit string or integer only."
     },
-    "physical_constants": {
-      "type": "object",
-      "required": [
-        "gravitational_constant",
-        "speed_of_light_mps"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "gravitational_constant": {
-          "type": "number"
-        },
-        "speed_of_light_mps": {
-          "type": "number"
-        }
-      }
-    },
-    "base_domain_bindings": {
+    "domain_binding_ids": {
       "type": "array",
       "items": {
         "type": "string"
-      },
-      "minItems": 1
+      }
     },
-    "initial_scenario_id": {
+    "physics_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_scenario_id": {
       "type": "string"
     },
-    "compatibility_version": {
+    "initial_pack_set_hash_expectation": {
       "type": "string",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compatibility_schema_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "immutable_after_create": {
+      "type": "boolean",
+      "const": true
+    },
+    "extensions": {
+      "type": "object"
     },
     "identity_hash": {
       "type": "string",
@@ -70,17 +79,22 @@
   "examples": [
     {
       "schema_version": "1.0.0",
+      "universe_id": "universe.8de7ca4fb8e4eb67",
       "global_seed": "dominium.lab.galaxy.seed.0001",
-      "physical_constants": {
-        "gravitational_constant": 6.6743e-11,
-        "speed_of_light_mps": 299792458
-      },
-      "base_domain_bindings": [
+      "domain_binding_ids": [
         "domain.navigation",
         "domain.astronomy"
       ],
-      "initial_scenario_id": "scenario.lab.galaxy_nav",
-      "compatibility_version": "1.0.0",
+      "physics_profile_id": "physics.null",
+      "base_scenario_id": "scenario.lab.galaxy_nav",
+      "initial_pack_set_hash_expectation": "d9eb253e069b2ce7fbbdb5f95f98cc28fbf3622f29227cececad2e89d13718a5",
+      "compatibility_schema_refs": [
+        "bundle_lockfile@1.0.0",
+        "session_spec@1.0.0",
+        "universe_identity@1.0.0"
+      ],
+      "immutable_after_create": true,
+      "extensions": {},
       "identity_hash": "5ce1f4975ab8e443664f94f79e4a00c3d54f14ab1ec691e4d8f9f646d159c111"
     }
   ]
