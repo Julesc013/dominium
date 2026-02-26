@@ -2830,6 +2830,150 @@ def _universe_physics_registry_rows(
     return profile_rows, time_rows, precision_rows, taxonomy_rows, boundary_rows, errors
 
 
+def _transition_policy_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/transition_policy_registry.json",
+        expected_schema_id="dominium.registry.transition_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], policy_load_errors
+
+    _arb_record, arb_rows_raw, arb_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/arbitration_rule_registry.json",
+        expected_schema_id="dominium.registry.arbitration_rule_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="rules",
+    )
+    if arb_load_errors:
+        return [], [], arb_load_errors
+
+    arbitration_rule_rows: List[dict] = []
+    arbitration_rule_seen = set()
+    for entry in sorted(arb_rows_raw, key=lambda row: str((row or {}).get("rule_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_arbitration_rule_entry",
+                    "message": "arbitration rule entry must be object",
+                    "path": "$.rules",
+                }
+            )
+            continue
+        rule_id = str(entry.get("rule_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if not rule_id or not description or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_arbitration_rule_entry",
+                    "message": "arbitration rule entry missing required fields",
+                    "path": "$.rules",
+                }
+            )
+            continue
+        if rule_id in arbitration_rule_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_arbitration_rule_id",
+                    "message": "duplicate arbitration rule_id '{}'".format(rule_id),
+                    "path": "$.rules.rule_id",
+                }
+            )
+            continue
+        arbitration_rule_seen.add(rule_id)
+        arbitration_rule_rows.append(
+            {
+                "rule_id": rule_id,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    arbitration_rule_rows = sorted(arbitration_rule_rows, key=lambda row: str(row.get("rule_id", "")))
+    arbitration_rule_ids = set(str(row.get("rule_id", "")).strip() for row in arbitration_rule_rows)
+
+    transition_policy_rows: List[dict] = []
+    transition_policy_seen = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("transition_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_transition_policy_entry",
+                    "message": "transition policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        transition_policy_id = str(entry.get("transition_policy_id", "")).strip()
+        if not transition_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_transition_policy_entry",
+                    "message": "transition policy id is missing",
+                    "path": "$.policies.transition_policy_id",
+                }
+            )
+            continue
+        if transition_policy_id in transition_policy_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_transition_policy_id",
+                    "message": "duplicate transition_policy_id '{}'".format(transition_policy_id),
+                    "path": "$.policies.transition_policy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="transition_policy",
+            payload=entry,
+            path="data/registries/transition_policy_registry.json#{}".format(transition_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        arbitration_rule_id = str(entry.get("arbitration_rule_id", "")).strip()
+        if arbitration_rule_id not in arbitration_rule_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.transition_policy_arbitration_rule_missing",
+                    "message": "transition policy '{}' references unknown arbitration rule '{}'".format(
+                        transition_policy_id,
+                        arbitration_rule_id or "<empty>",
+                    ),
+                    "path": "$.policies.arbitration_rule_id",
+                }
+            )
+            continue
+        transition_policy_seen.add(transition_policy_id)
+        transition_policy_rows.append(
+            {
+                "schema_version": str(entry.get("schema_version", "")).strip(),
+                "transition_policy_id": transition_policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "max_micro_regions": int(entry.get("max_micro_regions", 0) or 0),
+                "max_micro_entities": int(entry.get("max_micro_entities", 0) or 0),
+                "hysteresis_rules": dict(entry.get("hysteresis_rules") or {}),
+                "arbitration_rule_id": arbitration_rule_id,
+                "degrade_order": [str(item).strip() for item in list(entry.get("degrade_order") or []) if str(item).strip()],
+                "refuse_thresholds": dict(entry.get("refuse_thresholds") or {}),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    transition_policy_rows = sorted(
+        transition_policy_rows, key=lambda row: str(row.get("transition_policy_id", ""))
+    )
+    return transition_policy_rows, arbitration_rule_rows, errors
+
+
 def _time_control_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -5813,6 +5957,102 @@ def compile_bundle(
         known_contract_set_ids=[str(row.get("contract_set_id", "")) for row in conservation_contract_set_rows],
     )
     (
+        transition_policy_rows,
+        arbitration_rule_rows,
+        transition_registry_errors,
+    ) = _transition_policy_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    transition_reference_errors: List[dict] = []
+    transition_policy_ids = set(
+        str(row.get("transition_policy_id", "")).strip() for row in transition_policy_rows if str(row.get("transition_policy_id", "")).strip()
+    )
+    for taxonomy_row in tier_taxonomy_rows:
+        taxonomy_id = str(taxonomy_row.get("taxonomy_id", "")).strip() or "<unknown>"
+        tiers = set(str(item).strip() for item in list(taxonomy_row.get("tiers") or []) if str(item).strip())
+        default_transition_policy_id = str(taxonomy_row.get("default_transition_policy_id", "")).strip()
+        if default_transition_policy_id and default_transition_policy_id not in transition_policy_ids:
+            transition_reference_errors.append(
+                {
+                    "code": "refuse.registry_compile.tier_taxonomy_transition_policy_missing",
+                    "message": "tier taxonomy '{}' references unknown default_transition_policy_id '{}'".format(
+                        taxonomy_id,
+                        default_transition_policy_id,
+                    ),
+                    "path": "$.taxonomies.default_transition_policy_id",
+                }
+            )
+        for transition_row in list(taxonomy_row.get("allowed_transitions") or []):
+            if not isinstance(transition_row, dict):
+                continue
+            from_tier = str(transition_row.get("from_tier", "")).strip()
+            to_tier = str(transition_row.get("to_tier", "")).strip()
+            if from_tier and from_tier not in tiers:
+                transition_reference_errors.append(
+                    {
+                        "code": "refuse.registry_compile.tier_taxonomy_transition_invalid",
+                        "message": "tier taxonomy '{}' transition from_tier '{}' is not declared in tiers".format(
+                            taxonomy_id,
+                            from_tier,
+                        ),
+                        "path": "$.taxonomies.allowed_transitions.from_tier",
+                    }
+                )
+            if to_tier and to_tier not in tiers:
+                transition_reference_errors.append(
+                    {
+                        "code": "refuse.registry_compile.tier_taxonomy_transition_invalid",
+                        "message": "tier taxonomy '{}' transition to_tier '{}' is not declared in tiers".format(
+                            taxonomy_id,
+                            to_tier,
+                        ),
+                        "path": "$.taxonomies.allowed_transitions.to_tier",
+                    }
+                )
+
+    for profile_row in universe_physics_profile_rows:
+        profile_id = str(profile_row.get("physics_profile_id", "")).strip() or "<unknown>"
+        extensions = dict(profile_row.get("extensions") or {})
+        allowed_policy_ids = sorted(
+            set(str(item).strip() for item in list(extensions.get("allowed_transition_policy_ids") or []) if str(item).strip())
+        )
+        default_policy_id = str(extensions.get("default_transition_policy_id", "")).strip()
+        for policy_id in allowed_policy_ids:
+            if policy_id not in transition_policy_ids:
+                transition_reference_errors.append(
+                    {
+                        "code": "refuse.registry_compile.physics_profile_transition_policy_missing",
+                        "message": "physics profile '{}' references unknown allowed transition policy '{}'".format(
+                            profile_id,
+                            policy_id,
+                        ),
+                        "path": "$.physics_profiles.extensions.allowed_transition_policy_ids",
+                    }
+                )
+        if default_policy_id and default_policy_id not in transition_policy_ids:
+            transition_reference_errors.append(
+                {
+                    "code": "refuse.registry_compile.physics_profile_transition_policy_missing",
+                    "message": "physics profile '{}' references unknown default transition policy '{}'".format(
+                        profile_id,
+                        default_policy_id,
+                    ),
+                    "path": "$.physics_profiles.extensions.default_transition_policy_id",
+                }
+            )
+        if default_policy_id and allowed_policy_ids and default_policy_id not in set(allowed_policy_ids):
+            transition_reference_errors.append(
+                {
+                    "code": "refuse.registry_compile.physics_profile_transition_policy_invalid",
+                    "message": "physics profile '{}' default transition policy '{}' is not present in allowed_transition_policy_ids".format(
+                        profile_id,
+                        default_policy_id,
+                    ),
+                    "path": "$.physics_profiles.extensions.default_transition_policy_id",
+                }
+            )
+    (
         time_control_policy_rows,
         dt_quantization_rule_rows,
         compaction_policy_rows,
@@ -5903,6 +6143,8 @@ def compile_bundle(
         + civilisation_registry_errors
         + conservation_registry_errors
         + universe_physics_registry_errors
+        + transition_registry_errors
+        + transition_reference_errors
         + time_control_registry_errors
         + body_shape_registry_errors
         + view_mode_registry_errors
@@ -5968,6 +6210,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "taxonomies": tier_taxonomy_rows,
+        }
+    )
+    transition_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": transition_policy_rows,
+        }
+    )
+    arbitration_rule_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "rules": arbitration_rule_rows,
         }
     )
     boundary_model_payload = _finalize_registry_payload(
@@ -6366,6 +6622,8 @@ def compile_bundle(
         "compaction_policy_registry": ("compaction_policy_registry", compaction_policy_payload),
         "numeric_precision_policy_registry": ("numeric_precision_policy_registry", numeric_precision_policy_payload),
         "tier_taxonomy_registry": ("tier_taxonomy_registry", tier_taxonomy_payload),
+        "transition_policy_registry": ("transition_policy_registry", transition_policy_payload),
+        "arbitration_rule_registry": ("arbitration_rule_registry", arbitration_rule_payload),
         "boundary_model_registry": ("boundary_model_registry", boundary_model_payload),
         "domain_registry": ("domain_registry", domain_payload),
         "law_registry": ("law_registry", law_payload),
@@ -6437,6 +6695,8 @@ def compile_bundle(
         "compaction_policy_registry",
         "numeric_precision_policy_registry",
         "tier_taxonomy_registry",
+        "transition_policy_registry",
+        "arbitration_rule_registry",
         "boundary_model_registry",
         "domain_registry",
         "law_registry",
@@ -6525,6 +6785,8 @@ def compile_bundle(
             "compaction_policy_registry_hash": registry_hashes["compaction_policy_registry_hash"],
             "numeric_precision_policy_registry_hash": registry_hashes["numeric_precision_policy_registry_hash"],
             "tier_taxonomy_registry_hash": registry_hashes["tier_taxonomy_registry_hash"],
+            "transition_policy_registry_hash": registry_hashes["transition_policy_registry_hash"],
+            "arbitration_rule_registry_hash": registry_hashes["arbitration_rule_registry_hash"],
             "boundary_model_registry_hash": registry_hashes["boundary_model_registry_hash"],
             "domain_registry_hash": registry_hashes["domain_registry_hash"],
             "law_registry_hash": registry_hashes["law_registry_hash"],

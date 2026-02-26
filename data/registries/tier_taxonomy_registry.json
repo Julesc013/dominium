@@ -7,17 +7,22 @@
     "taxonomies": [
       {
         "schema_version": "1.0.0",
-        "taxonomy_id": "default_minimal",
+        "taxonomy_id": "tiers.null",
         "tiers": [
           "macro",
           "render"
         ],
-        "collapse_required_invariants": [
-          "inv.epistemic_invariance"
+        "allowed_transitions": [
+          {
+            "from_tier": "macro",
+            "to_tier": "render"
+          },
+          {
+            "from_tier": "render",
+            "to_tier": "macro"
+          }
         ],
-        "expand_redaction_rules": [
-          "redaction.default"
-        ],
+        "default_transition_policy_id": "transition.policy.null",
         "extensions": {}
       },
       {
@@ -29,12 +34,33 @@
           "micro",
           "render"
         ],
-        "collapse_required_invariants": [
-          "inv.epistemic_invariance"
+        "allowed_transitions": [
+          {
+            "from_tier": "macro",
+            "to_tier": "meso"
+          },
+          {
+            "from_tier": "macro",
+            "to_tier": "micro"
+          },
+          {
+            "from_tier": "meso",
+            "to_tier": "micro"
+          },
+          {
+            "from_tier": "micro",
+            "to_tier": "meso"
+          },
+          {
+            "from_tier": "micro",
+            "to_tier": "macro"
+          },
+          {
+            "from_tier": "meso",
+            "to_tier": "macro"
+          }
         ],
-        "expand_redaction_rules": [
-          "redaction.default"
-        ],
+        "default_transition_policy_id": "transition.policy.default_realistic",
         "extensions": {}
       }
     ],

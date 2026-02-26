@@ -17,6 +17,12 @@
     },
     "version_introduced": "1.0.0",
     "deprecated": false,
-    "extensions": {}
+    "extensions": {
+      "allowed_transition_policy_ids": [
+        "transition.policy.default_realistic",
+        "transition.policy.rank_strict"
+      ],
+      "default_transition_policy_id": "transition.policy.default_realistic"
+    }
   }
 }

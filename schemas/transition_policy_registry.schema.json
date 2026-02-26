@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Transition Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic registry output for tier transition policies.",
+  "x-doc-ref": [
+    "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "$ref": "./transition_policy.schema.json"
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "policies": [
+        {
+          "schema_version": "1.0.0",
+          "transition_policy_id": "transition.policy.default_realistic",
+          "description": "Default deterministic transition policy.",
+          "max_micro_regions": 128,
+          "max_micro_entities": 100000,
+          "hysteresis_rules": {
+            "min_transition_interval_ticks": 0
+          },
+          "arbitration_rule_id": "arb.priority_by_distance",
+          "degrade_order": [
+            "fine",
+            "medium",
+            "coarse"
+          ],
+          "refuse_thresholds": {
+            "max_forced_micro_regions": 512
+          },
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ]
+}

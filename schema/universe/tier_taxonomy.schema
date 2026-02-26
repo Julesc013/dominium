@@ -4,13 +4,23 @@ schema_version: 1.0.0
 stability: core
 
 PURPOSE:
-- Define ordered fidelity tiers and required invariants on collapse/expand transitions.
+- Define ordered fidelity tiers and allowed transitions for deterministic tier control.
 
 REQUIRED SHAPE:
 record tier_taxonomy
   required:
+    - schema_version: semver
     - taxonomy_id: id
     - tiers: [id]
-    - collapse_required_invariants: [id]
-    - expand_redaction_rules: [id]
+    - allowed_transitions: [transition_pair]
+    - default_transition_policy_id: id
     - extensions: map
+
+record transition_pair
+  required:
+    - from_tier: id
+    - to_tier: id
+
+INVARIANTS:
+- Tier order is canonical and deterministic.
+- Transition pairs must be explicit and non-ambiguous.

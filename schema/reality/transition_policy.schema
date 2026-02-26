@@ -1,0 +1,25 @@
+SCHEMA: reality/transition_policy.schema
+schema_id: dominium.schema.reality.transition_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic transition-policy rows controlling tier activation/degradation arbitration.
+
+REQUIRED SHAPE:
+record transition_policy
+  required:
+    - schema_version: semver
+    - transition_policy_id: id
+    - description: text
+    - max_micro_regions: u32
+    - max_micro_entities: u32
+    - hysteresis_rules: map
+    - arbitration_rule_id: id
+    - degrade_order: [id]
+    - refuse_thresholds: map
+    - extensions: map
+
+INVARIANTS:
+- Policy is deterministic and declarative.
+- Arbitration and hysteresis remain wall-clock independent.

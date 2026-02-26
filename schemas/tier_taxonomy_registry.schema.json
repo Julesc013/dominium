@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic tier taxonomy registry output.",
   "x-doc-ref": [
-    "docs/reality/UNIVERSE_PHYSICS_PROFILE.md",
+    "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",
@@ -26,47 +26,7 @@
     "taxonomies": {
       "type": "array",
       "items": {
-        "type": "object",
-        "required": [
-          "schema_version",
-          "taxonomy_id",
-          "tiers",
-          "collapse_required_invariants",
-          "expand_redaction_rules",
-          "extensions"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "schema_version": {
-            "type": "string",
-            "const": "1.0.0"
-          },
-          "taxonomy_id": {
-            "type": "string"
-          },
-          "tiers": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "collapse_required_invariants": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "expand_redaction_rules": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "extensions": {
-            "type": "object",
-            "additionalProperties": true
-          }
-        }
+        "$ref": "./tier_taxonomy.schema.json"
       }
     },
     "registry_hash": {

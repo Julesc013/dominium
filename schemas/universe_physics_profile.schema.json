@@ -104,7 +104,7 @@
       "conservation_contract_set_id": "contracts.null",
       "allowed_exception_types": [],
       "numeric_precision_policy_id": "default_null",
-      "tier_taxonomy_id": "default_minimal",
+      "tier_taxonomy_id": "tiers.null",
       "time_model_id": "default_single_tick",
       "boundary_model_id": "procedural_infinite",
       "error_budget": {},

@@ -1,0 +1,26 @@
+{
+  "schema_id": "dominium.registry.arbitration_rule_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.arbitration_rule_registry",
+    "registry_version": "1.0.0",
+    "rules": [
+      {
+        "rule_id": "arb.equal_share",
+        "description": "Deterministic equal-share arbitration across active observers.",
+        "extensions": {}
+      },
+      {
+        "rule_id": "arb.priority_by_distance",
+        "description": "Deterministic arbitration by quantized distance then stable region ordering.",
+        "extensions": {}
+      },
+      {
+        "rule_id": "arb.server_authoritative_weighted",
+        "description": "Server-profile weighted deterministic arbitration across distributed interests.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

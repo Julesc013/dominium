@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Transition Event Schema",
+  "version": "1.0.0",
+  "description": "Deterministic tier transition event artifact.",
+  "x-doc-ref": [
+    "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "tick",
+    "shard_id",
+    "region_id",
+    "domain_id",
+    "solver_id",
+    "from_tier",
+    "to_tier",
+    "reason",
+    "invariant_checks",
+    "ledger_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "shard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "region_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "solver_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "from_tier": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_tier": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "interest",
+        "budget",
+        "user_request",
+        "server_policy"
+      ]
+    },
+    "invariant_checks": {
+      "type": "array",
+      "items": {
+        "$ref": "./invariant_check_result.schema.json"
+      }
+    },
+    "ledger_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "event_id": "transition.tick.42.region.earth.expand",
+      "tick": 42,
+      "shard_id": "shard.0",
+      "region_id": "region.object.earth",
+      "domain_id": "domain.reality",
+      "solver_id": "solver.expand.local_high_fidelity",
+      "from_tier": "macro",
+      "to_tier": "micro",
+      "reason": "interest",
+      "invariant_checks": [
+        {
+          "schema_version": "1.0.0",
+          "check_id": "check.region.earth.mass_energy",
+          "domain_id": "domain.reality",
+          "invariant_id": "inv.conservation.mass_energy_total",
+          "status": "pass",
+          "measured_value": 0,
+          "tolerance": 0,
+          "extensions": {}
+        }
+      ],
+      "ledger_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "deterministic_fingerprint": "1111111111111111111111111111111111111111111111111111111111111111",
+      "extensions": {}
+    }
+  ]
+}

@@ -234,6 +234,8 @@ REGISTRY_FILE_MAP = {
     "time_control_policy_registry_hash": "time_control_policy.registry.json",
     "dt_quantization_rule_registry_hash": "dt_quantization_rule.registry.json",
     "compaction_policy_registry_hash": "compaction_policy.registry.json",
+    "transition_policy_registry_hash": "transition_policy.registry.json",
+    "arbitration_rule_registry_hash": "arbitration_rule.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",
     "budget_policy_registry_hash": "budget_policy.registry.json",
     "fidelity_policy_registry_hash": "fidelity_policy.registry.json",

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Arbitration Rule Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic registry output for transition arbitration rules.",
+  "x-doc-ref": [
+    "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "rules",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "description",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "rules": [
+        {
+          "rule_id": "arb.priority_by_distance",
+          "description": "Deterministic arbitration by quantized distance and stable tie-breaks.",
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ]
+}

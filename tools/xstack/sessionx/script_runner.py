@@ -434,6 +434,22 @@ def run_intent_script(
     )
     if tier_taxonomy_registry_error:
         return tier_taxonomy_registry_error
+    transition_policy_registry, transition_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["transition_policy_registry_hash"],
+        expected_hash=str(registries.get("transition_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if transition_policy_registry_error:
+        return transition_policy_registry_error
+    arbitration_rule_registry, arbitration_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["arbitration_rule_registry_hash"],
+        expected_hash=str(registries.get("arbitration_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if arbitration_rule_registry_error:
+        return arbitration_rule_registry_error
     boundary_model_registry, boundary_model_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["boundary_model_registry_hash"],
@@ -1003,6 +1019,8 @@ def run_intent_script(
             "compaction_policy_registry": compaction_policy_registry,
             "numeric_precision_policy_registry": numeric_precision_policy_registry,
             "tier_taxonomy_registry": tier_taxonomy_registry,
+            "transition_policy_registry": transition_policy_registry,
+            "arbitration_rule_registry": arbitration_rule_registry,
             "boundary_model_registry": boundary_model_registry,
             "conservation_contract_set_registry": conservation_contract_set_registry,
             "quantity_registry": quantity_registry,
