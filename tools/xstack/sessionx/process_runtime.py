@@ -16,6 +16,11 @@ from src.reality.ledger import (
     last_ledger_hash,
     record_unaccounted_delta,
 )
+from src.performance.cost_engine import (
+    compute_cost_snapshot,
+    evaluate_envelope,
+    normalize_budget_envelope,
+)
 from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
     advance_time as time_advance,
@@ -4240,6 +4245,25 @@ def _region_management_tick(
     forced_collapse_region_ids: List[str] | None = None,
     forced_expand_tiers: Dict[str, str] | None = None,
 ) -> Dict[str, object]:
+    def _registry_row_by_id(registry_payload: dict, list_key: str, id_key: str, token: str) -> dict:
+        rows = list((registry_payload.get(list_key) or [])) if isinstance(registry_payload, dict) else []
+        normalized = str(token).strip()
+        if not normalized:
+            return {}
+        for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(id_key, ""))):
+            if str(row.get(id_key, "")).strip() == normalized:
+                return dict(row)
+        return {}
+
+    def _cap_budget_value(base_value: int, envelope_value: int) -> int:
+        base = max(0, int(base_value))
+        cap = max(0, int(envelope_value))
+        if base > 0 and cap > 0:
+            return int(min(base, cap))
+        if cap > 0:
+            return int(cap)
+        return int(base)
+
     activation_policy = _policy_payload(policy_context, "activation_policy")
     budget_policy = _policy_payload(policy_context, "budget_policy")
     fidelity_policy = _policy_payload(policy_context, "fidelity_policy")
@@ -4265,6 +4289,37 @@ def _region_management_tick(
             "refuse_thresholds": {},
             "extensions": {},
         }
+    budget_envelope_registry = _policy_payload(policy_context, "budget_envelope_registry")
+    budget_envelope_id = str((policy_context or {}).get("budget_envelope_id", "")).strip()
+    selected_budget_envelope = _registry_row_by_id(
+        budget_envelope_registry,
+        "envelopes",
+        "envelope_id",
+        budget_envelope_id,
+    )
+    normalized_budget_envelope = normalize_budget_envelope(
+        envelope=selected_budget_envelope,
+        budget_policy=budget_policy,
+    )
+    effective_budget_policy = dict(budget_policy)
+    effective_budget_policy["max_regions_micro"] = int(
+        _cap_budget_value(
+            _as_int(budget_policy.get("max_regions_micro", 0), 0),
+            _as_int(normalized_budget_envelope.get("max_micro_regions_per_shard", 0), 0),
+        )
+    )
+    effective_budget_policy["max_entities_micro"] = int(
+        _cap_budget_value(
+            _as_int(budget_policy.get("max_entities_micro", 0), 0),
+            _as_int(normalized_budget_envelope.get("max_micro_entities_per_shard", 0), 0),
+        )
+    )
+    effective_budget_policy["max_compute_units_per_tick"] = int(
+        _cap_budget_value(
+            _as_int(budget_policy.get("max_compute_units_per_tick", 0), 0),
+            _as_int(normalized_budget_envelope.get("max_solver_cost_units_per_tick", 0), 0),
+        )
+    )
     strict_contracts = bool((policy_context or {}).get("strict_contracts", False))
     transition_extensions = dict(transition_policy.get("extensions") or {})
     invariant_tolerances = dict(transition_extensions.get("invariant_tolerances") or {})
@@ -4411,10 +4466,10 @@ def _region_management_tick(
             }
         )
 
-    max_compute = max(0, _as_int(budget_policy.get("max_compute_units_per_tick", 0), 0))
-    max_entities = max(0, _as_int(budget_policy.get("max_entities_micro", 0), 0))
-    entity_weight = max(0, _as_int(budget_policy.get("entity_compute_weight", 0), 0))
-    tier_weight_by_tier = dict((tier, int(_tier_weight(budget_policy, tier))) for tier in _tier_tokens())
+    max_compute = max(0, _as_int(effective_budget_policy.get("max_compute_units_per_tick", 0), 0))
+    max_entities = max(0, _as_int(effective_budget_policy.get("max_entities_micro", 0), 0))
+    entity_weight = max(0, _as_int(effective_budget_policy.get("entity_compute_weight", 0), 0))
+    tier_weight_by_tier = dict((tier, int(_tier_weight(effective_budget_policy, tier))) for tier in _tier_tokens())
     tier_entity_target_by_tier = dict((tier, int(_tier_entity_target(fidelity_policy, tier))) for tier in _tier_tokens())
 
     def _selection_usage(selection: Dict[str, str]) -> Dict[str, int]:
@@ -4437,7 +4492,7 @@ def _region_management_tick(
     transition_plan = compute_transition_plan(
         tick=int(current_tick),
         transition_policy=transition_policy,
-        budget_policy=budget_policy,
+        budget_policy=effective_budget_policy,
         interest_regions_by_id=dict(interest_by_region),
         candidates=list(candidates),
         current_active=dict(current_active),
@@ -4734,8 +4789,32 @@ def _region_management_tick(
         key=lambda item: str(item.get("region_id", "")),
     )
 
-    if str(budget_outcome) == "degraded":
-        usage = _selection_usage(desired_active)
+    inspection_runtime_budget_state = dict((policy_context or {}).get("inspection_runtime_budget_state") or {})
+    inspection_used_by_tick = dict(inspection_runtime_budget_state.get("used_by_tick") or {})
+    inspection_cost_units = max(0, _as_int(inspection_used_by_tick.get(str(int(current_tick)), 0), 0))
+    cost_snapshot = compute_cost_snapshot(
+        active_tiers_by_region=dict(desired_active),
+        tier_weight_by_tier=tier_weight_by_tier,
+        tier_entity_target_by_tier=tier_entity_target_by_tier,
+        entity_compute_weight=int(entity_weight),
+        inspection_cost_units=int(inspection_cost_units),
+    )
+    envelope_evaluation = evaluate_envelope(
+        cost_snapshot=cost_snapshot,
+        envelope=normalized_budget_envelope,
+    )
+    usage = {
+        "compute_units": int(cost_snapshot.get("solver_cost_units", 0) or 0),
+        "entity_count": int(cost_snapshot.get("micro_entity_count", 0) or 0),
+    }
+    if bool(envelope_evaluation.get("inspection_cost_exceeded", False)) and str(budget_outcome) == "ok":
+        budget_outcome = "degraded"
+    if (
+        bool(envelope_evaluation.get("solver_cost_exceeded", False))
+        or bool(envelope_evaluation.get("micro_entities_exceeded", False))
+        or bool(envelope_evaluation.get("micro_regions_exceeded", False))
+    ):
+        budget_outcome = "capped"
 
     if collapse_ids or expand_ids:
         _ledger_emit_exception(
@@ -4832,6 +4911,9 @@ def _region_management_tick(
         "result": "complete",
         "budget_outcome": str(budget_outcome),
         "compute_units_used": int(usage["compute_units"]),
+        "cost_snapshot": dict(cost_snapshot),
+        "budget_envelope_id": str(normalized_budget_envelope.get("envelope_id", "")),
+        "envelope_evaluation": dict(envelope_evaluation),
         "active_regions": sorted(desired_active.keys()),
         "collapsed_regions": collapse_ids,
         "expanded_regions": expand_ids,
