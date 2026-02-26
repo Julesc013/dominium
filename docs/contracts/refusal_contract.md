@@ -118,6 +118,8 @@ Tool payload wrapper:
 - `refusal.contract.no_penetration_violation`
 - `refusal.ep.lod_information_gain`
 - `refusal.ep.memory_policy_violation`
+- `refusal.physics_profile_missing`
+- `refusal.physics_profile_mismatch`
 - `refusal.civ.entitlement_missing`
 - `refusal.civ.law_forbidden`
 - `refusal.civ.already_affiliated`
@@ -160,6 +162,8 @@ Tool payload wrapper:
 - `refusal.cosmetic.not_in_whitelist`: select cosmetic IDs and pack IDs present in the ranked/active policy allow-list.
 - `refusal.ep.lod_information_gain`: enforce solver-tier redaction and precision envelopes before emitting PerceivedModel output.
 - `refusal.ep.memory_policy_violation`: ensure memory payload channels/precision comply with active epistemic + retention policy chain.
+- `refusal.physics_profile_missing`: select/install a physics profile and bind `UniverseIdentity.physics_profile_id` before boot/handshake.
+- `refusal.physics_profile_mismatch`: client/server/save lineage `physics_profile_id` values must match exactly for deterministic compatibility.
 - `refusal.civ.entitlement_missing`: grant CIV entitlement for faction/affiliation/territory/diplomacy process request.
 - `refusal.civ.law_forbidden`: active law profile forbids requested CIV process; switch profile or update policy pack.
 - `refusal.civ.already_affiliated`: subject must leave current faction before joining another faction.
