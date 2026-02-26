@@ -206,6 +206,53 @@ def _transition_policy(runtime: dict, policy_id: str) -> dict:
     }
 
 
+def _budget_envelope(runtime: dict, envelope_id: str) -> dict:
+    registry = dict((runtime.get("registry_payloads") or {}).get("budget_envelope_registry") or {})
+    rows = list(registry.get("envelopes") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("envelope_id", ""))):
+        if str(row.get("envelope_id", "")).strip() == str(envelope_id).strip():
+            return dict(row)
+    return {
+        "envelope_id": str(envelope_id).strip() or "budget.null",
+        "max_micro_entities_per_shard": 0,
+        "max_micro_regions_per_shard": 0,
+        "max_solver_cost_units_per_tick": 0,
+        "max_inspection_cost_units_per_tick": 0,
+        "extensions": {},
+    }
+
+
+def _arbitration_policy(runtime: dict, policy_id: str) -> dict:
+    registry = dict((runtime.get("registry_payloads") or {}).get("arbitration_policy_registry") or {})
+    rows = list(registry.get("policies") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("arbitration_policy_id", ""))):
+        if str(row.get("arbitration_policy_id", "")).strip() == str(policy_id).strip():
+            return dict(row)
+    return {
+        "arbitration_policy_id": str(policy_id).strip() or "arb.equal_share",
+        "mode": "equal_share",
+        "weight_source": "derived",
+        "tie_break_rule_id": "tie.player_region_tick",
+        "extensions": {},
+    }
+
+
+def _inspection_cache_policy(runtime: dict, policy_id: str) -> dict:
+    registry = dict((runtime.get("registry_payloads") or {}).get("inspection_cache_policy_registry") or {})
+    rows = list(registry.get("policies") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("cache_policy_id", ""))):
+        if str(row.get("cache_policy_id", "")).strip() == str(policy_id).strip():
+            return dict(row)
+    return {
+        "cache_policy_id": str(policy_id).strip() or "cache.off",
+        "enable_caching": False,
+        "invalidation_rules": [],
+        "max_cache_entries": 0,
+        "eviction_rule_id": "evict.none",
+        "extensions": {},
+    }
+
+
 def _is_unauthorized_time_control_refusal(process_id: str, reason_code: str) -> bool:
     token = str(process_id).strip()
     reason = str(reason_code).strip()
@@ -247,8 +294,23 @@ def _runtime_policy_context(runtime: dict) -> dict:
     selected_time_policy = _time_control_policy(runtime=runtime, policy_id=time_control_policy_id)
     transition_policy_id = _session_transition_policy_id(runtime=runtime, profile_row=profile_row)
     selected_transition_policy = _transition_policy(runtime=runtime, policy_id=transition_policy_id)
+    budget_envelope_id = str(profile_row.get("budget_envelope_id", "")).strip() or "budget.null"
+    arbitration_policy_id = str(profile_row.get("arbitration_policy_id", "")).strip() or "arb.equal_share"
+    inspection_cache_policy_id = str(profile_row.get("inspection_cache_policy_id", "")).strip() or "cache.off"
+    selected_budget_envelope = _budget_envelope(runtime=runtime, envelope_id=budget_envelope_id)
+    selected_arbitration_policy = _arbitration_policy(runtime=runtime, policy_id=arbitration_policy_id)
+    selected_inspection_cache_policy = _inspection_cache_policy(runtime=runtime, policy_id=inspection_cache_policy_id)
     dt_rule_id = str(selected_time_policy.get("dt_quantization_rule_id", "")).strip() or "dt.rule.single_tick"
     selected_dt_rule = _dt_quantization_rule(runtime=runtime, dt_rule_id=dt_rule_id)
+    inspection_runtime_budget_state = server.get("inspection_runtime_budget_state")
+    if not isinstance(inspection_runtime_budget_state, dict):
+        inspection_runtime_budget_state = {"used_by_tick": {}}
+        server["inspection_runtime_budget_state"] = inspection_runtime_budget_state
+    inspection_cache_state = server.get("inspection_cache_state")
+    if not isinstance(inspection_cache_state, dict):
+        inspection_cache_state = {"entries_by_key": {}}
+        server["inspection_cache_state"] = inspection_cache_state
+    runtime["server"] = server
 
     context = {
         **dict(runtime.get("registry_payloads") or {}),
@@ -266,6 +328,14 @@ def _runtime_policy_context(runtime: dict) -> dict:
         "tier_taxonomy_id": str(tier_taxonomy_id),
         "transition_policy_id": str(transition_policy_id),
         "transition_policy": dict(selected_transition_policy),
+        "budget_envelope_id": str(budget_envelope_id),
+        "budget_envelope": dict(selected_budget_envelope),
+        "arbitration_policy_id": str(arbitration_policy_id),
+        "arbitration_policy": dict(selected_arbitration_policy),
+        "inspection_cache_policy_id": str(inspection_cache_policy_id),
+        "inspection_cache_policy": dict(selected_inspection_cache_policy),
+        "inspection_runtime_budget_state": inspection_runtime_budget_state,
+        "inspection_cache_state": inspection_cache_state,
         "dt_quantization_rule_id": str(dt_rule_id),
         "dt_quantization_rule": dict(selected_dt_rule),
         "resolved_packs": list(((runtime.get("lock_payload") or {}).get("resolved_packs") or [])),
