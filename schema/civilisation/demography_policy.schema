@@ -1,0 +1,26 @@
+SCHEMA: civilisation/demography_policy.schema
+schema_id: dominium.schema.civilisation.demography_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic CIV-4 demography policy records.
+
+REQUIRED SHAPE:
+record demography_policy
+  required:
+    - schema_version: semver
+    - demography_policy_id: id
+    - births_enabled: bool
+    - death_model_id: id
+    - birth_model_id: id
+    - migration_model_id: id
+    - tick_rate: u32
+    - deterministic_tie_break_id: id
+    - extensions: map
+
+INVARIANTS:
+- Demography policy selection is registry-driven.
+- births_enabled may be further constrained by LawProfile.
+- tick_rate must be deterministic and >= 1.
+

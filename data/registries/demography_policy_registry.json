@@ -1,0 +1,42 @@
+{
+  "schema_id": "dominium.registry.demography_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.demography_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "demography_policy_id": "demo.policy.basic_births",
+        "births_enabled": true,
+        "death_model_id": "demo.death.basic",
+        "birth_model_id": "demo.birth.basic",
+        "migration_model_id": "demo.migration.banded",
+        "tick_rate": 1,
+        "deterministic_tie_break_id": "tie.cohort_id.asc",
+        "extensions": {}
+      },
+      {
+        "demography_policy_id": "demo.policy.none",
+        "births_enabled": false,
+        "death_model_id": "demo.death.none",
+        "birth_model_id": "demo.birth.none",
+        "migration_model_id": "demo.migration.instant",
+        "tick_rate": 1,
+        "deterministic_tie_break_id": "tie.cohort_id.asc",
+        "extensions": {}
+      },
+      {
+        "demography_policy_id": "demo.policy.stable_no_birth",
+        "births_enabled": false,
+        "death_model_id": "demo.death.low",
+        "birth_model_id": "demo.birth.none",
+        "migration_model_id": "demo.migration.banded",
+        "tick_rate": 1,
+        "deterministic_tie_break_id": "tie.cohort_id.asc",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

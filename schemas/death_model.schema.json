@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Death Model Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic CIV-4 death model record.",
+  "x-doc-ref": [
+    "docs/civilisation/DEMOGRAPHY_OPTIONALITY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "death_model_id",
+    "description",
+    "base_death_rate_per_tick",
+    "modifiers",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "death_model_id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "base_death_rate_per_tick": {
+      "type": "number",
+      "minimum": 0
+    },
+    "modifiers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "integer",
+          "string",
+          "boolean"
+        ]
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "death_model_id": "demo.death.low",
+      "description": "Low deterministic death model.",
+      "base_death_rate_per_tick": 0.001,
+      "modifiers": {},
+      "extensions": {}
+    }
+  ]
+}
+

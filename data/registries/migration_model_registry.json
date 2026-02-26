@@ -1,0 +1,49 @@
+{
+  "schema_id": "dominium.registry.migration_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.migration_model_registry",
+    "registry_version": "1.0.0",
+    "migration_models": [
+      {
+        "migration_model_id": "demo.migration.banded",
+        "description": "Deterministic distance-band migration model.",
+        "travel_time_policy_id": "travel.band.default",
+        "capacity_limits": {
+          "max_transit_per_tick": 1000000
+        },
+        "extensions": {
+          "distance_bands_mm": [
+            {
+              "max_distance_mm": 0,
+              "travel_ticks": 0
+            },
+            {
+              "max_distance_mm": 5000,
+              "travel_ticks": 1
+            },
+            {
+              "max_distance_mm": 20000,
+              "travel_ticks": 4
+            },
+            {
+              "max_distance_mm": 100000,
+              "travel_ticks": 12
+            }
+          ]
+        }
+      },
+      {
+        "migration_model_id": "demo.migration.instant",
+        "description": "Instant deterministic migration model for tests and no-delay policies.",
+        "travel_time_policy_id": "travel.instant",
+        "capacity_limits": {},
+        "extensions": {
+          "instant": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
+

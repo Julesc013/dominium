@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.registry.birth_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.birth_model_registry",
+    "registry_version": "1.0.0",
+    "birth_models": [
+      {
+        "birth_model_id": "demo.birth.basic",
+        "description": "Baseline deterministic birth model using abstract pairing semantics.",
+        "base_birth_rate_per_tick": 0.003,
+        "modifiers": {
+          "settlement.capacity.scalar": 1.0
+        },
+        "extensions": {}
+      },
+      {
+        "birth_model_id": "demo.birth.low",
+        "description": "Low deterministic birth model.",
+        "base_birth_rate_per_tick": 0.001,
+        "modifiers": {},
+        "extensions": {}
+      },
+      {
+        "birth_model_id": "demo.birth.none",
+        "description": "Births disabled by model.",
+        "base_birth_rate_per_tick": 0.0,
+        "modifiers": {},
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+
