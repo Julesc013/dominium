@@ -33,6 +33,15 @@ def _norm(path: str) -> str:
     return str(path or "").replace("\\", "/")
 
 
+def _rel_or_norm(path: str, repo_root: str) -> str:
+    abs_path = os.path.normpath(os.path.abspath(path))
+    try:
+        rel_path = os.path.relpath(abs_path, repo_root)
+    except ValueError:
+        return _norm(abs_path)
+    return _norm(rel_path)
+
+
 def _read_json_object(path: str) -> Tuple[dict, str]:
     try:
         payload = json.load(open(path, "r", encoding="utf-8"))
@@ -168,7 +177,7 @@ def _source_payload(repo_root: str, source_pack_rel: str) -> Tuple[dict, str, Li
             "refusal.data_source_missing",
             "dem source payload is missing or invalid",
             "$.source_payload",
-            source_path=_norm(os.path.relpath(source_abs, repo_root)),
+            source_path=_rel_or_norm(source_abs, repo_root),
         )
 
     checked = validate_instance(
@@ -210,7 +219,7 @@ def _source_payload(repo_root: str, source_pack_rel: str) -> Tuple[dict, str, Li
                 "DEM tile declared by source payload is missing",
                 "$.source_payload.tiles",
                 source_pack_id=source_pack_id,
-                tile_path=_norm(os.path.relpath(abs_path, repo_root)),
+                tile_path=_rel_or_norm(abs_path, repo_root),
             )
         grid, parse_err = _parse_dem_tile(abs_path)
         if parse_err:
@@ -219,7 +228,7 @@ def _source_payload(repo_root: str, source_pack_rel: str) -> Tuple[dict, str, Li
                 "failed to parse DEM tile data",
                 "$.source_payload.tiles",
                 source_pack_id=source_pack_id,
-                tile_path=_norm(os.path.relpath(abs_path, repo_root)),
+                tile_path=_rel_or_norm(abs_path, repo_root),
             )
         hashes.append({"path": _norm(rel), "sha256": _file_sha256(abs_path)})
         tiles.append(
@@ -382,7 +391,7 @@ def run_import(
         "source_hash": source_hash,
         "input_merkle_hash": input_merkle_hash,
         "derived_pack": _norm(derived_pack),
-        "output_path": _norm(os.path.relpath(pyramid_path, repo_root)),
+        "output_path": _rel_or_norm(pyramid_path, repo_root),
         "output_hash": canonical_sha256(derived_payload),
         "level_count": len(levels),
         "tile_count": sum(len(list(level.get("tiles") or [])) for level in levels),

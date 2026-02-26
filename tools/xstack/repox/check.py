@@ -380,6 +380,16 @@ NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
     "tools/xstack/repox/",
 )
 
+PHYSICS_LITERAL_ALLOWED_PATH_PREFIXES = (
+    "packs/",
+    "data/registries/",
+    "docs/",
+    "schemas/",
+    "tools/auditx/",
+    "tools/xstack/testx/tests/",
+    "tools/xstack/repox/check.py",
+)
+
 AUDITX_FINDINGS_PATH = "docs/audit/auditx/FINDINGS.json"
 AUDITX_RUNTIME_PROBE_OUTPUT_ROOT = ".xstack_cache/auditx/repox_probe"
 AUDITX_HIGH_RISK_CONFIDENCE = 0.85
@@ -4892,6 +4902,111 @@ def _append_hidden_ban_invariant_findings(
             )
 
 
+def _append_reality_profile_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_files = {
+        "schemas/universe_identity.schema.json": (
+            "physics_profile_id",
+            "immutable_after_create",
+            "initial_pack_set_hash_expectation",
+        ),
+        "tools/xstack/sessionx/creator.py": (
+            "physics_profile_id",
+            "select_physics_profile(",
+            "write_null_boot_artifacts(",
+        ),
+        "tools/xstack/sessionx/runner.py": (
+            "select_physics_profile(",
+            "refusal.physics_profile_mismatch",
+            "server_physics_profile_id=",
+        ),
+        "tools/xstack/sessionx/net_handshake.py": (
+            "refusal.physics_profile_missing",
+            "refusal.physics_profile_mismatch",
+            "server_physics_profile_id",
+        ),
+        "tools/xstack/sessionx/universe_physics.py": (
+            "NULL_PHYSICS_PROFILE_ID",
+            "write_null_boot_artifacts(",
+            "default_null_lockfile_payload(",
+        ),
+    }
+    for rel_path, tokens in required_files.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required RS-1 physics profile runtime file is missing",
+                    rule_id="INV-PHYSICS-PROFILE-IN-IDENTITY",
+                )
+            )
+            continue
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required RS-1 physics profile runtime file is unreadable",
+                    rule_id="INV-PHYSICS-PROFILE-IN-IDENTITY",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="physics profile identity/handshake invariant token is missing",
+                    rule_id="INV-PHYSICS-PROFILE-IN-IDENTITY",
+                )
+            )
+
+    runtime_scan_roots = (
+        "tools/xstack/sessionx/",
+        "src/",
+        "worldgen/",
+    )
+    for rel_path in _iter_negative_code_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.startswith(runtime_scan_roots):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            lowered = str(line).lower()
+            if "physics.default.realistic" not in lowered:
+                continue
+            if rel_norm.startswith(PHYSICS_LITERAL_ALLOWED_PATH_PREFIXES):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=str(line).strip()[:140],
+                    message="runtime must not hardcode the optional realistic profile id; profile selection must remain pack-driven",
+                    rule_id="INV-NO-HARDCODED-PHYSICS-ASSUMPTIONS",
+                )
+            )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -4923,6 +5038,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_hidden_ban_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_reality_profile_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
