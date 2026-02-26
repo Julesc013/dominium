@@ -411,6 +411,7 @@ def replay_intent_script_srz(
     script_state_hash_anchors: List[str] = []
     tick_hash_anchors: List[dict] = []
     checkpoint_hashes: List[dict] = []
+    checkpoint_snapshots: List[dict] = []
     resolution_log: List[dict] = []
     last_tick_hash = ""
     last_checkpoint_hash = ""
@@ -516,6 +517,18 @@ def replay_intent_script_srz(
                     "composite_hash": str(current_composite),
                 }
             )
+            checkpoint_snapshots.append(
+                {
+                    "scheduler_tick": int(scheduler_tick),
+                    "simulation_tick": int(current_tick),
+                    "checkpoint_hash": str(cp_hash),
+                    "tick_hash": str(tick_hash),
+                    "composite_hash": str(current_composite),
+                    "ledger_hash": str(tick_ledger_hash or ""),
+                    "truth_hash_anchor": canonical_sha256(state),
+                    "state_snapshot": copy.deepcopy(state),
+                }
+            )
 
         resolution_log.append(
             {
@@ -536,6 +549,7 @@ def replay_intent_script_srz(
         "state_hash_anchors": script_state_hash_anchors,
         "tick_hash_anchors": tick_hash_anchors,
         "checkpoint_hashes": checkpoint_hashes,
+        "checkpoint_snapshots": checkpoint_snapshots,
         "composite_hash": final_composite,
         "final_state_hash": canonical_sha256(state),
         "srz": {

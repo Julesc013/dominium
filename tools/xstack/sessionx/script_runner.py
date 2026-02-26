@@ -29,6 +29,112 @@ from .scheduler import replay_intent_script_srz
 from .universe_physics import select_physics_profile
 
 
+def _is_sha256_hex(token: str) -> bool:
+    value = str(token or "").strip()
+    if len(value) != 64:
+        return False
+    for ch in value:
+        if ch not in "0123456789abcdefABCDEF":
+            return False
+    return True
+
+
+def _normalize_hash64(token: str, seed: object) -> str:
+    value = str(token or "").strip()
+    if _is_sha256_hex(value):
+        return value.lower()
+    return canonical_sha256(seed)
+
+
+def _write_checkpoint_artifacts(
+    *,
+    repo_root: str,
+    save_id: str,
+    pack_lock_hash: str,
+    physics_profile_id: str,
+    registry_hashes: dict,
+    checkpoint_snapshots: List[dict],
+) -> Tuple[List[dict], List[str], Dict[str, object]]:
+    rows: List[dict] = []
+    paths: List[str] = []
+    for snapshot_row in sorted(
+        (dict(item) for item in (checkpoint_snapshots or []) if isinstance(item, dict)),
+        key=lambda item: (
+            int(item.get("scheduler_tick", 0) or 0),
+            int(item.get("simulation_tick", 0) or 0),
+            str(item.get("checkpoint_hash", "")),
+        ),
+    ):
+        scheduler_tick = int(snapshot_row.get("scheduler_tick", 0) or 0)
+        simulation_tick = int(snapshot_row.get("simulation_tick", 0) or 0)
+        checkpoint_hash = str(snapshot_row.get("checkpoint_hash", "")).strip()
+        tick_hash = str(snapshot_row.get("tick_hash", "")).strip()
+        composite_hash = str(snapshot_row.get("composite_hash", "")).strip()
+        snapshot_state = dict(snapshot_row.get("state_snapshot") or {})
+        checkpoint_id = "checkpoint.{}.sched.{}.tick.{}".format(str(save_id), int(scheduler_tick), int(simulation_tick))
+
+        snapshot_rel = norm(
+            os.path.join("saves", str(save_id), "checkpoints", "{}.snapshot.json".format(checkpoint_id))
+        )
+        snapshot_abs = os.path.join(repo_root, snapshot_rel.replace("/", os.sep))
+        write_canonical_json(snapshot_abs, snapshot_state)
+
+        truth_hash_anchor = _normalize_hash64(
+            str(snapshot_row.get("truth_hash_anchor", "")),
+            {"snapshot": snapshot_state},
+        )
+        ledger_hash = _normalize_hash64(
+            str(snapshot_row.get("ledger_hash", "")),
+            {
+                "checkpoint_id": checkpoint_id,
+                "scheduler_tick": int(scheduler_tick),
+                "simulation_tick": int(simulation_tick),
+                "tick_hash": tick_hash,
+            },
+        )
+        checkpoint_payload = {
+            "schema_version": "1.0.0",
+            "checkpoint_id": checkpoint_id,
+            "save_id": str(save_id),
+            "tick": int(simulation_tick),
+            "pack_lock_hash": _normalize_hash64(pack_lock_hash, {"save_id": str(save_id)}),
+            "physics_profile_id": str(physics_profile_id),
+            "registry_hashes": dict(registry_hashes or {}),
+            "truth_hash_anchor": truth_hash_anchor,
+            "ledger_hash": ledger_hash,
+            "payload_ref": snapshot_rel,
+            "extensions": {
+                "scheduler_tick": int(scheduler_tick),
+                "checkpoint_hash": checkpoint_hash,
+                "tick_hash": tick_hash,
+                "composite_hash": composite_hash,
+            },
+        }
+        valid = validate_instance(
+            repo_root=repo_root,
+            schema_name="time_checkpoint",
+            payload=checkpoint_payload,
+            strict_top_level=True,
+        )
+        if not bool(valid.get("valid", False)):
+            return [], [], refusal(
+                "REFUSE_TIME_CHECKPOINT_SCHEMA_INVALID",
+                "checkpoint artifact payload failed schema validation",
+                "Repair checkpoint artifact generation fields and retry script run.",
+                {"checkpoint_id": checkpoint_id},
+                "$.checkpoint",
+            )
+        checkpoint_meta_rel = norm(
+            os.path.join("saves", str(save_id), "checkpoints", "{}.checkpoint.json".format(checkpoint_id))
+        )
+        checkpoint_meta_abs = os.path.join(repo_root, checkpoint_meta_rel.replace("/", os.sep))
+        write_canonical_json(checkpoint_meta_abs, checkpoint_payload)
+
+        rows.append(dict(checkpoint_payload))
+        paths.append(checkpoint_meta_rel)
+    return rows, paths, {}
+
+
 def _load_script(path: str) -> Tuple[dict, List[dict], Dict[str, object]]:
     payload, err = read_json_object(path)
     if err:
@@ -765,6 +871,7 @@ def run_intent_script(
     state_hash_anchors = list(script_result.get("state_hash_anchors") or [])
     tick_hash_anchors = list(script_result.get("tick_hash_anchors") or [])
     checkpoint_hashes = list(script_result.get("checkpoint_hashes") or [])
+    checkpoint_snapshots = list(script_result.get("checkpoint_snapshots") or [])
     composite_hash = str(script_result.get("composite_hash", ""))
     final_state_hash = str(script_result.get("final_state_hash", ""))
     srz = dict(script_result.get("srz") or {})
@@ -784,6 +891,17 @@ def run_intent_script(
             {"schema_id": "universe_state"},
             "$.universe_state",
         )
+
+    checkpoint_artifacts, checkpoint_artifact_paths, checkpoint_artifact_error = _write_checkpoint_artifacts(
+        repo_root=repo_root,
+        save_id=save_id,
+        pack_lock_hash=str(lock_payload.get("pack_lock_hash", "")),
+        physics_profile_id=identity_physics_profile_id,
+        registry_hashes=dict(registries),
+        checkpoint_snapshots=checkpoint_snapshots,
+    )
+    if checkpoint_artifact_error:
+        return checkpoint_artifact_error
 
     if write_state:
         write_canonical_json(state_path, updated_state)
@@ -893,6 +1011,8 @@ def run_intent_script(
         "state_hash_anchors": state_hash_anchors,
         "tick_hash_anchors": tick_hash_anchors,
         "checkpoint_hashes": checkpoint_hashes,
+        "checkpoint_artifact_hashes": [canonical_sha256(item) for item in checkpoint_artifacts],
+        "checkpoint_artifact_paths": checkpoint_artifact_paths,
         "composite_hash": composite_hash,
         "final_state_hash": final_state_hash,
         "physics_profile_id": identity_physics_profile_id,
@@ -953,6 +1073,8 @@ def run_intent_script(
         "state_hash_anchors": state_hash_anchors,
         "tick_hash_anchors": tick_hash_anchors,
         "checkpoint_hashes": checkpoint_hashes,
+        "checkpoint_artifact_hashes": [canonical_sha256(item) for item in checkpoint_artifacts],
+        "checkpoint_artifact_paths": checkpoint_artifact_paths,
         "composite_hash": composite_hash,
         "final_state_hash": final_state_hash,
         "performance_state": dict(updated_state.get("performance_state") or {}),
