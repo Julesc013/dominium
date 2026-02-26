@@ -293,9 +293,9 @@
       }
     },
     "INV-MODE-AS-PROFILES": {
-      "finding_count": 58,
+      "finding_count": 59,
       "recommended_actions": {
-        "ADD_RULE": 58
+        "ADD_RULE": 59
       },
       "sample_findings": [
         {
@@ -325,7 +325,7 @@
         }
       ],
       "severities": {
-        "VIOLATION": 58
+        "VIOLATION": 59
       }
     },
     "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
@@ -365,9 +365,9 @@
       }
     },
     "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 58,
+      "finding_count": 59,
       "recommended_actions": {
-        "ADD_RULE": 58
+        "ADD_RULE": 59
       },
       "sample_findings": [
         {
@@ -397,7 +397,7 @@
         }
       ],
       "severities": {
-        "VIOLATION": 58
+        "VIOLATION": 59
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
@@ -579,27 +579,6 @@
       ],
       "severities": {
         "RISK": 1
-      }
-    },
-    "INV-UI-NEVER-MUTATES-TRUTH": {
-      "finding_count": 2,
-      "recommended_actions": {
-        "REWRITE": 2
-      },
-      "sample_findings": [
-        {
-          "category": "interaction.interaction_bypass_smell",
-          "finding_id": "E52_INTERACTION_BYPASS_SMELL:0001",
-          "location": "tools/interaction/interaction_cli.py"
-        },
-        {
-          "category": "interaction.interaction_bypass_smell",
-          "finding_id": "E52_INTERACTION_BYPASS_SMELL:0002",
-          "location": "tools/interaction/interaction_cli.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 2
       }
     },
     "INV-WORKSPACE-ISOLATION": {
