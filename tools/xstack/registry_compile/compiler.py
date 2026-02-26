@@ -1498,6 +1498,99 @@ def _control_registry_rows(
     return control_action_rows, controller_type_rows, errors
 
 
+def _interaction_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict]]:
+    _record, action_rows_raw, load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/interaction_action_registry.json",
+        expected_schema_id="dominium.registry.interaction_action_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="actions",
+    )
+    if load_errors:
+        return [], load_errors
+
+    errors: List[dict] = []
+    action_rows: List[dict] = []
+    action_seen = set()
+    allowed_target_kinds = {"agent", "cohort", "faction", "territory"}
+    allowed_preview_modes = {"none", "cheap", "expensive"}
+    for entry in sorted(action_rows_raw, key=lambda row: str((row or {}).get("action_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_interaction_action_entry",
+                    "message": "interaction action entry must be object",
+                    "path": "$.actions",
+                }
+            )
+            continue
+        action_id = str(entry.get("action_id", "")).strip()
+        process_id = str(entry.get("process_id", "")).strip()
+        display_name = str(entry.get("display_name", "")).strip()
+        target_kinds = entry.get("target_kinds")
+        preview_mode = str(entry.get("preview_mode", "")).strip()
+        required_lens_channels = entry.get("required_lens_channels")
+        default_ui_hints = entry.get("default_ui_hints")
+        extensions = entry.get("extensions")
+        parameter_schema_id = entry.get("parameter_schema_id")
+        if (
+            not action_id
+            or not process_id
+            or not display_name
+            or not isinstance(target_kinds, list)
+            or preview_mode not in allowed_preview_modes
+            or not isinstance(required_lens_channels, list)
+            or not isinstance(default_ui_hints, dict)
+            or not isinstance(extensions, dict)
+            or (parameter_schema_id is not None and not isinstance(parameter_schema_id, str))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_interaction_action_entry",
+                    "message": "interaction action '{}' missing required fields".format(action_id or "<missing>"),
+                    "path": "$.actions",
+                }
+            )
+            continue
+        if action_id in action_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_interaction_action_id",
+                    "message": "duplicate interaction action_id '{}'".format(action_id),
+                    "path": "$.actions.action_id",
+                }
+            )
+            continue
+        normalized_target_kinds = _sorted_unique_strings(target_kinds)
+        if not normalized_target_kinds or any(token not in allowed_target_kinds for token in normalized_target_kinds):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_interaction_action_targets",
+                    "message": "interaction action '{}' has invalid target_kinds".format(action_id),
+                    "path": "$.actions.target_kinds",
+                }
+            )
+            continue
+        action_seen.add(action_id)
+        action_rows.append(
+            {
+                "action_id": action_id,
+                "process_id": process_id,
+                "display_name": display_name,
+                "target_kinds": normalized_target_kinds,
+                "parameter_schema_id": str(parameter_schema_id).strip() if isinstance(parameter_schema_id, str) else None,
+                "preview_mode": preview_mode,
+                "default_ui_hints": dict((str(key), default_ui_hints[key]) for key in sorted(default_ui_hints.keys())),
+                "required_lens_channels": _sorted_unique_strings(required_lens_channels),
+                "extensions": dict(extensions),
+            }
+        )
+    action_rows = sorted(action_rows, key=lambda row: str(row.get("action_id", "")))
+    return action_rows, errors
+
+
 def _civilisation_registry_rows(
     repo_root: str,
 ) -> Tuple[
@@ -6117,6 +6210,9 @@ def compile_bundle(
     control_action_rows, controller_type_rows, control_registry_errors = _control_registry_rows(
         repo_root=repo_root,
     )
+    interaction_action_rows, interaction_registry_errors = _interaction_registry_rows(
+        repo_root=repo_root,
+    )
     (
         governance_type_rows,
         diplomatic_state_rows,
@@ -6350,6 +6446,7 @@ def compile_bundle(
         + policy_errors
         + worldgen_constraints_errors
         + control_registry_errors
+        + interaction_registry_errors
         + civilisation_registry_errors
         + conservation_registry_errors
         + performance_registry_errors
@@ -6519,6 +6616,13 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "actions": control_action_rows,
+        }
+    )
+    interaction_action_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "actions": interaction_action_rows,
         }
     )
     controller_type_payload = _finalize_registry_payload(
@@ -6865,6 +6969,7 @@ def compile_bundle(
         "experience_registry": ("experience_registry", experience_payload),
         "lens_registry": ("lens_registry", lens_payload),
         "control_action_registry": ("control_action_registry", control_action_payload),
+        "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
         "governance_type_registry": ("governance_type_registry", governance_type_payload),
         "diplomatic_state_registry": ("diplomatic_state_registry", diplomatic_state_payload),
@@ -6941,6 +7046,7 @@ def compile_bundle(
         "experience_registry",
         "lens_registry",
         "control_action_registry",
+        "interaction_action_registry",
         "controller_type_registry",
         "governance_type_registry",
         "diplomatic_state_registry",
@@ -7034,6 +7140,7 @@ def compile_bundle(
             "experience_registry_hash": registry_hashes["experience_registry_hash"],
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
+            "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
             "governance_type_registry_hash": registry_hashes["governance_type_registry_hash"],
             "diplomatic_state_registry_hash": registry_hashes["diplomatic_state_registry_hash"],

@@ -1,0 +1,134 @@
+{
+  "schema_id": "dominium.registry.interaction_action_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.interaction_action_registry",
+    "registry_version": "1.0.0",
+    "actions": [
+      {
+        "action_id": "interaction.inspect",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect",
+        "target_kinds": [
+          "agent",
+          "cohort",
+          "faction",
+          "territory"
+        ],
+        "parameter_schema_id": "dominium.schema.interaction.inspect_params",
+        "preview_mode": "expensive",
+        "default_ui_hints": {
+          "group": "inspect",
+          "icon": "glyph.inspect",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.core.entities"
+        ],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.move_agent",
+        "process_id": "process.agent_move",
+        "display_name": "Move",
+        "target_kinds": [
+          "agent"
+        ],
+        "parameter_schema_id": "dominium.intent.agent_move",
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "movement",
+          "icon": "glyph.move",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.core.entities"
+        ],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.migrate",
+        "process_id": "process.cohort_relocate",
+        "display_name": "Migrate",
+        "target_kinds": [
+          "cohort"
+        ],
+        "parameter_schema_id": "dominium.schema.civilisation.order_move",
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "movement",
+          "icon": "glyph.migrate",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.core.entities"
+        ],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.assimilate",
+        "process_id": "process.affiliation_join",
+        "display_name": "Assimilate",
+        "target_kinds": [
+          "agent",
+          "cohort"
+        ],
+        "parameter_schema_id": "dominium.schema.civilisation.affiliation",
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "civilisation",
+          "icon": "glyph.assimilate",
+          "confirm": true
+        },
+        "required_lens_channels": [
+          "ch.core.entities"
+        ],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.issue_order",
+        "process_id": "process.order_create",
+        "display_name": "Issue Order",
+        "target_kinds": [
+          "agent",
+          "cohort",
+          "faction",
+          "territory"
+        ],
+        "parameter_schema_id": "dominium.schema.civilisation.order",
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "civilisation",
+          "icon": "glyph.order",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.core.entities"
+        ],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.communicate",
+        "process_id": "process.instrument_radio_send_text",
+        "display_name": "Communicate",
+        "target_kinds": [
+          "agent",
+          "cohort",
+          "faction"
+        ],
+        "parameter_schema_id": "dominium.schema.diegetics.message",
+        "preview_mode": "none",
+        "default_ui_hints": {
+          "group": "communication",
+          "icon": "glyph.radio",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.diegetic.radio_text"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

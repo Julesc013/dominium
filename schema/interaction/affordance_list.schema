@@ -1,0 +1,22 @@
+SCHEMA: interaction/affordance_list.schema
+schema_id: dominium.schema.interaction.affordance_list
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic affordance list payloads returned for a selected target and viewpoint.
+
+REQUIRED SHAPE:
+record affordance_list
+  required:
+    - schema_version: semver
+    - tick: u64
+    - viewpoint_id: id
+    - target_semantic_id: id
+    - affordances: list[affordance]
+    - list_hash: hash_hex
+    - extensions: map
+
+INVARIANTS:
+- Affordances are sorted deterministically.
+- `list_hash` is canonical hash of deterministic list payload.

@@ -49,6 +49,20 @@
         "1.0.0"
       ]
     },
+    "affordance": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "affordance_list": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "affiliation": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -540,6 +554,20 @@
       ]
     },
     "inspection_cache_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "interaction_action_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "interaction_preview": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
