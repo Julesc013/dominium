@@ -16,6 +16,7 @@ from src.reality.ledger import (
     last_ledger_hash,
     record_unaccounted_delta,
 )
+from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
     advance_time as time_advance,
     clamp_rate_to_policy as time_clamp_rate_to_policy,
@@ -4085,6 +4086,20 @@ def _region_management_tick(
             {"process_id": "process.region_management_tick"},
             "$.policy_context",
         )
+    transition_policy = _policy_payload(policy_context, "transition_policy")
+    if not transition_policy:
+        transition_policy = {
+            "transition_policy_id": str((policy_context or {}).get("transition_policy_id", "")).strip()
+            or "transition.policy.default_runtime",
+            "description": "fallback deterministic transition policy",
+            "max_micro_regions": int(_as_int(budget_policy.get("max_regions_micro", 0), 0)),
+            "max_micro_entities": int(_as_int(budget_policy.get("max_entities_micro", 0), 0)),
+            "hysteresis_rules": {"min_transition_interval_ticks": 0},
+            "arbitration_rule_id": "arb.priority_by_distance",
+            "degrade_order": ["fine", "medium", "coarse"],
+            "refuse_thresholds": {},
+            "extensions": {},
+        }
 
     entries = _astronomy_entries(navigation_indices)
     if not entries:
@@ -4213,135 +4228,65 @@ def _region_management_tick(
             }
         )
 
-    candidates = sorted(candidates, key=lambda item: (int(item.get("priority", 0)), str(item.get("object_id", ""))))
-    max_regions = max(0, _as_int(budget_policy.get("max_regions_micro", 0), 0))
-    selected = {}
-    priority_map = {}
-    for item in candidates[:max_regions]:
-        region_id = str(item.get("region_id", ""))
-        selected[region_id] = str(item.get("tier", "coarse"))
-        priority_map[region_id] = int(item.get("priority", 0))
-
     max_compute = max(0, _as_int(budget_policy.get("max_compute_units_per_tick", 0), 0))
     max_entities = max(0, _as_int(budget_policy.get("max_entities_micro", 0), 0))
     entity_weight = max(0, _as_int(budget_policy.get("entity_compute_weight", 0), 0))
-
-    def budget_usage(selection: Dict[str, str]) -> Dict[str, int]:
-        tier_sum = 0
-        entity_sum = 0
-        for region_id in sorted(selection.keys()):
-            tier = str(selection.get(region_id, "coarse"))
-            tier_sum += _tier_weight(budget_policy, tier)
-            entity_sum += _tier_entity_target(fidelity_policy, tier)
-        compute_units = int(tier_sum + (entity_sum * entity_weight))
-        return {
-            "compute_units": compute_units,
-            "entity_count": int(entity_sum),
-        }
-
-    usage = budget_usage(selected)
-    fallback = str(budget_policy.get("fallback_behavior", "degrade_fidelity")).strip()
-    budget_outcome = "ok"
-
-    if usage["compute_units"] > max_compute or usage["entity_count"] > max_entities:
-        if fallback == "refuse":
-            return refusal(
-                "BUDGET_EXCEEDED",
-                "region management exceeded budget policy limits",
-                "Lower requested fidelity/region count or use a budget policy with higher limits.",
-                {
-                    "budget_policy_id": str(budget_policy.get("policy_id", "")),
-                    "compute_units_used": str(usage["compute_units"]),
-                    "max_compute_units_per_tick": str(max_compute),
-                },
-                "$.budget_policy",
-            )
-
-        switching = fidelity_policy.get("switching_rules")
-        if isinstance(switching, dict):
-            degrade_order = [str(item).strip() for item in (switching.get("degrade_order") or []) if str(item).strip()]
-        else:
-            degrade_order = []
-        if degrade_order != ["fine", "medium", "coarse"]:
-            degrade_order = ["fine", "medium", "coarse"]
-
-        changed = False
-        while usage["compute_units"] > max_compute or usage["entity_count"] > max_entities:
-            step_changed = False
-            for region_id in sorted(selected.keys(), key=lambda rid: (int(priority_map.get(rid, 0)), str(rid)), reverse=True):
-                current_tier = str(selected.get(region_id, "coarse"))
-                next_tier = _degrade_one_tier(current_tier, degrade_order)
-                if next_tier == current_tier:
-                    continue
-                selected[region_id] = next_tier
-                step_changed = True
-                changed = True
-                usage = budget_usage(selected)
-                if usage["compute_units"] <= max_compute and usage["entity_count"] <= max_entities:
-                    break
-            if not step_changed:
-                break
-        if changed:
-            budget_outcome = "degraded"
-
-        if usage["compute_units"] > max_compute or usage["entity_count"] > max_entities:
-            for region_id in sorted(selected.keys(), key=lambda rid: (int(priority_map.get(rid, 0)), str(rid)), reverse=True):
-                del selected[region_id]
-                usage = budget_usage(selected)
-                if usage["compute_units"] <= max_compute and usage["entity_count"] <= max_entities:
-                    break
-            budget_outcome = "capped"
+    tier_weight_by_tier = dict((tier, int(_tier_weight(budget_policy, tier))) for tier in _tier_tokens())
+    tier_entity_target_by_tier = dict((tier, int(_tier_entity_target(fidelity_policy, tier))) for tier in _tier_tokens())
 
     current_active = {}
     for region_id, row in interest_by_region.items():
         if bool(row.get("active", False)):
             current_active[region_id] = str(row.get("current_fidelity_tier", "coarse"))
-    desired_active = dict(selected)
-    forced_expand_ids = _sorted_tokens(list(forced_expand_region_ids or []))
-    forced_collapse_ids = _sorted_tokens(list(forced_collapse_region_ids or []))
-    forced_tiers = dict(forced_expand_tiers or {})
-    for region_id in forced_collapse_ids + forced_expand_ids:
-        if region_id not in interest_by_region:
+
+    transition_plan = compute_transition_plan(
+        tick=int(current_tick),
+        transition_policy=transition_policy,
+        budget_policy=budget_policy,
+        interest_regions_by_id=dict(interest_by_region),
+        candidates=list(candidates),
+        current_active=dict(current_active),
+        forced_expand_region_ids=list(forced_expand_region_ids or []),
+        forced_collapse_region_ids=list(forced_collapse_region_ids or []),
+        forced_expand_tiers=dict(forced_expand_tiers or {}),
+        tier_weight_by_tier=tier_weight_by_tier,
+        tier_entity_target_by_tier=tier_entity_target_by_tier,
+        entity_compute_weight=int(entity_weight),
+    )
+    if str(transition_plan.get("result", "")) != "complete":
+        refusal_code = str(transition_plan.get("code", "")).strip() or "BUDGET_EXCEEDED"
+        refusal_message = str(transition_plan.get("message", "")).strip() or "transition controller refused region transitions"
+        details = dict(transition_plan.get("details") or {})
+        if refusal_code == "refusal.control.target_invalid":
             return refusal(
                 "refusal.control.target_invalid",
-                "region '{}' is not known to region management".format(region_id),
+                refusal_message,
                 "Use a region_id produced by deterministic region mapping (region.<object_id>).",
-                {"region_id": region_id},
+                {
+                    "region_id": str(details.get("region_id", "")),
+                },
                 "$.intent.inputs.region_id",
             )
-    for region_id in forced_collapse_ids:
-        desired_active.pop(region_id, None)
-    for region_id in forced_expand_ids:
-        forced_tier = str(forced_tiers.get(region_id, "")).strip()
-        if forced_tier not in _tier_tokens():
-            forced_tier = str(desired_active.get(region_id, "") or current_active.get(region_id, "")).strip() or "coarse"
-        if forced_tier not in _tier_tokens():
-            forced_tier = "coarse"
-        desired_active[region_id] = forced_tier
-    usage = budget_usage(desired_active)
-    if usage["compute_units"] > max_compute or usage["entity_count"] > max_entities:
         return refusal(
-            "BUDGET_EXCEEDED",
-            "forced region transition exceeds deterministic budget envelope",
-            "Reduce forced expand set or use a budget policy with higher limits.",
+            refusal_code,
+            refusal_message,
+            "Adjust transition policy or budget policy limits for deterministic region management.",
             {
-                "forced_expand_region_ids": ",".join(forced_expand_ids),
-                "compute_units_used": str(usage["compute_units"]),
+                "budget_policy_id": str(budget_policy.get("policy_id", "")),
+                "transition_policy_id": str(transition_policy.get("transition_policy_id", "")),
+                "compute_units_used": str(details.get("compute_units_used", "")),
                 "max_compute_units_per_tick": str(max_compute),
             },
             "$.budget_policy",
         )
 
-    collapse_ids = sorted(
-        region_id
-        for region_id in current_active.keys()
-        if region_id not in desired_active or str(desired_active.get(region_id, "")) != str(current_active.get(region_id, ""))
-    )
-    expand_ids = sorted(
-        region_id
-        for region_id in desired_active.keys()
-        if region_id not in current_active or str(desired_active.get(region_id, "")) != str(current_active.get(region_id, ""))
-    )
+    desired_active = dict(transition_plan.get("desired_active") or {})
+    collapse_ids = sorted(str(item) for item in list(transition_plan.get("collapse_ids") or []) if str(item).strip())
+    expand_ids = sorted(str(item) for item in list(transition_plan.get("expand_ids") or []) if str(item).strip())
+    usage = dict(transition_plan.get("usage") or {"compute_units": 0, "entity_count": 0})
+    budget_outcome = str(transition_plan.get("budget_outcome", "ok"))
+    forced_expand_ids = sorted(str(item) for item in list(transition_plan.get("forced_expand_region_ids") or []) if str(item).strip())
+    forced_collapse_ids = sorted(str(item) for item in list(transition_plan.get("forced_collapse_region_ids") or []) if str(item).strip())
     solver_binding_trace: List[dict] = []
     if collapse_ids:
         collapse_check = _check_solver_binding_for_transition(policy_context=policy_context, transition_name="collapse")
