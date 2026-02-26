@@ -237,6 +237,30 @@ def run_intent_script(
     )
     if boundary_model_registry_error:
         return boundary_model_registry_error
+    conservation_contract_set_registry, conservation_contract_set_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["conservation_contract_set_registry_hash"],
+        expected_hash=str(registries.get("conservation_contract_set_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if conservation_contract_set_registry_error:
+        return conservation_contract_set_registry_error
+    quantity_registry, quantity_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["quantity_registry_hash"],
+        expected_hash=str(registries.get("quantity_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if quantity_registry_error:
+        return quantity_registry_error
+    exception_type_registry, exception_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["exception_type_registry_hash"],
+        expected_hash=str(registries.get("exception_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if exception_type_registry_error:
+        return exception_type_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -570,6 +594,9 @@ def run_intent_script(
     )
     if selected_physics_profile_error:
         return selected_physics_profile_error
+    identity_conservation_contract_set_id = (
+        str(selected_physics_profile.get("conservation_contract_set_id", "")).strip() or "contracts.null"
+    )
     universe_state, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
         return state_error
@@ -627,9 +654,16 @@ def run_intent_script(
         "events": [],
     }
     script_policy_context = {
+        "physics_profile_id": identity_physics_profile_id,
+        "conservation_contract_set_id": identity_conservation_contract_set_id,
+        "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
+        "active_shard_id": "shard.0",
         "activation_policy": activation_policy,
         "budget_policy": budget_policy,
         "fidelity_policy": fidelity_policy,
+        "conservation_contract_set_registry": conservation_contract_set_registry,
+        "quantity_registry": quantity_registry,
+        "exception_type_registry": exception_type_registry,
         "governance_type_registry": governance_type_registry,
         "diplomatic_state_registry": diplomatic_state_registry,
         "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -713,6 +747,9 @@ def run_intent_script(
             "numeric_precision_policy_registry": numeric_precision_policy_registry,
             "tier_taxonomy_registry": tier_taxonomy_registry,
             "boundary_model_registry": boundary_model_registry,
+            "conservation_contract_set_registry": conservation_contract_set_registry,
+            "quantity_registry": quantity_registry,
+            "exception_type_registry": exception_type_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
@@ -803,6 +840,7 @@ def run_intent_script(
         "composite_hash": composite_hash,
         "final_state_hash": final_state_hash,
         "physics_profile_id": identity_physics_profile_id,
+        "conservation_contract_set_id": identity_conservation_contract_set_id,
         "performance_state": dict(updated_state.get("performance_state") or {}),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
@@ -850,6 +888,7 @@ def run_intent_script(
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "registry_hashes": registry_hashes,
         "physics_profile_id": identity_physics_profile_id,
+        "conservation_contract_set_id": identity_conservation_contract_set_id,
         "state_hash_anchors": state_hash_anchors,
         "tick_hash_anchors": tick_hash_anchors,
         "checkpoint_hashes": checkpoint_hashes,
