@@ -106,6 +106,94 @@ def _registry_hashes(lock_payload: dict) -> dict:
     return out
 
 
+def _session_extensions(runtime: dict) -> dict:
+    session_spec = dict(runtime.get("session_spec") or {})
+    extensions = session_spec.get("extensions")
+    if not isinstance(extensions, dict):
+        return {}
+    return dict(extensions)
+
+
+def _runtime_policy_context(runtime: dict) -> dict:
+    context = {
+        **dict(runtime.get("registry_payloads") or {}),
+        "control_policy": dict(runtime.get("control_policy") or {}),
+        "cosmetic_policy_id": str((runtime.get("control_policy") or {}).get("cosmetic_policy_id", "")),
+        "server_policy": dict(runtime.get("server_policy") or {}),
+        "server_profile": dict(runtime.get("server_profile") or {}),
+        "resolved_packs": list(((runtime.get("lock_payload") or {}).get("resolved_packs") or [])),
+    }
+    session_spec = dict(runtime.get("session_spec") or {})
+    parameter_bundle_id = str(session_spec.get("parameter_bundle_id", "")).strip()
+    if parameter_bundle_id:
+        context["parameter_bundle_id"] = parameter_bundle_id
+    session_ext = _session_extensions(runtime)
+    demography_policy_id = str(session_ext.get("demography_policy_id", "")).strip()
+    if demography_policy_id:
+        context["demography_policy_id"] = demography_policy_id
+    migration_model_id = str(session_ext.get("migration_model_id", "")).strip()
+    if migration_model_id:
+        context["migration_model_id"] = migration_model_id
+    return context
+
+
+def _law_allows_process(law_profile: dict, process_id: str) -> bool:
+    allowed = _sorted_tokens(list((law_profile or {}).get("allowed_processes") or []))
+    forbidden = _sorted_tokens(list((law_profile or {}).get("forbidden_processes") or []))
+    return bool(process_id in set(allowed) and process_id not in set(forbidden))
+
+
+def _server_demography_authority(runtime: dict) -> Tuple[dict, dict]:
+    clients = dict(runtime.get("clients") or {})
+    if not clients:
+        return {}, {}
+    server = dict(runtime.get("server") or {})
+    server_peer_id = str(server.get("peer_id", "")).strip()
+    selected_peer_id = server_peer_id if server_peer_id and server_peer_id in clients else sorted(clients.keys())[0]
+    selected_client = dict(clients.get(selected_peer_id) or {})
+    law_profile = dict(selected_client.get("law_profile") or {})
+    authority = dict(selected_client.get("authority_context") or {})
+    entitlements = _sorted_tokens(list(authority.get("entitlements") or []) + ["session.boot"])
+    authority["authority_origin"] = "server"
+    authority["peer_id"] = server_peer_id or "peer.server"
+    authority["law_profile_id"] = str(law_profile.get("law_profile_id", "")).strip() or str(authority.get("law_profile_id", "")).strip()
+    authority["entitlements"] = entitlements
+    authority["privilege_level"] = "system"
+    scope = authority.get("epistemic_scope")
+    if not isinstance(scope, dict):
+        authority["epistemic_scope"] = {
+            "scope_id": "scope.server.authoritative",
+            "visibility_level": "nondiegetic",
+        }
+    return law_profile, authority
+
+
+def _run_server_demography_tick(state: dict, runtime: dict, server_tick: int) -> Dict[str, object]:
+    process_id = "process.demography_tick"
+    law_profile, authority_context = _server_demography_authority(runtime)
+    if not law_profile or not authority_context:
+        return {"result": "skipped", "reason": "missing_server_authority"}
+    if not _law_allows_process(law_profile, process_id):
+        return {"result": "skipped", "reason": "law_forbidden"}
+    session_ext = _session_extensions(runtime)
+    inputs: Dict[str, object] = {}
+    demography_policy_id = str(session_ext.get("demography_policy_id", "")).strip()
+    if demography_policy_id:
+        inputs["demography_policy_id"] = demography_policy_id
+    return execute_intent(
+        state=state,
+        intent={
+            "intent_id": "intent.server.demography.tick.{}".format(int(server_tick)),
+            "process_id": process_id,
+            "inputs": inputs,
+        },
+        law_profile=law_profile,
+        authority_context=authority_context,
+        navigation_indices=dict(runtime.get("registry_payloads") or {}),
+        policy_context=_runtime_policy_context(runtime),
+    )
+
+
 def _runtime_paths(runtime: dict) -> Tuple[str, str]:
     repo_root = str(runtime.get("repo_root", "")).strip()
     artifacts_rel = str(runtime.get("artifacts_rel", "")).strip()
@@ -1072,14 +1160,7 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
             law_profile=dict(client.get("law_profile") or {}),
             authority_context=dict(client.get("authority_context") or {}),
             navigation_indices=dict(runtime.get("registry_payloads") or {}),
-            policy_context={
-                **dict(runtime.get("registry_payloads") or {}),
-                "control_policy": dict(runtime.get("control_policy") or {}),
-                "cosmetic_policy_id": str((runtime.get("control_policy") or {}).get("cosmetic_policy_id", "")),
-                "server_policy": dict(runtime.get("server_policy") or {}),
-                "server_profile": dict(runtime.get("server_profile") or {}),
-                "resolved_packs": list(((runtime.get("lock_payload") or {}).get("resolved_packs") or [])),
-            },
+            policy_context=_runtime_policy_context(runtime),
         )
         if str(executed.get("result", "")) != "complete":
             refusal_reason_code = str(((executed.get("refusal") or {}).get("reason_code", "refusal.net.authority_violation")))
@@ -1172,6 +1253,73 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
                 "state_hash_anchor": str(executed.get("state_hash_anchor", "")),
             }
         )
+
+    server_peer_id = str((runtime.get("server") or {}).get("peer_id", "")).strip() or "peer.server"
+    demography_tick_summary: Dict[str, object] = {
+        "result": "skipped",
+        "reason": "not_evaluated",
+    }
+    demography_tick = _run_server_demography_tick(
+        state=state,
+        runtime=runtime,
+        server_tick=int(server_tick),
+    )
+    demography_result = str(demography_tick.get("result", ""))
+    if demography_result == "complete":
+        processed_rows.append(
+            {
+                "envelope_id": "auto.demography.tick.{}".format(int(server_tick)),
+                "peer_id": server_peer_id,
+                "result": "complete",
+                "state_hash_anchor": str(demography_tick.get("state_hash_anchor", "")),
+            }
+        )
+        demography_tick_summary = {
+            "result": "complete",
+            "state_hash_anchor": str(demography_tick.get("state_hash_anchor", "")),
+            "demography_policy_id": str(demography_tick.get("demography_policy_id", "")),
+            "processed_cohort_count": int(demography_tick.get("processed_cohort_count", 0) or 0),
+            "total_births": int(demography_tick.get("total_births", 0) or 0),
+            "total_deaths": int(demography_tick.get("total_deaths", 0) or 0),
+        }
+    elif demography_result == "refused":
+        refusal_payload = dict(demography_tick.get("refusal") or {})
+        processed_rows.append(
+            {
+                "envelope_id": "auto.demography.tick.{}".format(int(server_tick)),
+                "peer_id": server_peer_id,
+                "result": "refused",
+                "refusal": refusal_payload,
+            }
+        )
+        server_refusals = list((runtime.get("server") or {}).get("refusals") or [])
+        server_refusals.append(
+            {
+                "tick": int(server_tick),
+                "peer_id": server_peer_id,
+                "envelope_id": "auto.demography.tick.{}".format(int(server_tick)),
+                "reason_code": str(refusal_payload.get("reason_code", "")),
+            }
+        )
+        server_now = dict(runtime.get("server") or {})
+        server_now["refusals"] = sorted(
+            server_refusals,
+            key=lambda row: (
+                int(row.get("tick", 0)),
+                str(row.get("peer_id", "")),
+                str(row.get("envelope_id", "")),
+            ),
+        )
+        runtime["server"] = server_now
+        demography_tick_summary = {
+            "result": "refused",
+            "refusal": refusal_payload,
+        }
+    else:
+        demography_tick_summary = {
+            "result": "skipped",
+            "reason": str(demography_tick.get("reason", "not_enabled")),
+        }
 
     server = dict(runtime.get("server") or {})
     server["network_tick"] = int(server_tick)
@@ -1312,6 +1460,7 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
         "result": "complete",
         "tick": int(server_tick),
         "processed_envelopes": processed_rows,
+        "demography_tick": demography_tick_summary,
         "hash_anchor_frame": frame,
         "perceived_deltas": delta_rows,
         "client_memory_hashes": dict(
