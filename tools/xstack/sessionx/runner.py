@@ -1621,6 +1621,8 @@ def boot_session_spec(
                 client_physics_profile_id=identity_physics_profile_id,
                 server_conservation_contract_set_id=identity_conservation_contract_set_id,
                 client_conservation_contract_set_id=identity_conservation_contract_set_id,
+                server_time_control_policy_id=str(selected_time_control_policy.get("time_control_policy_id", "")),
+                client_time_control_policy_id=str(selected_time_control_policy.get("time_control_policy_id", "")),
             )
             if str(handshake_result.get("result", "")) != "complete":
                 return handshake_result
@@ -1652,6 +1654,8 @@ def boot_session_spec(
                     "client_physics_profile_id": str(handshake_result.get("client_physics_profile_id", "")),
                     "server_conservation_contract_set_id": str(handshake_result.get("conservation_contract_set_id", "")),
                     "client_conservation_contract_set_id": str(handshake_result.get("client_conservation_contract_set_id", "")),
+                    "server_time_control_policy_id": str(handshake_result.get("time_control_policy_id", "")),
+                    "client_time_control_policy_id": str(handshake_result.get("client_time_control_policy_id", "")),
                     "server_profile_id": str(handshake_result.get("server_profile_id", "")),
                     "server_policy_id": str(handshake_result.get("server_policy_id", "")),
                     "control_capabilities": {
@@ -1987,6 +1991,8 @@ def boot_session_spec(
         "client_physics_profile_id": str(handshake_stage_result.get("client_physics_profile_id", "")),
         "server_conservation_contract_set_id": str(handshake_stage_result.get("conservation_contract_set_id", "")),
         "client_conservation_contract_set_id": str(handshake_stage_result.get("client_conservation_contract_set_id", "")),
+        "server_time_control_policy_id": str(handshake_stage_result.get("time_control_policy_id", "")),
+        "client_time_control_policy_id": str(handshake_stage_result.get("client_time_control_policy_id", "")),
         "control_capabilities": {
             "camera_bind_allowed": bool(handshake_control_capabilities.get("camera_bind_allowed", False)),
             "possession_allowed": bool(handshake_control_capabilities.get("possession_allowed", False)),

@@ -39,6 +39,13 @@ from tools.xstack.sessionx.srz import (
 
 POLICY_ID_SERVER_AUTHORITATIVE = "policy.net.server_authoritative"
 MOVEMENT_PROCESS_IDS = ("process.agent_move", "process.agent_rotate")
+TIME_CONTROL_PROCESS_IDS = (
+    "process.time_control_set_rate",
+    "process.time_set_rate",
+    "process.time_pause",
+    "process.time_resume",
+    "process.time_branch_from_checkpoint",
+)
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -115,6 +122,60 @@ def _session_extensions(runtime: dict) -> dict:
     return dict(extensions)
 
 
+def _session_time_control_policy_id(runtime: dict) -> str:
+    session_spec = dict(runtime.get("session_spec") or {})
+    return str(session_spec.get("time_control_policy_id", "") or "time.policy.null").strip() or "time.policy.null"
+
+
+def _time_control_policy(runtime: dict, policy_id: str) -> dict:
+    registry = dict((runtime.get("registry_payloads") or {}).get("time_control_policy_registry") or {})
+    rows = list(registry.get("policies") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("time_control_policy_id", ""))):
+        if str(row.get("time_control_policy_id", "")).strip() == str(policy_id).strip():
+            return dict(row)
+    return {
+        "time_control_policy_id": str(policy_id),
+        "allow_variable_dt": False,
+        "allow_pause": True,
+        "allow_rate_change": False,
+        "allowed_rate_range": {"min": 1000, "max": 1000},
+        "dt_quantization_rule_id": "dt.rule.single_tick",
+        "checkpoint_interval_ticks": 4,
+        "compaction_policy_id": "compaction.policy.keep_all",
+        "extensions": {"allow_branching": False, "allow_branch_mid_session": False},
+    }
+
+
+def _dt_quantization_rule(runtime: dict, dt_rule_id: str) -> dict:
+    registry = dict((runtime.get("registry_payloads") or {}).get("dt_quantization_rule_registry") or {})
+    rows = list(registry.get("rules") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("dt_rule_id", ""))):
+        if str(row.get("dt_rule_id", "")).strip() == str(dt_rule_id).strip():
+            return dict(row)
+    return {
+        "dt_rule_id": str(dt_rule_id).strip() or "dt.rule.single_tick",
+        "allowed_dt_values": [1000],
+        "default_dt": 1000,
+        "deterministic_rounding_rule": "round.nearest.lower_tie",
+        "extensions": {},
+    }
+
+
+def _is_unauthorized_time_control_refusal(process_id: str, reason_code: str) -> bool:
+    token = str(process_id).strip()
+    reason = str(reason_code).strip()
+    if token not in set(TIME_CONTROL_PROCESS_IDS):
+        return False
+    if reason in {
+        "ENTITLEMENT_MISSING",
+        "PROCESS_FORBIDDEN",
+        "refusal.control.entitlement_missing",
+        "refusal.control.law_forbidden",
+    }:
+        return True
+    return reason.startswith("refusal.time.")
+
+
 def _runtime_server(runtime: dict) -> dict:
     server = runtime.get("server")
     if isinstance(server, dict):
@@ -134,6 +195,12 @@ def _runtime_policy_context(runtime: dict) -> dict:
     physics_profile_id = str((runtime.get("universe_identity") or {}).get("physics_profile_id", "")).strip()
     if not physics_profile_id:
         physics_profile_id = "physics.null"
+    server_profile = dict(runtime.get("server_profile") or {})
+    time_control_policy_id = _session_time_control_policy_id(runtime=runtime)
+    selected_time_policy = _time_control_policy(runtime=runtime, policy_id=time_control_policy_id)
+    dt_rule_id = str(selected_time_policy.get("dt_quantization_rule_id", "")).strip() or "dt.rule.single_tick"
+    selected_dt_rule = _dt_quantization_rule(runtime=runtime, dt_rule_id=dt_rule_id)
+
     context = {
         **dict(runtime.get("registry_payloads") or {}),
         "physics_profile_id": physics_profile_id,
@@ -143,7 +210,12 @@ def _runtime_policy_context(runtime: dict) -> dict:
         "control_policy": dict(runtime.get("control_policy") or {}),
         "cosmetic_policy_id": str((runtime.get("control_policy") or {}).get("cosmetic_policy_id", "")),
         "server_policy": dict(runtime.get("server_policy") or {}),
-        "server_profile": dict(runtime.get("server_profile") or {}),
+        "server_profile": server_profile,
+        "server_profile_id": str(server_profile.get("server_profile_id", "")),
+        "time_control_policy_id": str(time_control_policy_id),
+        "time_control_policy": dict(selected_time_policy),
+        "dt_quantization_rule_id": str(dt_rule_id),
+        "dt_quantization_rule": dict(selected_dt_rule),
         "resolved_packs": list(((runtime.get("lock_payload") or {}).get("resolved_packs") or [])),
     }
     session_spec = dict(runtime.get("session_spec") or {})
@@ -1304,6 +1376,26 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
         )
         if str(executed.get("result", "")) != "complete":
             refusal_reason_code = str(((executed.get("refusal") or {}).get("reason_code", "refusal.net.authority_violation")))
+            unauthorized_time_control = _is_unauthorized_time_control_refusal(
+                process_id=process_id,
+                reason_code=refusal_reason_code,
+            )
+            if unauthorized_time_control:
+                _emit_anti_cheat_event(
+                    repo_root=repo_root,
+                    runtime=runtime,
+                    tick=int(server_tick),
+                    peer_id=peer_id,
+                    module_id="ac.module.authority_integrity",
+                    severity="violation",
+                    reason_code="ac.time_control.unauthorized_change_attempt",
+                    evidence=[
+                        "process_id={}".format(process_id),
+                        "refusal_reason_code={}".format(refusal_reason_code),
+                        "envelope_id={}".format(str(envelope.get("envelope_id", ""))),
+                    ],
+                    default_action="refuse",
+                )
             decision = check_authority_integrity(
                 repo_root=repo_root,
                 runtime=runtime,
@@ -1314,8 +1406,11 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
                 evidence=["authoritative process execution refused submitted envelope"],
                 default_action_token="refuse",
             )
+            decision_action = str(decision.get("action", "refuse"))
+            if unauthorized_time_control:
+                decision_action = "refuse"
             enforcement = _apply_enforcement_result(
-                action=str(decision.get("action", "refuse")),
+                action=decision_action,
                 fallback_reason_code=refusal_reason_code,
                 fallback_message="authoritative process execution refused submitted envelope",
                 fallback_remediation="Resolve authority/law violations then resend deterministic intent envelope.",

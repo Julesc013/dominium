@@ -77,6 +77,8 @@ def _handshake_payload(
     client_physics_profile_id: str = "",
     server_conservation_contract_set_id: str = "",
     client_conservation_contract_set_id: str = "",
+    server_time_control_policy_id: str = "",
+    client_time_control_policy_id: str = "",
 ) -> dict:
     capabilities = dict(control_capabilities if isinstance(control_capabilities, dict) else {})
     return {
@@ -108,6 +110,8 @@ def _handshake_payload(
             "client_physics_profile_id": str(client_physics_profile_id or ""),
             "server_conservation_contract_set_id": str(server_conservation_contract_set_id or ""),
             "client_conservation_contract_set_id": str(client_conservation_contract_set_id or ""),
+            "server_time_control_policy_id": str(server_time_control_policy_id or ""),
+            "client_time_control_policy_id": str(client_time_control_policy_id or ""),
         },
     }
 
@@ -223,6 +227,7 @@ def _server_response(
     authority_context: dict,
     server_physics_profile_id: str = "",
     server_conservation_contract_set_id: str = "",
+    server_time_control_policy_id: str = "",
 ) -> dict:
     handshake_id = str(request_payload.get("handshake_id", "")).strip()
     client_peer_id = str(request_payload.get("client_peer_id", "")).strip()
@@ -241,6 +246,9 @@ def _server_response(
     requested_conservation_contract_set_id = str(request_extensions.get("conservation_contract_set_id", "")).strip()
     if not requested_conservation_contract_set_id:
         requested_conservation_contract_set_id = str(request_payload.get("conservation_contract_set_id", "")).strip()
+    requested_time_control_policy_id = str(request_extensions.get("time_control_policy_id", "")).strip()
+    if not requested_time_control_policy_id:
+        requested_time_control_policy_id = str(request_payload.get("time_control_policy_id", "")).strip()
     schema_versions = dict(request_payload.get("schema_versions") or {})
     request_registry_hashes = dict(request_payload.get("registry_hashes") or {})
     expected_registry_hashes = dict(lock_payload.get("registries") or {})
@@ -262,6 +270,7 @@ def _server_response(
     enforce_lod_invariance_strict = False
     expected_server_physics_profile_id = str(server_physics_profile_id or "").strip()
     expected_server_conservation_contract_set_id = str(server_conservation_contract_set_id or "").strip()
+    expected_server_time_control_policy_id = str(server_time_control_policy_id or "").strip()
 
     def refuse(
         reason_code: str,
@@ -295,6 +304,8 @@ def _server_response(
             client_physics_profile_id=requested_physics_profile_id,
             server_conservation_contract_set_id=expected_server_conservation_contract_set_id,
             client_conservation_contract_set_id=requested_conservation_contract_set_id,
+            server_time_control_policy_id=expected_server_time_control_policy_id,
+            client_time_control_policy_id=requested_time_control_policy_id,
         )
 
     if str(request_payload.get("pack_lock_hash", "")).strip() != pack_lock_hash:
@@ -338,6 +349,20 @@ def _server_response(
                 "server_conservation_contract_set_id": expected_server_conservation_contract_set_id,
             },
         )
+    if not requested_time_control_policy_id:
+        requested_time_control_policy_id = expected_server_time_control_policy_id
+    if not expected_server_time_control_policy_id:
+        expected_server_time_control_policy_id = requested_time_control_policy_id
+    if requested_time_control_policy_id != expected_server_time_control_policy_id:
+        return refuse(
+            "refusal.net.handshake_policy_not_allowed",
+            "client/server time_control_policy_id mismatch",
+            "Reconnect with a SessionSpec using the same time_control_policy_id as the server.",
+            {
+                "client_time_control_policy_id": requested_time_control_policy_id,
+                "server_time_control_policy_id": expected_server_time_control_policy_id,
+            },
+        )
 
     mismatch_key, mismatch_expected, mismatch_actual = _first_registry_mismatch(expected_registry_hashes, request_registry_hashes)
     if mismatch_key:
@@ -376,6 +401,8 @@ def _server_response(
             client_physics_profile_id=requested_physics_profile_id,
             server_conservation_contract_set_id=expected_server_conservation_contract_set_id,
             client_conservation_contract_set_id=requested_conservation_contract_set_id,
+            server_time_control_policy_id=expected_server_time_control_policy_id,
+            client_time_control_policy_id=requested_time_control_policy_id,
         )
 
     server_profile = dict(server_profile_map.get(requested_server_profile_id) or {})
@@ -662,6 +689,8 @@ def _server_response(
         client_physics_profile_id=requested_physics_profile_id,
         server_conservation_contract_set_id=expected_server_conservation_contract_set_id,
         client_conservation_contract_set_id=requested_conservation_contract_set_id,
+        server_time_control_policy_id=expected_server_time_control_policy_id,
+        client_time_control_policy_id=requested_time_control_policy_id,
     )
 
 
@@ -735,6 +764,8 @@ def run_loopback_handshake(
     client_physics_profile_id: str = "",
     server_conservation_contract_set_id: str = "",
     client_conservation_contract_set_id: str = "",
+    server_time_control_policy_id: str = "",
+    client_time_control_policy_id: str = "",
 ) -> Dict[str, object]:
     network_payload, network_error = _require_network_payload(session_spec=session_spec)
     if network_error:
@@ -774,6 +805,13 @@ def run_loopback_handshake(
     server_conservation_contract_set_id_value = (
         str(server_conservation_contract_set_id).strip() or client_conservation_contract_set_id_value
     )
+    client_time_control_policy_id_value = (
+        str(client_time_control_policy_id).strip()
+        or str((session_spec.get("time_control_policy_id", "") or "")).strip()
+    )
+    server_time_control_policy_id_value = (
+        str(server_time_control_policy_id).strip() or client_time_control_policy_id_value
+    )
 
     request_seed = {
         "client_peer_id": str(network_payload.get("client_peer_id", "")).strip(),
@@ -786,6 +824,7 @@ def run_loopback_handshake(
         "registry_hashes": client_registry_hashes_value,
         "physics_profile_id": client_physics_profile_id_value,
         "conservation_contract_set_id": client_conservation_contract_set_id_value,
+        "time_control_policy_id": client_time_control_policy_id_value,
     }
     handshake_id = "hs.{}".format(canonical_sha256(request_seed)[:16])
     request_payload = {
@@ -810,6 +849,7 @@ def run_loopback_handshake(
         "extensions": {
             "physics_profile_id": client_physics_profile_id_value,
             "conservation_contract_set_id": client_conservation_contract_set_id_value,
+            "time_control_policy_id": client_time_control_policy_id_value,
         },
     }
 
@@ -893,6 +933,7 @@ def run_loopback_handshake(
         authority_context=authority_context,
         server_physics_profile_id=server_physics_profile_id_value,
         server_conservation_contract_set_id=server_conservation_contract_set_id_value,
+        server_time_control_policy_id=server_time_control_policy_id_value,
     )
     response_validated = validate_instance(
         repo_root=repo_root,
@@ -991,6 +1032,8 @@ def run_loopback_handshake(
         "client_physics_profile_id": str(((response_proto_payload.get("extensions") or {}).get("client_physics_profile_id") or "")),
         "conservation_contract_set_id": str(((response_proto_payload.get("extensions") or {}).get("server_conservation_contract_set_id") or "")),
         "client_conservation_contract_set_id": str(((response_proto_payload.get("extensions") or {}).get("client_conservation_contract_set_id") or "")),
+        "time_control_policy_id": str(((response_proto_payload.get("extensions") or {}).get("server_time_control_policy_id") or "")),
+        "client_time_control_policy_id": str(((response_proto_payload.get("extensions") or {}).get("client_time_control_policy_id") or "")),
         "control_capabilities": dict(((response_proto_payload.get("extensions") or {}).get("control_capabilities") or {})),
         "handshake_artifact_hash": canonical_sha256(
             {

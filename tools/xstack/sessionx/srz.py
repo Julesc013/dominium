@@ -245,9 +245,11 @@ def checkpoint_hash(tick: int, tick_hash: str, previous_checkpoint_hash: str, co
     return canonical_sha256(payload)
 
 
-def checkpoint_interval_from_policy(activation_policy: dict) -> int:
+def checkpoint_interval_from_policy(activation_policy: dict, time_control_policy: dict | None = None) -> int:
     value = 0
-    if isinstance(activation_policy, dict):
+    if isinstance(time_control_policy, dict):
+        value = _as_int(time_control_policy.get("checkpoint_interval_ticks", 0), 0)
+    if value < 1 and isinstance(activation_policy, dict):
         value = _as_int(activation_policy.get("checkpoint_interval_ticks", 0), 0)
     if value < 1:
         value = DEFAULT_CHECKPOINT_INTERVAL_TICKS
