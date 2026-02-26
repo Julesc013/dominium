@@ -30,6 +30,7 @@ def main() -> int:
     parser.add_argument("--renderer", default="null", choices=("null", "software"))
     parser.add_argument("--input", required=True, help="Path to RenderModel JSON artifact.")
     parser.add_argument("--out", default="", help="Output directory root for snapshots.")
+    parser.add_argument("--cache-dir", default="", help="Derived snapshot cache directory.")
     parser.add_argument("--width", type=int, default=0)
     parser.add_argument("--height", type=int, default=0)
     parser.add_argument("--wireframe", action="store_true")
@@ -52,6 +53,11 @@ def main() -> int:
         out_root = os.path.join(repo_root, "run_meta", "render_snapshots")
     out_root = os.path.normpath(os.path.abspath(out_root))
     os.makedirs(out_root, exist_ok=True)
+    cache_root = str(args.cache_dir or "").strip()
+    if not cache_root:
+        cache_root = os.path.join(repo_root, ".xstack_cache", "render_snapshots")
+    cache_root = os.path.normpath(os.path.abspath(cache_root))
+    os.makedirs(cache_root, exist_ok=True)
 
     result = capture_render_snapshot(
         renderer_id=str(args.renderer),
@@ -60,6 +66,7 @@ def main() -> int:
         width=int(max(0, int(args.width))),
         height=int(max(0, int(args.height))),
         wireframe=bool(args.wireframe),
+        cache_dir=cache_root,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if str(result.get("result", "")) == "complete" else 1
