@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.exception_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.exception_type_registry",
+    "registry_version": "1.0.0",
+    "exception_types": [
+      {
+        "exception_type_id": "exception.boundary_flux",
+        "description": "Declared boundary flux across universe or shard boundary.",
+        "extensions": {}
+      },
+      {
+        "exception_type_id": "exception.field_exchange",
+        "description": "Declared exchange with external field approximation.",
+        "extensions": {}
+      },
+      {
+        "exception_type_id": "exception.creation_annihilation",
+        "description": "Declared creation/annihilation accounting event.",
+        "extensions": {}
+      },
+      {
+        "exception_type_id": "exception.coordinate_gauge",
+        "description": "Declared coordinate/gauge transform accounting adjustment.",
+        "extensions": {}
+      },
+      {
+        "exception_type_id": "exception.numeric_error_budget",
+        "description": "Declared numeric approximation error budget event.",
+        "extensions": {}
+      },
+      {
+        "exception_type_id": "exception.meta_law_override",
+        "description": "Declared admin/meta-law override event.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

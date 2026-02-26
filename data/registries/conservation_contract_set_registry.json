@@ -1,0 +1,130 @@
+{
+  "schema_id": "dominium.registry.conservation_contract_set_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.conservation_contract_set_registry",
+    "registry_version": "1.0.0",
+    "contract_sets": [
+      {
+        "schema_version": "1.0.0",
+        "contract_set_id": "contracts.default.realistic",
+        "description": "Default strict realistic conservation baseline.",
+        "quantities": [
+          {
+            "quantity_id": "quantity.mass_energy_total",
+            "mode": "enforce_strict",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Combined mass-energy channel must remain invariant."
+          },
+          {
+            "quantity_id": "quantity.charge_total",
+            "mode": "enforce_strict",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Net charge must remain invariant."
+          },
+          {
+            "quantity_id": "quantity.entropy_metric",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Tracked only by default."
+          }
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_set_id": "contracts.magic_relaxed",
+        "description": "Relaxed profile that permits conservation violations with explicit ledger accounting.",
+        "quantities": [
+          {
+            "quantity_id": "quantity.mass_energy_total",
+            "mode": "allow_with_ledger",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.creation_annihilation",
+              "exception.field_exchange",
+              "exception.meta_law_override",
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Violations allowed only when explicitly logged."
+          },
+          {
+            "quantity_id": "quantity.charge_total",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Tracked only in relaxed profile."
+          },
+          {
+            "quantity_id": "quantity.entropy_metric",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Tracked metric."
+          }
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_set_id": "contracts.null",
+        "description": "Null boot contract set with non-enforcing channels.",
+        "quantities": [
+          {
+            "quantity_id": "quantity.mass_energy_total",
+            "mode": "ignore",
+            "tolerance": 0,
+            "allowed_exception_types": [],
+            "notes": "Null profile ignores conservation enforcement."
+          },
+          {
+            "quantity_id": "quantity.charge_total",
+            "mode": "ignore",
+            "tolerance": 0,
+            "allowed_exception_types": [],
+            "notes": "Null profile ignores conservation enforcement."
+          },
+          {
+            "quantity_id": "quantity.entropy_metric",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Optional tracked channel in null profile."
+          },
+          {
+            "quantity_id": "quantity.ledger_balance",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Optional tracked channel in null profile."
+          }
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

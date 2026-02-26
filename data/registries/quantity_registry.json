@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.registry.quantity_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.quantity_registry",
+    "registry_version": "1.0.0",
+    "quantities": [
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass_energy_total",
+        "description": "Combined mass-energy accounting channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.mass_energy.stub",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass",
+        "description": "Mass-only accounting channel for non-relativistic profiles.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.mass.stub",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy",
+        "description": "Energy-only accounting channel for non-relativistic profiles.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.energy.stub",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.charge_total",
+        "description": "Aggregate charge accounting channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.charge.stub",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.ledger_balance",
+        "description": "Aggregate ledger-balance accounting channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.ledger_balance.stub",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.entropy_metric",
+        "description": "Aggregate entropy metric channel (tracked by policy).",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.entropy.stub",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

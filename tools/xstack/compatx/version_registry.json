@@ -210,6 +210,20 @@
         "1.0.0"
       ]
     },
+    "conservation_contract_set": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "conservation_contract_set_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "cohort": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -358,6 +372,27 @@
       ]
     },
     "epistemic_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "exception_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "exception_ledger": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "exception_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -778,6 +813,20 @@
       ]
     },
     "procedural_material_template_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "quantity": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "quantity_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

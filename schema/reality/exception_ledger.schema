@@ -1,0 +1,32 @@
+SCHEMA: reality/exception_ledger.schema
+schema_id: dominium.schema.reality.exception_ledger
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic per-tick per-shard exception ledger payloads.
+
+REQUIRED SHAPE:
+record exception_ledger
+  required:
+    - schema_version: semver
+    - ledger_id: id
+    - tick: u64
+    - shard_id: id
+    - pack_lock_hash: sha256
+    - physics_profile_id: id
+    - contract_set_id: id
+    - totals: [quantity_total]
+    - entries: [exception_entry]
+    - ledger_hash: sha256
+    - previous_ledger_hash: sha256|null
+    - extensions: map
+
+record quantity_total
+  required:
+    - quantity_id: id
+    - net_delta: fixed_point
+
+INVARIANTS:
+- Ledger hash is deterministic over canonical payload.
+- Ledgers chain by previous_ledger_hash when available.

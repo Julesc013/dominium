@@ -2213,10 +2213,264 @@ def _civilisation_registry_rows(
     )
 
 
+def _conservation_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _quantity_record, quantity_rows_raw, quantity_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/quantity_registry.json",
+        expected_schema_id="dominium.registry.quantity_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="quantities",
+    )
+    if quantity_load_errors:
+        return [], [], [], quantity_load_errors
+
+    _exception_record, exception_type_rows_raw, exception_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/exception_type_registry.json",
+        expected_schema_id="dominium.registry.exception_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="exception_types",
+    )
+    if exception_type_load_errors:
+        return [], [], [], exception_type_load_errors
+
+    _contract_set_record, contract_set_rows_raw, contract_set_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/conservation_contract_set_registry.json",
+        expected_schema_id="dominium.registry.conservation_contract_set_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="contract_sets",
+    )
+    if contract_set_load_errors:
+        return [], [], [], contract_set_load_errors
+
+    quantity_rows: List[dict] = []
+    quantity_seen = set()
+    for entry in sorted(quantity_rows_raw, key=lambda row: str((row or {}).get("quantity_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quantity_entry",
+                    "message": "quantity entry must be object",
+                    "path": "$.quantities",
+                }
+            )
+            continue
+        quantity_id = str(entry.get("quantity_id", "")).strip()
+        if not quantity_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quantity_entry",
+                    "message": "quantity_id is missing",
+                    "path": "$.quantities.quantity_id",
+                }
+            )
+            continue
+        if quantity_id in quantity_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_quantity_id",
+                    "message": "duplicate quantity_id '{}'".format(quantity_id),
+                    "path": "$.quantities.quantity_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="quantity",
+            payload=entry,
+            path="data/registries/quantity_registry.json#{}".format(quantity_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        quantity_seen.add(quantity_id)
+        quantity_rows.append(
+            {
+                "quantity_id": quantity_id,
+                "description": str(entry.get("description", "")).strip(),
+                "numeric_type": str(entry.get("numeric_type", "fixed_point")).strip() or "fixed_point",
+                "units_id": str(entry.get("units_id", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    quantity_rows = sorted(quantity_rows, key=lambda row: str(row.get("quantity_id", "")))
+
+    exception_type_rows: List[dict] = []
+    exception_type_seen = set()
+    for entry in sorted(exception_type_rows_raw, key=lambda row: str((row or {}).get("exception_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_exception_type_entry",
+                    "message": "exception type entry must be object",
+                    "path": "$.exception_types",
+                }
+            )
+            continue
+        exception_type_id = str(entry.get("exception_type_id", "")).strip()
+        if not exception_type_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_exception_type_entry",
+                    "message": "exception_type_id is missing",
+                    "path": "$.exception_types.exception_type_id",
+                }
+            )
+            continue
+        if exception_type_id in exception_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_exception_type_id",
+                    "message": "duplicate exception_type_id '{}'".format(exception_type_id),
+                    "path": "$.exception_types.exception_type_id",
+                }
+            )
+            continue
+        description = str(entry.get("description", "")).strip()
+        if not description:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_exception_type_entry",
+                    "message": "exception type '{}' is missing description".format(exception_type_id),
+                    "path": "$.exception_types.description",
+                }
+            )
+            continue
+        extensions = entry.get("extensions")
+        if not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_exception_type_entry",
+                    "message": "exception type '{}' extensions must be object".format(exception_type_id),
+                    "path": "$.exception_types.extensions",
+                }
+            )
+            continue
+        exception_type_seen.add(exception_type_id)
+        exception_type_rows.append(
+            {
+                "exception_type_id": exception_type_id,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    exception_type_rows = sorted(exception_type_rows, key=lambda row: str(row.get("exception_type_id", "")))
+
+    quantity_ids = set(str(row.get("quantity_id", "")).strip() for row in quantity_rows)
+    exception_type_ids = set(str(row.get("exception_type_id", "")).strip() for row in exception_type_rows)
+
+    contract_set_rows: List[dict] = []
+    contract_set_seen = set()
+    for entry in sorted(contract_set_rows_raw, key=lambda row: str((row or {}).get("contract_set_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_conservation_contract_set_entry",
+                    "message": "conservation contract set entry must be object",
+                    "path": "$.contract_sets",
+                }
+            )
+            continue
+        contract_set_id = str(entry.get("contract_set_id", "")).strip()
+        if not contract_set_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_conservation_contract_set_entry",
+                    "message": "contract_set_id is missing",
+                    "path": "$.contract_sets.contract_set_id",
+                }
+            )
+            continue
+        if contract_set_id in contract_set_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_conservation_contract_set_id",
+                    "message": "duplicate contract_set_id '{}'".format(contract_set_id),
+                    "path": "$.contract_sets.contract_set_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="conservation_contract_set",
+            payload=entry,
+            path="data/registries/conservation_contract_set_registry.json#{}".format(contract_set_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+
+        quantities = list(entry.get("quantities") or [])
+        missing_refs: List[str] = []
+        for quantity_row in quantities:
+            if not isinstance(quantity_row, dict):
+                continue
+            quantity_id = str(quantity_row.get("quantity_id", "")).strip()
+            if quantity_id not in quantity_ids:
+                missing_refs.append("quantity_id={}".format(quantity_id))
+            for exception_type_id in sorted(
+                set(str(item).strip() for item in (quantity_row.get("allowed_exception_types") or []) if str(item).strip())
+            ):
+                if exception_type_id not in exception_type_ids:
+                    missing_refs.append("allowed_exception_types={}".format(exception_type_id))
+        if missing_refs:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.conservation_contract_set_reference_missing",
+                    "message": "contract_set '{}' references unknown ids: {}".format(
+                        contract_set_id,
+                        ",".join(sorted(set(missing_refs))),
+                    ),
+                    "path": "$.contract_sets",
+                }
+            )
+            continue
+        contract_set_seen.add(contract_set_id)
+        normalized_quantities = []
+        for quantity_row in sorted(
+            (dict(item) for item in quantities if isinstance(item, dict)),
+            key=lambda row: (
+                str(row.get("quantity_id", "")),
+                str(row.get("mode", "")),
+            ),
+        ):
+            normalized_quantities.append(
+                {
+                    "quantity_id": str(quantity_row.get("quantity_id", "")).strip(),
+                    "mode": str(quantity_row.get("mode", "")).strip(),
+                    "tolerance": int(quantity_row.get("tolerance", 0) or 0),
+                    "allowed_exception_types": sorted(
+                        set(str(item).strip() for item in (quantity_row.get("allowed_exception_types") or []) if str(item).strip())
+                    ),
+                    "notes": str(quantity_row.get("notes", "")).strip(),
+                }
+            )
+        contract_set_rows.append(
+            {
+                "contract_set_id": contract_set_id,
+                "description": str(entry.get("description", "")).strip(),
+                "quantities": normalized_quantities,
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+
+    contract_set_rows = sorted(contract_set_rows, key=lambda row: str(row.get("contract_set_id", "")))
+    return quantity_rows, exception_type_rows, contract_set_rows, errors
+
+
 def _universe_physics_registry_rows(
     repo_root: str,
     schema_root: str,
     contributions: List[dict] | None = None,
+    known_contract_set_ids: List[str] | None = None,
 ) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
 
@@ -2497,6 +2751,7 @@ def _universe_physics_registry_rows(
     precision_policy_ids = set(str(row.get("policy_id", "")).strip() for row in precision_rows)
     taxonomy_ids = set(str(row.get("taxonomy_id", "")).strip() for row in taxonomy_rows)
     boundary_model_ids = set(str(row.get("boundary_model_id", "")).strip() for row in boundary_rows)
+    contract_set_ids = set(str(item).strip() for item in (known_contract_set_ids or []) if str(item).strip())
 
     profile_rows: List[dict] = []
     profile_seen = set()
@@ -2551,6 +2806,10 @@ def _universe_physics_registry_rows(
             missing_refs.append("tier_taxonomy_id={}".format(str(entry.get("tier_taxonomy_id", "")).strip()))
         if str(entry.get("boundary_model_id", "")).strip() not in boundary_model_ids:
             missing_refs.append("boundary_model_id={}".format(str(entry.get("boundary_model_id", "")).strip()))
+        if contract_set_ids and str(entry.get("conservation_contract_set_id", "")).strip() not in contract_set_ids:
+            missing_refs.append(
+                "conservation_contract_set_id={}".format(str(entry.get("conservation_contract_set_id", "")).strip())
+            )
         if missing_refs:
             errors.append(
                 {
@@ -5293,6 +5552,15 @@ def compile_bundle(
         repo_root=repo_root,
     )
     (
+        quantity_rows,
+        exception_type_rows,
+        conservation_contract_set_rows,
+        conservation_registry_errors,
+    ) = _conservation_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         universe_physics_profile_rows,
         time_model_rows,
         numeric_precision_policy_rows,
@@ -5303,6 +5571,7 @@ def compile_bundle(
         repo_root=repo_root,
         schema_root=schema_root,
         contributions=contributions,
+        known_contract_set_ids=[str(row.get("contract_set_id", "")) for row in conservation_contract_set_rows],
     )
     body_shape_rows, body_shape_registry_errors = _body_shape_registry_rows(
         repo_root=repo_root,
@@ -5383,6 +5652,7 @@ def compile_bundle(
         + worldgen_constraints_errors
         + control_registry_errors
         + civilisation_registry_errors
+        + conservation_registry_errors
         + universe_physics_registry_errors
         + body_shape_registry_errors
         + view_mode_registry_errors
@@ -5434,6 +5704,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "boundary_models": boundary_model_rows,
+        }
+    )
+    conservation_contract_set_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "contract_sets": conservation_contract_set_rows,
+        }
+    )
+    quantity_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "quantities": quantity_rows,
+        }
+    )
+    exception_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "exception_types": exception_type_rows,
         }
     )
     domain_payload = _finalize_registry_payload(
@@ -5791,6 +6082,12 @@ def compile_bundle(
     )
 
     registry_payloads = {
+        "conservation_contract_set_registry": (
+            "conservation_contract_set_registry",
+            conservation_contract_set_payload,
+        ),
+        "quantity_registry": ("quantity_registry", quantity_payload),
+        "exception_type_registry": ("exception_type_registry", exception_type_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
         "numeric_precision_policy_registry": ("numeric_precision_policy_registry", numeric_precision_policy_payload),
@@ -5856,6 +6153,9 @@ def compile_bundle(
     registry_hashes = {}
     output_files = []
     for registry_key in (
+        "conservation_contract_set_registry",
+        "quantity_registry",
+        "exception_type_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
         "numeric_precision_policy_registry",
@@ -5938,6 +6238,9 @@ def compile_bundle(
         "bundle_id": str(bundle_id),
         "resolved_packs": resolved_packs,
         "registries": {
+            "conservation_contract_set_registry_hash": registry_hashes["conservation_contract_set_registry_hash"],
+            "quantity_registry_hash": registry_hashes["quantity_registry_hash"],
+            "exception_type_registry_hash": registry_hashes["exception_type_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
             "numeric_precision_policy_registry_hash": registry_hashes["numeric_precision_policy_registry_hash"],

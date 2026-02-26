@@ -9,6 +9,9 @@ DEFAULT_COMPATIBILITY_VERSION = "1.0.0"
 
 
 REGISTRY_OUTPUT_FILENAMES = {
+    "conservation_contract_set_registry": "conservation_contract_set.registry.json",
+    "quantity_registry": "quantity.registry.json",
+    "exception_type_registry": "exception_type.registry.json",
     "universe_physics_profile_registry": "universe_physics_profile.registry.json",
     "time_model_registry": "time_model.registry.json",
     "numeric_precision_policy_registry": "numeric_precision_policy.registry.json",

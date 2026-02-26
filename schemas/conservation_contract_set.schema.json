@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Conservation Contract Set Schema",
+  "version": "1.0.0",
+  "description": "Canonical RS-2 conservation contract-set record.",
+  "x-doc-ref": [
+    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contract_set_id",
+    "description",
+    "quantities",
+    "version_introduced",
+    "deprecated",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "contract_set_id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "quantities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "quantity_id",
+          "mode",
+          "tolerance",
+          "allowed_exception_types",
+          "notes"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "quantity_id": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "enforce_strict",
+              "enforce_local",
+              "allow_with_ledger",
+              "track_only",
+              "ignore"
+            ]
+          },
+          "tolerance": {
+            "type": "integer"
+          },
+          "allowed_exception_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "version_introduced": {
+      "type": "string"
+    },
+    "deprecated": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "contract_set_id": "contracts.default.realistic",
+      "description": "Default strict realistic conservation baseline.",
+      "quantities": [
+        {
+          "quantity_id": "quantity.mass_energy_total",
+          "mode": "enforce_strict",
+          "tolerance": 0,
+          "allowed_exception_types": [
+            "exception.numeric_error_budget"
+          ],
+          "notes": "Combined relativistic baseline channel."
+        }
+      ],
+      "version_introduced": "1.0.0",
+      "deprecated": false,
+      "extensions": {}
+    }
+  ]
+}
