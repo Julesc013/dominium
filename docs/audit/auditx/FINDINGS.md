@@ -8,369 +8,369 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1562
-- Severities: INFO=230, RISK=243, VIOLATION=47, WARN=1042
-- Categories: canon_drift=640, capability_bypass_smell=1, capability_misuse=139, civilisation.nondeterministic_cohort_mapping_smell=1, derived_freshness=131, epistemics.hidden_state_leak_smell=6, legacy_contamination=6, mode_flag_smell=46, net.precision_leak_smell=2, net.truth_over_net_smell=6, ownership_boundary=9, reachability=80, schema_usage=160, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1, terminology_misuse=1, ui_parity=207
+- Total findings: 795
+- Severities: RISK=24, VIOLATION=1, WARN=770
+- Categories: canon_drift=641, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, derived_freshness=11, epistemics.hidden_state_leak_smell=6, net.precision_leak_smell=2, net.truth_over_net_smell=6, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
 - `A4_DERIVED_ARTIFACT_CONTRACT:0001` VIOLATION `A4_DERIVED_ARTIFACT_CONTRACT` `semantic.derived_artifact_contract` (docs/audit/auditx/FINDINGS.json)
   - Canonical artifact contains forbidden run-meta fields.
   - Sample keys: findings[0].created_utc, findings[1].created_utc, findings[2].created_utc, findings[3].created_utc, findings[4].created_utc
-- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/22347c1434b0aaf50a6fbc69ffe6c7e25bb2a88ecbf4ada4cd30455e5574bec9.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0002` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2294323391e767cee37c19e0bf0d467718804569e03a8300c1c5ffac920d67ba.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0003` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2f6c968e1afe470de28f475d61eafe9151eab8f14d2ab56a5540fe0b0a0a7ce6.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0004` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/36eb761c354dd1e15fdf5d6800c27d32e3c9ab32bc01db1eda226e5db72586ff.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0005` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/592c2ff250b8674c750a8540a7a9852dd3ff1481a505cde08f5cb56968cbc9e3.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0006` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/6125fe68afaf54394ac952f781d2a410bdd7de14446c54e6494fb8b621ed7746.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0007` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/621671c7068987d0e62fe01a49851b44d608c34cb2db919f2438b69ae227aaf7.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0008` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/665ccbda8c605d3aa3695973c8322663415285513ffe994d39e1ea0190be9837.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0009` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/6e1818b877af7f7b42aa58994a5ea1a432b9140dcf56889c40000924e4db1494.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0010` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/79644194bd2f8fe85f8f595b529e05c72afd9b0b5efedf401ce55e3b87f9fab9.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0011` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/7b1d9167c97d92e6666a739fee108e2c906ca4203bca5e82fc9072bcbd7439ba.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0012` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/8fa5a04d2fbc4a5b86a55b25b2a0a5c25332a0317b88e88aed45fe572d2937e6.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0013` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/bb680d1b01112f01595193cde8b455b696651e8d539edfe7da5bbdecc701d023.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0014` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/d897f4c70da135a05324c81264e2fe382cbe217be945d339d3b42d26ec92d7f0.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0015` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/d9472bdcd8c5cbc82ce1b541a960271681a09ed54d896176681ba8320f84a98b.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0016` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/0202f072348b4a5bdcd834997bfa9dae083230f8ae9b87ceb495d3c8a3fc7c0a.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0017` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/14c7bb7507cabedbd6981a54cf7b80b93e9b26cb2097651e699f8060d2165268.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0018` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/2dbb5c0cd9f02a2e19940448fa8e8be8de10b5a96f2180c9ffe90783773ac397.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0019` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/3fe247566e223ff80382e3c8423c0c05ecba1cded2505de00bdadef3737bb440.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0020` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/5c25794ffc2d34cae1288400e5dda9967499ebe6858091434bb8289ee0eae59b.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0021` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/5e9afa37748e0d4bec1aaea63c245aacf76956e61b6a734263f6f73655059f40.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0022` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/77b9bd34e97f4236eec020f91d3967f3f83239fcf9bc5b180d787d1734cebd3e.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0023` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/7bbcf2a229715ea72a9eb3d081252838116c05fa310e2b255ba7e080bab5d939.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0024` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/861f362b18e9201e31798e60bf759f5be09dd96d2d74728731ebdcf140f3e33d.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0025` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/9c8c3767a412eb806bd7ee187a88f3f244da38b39737be94ec847699ffb4cd72.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0026` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/a1057ea11f1c1b32756c54ed69ea8f246d15867273c13395d8e6300a2b7f87ee.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0027` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/a589278686796cd627813d90d12c2244271cd14bb46b4ca08827a3731179c23f.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0028` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/d97ac7c9bc6b93ac1bf15e439de1807635028409760d1d109576f322396896dc.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0029` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-345f13b6e7bc753a/auditx/entries/fd912f8af92fb7a6fe91ef6bf9e84e16526fb04d1a3e34b3b4b6539576bcf710.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0030` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-373cd2aca1157dcd/auditx/entries/941e9e98ede97a76095e26e1d9f3055803d77b3012c6fa9ef445322f696807f8.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0031` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-373cd2aca1157dcd/auditx/entries/9f9be58030e70c4ecb0889962ae9a7c697c91eb236181077b9bfd76cf93f00dd.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0032` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-3c15259e2d8b3656/auditx/entries/34bd79ab2aed106d0dc78f2b8d8c0abcd0fcb86d27d4363c44e4d32e5bbfd155.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0033` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-3c15259e2d8b3656/auditx/entries/36b6657aeb8d3b6d66ceac097558f2bef0cdd751a0eabc13d84910006a8d2ca4.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0034` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-426fb129fc29daec/auditx/entries/74fa52b67de8e4537ad38d0e8f9fd685357e5745025be59389fabbab8e285289.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0035` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-426fb129fc29daec/auditx/entries/ace2c25c5abf6e12cff7d068e03ac411b11a0a50a50982baefe08ab635986803.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0036` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-426fb129fc29daec/auditx/entries/b8a869332d08b64133b071ff6dd2d3351da3c15a74f66d557ebf71b0587e662a.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0037` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-426fb129fc29daec/repox/repox.docs.canon/fa6e53a85de50afa09eeedb097a7b7f48ffaa3753f7f22cf94ae8a338ef67188.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0038` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-8d13df35d7c1f8f8/auditx/entries/566fe4bde7390fc0c1945fb334747d370f713aad2474e7abdd95d32e1fec6357.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0039` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-8d13df35d7c1f8f8/auditx/entries/9a7723e66b0224cbda9d10c95fcdf1cf5aa7688b6e1b01b2bcac179e9941778a.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0040` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-d11a47b4964a62ea/auditx/entries/ba2528fdf57bfebb3cb94ca9102b537962ca95c059a8de4eb3600077d7052e4b.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0041` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-d11c7937962829ad/auditx/entries/3053df4ebd5ae2b3f398c7a7028951060e774824bd3bb4da1058fc2160412321.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0042` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-d11c7937962829ad/auditx/entries/cc8da7b85baec1e0e88d20b7fb8ac5b89551330b8fad2645714212eb04fa8199.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0043` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-d88cca54508dfdf3/auditx/entries/c784e4ff256fffc7c35d6e4472694cb8d8dee7705db17166579bde852c67deba.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0044` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (data/registries/glossary.json)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0045` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tests/systemic/test_future_case_stress_suite.py)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0046` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/xstack/repox/check.py)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `A2_OWNERSHIP_BOUNDARY:0001` RISK `A2_OWNERSHIP_BOUNDARY` `ownership_boundary` (client/app/main_client.c)
-  - Client path appears to combine install tokens with mutation operations.
-  - Client should remain presentation-only for install mutation.
-- `A2_OWNERSHIP_BOUNDARY:0002` RISK `A2_OWNERSHIP_BOUNDARY` `ownership_boundary` (client/shell/client_shell.c)
-  - Client path appears to combine install tokens with mutation operations.
-  - Client should remain presentation-only for install mutation.
-- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
-  - Detected key access without obvious schema anchor: caps.sim
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
-  - Detected key access without obvious schema anchor: caps.sim
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
-  - Detected key access without obvious schema anchor: caps.sim
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
-  - Detected key access without obvious schema anchor: caps.sim
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
-  - Detected key access without obvious schema anchor: caps.sim
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
-  - Detected key access without obvious schema anchor: caps.sim
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/system/core/base/shared/manifest_install.cpp)
-  - Detected key access without obvious schema anchor: root_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/system/core/base/shared/manifest_install.cpp)
-  - Detected key access without obvious schema anchor: root_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/ui_codegen/tests/ui_codegen_tests.cpp)
-  - Detected key access without obvious schema anchor: beta.action
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/ui_codegen/tests/ui_codegen_tests.cpp)
-  - Detected key access without obvious schema anchor: beta.action
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: root_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: root_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: default_install_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: default_modset_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: preferred_display_mode
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: default_install_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: default_modset_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: preferred_display_mode
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: modset_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: base_install_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: enabled
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: modset_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: base_install_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: enabled
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: server_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: address
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: last_seen
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: favorite
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: server_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: address
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: last_seen
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: favorite
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: friend_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: last_presence
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: friend_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: last_presence
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: total_playtime_sec
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: total_playtime_sec
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: enable_global_install_discovery
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: auto_update_news
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: news_refresh_interval_min
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: auto_update_changes
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: changes_refresh_interval_min
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: enable_playtime_stats
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: enable_online_telemetry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0048` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: enable_global_install_discovery
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0049` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: auto_update_news
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0050` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: news_refresh_interval_min
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0051` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: auto_update_changes
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0052` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: changes_refresh_interval_min
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0053` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: enable_playtime_stats
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0054` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: enable_online_telemetry
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0055` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: mod_sets
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0056` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: mod_sets
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0057` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: servers
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0058` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: servers
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0059` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: friends
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0060` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: friends
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0061` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: manual_install_paths
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0062` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: manual_install_paths
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0063` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: plugin_data
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0064` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: mod_sets
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0065` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: servers
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0066` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: friends
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0067` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: manual_install_paths
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0068` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: plugin_data
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0069` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/tests/launcher_control_plane_tests.cpp)
-  - Detected key access without obvious schema anchor: spawned
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0070` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/tests/launcher_control_plane_tests.cpp)
-  - Detected key access without obvious schema anchor: waited
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0071` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/tests/launcher_control_plane_tests.cpp)
-  - Detected key access without obvious schema anchor: child_exit_code
-  - Best-effort heuristic; verify if schema declaration exists.
+- `A8_DERIVED_FRESHNESS_SMELL:0001` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/auditx/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.auditx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0002` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/performx/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.performx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0003` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/REPOX_PROFILE.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.repox.profile
+- `A8_DERIVED_FRESHNESS_SMELL:0004` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/proof_manifest.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.repox.proof_manifest
+- `A8_DERIVED_FRESHNESS_SMELL:0005` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/securex/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.securex.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0006` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/testx/TESTX_RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.testx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0007` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.full_plan_warning
+- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (dist/pkg/winnt/x86_64/index/pkg_index.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.pkg.index
+- `A8_DERIVED_FRESHNESS_SMELL:0009` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/perf/profile_trace.sample.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.perf.trace.sample
+- `A8_DERIVED_FRESHNESS_SMELL:0010` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/system/LEDGER_SNAPSHOT.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.ledger_snapshot
+- `A8_DERIVED_FRESHNESS_SMELL:0011` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.performance_ceiling_alert
+- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
+  - Bridge is missing required capability/entitlement guard markers.
+  - Missing markers: refuse.profile_not_selected
+- `E29_HIDDEN_STATE_LEAK_SMELL:0001` RISK `E29_HIDDEN_STATE_LEAK_SMELL` `epistemics.hidden_state_leak_smell` (tools/xstack/sessionx/observation.py)
+  - potential hidden-state token in perceived/network refinement path
+  - "hidden_inventory",
+- `E29_HIDDEN_STATE_LEAK_SMELL:0002` RISK `E29_HIDDEN_STATE_LEAK_SMELL` `epistemics.hidden_state_leak_smell` (tools/xstack/sessionx/observation.py)
+  - potential hidden-state token in perceived/network refinement path
+  - "internal_state",
+- `E29_HIDDEN_STATE_LEAK_SMELL:0003` RISK `E29_HIDDEN_STATE_LEAK_SMELL` `epistemics.hidden_state_leak_smell` (tools/xstack/sessionx/observation.py)
+  - potential hidden-state token in perceived/network refinement path
+  - "hidden_inventory",
+- `E29_HIDDEN_STATE_LEAK_SMELL:0004` RISK `E29_HIDDEN_STATE_LEAK_SMELL` `epistemics.hidden_state_leak_smell` (tools/xstack/sessionx/observation.py)
+  - potential hidden-state token in perceived/network refinement path
+  - "internal_state",
+- `E29_HIDDEN_STATE_LEAK_SMELL:0005` RISK `E29_HIDDEN_STATE_LEAK_SMELL` `epistemics.hidden_state_leak_smell` (tools/xstack/sessionx/observation.py)
+  - potential hidden-state token in perceived/network refinement path
+  - "micro_solver",
+- `E29_HIDDEN_STATE_LEAK_SMELL:0006` RISK `E29_HIDDEN_STATE_LEAK_SMELL` `epistemics.hidden_state_leak_smell` (tools/xstack/sessionx/observation.py)
+  - potential hidden-state token in perceived/network refinement path
+  - "native_precision",
+- `E2_TRUTH_OVER_NET_SMELL:0001` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(truthmodel|truth_model).*(serialize|json|packet|socket|network|replication|delta|snapshot)"
+- `E2_TRUTH_OVER_NET_SMELL:0002` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(serialize|json|packet|socket|network|replication|delta|snapshot).*(truthmodel|truth_model)",
+- `E2_TRUTH_OVER_NET_SMELL:0003` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - message="TruthModel network serialization smell detected; transmit PerceivedModel/snapshot hashes only",
+- `E2_TRUTH_OVER_NET_SMELL:0004` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - message="network payload path must remain PerceivedModel-only and avoid TruthModel serialization",
+- `E2_TRUTH_OVER_NET_SMELL:0005` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(send|socket|packet|transport|wire|payload_ref).*(truth_model|truthmodel|universe_state)"
+- `E2_TRUTH_OVER_NET_SMELL:0006` RISK `E2_TRUTH_OVER_NET_SMELL` `net.truth_over_net_smell` (tools/xstack/repox/check.py)
+  - Potential TruthModel network serialization smell.
+  - r"(truth_model|truthmodel|universe_state).*(send|socket|packet|transport|wire)",
+- `A2_SCHEMA_SHADOWING:0001` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0002` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/fields.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.field
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0003` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/content/topology_nodes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0004` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.body.earth_macro/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0005` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0006` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/institutions.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0007` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/content/processes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0008` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.rules/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0009` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.scenarios.minimal/content/scenarios.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0010` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.scenarios.minimal/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0011` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0012` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/content/topology_nodes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0013` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.system.sol/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0014` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0015` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/content/topology_nodes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0016` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.topology/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0017` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.universe.milkyway/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0018` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.universe.milkyway/content/fields.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.field
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0019` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.universe.milkyway/content/topology_nodes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.topology
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0020` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.base.universe.milkyway/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0021` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.content.institutions.placeholder/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0022` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.content.resources.placeholder/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0023` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.content.terrain.placeholder/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0024` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.content.worldgen.placeholder/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0025` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.assemblies.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0026` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.civ_stress.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0027` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.contracts.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0028` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.ecology.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0029` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.enforcement.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0030` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.hazards.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0031` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.infrastructure.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0032` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.institutions.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0033` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.instruments.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0034` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.instruments.inspection/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0035` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.interaction.baseline/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0036` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.interfaces/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0037` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.law.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0038` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.materials.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0039` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.materials.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0040` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.parts.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0041` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.parts.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0042` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.population.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0043` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.processes.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0044` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.processes.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0045` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.quality.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0046` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.settlements.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0047` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.signals.baseline/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0048` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.signals.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0049` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0050` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.certification/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0051` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.standards.extended/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0052` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.trade.basic/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0053` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.core.units/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0054` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0055` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0056` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/knowledge_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0057` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/measurement_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0058` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/processes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0059` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/provenance_records.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0060` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/refinement_plans.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0061` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/worldgen_models.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0062` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/content/worldgen_models.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.worldgen_model
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0063` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.epistemics.core/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0064` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/assemblies.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.assembly
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0065` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0066` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0067` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/institutions.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0068` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/knowledge_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0069` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/measurement_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0070` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/processes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0071` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/provenance_records.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0072` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/content/refinement_plans.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0073` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.false_science/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0074` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/assemblies.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.assembly
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0075` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0076` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0077` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/institutions.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0078` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/knowledge_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0079` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/measurement_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0080` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/processes.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.process
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0081` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/provenance_records.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0082` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/content/refinement_plans.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0083` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.lost_civilization/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0084` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0085` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/domains.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.domain
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0086` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/institutions.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0087` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/knowledge_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0088` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/measurement_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0089` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/provenance_records.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0090` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/content/refinement_plans.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.refinement_plan
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0091` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.magic_earth/pack_manifest.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.pack_manifest
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0092` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/capabilities.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.capability
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0093` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/institutions.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.institution
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0094` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/knowledge_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.knowledge
+  - Review for shadowing or override semantics.
+- `A2_SCHEMA_SHADOWING:0095` WARN `A2_SCHEMA_SHADOWING` `semantic.schema_shadowing` (data/packs/org.dominium.examples.multicosmology/content/measurement_artifacts.json)
+  - Pack/registry references core schema_id in extensible surface: dominium.schema.measurement_artifact
+  - Review for shadowing or override semantics.
