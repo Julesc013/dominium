@@ -1,4 +1,4 @@
-Status: DRAFT
+Status: DERIVED
 Last Reviewed: 2026-02-26
 Supersedes: none
 Superseded By: none
@@ -27,6 +27,9 @@ Required fields:
 - `extensions`
 
 `UniversePhysicsProfile` declares policy and compatibility anchors only. It does not directly execute solver semantics.
+
+Implementation note:
+- Runtime payload uses `error_budget` schema field; doctrine alias `default_error_budget` refers to the same profile budget contract.
 
 ## B) Null Boot Doctrine
 Engine runtime must boot and tick deterministically with no packs installed and no optional content present.
