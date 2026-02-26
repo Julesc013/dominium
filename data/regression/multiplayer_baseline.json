@@ -22,6 +22,6 @@
   },
   "update_policy": {
     "required_commit_tag": "MULTIPLAYER-REGRESSION-UPDATE",
-    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-27 (RS4 tier transition hash input integration)."
+    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-26 (RS4 tier transition hash input integration)."
   }
 }
