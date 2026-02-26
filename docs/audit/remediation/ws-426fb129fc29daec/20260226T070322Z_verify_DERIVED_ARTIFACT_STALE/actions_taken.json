@@ -1,0 +1,51 @@
+{
+  "actions": [
+    {
+      "command": [
+        "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools\\ci\\tool_identity_fingerprint.py",
+        "--repo-root",
+        "D:\\Projects\\Dominium\\dominium"
+      ],
+      "output": "{\"fingerprint_sha256\": \"c16427fb1e5753f23bf0aff559935e51723ff313c5cb80783330c6512269329e\", \"inputs\": {\"canon_index\": {\"path\": \"docs/architecture/CANON_INDEX.md\", \"sha256\": \"9fd3d8b47d9c1d07c61d29a173f4e183c037f3667bd8d7cbca2a61e5852997a6\"}, \"gate_runner\": {\"path\": \"scripts/dev/gate.py\", \"sha256\": \"2b8ed7189ace42ca206bdb3a574fb6536b799dfb97a5e07be105fc5fdf33832e\"}, \"ontology_commitment\": {\"sha256\": \"831a336a64022e33b1f72801c3e636cf817fc3e96c4c0223c3bd2cc2190930d7\", \"value\": \"Assemblies|Fields|Processes|Agents|Law\"}, \"repox_rulesets\": {\"path\": \"repo/repox/rulesets\", \"sha256\": \"cda31da9c1f047d2b44492fcc80853dbe438eba38d2730e37995caa5398ed474\"}, \"status_now_snapshot\": {\"path\": \"docs/STATUS_NOW.md\", \"sha256\": \"062faa95a1dd8292b5fe2a90bff7aeac6ba29689563cd481f2f17e1a08174d48\"}, \"testx_suite_set\": {\"sha256\": \"8184302fff4b8f5fb3c0272b06b3a0bd279580b520e58c112a09f6af79214c01\", \"source_root\": \"tests\", \"suite_count\": 350}, \"unbounded_doctrine\": {\"path\": \"docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md\", \"sha256\": \"d1b643f706e56b3bccc91cc9d0c28e8b745628797d8edb1a4f125601172b74b8\"}}, \"schema_id\": \"dominium.audit.identity_fingerprint\", \"schema_version\": \"1.0.0\"}\n",
+      "returncode": 0,
+      "strategy": "artifact_regeneration",
+      "targets": [
+        "identity_fingerprint"
+      ]
+    },
+    {
+      "applied_strategy": "artifact_regeneration",
+      "returncode": 1,
+      "score_after": 1012,
+      "score_before": 1012,
+      "stage": "repox.precheck",
+      "strategy": "verify_after_strategy"
+    },
+    {
+      "command": [
+        "cmake",
+        "--build",
+        "D:\\Projects\\Dominium\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "ui_bind_phase"
+      ],
+      "output": "refuse.command_unresolvable: [WinError 2] The system cannot find the file specified",
+      "returncode": 127,
+      "strategy": "tooling_integration",
+      "targets": [
+        "ui_bind_phase"
+      ]
+    },
+    {
+      "applied_strategy": "tooling_integration",
+      "returncode": 1,
+      "score_after": 1012,
+      "score_before": 1012,
+      "stage": "repox.precheck",
+      "strategy": "verify_after_strategy"
+    }
+  ]
+}

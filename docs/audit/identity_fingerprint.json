@@ -1,13 +1,13 @@
 {
-  "fingerprint_sha256": "26b1b5d521092de55899d4b4fc11ae5bcce9d81158fdb0acd63cc27d719d4c57",
+  "fingerprint_sha256": "c16427fb1e5753f23bf0aff559935e51723ff313c5cb80783330c6512269329e",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "c6fba5eba65fde7ce6471e87524bac9e8425e10a23606673138630d3d0ef9164"
+      "sha256": "9fd3d8b47d9c1d07c61d29a173f4e183c037f3667bd8d7cbca2a61e5852997a6"
     },
     "gate_runner": {
       "path": "scripts/dev/gate.py",
-      "sha256": "b457cba0610cf9323b7dfdb3d781a675ad22948dadacf5589fc9a3a2c9c41831"
+      "sha256": "2b8ed7189ace42ca206bdb3a574fb6536b799dfb97a5e07be105fc5fdf33832e"
     },
     "ontology_commitment": {
       "sha256": "831a336a64022e33b1f72801c3e636cf817fc3e96c4c0223c3bd2cc2190930d7",
@@ -15,11 +15,11 @@
     },
     "repox_rulesets": {
       "path": "repo/repox/rulesets",
-      "sha256": "bfcedbaf42f40ccf373da21b7b57011c96cfe5974c40029808e99c548dd73df6"
+      "sha256": "cda31da9c1f047d2b44492fcc80853dbe438eba38d2730e37995caa5398ed474"
     },
     "status_now_snapshot": {
       "path": "docs/STATUS_NOW.md",
-      "sha256": "759a028019b67caa7112af9c6de67e419d9eeaf7020c47653b20b98854722416"
+      "sha256": "062faa95a1dd8292b5fe2a90bff7aeac6ba29689563cd481f2f17e1a08174d48"
     },
     "testx_suite_set": {
       "sha256": "8184302fff4b8f5fb3c0272b06b3a0bd279580b520e58c112a09f6af79214c01",
@@ -28,7 +28,7 @@
     },
     "unbounded_doctrine": {
       "path": "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md",
-      "sha256": "beb6c50be22b2c046d6c6b365598f434fea663ce1139bd5a706725190ea8cdc6"
+      "sha256": "d1b643f706e56b3bccc91cc9d0c28e8b745628797d8edb1a4f125601172b74b8"
     }
   },
   "schema_id": "dominium.audit.identity_fingerprint",

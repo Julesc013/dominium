@@ -1,0 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-02-26
+Supersedes: none
+Superseded By: none
+
+gate run with deterministic remediation
+cmake --build D:\Projects\Dominium\dominium\out\build\vs2026\verify --config Debug --target domino_engine dominium_game dominium_client => 127
