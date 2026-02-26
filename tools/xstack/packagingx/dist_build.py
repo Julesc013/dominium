@@ -17,53 +17,11 @@ from tools.xstack.registry_compile.compiler import compile_bundle
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from tools.xstack.sessionx.creator import create_session_spec
-from tools.xstack.sessionx.runner import boot_session_spec
+from tools.xstack.sessionx.runner import REGISTRY_FILE_MAP as SESSION_REGISTRY_FILE_MAP, boot_session_spec
 from tools.xstack.sessionx.script_runner import run_intent_script
 
 
-LOCKFILE_REGISTRY_FILE_MAP = {
-    "domain_registry_hash": "domain.registry.json",
-    "law_registry_hash": "law.registry.json",
-    "experience_registry_hash": "experience.registry.json",
-    "lens_registry_hash": "lens.registry.json",
-    "control_action_registry_hash": "control_action.registry.json",
-    "controller_type_registry_hash": "controller_type.registry.json",
-    "governance_type_registry_hash": "governance_type.registry.json",
-    "diplomatic_state_registry_hash": "diplomatic_state.registry.json",
-    "cohort_mapping_policy_registry_hash": "cohort_mapping_policy.registry.json",
-    "order_type_registry_hash": "order_type.registry.json",
-    "role_registry_hash": "role.registry.json",
-    "institution_type_registry_hash": "institution_type.registry.json",
-    "body_shape_registry_hash": "body_shape.registry.json",
-    "view_mode_registry_hash": "view_mode.registry.json",
-    "instrument_type_registry_hash": "instrument_type.registry.json",
-    "calibration_model_registry_hash": "calibration_model.registry.json",
-    "render_proxy_registry_hash": "render_proxy.registry.json",
-    "cosmetic_registry_hash": "cosmetic.registry.json",
-    "cosmetic_policy_registry_hash": "cosmetic_policy.registry.json",
-    "net_replication_policy_registry_hash": "net_replication_policy.registry.json",
-    "net_resync_strategy_registry_hash": "net_resync_strategy.registry.json",
-    "net_server_policy_registry_hash": "net_server_policy.registry.json",
-    "securex_policy_registry_hash": "securex_policy.registry.json",
-    "server_profile_registry_hash": "server_profile.registry.json",
-    "shard_map_registry_hash": "shard_map.registry.json",
-    "perception_interest_policy_registry_hash": "perception_interest_policy.registry.json",
-    "epistemic_policy_registry_hash": "epistemic_policy.registry.json",
-    "retention_policy_registry_hash": "retention_policy.registry.json",
-    "decay_model_registry_hash": "decay_model.registry.json",
-    "eviction_rule_registry_hash": "eviction_rule.registry.json",
-    "anti_cheat_policy_registry_hash": "anti_cheat_policy.registry.json",
-    "anti_cheat_module_registry_hash": "anti_cheat_module.registry.json",
-    "activation_policy_registry_hash": "activation_policy.registry.json",
-    "budget_policy_registry_hash": "budget_policy.registry.json",
-    "fidelity_policy_registry_hash": "fidelity_policy.registry.json",
-    "worldgen_constraints_registry_hash": "worldgen_constraints.registry.json",
-    "astronomy_catalog_index_hash": "astronomy.catalog.index.json",
-    "site_registry_index_hash": "site.registry.index.json",
-    "ephemeris_registry_hash": "ephemeris.registry.json",
-    "terrain_tile_registry_hash": "terrain.tile.registry.json",
-    "ui_registry_hash": "ui.registry.json",
-}
+LOCKFILE_REGISTRY_FILE_MAP = dict(SESSION_REGISTRY_FILE_MAP)
 
 MANAGED_SUBDIRS = ("bin", "packs", "bundles", "registries")
 MANAGED_FILES = ("lockfile.json", "manifest.json")
