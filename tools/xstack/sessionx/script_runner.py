@@ -135,6 +135,80 @@ def _write_checkpoint_artifacts(
     return rows, paths, {}
 
 
+def _write_intent_log_artifacts(
+    *,
+    repo_root: str,
+    save_id: str,
+    accepted_envelopes: List[dict],
+) -> Tuple[List[dict], List[str], Dict[str, object]]:
+    grouped: Dict[int, List[str]] = {}
+    for row in sorted(
+        (dict(item) for item in (accepted_envelopes or []) if isinstance(item, dict)),
+        key=lambda item: (
+            int(item.get("submission_tick", 0) or 0),
+            int(item.get("deterministic_sequence_number", 0) or 0),
+            str(item.get("envelope_id", "")),
+        ),
+    ):
+        tick = int(row.get("submission_tick", 0) or 0)
+        envelope_id = str(row.get("envelope_id", "")).strip()
+        intent_id = str(row.get("intent_id", "")).strip()
+        token = envelope_id or intent_id
+        if not token:
+            continue
+        grouped.setdefault(int(tick), []).append(token)
+
+    rows: List[dict] = []
+    paths: List[str] = []
+    for tick in sorted(grouped.keys()):
+        envelopes = sorted(set(str(item) for item in grouped[tick] if str(item).strip()))
+        if not envelopes:
+            continue
+        log_id = "intent_log.{}.{}_{}".format(str(save_id), int(tick), int(tick))
+        payload = {
+            "schema_version": "1.0.0",
+            "log_id": log_id,
+            "save_id": str(save_id),
+            "tick_range": {
+                "start_tick": int(tick),
+                "end_tick": int(tick),
+            },
+            "envelopes_or_intents": list(envelopes),
+            "log_hash": "",
+            "extensions": {},
+        }
+        payload["log_hash"] = canonical_sha256(
+            {
+                "schema_version": payload["schema_version"],
+                "log_id": payload["log_id"],
+                "save_id": payload["save_id"],
+                "tick_range": dict(payload["tick_range"]),
+                "envelopes_or_intents": list(payload["envelopes_or_intents"]),
+                "extensions": dict(payload["extensions"]),
+            }
+        )
+        valid = validate_instance(
+            repo_root=repo_root,
+            schema_name="intent_log",
+            payload=payload,
+            strict_top_level=True,
+        )
+        if not bool(valid.get("valid", False)):
+            return [], [], refusal(
+                "REFUSE_TIME_INTENT_LOG_SCHEMA_INVALID",
+                "intent log artifact payload failed schema validation",
+                "Repair intent log artifact generation fields and retry script run.",
+                {"log_id": log_id},
+                "$.intent_log",
+            )
+        rel_path = norm(os.path.join("saves", str(save_id), "intent_logs", "{}.json".format(log_id)))
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        write_canonical_json(abs_path, payload)
+        rows.append(dict(payload))
+        paths.append(rel_path)
+    return rows, paths, {}
+
+
 def _load_script(path: str) -> Tuple[dict, List[dict], Dict[str, object]]:
     payload, err = read_json_object(path)
     if err:
@@ -802,6 +876,7 @@ def run_intent_script(
         "events": [],
     }
     script_policy_context = {
+        "save_id": str(save_id),
         "physics_profile_id": identity_physics_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
@@ -872,6 +947,7 @@ def run_intent_script(
     tick_hash_anchors = list(script_result.get("tick_hash_anchors") or [])
     checkpoint_hashes = list(script_result.get("checkpoint_hashes") or [])
     checkpoint_snapshots = list(script_result.get("checkpoint_snapshots") or [])
+    accepted_envelopes = list(script_result.get("accepted_envelopes") or [])
     composite_hash = str(script_result.get("composite_hash", ""))
     final_state_hash = str(script_result.get("final_state_hash", ""))
     srz = dict(script_result.get("srz") or {})
@@ -902,6 +978,13 @@ def run_intent_script(
     )
     if checkpoint_artifact_error:
         return checkpoint_artifact_error
+    intent_log_artifacts, intent_log_artifact_paths, intent_log_artifact_error = _write_intent_log_artifacts(
+        repo_root=repo_root,
+        save_id=save_id,
+        accepted_envelopes=accepted_envelopes,
+    )
+    if intent_log_artifact_error:
+        return intent_log_artifact_error
 
     if write_state:
         write_canonical_json(state_path, updated_state)
@@ -1013,6 +1096,8 @@ def run_intent_script(
         "checkpoint_hashes": checkpoint_hashes,
         "checkpoint_artifact_hashes": [canonical_sha256(item) for item in checkpoint_artifacts],
         "checkpoint_artifact_paths": checkpoint_artifact_paths,
+        "intent_log_hashes": [str(item.get("log_hash", "")) for item in intent_log_artifacts],
+        "intent_log_artifact_paths": intent_log_artifact_paths,
         "composite_hash": composite_hash,
         "final_state_hash": final_state_hash,
         "physics_profile_id": identity_physics_profile_id,
@@ -1075,6 +1160,8 @@ def run_intent_script(
         "checkpoint_hashes": checkpoint_hashes,
         "checkpoint_artifact_hashes": [canonical_sha256(item) for item in checkpoint_artifacts],
         "checkpoint_artifact_paths": checkpoint_artifact_paths,
+        "intent_log_hashes": [str(item.get("log_hash", "")) for item in intent_log_artifacts],
+        "intent_log_artifact_paths": intent_log_artifact_paths,
         "composite_hash": composite_hash,
         "final_state_hash": final_state_hash,
         "performance_state": dict(updated_state.get("performance_state") or {}),

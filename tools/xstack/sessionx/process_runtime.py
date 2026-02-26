@@ -72,6 +72,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.time_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
     "process.time_resume": "entitlement.time_control",
+    "process.time_branch_from_checkpoint": "entitlement.control.admin",
     "process.region_management_tick": "session.boot",
     "process.region_expand": "session.boot",
     "process.region_collapse": "session.boot",
@@ -118,6 +119,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.time_set_rate": "operator",
     "process.time_pause": "operator",
     "process.time_resume": "operator",
+    "process.time_branch_from_checkpoint": "operator",
     "process.region_management_tick": "observer",
     "process.region_expand": "observer",
     "process.region_collapse": "observer",
@@ -7983,6 +7985,63 @@ def execute_intent(
         control = _ensure_time_control(state)
         control["paused"] = False
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.time_branch_from_checkpoint":
+        parent_checkpoint_id = str(inputs.get("parent_checkpoint_id", "")).strip()
+        new_save_id = str(inputs.get("new_save_id", "")).strip()
+        reason = str(inputs.get("reason", "user.tool.branch")).strip() or "user.tool.branch"
+        if not parent_checkpoint_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.time_branch_from_checkpoint requires parent_checkpoint_id",
+                "Provide parent_checkpoint_id in intent inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.parent_checkpoint_id",
+            )
+        if not new_save_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.time_branch_from_checkpoint requires new_save_id",
+                "Provide new_save_id in intent inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.new_save_id",
+            )
+        ranked_policy_enforced = str((policy_context or {}).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
+        time_policy_id = str((policy_context or {}).get("time_control_policy_id", "")).strip()
+        if time_policy_id == "time.policy.rank_strict":
+            ranked_policy_enforced = True
+        selected_time_policy = dict((policy_context or {}).get("time_control_policy") or {})
+        selected_time_policy_extensions = dict(selected_time_policy.get("extensions") or {})
+        if ranked_policy_enforced:
+            return refusal(
+                "refusal.time.branch_forbidden_by_policy",
+                "time branching is forbidden by ranked policy",
+                "Run branching only in non-ranked sessions with explicit branching policy.",
+                {"process_id": process_id, "time_control_policy_id": time_policy_id or "time.policy.rank_strict"},
+                "$.intent.process_id",
+            )
+        if not bool(selected_time_policy_extensions.get("allow_branching", False)):
+            return refusal(
+                "refusal.time.branch_forbidden_by_policy",
+                "active time control policy does not allow branching",
+                "Select a time_control_policy_id with extensions.allow_branching=true.",
+                {"process_id": process_id, "time_control_policy_id": time_policy_id or "time.policy.null"},
+                "$.intent.process_id",
+            )
+        current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+        branch_seed = {
+            "parent_checkpoint_id": parent_checkpoint_id,
+            "new_save_id": new_save_id,
+            "reason": reason,
+            "tick": int(current_tick),
+        }
+        branch_id = "branch.{}".format(canonical_sha256(branch_seed)[:16])
+        _advance_time(state, steps=1, policy_context=policy_context)
+        result_metadata = {
+            "branch_id": branch_id,
+            "parent_checkpoint_id": parent_checkpoint_id,
+            "new_save_id": new_save_id,
+            "reason": reason,
+        }
     elif process_id in ("process.region_expand", "process.region_collapse"):
         transition = _run_region_transition_with_lod_invariance(
             state=state,
