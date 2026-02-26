@@ -1477,6 +1477,9 @@ def boot_session_spec(
         return selected_transition_policy_error
     selected_transition_policy_id = str(selected_transition_policy.get("transition_policy_id", "")).strip() or "transition.policy.null"
     selected_tier_taxonomy_id = str(selected_physics_profile.get("tier_taxonomy_id", "")).strip() or "tiers.null"
+    selected_budget_envelope_id = str(selected_physics_profile.get("budget_envelope_id", "")).strip() or "budget.null"
+    selected_arbitration_policy_id = str(selected_physics_profile.get("arbitration_policy_id", "")).strip() or "arb.equal_share"
+    selected_inspection_cache_policy_id = str(selected_physics_profile.get("inspection_cache_policy_id", "")).strip() or "cache.off"
 
     _state_payload, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
@@ -1772,6 +1775,10 @@ def boot_session_spec(
                 client_tier_taxonomy_id=str(selected_tier_taxonomy_id),
                 server_transition_policy_id=str(selected_transition_policy_id),
                 client_transition_policy_id=str(selected_transition_policy_id),
+                server_budget_envelope_id=str(selected_budget_envelope_id),
+                client_budget_envelope_id=str(selected_budget_envelope_id),
+                server_arbitration_policy_id=str(selected_arbitration_policy_id),
+                client_arbitration_policy_id=str(selected_arbitration_policy_id),
             )
             if str(handshake_result.get("result", "")) != "complete":
                 return handshake_result
@@ -1805,6 +1812,10 @@ def boot_session_spec(
                     "client_conservation_contract_set_id": str(handshake_result.get("client_conservation_contract_set_id", "")),
                     "server_time_control_policy_id": str(handshake_result.get("time_control_policy_id", "")),
                     "client_time_control_policy_id": str(handshake_result.get("client_time_control_policy_id", "")),
+                    "server_budget_envelope_id": str(handshake_result.get("budget_envelope_id", "")),
+                    "client_budget_envelope_id": str(handshake_result.get("client_budget_envelope_id", "")),
+                    "server_arbitration_policy_id": str(handshake_result.get("arbitration_policy_id", "")),
+                    "client_arbitration_policy_id": str(handshake_result.get("client_arbitration_policy_id", "")),
                     "server_profile_id": str(handshake_result.get("server_profile_id", "")),
                     "server_policy_id": str(handshake_result.get("server_policy_id", "")),
                     "control_capabilities": {
@@ -2148,6 +2159,10 @@ def boot_session_spec(
         "client_tier_taxonomy_id": str(handshake_stage_result.get("client_tier_taxonomy_id", "")),
         "server_transition_policy_id": str(handshake_stage_result.get("transition_policy_id", "")),
         "client_transition_policy_id": str(handshake_stage_result.get("client_transition_policy_id", "")),
+        "server_budget_envelope_id": str(handshake_stage_result.get("budget_envelope_id", "")),
+        "client_budget_envelope_id": str(handshake_stage_result.get("client_budget_envelope_id", "")),
+        "server_arbitration_policy_id": str(handshake_stage_result.get("arbitration_policy_id", "")),
+        "client_arbitration_policy_id": str(handshake_stage_result.get("client_arbitration_policy_id", "")),
         "control_capabilities": {
             "camera_bind_allowed": bool(handshake_control_capabilities.get("camera_bind_allowed", False)),
             "possession_allowed": bool(handshake_control_capabilities.get("possession_allowed", False)),
@@ -2194,6 +2209,9 @@ def boot_session_spec(
         "time_model_id": str(selected_time_model.get("time_model_id", "")),
         "tier_taxonomy_id": str(selected_tier_taxonomy_id),
         "transition_policy_id": str(selected_transition_policy_id),
+        "budget_envelope_id": str(selected_budget_envelope_id),
+        "arbitration_policy_id": str(selected_arbitration_policy_id),
+        "inspection_cache_policy_id": str(selected_inspection_cache_policy_id),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
         "fidelity_policy_id": str(fidelity_policy.get("policy_id", "")),
@@ -2270,6 +2288,9 @@ def boot_session_spec(
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "tier_taxonomy_id": str(selected_tier_taxonomy_id),
         "transition_policy_id": str(selected_transition_policy_id),
+        "budget_envelope_id": str(selected_budget_envelope_id),
+        "arbitration_policy_id": str(selected_arbitration_policy_id),
+        "inspection_cache_policy_id": str(selected_inspection_cache_policy_id),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "perceived_model_hash": perceived_hash,
         "render_model_hash": render_hash,

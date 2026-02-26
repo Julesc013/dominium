@@ -83,6 +83,10 @@ def _handshake_payload(
     client_tier_taxonomy_id: str = "",
     server_transition_policy_id: str = "",
     client_transition_policy_id: str = "",
+    server_budget_envelope_id: str = "",
+    client_budget_envelope_id: str = "",
+    server_arbitration_policy_id: str = "",
+    client_arbitration_policy_id: str = "",
 ) -> dict:
     capabilities = dict(control_capabilities if isinstance(control_capabilities, dict) else {})
     return {
@@ -120,6 +124,10 @@ def _handshake_payload(
             "client_tier_taxonomy_id": str(client_tier_taxonomy_id or ""),
             "server_transition_policy_id": str(server_transition_policy_id or ""),
             "client_transition_policy_id": str(client_transition_policy_id or ""),
+            "server_budget_envelope_id": str(server_budget_envelope_id or ""),
+            "client_budget_envelope_id": str(client_budget_envelope_id or ""),
+            "server_arbitration_policy_id": str(server_arbitration_policy_id or ""),
+            "client_arbitration_policy_id": str(client_arbitration_policy_id or ""),
         },
     }
 
@@ -238,6 +246,8 @@ def _server_response(
     server_time_control_policy_id: str = "",
     server_tier_taxonomy_id: str = "",
     server_transition_policy_id: str = "",
+    server_budget_envelope_id: str = "",
+    server_arbitration_policy_id: str = "",
 ) -> dict:
     handshake_id = str(request_payload.get("handshake_id", "")).strip()
     client_peer_id = str(request_payload.get("client_peer_id", "")).strip()
@@ -265,6 +275,12 @@ def _server_response(
     requested_transition_policy_id = str(request_extensions.get("transition_policy_id", "")).strip()
     if not requested_transition_policy_id:
         requested_transition_policy_id = str(request_payload.get("transition_policy_id", "")).strip()
+    requested_budget_envelope_id = str(request_extensions.get("budget_envelope_id", "")).strip()
+    if not requested_budget_envelope_id:
+        requested_budget_envelope_id = str(request_payload.get("budget_envelope_id", "")).strip()
+    requested_arbitration_policy_id = str(request_extensions.get("arbitration_policy_id", "")).strip()
+    if not requested_arbitration_policy_id:
+        requested_arbitration_policy_id = str(request_payload.get("arbitration_policy_id", "")).strip()
     schema_versions = dict(request_payload.get("schema_versions") or {})
     request_registry_hashes = dict(request_payload.get("registry_hashes") or {})
     expected_registry_hashes = dict(lock_payload.get("registries") or {})
@@ -289,6 +305,8 @@ def _server_response(
     expected_server_time_control_policy_id = str(server_time_control_policy_id or "").strip()
     expected_server_tier_taxonomy_id = str(server_tier_taxonomy_id or "").strip()
     expected_server_transition_policy_id = str(server_transition_policy_id or "").strip()
+    expected_server_budget_envelope_id = str(server_budget_envelope_id or "").strip()
+    expected_server_arbitration_policy_id = str(server_arbitration_policy_id or "").strip()
 
     def refuse(
         reason_code: str,
@@ -328,6 +346,10 @@ def _server_response(
             client_tier_taxonomy_id=requested_tier_taxonomy_id,
             server_transition_policy_id=expected_server_transition_policy_id,
             client_transition_policy_id=requested_transition_policy_id,
+            server_budget_envelope_id=expected_server_budget_envelope_id,
+            client_budget_envelope_id=requested_budget_envelope_id,
+            server_arbitration_policy_id=expected_server_arbitration_policy_id,
+            client_arbitration_policy_id=requested_arbitration_policy_id,
         )
 
     if str(request_payload.get("pack_lock_hash", "")).strip() != pack_lock_hash:
@@ -413,6 +435,34 @@ def _server_response(
                 "server_transition_policy_id": expected_server_transition_policy_id,
             },
         )
+    if not requested_budget_envelope_id:
+        requested_budget_envelope_id = expected_server_budget_envelope_id
+    if not expected_server_budget_envelope_id:
+        expected_server_budget_envelope_id = requested_budget_envelope_id
+    if requested_budget_envelope_id != expected_server_budget_envelope_id:
+        return refuse(
+            "refusal.net.handshake_policy_not_allowed",
+            "client/server budget_envelope_id mismatch",
+            "Reconnect with a compatible UniversePhysicsProfile budget envelope id.",
+            {
+                "client_budget_envelope_id": requested_budget_envelope_id,
+                "server_budget_envelope_id": expected_server_budget_envelope_id,
+            },
+        )
+    if not requested_arbitration_policy_id:
+        requested_arbitration_policy_id = expected_server_arbitration_policy_id
+    if not expected_server_arbitration_policy_id:
+        expected_server_arbitration_policy_id = requested_arbitration_policy_id
+    if requested_arbitration_policy_id != expected_server_arbitration_policy_id:
+        return refuse(
+            "refusal.net.handshake_policy_not_allowed",
+            "client/server arbitration_policy_id mismatch",
+            "Reconnect with a compatible UniversePhysicsProfile arbitration policy id.",
+            {
+                "client_arbitration_policy_id": requested_arbitration_policy_id,
+                "server_arbitration_policy_id": expected_server_arbitration_policy_id,
+            },
+        )
 
     mismatch_key, mismatch_expected, mismatch_actual = _first_registry_mismatch(expected_registry_hashes, request_registry_hashes)
     if mismatch_key:
@@ -457,6 +507,10 @@ def _server_response(
             client_tier_taxonomy_id=requested_tier_taxonomy_id,
             server_transition_policy_id=expected_server_transition_policy_id,
             client_transition_policy_id=requested_transition_policy_id,
+            server_budget_envelope_id=expected_server_budget_envelope_id,
+            client_budget_envelope_id=requested_budget_envelope_id,
+            server_arbitration_policy_id=expected_server_arbitration_policy_id,
+            client_arbitration_policy_id=requested_arbitration_policy_id,
         )
 
     server_profile = dict(server_profile_map.get(requested_server_profile_id) or {})
@@ -513,6 +567,17 @@ def _server_response(
         selected_server_policy_id = requested_server_policy_id
     control_capabilities = _control_capabilities_from_server_profile(server_profile)
     enforce_lod_invariance_strict = bool((server_profile.get("extensions") or {}).get("enforce_lod_invariance_strict", False))
+    ranked_profile = "rank" in str(selected_server_profile_id).lower()
+    if ranked_profile and expected_server_arbitration_policy_id and expected_server_arbitration_policy_id != "arb.equal_share":
+        return refuse(
+            "refusal.net.handshake_policy_not_allowed",
+            "ranked server profile requires arb.equal_share arbitration policy",
+            "Set UniversePhysicsProfile arbitration_policy_id to arb.equal_share for ranked servers.",
+            {
+                "server_profile_id": selected_server_profile_id,
+                "arbitration_policy_id": expected_server_arbitration_policy_id,
+            },
+        )
 
     if requested_policy_id not in replication_map:
         return refuse(
@@ -749,6 +814,10 @@ def _server_response(
         client_tier_taxonomy_id=requested_tier_taxonomy_id,
         server_transition_policy_id=expected_server_transition_policy_id,
         client_transition_policy_id=requested_transition_policy_id,
+        server_budget_envelope_id=expected_server_budget_envelope_id,
+        client_budget_envelope_id=requested_budget_envelope_id,
+        server_arbitration_policy_id=expected_server_arbitration_policy_id,
+        client_arbitration_policy_id=requested_arbitration_policy_id,
     )
 
 
@@ -828,6 +897,10 @@ def run_loopback_handshake(
     client_tier_taxonomy_id: str = "",
     server_transition_policy_id: str = "",
     client_transition_policy_id: str = "",
+    server_budget_envelope_id: str = "",
+    client_budget_envelope_id: str = "",
+    server_arbitration_policy_id: str = "",
+    client_arbitration_policy_id: str = "",
 ) -> Dict[str, object]:
     network_payload, network_error = _require_network_payload(session_spec=session_spec)
     if network_error:
@@ -888,6 +961,20 @@ def run_loopback_handshake(
     server_transition_policy_id_value = (
         str(server_transition_policy_id).strip() or client_transition_policy_id_value
     )
+    client_budget_envelope_id_value = (
+        str(client_budget_envelope_id).strip()
+        or str((network_payload.get("budget_envelope_id", "") or "")).strip()
+    )
+    server_budget_envelope_id_value = (
+        str(server_budget_envelope_id).strip() or client_budget_envelope_id_value
+    )
+    client_arbitration_policy_id_value = (
+        str(client_arbitration_policy_id).strip()
+        or str((network_payload.get("arbitration_policy_id", "") or "")).strip()
+    )
+    server_arbitration_policy_id_value = (
+        str(server_arbitration_policy_id).strip() or client_arbitration_policy_id_value
+    )
 
     request_seed = {
         "client_peer_id": str(network_payload.get("client_peer_id", "")).strip(),
@@ -903,6 +990,8 @@ def run_loopback_handshake(
         "time_control_policy_id": client_time_control_policy_id_value,
         "tier_taxonomy_id": client_tier_taxonomy_id_value,
         "transition_policy_id": client_transition_policy_id_value,
+        "budget_envelope_id": client_budget_envelope_id_value,
+        "arbitration_policy_id": client_arbitration_policy_id_value,
     }
     handshake_id = "hs.{}".format(canonical_sha256(request_seed)[:16])
     request_payload = {
@@ -930,6 +1019,8 @@ def run_loopback_handshake(
             "time_control_policy_id": client_time_control_policy_id_value,
             "tier_taxonomy_id": client_tier_taxonomy_id_value,
             "transition_policy_id": client_transition_policy_id_value,
+            "budget_envelope_id": client_budget_envelope_id_value,
+            "arbitration_policy_id": client_arbitration_policy_id_value,
         },
     }
 
@@ -1016,6 +1107,8 @@ def run_loopback_handshake(
         server_time_control_policy_id=server_time_control_policy_id_value,
         server_tier_taxonomy_id=server_tier_taxonomy_id_value,
         server_transition_policy_id=server_transition_policy_id_value,
+        server_budget_envelope_id=server_budget_envelope_id_value,
+        server_arbitration_policy_id=server_arbitration_policy_id_value,
     )
     response_validated = validate_instance(
         repo_root=repo_root,
@@ -1120,6 +1213,10 @@ def run_loopback_handshake(
         "client_tier_taxonomy_id": str(((response_proto_payload.get("extensions") or {}).get("client_tier_taxonomy_id") or "")),
         "transition_policy_id": str(((response_proto_payload.get("extensions") or {}).get("server_transition_policy_id") or "")),
         "client_transition_policy_id": str(((response_proto_payload.get("extensions") or {}).get("client_transition_policy_id") or "")),
+        "budget_envelope_id": str(((response_proto_payload.get("extensions") or {}).get("server_budget_envelope_id") or "")),
+        "client_budget_envelope_id": str(((response_proto_payload.get("extensions") or {}).get("client_budget_envelope_id") or "")),
+        "arbitration_policy_id": str(((response_proto_payload.get("extensions") or {}).get("server_arbitration_policy_id") or "")),
+        "client_arbitration_policy_id": str(((response_proto_payload.get("extensions") or {}).get("client_arbitration_policy_id") or "")),
         "control_capabilities": dict(((response_proto_payload.get("extensions") or {}).get("control_capabilities") or {})),
         "handshake_artifact_hash": canonical_sha256(
             {
