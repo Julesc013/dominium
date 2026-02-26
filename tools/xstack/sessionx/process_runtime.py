@@ -5103,6 +5103,103 @@ def _append_lod_invariance_log(state: dict, row: dict) -> None:
     state["performance_state"] = performance_state
 
 
+def _attach_lod_summary_to_transition_events(state: dict, event_ids: List[str], lod_summary: dict) -> List[dict]:
+    event_id_set = set(_sorted_tokens(list(event_ids or [])))
+    if not event_id_set:
+        return []
+    performance_state = state.get("performance_state")
+    if not isinstance(performance_state, dict):
+        return []
+    rows = performance_state.get("transition_events")
+    if not isinstance(rows, list):
+        return []
+
+    lod_status = str((lod_summary or {}).get("status", "")).strip().lower()
+    check_status = "pass"
+    measured_value = 0
+    if lod_status in ("violation", "clamped"):
+        check_status = "warn"
+        measured_value = 1
+    if lod_status == "error":
+        check_status = "fail"
+        measured_value = 1
+
+    updated = []
+    selected = []
+    for item in rows:
+        if not isinstance(item, dict):
+            continue
+        row = dict(item)
+        event_id = str(row.get("event_id", "")).strip()
+        if event_id in event_id_set:
+            check_seed = {
+                "event_id": event_id,
+                "status": check_status,
+                "before_hash": str((lod_summary or {}).get("before_hash", "")),
+                "after_hash": str((lod_summary or {}).get("after_hash", "")),
+            }
+            lod_check = {
+                "schema_version": "1.0.0",
+                "check_id": "check.{}".format(canonical_sha256(check_seed)[:16]),
+                "domain_id": CONSERVATION_DEFAULT_DOMAIN_ID,
+                "invariant_id": "inv.epistemic.lod_invariance",
+                "status": check_status,
+                "measured_value": int(measured_value),
+                "tolerance": 0,
+                "extensions": {
+                    "lod_status": lod_status or "skipped",
+                    "new_channels": list((lod_summary or {}).get("new_channels") or []),
+                    "new_entities": list((lod_summary or {}).get("new_entities") or []),
+                    "changed_entities": list((lod_summary or {}).get("changed_entities") or []),
+                },
+            }
+            checks = []
+            for check_row in list(row.get("invariant_checks") or []):
+                if not isinstance(check_row, dict):
+                    continue
+                if str(check_row.get("invariant_id", "")).strip() == "inv.epistemic.lod_invariance":
+                    continue
+                checks.append(dict(check_row))
+            checks.append(lod_check)
+            row["invariant_checks"] = sorted(
+                checks,
+                key=lambda item: (
+                    str(item.get("invariant_id", "")),
+                    str(item.get("check_id", "")),
+                ),
+            )
+            ext = dict(row.get("extensions") or {})
+            ext["epistemic_check_status"] = lod_status or "skipped"
+            ext["epistemic_before_hash"] = str((lod_summary or {}).get("before_hash", ""))
+            ext["epistemic_after_hash"] = str((lod_summary or {}).get("after_hash", ""))
+            row["extensions"] = ext
+            fingerprint_payload = dict(row)
+            fingerprint_payload.pop("deterministic_fingerprint", None)
+            row["deterministic_fingerprint"] = canonical_sha256(fingerprint_payload)
+            selected.append(dict(row))
+        updated.append(row)
+
+    performance_state["transition_events"] = sorted(
+        updated,
+        key=lambda item: (
+            int(item.get("tick", 0) or 0),
+            str(item.get("shard_id", "")),
+            str(item.get("region_id", "")),
+            str(item.get("event_id", "")),
+        ),
+    )
+    state["performance_state"] = performance_state
+    return sorted(
+        selected,
+        key=lambda item: (
+            int(item.get("tick", 0) or 0),
+            str(item.get("shard_id", "")),
+            str(item.get("region_id", "")),
+            str(item.get("event_id", "")),
+        ),
+    )
+
+
 def _run_region_transition_with_lod_invariance(
     state: dict,
     process_id: str,
@@ -5125,6 +5222,7 @@ def _run_region_transition_with_lod_invariance(
     if desired_tier not in _tier_tokens():
         desired_tier = "coarse"
     strict_contracts = bool((policy_context or {}).get("strict_contracts", False))
+    ranked_policy_enforced = str((policy_context or {}).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
     enforce_lod_invariance = bool(inputs.get("enforce_lod_invariance", True))
     lod_observation = dict(inputs.get("lod_observation") or {})
     before_observation = {}
@@ -5142,7 +5240,7 @@ def _run_region_transition_with_lod_invariance(
         )
         if str(before_observation.get("result", "")) == "complete":
             memory_state = dict(before_observation.get("memory_state") or {})
-        elif strict_contracts:
+        elif strict_contracts or ranked_policy_enforced:
             return dict(before_observation)
 
     forced_expand_ids = [region_id] if process_id == "process.region_expand" else []
@@ -5182,7 +5280,7 @@ def _run_region_transition_with_lod_invariance(
             memory_state=memory_state,
         )
         if str(after_observation.get("result", "")) != "complete":
-            if strict_contracts:
+            if strict_contracts or ranked_policy_enforced:
                 return dict(after_observation)
         else:
             after_perceived = dict(after_observation.get("perceived_model") or {})
@@ -5236,7 +5334,7 @@ def _run_region_transition_with_lod_invariance(
                     "missing_memory_item_ids": list(lod_summary.get("missing_memory_item_ids") or []),
                 },
             )
-            if violation and strict_contracts:
+            if violation and (strict_contracts or ranked_policy_enforced):
                 return refusal(
                     "refusal.ep.lod_information_gain",
                     "solver-tier transition exposed epistemic information beyond allowed policy envelope",
@@ -5250,6 +5348,16 @@ def _run_region_transition_with_lod_invariance(
                     },
                     "$.perceived_model",
                 )
+            if violation and (not strict_contracts) and (not ranked_policy_enforced):
+                lod_summary["status"] = "clamped"
+
+    event_rows = _attach_lod_summary_to_transition_events(
+        state=state,
+        event_ids=list(tick_result.get("transition_event_ids") or []),
+        lod_summary=lod_summary,
+    )
+    if event_rows:
+        tick_result["transition_events"] = event_rows
 
     return {
         "result": "complete",
@@ -5257,6 +5365,149 @@ def _run_region_transition_with_lod_invariance(
         "lod_invariance": lod_summary,
         "region_id": region_id,
         "forced_tier": desired_tier if process_id == "process.region_expand" else "",
+    }
+
+
+def _run_region_management_tick_with_lod_invariance(
+    state: dict,
+    inputs: dict,
+    law_profile: dict,
+    authority_context: dict,
+    navigation_indices: dict | None,
+    policy_context: dict | None,
+) -> Dict[str, object]:
+    strict_contracts = bool((policy_context or {}).get("strict_contracts", False))
+    ranked_policy_enforced = str((policy_context or {}).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
+    enforce_lod_invariance = bool(inputs.get("enforce_lod_invariance", True))
+    lod_observation = dict(inputs.get("lod_observation") or {})
+
+    before_observation = {}
+    after_observation = {}
+    memory_state = dict(lod_observation.get("memory_state") or {})
+    if enforce_lod_invariance:
+        before_observation = _observe_lod_snapshot(
+            state=state,
+            law_profile=law_profile,
+            authority_context=authority_context,
+            navigation_indices=navigation_indices,
+            policy_context=policy_context,
+            lod_observation=lod_observation,
+            memory_state=memory_state,
+        )
+        if str(before_observation.get("result", "")) == "complete":
+            memory_state = dict(before_observation.get("memory_state") or {})
+        elif strict_contracts or ranked_policy_enforced:
+            return dict(before_observation)
+
+    tick_result = _region_management_tick(
+        state=state,
+        navigation_indices=navigation_indices,
+        policy_context=policy_context,
+        process_id="process.region_management_tick",
+    )
+    if str(tick_result.get("result", "")) != "complete":
+        return tick_result
+
+    event_ids = list(tick_result.get("transition_event_ids") or [])
+    lod_summary = {
+        "status": "skipped",
+        "before_hash": "",
+        "after_hash": "",
+        "new_channels": [],
+        "new_entities": [],
+        "changed_entities": [],
+        "precision_gain": False,
+        "sensitive_paths": [],
+        "missing_memory_item_ids": [],
+    }
+    if enforce_lod_invariance and event_ids and str(before_observation.get("result", "")) == "complete":
+        after_observation = _observe_lod_snapshot(
+            state=state,
+            law_profile=law_profile,
+            authority_context=authority_context,
+            navigation_indices=navigation_indices,
+            policy_context=policy_context,
+            lod_observation=lod_observation,
+            memory_state=memory_state,
+        )
+        if str(after_observation.get("result", "")) != "complete":
+            if strict_contracts or ranked_policy_enforced:
+                return dict(after_observation)
+        else:
+            after_perceived = dict(after_observation.get("perceived_model") or {})
+            if bool(inputs.get("test_force_lod_information_gain", False)) or bool(
+                (policy_context or {}).get("test_force_lod_information_gain", False)
+            ):
+                entities_payload = dict(after_perceived.get("entities") or {})
+                extensions_payload = dict(entities_payload.get("extensions") or {})
+                extensions_payload["micro_internal_state"] = "forced.test.leak"
+                entities_payload["extensions"] = extensions_payload
+                after_perceived["entities"] = entities_payload
+            delta = _lod_invariance_delta(
+                before_perceived=dict(before_observation.get("perceived_model") or {}),
+                after_perceived=after_perceived,
+                allowed_new_channels=_sorted_tokens(list(lod_observation.get("allowed_new_channels") or [])),
+                allowed_new_entity_ids=_sorted_tokens(list(lod_observation.get("allowed_new_entity_ids") or [])),
+            )
+            before_memory = set(_memory_item_ids(dict(before_observation.get("perceived_model") or {})))
+            after_memory = set(_memory_item_ids(after_perceived))
+            missing_memory_item_ids = sorted(before_memory - after_memory)
+            violation = (not bool(delta.get("invariant_ok", False))) or bool(missing_memory_item_ids)
+            lod_summary = {
+                "status": "violation" if violation else "ok",
+                "before_hash": str(delta.get("before_hash", "")),
+                "after_hash": str(delta.get("after_hash", "")),
+                "new_channels": list(delta.get("new_channels") or []),
+                "new_entities": list(delta.get("new_entities") or []),
+                "changed_entities": list(delta.get("changed_entities") or []),
+                "precision_gain": bool(delta.get("precision_gain", False)),
+                "sensitive_paths": list(delta.get("sensitive_paths") or []),
+                "missing_memory_item_ids": list(missing_memory_item_ids),
+            }
+            _append_lod_invariance_log(
+                state=state,
+                row={
+                    "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
+                    "process_id": "process.region_management_tick",
+                    "region_id": "*",
+                    "status": str(lod_summary.get("status", "")),
+                    "before_hash": str(lod_summary.get("before_hash", "")),
+                    "after_hash": str(lod_summary.get("after_hash", "")),
+                    "new_channels": list(lod_summary.get("new_channels") or []),
+                    "new_entities": list(lod_summary.get("new_entities") or []),
+                    "changed_entities": list(lod_summary.get("changed_entities") or []),
+                    "precision_gain": bool(lod_summary.get("precision_gain", False)),
+                    "missing_memory_item_ids": list(lod_summary.get("missing_memory_item_ids") or []),
+                },
+            )
+            if violation and (strict_contracts or ranked_policy_enforced):
+                return refusal(
+                    "refusal.ep.lod_information_gain",
+                    "region-management transition exposed epistemic information beyond allowed policy envelope",
+                    "Apply redaction/precision rules or adjust entitlements before ROI transition tick.",
+                    {
+                        "process_id": "process.region_management_tick",
+                        "new_channels": ",".join(list(lod_summary.get("new_channels") or [])),
+                        "new_entities": ",".join(list(lod_summary.get("new_entities") or [])),
+                        "missing_memory_item_ids": ",".join(list(lod_summary.get("missing_memory_item_ids") or [])),
+                    },
+                    "$.perceived_model",
+                )
+            if violation and (not strict_contracts) and (not ranked_policy_enforced):
+                lod_summary["status"] = "clamped"
+
+    event_rows = _attach_lod_summary_to_transition_events(
+        state=state,
+        event_ids=event_ids,
+        lod_summary=lod_summary,
+    )
+    if event_rows:
+        tick_result["transition_events"] = event_rows
+    tick_result["lod_invariance"] = dict(lod_summary)
+    return {
+        "result": "complete",
+        "tick_result": tick_result,
+        "lod_invariance": dict(lod_summary),
     }
 
 
@@ -8411,14 +8662,18 @@ def execute_intent(
             "lod_invariance": lod_summary,
         }
     elif process_id == "process.region_management_tick":
-        tick_result = _region_management_tick(
+        transition = _run_region_management_tick_with_lod_invariance(
             state=state,
+            inputs=dict(inputs),
+            law_profile=law_profile,
+            authority_context=authority_context,
             navigation_indices=navigation_indices,
             policy_context=policy_context,
-            process_id=process_id,
         )
-        if tick_result.get("result") != "complete":
-            return tick_result
+        if str(transition.get("result", "")) != "complete":
+            return transition
+        tick_result = dict(transition.get("tick_result") or {})
+        lod_summary = dict(transition.get("lod_invariance") or {})
         _advance_time(state, steps=1, policy_context=policy_context)
         conservation_result = _finalize_conservation_or_refusal(
             state=state,
@@ -8450,6 +8705,7 @@ def execute_intent(
             "transition_events": transition_events_out,
             "invariant_fail_count": int(tick_result.get("invariant_fail_count", 0) or 0),
             "invariant_warn_count": int(tick_result.get("invariant_warn_count", 0) or 0),
+            "lod_invariance": lod_summary,
         }
     else:
         return refusal(
