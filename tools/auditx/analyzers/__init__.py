@@ -73,6 +73,8 @@ from analyzers import e44_wall_clock_time_usage_smell
 from analyzers import e45_nondeterministic_checkpoint_smell
 from analyzers import e46_transition_thrash_smell
 from analyzers import e47_nondeterministic_arbitration_smell
+from analyzers import e48_performance_nondeterminism_smell
+from analyzers import e49_unbounded_micro_expansion_smell
 
 
 ANALYZERS = (
@@ -149,6 +151,8 @@ ANALYZERS = (
     e45_nondeterministic_checkpoint_smell,
     e46_transition_thrash_smell,
     e47_nondeterministic_arbitration_smell,
+    e48_performance_nondeterminism_smell,
+    e49_unbounded_micro_expansion_smell,
 )
 
 
