@@ -490,6 +490,13 @@
         "1.0.0"
       ]
     },
+    "frame_summary": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "governance_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -834,6 +841,13 @@
       ]
     },
     "render_proxy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_snapshot": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
