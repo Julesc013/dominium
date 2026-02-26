@@ -263,6 +263,39 @@ COSMETIC_SEMANTIC_FORBIDDEN_TOKENS = (
     "velocity_mm_per_tick",
 )
 
+INTERACTION_UI_SURFACE_FILES = (
+    "src/client/interaction/affordance_generator.py",
+    "src/client/interaction/interaction_dispatch.py",
+    "src/client/interaction/preview_generator.py",
+    "src/client/interaction/inspection_overlays.py",
+    "src/client/interaction/interaction_panel.py",
+    "tools/xstack/sessionx/interaction.py",
+    "tools/interaction/interaction_cli.py",
+)
+
+INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "src/client/interaction/interaction_dispatch.py"
+INTERACTION_AFFORDANCE_FILE = "src/client/interaction/affordance_generator.py"
+INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS = (
+    "agent_states",
+    "world_assemblies",
+    "active_law_references",
+    "session_references",
+    "history_anchors",
+    "camera_assemblies",
+    "time_control",
+    "process_log",
+    "faction_assemblies",
+    "affiliations",
+    "territory_assemblies",
+    "diplomatic_relations",
+    "cohort_assemblies",
+    "body_assemblies",
+    "interest_regions",
+    "macro_capsules",
+    "micro_regions",
+    "performance_state",
+)
+
 PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/",
     "docs/",
@@ -5753,6 +5786,190 @@ def _append_performance_constitution_invariant_findings(
             )
 
 
+def _append_interaction_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    dispatch_rel = INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE
+    dispatch_abs = os.path.join(repo_root, dispatch_rel.replace("/", os.sep))
+    try:
+        dispatch_text = open(dispatch_abs, "r", encoding="utf-8").read()
+    except OSError:
+        dispatch_text = ""
+
+    if not dispatch_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=dispatch_rel,
+                line_number=1,
+                snippet="",
+                message="interaction dispatch file missing; cannot verify intent-only execution path",
+                rule_id="INV-INTERACTION-INTENTS-ONLY",
+            )
+        )
+    else:
+        for token in (
+            "def run_interaction_command(",
+            "build_affordance_list(",
+            "build_interaction_intent(",
+            "build_interaction_envelope(",
+            "execute_intent(",
+            "interact.list_affordances",
+            "interact.execute",
+        ):
+            if token in dispatch_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=dispatch_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="interaction dispatch must route execution through deterministic intent envelope/process path",
+                    rule_id="INV-INTERACTION-INTENTS-ONLY",
+                )
+            )
+
+    affordance_rel = INTERACTION_AFFORDANCE_FILE
+    affordance_abs = os.path.join(repo_root, affordance_rel.replace("/", os.sep))
+    try:
+        affordance_text = open(affordance_abs, "r", encoding="utf-8").read()
+    except OSError:
+        affordance_text = ""
+    if not affordance_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=affordance_rel,
+                line_number=1,
+                snippet="",
+                message="affordance generator file missing; law-derived affordance validation unavailable",
+                rule_id="INV-AFFORDANCES-DERIVED-FROM-LAW",
+            )
+        )
+    else:
+        for token in (
+            "_allowed_processes(law_profile)",
+            "_process_entitlement_map(law_profile)",
+            "process_allowed = process_id in allowed_processes",
+            "if not process_allowed:",
+            "_action_rows(interaction_action_registry)",
+        ):
+            if token in affordance_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=affordance_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="affordance generation must be derived from law profile process allow-list and entitlement requirements",
+                    rule_id="INV-AFFORDANCES-DERIVED-FROM-LAW",
+                )
+            )
+
+    mutation_pattern = re.compile(
+        r"\[\s*['\"](" + "|".join(INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS) + r")['\"]\s*\]\s*="
+    )
+    truth_symbol_pattern = re.compile(r"\b(truth_model|truthmodel)\b", re.IGNORECASE)
+
+    for rel_path in INTERACTION_UI_SURFACE_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="interaction UI surface file is missing",
+                    rule_id="INV-UI-NEVER-MUTATES-TRUTH",
+                )
+            )
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line)
+            if truth_symbol_pattern.search(token):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=token.strip()[:140],
+                        message="interaction UI surfaces must not reference authoritative TruthModel/universe state symbols",
+                        rule_id="INV-UI-NEVER-MUTATES-TRUTH",
+                    )
+                )
+            if mutation_pattern.search(token):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=token.strip()[:140],
+                        message="interaction UI surfaces must not mutate authoritative truth collections directly",
+                        rule_id="INV-UI-NEVER-MUTATES-TRUTH",
+                    )
+                )
+            if "execute_intent(" in token and rel_path != INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=token.strip()[:140],
+                        message="interaction surfaces must dispatch via run_interaction_command/intent envelopes, not direct process runtime calls",
+                        rule_id="INV-INTERACTION-INTENTS-ONLY",
+                    )
+                )
+
+    integration_tokens = (
+        ("tools/xstack/sessionx/interaction.py", ("run_interaction_command(",)),
+        (
+            "tools/interaction/interaction_cli.py",
+            (
+                "run_interaction_command(",
+                "interact.list_affordances",
+                "interact.execute",
+            ),
+        ),
+    )
+    for rel_path, tokens in integration_tokens:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="interaction integration surface missing; cannot verify intent-only flow",
+                    rule_id="INV-INTERACTION-INTENTS-ONLY",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="interaction integration surfaces must delegate through canonical interaction dispatch APIs",
+                    rule_id="INV-INTERACTION-INTENTS-ONLY",
+                )
+            )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -5809,6 +6026,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_performance_constitution_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_interaction_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

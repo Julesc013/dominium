@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 12,
+  "candidate_count": 13,
   "candidates": [
     {
       "evidence_paths": [
@@ -13,6 +13,16 @@
     },
     {
       "evidence_paths": [
+        "tools/interaction/interaction_cli.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.93,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        ".xstack_cache/auditx/repox_probe/FINDINGS.json",
         ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/22347c1434b0aaf50a6fbc69ffe6c7e25bb2a88ecbf4ada4cd30455e5574bec9.json",
         ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2294323391e767cee37c19e0bf0d467718804569e03a8300c1c5ffac920d67ba.json",
         ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2f6c968e1afe470de28f475d61eafe9151eab8f14d2ab56a5540fe0b0a0a7ce6.json",
@@ -29,6 +39,7 @@
         ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/d897f4c70da135a05324c81264e2fe382cbe217be945d339d3b42d26ec92d7f0.json",
         ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/d9472bdcd8c5cbc82ce1b541a960271681a09ed54d896176681ba8320f84a98b.json",
         ".xstack_cache/ws-09453da0be759a88/auditx/entries/fa390d210a5ac6c68d6ce40559ef54657bfab4380176c2479b901f61595e59b3.json",
+        ".xstack_cache/ws-1e168ac5bf4b5ca2/auditx/entries/c30daa1a508a8bb0f7386fe5525fd85321a9b3836539f989a246279935f6dc37.json",
         ".xstack_cache/ws-345f13b6e7bc753a/auditx/entries/0202f072348b4a5bdcd834997bfa9dae083230f8ae9b87ceb495d3c8a3fc7c0a.json",
         ".xstack_cache/ws-345f13b6e7bc753a/auditx/entries/14c7bb7507cabedbd6981a54cf7b80b93e9b26cb2097651e699f8060d2165268.json",
         ".xstack_cache/ws-345f13b6e7bc753a/auditx/entries/2dbb5c0cd9f02a2e19940448fa8e8be8de10b5a96f2180c9ffe90783773ac397.json",
@@ -54,6 +65,8 @@
         ".xstack_cache/ws-65fca05df0a0cdc9/auditx/entries/188ebbbc19f61ac760c910d4fa7a6ffd9d992b92f4b21b490ce1977c12ffa8e5.json",
         ".xstack_cache/ws-65fca05df0a0cdc9/auditx/entries/6527b9953edb355e316c92d982672653064a01f1aee1e78f46109b18bb3ffb29.json",
         ".xstack_cache/ws-65fca05df0a0cdc9/auditx/entries/6c6f4b922e4b59b70594a802788e52ba4fccf6697e3382416c98edb7aec4593f.json",
+        ".xstack_cache/ws-6c11922aba610bbb/auditx/entries/48bec209a9b20af9ffe518cc26e0d5284a10fbefb5145e063a5e311d5c6328f1.json",
+        ".xstack_cache/ws-6c11922aba610bbb/auditx/entries/510fe4d72e77a7c5aebe81d0d24344c636c57662d23f9b5e9a2b8c16725104a1.json",
         ".xstack_cache/ws-7aeb0c8f71584cdb/auditx/entries/a4f1a3f1eeca8b997b42fe0630a48e7b18da18c2e339e13fb237fe3940dd15fa.json",
         ".xstack_cache/ws-8d13df35d7c1f8f8/auditx/entries/566fe4bde7390fc0c1945fb334747d370f713aad2474e7abdd95d32e1fec6357.json",
         ".xstack_cache/ws-8d13df35d7c1f8f8/auditx/entries/9a7723e66b0224cbda9d10c95fcdf1cf5aa7688b6e1b01b2bcac179e9941778a.json",

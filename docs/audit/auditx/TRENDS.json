@@ -1,14 +1,15 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 643,
+    "canon_drift": 645,
     "capability_bypass_smell": 1,
     "capability_misuse": 139,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
     "derived_freshness": 131,
     "epistemics.hidden_state_leak_smell": 6,
+    "interaction.interaction_bypass_smell": 2,
     "legacy_contamination": 6,
-    "mode_flag_smell": 54,
+    "mode_flag_smell": 58,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
     "ownership_boundary": 9,
@@ -31,13 +32,14 @@
       "civilisation.nondeterministic_cohort_mapping_smell": 0,
       "derived_freshness": 120,
       "epistemics.hidden_state_leak_smell": 0,
+      "interaction.interaction_bypass_smell": 0,
       "legacy_contamination": 6,
-      "mode_flag_smell": 54,
+      "mode_flag_smell": 57,
       "net.precision_leak_smell": 0,
       "net.truth_over_net_smell": 0,
       "ownership_boundary": 9,
-      "reachability": 80,
-      "schema_usage": 160,
+      "reachability": 76,
+      "schema_usage": 158,
       "security.boundary_io": 29,
       "security.privilege_bypass": 9,
       "semantic.capability_drift": 0,
@@ -49,22 +51,22 @@
     },
     "severity_distribution": {
       "INFO": 230,
-      "RISK": 219,
-      "VIOLATION": 63,
-      "WARN": 302
+      "RISK": 217,
+      "VIOLATION": 66,
+      "WARN": 298
     }
   },
-  "findings_hash": "d8f4ea414ada3e67a4f274a2948d9a61382e5fe5659079f2bdf7e8a71d6ce4a6",
+  "findings_hash": "8eed854dc34a4a2273d347740fb9446a01102c015aeee74fc4086a1282ea36d4",
   "history_reference": {
-    "previous_distinct_hash": "8a7ebf5489a86f1aae891c141528a1537f155f9636b8063bdab6f13255a43969"
+    "previous_distinct_hash": "64e11a79b01e536b196f001f81103ffcb4caf44b063c05317e45a9845d8c3866"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 230,
     "RISK": 243,
-    "VIOLATION": 64,
-    "WARN": 1074
+    "VIOLATION": 70,
+    "WARN": 1076
   },
-  "total_findings": 1611
+  "total_findings": 1619
 }

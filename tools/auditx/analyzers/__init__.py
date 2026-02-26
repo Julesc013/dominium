@@ -77,6 +77,8 @@ from analyzers import e48_performance_nondeterminism_smell
 from analyzers import e49_unbounded_micro_expansion_smell
 from analyzers import e50_renderer_truth_leak_smell
 from analyzers import e51_render_snapshot_misclassified_smell
+from analyzers import e52_interaction_bypass_smell
+from analyzers import e53_preview_info_leak_smell
 
 
 ANALYZERS = (
@@ -157,6 +159,8 @@ ANALYZERS = (
     e49_unbounded_micro_expansion_smell,
     e50_renderer_truth_leak_smell,
     e51_render_snapshot_misclassified_smell,
+    e52_interaction_bypass_smell,
+    e53_preview_info_leak_smell,
 )
 
 

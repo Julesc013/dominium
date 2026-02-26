@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 643,
+      "finding_count": 645,
       "recommended_actions": {
-        "DOC_FIX": 643
+        "DOC_FIX": 645
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 643
+        "WARN": 645
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -293,39 +293,39 @@
       }
     },
     "INV-MODE-AS-PROFILES": {
-      "finding_count": 54,
+      "finding_count": 58,
       "recommended_actions": {
-        "ADD_RULE": 54
+        "ADD_RULE": 58
       },
       "sample_findings": [
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/22347c1434b0aaf50a6fbc69ffe6c7e25bb2a88ecbf4ada4cd30455e5574bec9.json"
+          "location": ".xstack_cache/auditx/repox_probe/FINDINGS.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0002",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2294323391e767cee37c19e0bf0d467718804569e03a8300c1c5ffac920d67ba.json"
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/22347c1434b0aaf50a6fbc69ffe6c7e25bb2a88ecbf4ada4cd30455e5574bec9.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0003",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2f6c968e1afe470de28f475d61eafe9151eab8f14d2ab56a5540fe0b0a0a7ce6.json"
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2294323391e767cee37c19e0bf0d467718804569e03a8300c1c5ffac920d67ba.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0004",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/36eb761c354dd1e15fdf5d6800c27d32e3c9ab32bc01db1eda226e5db72586ff.json"
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2f6c968e1afe470de28f475d61eafe9151eab8f14d2ab56a5540fe0b0a0a7ce6.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0005",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/592c2ff250b8674c750a8540a7a9852dd3ff1481a505cde08f5cb56968cbc9e3.json"
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/36eb761c354dd1e15fdf5d6800c27d32e3c9ab32bc01db1eda226e5db72586ff.json"
         }
       ],
       "severities": {
-        "VIOLATION": 54
+        "VIOLATION": 58
       }
     },
     "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
@@ -365,39 +365,39 @@
       }
     },
     "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 54,
+      "finding_count": 58,
       "recommended_actions": {
-        "ADD_RULE": 54
+        "ADD_RULE": 58
       },
       "sample_findings": [
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/22347c1434b0aaf50a6fbc69ffe6c7e25bb2a88ecbf4ada4cd30455e5574bec9.json"
+          "location": ".xstack_cache/auditx/repox_probe/FINDINGS.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0002",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2294323391e767cee37c19e0bf0d467718804569e03a8300c1c5ffac920d67ba.json"
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/22347c1434b0aaf50a6fbc69ffe6c7e25bb2a88ecbf4ada4cd30455e5574bec9.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0003",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2f6c968e1afe470de28f475d61eafe9151eab8f14d2ab56a5540fe0b0a0a7ce6.json"
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2294323391e767cee37c19e0bf0d467718804569e03a8300c1c5ffac920d67ba.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0004",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/36eb761c354dd1e15fdf5d6800c27d32e3c9ab32bc01db1eda226e5db72586ff.json"
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2f6c968e1afe470de28f475d61eafe9151eab8f14d2ab56a5540fe0b0a0a7ce6.json"
         },
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0005",
-          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/592c2ff250b8674c750a8540a7a9852dd3ff1481a505cde08f5cb56968cbc9e3.json"
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/36eb761c354dd1e15fdf5d6800c27d32e3c9ab32bc01db1eda226e5db72586ff.json"
         }
       ],
       "severities": {
-        "VIOLATION": 54
+        "VIOLATION": 58
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
@@ -579,6 +579,27 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-UI-NEVER-MUTATES-TRUTH": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "REWRITE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "interaction.interaction_bypass_smell",
+          "finding_id": "E52_INTERACTION_BYPASS_SMELL:0001",
+          "location": "tools/interaction/interaction_cli.py"
+        },
+        {
+          "category": "interaction.interaction_bypass_smell",
+          "finding_id": "E52_INTERACTION_BYPASS_SMELL:0002",
+          "location": "tools/interaction/interaction_cli.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 2
       }
     },
     "INV-WORKSPACE-ISOLATION": {
