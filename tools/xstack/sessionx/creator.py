@@ -20,7 +20,6 @@ from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from worldgen.core.pipeline import run_worldgen_pipeline
 
 from .common import (
-    DEFAULT_COMPATIBILITY_VERSION,
     DEFAULT_TIMESTAMP_UTC,
     deterministic_seed_hex,
     identity_hash_for_payload,
@@ -30,6 +29,12 @@ from .common import (
     write_canonical_json,
 )
 from .pipeline_contract import DEFAULT_PIPELINE_ID, load_session_pipeline_contract
+from .universe_physics import (
+    NULL_PHYSICS_PROFILE_ID,
+    is_null_bundle_profile,
+    select_physics_profile,
+    write_null_boot_artifacts,
+)
 
 
 DEFAULT_EXPERIENCE_ID = "profile.lab.developer"
@@ -37,6 +42,7 @@ DEFAULT_LAW_PROFILE_ID = "law.lab.unrestricted"
 DEFAULT_PARAMETER_BUNDLE_ID = "params.lab.placeholder"
 DEFAULT_BUDGET_POLICY_ID = "policy.budget.default_lab"
 DEFAULT_FIDELITY_POLICY_ID = "policy.fidelity.default_lab"
+DEFAULT_PHYSICS_PROFILE_ID = NULL_PHYSICS_PROFILE_ID
 DEFAULT_SCENARIO_ID = "scenario.lab.galaxy_nav"
 DEFAULT_SCOPE_ID = "epistemic.lab.placeholder"
 DEFAULT_VISIBILITY_LEVEL = "placeholder"
@@ -63,10 +69,6 @@ DEFAULT_ENTITLEMENTS = (
     "lens.nondiegetic.access",
     "ui.window.lab.nav",
 )
-DEFAULT_PHYSICAL_CONSTANTS = {
-    "gravitational_constant": 6.6743e-11,
-    "speed_of_light_mps": 299792458.0,
-}
 DEFAULT_CAMERA_ASSEMBLY = {
     "assembly_id": "camera.main",
     "frame_id": "frame.world",
@@ -226,6 +228,7 @@ DEFAULT_INSTRUMENT_ASSEMBLIES = [
 DEFAULT_WORLDGEN_MODULE_REGISTRY_REL = "data/registries/worldgen_module_registry.json"
 
 REGISTRY_FILE_MAP = {
+    "universe_physics_profile_registry_hash": "universe_physics_profile.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",
     "budget_policy_registry_hash": "budget_policy.registry.json",
     "fidelity_policy_registry_hash": "fidelity_policy.registry.json",
@@ -319,6 +322,34 @@ def _default_net_schema_versions(repo_root: str) -> Dict[str, str]:
         if token:
             out[str(schema_name)] = token
     return dict((key, out[key]) for key in sorted(out.keys()))
+
+
+def _compatibility_schema_refs(repo_root: str) -> List[str]:
+    payload, error = load_version_registry(repo_root=repo_root)
+    if error:
+        return []
+    rows = (payload.get("schemas") or {}) if isinstance(payload, dict) else {}
+    if not isinstance(rows, dict):
+        return []
+    include = (
+        "bundle_lockfile",
+        "session_spec",
+        "universe_identity",
+        "universe_physics_profile",
+        "time_model",
+        "numeric_precision_policy",
+        "tier_taxonomy",
+        "boundary_model",
+    )
+    out: List[str] = []
+    for schema_name in include:
+        row = rows.get(schema_name)
+        if not isinstance(row, dict):
+            continue
+        version = str(row.get("current_version", "")).strip()
+        if version:
+            out.append("{}@{}".format(schema_name, version))
+    return sorted(set(out))
 
 
 def _domain_bindings_from_registry(repo_root: str) -> List[str]:
@@ -561,14 +592,29 @@ def _select_policy_entry(registry_payload: dict, key: str, policy_id: str, refus
     )
 
 
-def _universe_identity_from_seed(seed_text: str, scenario_id: str, base_domain_bindings: List[str]) -> dict:
+def _universe_identity_from_seed(
+    *,
+    seed_text: str,
+    universe_id: str,
+    scenario_id: str,
+    domain_binding_ids: List[str],
+    physics_profile_id: str,
+    initial_pack_set_hash_expectation: str,
+    compatibility_schema_refs: List[str],
+) -> dict:
     payload = {
         "schema_version": "1.0.0",
+        "universe_id": str(universe_id).strip(),
         "global_seed": str(seed_text),
-        "physical_constants": dict(DEFAULT_PHYSICAL_CONSTANTS),
-        "base_domain_bindings": list(base_domain_bindings),
-        "initial_scenario_id": str(scenario_id),
-        "compatibility_version": DEFAULT_COMPATIBILITY_VERSION,
+        "domain_binding_ids": sorted(set(str(item).strip() for item in (domain_binding_ids or []) if str(item).strip())),
+        "physics_profile_id": str(physics_profile_id).strip() or NULL_PHYSICS_PROFILE_ID,
+        "base_scenario_id": str(scenario_id),
+        "initial_pack_set_hash_expectation": str(initial_pack_set_hash_expectation).strip(),
+        "compatibility_schema_refs": sorted(
+            set(str(item).strip() for item in (compatibility_schema_refs or []) if str(item).strip())
+        ),
+        "immutable_after_create": True,
+        "extensions": {},
         "identity_hash": "",
     }
     payload["identity_hash"] = identity_hash_for_payload(payload)
@@ -758,14 +804,16 @@ def _validate_universe_identity(repo_root: str, payload: dict) -> Dict[str, obje
 def _initial_universe_state(
     save_id: str,
     law_profile_id: str,
-    camera_assembly: dict,
+    camera_assembly: dict | None,
     instrument_assemblies: List[dict],
     budget_policy_id: str,
     fidelity_policy_id: str,
     activation_policy_id: str,
     max_compute_units_per_tick: int,
 ) -> dict:
-    camera_payload = _camera_from_payload(camera_assembly if isinstance(camera_assembly, dict) else {})
+    has_camera = isinstance(camera_assembly, dict) and bool(camera_assembly)
+    camera_payload = _camera_from_payload(camera_assembly if has_camera else {})
+    camera_rows = [camera_payload] if has_camera else []
     instrument_rows = [
         {
             "assembly_id": str(row.get("assembly_id", "")),
@@ -783,7 +831,9 @@ def _initial_universe_state(
         for row in sorted((item for item in (instrument_assemblies or []) if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", "")))
         if str(row.get("assembly_id", "")).strip() and str(row.get("instrument_type", "")).strip()
     ]
-    world_assemblies = [str(camera_payload.get("assembly_id", "camera.main"))]
+    world_assemblies: List[str] = []
+    if has_camera:
+        world_assemblies.append(str(camera_payload.get("assembly_id", "camera.main")))
     world_assemblies.extend(str(row.get("assembly_id", "")) for row in instrument_rows if str(row.get("assembly_id", "")).strip())
     world_assemblies = sorted(set(world_assemblies))
     return {
@@ -797,7 +847,7 @@ def _initial_universe_state(
         "active_law_references": [str(law_profile_id)],
         "session_references": ["session.{}".format(str(save_id))],
         "history_anchors": ["history.anchor.tick.0"],
-        "camera_assemblies": [camera_payload],
+        "camera_assemblies": camera_rows,
         "instrument_assemblies": instrument_rows,
         "controller_assemblies": [],
         "control_bindings": [],
@@ -841,6 +891,7 @@ def create_session_spec(
     repo_root: str,
     save_id: str,
     bundle_id: str = DEFAULT_BUNDLE_ID,
+    physics_profile_id: str = "",
     scenario_id: str = DEFAULT_SCENARIO_ID,
     mission_id: str = "",
     experience_id: str = DEFAULT_EXPERIENCE_ID,
@@ -893,6 +944,7 @@ def create_session_spec(
             {"bundle_id": str(bundle_id)},
             "$.bundle_id",
         )
+    null_bundle = is_null_bundle_profile(bundle_profile)
 
     network_payload: dict = {}
     network_endpoint = str(net_endpoint).strip()
@@ -979,15 +1031,24 @@ def create_session_spec(
 
     compile_result = {}
     if compile_outputs:
-        compile_result = compile_bundle(
-            repo_root=repo_root,
-            bundle_id=str(bundle_id),
-            out_dir_rel="build/registries",
-            lockfile_out_rel="build/lockfile.json",
-            packs_root_rel="packs",
-            schema_repo_root=repo_root,
-            use_cache=False,
-        )
+        if null_bundle:
+            compile_result = write_null_boot_artifacts(
+                repo_root=repo_root,
+                out_dir_rel="build/registries",
+                lockfile_out_rel="build/lockfile.json",
+                bundle_id=str(bundle_id),
+                schema_repo_root=repo_root,
+            )
+        else:
+            compile_result = compile_bundle(
+                repo_root=repo_root,
+                bundle_id=str(bundle_id),
+                out_dir_rel="build/registries",
+                lockfile_out_rel="build/lockfile.json",
+                packs_root_rel="packs",
+                schema_repo_root=repo_root,
+                use_cache=False,
+            )
         if compile_result.get("result") != "complete":
             return refusal(
                 "REFUSE_BUNDLE_COMPILE_FAILED",
@@ -1012,6 +1073,25 @@ def create_session_spec(
             "$.bundle_id",
         )
 
+    registries = lockfile_payload.get("registries")
+    if not isinstance(registries, dict):
+        return refusal(
+            "REFUSE_LOCKFILE_REGISTRY_SECTION_MISSING",
+            "lockfile registries section is missing",
+            "Rebuild lockfile and retry session creation.",
+            {"bundle_id": str(bundle_id)},
+            "$.registries",
+        )
+    universe_physics_registry, universe_physics_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["universe_physics_profile_registry_hash"],
+        expected_hash=str(registries.get("universe_physics_profile_registry_hash", "")),
+    )
+    if universe_physics_registry_error:
+        return universe_physics_registry_error
+
+    explicit_physics_profile_id = str(physics_profile_id).strip()
+    requested_physics_profile_id = explicit_physics_profile_id or DEFAULT_PHYSICS_PROFILE_ID
     if universe_identity_path:
         identity_abs = os.path.normpath(os.path.abspath(universe_identity_path))
         identity_payload, identity_err = read_json_object(identity_abs)
@@ -1023,22 +1103,76 @@ def create_session_spec(
                 {"universe_identity_path": norm(identity_abs)},
                 "$.universe_identity",
             )
+        identity_physics_profile_id = str(identity_payload.get("physics_profile_id", "")).strip()
+        if not identity_physics_profile_id:
+            return refusal(
+                "refusal.physics_profile_missing",
+                "provided universe identity is missing physics_profile_id",
+                "Set universe_identity.physics_profile_id explicitly or regenerate via session_create.",
+                {"universe_identity_path": norm(identity_abs)},
+                "$.universe_identity.physics_profile_id",
+            )
+        if explicit_physics_profile_id and explicit_physics_profile_id != identity_physics_profile_id:
+            return refusal(
+                "refusal.physics_profile_mismatch",
+                "requested physics_profile_id does not match provided universe identity",
+                "Use matching physics profile inputs or remove explicit --physics-profile-id override.",
+                {
+                    "requested_physics_profile_id": explicit_physics_profile_id,
+                    "identity_physics_profile_id": identity_physics_profile_id,
+                },
+                "$.physics_profile_id",
+            )
+        requested_physics_profile_id = identity_physics_profile_id
     else:
-        domain_bindings = _domain_bindings_from_registry(repo_root)
-        if not domain_bindings:
-            domain_bindings = ["domain.navigation"]
+        selected_profile, profile_error = select_physics_profile(
+            physics_profile_id=requested_physics_profile_id,
+            profile_registry=universe_physics_registry,
+        )
+        if profile_error:
+            return profile_error
+        domain_bindings = sorted(
+            set(str(item).strip() for item in (selected_profile.get("enabled_domain_ids") or []) if str(item).strip())
+        )
+        generated_universe_id = str(universe_id).strip() or "universe.{}".format(
+            deterministic_seed_hex(str(universe_seed_string), "universe.identity")[:16]
+        )
         identity_payload = _universe_identity_from_seed(
+            universe_id=generated_universe_id,
             seed_text=str(universe_seed_string),
             scenario_id=str(scenario_id),
-            base_domain_bindings=domain_bindings,
+            domain_binding_ids=domain_bindings,
+            physics_profile_id=str(selected_profile.get("physics_profile_id", "")),
+            initial_pack_set_hash_expectation=str(lockfile_payload.get("pack_lock_hash", "")),
+            compatibility_schema_refs=_compatibility_schema_refs(repo_root=repo_root),
         )
         identity_abs = ""
+
+    selected_profile, profile_error = select_physics_profile(
+        physics_profile_id=requested_physics_profile_id,
+        profile_registry=universe_physics_registry,
+    )
+    if profile_error:
+        return profile_error
+    if str(identity_payload.get("physics_profile_id", "")).strip() != str(selected_profile.get("physics_profile_id", "")).strip():
+        return refusal(
+            "refusal.physics_profile_mismatch",
+            "universe identity physics_profile_id does not match selected profile",
+            "Use an identity payload with a compatible physics profile id.",
+            {
+                "identity_physics_profile_id": str(identity_payload.get("physics_profile_id", "")),
+                "selected_physics_profile_id": str(selected_profile.get("physics_profile_id", "")),
+            },
+            "$.universe_identity.physics_profile_id",
+        )
 
     identity_check = _validate_universe_identity(repo_root=repo_root, payload=identity_payload)
     if identity_check.get("result") != "complete":
         return identity_check
 
-    calculated_universe_id = str(universe_id).strip() or "universe.{}".format(str(identity_payload.get("identity_hash", ""))[:16])
+    calculated_universe_id = str(identity_payload.get("universe_id", "")).strip() or str(universe_id).strip()
+    if not calculated_universe_id:
+        calculated_universe_id = "universe.{}".format(str(identity_payload.get("identity_hash", ""))[:16])
     entitlement_rows = sorted(set(str(item).strip() for item in (entitlements or DEFAULT_ENTITLEMENTS) if str(item).strip()))
     if not entitlement_rows:
         return refusal(
@@ -1153,6 +1287,9 @@ def create_session_spec(
     if activation_policy_error:
         return activation_policy_error
 
+    if network_payload:
+        network_payload["physics_profile_id"] = str(identity_payload.get("physics_profile_id", "")).strip()
+
     session_payload = {
         "schema_version": "1.0.0",
         "universe_id": calculated_universe_id,
@@ -1196,8 +1333,8 @@ def create_session_spec(
             "$.session_spec",
         )
 
-    camera_assembly = _camera_seed_from_bundle(repo_root=repo_root, bundle_id=str(bundle_id))
-    instrument_assemblies = _instrument_seed_from_bundle(repo_root=repo_root, bundle_id=str(bundle_id))
+    camera_assembly = None if null_bundle else _camera_seed_from_bundle(repo_root=repo_root, bundle_id=str(bundle_id))
+    instrument_assemblies = [] if null_bundle else _instrument_seed_from_bundle(repo_root=repo_root, bundle_id=str(bundle_id))
     state_payload = _initial_universe_state(
         save_id=save_token,
         law_profile_id=str(law_profile_id),
@@ -1241,6 +1378,7 @@ def create_session_spec(
         else "",
         "pack_lock_hash": str(lockfile_payload.get("pack_lock_hash", "")),
         "registry_hashes": dict((lockfile_payload.get("registries") or {})),
+        "physics_profile_id": str(identity_payload.get("physics_profile_id", "")),
         "loaded_universe_identity_path": norm(identity_abs) if identity_abs else "",
         "generated_universe_identity": not bool(universe_identity_path),
     }

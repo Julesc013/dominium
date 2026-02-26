@@ -25,6 +25,7 @@ from .runner import (
     _validate_registry_hashes,
 )
 from .scheduler import replay_intent_script_srz
+from .universe_physics import select_physics_profile
 
 
 def _load_script(path: str) -> Tuple[dict, List[dict], Dict[str, object]]:
@@ -195,6 +196,47 @@ def run_intent_script(
             {"bundle_id": bundle_token},
             "$.registries",
         )
+
+    universe_physics_profile_registry, universe_physics_profile_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["universe_physics_profile_registry_hash"],
+        expected_hash=str(registries.get("universe_physics_profile_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if universe_physics_profile_registry_error:
+        return universe_physics_profile_registry_error
+    time_model_registry, time_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["time_model_registry_hash"],
+        expected_hash=str(registries.get("time_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if time_model_registry_error:
+        return time_model_registry_error
+    numeric_precision_policy_registry, numeric_precision_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["numeric_precision_policy_registry_hash"],
+        expected_hash=str(registries.get("numeric_precision_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if numeric_precision_policy_registry_error:
+        return numeric_precision_policy_registry_error
+    tier_taxonomy_registry, tier_taxonomy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["tier_taxonomy_registry_hash"],
+        expected_hash=str(registries.get("tier_taxonomy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if tier_taxonomy_registry_error:
+        return tier_taxonomy_registry_error
+    boundary_model_registry, boundary_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["boundary_model_registry_hash"],
+        expected_hash=str(registries.get("boundary_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if boundary_model_registry_error:
+        return boundary_model_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -513,6 +555,21 @@ def run_intent_script(
             {"save_id": save_id},
             "$.identity_hash",
         )
+    identity_physics_profile_id = str(universe_identity.get("physics_profile_id", "")).strip()
+    if not identity_physics_profile_id:
+        return refusal(
+            "refusal.physics_profile_missing",
+            "UniverseIdentity is missing physics_profile_id",
+            "Regenerate universe identity with an explicit physics profile id.",
+            {"save_id": save_id},
+            "$.physics_profile_id",
+        )
+    selected_physics_profile, selected_physics_profile_error = select_physics_profile(
+        physics_profile_id=identity_physics_profile_id,
+        profile_registry=universe_physics_profile_registry,
+    )
+    if selected_physics_profile_error:
+        return selected_physics_profile_error
     universe_state, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
         return state_error
@@ -651,6 +708,11 @@ def run_intent_script(
         identity_path=norm(os.path.relpath(identity_path, repo_root)),
         state_path=norm(os.path.relpath(state_path, repo_root)),
         registry_payloads={
+            "universe_physics_profile_registry": universe_physics_profile_registry,
+            "time_model_registry": time_model_registry,
+            "numeric_precision_policy_registry": numeric_precision_policy_registry,
+            "tier_taxonomy_registry": tier_taxonomy_registry,
+            "boundary_model_registry": boundary_model_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
@@ -740,6 +802,7 @@ def run_intent_script(
         "checkpoint_hashes": checkpoint_hashes,
         "composite_hash": composite_hash,
         "final_state_hash": final_state_hash,
+        "physics_profile_id": identity_physics_profile_id,
         "performance_state": dict(updated_state.get("performance_state") or {}),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
@@ -786,6 +849,7 @@ def run_intent_script(
         "script_hash": script_hash,
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "registry_hashes": registry_hashes,
+        "physics_profile_id": identity_physics_profile_id,
         "state_hash_anchors": state_hash_anchors,
         "tick_hash_anchors": tick_hash_anchors,
         "checkpoint_hashes": checkpoint_hashes,

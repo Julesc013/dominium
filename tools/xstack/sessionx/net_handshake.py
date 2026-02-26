@@ -73,6 +73,8 @@ def _handshake_payload(
     server_policy_id: str,
     control_capabilities: dict | None = None,
     enforce_lod_invariance_strict: bool = False,
+    server_physics_profile_id: str = "",
+    client_physics_profile_id: str = "",
 ) -> dict:
     capabilities = dict(control_capabilities if isinstance(control_capabilities, dict) else {})
     return {
@@ -100,6 +102,8 @@ def _handshake_payload(
                 "lens_override_allowed": bool(capabilities.get("lens_override_allowed", False)),
             },
             "enforce_lod_invariance_strict": bool(enforce_lod_invariance_strict),
+            "server_physics_profile_id": str(server_physics_profile_id or ""),
+            "client_physics_profile_id": str(client_physics_profile_id or ""),
         },
     }
 
@@ -213,6 +217,7 @@ def _server_response(
     securex_policy_registry: dict,
     server_profile_registry: dict,
     authority_context: dict,
+    server_physics_profile_id: str = "",
 ) -> dict:
     handshake_id = str(request_payload.get("handshake_id", "")).strip()
     client_peer_id = str(request_payload.get("client_peer_id", "")).strip()
@@ -224,6 +229,10 @@ def _server_response(
     request_securex_policy_id = str(request_payload.get("securex_policy_id", "")).strip()
     requested_law_profile_raw = request_payload.get("desired_law_profile_id", "")
     requested_law_profile_id = "" if requested_law_profile_raw is None else str(requested_law_profile_raw).strip()
+    request_extensions = dict(request_payload.get("extensions") or {})
+    requested_physics_profile_id = str(request_extensions.get("physics_profile_id", "")).strip()
+    if not requested_physics_profile_id:
+        requested_physics_profile_id = str(request_payload.get("physics_profile_id", "")).strip()
     schema_versions = dict(request_payload.get("schema_versions") or {})
     request_registry_hashes = dict(request_payload.get("registry_hashes") or {})
     expected_registry_hashes = dict(lock_payload.get("registries") or {})
@@ -243,6 +252,7 @@ def _server_response(
         "lens_override_allowed": False,
     }
     enforce_lod_invariance_strict = False
+    expected_server_physics_profile_id = str(server_physics_profile_id or "").strip()
 
     def refuse(
         reason_code: str,
@@ -272,6 +282,8 @@ def _server_response(
             server_policy_id=selected_server_policy_id or requested_server_policy_id,
             control_capabilities=control_capabilities,
             enforce_lod_invariance_strict=enforce_lod_invariance_strict,
+            server_physics_profile_id=expected_server_physics_profile_id,
+            client_physics_profile_id=requested_physics_profile_id,
         )
 
     if str(request_payload.get("pack_lock_hash", "")).strip() != pack_lock_hash:
@@ -280,6 +292,26 @@ def _server_response(
             "client pack_lock_hash does not match server lock hash",
             "Use a client build generated from the same lockfile.",
             {"client_peer_id": client_peer_id, "server_peer_id": server_peer_id},
+        )
+
+    if not requested_physics_profile_id:
+        return refuse(
+            "refusal.physics_profile_missing",
+            "client handshake payload is missing physics_profile_id",
+            "Populate network.physics_profile_id from UniverseIdentity before handshake.",
+            {"client_peer_id": client_peer_id},
+        )
+    if not expected_server_physics_profile_id:
+        expected_server_physics_profile_id = requested_physics_profile_id
+    if requested_physics_profile_id != expected_server_physics_profile_id:
+        return refuse(
+            "refusal.physics_profile_mismatch",
+            "client/server physics_profile_id mismatch",
+            "Reconnect with a UniverseIdentity using the same physics profile as the server.",
+            {
+                "client_physics_profile_id": requested_physics_profile_id,
+                "server_physics_profile_id": expected_server_physics_profile_id,
+            },
         )
 
     mismatch_key, mismatch_expected, mismatch_actual = _first_registry_mismatch(expected_registry_hashes, request_registry_hashes)
@@ -315,6 +347,8 @@ def _server_response(
             server_policy_id=requested_server_policy_id,
             control_capabilities=control_capabilities,
             enforce_lod_invariance_strict=enforce_lod_invariance_strict,
+            server_physics_profile_id=expected_server_physics_profile_id,
+            client_physics_profile_id=requested_physics_profile_id,
         )
 
     server_profile = dict(server_profile_map.get(requested_server_profile_id) or {})
@@ -597,6 +631,8 @@ def _server_response(
         server_policy_id=selected_server_policy_id,
         control_capabilities=control_capabilities,
         enforce_lod_invariance_strict=enforce_lod_invariance_strict,
+        server_physics_profile_id=expected_server_physics_profile_id,
+        client_physics_profile_id=requested_physics_profile_id,
     )
 
 
@@ -666,6 +702,8 @@ def run_loopback_handshake(
     authority_context: dict,
     client_pack_lock_hash: str = "",
     client_registry_hashes: Dict[str, str] | None = None,
+    server_physics_profile_id: str = "",
+    client_physics_profile_id: str = "",
 ) -> Dict[str, object]:
     network_payload, network_error = _require_network_payload(session_spec=session_spec)
     if network_error:
@@ -693,6 +731,11 @@ def run_loopback_handshake(
         if isinstance(client_registry_hashes, dict) and client_registry_hashes
         else dict(lock_payload.get("registries") or {})
     )
+    client_physics_profile_id_value = (
+        str(client_physics_profile_id).strip()
+        or str((network_payload.get("physics_profile_id", "") or "")).strip()
+    )
+    server_physics_profile_id_value = str(server_physics_profile_id).strip() or client_physics_profile_id_value
 
     request_seed = {
         "client_peer_id": str(network_payload.get("client_peer_id", "")).strip(),
@@ -703,6 +746,7 @@ def run_loopback_handshake(
         "server_policy_id": str(network_payload.get("server_policy_id", "")).strip(),
         "pack_lock_hash": client_pack_lock_hash_value,
         "registry_hashes": client_registry_hashes_value,
+        "physics_profile_id": client_physics_profile_id_value,
     }
     handshake_id = "hs.{}".format(canonical_sha256(request_seed)[:16])
     request_payload = {
@@ -724,7 +768,9 @@ def run_loopback_handshake(
         "registry_hashes": dict(client_registry_hashes_value),
         "schema_versions": dict(network_payload.get("schema_versions") or {}),
         "securex_policy_id": str(network_payload.get("securex_policy_id", "")).strip(),
-        "extensions": {},
+        "extensions": {
+            "physics_profile_id": client_physics_profile_id_value,
+        },
     }
 
     request_message = build_proto_message(
@@ -805,6 +851,7 @@ def run_loopback_handshake(
         securex_policy_registry=securex_policy_registry,
         server_profile_registry=server_profile_registry,
         authority_context=authority_context,
+        server_physics_profile_id=server_physics_profile_id_value,
     )
     response_validated = validate_instance(
         repo_root=repo_root,
@@ -899,6 +946,8 @@ def run_loopback_handshake(
         "anti_cheat_policy_id": str(response_proto_payload.get("anti_cheat_policy_id", "")),
         "server_profile_id": str(response_proto_payload.get("server_profile_id", "")),
         "server_policy_id": str(network_payload.get("server_policy_id", "")),
+        "physics_profile_id": str(((response_proto_payload.get("extensions") or {}).get("server_physics_profile_id") or "")),
+        "client_physics_profile_id": str(((response_proto_payload.get("extensions") or {}).get("client_physics_profile_id") or "")),
         "control_capabilities": dict(((response_proto_payload.get("extensions") or {}).get("control_capabilities") or {})),
         "handshake_artifact_hash": canonical_sha256(
             {

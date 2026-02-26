@@ -32,9 +32,15 @@ from .net_handshake import run_loopback_handshake
 from .observation import build_truth_model, observe_truth
 from .pipeline_contract import DEFAULT_PIPELINE_ID, load_session_pipeline_contract
 from .render_model import build_render_model
+from .universe_physics import select_physics_profile
 
 
 REGISTRY_HASH_KEY_MAP = {
+    "universe_physics_profile_registry_hash": "universe_physics_profile_registry",
+    "time_model_registry_hash": "time_model_registry",
+    "numeric_precision_policy_registry_hash": "numeric_precision_policy_registry",
+    "tier_taxonomy_registry_hash": "tier_taxonomy_registry",
+    "boundary_model_registry_hash": "boundary_model_registry",
     "domain_registry_hash": "domain_registry",
     "law_registry_hash": "law_registry",
     "experience_registry_hash": "experience_registry",
@@ -87,6 +93,11 @@ REGISTRY_HASH_KEY_MAP = {
     "ui_registry_hash": "ui_registry",
 }
 REGISTRY_FILE_MAP = {
+    "universe_physics_profile_registry_hash": "universe_physics_profile.registry.json",
+    "time_model_registry_hash": "time_model.registry.json",
+    "numeric_precision_policy_registry_hash": "numeric_precision_policy.registry.json",
+    "tier_taxonomy_registry_hash": "tier_taxonomy.registry.json",
+    "boundary_model_registry_hash": "boundary_model.registry.json",
     "domain_registry_hash": "domain.registry.json",
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
@@ -681,6 +692,47 @@ def boot_session_spec(
             "$.registries",
         )
 
+    universe_physics_profile_registry, universe_physics_profile_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["universe_physics_profile_registry_hash"],
+        expected_hash=str(registries.get("universe_physics_profile_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if universe_physics_profile_registry_error:
+        return universe_physics_profile_registry_error
+    time_model_registry, time_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["time_model_registry_hash"],
+        expected_hash=str(registries.get("time_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if time_model_registry_error:
+        return time_model_registry_error
+    numeric_precision_policy_registry, numeric_precision_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["numeric_precision_policy_registry_hash"],
+        expected_hash=str(registries.get("numeric_precision_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if numeric_precision_policy_registry_error:
+        return numeric_precision_policy_registry_error
+    tier_taxonomy_registry, tier_taxonomy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["tier_taxonomy_registry_hash"],
+        expected_hash=str(registries.get("tier_taxonomy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if tier_taxonomy_registry_error:
+        return tier_taxonomy_registry_error
+    boundary_model_registry, boundary_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["boundary_model_registry_hash"],
+        expected_hash=str(registries.get("boundary_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if boundary_model_registry_error:
+        return boundary_model_registry_error
+
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["law_registry_hash"],
@@ -1057,6 +1109,34 @@ def boot_session_spec(
             {"save_id": save_id},
             "$.identity_hash",
         )
+    identity_physics_profile_id = str(universe_identity.get("physics_profile_id", "")).strip()
+    if not identity_physics_profile_id:
+        return refusal(
+            "refusal.physics_profile_missing",
+            "UniverseIdentity is missing physics_profile_id",
+            "Regenerate universe identity with an explicit physics profile id.",
+            {"save_id": save_id},
+            "$.physics_profile_id",
+        )
+    selected_physics_profile, selected_physics_profile_error = select_physics_profile(
+        physics_profile_id=identity_physics_profile_id,
+        profile_registry=universe_physics_profile_registry,
+    )
+    if selected_physics_profile_error:
+        return selected_physics_profile_error
+    previous_physics_profile_id = str((previous_run_meta or {}).get("physics_profile_id", "")).strip()
+    if previous_physics_profile_id and previous_physics_profile_id != identity_physics_profile_id:
+        return refusal(
+            "refusal.physics_profile_mismatch",
+            "physics_profile_id does not match the previously booted universe lineage for this save",
+            "Create a new save id for a new physics lineage or restore the original identity.",
+            {
+                "save_id": save_id,
+                "previous_physics_profile_id": previous_physics_profile_id,
+                "identity_physics_profile_id": identity_physics_profile_id,
+            },
+            "$.physics_profile_id",
+        )
 
     _state_payload, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
@@ -1185,6 +1265,11 @@ def boot_session_spec(
             anti_cheat_module_registry=anti_cheat_module_registry,
             replication_policy_registry=net_replication_policy_registry,
             registry_payloads={
+                "universe_physics_profile_registry": universe_physics_profile_registry,
+                "time_model_registry": time_model_registry,
+                "numeric_precision_policy_registry": numeric_precision_policy_registry,
+                "tier_taxonomy_registry": tier_taxonomy_registry,
+                "boundary_model_registry": boundary_model_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1250,6 +1335,11 @@ def boot_session_spec(
             shard_map_registry=shard_map_registry,
             perception_interest_policy_registry=perception_interest_policy_registry,
             registry_payloads={
+                "universe_physics_profile_registry": universe_physics_profile_registry,
+                "time_model_registry": time_model_registry,
+                "numeric_precision_policy_registry": numeric_precision_policy_registry,
+                "tier_taxonomy_registry": tier_taxonomy_registry,
+                "boundary_model_registry": boundary_model_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1302,6 +1392,7 @@ def boot_session_spec(
                 securex_policy_registry=securex_policy_registry,
                 server_profile_registry=server_profile_registry,
                 authority_context=boot_authority_context,
+                server_physics_profile_id=identity_physics_profile_id,
             )
             if str(handshake_result.get("result", "")) != "complete":
                 return handshake_result
@@ -1329,6 +1420,8 @@ def boot_session_spec(
                     "negotiated_replication_policy_id": str(handshake_result.get("negotiated_replication_policy_id", "")),
                     "anti_cheat_policy_id": str(handshake_result.get("anti_cheat_policy_id", "")),
                     "server_law_profile_id": str(handshake_result.get("server_law_profile_id", "")),
+                    "server_physics_profile_id": str(handshake_result.get("physics_profile_id", "")),
+                    "client_physics_profile_id": str(handshake_result.get("client_physics_profile_id", "")),
                     "server_profile_id": str(handshake_result.get("server_profile_id", "")),
                     "server_policy_id": str(handshake_result.get("server_policy_id", "")),
                     "control_capabilities": {
@@ -1568,6 +1661,11 @@ def boot_session_spec(
         identity_path=norm(os.path.relpath(identity_path, repo_root)),
         state_path=norm(os.path.relpath(state_path, repo_root)),
         registry_payloads={
+            "universe_physics_profile_registry": universe_physics_profile_registry,
+            "time_model_registry": time_model_registry,
+            "numeric_precision_policy_registry": numeric_precision_policy_registry,
+            "tier_taxonomy_registry": tier_taxonomy_registry,
+            "boundary_model_registry": boundary_model_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
@@ -1649,6 +1747,8 @@ def boot_session_spec(
         "server_profile_id": str(handshake_stage_result.get("server_profile_id", "")),
         "server_policy_id": str(handshake_stage_result.get("server_policy_id", "")),
         "server_law_profile_id": str(handshake_stage_result.get("server_law_profile_id", "")),
+        "server_physics_profile_id": str(handshake_stage_result.get("physics_profile_id", "")),
+        "client_physics_profile_id": str(handshake_stage_result.get("client_physics_profile_id", "")),
         "control_capabilities": {
             "camera_bind_allowed": bool(handshake_control_capabilities.get("camera_bind_allowed", False)),
             "possession_allowed": bool(handshake_control_capabilities.get("possession_allowed", False)),
@@ -1687,6 +1787,7 @@ def boot_session_spec(
         "stage_log": stage_log,
         "last_stage_id": str(final_stage_id),
         "universe_identity_hash": str(universe_identity.get("identity_hash", "")),
+        "physics_profile_id": identity_physics_profile_id,
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
         "fidelity_policy_id": str(fidelity_policy.get("policy_id", "")),
@@ -1758,6 +1859,7 @@ def boot_session_spec(
         "session_spec_hash": session_spec_hash,
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "registry_hashes": registry_hashes,
+        "physics_profile_id": identity_physics_profile_id,
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "perceived_model_hash": perceived_hash,
         "render_model_hash": render_hash,
