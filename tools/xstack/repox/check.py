@@ -5007,6 +5007,127 @@ def _append_reality_profile_invariant_findings(
             )
 
 
+def _append_conservation_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    contract_required_files = {
+        "tools/xstack/sessionx/runner.py": (
+            "conservation_contract_set_registry_hash",
+            "conservation_contract_set_id",
+            "identity_conservation_contract_set_id",
+        ),
+        "tools/xstack/sessionx/script_runner.py": (
+            "conservation_contract_set_registry_hash",
+            "conservation_contract_set_id",
+        ),
+        "tools/xstack/sessionx/net_handshake.py": (
+            "conservation_contract_set_id",
+            "refusal.conservation_contract_set_mismatch",
+        ),
+        "src/reality/ledger/ledger_engine.py": (
+            "finalize_process_accounting(",
+            "record_unaccounted_delta(",
+        ),
+    }
+    for rel_path, tokens in contract_required_files.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required conservation contract runtime file is missing",
+                    rule_id="INV-CONSERVATION-CONTRACT-SET-REQUIRED",
+                )
+            )
+            continue
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required conservation contract runtime file is unreadable",
+                    rule_id="INV-CONSERVATION-CONTRACT-SET-REQUIRED",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="conservation contract set integration token is missing",
+                    rule_id="INV-CONSERVATION-CONTRACT-SET-REQUIRED",
+                )
+            )
+
+    process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_runtime_abs = os.path.join(repo_root, process_runtime_rel.replace("/", os.sep))
+    try:
+        process_runtime_text = open(process_runtime_abs, "r", encoding="utf-8").read()
+    except OSError:
+        process_runtime_text = ""
+    if not process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime is missing; cannot verify conservation accounting emission hooks",
+                rule_id="INV-NO-SILENT-VIOLATIONS",
+            )
+        )
+        return
+
+    required_accounting_tokens = (
+        "_ledger_emit_exception(",
+        "_record_unaccounted_conservation_delta(",
+        "_finalize_conservation_process(",
+        "refusal.conservation_unaccounted",
+    )
+    for token in required_accounting_tokens:
+        if token in process_runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="conservation mutation paths must route through deterministic ledger accounting hooks",
+                rule_id="INV-NO-SILENT-VIOLATIONS",
+            )
+        )
+
+    if "CONSERVATION_VIOLATION" in process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="CONSERVATION_VIOLATION",
+                message="legacy hardcoded conservation violation refusals detected; use contract-ledger refusal paths instead",
+                rule_id="INV-NO-SILENT-VIOLATIONS",
+            )
+        )
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -5043,6 +5164,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_reality_profile_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_conservation_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
