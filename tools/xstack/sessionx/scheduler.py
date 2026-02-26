@@ -438,6 +438,7 @@ def replay_intent_script_srz(
         resolved = _resolve_phase(proposed)
         accepted = list(resolved.get("accepted") or [])
         dropped = list(resolved.get("dropped") or [])
+        tick_ledger_hash = ""
 
         for proposal in accepted:
             executed = execute_intent(
@@ -456,6 +457,9 @@ def replay_intent_script_srz(
                 refused["envelope_id"] = str(proposal.get("envelope_id", ""))
                 return refused
             script_state_hash_anchors.append(str(executed.get("state_hash_anchor", "")))
+            token = str(executed.get("ledger_hash", "")).strip()
+            if token:
+                tick_ledger_hash = token
 
         shard["owned_entities"] = owned_entity_ids(state)
         shard["owned_regions"] = owned_region_ids(state)
@@ -477,6 +481,7 @@ def replay_intent_script_srz(
             pack_lock_hash=str(pack_lock_hash),
             registry_hashes=dict(registry_hashes or {}),
             last_tick_hash=str(last_tick_hash),
+            ledger_hash=str(tick_ledger_hash),
         )
         shard["last_hash_anchor"] = tick_hash
         current_composite = composite_hash([shard])
@@ -484,6 +489,7 @@ def replay_intent_script_srz(
             "scheduler_tick": int(scheduler_tick),
             "submission_tick": int(submission_tick),
             "simulation_tick": int(current_tick),
+            "ledger_hash": str(tick_ledger_hash),
             "tick_hash": str(tick_hash),
             "composite_hash": str(current_composite),
         }

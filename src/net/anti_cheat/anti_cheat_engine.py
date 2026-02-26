@@ -702,6 +702,14 @@ def export_proof_artifacts(repo_root: str, runtime: dict, run_id: str = "") -> D
         (dict(row) for row in list(server.get("anti_cheat_refusal_injections") or []) if isinstance(row, dict)),
         key=_refusal_injection_sort_key,
     )
+    conservation_rows = sorted(
+        (dict(row) for row in list(server.get("conservation_ledgers") or []) if isinstance(row, dict)),
+        key=lambda row: (
+            int(_as_int(row.get("tick", 0), 0)),
+            str(row.get("shard_id", "")),
+            str(row.get("ledger_hash", "")),
+        ),
+    )
 
     payloads = {
         "events": {
@@ -730,6 +738,13 @@ def export_proof_artifacts(repo_root: str, runtime: dict, run_id: str = "") -> D
             "run_id": run_token,
             "rows": refusal_rows,
             "row_count": int(len(refusal_rows)),
+            "extensions": {},
+        },
+        "conservation_ledgers": {
+            **_artifact_header(runtime=runtime, artifact_type_id="anti_cheat.conservation_ledgers"),
+            "run_id": run_token,
+            "rows": conservation_rows,
+            "row_count": int(len(conservation_rows)),
             "extensions": {},
         },
     }
