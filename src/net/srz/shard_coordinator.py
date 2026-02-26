@@ -20,6 +20,7 @@ from src.net.anti_cheat import (
     export_proof_artifacts,
     refusal_reason_from_action,
 )
+from src.reality.ledger import finalize_noop_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.sessionx.common import norm, refusal, write_canonical_json
@@ -230,10 +231,22 @@ def _session_extensions(runtime: dict) -> dict:
 
 
 def _runtime_policy_context(runtime: dict, *, active_shard_id: str = "") -> dict:
+    server = _runtime_server(runtime)
+    runtime_conservation = server.get("conservation_runtime_by_shard")
+    if not isinstance(runtime_conservation, dict):
+        runtime_conservation = {}
+        server["conservation_runtime_by_shard"] = runtime_conservation
+    runtime["server"] = server
+    physics_profile_id = str((runtime.get("universe_identity") or {}).get("physics_profile_id", "")).strip()
+    if not physics_profile_id:
+        physics_profile_id = "physics.null"
     context = {
         **dict(runtime.get("registry_payloads") or {}),
         "shard_map": dict(runtime.get("shard_map") or {}),
-        "active_shard_id": str(active_shard_id).strip(),
+        "active_shard_id": str(active_shard_id).strip() or DEFAULT_SHARD_ID,
+        "physics_profile_id": physics_profile_id,
+        "pack_lock_hash": str(((runtime.get("lock_payload") or {}).get("pack_lock_hash", ""))),
+        "conservation_runtime_by_shard": runtime_conservation,
         "control_policy": dict(runtime.get("control_policy") or {}),
         "allow_cross_shard_collision": bool((runtime.get("control_policy") or {}).get("allow_cross_shard_collision", False)),
         "cosmetic_policy_id": str((runtime.get("control_policy") or {}).get("cosmetic_policy_id", "")),
@@ -253,6 +266,113 @@ def _runtime_policy_context(runtime: dict, *, active_shard_id: str = "") -> dict
     if migration_model_id:
         context["migration_model_id"] = migration_model_id
     return context
+
+
+def _is_ranked_runtime(runtime: dict) -> bool:
+    profile_id = str((runtime.get("server_profile") or {}).get("server_profile_id", "")).strip().lower()
+    anti_cheat_policy_id = str((runtime.get("anti_cheat") or {}).get("policy_id", "")).strip().lower()
+    return ("rank" in profile_id) or ("rank" in anti_cheat_policy_id)
+
+
+def _conservation_allowed_exception_types(runtime: dict, contract_set_id: str, quantity_id: str) -> List[str]:
+    registry = dict((runtime.get("registry_payloads") or {}).get("conservation_contract_set_registry") or {})
+    rows = list(registry.get("contract_sets") or [])
+    for contract_row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("contract_set_id", ""))):
+        if str(contract_row.get("contract_set_id", "")).strip() != str(contract_set_id).strip():
+            continue
+        quantity_rows = list(contract_row.get("quantities") or [])
+        for quantity_row in sorted((item for item in quantity_rows if isinstance(item, dict)), key=lambda item: str(item.get("quantity_id", ""))):
+            if str(quantity_row.get("quantity_id", "")).strip() != str(quantity_id).strip():
+                continue
+            return _sorted_tokens(list(quantity_row.get("allowed_exception_types") or []))
+        break
+    return []
+
+
+def _sync_conservation_ledgers_to_server(runtime: dict, policy_context: dict) -> List[dict]:
+    server = _runtime_server(runtime)
+    runtime_by_shard = dict(policy_context.get("conservation_runtime_by_shard") or {})
+    rows: List[dict] = []
+    for shard_id in sorted(runtime_by_shard.keys()):
+        shard_runtime = dict(runtime_by_shard.get(shard_id) or {})
+        for ledger_row in list(shard_runtime.get("ledger_rows") or []):
+            if isinstance(ledger_row, dict):
+                rows.append(dict(ledger_row))
+    rows = sorted(
+        rows,
+        key=lambda row: (
+            int(_as_int(row.get("tick", 0), 0)),
+            str(row.get("shard_id", "")),
+            str(row.get("ledger_hash", "")),
+        ),
+    )
+    server["conservation_ledgers"] = rows[-1024:]
+    runtime["server"] = server
+    return list(server.get("conservation_ledgers") or [])
+
+
+def _emit_conservation_anti_cheat_signals(
+    repo_root: str,
+    runtime: dict,
+    tick: int,
+    ledger_rows: List[dict],
+) -> None:
+    if not ledger_rows:
+        return
+    latest = dict(ledger_rows[-1] or {})
+    entries = list(latest.get("entries") or [])
+    contract_set_id = str(latest.get("contract_set_id", "")).strip()
+    if not contract_set_id:
+        return
+
+    meta_override_count = 0
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        quantity_id = str(entry.get("quantity_id", "")).strip()
+        exception_type_id = str(entry.get("exception_type_id", "")).strip()
+        if exception_type_id == "exception.meta_law_override":
+            meta_override_count += 1
+        if not quantity_id or not exception_type_id:
+            continue
+        allowed = _conservation_allowed_exception_types(
+            runtime=runtime,
+            contract_set_id=contract_set_id,
+            quantity_id=quantity_id,
+        )
+        if exception_type_id in set(allowed):
+            continue
+        check_behavioral_detection(
+            repo_root=repo_root,
+            runtime=runtime,
+            tick=int(tick),
+            peer_id=str((_runtime_server(runtime).get("peer_id", "peer.server"))),
+            suspicious=True,
+            reason_code="ac.conservation.exception_type_unexpected",
+            evidence=[
+                "contract_set_id={}".format(contract_set_id),
+                "quantity_id={}".format(quantity_id),
+                "exception_type_id={}".format(exception_type_id),
+                "ledger_hash={}".format(str(latest.get("ledger_hash", ""))),
+            ],
+            default_action_token="audit",
+        )
+
+    if _is_ranked_runtime(runtime) and int(meta_override_count) > 0:
+        check_behavioral_detection(
+            repo_root=repo_root,
+            runtime=runtime,
+            tick=int(tick),
+            peer_id=str((_runtime_server(runtime).get("peer_id", "peer.server"))),
+            suspicious=True,
+            reason_code="ac.conservation.meta_law_override_ranked",
+            evidence=[
+                "meta_law_override_count={}".format(int(meta_override_count)),
+                "contract_set_id={}".format(contract_set_id),
+                "ledger_hash={}".format(str(latest.get("ledger_hash", ""))),
+            ],
+            default_action_token="audit",
+        )
 
 
 def _law_allows_process(law_profile: dict, process_id: str) -> bool:
@@ -948,6 +1068,8 @@ def initialize_hybrid_runtime(
             "last_sequence_by_peer": {},
             "seen_envelope_ids": [],
             "last_tick_hash": "",
+            "last_ledger_hash": "",
+            "last_ledger_by_shard": {},
             "last_composite_hash": "0" * 64,
             "hash_anchor_frames": [],
             "snapshots": [],
@@ -963,6 +1085,8 @@ def initialize_hybrid_runtime(
             "anti_cheat_violation_counters": {},
             "terminated_peers": [],
             "refusals": [],
+            "conservation_runtime_by_shard": {},
+            "conservation_ledgers": [],
         },
         "shards": shard_rows,
         "clients": {},
@@ -1495,6 +1619,7 @@ def _state_tick_hash(runtime: dict, tick: int) -> str:
         "state_hash": canonical_sha256(dict(runtime.get("global_state") or {})),
         "pack_lock_hash": str(server.get("pack_lock_hash", "")),
         "registry_hashes": dict(server.get("registry_hashes") or {}),
+        "ledger_hash": str(server.get("last_ledger_hash", "")),
         "previous_composite_hash": str(server.get("last_composite_hash", "0" * 64)),
     }
     return canonical_sha256(payload)
@@ -1531,6 +1656,7 @@ def _build_anchor_frame(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
         "checkpoint_id": "",
         "extensions": {
             "state_tick_hash": state_tick_hash,
+            "ledger_hash": str(server.get("last_ledger_hash", "")),
         },
     }
     checked = validate_instance(
@@ -1783,6 +1909,7 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
 
     proposals = []
     processed = []
+    tick_ledger_by_shard: Dict[str, str] = {}
     for envelope in ready:
         built = _build_proposal(runtime=runtime, envelope=envelope, tick=int(tick))
         if str(built.get("result", "")) != "complete":
@@ -1919,6 +2046,10 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                 "state_hash_anchor": str(executed.get("state_hash_anchor", "")),
             }
         )
+        ledger_token = str(executed.get("ledger_hash", "")).strip()
+        target_shard_id = str(proposal.get("target_shard_id", "")).strip() or DEFAULT_SHARD_ID
+        if ledger_token:
+            tick_ledger_by_shard[target_shard_id] = ledger_token
 
     demography_ticks: List[dict] = []
     server_peer_id = str(server.get("peer_id", "")).strip() or "peer.server"
@@ -1955,6 +2086,9 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                     "total_deaths": int(demography_tick.get("total_deaths", 0) or 0),
                 }
             )
+            demography_ledger_hash = str(demography_tick.get("ledger_hash", "")).strip()
+            if demography_ledger_hash:
+                tick_ledger_by_shard[shard_id] = demography_ledger_hash
         elif demography_result == "refused":
             refusal_payload = dict(demography_tick.get("refusal") or {})
             processed.append(
@@ -1977,8 +2111,43 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
             demography_summary["reason"] = str(demography_tick.get("reason", "not_enabled"))
         demography_ticks.append(demography_summary)
 
+    state_tick = int(simulation_tick(dict(state)))
+    for shard_row in _runtime_shards(runtime):
+        shard_id = str(shard_row.get("shard_id", "")).strip()
+        if not shard_id:
+            continue
+        if str(tick_ledger_by_shard.get(shard_id, "")).strip():
+            continue
+        shard_policy_context = _runtime_policy_context(runtime, active_shard_id=shard_id)
+        noop_finalized = finalize_noop_tick(
+            policy_context=shard_policy_context,
+            tick=int(state_tick),
+            process_id="process.tick_ledger",
+        )
+        if str(noop_finalized.get("result", "")) == "complete":
+            token = str(noop_finalized.get("ledger_hash", "")).strip()
+            if token:
+                tick_ledger_by_shard[shard_id] = token
+
+    tick_ledger_hash = canonical_sha256(
+        {
+            "tick": int(tick),
+            "ledger_by_shard": dict((key, tick_ledger_by_shard[key]) for key in sorted(tick_ledger_by_shard.keys())),
+        }
+    )
+    sync_policy_context = _runtime_policy_context(runtime, active_shard_id=DEFAULT_SHARD_ID)
+    ledger_rows = _sync_conservation_ledgers_to_server(runtime, sync_policy_context)
+    _emit_conservation_anti_cheat_signals(
+        repo_root=repo_root,
+        runtime=runtime,
+        tick=int(tick),
+        ledger_rows=ledger_rows,
+    )
+
     runtime["global_state"] = state
     server["network_tick"] = int(tick)
+    server["last_ledger_hash"] = str(tick_ledger_hash)
+    server["last_ledger_by_shard"] = dict((key, tick_ledger_by_shard[key]) for key in sorted(tick_ledger_by_shard.keys()))
     server["queued_envelopes"] = sorted(pending, key=_queue_sort_key)
     runtime["server"] = server
 
@@ -1994,6 +2163,7 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
     return {
         "result": "complete",
         "tick": int(tick),
+        "ledger_hash": str(tick_ledger_hash),
         "processed_envelopes": processed,
         "resolved_proposals": resolved,
         "demography_ticks": demography_ticks,
