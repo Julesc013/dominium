@@ -69,6 +69,8 @@ from analyzers import e40_physics_assumption_smell
 from analyzers import e41_implicit_default_profile_smell
 from analyzers import e42_unaccounted_violation_smell
 from analyzers import e43_excessive_numeric_loss_smell
+from analyzers import e44_wall_clock_time_usage_smell
+from analyzers import e45_nondeterministic_checkpoint_smell
 
 
 ANALYZERS = (
@@ -141,6 +143,8 @@ ANALYZERS = (
     e41_implicit_default_profile_smell,
     e42_unaccounted_violation_smell,
     e43_excessive_numeric_loss_smell,
+    e44_wall_clock_time_usage_smell,
+    e45_nondeterministic_checkpoint_smell,
 )
 
 
