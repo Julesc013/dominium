@@ -5501,6 +5501,142 @@ def _append_tier_transition_invariant_findings(
             )
 
 
+def _append_performance_constitution_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    cost_engine_rel = "src/performance/cost_engine.py"
+    inspection_cache_rel = "src/performance/inspection_cache.py"
+    process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    transition_controller_rel = "src/reality/transitions/transition_controller.py"
+
+    for rel_path, required_tokens in (
+        (
+            cost_engine_rel,
+            (
+                "compute_cost_snapshot(",
+                "evaluate_envelope(",
+                "reserve_inspection_budget(",
+            ),
+        ),
+        (
+            inspection_cache_rel,
+            (
+                "build_cache_key(",
+                "build_inspection_snapshot(",
+                "cache_lookup_or_store(",
+            ),
+        ),
+    ):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="performance constitution file is missing or unreadable",
+                    rule_id="INV-NO-WALLCLOCK-IN-PERFORMANCE",
+                )
+            )
+            continue
+        for token in required_tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="performance accounting implementation is missing required deterministic token",
+                    rule_id="INV-NO-WALLCLOCK-IN-PERFORMANCE",
+                )
+            )
+
+    process_runtime_abs = os.path.join(repo_root, process_runtime_rel.replace("/", os.sep))
+    try:
+        process_runtime_text = open(process_runtime_abs, "r", encoding="utf-8").read()
+    except OSError:
+        process_runtime_text = ""
+    if not process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime missing; cannot verify inspection-derived invariant",
+                rule_id="INV-INSPECTION-IS-DERIVED",
+            )
+        )
+    else:
+        for token in (
+            "process.inspect_generate_snapshot",
+            "inspection_cache_lookup_or_store(",
+            "skip_state_log = True",
+            "refusal.inspect.budget_exceeded",
+        ):
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="inspection path must be derived, budget-gated, and non-mutating",
+                    rule_id="INV-INSPECTION-IS-DERIVED",
+                )
+            )
+        start = process_runtime_text.find('elif process_id == "process.inspect_generate_snapshot":')
+        end = process_runtime_text.find('elif process_id in ("process.time_control_set_rate", "process.time_set_rate"):')
+        if start >= 0 and end > start:
+            branch_text = process_runtime_text[start:end]
+            if "_advance_time(state" in branch_text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=1,
+                        snippet="_advance_time(state",
+                        message="inspection process must not advance simulation time or mutate TruthModel",
+                        rule_id="INV-INSPECTION-IS-DERIVED",
+                    )
+                )
+
+    for rel_path in (cost_engine_rel, inspection_cache_rel, process_runtime_rel, transition_controller_rel):
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            lowered = str(line).lower()
+            if (
+                "time.time(" not in lowered
+                and "datetime.now(" not in lowered
+                and "datetime.utcnow(" not in lowered
+                and "time.perf_counter(" not in lowered
+                and "time.monotonic(" not in lowered
+                and "time.sleep(" not in lowered
+                and "os.times(" not in lowered
+            ):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=str(line).strip()[:140],
+                    message="performance accounting/arbitration paths must not use wall-clock APIs",
+                    rule_id="INV-NO-WALLCLOCK-IN-PERFORMANCE",
+                )
+            )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -5552,6 +5688,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_tier_transition_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_performance_constitution_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
