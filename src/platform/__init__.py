@@ -14,6 +14,7 @@ from .platform_input import (
     normalize_input_event,
     queue_input_event,
 )
+from .platform_input_routing import pick_render_model_target, route_platform_events_to_commands
 from .platform_window import close_window, create_window, detect_platform_id, resize_window
 
 __all__ = [
@@ -28,9 +29,11 @@ __all__ = [
     "destroy_graphics_context",
     "list_available_backends",
     "normalize_input_event",
+    "pick_render_model_target",
     "present_frame",
     "queue_input_event",
     "resize_graphics_surface",
     "resize_window",
+    "route_platform_events_to_commands",
     "submit_audio_frame",
 ]
