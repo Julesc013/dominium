@@ -345,6 +345,32 @@ def _quantize_int(value: int, step: int) -> int:
     return int(-(((-number + (token // 2)) // token) * token))
 
 
+def _population_quantization_step(camera_distance_mm: int, has_map_instrument: bool) -> int:
+    distance = max(0, int(camera_distance_mm))
+    if distance <= 5000:
+        step = 10
+    elif distance <= 20000:
+        step = 25
+    elif distance <= 100000:
+        step = 50
+    else:
+        step = 100
+    if bool(has_map_instrument):
+        step = max(5, step // 2)
+    return int(step)
+
+
+def _population_band(population_value: int) -> str:
+    value = max(0, int(population_value))
+    if value == 0:
+        return "none"
+    if value < 100:
+        return "dozens"
+    if value < 1000:
+        return "hundreds"
+    return "thousands"
+
+
 def _camera_distance_mm(camera_viewpoint: dict) -> int:
     position = camera_viewpoint.get("position_mm")
     if not isinstance(position, dict):
@@ -378,6 +404,13 @@ def _interest_cull(perceived_model: dict, max_objects: int) -> dict:
         entities = dict(out.get("entities") or {})
         entities["entries"] = []
         out["entities"] = entities
+        out["populations"] = {
+            "entries": [],
+            "summary": "cohorts=0 population=none",
+            "total_population_estimate": 0,
+            "precision_mode": str((dict(out.get("populations") or {})).get("precision_mode", "quantized")),
+            "precision_step": int((dict(out.get("populations") or {})).get("precision_step", 100) or 100),
+        }
         return out
     selected = sorted(set(str(item).strip() for item in (out.get("observed_entities") or []) if str(item).strip()))[:limit]
     selected_set = set(selected)
@@ -392,6 +425,25 @@ def _interest_cull(perceived_model: dict, max_objects: int) -> dict:
             if str(item.get("entity_id", "")).strip() in selected_set
         ]
     out["entities"] = entities
+    populations = dict(out.get("populations") or {})
+    population_entries = populations.get("entries")
+    if isinstance(population_entries, list):
+        trimmed_entries = [
+            dict(item)
+            for item in sorted(
+                (row for row in population_entries if isinstance(row, dict)),
+                key=lambda row: str(row.get("cohort_id", "")),
+            )[:limit]
+        ]
+        populations["entries"] = trimmed_entries
+        populations["total_population_estimate"] = int(
+            sum(max(0, int(row.get("population_estimate", 0) or 0)) for row in trimmed_entries)
+        )
+        populations["summary"] = "cohorts={} population={}".format(
+            len(trimmed_entries),
+            _population_band(int(populations.get("total_population_estimate", 0) or 0)),
+        )
+    out["populations"] = populations
 
     navigation = dict(out.get("navigation") or {})
     hierarchy = navigation.get("hierarchy")
@@ -419,6 +471,7 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
     if channel_id in ("ch.core.entities", "ch.nondiegetic.entity_inspector"):
         return {
             "entities": dict(perceived_model.get("entities") or {}),
+            "populations": dict(perceived_model.get("populations") or {}),
             "observed_entities": list(perceived_model.get("observed_entities") or []),
             "control": dict(perceived_model.get("control") or {}),
         }
@@ -436,7 +489,10 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
     if channel_id == "ch.diegetic.altimeter":
         return {"instrument.altimeter": dict(instruments.get("instrument.altimeter") or {})}
     if channel_id == "ch.diegetic.map_local":
-        return {"instrument.map_local": dict(instruments.get("instrument.map_local") or {})}
+        return {
+            "instrument.map_local": dict(instruments.get("instrument.map_local") or {}),
+            "populations": dict(perceived_model.get("populations") or {}),
+        }
     if channel_id == "ch.diegetic.notebook":
         return {"instrument.notebook": dict(instruments.get("instrument.notebook") or {})}
     if channel_id == "ch.diegetic.radio_text":
@@ -467,6 +523,14 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
     if not ({"ch.core.entities", "ch.nondiegetic.entity_inspector"} & allowed):
         out["observed_entities"] = []
         out["entities"] = {"entries": [], "assignments": [], "selected_fields": []}
+    if not ({"ch.core.entities", "ch.nondiegetic.entity_inspector", "ch.diegetic.map_local"} & allowed):
+        out["populations"] = {
+            "entries": [],
+            "summary": "redacted",
+            "total_population_estimate": 0,
+            "precision_mode": "redacted",
+            "precision_step": 0,
+        }
     if "ch.nondiegetic.entity_inspector" not in allowed:
         out["control"] = {"controllers": [], "bindings": [], "possession_graph": [], "summary": "redacted"}
     if not ({"ch.core.process_log", "ch.nondiegetic.performance_monitor"} & allowed):
@@ -949,6 +1013,77 @@ def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
     }
 
 
+def _population_view(
+    truth: dict,
+    *,
+    camera_viewpoint: dict,
+    allow_hidden: bool,
+    entitlements: List[str],
+    requested_channels: List[str],
+) -> dict:
+    state = truth.get("universe_state")
+    if not isinstance(state, dict):
+        return {
+            "entries": [],
+            "summary": "cohorts=0 population=none",
+            "total_population_estimate": 0,
+            "precision_mode": "quantized",
+            "precision_step": 100,
+        }
+
+    cohort_rows = list(state.get("cohort_assemblies") or [])
+    if not isinstance(cohort_rows, list):
+        cohort_rows = []
+    has_map_instrument = "ch.diegetic.map_local" in set(_sorted_unique(list(requested_channels or [])))
+    can_view_exact = bool(allow_hidden) or "entitlement.inspect" in set(_sorted_unique(list(entitlements or [])))
+    quant_step = _population_quantization_step(
+        camera_distance_mm=_camera_distance_mm(camera_viewpoint),
+        has_map_instrument=bool(has_map_instrument),
+    )
+
+    entries = []
+    total_population_estimate = 0
+    anonymous_index = 0
+    for row in sorted((item for item in cohort_rows if isinstance(item, dict)), key=lambda item: str(item.get("cohort_id", ""))):
+        cohort_id = str(row.get("cohort_id", "")).strip()
+        if not cohort_id:
+            continue
+        size_exact = max(0, int(row.get("size", 0) or 0))
+        if can_view_exact:
+            estimate = int(size_exact)
+        else:
+            estimate = int(_quantize_int(size_exact, quant_step))
+            if size_exact > 0:
+                estimate = max(1, estimate)
+        total_population_estimate += int(estimate)
+        entry = {
+            "faction_id": row.get("faction_id"),
+            "territory_id": row.get("territory_id"),
+            "location_ref": str(row.get("location_ref", "")).strip(),
+            "refinement_state": str(row.get("refinement_state", "macro")).strip() or "macro",
+            "population_estimate": int(estimate),
+            "population_band": _population_band(estimate),
+            "precision_mode": "exact" if can_view_exact else "quantized",
+            "precision_step": 1 if can_view_exact else int(quant_step),
+        }
+        if can_view_exact:
+            entry["cohort_id"] = cohort_id
+            entry["population_exact"] = int(size_exact)
+        else:
+            anonymous_index += 1
+            entry["population_id"] = "population.anonymous.{}".format(str(int(anonymous_index)).zfill(4))
+        entries.append(entry)
+
+    summary = "cohorts={} population={}".format(len(entries), _population_band(total_population_estimate))
+    return {
+        "entries": entries,
+        "summary": summary,
+        "total_population_estimate": int(total_population_estimate),
+        "precision_mode": "exact" if can_view_exact else "quantized",
+        "precision_step": 1 if can_view_exact else int(quant_step),
+    }
+
+
 def _control_view(truth: dict, *, allow_order_visibility: bool = False) -> dict:
     state = truth.get("universe_state")
     if not isinstance(state, dict):
@@ -1257,6 +1392,10 @@ def build_truth_model(
             "order_type_registry_hash": str(registries.get("order_type_registry_hash", "")),
             "role_registry_hash": str(registries.get("role_registry_hash", "")),
             "institution_type_registry_hash": str(registries.get("institution_type_registry_hash", "")),
+            "demography_policy_registry_hash": str(registries.get("demography_policy_registry_hash", "")),
+            "death_model_registry_hash": str(registries.get("death_model_registry_hash", "")),
+            "birth_model_registry_hash": str(registries.get("birth_model_registry_hash", "")),
+            "migration_model_registry_hash": str(registries.get("migration_model_registry_hash", "")),
             "view_mode_registry_hash": str(registries.get("view_mode_registry_hash", "")),
             "instrument_type_registry_hash": str(registries.get("instrument_type_registry_hash", "")),
             "calibration_model_registry_hash": str(registries.get("calibration_model_registry_hash", "")),
@@ -1538,6 +1677,13 @@ def observe_truth(
     sites = _site_view(truth_model)
     process_log = _process_log_entries(truth_model)
     entities = _entity_view(truth_model, observed_entities=observed_entities)
+    populations = _population_view(
+        truth_model,
+        camera_viewpoint=camera_viewpoint,
+        allow_hidden=allow_hidden,
+        entitlements=list(entitlements),
+        requested_channels=requested_channels,
+    )
     control = _control_view(
         truth_model,
         allow_order_visibility=("entitlement.civ.view_orders" in set(entitlements)),
@@ -1569,6 +1715,7 @@ def observe_truth(
         "navigation": navigation,
         "sites": sites,
         "entities": entities,
+        "populations": populations,
         "control": control,
         "process_log": {
             "entries": process_log,
