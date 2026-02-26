@@ -10,19 +10,19 @@ Superseded By: none
 
 - INFO: 230
 - RISK: 243
-- VIOLATION: 61
-- WARN: 1073
+- VIOLATION: 64
+- WARN: 1074
 
 ## Counts By Category
 
-- canon_drift: 642
+- canon_drift: 643
 - capability_bypass_smell: 1
 - capability_misuse: 139
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - derived_freshness: 131
 - epistemics.hidden_state_leak_smell: 6
 - legacy_contamination: 6
-- mode_flag_smell: 51
+- mode_flag_smell: 54
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
 - ownership_boundary: 9

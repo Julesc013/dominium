@@ -2,9 +2,9 @@
   "artifact_class": "RUN_META",
   "cache_mode": "full_scan",
   "changed_only": false,
-  "changed_paths_since_last": 7907,
-  "generated_utc": "2026-02-26T15:29:25Z",
-  "graph_hash": "82d17f10f59c656c9941a8c973f752a30f1069e91f16c241827bd0ad016654d6",
+  "changed_paths_since_last": 7925,
+  "generated_utc": "2026-02-26T15:44:17Z",
+  "graph_hash": "a1d4669b7ee4580b137f03518d45777cfeb0f42a1f0264aedf5477a83755b1ab",
   "last_reviewed": "2026-02-26",
   "output_format": "both",
   "platform": "windows",
@@ -80,6 +80,8 @@
     "E48_PERFORMANCE_NONDETERMINISM_SMELL",
     "E49_UNBOUNDED_MICRO_EXPANSION_SMELL",
     "E4_AUTHORITATIVE_TRUTH_LEAK",
+    "E50_RENDERER_TRUTH_LEAK_SMELL",
+    "E51_RENDER_SNAPSHOT_MISCLASSIFIED_SMELL",
     "E5_CROSS_SHARD_WRITE_SMELL",
     "E6_SHARD_MAP_DRIFT",
     "E7_EPISTEMIC_LEAK_SMELL",
@@ -89,5 +91,5 @@
   "result": "scan_complete",
   "reused_analyzers": [],
   "status": "DERIVED",
-  "workspace_id": "ws-09453da0be759a88"
+  "workspace_id": "ws-1e168ac5bf4b5ca2"
 }

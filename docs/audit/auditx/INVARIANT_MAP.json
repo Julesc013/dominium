@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 642,
+      "finding_count": 643,
       "recommended_actions": {
-        "DOC_FIX": 642
+        "DOC_FIX": 643
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 642
+        "WARN": 643
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -293,9 +293,9 @@
       }
     },
     "INV-MODE-AS-PROFILES": {
-      "finding_count": 51,
+      "finding_count": 54,
       "recommended_actions": {
-        "ADD_RULE": 51
+        "ADD_RULE": 54
       },
       "sample_findings": [
         {
@@ -325,7 +325,7 @@
         }
       ],
       "severities": {
-        "VIOLATION": 51
+        "VIOLATION": 54
       }
     },
     "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
@@ -365,9 +365,9 @@
       }
     },
     "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 51,
+      "finding_count": 54,
       "recommended_actions": {
-        "ADD_RULE": 51
+        "ADD_RULE": 54
       },
       "sample_findings": [
         {
@@ -397,7 +397,7 @@
         }
       ],
       "severities": {
-        "VIOLATION": 51
+        "VIOLATION": 54
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
