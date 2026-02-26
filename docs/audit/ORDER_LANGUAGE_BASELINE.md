@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-17
+Last Reviewed: 2026-02-26
 Version: 1.0.0
 Scope: CIV-3/4 order language + institution scaffold baseline
 
@@ -60,6 +60,23 @@ Scope: CIV-3/4 order language + institution scaffold baseline
 - `test_role_assignment_entitlement_gating`
 - `test_cross_shard_order_behavior`
 - `test_order_visibility_gated`
+
+## Validation Snapshot (2026-02-26)
+- RepoX PASS:
+  - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
+  - Result: `status=pass` (`repox scan passed`, findings=`0`).
+- AuditX run:
+  - `py -3 tools/auditx/auditx.py scan --repo-root . --changed-only --format json`
+  - Result: `result=scan_complete`, findings=`789`.
+- TestX PASS (CIV-3 required suite):
+  - `py -3 tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset testx.civilisation.order_create_deterministic,testx.civilisation.order_queue_ordering_deterministic,testx.civilisation.order_executor_stub_refusals_deterministic,testx.civilisation.role_assignment_entitlement_gating,testx.civilisation.cross_shard_order_behavior,testx.civilisation.order_visibility_gated`
+  - Result: `status=pass` (`selected_tests=6`).
+- strict build PASS:
+  - `C:\Program Files\CMake\bin\cmake.exe --build out/build/vs2026/verify --config Debug --target domino_engine dominium_game dominium_client`
+  - Result: build complete for all strict targets.
+- `ui_bind --check` PASS:
+  - `py -3 tools/xstack/ui_bind.py --repo-root . --check`
+  - Result: `result=complete`, `checked_windows=21`.
 
 ## Extension Points
 - CIV-4 demography/procreation order handlers.
