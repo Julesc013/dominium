@@ -31,6 +31,12 @@ def _stable_semantic_id(row: dict) -> str:
     return token or "entity.unknown"
 
 
+def _stable_renderable_id(semantic_id: str) -> str:
+    token = str(semantic_id).strip() or "entity.unknown"
+    digest = canonical_sha256({"semantic_id": token})
+    return "renderable.{}.{}".format(token, str(digest)[:16])
+
+
 def _normalize_transform(row: dict) -> dict:
     transform = dict(row.get("transform") or {})
     if transform:
@@ -83,11 +89,12 @@ def _overlay_rows(perceived_model: dict, view_mode_id: str) -> Tuple[List[dict],
 
     def add_overlay(overlay_id: str, label: str) -> None:
         material_id = "mat.overlay.{}".format(overlay_id)
+        semantic_id = "overlay.{}".format(overlay_id)
         overlays.append(
             {
                 "schema_version": "1.0.0",
-                "renderable_id": "overlay.{}".format(overlay_id),
-                "semantic_id": "overlay.{}".format(overlay_id),
+                "renderable_id": _stable_renderable_id(semantic_id),
+                "semantic_id": semantic_id,
                 "primitive_id": "prim.glyph.label",
                 "transform": {
                     "position_mm": {"x": 0, "y": 0, "z": 0},
@@ -181,7 +188,7 @@ def build_render_model(
         renderables.append(
             {
                 "schema_version": "1.0.0",
-                "renderable_id": "renderable.{}".format(semantic_id),
+                "renderable_id": _stable_renderable_id(semantic_id),
                 "semantic_id": semantic_id,
                 "primitive_id": str(resolved.get("primitive_id", "")).strip() or "prim.box.default",
                 "transform": _normalize_transform(row),
