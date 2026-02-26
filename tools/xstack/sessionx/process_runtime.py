@@ -9,6 +9,13 @@ import math
 import os
 from typing import Dict, List, Tuple
 
+from src.reality.ledger import (
+    begin_process_accounting,
+    emit_exception as ledger_emit_exception,
+    finalize_process_accounting,
+    last_ledger_hash,
+    record_unaccounted_delta,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -224,6 +231,10 @@ INSTRUMENT_TYPE_ID_BY_TYPE = {
     "radio_text": "instr.radio_text",
 }
 INSTRUMENT_TYPE_BY_ID = dict((value, key) for key, value in INSTRUMENT_TYPE_ID_BY_TYPE.items())
+
+CONSERVATION_DEFAULT_QUANTITY_ID = "quantity.mass_energy_total"
+CONSERVATION_DEFAULT_DOMAIN_ID = "domain.reality"
+CONSERVATION_CONTROL_DOMAIN_ID = "domain.control"
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -3182,6 +3193,118 @@ def _log_process(state: dict, process_id: str, intent_id: str, authority_origin:
     return state_hash_anchor
 
 
+def _begin_conservation_process(policy_context: dict | None, process_id: str) -> None:
+    if not isinstance(policy_context, dict):
+        return
+    begin_process_accounting(policy_context=policy_context, process_id=str(process_id))
+
+
+def _ledger_emit_exception(
+    policy_context: dict | None,
+    *,
+    quantity_id: str,
+    delta: int,
+    exception_type_id: str,
+    domain_id: str,
+    process_id: str,
+    reason_code: str,
+    evidence: List[str] | None = None,
+) -> None:
+    if not isinstance(policy_context, dict):
+        return
+    ledger_emit_exception(
+        policy_context=policy_context,
+        quantity_id=str(quantity_id),
+        delta=int(_as_int(delta, 0)),
+        exception_type_id=str(exception_type_id),
+        domain_id=str(domain_id),
+        process_id=str(process_id),
+        reason_code=str(reason_code),
+        evidence=list(evidence or []),
+    )
+
+
+def _record_unaccounted_conservation_delta(
+    policy_context: dict | None,
+    *,
+    quantity_id: str,
+    delta: int,
+) -> None:
+    if not isinstance(policy_context, dict):
+        return
+    record_unaccounted_delta(
+        policy_context=policy_context,
+        quantity_id=str(quantity_id),
+        delta=int(_as_int(delta, 0)),
+    )
+
+
+def _finalize_conservation_process(
+    state: dict,
+    process_id: str,
+    policy_context: dict | None,
+) -> Dict[str, object]:
+    if not isinstance(policy_context, dict):
+        return {"result": "complete", "ledger_hash": ""}
+    tick = int((_ensure_simulation_time(state)).get("tick", 0))
+    finalized = finalize_process_accounting(
+        policy_context=policy_context,
+        tick=int(tick),
+        process_id=str(process_id),
+    )
+    if str(finalized.get("result", "")) != "complete":
+        reason_code = str(finalized.get("reason_code", "refusal.conservation_unaccounted")).strip() or "refusal.conservation_unaccounted"
+        details = dict(finalized.get("details") or {})
+        quantity_id = str(details.get("quantity_id", "")).strip()
+        hints = [str(item).strip() for item in list(finalized.get("remediation_hints") or []) if str(item).strip()]
+        remediation = "; ".join(hints) if hints else "enable exception type in physics profile; switch contract set; use meta-law override in private universe"
+        relevant = {
+            "process_id": str(process_id),
+            "contract_set_id": str(((dict(policy_context).get("conservation_runtime_by_shard") or {}).get(str(dict(policy_context).get("active_shard_id", "shard.0"))) or {}).get("contract_set_id", "")),
+        }
+        if quantity_id:
+            relevant["quantity_id"] = quantity_id
+        if details:
+            relevant["net_delta"] = str(details.get("net_delta", ""))
+            relevant["tolerance"] = str(details.get("tolerance", ""))
+        return refusal(
+            reason_code,
+            "conservation contract rejected process accounting",
+            remediation,
+            relevant,
+            "$.conservation",
+        )
+    return {
+        "result": "complete",
+        "ledger_hash": str(finalized.get("ledger_hash", "")),
+        "ledger": dict(finalized.get("ledger") or {}),
+    }
+
+
+def _finalize_conservation_or_refusal(
+    state: dict,
+    process_id: str,
+    policy_context: dict | None,
+) -> Dict[str, object]:
+    finalized = _finalize_conservation_process(
+        state=state,
+        process_id=process_id,
+        policy_context=policy_context,
+    )
+    if str(finalized.get("result", "")) != "complete":
+        return finalized
+    active_shard_id = ""
+    if isinstance(policy_context, dict):
+        active_shard_id = str(policy_context.get("active_shard_id", "")).strip()
+    ledger_hash = str(finalized.get("ledger_hash", "")).strip()
+    if not ledger_hash:
+        ledger_hash = str(last_ledger_hash(policy_context=policy_context, shard_id=active_shard_id)).strip()
+    return {
+        "result": "complete",
+        "ledger_hash": ledger_hash,
+    }
+
+
 def _navigation_maps(navigation_indices: dict | None) -> Dict[str, dict]:
     astro = {}
     sites = {}
@@ -3954,6 +4077,7 @@ def _region_management_tick(
     state: dict,
     navigation_indices: dict | None,
     policy_context: dict | None,
+    process_id: str = "process.region_management_tick",
     forced_expand_region_ids: List[str] | None = None,
     forced_collapse_region_ids: List[str] | None = None,
     forced_expand_tiers: Dict[str, str] | None = None,
@@ -4307,16 +4431,28 @@ def _region_management_tick(
     )
 
     mass_after = _total_conserved_mass(state)
-    if int(mass_before) != int(mass_after):
-        return refusal(
-            "CONSERVATION_VIOLATION",
-            "macro/micro transition changed conserved mass_stub total",
-            "Inspect region transition ordering and conservation transfer logic.",
-            {
-                "mass_before": str(mass_before),
-                "mass_after": str(mass_after),
-            },
-            "$.macro_capsules",
+    mass_delta = int(mass_after) - int(mass_before)
+    if collapse_ids or expand_ids:
+        _ledger_emit_exception(
+            policy_context=policy_context,
+            quantity_id=CONSERVATION_DEFAULT_QUANTITY_ID,
+            delta=int(mass_delta),
+            exception_type_id="exception.numeric_error_budget",
+            domain_id=CONSERVATION_DEFAULT_DOMAIN_ID,
+            process_id=str(process_id),
+            reason_code="conservation.lod.quantization",
+            evidence=[
+                "mass_before={}".format(int(mass_before)),
+                "mass_after={}".format(int(mass_after)),
+                "collapsed_regions={}".format(len(collapse_ids)),
+                "expanded_regions={}".format(len(expand_ids)),
+            ],
+        )
+    elif int(mass_delta) != 0:
+        _record_unaccounted_conservation_delta(
+            policy_context=policy_context,
+            quantity_id=CONSERVATION_DEFAULT_QUANTITY_ID,
+            delta=int(mass_delta),
         )
 
     tier_counts = {"coarse": 0, "medium": 0, "fine": 0}
@@ -4705,6 +4841,7 @@ def _run_region_transition_with_lod_invariance(
         state=state,
         navigation_indices=navigation_indices,
         policy_context=policy_context,
+        process_id=process_id,
         forced_expand_region_ids=forced_expand_ids,
         forced_collapse_region_ids=forced_collapse_ids,
         forced_expand_tiers=forced_tiers,
@@ -4895,6 +5032,7 @@ def execute_intent(
     arrived_cohort_ids = _apply_pending_cohort_arrivals(cohorts, current_tick)
     result_metadata: Dict[str, object] = {}
     skip_state_log = False
+    _begin_conservation_process(policy_context=policy_context, process_id=process_id)
 
     if process_id == "process.camera_move":
         delta = _vector3_int(inputs.get("delta_local_mm"), "delta_local_mm")
@@ -4926,6 +5064,18 @@ def execute_intent(
         camera["position_mm"] = dict(resolved_target.get("position_mm") or {"x": 0, "y": 0, "z": 0})
         camera["orientation_mdeg"] = dict(resolved_target.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0})
         camera["velocity_mm_per_tick"] = {"x": 0, "y": 0, "z": 0}
+        _ledger_emit_exception(
+            policy_context=policy_context,
+            quantity_id=CONSERVATION_DEFAULT_QUANTITY_ID,
+            delta=0,
+            exception_type_id="exception.meta_law_override",
+            domain_id=CONSERVATION_CONTROL_DOMAIN_ID,
+            process_id=process_id,
+            reason_code="control.teleport.override",
+            evidence=[
+                "target_frame_id={}".format(str(resolved_target.get("frame_id", ""))),
+            ],
+        )
         _advance_time(state, steps=1)
     elif process_id == "process.agent_move":
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
@@ -7816,6 +7966,13 @@ def execute_intent(
         tick_result = dict(transition.get("tick_result") or {})
         lod_summary = dict(transition.get("lod_invariance") or {})
         _advance_time(state, steps=1)
+        conservation_result = _finalize_conservation_or_refusal(
+            state=state,
+            process_id=process_id,
+            policy_context=policy_context,
+        )
+        if str(conservation_result.get("result", "")) != "complete":
+            return conservation_result
         state_hash_anchor = _log_process(
             state=state,
             process_id=process_id,
@@ -7827,6 +7984,7 @@ def execute_intent(
             "result": "complete",
             "state_hash_anchor": state_hash_anchor,
             "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
+            "ledger_hash": str(conservation_result.get("ledger_hash", "")),
             "selected_terrain_tiles": list(tick_result.get("selected_terrain_tiles") or []),
             "active_regions": list(tick_result.get("active_regions") or []),
             "budget_outcome": str(tick_result.get("budget_outcome", "")),
@@ -7840,10 +7998,18 @@ def execute_intent(
             state=state,
             navigation_indices=navigation_indices,
             policy_context=policy_context,
+            process_id=process_id,
         )
         if tick_result.get("result") != "complete":
             return tick_result
         _advance_time(state, steps=1)
+        conservation_result = _finalize_conservation_or_refusal(
+            state=state,
+            process_id=process_id,
+            policy_context=policy_context,
+        )
+        if str(conservation_result.get("result", "")) != "complete":
+            return conservation_result
         state_hash_anchor = _log_process(
             state=state,
             process_id=process_id,
@@ -7855,6 +8021,7 @@ def execute_intent(
             "result": "complete",
             "state_hash_anchor": state_hash_anchor,
             "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
+            "ledger_hash": str(conservation_result.get("ledger_hash", "")),
             "selected_terrain_tiles": list(tick_result.get("selected_terrain_tiles") or []),
             "active_regions": list(tick_result.get("active_regions") or []),
             "budget_outcome": str(tick_result.get("budget_outcome", "")),
@@ -7868,6 +8035,14 @@ def execute_intent(
             {"process_id": process_id},
             "$.intent.process_id",
         )
+
+    conservation_result = _finalize_conservation_or_refusal(
+        state=state,
+        process_id=process_id,
+        policy_context=policy_context,
+    )
+    if str(conservation_result.get("result", "")) != "complete":
+        return conservation_result
 
     if bool(skip_state_log):
         state_hash_anchor = canonical_sha256(state)
@@ -7883,6 +8058,7 @@ def execute_intent(
         "result": "complete",
         "state_hash_anchor": state_hash_anchor,
         "tick": int((_ensure_simulation_time(state)).get("tick", 0)),
+        "ledger_hash": str(conservation_result.get("ledger_hash", "")),
     }
     if arrived_cohort_ids:
         result_payload["arrived_cohort_ids"] = list(arrived_cohort_ids)
