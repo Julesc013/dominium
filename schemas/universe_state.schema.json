@@ -1536,6 +1536,144 @@
               }
             }
           }
+        },
+        "transition_events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "schema_version",
+              "event_id",
+              "tick",
+              "shard_id",
+              "region_id",
+              "domain_id",
+              "solver_id",
+              "from_tier",
+              "to_tier",
+              "reason",
+              "invariant_checks",
+              "ledger_hash",
+              "deterministic_fingerprint",
+              "extensions"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "type": "string",
+                "const": "1.0.0"
+              },
+              "event_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tick": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "shard_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "region_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "domain_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "solver_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "from_tier": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to_tier": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "enum": [
+                  "interest",
+                  "budget",
+                  "user_request",
+                  "server_policy"
+                ]
+              },
+              "invariant_checks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "schema_version",
+                    "check_id",
+                    "domain_id",
+                    "invariant_id",
+                    "status",
+                    "measured_value",
+                    "tolerance",
+                    "extensions"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "schema_version": {
+                      "type": "string",
+                      "const": "1.0.0"
+                    },
+                    "check_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "domain_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "invariant_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pass",
+                        "warn",
+                        "fail"
+                      ]
+                    },
+                    "measured_value": {
+                      "type": "integer"
+                    },
+                    "tolerance": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "extensions": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              },
+              "ledger_hash": {
+                "type": "string",
+                "pattern": "^[A-Fa-f0-9]{64}$"
+              },
+              "deterministic_fingerprint": {
+                "type": "string",
+                "pattern": "^[A-Fa-f0-9]{64}$"
+              },
+              "extensions": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
         }
       }
     }
