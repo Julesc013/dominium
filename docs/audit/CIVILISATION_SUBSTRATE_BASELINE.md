@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-16
+Last Reviewed: 2026-02-26
 Version: 1.0.0
 Scope: CIV-1/4 structural baseline
 
@@ -79,6 +79,26 @@ CIV-1 establishes deterministic, process-driven foundations for factions, affili
   - `testx.civilisation.diplomacy_update_deterministic`
   - `testx.civilisation.no_agents_world_runs_ok`
   - `testx.civilisation.single_agent_world_runs_ok`
+
+## Validation Snapshot (2026-02-26)
+- RepoX PASS:
+  - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
+  - Result: `status=pass` (`repox scan passed`, findings=`1` warn-level only).
+- AuditX run:
+  - `py -3 tools/auditx/auditx.py scan --repo-root .`
+  - Result: `result=scan_complete`, findings=`1532`.
+- TestX PASS (CIV-1 required suite):
+  - `py -3 tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset testx.civilisation.faction_create_deterministic,testx.civilisation.affiliation_join_leave_deterministic,testx.civilisation.territory_claim_conflict_order,testx.civilisation.diplomacy_update_deterministic,testx.civilisation.no_agents_world_runs_ok,testx.civilisation.single_agent_world_runs_ok`
+  - Result: `status=pass` (`selected_tests=6`).
+- strict build PASS:
+  - `C:\Program Files\CMake\bin\cmake.exe --build out/build/vs2026/verify --config Debug --target domino_engine dominium_game dominium_client`
+  - Result: build complete for all strict targets.
+- `ui_bind --check` PASS:
+  - `py -3 tools/xstack/ui_bind.py --repo-root . --check`
+  - Result: `result=complete`, `checked_windows=21`.
+
+Known environment limitation observed during full profile run:
+- `py -3 tools/xstack/run.py strict --repo-root .` currently reports non-CIV failures in unrelated baseline suites (cross-drive temp-path tests, baseline hash drifts, and packaging registry artifact drift). CIV-1 substrate tests remain green.
 
 ## Extension Points (CIV-2+)
 - Cohort/population affiliation and macro cohort abstractions.
