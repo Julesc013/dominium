@@ -24,6 +24,49 @@ def _repo_root(value: str) -> str:
     return REPO_ROOT_HINT
 
 
+def run_capture(
+    *,
+    repo_root: str,
+    renderer: str,
+    input_path: str,
+    out_dir: str,
+    cache_dir: str,
+    width: int,
+    height: int,
+    wireframe: bool,
+) -> dict:
+    repo_root = _repo_root(repo_root)
+    input_path = os.path.normpath(os.path.abspath(str(input_path)))
+    render_model, load_err = load_render_model_from_artifact(input_path)
+    if load_err:
+        return {
+            "result": "refusal",
+            "code": "refusal.render.capture_input_invalid",
+            "message": str(load_err),
+        }
+
+    out_root = str(out_dir or "").strip()
+    if not out_root:
+        out_root = os.path.join(repo_root, "run_meta", "render_snapshots")
+    out_root = os.path.normpath(os.path.abspath(out_root))
+    os.makedirs(out_root, exist_ok=True)
+    cache_root = str(cache_dir or "").strip()
+    if not cache_root:
+        cache_root = os.path.join(repo_root, ".xstack_cache", "render_snapshots")
+    cache_root = os.path.normpath(os.path.abspath(cache_root))
+    os.makedirs(cache_root, exist_ok=True)
+
+    return capture_render_snapshot(
+        renderer_id=str(renderer),
+        render_model=render_model,
+        out_dir=out_root,
+        width=int(max(0, int(width))),
+        height=int(max(0, int(height))),
+        wireframe=bool(wireframe),
+        cache_dir=cache_root,
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Capture deterministic render snapshots from RenderModel artifacts.")
     parser.add_argument("--repo-root", default="")
@@ -36,37 +79,15 @@ def main() -> int:
     parser.add_argument("--wireframe", action="store_true")
     args = parser.parse_args()
 
-    repo_root = _repo_root(args.repo_root)
-    input_path = os.path.normpath(os.path.abspath(str(args.input)))
-    render_model, load_err = load_render_model_from_artifact(input_path)
-    if load_err:
-        result = {
-            "result": "refusal",
-            "code": "refusal.render.capture_input_invalid",
-            "message": str(load_err),
-        }
-        print(json.dumps(result, indent=2, sort_keys=True))
-        return 1
-
-    out_root = str(args.out or "").strip()
-    if not out_root:
-        out_root = os.path.join(repo_root, "run_meta", "render_snapshots")
-    out_root = os.path.normpath(os.path.abspath(out_root))
-    os.makedirs(out_root, exist_ok=True)
-    cache_root = str(args.cache_dir or "").strip()
-    if not cache_root:
-        cache_root = os.path.join(repo_root, ".xstack_cache", "render_snapshots")
-    cache_root = os.path.normpath(os.path.abspath(cache_root))
-    os.makedirs(cache_root, exist_ok=True)
-
-    result = capture_render_snapshot(
-        renderer_id=str(args.renderer),
-        render_model=render_model,
-        out_dir=out_root,
-        width=int(max(0, int(args.width))),
-        height=int(max(0, int(args.height))),
+    result = run_capture(
+        repo_root=str(args.repo_root),
+        renderer=str(args.renderer),
+        input_path=str(args.input),
+        out_dir=str(args.out),
+        cache_dir=str(args.cache_dir),
+        width=int(args.width),
+        height=int(args.height),
         wireframe=bool(args.wireframe),
-        cache_dir=cache_root,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if str(result.get("result", "")) == "complete" else 1
