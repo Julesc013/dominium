@@ -5128,6 +5128,182 @@ def _append_conservation_invariant_findings(
             )
         )
 
+
+def _append_time_constitution_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    time_engine_rel = "src/time/time_engine.py"
+    time_engine_abs = os.path.join(repo_root, time_engine_rel.replace("/", os.sep))
+    if not os.path.isfile(time_engine_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=time_engine_rel,
+                line_number=1,
+                snippet="",
+                message="time engine is missing",
+                rule_id="INV-NO-WALLCLOCK-IN-TIME-ENGINE",
+            )
+        )
+    else:
+        try:
+            time_engine_text = open(time_engine_abs, "r", encoding="utf-8").read()
+        except OSError:
+            time_engine_text = ""
+        if not time_engine_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=time_engine_rel,
+                    line_number=1,
+                    snippet="",
+                    message="time engine is unreadable",
+                    rule_id="INV-NO-WALLCLOCK-IN-TIME-ENGINE",
+                )
+            )
+        else:
+            for token in (
+                "advance_time(",
+                "_tick_dt_permille(",
+                "policy_context",
+                "time_tick_log",
+            ):
+                if token in time_engine_text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=time_engine_rel,
+                        line_number=1,
+                        snippet=token,
+                        message="time engine missing deterministic time-governance token",
+                        rule_id="INV-NO-WALLCLOCK-IN-TIME-ENGINE",
+                    )
+                )
+            for line_no, line in _iter_lines(repo_root, time_engine_rel):
+                lowered = str(line).lower()
+                if (
+                    "time.time(" not in lowered
+                    and "datetime.now(" not in lowered
+                    and "datetime.utcnow(" not in lowered
+                    and "time.perf_counter(" not in lowered
+                    and "time.monotonic(" not in lowered
+                    and "time.sleep(" not in lowered
+                ):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=time_engine_rel,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="time engine must not use wall-clock/non-authoritative time APIs",
+                        rule_id="INV-NO-WALLCLOCK-IN-TIME-ENGINE",
+                    )
+                )
+
+    lineage_required_files = {
+        "tools/xstack/sessionx/time_lineage.py": (
+            "branch_from_checkpoint(",
+            "shutil.copytree(",
+            "parent_checkpoint_id",
+            "new_save_id",
+            "divergence_tick",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "process.time_branch_from_checkpoint",
+            "refusal.time.branch_forbidden_by_policy",
+        ),
+        "tools/time/tool_time_branch_from_checkpoint.py": (
+            "branch_from_checkpoint(",
+        ),
+        "schema/time/branch.schema": (
+            "parent_save_id",
+            "parent_checkpoint_id",
+            "divergence_tick",
+            "new_save_id",
+        ),
+    }
+    for rel_path, tokens in lineage_required_files.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required time-branch lineage file is missing",
+                    rule_id="INV-TIME_BRANCH_IS_LINEAGE",
+                )
+            )
+            continue
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required time-branch lineage file is unreadable",
+                    rule_id="INV-TIME_BRANCH_IS_LINEAGE",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="time branch lineage token is missing",
+                    rule_id="INV-TIME_BRANCH_IS_LINEAGE",
+                )
+            )
+
+    runtime_lineage_files = (
+        "tools/xstack/sessionx/time_lineage.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "src/time/time_engine.py",
+    )
+    for rel_path in runtime_lineage_files:
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            lowered = str(line).lower()
+            if "process.time_rewind" in lowered or "process.time_set_tick" in lowered:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="retroactive in-place time mutation APIs are forbidden; branch lineage only",
+                        rule_id="INV-TIME_BRANCH_IS_LINEAGE",
+                    )
+                )
+            if "allow_retroactive_mutation" in lowered and "true" in lowered:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=str(line).strip()[:140],
+                        message="runtime must not enable retroactive mutation; branch lineage only",
+                        rule_id="INV-TIME_BRANCH_IS_LINEAGE",
+                    )
+                )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -5169,6 +5345,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_conservation_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_time_constitution_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
