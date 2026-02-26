@@ -1,10 +1,21 @@
+SCHEMA: render/representation_rule.schema
 schema_id: dominium.render.representation_rule
 schema_version: 1.0.0
-stability: stable
-description: Deterministic rule for mapping perceived semantic records to render outputs.
-fields:
-  - rule_id
-  - match
-  - output
-  - priority
-  - extensions
+stability: core
+
+PURPOSE:
+- Define deterministic rules that map perceived semantic records to render outputs.
+
+REQUIRED SHAPE:
+record representation_rule
+  required:
+    - schema_version: semver
+    - rule_id: id
+    - match: map
+    - output: map
+    - priority: u32
+    - extensions: map
+
+INVARIANTS:
+- Rule selection is deterministic by `(priority desc, rule_id asc)`.
+- Match constraints are interpreted against PerceivedModel-derived attributes only.

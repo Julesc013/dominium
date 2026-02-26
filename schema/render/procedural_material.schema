@@ -1,13 +1,25 @@
+SCHEMA: render/procedural_material.schema
 schema_id: dominium.render.procedural_material
 schema_version: 1.0.0
-stability: stable
-description: Deterministic procedural material parameters for renderer backends.
-fields:
-  - material_id
-  - base_color
-  - roughness
-  - metallic
-  - emission
-  - transparency
-  - pattern_id
-  - extensions
+stability: core
+
+PURPOSE:
+- Define deterministic procedural material parameters for renderer backends.
+
+REQUIRED SHAPE:
+record procedural_material
+  required:
+    - schema_version: semver
+    - material_id: id
+    - base_color: map
+    - roughness: u16
+    - metallic: u16
+    - extensions: map
+  optional:
+    - emission: map|null
+    - transparency: map|null
+    - pattern_id: id|null
+
+INVARIANTS:
+- Material generation must be deterministic for identical semantic/template inputs.
+- Material parameters are presentation-only and cannot encode hidden truth.
