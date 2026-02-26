@@ -60,7 +60,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Deterministic interaction command surface.")
     parser.add_argument(
         "command",
-        choices=("interact.select_target", "interact.list_affordances", "interact.execute"),
+        choices=("interact.select_target", "interact.list_affordances", "interact.preview", "interact.execute"),
     )
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--perceived", required=True, help="Path to PerceivedModel JSON artifact.")
@@ -148,4 +148,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

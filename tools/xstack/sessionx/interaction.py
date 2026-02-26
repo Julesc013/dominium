@@ -7,6 +7,7 @@ from typing import Dict
 from src.client.interaction import (
     build_affordance_list as _build_affordance_list,
     execute_affordance as _execute_affordance,
+    generate_interaction_preview as _generate_interaction_preview,
     run_interaction_command as _run_interaction_command,
 )
 
@@ -100,5 +101,22 @@ def run_interaction_command(
         deterministic_sequence_number=int(deterministic_sequence_number),
         submission_tick=int(submission_tick),
         include_disabled=bool(include_disabled),
+        repo_root=str(repo_root or ""),
+    )
+
+
+def generate_interaction_preview(
+    *,
+    perceived_model: dict,
+    affordance_row: dict,
+    parameters: dict | None = None,
+    preview_runtime: dict | None = None,
+    repo_root: str = "",
+) -> Dict[str, object]:
+    return _generate_interaction_preview(
+        perceived_model=dict(perceived_model or {}),
+        affordance_row=dict(affordance_row or {}),
+        parameters=dict(parameters or {}),
+        preview_runtime=dict(preview_runtime or {}),
         repo_root=str(repo_root or ""),
     )

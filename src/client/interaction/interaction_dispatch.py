@@ -7,6 +7,7 @@ from typing import Dict, List
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .affordance_generator import build_affordance_list
+from .preview_generator import generate_interaction_preview
 
 
 def _sorted_unique_strings(values: List[object]) -> List[str]:
@@ -351,6 +352,41 @@ def run_interaction_command(
             include_disabled=bool(include_disabled),
             repo_root=repo_root,
         )
+    if token == "interact.preview":
+        affordances = build_affordance_list(
+            perceived_model=perceived_model,
+            target_semantic_id=target_semantic_id,
+            law_profile=law_profile,
+            authority_context=authority_context,
+            interaction_action_registry=interaction_action_registry,
+            include_disabled=bool(include_disabled),
+            repo_root=repo_root,
+        )
+        affordance_list_payload = dict(affordances.get("affordance_list") or {})
+        affordance_row = _find_affordance(affordance_list_payload, affordance_id=str(affordance_id or ""))
+        if not affordance_row:
+            return _refusal(
+                "refusal.interaction.affordance_unknown",
+                "preview requires valid affordance_id from current affordance list",
+                "Call interact.list_affordances then retry with one returned affordance_id.",
+                {"affordance_id": str(affordance_id or "")},
+                "$.affordance_id",
+            )
+        if not bool(dict(affordance_row.get("extensions") or {}).get("enabled", False)):
+            return _refusal(
+                "refusal.interaction.affordance_disabled",
+                "preview is unavailable for disabled affordance under current law/authority context",
+                "Grant required entitlements/channels or choose another affordance.",
+                {"affordance_id": str(affordance_id or "")},
+                "$.affordance_id",
+            )
+        return generate_interaction_preview(
+            perceived_model=perceived_model,
+            affordance_row=affordance_row,
+            parameters=dict(parameters or {}),
+            preview_runtime=dict(policy_context or {}),
+            repo_root=repo_root,
+        )
     if token == "interact.execute":
         return execute_affordance(
             state=dict(state or {}),
@@ -380,11 +416,10 @@ def run_interaction_command(
         )
     return _refusal(
         "refusal.interaction.command_unknown",
-        "unknown interaction command '{}'; supported commands are interact.select_target, interact.list_affordances, interact.execute".format(
+        "unknown interaction command '{}'; supported commands are interact.select_target, interact.list_affordances, interact.preview, interact.execute".format(
             token
         ),
         "Use one of the canonical interaction command ids.",
         {"command": token},
         "$.command",
     )
-

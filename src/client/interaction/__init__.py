@@ -8,12 +8,14 @@ from .interaction_dispatch import (
     run_interaction_command,
     select_target,
 )
+from .preview_generator import generate_interaction_preview
 
 __all__ = [
     "build_affordance_list",
     "build_interaction_envelope",
     "build_interaction_intent",
     "execute_affordance",
+    "generate_interaction_preview",
     "run_interaction_command",
     "select_target",
 ]
