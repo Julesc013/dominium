@@ -19,6 +19,9 @@
     "tier_taxonomy_id",
     "time_model_id",
     "boundary_model_id",
+    "budget_envelope_id",
+    "arbitration_policy_id",
+    "inspection_cache_policy_id",
     "error_budget",
     "version_introduced",
     "deprecated",
@@ -74,6 +77,18 @@
       "type": "string",
       "minLength": 1
     },
+    "budget_envelope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "arbitration_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inspection_cache_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "error_budget": {
       "type": "object",
       "additionalProperties": {
@@ -107,6 +122,9 @@
       "tier_taxonomy_id": "tiers.null",
       "time_model_id": "default_single_tick",
       "boundary_model_id": "procedural_infinite",
+      "budget_envelope_id": "budget.null",
+      "arbitration_policy_id": "arb.equal_share",
+      "inspection_cache_policy_id": "cache.off",
       "error_budget": {},
       "version_introduced": "1.0.0",
       "deprecated": false,

@@ -1,0 +1,22 @@
+SCHEMA: performance/inspection_cache_policy.schema
+schema_id: dominium.schema.performance.inspection_cache_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic inspection snapshot cache behavior for derived inspection artifacts.
+
+REQUIRED SHAPE:
+record inspection_cache_policy
+  required:
+    - schema_version: semver
+    - cache_policy_id: id
+    - enable_caching: bool
+    - invalidation_rules: [id]
+    - max_cache_entries: u32
+    - eviction_rule_id: id
+    - extensions: map
+
+INVARIANTS:
+- Inspection cache policy applies to derived artifacts only.
+- Cache policy must not authorize TruthModel mutation.

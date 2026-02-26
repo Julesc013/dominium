@@ -2471,6 +2471,9 @@ def _universe_physics_registry_rows(
     schema_root: str,
     contributions: List[dict] | None = None,
     known_contract_set_ids: List[str] | None = None,
+    known_budget_envelope_ids: List[str] | None = None,
+    known_arbitration_policy_ids: List[str] | None = None,
+    known_inspection_cache_policy_ids: List[str] | None = None,
 ) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
 
@@ -2752,6 +2755,11 @@ def _universe_physics_registry_rows(
     taxonomy_ids = set(str(row.get("taxonomy_id", "")).strip() for row in taxonomy_rows)
     boundary_model_ids = set(str(row.get("boundary_model_id", "")).strip() for row in boundary_rows)
     contract_set_ids = set(str(item).strip() for item in (known_contract_set_ids or []) if str(item).strip())
+    budget_envelope_ids = set(str(item).strip() for item in (known_budget_envelope_ids or []) if str(item).strip())
+    arbitration_policy_ids = set(str(item).strip() for item in (known_arbitration_policy_ids or []) if str(item).strip())
+    inspection_cache_policy_ids = set(
+        str(item).strip() for item in (known_inspection_cache_policy_ids or []) if str(item).strip()
+    )
 
     profile_rows: List[dict] = []
     profile_seen = set()
@@ -2809,6 +2817,19 @@ def _universe_physics_registry_rows(
         if contract_set_ids and str(entry.get("conservation_contract_set_id", "")).strip() not in contract_set_ids:
             missing_refs.append(
                 "conservation_contract_set_id={}".format(str(entry.get("conservation_contract_set_id", "")).strip())
+            )
+        if budget_envelope_ids and str(entry.get("budget_envelope_id", "")).strip() not in budget_envelope_ids:
+            missing_refs.append("budget_envelope_id={}".format(str(entry.get("budget_envelope_id", "")).strip()))
+        if arbitration_policy_ids and str(entry.get("arbitration_policy_id", "")).strip() not in arbitration_policy_ids:
+            missing_refs.append(
+                "arbitration_policy_id={}".format(str(entry.get("arbitration_policy_id", "")).strip())
+            )
+        if (
+            inspection_cache_policy_ids
+            and str(entry.get("inspection_cache_policy_id", "")).strip() not in inspection_cache_policy_ids
+        ):
+            missing_refs.append(
+                "inspection_cache_policy_id={}".format(str(entry.get("inspection_cache_policy_id", "")).strip())
             )
         if missing_refs:
             errors.append(
@@ -2972,6 +2993,183 @@ def _transition_policy_registry_rows(
         transition_policy_rows, key=lambda row: str(row.get("transition_policy_id", ""))
     )
     return transition_policy_rows, arbitration_rule_rows, errors
+
+
+def _performance_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _envelope_record, envelope_rows_raw, envelope_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/budget_envelope_registry.json",
+        expected_schema_id="dominium.registry.budget_envelope_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="envelopes",
+    )
+    if envelope_load_errors:
+        return [], [], [], envelope_load_errors
+
+    _arbitration_record, arbitration_rows_raw, arbitration_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/arbitration_policy_registry.json",
+        expected_schema_id="dominium.registry.arbitration_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if arbitration_load_errors:
+        return [], [], [], arbitration_load_errors
+
+    _inspection_record, inspection_rows_raw, inspection_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/inspection_cache_policy_registry.json",
+        expected_schema_id="dominium.registry.inspection_cache_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if inspection_load_errors:
+        return [], [], [], inspection_load_errors
+
+    budget_envelope_rows: List[dict] = []
+    envelope_seen = set()
+    for entry in sorted(envelope_rows_raw, key=lambda row: str((row or {}).get("envelope_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_budget_envelope_entry",
+                    "message": "budget envelope entry must be object",
+                    "path": "$.envelopes",
+                }
+            )
+            continue
+        envelope_id = str(entry.get("envelope_id", "")).strip()
+        if not envelope_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_budget_envelope_entry",
+                    "message": "budget envelope id is missing",
+                    "path": "$.envelopes.envelope_id",
+                }
+            )
+            continue
+        if envelope_id in envelope_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_budget_envelope_id",
+                    "message": "duplicate envelope_id '{}'".format(envelope_id),
+                    "path": "$.envelopes.envelope_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="budget_envelope",
+            payload=entry,
+            path="data/registries/budget_envelope_registry.json#{}".format(envelope_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        envelope_seen.add(envelope_id)
+        budget_envelope_rows.append(dict(entry))
+    budget_envelope_rows = sorted(budget_envelope_rows, key=lambda row: str(row.get("envelope_id", "")))
+
+    arbitration_policy_rows: List[dict] = []
+    arbitration_seen = set()
+    for entry in sorted(arbitration_rows_raw, key=lambda row: str((row or {}).get("arbitration_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_arbitration_policy_entry",
+                    "message": "arbitration policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        arbitration_policy_id = str(entry.get("arbitration_policy_id", "")).strip()
+        if not arbitration_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_arbitration_policy_entry",
+                    "message": "arbitration policy id is missing",
+                    "path": "$.policies.arbitration_policy_id",
+                }
+            )
+            continue
+        if arbitration_policy_id in arbitration_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_arbitration_policy_id",
+                    "message": "duplicate arbitration_policy_id '{}'".format(arbitration_policy_id),
+                    "path": "$.policies.arbitration_policy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="arbitration_policy",
+            payload=entry,
+            path="data/registries/arbitration_policy_registry.json#{}".format(arbitration_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        arbitration_seen.add(arbitration_policy_id)
+        arbitration_policy_rows.append(dict(entry))
+    arbitration_policy_rows = sorted(
+        arbitration_policy_rows,
+        key=lambda row: str(row.get("arbitration_policy_id", "")),
+    )
+
+    inspection_cache_policy_rows: List[dict] = []
+    inspection_seen = set()
+    for entry in sorted(inspection_rows_raw, key=lambda row: str((row or {}).get("cache_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_inspection_cache_policy_entry",
+                    "message": "inspection cache policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        cache_policy_id = str(entry.get("cache_policy_id", "")).strip()
+        if not cache_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_inspection_cache_policy_entry",
+                    "message": "inspection cache policy id is missing",
+                    "path": "$.policies.cache_policy_id",
+                }
+            )
+            continue
+        if cache_policy_id in inspection_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_inspection_cache_policy_id",
+                    "message": "duplicate cache_policy_id '{}'".format(cache_policy_id),
+                    "path": "$.policies.cache_policy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="inspection_cache_policy",
+            payload=entry,
+            path="data/registries/inspection_cache_policy_registry.json#{}".format(cache_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        inspection_seen.add(cache_policy_id)
+        inspection_cache_policy_rows.append(dict(entry))
+    inspection_cache_policy_rows = sorted(
+        inspection_cache_policy_rows,
+        key=lambda row: str(row.get("cache_policy_id", "")),
+    )
+
+    return budget_envelope_rows, arbitration_policy_rows, inspection_cache_policy_rows, errors
 
 
 def _time_control_registry_rows(
@@ -5944,6 +6142,15 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        budget_envelope_rows,
+        arbitration_policy_rows,
+        inspection_cache_policy_rows,
+        performance_registry_errors,
+    ) = _performance_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         universe_physics_profile_rows,
         time_model_rows,
         numeric_precision_policy_rows,
@@ -5955,6 +6162,9 @@ def compile_bundle(
         schema_root=schema_root,
         contributions=contributions,
         known_contract_set_ids=[str(row.get("contract_set_id", "")) for row in conservation_contract_set_rows],
+        known_budget_envelope_ids=[str(row.get("envelope_id", "")) for row in budget_envelope_rows],
+        known_arbitration_policy_ids=[str(row.get("arbitration_policy_id", "")) for row in arbitration_policy_rows],
+        known_inspection_cache_policy_ids=[str(row.get("cache_policy_id", "")) for row in inspection_cache_policy_rows],
     )
     (
         transition_policy_rows,
@@ -6142,6 +6352,7 @@ def compile_bundle(
         + control_registry_errors
         + civilisation_registry_errors
         + conservation_registry_errors
+        + performance_registry_errors
         + universe_physics_registry_errors
         + transition_registry_errors
         + transition_reference_errors
@@ -6224,6 +6435,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "rules": arbitration_rule_rows,
+        }
+    )
+    budget_envelope_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "envelopes": budget_envelope_rows,
+        }
+    )
+    arbitration_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": arbitration_policy_rows,
+        }
+    )
+    inspection_cache_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": inspection_cache_policy_rows,
         }
     )
     boundary_model_payload = _finalize_registry_payload(
@@ -6624,6 +6856,9 @@ def compile_bundle(
         "tier_taxonomy_registry": ("tier_taxonomy_registry", tier_taxonomy_payload),
         "transition_policy_registry": ("transition_policy_registry", transition_policy_payload),
         "arbitration_rule_registry": ("arbitration_rule_registry", arbitration_rule_payload),
+        "budget_envelope_registry": ("budget_envelope_registry", budget_envelope_payload),
+        "arbitration_policy_registry": ("arbitration_policy_registry", arbitration_policy_payload),
+        "inspection_cache_policy_registry": ("inspection_cache_policy_registry", inspection_cache_policy_payload),
         "boundary_model_registry": ("boundary_model_registry", boundary_model_payload),
         "domain_registry": ("domain_registry", domain_payload),
         "law_registry": ("law_registry", law_payload),
@@ -6697,6 +6932,9 @@ def compile_bundle(
         "tier_taxonomy_registry",
         "transition_policy_registry",
         "arbitration_rule_registry",
+        "budget_envelope_registry",
+        "arbitration_policy_registry",
+        "inspection_cache_policy_registry",
         "boundary_model_registry",
         "domain_registry",
         "law_registry",
@@ -6787,6 +7025,9 @@ def compile_bundle(
             "tier_taxonomy_registry_hash": registry_hashes["tier_taxonomy_registry_hash"],
             "transition_policy_registry_hash": registry_hashes["transition_policy_registry_hash"],
             "arbitration_rule_registry_hash": registry_hashes["arbitration_rule_registry_hash"],
+            "budget_envelope_registry_hash": registry_hashes["budget_envelope_registry_hash"],
+            "arbitration_policy_registry_hash": registry_hashes["arbitration_policy_registry_hash"],
+            "inspection_cache_policy_registry_hash": registry_hashes["inspection_cache_policy_registry_hash"],
             "boundary_model_registry_hash": registry_hashes["boundary_model_registry_hash"],
             "domain_registry_hash": registry_hashes["domain_registry_hash"],
             "law_registry_hash": registry_hashes["law_registry_hash"],

@@ -451,6 +451,30 @@ def run_intent_script(
     )
     if arbitration_rule_registry_error:
         return arbitration_rule_registry_error
+    budget_envelope_registry, budget_envelope_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["budget_envelope_registry_hash"],
+        expected_hash=str(registries.get("budget_envelope_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if budget_envelope_registry_error:
+        return budget_envelope_registry_error
+    arbitration_policy_registry, arbitration_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["arbitration_policy_registry_hash"],
+        expected_hash=str(registries.get("arbitration_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if arbitration_policy_registry_error:
+        return arbitration_policy_registry_error
+    inspection_cache_policy_registry, inspection_cache_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["inspection_cache_policy_registry_hash"],
+        expected_hash=str(registries.get("inspection_cache_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if inspection_cache_policy_registry_error:
+        return inspection_cache_policy_registry_error
     boundary_model_registry, boundary_model_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["boundary_model_registry_hash"],
@@ -909,6 +933,9 @@ def run_intent_script(
         "time_model_id": str(selected_time_model.get("time_model_id", "")),
         "tier_taxonomy_id": str(selected_physics_profile.get("tier_taxonomy_id", "")),
         "transition_policy_id": str(selected_transition_policy.get("transition_policy_id", "")),
+        "budget_envelope_id": str(selected_physics_profile.get("budget_envelope_id", "")),
+        "arbitration_policy_id": str(selected_physics_profile.get("arbitration_policy_id", "")),
+        "inspection_cache_policy_id": str(selected_physics_profile.get("inspection_cache_policy_id", "")),
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "active_shard_id": "shard.0",
         "activation_policy": activation_policy,
@@ -921,6 +948,9 @@ def run_intent_script(
         "time_model": selected_time_model,
         "transition_policy_registry": transition_policy_registry,
         "arbitration_rule_registry": arbitration_rule_registry,
+        "budget_envelope_registry": budget_envelope_registry,
+        "arbitration_policy_registry": arbitration_policy_registry,
+        "inspection_cache_policy_registry": inspection_cache_policy_registry,
         "time_control_policy_registry": time_control_policy_registry,
         "dt_quantization_rule_registry": dt_quantization_rule_registry,
         "compaction_policy_registry": compaction_policy_registry,

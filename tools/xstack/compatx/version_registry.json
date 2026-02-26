@@ -84,6 +84,20 @@
         "1.0.0"
       ]
     },
+    "budget_envelope": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "budget_envelope_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "bundle_profile": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -505,6 +519,20 @@
       ]
     },
     "instrument_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "inspection_cache_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "inspection_cache_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1030,6 +1058,20 @@
       ]
     },
     "arbitration_rule_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "arbitration_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "arbitration_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

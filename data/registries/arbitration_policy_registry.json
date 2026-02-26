@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.registry.arbitration_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.arbitration_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "arbitration_policy_id": "arb.equal_share",
+        "mode": "equal_share",
+        "weight_source": "none",
+        "tie_break_rule_id": "tie.player_region_tick",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "arbitration_policy_id": "arb.server_weighted",
+        "mode": "weighted",
+        "weight_source": "server.profile.weights",
+        "tie_break_rule_id": "tie.player_region_tick",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "arbitration_policy_id": "arb.distance_priority",
+        "mode": "server_authoritative_priority",
+        "weight_source": "distance.quantized",
+        "tie_break_rule_id": "tie.player_region_tick",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
