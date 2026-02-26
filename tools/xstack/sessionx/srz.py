@@ -210,6 +210,7 @@ def per_tick_hash(
     registry_hashes: dict,
     last_tick_hash: str,
     ledger_hash: str = "",
+    transition_event_hash: str = "",
 ) -> str:
     payload = {
         "truth_subset": _truth_hash_subset(universe_state),
@@ -218,6 +219,7 @@ def per_tick_hash(
         "registry_hashes": dict(registry_hashes or {}),
         "last_tick_hash": str(last_tick_hash),
         "ledger_hash": str(ledger_hash or ""),
+        "transition_event_hash": str(transition_event_hash or ""),
     }
     return canonical_sha256(payload)
 

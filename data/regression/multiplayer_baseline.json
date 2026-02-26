@@ -5,13 +5,13 @@
   "bundle_id": "bundle.base.lab",
   "policy_baselines": {
     "policy.net.lockstep": {
-      "final_composite_hash": "1a3823b973d2a237f0e93ab7448aeddcec53027eb2a204a6191c599bbfc100bf"
+      "final_composite_hash": "1eafec56811affe81ceb307df6b0c577efc7b0f4cc98782691ce9aa66bcd7420"
     },
     "policy.net.server_authoritative": {
-      "final_composite_hash": "287e43d4d7137528dc58ec7b3c66a8dad8d2a59217f5c7dd8c61a308520e448f"
+      "final_composite_hash": "f13ca1e99f4a531a3dd7a8b027cc15c45744ef394190abf73743c3b47f597b6f"
     },
     "policy.net.srz_hybrid": {
-      "final_composite_hash": "cff7a2e97cd06dfa37a423d39bb67a0a7ab36ace6e442567cbaf6bc5ffdeab0e"
+      "final_composite_hash": "bec5f34366e5e04a2113326e1c719373692d48a6e9ad7a6f46c1f350630fc867"
     }
   },
   "ranked_handshake_matrix_hash": "1926e51d42b7bca86246ca523439c0674245e19f9f141662021d54394f366fb6",
@@ -22,6 +22,6 @@
   },
   "update_policy": {
     "required_commit_tag": "MULTIPLAYER-REGRESSION-UPDATE",
-    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-17 (CIV2 recovery and deterministic hash refresh)."
+    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-27 (RS4 tier transition hash input integration)."
   }
 }

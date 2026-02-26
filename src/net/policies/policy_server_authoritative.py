@@ -161,6 +161,51 @@ def _dt_quantization_rule(runtime: dict, dt_rule_id: str) -> dict:
     }
 
 
+def _physics_profile(runtime: dict) -> dict:
+    physics_profile_id = str((runtime.get("universe_identity") or {}).get("physics_profile_id", "")).strip()
+    registry = dict((runtime.get("registry_payloads") or {}).get("universe_physics_profile_registry") or {})
+    rows = list(registry.get("physics_profiles") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("physics_profile_id", ""))):
+        if str(row.get("physics_profile_id", "")).strip() == physics_profile_id:
+            return dict(row)
+    return {}
+
+
+def _session_transition_policy_id(runtime: dict, profile_row: dict) -> str:
+    selected_transition = dict(runtime.get("selected_transition_policy") or {})
+    token = str(selected_transition.get("transition_policy_id", "")).strip()
+    if token:
+        return token
+    session_spec = dict(runtime.get("session_spec") or {})
+    token = str(session_spec.get("transition_policy_id", "")).strip()
+    if token:
+        return token
+    extensions = dict((profile_row or {}).get("extensions") or {})
+    token = str(extensions.get("default_transition_policy_id", "")).strip()
+    if token:
+        return token
+    return "transition.policy.null"
+
+
+def _transition_policy(runtime: dict, policy_id: str) -> dict:
+    registry = dict((runtime.get("registry_payloads") or {}).get("transition_policy_registry") or {})
+    rows = list(registry.get("policies") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("transition_policy_id", ""))):
+        if str(row.get("transition_policy_id", "")).strip() == str(policy_id).strip():
+            return dict(row)
+    return {
+        "transition_policy_id": str(policy_id).strip() or "transition.policy.null",
+        "description": "fallback deterministic transition policy",
+        "max_micro_regions": 0,
+        "max_micro_entities": 0,
+        "hysteresis_rules": {"min_transition_interval_ticks": 0},
+        "arbitration_rule_id": "arb.priority_by_distance",
+        "degrade_order": ["fine", "medium", "coarse"],
+        "refuse_thresholds": {},
+        "extensions": {},
+    }
+
+
 def _is_unauthorized_time_control_refusal(process_id: str, reason_code: str) -> bool:
     token = str(process_id).strip()
     reason = str(reason_code).strip()
@@ -195,9 +240,13 @@ def _runtime_policy_context(runtime: dict) -> dict:
     physics_profile_id = str((runtime.get("universe_identity") or {}).get("physics_profile_id", "")).strip()
     if not physics_profile_id:
         physics_profile_id = "physics.null"
+    profile_row = _physics_profile(runtime)
+    tier_taxonomy_id = str(runtime.get("selected_tier_taxonomy_id", "")).strip() or str(profile_row.get("tier_taxonomy_id", "")).strip() or "tiers.null"
     server_profile = dict(runtime.get("server_profile") or {})
     time_control_policy_id = _session_time_control_policy_id(runtime=runtime)
     selected_time_policy = _time_control_policy(runtime=runtime, policy_id=time_control_policy_id)
+    transition_policy_id = _session_transition_policy_id(runtime=runtime, profile_row=profile_row)
+    selected_transition_policy = _transition_policy(runtime=runtime, policy_id=transition_policy_id)
     dt_rule_id = str(selected_time_policy.get("dt_quantization_rule_id", "")).strip() or "dt.rule.single_tick"
     selected_dt_rule = _dt_quantization_rule(runtime=runtime, dt_rule_id=dt_rule_id)
 
@@ -214,6 +263,9 @@ def _runtime_policy_context(runtime: dict) -> dict:
         "server_profile_id": str(server_profile.get("server_profile_id", "")),
         "time_control_policy_id": str(time_control_policy_id),
         "time_control_policy": dict(selected_time_policy),
+        "tier_taxonomy_id": str(tier_taxonomy_id),
+        "transition_policy_id": str(transition_policy_id),
+        "transition_policy": dict(selected_transition_policy),
         "dt_quantization_rule_id": str(dt_rule_id),
         "dt_quantization_rule": dict(selected_dt_rule),
         "resolved_packs": list(((runtime.get("lock_payload") or {}).get("resolved_packs") or [])),
@@ -1092,6 +1144,19 @@ def _build_anchor_frame(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
     server = dict(runtime.get("server") or {})
     state = dict(server.get("universe_state") or {})
     ledger_hash = str(server.get("last_ledger_hash", "")).strip()
+    performance_state = dict(state.get("performance_state") or {})
+    transition_events = list(performance_state.get("transition_events") or [])
+    transition_event_hash = canonical_sha256(
+        sorted(
+            (dict(item) for item in transition_events if isinstance(item, dict)),
+            key=lambda item: (
+                int(_as_int(item.get("tick", 0), 0)),
+                str(item.get("shard_id", "")),
+                str(item.get("region_id", "")),
+                str(item.get("event_id", "")),
+            ),
+        )
+    )
     shard = build_single_shard(
         universe_state=state,
         authority_origin="server",
@@ -1105,6 +1170,7 @@ def _build_anchor_frame(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
         registry_hashes=dict(server.get("registry_hashes") or {}),
         last_tick_hash=str(server.get("last_tick_hash", "")),
         ledger_hash=str(ledger_hash),
+        transition_event_hash=str(transition_event_hash),
     )
     shard["last_hash_anchor"] = tick_hash
     composite = composite_hash([shard])
@@ -1127,6 +1193,7 @@ def _build_anchor_frame(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
         "checkpoint_id": checkpoint_id,
         "extensions": {
             "ledger_hash": str(ledger_hash),
+            "transition_event_hash": str(transition_event_hash),
         },
     }
     checked = validate_instance(
