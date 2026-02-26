@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reenactment Artifact Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic MAT-8 reenactment artifact metadata.",
+  "x-doc-ref": [
+    "docs/materials/REENACTMENT_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "reenactment_id",
+    "request_id",
+    "inputs_hash",
+    "output_timeline_ref",
+    "fidelity_achieved",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "reenactment_id": {
+      "type": "string"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "inputs_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "output_timeline_ref": {
+      "type": "string"
+    },
+    "fidelity_achieved": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

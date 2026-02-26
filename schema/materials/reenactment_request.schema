@@ -1,0 +1,23 @@
+SCHEMA: materials/reenactment_request.schema
+schema_id: dominium.schema.materials.reenactment_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic reenactment generation requests.
+
+REQUIRED SHAPE:
+record reenactment_request
+  required:
+    - schema_version: semver
+    - request_id: id
+    - target_id: id
+    - tick_range: map(start_tick:u64,end_tick:u64)
+    - desired_fidelity: enum(macro|meso|micro)
+    - max_cost_units: u32
+    - requester_subject_id: id
+    - extensions: map
+
+INVARIANTS:
+- Request identity and ordering are deterministic.
+- desired_fidelity is budget-governed and may deterministically degrade.

@@ -45,6 +45,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "order_type_registry": "order_type.registry.json",
     "role_registry": "role.registry.json",
     "institution_type_registry": "institution_type.registry.json",
+    "commitment_type_registry": "commitment_type.registry.json",
+    "causality_strictness_registry": "causality_strictness.registry.json",
     "demography_policy_registry": "demography_policy.registry.json",
     "death_model_registry": "death_model.registry.json",
     "birth_model_registry": "birth_model.registry.json",

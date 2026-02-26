@@ -65,6 +65,8 @@ REGISTRY_HASH_KEY_MAP = {
     "order_type_registry_hash": "order_type_registry",
     "role_registry_hash": "role_registry",
     "institution_type_registry_hash": "institution_type_registry",
+    "commitment_type_registry_hash": "commitment_type_registry",
+    "causality_strictness_registry_hash": "causality_strictness_registry",
     "demography_policy_registry_hash": "demography_policy_registry",
     "death_model_registry_hash": "death_model_registry",
     "birth_model_registry_hash": "birth_model_registry",
@@ -134,6 +136,8 @@ REGISTRY_FILE_MAP = {
     "order_type_registry_hash": "order_type.registry.json",
     "role_registry_hash": "role.registry.json",
     "institution_type_registry_hash": "institution_type.registry.json",
+    "commitment_type_registry_hash": "commitment_type.registry.json",
+    "causality_strictness_registry_hash": "causality_strictness.registry.json",
     "demography_policy_registry_hash": "demography_policy.registry.json",
     "death_model_registry_hash": "death_model.registry.json",
     "birth_model_registry_hash": "birth_model.registry.json",
@@ -1126,6 +1130,22 @@ def boot_session_spec(
     )
     if institution_type_registry_error:
         return institution_type_registry_error
+    commitment_type_registry, commitment_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["commitment_type_registry_hash"],
+        expected_hash=str(registries.get("commitment_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if commitment_type_registry_error:
+        return commitment_type_registry_error
+    causality_strictness_registry, causality_strictness_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["causality_strictness_registry_hash"],
+        expected_hash=str(registries.get("causality_strictness_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if causality_strictness_registry_error:
+        return causality_strictness_registry_error
     demography_policy_registry, demography_policy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["demography_policy_registry_hash"],
@@ -1647,6 +1667,8 @@ def boot_session_spec(
                 "order_type_registry": order_type_registry,
                 "role_registry": role_registry,
                 "institution_type_registry": institution_type_registry,
+                "commitment_type_registry": commitment_type_registry,
+                "causality_strictness_registry": causality_strictness_registry,
                 "demography_policy_registry": demography_policy_registry,
                 "death_model_registry": death_model_registry,
                 "birth_model_registry": birth_model_registry,
@@ -1733,6 +1755,8 @@ def boot_session_spec(
                 "order_type_registry": order_type_registry,
                 "role_registry": role_registry,
                 "institution_type_registry": institution_type_registry,
+                "commitment_type_registry": commitment_type_registry,
+                "causality_strictness_registry": causality_strictness_registry,
                 "demography_policy_registry": demography_policy_registry,
                 "death_model_registry": death_model_registry,
                 "birth_model_registry": birth_model_registry,
@@ -2091,6 +2115,8 @@ def boot_session_spec(
             "order_type_registry": order_type_registry,
             "role_registry": role_registry,
             "institution_type_registry": institution_type_registry,
+            "commitment_type_registry": commitment_type_registry,
+            "causality_strictness_registry": causality_strictness_registry,
             "demography_policy_registry": demography_policy_registry,
             "death_model_registry": death_model_registry,
             "birth_model_registry": birth_model_registry,
