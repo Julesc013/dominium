@@ -1,0 +1,22 @@
+SCHEMA: civilisation/death_model.schema
+schema_id: dominium.schema.civilisation.death_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic CIV-4 cohort death-rate model records.
+
+REQUIRED SHAPE:
+record death_model
+  required:
+    - schema_version: semver
+    - death_model_id: id
+    - description: text
+    - base_death_rate_per_tick: fixed_point
+    - modifiers: map
+    - extensions: map
+
+INVARIANTS:
+- base_death_rate_per_tick is non-negative.
+- modifiers are numeric tuning only; no structural logic payloads.
+

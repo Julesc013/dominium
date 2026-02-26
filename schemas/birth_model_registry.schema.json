@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Birth Model Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic birth model registry output.",
+  "x-doc-ref": [
+    "docs/civilisation/DEMOGRAPHY_OPTIONALITY.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "birth_models",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "birth_models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "birth_model_id",
+          "description",
+          "base_birth_rate_per_tick",
+          "modifiers",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "birth_model_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "base_birth_rate_per_tick": {
+            "type": "number",
+            "minimum": 0
+          },
+          "modifiers": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "birth_models": [],
+      "registry_hash": "f6306f2be18e6daed9916eec703c2efcecc373fa5b29947f4942d85797dc8f5b"
+    }
+  ]
+}
+

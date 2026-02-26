@@ -23,6 +23,10 @@
     "order_type_registry_hash",
     "role_registry_hash",
     "institution_type_registry_hash",
+    "demography_policy_registry_hash",
+    "death_model_registry_hash",
+    "birth_model_registry_hash",
+    "migration_model_registry_hash",
     "body_shape_registry_hash",
     "view_mode_registry_hash",
     "instrument_type_registry_hash",
@@ -110,6 +114,22 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "institution_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "demography_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "death_model_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "birth_model_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "migration_model_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
@@ -270,6 +290,10 @@
       "order_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "role_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "institution_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "demography_policy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "death_model_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "birth_model_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "migration_model_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "body_shape_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "view_mode_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "instrument_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",

@@ -68,6 +68,10 @@
         "order_type_registry_hash",
         "role_registry_hash",
         "institution_type_registry_hash",
+        "demography_policy_registry_hash",
+        "death_model_registry_hash",
+        "birth_model_registry_hash",
+        "migration_model_registry_hash",
         "body_shape_registry_hash",
         "view_mode_registry_hash",
         "instrument_type_registry_hash",
@@ -150,6 +154,22 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "institution_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "demography_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "death_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "birth_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "migration_model_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -317,6 +337,10 @@
         "order_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "role_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "institution_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "demography_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "death_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "birth_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "migration_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "body_shape_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "view_mode_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "instrument_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",

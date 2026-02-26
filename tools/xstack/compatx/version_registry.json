@@ -217,6 +217,20 @@
         "1.0.0"
       ]
     },
+    "birth_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "birth_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "decay_model": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -225,6 +239,34 @@
       ]
     },
     "decay_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "death_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "death_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "demography_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "demography_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -526,6 +568,20 @@
       ]
     },
     "message": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "migration_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "migration_model_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

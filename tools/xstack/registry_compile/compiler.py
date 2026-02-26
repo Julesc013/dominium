@@ -1499,7 +1499,19 @@ def _control_registry_rows(
 
 def _civilisation_registry_rows(
     repo_root: str,
-) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
+) -> Tuple[
+    List[dict],
+    List[dict],
+    List[dict],
+    List[dict],
+    List[dict],
+    List[dict],
+    List[dict],
+    List[dict],
+    List[dict],
+    List[dict],
+    List[dict],
+]:
     errors: List[dict] = []
 
     _governance_record, governance_rows_raw, governance_load_errors = _load_registry_record(
@@ -1510,7 +1522,7 @@ def _civilisation_registry_rows(
         expected_entry_key="governance_types",
     )
     if governance_load_errors:
-        return [], [], [], [], [], [], governance_load_errors
+        return [], [], [], [], [], [], [], [], [], [], governance_load_errors
 
     governance_rows: List[dict] = []
     governance_seen = set()
@@ -1563,7 +1575,7 @@ def _civilisation_registry_rows(
         expected_entry_key="states",
     )
     if diplomatic_load_errors:
-        return [], [], [], [], [], [], diplomatic_load_errors
+        return [], [], [], [], [], [], [], [], [], [], diplomatic_load_errors
 
     diplomatic_rows: List[dict] = []
     diplomatic_seen = set()
@@ -1616,7 +1628,7 @@ def _civilisation_registry_rows(
         expected_entry_key="policies",
     )
     if cohort_load_errors:
-        return [], [], [], [], [], [], cohort_load_errors
+        return [], [], [], [], [], [], [], [], [], [], cohort_load_errors
 
     cohort_rows: List[dict] = []
     cohort_seen = set()
@@ -1691,7 +1703,7 @@ def _civilisation_registry_rows(
         expected_entry_key="order_types",
     )
     if order_type_load_errors:
-        return [], [], [], [], [], [], order_type_load_errors
+        return [], [], [], [], [], [], [], [], [], [], order_type_load_errors
 
     order_type_rows: List[dict] = []
     order_type_seen = set()
@@ -1774,7 +1786,7 @@ def _civilisation_registry_rows(
         expected_entry_key="roles",
     )
     if role_load_errors:
-        return [], [], [], [], [], [], role_load_errors
+        return [], [], [], [], [], [], [], [], [], [], role_load_errors
 
     role_rows: List[dict] = []
     role_seen = set()
@@ -1829,7 +1841,7 @@ def _civilisation_registry_rows(
         expected_entry_key="institution_types",
     )
     if institution_load_errors:
-        return [], [], [], [], [], [], institution_load_errors
+        return [], [], [], [], [], [], [], [], [], [], institution_load_errors
 
     role_id_set = set(str(row.get("role_id", "")).strip() for row in role_rows)
     institution_rows: List[dict] = []
@@ -1891,6 +1903,300 @@ def _civilisation_registry_rows(
         )
     institution_rows = sorted(institution_rows, key=lambda row: str(row.get("institution_type_id", "")))
 
+    _demography_policy_record, demography_policy_rows_raw, demography_policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/demography_policy_registry.json",
+        expected_schema_id="dominium.registry.demography_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if demography_policy_load_errors:
+        return [], [], [], [], [], [], [], [], [], [], demography_policy_load_errors
+
+    _death_model_record, death_model_rows_raw, death_model_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/death_model_registry.json",
+        expected_schema_id="dominium.registry.death_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="death_models",
+    )
+    if death_model_load_errors:
+        return [], [], [], [], [], [], [], [], [], [], death_model_load_errors
+
+    death_model_rows: List[dict] = []
+    death_model_seen = set()
+    for entry in sorted(death_model_rows_raw, key=lambda row: str((row or {}).get("death_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_death_model_entry",
+                    "message": "death model entry must be object",
+                    "path": "$.death_models",
+                }
+            )
+            continue
+        death_model_id = str(entry.get("death_model_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        modifiers = entry.get("modifiers")
+        extensions = entry.get("extensions")
+        try:
+            base_death_rate_per_tick = float(entry.get("base_death_rate_per_tick", -1))
+        except (TypeError, ValueError):
+            base_death_rate_per_tick = -1.0
+        if (
+            not death_model_id
+            or not description
+            or base_death_rate_per_tick < 0
+            or not isinstance(modifiers, dict)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_death_model_entry",
+                    "message": "death model '{}' missing required fields".format(death_model_id or "<missing>"),
+                    "path": "$.death_models",
+                }
+            )
+            continue
+        if death_model_id in death_model_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_death_model_id",
+                    "message": "duplicate death_model_id '{}'".format(death_model_id),
+                    "path": "$.death_models.death_model_id",
+                }
+            )
+            continue
+        death_model_seen.add(death_model_id)
+        death_model_rows.append(
+            {
+                "death_model_id": death_model_id,
+                "description": description,
+                "base_death_rate_per_tick": float(base_death_rate_per_tick),
+                "modifiers": dict((str(key), modifiers[key]) for key in sorted(modifiers.keys())),
+                "extensions": dict(extensions),
+            }
+        )
+    death_model_rows = sorted(death_model_rows, key=lambda row: str(row.get("death_model_id", "")))
+
+    _birth_model_record, birth_model_rows_raw, birth_model_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/birth_model_registry.json",
+        expected_schema_id="dominium.registry.birth_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="birth_models",
+    )
+    if birth_model_load_errors:
+        return [], [], [], [], [], [], [], [], [], [], birth_model_load_errors
+
+    birth_model_rows: List[dict] = []
+    birth_model_seen = set()
+    for entry in sorted(birth_model_rows_raw, key=lambda row: str((row or {}).get("birth_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_birth_model_entry",
+                    "message": "birth model entry must be object",
+                    "path": "$.birth_models",
+                }
+            )
+            continue
+        birth_model_id = str(entry.get("birth_model_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        modifiers = entry.get("modifiers")
+        extensions = entry.get("extensions")
+        try:
+            base_birth_rate_per_tick = float(entry.get("base_birth_rate_per_tick", -1))
+        except (TypeError, ValueError):
+            base_birth_rate_per_tick = -1.0
+        if (
+            not birth_model_id
+            or not description
+            or base_birth_rate_per_tick < 0
+            or not isinstance(modifiers, dict)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_birth_model_entry",
+                    "message": "birth model '{}' missing required fields".format(birth_model_id or "<missing>"),
+                    "path": "$.birth_models",
+                }
+            )
+            continue
+        if birth_model_id in birth_model_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_birth_model_id",
+                    "message": "duplicate birth_model_id '{}'".format(birth_model_id),
+                    "path": "$.birth_models.birth_model_id",
+                }
+            )
+            continue
+        birth_model_seen.add(birth_model_id)
+        birth_model_rows.append(
+            {
+                "birth_model_id": birth_model_id,
+                "description": description,
+                "base_birth_rate_per_tick": float(base_birth_rate_per_tick),
+                "modifiers": dict((str(key), modifiers[key]) for key in sorted(modifiers.keys())),
+                "extensions": dict(extensions),
+            }
+        )
+    birth_model_rows = sorted(birth_model_rows, key=lambda row: str(row.get("birth_model_id", "")))
+
+    _migration_model_record, migration_model_rows_raw, migration_model_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/migration_model_registry.json",
+        expected_schema_id="dominium.registry.migration_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="migration_models",
+    )
+    if migration_model_load_errors:
+        return [], [], [], [], [], [], [], [], [], [], migration_model_load_errors
+
+    migration_model_rows: List[dict] = []
+    migration_model_seen = set()
+    for entry in sorted(migration_model_rows_raw, key=lambda row: str((row or {}).get("migration_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_migration_model_entry",
+                    "message": "migration model entry must be object",
+                    "path": "$.migration_models",
+                }
+            )
+            continue
+        migration_model_id = str(entry.get("migration_model_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        travel_time_policy_id = str(entry.get("travel_time_policy_id", "")).strip()
+        capacity_limits = entry.get("capacity_limits")
+        extensions = entry.get("extensions")
+        if (
+            not migration_model_id
+            or not description
+            or not travel_time_policy_id
+            or not isinstance(capacity_limits, dict)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_migration_model_entry",
+                    "message": "migration model '{}' missing required fields".format(migration_model_id or "<missing>"),
+                    "path": "$.migration_models",
+                }
+            )
+            continue
+        if migration_model_id in migration_model_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_migration_model_id",
+                    "message": "duplicate migration_model_id '{}'".format(migration_model_id),
+                    "path": "$.migration_models.migration_model_id",
+                }
+            )
+            continue
+        migration_model_seen.add(migration_model_id)
+        migration_model_rows.append(
+            {
+                "migration_model_id": migration_model_id,
+                "description": description,
+                "travel_time_policy_id": travel_time_policy_id,
+                "capacity_limits": dict((str(key), capacity_limits[key]) for key in sorted(capacity_limits.keys())),
+                "extensions": dict(extensions),
+            }
+        )
+    migration_model_rows = sorted(migration_model_rows, key=lambda row: str(row.get("migration_model_id", "")))
+
+    death_model_id_set = set(str(row.get("death_model_id", "")).strip() for row in death_model_rows)
+    birth_model_id_set = set(str(row.get("birth_model_id", "")).strip() for row in birth_model_rows)
+    migration_model_id_set = set(str(row.get("migration_model_id", "")).strip() for row in migration_model_rows)
+    demography_policy_rows: List[dict] = []
+    demography_policy_seen = set()
+    for entry in sorted(demography_policy_rows_raw, key=lambda row: str((row or {}).get("demography_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_demography_policy_entry",
+                    "message": "demography policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        demography_policy_id = str(entry.get("demography_policy_id", "")).strip()
+        births_enabled = entry.get("births_enabled")
+        death_model_id = str(entry.get("death_model_id", "")).strip()
+        birth_model_id = str(entry.get("birth_model_id", "")).strip()
+        migration_model_id = str(entry.get("migration_model_id", "")).strip()
+        deterministic_tie_break_id = str(entry.get("deterministic_tie_break_id", "")).strip()
+        extensions = entry.get("extensions")
+        try:
+            tick_rate = int(entry.get("tick_rate", 0) or 0)
+        except (TypeError, ValueError):
+            tick_rate = 0
+        if (
+            not demography_policy_id
+            or not isinstance(births_enabled, bool)
+            or not death_model_id
+            or not birth_model_id
+            or not migration_model_id
+            or tick_rate < 1
+            or not deterministic_tie_break_id
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_demography_policy_entry",
+                    "message": "demography policy '{}' missing required fields".format(
+                        demography_policy_id or "<missing>"
+                    ),
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if demography_policy_id in demography_policy_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_demography_policy_id",
+                    "message": "duplicate demography_policy_id '{}'".format(demography_policy_id),
+                    "path": "$.policies.demography_policy_id",
+                }
+            )
+            continue
+        missing_refs = []
+        if death_model_id not in death_model_id_set:
+            missing_refs.append("death_model_id={}".format(death_model_id))
+        if birth_model_id not in birth_model_id_set:
+            missing_refs.append("birth_model_id={}".format(birth_model_id))
+        if migration_model_id not in migration_model_id_set:
+            missing_refs.append("migration_model_id={}".format(migration_model_id))
+        if missing_refs:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.demography_policy_model_missing",
+                    "message": "demography policy '{}' references unknown model ids: {}".format(
+                        demography_policy_id,
+                        ",".join(sorted(missing_refs)),
+                    ),
+                    "path": "$.policies",
+                }
+            )
+            continue
+        demography_policy_seen.add(demography_policy_id)
+        demography_policy_rows.append(
+            {
+                "demography_policy_id": demography_policy_id,
+                "births_enabled": bool(births_enabled),
+                "death_model_id": death_model_id,
+                "birth_model_id": birth_model_id,
+                "migration_model_id": migration_model_id,
+                "tick_rate": int(tick_rate),
+                "deterministic_tie_break_id": deterministic_tie_break_id,
+                "extensions": dict(extensions),
+            }
+        )
+    demography_policy_rows = sorted(demography_policy_rows, key=lambda row: str(row.get("demography_policy_id", "")))
+
     return (
         governance_rows,
         diplomatic_rows,
@@ -1898,6 +2204,10 @@ def _civilisation_registry_rows(
         order_type_rows,
         role_rows,
         institution_rows,
+        demography_policy_rows,
+        death_model_rows,
+        birth_model_rows,
+        migration_model_rows,
         errors,
     )
 
@@ -4593,6 +4903,10 @@ def compile_bundle(
         order_type_rows,
         role_rows,
         institution_type_rows,
+        demography_policy_rows,
+        death_model_rows,
+        birth_model_rows,
+        migration_model_rows,
         civilisation_registry_errors,
     ) = _civilisation_registry_rows(
         repo_root=repo_root,
@@ -4775,6 +5089,34 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "institution_types": institution_type_rows,
+        }
+    )
+    demography_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": demography_policy_rows,
+        }
+    )
+    death_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "death_models": death_model_rows,
+        }
+    )
+    birth_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "birth_models": birth_model_rows,
+        }
+    )
+    migration_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "migration_models": migration_model_rows,
         }
     )
     body_shape_payload = _finalize_registry_payload(
@@ -5032,6 +5374,10 @@ def compile_bundle(
         "order_type_registry": ("order_type_registry", order_type_payload),
         "role_registry": ("role_registry", role_payload),
         "institution_type_registry": ("institution_type_registry", institution_type_payload),
+        "demography_policy_registry": ("demography_policy_registry", demography_policy_payload),
+        "death_model_registry": ("death_model_registry", death_model_payload),
+        "birth_model_registry": ("birth_model_registry", birth_model_payload),
+        "migration_model_registry": ("migration_model_registry", migration_model_payload),
         "body_shape_registry": ("body_shape_registry", body_shape_payload),
         "view_mode_registry": ("view_mode_registry", view_mode_payload),
         "instrument_type_registry": ("instrument_type_registry", instrument_type_payload),
@@ -5088,6 +5434,10 @@ def compile_bundle(
         "order_type_registry",
         "role_registry",
         "institution_type_registry",
+        "demography_policy_registry",
+        "death_model_registry",
+        "birth_model_registry",
+        "migration_model_registry",
         "body_shape_registry",
         "view_mode_registry",
         "instrument_type_registry",
@@ -5161,6 +5511,10 @@ def compile_bundle(
             "order_type_registry_hash": registry_hashes["order_type_registry_hash"],
             "role_registry_hash": registry_hashes["role_registry_hash"],
             "institution_type_registry_hash": registry_hashes["institution_type_registry_hash"],
+            "demography_policy_registry_hash": registry_hashes["demography_policy_registry_hash"],
+            "death_model_registry_hash": registry_hashes["death_model_registry_hash"],
+            "birth_model_registry_hash": registry_hashes["birth_model_registry_hash"],
+            "migration_model_registry_hash": registry_hashes["migration_model_registry_hash"],
             "body_shape_registry_hash": registry_hashes["body_shape_registry_hash"],
             "view_mode_registry_hash": registry_hashes["view_mode_registry_hash"],
             "instrument_type_registry_hash": registry_hashes["instrument_type_registry_hash"],

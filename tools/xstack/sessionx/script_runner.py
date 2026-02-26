@@ -268,6 +268,38 @@ def run_intent_script(
     )
     if institution_type_registry_error:
         return institution_type_registry_error
+    demography_policy_registry, demography_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["demography_policy_registry_hash"],
+        expected_hash=str(registries.get("demography_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if demography_policy_registry_error:
+        return demography_policy_registry_error
+    death_model_registry, death_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["death_model_registry_hash"],
+        expected_hash=str(registries.get("death_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if death_model_registry_error:
+        return death_model_registry_error
+    birth_model_registry, birth_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["birth_model_registry_hash"],
+        expected_hash=str(registries.get("birth_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if birth_model_registry_error:
+        return birth_model_registry_error
+    migration_model_registry, migration_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["migration_model_registry_hash"],
+        expected_hash=str(registries.get("migration_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if migration_model_registry_error:
+        return migration_model_registry_error
     astronomy_registry, astronomy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["astronomy_catalog_index_hash"],
@@ -547,6 +579,10 @@ def run_intent_script(
         "order_type_registry": order_type_registry,
         "role_registry": role_registry,
         "institution_type_registry": institution_type_registry,
+        "demography_policy_registry": demography_policy_registry,
+        "death_model_registry": death_model_registry,
+        "birth_model_registry": birth_model_registry,
+        "migration_model_registry": migration_model_registry,
         "render_proxy_registry": render_proxy_registry,
         "cosmetic_registry": cosmetic_registry,
         "cosmetic_policy_registry": cosmetic_policy_registry,
@@ -558,6 +594,7 @@ def run_intent_script(
         "cosmetic_policy_id": "policy.cosmetics.private_relaxed",
         "representation_state": representation_state,
         "resolved_packs": list(lock_payload.get("resolved_packs") or []),
+        "parameter_bundle_id": str(session_spec.get("parameter_bundle_id", "")),
     }
     script_result = replay_intent_script_srz(
         repo_root=repo_root,
@@ -624,6 +661,10 @@ def run_intent_script(
             "order_type_registry": order_type_registry,
             "role_registry": role_registry,
             "institution_type_registry": institution_type_registry,
+            "demography_policy_registry": demography_policy_registry,
+            "death_model_registry": death_model_registry,
+            "birth_model_registry": birth_model_registry,
+            "migration_model_registry": migration_model_registry,
             "activation_policy_registry": activation_policy_registry,
             "budget_policy_registry": budget_policy_registry,
             "fidelity_policy_registry": fidelity_policy_registry,

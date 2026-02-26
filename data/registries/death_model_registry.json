@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.registry.death_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.death_model_registry",
+    "registry_version": "1.0.0",
+    "death_models": [
+      {
+        "death_model_id": "demo.death.basic",
+        "description": "Baseline deterministic cohort death model for CIV-4.",
+        "base_death_rate_per_tick": 0.002,
+        "modifiers": {
+          "terrain.hazard.scalar": 1.0
+        },
+        "extensions": {}
+      },
+      {
+        "death_model_id": "demo.death.low",
+        "description": "Low deterministic death model for stable/no-birth worlds.",
+        "base_death_rate_per_tick": 0.001,
+        "modifiers": {},
+        "extensions": {}
+      },
+      {
+        "death_model_id": "demo.death.none",
+        "description": "No deterministic deaths; scaffold/testing policy only.",
+        "base_death_rate_per_tick": 0.0,
+        "modifiers": {},
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

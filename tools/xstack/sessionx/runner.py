@@ -47,6 +47,10 @@ REGISTRY_HASH_KEY_MAP = {
     "order_type_registry_hash": "order_type_registry",
     "role_registry_hash": "role_registry",
     "institution_type_registry_hash": "institution_type_registry",
+    "demography_policy_registry_hash": "demography_policy_registry",
+    "death_model_registry_hash": "death_model_registry",
+    "birth_model_registry_hash": "birth_model_registry",
+    "migration_model_registry_hash": "migration_model_registry",
     "body_shape_registry_hash": "body_shape_registry",
     "view_mode_registry_hash": "view_mode_registry",
     "instrument_type_registry_hash": "instrument_type_registry",
@@ -95,6 +99,10 @@ REGISTRY_FILE_MAP = {
     "order_type_registry_hash": "order_type.registry.json",
     "role_registry_hash": "role.registry.json",
     "institution_type_registry_hash": "institution_type.registry.json",
+    "demography_policy_registry_hash": "demography_policy.registry.json",
+    "death_model_registry_hash": "death_model.registry.json",
+    "birth_model_registry_hash": "birth_model.registry.json",
+    "migration_model_registry_hash": "migration_model.registry.json",
     "body_shape_registry_hash": "body_shape.registry.json",
     "view_mode_registry_hash": "view_mode.registry.json",
     "instrument_type_registry_hash": "instrument_type.registry.json",
@@ -745,6 +753,38 @@ def boot_session_spec(
     )
     if institution_type_registry_error:
         return institution_type_registry_error
+    demography_policy_registry, demography_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["demography_policy_registry_hash"],
+        expected_hash=str(registries.get("demography_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if demography_policy_registry_error:
+        return demography_policy_registry_error
+    death_model_registry, death_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["death_model_registry_hash"],
+        expected_hash=str(registries.get("death_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if death_model_registry_error:
+        return death_model_registry_error
+    birth_model_registry, birth_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["birth_model_registry_hash"],
+        expected_hash=str(registries.get("birth_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if birth_model_registry_error:
+        return birth_model_registry_error
+    migration_model_registry, migration_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["migration_model_registry_hash"],
+        expected_hash=str(registries.get("migration_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if migration_model_registry_error:
+        return migration_model_registry_error
     astronomy_registry, astronomy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["astronomy_catalog_index_hash"],
@@ -1155,6 +1195,10 @@ def boot_session_spec(
                 "order_type_registry": order_type_registry,
                 "role_registry": role_registry,
                 "institution_type_registry": institution_type_registry,
+                "demography_policy_registry": demography_policy_registry,
+                "death_model_registry": death_model_registry,
+                "birth_model_registry": birth_model_registry,
+                "migration_model_registry": migration_model_registry,
                 "activation_policy_registry": activation_policy_registry,
                 "budget_policy_registry": budget_policy_registry,
                 "fidelity_policy_registry": fidelity_policy_registry,
@@ -1216,6 +1260,10 @@ def boot_session_spec(
                 "order_type_registry": order_type_registry,
                 "role_registry": role_registry,
                 "institution_type_registry": institution_type_registry,
+                "demography_policy_registry": demography_policy_registry,
+                "death_model_registry": death_model_registry,
+                "birth_model_registry": birth_model_registry,
+                "migration_model_registry": migration_model_registry,
                 "activation_policy_registry": activation_policy_registry,
                 "budget_policy_registry": budget_policy_registry,
                 "fidelity_policy_registry": fidelity_policy_registry,
@@ -1530,6 +1578,10 @@ def boot_session_spec(
             "order_type_registry": order_type_registry,
             "role_registry": role_registry,
             "institution_type_registry": institution_type_registry,
+            "demography_policy_registry": demography_policy_registry,
+            "death_model_registry": death_model_registry,
+            "birth_model_registry": birth_model_registry,
+            "migration_model_registry": migration_model_registry,
             "activation_policy_registry": activation_policy_registry,
             "budget_policy_registry": budget_policy_registry,
             "fidelity_policy_registry": fidelity_policy_registry,
