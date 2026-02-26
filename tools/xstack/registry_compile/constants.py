@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.17.0"
+COMPILER_VERSION = "1.18.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -37,6 +37,7 @@ REGISTRY_OUTPUT_FILENAMES = {
     "shard_map_registry": "shard_map.registry.json",
     "perception_interest_policy_registry": "perception_interest_policy.registry.json",
     "control_action_registry": "control_action.registry.json",
+    "interaction_action_registry": "interaction_action.registry.json",
     "controller_type_registry": "controller_type.registry.json",
     "governance_type_registry": "governance_type.registry.json",
     "diplomatic_state_registry": "diplomatic_state.registry.json",

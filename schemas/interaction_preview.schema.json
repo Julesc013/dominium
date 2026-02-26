@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interaction Preview Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic interaction preview payload.",
+  "x-doc-ref": [
+    "docs/interaction/INTERACTION_MODEL.md",
+    "docs/interaction/INSPECTION_OVERLAYS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "preview_id",
+    "tick",
+    "target_semantic_id",
+    "process_id",
+    "parameters",
+    "predicted_effects",
+    "preview_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "preview_id": {
+      "type": "string"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "target_semantic_id": {
+      "type": "string"
+    },
+    "process_id": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "predicted_effects": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "preview_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "preview_id": "preview.47ec7fce565ade11",
+      "tick": 42,
+      "target_semantic_id": "cohort.alpha",
+      "process_id": "process.cohort_relocate",
+      "parameters": {
+        "destination": "region.beta"
+      },
+      "predicted_effects": {
+        "summary": "will attempt relocation"
+      },
+      "preview_hash": "f9d43f2fa4f57fc2137707e64f237f6ad613ca9f094ca3229d89f9b5de3da9a2",
+      "extensions": {}
+    }
+  ]
+}

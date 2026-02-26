@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Affordance List Schema",
+  "version": "1.0.0",
+  "description": "Deterministic per-target affordance listing payload.",
+  "x-doc-ref": [
+    "docs/interaction/INTERACTION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tick",
+    "viewpoint_id",
+    "target_semantic_id",
+    "affordances",
+    "list_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "viewpoint_id": {
+      "type": "string"
+    },
+    "target_semantic_id": {
+      "type": "string"
+    },
+    "affordances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "list_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "tick": 42,
+      "viewpoint_id": "viewpoint.main",
+      "target_semantic_id": "agent.alpha",
+      "affordances": [],
+      "list_hash": "7cf3e57afcb7f4183b60a18f4f6a41a8a34af5f97efa95eef1308f4ae4ed4f7b",
+      "extensions": {}
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+SCHEMA: interaction/interaction_preview.schema
+schema_id: dominium.schema.interaction.interaction_preview
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic, derived interaction preview payloads.
+
+REQUIRED SHAPE:
+record interaction_preview
+  required:
+    - schema_version: semver
+    - preview_id: id
+    - tick: u64
+    - target_semantic_id: id
+    - process_id: id
+    - parameters: map
+    - predicted_effects: map
+    - preview_hash: hash_hex
+    - extensions: map
+
+INVARIANTS:
+- Previews are derived-only and never mutate truth.
+- Preview generation obeys epistemic and budget gates.
+- `preview_hash` is deterministic for identical inputs.
