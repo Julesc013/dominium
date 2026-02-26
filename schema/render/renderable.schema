@@ -1,15 +1,28 @@
+SCHEMA: render/renderable.schema
 schema_id: dominium.render.renderable
 schema_version: 1.0.0
-stability: stable
-description: Deterministic renderable record resolved from a perceived semantic item.
-fields:
-  - renderable_id
-  - semantic_id
-  - primitive_id
-  - transform
-  - material_id
-  - layer_tags
-  - label
-  - lod_hint
-  - flags
-  - extensions
+stability: core
+
+PURPOSE:
+- Define a deterministic renderable record resolved from one perceived semantic item.
+
+REQUIRED SHAPE:
+record renderable
+  required:
+    - schema_version: semver
+    - renderable_id: id
+    - semantic_id: id
+    - primitive_id: id
+    - transform: map
+    - material_id: id
+    - layer_tags: list<id>
+    - flags: map
+    - extensions: map
+  optional:
+    - label: string
+    - lod_hint: id
+
+INVARIANTS:
+- `renderable_id` is stable for a stable semantic identity.
+- `layer_tags` must be from allowed presentation layers.
+- Renderable contents are presentation-only and cannot mutate truth.

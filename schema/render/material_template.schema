@@ -1,11 +1,21 @@
+SCHEMA: render/material_template.schema
 schema_id: dominium.render.material_template
 schema_version: 1.0.0
-stability: stable
-description: Procedural material template with deterministic parameter generation rules.
-fields:
-  - template_id
-  - base_color_rule
-  - roughness_rule
-  - metallic_rule
-  - emission_rule
-  - extensions
+stability: core
+
+PURPOSE:
+- Define procedural material template rules used by representation resolution.
+
+REQUIRED SHAPE:
+record material_template
+  required:
+    - schema_version: semver
+    - template_id: id
+    - base_color_rule: map
+    - roughness_rule: map
+    - metallic_rule: map
+    - emission_rule: map
+    - extensions: map
+
+INVARIANTS:
+- Template evaluation must be deterministic and free of wall-clock/random side effects.

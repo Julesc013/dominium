@@ -1,15 +1,28 @@
+SCHEMA: render/render_model.schema
 schema_id: dominium.render.render_model
 schema_version: 1.0.0
-stability: stable
-description: Canonical RenderModel artifact derived from PerceivedModel only.
-fields:
-  - render_model_id
-  - tick
-  - viewpoint_id
-  - pack_lock_hash
-  - physics_profile_id
-  - perceived_hash
-  - renderables
-  - overlays
-  - render_model_hash
-  - extensions
+stability: core
+
+PURPOSE:
+- Define the canonical RenderModel artifact derived from PerceivedModel.
+- Provide a renderer-only payload contract with deterministic identity/hash semantics.
+
+REQUIRED SHAPE:
+record render_model
+  required:
+    - schema_version: semver
+    - render_model_id: id
+    - tick: u64
+    - viewpoint_id: id
+    - pack_lock_hash: hash_hex
+    - physics_profile_id: id
+    - perceived_hash: hash_hex
+    - renderables: list<renderable>
+    - overlays: list<renderable>
+    - render_model_hash: hash_hex
+    - extensions: map
+
+INVARIANTS:
+- RenderModel input source is PerceivedModel only.
+- RenderModel does not include hidden truth channels.
+- Renderables are deterministically ordered.

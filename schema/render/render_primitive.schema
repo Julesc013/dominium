@@ -1,9 +1,19 @@
+SCHEMA: render/render_primitive.schema
 schema_id: dominium.render.render_primitive
 schema_version: 1.0.0
-stability: stable
-description: Primitive geometry descriptor for asset-free and deterministic rendering.
-fields:
-  - primitive_id
-  - primitive_type
-  - parameters
-  - extensions
+stability: core
+
+PURPOSE:
+- Define primitive geometry descriptors used by representation resolver output.
+
+REQUIRED SHAPE:
+record render_primitive
+  required:
+    - schema_version: semver
+    - primitive_id: id
+    - primitive_type: enum(capsule|box|cylinder|sphere|plane|line|billboard|glyph)
+    - parameters: map
+    - extensions: map
+
+INVARIANTS:
+- Primitive declarations are data-driven and asset-independent.
