@@ -41,6 +41,9 @@ REGISTRY_HASH_KEY_MAP = {
     "numeric_precision_policy_registry_hash": "numeric_precision_policy_registry",
     "tier_taxonomy_registry_hash": "tier_taxonomy_registry",
     "boundary_model_registry_hash": "boundary_model_registry",
+    "conservation_contract_set_registry_hash": "conservation_contract_set_registry",
+    "quantity_registry_hash": "quantity_registry",
+    "exception_type_registry_hash": "exception_type_registry",
     "domain_registry_hash": "domain_registry",
     "law_registry_hash": "law_registry",
     "experience_registry_hash": "experience_registry",
@@ -98,6 +101,9 @@ REGISTRY_FILE_MAP = {
     "numeric_precision_policy_registry_hash": "numeric_precision_policy.registry.json",
     "tier_taxonomy_registry_hash": "tier_taxonomy.registry.json",
     "boundary_model_registry_hash": "boundary_model.registry.json",
+    "conservation_contract_set_registry_hash": "conservation_contract_set.registry.json",
+    "quantity_registry_hash": "quantity.registry.json",
+    "exception_type_registry_hash": "exception_type.registry.json",
     "domain_registry_hash": "domain.registry.json",
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
@@ -732,6 +738,30 @@ def boot_session_spec(
     )
     if boundary_model_registry_error:
         return boundary_model_registry_error
+    conservation_contract_set_registry, conservation_contract_set_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["conservation_contract_set_registry_hash"],
+        expected_hash=str(registries.get("conservation_contract_set_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if conservation_contract_set_registry_error:
+        return conservation_contract_set_registry_error
+    quantity_registry, quantity_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["quantity_registry_hash"],
+        expected_hash=str(registries.get("quantity_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if quantity_registry_error:
+        return quantity_registry_error
+    exception_type_registry, exception_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["exception_type_registry_hash"],
+        expected_hash=str(registries.get("exception_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if exception_type_registry_error:
+        return exception_type_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1124,6 +1154,9 @@ def boot_session_spec(
     )
     if selected_physics_profile_error:
         return selected_physics_profile_error
+    identity_conservation_contract_set_id = (
+        str(selected_physics_profile.get("conservation_contract_set_id", "")).strip() or "contracts.null"
+    )
     previous_physics_profile_id = str((previous_run_meta or {}).get("physics_profile_id", "")).strip()
     if previous_physics_profile_id and previous_physics_profile_id != identity_physics_profile_id:
         return refusal(
@@ -1270,6 +1303,9 @@ def boot_session_spec(
                 "numeric_precision_policy_registry": numeric_precision_policy_registry,
                 "tier_taxonomy_registry": tier_taxonomy_registry,
                 "boundary_model_registry": boundary_model_registry,
+                "conservation_contract_set_registry": conservation_contract_set_registry,
+                "quantity_registry": quantity_registry,
+                "exception_type_registry": exception_type_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1340,6 +1376,9 @@ def boot_session_spec(
                 "numeric_precision_policy_registry": numeric_precision_policy_registry,
                 "tier_taxonomy_registry": tier_taxonomy_registry,
                 "boundary_model_registry": boundary_model_registry,
+                "conservation_contract_set_registry": conservation_contract_set_registry,
+                "quantity_registry": quantity_registry,
+                "exception_type_registry": exception_type_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1393,6 +1432,9 @@ def boot_session_spec(
                 server_profile_registry=server_profile_registry,
                 authority_context=boot_authority_context,
                 server_physics_profile_id=identity_physics_profile_id,
+                client_physics_profile_id=identity_physics_profile_id,
+                server_conservation_contract_set_id=identity_conservation_contract_set_id,
+                client_conservation_contract_set_id=identity_conservation_contract_set_id,
             )
             if str(handshake_result.get("result", "")) != "complete":
                 return handshake_result
@@ -1422,6 +1464,8 @@ def boot_session_spec(
                     "server_law_profile_id": str(handshake_result.get("server_law_profile_id", "")),
                     "server_physics_profile_id": str(handshake_result.get("physics_profile_id", "")),
                     "client_physics_profile_id": str(handshake_result.get("client_physics_profile_id", "")),
+                    "server_conservation_contract_set_id": str(handshake_result.get("conservation_contract_set_id", "")),
+                    "client_conservation_contract_set_id": str(handshake_result.get("client_conservation_contract_set_id", "")),
                     "server_profile_id": str(handshake_result.get("server_profile_id", "")),
                     "server_policy_id": str(handshake_result.get("server_policy_id", "")),
                     "control_capabilities": {
@@ -1666,6 +1710,9 @@ def boot_session_spec(
             "numeric_precision_policy_registry": numeric_precision_policy_registry,
             "tier_taxonomy_registry": tier_taxonomy_registry,
             "boundary_model_registry": boundary_model_registry,
+            "conservation_contract_set_registry": conservation_contract_set_registry,
+            "quantity_registry": quantity_registry,
+            "exception_type_registry": exception_type_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
@@ -1749,6 +1796,8 @@ def boot_session_spec(
         "server_law_profile_id": str(handshake_stage_result.get("server_law_profile_id", "")),
         "server_physics_profile_id": str(handshake_stage_result.get("physics_profile_id", "")),
         "client_physics_profile_id": str(handshake_stage_result.get("client_physics_profile_id", "")),
+        "server_conservation_contract_set_id": str(handshake_stage_result.get("conservation_contract_set_id", "")),
+        "client_conservation_contract_set_id": str(handshake_stage_result.get("client_conservation_contract_set_id", "")),
         "control_capabilities": {
             "camera_bind_allowed": bool(handshake_control_capabilities.get("camera_bind_allowed", False)),
             "possession_allowed": bool(handshake_control_capabilities.get("possession_allowed", False)),
@@ -1788,6 +1837,7 @@ def boot_session_spec(
         "last_stage_id": str(final_stage_id),
         "universe_identity_hash": str(universe_identity.get("identity_hash", "")),
         "physics_profile_id": identity_physics_profile_id,
+        "conservation_contract_set_id": identity_conservation_contract_set_id,
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
         "fidelity_policy_id": str(fidelity_policy.get("policy_id", "")),
@@ -1860,6 +1910,7 @@ def boot_session_spec(
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "registry_hashes": registry_hashes,
         "physics_profile_id": identity_physics_profile_id,
+        "conservation_contract_set_id": identity_conservation_contract_set_id,
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "perceived_model_hash": perceived_hash,
         "render_model_hash": render_hash,
