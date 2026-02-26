@@ -17,8 +17,10 @@ Version: 1.0.0
 
 ## Deterministic Travel
 - Travel delay uses deterministic distance-band policy data.
+- Canonical delayed form is `ticks = distance_band_table[band]`.
 - No runtime pathfinding randomness is introduced.
 - Cross-shard migration follows SRZ ownership and deterministic refusal paths.
+- `order.migrate` resolves through `process.cohort_relocate` and uses the same model tables.
 
 ## Assimilation
 - Assimilation remains order/process-driven:
@@ -30,4 +32,3 @@ Version: 1.0.0
 ## Law And Policy Gating
 - Migration and assimilation require explicit law/entitlement allowances.
 - Missing or forbidden policy/model inputs produce deterministic refusal codes.
-
