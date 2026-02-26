@@ -7,6 +7,7 @@ import os
 from typing import Dict
 
 from .renderers.null_renderer import render_null_snapshot
+from .renderers.software_renderer import render_software_snapshot
 
 
 def _to_int(value: object, default: int = 0) -> int:
@@ -48,6 +49,7 @@ def capture_render_snapshot(
     out_dir: str,
     width: int = 0,
     height: int = 0,
+    wireframe: bool = False,
 ) -> Dict[str, object]:
     renderer = str(renderer_id or "").strip().lower() or "null"
     if renderer == "null":
@@ -57,6 +59,14 @@ def capture_render_snapshot(
             renderer_id="null",
             image_width=max(0, _to_int(width, 0)),
             image_height=max(0, _to_int(height, 0)),
+        )
+    if renderer == "software":
+        return render_software_snapshot(
+            render_model=dict(render_model or {}),
+            out_dir=str(out_dir),
+            image_width=max(0, _to_int(width, 640)),
+            image_height=max(0, _to_int(height, 360)),
+            wireframe=bool(wireframe),
         )
     return {
         "result": "refusal",
