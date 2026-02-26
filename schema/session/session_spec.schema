@@ -29,3 +29,6 @@ record session_spec
     - deterministic_seed_bundle: [id]
     - workspace_id: tag
     - extensions: map
+
+OPTIONAL:
+  - time_control_policy_id: id

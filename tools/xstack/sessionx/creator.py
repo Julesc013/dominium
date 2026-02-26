@@ -43,6 +43,7 @@ DEFAULT_PARAMETER_BUNDLE_ID = "params.lab.placeholder"
 DEFAULT_BUDGET_POLICY_ID = "policy.budget.default_lab"
 DEFAULT_FIDELITY_POLICY_ID = "policy.fidelity.default_lab"
 DEFAULT_PHYSICS_PROFILE_ID = NULL_PHYSICS_PROFILE_ID
+DEFAULT_TIME_CONTROL_POLICY_ID = "time.policy.null"
 DEFAULT_SCENARIO_ID = "scenario.lab.galaxy_nav"
 DEFAULT_SCOPE_ID = "epistemic.lab.placeholder"
 DEFAULT_VISIBILITY_LEVEL = "placeholder"
@@ -229,6 +230,10 @@ DEFAULT_WORLDGEN_MODULE_REGISTRY_REL = "data/registries/worldgen_module_registry
 
 REGISTRY_FILE_MAP = {
     "universe_physics_profile_registry_hash": "universe_physics_profile.registry.json",
+    "time_model_registry_hash": "time_model.registry.json",
+    "time_control_policy_registry_hash": "time_control_policy.registry.json",
+    "dt_quantization_rule_registry_hash": "dt_quantization_rule.registry.json",
+    "compaction_policy_registry_hash": "compaction_policy.registry.json",
     "activation_policy_registry_hash": "activation_policy.registry.json",
     "budget_policy_registry_hash": "budget_policy.registry.json",
     "fidelity_policy_registry_hash": "fidelity_policy.registry.json",
@@ -337,6 +342,9 @@ def _compatibility_schema_refs(repo_root: str) -> List[str]:
         "universe_identity",
         "universe_physics_profile",
         "time_model",
+        "time_control_policy",
+        "dt_quantization_rule",
+        "compaction_policy",
         "numeric_precision_policy",
         "tier_taxonomy",
         "boundary_model",
@@ -590,6 +598,147 @@ def _select_policy_entry(registry_payload: dict, key: str, policy_id: str, refus
         {"policy_id": str(policy_id)},
         "$.policy_id",
     )
+
+
+def _select_time_control_policy(
+    *,
+    time_control_policy_registry: dict,
+    dt_quantization_rule_registry: dict,
+    compaction_policy_registry: dict,
+    time_model_registry: dict,
+    selected_physics_profile: dict,
+    requested_time_control_policy_id: str,
+) -> Tuple[dict, Dict[str, object]]:
+    policy_rows = list(time_control_policy_registry.get("policies") or [])
+    if not isinstance(policy_rows, list):
+        return {}, refusal(
+            "REFUSE_TIME_CONTROL_POLICY_NOT_FOUND",
+            "time control policy registry is missing policies list",
+            "Rebuild registries and ensure time control policies are present.",
+            {"registry_file": REGISTRY_FILE_MAP["time_control_policy_registry_hash"]},
+            "$.policies",
+        )
+    requested_id = str(requested_time_control_policy_id or "").strip()
+    selected_policy = {}
+    if requested_id:
+        for row in sorted(
+            (item for item in policy_rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("time_control_policy_id", "")),
+        ):
+            if str(row.get("time_control_policy_id", "")).strip() == requested_id:
+                selected_policy = dict(row)
+                break
+    else:
+        for row in sorted(
+            (item for item in policy_rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("time_control_policy_id", "")),
+        ):
+            selected_policy = dict(row)
+            requested_id = str(selected_policy.get("time_control_policy_id", "")).strip()
+            break
+    if not selected_policy:
+        return {}, refusal(
+            "REFUSE_TIME_CONTROL_POLICY_NOT_FOUND",
+            "time control policy '{}' is not present in compiled registry".format(requested_id or "<empty>"),
+            "Select a policy ID listed in '{}' and rebuild SessionSpec.".format(REGISTRY_FILE_MAP["time_control_policy_registry_hash"]),
+            {"time_control_policy_id": requested_id},
+            "$.time_control_policy_id",
+        )
+
+    dt_rule_id = str(selected_policy.get("dt_quantization_rule_id", "")).strip()
+    dt_rows = list(dt_quantization_rule_registry.get("rules") or [])
+    has_dt_rule = False
+    for row in sorted((item for item in dt_rows if isinstance(item, dict)), key=lambda item: str(item.get("dt_rule_id", ""))):
+        if str(row.get("dt_rule_id", "")).strip() == dt_rule_id:
+            has_dt_rule = True
+            break
+    if not has_dt_rule:
+        return {}, refusal(
+            "REFUSE_DT_RULE_NOT_FOUND",
+            "time control policy '{}' references unknown dt_quantization_rule_id '{}'".format(requested_id, dt_rule_id or "<empty>"),
+            "Select a valid dt quantization rule from '{}'.".format(REGISTRY_FILE_MAP["dt_quantization_rule_registry_hash"]),
+            {"time_control_policy_id": requested_id, "dt_quantization_rule_id": dt_rule_id},
+            "$.time_control_policy_id",
+        )
+
+    compaction_policy_id = str(selected_policy.get("compaction_policy_id", "")).strip()
+    compaction_rows = list(compaction_policy_registry.get("policies") or [])
+    has_compaction_policy = False
+    for row in sorted(
+        (item for item in compaction_rows if isinstance(item, dict)),
+        key=lambda item: str(item.get("compaction_policy_id", "")),
+    ):
+        if str(row.get("compaction_policy_id", "")).strip() == compaction_policy_id:
+            has_compaction_policy = True
+            break
+    if not has_compaction_policy:
+        return {}, refusal(
+            "REFUSE_COMPACTION_POLICY_NOT_FOUND",
+            "time control policy '{}' references unknown compaction_policy_id '{}'".format(requested_id, compaction_policy_id or "<empty>"),
+            "Select a valid compaction policy from '{}'.".format(REGISTRY_FILE_MAP["compaction_policy_registry_hash"]),
+            {"time_control_policy_id": requested_id, "compaction_policy_id": compaction_policy_id},
+            "$.time_control_policy_id",
+        )
+
+    time_model_id = str((selected_physics_profile or {}).get("time_model_id", "")).strip()
+    time_model_rows = list(time_model_registry.get("time_models") or [])
+    selected_time_model = {}
+    for row in sorted((item for item in time_model_rows if isinstance(item, dict)), key=lambda item: str(item.get("time_model_id", ""))):
+        if str(row.get("time_model_id", "")).strip() == time_model_id:
+            selected_time_model = dict(row)
+            break
+    if not selected_time_model:
+        return {}, refusal(
+            "REFUSE_TIME_MODEL_NOT_FOUND",
+            "physics profile references unknown time_model_id '{}'".format(time_model_id or "<empty>"),
+            "Select a valid UniversePhysicsProfile time_model_id.",
+            {"time_model_id": time_model_id},
+            "$.physics_profile_id",
+        )
+
+    extensions = dict(selected_policy.get("extensions") or {})
+    allowed_models = sorted(
+        set(str(item).strip() for item in (extensions.get("allowed_time_model_ids") or []) if str(item).strip())
+    )
+    if allowed_models and time_model_id not in set(allowed_models):
+        return {}, refusal(
+            "REFUSE_TIME_CONTROL_POLICY_NOT_ALLOWED_BY_PHYSICS",
+            "time control policy '{}' is not allowed for time_model_id '{}'".format(requested_id, time_model_id),
+            "Select a compatible time_control_policy_id for the active physics profile.",
+            {
+                "time_control_policy_id": requested_id,
+                "time_model_id": time_model_id,
+            },
+            "$.time_control_policy_id",
+        )
+
+    allow_variable_dt = bool(selected_policy.get("allow_variable_dt", False))
+    if allow_variable_dt and not bool(selected_time_model.get("allow_variable_dt", False)):
+        return {}, refusal(
+            "REFUSE_TIME_CONTROL_POLICY_NOT_ALLOWED_BY_PHYSICS",
+            "time control policy '{}' requires variable dt but active time model forbids it".format(requested_id),
+            "Choose a non-variable-dt policy or a compatible physics profile time model.",
+            {
+                "time_control_policy_id": requested_id,
+                "time_model_id": time_model_id,
+            },
+            "$.time_control_policy_id",
+        )
+
+    allow_branching = bool(extensions.get("allow_branching", False))
+    if allow_branching and not bool(selected_time_model.get("allow_branching", False)):
+        return {}, refusal(
+            "REFUSE_TIME_CONTROL_POLICY_NOT_ALLOWED_BY_PHYSICS",
+            "time control policy '{}' enables branching while active time model forbids it".format(requested_id),
+            "Choose a compatible policy/time_model combination.",
+            {
+                "time_control_policy_id": requested_id,
+                "time_model_id": time_model_id,
+            },
+            "$.time_control_policy_id",
+        )
+
+    return selected_policy, {}
 
 
 def _universe_identity_from_seed(
@@ -899,6 +1048,7 @@ def create_session_spec(
     parameter_bundle_id: str = DEFAULT_PARAMETER_BUNDLE_ID,
     budget_policy_id: str = DEFAULT_BUDGET_POLICY_ID,
     fidelity_policy_id: str = DEFAULT_FIDELITY_POLICY_ID,
+    time_control_policy_id: str = DEFAULT_TIME_CONTROL_POLICY_ID,
     constraints_id: str = "",
     constraints_file: str = "",
     pipeline_id: str = DEFAULT_PIPELINE_ID,
@@ -1234,6 +1384,34 @@ def create_session_spec(
     )
     if worldgen_constraints_registry_error:
         return worldgen_constraints_registry_error
+    time_model_registry, time_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["time_model_registry_hash"],
+        expected_hash=str(registries.get("time_model_registry_hash", "")),
+    )
+    if time_model_registry_error:
+        return time_model_registry_error
+    time_control_policy_registry, time_control_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["time_control_policy_registry_hash"],
+        expected_hash=str(registries.get("time_control_policy_registry_hash", "")),
+    )
+    if time_control_policy_registry_error:
+        return time_control_policy_registry_error
+    dt_quantization_rule_registry, dt_quantization_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["dt_quantization_rule_registry_hash"],
+        expected_hash=str(registries.get("dt_quantization_rule_registry_hash", "")),
+    )
+    if dt_quantization_rule_registry_error:
+        return dt_quantization_rule_registry_error
+    compaction_policy_registry, compaction_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["compaction_policy_registry_hash"],
+        expected_hash=str(registries.get("compaction_policy_registry_hash", "")),
+    )
+    if compaction_policy_registry_error:
+        return compaction_policy_registry_error
 
     if selected_constraints_id:
         module_registry_payload, module_registry_error = _load_worldgen_module_registry(repo_root=repo_root)
@@ -1287,6 +1465,18 @@ def create_session_spec(
     if activation_policy_error:
         return activation_policy_error
 
+    resolved_time_control_policy_id = str(time_control_policy_id).strip() or DEFAULT_TIME_CONTROL_POLICY_ID
+    selected_time_control_policy, time_control_policy_error = _select_time_control_policy(
+        time_control_policy_registry=time_control_policy_registry,
+        dt_quantization_rule_registry=dt_quantization_rule_registry,
+        compaction_policy_registry=compaction_policy_registry,
+        time_model_registry=time_model_registry,
+        selected_physics_profile=selected_profile,
+        requested_time_control_policy_id=resolved_time_control_policy_id,
+    )
+    if time_control_policy_error:
+        return time_control_policy_error
+
     if network_payload:
         network_payload["physics_profile_id"] = str(identity_payload.get("physics_profile_id", "")).strip()
 
@@ -1314,6 +1504,7 @@ def create_session_spec(
         "pack_lock_hash": str(lockfile_payload.get("pack_lock_hash", "")),
         "budget_policy_id": str(budget_policy_id),
         "fidelity_policy_id": str(fidelity_policy_id),
+        "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "selected_seed": str(selected_seed),
         "deterministic_rng_roots": rng_rows,
     }
@@ -1379,6 +1570,7 @@ def create_session_spec(
         "pack_lock_hash": str(lockfile_payload.get("pack_lock_hash", "")),
         "registry_hashes": dict((lockfile_payload.get("registries") or {})),
         "physics_profile_id": str(identity_payload.get("physics_profile_id", "")),
+        "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "loaded_universe_identity_path": norm(identity_abs) if identity_abs else "",
         "generated_universe_identity": not bool(universe_identity_path),
     }

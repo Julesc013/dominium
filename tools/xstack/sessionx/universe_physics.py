@@ -34,6 +34,43 @@ _NULL_TIME_MODEL = {
     "extensions": {},
 }
 
+_NULL_DT_QUANTIZATION_RULE = {
+    "schema_version": "1.0.0",
+    "dt_rule_id": "dt.rule.single_tick",
+    "allowed_dt_values": [1000],
+    "default_dt": 1000,
+    "deterministic_rounding_rule": "round.exact_only",
+    "extensions": {},
+}
+
+_NULL_COMPACTION_POLICY = {
+    "schema_version": "1.0.0",
+    "compaction_policy_id": "compaction.policy.keep_all",
+    "rules": {
+        "keep_every_nth_checkpoint": 1,
+        "merge_intent_logs": False,
+        "prune_old_run_meta": False,
+    },
+    "extensions": {},
+}
+
+_NULL_TIME_CONTROL_POLICY = {
+    "schema_version": "1.0.0",
+    "time_control_policy_id": "time.policy.null",
+    "allow_variable_dt": False,
+    "allow_pause": True,
+    "allow_rate_change": False,
+    "allowed_rate_range": {"min": 1000, "max": 1000},
+    "dt_quantization_rule_id": "dt.rule.single_tick",
+    "checkpoint_interval_ticks": 4,
+    "compaction_policy_id": "compaction.policy.keep_all",
+    "extensions": {
+        "allowed_time_model_ids": ["default_single_tick"],
+        "allow_branching": False,
+        "allow_branch_mid_session": False,
+    },
+}
+
 _NULL_PRECISION_POLICY = {
     "schema_version": "1.0.0",
     "policy_id": "default_null",
@@ -365,6 +402,9 @@ _NULL_EVICTION_RULE = {
 }
 
 _NULL_REGISTRY_LIST_KEYS = {
+    "time_control_policy_registry": "policies",
+    "dt_quantization_rule_registry": "rules",
+    "compaction_policy_registry": "policies",
     "conservation_contract_set_registry": "contract_sets",
     "quantity_registry": "quantities",
     "exception_type_registry": "exception_types",
@@ -465,6 +505,9 @@ def default_null_runtime_registries() -> Dict[str, dict]:
 
     payloads["universe_physics_profile_registry"]["physics_profiles"] = [copy.deepcopy(_NULL_PHYSICS_PROFILE)]
     payloads["time_model_registry"]["time_models"] = [copy.deepcopy(_NULL_TIME_MODEL)]
+    payloads["time_control_policy_registry"]["policies"] = [copy.deepcopy(_NULL_TIME_CONTROL_POLICY)]
+    payloads["dt_quantization_rule_registry"]["rules"] = [copy.deepcopy(_NULL_DT_QUANTIZATION_RULE)]
+    payloads["compaction_policy_registry"]["policies"] = [copy.deepcopy(_NULL_COMPACTION_POLICY)]
     payloads["numeric_precision_policy_registry"]["precision_policies"] = [copy.deepcopy(_NULL_PRECISION_POLICY)]
     payloads["tier_taxonomy_registry"]["taxonomies"] = [copy.deepcopy(_NULL_TIER_TAXONOMY)]
     payloads["boundary_model_registry"]["boundary_models"] = [copy.deepcopy(_NULL_BOUNDARY_MODEL)]

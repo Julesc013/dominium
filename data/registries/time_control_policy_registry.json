@@ -1,0 +1,76 @@
+{
+  "schema_id": "dominium.registry.time_control_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.time_control_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "time_control_policy_id": "time.policy.default_realistic",
+        "allow_variable_dt": true,
+        "allow_pause": true,
+        "allow_rate_change": true,
+        "allowed_rate_range": {
+          "min": 250,
+          "max": 4000
+        },
+        "dt_quantization_rule_id": "dt.rule.standard",
+        "checkpoint_interval_ticks": 16,
+        "compaction_policy_id": "compaction.policy.default",
+        "extensions": {
+          "allowed_time_model_ids": [
+            "time.single_axis_branching_allowed",
+            "default_single_tick"
+          ],
+          "allow_branching": true,
+          "allow_branch_mid_session": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "time_control_policy_id": "time.policy.null",
+        "allow_variable_dt": false,
+        "allow_pause": true,
+        "allow_rate_change": false,
+        "allowed_rate_range": {
+          "min": 1000,
+          "max": 1000
+        },
+        "dt_quantization_rule_id": "dt.rule.single_tick",
+        "checkpoint_interval_ticks": 4,
+        "compaction_policy_id": "compaction.policy.keep_all",
+        "extensions": {
+          "allowed_time_model_ids": [
+            "default_single_tick"
+          ],
+          "allow_branching": false,
+          "allow_branch_mid_session": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "time_control_policy_id": "time.policy.rank_strict",
+        "allow_variable_dt": true,
+        "allow_pause": false,
+        "allow_rate_change": true,
+        "allowed_rate_range": {
+          "min": 750,
+          "max": 1250
+        },
+        "dt_quantization_rule_id": "dt.rule.rank_strict",
+        "checkpoint_interval_ticks": 8,
+        "compaction_policy_id": "compaction.policy.rank_strict",
+        "extensions": {
+          "allowed_time_model_ids": [
+            "default_single_tick",
+            "time.single_axis_branching_allowed"
+          ],
+          "allow_branching": false,
+          "allow_branch_mid_session": false
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

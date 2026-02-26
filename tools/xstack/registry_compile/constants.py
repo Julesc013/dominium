@@ -9,6 +9,9 @@ DEFAULT_COMPATIBILITY_VERSION = "1.0.0"
 
 
 REGISTRY_OUTPUT_FILENAMES = {
+    "time_control_policy_registry": "time_control_policy.registry.json",
+    "dt_quantization_rule_registry": "dt_quantization_rule.registry.json",
+    "compaction_policy_registry": "compaction_policy.registry.json",
     "conservation_contract_set_registry": "conservation_contract_set.registry.json",
     "quantity_registry": "quantity.registry.json",
     "exception_type_registry": "exception_type.registry.json",

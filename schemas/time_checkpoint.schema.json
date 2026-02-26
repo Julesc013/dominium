@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time Checkpoint Schema",
+  "version": "1.0.0",
+  "description": "Deterministic RS-3 checkpoint metadata artifact.",
+  "x-doc-ref": [
+    "docs/reality/TIME_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "checkpoint_id",
+    "save_id",
+    "tick",
+    "pack_lock_hash",
+    "physics_profile_id",
+    "registry_hashes",
+    "truth_hash_anchor",
+    "ledger_hash",
+    "payload_ref",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "checkpoint_id": {
+      "type": "string"
+    },
+    "save_id": {
+      "type": "string"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "physics_profile_id": {
+      "type": "string"
+    },
+    "registry_hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{64}$"
+      }
+    },
+    "truth_hash_anchor": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "ledger_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "payload_ref": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "checkpoint_id": "checkpoint.save.lab.tick.128",
+      "save_id": "save.lab",
+      "tick": 128,
+      "pack_lock_hash": "17a8255be7f6d082c7fce0f6bc2d0ad4cc4f95e14f7696b1ef255fca605dc04d",
+      "physics_profile_id": "physics.null",
+      "registry_hashes": {},
+      "truth_hash_anchor": "39fca9dd8ed652017311c80aeb26d4de6a40ca8dc3ec50904e8f4ca6da7d87b2",
+      "ledger_hash": "f6306f2be18e6daed9916eec703c2efcecc373fa5b29947f4942d85797dc8f5b",
+      "payload_ref": "save.lab/checkpoints/checkpoint.save.lab.tick.128.snapshot.json",
+      "extensions": {}
+    }
+  ]
+}

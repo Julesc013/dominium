@@ -1,0 +1,21 @@
+SCHEMA: time/dt_quantization_rule.schema
+schema_id: dominium.schema.time.dt_quantization_rule
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic simulation-dt quantization rules.
+
+REQUIRED SHAPE:
+record dt_quantization_rule
+  required:
+    - schema_version: semver
+    - dt_rule_id: id
+    - allowed_dt_values: [u32]
+    - default_dt: u32
+    - deterministic_rounding_rule: id
+    - extensions: map
+
+INVARIANTS:
+- dt selection must be deterministic.
+- default_dt must be an allowed value.

@@ -2830,6 +2830,245 @@ def _universe_physics_registry_rows(
     return profile_rows, time_rows, precision_rows, taxonomy_rows, boundary_rows, errors
 
 
+def _time_control_registry_rows(
+    repo_root: str,
+    schema_root: str,
+    known_time_model_ids: List[str] | None = None,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _dt_rule_record, dt_rule_rows_raw, dt_rule_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/dt_quantization_rule_registry.json",
+        expected_schema_id="dominium.registry.dt_quantization_rule_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="rules",
+    )
+    if dt_rule_load_errors:
+        return [], [], [], dt_rule_load_errors
+
+    _compaction_record, compaction_rows_raw, compaction_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/compaction_policy_registry.json",
+        expected_schema_id="dominium.registry.compaction_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if compaction_load_errors:
+        return [], [], [], compaction_load_errors
+
+    _time_control_record, time_control_rows_raw, time_control_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/time_control_policy_registry.json",
+        expected_schema_id="dominium.registry.time_control_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if time_control_load_errors:
+        return [], [], [], time_control_load_errors
+
+    dt_rule_rows: List[dict] = []
+    dt_rule_seen = set()
+    for entry in sorted(dt_rule_rows_raw, key=lambda row: str((row or {}).get("dt_rule_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_dt_quantization_rule_entry",
+                    "message": "dt quantization rule entry must be object",
+                    "path": "$.rules",
+                }
+            )
+            continue
+        dt_rule_id = str(entry.get("dt_rule_id", "")).strip()
+        if not dt_rule_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_dt_quantization_rule_entry",
+                    "message": "dt quantization rule id is missing",
+                    "path": "$.rules.dt_rule_id",
+                }
+            )
+            continue
+        if dt_rule_id in dt_rule_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_dt_quantization_rule_id",
+                    "message": "duplicate dt_rule_id '{}'".format(dt_rule_id),
+                    "path": "$.rules.dt_rule_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="dt_quantization_rule",
+            payload=entry,
+            path="data/registries/dt_quantization_rule_registry.json#{}".format(dt_rule_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        allowed_dt_values = []
+        for raw_value in list(entry.get("allowed_dt_values") or []):
+            try:
+                value = int(raw_value)
+            except (TypeError, ValueError):
+                continue
+            if value > 0:
+                allowed_dt_values.append(value)
+        allowed_dt_values = sorted(set(allowed_dt_values))
+        default_dt = int(entry.get("default_dt", 0) or 0)
+        if default_dt not in set(allowed_dt_values):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.dt_quantization_default_not_allowed",
+                    "message": "dt rule '{}' default_dt must be present in allowed_dt_values".format(dt_rule_id),
+                    "path": "$.rules.default_dt",
+                }
+            )
+            continue
+        dt_rule_seen.add(dt_rule_id)
+        normalized_entry = dict(entry)
+        normalized_entry["allowed_dt_values"] = list(allowed_dt_values)
+        dt_rule_rows.append(normalized_entry)
+    dt_rule_rows = sorted(dt_rule_rows, key=lambda row: str(row.get("dt_rule_id", "")))
+
+    compaction_rows: List[dict] = []
+    compaction_seen = set()
+    for entry in sorted(compaction_rows_raw, key=lambda row: str((row or {}).get("compaction_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compaction_policy_entry",
+                    "message": "compaction policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        compaction_policy_id = str(entry.get("compaction_policy_id", "")).strip()
+        if not compaction_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compaction_policy_entry",
+                    "message": "compaction policy id is missing",
+                    "path": "$.policies.compaction_policy_id",
+                }
+            )
+            continue
+        if compaction_policy_id in compaction_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_compaction_policy_id",
+                    "message": "duplicate compaction_policy_id '{}'".format(compaction_policy_id),
+                    "path": "$.policies.compaction_policy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="compaction_policy",
+            payload=entry,
+            path="data/registries/compaction_policy_registry.json#{}".format(compaction_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        rules = dict(entry.get("rules") or {})
+        if int(rules.get("keep_every_nth_checkpoint", 0) or 0) < 1:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compaction_policy_entry",
+                    "message": "compaction policy '{}' requires keep_every_nth_checkpoint >= 1".format(compaction_policy_id),
+                    "path": "$.policies.rules.keep_every_nth_checkpoint",
+                }
+            )
+            continue
+        compaction_seen.add(compaction_policy_id)
+        compaction_rows.append(dict(entry))
+    compaction_rows = sorted(compaction_rows, key=lambda row: str(row.get("compaction_policy_id", "")))
+
+    dt_rule_ids = set(str(row.get("dt_rule_id", "")).strip() for row in dt_rule_rows)
+    compaction_policy_ids = set(str(row.get("compaction_policy_id", "")).strip() for row in compaction_rows)
+    known_time_models = set(str(item).strip() for item in (known_time_model_ids or []) if str(item).strip())
+
+    time_control_rows: List[dict] = []
+    time_control_seen = set()
+    for entry in sorted(time_control_rows_raw, key=lambda row: str((row or {}).get("time_control_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_time_control_policy_entry",
+                    "message": "time control policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        time_control_policy_id = str(entry.get("time_control_policy_id", "")).strip()
+        if not time_control_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_time_control_policy_entry",
+                    "message": "time control policy id is missing",
+                    "path": "$.policies.time_control_policy_id",
+                }
+            )
+            continue
+        if time_control_policy_id in time_control_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_time_control_policy_id",
+                    "message": "duplicate time_control_policy_id '{}'".format(time_control_policy_id),
+                    "path": "$.policies.time_control_policy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="time_control_policy",
+            payload=entry,
+            path="data/registries/time_control_policy_registry.json#{}".format(time_control_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        missing_refs = []
+        dt_rule_id = str(entry.get("dt_quantization_rule_id", "")).strip()
+        if dt_rule_id not in dt_rule_ids:
+            missing_refs.append("dt_quantization_rule_id={}".format(dt_rule_id))
+        compaction_policy_id = str(entry.get("compaction_policy_id", "")).strip()
+        if compaction_policy_id not in compaction_policy_ids:
+            missing_refs.append("compaction_policy_id={}".format(compaction_policy_id))
+        allowed_rate_range = dict(entry.get("allowed_rate_range") or {})
+        min_rate = int(allowed_rate_range.get("min", 0) or 0)
+        max_rate = int(allowed_rate_range.get("max", 0) or 0)
+        if min_rate > max_rate:
+            missing_refs.append("allowed_rate_range=min_gt_max")
+        extensions = dict(entry.get("extensions") or {})
+        allowed_time_model_ids = sorted(
+            set(str(item).strip() for item in (extensions.get("allowed_time_model_ids") or []) if str(item).strip())
+        )
+        if known_time_models and allowed_time_model_ids:
+            for time_model_id in allowed_time_model_ids:
+                if time_model_id not in known_time_models:
+                    missing_refs.append("allowed_time_model_ids={}".format(time_model_id))
+        if missing_refs:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.time_control_policy_reference_missing",
+                    "message": "time control policy '{}' references unknown ids: {}".format(
+                        time_control_policy_id,
+                        ",".join(sorted(set(missing_refs))),
+                    ),
+                    "path": "$.policies",
+                }
+            )
+            continue
+        time_control_seen.add(time_control_policy_id)
+        time_control_rows.append(dict(entry))
+    time_control_rows = sorted(time_control_rows, key=lambda row: str(row.get("time_control_policy_id", "")))
+
+    return time_control_rows, dt_rule_rows, compaction_rows, errors
+
+
 def _body_shape_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     _body_record, body_rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -5573,6 +5812,16 @@ def compile_bundle(
         contributions=contributions,
         known_contract_set_ids=[str(row.get("contract_set_id", "")) for row in conservation_contract_set_rows],
     )
+    (
+        time_control_policy_rows,
+        dt_quantization_rule_rows,
+        compaction_policy_rows,
+        time_control_registry_errors,
+    ) = _time_control_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+        known_time_model_ids=[str(row.get("time_model_id", "")) for row in time_model_rows],
+    )
     body_shape_rows, body_shape_registry_errors = _body_shape_registry_rows(
         repo_root=repo_root,
     )
@@ -5654,6 +5903,7 @@ def compile_bundle(
         + civilisation_registry_errors
         + conservation_registry_errors
         + universe_physics_registry_errors
+        + time_control_registry_errors
         + body_shape_registry_errors
         + view_mode_registry_errors
         + diegetic_registry_errors
@@ -5683,6 +5933,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "time_models": time_model_rows,
+        }
+    )
+    time_control_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": time_control_policy_rows,
+        }
+    )
+    dt_quantization_rule_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "rules": dt_quantization_rule_rows,
+        }
+    )
+    compaction_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": compaction_policy_rows,
         }
     )
     numeric_precision_policy_payload = _finalize_registry_payload(
@@ -6090,6 +6361,9 @@ def compile_bundle(
         "exception_type_registry": ("exception_type_registry", exception_type_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
+        "time_control_policy_registry": ("time_control_policy_registry", time_control_policy_payload),
+        "dt_quantization_rule_registry": ("dt_quantization_rule_registry", dt_quantization_rule_payload),
+        "compaction_policy_registry": ("compaction_policy_registry", compaction_policy_payload),
         "numeric_precision_policy_registry": ("numeric_precision_policy_registry", numeric_precision_policy_payload),
         "tier_taxonomy_registry": ("tier_taxonomy_registry", tier_taxonomy_payload),
         "boundary_model_registry": ("boundary_model_registry", boundary_model_payload),
@@ -6158,6 +6432,9 @@ def compile_bundle(
         "exception_type_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
+        "time_control_policy_registry",
+        "dt_quantization_rule_registry",
+        "compaction_policy_registry",
         "numeric_precision_policy_registry",
         "tier_taxonomy_registry",
         "boundary_model_registry",
@@ -6243,6 +6520,9 @@ def compile_bundle(
             "exception_type_registry_hash": registry_hashes["exception_type_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
+            "time_control_policy_registry_hash": registry_hashes["time_control_policy_registry_hash"],
+            "dt_quantization_rule_registry_hash": registry_hashes["dt_quantization_rule_registry_hash"],
+            "compaction_policy_registry_hash": registry_hashes["compaction_policy_registry_hash"],
             "numeric_precision_policy_registry_hash": registry_hashes["numeric_precision_policy_registry_hash"],
             "tier_taxonomy_registry_hash": registry_hashes["tier_taxonomy_registry_hash"],
             "boundary_model_registry_hash": registry_hashes["boundary_model_registry_hash"],

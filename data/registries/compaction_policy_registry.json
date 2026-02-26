@@ -1,0 +1,44 @@
+{
+  "schema_id": "dominium.registry.compaction_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compaction_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "compaction_policy_id": "compaction.policy.default",
+        "rules": {
+          "keep_every_nth_checkpoint": 4,
+          "merge_intent_logs": true,
+          "prune_old_run_meta": true,
+          "prune_run_meta_older_than_ticks": 2048
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "compaction_policy_id": "compaction.policy.keep_all",
+        "rules": {
+          "keep_every_nth_checkpoint": 1,
+          "merge_intent_logs": false,
+          "prune_old_run_meta": false
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "compaction_policy_id": "compaction.policy.rank_strict",
+        "rules": {
+          "keep_every_nth_checkpoint": 2,
+          "merge_intent_logs": true,
+          "prune_old_run_meta": false
+        },
+        "extensions": {
+          "ranked_provenance_retention": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

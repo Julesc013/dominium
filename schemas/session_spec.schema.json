@@ -220,6 +220,10 @@
     "fidelity_policy_id": {
       "type": "string"
     },
+    "time_control_policy_id": {
+      "type": "string",
+      "description": "Session-selected deterministic time control policy identifier."
+    },
     "constraints_id": {
       "type": "string",
       "description": "Optional worldgen constraints artifact identifier used for deterministic multi-seed planning."
@@ -282,6 +286,7 @@
       "pack_lock_hash": "17a8255be7f6d082c7fce0f6bc2d0ad4cc4f95e14f7696b1ef255fca605dc04d",
       "budget_policy_id": "policy.budget.default_lab",
       "fidelity_policy_id": "policy.fidelity.default_lab",
+      "time_control_policy_id": "time.policy.null",
       "constraints_id": "constraints.lab.navigation.default",
       "selected_seed": "33dbcef8b6ab9ee0",
       "search_plan_hash": "53eda2d58cc9f2eca6d3ed76f88bc8a1450c4f26f6f397103f0f74101dca2c31",
