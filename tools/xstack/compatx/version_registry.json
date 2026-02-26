@@ -112,6 +112,20 @@
         "1.0.0"
       ]
     },
+    "boundary_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "boundary_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "control_action": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -491,6 +505,20 @@
       ]
     },
     "net_snapshot": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "numeric_precision_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "numeric_precision_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -882,6 +910,34 @@
         "1.0.0"
       ]
     },
+    "tier_taxonomy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tier_taxonomy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "time_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "time_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "territory": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -918,6 +974,20 @@
       ]
     },
     "view_mode_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "universe_physics_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "universe_physics_profile_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

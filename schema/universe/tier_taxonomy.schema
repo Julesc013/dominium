@@ -1,0 +1,16 @@
+SCHEMA: universe/tier_taxonomy.schema
+schema_id: dominium.schema.universe.tier_taxonomy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define ordered fidelity tiers and required invariants on collapse/expand transitions.
+
+REQUIRED SHAPE:
+record tier_taxonomy
+  required:
+    - taxonomy_id: id
+    - tiers: [id]
+    - collapse_required_invariants: [id]
+    - expand_redaction_rules: [id]
+    - extensions: map

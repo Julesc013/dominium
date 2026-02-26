@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Numeric Precision Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic numeric precision policy registry output.",
+  "x-doc-ref": [
+    "docs/reality/UNIVERSE_PHYSICS_PROFILE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "precision_policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "precision_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "policy_id",
+          "invariant_numeric_type",
+          "solver_numeric_type",
+          "quantization_rules",
+          "error_accumulation_strategy",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "policy_id": {
+            "type": "string"
+          },
+          "invariant_numeric_type": {
+            "type": "string"
+          },
+          "solver_numeric_type": {
+            "type": "string"
+          },
+          "quantization_rules": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "error_accumulation_strategy": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.registry.tier_taxonomy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.tier_taxonomy_registry",
+    "registry_version": "1.0.0",
+    "taxonomies": [
+      {
+        "schema_version": "1.0.0",
+        "taxonomy_id": "default_minimal",
+        "tiers": [
+          "macro",
+          "render"
+        ],
+        "collapse_required_invariants": [
+          "inv.epistemic_invariance"
+        ],
+        "expand_redaction_rules": [
+          "redaction.default"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "taxonomy_id": "tiers.standard",
+        "tiers": [
+          "macro",
+          "meso",
+          "micro",
+          "render"
+        ],
+        "collapse_required_invariants": [
+          "inv.epistemic_invariance"
+        ],
+        "expand_redaction_rules": [
+          "redaction.default"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

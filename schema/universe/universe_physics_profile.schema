@@ -1,0 +1,29 @@
+SCHEMA: universe/universe_physics_profile.schema
+schema_id: dominium.schema.universe.physics_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define immutable universe physics selection artifact.
+- Decouple runtime assumptions from pack-provided physics defaults.
+
+NON-SEMANTICS:
+- This schema does not execute solver logic.
+- It declares identity and compatibility anchors only.
+
+REQUIRED SHAPE:
+record universe_physics_profile
+  required:
+    - physics_profile_id: id
+    - description: text
+    - enabled_domain_ids: [id]
+    - conservation_contract_set_id: id
+    - allowed_exception_types: [id]
+    - numeric_precision_policy_id: id
+    - tier_taxonomy_id: id
+    - time_model_id: id
+    - boundary_model_id: id
+    - error_budget: map
+    - version_introduced: tag
+    - deprecated: bool
+    - extensions: map

@@ -117,6 +117,11 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
         )
     else:
         expected_keys = (
+            "universe_physics_profile_registry_hash",
+            "time_model_registry_hash",
+            "numeric_precision_policy_registry_hash",
+            "tier_taxonomy_registry_hash",
+            "boundary_model_registry_hash",
             "domain_registry_hash",
             "law_registry_hash",
             "experience_registry_hash",

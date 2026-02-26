@@ -2212,6 +2212,315 @@ def _civilisation_registry_rows(
     )
 
 
+def _universe_physics_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _time_record, time_rows_raw, time_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/time_model_registry.json",
+        expected_schema_id="dominium.registry.time_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="time_models",
+    )
+    if time_load_errors:
+        return [], [], [], [], [], time_load_errors
+
+    _precision_record, precision_rows_raw, precision_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/numeric_precision_policy_registry.json",
+        expected_schema_id="dominium.registry.numeric_precision_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="precision_policies",
+    )
+    if precision_load_errors:
+        return [], [], [], [], [], precision_load_errors
+
+    _taxonomy_record, taxonomy_rows_raw, taxonomy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/tier_taxonomy_registry.json",
+        expected_schema_id="dominium.registry.tier_taxonomy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="taxonomies",
+    )
+    if taxonomy_load_errors:
+        return [], [], [], [], [], taxonomy_load_errors
+
+    _boundary_record, boundary_rows_raw, boundary_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/boundary_model_registry.json",
+        expected_schema_id="dominium.registry.boundary_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="boundary_models",
+    )
+    if boundary_load_errors:
+        return [], [], [], [], [], boundary_load_errors
+
+    _profile_record, profile_rows_raw, profile_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/universe_physics_profile_registry.json",
+        expected_schema_id="dominium.registry.universe_physics_profile_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="physics_profiles",
+    )
+    if profile_load_errors:
+        return [], [], [], [], [], profile_load_errors
+
+    time_rows: List[dict] = []
+    time_seen = set()
+    for entry in sorted(time_rows_raw, key=lambda row: str((row or {}).get("time_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_time_model_entry",
+                    "message": "time model entry must be object",
+                    "path": "$.time_models",
+                }
+            )
+            continue
+        time_model_id = str(entry.get("time_model_id", "")).strip()
+        if not time_model_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_time_model_entry",
+                    "message": "time model id is missing",
+                    "path": "$.time_models.time_model_id",
+                }
+            )
+            continue
+        if time_model_id in time_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_time_model_id",
+                    "message": "duplicate time_model_id '{}'".format(time_model_id),
+                    "path": "$.time_models.time_model_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="time_model",
+            payload=entry,
+            path="data/registries/time_model_registry.json#{}".format(time_model_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        time_seen.add(time_model_id)
+        time_rows.append(dict(entry))
+    time_rows = sorted(time_rows, key=lambda row: str(row.get("time_model_id", "")))
+
+    precision_rows: List[dict] = []
+    precision_seen = set()
+    for entry in sorted(precision_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_numeric_precision_policy_entry",
+                    "message": "numeric precision policy entry must be object",
+                    "path": "$.precision_policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        if not policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_numeric_precision_policy_entry",
+                    "message": "numeric precision policy id is missing",
+                    "path": "$.precision_policies.policy_id",
+                }
+            )
+            continue
+        if policy_id in precision_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_numeric_precision_policy_id",
+                    "message": "duplicate policy_id '{}'".format(policy_id),
+                    "path": "$.precision_policies.policy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="numeric_precision_policy",
+            payload=entry,
+            path="data/registries/numeric_precision_policy_registry.json#{}".format(policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        precision_seen.add(policy_id)
+        precision_rows.append(dict(entry))
+    precision_rows = sorted(precision_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    taxonomy_rows: List[dict] = []
+    taxonomy_seen = set()
+    for entry in sorted(taxonomy_rows_raw, key=lambda row: str((row or {}).get("taxonomy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tier_taxonomy_entry",
+                    "message": "tier taxonomy entry must be object",
+                    "path": "$.taxonomies",
+                }
+            )
+            continue
+        taxonomy_id = str(entry.get("taxonomy_id", "")).strip()
+        if not taxonomy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tier_taxonomy_entry",
+                    "message": "tier taxonomy id is missing",
+                    "path": "$.taxonomies.taxonomy_id",
+                }
+            )
+            continue
+        if taxonomy_id in taxonomy_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_tier_taxonomy_id",
+                    "message": "duplicate taxonomy_id '{}'".format(taxonomy_id),
+                    "path": "$.taxonomies.taxonomy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="tier_taxonomy",
+            payload=entry,
+            path="data/registries/tier_taxonomy_registry.json#{}".format(taxonomy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        taxonomy_seen.add(taxonomy_id)
+        taxonomy_rows.append(dict(entry))
+    taxonomy_rows = sorted(taxonomy_rows, key=lambda row: str(row.get("taxonomy_id", "")))
+
+    boundary_rows: List[dict] = []
+    boundary_seen = set()
+    for entry in sorted(boundary_rows_raw, key=lambda row: str((row or {}).get("boundary_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_boundary_model_entry",
+                    "message": "boundary model entry must be object",
+                    "path": "$.boundary_models",
+                }
+            )
+            continue
+        boundary_model_id = str(entry.get("boundary_model_id", "")).strip()
+        if not boundary_model_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_boundary_model_entry",
+                    "message": "boundary model id is missing",
+                    "path": "$.boundary_models.boundary_model_id",
+                }
+            )
+            continue
+        if boundary_model_id in boundary_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_boundary_model_id",
+                    "message": "duplicate boundary_model_id '{}'".format(boundary_model_id),
+                    "path": "$.boundary_models.boundary_model_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="boundary_model",
+            payload=entry,
+            path="data/registries/boundary_model_registry.json#{}".format(boundary_model_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        boundary_seen.add(boundary_model_id)
+        boundary_rows.append(dict(entry))
+    boundary_rows = sorted(boundary_rows, key=lambda row: str(row.get("boundary_model_id", "")))
+
+    time_model_ids = set(str(row.get("time_model_id", "")).strip() for row in time_rows)
+    precision_policy_ids = set(str(row.get("policy_id", "")).strip() for row in precision_rows)
+    taxonomy_ids = set(str(row.get("taxonomy_id", "")).strip() for row in taxonomy_rows)
+    boundary_model_ids = set(str(row.get("boundary_model_id", "")).strip() for row in boundary_rows)
+
+    profile_rows: List[dict] = []
+    profile_seen = set()
+    for entry in sorted(profile_rows_raw, key=lambda row: str((row or {}).get("physics_profile_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_universe_physics_profile_entry",
+                    "message": "universe physics profile entry must be object",
+                    "path": "$.physics_profiles",
+                }
+            )
+            continue
+        physics_profile_id = str(entry.get("physics_profile_id", "")).strip()
+        if not physics_profile_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_universe_physics_profile_entry",
+                    "message": "physics profile id is missing",
+                    "path": "$.physics_profiles.physics_profile_id",
+                }
+            )
+            continue
+        if physics_profile_id in profile_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_universe_physics_profile_id",
+                    "message": "duplicate physics_profile_id '{}'".format(physics_profile_id),
+                    "path": "$.physics_profiles.physics_profile_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="universe_physics_profile",
+            payload=entry,
+            path="data/registries/universe_physics_profile_registry.json#{}".format(physics_profile_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+
+        missing_refs: List[str] = []
+        if str(entry.get("time_model_id", "")).strip() not in time_model_ids:
+            missing_refs.append("time_model_id={}".format(str(entry.get("time_model_id", "")).strip()))
+        if str(entry.get("numeric_precision_policy_id", "")).strip() not in precision_policy_ids:
+            missing_refs.append(
+                "numeric_precision_policy_id={}".format(str(entry.get("numeric_precision_policy_id", "")).strip())
+            )
+        if str(entry.get("tier_taxonomy_id", "")).strip() not in taxonomy_ids:
+            missing_refs.append("tier_taxonomy_id={}".format(str(entry.get("tier_taxonomy_id", "")).strip()))
+        if str(entry.get("boundary_model_id", "")).strip() not in boundary_model_ids:
+            missing_refs.append("boundary_model_id={}".format(str(entry.get("boundary_model_id", "")).strip()))
+        if missing_refs:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.universe_physics_profile_reference_missing",
+                    "message": "physics profile '{}' references unknown ids: {}".format(
+                        physics_profile_id,
+                        ",".join(sorted(missing_refs)),
+                    ),
+                    "path": "$.physics_profiles",
+                }
+            )
+            continue
+
+        profile_seen.add(physics_profile_id)
+        profile_rows.append(dict(entry))
+    profile_rows = sorted(profile_rows, key=lambda row: str(row.get("physics_profile_id", "")))
+
+    return profile_rows, time_rows, precision_rows, taxonomy_rows, boundary_rows, errors
+
+
 def _body_shape_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     _body_record, body_rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -4911,6 +5220,17 @@ def compile_bundle(
     ) = _civilisation_registry_rows(
         repo_root=repo_root,
     )
+    (
+        universe_physics_profile_rows,
+        time_model_rows,
+        numeric_precision_policy_rows,
+        tier_taxonomy_rows,
+        boundary_model_rows,
+        universe_physics_registry_errors,
+    ) = _universe_physics_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
     body_shape_rows, body_shape_registry_errors = _body_shape_registry_rows(
         repo_root=repo_root,
     )
@@ -4990,6 +5310,7 @@ def compile_bundle(
         + worldgen_constraints_errors
         + control_registry_errors
         + civilisation_registry_errors
+        + universe_physics_registry_errors
         + body_shape_registry_errors
         + view_mode_registry_errors
         + diegetic_registry_errors
@@ -5007,6 +5328,41 @@ def compile_bundle(
             "errors": sorted(all_errors, key=lambda row: (row["code"], row["path"], row["message"])),
         }
 
+    universe_physics_profile_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "physics_profiles": universe_physics_profile_rows,
+        }
+    )
+    time_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "time_models": time_model_rows,
+        }
+    )
+    numeric_precision_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "precision_policies": numeric_precision_policy_rows,
+        }
+    )
+    tier_taxonomy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "taxonomies": tier_taxonomy_rows,
+        }
+    )
+    boundary_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "boundary_models": boundary_model_rows,
+        }
+    )
     domain_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -5362,6 +5718,11 @@ def compile_bundle(
     )
 
     registry_payloads = {
+        "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
+        "time_model_registry": ("time_model_registry", time_model_payload),
+        "numeric_precision_policy_registry": ("numeric_precision_policy_registry", numeric_precision_policy_payload),
+        "tier_taxonomy_registry": ("tier_taxonomy_registry", tier_taxonomy_payload),
+        "boundary_model_registry": ("boundary_model_registry", boundary_model_payload),
         "domain_registry": ("domain_registry", domain_payload),
         "law_registry": ("law_registry", law_payload),
         "experience_registry": ("experience_registry", experience_payload),
@@ -5422,6 +5783,11 @@ def compile_bundle(
     registry_hashes = {}
     output_files = []
     for registry_key in (
+        "universe_physics_profile_registry",
+        "time_model_registry",
+        "numeric_precision_policy_registry",
+        "tier_taxonomy_registry",
+        "boundary_model_registry",
         "domain_registry",
         "law_registry",
         "experience_registry",
@@ -5499,6 +5865,11 @@ def compile_bundle(
         "bundle_id": str(bundle_id),
         "resolved_packs": resolved_packs,
         "registries": {
+            "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
+            "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
+            "numeric_precision_policy_registry_hash": registry_hashes["numeric_precision_policy_registry_hash"],
+            "tier_taxonomy_registry_hash": registry_hashes["tier_taxonomy_registry_hash"],
+            "boundary_model_registry_hash": registry_hashes["boundary_model_registry_hash"],
             "domain_registry_hash": registry_hashes["domain_registry_hash"],
             "law_registry_hash": registry_hashes["law_registry_hash"],
             "experience_registry_hash": registry_hashes["experience_registry_hash"],

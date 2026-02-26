@@ -9,6 +9,11 @@ DEFAULT_COMPATIBILITY_VERSION = "1.0.0"
 
 
 REGISTRY_OUTPUT_FILENAMES = {
+    "universe_physics_profile_registry": "universe_physics_profile.registry.json",
+    "time_model_registry": "time_model.registry.json",
+    "numeric_precision_policy_registry": "numeric_precision_policy.registry.json",
+    "tier_taxonomy_registry": "tier_taxonomy.registry.json",
+    "boundary_model_registry": "boundary_model.registry.json",
     "domain_registry": "domain.registry.json",
     "law_registry": "law.registry.json",
     "experience_registry": "experience.registry.json",

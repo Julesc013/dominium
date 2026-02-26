@@ -1,0 +1,25 @@
+{
+  "schema_id": "dominium.registry.boundary_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.boundary_model_registry",
+    "registry_version": "1.0.0",
+    "boundary_models": [
+      {
+        "schema_version": "1.0.0",
+        "boundary_model_id": "procedural_infinite",
+        "universe_type": "procedural_infinite",
+        "allow_boundary_flux": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "boundary_model_id": "boundary.procedural_infinite_closed",
+        "universe_type": "procedural_infinite",
+        "allow_boundary_flux": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

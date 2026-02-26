@@ -1,0 +1,17 @@
+SCHEMA: universe/numeric_precision_policy.schema
+schema_id: dominium.schema.universe.numeric_precision_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic numeric precision and quantization policy contracts.
+
+REQUIRED SHAPE:
+record numeric_precision_policy
+  required:
+    - policy_id: id
+    - invariant_numeric_type: enum(fixed_point|required)
+    - solver_numeric_type: enum(fixed_point|deterministic_float)
+    - quantization_rules: map
+    - error_accumulation_strategy: id
+    - extensions: map
