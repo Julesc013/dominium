@@ -79,6 +79,8 @@ from analyzers import e50_renderer_truth_leak_smell
 from analyzers import e51_render_snapshot_misclassified_smell
 from analyzers import e52_interaction_bypass_smell
 from analyzers import e53_preview_info_leak_smell
+from analyzers import e54_platform_leak_smell
+from analyzers import e55_renderer_backend_truth_leak_smell
 
 
 ANALYZERS = (
@@ -161,6 +163,8 @@ ANALYZERS = (
     e51_render_snapshot_misclassified_smell,
     e52_interaction_bypass_smell,
     e53_preview_info_leak_smell,
+    e54_platform_leak_smell,
+    e55_renderer_backend_truth_leak_smell,
 )
 
 

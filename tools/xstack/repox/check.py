@@ -247,6 +247,20 @@ RENDER_SNAPSHOT_DERIVED_FILES = (
     "tools/render/tool_render_capture.py",
 )
 
+PLATFORM_ABSTRACTION_FILES = (
+    "src/platform/__init__.py",
+    "src/platform/platform_window.py",
+    "src/platform/platform_input.py",
+    "src/platform/platform_gfx.py",
+    "src/platform/platform_audio.py",
+    "src/platform/platform_input_routing.py",
+)
+
+HW_RENDERER_RENDERMODEL_ONLY_FILES = (
+    "src/client/render/renderers/hw_renderer_gl.py",
+    "src/client/render/snapshot_capture.py",
+)
+
 REPRESENTATION_DATA_DRIVEN_FILE = "src/client/render/representation_resolver.py"
 REPRESENTATION_DATA_DRIVEN_REQUIRED_TOKENS = (
     "representation_rule_registry",
@@ -5970,6 +5984,153 @@ def _append_interaction_invariant_findings(
             )
 
 
+def _append_platform_renderer_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    for rel_path in PLATFORM_ABSTRACTION_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="platform abstraction module is missing",
+                rule_id="INV-PLATFORM-ISOLATION",
+            )
+        )
+
+    os_dependency_patterns = (
+        re.compile(r"^\s*#\s*include\s*[<\"]windows\.h[\">]", re.IGNORECASE),
+        re.compile(r"^\s*#\s*include\s*[<\"]X11/", re.IGNORECASE),
+        re.compile(r"^\s*#\s*include\s*[<\"]Cocoa/", re.IGNORECASE),
+        re.compile(r"\bctypes\.windll\b", re.IGNORECASE),
+        re.compile(r"\bimport\s+win32api\b", re.IGNORECASE),
+    )
+    scan_root = os.path.join(repo_root, "src")
+    if os.path.isdir(scan_root):
+        for walk_root, dirs, files in os.walk(scan_root):
+            dirs[:] = sorted(dirs)
+            files = sorted(files)
+            rel_root = _norm(os.path.relpath(walk_root, repo_root))
+            if rel_root.startswith("src/platform"):
+                continue
+            for name in files:
+                _, ext = os.path.splitext(name.lower())
+                if ext not in (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp"):
+                    continue
+                rel_path = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                for line_no, line in _iter_lines(repo_root, rel_path):
+                    snippet = str(line).strip()
+                    if not snippet:
+                        continue
+                    for pattern in os_dependency_patterns:
+                        if not pattern.search(snippet):
+                            continue
+                        findings.append(
+                            _finding(
+                                severity=severity,
+                                file_path=rel_path,
+                                line_number=line_no,
+                                snippet=snippet[:140],
+                                message="platform-specific OS dependency token must remain isolated to src/platform",
+                                rule_id="INV-PLATFORM-ISOLATION",
+                            )
+                        )
+                        break
+
+    renderer_truth_pattern = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)
+    renderer_mutation_pattern = re.compile(r"\b(process_runtime|apply_intent|authority_context|process_id)\b", re.IGNORECASE)
+    for rel_path in HW_RENDERER_RENDERMODEL_ONLY_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="hardware renderer contract file is missing",
+                    rule_id="INV-HW-RENDERER-RENDERMODEL-ONLY",
+                )
+            )
+            continue
+
+        has_render_model_token = False
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line)
+            lowered = token.lower()
+            if "render_model" in lowered or "rendermodel" in lowered:
+                has_render_model_token = True
+            if renderer_truth_pattern.search(token):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=token.strip()[:140],
+                        message="hardware renderer path references forbidden truth symbol",
+                        rule_id="INV-HW-RENDERER-RENDERMODEL-ONLY",
+                    )
+                )
+            if renderer_mutation_pattern.search(token):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=token.strip()[:140],
+                        message="hardware renderer path must not couple to process mutation surfaces",
+                        rule_id="INV-HW-RENDERER-RENDERMODEL-ONLY",
+                    )
+                )
+        if not has_render_model_token:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="render_model",
+                    message="hardware renderer path must consume RenderModel payloads",
+                    rule_id="INV-HW-RENDERER-RENDERMODEL-ONLY",
+                )
+            )
+
+    hw_renderer_rel = "src/client/render/renderers/hw_renderer_gl.py"
+    hw_renderer_abs = os.path.join(repo_root, hw_renderer_rel.replace("/", os.sep))
+    try:
+        hw_text = open(hw_renderer_abs, "r", encoding="utf-8").read()
+    except OSError:
+        hw_text = ""
+    for token in (
+        "def render_hardware_gl_snapshot(",
+        "create_graphics_context(",
+        "render_software_snapshot(",
+    ):
+        if hw_text and token in hw_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=hw_renderer_rel,
+                line_number=1,
+                snippet=token,
+                message="hardware renderer backend missing deterministic RenderModel-only integration token",
+                rule_id="INV-HW-RENDERER-RENDERMODEL-ONLY",
+            )
+        )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -6031,6 +6192,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_interaction_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_platform_renderer_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
