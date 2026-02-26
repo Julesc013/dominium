@@ -16,6 +16,11 @@ FIXTURE_SOURCE_REGISTRY_FILES = (
     ("tools/xstack/testdata/registries/server_profile_registry.json", "data/registries/server_profile_registry.json"),
     ("data/registries/shard_map_registry.json", "data/registries/shard_map_registry.json"),
     ("data/registries/perception_interest_policy_registry.json", "data/registries/perception_interest_policy_registry.json"),
+    ("data/registries/universe_physics_profile_registry.json", "data/registries/universe_physics_profile_registry.json"),
+    ("data/registries/time_model_registry.json", "data/registries/time_model_registry.json"),
+    ("data/registries/numeric_precision_policy_registry.json", "data/registries/numeric_precision_policy_registry.json"),
+    ("data/registries/tier_taxonomy_registry.json", "data/registries/tier_taxonomy_registry.json"),
+    ("data/registries/boundary_model_registry.json", "data/registries/boundary_model_registry.json"),
     ("data/registries/control_action_registry.json", "data/registries/control_action_registry.json"),
     ("data/registries/controller_type_registry.json", "data/registries/controller_type_registry.json"),
     ("data/registries/governance_type_registry.json", "data/registries/governance_type_registry.json"),
@@ -58,13 +63,18 @@ def _copy_rel_file(source_repo_root: str, temp_root: str, src_rel_path: str, dst
 
 
 def make_temp_repo_with_test_packs(source_repo_root: str) -> str:
-    temp_root = tempfile.mkdtemp(prefix="xstack_testx_fixture_")
+    fixture_root = os.path.join(source_repo_root, ".xstack_cache", "testx", "fixtures")
+    os.makedirs(fixture_root, exist_ok=True)
+    temp_root = tempfile.mkdtemp(prefix="xstack_testx_fixture_", dir=fixture_root)
     src_packs = os.path.join(source_repo_root, "tools", "xstack", "testdata", "packs")
     dst_packs = os.path.join(temp_root, "packs")
     shutil.copytree(src_packs, dst_packs)
     src_bundles = os.path.join(source_repo_root, "tools", "xstack", "testdata", "bundles")
     dst_bundles = os.path.join(temp_root, "bundles")
     shutil.copytree(src_bundles, dst_bundles)
+    src_registries = os.path.join(source_repo_root, "data", "registries")
+    dst_registries = os.path.join(temp_root, "data", "registries")
+    shutil.copytree(src_registries, dst_registries)
     for src_rel_path, dst_rel_path in FIXTURE_SOURCE_REGISTRY_FILES:
         _copy_rel_file(
             source_repo_root=source_repo_root,

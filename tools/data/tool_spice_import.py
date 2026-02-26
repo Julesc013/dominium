@@ -33,6 +33,15 @@ def _norm(path: str) -> str:
     return str(path or "").replace("\\", "/")
 
 
+def _rel_or_norm(path: str, repo_root: str) -> str:
+    abs_path = os.path.normpath(os.path.abspath(path))
+    try:
+        rel_path = os.path.relpath(abs_path, repo_root)
+    except ValueError:
+        return _norm(abs_path)
+    return _norm(rel_path)
+
+
 def _read_json_object(path: str) -> Tuple[dict, str]:
     try:
         payload = json.load(open(path, "r", encoding="utf-8"))
@@ -163,7 +172,7 @@ def _source_payload(repo_root: str, source_pack_rel: str) -> Tuple[dict, str, st
             "refusal.data_source_missing",
             "ephemeris source payload is missing or invalid",
             "$.source_payload",
-            source_path=_norm(os.path.relpath(source_abs, repo_root)),
+            source_path=_rel_or_norm(source_abs, repo_root),
         )
 
     checked = validate_instance(
@@ -191,7 +200,7 @@ def _source_payload(repo_root: str, source_pack_rel: str) -> Tuple[dict, str, st
                 "kernel file declared by source payload is missing",
                 "$.source_payload.kernel_files",
                 source_pack_id=source_pack_id,
-                kernel_file=_norm(os.path.relpath(abs_path, repo_root)),
+                kernel_file=_rel_or_norm(abs_path, repo_root),
             )
         kernel_hashes.append(
             {
@@ -317,7 +326,7 @@ def run_import(
         "source_hash": source_hash,
         "input_merkle_hash": input_merkle_hash,
         "derived_pack": _norm(derived_pack),
-        "output_path": _norm(os.path.relpath(table_path, repo_root)),
+        "output_path": _rel_or_norm(table_path, repo_root),
         "output_hash": canonical_sha256(derived_payload),
         "table_count": len(tables),
         "sample_count": sum(len(list(row.get("samples") or [])) for row in tables),

@@ -65,6 +65,8 @@ from analyzers import e36_render_truth_leak_smell
 from analyzers import e37_hardcoded_representation_smell
 from analyzers import e38_demography_leak_smell
 from analyzers import e39_nondeterministic_rate_usage_smell
+from analyzers import e40_physics_assumption_smell
+from analyzers import e41_implicit_default_profile_smell
 
 
 ANALYZERS = (
@@ -133,6 +135,8 @@ ANALYZERS = (
     e37_hardcoded_representation_smell,
     e38_demography_leak_smell,
     e39_nondeterministic_rate_usage_smell,
+    e40_physics_assumption_smell,
+    e41_implicit_default_profile_smell,
 )
 
 
