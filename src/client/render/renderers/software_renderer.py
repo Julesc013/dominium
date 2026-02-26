@@ -260,6 +260,8 @@ def render_software_snapshot(
     image_width: int,
     image_height: int,
     wireframe: bool = False,
+    renderer_id: str = "software",
+    backend_metadata: dict | None = None,
 ) -> dict:
     model = dict(render_model or {})
     model_hash = str(model.get("render_model_hash", "")).strip() or str(canonical_sha256(model))
@@ -365,9 +367,10 @@ def render_software_snapshot(
     summary, frame_layers = build_frame_summary(model)
     summary_hash = str(canonical_sha256(summary))
     pixel_hash = hashlib.sha256(bytes(pixels)).hexdigest()
+    renderer = str(renderer_id or "software").strip() or "software"
     snapshot_seed = {
         "render_model_hash": model_hash,
-        "renderer_id": "software",
+        "renderer_id": renderer,
         "width": int(width),
         "height": int(height),
         "tick": int(tick),
@@ -401,7 +404,7 @@ def render_software_snapshot(
         "render_model_hash": model_hash,
         "pack_lock_hash": pack_lock_hash,
         "physics_profile_id": physics_profile_id,
-        "renderer_id": "software",
+        "renderer_id": renderer,
         "image_width": int(width),
         "image_height": int(height),
         "pixel_format": "RGB8",
@@ -415,6 +418,7 @@ def render_software_snapshot(
         "extensions": {
             "snapshot_dir": snapshot_dir.replace("\\", "/"),
             "wireframe": bool(wireframe),
+            "backend_metadata": dict(backend_metadata or {}),
         },
     }
     with open(snapshot_path, "w", encoding="utf-8", newline="\n") as handle:
@@ -423,7 +427,7 @@ def render_software_snapshot(
 
     return {
         "result": "complete",
-        "renderer_id": "software",
+        "renderer_id": renderer,
         "snapshot_id": snapshot_id,
         "snapshot_dir": snapshot_dir.replace("\\", "/"),
         "snapshot_path": snapshot_path.replace("\\", "/"),
