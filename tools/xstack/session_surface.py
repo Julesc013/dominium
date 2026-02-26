@@ -16,6 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 from tools.xstack.sessionx.stage_parity import (  # noqa: E402
     surface_abort_session,
+    surface_compact_session,
     surface_resume_session,
     surface_stage_status,
 )
@@ -47,6 +48,10 @@ def main() -> int:
     resume_cmd.add_argument("--lockfile", default="")
     resume_cmd.add_argument("--registries-dir", default="")
 
+    compact_cmd = sub.add_parser("client.session.compact")
+    compact_cmd.add_argument("session_spec_path")
+    compact_cmd.add_argument("--compaction-policy-id", required=True)
+
     args = parser.parse_args()
     repo_root = _repo_root(str(args.repo_root))
     surface = str(args.surface)
@@ -73,6 +78,13 @@ def main() -> int:
             bundle_id=str(args.bundle),
             lockfile_path=str(args.lockfile),
             registries_dir=str(args.registries_dir),
+        )
+    elif args.command == "client.session.compact":
+        result = surface_compact_session(
+            surface=surface,
+            repo_root=repo_root,
+            session_spec_path=str(args.session_spec_path),
+            compaction_policy_id=str(args.compaction_policy_id),
         )
     else:
         parser.print_help()

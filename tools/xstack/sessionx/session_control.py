@@ -13,6 +13,7 @@ from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from .common import norm, now_utc_iso, read_json_object, refusal, write_canonical_json
 from .pipeline_contract import DEFAULT_PIPELINE_ID, load_session_pipeline_contract
 from .runner import _latest_run_meta, _load_lockfile, _load_schema_validated, _validate_registry_hashes, boot_session_spec
+from .time_lineage import compact_save
 
 
 def _authority_compatible(previous: dict, current: dict) -> int:
@@ -365,3 +366,27 @@ def resume_session_spec(
     resumed["resume_source_last_stage_id"] = previous_last_stage_id
     resumed["resume_source_run_meta_path"] = norm(os.path.relpath(previous_path, repo_root))
     return resumed
+
+
+def compact_session_save(
+    repo_root: str,
+    session_spec_path: str,
+    compaction_policy_id: str,
+) -> Dict[str, object]:
+    session_spec, spec_error, _spec_abs = _load_session_spec(repo_root=repo_root, session_spec_path=session_spec_path)
+    if spec_error:
+        return spec_error
+    save_id = str(session_spec.get("save_id", "")).strip()
+    if not save_id:
+        return refusal(
+            "refusal.time.compaction_save_missing",
+            "session_spec is missing save_id for compaction",
+            "Provide a valid session_spec with save_id.",
+            {"session_spec_path": norm(session_spec_path)},
+            "$.save_id",
+        )
+    return compact_save(
+        repo_root=repo_root,
+        save_id=save_id,
+        compaction_policy_id=str(compaction_policy_id).strip(),
+    )
