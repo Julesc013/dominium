@@ -4301,6 +4301,28 @@ def _region_management_tick(
         envelope=selected_budget_envelope,
         budget_policy=budget_policy,
     )
+    arbitration_policy_registry = _policy_payload(policy_context, "arbitration_policy_registry")
+    arbitration_policy_id = str((policy_context or {}).get("arbitration_policy_id", "")).strip()
+    selected_arbitration_policy = _registry_row_by_id(
+        arbitration_policy_registry,
+        "policies",
+        "arbitration_policy_id",
+        arbitration_policy_id,
+    )
+    if not selected_arbitration_policy:
+        transition_rule_id = str(transition_policy.get("arbitration_rule_id", "")).strip()
+        fallback_mode = "server_authoritative_priority"
+        if transition_rule_id == "arb.equal_share":
+            fallback_mode = "equal_share"
+        elif transition_rule_id == "arb.server_authoritative_weighted":
+            fallback_mode = "weighted"
+        selected_arbitration_policy = {
+            "arbitration_policy_id": "arb.derived.from_transition_policy",
+            "mode": fallback_mode,
+            "weight_source": "derived",
+            "tie_break_rule_id": "tie.player_region_tick",
+            "extensions": {},
+        }
     effective_budget_policy = dict(budget_policy)
     effective_budget_policy["max_regions_micro"] = int(
         _cap_budget_value(
@@ -4469,6 +4491,10 @@ def _region_management_tick(
     max_compute = max(0, _as_int(effective_budget_policy.get("max_compute_units_per_tick", 0), 0))
     max_entities = max(0, _as_int(effective_budget_policy.get("max_entities_micro", 0), 0))
     entity_weight = max(0, _as_int(effective_budget_policy.get("entity_compute_weight", 0), 0))
+    max_inspection_cost_units = max(0, _as_int(normalized_budget_envelope.get("max_inspection_cost_units_per_tick", 0), 0))
+    inspection_runtime_budget_state = dict((policy_context or {}).get("inspection_runtime_budget_state") or {})
+    inspection_used_by_tick = dict(inspection_runtime_budget_state.get("used_by_tick") or {})
+    inspection_cost_units = max(0, _as_int(inspection_used_by_tick.get(str(int(current_tick)), 0), 0))
     tier_weight_by_tier = dict((tier, int(_tier_weight(effective_budget_policy, tier))) for tier in _tier_tokens())
     tier_entity_target_by_tier = dict((tier, int(_tier_entity_target(fidelity_policy, tier))) for tier in _tier_tokens())
 
@@ -4502,6 +4528,9 @@ def _region_management_tick(
         tier_weight_by_tier=tier_weight_by_tier,
         tier_entity_target_by_tier=tier_entity_target_by_tier,
         entity_compute_weight=int(entity_weight),
+        arbitration_policy=selected_arbitration_policy,
+        inspection_cost_units=int(inspection_cost_units),
+        max_inspection_cost_units_per_tick=int(max_inspection_cost_units),
     )
     if str(transition_plan.get("result", "")) != "complete":
         refusal_code = str(transition_plan.get("code", "")).strip() or "BUDGET_EXCEEDED"
@@ -4537,6 +4566,20 @@ def _region_management_tick(
     budget_outcome = str(transition_plan.get("budget_outcome", "ok"))
     forced_expand_ids = sorted(str(item) for item in list(transition_plan.get("forced_expand_region_ids") or []) if str(item).strip())
     forced_collapse_ids = sorted(str(item) for item in list(transition_plan.get("forced_collapse_region_ids") or []) if str(item).strip())
+    refused_expand_ids = sorted(str(item) for item in list(transition_plan.get("refused_expand_ids") or []) if str(item).strip())
+    arbitration_mode = str(transition_plan.get("arbitration_mode", ""))
+    arbitration_policy_id = str(transition_plan.get("arbitration_policy_id", ""))
+    selected_player_by_region = dict((transition_plan.get("selected_player_by_region") or {}))
+    selected_priority_score = dict((transition_plan.get("selected_priority_score") or {}))
+    selection_trace = sorted(
+        (dict(item) for item in list(transition_plan.get("selection_trace") or []) if isinstance(item, dict)),
+        key=lambda item: (
+            str(item.get("issuer_peer_id", "")),
+            str(item.get("region_id", "")),
+            _as_int(item.get("priority_score", 0), 0),
+        ),
+    )
+    inspection_resolution_reduced = bool(transition_plan.get("inspection_resolution_reduced", False))
     solver_binding_trace: List[dict] = []
     if collapse_ids:
         collapse_check = _check_solver_binding_for_transition(policy_context=policy_context, transition_name="collapse")
@@ -4636,6 +4679,13 @@ def _region_management_tick(
         solver_id = str(trace.get("solver_id", "")).strip()
         if transition_name and solver_id:
             solver_id_by_transition[transition_name] = solver_id
+    selection_trace_by_region = {}
+    for row in list(selection_trace or []):
+        if not isinstance(row, dict):
+            continue
+        region_id = str(row.get("region_id", "")).strip()
+        if region_id:
+            selection_trace_by_region[region_id] = dict(row)
 
     transition_events: List[dict] = []
     failing_checks: List[dict] = []
@@ -4755,6 +4805,12 @@ def _region_management_tick(
                     "mass_before": int(region_mass_before.get(region_id, 0)),
                     "mass_after": int(region_mass_after),
                     "mass_delta": int(region_delta),
+                    "arbitration_policy_id": str(arbitration_policy_id),
+                    "arbitration_mode": str(arbitration_mode),
+                    "arbitration_peer_id": str(selected_player_by_region.get(region_id, "")),
+                    "arbitration_priority_score": int(_as_int(selected_priority_score.get(region_id, 0), 0)),
+                    "selection_action": str((selection_trace_by_region.get(region_id) or {}).get("action", "")),
+                    "inspection_resolution_reduced": bool(inspection_resolution_reduced),
                 },
             )
         )
@@ -4789,9 +4845,6 @@ def _region_management_tick(
         key=lambda item: str(item.get("region_id", "")),
     )
 
-    inspection_runtime_budget_state = dict((policy_context or {}).get("inspection_runtime_budget_state") or {})
-    inspection_used_by_tick = dict(inspection_runtime_budget_state.get("used_by_tick") or {})
-    inspection_cost_units = max(0, _as_int(inspection_used_by_tick.get(str(int(current_tick)), 0), 0))
     cost_snapshot = compute_cost_snapshot(
         active_tiers_by_region=dict(desired_active),
         tier_weight_by_tier=tier_weight_by_tier,
@@ -4917,8 +4970,12 @@ def _region_management_tick(
         "active_regions": sorted(desired_active.keys()),
         "collapsed_regions": collapse_ids,
         "expanded_regions": expand_ids,
+        "refused_expand_region_ids": refused_expand_ids,
         "forced_expand_region_ids": forced_expand_ids,
         "forced_collapse_region_ids": forced_collapse_ids,
+        "arbitration_policy_id": str(arbitration_policy_id),
+        "arbitration_mode": str(arbitration_mode),
+        "selection_trace": selection_trace,
         "selected_terrain_tiles": selected_terrain_tiles,
         "cohort_refinement": cohort_refinement,
         "transition_events": [dict(item) for item in list(transition_events or []) if isinstance(item, dict)],
