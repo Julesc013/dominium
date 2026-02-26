@@ -14,7 +14,12 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from tools.xstack.sessionx.session_control import abort_session_spec, resume_session_spec, session_stage_status  # noqa: E402
+from tools.xstack.sessionx.session_control import (  # noqa: E402
+    abort_session_spec,
+    compact_session_save,
+    resume_session_spec,
+    session_stage_status,
+)
 
 
 def _repo_root(value: str) -> str:
@@ -55,12 +60,23 @@ def _add_resume_command(subparsers) -> None:
     parser.add_argument("--registries-dir", default="")
 
 
+def _add_compact_command(subparsers) -> None:
+    parser = subparsers.add_parser(
+        "client.session.compact",
+        help="run deterministic save compaction policy for the session save",
+    )
+    parser.add_argument("session_spec_path", help="path to saves/<save_id>/session_spec.json")
+    parser.add_argument("--repo-root", default="")
+    parser.add_argument("--compaction-policy-id", required=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Session pipeline controls (stage/abort/resume).")
     sub = parser.add_subparsers(dest="command")
     _add_stage_command(sub)
     _add_abort_command(sub)
     _add_resume_command(sub)
+    _add_compact_command(sub)
     args = parser.parse_args()
     command = str(getattr(args, "command", "") or "").strip()
     repo_root = _repo_root(str(getattr(args, "repo_root", "") or ""))
@@ -84,6 +100,12 @@ def main() -> int:
             bundle_id=str(args.bundle),
             lockfile_path=str(args.lockfile),
             registries_dir=str(args.registries_dir),
+        )
+    elif command == "client.session.compact":
+        result = compact_session_save(
+            repo_root=repo_root,
+            session_spec_path=str(args.session_spec_path),
+            compaction_policy_id=str(args.compaction_policy_id),
         )
     else:
         parser.print_help()

@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict
 
 from .common import refusal
-from .session_control import abort_session_spec, resume_session_spec, session_stage_status
+from .session_control import abort_session_spec, compact_session_save, resume_session_spec, session_stage_status
 
 
 SUPPORTED_SURFACES = ("cli", "tui", "gui")
@@ -75,5 +75,22 @@ def surface_resume_session(
         bundle_id=bundle_id,
         lockfile_path=lockfile_path,
         registries_dir=registries_dir,
+    )
+    return _workspace_payload(surface=str(checked.get("surface", "")), payload=payload)
+
+
+def surface_compact_session(
+    surface: str,
+    repo_root: str,
+    session_spec_path: str,
+    compaction_policy_id: str,
+) -> Dict[str, object]:
+    checked = _validate_surface(surface)
+    if checked.get("result") != "complete":
+        return checked
+    payload = compact_session_save(
+        repo_root=repo_root,
+        session_spec_path=session_spec_path,
+        compaction_policy_id=compaction_policy_id,
     )
     return _workspace_payload(surface=str(checked.get("surface", "")), payload=payload)
