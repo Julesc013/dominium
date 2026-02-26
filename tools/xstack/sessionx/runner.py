@@ -1438,6 +1438,15 @@ def boot_session_spec(
     )
     if selected_time_control_policy_error:
         return selected_time_control_policy_error
+    selected_transition_policy, selected_transition_policy_error = _select_transition_policy(
+        transition_policy_registry=transition_policy_registry,
+        selected_physics_profile=selected_physics_profile,
+        requested_transition_policy_id=str(session_spec.get("transition_policy_id", "")).strip(),
+    )
+    if selected_transition_policy_error:
+        return selected_transition_policy_error
+    selected_transition_policy_id = str(selected_transition_policy.get("transition_policy_id", "")).strip() or "transition.policy.null"
+    selected_tier_taxonomy_id = str(selected_physics_profile.get("tier_taxonomy_id", "")).strip() or "tiers.null"
 
     _state_payload, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
@@ -1552,10 +1561,12 @@ def boot_session_spec(
         selected_law_profile, selected_lens_profile, selected_profile_error = _resolve_server_authoritative_profiles()
         if selected_profile_error:
             return {}, selected_profile_error
+        runtime_session_spec = dict(session_spec if isinstance(session_spec, dict) else {})
+        runtime_session_spec["transition_policy_id"] = str(selected_transition_policy_id)
         initialized = initialize_authoritative_runtime(
             repo_root=repo_root,
             save_id=save_id,
-            session_spec=session_spec,
+            session_spec=runtime_session_spec,
             lock_payload=lock_payload,
             universe_identity=universe_identity,
             universe_state=_state_payload,
@@ -1618,6 +1629,8 @@ def boot_session_spec(
         if str(initialized.get("result", "")) != "complete":
             return {}, initialized
         server_authoritative_runtime = dict(initialized.get("runtime") or {})
+        server_authoritative_runtime["selected_transition_policy"] = dict(selected_transition_policy)
+        server_authoritative_runtime["selected_tier_taxonomy_id"] = str(selected_tier_taxonomy_id)
         return server_authoritative_runtime, {}
 
     def _ensure_hybrid_runtime() -> Tuple[dict, Dict[str, object]]:
@@ -1627,10 +1640,12 @@ def boot_session_spec(
         selected_law_profile, selected_lens_profile, selected_profile_error = _resolve_server_authoritative_profiles()
         if selected_profile_error:
             return {}, selected_profile_error
+        runtime_session_spec = dict(session_spec if isinstance(session_spec, dict) else {})
+        runtime_session_spec["transition_policy_id"] = str(selected_transition_policy_id)
         initialized = initialize_hybrid_runtime(
             repo_root=repo_root,
             save_id=save_id,
-            session_spec=session_spec,
+            session_spec=runtime_session_spec,
             lock_payload=lock_payload,
             universe_identity=universe_identity,
             universe_state=_state_payload,
@@ -1695,6 +1710,8 @@ def boot_session_spec(
         if str(initialized.get("result", "")) != "complete":
             return {}, initialized
         hybrid_runtime = dict(initialized.get("runtime") or {})
+        hybrid_runtime["selected_transition_policy"] = dict(selected_transition_policy)
+        hybrid_runtime["selected_tier_taxonomy_id"] = str(selected_tier_taxonomy_id)
         return hybrid_runtime, {}
 
     def _execute_stage(stage_id: str) -> Dict[str, object]:
@@ -1715,6 +1732,10 @@ def boot_session_spec(
                 client_conservation_contract_set_id=identity_conservation_contract_set_id,
                 server_time_control_policy_id=str(selected_time_control_policy.get("time_control_policy_id", "")),
                 client_time_control_policy_id=str(selected_time_control_policy.get("time_control_policy_id", "")),
+                server_tier_taxonomy_id=str(selected_tier_taxonomy_id),
+                client_tier_taxonomy_id=str(selected_tier_taxonomy_id),
+                server_transition_policy_id=str(selected_transition_policy_id),
+                client_transition_policy_id=str(selected_transition_policy_id),
             )
             if str(handshake_result.get("result", "")) != "complete":
                 return handshake_result
@@ -2087,6 +2108,10 @@ def boot_session_spec(
         "client_conservation_contract_set_id": str(handshake_stage_result.get("client_conservation_contract_set_id", "")),
         "server_time_control_policy_id": str(handshake_stage_result.get("time_control_policy_id", "")),
         "client_time_control_policy_id": str(handshake_stage_result.get("client_time_control_policy_id", "")),
+        "server_tier_taxonomy_id": str(handshake_stage_result.get("tier_taxonomy_id", "")),
+        "client_tier_taxonomy_id": str(handshake_stage_result.get("client_tier_taxonomy_id", "")),
+        "server_transition_policy_id": str(handshake_stage_result.get("transition_policy_id", "")),
+        "client_transition_policy_id": str(handshake_stage_result.get("client_transition_policy_id", "")),
         "control_capabilities": {
             "camera_bind_allowed": bool(handshake_control_capabilities.get("camera_bind_allowed", False)),
             "possession_allowed": bool(handshake_control_capabilities.get("possession_allowed", False)),
@@ -2131,6 +2156,8 @@ def boot_session_spec(
         "dt_quantization_rule_id": str(selected_dt_quantization_rule.get("dt_rule_id", "")),
         "compaction_policy_id": str(selected_compaction_policy.get("compaction_policy_id", "")),
         "time_model_id": str(selected_time_model.get("time_model_id", "")),
+        "tier_taxonomy_id": str(selected_tier_taxonomy_id),
+        "transition_policy_id": str(selected_transition_policy_id),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "budget_policy_id": str(budget_policy.get("policy_id", "")),
         "fidelity_policy_id": str(fidelity_policy.get("policy_id", "")),
@@ -2205,6 +2232,8 @@ def boot_session_spec(
         "physics_profile_id": identity_physics_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
+        "tier_taxonomy_id": str(selected_tier_taxonomy_id),
+        "transition_policy_id": str(selected_transition_policy_id),
         "selected_lens_id": str(lens_profile.get("lens_id", "")),
         "perceived_model_hash": perceived_hash,
         "render_model_hash": render_hash,

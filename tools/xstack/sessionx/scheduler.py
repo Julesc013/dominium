@@ -497,6 +497,21 @@ def replay_intent_script_srz(
                 pending.append(str(pending_envelope.get("envelope_id", "")))
         shard["process_queue"] = sorted(set(token for token in pending if token))
         current_tick = simulation_tick(state)
+        transition_event_hash = canonical_sha256(
+            sorted(
+                (
+                    dict(item)
+                    for item in list((dict(state.get("performance_state") or {})).get("transition_events") or [])
+                    if isinstance(item, dict)
+                ),
+                key=lambda item: (
+                    int(item.get("tick", 0) or 0),
+                    str(item.get("shard_id", "")),
+                    str(item.get("region_id", "")),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        )
         tick_hash = per_tick_hash(
             universe_state=state,
             shards=[shard],
@@ -504,6 +519,7 @@ def replay_intent_script_srz(
             registry_hashes=dict(registry_hashes or {}),
             last_tick_hash=str(last_tick_hash),
             ledger_hash=str(tick_ledger_hash),
+            transition_event_hash=str(transition_event_hash),
         )
         shard["last_hash_anchor"] = tick_hash
         current_composite = composite_hash([shard])
