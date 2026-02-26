@@ -85,6 +85,32 @@
         },
         "notes": "Mission player defaults.",
         "extensions": {}
+      },
+      {
+        "parameter_bundle_id": "params.civ.nobirths",
+        "domain": "civilisation",
+        "deterministic_required": true,
+        "parameters": {
+          "civ.demography.birth_multiplier": 0.0,
+          "civ.demography.death_multiplier": 1.0,
+          "civ.demography.max_cohort_growth_per_interval": 0,
+          "civ.migration.delay_multiplier": 1.0
+        },
+        "notes": "CIV demography tuning for no-procreation worlds.",
+        "extensions": {}
+      },
+      {
+        "parameter_bundle_id": "params.civ.basic_births",
+        "domain": "civilisation",
+        "deterministic_required": true,
+        "parameters": {
+          "civ.demography.birth_multiplier": 1.0,
+          "civ.demography.death_multiplier": 1.0,
+          "civ.demography.max_cohort_growth_per_interval": 250,
+          "civ.migration.delay_multiplier": 1.0
+        },
+        "notes": "CIV demography tuning for basic abstract procreation.",
+        "extensions": {}
       }
     ],
     "extensions": {
