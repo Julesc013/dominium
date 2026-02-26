@@ -16,6 +16,7 @@ TARGETS = (
     "src/client/render/snapshot_capture.py",
     "src/client/render/renderers/null_renderer.py",
     "src/client/render/renderers/software_renderer.py",
+    "src/client/render/renderers/hw_renderer_gl.py",
     "tools/render/tool_render_capture.py",
     "tools/render/render_cli.py",
 )
