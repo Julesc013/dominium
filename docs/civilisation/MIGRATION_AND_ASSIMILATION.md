@@ -1,0 +1,33 @@
+Status: AUTHORITATIVE
+Last Reviewed: 2026-02-26
+Version: 1.0.0
+
+# Migration And Assimilation
+
+## Migration
+- Migration is executed through deterministic process mutation:
+  - `process.cohort_relocate`
+- Inputs:
+  - `cohort_id`
+  - destination (`site_id` or `region_id`)
+  - `migration_model_id`
+- Travel time is model-driven:
+  - instant migration is allowed by model
+  - delayed migration stores in-transit metadata and applies location update only on arrival tick
+
+## Deterministic Travel
+- Travel delay uses deterministic distance-band policy data.
+- No runtime pathfinding randomness is introduced.
+- Cross-shard migration follows SRZ ownership and deterministic refusal paths.
+
+## Assimilation
+- Assimilation remains order/process-driven:
+  - `order.assimilate`
+  - `process.affiliation_join`
+  - `process.affiliation_change_micro` (stub-safe)
+- CIV-4 does not add combat/trade/economy effects to assimilation.
+
+## Law And Policy Gating
+- Migration and assimilation require explicit law/entitlement allowances.
+- Missing or forbidden policy/model inputs produce deterministic refusal codes.
+
