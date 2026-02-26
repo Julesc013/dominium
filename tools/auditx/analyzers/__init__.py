@@ -71,6 +71,8 @@ from analyzers import e42_unaccounted_violation_smell
 from analyzers import e43_excessive_numeric_loss_smell
 from analyzers import e44_wall_clock_time_usage_smell
 from analyzers import e45_nondeterministic_checkpoint_smell
+from analyzers import e46_transition_thrash_smell
+from analyzers import e47_nondeterministic_arbitration_smell
 
 
 ANALYZERS = (
@@ -145,6 +147,8 @@ ANALYZERS = (
     e43_excessive_numeric_loss_smell,
     e44_wall_clock_time_usage_smell,
     e45_nondeterministic_checkpoint_smell,
+    e46_transition_thrash_smell,
+    e47_nondeterministic_arbitration_smell,
 )
 
 
