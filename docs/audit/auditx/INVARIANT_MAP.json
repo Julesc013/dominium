@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 637,
+      "finding_count": 638,
       "recommended_actions": {
-        "DOC_FIX": 637
+        "DOC_FIX": 638
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 637
+        "WARN": 638
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -162,6 +162,22 @@
         "WARN": 2
       }
     },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
     "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
       "finding_count": 6,
       "recommended_actions": {
@@ -196,6 +212,22 @@
       ],
       "severities": {
         "RISK": 6
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
@@ -300,6 +332,78 @@
       ],
       "severities": {
         "WARN": 1
+      }
+    },
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "RETIRE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "tools/auditx/analyzers/__init__.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "tools/auditx/analyzers/e42_unaccounted_violation_smell.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "tools/auditx/analyzers/e43_excessive_numeric_loss_smell.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "tools/xstack/sessionx/scheduler.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
+          "location": "tools/xstack/sessionx/srz.py"
+        }
+      ],
+      "severities": {
+        "WARN": 6
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 160,
+      "recommended_actions": {
+        "ADD_RULE": 160
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": "src/net/anti_cheat/anti_cheat_engine.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0002",
+          "location": "src/net/anti_cheat/anti_cheat_engine.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0003",
+          "location": "src/net/anti_cheat/anti_cheat_engine.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0004",
+          "location": "src/net/anti_cheat/anti_cheat_engine.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0005",
+          "location": "src/net/anti_cheat/anti_cheat_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 160
       }
     }
   },

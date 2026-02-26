@@ -1,13 +1,16 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 637,
+    "canon_drift": 638,
     "capability_bypass_smell": 1,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
     "derived_freshness": 11,
     "epistemics.hidden_state_leak_smell": 6,
+    "mode_flag_smell": 1,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
+    "reachability": 6,
+    "schema_usage": 160,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
@@ -15,34 +18,37 @@
   },
   "delta_over_time": {
     "category_frequency": {
-      "canon_drift": 637,
+      "canon_drift": 638,
       "capability_bypass_smell": 1,
       "civilisation.nondeterministic_cohort_mapping_smell": 1,
       "derived_freshness": 11,
       "epistemics.hidden_state_leak_smell": 6,
+      "mode_flag_smell": 1,
       "net.precision_leak_smell": 2,
       "net.truth_over_net_smell": 6,
+      "reachability": 6,
+      "schema_usage": 160,
       "semantic.capability_drift": 5,
       "semantic.derived_artifact_contract": 1,
       "semantic.schema_shadowing": 120,
       "semantic.workspace_contamination": 1
     },
     "severity_distribution": {
-      "RISK": 24,
-      "VIOLATION": 1,
-      "WARN": 766
+      "RISK": 184,
+      "VIOLATION": 2,
+      "WARN": 773
     }
   },
-  "findings_hash": "cdf41c1e437770361e0eda08d1a07d69072e56cc2cc29747920ffe3054b6bc87",
+  "findings_hash": "44be694a393f91f4edc7b95efeea3858e8afec54751edcf40e571dc040bca439",
   "history_reference": {
     "previous_distinct_hash": ""
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "RISK": 24,
-    "VIOLATION": 1,
-    "WARN": 766
+    "RISK": 184,
+    "VIOLATION": 2,
+    "WARN": 773
   },
-  "total_findings": 791
+  "total_findings": 959
 }
