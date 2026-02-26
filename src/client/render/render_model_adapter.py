@@ -165,6 +165,55 @@ def _overlay_rows(perceived_model: dict, view_mode_id: str) -> Tuple[List[dict],
     return overlays, materials
 
 
+def _interaction_overlay_rows(perceived_model: dict) -> Tuple[List[dict], List[dict]]:
+    interaction = dict((dict(perceived_model or {})).get("interaction") or {})
+    inspection = dict(interaction.get("inspection_overlays") or {})
+    rows = list(inspection.get("renderables") or [])
+    materials = list(inspection.get("materials") or [])
+    normalized_overlays = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("renderable_id", ""))):
+        semantic_id = str(row.get("semantic_id", "")).strip() or str(row.get("renderable_id", "")).strip()
+        if not semantic_id:
+            continue
+        normalized_overlays.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": str(row.get("renderable_id", "")).strip() or _stable_renderable_id(semantic_id),
+                "semantic_id": semantic_id,
+                "primitive_id": str(row.get("primitive_id", "")).strip() or "prim.glyph.label",
+                "transform": _normalize_transform(dict(row)),
+                "material_id": str(row.get("material_id", "")).strip() or "mat.overlay.{}".format(semantic_id),
+                "layer_tags": _normalize_layers(list(row.get("layer_tags") or ["overlay", "ui"])),
+                "label": row.get("label"),
+                "lod_hint": str(row.get("lod_hint", "")).strip() or None,
+                "flags": {
+                    "selectable": bool(dict(row.get("flags") or {}).get("selectable", False)),
+                    "highlighted": bool(dict(row.get("flags") or {}).get("highlighted", False)),
+                },
+                "extensions": dict(row.get("extensions") or {}),
+            }
+        )
+    normalized_materials = []
+    for row in sorted((item for item in materials if isinstance(item, dict)), key=lambda item: str(item.get("material_id", ""))):
+        material_id = str(row.get("material_id", "")).strip()
+        if not material_id:
+            continue
+        normalized_materials.append(
+            {
+                "schema_version": "1.0.0",
+                "material_id": material_id,
+                "base_color": dict(row.get("base_color") or {"r": 220, "g": 220, "b": 220}),
+                "roughness": _to_int(row.get("roughness", 400), 400),
+                "metallic": _to_int(row.get("metallic", 0), 0),
+                "emission": row.get("emission"),
+                "transparency": row.get("transparency"),
+                "pattern_id": row.get("pattern_id"),
+                "extensions": dict(row.get("extensions") or {}),
+            }
+        )
+    return normalized_overlays, normalized_materials
+
+
 def build_render_model(
     perceived_model: dict,
     registry_payloads: Dict[str, dict] | None = None,
@@ -218,7 +267,12 @@ def build_render_model(
         )
 
     overlays, overlay_materials = _overlay_rows(perceived_model=perceived, view_mode_id=view_mode_id)
-    for row in overlay_materials:
+    interaction_overlays, interaction_overlay_materials = _interaction_overlay_rows(perceived_model=perceived)
+    overlays = sorted(
+        list(overlays) + list(interaction_overlays),
+        key=lambda row: (str(row.get("semantic_id", "")), ",".join(list(row.get("layer_tags") or []))),
+    )
+    for row in list(overlay_materials) + list(interaction_overlay_materials):
         materials_by_id[str(row.get("material_id", ""))] = dict(row)
 
     renderables = sorted(

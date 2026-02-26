@@ -7,6 +7,7 @@ from typing import Dict, List
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .affordance_generator import build_affordance_list
+from .inspection_overlays import build_inspection_overlays
 from .preview_generator import generate_interaction_preview
 
 
@@ -309,12 +310,35 @@ def execute_affordance(
         out["intent"] = intent
         out["envelope"] = envelope
         return out
-    return {
+    interaction_overlay_payload = {}
+    if str(intent.get("process_id", "")).strip() == "process.inspect_generate_snapshot":
+        overlay_result = build_inspection_overlays(
+            perceived_model={
+                "time_state": {"tick": int(max(0, _to_int(execution.get("tick", tick), tick)))},
+                "entities": dict((dict(parameters or {})).get("entities") or {}),
+                "populations": dict((dict(parameters or {})).get("populations") or {}),
+                "truth_overlay": {
+                    "state_hash_anchor": str(execution.get("state_hash_anchor", "")),
+                },
+            },
+            target_semantic_id=str((dict(affordance_row or {})).get("target_semantic_id", "")).strip(),
+            authority_context=dict(authority_context or {}),
+            inspection_snapshot=dict(execution.get("inspection_snapshot") or {}),
+            overlay_runtime=dict(policy_context or {}),
+            requested_cost_units=int(max(1, _to_int(execution.get("inspection_cost_units", 1), 1))),
+        )
+        if str(overlay_result.get("result", "")) == "complete":
+            interaction_overlay_payload = dict(overlay_result.get("inspection_overlays") or {})
+    out = {
         "result": "complete",
         "intent": intent,
         "envelope": envelope,
         "execution": dict(execution),
     }
+    if interaction_overlay_payload:
+        out["inspection_overlays"] = interaction_overlay_payload
+        out["perceived_interaction_patch"] = {"inspection_overlays": interaction_overlay_payload}
+    return out
 
 
 def run_interaction_command(

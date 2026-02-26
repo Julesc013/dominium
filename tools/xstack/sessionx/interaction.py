@@ -6,6 +6,7 @@ from typing import Dict
 
 from src.client.interaction import (
     build_affordance_list as _build_affordance_list,
+    build_inspection_overlays as _build_inspection_overlays,
     execute_affordance as _execute_affordance,
     generate_interaction_preview as _generate_interaction_preview,
     run_interaction_command as _run_interaction_command,
@@ -119,4 +120,23 @@ def generate_interaction_preview(
         parameters=dict(parameters or {}),
         preview_runtime=dict(preview_runtime or {}),
         repo_root=str(repo_root or ""),
+    )
+
+
+def build_inspection_overlays(
+    *,
+    perceived_model: dict,
+    target_semantic_id: str,
+    authority_context: dict | None = None,
+    inspection_snapshot: dict | None = None,
+    overlay_runtime: dict | None = None,
+    requested_cost_units: int = 1,
+) -> Dict[str, object]:
+    return _build_inspection_overlays(
+        perceived_model=dict(perceived_model or {}),
+        target_semantic_id=str(target_semantic_id or ""),
+        authority_context=dict(authority_context or {}),
+        inspection_snapshot=dict(inspection_snapshot or {}),
+        overlay_runtime=dict(overlay_runtime or {}),
+        requested_cost_units=int(requested_cost_units),
     )
