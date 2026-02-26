@@ -83,10 +83,32 @@ _NULL_PRECISION_POLICY = {
 
 _NULL_TIER_TAXONOMY = {
     "schema_version": "1.0.0",
-    "taxonomy_id": "default_minimal",
+    "taxonomy_id": "tiers.null",
     "tiers": ["macro", "render"],
-    "collapse_required_invariants": ["inv.epistemic_invariance"],
-    "expand_redaction_rules": ["redaction.default"],
+    "allowed_transitions": [
+        {"from_tier": "macro", "to_tier": "render"},
+        {"from_tier": "render", "to_tier": "macro"},
+    ],
+    "default_transition_policy_id": "transition.policy.null",
+    "extensions": {},
+}
+
+_NULL_TRANSITION_POLICY = {
+    "schema_version": "1.0.0",
+    "transition_policy_id": "transition.policy.null",
+    "description": "Null deterministic transition policy for zero-pack boot.",
+    "max_micro_regions": 0,
+    "max_micro_entities": 0,
+    "hysteresis_rules": {"min_transition_interval_ticks": 0},
+    "arbitration_rule_id": "arb.equal_share",
+    "degrade_order": ["fine", "medium", "coarse"],
+    "refuse_thresholds": {"max_forced_micro_regions": 0},
+    "extensions": {},
+}
+
+_NULL_ARBITRATION_RULE = {
+    "rule_id": "arb.equal_share",
+    "description": "Deterministic equal-share arbitration for null profile.",
     "extensions": {},
 }
 
@@ -106,18 +128,20 @@ _NULL_PHYSICS_PROFILE = {
     "conservation_contract_set_id": "contracts.null",
     "allowed_exception_types": [],
     "numeric_precision_policy_id": "default_null",
-    "tier_taxonomy_id": "default_minimal",
+    "tier_taxonomy_id": "tiers.null",
     "time_model_id": "default_single_tick",
     "boundary_model_id": "procedural_infinite",
     "error_budget": {},
     "version_introduced": "1.0.0",
     "deprecated": False,
-    "extensions": {},
+    "extensions": {
+        "allowed_transition_policy_ids": ["transition.policy.null"],
+        "default_transition_policy_id": "transition.policy.null",
+    },
 }
 
 _NULL_QUANTITIES = [
     {
-        "schema_version": "1.0.0",
         "quantity_id": "quantity.mass_energy_total",
         "description": "Null profile combined mass-energy channel.",
         "numeric_type": "fixed_point",
@@ -125,7 +149,6 @@ _NULL_QUANTITIES = [
         "extensions": {},
     },
     {
-        "schema_version": "1.0.0",
         "quantity_id": "quantity.charge_total",
         "description": "Null profile aggregate charge channel.",
         "numeric_type": "fixed_point",
@@ -133,7 +156,6 @@ _NULL_QUANTITIES = [
         "extensions": {},
     },
     {
-        "schema_version": "1.0.0",
         "quantity_id": "quantity.entropy_metric",
         "description": "Null profile tracked entropy metric channel.",
         "numeric_type": "fixed_point",
@@ -141,7 +163,6 @@ _NULL_QUANTITIES = [
         "extensions": {},
     },
     {
-        "schema_version": "1.0.0",
         "quantity_id": "quantity.ledger_balance",
         "description": "Null profile tracked ledger balance channel.",
         "numeric_type": "fixed_point",
@@ -184,7 +205,6 @@ _NULL_EXCEPTION_TYPES = [
 ]
 
 _NULL_CONSERVATION_CONTRACT_SET = {
-    "schema_version": "1.0.0",
     "contract_set_id": "contracts.null",
     "description": "Null boot conservation contract set.",
     "quantities": [
@@ -420,6 +440,8 @@ _NULL_REGISTRY_LIST_KEYS = {
     "order_type_registry": "order_types",
     "role_registry": "roles",
     "institution_type_registry": "institution_types",
+    "transition_policy_registry": "policies",
+    "arbitration_rule_registry": "rules",
     "demography_policy_registry": "policies",
     "death_model_registry": "death_models",
     "birth_model_registry": "birth_models",
@@ -510,6 +532,8 @@ def default_null_runtime_registries() -> Dict[str, dict]:
     payloads["compaction_policy_registry"]["policies"] = [copy.deepcopy(_NULL_COMPACTION_POLICY)]
     payloads["numeric_precision_policy_registry"]["precision_policies"] = [copy.deepcopy(_NULL_PRECISION_POLICY)]
     payloads["tier_taxonomy_registry"]["taxonomies"] = [copy.deepcopy(_NULL_TIER_TAXONOMY)]
+    payloads["transition_policy_registry"]["policies"] = [copy.deepcopy(_NULL_TRANSITION_POLICY)]
+    payloads["arbitration_rule_registry"]["rules"] = [copy.deepcopy(_NULL_ARBITRATION_RULE)]
     payloads["boundary_model_registry"]["boundary_models"] = [copy.deepcopy(_NULL_BOUNDARY_MODEL)]
     payloads["quantity_registry"]["quantities"] = [copy.deepcopy(row) for row in _NULL_QUANTITIES]
     payloads["exception_type_registry"]["exception_types"] = [copy.deepcopy(row) for row in _NULL_EXCEPTION_TYPES]

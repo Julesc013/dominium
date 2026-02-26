@@ -1,0 +1,71 @@
+{
+  "schema_id": "dominium.registry.transition_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.transition_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "transition_policy_id": "transition.policy.null",
+        "description": "Null deterministic transition policy for zero-pack boot.",
+        "max_micro_regions": 0,
+        "max_micro_entities": 0,
+        "hysteresis_rules": {
+          "min_transition_interval_ticks": 0
+        },
+        "arbitration_rule_id": "arb.equal_share",
+        "degrade_order": [
+          "fine",
+          "medium",
+          "coarse"
+        ],
+        "refuse_thresholds": {
+          "max_forced_micro_regions": 0
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "transition_policy_id": "transition.policy.default_realistic",
+        "description": "Default deterministic transition policy for realistic profile sessions.",
+        "max_micro_regions": 128,
+        "max_micro_entities": 100000,
+        "hysteresis_rules": {
+          "min_transition_interval_ticks": 0
+        },
+        "arbitration_rule_id": "arb.priority_by_distance",
+        "degrade_order": [
+          "fine",
+          "medium",
+          "coarse"
+        ],
+        "refuse_thresholds": {
+          "max_forced_micro_regions": 256
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "transition_policy_id": "transition.policy.rank_strict",
+        "description": "Ranked deterministic transition policy with conservative micro activation.",
+        "max_micro_regions": 64,
+        "max_micro_entities": 50000,
+        "hysteresis_rules": {
+          "min_transition_interval_ticks": 2
+        },
+        "arbitration_rule_id": "arb.server_authoritative_weighted",
+        "degrade_order": [
+          "fine",
+          "medium",
+          "coarse"
+        ],
+        "refuse_thresholds": {
+          "max_forced_micro_regions": 64
+        },
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

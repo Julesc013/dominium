@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.15.0"
+COMPILER_VERSION = "1.16.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -19,6 +19,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "time_model_registry": "time_model.registry.json",
     "numeric_precision_policy_registry": "numeric_precision_policy.registry.json",
     "tier_taxonomy_registry": "tier_taxonomy.registry.json",
+    "transition_policy_registry": "transition_policy.registry.json",
+    "arbitration_rule_registry": "arbitration_rule.registry.json",
     "boundary_model_registry": "boundary_model.registry.json",
     "domain_registry": "domain.registry.json",
     "law_registry": "law.registry.json",

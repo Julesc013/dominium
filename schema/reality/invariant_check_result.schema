@@ -1,0 +1,22 @@
+SCHEMA: reality/invariant_check_result.schema
+schema_id: dominium.schema.reality.invariant_check_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic invariant check result rows emitted at tier transition boundaries.
+
+REQUIRED SHAPE:
+record invariant_check_result
+  required:
+    - schema_version: semver
+    - check_id: id
+    - domain_id: id
+    - invariant_id: id
+    - status: enum(pass|warn|fail)
+    - measured_value: fixed_point
+    - tolerance: fixed_point
+    - extensions: map
+
+INVARIANTS:
+- Check identifiers and values must be replay-stable.

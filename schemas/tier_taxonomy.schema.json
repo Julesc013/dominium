@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic fidelity tier taxonomy contract.",
   "x-doc-ref": [
-    "docs/reality/UNIVERSE_PHYSICS_PROFILE.md",
+    "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md",
     "docs/canon/constitution_v1.md"
   ],
   "type": "object",
@@ -12,8 +12,8 @@
     "schema_version",
     "taxonomy_id",
     "tiers",
-    "collapse_required_invariants",
-    "expand_redaction_rules",
+    "allowed_transitions",
+    "default_transition_policy_id",
     "extensions"
   ],
   "additionalProperties": false,
@@ -35,21 +35,30 @@
       },
       "uniqueItems": true
     },
-    "collapse_required_invariants": {
+    "allowed_transitions": {
       "type": "array",
       "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "uniqueItems": true
+        "type": "object",
+        "required": [
+          "from_tier",
+          "to_tier"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "from_tier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to_tier": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
-    "expand_redaction_rules": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "uniqueItems": true
+    "default_transition_policy_id": {
+      "type": "string",
+      "minLength": 1
     },
     "extensions": {
       "type": "object",
@@ -59,17 +68,40 @@
   "examples": [
     {
       "schema_version": "1.0.0",
-      "taxonomy_id": "default_minimal",
+      "taxonomy_id": "tiers.standard",
       "tiers": [
         "macro",
+        "meso",
+        "micro",
         "render"
       ],
-      "collapse_required_invariants": [
-        "inv.population_conservation"
+      "allowed_transitions": [
+        {
+          "from_tier": "macro",
+          "to_tier": "meso"
+        },
+        {
+          "from_tier": "macro",
+          "to_tier": "micro"
+        },
+        {
+          "from_tier": "meso",
+          "to_tier": "micro"
+        },
+        {
+          "from_tier": "micro",
+          "to_tier": "meso"
+        },
+        {
+          "from_tier": "micro",
+          "to_tier": "macro"
+        },
+        {
+          "from_tier": "meso",
+          "to_tier": "macro"
+        }
       ],
-      "expand_redaction_rules": [
-        "redact.identity.default"
-      ],
+      "default_transition_policy_id": "transition.policy.default_realistic",
       "extensions": {}
     }
   ]

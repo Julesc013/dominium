@@ -18,6 +18,8 @@
     "compaction_policy_registry_hash",
     "numeric_precision_policy_registry_hash",
     "tier_taxonomy_registry_hash",
+    "transition_policy_registry_hash",
+    "arbitration_rule_registry_hash",
     "boundary_model_registry_hash",
     "domain_registry_hash",
     "law_registry_hash",
@@ -102,6 +104,14 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "tier_taxonomy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "transition_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "arbitration_rule_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
@@ -325,6 +335,8 @@
       "compaction_policy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "numeric_precision_policy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "tier_taxonomy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "transition_policy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "arbitration_rule_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "boundary_model_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "domain_registry_hash": "6f2e8716f2c1d7f9cf8714ac8c0bf8bb99295aa6254e6177cb1081b754adfd88",
       "law_registry_hash": "ccf4d2cc714f257c5f161f64e59ff3b496f6a5f6c533e0f8f40261f8fbc14165",

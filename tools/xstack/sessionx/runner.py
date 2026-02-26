@@ -43,6 +43,8 @@ REGISTRY_HASH_KEY_MAP = {
     "time_model_registry_hash": "time_model_registry",
     "numeric_precision_policy_registry_hash": "numeric_precision_policy_registry",
     "tier_taxonomy_registry_hash": "tier_taxonomy_registry",
+    "transition_policy_registry_hash": "transition_policy_registry",
+    "arbitration_rule_registry_hash": "arbitration_rule_registry",
     "boundary_model_registry_hash": "boundary_model_registry",
     "conservation_contract_set_registry_hash": "conservation_contract_set_registry",
     "quantity_registry_hash": "quantity_registry",
@@ -106,6 +108,8 @@ REGISTRY_FILE_MAP = {
     "time_model_registry_hash": "time_model.registry.json",
     "numeric_precision_policy_registry_hash": "numeric_precision_policy.registry.json",
     "tier_taxonomy_registry_hash": "tier_taxonomy.registry.json",
+    "transition_policy_registry_hash": "transition_policy.registry.json",
+    "arbitration_rule_registry_hash": "arbitration_rule.registry.json",
     "boundary_model_registry_hash": "boundary_model.registry.json",
     "conservation_contract_set_registry_hash": "conservation_contract_set.registry.json",
     "quantity_registry_hash": "quantity.registry.json",
@@ -893,6 +897,22 @@ def boot_session_spec(
     )
     if tier_taxonomy_registry_error:
         return tier_taxonomy_registry_error
+    transition_policy_registry, transition_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["transition_policy_registry_hash"],
+        expected_hash=str(registries.get("transition_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if transition_policy_registry_error:
+        return transition_policy_registry_error
+    arbitration_rule_registry, arbitration_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["arbitration_rule_registry_hash"],
+        expected_hash=str(registries.get("arbitration_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if arbitration_rule_registry_error:
+        return arbitration_rule_registry_error
     boundary_model_registry, boundary_model_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["boundary_model_registry_hash"],
@@ -1317,6 +1337,19 @@ def boot_session_spec(
     )
     if selected_physics_profile_error:
         return selected_physics_profile_error
+    previous_physics_profile_id = str((previous_run_meta or {}).get("physics_profile_id", "")).strip()
+    if previous_physics_profile_id and previous_physics_profile_id != identity_physics_profile_id:
+        return refusal(
+            "refusal.physics_profile_mismatch",
+            "physics_profile_id does not match the previously booted universe lineage for this save",
+            "Create a new save id for a new physics lineage or restore the original identity.",
+            {
+                "save_id": save_id,
+                "previous_physics_profile_id": previous_physics_profile_id,
+                "identity_physics_profile_id": identity_physics_profile_id,
+            },
+            "$.physics_profile_id",
+        )
     identity_conservation_contract_set_id = (
         str(selected_physics_profile.get("conservation_contract_set_id", "")).strip() or "contracts.null"
     )
@@ -1337,19 +1370,6 @@ def boot_session_spec(
     )
     if selected_time_control_policy_error:
         return selected_time_control_policy_error
-    previous_physics_profile_id = str((previous_run_meta or {}).get("physics_profile_id", "")).strip()
-    if previous_physics_profile_id and previous_physics_profile_id != identity_physics_profile_id:
-        return refusal(
-            "refusal.physics_profile_mismatch",
-            "physics_profile_id does not match the previously booted universe lineage for this save",
-            "Create a new save id for a new physics lineage or restore the original identity.",
-            {
-                "save_id": save_id,
-                "previous_physics_profile_id": previous_physics_profile_id,
-                "identity_physics_profile_id": identity_physics_profile_id,
-            },
-            "$.physics_profile_id",
-        )
 
     _state_payload, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
@@ -1485,6 +1505,8 @@ def boot_session_spec(
                 "compaction_policy_registry": compaction_policy_registry,
                 "numeric_precision_policy_registry": numeric_precision_policy_registry,
                 "tier_taxonomy_registry": tier_taxonomy_registry,
+                "transition_policy_registry": transition_policy_registry,
+                "arbitration_rule_registry": arbitration_rule_registry,
                 "boundary_model_registry": boundary_model_registry,
                 "conservation_contract_set_registry": conservation_contract_set_registry,
                 "quantity_registry": quantity_registry,
@@ -1561,6 +1583,8 @@ def boot_session_spec(
                 "compaction_policy_registry": compaction_policy_registry,
                 "numeric_precision_policy_registry": numeric_precision_policy_registry,
                 "tier_taxonomy_registry": tier_taxonomy_registry,
+                "transition_policy_registry": transition_policy_registry,
+                "arbitration_rule_registry": arbitration_rule_registry,
                 "boundary_model_registry": boundary_model_registry,
                 "conservation_contract_set_registry": conservation_contract_set_registry,
                 "quantity_registry": quantity_registry,
@@ -1902,6 +1926,8 @@ def boot_session_spec(
             "compaction_policy_registry": compaction_policy_registry,
             "numeric_precision_policy_registry": numeric_precision_policy_registry,
             "tier_taxonomy_registry": tier_taxonomy_registry,
+            "transition_policy_registry": transition_policy_registry,
+            "arbitration_rule_registry": arbitration_rule_registry,
             "boundary_model_registry": boundary_model_registry,
             "conservation_contract_set_registry": conservation_contract_set_registry,
             "quantity_registry": quantity_registry,

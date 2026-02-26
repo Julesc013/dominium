@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Invariant Check Result Schema",
+  "version": "1.0.0",
+  "description": "Deterministic transition invariant check result row.",
+  "x-doc-ref": [
+    "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "check_id",
+    "domain_id",
+    "invariant_id",
+    "status",
+    "measured_value",
+    "tolerance",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "check_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "invariant_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "warn",
+        "fail"
+      ]
+    },
+    "measured_value": {
+      "type": "integer"
+    },
+    "tolerance": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "check_id": "check.region.earth.mass_energy",
+      "domain_id": "domain.reality",
+      "invariant_id": "inv.conservation.mass_energy_total",
+      "status": "pass",
+      "measured_value": 0,
+      "tolerance": 0,
+      "extensions": {}
+    }
+  ]
+}
