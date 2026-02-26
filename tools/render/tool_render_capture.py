@@ -32,6 +32,7 @@ def main() -> int:
     parser.add_argument("--out", default="", help="Output directory root for snapshots.")
     parser.add_argument("--width", type=int, default=0)
     parser.add_argument("--height", type=int, default=0)
+    parser.add_argument("--wireframe", action="store_true")
     args = parser.parse_args()
 
     repo_root = _repo_root(args.repo_root)
@@ -58,6 +59,7 @@ def main() -> int:
         out_dir=out_root,
         width=int(max(0, int(args.width))),
         height=int(max(0, int(args.height))),
+        wireframe=bool(args.wireframe),
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if str(result.get("result", "")) == "complete" else 1

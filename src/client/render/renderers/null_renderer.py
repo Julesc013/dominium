@@ -73,7 +73,8 @@ def build_frame_summary(render_model: dict) -> Tuple[dict, dict]:
         primitive_counts[primitive_type] = int(primitive_counts.get(primitive_type, 0)) + 1
         for layer in _sorted_strings(row.get("layer_tags") or []):
             layer_counts[layer] = int(layer_counts.get(layer, 0)) + 1
-        label = str(row.get("label", "")).strip()
+        label_value = row.get("label")
+        label = str(label_value).strip() if isinstance(label_value, str) else ""
         if label:
             label_count += 1
 
