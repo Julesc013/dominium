@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Event Stream Index Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic MAT-8 event stream index artifact.",
+  "x-doc-ref": [
+    "docs/materials/REENACTMENT_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "stream_id",
+    "target_id",
+    "tick_range",
+    "event_ids",
+    "stream_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "stream_id": {
+      "type": "string"
+    },
+    "target_id": {
+      "type": "string"
+    },
+    "tick_range": {
+      "type": "object",
+      "required": [
+        "start_tick",
+        "end_tick"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_tick": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "event_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stream_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

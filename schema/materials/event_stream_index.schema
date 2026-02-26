@@ -1,0 +1,22 @@
+SCHEMA: materials/event_stream_index.schema
+schema_id: dominium.schema.materials.event_stream_index
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic per-target event stream indices for replay/reenactment.
+
+REQUIRED SHAPE:
+record event_stream_index
+  required:
+    - schema_version: semver
+    - stream_id: id
+    - target_id: id
+    - tick_range: map(start_tick:u64,end_tick:u64)
+    - event_ids: list[id]
+    - stream_hash: hash64
+    - extensions: map
+
+INVARIANTS:
+- event_ids are ordered deterministically by tick then event id.
+- stream_hash is canonical over ordered event ids and tick range.

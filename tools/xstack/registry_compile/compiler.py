@@ -1605,6 +1605,8 @@ def _civilisation_registry_rows(
     List[dict],
     List[dict],
     List[dict],
+    List[dict],
+    List[dict],
 ]:
     errors: List[dict] = []
 
@@ -1616,7 +1618,7 @@ def _civilisation_registry_rows(
         expected_entry_key="governance_types",
     )
     if governance_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], governance_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], governance_load_errors
 
     governance_rows: List[dict] = []
     governance_seen = set()
@@ -1669,7 +1671,7 @@ def _civilisation_registry_rows(
         expected_entry_key="states",
     )
     if diplomatic_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], diplomatic_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], diplomatic_load_errors
 
     diplomatic_rows: List[dict] = []
     diplomatic_seen = set()
@@ -1722,7 +1724,7 @@ def _civilisation_registry_rows(
         expected_entry_key="policies",
     )
     if cohort_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], cohort_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], cohort_load_errors
 
     cohort_rows: List[dict] = []
     cohort_seen = set()
@@ -1797,7 +1799,7 @@ def _civilisation_registry_rows(
         expected_entry_key="order_types",
     )
     if order_type_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], order_type_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], order_type_load_errors
 
     order_type_rows: List[dict] = []
     order_type_seen = set()
@@ -1880,7 +1882,7 @@ def _civilisation_registry_rows(
         expected_entry_key="roles",
     )
     if role_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], role_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], role_load_errors
 
     role_rows: List[dict] = []
     role_seen = set()
@@ -1935,7 +1937,7 @@ def _civilisation_registry_rows(
         expected_entry_key="institution_types",
     )
     if institution_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], institution_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], institution_load_errors
 
     role_id_set = set(str(row.get("role_id", "")).strip() for row in role_rows)
     institution_rows: List[dict] = []
@@ -1997,6 +1999,157 @@ def _civilisation_registry_rows(
         )
     institution_rows = sorted(institution_rows, key=lambda row: str(row.get("institution_type_id", "")))
 
+    _commitment_type_record, commitment_type_rows_raw, commitment_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/commitment_type_registry.json",
+        expected_schema_id="dominium.registry.commitment_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="commitment_types",
+    )
+    if commitment_type_load_errors:
+        return [], [], [], [], [], [], [], [], [], [], [], [], commitment_type_load_errors
+
+    _causality_record, causality_rows_raw, causality_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/causality_strictness_registry.json",
+        expected_schema_id="dominium.registry.causality_strictness_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="strictness_levels",
+    )
+    if causality_load_errors:
+        return [], [], [], [], [], [], [], [], [], [], [], [], causality_load_errors
+
+    causality_rows: List[dict] = []
+    causality_seen = set()
+    for entry in sorted(causality_rows_raw, key=lambda row: str((row or {}).get("strictness_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_causality_strictness_entry",
+                    "message": "causality strictness entry must be object",
+                    "path": "$.strictness_levels",
+                }
+            )
+            continue
+        strictness_id = str(entry.get("strictness_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        commitments_required_for = entry.get("commitments_required_for")
+        extensions = entry.get("extensions")
+        if (
+            not strictness_id
+            or not description
+            or not isinstance(commitments_required_for, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_causality_strictness_entry",
+                    "message": "causality strictness '{}' missing required fields".format(strictness_id or "<missing>"),
+                    "path": "$.strictness_levels",
+                }
+            )
+            continue
+        if strictness_id in causality_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_causality_strictness_id",
+                    "message": "duplicate strictness_id '{}'".format(strictness_id),
+                    "path": "$.strictness_levels.strictness_id",
+                }
+            )
+            continue
+        causality_seen.add(strictness_id)
+        causality_rows.append(
+            {
+                "strictness_id": strictness_id,
+                "description": description,
+                "commitments_required_for": _sorted_unique_strings(commitments_required_for),
+                "extensions": dict(extensions),
+            }
+        )
+    causality_rows = sorted(causality_rows, key=lambda row: str(row.get("strictness_id", "")))
+
+    causality_id_set = set(str(row.get("strictness_id", "")).strip() for row in causality_rows)
+    commitment_type_rows: List[dict] = []
+    commitment_type_seen = set()
+    for entry in sorted(commitment_type_rows_raw, key=lambda row: str((row or {}).get("commitment_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_commitment_type_entry",
+                    "message": "commitment type entry must be object",
+                    "path": "$.commitment_types",
+                }
+            )
+            continue
+        commitment_type_id = str(entry.get("commitment_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        required_entitlements = entry.get("required_entitlements")
+        produces_event_type_ids = entry.get("produces_event_type_ids")
+        strictness_requirements = entry.get("strictness_requirements")
+        extensions = entry.get("extensions")
+        if (
+            not commitment_type_id
+            or not description
+            or not isinstance(required_entitlements, list)
+            or not isinstance(produces_event_type_ids, list)
+            or not isinstance(strictness_requirements, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_commitment_type_entry",
+                    "message": "commitment type '{}' missing required fields".format(commitment_type_id or "<missing>"),
+                    "path": "$.commitment_types",
+                }
+            )
+            continue
+        if commitment_type_id in commitment_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_commitment_type_id",
+                    "message": "duplicate commitment_type_id '{}'".format(commitment_type_id),
+                    "path": "$.commitment_types.commitment_type_id",
+                }
+            )
+            continue
+        normalized_requirements = _sorted_unique_strings(strictness_requirements)
+        if not normalized_requirements:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_commitment_type_strictness",
+                    "message": "commitment type '{}' must declare strictness_requirements".format(commitment_type_id),
+                    "path": "$.commitment_types.strictness_requirements",
+                }
+            )
+            continue
+        missing_strictness = [token for token in normalized_requirements if token not in causality_id_set]
+        if missing_strictness:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.commitment_type_strictness_missing",
+                    "message": "commitment type '{}' references unknown strictness ids: {}".format(
+                        commitment_type_id,
+                        ",".join(sorted(missing_strictness)),
+                    ),
+                    "path": "$.commitment_types.strictness_requirements",
+                }
+            )
+            continue
+        commitment_type_seen.add(commitment_type_id)
+        commitment_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "commitment_type_id": commitment_type_id,
+                "description": description,
+                "required_entitlements": _sorted_unique_strings(required_entitlements),
+                "produces_event_type_ids": _sorted_unique_strings(produces_event_type_ids),
+                "strictness_requirements": normalized_requirements,
+                "extensions": dict(extensions),
+            }
+        )
+    commitment_type_rows = sorted(commitment_type_rows, key=lambda row: str(row.get("commitment_type_id", "")))
+
     _demography_policy_record, demography_policy_rows_raw, demography_policy_load_errors = _load_registry_record(
         repo_root=repo_root,
         registry_rel_path="data/registries/demography_policy_registry.json",
@@ -2005,7 +2158,7 @@ def _civilisation_registry_rows(
         expected_entry_key="policies",
     )
     if demography_policy_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], demography_policy_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], demography_policy_load_errors
 
     _death_model_record, death_model_rows_raw, death_model_load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -2015,7 +2168,7 @@ def _civilisation_registry_rows(
         expected_entry_key="death_models",
     )
     if death_model_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], death_model_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], death_model_load_errors
 
     death_model_rows: List[dict] = []
     death_model_seen = set()
@@ -2081,7 +2234,7 @@ def _civilisation_registry_rows(
         expected_entry_key="birth_models",
     )
     if birth_model_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], birth_model_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], birth_model_load_errors
 
     birth_model_rows: List[dict] = []
     birth_model_seen = set()
@@ -2147,7 +2300,7 @@ def _civilisation_registry_rows(
         expected_entry_key="migration_models",
     )
     if migration_model_load_errors:
-        return [], [], [], [], [], [], [], [], [], [], migration_model_load_errors
+        return [], [], [], [], [], [], [], [], [], [], [], [], migration_model_load_errors
 
     migration_model_rows: List[dict] = []
     migration_model_seen = set()
@@ -2298,6 +2451,8 @@ def _civilisation_registry_rows(
         order_type_rows,
         role_rows,
         institution_rows,
+        commitment_type_rows,
+        causality_rows,
         demography_policy_rows,
         death_model_rows,
         birth_model_rows,
@@ -6220,6 +6375,8 @@ def compile_bundle(
         order_type_rows,
         role_rows,
         institution_type_rows,
+        commitment_type_rows,
+        causality_strictness_rows,
         demography_policy_rows,
         death_model_rows,
         birth_model_rows,
@@ -6674,6 +6831,20 @@ def compile_bundle(
             "institution_types": institution_type_rows,
         }
     )
+    commitment_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "commitment_types": commitment_type_rows,
+        }
+    )
+    causality_strictness_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "strictness_levels": causality_strictness_rows,
+        }
+    )
     demography_policy_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -6977,6 +7148,8 @@ def compile_bundle(
         "order_type_registry": ("order_type_registry", order_type_payload),
         "role_registry": ("role_registry", role_payload),
         "institution_type_registry": ("institution_type_registry", institution_type_payload),
+        "commitment_type_registry": ("commitment_type_registry", commitment_type_payload),
+        "causality_strictness_registry": ("causality_strictness_registry", causality_strictness_payload),
         "demography_policy_registry": ("demography_policy_registry", demography_policy_payload),
         "death_model_registry": ("death_model_registry", death_model_payload),
         "birth_model_registry": ("birth_model_registry", birth_model_payload),
@@ -7054,6 +7227,8 @@ def compile_bundle(
         "order_type_registry",
         "role_registry",
         "institution_type_registry",
+        "commitment_type_registry",
+        "causality_strictness_registry",
         "demography_policy_registry",
         "death_model_registry",
         "birth_model_registry",
@@ -7148,6 +7323,8 @@ def compile_bundle(
             "order_type_registry_hash": registry_hashes["order_type_registry_hash"],
             "role_registry_hash": registry_hashes["role_registry_hash"],
             "institution_type_registry_hash": registry_hashes["institution_type_registry_hash"],
+            "commitment_type_registry_hash": registry_hashes["commitment_type_registry_hash"],
+            "causality_strictness_registry_hash": registry_hashes["causality_strictness_registry_hash"],
             "demography_policy_registry_hash": registry_hashes["demography_policy_registry_hash"],
             "death_model_registry_hash": registry_hashes["death_model_registry_hash"],
             "birth_model_registry_hash": registry_hashes["birth_model_registry_hash"],

@@ -287,6 +287,34 @@
         "1.0.0"
       ]
     },
+    "commitment": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "commitment_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "commitment_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "causality_strictness_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "birth_model": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -442,6 +470,13 @@
       ]
     },
     "exception_ledger": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "event_stream_index": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -869,6 +904,20 @@
       ]
     },
     "render_proxy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reenactment_artifact": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reenactment_request": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
