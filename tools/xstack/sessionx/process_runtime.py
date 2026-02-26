@@ -20,6 +20,12 @@ from src.performance.cost_engine import (
     compute_cost_snapshot,
     evaluate_envelope,
     normalize_budget_envelope,
+    reserve_inspection_budget,
+)
+from src.performance.inspection_cache import (
+    build_cache_key as inspection_build_cache_key,
+    build_inspection_snapshot,
+    cache_lookup_or_store as inspection_cache_lookup_or_store,
 )
 from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
@@ -79,6 +85,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.time_pause": "entitlement.time_control",
     "process.time_resume": "entitlement.time_control",
     "process.time_branch_from_checkpoint": "entitlement.control.admin",
+    "process.inspect_generate_snapshot": "entitlement.inspect",
     "process.region_management_tick": "session.boot",
     "process.region_expand": "session.boot",
     "process.region_collapse": "session.boot",
@@ -126,6 +133,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.time_pause": "operator",
     "process.time_resume": "operator",
     "process.time_branch_from_checkpoint": "operator",
+    "process.inspect_generate_snapshot": "observer",
     "process.region_management_tick": "observer",
     "process.region_expand": "observer",
     "process.region_collapse": "observer",
@@ -3536,6 +3544,73 @@ def _policy_payload(policy_context: dict | None, key: str) -> dict:
     if not isinstance(row, dict):
         return {}
     return row
+
+
+def _registry_row_by_id(registry_payload: dict, list_key: str, id_key: str, token: str) -> dict:
+    rows = list((registry_payload.get(list_key) or [])) if isinstance(registry_payload, dict) else []
+    normalized = str(token).strip()
+    if not normalized:
+        return {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(id_key, ""))):
+        if str(row.get(id_key, "")).strip() == normalized:
+            return dict(row)
+    return {}
+
+
+def _inspection_target_payload(state: dict, target_id: str) -> dict:
+    token = str(target_id).strip()
+    if not token:
+        return {"exists": False}
+
+    def _row_by_id(rows: object, key: str) -> dict:
+        if not isinstance(rows, list):
+            return {}
+        for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(key, ""))):
+            if str(row.get(key, "")).strip() == token:
+                return dict(row)
+        return {}
+
+    if token.startswith("region."):
+        interest = _row_by_id(state.get("interest_regions"), "region_id")
+        micro = _row_by_id(state.get("micro_regions"), "region_id")
+        region_payload = {"target_id": token, "exists": bool(interest)}
+        if interest:
+            region_payload["interest_region"] = interest
+            object_id = str(interest.get("anchor_object_id", "")).strip()
+            if object_id:
+                capsule_rows = list(state.get("macro_capsules") or [])
+                for row in sorted((item for item in capsule_rows if isinstance(item, dict)), key=lambda item: str(item.get("capsule_id", ""))):
+                    if str(row.get("covers_object_id", "")).strip() == object_id:
+                        region_payload["macro_capsule"] = dict(row)
+                        break
+        if micro:
+            region_payload["micro_region"] = micro
+            region_payload["exists"] = True
+        return region_payload
+
+    id_table = (
+        ("cohort_assemblies", "cohort_id"),
+        ("faction_assemblies", "faction_id"),
+        ("territory_assemblies", "territory_id"),
+        ("agent_states", "agent_id"),
+        ("body_assemblies", "body_id"),
+        ("order_assemblies", "order_id"),
+        ("institution_assemblies", "institution_id"),
+        ("role_assignments", "role_assignment_id"),
+    )
+    for list_key, id_key in id_table:
+        row = _row_by_id(state.get(list_key), id_key)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": str(list_key),
+                "row": row,
+            }
+    return {
+        "target_id": token,
+        "exists": False,
+    }
 
 
 def _registry_rows_by_id(registry_payload: dict, key: str, id_key: str) -> Dict[str, dict]:
@@ -8629,6 +8704,109 @@ def execute_intent(
             "delivered_count": len(inbox),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.inspect_generate_snapshot":
+        target_id = str(inputs.get("target_id", "") or inputs.get("target", "")).strip()
+        if not target_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.inspect_generate_snapshot requires target_id",
+                "Provide target_id in intent.inputs.target_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_id",
+            )
+        requested_cost_units = max(0, _as_int(inputs.get("cost_units", 1), 1))
+        budget_envelope_registry = _policy_payload(policy_context, "budget_envelope_registry")
+        budget_envelope_id = str((policy_context or {}).get("budget_envelope_id", "")).strip()
+        selected_budget_envelope = _registry_row_by_id(
+            budget_envelope_registry,
+            "envelopes",
+            "envelope_id",
+            budget_envelope_id,
+        )
+        budget_policy_row = _policy_payload(policy_context, "budget_policy")
+        normalized_budget_envelope = normalize_budget_envelope(
+            envelope=selected_budget_envelope,
+            budget_policy=budget_policy_row,
+        )
+        max_inspection_budget = max(0, _as_int(normalized_budget_envelope.get("max_inspection_cost_units_per_tick", 0), 0))
+        reservation = reserve_inspection_budget(
+            runtime_budget_state=dict((policy_context or {}).get("inspection_runtime_budget_state") or {}),
+            tick=int(current_tick),
+            requested_cost_units=int(requested_cost_units),
+            max_cost_units_per_tick=int(max_inspection_budget),
+        )
+        if str(reservation.get("result", "")) != "complete":
+            return refusal(
+                "refusal.inspect.budget_exceeded",
+                "inspection budget envelope exceeded for this tick",
+                "Retry next tick, lower inspection cost_units, or select a higher inspection budget envelope.",
+                {
+                    "target_id": target_id,
+                    "requested_cost_units": str(requested_cost_units),
+                    "max_inspection_cost_units_per_tick": str(max_inspection_budget),
+                },
+                "$.intent.inputs.cost_units",
+            )
+        if isinstance(policy_context, dict):
+            policy_context["inspection_runtime_budget_state"] = dict(reservation.get("runtime_budget_state") or {})
+
+        cache_policy_registry = _policy_payload(policy_context, "inspection_cache_policy_registry")
+        cache_policy_id = str((policy_context or {}).get("inspection_cache_policy_id", "")).strip()
+        selected_cache_policy = _registry_row_by_id(
+            cache_policy_registry,
+            "policies",
+            "cache_policy_id",
+            cache_policy_id,
+        )
+        if not selected_cache_policy:
+            selected_cache_policy = {
+                "cache_policy_id": "cache.off",
+                "enable_caching": False,
+                "invalidation_rules": [],
+                "max_cache_entries": 0,
+                "eviction_rule_id": "evict.none",
+                "extensions": {},
+            }
+        truth_hash_anchor = canonical_sha256(state)
+        target_payload = _inspection_target_payload(state=state, target_id=target_id)
+        snapshot = build_inspection_snapshot(
+            target_id=target_id,
+            tick=int(current_tick),
+            physics_profile_id=str((policy_context or {}).get("physics_profile_id", "")),
+            pack_lock_hash=str((policy_context or {}).get("pack_lock_hash", "")),
+            truth_hash_anchor=str(truth_hash_anchor),
+            policy_id=str(selected_cache_policy.get("cache_policy_id", "")),
+            target_payload=target_payload,
+        )
+        cache_key = inspection_build_cache_key(
+            target_id=target_id,
+            truth_hash_anchor=str(truth_hash_anchor),
+            policy_id=str(selected_cache_policy.get("cache_policy_id", "")),
+            physics_profile_id=str((policy_context or {}).get("physics_profile_id", "")),
+            pack_lock_hash=str((policy_context or {}).get("pack_lock_hash", "")),
+        )
+        cache_result = inspection_cache_lookup_or_store(
+            cache_state=dict((policy_context or {}).get("inspection_cache_state") or {}),
+            cache_policy=selected_cache_policy,
+            cache_key=str(cache_key),
+            snapshot=snapshot,
+            tick=int(current_tick),
+        )
+        if isinstance(policy_context, dict):
+            policy_context["inspection_cache_state"] = dict(cache_result.get("cache_state") or {})
+        skip_state_log = True
+        result_metadata = {
+            "target_id": target_id,
+            "cache_policy_id": str(selected_cache_policy.get("cache_policy_id", "")),
+            "cache_key": str(cache_result.get("cache_key", "")),
+            "cache_hit": bool(cache_result.get("cache_hit", False)),
+            "snapshot_id": str((cache_result.get("snapshot") or {}).get("snapshot_id", "")),
+            "snapshot_hash": str(cache_result.get("snapshot_hash", "")),
+            "inspection_snapshot": dict(cache_result.get("snapshot") or {}),
+            "evicted_cache_keys": list(cache_result.get("evicted_keys") or []),
+            "inspection_cost_units": int(requested_cost_units),
+            "max_inspection_cost_units_per_tick": int(max_inspection_budget),
+        }
     elif process_id in ("process.time_control_set_rate", "process.time_set_rate"):
         ranked_policy_enforced = str((policy_context or {}).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
         if str((policy_context or {}).get("time_control_policy_id", "")).strip() == "time.policy.rank_strict":
