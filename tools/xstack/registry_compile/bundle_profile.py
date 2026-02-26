@@ -78,8 +78,6 @@ def _validate_bundle_payload(repo_root: str, payload: dict, schema_repo_root: st
     )
     if not bundle_id:
         errors.append(build_error("refuse.bundle_profile.missing_bundle_id", "bundle_id must be non-empty", "$.bundle_id"))
-    if not pack_ids:
-        errors.append(build_error("refuse.bundle_profile.empty_pack_ids", "pack_ids must include at least one pack_id", "$.pack_ids"))
     if errors:
         return result_refused({}, errors)
 
@@ -249,17 +247,6 @@ def resolve_bundle_selection(
         return result_refused({}, errors)
 
     selected_pack_ids = sorted(set(selected))
-    if not selected_pack_ids:
-        return result_refused(
-            {},
-            [
-                build_error(
-                    "refuse.bundle_profile.empty_selection",
-                    "bundle '{}' resolved to an empty pack selection".format(str(loaded.get("bundle_id", ""))),
-                    "$.pack_ids",
-                )
-            ],
-        )
 
     return result_complete(
         {

@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0.0",
+  "bundle_id": "bundle.null",
+  "description": "Null boot bundle with zero selected packs.",
+  "pack_ids": [],
+  "optional_pack_ids": []
+}
