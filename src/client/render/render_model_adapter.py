@@ -167,9 +167,18 @@ def _overlay_rows(perceived_model: dict, view_mode_id: str) -> Tuple[List[dict],
 
 def _interaction_overlay_rows(perceived_model: dict) -> Tuple[List[dict], List[dict]]:
     interaction = dict((dict(perceived_model or {})).get("interaction") or {})
+    overlay_blocks = []
     inspection = dict(interaction.get("inspection_overlays") or {})
-    rows = list(inspection.get("renderables") or [])
-    materials = list(inspection.get("materials") or [])
+    selection = dict(interaction.get("selection_overlay") or {})
+    if inspection:
+        overlay_blocks.append(inspection)
+    if selection:
+        overlay_blocks.append(selection)
+    rows = []
+    materials = []
+    for block in overlay_blocks:
+        rows.extend(list(dict(block).get("renderables") or []))
+        materials.extend(list(dict(block).get("materials") or []))
     normalized_overlays = []
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("renderable_id", ""))):
         semantic_id = str(row.get("semantic_id", "")).strip() or str(row.get("renderable_id", "")).strip()

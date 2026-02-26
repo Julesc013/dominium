@@ -9,13 +9,16 @@ from .interaction_dispatch import (
     select_target,
 )
 from .inspection_overlays import build_inspection_overlays
+from .interaction_panel import build_interaction_panel, build_selection_overlay
 from .preview_generator import generate_interaction_preview
 
 __all__ = [
     "build_affordance_list",
+    "build_interaction_panel",
     "build_interaction_envelope",
     "build_interaction_intent",
     "build_inspection_overlays",
+    "build_selection_overlay",
     "execute_affordance",
     "generate_interaction_preview",
     "run_interaction_command",

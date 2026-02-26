@@ -8,6 +8,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .affordance_generator import build_affordance_list
 from .inspection_overlays import build_inspection_overlays
+from .interaction_panel import build_interaction_panel, build_selection_overlay
 from .preview_generator import generate_interaction_preview
 
 
@@ -362,12 +363,16 @@ def run_interaction_command(
 ) -> Dict[str, object]:
     token = str(command).strip()
     if token == "interact.select_target":
-        return select_target(
+        selected = select_target(
             perceived_model=perceived_model,
             target_semantic_id=target_semantic_id,
         )
+        if str(selected.get("result", "")) != "complete":
+            return selected
+        selected["selection_overlay"] = build_selection_overlay(str(selected.get("target_semantic_id", "")))
+        return selected
     if token == "interact.list_affordances":
-        return build_affordance_list(
+        listed = build_affordance_list(
             perceived_model=perceived_model,
             target_semantic_id=target_semantic_id,
             law_profile=law_profile,
@@ -376,6 +381,14 @@ def run_interaction_command(
             include_disabled=bool(include_disabled),
             repo_root=repo_root,
         )
+        if str(listed.get("result", "")) != "complete":
+            return listed
+        listed["interaction_panel"] = build_interaction_panel(
+            affordance_list=dict(listed.get("affordance_list") or {}),
+            selected_affordance_id="",
+        )
+        listed["selection_overlay"] = build_selection_overlay(str(target_semantic_id or ""))
+        return listed
     if token == "interact.preview":
         affordances = build_affordance_list(
             perceived_model=perceived_model,
@@ -412,7 +425,7 @@ def run_interaction_command(
             repo_root=repo_root,
         )
     if token == "interact.execute":
-        return execute_affordance(
+        executed = execute_affordance(
             state=dict(state or {}),
             affordance_list=dict(
                 (
@@ -438,6 +451,26 @@ def run_interaction_command(
             deterministic_sequence_number=int(deterministic_sequence_number),
             submission_tick=int(submission_tick),
         )
+        if str(executed.get("result", "")) != "complete":
+            return executed
+        affordances = build_affordance_list(
+            perceived_model=perceived_model,
+            target_semantic_id=target_semantic_id,
+            law_profile=law_profile,
+            authority_context=authority_context,
+            interaction_action_registry=interaction_action_registry,
+            include_disabled=bool(include_disabled),
+            repo_root=repo_root,
+        )
+        affordance_list_payload = dict(affordances.get("affordance_list") or {})
+        if affordance_list_payload:
+            executed["interaction_panel"] = build_interaction_panel(
+                affordance_list=affordance_list_payload,
+                selected_affordance_id=str(affordance_id or ""),
+            )
+        if "inspection_overlays" not in executed:
+            executed["selection_overlay"] = build_selection_overlay(str(target_semantic_id or ""))
+        return executed
     return _refusal(
         "refusal.interaction.command_unknown",
         "unknown interaction command '{}'; supported commands are interact.select_target, interact.list_affordances, interact.preview, interact.execute".format(
