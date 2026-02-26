@@ -16,7 +16,7 @@ record render_snapshot
     - render_model_hash: hash_hex
     - pack_lock_hash: hash_hex
     - physics_profile_id: id
-    - renderer_id: enum(null|software)
+    - renderer_id: enum(null|software|hardware_gl)
     - image_width: u32
     - image_height: u32
     - pixel_format: string

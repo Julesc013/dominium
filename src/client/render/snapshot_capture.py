@@ -8,6 +8,10 @@ from typing import Dict
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
+from src.platform.platform_gfx import list_available_backends
+from src.platform.platform_window import detect_platform_id
+
+from .renderers.hw_renderer_gl import render_hardware_gl_snapshot
 from .renderers.null_renderer import render_null_snapshot
 from .renderers.software_renderer import render_software_snapshot
 
@@ -53,6 +57,53 @@ def _cache_key(*, render_model_hash: str, renderer_id: str, width: int, height: 
         "wireframe": bool(wireframe),
     }
     return str(canonical_sha256(payload))
+
+
+def _sorted_unique_strings(values: list[object]) -> list[str]:
+    return sorted(set(str(item).strip() for item in list(values or []) if str(item).strip()))
+
+
+def _normalized_backend_policy(backend_policy: dict | None) -> dict:
+    policy = dict(backend_policy or {})
+    enabled = _sorted_unique_strings(list(policy.get("enabled_backends") or []))
+    disabled = _sorted_unique_strings(list(policy.get("disabled_backends") or []))
+    if enabled:
+        policy["enabled_backends"] = enabled
+    if disabled:
+        policy["disabled_backends"] = disabled
+    return policy
+
+
+def _fallback_event(
+    *,
+    requested_renderer_id: str,
+    effective_renderer_id: str,
+    available_backends: list[str],
+    platform_id: str,
+    reason_code: str,
+) -> dict:
+    return {
+        "event_type": "render.backend_fallback",
+        "requested_renderer_id": str(requested_renderer_id),
+        "effective_renderer_id": str(effective_renderer_id),
+        "platform_id": str(platform_id),
+        "available_backends": _sorted_unique_strings(list(available_backends or [])),
+        "reason_code": str(reason_code),
+    }
+
+
+def _write_fallback_event(*, out_dir: str, cache_key: str, snapshot_id: str, event_payload: dict) -> str:
+    root = os.path.normpath(os.path.abspath(out_dir))
+    event_dir = os.path.join(root, "_fallback_events")
+    os.makedirs(event_dir, exist_ok=True)
+    payload = {
+        "cache_key": str(cache_key),
+        "snapshot_id": str(snapshot_id),
+        "fallback_event": dict(event_payload or {}),
+    }
+    event_path = os.path.join(event_dir, "{}.json".format(str(cache_key)))
+    _write_json(event_path, payload)
+    return event_path
 
 
 def _cache_index_load(cache_index_path: str) -> dict:
@@ -114,12 +165,42 @@ def capture_render_snapshot(
     height: int = 0,
     wireframe: bool = False,
     cache_dir: str = "",
+    backend_policy: dict | None = None,
+    platform_id: str = "",
 ) -> Dict[str, object]:
-    renderer = str(renderer_id or "").strip().lower() or "null"
+    requested_renderer = str(renderer_id or "").strip().lower() or "null"
+    if requested_renderer not in ("null", "software", "hardware_gl"):
+        return {
+            "result": "refusal",
+            "code": "refusal.render.renderer_not_supported",
+            "message": "renderer '{}' is not yet supported by capture pipeline".format(requested_renderer),
+        }
     model = dict(render_model or {})
     model_hash = str(model.get("render_model_hash", "")).strip() or str(canonical_sha256(model))
     width_value = max(0, _to_int(width, 0))
     height_value = max(0, _to_int(height, 0))
+    platform_token = detect_platform_id(platform_id)
+    policy = _normalized_backend_policy(backend_policy)
+    available_backends = list_available_backends(platform_id=platform_token, backend_policy=policy)
+    renderer = str(requested_renderer)
+    fallback = {}
+    if requested_renderer not in set(available_backends):
+        if requested_renderer in ("hardware_gl",):
+            renderer = "software"
+            fallback = _fallback_event(
+                requested_renderer_id=requested_renderer,
+                effective_renderer_id=renderer,
+                available_backends=list(available_backends),
+                platform_id=platform_token,
+                reason_code="refusal.render.backend_unavailable",
+            )
+        else:
+            return {
+                "result": "refusal",
+                "code": "refusal.render.renderer_not_supported",
+                "message": "renderer '{}' is not available under current platform policy".format(requested_renderer),
+                "available_backends": list(available_backends),
+            }
     cache_root = str(cache_dir or "").strip()
     if not cache_root:
         cache_root = os.path.join(str(out_dir), "_cache")
@@ -138,11 +219,13 @@ def capture_render_snapshot(
         snapshot_payload, snapshot_err = _load_json(hit["snapshot_path"])
         summary_payload, summary_err = _load_json(hit["summary_path"])
         if not snapshot_err and not summary_err:
-            return {
+            out = {
                 "result": "complete",
                 "cache_hit": True,
                 "cache_key": key,
                 "renderer_id": str(snapshot_payload.get("renderer_id", renderer)),
+                "requested_renderer_id": str(requested_renderer),
+                "effective_renderer_id": str(renderer),
                 "snapshot_id": str(snapshot_payload.get("snapshot_id", "")),
                 "snapshot_dir": str(hit.get("snapshot_dir", "")).replace("\\", "/"),
                 "snapshot_path": str(hit.get("snapshot_path", "")).replace("\\", "/"),
@@ -151,6 +234,16 @@ def capture_render_snapshot(
                 "render_snapshot": snapshot_payload,
                 "frame_summary": summary_payload,
             }
+            if fallback:
+                out["fallback_event"] = dict(fallback)
+                event_path = _write_fallback_event(
+                    out_dir=str(out_dir),
+                    cache_key=key,
+                    snapshot_id=str(out.get("snapshot_id", "")),
+                    event_payload=fallback,
+                )
+                out["fallback_event_path"] = event_path.replace("\\", "/")
+            return out
 
     if renderer == "null":
         result = render_null_snapshot(
@@ -161,12 +254,27 @@ def capture_render_snapshot(
             image_height=height_value,
         )
     elif renderer == "software":
+        software_backend_metadata = {"backend_id": "software"}
+        if fallback:
+            software_backend_metadata["backend_fallback"] = dict(fallback)
         result = render_software_snapshot(
             render_model=model,
             out_dir=str(out_dir),
             image_width=max(0, _to_int(width, 640)),
             image_height=max(0, _to_int(height, 360)),
             wireframe=bool(wireframe),
+            renderer_id="software",
+            backend_metadata=software_backend_metadata,
+        )
+    elif renderer == "hardware_gl":
+        result = render_hardware_gl_snapshot(
+            render_model=model,
+            out_dir=str(out_dir),
+            image_width=max(0, _to_int(width, 640)),
+            image_height=max(0, _to_int(height, 360)),
+            wireframe=bool(wireframe),
+            backend_policy=policy,
+            platform_id=platform_token,
         )
     else:
         return {
@@ -182,4 +290,15 @@ def capture_render_snapshot(
     out["cache_hit"] = False
     out["cache_key"] = key
     out["cache_index_path"] = cache_index_path.replace("\\", "/")
+    out["requested_renderer_id"] = str(requested_renderer)
+    out["effective_renderer_id"] = str(renderer)
+    if fallback:
+        out["fallback_event"] = dict(fallback)
+        event_path = _write_fallback_event(
+            out_dir=str(out_dir),
+            cache_key=key,
+            snapshot_id=str(out.get("snapshot_id", "")),
+            event_payload=fallback,
+        )
+        out["fallback_event_path"] = event_path.replace("\\", "/")
     return out
