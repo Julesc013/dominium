@@ -39,6 +39,7 @@ def main() -> int:
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--save-id", required=True)
     parser.add_argument("--bundle", default=DEFAULT_BUNDLE_ID)
+    parser.add_argument("--physics-profile-id", default="")
     parser.add_argument("--pipeline-id", default=DEFAULT_PIPELINE_ID)
     parser.add_argument("--scenario-id", default=DEFAULT_SCENARIO_ID)
     parser.add_argument("--mission-id", default="")
@@ -78,6 +79,7 @@ def main() -> int:
         repo_root=repo_root,
         save_id=str(args.save_id),
         bundle_id=str(args.bundle),
+        physics_profile_id=str(args.physics_profile_id),
         pipeline_id=str(args.pipeline_id),
         scenario_id=str(args.scenario_id),
         mission_id=str(args.mission_id),

@@ -1380,6 +1380,11 @@ def build_truth_model(
         "universe_identity_ref": str(identity_path),
         "universe_state_ref": str(state_path),
         "registry_refs": {
+            "universe_physics_profile_registry_hash": str(registries.get("universe_physics_profile_registry_hash", "")),
+            "time_model_registry_hash": str(registries.get("time_model_registry_hash", "")),
+            "numeric_precision_policy_registry_hash": str(registries.get("numeric_precision_policy_registry_hash", "")),
+            "tier_taxonomy_registry_hash": str(registries.get("tier_taxonomy_registry_hash", "")),
+            "boundary_model_registry_hash": str(registries.get("boundary_model_registry_hash", "")),
             "domain_registry_hash": str(registries.get("domain_registry_hash", "")),
             "law_registry_hash": str(registries.get("law_registry_hash", "")),
             "experience_registry_hash": str(registries.get("experience_registry_hash", "")),
