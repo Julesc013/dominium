@@ -1,70 +1,48 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 635,
+    "canon_drift": 637,
     "capability_bypass_smell": 1,
-    "capability_misuse": 139,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
-    "derived_freshness": 131,
+    "derived_freshness": 11,
     "epistemics.hidden_state_leak_smell": 6,
-    "legacy_contamination": 6,
-    "mode_flag_smell": 3,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
-    "ownership_boundary": 9,
-    "reachability": 80,
-    "schema_usage": 160,
-    "security.boundary_io": 29,
-    "security.privilege_bypass": 9,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
-    "semantic.workspace_contamination": 1,
-    "terminology_misuse": 1,
-    "ui_parity": 171
+    "semantic.workspace_contamination": 1
   },
   "delta_over_time": {
     "category_frequency": {
-      "canon_drift": 635,
+      "canon_drift": 637,
       "capability_bypass_smell": 1,
-      "capability_misuse": 139,
       "civilisation.nondeterministic_cohort_mapping_smell": 1,
-      "derived_freshness": 131,
+      "derived_freshness": 11,
       "epistemics.hidden_state_leak_smell": 6,
-      "legacy_contamination": 6,
-      "mode_flag_smell": 3,
       "net.precision_leak_smell": 2,
       "net.truth_over_net_smell": 6,
-      "ownership_boundary": 9,
-      "reachability": 80,
-      "schema_usage": 160,
-      "security.boundary_io": 29,
-      "security.privilege_bypass": 9,
       "semantic.capability_drift": 5,
       "semantic.derived_artifact_contract": 1,
       "semantic.schema_shadowing": 120,
-      "semantic.workspace_contamination": 1,
-      "terminology_misuse": 1,
-      "ui_parity": 171
+      "semantic.workspace_contamination": 1
     },
     "severity_distribution": {
-      "INFO": 226,
-      "RISK": 235,
-      "VIOLATION": 13,
-      "WARN": 1042
+      "RISK": 24,
+      "VIOLATION": 1,
+      "WARN": 766
     }
   },
-  "findings_hash": "776003b12d93cfba77b39e0c9b119335c61ffcc0fcd5fb66e9cc90caca084d22",
+  "findings_hash": "cdf41c1e437770361e0eda08d1a07d69072e56cc2cc29747920ffe3054b6bc87",
   "history_reference": {
     "previous_distinct_hash": ""
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 226,
-    "RISK": 235,
-    "VIOLATION": 13,
-    "WARN": 1042
+    "RISK": 24,
+    "VIOLATION": 1,
+    "WARN": 766
   },
-  "total_findings": 1516
+  "total_findings": 791
 }

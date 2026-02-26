@@ -1,0 +1,23 @@
+{
+  "commands": [
+    {
+      "command": [
+        "cmake",
+        "--build",
+        "D:\\Projects\\Dominium\\dominium\\out\\build\\vs2026\\verify",
+        "--config",
+        "Debug",
+        "--target",
+        "domino_engine",
+        "dominium_game",
+        "dominium_client"
+      ],
+      "output": "refuse.command_unresolvable: [WinError 2] The system cannot find the file specified",
+      "returncode": 127
+    }
+  ],
+  "skipped": [
+    "repox.full"
+  ],
+  "warnings": []
+}
