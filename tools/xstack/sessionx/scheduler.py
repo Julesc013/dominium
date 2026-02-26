@@ -33,6 +33,7 @@ PROCESS_PRIORITY = {
     "process.time_set_rate": 20,
     "process.time_pause": 20,
     "process.time_resume": 20,
+    "process.time_branch_from_checkpoint": 20,
     "process.faction_create": 22,
     "process.faction_dissolve": 22,
     "process.affiliation_join": 23,
@@ -74,6 +75,7 @@ PROCESS_ENTITY_SCOPE = {
     "process.time_set_rate": "time.control",
     "process.time_pause": "time.control",
     "process.time_resume": "time.control",
+    "process.time_branch_from_checkpoint": "time.branch",
     "process.faction_create": "faction.create",
     "process.faction_dissolve": "faction.unknown",
     "process.affiliation_join": "subject.unknown",
@@ -115,6 +117,7 @@ PROCESS_FIELD_SCOPE = {
     "process.time_set_rate": "time.control",
     "process.time_pause": "time.control",
     "process.time_resume": "time.control",
+    "process.time_branch_from_checkpoint": "time.branch",
     "process.faction_create": "civ.faction.state",
     "process.faction_dissolve": "civ.faction.state",
     "process.affiliation_join": "civ.affiliation.state",
@@ -412,6 +415,7 @@ def replay_intent_script_srz(
     tick_hash_anchors: List[dict] = []
     checkpoint_hashes: List[dict] = []
     checkpoint_snapshots: List[dict] = []
+    accepted_envelopes: List[dict] = []
     resolution_log: List[dict] = []
     last_tick_hash = ""
     last_checkpoint_hash = ""
@@ -464,6 +468,16 @@ def replay_intent_script_srz(
             token = str(executed.get("ledger_hash", "")).strip()
             if token:
                 tick_ledger_hash = token
+            accepted_envelopes.append(
+                {
+                    "scheduler_tick": int(scheduler_tick),
+                    "submission_tick": int(submission_tick),
+                    "envelope_id": str(proposal.get("envelope_id", "")),
+                    "intent_id": str((proposal.get("intent") or {}).get("intent_id", "")),
+                    "process_id": str(proposal.get("process_id", "")),
+                    "deterministic_sequence_number": int(proposal.get("intent_sequence", 0) or 0),
+                }
+            )
 
         shard["owned_entities"] = owned_entity_ids(state)
         shard["owned_regions"] = owned_region_ids(state)
@@ -550,6 +564,14 @@ def replay_intent_script_srz(
         "tick_hash_anchors": tick_hash_anchors,
         "checkpoint_hashes": checkpoint_hashes,
         "checkpoint_snapshots": checkpoint_snapshots,
+        "accepted_envelopes": sorted(
+            accepted_envelopes,
+            key=lambda row: (
+                int(row.get("submission_tick", 0) or 0),
+                int(row.get("deterministic_sequence_number", 0) or 0),
+                str(row.get("envelope_id", "")),
+            ),
+        ),
         "composite_hash": final_composite,
         "final_state_hash": canonical_sha256(state),
         "srz": {
