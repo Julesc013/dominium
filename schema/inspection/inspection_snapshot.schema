@@ -1,0 +1,29 @@
+SCHEMA: inspection/inspection_snapshot.schema
+schema_id: dominium.schema.inspection.inspection_snapshot
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic derived inspection snapshot artifact.
+
+REQUIRED SHAPE:
+record inspection_snapshot
+  required:
+    - schema_version: semver
+    - snapshot_id: id
+    - request_id: id
+    - target_id: id
+    - achieved_fidelity: enum(macro|meso|micro)
+    - tick: int
+    - truth_hash_anchor: hash64
+    - ledger_hash: hash64
+    - inputs_hash: hash64
+    - summary_sections: map
+    - deterministic_fingerprint: hash64
+    - extensions: map
+  optional:
+    - detail_refs: list<string>
+
+INVARIANTS:
+- Snapshot is derived-only; canonical TruthModel mutation is forbidden.
+- deterministic_fingerprint must remain stable for equivalent inputs.

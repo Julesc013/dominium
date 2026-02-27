@@ -6958,13 +6958,24 @@ def _append_performance_constitution_invariant_findings(
                 rule_id="INV-INSPECTION-IS-DERIVED",
             )
         )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime missing; cannot verify inspection-derived invariant",
+                rule_id="INV-INSPECTION-DERIVED-ONLY",
+            )
+        )
     else:
-        for token in (
+        derived_tokens = (
             "process.inspect_generate_snapshot",
             "inspection_cache_lookup_or_store(",
             "skip_state_log = True",
             "refusal.inspect.budget_exceeded",
-        ):
+        )
+        for token in derived_tokens:
             if token in process_runtime_text:
                 continue
             findings.append(
@@ -6975,6 +6986,51 @@ def _append_performance_constitution_invariant_findings(
                     snippet=token,
                     message="inspection path must be derived, budget-gated, and non-mutating",
                     rule_id="INV-INSPECTION-IS-DERIVED",
+                )
+            )
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="inspection path must be derived, budget-gated, and non-mutating",
+                    rule_id="INV-INSPECTION-DERIVED-ONLY",
+                )
+            )
+        for token in (
+            "reserve_inspection_budget(",
+            "inspection_budget_share_per_peer",
+            "max_inspection_cost_units_per_tick",
+        ):
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="inspection path must enforce deterministic per-tick budget controls",
+                    rule_id="INV-INSPECTION-BUDGETED",
+                )
+            )
+        for token in (
+            "_augment_inspection_target_payload_for_materialization(",
+            "_augment_inspection_target_payload_for_maintenance(",
+            "_augment_inspection_target_payload_for_commitment_reenactment(",
+            "build_inspection_snapshot_artifact(",
+        ):
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="inspection pipeline missing epistemic-safe snapshot derivation token",
+                    rule_id="INV-NO-TRUTH-LEAK-VIA-INSPECTION",
                 )
             )
         start = process_runtime_text.find('elif process_id == "process.inspect_generate_snapshot":')
@@ -6992,6 +7048,54 @@ def _append_performance_constitution_invariant_findings(
                         rule_id="INV-INSPECTION-IS-DERIVED",
                     )
                 )
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=process_runtime_rel,
+                        line_number=1,
+                        snippet="_advance_time(state",
+                        message="inspection process must not advance simulation time or mutate TruthModel",
+                        rule_id="INV-INSPECTION-DERIVED-ONLY",
+                    )
+                )
+
+    inspection_engine_rel = "src/inspection/inspection_engine.py"
+    inspection_engine_abs = os.path.join(repo_root, inspection_engine_rel.replace("/", os.sep))
+    try:
+        inspection_engine_text = open(inspection_engine_abs, "r", encoding="utf-8").read()
+    except OSError:
+        inspection_engine_text = ""
+    if not inspection_engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inspection_engine_rel,
+                line_number=1,
+                snippet="",
+                message="inspection engine is missing or unreadable",
+                rule_id="INV-NO-TRUTH-LEAK-VIA-INSPECTION",
+            )
+        )
+    else:
+        for token in (
+            "visibility_level",
+            "micro_allowed",
+            "include_part_ids",
+            "epistemic_redaction_level",
+            "\"derived_only\": True",
+        ):
+            if token in inspection_engine_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=inspection_engine_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="inspection engine missing epistemic redaction/derived-only token",
+                    rule_id="INV-NO-TRUTH-LEAK-VIA-INSPECTION",
+                )
+            )
 
     for rel_path in (cost_engine_rel, inspection_cache_rel, process_runtime_rel, transition_controller_rel):
         for line_no, line in _iter_lines(repo_root, rel_path):

@@ -475,6 +475,14 @@ def run_intent_script(
     )
     if inspection_cache_policy_registry_error:
         return inspection_cache_policy_registry_error
+    inspection_section_registry, inspection_section_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["inspection_section_registry_hash"],
+        expected_hash=str(registries.get("inspection_section_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if inspection_section_registry_error:
+        return inspection_section_registry_error
     boundary_model_registry, boundary_model_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["boundary_model_registry_hash"],
@@ -1095,6 +1103,7 @@ def run_intent_script(
         "budget_envelope_registry": budget_envelope_registry,
         "arbitration_policy_registry": arbitration_policy_registry,
         "inspection_cache_policy_registry": inspection_cache_policy_registry,
+        "inspection_section_registry": inspection_section_registry,
         "time_control_policy_registry": time_control_policy_registry,
         "dt_quantization_rule_registry": dt_quantization_rule_registry,
         "compaction_policy_registry": compaction_policy_registry,

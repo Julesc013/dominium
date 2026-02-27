@@ -48,6 +48,7 @@ REGISTRY_HASH_KEY_MAP = {
     "budget_envelope_registry_hash": "budget_envelope_registry",
     "arbitration_policy_registry_hash": "arbitration_policy_registry",
     "inspection_cache_policy_registry_hash": "inspection_cache_policy_registry",
+    "inspection_section_registry_hash": "inspection_section_registry",
     "boundary_model_registry_hash": "boundary_model_registry",
     "conservation_contract_set_registry_hash": "conservation_contract_set_registry",
     "quantity_registry_hash": "quantity_registry",
@@ -138,6 +139,7 @@ REGISTRY_FILE_MAP = {
     "budget_envelope_registry_hash": "budget_envelope.registry.json",
     "arbitration_policy_registry_hash": "arbitration_policy.registry.json",
     "inspection_cache_policy_registry_hash": "inspection_cache_policy.registry.json",
+    "inspection_section_registry_hash": "inspection_section.registry.json",
     "boundary_model_registry_hash": "boundary_model.registry.json",
     "conservation_contract_set_registry_hash": "conservation_contract_set.registry.json",
     "quantity_registry_hash": "quantity.registry.json",
@@ -1055,6 +1057,14 @@ def boot_session_spec(
     )
     if inspection_cache_policy_registry_error:
         return inspection_cache_policy_registry_error
+    inspection_section_registry, inspection_section_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["inspection_section_registry_hash"],
+        expected_hash=str(registries.get("inspection_section_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if inspection_section_registry_error:
+        return inspection_section_registry_error
     boundary_model_registry, boundary_model_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["boundary_model_registry_hash"],
@@ -1842,6 +1852,7 @@ def boot_session_spec(
                 "budget_envelope_registry": budget_envelope_registry,
                 "arbitration_policy_registry": arbitration_policy_registry,
                 "inspection_cache_policy_registry": inspection_cache_policy_registry,
+                "inspection_section_registry": inspection_section_registry,
                 "boundary_model_registry": boundary_model_registry,
                 "conservation_contract_set_registry": conservation_contract_set_registry,
                 "quantity_registry": quantity_registry,
@@ -1949,6 +1960,7 @@ def boot_session_spec(
                 "budget_envelope_registry": budget_envelope_registry,
                 "arbitration_policy_registry": arbitration_policy_registry,
                 "inspection_cache_policy_registry": inspection_cache_policy_registry,
+                "inspection_section_registry": inspection_section_registry,
                 "boundary_model_registry": boundary_model_registry,
                 "conservation_contract_set_registry": conservation_contract_set_registry,
                 "quantity_registry": quantity_registry,

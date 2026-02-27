@@ -96,7 +96,55 @@ def run(repo_root: str):
         lockfile_payload={"registries": {}},
         identity_path="identity.test.materialization.json",
         state_path="state.test.materialization.json",
-        registry_payloads={},
+        registry_payloads={
+            "epistemic_policy_registry": {
+                "policies": [
+                    {
+                        "epistemic_policy_id": "ep.policy.lab_broad",
+                        "retention_policy_id": "ep.retention.session_basic",
+                        "allowed_observation_channels": ["ch.core.entities"],
+                        "forbidden_channels": [],
+                        "inference_policy_id": "ep.infer.none",
+                        "max_precision_rules": [],
+                        "deterministic_filters": [],
+                        "extensions": {},
+                    }
+                ]
+            },
+            "retention_policy_registry": {
+                "policies": [
+                    {
+                        "retention_policy_id": "ep.retention.session_basic",
+                        "memory_allowed": True,
+                        "max_memory_items": 256,
+                        "decay_model_id": "ep.decay.session_basic",
+                        "eviction_rule_id": "evict.oldest_first",
+                        "deterministic_eviction_rule_id": "evict.oldest_first",
+                        "extensions": {},
+                    }
+                ]
+            },
+            "decay_model_registry": {
+                "decay_models": [
+                    {
+                        "decay_model_id": "ep.decay.session_basic",
+                        "formula_kind": "none",
+                        "parameters": {},
+                        "extensions": {},
+                    }
+                ]
+            },
+            "eviction_rule_registry": {
+                "eviction_rules": [
+                    {
+                        "eviction_rule_id": "evict.oldest_first",
+                        "algorithm": "oldest_first",
+                        "deterministic_tie_break": "id_asc",
+                        "extensions": {},
+                    }
+                ]
+            },
+        },
     )
     observed = observe_truth(
         truth_model=truth_model,

@@ -45,6 +45,7 @@ REGISTRY_OUTPUT_FILENAMES = {
     "budget_envelope_registry": "budget_envelope.registry.json",
     "arbitration_policy_registry": "arbitration_policy.registry.json",
     "inspection_cache_policy_registry": "inspection_cache_policy.registry.json",
+    "inspection_section_registry": "inspection_section.registry.json",
     "boundary_model_registry": "boundary_model.registry.json",
     "domain_registry": "domain.registry.json",
     "law_registry": "law.registry.json",

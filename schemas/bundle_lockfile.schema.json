@@ -92,6 +92,7 @@
         "budget_envelope_registry_hash",
         "arbitration_policy_registry_hash",
         "inspection_cache_policy_registry_hash",
+        "inspection_section_registry_hash",
         "boundary_model_registry_hash",
         "domain_registry_hash",
         "law_registry_hash",
@@ -288,6 +289,10 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "inspection_cache_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "inspection_section_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -530,6 +535,7 @@
         "budget_envelope_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "arbitration_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "inspection_cache_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "inspection_section_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "boundary_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "domain_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "law_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",

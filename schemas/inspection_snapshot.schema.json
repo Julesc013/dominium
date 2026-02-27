@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Inspection Snapshot Schema",
+  "version": "1.0.0",
+  "description": "Deterministic derived inspection snapshot artifact.",
+  "x-doc-ref": [
+    "docs/materials/INSPECTION_SYSTEM.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "request_id",
+    "target_id",
+    "achieved_fidelity",
+    "tick",
+    "truth_hash_anchor",
+    "ledger_hash",
+    "inputs_hash",
+    "summary_sections",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "achieved_fidelity": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "physics_profile_id": {
+      "type": "string"
+    },
+    "pack_lock_hash": {
+      "type": "string"
+    },
+    "cache_policy_id": {
+      "type": "string"
+    },
+    "truth_hash_anchor": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "snapshot_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "ledger_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "inputs_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "summary_sections": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "inspection_section.schema.json"
+      }
+    },
+    "detail_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "target_payload": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

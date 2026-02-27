@@ -153,6 +153,7 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "budget_envelope_registry_hash",
             "arbitration_policy_registry_hash",
             "inspection_cache_policy_registry_hash",
+            "inspection_section_registry_hash",
             "boundary_model_registry_hash",
             "domain_registry_hash",
             "law_registry_hash",
