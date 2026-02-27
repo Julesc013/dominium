@@ -93,6 +93,10 @@ from analyzers import e64_silent_construction_smell
 from analyzers import e65_missing_provenance_smell
 from analyzers import e66_silent_failure_smell
 from analyzers import e67_nondeterministic_hazard_smell
+from analyzers import e68_micro_entity_leak_smell
+from analyzers import e69_collapse_drift_smell
+from analyzers import e70_uncommitted_macro_change_smell
+from analyzers import e71_reenactment_leak_smell
 
 
 ANALYZERS = (
@@ -189,6 +193,10 @@ ANALYZERS = (
     e65_missing_provenance_smell,
     e66_silent_failure_smell,
     e67_nondeterministic_hazard_smell,
+    e68_micro_entity_leak_smell,
+    e69_collapse_drift_smell,
+    e70_uncommitted_macro_change_smell,
+    e71_reenactment_leak_smell,
 )
 
 

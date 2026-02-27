@@ -54,6 +54,34 @@ from src.materials.maintenance.decay_engine import (
     schedule_maintenance_commitments,
     tick_decay,
 )
+from src.materials.materialization.materialization_engine import (
+    MaterializationError,
+    REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED,
+    dematerialize_structure_roi,
+    materialize_structure_roi,
+    normalize_distribution_aggregate_row,
+    normalize_materialization_state_row,
+    normalize_micro_part_instance_row,
+    normalize_reenactment_descriptor_row,
+)
+from src.materials.commitments.commitment_engine import (
+    CommitmentError,
+    REFUSAL_COMMITMENT_FORBIDDEN,
+    REFUSAL_COMMITMENT_INVALID_SCHEDULE,
+    REFUSAL_COMMITMENT_REQUIRED_MISSING,
+    REFUSAL_REENACTMENT_BUDGET_EXCEEDED,
+    REFUSAL_REENACTMENT_FORBIDDEN_BY_LAW,
+    build_reenactment_artifact,
+    commitment_type_rows_by_id,
+    create_commitment_row,
+    normalize_commitment_rows,
+    resolve_causality_strictness_row,
+    strictness_requires_commitment,
+)
+from src.materials.provenance.event_stream_index import (
+    build_event_stream_index,
+    normalize_event_stream_index_row,
+)
 from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
     advance_time as time_advance,
@@ -126,6 +154,12 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.maintenance_schedule": "entitlement.control.admin",
     "process.inspection_perform": "entitlement.control.admin",
     "process.maintenance_perform": "entitlement.control.admin",
+    "process.materialize_structure_roi": "entitlement.control.admin",
+    "process.dematerialize_structure_roi": "entitlement.control.admin",
+    "process.commitment_create": "entitlement.control.admin",
+    "process.event_stream_index_rebuild": "entitlement.inspect",
+    "process.reenactment_generate": "entitlement.inspect",
+    "process.reenactment_play": "entitlement.inspect",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -184,6 +218,12 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.maintenance_schedule": "operator",
     "process.inspection_perform": "operator",
     "process.maintenance_perform": "operator",
+    "process.materialize_structure_roi": "operator",
+    "process.dematerialize_structure_roi": "operator",
+    "process.commitment_create": "operator",
+    "process.event_stream_index_rebuild": "observer",
+    "process.reenactment_generate": "observer",
+    "process.reenactment_play": "observer",
 }
 PRIVILEGE_RANK = {
     "observer": 0,
@@ -1864,6 +1904,382 @@ def _persist_maintenance_state(
     _ensure_maintenance_commitments(state)
     _ensure_maintenance_provenance_events(state)
     _ensure_maintenance_runtime_state(state)
+
+
+def _ensure_micro_part_instances(state: dict) -> List[dict]:
+    rows = state.get("micro_part_instances")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (
+            str(item.get("parent_structure_id", "")),
+            str(item.get("ag_node_id", "")),
+            str(item.get("batch_id", "")),
+            str(item.get("micro_part_id", "")),
+        ),
+    ):
+        try:
+            normalized.append(normalize_micro_part_instance_row(row))
+        except MaterializationError:
+            continue
+    state["micro_part_instances"] = normalized
+    return normalized
+
+
+def _ensure_materialization_states(state: dict) -> List[dict]:
+    rows = state.get("materialization_states")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("structure_id", "")) + "::" + str(item.get("roi_id", ""))):
+        try:
+            normalized.append(normalize_materialization_state_row(row))
+        except MaterializationError:
+            continue
+    state["materialization_states"] = normalized
+    return normalized
+
+
+def _ensure_distribution_aggregates(state: dict) -> List[dict]:
+    rows = state.get("distribution_aggregates")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("structure_id", "")) + "::" + str(item.get("ag_node_id", ""))):
+        try:
+            normalized.append(normalize_distribution_aggregate_row(row))
+        except MaterializationError:
+            continue
+    state["distribution_aggregates"] = normalized
+    return normalized
+
+
+def _ensure_materialization_reenactment_descriptors(state: dict) -> List[dict]:
+    rows = state.get("materialization_reenactment_descriptors")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("structure_id", ""))):
+        try:
+            normalized.append(normalize_reenactment_descriptor_row(row))
+        except MaterializationError:
+            continue
+    state["materialization_reenactment_descriptors"] = normalized
+    return normalized
+
+
+def _persist_materialization_state(
+    state: dict,
+    *,
+    micro_part_instances: List[dict],
+    materialization_states: List[dict],
+    distribution_aggregates: List[dict],
+    reenactment_descriptors: List[dict],
+) -> None:
+    state["micro_part_instances"] = [dict(row) for row in list(micro_part_instances or []) if isinstance(row, dict)]
+    state["materialization_states"] = [dict(row) for row in list(materialization_states or []) if isinstance(row, dict)]
+    state["distribution_aggregates"] = [dict(row) for row in list(distribution_aggregates or []) if isinstance(row, dict)]
+    state["materialization_reenactment_descriptors"] = [
+        dict(row) for row in list(reenactment_descriptors or []) if isinstance(row, dict)
+    ]
+    _ensure_micro_part_instances(state)
+    _ensure_materialization_states(state)
+    _ensure_distribution_aggregates(state)
+    _ensure_materialization_reenactment_descriptors(state)
+
+
+def _ensure_material_commitments(state: dict) -> List[dict]:
+    rows = state.get("material_commitments")
+    normalized = normalize_commitment_rows(rows)
+    state["material_commitments"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_event_stream_indices(state: dict) -> List[dict]:
+    rows = state.get("event_stream_indices")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("stream_id", ""))):
+        normalized = normalize_event_stream_index_row(row)
+        stream_id = str(normalized.get("stream_id", "")).strip()
+        if stream_id:
+            out[stream_id] = normalized
+    state["event_stream_indices"] = [dict(out[key]) for key in sorted(out.keys())]
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _ensure_reenactment_requests(state: dict) -> List[dict]:
+    rows = state.get("reenactment_requests")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("request_id", ""))):
+        request_id = str(row.get("request_id", "")).strip()
+        target_id = str(row.get("target_id", "")).strip()
+        if not request_id or not target_id:
+            continue
+        tick_range = dict(row.get("tick_range") or {})
+        start_tick = max(0, _as_int(tick_range.get("start_tick", 0), 0))
+        end_tick = max(start_tick, _as_int(tick_range.get("end_tick", start_tick), start_tick))
+        fidelity = str(row.get("desired_fidelity", "macro")).strip() or "macro"
+        if fidelity not in ("macro", "meso", "micro"):
+            fidelity = "macro"
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "request_id": request_id,
+                "target_id": target_id,
+                "tick_range": {
+                    "start_tick": int(start_tick),
+                    "end_tick": int(end_tick),
+                },
+                "desired_fidelity": fidelity,
+                "max_cost_units": max(0, _as_int(row.get("max_cost_units", 0), 0)),
+                "requester_subject_id": str(row.get("requester_subject_id", "")).strip() or "subject.system",
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["reenactment_requests"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_reenactment_artifacts(state: dict) -> List[dict]:
+    rows = state.get("reenactment_artifacts")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("reenactment_id", ""))):
+        reenactment_id = str(row.get("reenactment_id", "")).strip()
+        request_id = str(row.get("request_id", "")).strip()
+        if not reenactment_id or not request_id:
+            continue
+        fidelity = str(row.get("fidelity_achieved", "macro")).strip() or "macro"
+        if fidelity not in ("macro", "meso", "micro"):
+            fidelity = "macro"
+        output_timeline_ref = str(row.get("output_timeline_ref", "")).strip()
+        if not output_timeline_ref:
+            output_timeline_ref = "timeline.{}".format(reenactment_id)
+        payload = {
+            "schema_version": "1.0.0",
+            "reenactment_id": reenactment_id,
+            "request_id": request_id,
+            "inputs_hash": str(row.get("inputs_hash", "")).strip(),
+            "output_timeline_ref": output_timeline_ref,
+            "fidelity_achieved": fidelity,
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        if not payload["deterministic_fingerprint"]:
+            fingerprint_payload = dict(payload)
+            fingerprint_payload["deterministic_fingerprint"] = ""
+            payload["deterministic_fingerprint"] = canonical_sha256(fingerprint_payload)
+        normalized.append(payload)
+    state["reenactment_artifacts"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _persist_commitment_reenactment_state(
+    state: dict,
+    *,
+    commitments: List[dict],
+    event_stream_indices: List[dict],
+    reenactment_requests: List[dict],
+    reenactment_artifacts: List[dict],
+) -> None:
+    state["material_commitments"] = [dict(row) for row in list(commitments or []) if isinstance(row, dict)]
+    state["event_stream_indices"] = [dict(row) for row in list(event_stream_indices or []) if isinstance(row, dict)]
+    state["reenactment_requests"] = [dict(row) for row in list(reenactment_requests or []) if isinstance(row, dict)]
+    state["reenactment_artifacts"] = [dict(row) for row in list(reenactment_artifacts or []) if isinstance(row, dict)]
+    _ensure_material_commitments(state)
+    _ensure_event_stream_indices(state)
+    _ensure_reenactment_requests(state)
+    _ensure_reenactment_artifacts(state)
+
+
+def _build_material_provenance_events(
+    *,
+    logistics_events: List[dict],
+    construction_events: List[dict],
+    maintenance_events: List[dict],
+) -> List[dict]:
+    rows: List[dict] = []
+    for row in list(logistics_events or []):
+        if not isinstance(row, dict):
+            continue
+        rows.append(
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type": str(row.get("event_type", "")).strip(),
+                "event_type_id": str(row.get("event_type", "")).strip(),
+                "manifest_id": str(row.get("manifest_id", "")).strip(),
+                "commitment_id": str(row.get("commitment_id", "")).strip(),
+                "material_id": str(row.get("material_id", "")).strip(),
+                "batch_id": str(row.get("batch_id", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    for row in list(construction_events or []):
+        if not isinstance(row, dict):
+            continue
+        rows.append(
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type": str(row.get("event_type_id", "")).strip(),
+                "event_type_id": str(row.get("event_type_id", "")).strip(),
+                "linked_project_id": str(row.get("linked_project_id", "")).strip(),
+                "linked_step_id": str(row.get("linked_step_id", "")).strip(),
+                "inputs": _sorted_tokens(list(row.get("inputs") or [])),
+                "outputs": _sorted_tokens(list(row.get("outputs") or [])),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    for row in list(maintenance_events or []):
+        if not isinstance(row, dict):
+            continue
+        rows.append(
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type": str(row.get("event_type_id", "")).strip(),
+                "event_type_id": str(row.get("event_type_id", "")).strip(),
+                "asset_id": str((dict(row.get("extensions") or {})).get("asset_id", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    return sorted(
+        [dict(row) for row in rows if str(row.get("event_id", "")).strip()],
+        key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+    )
+
+
+def _upsert_event_stream_index(rows: List[dict], row: dict) -> List[dict]:
+    stream_id = str((dict(row) or {}).get("stream_id", "")).strip()
+    if not stream_id:
+        return [dict(item) for item in list(rows or []) if isinstance(item, dict)]
+    out: Dict[str, dict] = {}
+    for item in list(rows or []):
+        if not isinstance(item, dict):
+            continue
+        token = str(item.get("stream_id", "")).strip()
+        if token:
+            out[token] = dict(item)
+    out[stream_id] = normalize_event_stream_index_row(row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _upsert_reenactment_request(rows: List[dict], row: dict) -> List[dict]:
+    request_id = str((dict(row) or {}).get("request_id", "")).strip()
+    if not request_id:
+        return [dict(item) for item in list(rows or []) if isinstance(item, dict)]
+    out: Dict[str, dict] = {}
+    for item in list(rows or []):
+        if not isinstance(item, dict):
+            continue
+        token = str(item.get("request_id", "")).strip()
+        if token:
+            out[token] = dict(item)
+    out[request_id] = {
+        "schema_version": "1.0.0",
+        "request_id": request_id,
+        "target_id": str(row.get("target_id", "")).strip(),
+        "tick_range": {
+            "start_tick": max(0, _as_int((dict(row.get("tick_range") or {})).get("start_tick", 0), 0)),
+            "end_tick": max(
+                0,
+                _as_int((dict(row.get("tick_range") or {})).get("end_tick", 0), 0),
+            ),
+        },
+        "desired_fidelity": str(row.get("desired_fidelity", "macro")).strip() or "macro",
+        "max_cost_units": max(0, _as_int(row.get("max_cost_units", 0), 0)),
+        "requester_subject_id": str(row.get("requester_subject_id", "")).strip() or "subject.system",
+        "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+    }
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _upsert_reenactment_artifact(rows: List[dict], row: dict) -> List[dict]:
+    reenactment_id = str((dict(row) or {}).get("reenactment_id", "")).strip()
+    if not reenactment_id:
+        return [dict(item) for item in list(rows or []) if isinstance(item, dict)]
+    out: Dict[str, dict] = {}
+    for item in list(rows or []):
+        if not isinstance(item, dict):
+            continue
+        token = str(item.get("reenactment_id", "")).strip()
+        if token:
+            out[token] = dict(item)
+    payload = dict(row)
+    output_timeline_ref = str(payload.get("output_timeline_ref", "")).strip()
+    if not output_timeline_ref:
+        output_timeline_ref = "timeline.{}".format(reenactment_id)
+    payload["output_timeline_ref"] = output_timeline_ref
+    out[reenactment_id] = payload
+    return _ensure_reenactment_artifacts({"reenactment_artifacts": [dict(out[key]) for key in sorted(out.keys())]})
+
+
+def _commitment_type_row(policy_context: dict | None, commitment_type_id: str) -> dict:
+    rows_by_id = commitment_type_rows_by_id(_policy_payload(policy_context, "commitment_type_registry"))
+    return dict(rows_by_id.get(str(commitment_type_id).strip()) or {})
+
+
+def _validate_commitment_type_authority(
+    *,
+    policy_context: dict | None,
+    authority_context: dict,
+    commitment_type_id: str,
+) -> Dict[str, object]:
+    row = _commitment_type_row(policy_context, commitment_type_id)
+    token = str(commitment_type_id).strip()
+    if not row:
+        return refusal(
+            REFUSAL_COMMITMENT_FORBIDDEN,
+            "commitment_type_id '{}' is not declared in commitment_type_registry".format(token),
+            "Use commitment_type_id from commitment_type_registry.",
+            {"commitment_type_id": token},
+            "$.intent.inputs.commitment_type_id",
+        )
+    required_entitlements = set(_sorted_tokens(list(row.get("required_entitlements") or [])))
+    authority_entitlements = set(_sorted_tokens(list((dict(authority_context or {})).get("entitlements") or [])))
+    missing = sorted(token for token in required_entitlements if token not in authority_entitlements)
+    if missing:
+        return refusal(
+            REFUSAL_COMMITMENT_FORBIDDEN,
+            "authority context is missing required entitlement(s) for commitment type '{}'".format(token),
+            "Grant missing commitment entitlements or choose an allowed commitment type.",
+            {
+                "commitment_type_id": token,
+                "missing_entitlements": ",".join(missing),
+            },
+            "$.authority_context.entitlements",
+        )
+    return {}
+
+
+def _material_provenance_events_for_reenactment(state: dict) -> List[dict]:
+    return _build_material_provenance_events(
+        logistics_events=_ensure_logistics_provenance_events(state),
+        construction_events=_ensure_construction_provenance_events(state),
+        maintenance_events=_ensure_maintenance_provenance_events(state),
+    )
+
+
+def _reenactment_micro_detail_allowed(
+    *,
+    authority_context: dict,
+    law_profile: dict,
+) -> bool:
+    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+    if visibility_level == "diegetic":
+        return False
+    if not bool((dict(law_profile or {})).get("epistemic_limits", {}).get("allow_hidden_state_access", False)):
+        return False
+    entitlements = set(_sorted_tokens(list((dict(authority_context or {})).get("entitlements") or [])))
+    return "entitlement.inspect" in entitlements
 
 
 def _find_cohort(cohort_rows: List[dict], cohort_id: str) -> dict:
@@ -4223,6 +4639,170 @@ def _logistics_actor_subject_id(authority_context: dict) -> str:
     return "subject.system"
 
 
+def _material_commitment_actor_subject_id(authority_context: dict) -> str:
+    return _logistics_actor_subject_id(authority_context)
+
+
+def _upsert_material_commitment(rows: List[dict], row: dict) -> List[dict]:
+    commitment_id = str((dict(row) or {}).get("commitment_id", "")).strip()
+    if not commitment_id:
+        return [dict(item) for item in list(rows or []) if isinstance(item, dict)]
+    out: Dict[str, dict] = {}
+    for item in list(rows or []):
+        if not isinstance(item, dict):
+            continue
+        token = str(item.get("commitment_id", "")).strip()
+        if token:
+            out[token] = dict(item)
+    out[commitment_id] = dict(row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _sync_material_commitments_from_domain(
+    *,
+    material_commitments: List[dict],
+    shipment_commitment_rows: List[dict],
+    construction_commitment_rows: List[dict],
+    maintenance_commitment_rows: List[dict],
+    current_tick: int,
+) -> List[dict]:
+    out = normalize_commitment_rows(material_commitments)
+    for row in list(shipment_commitment_rows or []):
+        if not isinstance(row, dict):
+            continue
+        commitment_id = str(row.get("commitment_id", "")).strip()
+        manifest_id = str(row.get("manifest_id", "")).strip()
+        if not commitment_id or not manifest_id:
+            continue
+        normalized = create_commitment_row(
+            commitment_type_id="commit.logistics.shipment",
+            actor_subject_id=str(row.get("actor_subject_id", "")).strip() or "subject.system",
+            target_kind="logistics",
+            target_id=manifest_id,
+            created_tick=max(0, _as_int(row.get("created_tick", current_tick), current_tick)),
+            scheduled_start_tick=max(0, _as_int(row.get("created_tick", current_tick), current_tick)),
+            linked_manifest_id=manifest_id,
+            status=str(row.get("status", "planned")).strip() or "planned",
+            commitment_id=commitment_id,
+            extensions={
+                "domain_source": "shipment_commitments",
+            },
+        )
+        out = _upsert_material_commitment(out, normalized)
+    for row in list(construction_commitment_rows or []):
+        if not isinstance(row, dict):
+            continue
+        commitment_id = str(row.get("commitment_id", "")).strip()
+        project_id = str(row.get("project_id", "")).strip()
+        if not commitment_id or not project_id:
+            continue
+        commitment_kind = str(row.get("commitment_kind", "")).strip()
+        commitment_type_id = "commit.construction.step"
+        if commitment_kind == "construction.project":
+            commitment_type_id = "commit.construction.project"
+        normalized = create_commitment_row(
+            commitment_type_id=commitment_type_id,
+            actor_subject_id=str(row.get("actor_subject_id", "")).strip() or "subject.system",
+            target_kind="structure",
+            target_id=project_id,
+            created_tick=max(0, _as_int(row.get("scheduled_tick", current_tick), current_tick)),
+            scheduled_start_tick=max(0, _as_int(row.get("scheduled_tick", current_tick), current_tick)),
+            linked_project_id=project_id,
+            status=str(row.get("status", "planned")).strip() or "planned",
+            commitment_id=commitment_id,
+            extensions={
+                "domain_source": "construction_commitments",
+                "step_id": str(row.get("step_id", "")).strip(),
+            },
+        )
+        out = _upsert_material_commitment(out, normalized)
+    for row in list(maintenance_commitment_rows or []):
+        if not isinstance(row, dict):
+            continue
+        commitment_id = str(row.get("commitment_id", "")).strip()
+        asset_id = str(row.get("asset_id", "")).strip()
+        if not commitment_id or not asset_id:
+            continue
+        commitment_kind = str(row.get("commitment_kind", "")).strip()
+        commitment_type_id = "commit.maintenance.inspect"
+        if commitment_kind == "maintenance_due":
+            commitment_type_id = "commit.maintenance.repair"
+        normalized = create_commitment_row(
+            commitment_type_id=commitment_type_id,
+            actor_subject_id=str(row.get("actor_subject_id", "")).strip() or "subject.system",
+            target_kind="maintenance",
+            target_id=asset_id,
+            created_tick=max(0, _as_int(row.get("scheduled_tick", current_tick), current_tick)),
+            scheduled_start_tick=max(0, _as_int(row.get("scheduled_tick", current_tick), current_tick)),
+            status=str(row.get("status", "planned")).strip() or "planned",
+            commitment_id=commitment_id,
+            extensions={
+                "domain_source": "maintenance_commitments",
+                "maintenance_policy_id": str(row.get("maintenance_policy_id", "")).strip(),
+                "commitment_kind": commitment_kind,
+            },
+        )
+        out = _upsert_material_commitment(out, normalized)
+    return normalize_commitment_rows(out)
+
+
+def _has_active_material_commitment(
+    *,
+    commitments: List[dict],
+    target_kind: str,
+    target_id: str,
+) -> bool:
+    kind = str(target_kind).strip()
+    token = str(target_id).strip()
+    for row in list(commitments or []):
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("target_kind", "")).strip() != kind:
+            continue
+        if str(row.get("target_id", "")).strip() != token:
+            continue
+        status = str(row.get("status", "")).strip() or "planned"
+        if status in ("cancelled", "failed"):
+            continue
+        return True
+    return False
+
+
+def _enforce_causality_commitment_requirement(
+    *,
+    process_id: str,
+    strictness_row: dict,
+    commitments: List[dict],
+    target_kind: str,
+    target_ids: List[str],
+) -> Dict[str, object]:
+    if not strictness_requires_commitment(process_id=process_id, strictness_row=strictness_row):
+        return {}
+    missing = [
+        token
+        for token in _sorted_tokens(list(target_ids or []))
+        if not _has_active_material_commitment(
+            commitments=commitments,
+            target_kind=target_kind,
+            target_id=token,
+        )
+    ]
+    if not missing:
+        return {}
+    return refusal(
+        REFUSAL_COMMITMENT_REQUIRED_MISSING,
+        "causality strictness requires commitment for '{}' target(s)".format(target_kind),
+        "Create required commitments before executing macro-changing process.",
+        {
+            "process_id": process_id,
+            "target_kind": target_kind,
+            "missing_target_ids": ",".join(missing),
+            "causality_strictness_id": str(strictness_row.get("causality_strictness_id", "")),
+        },
+        "$.intent.inputs",
+    )
+
+
 def _select_logistics_graph_and_rule(
     *,
     policy_context: dict | None,
@@ -4584,6 +5164,268 @@ def _augment_inspection_target_payload_for_maintenance(
     return payload
 
 
+def _materialization_quantization_step(
+    *,
+    authority_context: dict,
+    policy_context: dict | None,
+) -> int:
+    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+    if visibility_level == "diegetic":
+        return 1000
+    entitlements = set(_sorted_tokens(list((dict(authority_context or {})).get("entitlements") or [])))
+    if "entitlement.inspect" in entitlements:
+        return 1
+    configured_step = _as_int((dict(policy_context or {})).get("materialization_quantization_step", 100), 100)
+    return max(1, int(configured_step))
+
+
+def _quantize_numeric_map(values: object, *, step: int) -> dict:
+    quant_step = max(1, _as_int(step, 1))
+    if not isinstance(values, dict):
+        return {}
+    out = {}
+    for key, value in sorted(values.items(), key=lambda item: str(item[0])):
+        token = str(key).strip()
+        if not token:
+            continue
+        raw = max(0, _as_int(value, 0))
+        if quant_step > 1:
+            raw = int((raw // quant_step) * quant_step)
+        out[token] = int(raw)
+    return out
+
+
+def _augment_inspection_target_payload_for_materialization(
+    *,
+    state: dict,
+    policy_context: dict | None,
+    authority_context: dict,
+    target_payload: dict,
+) -> dict:
+    payload = dict(target_payload or {})
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    if not row:
+        return payload
+    if collection not in (
+        "micro_part_instances",
+        "materialization_states",
+        "distribution_aggregates",
+        "materialization_reenactment_descriptors",
+        "installed_structure_instances",
+    ):
+        return payload
+
+    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+    quantization_step = _materialization_quantization_step(
+        authority_context=authority_context,
+        policy_context=policy_context,
+    )
+    micro_rows = sorted(
+        [dict(item) for item in list(state.get("micro_part_instances") or []) if isinstance(item, dict)],
+        key=lambda item: (
+            str(item.get("parent_structure_id", "")),
+            str(item.get("ag_node_id", "")),
+            str(item.get("batch_id", "")),
+            str(item.get("micro_part_id", "")),
+        ),
+    )
+    aggregate_rows = sorted(
+        [dict(item) for item in list(state.get("distribution_aggregates") or []) if isinstance(item, dict)],
+        key=lambda item: (str(item.get("structure_id", "")), str(item.get("ag_node_id", ""))),
+    )
+    materialization_rows = sorted(
+        [dict(item) for item in list(state.get("materialization_states") or []) if isinstance(item, dict)],
+        key=lambda item: (str(item.get("structure_id", "")), str(item.get("roi_id", ""))),
+    )
+    extensions = dict(payload.get("extensions") or {})
+
+    if collection == "micro_part_instances":
+        if visibility_level == "diegetic":
+            row.pop("deterministic_seed", None)
+            row["wear_state"] = _quantize_numeric_map(dict(row.get("wear_state") or {}), step=quantization_step)
+            row["defect_flags"] = _sorted_tokens(list(row.get("defect_flags") or []))[:1]
+            extensions["epistemic_redaction"] = "diegetic_micro_part_redaction"
+        payload["row"] = row
+        payload["extensions"] = extensions
+        return payload
+
+    if collection == "distribution_aggregates":
+        row["defect_distribution_vector"] = _quantize_numeric_map(
+            dict(row.get("defect_distribution_vector") or {}),
+            step=quantization_step,
+        )
+        row["wear_distribution_vector"] = _quantize_numeric_map(
+            dict(row.get("wear_distribution_vector") or {}),
+            step=quantization_step,
+        )
+        if visibility_level == "diegetic":
+            extensions["epistemic_redaction"] = "diegetic_distribution_quantized"
+        extensions["quantization_step"] = int(quantization_step)
+        payload["row"] = row
+        payload["extensions"] = extensions
+        return payload
+
+    structure_id = ""
+    roi_id = ""
+    if collection == "materialization_states":
+        structure_id = str(row.get("structure_id", "")).strip()
+        roi_id = str(row.get("roi_id", "")).strip()
+    elif collection == "installed_structure_instances":
+        structure_id = str(row.get("instance_id", "")).strip()
+    elif collection == "materialization_reenactment_descriptors":
+        structure_id = str(row.get("structure_id", "")).strip()
+        if visibility_level == "diegetic":
+            row["seed_reference"] = ""
+            extensions["epistemic_redaction"] = "diegetic_seed_redaction"
+            payload["row"] = row
+            payload["extensions"] = extensions
+            return payload
+
+    if not structure_id:
+        payload["row"] = row
+        payload["extensions"] = extensions
+        return payload
+
+    relevant_micro_rows = [
+        dict(item)
+        for item in micro_rows
+        if str(item.get("parent_structure_id", "")).strip() == structure_id
+        and (
+            (not roi_id)
+            or str((dict(item.get("extensions") or {})).get("roi_id", "")).strip() == roi_id
+        )
+    ]
+    relevant_aggregate_rows = [
+        dict(item)
+        for item in aggregate_rows
+        if str(item.get("structure_id", "")).strip() == structure_id
+    ]
+    micro_mass_total = int(sum(max(0, _as_int(item.get("mass", 0), 0)) for item in relevant_micro_rows))
+    aggregate_mass_total = int(sum(max(0, _as_int(item.get("total_mass", 0), 0)) for item in relevant_aggregate_rows))
+    remaining_macro_mass = int(max(0, aggregate_mass_total - micro_mass_total))
+
+    defect_distribution = {}
+    wear_distribution = {}
+    for item in relevant_micro_rows:
+        part_mass = max(0, _as_int(item.get("mass", 0), 0))
+        for defect_flag in _sorted_tokens(list(item.get("defect_flags") or [])):
+            defect_distribution[defect_flag] = int(_as_int(defect_distribution.get(defect_flag, 0), 0) + part_mass)
+        for wear_key, wear_value in sorted((dict(item.get("wear_state") or {})).items(), key=lambda pair: str(pair[0])):
+            token = str(wear_key).strip()
+            if not token:
+                continue
+            wear_distribution[token] = int(_as_int(wear_distribution.get(token, 0), 0) + max(0, _as_int(wear_value, 0)))
+    defect_distribution = _quantize_numeric_map(defect_distribution, step=quantization_step)
+    wear_distribution = _quantize_numeric_map(wear_distribution, step=quantization_step)
+
+    structure_states = [
+        dict(item)
+        for item in materialization_rows
+        if str(item.get("structure_id", "")).strip() == structure_id
+    ]
+    materialized_node_ids = _sorted_tokens(
+        [str(node) for state_row in structure_states for node in list(state_row.get("materialized_nodes") or [])]
+    )
+    state_refs = _sorted_tokens(
+        [
+            "materialization.state.{}::{}".format(
+                str(state_row.get("structure_id", "")).strip(),
+                str(state_row.get("roi_id", "")).strip(),
+            )
+            for state_row in structure_states
+        ]
+    )
+
+    extensions.update(
+        {
+            "materialized_part_count": int(len(relevant_micro_rows)),
+            "micro_mass_total": int(micro_mass_total),
+            "aggregate_mass_total": int(aggregate_mass_total),
+            "remaining_macro_mass": int(remaining_macro_mass),
+            "defect_distribution_quantized": defect_distribution,
+            "wear_distribution_quantized": wear_distribution,
+            "quantization_step": int(quantization_step),
+            "materialized_node_count": int(len(materialized_node_ids)),
+            "materialized_roi_count": int(len(structure_states)),
+            "materialization_state_refs": state_refs if visibility_level != "diegetic" else [],
+        }
+    )
+    if visibility_level == "diegetic":
+        if collection == "materialization_states":
+            row["materialized_part_ids"] = []
+        extensions["epistemic_redaction"] = "diegetic_materialization_summary"
+    payload["row"] = row
+    payload["extensions"] = extensions
+    return payload
+
+
+def _augment_inspection_target_payload_for_commitment_reenactment(
+    *,
+    authority_context: dict,
+    target_payload: dict,
+) -> dict:
+    payload = dict(target_payload or {})
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    if not row:
+        return payload
+    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+    extensions = dict(payload.get("extensions") or {})
+    if collection == "material_commitments":
+        linked_event_ids = _sorted_tokens(list(row.get("linked_event_ids") or []))
+        if visibility_level == "diegetic":
+            row["required_inputs"] = []
+            row["expected_outputs"] = []
+            row["linked_event_ids"] = linked_event_ids[:1]
+            extensions["epistemic_redaction"] = "diegetic_commitment_summary"
+        extensions["linked_event_count"] = int(len(linked_event_ids))
+        payload["row"] = row
+        payload["extensions"] = extensions
+        return payload
+    if collection == "event_stream_indices":
+        stream_extensions = dict(row.get("extensions") or {})
+        event_rows = [dict(item) for item in list(stream_extensions.get("event_rows") or []) if isinstance(item, dict)]
+        if visibility_level == "diegetic":
+            stream_extensions["event_rows"] = [
+                {
+                    "event_id": str(item.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(item.get("tick", 0), 0))),
+                    "event_type_id": str(item.get("event_type_id", "")).strip(),
+                }
+                for item in event_rows[:12]
+            ]
+            extensions["epistemic_redaction"] = "diegetic_event_stream_summary"
+        else:
+            stream_extensions["event_rows"] = event_rows[:64]
+        row["extensions"] = stream_extensions
+        extensions["event_count"] = int(len(list(row.get("event_ids") or [])))
+        payload["row"] = row
+        payload["extensions"] = extensions
+        return payload
+    if collection == "reenactment_artifacts":
+        artifact_extensions = dict(row.get("extensions") or {})
+        timeline = dict(artifact_extensions.get("timeline") or {})
+        if visibility_level == "diegetic":
+            timeline.pop("micro_seed_refs", None)
+            timeline_rows = [dict(item) for item in list(timeline.get("timeline") or []) if isinstance(item, dict)]
+            timeline["timeline"] = [
+                {
+                    "tick": int(max(0, _as_int(item.get("tick", 0), 0))),
+                    "event_id": str(item.get("event_id", "")).strip(),
+                    "event_type_id": str(item.get("event_type_id", "")).strip(),
+                }
+                for item in timeline_rows[:12]
+            ]
+            extensions["epistemic_redaction"] = "diegetic_reenactment_summary"
+        artifact_extensions["timeline"] = timeline
+        row["extensions"] = artifact_extensions
+        payload["row"] = row
+        payload["extensions"] = extensions
+        return payload
+    return payload
+
+
 def _inspection_target_payload(state: dict, target_id: str) -> dict:
     token = str(target_id).strip()
     if not token:
@@ -4614,6 +5456,46 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
             region_payload["micro_region"] = micro
             region_payload["exists"] = True
         return region_payload
+    if token.startswith("materialization.state."):
+        suffix = token[len("materialization.state."):]
+        structure_id = ""
+        roi_id = ""
+        if "::" in suffix:
+            structure_id, roi_id = suffix.split("::", 1)
+        for row in sorted(
+            (item for item in list(state.get("materialization_states") or []) if isinstance(item, dict)),
+            key=lambda item: (str(item.get("structure_id", "")), str(item.get("roi_id", ""))),
+        ):
+            if structure_id and str(row.get("structure_id", "")).strip() != str(structure_id).strip():
+                continue
+            if roi_id and str(row.get("roi_id", "")).strip() != str(roi_id).strip():
+                continue
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "materialization_states",
+                "row": dict(row),
+            }
+    if token.startswith("distribution.aggregate."):
+        suffix = token[len("distribution.aggregate."):]
+        structure_id = ""
+        ag_node_id = ""
+        if "::" in suffix:
+            structure_id, ag_node_id = suffix.split("::", 1)
+        for row in sorted(
+            (item for item in list(state.get("distribution_aggregates") or []) if isinstance(item, dict)),
+            key=lambda item: (str(item.get("structure_id", "")), str(item.get("ag_node_id", ""))),
+        ):
+            if structure_id and str(row.get("structure_id", "")).strip() != str(structure_id).strip():
+                continue
+            if ag_node_id and str(row.get("ag_node_id", "")).strip() != str(ag_node_id).strip():
+                continue
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "distribution_aggregates",
+                "row": dict(row),
+            }
 
     id_table = (
         ("cohort_assemblies", "cohort_id"),
@@ -4631,10 +5513,16 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("construction_commitments", "commitment_id"),
         ("construction_provenance_events", "event_id"),
         ("installed_structure_instances", "instance_id"),
+        ("micro_part_instances", "micro_part_id"),
+        ("materialization_reenactment_descriptors", "structure_id"),
         ("asset_health_states", "asset_id"),
         ("failure_events", "event_id"),
         ("maintenance_commitments", "commitment_id"),
         ("maintenance_provenance_events", "event_id"),
+        ("material_commitments", "commitment_id"),
+        ("event_stream_indices", "stream_id"),
+        ("reenactment_requests", "request_id"),
+        ("reenactment_artifacts", "reenactment_id"),
         ("role_assignments", "role_assignment_id"),
     )
     for list_key, id_key in id_table:
@@ -6855,8 +7743,34 @@ def execute_intent(
     installed_structure_instances = _ensure_installed_structure_instances(state)
     construction_provenance_events = _ensure_construction_provenance_events(state)
     construction_runtime_state = _ensure_construction_runtime_state(state)
+    micro_part_instances = _ensure_micro_part_instances(state)
+    materialization_states = _ensure_materialization_states(state)
+    distribution_aggregates = _ensure_distribution_aggregates(state)
+    materialization_reenactment_descriptors = _ensure_materialization_reenactment_descriptors(state)
+    material_commitments = _ensure_material_commitments(state)
+    event_stream_indices = _ensure_event_stream_indices(state)
+    reenactment_requests = _ensure_reenactment_requests(state)
+    reenactment_artifacts = _ensure_reenactment_artifacts(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+    strictness_row = resolve_causality_strictness_row(
+        policy_context=policy_context,
+        strictness_registry_payload=_policy_payload(policy_context, "causality_strictness_registry"),
+    )
+    material_commitments = _sync_material_commitments_from_domain(
+        material_commitments=material_commitments,
+        shipment_commitment_rows=shipment_commitment_rows,
+        construction_commitment_rows=construction_commitments,
+        maintenance_commitment_rows=_ensure_maintenance_commitments(state),
+        current_tick=int(current_tick),
+    )
+    _persist_commitment_reenactment_state(
+        state,
+        commitments=material_commitments,
+        event_stream_indices=event_stream_indices,
+        reenactment_requests=reenactment_requests,
+        reenactment_artifacts=reenactment_artifacts,
+    )
     arrived_cohort_ids = _apply_pending_cohort_arrivals(cohorts, current_tick)
     result_metadata: Dict[str, object] = {}
     skip_state_log = False
@@ -9143,6 +10057,51 @@ def execute_intent(
         logistics_manifests = [dict(manifest_by_id[key]) for key in sorted(manifest_by_id.keys())]
         shipment_commitment_rows = [dict(commitment_by_id[key]) for key in sorted(commitment_by_id.keys())]
         logistics_inventory_rows = inventory_rows_from_index(dict(created.get("inventory_index") or {}))
+        manifest_event_row = {
+            "schema_version": "1.0.0",
+            "event_id": "event.shipment.{}".format(
+                canonical_sha256(
+                    {
+                        "event_type": "shipment_manifest_created",
+                        "manifest_id": str(manifest_row.get("manifest_id", "")).strip(),
+                        "tick": int(max(0, int(current_tick))),
+                        "intent_id": str(intent_id),
+                    }
+                )[:24]
+            ),
+            "event_type": "shipment_manifest_created",
+            "manifest_id": str(manifest_row.get("manifest_id", "")).strip(),
+            "batch_id": str(manifest_row.get("batch_id", "")).strip(),
+            "material_id": str(manifest_row.get("material_id", "")).strip(),
+            "quantity_mass": int(max(0, _as_int(manifest_row.get("quantity_mass", 0), 0))),
+            "tick": int(max(0, int(current_tick))),
+            "commitment_id": str(commitment_row.get("commitment_id", "")).strip(),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "graph_id": str(manifest_row.get("graph_id", "")).strip(),
+                "from_node_id": str(manifest_row.get("from_node_id", "")).strip(),
+                "to_node_id": str(manifest_row.get("to_node_id", "")).strip(),
+            },
+        }
+        manifest_event_row["deterministic_fingerprint"] = canonical_sha256(
+            dict(manifest_event_row, deterministic_fingerprint="")
+        )
+        logistics_provenance_events = sorted(
+            [
+                dict(item)
+                for item in list(logistics_provenance_events or [])
+                if isinstance(item, dict) and str(item.get("event_id", "")).strip()
+            ]
+            + [manifest_event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        if manifest_row:
+            manifest_row["provenance_event_ids"] = _sorted_tokens(
+                list(manifest_row.get("provenance_event_ids") or [])
+                + [str(manifest_event_row.get("event_id", "")).strip()]
+            )
+            manifest_by_id[str(manifest_row.get("manifest_id", ""))] = dict(manifest_row)
+            logistics_manifests = [dict(manifest_by_id[key]) for key in sorted(manifest_by_id.keys())]
         _persist_logistics_state(
             state,
             manifests=logistics_manifests,
@@ -9151,6 +10110,39 @@ def execute_intent(
             events=logistics_provenance_events,
             runtime_state=logistics_runtime_state,
         )
+        if commitment_row:
+            try:
+                material_commitment_row = create_commitment_row(
+                    commitment_type_id="commit.logistics.shipment",
+                    actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+                    target_kind="logistics",
+                    target_id=str(manifest_row.get("manifest_id", "")).strip(),
+                    created_tick=int(max(0, int(current_tick))),
+                    scheduled_start_tick=int(max(0, int(earliest_depart_tick))),
+                    linked_manifest_id=str(manifest_row.get("manifest_id", "")).strip(),
+                    status=str(commitment_row.get("status", "planned")).strip() or "planned",
+                    commitment_id=str(commitment_row.get("commitment_id", "")).strip(),
+                    extensions={
+                        "source_process_id": process_id,
+                        "causality_strictness_id": str(strictness_row.get("causality_strictness_id", "")),
+                    },
+                )
+            except CommitmentError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Fix commitment schedule semantics and retry manifest creation.",
+                    dict(exc.details),
+                    "$.intent.inputs",
+                )
+            material_commitments = _upsert_material_commitment(material_commitments, material_commitment_row)
+            _persist_commitment_reenactment_state(
+                state,
+                commitments=material_commitments,
+                event_stream_indices=event_stream_indices,
+                reenactment_requests=reenactment_requests,
+                reenactment_artifacts=reenactment_artifacts,
+            )
         result_metadata = {
             "graph_id": str((manifest_row or {}).get("graph_id", "")),
             "manifest_id": str((manifest_row or {}).get("manifest_id", "")),
@@ -9219,6 +10211,19 @@ def execute_intent(
                 for row in list(logistics_manifests or [])
                 if isinstance(row, dict) and str(row.get("graph_id", "")).strip() != selected_graph_id
             ]
+            causality_check = _enforce_causality_commitment_requirement(
+                process_id=process_id,
+                strictness_row=strictness_row,
+                commitments=material_commitments,
+                target_kind="logistics",
+                target_ids=[
+                    str(row.get("manifest_id", "")).strip()
+                    for row in list(scoped_manifests or [])
+                    if isinstance(row, dict) and str(row.get("status", "")).strip() not in ("delivered", "lost", "failed")
+                ],
+            )
+            if causality_check:
+                return causality_check
             try:
                 ticked = tick_manifests(
                     graph_row=graph_row,
@@ -9324,6 +10329,20 @@ def execute_intent(
                 inventories=logistics_inventory_rows,
                 events=logistics_provenance_events,
                 runtime_state=logistics_runtime_state,
+            )
+            material_commitments = _sync_material_commitments_from_domain(
+                material_commitments=material_commitments,
+                shipment_commitment_rows=shipment_commitment_rows,
+                construction_commitment_rows=construction_commitments,
+                maintenance_commitment_rows=_ensure_maintenance_commitments(state),
+                current_tick=int(current_tick),
+            )
+            _persist_commitment_reenactment_state(
+                state,
+                commitments=material_commitments,
+                event_stream_indices=event_stream_indices,
+                reenactment_requests=reenactment_requests,
+                reenactment_artifacts=reenactment_artifacts,
             )
             result_metadata = {
                 "graph_id": selected_graph_id,
@@ -9522,6 +10541,21 @@ def execute_intent(
                 (dict(policy_context or {})).get("construction_max_projects_per_tick", CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK),
                 CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK,
             )
+        causality_check = _enforce_causality_commitment_requirement(
+            process_id=process_id,
+            strictness_row=strictness_row,
+            commitments=material_commitments,
+            target_kind="structure",
+            target_ids=[
+                str(row.get("project_id", "")).strip()
+                for row in list(construction_projects or [])
+                if isinstance(row, dict)
+                and str(row.get("project_id", "")).strip()
+                and str(row.get("status", "")).strip() not in ("completed", "failed", "paused")
+            ],
+        )
+        if causality_check:
+            return causality_check
         budget = _construction_tick_budget(
             policy_context=policy_context,
             requested_max_projects=int(requested_max_projects),
@@ -10037,6 +11071,15 @@ def execute_intent(
                 for key, value in sorted((dict(node_entry.get("material_stocks") or {})).items(), key=lambda item: str(item[0]))
                 if str(key).strip()
             )
+        causality_check = _enforce_causality_commitment_requirement(
+            process_id=process_id,
+            strictness_row=strictness_row,
+            commitments=material_commitments,
+            target_kind="maintenance",
+            target_ids=[asset_id],
+        )
+        if causality_check:
+            return causality_check
         asset_health_states = _ensure_asset_health_states(state)
         failure_events = _ensure_failure_events(state)
         maintenance_commitments = _ensure_maintenance_commitments(state)
@@ -10122,6 +11165,720 @@ def execute_intent(
             "backlog_after": int(maintained.get("backlog_after", 0)),
             "logistics_node_id": logistics_node_id,
             "required_materials": dict(required_materials),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.commitment_create":
+        commitment_type_id = str(inputs.get("commitment_type_id", "")).strip()
+        target_kind = str(inputs.get("target_kind", "custom")).strip() or "custom"
+        target_id = str(inputs.get("target_id", "")).strip()
+        if not commitment_type_id or not target_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.commitment_create requires commitment_type_id and target_id",
+                "Provide commitment_type_id and target_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        authority_check = _validate_commitment_type_authority(
+            policy_context=policy_context,
+            authority_context=authority_context,
+            commitment_type_id=commitment_type_id,
+        )
+        if authority_check:
+            return authority_check
+        created_tick = max(0, _as_int(inputs.get("created_tick", current_tick), int(current_tick)))
+        scheduled_start_tick = max(0, _as_int(inputs.get("scheduled_start_tick", created_tick), int(created_tick)))
+        scheduled_end_tick = None
+        scheduled_end_input = inputs.get("scheduled_end_tick")
+        if scheduled_end_input is not None and str(scheduled_end_input).strip():
+            scheduled_end_tick = max(0, _as_int(scheduled_end_input, 0))
+        try:
+            commitment_row = create_commitment_row(
+                commitment_type_id=commitment_type_id,
+                actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+                target_kind=target_kind,
+                target_id=target_id,
+                created_tick=int(created_tick),
+                scheduled_start_tick=int(scheduled_start_tick),
+                scheduled_end_tick=scheduled_end_tick,
+                required_inputs=_sorted_tokens(list(inputs.get("required_inputs") or [])),
+                expected_outputs=_sorted_tokens(list(inputs.get("expected_outputs") or [])),
+                linked_project_id=str(inputs.get("linked_project_id", "")).strip() or None,
+                linked_manifest_id=str(inputs.get("linked_manifest_id", "")).strip() or None,
+                linked_event_ids=_sorted_tokens(list(inputs.get("linked_event_ids") or [])),
+                status=str(inputs.get("status", "planned")).strip() or "planned",
+                extensions=dict(inputs.get("extensions") or {}),
+                commitment_id=str(inputs.get("commitment_id", "")).strip(),
+            )
+        except CommitmentError as exc:
+            code = str(exc.reason_code or REFUSAL_COMMITMENT_INVALID_SCHEDULE)
+            return refusal(
+                code,
+                str(exc),
+                "Adjust commitment schedule semantics and retry commitment creation.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        material_commitments = _upsert_material_commitment(material_commitments, commitment_row)
+        _persist_commitment_reenactment_state(
+            state,
+            commitments=material_commitments,
+            event_stream_indices=event_stream_indices,
+            reenactment_requests=reenactment_requests,
+            reenactment_artifacts=reenactment_artifacts,
+        )
+        result_metadata = {
+            "commitment_id": str(commitment_row.get("commitment_id", "")),
+            "commitment_type_id": commitment_type_id,
+            "target_kind": target_kind,
+            "target_id": target_id,
+            "status": str(commitment_row.get("status", "")),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.event_stream_index_rebuild":
+        target_id = str(inputs.get("target_id", "")).strip()
+        if not target_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.event_stream_index_rebuild requires target_id",
+                "Provide deterministic target_id for event stream indexing.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_id",
+            )
+        tick_range_input = dict(inputs.get("tick_range") or {})
+        start_tick = max(
+            0,
+            _as_int(
+                inputs.get("start_tick", tick_range_input.get("start_tick", 0)),
+                0,
+            ),
+        )
+        end_tick = max(
+            int(start_tick),
+            _as_int(
+                inputs.get("end_tick", tick_range_input.get("end_tick", current_tick)),
+                int(current_tick),
+            ),
+        )
+        material_events = _material_provenance_events_for_reenactment(state)
+        stream_row = build_event_stream_index(
+            target_id=target_id,
+            events=material_events,
+            start_tick=int(start_tick),
+            end_tick=int(end_tick),
+        )
+        event_stream_indices = _upsert_event_stream_index(event_stream_indices, stream_row)
+        _persist_commitment_reenactment_state(
+            state,
+            commitments=material_commitments,
+            event_stream_indices=event_stream_indices,
+            reenactment_requests=reenactment_requests,
+            reenactment_artifacts=reenactment_artifacts,
+        )
+        result_metadata = {
+            "target_id": target_id,
+            "stream_id": str(stream_row.get("stream_id", "")),
+            "stream_hash": str(stream_row.get("stream_hash", "")),
+            "tick_range": dict(stream_row.get("tick_range") or {}),
+            "event_count": int(len(list(stream_row.get("event_ids") or []))),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.reenactment_generate":
+        target_id = str(inputs.get("target_id", "")).strip()
+        if not target_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.reenactment_generate requires target_id",
+                "Provide deterministic target_id for reenactment request.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_id",
+            )
+        tick_range_input = dict(inputs.get("tick_range") or {})
+        start_tick = max(
+            0,
+            _as_int(
+                inputs.get("start_tick", tick_range_input.get("start_tick", 0)),
+                0,
+            ),
+        )
+        end_tick = max(
+            int(start_tick),
+            _as_int(
+                inputs.get("end_tick", tick_range_input.get("end_tick", current_tick)),
+                int(current_tick),
+            ),
+        )
+        desired_fidelity = str(inputs.get("desired_fidelity", "macro")).strip() or "macro"
+        if desired_fidelity not in ("macro", "meso", "micro"):
+            desired_fidelity = "macro"
+        max_cost_units = max(
+            0,
+            _as_int(
+                inputs.get("max_cost_units", (dict(policy_context or {})).get("reenactment_max_cost_units", 4096)),
+                4096,
+            ),
+        )
+        requester_subject_id = _material_commitment_actor_subject_id(authority_context)
+        request_id = str(inputs.get("request_id", "")).strip()
+        if not request_id:
+            request_id = "reenactment.request.{}".format(
+                canonical_sha256(
+                    {
+                        "target_id": target_id,
+                        "tick_range": {"start_tick": int(start_tick), "end_tick": int(end_tick)},
+                        "desired_fidelity": desired_fidelity,
+                        "max_cost_units": int(max_cost_units),
+                        "requester_subject_id": requester_subject_id,
+                        "created_tick": int(current_tick),
+                    }
+                )[:24]
+            )
+        request_row = {
+            "schema_version": "1.0.0",
+            "request_id": request_id,
+            "target_id": target_id,
+            "tick_range": {"start_tick": int(start_tick), "end_tick": int(end_tick)},
+            "desired_fidelity": desired_fidelity,
+            "max_cost_units": int(max_cost_units),
+            "requester_subject_id": requester_subject_id,
+            "extensions": dict(inputs.get("extensions") or {}),
+        }
+        reenactment_requests = _upsert_reenactment_request(reenactment_requests, request_row)
+
+        stream_row = {}
+        for row in sorted(
+            (dict(item) for item in list(event_stream_indices or []) if isinstance(item, dict)),
+            key=lambda item: str(item.get("stream_id", "")),
+        ):
+            if str(row.get("target_id", "")).strip() != target_id:
+                continue
+            tick_range = dict(row.get("tick_range") or {})
+            if (
+                _as_int(tick_range.get("start_tick", 0), 0) == int(start_tick)
+                and _as_int(tick_range.get("end_tick", 0), 0) == int(end_tick)
+            ):
+                stream_row = dict(row)
+                break
+        if not stream_row:
+            stream_row = build_event_stream_index(
+                target_id=target_id,
+                events=_material_provenance_events_for_reenactment(state),
+                start_tick=int(start_tick),
+                end_tick=int(end_tick),
+            )
+            event_stream_indices = _upsert_event_stream_index(event_stream_indices, stream_row)
+
+        stream_extensions = dict(stream_row.get("extensions") or {})
+        stream_event_rows = [dict(row) for row in list(stream_extensions.get("event_rows") or []) if isinstance(row, dict)]
+        stream_for_build = dict(stream_row)
+        stream_for_build["event_rows"] = stream_event_rows
+        stream_commitment_ids = set(
+            str(row.get("commitment_id", "")).strip()
+            for row in stream_event_rows
+            if str(row.get("commitment_id", "")).strip()
+        )
+        relevant_commitments = sorted(
+            [
+                dict(row)
+                for row in list(material_commitments or [])
+                if isinstance(row, dict)
+                and (
+                    str(row.get("target_id", "")).strip() == target_id
+                    or str(row.get("linked_project_id", "")).strip() == target_id
+                    or str(row.get("linked_manifest_id", "")).strip() == target_id
+                    or str(row.get("commitment_id", "")).strip() in stream_commitment_ids
+                )
+            ],
+            key=lambda row: (_as_int(row.get("scheduled_start_tick", 0), 0), str(row.get("commitment_id", ""))),
+        )
+        batch_ids = set()
+        for row in list(logistics_manifests or []):
+            if not isinstance(row, dict):
+                continue
+            token = str(row.get("batch_id", "")).strip()
+            if token:
+                batch_ids.add(token)
+        for row in list(micro_part_instances or []):
+            if not isinstance(row, dict):
+                continue
+            token = str(row.get("batch_id", "")).strip()
+            if token:
+                batch_ids.add(token)
+        batch_lineage_rows = [{"batch_id": token} for token in sorted(batch_ids)]
+        allow_micro_detail = _reenactment_micro_detail_allowed(
+            authority_context=authority_context,
+            law_profile=law_profile,
+        )
+        try:
+            artifact_row, timeline_payload = build_reenactment_artifact(
+                request_row=request_row,
+                event_stream_row=stream_for_build,
+                commitment_rows=relevant_commitments,
+                batch_lineage_rows=batch_lineage_rows,
+                max_cost_units=int(max_cost_units),
+                allow_micro_detail=bool(allow_micro_detail),
+            )
+        except CommitmentError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Adjust reenactment fidelity/budget inputs or entitlement scope and retry.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        reenactment_id = str(artifact_row.get("reenactment_id", "")).strip()
+        artifact_row["output_timeline_ref"] = "timeline.{}".format(reenactment_id)
+        artifact_extensions = dict(artifact_row.get("extensions") or {})
+        artifact_extensions["timeline"] = dict(timeline_payload)
+        artifact_extensions["event_stream_id"] = str(stream_row.get("stream_id", "")).strip()
+        artifact_extensions["target_id"] = target_id
+        artifact_row["extensions"] = artifact_extensions
+        artifact_row["deterministic_fingerprint"] = canonical_sha256(
+            dict(artifact_row, deterministic_fingerprint="")
+        )
+        reenactment_artifacts = _upsert_reenactment_artifact(reenactment_artifacts, artifact_row)
+        _persist_commitment_reenactment_state(
+            state,
+            commitments=material_commitments,
+            event_stream_indices=event_stream_indices,
+            reenactment_requests=reenactment_requests,
+            reenactment_artifacts=reenactment_artifacts,
+        )
+        budget_info = dict((dict(artifact_row.get("extensions") or {})).get("budget") or {})
+        result_metadata = {
+            "target_id": target_id,
+            "request_id": request_id,
+            "reenactment_id": reenactment_id,
+            "event_stream_id": str(stream_row.get("stream_id", "")),
+            "desired_fidelity": desired_fidelity,
+            "fidelity_achieved": str(artifact_row.get("fidelity_achieved", "")),
+            "degraded": bool((dict(artifact_row.get("extensions") or {})).get("degraded", False)),
+            "max_cost_units": int(max_cost_units),
+            "budget": dict(budget_info),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.reenactment_play":
+        reenactment_id = str(inputs.get("reenactment_id", "")).strip()
+        request_id = str(inputs.get("request_id", "")).strip()
+        target_id = str(inputs.get("target_id", "")).strip()
+        request_rows_by_id = dict(
+            (str(row.get("request_id", "")).strip(), dict(row))
+            for row in list(reenactment_requests or [])
+            if isinstance(row, dict) and str(row.get("request_id", "")).strip()
+        )
+        artifact_candidates = sorted(
+            (dict(row) for row in list(reenactment_artifacts or []) if isinstance(row, dict)),
+            key=lambda row: str(row.get("reenactment_id", "")),
+        )
+        selected_artifact = {}
+        if reenactment_id:
+            for row in artifact_candidates:
+                if str(row.get("reenactment_id", "")).strip() == reenactment_id:
+                    selected_artifact = dict(row)
+                    break
+        elif request_id:
+            for row in artifact_candidates:
+                if str(row.get("request_id", "")).strip() == request_id:
+                    selected_artifact = dict(row)
+                    break
+        elif target_id:
+            for row in artifact_candidates:
+                req = dict(request_rows_by_id.get(str(row.get("request_id", "")).strip()) or {})
+                if str(req.get("target_id", "")).strip() == target_id:
+                    selected_artifact = dict(row)
+                    break
+        if not selected_artifact:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.reenactment_play could not resolve requested reenactment artifact",
+                "Provide reenactment_id, request_id, or target_id with generated reenactment data.",
+                {
+                    "reenactment_id": reenactment_id,
+                    "request_id": request_id,
+                    "target_id": target_id,
+                },
+                "$.intent.inputs",
+            )
+        if (
+            str(selected_artifact.get("fidelity_achieved", "")).strip() == "micro"
+            and not _reenactment_micro_detail_allowed(
+                authority_context=authority_context,
+                law_profile=law_profile,
+            )
+        ):
+            return refusal(
+                REFUSAL_REENACTMENT_FORBIDDEN_BY_LAW,
+                "micro reenactment playback is forbidden by active law/authority scope",
+                "Use meso/macro fidelity or elevate epistemic entitlements under allowed law profile.",
+                {"reenactment_id": str(selected_artifact.get("reenactment_id", ""))},
+                "$.intent.inputs.reenactment_id",
+            )
+        playback_timeline = dict((dict(selected_artifact.get("extensions") or {})).get("timeline") or {})
+        visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+        if visibility_level == "diegetic":
+            playback_timeline.pop("micro_seed_refs", None)
+            timeline_rows = list(playback_timeline.get("timeline") or [])
+            playback_timeline["timeline"] = [
+                {
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "event_type_id": str(row.get("event_type_id", "")).strip(),
+                }
+                for row in timeline_rows
+                if isinstance(row, dict)
+            ]
+            playback_timeline["epistemic_redaction"] = "diegetic_reenactment_summary"
+        selected_request_id = str(selected_artifact.get("request_id", "")).strip()
+        selected_request = dict(request_rows_by_id.get(selected_request_id) or {})
+        skip_state_log = True
+        result_metadata = {
+            "reenactment_id": str(selected_artifact.get("reenactment_id", "")),
+            "request_id": selected_request_id,
+            "target_id": str(selected_request.get("target_id", "")).strip(),
+            "fidelity_achieved": str(selected_artifact.get("fidelity_achieved", "")),
+            "output_timeline_ref": str(selected_artifact.get("output_timeline_ref", "")),
+            "reenactment_timeline": playback_timeline,
+        }
+    elif process_id == "process.materialize_structure_roi":
+        structure_instance_id = str(
+            inputs.get("structure_instance_id", "")
+            or inputs.get("structure_id", "")
+            or inputs.get("instance_id", "")
+        ).strip()
+        roi_id = str(inputs.get("roi_id", "")).strip()
+        if not structure_instance_id or not roi_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.materialize_structure_roi requires structure_instance_id and roi_id",
+                "Provide deterministic structure_instance_id and roi_id in intent inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        strict_contracts = bool((dict(policy_context or {})).get("strict_contracts", False))
+        configured_budget = max(
+            0,
+            _as_int((dict(policy_context or {})).get("materialization_max_micro_parts_per_roi", 0), 0),
+        )
+        requested_budget = max(0, _as_int(inputs.get("max_micro_parts", configured_budget), configured_budget))
+        max_micro_parts = requested_budget if requested_budget > 0 else configured_budget
+        if max_micro_parts <= 0:
+            max_micro_parts = 1024
+        strict_budget = bool(inputs.get("strict_budget", strict_contracts))
+        roi_node_ids = _sorted_tokens(list(inputs.get("roi_node_ids") or []))
+        structure_row = {}
+        for row in installed_structure_instances:
+            if str(row.get("instance_id", "")).strip() == structure_instance_id:
+                structure_row = dict(row)
+                break
+        if not structure_row:
+            return refusal(
+                "refusal.materialization.invalid_structure",
+                "installed structure instance '{}' was not found".format(structure_instance_id),
+                "Use instance_id from installed_structure_instances.",
+                {"structure_instance_id": structure_instance_id},
+                "$.intent.inputs.structure_instance_id",
+            )
+        try:
+            materialized = materialize_structure_roi(
+                structure_row=structure_row,
+                roi_id=roi_id,
+                current_tick=int(current_tick),
+                max_micro_parts=int(max_micro_parts),
+                distribution_aggregates=distribution_aggregates,
+                existing_micro_parts=micro_part_instances,
+                existing_materialization_states=materialization_states,
+                strict_budget=bool(strict_budget),
+                roi_node_ids=list(roi_node_ids),
+            )
+        except MaterializationError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Adjust ROI/materialization budget inputs or aggregate state, then retry.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+
+        micro_part_instances = sorted(
+            list(materialized.get("remaining_micro_parts") or []) + list(materialized.get("micro_parts") or []),
+            key=lambda row: (
+                str((dict(row)).get("parent_structure_id", "")),
+                str((dict(row)).get("ag_node_id", "")),
+                str((dict(row)).get("batch_id", "")),
+                str((dict(row)).get("micro_part_id", "")),
+            ),
+        )
+        materialization_states = sorted(
+            list(materialized.get("remaining_materialization_states") or []) + [dict(materialized.get("materialization_state") or {})],
+            key=lambda row: str((dict(row)).get("structure_id", "")) + "::" + str((dict(row)).get("roi_id", "")),
+        )
+        descriptor = dict(materialized.get("reenactment_descriptor") or {})
+        materialization_reenactment_descriptors = sorted(
+            [
+                dict(row)
+                for row in list(materialization_reenactment_descriptors or [])
+                if isinstance(row, dict)
+                and (
+                    str(row.get("structure_id", "")).strip() != str(descriptor.get("structure_id", "")).strip()
+                    or str((dict(row.get("extensions") or {})).get("roi_id", "")).strip()
+                    != str((dict(descriptor.get("extensions") or {})).get("roi_id", "")).strip()
+                )
+            ]
+            + ([descriptor] if descriptor else []),
+            key=lambda row: (
+                str((dict(row)).get("structure_id", "")),
+                str((dict((dict(row)).get("extensions") or {})).get("roi_id", "")),
+            ),
+        )
+        _persist_materialization_state(
+            state,
+            micro_part_instances=micro_part_instances,
+            materialization_states=materialization_states,
+            distribution_aggregates=distribution_aggregates,
+            reenactment_descriptors=materialization_reenactment_descriptors,
+        )
+
+        transition_policy = dict((dict(policy_context or {})).get("transition_policy") or {})
+        transition_extensions = dict(transition_policy.get("extensions") or {})
+        invariant_tolerances = dict(transition_extensions.get("invariant_tolerances") or {})
+        expand_tolerance = max(0, _as_int((dict(invariant_tolerances or {})).get("expand_materialization", 0), 0))
+        invariant_delta = int(_as_int(materialized.get("invariant_delta", 0), 0))
+        expand_status = _transition_check_status(
+            measured_value=int(invariant_delta),
+            tolerance=int(expand_tolerance),
+            strict_contracts=bool(strict_contracts),
+        )
+        expand_check = _transition_check_row(
+            tick=int(current_tick),
+            region_id="structure.{}".format(structure_instance_id),
+            invariant_id="inv.transition.expand_materialization",
+            status=expand_status,
+            measured_value=int(invariant_delta),
+            tolerance=int(expand_tolerance),
+            extensions={
+                "structure_instance_id": structure_instance_id,
+                "roi_id": roi_id,
+                "source_mass_total": int(_as_int(materialized.get("source_mass_total", 0), 0)),
+                "micro_mass_total": int(_as_int(materialized.get("micro_mass_total", 0), 0)),
+                "truncated": bool(materialized.get("truncated", False)),
+            },
+        )
+        if expand_status == "fail" and bool(strict_contracts):
+            return refusal(
+                "refusal.transition.invariant_violation",
+                "materialize_structure_roi invariant check failed under strict contracts",
+                "Increase transition invariant tolerance or fix aggregate/micro budget mismatch.",
+                {
+                    "invariant_id": "inv.transition.expand_materialization",
+                    "measured_value": str(invariant_delta),
+                    "tolerance": str(expand_tolerance),
+                },
+                "$.transition_event",
+            )
+        if invariant_delta != 0 and (not bool(strict_contracts)):
+            _ledger_emit_exception(
+                policy_context=policy_context,
+                quantity_id=LOGISTICS_DEFAULT_QUANTITY_ID,
+                delta=int(invariant_delta),
+                exception_type_id="exception.numeric_error_budget",
+                domain_id=CONSERVATION_DEFAULT_DOMAIN_ID,
+                process_id=process_id,
+                reason_code="materials.materialization.expand.drift",
+                evidence=[
+                    "structure_instance_id={}".format(structure_instance_id),
+                    "roi_id={}".format(roi_id),
+                ],
+            )
+        performance_state = dict(state.get("performance_state") or {})
+        transition_events = _merge_transition_events(
+            list(performance_state.get("transition_events") or []),
+            [
+                _transition_event_row(
+                    tick=int(current_tick),
+                    shard_id=str((policy_context or {}).get("active_shard_id", "")).strip() or "shard.0",
+                    region_id="structure.{}".format(structure_instance_id),
+                    solver_id=str((dict(policy_context or {})).get("expand_solver_id", "")).strip(),
+                    from_tier="macro",
+                    to_tier="micro",
+                    reason="user_request",
+                    invariant_checks=[expand_check],
+                    process_id=process_id,
+                    fidelity_from="coarse",
+                    fidelity_to="fine",
+                    ledger_hash=ZERO_HASH,
+                    extensions={
+                        "roi_id": roi_id,
+                        "materialized_count": int(len(list(materialized.get("micro_parts") or []))),
+                        "truncated": bool(materialized.get("truncated", False)),
+                    },
+                )
+            ],
+        )
+        performance_state["transition_events"] = transition_events
+        state["performance_state"] = performance_state
+        result_metadata = {
+            "structure_instance_id": structure_instance_id,
+            "roi_id": roi_id,
+            "materialized_count": int(len(list(materialized.get("micro_parts") or []))),
+            "source_mass_total": int(_as_int(materialized.get("source_mass_total", 0), 0)),
+            "micro_mass_total": int(_as_int(materialized.get("micro_mass_total", 0), 0)),
+            "invariant_delta": int(invariant_delta),
+            "truncated": bool(materialized.get("truncated", False)),
+            "truncated_count": int(_as_int(materialized.get("truncated_count", 0), 0)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.dematerialize_structure_roi":
+        structure_instance_id = str(
+            inputs.get("structure_instance_id", "")
+            or inputs.get("structure_id", "")
+            or inputs.get("instance_id", "")
+        ).strip()
+        roi_id = str(inputs.get("roi_id", "")).strip()
+        if not structure_instance_id or not roi_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.dematerialize_structure_roi requires structure_instance_id and roi_id",
+                "Provide deterministic structure_instance_id and roi_id in intent inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        strict_contracts = bool((dict(policy_context or {})).get("strict_contracts", False))
+        try:
+            dematerialized = dematerialize_structure_roi(
+                structure_id=structure_instance_id,
+                roi_id=roi_id,
+                current_tick=int(current_tick),
+                existing_micro_parts=micro_part_instances,
+                existing_distribution_aggregates=distribution_aggregates,
+                existing_materialization_states=materialization_states,
+            )
+        except MaterializationError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Adjust structure/roi materialization state and retry dematerialization.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        micro_part_instances = sorted(
+            list(dematerialized.get("remaining_micro_parts") or []),
+            key=lambda row: (
+                str((dict(row)).get("parent_structure_id", "")),
+                str((dict(row)).get("ag_node_id", "")),
+                str((dict(row)).get("batch_id", "")),
+                str((dict(row)).get("micro_part_id", "")),
+            ),
+        )
+        distribution_aggregates = sorted(
+            list(dematerialized.get("distribution_aggregates") or []),
+            key=lambda row: (
+                str((dict(row)).get("structure_id", "")),
+                str((dict(row)).get("ag_node_id", "")),
+            ),
+        )
+        materialization_states = sorted(
+            list(dematerialized.get("remaining_materialization_states") or []),
+            key=lambda row: str((dict(row)).get("structure_id", "")) + "::" + str((dict(row)).get("roi_id", "")),
+        )
+        _persist_materialization_state(
+            state,
+            micro_part_instances=micro_part_instances,
+            materialization_states=materialization_states,
+            distribution_aggregates=distribution_aggregates,
+            reenactment_descriptors=materialization_reenactment_descriptors,
+        )
+
+        transition_policy = dict((dict(policy_context or {})).get("transition_policy") or {})
+        transition_extensions = dict(transition_policy.get("extensions") or {})
+        invariant_tolerances = dict(transition_extensions.get("invariant_tolerances") or {})
+        collapse_tolerance = max(
+            0,
+            _as_int((dict(invariant_tolerances or {})).get("collapse_materialization", 0), 0),
+        )
+        if collapse_tolerance <= 0:
+            collapse_tolerance = max(
+                0,
+                _as_int((dict(invariant_tolerances or {})).get("expand_materialization", 0), 0),
+            )
+        invariant_delta = int(_as_int(dematerialized.get("invariant_delta", 0), 0))
+        collapse_status = _transition_check_status(
+            measured_value=int(invariant_delta),
+            tolerance=int(collapse_tolerance),
+            strict_contracts=bool(strict_contracts),
+        )
+        collapse_check = _transition_check_row(
+            tick=int(current_tick),
+            region_id="structure.{}".format(structure_instance_id),
+            invariant_id="inv.transition.collapse_materialization",
+            status=collapse_status,
+            measured_value=int(invariant_delta),
+            tolerance=int(collapse_tolerance),
+            extensions={
+                "structure_instance_id": structure_instance_id,
+                "roi_id": roi_id,
+                "aggregate_mass_total": int(_as_int(dematerialized.get("aggregate_mass_total", 0), 0)),
+                "micro_mass_total": int(_as_int(dematerialized.get("micro_mass_total", 0), 0)),
+            },
+        )
+        if collapse_status == "fail" and bool(strict_contracts):
+            return refusal(
+                "refusal.transition.invariant_violation",
+                "dematerialize_structure_roi invariant check failed under strict contracts",
+                "Increase transition invariant tolerance or repair micro/distribution drift.",
+                {
+                    "invariant_id": "inv.transition.collapse_materialization",
+                    "measured_value": str(invariant_delta),
+                    "tolerance": str(collapse_tolerance),
+                },
+                "$.transition_event",
+            )
+        if invariant_delta != 0 and (not bool(strict_contracts)):
+            _ledger_emit_exception(
+                policy_context=policy_context,
+                quantity_id=LOGISTICS_DEFAULT_QUANTITY_ID,
+                delta=int(invariant_delta),
+                exception_type_id="exception.numeric_error_budget",
+                domain_id=CONSERVATION_DEFAULT_DOMAIN_ID,
+                process_id=process_id,
+                reason_code="materials.materialization.collapse.drift",
+                evidence=[
+                    "structure_instance_id={}".format(structure_instance_id),
+                    "roi_id={}".format(roi_id),
+                ],
+            )
+        performance_state = dict(state.get("performance_state") or {})
+        transition_events = _merge_transition_events(
+            list(performance_state.get("transition_events") or []),
+            [
+                _transition_event_row(
+                    tick=int(current_tick),
+                    shard_id=str((policy_context or {}).get("active_shard_id", "")).strip() or "shard.0",
+                    region_id="structure.{}".format(structure_instance_id),
+                    solver_id=str((dict(policy_context or {})).get("collapse_solver_id", "")).strip(),
+                    from_tier="micro",
+                    to_tier="macro",
+                    reason="user_request",
+                    invariant_checks=[collapse_check],
+                    process_id=process_id,
+                    fidelity_from="fine",
+                    fidelity_to="coarse",
+                    ledger_hash=ZERO_HASH,
+                    extensions={
+                        "roi_id": roi_id,
+                        "collapsed_count": int(_as_int(dematerialized.get("collapsed_count", 0), 0)),
+                    },
+                )
+            ],
+        )
+        performance_state["transition_events"] = transition_events
+        state["performance_state"] = performance_state
+        result_metadata = {
+            "structure_instance_id": structure_instance_id,
+            "roi_id": roi_id,
+            "collapsed_count": int(_as_int(dematerialized.get("collapsed_count", 0), 0)),
+            "aggregate_mass_total": int(_as_int(dematerialized.get("aggregate_mass_total", 0), 0)),
+            "micro_mass_total": int(_as_int(dematerialized.get("micro_mass_total", 0), 0)),
+            "invariant_delta": int(invariant_delta),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.role_assign":
@@ -10903,6 +12660,16 @@ def execute_intent(
             authority_context=authority_context,
             target_payload=target_payload,
         )
+        target_payload = _augment_inspection_target_payload_for_materialization(
+            state=state,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            target_payload=target_payload,
+        )
+        target_payload = _augment_inspection_target_payload_for_commitment_reenactment(
+            authority_context=authority_context,
+            target_payload=target_payload,
+        )
         snapshot = build_inspection_snapshot(
             target_id=target_id,
             tick=int(current_tick),
@@ -11166,6 +12933,21 @@ def execute_intent(
             {"process_id": process_id},
             "$.intent.process_id",
         )
+
+    material_commitments = _sync_material_commitments_from_domain(
+        material_commitments=material_commitments,
+        shipment_commitment_rows=shipment_commitment_rows,
+        construction_commitment_rows=construction_commitments,
+        maintenance_commitment_rows=_ensure_maintenance_commitments(state),
+        current_tick=int(current_tick),
+    )
+    _persist_commitment_reenactment_state(
+        state,
+        commitments=material_commitments,
+        event_stream_indices=event_stream_indices,
+        reenactment_requests=reenactment_requests,
+        reenactment_artifacts=reenactment_artifacts,
+    )
 
     conservation_result = _finalize_conservation_or_refusal(
         state=state,

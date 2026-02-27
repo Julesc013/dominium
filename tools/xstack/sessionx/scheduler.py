@@ -60,6 +60,12 @@ PROCESS_PRIORITY = {
     "process.maintenance_schedule": 26,
     "process.inspection_perform": 26,
     "process.maintenance_perform": 26,
+    "process.commitment_create": 26,
+    "process.event_stream_index_rebuild": 28,
+    "process.reenactment_generate": 28,
+    "process.reenactment_play": 29,
+    "process.materialize_structure_roi": 26,
+    "process.dematerialize_structure_roi": 26,
     "process.decay_tick": 27,
     "process.control_bind_camera": 25,
     "process.control_unbind_camera": 25,
@@ -112,6 +118,12 @@ PROCESS_ENTITY_SCOPE = {
     "process.maintenance_schedule": "maintenance.asset",
     "process.inspection_perform": "maintenance.asset",
     "process.maintenance_perform": "maintenance.asset",
+    "process.commitment_create": "materials.commitment",
+    "process.event_stream_index_rebuild": "materials.history",
+    "process.reenactment_generate": "materials.reenactment",
+    "process.reenactment_play": "materials.reenactment",
+    "process.materialize_structure_roi": "materialization.structure",
+    "process.dematerialize_structure_roi": "materialization.structure",
     "process.decay_tick": "maintenance.decay.tick",
     "process.control_bind_camera": "controller.binding.camera",
     "process.control_unbind_camera": "controller.binding.camera",
@@ -164,6 +176,12 @@ PROCESS_FIELD_SCOPE = {
     "process.maintenance_schedule": "maintenance.commitment.state",
     "process.inspection_perform": "maintenance.health.state",
     "process.maintenance_perform": "maintenance.health.state",
+    "process.commitment_create": "materials.commitment.state",
+    "process.event_stream_index_rebuild": "materials.history.state",
+    "process.reenactment_generate": "materials.reenactment.state",
+    "process.reenactment_play": "materials.reenactment.playback",
+    "process.materialize_structure_roi": "materialization.state",
+    "process.dematerialize_structure_roi": "materialization.state",
     "process.decay_tick": "maintenance.health.state",
     "process.control_bind_camera": "control.binding.camera",
     "process.control_unbind_camera": "control.binding.camera",
@@ -332,6 +350,17 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
         asset_id = str(inputs.get("asset_id", "")).strip()
         if asset_id:
             entity_scope = asset_id
+    if process_id in ("process.materialize_structure_roi", "process.dematerialize_structure_roi"):
+        structure_id = str(
+            inputs.get("structure_instance_id", "")
+            or inputs.get("structure_id", "")
+            or inputs.get("instance_id", "")
+        ).strip()
+        roi_id = str(inputs.get("roi_id", "")).strip()
+        if structure_id and roi_id:
+            entity_scope = "materialization.{}::{}".format(structure_id, roi_id)
+        elif structure_id:
+            entity_scope = "materialization.{}".format(structure_id)
     if process_id == "process.decay_tick":
         asset_id = str(inputs.get("asset_id", "")).strip()
         if asset_id:

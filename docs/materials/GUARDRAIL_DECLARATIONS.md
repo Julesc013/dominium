@@ -139,6 +139,46 @@ Declare MAT-0 required future test coverage and guardrail identifiers for RepoX 
 - `SilentFailureSmell`
 - `NondeterministicHazardSmell`
 
+## MAT-7 Additions (Macro↔Micro Part Mapping)
+### TestX Declarations
+- `test_materialize_deterministic_ids`
+- `test_collapse_preserves_mass`
+- `test_expand_collapse_expand_stability`
+- `test_epistemic_no_leak_outside_roi`
+- `test_truncation_deterministic`
+- `test_reenactment_seed_reproducible`
+
+### RepoX Rule Declarations
+- `INV-NO-GLOBAL-MICRO-PARTS`
+  - Micro part instances must remain ROI-bounded with deterministic budget enforcement.
+- `INV-MACRO-STOCK-CANONICAL`
+  - Macro distribution aggregates remain canonical; micro rows are derived and collapse back deterministically.
+- `INV-MATERIALIZATION-DETERMINISTIC`
+  - Expand/collapse IDs, sampling, and ordering must be deterministic and replay-safe.
+
+### AuditX Analyzer Declarations
+- `MicroEntityLeakSmell`
+- `CollapseDriftSmell`
+
+## MAT-8 Additions (Commitments + Reenactment)
+### TestX Declarations
+- `test_commitment_required_under_C1`
+- `test_events_always_required_under_C0`
+- `test_event_stream_index_deterministic`
+- `test_reenactment_deterministic_hash`
+- `test_reenactment_budget_degrades`
+- `test_epistemic_gating_of_reenactment_detail`
+
+### RepoX Rule Declarations
+- `INV-NO_SILENT_MACRO_CHANGE`
+  - Macro changes require process execution and events; commitment requirements follow active causality strictness.
+- `INV-REENACTMENT_DERIVED_ONLY`
+  - Reenactment generation/playback is derived-only and must not mutate canonical truth state.
+
+### AuditX Analyzer Declarations
+- `UncommittedMacroChangeSmell`
+- `ReenactmentLeakSmell`
+
 ## MAT-0 Status
 - These declarations are constitutional commitments in MAT-0.
 - Enforcement implementation and deeper runtime coverage are MAT-1..MAT-10 work.

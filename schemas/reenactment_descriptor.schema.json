@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reenactment Descriptor Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic materialization reenactment descriptor payload.",
+  "x-doc-ref": [
+    "docs/materials/MACRO_MICRO_MAPPING.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "structure_id",
+    "tick_range",
+    "ag_nodes_involved",
+    "batch_ids",
+    "seed_reference",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "structure_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick_range": {
+      "type": "object",
+      "required": [
+        "tick_start",
+        "tick_end"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tick_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tick_end": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "ag_nodes_involved": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "batch_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "seed_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

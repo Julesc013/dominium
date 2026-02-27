@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Distribution Aggregate Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic aggregate distribution payload.",
+  "x-doc-ref": [
+    "docs/materials/MACRO_MICRO_MAPPING.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "structure_id",
+    "ag_node_id",
+    "total_mass",
+    "defect_distribution_vector",
+    "wear_distribution_vector",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "structure_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ag_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "total_mass": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "defect_distribution_vector": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "wear_distribution_vector": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

@@ -71,6 +71,8 @@ REGISTRY_HASH_KEY_MAP = {
     "failure_mode_registry_hash": "failure_mode_registry",
     "maintenance_policy_registry_hash": "maintenance_policy_registry",
     "backlog_growth_rule_registry_hash": "backlog_growth_rule_registry",
+    "commitment_type_registry_hash": "commitment_type_registry",
+    "causality_strictness_registry_hash": "causality_strictness_registry",
     "domain_registry_hash": "domain_registry",
     "law_registry_hash": "law_registry",
     "experience_registry_hash": "experience_registry",
@@ -159,6 +161,8 @@ REGISTRY_FILE_MAP = {
     "failure_mode_registry_hash": "failure_mode.registry.json",
     "maintenance_policy_registry_hash": "maintenance_policy.registry.json",
     "backlog_growth_rule_registry_hash": "backlog_growth_rule.registry.json",
+    "commitment_type_registry_hash": "commitment_type.registry.json",
+    "causality_strictness_registry_hash": "causality_strictness.registry.json",
     "domain_registry_hash": "domain.registry.json",
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
@@ -1235,6 +1239,22 @@ def boot_session_spec(
     )
     if backlog_growth_rule_registry_error:
         return backlog_growth_rule_registry_error
+    commitment_type_registry, commitment_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["commitment_type_registry_hash"],
+        expected_hash=str(registries.get("commitment_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if commitment_type_registry_error:
+        return commitment_type_registry_error
+    causality_strictness_registry, causality_strictness_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["causality_strictness_registry_hash"],
+        expected_hash=str(registries.get("causality_strictness_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if causality_strictness_registry_error:
+        return causality_strictness_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1845,6 +1865,8 @@ def boot_session_spec(
                 "failure_mode_registry": failure_mode_registry,
                 "maintenance_policy_registry": maintenance_policy_registry,
                 "backlog_growth_rule_registry": backlog_growth_rule_registry,
+                "commitment_type_registry": commitment_type_registry,
+                "causality_strictness_registry": causality_strictness_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1950,6 +1972,8 @@ def boot_session_spec(
                 "failure_mode_registry": failure_mode_registry,
                 "maintenance_policy_registry": maintenance_policy_registry,
                 "backlog_growth_rule_registry": backlog_growth_rule_registry,
+                "commitment_type_registry": commitment_type_registry,
+                "causality_strictness_registry": causality_strictness_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -2327,6 +2351,8 @@ def boot_session_spec(
             "failure_mode_registry": failure_mode_registry,
             "maintenance_policy_registry": maintenance_policy_registry,
             "backlog_growth_rule_registry": backlog_growth_rule_registry,
+            "commitment_type_registry": commitment_type_registry,
+            "causality_strictness_registry": causality_strictness_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,

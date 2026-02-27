@@ -1,0 +1,22 @@
+SCHEMA: materials/event_stream_index.schema
+schema_id: dominium.schema.materials.event_stream_index
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic ordered index over provenance event streams for reenactment and inspection.
+
+REQUIRED SHAPE:
+record event_stream_index
+  required:
+    - schema_version: semver
+    - stream_id: id
+    - target_id: id
+    - tick_range: map
+    - event_ids: list<id>
+    - stream_hash: hash64
+    - extensions: map
+
+INVARIANTS:
+- event_ids order must be deterministic and stable for equivalent source events.
+- stream_hash must be computed from deterministic stream content.

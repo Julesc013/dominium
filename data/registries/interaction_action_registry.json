@@ -182,6 +182,26 @@
         "extensions": {}
       },
       {
+        "action_id": "interaction.inspect_materialization",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Materialization",
+        "target_kinds": [
+          "installed_structure",
+          "materialization_state",
+          "micro_part",
+          "distribution_aggregate"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "construction",
+          "icon": "glyph.materialization.inspect",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
         "action_id": "interaction.view_provenance_events",
         "process_id": "process.inspect_generate_snapshot",
         "display_name": "View Provenance",
@@ -263,6 +283,85 @@
           "group": "maintenance",
           "icon": "glyph.maintenance.perform",
           "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_commitments",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Commitments",
+        "target_kinds": [
+          "commitment",
+          "shipment_commitment",
+          "maintenance_commitment",
+          "construction_project"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "history",
+          "icon": "glyph.history.commitment",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.view_history",
+        "process_id": "process.event_stream_index_rebuild",
+        "display_name": "View History",
+        "target_kinds": [
+          "construction_project",
+          "installed_structure",
+          "manifest",
+          "asset_health"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "history",
+          "icon": "glyph.history.stream",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.generate_reenactment",
+        "process_id": "process.reenactment_generate",
+        "display_name": "Generate Reenactment",
+        "target_kinds": [
+          "construction_project",
+          "installed_structure",
+          "manifest",
+          "asset_health",
+          "event_stream"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "expensive",
+        "default_ui_hints": {
+          "group": "history",
+          "icon": "glyph.history.generate",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.play_reenactment",
+        "process_id": "process.reenactment_play",
+        "display_name": "Play Reenactment",
+        "target_kinds": [
+          "reenactment_artifact",
+          "reenactment_request"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "history",
+          "icon": "glyph.history.play",
+          "confirm": false
         },
         "required_lens_channels": [],
         "extensions": {}

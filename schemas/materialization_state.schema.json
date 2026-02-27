@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Materialization State Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic ROI materialization state payload.",
+  "x-doc-ref": [
+    "docs/materials/MACRO_MICRO_MAPPING.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "structure_id",
+    "roi_id",
+    "materialized_nodes",
+    "materialized_part_ids",
+    "last_materialization_tick",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "structure_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "roi_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "materialized_nodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "materialized_part_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "last_materialization_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,23 @@
+SCHEMA: materials/reenactment_request.schema
+schema_id: dominium.schema.materials.reenactment_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic reenactment request parameters.
+
+REQUIRED SHAPE:
+record reenactment_request
+  required:
+    - schema_version: semver
+    - request_id: id
+    - target_id: id
+    - tick_range: map
+    - desired_fidelity: enum(macro|meso|micro)
+    - max_cost_units: int
+    - requester_subject_id: id
+    - extensions: map
+
+INVARIANTS:
+- tick_range.start_tick <= tick_range.end_tick.
+- max_cost_units must be non-negative.

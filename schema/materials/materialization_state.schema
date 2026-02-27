@@ -1,0 +1,22 @@
+SCHEMA: materials/materialization_state.schema
+schema_id: dominium.schema.materials.materialization_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Track deterministic ROI materialization scope state for a structure instance.
+
+REQUIRED SHAPE:
+record materialization_state
+  required:
+    - schema_version: semver
+    - structure_id: id
+    - roi_id: id
+    - materialized_nodes: list<id>
+    - materialized_part_ids: list<id>
+    - last_materialization_tick: int
+    - extensions: map
+
+INVARIANTS:
+- materialized_part_ids must be deterministic and stable for equivalent state+budget.
+- materialized_nodes must be a deterministic subset of installed AG nodes in ROI.

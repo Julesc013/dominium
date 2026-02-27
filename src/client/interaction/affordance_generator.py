@@ -19,10 +19,17 @@ _KNOWN_TARGET_KINDS = (
     "shipment_commitment",
     "construction_project",
     "installed_structure",
+    "micro_part",
+    "materialization_state",
+    "distribution_aggregate",
     "provenance_event",
     "asset_health",
     "failure_event",
     "maintenance_commitment",
+    "commitment",
+    "event_stream",
+    "reenactment_request",
+    "reenactment_artifact",
 )
 _KNOWN_PREVIEW_MODES = ("none", "cheap", "expensive")
 
@@ -86,6 +93,12 @@ def _target_kind_from_prefix(target_semantic_id: str) -> str:
         return "construction_project"
     if token.startswith("assembly.structure_instance."):
         return "installed_structure"
+    if token.startswith("micro.part."):
+        return "micro_part"
+    if token.startswith("materialization.state."):
+        return "materialization_state"
+    if token.startswith("distribution.aggregate."):
+        return "distribution_aggregate"
     if token.startswith("provenance.event."):
         return "provenance_event"
     if token.startswith("asset.health.") or token.startswith("asset_health."):
@@ -94,6 +107,14 @@ def _target_kind_from_prefix(target_semantic_id: str) -> str:
         return "failure_event"
     if token.startswith("commitment.maintenance."):
         return "maintenance_commitment"
+    if token.startswith("commitment."):
+        return "commitment"
+    if token.startswith("stream.event."):
+        return "event_stream"
+    if token.startswith("reenactment.request."):
+        return "reenactment_request"
+    if token.startswith("reenactment."):
+        return "reenactment_artifact"
     if token.startswith("agent.") or token.startswith("body.") or token.startswith("camera."):
         return "agent"
     if token.startswith("cohort.") or token.startswith("population."):
