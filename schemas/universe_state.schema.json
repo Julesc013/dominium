@@ -1950,6 +1950,387 @@
           "additionalProperties": true
         }
       }
+    },
+    "construction_projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "project_id",
+          "blueprint_id",
+          "compiled_ag_id",
+          "bom_id",
+          "site_ref",
+          "logistics_node_id",
+          "created_tick",
+          "status",
+          "milestone_commitment_ids",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "blueprint_id": {
+            "type": "string"
+          },
+          "compiled_ag_id": {
+            "type": "string"
+          },
+          "bom_id": {
+            "type": "string"
+          },
+          "site_ref": {
+            "type": "string"
+          },
+          "owner_faction_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "logistics_node_id": {
+            "type": "string"
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "executing",
+              "paused",
+              "completed",
+              "failed"
+            ]
+          },
+          "milestone_commitment_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "progress_state_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "construction_steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "step_id",
+          "project_id",
+          "ag_node_id",
+          "required_materials",
+          "required_part_classes",
+          "scheduled_start_tick",
+          "scheduled_end_tick",
+          "status",
+          "output_batch_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "step_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "ag_node_id": {
+            "type": "string"
+          },
+          "required_materials": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required_part_classes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "scheduled_start_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scheduled_end_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "executing",
+              "completed",
+              "failed"
+            ]
+          },
+          "output_batch_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "construction_commitments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "commitment_id",
+          "project_id",
+          "step_id",
+          "commitment_kind",
+          "scheduled_tick",
+          "status",
+          "actor_subject_id",
+          "manifest_ids",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "commitment_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "step_id": {
+            "type": "string"
+          },
+          "commitment_kind": {
+            "type": "string"
+          },
+          "scheduled_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "scheduled",
+              "executing",
+              "completed",
+              "failed"
+            ]
+          },
+          "actor_subject_id": {
+            "type": "string"
+          },
+          "manifest_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "construction_provenance_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "event_id",
+          "tick",
+          "event_type_id",
+          "actor_subject_id",
+          "site_ref",
+          "inputs",
+          "outputs",
+          "ledger_deltas",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "event_id": {
+            "type": "string"
+          },
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "event_type_id": {
+            "type": "string"
+          },
+          "actor_subject_id": {
+            "type": "string"
+          },
+          "site_ref": {
+            "type": "string"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ledger_deltas": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "linked_project_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "linked_step_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "installed_structure_instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "instance_id",
+          "project_id",
+          "ag_id",
+          "site_ref",
+          "installed_node_states",
+          "maintenance_backlog",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "instance_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "ag_id": {
+            "type": "string"
+          },
+          "site_ref": {
+            "type": "string"
+          },
+          "installed_node_states": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "maintenance_backlog": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "construction_runtime_state": {
+      "type": "object",
+      "required": [
+        "next_event_sequence",
+        "last_project_tick",
+        "last_budget_outcome",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "next_event_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_project_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_budget_outcome": {
+          "type": "string",
+          "enum": [
+            "none",
+            "complete",
+            "degraded"
+          ]
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
     }
   },
   "examples": [

@@ -1523,6 +1523,9 @@ def _interaction_registry_rows(
         "logistics_node",
         "manifest",
         "shipment_commitment",
+        "construction_project",
+        "installed_structure",
+        "provenance_event",
     }
     allowed_preview_modes = {"none", "cheap", "expensive"}
     for entry in sorted(action_rows_raw, key=lambda row: str((row or {}).get("action_id", ""))):

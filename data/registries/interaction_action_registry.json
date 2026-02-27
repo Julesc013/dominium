@@ -131,6 +131,74 @@
         "extensions": {}
       },
       {
+        "action_id": "interaction.start_construction_project",
+        "process_id": "process.construction_project_create",
+        "display_name": "Start Construction",
+        "target_kinds": [
+          "blueprint"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "construction",
+          "icon": "glyph.construction.start",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_construction_project",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Construction",
+        "target_kinds": [
+          "construction_project"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "construction",
+          "icon": "glyph.construction.project",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_installed_structure",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Structure",
+        "target_kinds": [
+          "installed_structure"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "construction",
+          "icon": "glyph.construction.structure",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.view_provenance_events",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "View Provenance",
+        "target_kinds": [
+          "provenance_event"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "construction",
+          "icon": "glyph.construction.provenance",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
         "action_id": "interaction.move_agent",
         "process_id": "process.agent_move",
         "display_name": "Move",
