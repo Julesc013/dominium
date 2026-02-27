@@ -13,6 +13,7 @@
     "policy_id",
     "invariant_numeric_type",
     "solver_numeric_type",
+    "fixed_point",
     "quantization_rules",
     "error_accumulation_strategy",
     "extensions"
@@ -41,6 +42,34 @@
         "deterministic_float"
       ]
     },
+    "fixed_point": {
+      "type": "object",
+      "required": [
+        "fractional_bits",
+        "storage_bits",
+        "overflow_behavior",
+        "error_budget_max"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "fractional_bits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "storage_bits": {
+          "type": "integer",
+          "const": 64
+        },
+        "overflow_behavior": {
+          "type": "string",
+          "const": "refuse"
+        },
+        "error_budget_max": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
     "quantization_rules": {
       "type": "object",
       "additionalProperties": true
@@ -60,6 +89,12 @@
       "policy_id": "default_null",
       "invariant_numeric_type": "fixed_point",
       "solver_numeric_type": "fixed_point",
+      "fixed_point": {
+        "fractional_bits": 24,
+        "storage_bits": 64,
+        "overflow_behavior": "refuse",
+        "error_budget_max": 0
+      },
       "quantization_rules": {},
       "error_accumulation_strategy": "none",
       "extensions": {}

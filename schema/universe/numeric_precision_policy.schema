@@ -12,6 +12,7 @@ record numeric_precision_policy
     - policy_id: id
     - invariant_numeric_type: enum(fixed_point|required)
     - solver_numeric_type: enum(fixed_point|deterministic_float)
+    - fixed_point: record(fractional_bits:int,storage_bits:int,overflow_behavior:id,error_budget_max:int)
     - quantization_rules: map
     - error_accumulation_strategy: id
     - extensions: map
