@@ -93,6 +93,31 @@ Declare MAT-0 required future test coverage and guardrail identifiers for RepoX 
 - `SilentShipmentSmell`
 - `NonDeterministicRoutingSmell`
 
+## MAT-5 Additions (Construction + Installation + Provenance Events)
+### TestX Declarations
+- `test_project_create_deterministic`
+- `test_step_scheduling_deterministic`
+- `test_material_consumption_balanced`
+- `test_insufficient_material_refusal`
+- `test_provenance_events_deterministic`
+- `test_visualization_render_model_hash_stable`
+  - construction coverage implementation: `test_construction_visualization_render_model_hash_stable`
+- `test_budget_parallelism_reduction_deterministic`
+
+### RepoX Rule Declarations
+- `INV-CONSTRUCTION-REQUIRES-COMMITMENTS`
+  - Construction project and step progression must be commitment-linked before macro install state mutation.
+- `INV-PROVENANCE-EVENTS-REQUIRED`
+  - Construction/install mutation paths must emit deterministic provenance events with causal links.
+- `INV-LEDGER-DEBIT-CREDIT-REQUIRED`
+  - Construction material consumption and part-batch creation must include balanced ledger deltas.
+- `INV-NO-SILENT-INSTALL`
+  - Installed structure state cannot mutate outside canonical process runtime paths.
+
+### AuditX Analyzer Declarations
+- `SilentConstructionSmell`
+- `MissingProvenanceSmell`
+
 ## MAT-0 Status
 - These declarations are constitutional commitments in MAT-0.
 - Enforcement implementation and deeper runtime coverage are MAT-1..MAT-10 work.

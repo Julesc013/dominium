@@ -89,6 +89,8 @@ from analyzers import e60_hardcoded_blueprint_smell
 from analyzers import e61_nondeterministic_graph_order_smell
 from analyzers import e62_silent_shipment_smell
 from analyzers import e63_nondeterministic_routing_smell
+from analyzers import e64_silent_construction_smell
+from analyzers import e65_missing_provenance_smell
 
 
 ANALYZERS = (
@@ -181,6 +183,8 @@ ANALYZERS = (
     e61_nondeterministic_graph_order_smell,
     e62_silent_shipment_smell,
     e63_nondeterministic_routing_smell,
+    e64_silent_construction_smell,
+    e65_missing_provenance_smell,
 )
 
 
