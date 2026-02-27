@@ -37,6 +37,44 @@
         "WARN": 652
       }
     },
+    "INV-CAPABILITY-GATED-RUNTIME": {
+      "finding_count": 139,
+      "recommended_actions": {
+        "ADD_RULE": 60,
+        "ADD_TEST": 79
+      },
+      "sample_findings": [
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0001",
+          "location": "client/app/main_client.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0002",
+          "location": "client/gui/client_app_win32.cpp"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0003",
+          "location": "client/shell/client_shell.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0004",
+          "location": "engine/modules/caps/d_caps.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0005",
+          "location": "engine/modules/core/fs_util.c"
+        }
+      ],
+      "severities": {
+        "INFO": 79,
+        "WARN": 60
+      }
+    },
     "INV-CAPABILITY-SCOPE": {
       "finding_count": 5,
       "recommended_actions": {
@@ -73,6 +111,45 @@
         "WARN": 5
       }
     },
+    "INV-CLI-CANONICAL-UI": {
+      "finding_count": 222,
+      "recommended_actions": {
+        "ADD_RULE": 148,
+        "ADD_TEST": 74
+      },
+      "sample_findings": [
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0001",
+          "location": "client/gui/client_app_win32.cpp"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0002",
+          "location": "client/ui/workspaces/session_transition/session_transition.default.json"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0003",
+          "location": "client/ui/workspaces/session_transition/session_transition.default.json"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0004",
+          "location": "client/ui/workspaces/session_transition/session_transition.default.json"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0005",
+          "location": "client/ui/workspaces/session_transition/session_transition.default.json"
+        }
+      ],
+      "severities": {
+        "INFO": 31,
+        "RISK": 132,
+        "WARN": 59
+      }
+    },
     "INV-COMMAND-CAPABILITY-DECLARED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -106,9 +183,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 13,
+      "finding_count": 131,
       "recommended_actions": {
-        "ADD_RULE": 13
+        "ADD_RULE": 131
       },
       "sample_findings": [
         {
@@ -138,7 +215,7 @@
         }
       ],
       "severities": {
-        "INFO": 2,
+        "INFO": 120,
         "RISK": 11
       }
     },
@@ -163,20 +240,92 @@
         "WARN": 2
       }
     },
-    "INV-MODE-AS-PROFILES": {
+    "INV-GLOSSARY-TERM-CANON": {
       "finding_count": 1,
       "recommended_actions": {
-        "ADD_RULE": 1
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "terminology_misuse",
+          "finding_id": "C4_TERMINOLOGY_MISUSE:0001",
+          "location": "docs/architecture/TERMINOLOGY_GLOSSARY.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-LEGACY-CODE-QUARANTINED": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "ADD_TEST": 6
+      },
+      "sample_findings": [
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
+          "location": "setup/packages/scripts/packaging/pipeline.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
+          "location": "tools/auditx/analyzers/a1_reachability_orphaned.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0003",
+          "location": "tools/auditx/analyzers/a5_capability_misuse.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0004",
+          "location": "tools/auditx/analyzers/a6_ui_parity_bypass.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0005",
+          "location": "tools/auditx/analyzers/a7_legacy_contamination.py"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 64,
+      "recommended_actions": {
+        "ADD_RULE": 64
       },
       "sample_findings": [
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "tools/xstack/repox/check.py"
+          "location": ".xstack_cache/auditx/read_only_test/FINDINGS.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0002",
+          "location": ".xstack_cache/auditx/repox_probe/FINDINGS.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0003",
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/22347c1434b0aaf50a6fbc69ffe6c7e25bb2a88ecbf4ada4cd30455e5574bec9.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0004",
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2294323391e767cee37c19e0bf0d467718804569e03a8300c1c5ffac920d67ba.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0005",
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2f6c968e1afe470de28f475d61eafe9151eab8f14d2ab56a5540fe0b0a0a7ce6.json"
         }
       ],
       "severities": {
-        "VIOLATION": 1
+        "VIOLATION": 64
       }
     },
     "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
@@ -216,55 +365,75 @@
       }
     },
     "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 1,
+      "finding_count": 64,
       "recommended_actions": {
-        "ADD_RULE": 1
+        "ADD_RULE": 64
       },
       "sample_findings": [
         {
           "category": "mode_flag_smell",
           "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "tools/xstack/repox/check.py"
+          "location": ".xstack_cache/auditx/read_only_test/FINDINGS.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0002",
+          "location": ".xstack_cache/auditx/repox_probe/FINDINGS.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0003",
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/22347c1434b0aaf50a6fbc69ffe6c7e25bb2a88ecbf4ada4cd30455e5574bec9.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0004",
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2294323391e767cee37c19e0bf0d467718804569e03a8300c1c5ffac920d67ba.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0005",
+          "location": ".xstack_cache/ws-019eb6c9cc7aba8d/auditx/entries/2f6c968e1afe470de28f475d61eafe9151eab8f14d2ab56a5540fe0b0a0a7ce6.json"
         }
       ],
       "severities": {
-        "VIOLATION": 1
+        "VIOLATION": 64
       }
     },
     "INV-NO-HARDCODED-STRUCTURES": {
-      "finding_count": 20,
+      "finding_count": 16,
       "recommended_actions": {
-        "REWRITE": 20
+        "REWRITE": 16
       },
       "sample_findings": [
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0001",
-          "location": "data/registries/interaction_action_registry.json"
+          "location": "src/client/interaction/preview_generator.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
-          "location": "data/registries/interaction_action_registry.json"
+          "location": "src/client/interaction/preview_generator.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0003",
-          "location": "data/registries/interaction_action_registry.json"
+          "location": "src/materials/blueprint_engine.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0004",
-          "location": "src/client/interaction/preview_generator.py"
+          "location": "src/materials/blueprint_engine.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0005",
-          "location": "src/client/interaction/preview_generator.py"
+          "location": "src/materials/blueprint_engine.py"
         }
       ],
       "severities": {
-        "VIOLATION": 20
+        "VIOLATION": 16
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
@@ -339,6 +508,99 @@
         "WARN": 120
       }
     },
+    "INV-SECUREX-PRIVILEGE-MODEL": {
+      "finding_count": 9,
+      "recommended_actions": {
+        "ADD_TEST": 9
+      },
+      "sample_findings": [
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0001",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0002",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0003",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0004",
+          "location": "tools/securex/core/boundary_validator.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0005",
+          "location": "tools/securex/core/boundary_validator.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 9
+      }
+    },
+    "INV-SECUREX-TRUST-POLICY-VALID": {
+      "finding_count": 29,
+      "recommended_actions": {
+        "ADD_RULE": 29
+      },
+      "sample_findings": [
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0010",
+          "location": "client/app/main_client.c"
+        },
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0011",
+          "location": "client/core/client_command_bridge.c"
+        },
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0012",
+          "location": "client/core/client_state_machine.c"
+        },
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0013",
+          "location": "client/core/client_state_machine.h"
+        },
+        {
+          "category": "security.boundary_io",
+          "finding_id": "C1:0014",
+          "location": "client/core/session_artifacts.c"
+        }
+      ],
+      "severities": {
+        "WARN": 29
+      }
+    },
+    "INV-SETTINGS-OWNERSHIP": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0001",
+          "location": "client/app/main_client.c"
+        },
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0002",
+          "location": "client/shell/client_shell.c"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
     "INV-UI-ENTITLEMENT-GATING": {
       "finding_count": 1,
       "recommended_actions": {
@@ -372,77 +634,77 @@
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 7,
+      "finding_count": 80,
       "recommended_actions": {
-        "RETIRE": 7
+        "RETIRE": 80
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "src/materials/__init__.py"
+          "location": "app/include/dominium/app/app_runtime.h"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "tools/auditx/analyzers/__init__.py"
+          "location": "app/include/dominium/app/compat_report.h"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "tools/auditx/analyzers/e60_hardcoded_blueprint_smell.py"
+          "location": "app/include/dominium/app/readonly_adapter.h"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "tools/auditx/analyzers/e61_nondeterministic_graph_order_smell.py"
+          "location": "app/include/dominium/app/readonly_format.h"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "tools/xstack/registry_compile/constants.py"
+          "location": "app/include/dominium/app/ui_event_log.h"
         }
       ],
       "severities": {
-        "WARN": 7
+        "WARN": 80
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 72,
+      "finding_count": 160,
       "recommended_actions": {
-        "ADD_RULE": 50,
-        "ADD_TEST": 22
+        "ADD_RULE": 80,
+        "ADD_TEST": 80
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "src/client/interaction/inspection_overlays.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "src/client/interaction/inspection_overlays.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "src/client/interaction/preview_generator.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "src/client/interaction/preview_generator.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "src/materials/blueprint_engine.py"
+          "location": "game/tests/tests/vectors/gen_tlv_vectors.py"
         }
       ],
       "severities": {
-        "RISK": 50,
-        "WARN": 22
+        "RISK": 80,
+        "WARN": 80
       }
     }
   },
