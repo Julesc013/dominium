@@ -129,3 +129,17 @@ def reserve_inspection_budget(
         "used_after": int(used_after),
         "runtime_budget_state": out_state,
     }
+
+
+def normalize_subsystem_cost_usage(*, subsystem_cost_units: Dict[str, object] | None) -> dict:
+    row = dict(subsystem_cost_units or {})
+    normalized = {}
+    for key, value in sorted(row.items(), key=lambda item: str(item[0])):
+        token = str(key).strip()
+        if not token:
+            continue
+        normalized[token] = max(0, _as_int(value, 0))
+    return {
+        "subsystem_cost_units": normalized,
+        "total_cost_units": int(sum(int(value) for value in normalized.values())),
+    }
