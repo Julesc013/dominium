@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 6,
+  "candidate_count": 7,
   "candidates": [
     {
       "evidence_paths": [
@@ -8,6 +8,20 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.98,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "data/registries/interaction_action_registry.json",
+        "src/client/interaction/preview_generator.py",
+        "src/materials/blueprint_engine.py",
+        "tools/materials/tool_blueprint_compile.py",
+        "tools/xstack/registry_compile/constants.py",
+        "tools/xstack/sessionx/runner.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.95,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
