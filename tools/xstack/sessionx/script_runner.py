@@ -579,6 +579,30 @@ def run_intent_script(
     )
     if quality_distribution_registry_error:
         return quality_distribution_registry_error
+    part_class_registry, part_class_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["part_class_registry_hash"],
+        expected_hash=str(registries.get("part_class_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if part_class_registry_error:
+        return part_class_registry_error
+    connection_type_registry, connection_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["connection_type_registry_hash"],
+        expected_hash=str(registries.get("connection_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if connection_type_registry_error:
+        return connection_type_registry_error
+    blueprint_registry, blueprint_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["blueprint_registry_hash"],
+        expected_hash=str(registries.get("blueprint_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if blueprint_registry_error:
+        return blueprint_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1038,6 +1062,9 @@ def run_intent_script(
         "mixture_registry": mixture_registry,
         "material_class_registry": material_class_registry,
         "quality_distribution_registry": quality_distribution_registry,
+        "part_class_registry": part_class_registry,
+        "connection_type_registry": connection_type_registry,
+        "blueprint_registry": blueprint_registry,
         "governance_type_registry": governance_type_registry,
         "diplomatic_state_registry": diplomatic_state_registry,
         "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -1158,6 +1185,9 @@ def run_intent_script(
             "mixture_registry": mixture_registry,
             "material_class_registry": material_class_registry,
             "quality_distribution_registry": quality_distribution_registry,
+            "part_class_registry": part_class_registry,
+            "connection_type_registry": connection_type_registry,
+            "blueprint_registry": blueprint_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,

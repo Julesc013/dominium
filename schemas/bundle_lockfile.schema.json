@@ -68,6 +68,9 @@
         "mixture_registry_hash",
         "material_class_registry_hash",
         "quality_distribution_registry_hash",
+        "part_class_registry_hash",
+        "connection_type_registry_hash",
+        "blueprint_registry_hash",
         "universe_physics_profile_registry_hash",
         "time_model_registry_hash",
         "time_control_policy_registry_hash",
@@ -180,6 +183,18 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "quality_distribution_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "part_class_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "connection_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "blueprint_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
