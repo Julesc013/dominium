@@ -132,6 +132,8 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "part_class_registry_hash",
             "connection_type_registry_hash",
             "blueprint_registry_hash",
+            "logistics_routing_rule_registry_hash",
+            "logistics_graph_registry_hash",
             "universe_physics_profile_registry_hash",
             "time_model_registry_hash",
             "time_control_policy_registry_hash",

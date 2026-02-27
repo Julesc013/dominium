@@ -1,0 +1,30 @@
+SCHEMA: logistics/manifest.schema
+schema_id: dominium.schema.logistics.manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic shipment manifest lifecycle artifact.
+
+REQUIRED SHAPE:
+record manifest
+  required:
+    - schema_version: semver
+    - manifest_id: id
+    - graph_id: id
+    - from_node_id: id
+    - to_node_id: id
+    - batch_id: id
+    - material_id: id
+    - quantity_mass: int
+    - scheduled_depart_tick: int
+    - status: enum(planned|in_transit|delivered|lost|failed)
+    - provenance_event_ids: list<string>
+    - deterministic_fingerprint: hash64
+    - extensions: map
+  optional:
+    - scheduled_arrive_tick: int
+
+INVARIANTS:
+- quantity_mass must be non-negative fixed-point integer.
+- depart/arrive ticks must be >= 0 and arrive >= depart when present.

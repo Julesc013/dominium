@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Logistics Node Schema",
+  "version": "1.0.0",
+  "description": "Canonical logistics node declaration.",
+  "x-doc-ref": [
+    "docs/materials/LOGISTICS_GRAPH.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_id",
+    "node_type",
+    "location_ref",
+    "tags",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_type": {
+      "type": "string",
+      "enum": [
+        "site",
+        "depot",
+        "factory",
+        "port",
+        "station",
+        "warehouse"
+      ]
+    },
+    "location_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capacity_storage": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_id": "node.site.alpha",
+      "node_type": "site",
+      "location_ref": "site.alpha",
+      "capacity_storage": 100000,
+      "tags": [
+        "baseline"
+      ],
+      "extensions": {}
+    }
+  ]
+}

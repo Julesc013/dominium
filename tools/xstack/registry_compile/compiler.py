@@ -1514,7 +1514,16 @@ def _interaction_registry_rows(
     errors: List[dict] = []
     action_rows: List[dict] = []
     action_seen = set()
-    allowed_target_kinds = {"agent", "cohort", "faction", "territory", "blueprint"}
+    allowed_target_kinds = {
+        "agent",
+        "cohort",
+        "faction",
+        "territory",
+        "blueprint",
+        "logistics_node",
+        "manifest",
+        "shipment_commitment",
+    }
     allowed_preview_modes = {"none", "cheap", "expensive"}
     for entry in sorted(action_rows_raw, key=lambda row: str((row or {}).get("action_id", ""))):
         if not isinstance(entry, dict):
@@ -3773,6 +3782,146 @@ def _materials_structure_registry_rows(
     blueprint_rows = sorted(blueprint_rows, key=lambda row: str(row.get("blueprint_id", "")))
 
     return part_class_rows, connection_type_rows, blueprint_rows, errors
+
+
+def _logistics_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _routing_rule_record, routing_rule_rows_raw, routing_rule_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/logistics_routing_rule_registry.json",
+        expected_schema_id="dominium.registry.logistics_routing_rule_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="routing_rules",
+    )
+    if routing_rule_load_errors:
+        return [], [], routing_rule_load_errors
+
+    _graph_record, graph_rows_raw, graph_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/logistics_graph_registry.json",
+        expected_schema_id="dominium.registry.logistics_graph_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="graphs",
+    )
+    if graph_load_errors:
+        return [], [], graph_load_errors
+
+    routing_rule_rows: List[dict] = []
+    routing_rule_ids = set()
+    for entry in sorted(routing_rule_rows_raw, key=lambda row: str((row or {}).get("rule_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_routing_rule_entry",
+                    "message": "routing rule entry must be object",
+                    "path": "$.routing_rules",
+                }
+            )
+            continue
+        rule_id = str(entry.get("rule_id", "")).strip()
+        if not rule_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_routing_rule_entry",
+                    "message": "routing rule entry missing rule_id",
+                    "path": "$.routing_rules.rule_id",
+                }
+            )
+            continue
+        if rule_id in routing_rule_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_routing_rule_id",
+                    "message": "duplicate routing rule id '{}'".format(rule_id),
+                    "path": "$.routing_rules.rule_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="routing_rule",
+            payload=entry,
+            path="data/registries/logistics_routing_rule_registry.json#{}".format(rule_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        routing_rule_ids.add(rule_id)
+        routing_rule_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "rule_id": rule_id,
+                "description": str(entry.get("description", "")).strip(),
+                "tie_break_policy": str(entry.get("tie_break_policy", "")).strip(),
+                "allow_multi_hop": bool(entry.get("allow_multi_hop", False)),
+                "constraints": dict(entry.get("constraints") or {}),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    routing_rule_rows = sorted(routing_rule_rows, key=lambda row: str(row.get("rule_id", "")))
+
+    graph_rows: List[dict] = []
+    graph_ids = set()
+    for entry in sorted(graph_rows_raw, key=lambda row: str((row or {}).get("graph_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_logistics_graph_entry",
+                    "message": "logistics graph entry must be object",
+                    "path": "$.graphs",
+                }
+            )
+            continue
+        graph_id = str(entry.get("graph_id", "")).strip()
+        if not graph_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_logistics_graph_entry",
+                    "message": "logistics graph entry missing graph_id",
+                    "path": "$.graphs.graph_id",
+                }
+            )
+            continue
+        if graph_id in graph_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_logistics_graph_id",
+                    "message": "duplicate logistics graph id '{}'".format(graph_id),
+                    "path": "$.graphs.graph_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="logistics_graph",
+            payload=entry,
+            path="data/registries/logistics_graph_registry.json#{}".format(graph_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        routing_rule_id = str(entry.get("deterministic_routing_rule_id", "")).strip()
+        if routing_rule_id and routing_rule_id not in routing_rule_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_logistics_graph_entry",
+                    "message": "logistics graph '{}' references unknown routing rule '{}'".format(
+                        graph_id,
+                        routing_rule_id,
+                    ),
+                    "path": "$.graphs.deterministic_routing_rule_id",
+                }
+            )
+            continue
+        graph_ids.add(graph_id)
+        graph_rows.append(dict(entry))
+    graph_rows = sorted(graph_rows, key=lambda row: str(row.get("graph_id", "")))
+
+    return routing_rule_rows, graph_rows, errors
 
 
 def _universe_physics_registry_rows(
@@ -7486,6 +7635,14 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        logistics_routing_rule_rows,
+        logistics_graph_rows,
+        logistics_registry_errors,
+    ) = _logistics_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         budget_envelope_rows,
         arbitration_policy_rows,
         inspection_cache_policy_rows,
@@ -7719,6 +7876,7 @@ def compile_bundle(
         + materials_dimension_registry_errors
         + material_taxonomy_registry_errors
         + material_structure_registry_errors
+        + logistics_registry_errors
         + materials_reference_errors
         + performance_registry_errors
         + universe_physics_registry_errors
@@ -7936,6 +8094,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "blueprints": blueprint_rows,
+        }
+    )
+    logistics_routing_rule_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "routing_rules": logistics_routing_rule_rows,
+        }
+    )
+    logistics_graph_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "graphs": logistics_graph_rows,
         }
     )
     domain_payload = _finalize_registry_payload(
@@ -8318,6 +8490,8 @@ def compile_bundle(
         "part_class_registry": ("part_class_registry", part_class_payload),
         "connection_type_registry": ("connection_type_registry", connection_type_payload),
         "blueprint_registry": ("blueprint_registry", blueprint_payload),
+        "logistics_routing_rule_registry": ("logistics_routing_rule_registry", logistics_routing_rule_payload),
+        "logistics_graph_registry": ("logistics_graph_registry", logistics_graph_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
         "time_control_policy_registry": ("time_control_policy_registry", time_control_policy_payload),
@@ -8407,6 +8581,8 @@ def compile_bundle(
         "part_class_registry",
         "connection_type_registry",
         "blueprint_registry",
+        "logistics_routing_rule_registry",
+        "logistics_graph_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
         "time_control_policy_registry",
@@ -8513,6 +8689,8 @@ def compile_bundle(
             "part_class_registry_hash": registry_hashes["part_class_registry_hash"],
             "connection_type_registry_hash": registry_hashes["connection_type_registry_hash"],
             "blueprint_registry_hash": registry_hashes["blueprint_registry_hash"],
+            "logistics_routing_rule_registry_hash": registry_hashes["logistics_routing_rule_registry_hash"],
+            "logistics_graph_registry_hash": registry_hashes["logistics_graph_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
             "time_control_policy_registry_hash": registry_hashes["time_control_policy_registry_hash"],

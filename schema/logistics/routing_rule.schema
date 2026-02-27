@@ -1,0 +1,21 @@
+SCHEMA: logistics/routing_rule.schema
+schema_id: dominium.schema.logistics.routing_rule
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic logistics routing rule declarations.
+
+REQUIRED SHAPE:
+record routing_rule
+  required:
+    - schema_version: semver
+    - rule_id: id
+    - description: string
+    - tie_break_policy: string
+    - allow_multi_hop: bool
+    - constraints: map
+    - extensions: map
+
+INVARIANTS:
+- tie_break_policy must define deterministic ordering behavior.

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Manifest Schema",
+  "version": "1.0.0",
+  "description": "Canonical shipment manifest declaration.",
+  "x-doc-ref": [
+    "docs/materials/MANIFESTS_AND_SHIPMENTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "manifest_id",
+    "graph_id",
+    "from_node_id",
+    "to_node_id",
+    "batch_id",
+    "material_id",
+    "quantity_mass",
+    "scheduled_depart_tick",
+    "status",
+    "provenance_event_ids",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "batch_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "material_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quantity_mass": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scheduled_depart_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scheduled_arrive_tick": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "in_transit",
+        "delivered",
+        "lost",
+        "failed"
+      ]
+    },
+    "provenance_event_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "manifest_id": "manifest.example",
+      "graph_id": "graph.example",
+      "from_node_id": "node.a",
+      "to_node_id": "node.b",
+      "batch_id": "batch.example",
+      "material_id": "material.iron",
+      "quantity_mass": 5000,
+      "scheduled_depart_tick": 20,
+      "scheduled_arrive_tick": 24,
+      "status": "planned",
+      "provenance_event_ids": [],
+      "deterministic_fingerprint": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84",
+      "extensions": {}
+    }
+  ]
+}
