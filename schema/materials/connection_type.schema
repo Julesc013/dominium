@@ -1,0 +1,20 @@
+SCHEMA: materials/connection_type.schema
+schema_id: dominium.schema.materials.connection_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical connection type tags for AG edges.
+
+REQUIRED SHAPE:
+record connection_type
+  required:
+    - schema_version: semver
+    - connection_type_id: id
+    - description: string
+    - extensions: map
+  optional:
+    - requires_part_classes: list<id>
+
+INVARIANTS:
+- Connection types are declarative tags only at MAT-3.

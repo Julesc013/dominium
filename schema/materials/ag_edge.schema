@@ -1,0 +1,23 @@
+SCHEMA: materials/ag_edge.schema
+schema_id: dominium.schema.materials.ag_edge
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic AG connection edges.
+
+REQUIRED SHAPE:
+record ag_edge
+  required:
+    - schema_version: semver
+    - edge_id: id
+    - from_node_id: id
+    - to_node_id: id
+    - connection_type_id: id
+    - extensions: map
+  optional:
+    - connection_params: map
+
+INVARIANTS:
+- Edge ids are unique.
+- from_node_id and to_node_id must reference AG nodes.
