@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Construction Policy Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic construction policy entry payload.",
+  "x-doc-ref": [
+    "docs/materials/CONSTRUCTION_AND_INSTALLATION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "default_step_duration_ticks",
+    "allow_parallel_steps",
+    "max_parallel_steps",
+    "deterministic_scheduling_rule_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "default_step_duration_ticks": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    "allow_parallel_steps": {
+      "type": "boolean"
+    },
+    "max_parallel_steps": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "deterministic_scheduling_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
