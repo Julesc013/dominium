@@ -603,6 +603,22 @@ def run_intent_script(
     )
     if blueprint_registry_error:
         return blueprint_registry_error
+    logistics_routing_rule_registry, logistics_routing_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["logistics_routing_rule_registry_hash"],
+        expected_hash=str(registries.get("logistics_routing_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if logistics_routing_rule_registry_error:
+        return logistics_routing_rule_registry_error
+    logistics_graph_registry, logistics_graph_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["logistics_graph_registry_hash"],
+        expected_hash=str(registries.get("logistics_graph_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if logistics_graph_registry_error:
+        return logistics_graph_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1065,6 +1081,8 @@ def run_intent_script(
         "part_class_registry": part_class_registry,
         "connection_type_registry": connection_type_registry,
         "blueprint_registry": blueprint_registry,
+        "logistics_routing_rule_registry": logistics_routing_rule_registry,
+        "logistics_graph_registry": logistics_graph_registry,
         "governance_type_registry": governance_type_registry,
         "diplomatic_state_registry": diplomatic_state_registry,
         "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -1188,6 +1206,8 @@ def run_intent_script(
             "part_class_registry": part_class_registry,
             "connection_type_registry": connection_type_registry,
             "blueprint_registry": blueprint_registry,
+            "logistics_routing_rule_registry": logistics_routing_rule_registry,
+            "logistics_graph_registry": logistics_graph_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
