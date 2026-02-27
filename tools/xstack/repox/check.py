@@ -5292,6 +5292,138 @@ def _append_conservation_invariant_findings(
         )
 
 
+def _append_material_dimension_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    quantity_type_registry_rel = "data/registries/quantity_type_registry.json"
+    quantity_type_abs = os.path.join(repo_root, quantity_type_registry_rel.replace("/", os.sep))
+    if not os.path.isfile(quantity_type_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=quantity_type_registry_rel,
+                line_number=1,
+                snippet="",
+                message="quantity_type_registry is missing",
+                rule_id="INV-QUANTITY-TYPE-DECLARED",
+            )
+        )
+    else:
+        payload, payload_error = _load_json_object(repo_root, quantity_type_registry_rel)
+        rows = list(((payload.get("record") or {}).get("quantity_types") or []) if not payload_error else [])
+        if payload_error or not rows:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=quantity_type_registry_rel,
+                    line_number=1,
+                    snippet="quantity_types",
+                    message="quantity_type_registry must define quantity_types entries",
+                    rule_id="INV-QUANTITY-TYPE-DECLARED",
+                )
+            )
+
+    compatibility_required = {
+        "tools/xstack/registry_compile/compiler.py": (
+            "\"quantity_type_registry\"",
+            "\"dimension_registry\"",
+            "\"unit_registry\"",
+            "\"base_dimension_registry\"",
+        ),
+        "src/reality/ledger/ledger_engine.py": (
+            "_REFUSAL_DIMENSION_MISMATCH",
+            "quantity_dimensions",
+            "refusal.dimension.mismatch",
+        ),
+        "src/materials/dimension_engine.py": (
+            "dimension_add(",
+            "dimension_mul(",
+            "dimension_div(",
+            "quantity_add(",
+            "quantity_convert(",
+            "refusal.unit.invalid_conversion",
+        ),
+    }
+    for rel_path, tokens in compatibility_required.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required material dimension enforcement file is missing",
+                    rule_id="INV-DIMENSION-COMPATIBILITY-ENFORCED",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required material dimension compatibility token is missing",
+                    rule_id="INV-DIMENSION-COMPATIBILITY-ENFORCED",
+                )
+            )
+
+    invariant_math_files = (
+        "src/materials/dimension_engine.py",
+        "src/reality/ledger/ledger_engine.py",
+    )
+    for rel_path in invariant_math_files:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="invariant math file missing; cannot verify raw-float prohibition",
+                    rule_id="INV-NO-RAW-FLOAT-IN-INVARIANT-MATH",
+                )
+            )
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            lowered = token.lower()
+            if "deterministic_float" in lowered:
+                continue
+            if (
+                "float(" not in lowered
+                and ": float" not in lowered
+                and "-> float" not in lowered
+                and "float " not in lowered
+            ):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token[:140],
+                    message="invariant quantity math must not use raw float types",
+                    rule_id="INV-NO-RAW-FLOAT-IN-INVARIANT-MATH",
+                )
+            )
+
+
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -6172,6 +6304,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_conservation_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_dimension_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
