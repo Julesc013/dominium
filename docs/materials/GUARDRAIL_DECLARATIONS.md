@@ -118,6 +118,27 @@ Declare MAT-0 required future test coverage and guardrail identifiers for RepoX 
 - `SilentConstructionSmell`
 - `MissingProvenanceSmell`
 
+## MAT-6 Additions (Decay + Failure + Maintenance)
+### TestX Declarations
+- `test_decay_deterministic`
+- `test_failure_trigger_threshold_deterministic`
+- `test_maintenance_reduces_backlog_deterministic`
+- `test_inspection_snapshot_cached`
+- `test_epistemic_quantization_of_failure_risk`
+- `test_time_warp_large_dt_stable`
+
+### RepoX Rule Declarations
+- `INV-FAILURE-MODES-REGISTRY-DRIVEN`
+  - Failure mode definitions and hazard models must resolve from registry payloads.
+- `INV-NO-SILENT-FAILURES`
+  - Failure state transitions require explicit failure/provenance events.
+- `INV-MAINTENANCE-IS-COMMITMENT-DRIVEN`
+  - Maintenance scheduling/execution must be represented as commitments and process events.
+
+### AuditX Analyzer Declarations
+- `SilentFailureSmell`
+- `NondeterministicHazardSmell`
+
 ## MAT-0 Status
 - These declarations are constitutional commitments in MAT-0.
 - Enforcement implementation and deeper runtime coverage are MAT-1..MAT-10 work.

@@ -46,6 +46,12 @@ def run(repo_root: str):
         "test_visualization_render_model_hash_stable",
         "test_construction_visualization_render_model_hash_stable",
         "test_budget_parallelism_reduction_deterministic",
+        "test_decay_deterministic",
+        "test_failure_trigger_threshold_deterministic",
+        "test_maintenance_reduces_backlog_deterministic",
+        "test_inspection_snapshot_cached",
+        "test_epistemic_quantization_of_failure_risk",
+        "test_time_warp_large_dt_stable",
         "INV-MATERIAL-MUTATION-PROCESS-ONLY",
         "INV-PROVENANCE-REQUIRED",
         "INV-BATCH-LINEAGE-ACYCLIC",
@@ -63,6 +69,9 @@ def run(repo_root: str):
         "INV-PROVENANCE-EVENTS-REQUIRED",
         "INV-LEDGER-DEBIT-CREDIT-REQUIRED",
         "INV-NO-SILENT-INSTALL",
+        "INV-FAILURE-MODES-REGISTRY-DRIVEN",
+        "INV-NO-SILENT-FAILURES",
+        "INV-MAINTENANCE-IS-COMMITMENT-DRIVEN",
         "SilentMaterialChangeSmell",
         "OrphanBatchSmell",
         "ProvenanceDriftSmell",
@@ -74,6 +83,8 @@ def run(repo_root: str):
         "NonDeterministicRoutingSmell",
         "SilentConstructionSmell",
         "MissingProvenanceSmell",
+        "SilentFailureSmell",
+        "NondeterministicHazardSmell",
     ]
     missing = [token for token in required_tokens if token not in text]
     if missing:

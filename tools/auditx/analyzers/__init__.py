@@ -91,6 +91,8 @@ from analyzers import e62_silent_shipment_smell
 from analyzers import e63_nondeterministic_routing_smell
 from analyzers import e64_silent_construction_smell
 from analyzers import e65_missing_provenance_smell
+from analyzers import e66_silent_failure_smell
+from analyzers import e67_nondeterministic_hazard_smell
 
 
 ANALYZERS = (
@@ -185,6 +187,8 @@ ANALYZERS = (
     e63_nondeterministic_routing_smell,
     e64_silent_construction_smell,
     e65_missing_provenance_smell,
+    e66_silent_failure_smell,
+    e67_nondeterministic_hazard_smell,
 )
 
 
