@@ -26,6 +26,7 @@ _REMEDIATION_HINTS = [
     "switch contract set",
     "use meta-law override in private universe",
 ]
+_REFUSAL_DIMENSION_MISMATCH = "refusal.dimension.mismatch"
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -73,15 +74,35 @@ def _contract_set_row(policy_context: dict, contract_set_id: str) -> dict:
 
 
 def _quantity_ids(policy_context: dict) -> List[str]:
+    quantity_type_registry = dict((policy_context or {}).get("quantity_type_registry") or {})
+    quantity_type_rows = quantity_type_registry.get("quantity_types")
+    out = []
+    if isinstance(quantity_type_rows, list):
+        for row in sorted((item for item in quantity_type_rows if isinstance(item, dict)), key=lambda item: str(item.get("quantity_id", ""))):
+            token = str(row.get("quantity_id", "")).strip()
+            if token:
+                out.append(token)
     registry = dict((policy_context or {}).get("quantity_registry") or {})
     rows = registry.get("quantities")
-    if not isinstance(rows, list):
-        return []
-    out = []
-    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("quantity_id", ""))):
-        token = str(row.get("quantity_id", "")).strip()
-        if token:
-            out.append(token)
+    if isinstance(rows, list):
+        for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("quantity_id", ""))):
+            token = str(row.get("quantity_id", "")).strip()
+            if token:
+                out.append(token)
+    return _sorted_tokens(out)
+
+
+def _quantity_dimensions(policy_context: dict) -> Dict[str, str]:
+    quantity_type_registry = dict((policy_context or {}).get("quantity_type_registry") or {})
+    quantity_type_rows = quantity_type_registry.get("quantity_types")
+    out: Dict[str, str] = {}
+    if not isinstance(quantity_type_rows, list):
+        return out
+    for row in sorted((item for item in quantity_type_rows if isinstance(item, dict)), key=lambda item: str(item.get("quantity_id", ""))):
+        quantity_id = str(row.get("quantity_id", "")).strip()
+        dimension_id = str(row.get("dimension_id", "")).strip()
+        if quantity_id and dimension_id:
+            out[quantity_id] = dimension_id
     return out
 
 
@@ -127,6 +148,7 @@ def _new_runtime(policy_context: dict, shard_id: str) -> dict:
     contract_set = _contract_set_row(policy_context, contract_set_id=contract_set_id)
 
     quantity_ids = _quantity_ids(policy_context)
+    quantity_dimensions = _quantity_dimensions(policy_context)
     exception_types = _exception_type_ids(policy_context)
     allowed_profile_exception_types = _sorted_tokens((profile or {}).get("allowed_exception_types") or [])
 
@@ -150,6 +172,7 @@ def _new_runtime(policy_context: dict, shard_id: str) -> dict:
         "contract_set_id": contract_set_id,
         "pack_lock_hash": str((policy_context or {}).get("pack_lock_hash", "")).strip(),
         "known_quantity_ids": list(quantity_ids),
+        "quantity_dimensions": dict(quantity_dimensions),
         "known_exception_type_ids": list(exception_types),
         "allowed_profile_exception_types": list(allowed_profile_exception_types),
         "quantity_modes": modes,
@@ -161,6 +184,7 @@ def _new_runtime(policy_context: dict, shard_id: str) -> dict:
         "pending_entries": [],
         "pending_total_deltas": {},
         "pending_unaccounted_deltas": {},
+        "pending_dimension_refusals": [],
     }
 
 
@@ -183,6 +207,7 @@ def begin_process_accounting(policy_context: dict | None, process_id: str = "") 
     runtime["pending_entries"] = []
     runtime["pending_total_deltas"] = {}
     runtime["pending_unaccounted_deltas"] = {}
+    runtime["pending_dimension_refusals"] = []
     runtime["pending_process_id"] = str(process_id or "")
     return runtime
 
@@ -195,24 +220,87 @@ def _increment_delta(bucket: dict, quantity_id: str, delta: int) -> None:
     bucket[token] = int(current + int(delta))
 
 
+def _dimension_refusal_payload(
+    *,
+    quantity_id: str,
+    expected_dimension_id: str,
+    actual_dimension_id: str,
+) -> dict:
+    return {
+        "result": "refused",
+        "reason_code": _REFUSAL_DIMENSION_MISMATCH,
+        "reason": "ledger quantity dimension mismatch",
+        "remediation_hints": [
+            "bind quantity_id to quantity_type_registry",
+            "ensure dimension_id matches quantity_type_registry for ledger deltas",
+        ],
+        "details": {
+            "quantity_id": str(quantity_id),
+            "expected_dimension_id": str(expected_dimension_id),
+            "actual_dimension_id": str(actual_dimension_id),
+        },
+    }
+
+
+def _record_dimension_refusal(runtime: dict, payload: dict) -> dict:
+    rows = list(runtime.get("pending_dimension_refusals") or [])
+    rows.append(dict(payload))
+    runtime["pending_dimension_refusals"] = rows
+    return dict(payload)
+
+
+def _validate_quantity_dimension(runtime: dict, quantity_id: str, dimension_id: str) -> dict:
+    quantity_token = str(quantity_id).strip()
+    expected_dimensions = dict(runtime.get("quantity_dimensions") or {})
+    expected_dimension_id = str(expected_dimensions.get(quantity_token, "")).strip()
+    if not expected_dimension_id:
+        known_ids = set(_sorted_tokens(runtime.get("known_quantity_ids") or []))
+        if quantity_token and quantity_token not in known_ids:
+            return _dimension_refusal_payload(
+                quantity_id=quantity_token,
+                expected_dimension_id="<declared_quantity_type_required>",
+                actual_dimension_id=str(dimension_id or "<missing>"),
+            )
+        return {"result": "complete"}
+    actual_dimension_id = str(dimension_id).strip()
+    if not actual_dimension_id:
+        return _dimension_refusal_payload(
+            quantity_id=quantity_token,
+            expected_dimension_id=expected_dimension_id,
+            actual_dimension_id="<missing>",
+        )
+    if actual_dimension_id != expected_dimension_id:
+        return _dimension_refusal_payload(
+            quantity_id=quantity_token,
+            expected_dimension_id=expected_dimension_id,
+            actual_dimension_id=actual_dimension_id,
+        )
+    return {"result": "complete"}
+
+
 def emit_exception(
     policy_context: dict | None,
     *,
     quantity_id: str,
     delta: int,
+    dimension_id: str = "",
     exception_type_id: str,
     domain_id: str,
     process_id: str,
     reason_code: str,
     evidence: List[str] | None = None,
-) -> None:
+) -> dict:
     runtime = resolve_conservation_runtime(policy_context)
     if not runtime:
-        return
+        return {"result": "complete"}
+    dimension_validation = _validate_quantity_dimension(runtime=runtime, quantity_id=str(quantity_id), dimension_id=str(dimension_id))
+    if str(dimension_validation.get("result", "")) != "complete":
+        return _record_dimension_refusal(runtime, dimension_validation)
     rows = list(runtime.get("pending_entries") or [])
     row = {
         "quantity_id": str(quantity_id).strip(),
         "delta": int(_as_int(delta, 0)),
+        "dimension_id": str(dimension_id).strip(),
         "exception_type_id": str(exception_type_id).strip(),
         "domain_id": str(domain_id).strip(),
         "process_id": str(process_id).strip(),
@@ -222,24 +310,31 @@ def emit_exception(
     rows.append(row)
     runtime["pending_entries"] = rows
     _increment_delta(runtime["pending_total_deltas"], str(quantity_id), int(row["delta"]))
+    return {"result": "complete"}
 
 
 def record_unaccounted_delta(
     policy_context: dict | None,
     *,
     quantity_id: str,
+    dimension_id: str = "",
     delta: int,
-) -> None:
+) -> dict:
     runtime = resolve_conservation_runtime(policy_context)
     if not runtime:
-        return
+        return {"result": "complete"}
+    dimension_validation = _validate_quantity_dimension(runtime=runtime, quantity_id=str(quantity_id), dimension_id=str(dimension_id))
+    if str(dimension_validation.get("result", "")) != "complete":
+        return _record_dimension_refusal(runtime, dimension_validation)
     _increment_delta(runtime["pending_total_deltas"], str(quantity_id), int(_as_int(delta, 0)))
     _increment_delta(runtime["pending_unaccounted_deltas"], str(quantity_id), int(_as_int(delta, 0)))
+    return {"result": "complete"}
 
 
-def _entry_sort_key(row: dict) -> Tuple[str, str, str, int, str]:
+def _entry_sort_key(row: dict) -> Tuple[str, str, str, str, int, str]:
     return (
         str(row.get("quantity_id", "")),
+        str(row.get("dimension_id", "")),
         str(row.get("process_id", "")),
         str(row.get("exception_type_id", "")),
         int(_as_int(row.get("delta", 0), 0)),
@@ -255,6 +350,7 @@ def _entry_payload(
     row: dict,
 ) -> dict:
     quantity_id = str(row.get("quantity_id", "")).strip()
+    dimension_id = str(row.get("dimension_id", "")).strip()
     process_id = str(row.get("process_id", "")).strip()
     exception_type_id = str(row.get("exception_type_id", "")).strip()
     delta = int(_as_int(row.get("delta", 0), 0))
@@ -263,6 +359,7 @@ def _entry_payload(
             "tick": int(tick),
             "shard_id": str(shard_id),
             "quantity_id": quantity_id,
+            "dimension_id": dimension_id,
             "process_id": process_id,
             "exception_type_id": exception_type_id,
             "delta": int(delta),
@@ -275,6 +372,7 @@ def _entry_payload(
             "tick": int(tick),
             "shard_id": str(shard_id),
             "quantity_id": quantity_id,
+            "dimension_id": dimension_id,
             "exception_type_id": exception_type_id,
             "domain_id": str(row.get("domain_id", "")),
             "process_id": process_id,
@@ -288,6 +386,7 @@ def _entry_payload(
         "tick": int(tick),
         "shard_id": str(shard_id),
         "quantity_id": quantity_id,
+        "dimension_id": dimension_id,
         "exception_type_id": exception_type_id,
         "domain_id": str(row.get("domain_id", "")),
         "process_id": process_id,
@@ -486,6 +585,23 @@ def finalize_process_accounting(
     pending_entries = sorted((dict(row) for row in list(runtime.get("pending_entries") or []) if isinstance(row, dict)), key=_entry_sort_key)
     pending_total_deltas = dict(runtime.get("pending_total_deltas") or {})
     pending_unaccounted_deltas = dict(runtime.get("pending_unaccounted_deltas") or {})
+    pending_dimension_refusals = list(runtime.get("pending_dimension_refusals") or [])
+
+    if pending_dimension_refusals:
+        refusal_row = dict(pending_dimension_refusals[0] if isinstance(pending_dimension_refusals[0], dict) else {})
+        runtime["pending_entries"] = []
+        runtime["pending_total_deltas"] = {}
+        runtime["pending_unaccounted_deltas"] = {}
+        runtime["pending_dimension_refusals"] = []
+        return {
+            "result": "refused",
+            "reason_code": str(refusal_row.get("reason_code", _REFUSAL_DIMENSION_MISMATCH)),
+            "reason": str(refusal_row.get("reason", "ledger quantity dimension mismatch")),
+            "remediation_hints": list(refusal_row.get("remediation_hints") or []),
+            "details": dict(refusal_row.get("details") or {}),
+            "ledger_hash": "",
+            "ledger": {},
+        }
 
     entries = []
     for index, row in enumerate(pending_entries, start=1):
@@ -545,6 +661,7 @@ def finalize_process_accounting(
     runtime["pending_entries"] = []
     runtime["pending_total_deltas"] = {}
     runtime["pending_unaccounted_deltas"] = {}
+    runtime["pending_dimension_refusals"] = []
 
     if refusal_payload:
         refused = dict(refusal_payload)
@@ -588,4 +705,3 @@ def last_ledger_payload(policy_context: dict | None, shard_id: str = "") -> dict
     if isinstance(runtime, dict):
         return dict(runtime.get("last_ledger") or {})
     return {}
-

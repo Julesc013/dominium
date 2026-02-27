@@ -3206,6 +3206,25 @@ def _begin_conservation_process(policy_context: dict | None, process_id: str) ->
     begin_process_accounting(policy_context=policy_context, process_id=str(process_id))
 
 
+def _quantity_dimension_id(policy_context: dict | None, quantity_id: str) -> str:
+    if not isinstance(policy_context, dict):
+        return ""
+    quantity_token = str(quantity_id).strip()
+    quantity_type_registry = dict(policy_context.get("quantity_type_registry") or {})
+    quantity_type_rows = quantity_type_registry.get("quantity_types")
+    if isinstance(quantity_type_rows, list):
+        for row in sorted((item for item in quantity_type_rows if isinstance(item, dict)), key=lambda item: str(item.get("quantity_id", ""))):
+            if str(row.get("quantity_id", "")).strip() == quantity_token:
+                return str(row.get("dimension_id", "")).strip()
+    quantity_registry = dict(policy_context.get("quantity_registry") or {})
+    quantity_rows = quantity_registry.get("quantities")
+    if isinstance(quantity_rows, list):
+        for row in sorted((item for item in quantity_rows if isinstance(item, dict)), key=lambda item: str(item.get("quantity_id", ""))):
+            if str(row.get("quantity_id", "")).strip() == quantity_token:
+                return str(row.get("dimension_id", "")).strip()
+    return ""
+
+
 def _ledger_emit_exception(
     policy_context: dict | None,
     *,
@@ -3222,6 +3241,7 @@ def _ledger_emit_exception(
     ledger_emit_exception(
         policy_context=policy_context,
         quantity_id=str(quantity_id),
+        dimension_id=_quantity_dimension_id(policy_context=policy_context, quantity_id=str(quantity_id)),
         delta=int(_as_int(delta, 0)),
         exception_type_id=str(exception_type_id),
         domain_id=str(domain_id),
@@ -3242,6 +3262,7 @@ def _record_unaccounted_conservation_delta(
     record_unaccounted_delta(
         policy_context=policy_context,
         quantity_id=str(quantity_id),
+        dimension_id=_quantity_dimension_id(policy_context=policy_context, quantity_id=str(quantity_id)),
         delta=int(_as_int(delta, 0)),
     )
 
