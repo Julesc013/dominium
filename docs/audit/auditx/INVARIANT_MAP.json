@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 650,
+      "finding_count": 652,
       "recommended_actions": {
-        "DOC_FIX": 650
+        "DOC_FIX": 652
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 650
+        "WARN": 652
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -106,9 +106,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 12,
+      "finding_count": 13,
       "recommended_actions": {
-        "ADD_RULE": 12
+        "ADD_RULE": 13
       },
       "sample_findings": [
         {
@@ -138,7 +138,7 @@
         }
       ],
       "severities": {
-        "INFO": 1,
+        "INFO": 2,
         "RISK": 11
       }
     },
@@ -229,6 +229,42 @@
       ],
       "severities": {
         "VIOLATION": 1
+      }
+    },
+    "INV-NO-HARDCODED-STRUCTURES": {
+      "finding_count": 20,
+      "recommended_actions": {
+        "REWRITE": 20
+      },
+      "sample_findings": [
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0001",
+          "location": "data/registries/interaction_action_registry.json"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
+          "location": "data/registries/interaction_action_registry.json"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0003",
+          "location": "data/registries/interaction_action_registry.json"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0004",
+          "location": "src/client/interaction/preview_generator.py"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0005",
+          "location": "src/client/interaction/preview_generator.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 20
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
@@ -354,12 +390,12 @@
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "tools/auditx/analyzers/e56_raw_float_in_invariant_smell.py"
+          "location": "tools/auditx/analyzers/e60_hardcoded_blueprint_smell.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "tools/auditx/analyzers/e57_dimension_drift_smell.py"
+          "location": "tools/auditx/analyzers/e61_nondeterministic_graph_order_smell.py"
         },
         {
           "category": "reachability",
@@ -372,41 +408,41 @@
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 155,
+      "finding_count": 72,
       "recommended_actions": {
-        "ADD_RULE": 134,
-        "ADD_TEST": 21
+        "ADD_RULE": 50,
+        "ADD_TEST": 22
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "src/materials/dimension_engine.py"
+          "location": "src/client/interaction/inspection_overlays.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "src/materials/dimension_engine.py"
+          "location": "src/client/interaction/inspection_overlays.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "src/materials/dimension_engine.py"
+          "location": "src/client/interaction/preview_generator.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "src/reality/ledger/ledger_engine.py"
+          "location": "src/client/interaction/preview_generator.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "src/reality/ledger/ledger_engine.py"
+          "location": "src/materials/blueprint_engine.py"
         }
       ],
       "severities": {
-        "RISK": 134,
-        "WARN": 21
+        "RISK": 50,
+        "WARN": 22
       }
     }
   },

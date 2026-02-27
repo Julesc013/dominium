@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": false,
+  "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-27T15:19:34Z",
-  "graph_hash": "5bbe4a4feb53688370036f9c1bf3a2d768cc3eb04a22b934857ed3d5bfd9719e",
+  "generated_utc": "2026-02-27T16:59:26Z",
+  "graph_hash": "78df49758fd75374048c56ff201f75f2d1bae6785ba10c5ebbeedc2bcc8eca49",
   "last_reviewed": "2026-02-27",
   "output_format": "both",
   "platform": "windows",
@@ -90,12 +90,16 @@
     "E55_RENDERER_BACKEND_TRUTH_LEAK_SMELL",
     "E56_RAW_FLOAT_IN_INVARIANT_SMELL",
     "E57_DIMENSION_DRIFT_SMELL",
+    "E58_HARDCODED_PERIODIC_TABLE_SMELL",
+    "E59_MATERIAL_MASS_DRIFT_SMELL",
     "E5_CROSS_SHARD_WRITE_SMELL",
+    "E60_HARDCODED_BLUEPRINT_SMELL",
+    "E61_NONDETERMINISTIC_GRAPH_ORDER_SMELL",
     "E6_SHARD_MAP_DRIFT",
     "E7_EPISTEMIC_LEAK_SMELL",
     "E8_PRECISION_LEAK_SMELL",
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-ff34d0e629ff4424"
+  "workspace_id": "ws-8d0998282d08100f"
 }
