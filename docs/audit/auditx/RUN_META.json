@@ -3,10 +3,10 @@
   "cache_mode": "incremental",
   "changed_only": false,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-26T17:00:44Z",
-  "graph_hash": "30c51b586cbf6d84e78db34823d6146226d28cae916bae1ce69dba98df6e1e76",
-  "last_reviewed": "2026-02-26",
-  "output_format": "json",
+  "generated_utc": "2026-02-27T15:19:34Z",
+  "graph_hash": "5bbe4a4feb53688370036f9c1bf3a2d768cc3eb04a22b934857ed3d5bfd9719e",
+  "last_reviewed": "2026-02-27",
+  "output_format": "both",
   "platform": "windows",
   "python_version": "3.11.9",
   "recomputed_analyzers": [],
@@ -88,6 +88,8 @@
     "E53_PREVIEW_INFO_LEAK_SMELL",
     "E54_PLATFORM_LEAK_SMELL",
     "E55_RENDERER_BACKEND_TRUTH_LEAK_SMELL",
+    "E56_RAW_FLOAT_IN_INVARIANT_SMELL",
+    "E57_DIMENSION_DRIFT_SMELL",
     "E5_CROSS_SHARD_WRITE_SMELL",
     "E6_SHARD_MAP_DRIFT",
     "E7_EPISTEMIC_LEAK_SMELL",
@@ -95,5 +97,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-4c3f5530b2040368"
+  "workspace_id": "ws-ff34d0e629ff4424"
 }
