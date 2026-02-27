@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material Batch Schema",
+  "version": "1.0.0",
+  "description": "Canonical material batch provenance payload.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md",
+    "docs/materials/MATERIALS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "batch_id",
+    "material_id",
+    "quantity_mass_raw",
+    "origin_process_id",
+    "origin_tick",
+    "parent_batch_ids",
+    "quality_distribution",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "batch_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "material_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quantity_mass_raw": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "origin_process_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "origin_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "parent_batch_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "quality_distribution": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
