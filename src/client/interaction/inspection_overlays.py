@@ -167,6 +167,213 @@ def _overlay_renderables(
     return sorted(rows, key=lambda row: str(row.get("renderable_id", "")))
 
 
+def _color_from_seed(seed: object, floor: int = 48) -> dict:
+    digest = canonical_sha256(seed)
+    minimum = max(0, min(240, _to_int(floor, 48)))
+    span = max(1, 256 - minimum)
+    return {
+        "r": minimum + (int(digest[0:2], 16) % span),
+        "g": minimum + (int(digest[2:4], 16) % span),
+        "b": minimum + (int(digest[4:6], 16) % span),
+    }
+
+
+def _logistics_graph_rows(runtime: dict, repo_root: str) -> list[dict]:
+    registry = _resolve_registry(runtime, "logistics_graph_registry", repo_root, "data/registries/logistics_graph_registry.json")
+    rows = list((dict(registry or {})).get("graphs") or [])
+    return sorted(
+        [dict(item) for item in rows if isinstance(item, dict)],
+        key=lambda item: str(item.get("graph_id", "")),
+    )
+
+
+def _logistics_graph_for_target(graph_rows: list[dict], target_row: dict, target_semantic_id: str) -> dict:
+    graph_id = str((dict(target_row or {})).get("graph_id", "")).strip()
+    if graph_id:
+        for row in graph_rows:
+            if str(row.get("graph_id", "")).strip() == graph_id:
+                return dict(row)
+    node_id = str((dict(target_row or {})).get("node_id", "")).strip()
+    if not node_id and str(target_semantic_id).startswith("node."):
+        node_id = str(target_semantic_id).strip()
+    if node_id:
+        for row in graph_rows:
+            nodes = list((dict(row or {})).get("nodes") or [])
+            for node in nodes:
+                if not isinstance(node, dict):
+                    continue
+                if str(node.get("node_id", "")).strip() == node_id:
+                    return dict(row)
+    return dict(graph_rows[0]) if graph_rows else {}
+
+
+def _logistics_overlay_payload(
+    *,
+    target_semantic_id: str,
+    runtime: dict,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    repo_root = str(runtime.get("repo_root", "")).strip()
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    graph_rows = _logistics_graph_rows(runtime, repo_root)
+    graph_row = _logistics_graph_for_target(graph_rows, target_row=target_row, target_semantic_id=target_semantic_id)
+    if not graph_row:
+        return {
+            "mode": "macro_summary",
+            "summary": "logistics:{} unavailable".format(str(target_semantic_id)),
+            "target_semantic_id": str(target_semantic_id),
+            "inspection_snapshot": dict(inspection_snapshot or {}),
+            "renderables": _overlay_renderables(
+                target_semantic_id=str(target_semantic_id),
+                summary_label="logistics unavailable",
+                mode="macro_summary",
+            ),
+            "materials": _overlay_materials(target_semantic_id=str(target_semantic_id)),
+            "degraded": True,
+            "extensions": {"overlay_kind": "logistics", "graph_status": "missing"},
+        }
+
+    graph_id = str(graph_row.get("graph_id", "")).strip()
+    edge_rows = sorted(
+        [dict(item) for item in list((dict(graph_row or {})).get("edges") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("edge_id", "")),
+    )
+    route_edge_ids = _sorted_unique_strings(
+        list((dict(target_row.get("extensions") or {})).get("route_edge_ids") or [])
+    )
+    material_id = str(target_row.get("material_id", "")).strip() or "material.unknown"
+    edge_color = _color_from_seed({"graph_id": graph_id, "kind": "edge"}, floor=58)
+    flow_color = _color_from_seed({"material_id": material_id, "kind": "flow"}, floor=72)
+    edge_material_id = "mat.inspect.logistics.edge.{}".format(canonical_sha256({"graph_id": graph_id})[:12])
+    flow_material_id = "mat.inspect.logistics.flow.{}".format(canonical_sha256({"material_id": material_id})[:12])
+    node_material_id = "mat.inspect.logistics.node.{}".format(canonical_sha256({"target": target_semantic_id})[:12])
+    materials = sorted(
+        [
+            {
+                "schema_version": "1.0.0",
+                "material_id": edge_material_id,
+                "base_color": dict(edge_color),
+                "roughness": 360,
+                "metallic": 0,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_edge"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": flow_material_id,
+                "base_color": dict(flow_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": flow_color["r"], "g": flow_color["g"], "b": flow_color["b"], "strength": 280},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_flow"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": node_material_id,
+                "base_color": _color_from_seed({"target": target_semantic_id, "kind": "node"}, floor=80),
+                "roughness": 180,
+                "metallic": 0,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_node"},
+            },
+        ],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+
+    renderables: list[dict] = []
+    for edge in edge_rows:
+        edge_id = str(edge.get("edge_id", "")).strip()
+        if not edge_id:
+            continue
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.logistics.edge.{}".format(canonical_sha256({"edge_id": edge_id})[:16]),
+                "semantic_id": "overlay.inspect.logistics.edge.{}".format(edge_id),
+                "primitive_id": "prim.line.debug",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": edge_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "logistics_edge",
+                    "edge_id": edge_id,
+                    "from_node_id": str(edge.get("from_node_id", "")).strip(),
+                    "to_node_id": str(edge.get("to_node_id", "")).strip(),
+                },
+            }
+        )
+        if edge_id in set(route_edge_ids):
+            renderables.append(
+                {
+                    "schema_version": "1.0.0",
+                    "renderable_id": "overlay.inspect.logistics.flow.{}".format(canonical_sha256({"edge_id": edge_id, "flow": True})[:16]),
+                    "semantic_id": "overlay.inspect.logistics.flow.{}".format(edge_id),
+                    "primitive_id": "prim.line.debug",
+                    "transform": {
+                        "position_mm": {"x": 0, "y": 0, "z": 0},
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 1000,
+                    },
+                    "material_id": flow_material_id,
+                    "layer_tags": ["overlay", "ui"],
+                    "label": None,
+                    "lod_hint": "lod.band.mid",
+                    "flags": {"selectable": False, "highlighted": True},
+                    "extensions": {
+                        "interaction_overlay": True,
+                        "overlay_kind": "logistics_flow_arrow",
+                        "edge_id": edge_id,
+                        "animated": True,
+                        "phase_tick": int(max(0, _to_int((dict(runtime.get("time_state") or {})).get("tick", 0), 0))),
+                    },
+                }
+            )
+
+    summary_bits = []
+    summary_bits.append("graph={}".format(graph_id or "none"))
+    summary_bits.append("edges={}".format(len(edge_rows)))
+    if collection == "logistics_node_inventories":
+        stocks = dict((dict(target_row or {})).get("material_stocks") or {})
+        summary_bits.append("materials={}".format(len(stocks.keys())))
+    if collection == "logistics_manifests":
+        summary_bits.append("route_edges={}".format(len(route_edge_ids)))
+        summary_bits.append("status={}".format(str(target_row.get("status", "planned")).strip() or "planned"))
+    summary_label = "logistics:{} {}".format(str(target_semantic_id), " ".join(summary_bits))
+
+    return {
+        "mode": "logistics_overlay",
+        "summary": summary_label,
+        "target_semantic_id": str(target_semantic_id),
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": sorted(renderables, key=lambda row: str(row.get("renderable_id", ""))),
+        "materials": list(materials),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "logistics",
+            "graph_id": graph_id,
+            "collection": collection,
+            "route_edge_ids": list(route_edge_ids),
+            "material_id": material_id,
+        },
+    }
+
+
 def _blueprint_overlay_payload(
     *,
     target_semantic_id: str,
@@ -268,6 +475,27 @@ def build_inspection_overlays(
     perceived = dict(perceived_model or {})
     target_id = str(target_semantic_id).strip()
     tick = int(max(0, _to_int((dict(perceived.get("time_state") or {})).get("tick", 0), 0)))
+    runtime["time_state"] = dict(perceived.get("time_state") or {})
+    snapshot_payload = dict(inspection_snapshot or {})
+    snapshot_target = dict(snapshot_payload.get("target_payload") or {})
+    snapshot_collection = str(snapshot_target.get("collection", "")).strip()
+    if (
+        target_id.startswith("manifest.")
+        or target_id.startswith("commitment.shipment.")
+        or target_id.startswith("node.")
+        or target_id.startswith("logistics.node.")
+        or snapshot_collection in ("logistics_manifests", "shipment_commitments", "logistics_node_inventories")
+    ):
+        logistics_overlay = _logistics_overlay_payload(
+            target_semantic_id=target_id,
+            runtime=runtime,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": logistics_overlay,
+            "overlay_runtime": runtime,
+        }
     if target_id.startswith("blueprint."):
         blueprint_overlay = _blueprint_overlay_payload(
             target_semantic_id=target_id,

@@ -79,6 +79,58 @@
         "extensions": {}
       },
       {
+        "action_id": "interaction.inspect_node_inventory",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Node Inventory",
+        "target_kinds": [
+          "logistics_node"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "logistics",
+          "icon": "glyph.logistics.node",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_shipment_manifests",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Shipments",
+        "target_kinds": [
+          "manifest",
+          "shipment_commitment"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "logistics",
+          "icon": "glyph.logistics.manifest",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.create_shipment",
+        "process_id": "process.manifest_create",
+        "display_name": "Create Shipment",
+        "target_kinds": [
+          "logistics_node"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "logistics",
+          "icon": "glyph.logistics.create",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
         "action_id": "interaction.move_agent",
         "process_id": "process.agent_move",
         "display_name": "Move",

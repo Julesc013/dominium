@@ -29,6 +29,8 @@
     "process.instrument_tick",
     "process.observe.telemetry",
     "process.region_management_tick",
+    "process.manifest_create",
+    "process.manifest_tick",
     "process.time_control_set_rate",
     "process.time_pause",
     "process.time_resume"
@@ -76,6 +78,8 @@
     "process.body_move_attempt": "entitlement.control.possess",
     "process.instrument_tick": "session.boot",
     "process.region_management_tick": "session.boot",
+    "process.manifest_create": "entitlement.control.admin",
+    "process.manifest_tick": "session.boot",
     "process.time_control_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
     "process.time_resume": "entitlement.time_control"
@@ -106,6 +110,8 @@
     "process.body_move_attempt": "operator",
     "process.instrument_tick": "observer",
     "process.region_management_tick": "observer",
+    "process.manifest_create": "operator",
+    "process.manifest_tick": "observer",
     "process.time_control_set_rate": "operator",
     "process.time_pause": "operator",
     "process.time_resume": "operator"
