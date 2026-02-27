@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material Class Schema",
+  "version": "1.0.0",
+  "description": "Canonical material class declaration with dimensional properties.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md",
+    "docs/materials/UNITS_AND_DIMENSIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "material_id",
+    "base_type",
+    "base_ref_id",
+    "density",
+    "specific_energy",
+    "conductivity",
+    "heat_capacity",
+    "phase_tags",
+    "quality_distribution_model_id",
+    "tags",
+    "version_introduced",
+    "deprecated",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "material_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_type": {
+      "type": "string",
+      "enum": [
+        "element",
+        "compound",
+        "mixture"
+      ]
+    },
+    "base_ref_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "density": {
+      "$ref": "#/$defs/property_quantity"
+    },
+    "specific_energy": {
+      "$ref": "#/$defs/property_quantity"
+    },
+    "conductivity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/property_quantity"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "heat_capacity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/property_quantity"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "phase_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "quality_distribution_model_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version_introduced": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deprecated": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "property_quantity": {
+      "type": "object",
+      "required": [
+        "value_raw",
+        "dimension_id",
+        "unit_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value_raw": {
+          "type": "integer"
+        },
+        "dimension_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

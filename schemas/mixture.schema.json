@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mixture Schema",
+  "version": "1.0.0",
+  "description": "Canonical mixture declaration with fixed-point mass fractions.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mixture_id",
+    "components",
+    "tags",
+    "version_introduced",
+    "deprecated",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "mixture_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "components": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version_introduced": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deprecated": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

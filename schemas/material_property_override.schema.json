@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material Property Override Schema",
+  "version": "1.0.0",
+  "description": "Pack-attributed material property override payload.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "material_id",
+    "property_name",
+    "value",
+    "override_pack_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "material_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "property_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "value": {},
+    "override_pack_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

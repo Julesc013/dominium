@@ -1,0 +1,25 @@
+SCHEMA: materials/element.schema
+schema_id: dominium.schema.materials.element
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a canonical element entry for deterministic material composition.
+
+REQUIRED SHAPE:
+record element
+  required:
+    - schema_version: semver
+    - element_id: id
+    - atomic_number: int|null (optional for fictional elements)
+    - molar_mass_raw: int (fixed-point)
+    - charge_default: int|null
+    - base_energy_content_raw: int|null
+    - tags: list<string>
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+
+INVARIANTS:
+- element_id is stable and pack-governed.
+- molar_mass_raw is fixed-point for deterministic arithmetic.

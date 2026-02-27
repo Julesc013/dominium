@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Compound Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic compound registry output.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "compounds",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "compounds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "compound_id",
+          "composition",
+          "molar_mass_mode",
+          "molar_mass_raw",
+          "mass_fractions_raw",
+          "tags",
+          "version_introduced",
+          "deprecated",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "compound_id": {
+            "type": "string"
+          },
+          "composition": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "molar_mass_mode": {
+            "type": "string"
+          },
+          "molar_mass_raw": {
+            "type": "integer"
+          },
+          "mass_fractions_raw": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version_introduced": {
+            "type": "string"
+          },
+          "deprecated": {
+            "type": "boolean"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

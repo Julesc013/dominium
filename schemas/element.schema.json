@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Element Schema",
+  "version": "1.0.0",
+  "description": "Canonical element declaration for deterministic material composition.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "element_id",
+    "atomic_number",
+    "molar_mass_raw",
+    "charge_default",
+    "base_energy_content_raw",
+    "tags",
+    "version_introduced",
+    "deprecated",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "element_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "atomic_number": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "molar_mass_raw": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "charge_default": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "base_energy_content_raw": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version_introduced": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deprecated": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

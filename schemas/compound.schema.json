@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Compound Schema",
+  "version": "1.0.0",
+  "description": "Canonical compound declaration with stoichiometric composition.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "compound_id",
+    "composition",
+    "molar_mass_mode",
+    "molar_mass_raw",
+    "tags",
+    "version_introduced",
+    "deprecated",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "compound_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "composition": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "molar_mass_mode": {
+      "type": "string",
+      "enum": [
+        "declared",
+        "derived"
+      ]
+    },
+    "molar_mass_raw": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version_introduced": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deprecated": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

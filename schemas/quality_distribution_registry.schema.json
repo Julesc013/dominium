@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quality Distribution Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic quality-distribution registry output.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "quality_distribution_models",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "quality_distribution_models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "quality_distribution_model_id",
+          "description",
+          "parameters",
+          "tags",
+          "version_introduced",
+          "deprecated",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "quality_distribution_model_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version_introduced": {
+            "type": "string"
+          },
+          "deprecated": {
+            "type": "boolean"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

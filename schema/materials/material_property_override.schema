@@ -1,0 +1,21 @@
+SCHEMA: materials/material_property_override.schema
+schema_id: dominium.schema.materials.material_property_override
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic per-pack material property overrides.
+
+REQUIRED SHAPE:
+record material_property_override
+  required:
+    - schema_version: semver
+    - material_id: id
+    - property_name: id
+    - value: any
+    - override_pack_id: id
+    - extensions: map
+
+INVARIANTS:
+- Overrides are explicit and attributable to override_pack_id.
+- Overrides do not bypass dimensional validation.
