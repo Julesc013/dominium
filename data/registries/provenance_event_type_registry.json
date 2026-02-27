@@ -1,0 +1,63 @@
+{
+  "schema_id": "dominium.registry.provenance_event_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.provenance_event_type_registry",
+    "registry_version": "1.0.0",
+    "event_types": [
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.construct_project_created",
+        "description": "Construction project record created.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.construct_step_started",
+        "description": "Construction step entered executing status.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.construct_step_completed",
+        "description": "Construction step entered completed status.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.install_part",
+        "description": "Installed part output applied to structure instance.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.deconstruct_part",
+        "description": "Deconstruction stub event type.",
+        "extensions": {
+          "stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.material_consumed",
+        "description": "Input material/batch consumed by construction step.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.batch_created",
+        "description": "Output batch created by construction step.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.maintenance_scheduled",
+        "description": "Maintenance scheduling provenance stub.",
+        "extensions": {
+          "stub": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

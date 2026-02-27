@@ -691,6 +691,8 @@ _NULL_REGISTRY_LIST_KEYS = {
     "blueprint_registry": "blueprints",
     "logistics_routing_rule_registry": "routing_rules",
     "logistics_graph_registry": "graphs",
+    "provenance_event_type_registry": "event_types",
+    "construction_policy_registry": "policies",
     "domain_registry": "domains",
     "law_registry": "law_profiles",
     "experience_registry": "experience_profiles",
