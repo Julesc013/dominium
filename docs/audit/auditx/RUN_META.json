@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": true,
+  "changed_only": false,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-27T16:59:26Z",
-  "graph_hash": "78df49758fd75374048c56ff201f75f2d1bae6785ba10c5ebbeedc2bcc8eca49",
+  "generated_utc": "2026-02-27T17:04:10Z",
+  "graph_hash": "520ce601574093ae0a070d6650a6c063eb08ef802884da8c100bb253f2509290",
   "last_reviewed": "2026-02-27",
   "output_format": "both",
   "platform": "windows",
@@ -101,5 +101,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-8d0998282d08100f"
+  "workspace_id": "ws-0b404f6c0981d10b"
 }
