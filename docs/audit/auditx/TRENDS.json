@@ -1,72 +1,60 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 652,
+    "canon_drift": 660,
     "capability_bypass_smell": 1,
-    "capability_misuse": 139,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
-    "derived_freshness": 131,
+    "derived_freshness": 15,
     "epistemics.hidden_state_leak_smell": 6,
-    "legacy_contamination": 6,
-    "materials.hardcoded_blueprint_smell": 16,
-    "mode_flag_smell": 64,
+    "materials.hardcoded_blueprint_smell": 5,
+    "materials.reenactment_leak_smell": 1,
+    "mode_flag_smell": 1,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
-    "ownership_boundary": 9,
-    "reachability": 80,
+    "reachability": 14,
     "schema_usage": 160,
-    "security.boundary_io": 29,
-    "security.privilege_bypass": 9,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
-    "semantic.workspace_contamination": 1,
-    "terminology_misuse": 1,
-    "ui_parity": 215
+    "semantic.workspace_contamination": 1
   },
   "delta_over_time": {
     "category_frequency": {
-      "canon_drift": 652,
-      "capability_bypass_smell": 1,
-      "capability_misuse": 139,
-      "civilisation.nondeterministic_cohort_mapping_smell": 1,
-      "derived_freshness": 131,
-      "epistemics.hidden_state_leak_smell": 6,
-      "legacy_contamination": 6,
-      "materials.hardcoded_blueprint_smell": 16,
-      "mode_flag_smell": 64,
-      "net.precision_leak_smell": 2,
-      "net.truth_over_net_smell": 6,
-      "ownership_boundary": 9,
-      "reachability": 80,
-      "schema_usage": 160,
-      "security.boundary_io": 29,
-      "security.privilege_bypass": 9,
-      "semantic.capability_drift": 5,
-      "semantic.derived_artifact_contract": 1,
-      "semantic.schema_shadowing": 120,
-      "semantic.workspace_contamination": 1,
-      "terminology_misuse": 1,
-      "ui_parity": 215
+      "canon_drift": 0,
+      "capability_bypass_smell": 0,
+      "civilisation.nondeterministic_cohort_mapping_smell": 0,
+      "derived_freshness": 0,
+      "epistemics.hidden_state_leak_smell": 0,
+      "materials.hardcoded_blueprint_smell": 0,
+      "materials.reenactment_leak_smell": 0,
+      "mode_flag_smell": 0,
+      "net.precision_leak_smell": 0,
+      "net.truth_over_net_smell": 0,
+      "reachability": 0,
+      "schema_usage": 0,
+      "semantic.capability_drift": 0,
+      "semantic.derived_artifact_contract": 0,
+      "semantic.schema_shadowing": 0,
+      "semantic.workspace_contamination": 0
     },
     "severity_distribution": {
-      "INFO": 230,
-      "RISK": 245,
-      "VIOLATION": 90,
-      "WARN": 1089
+      "INFO": 0,
+      "RISK": -1,
+      "VIOLATION": 0,
+      "WARN": 1
     }
   },
-  "findings_hash": "e4386aa09668c5a118ec9ed9dff9ae425899d4df11bcd01e1affbb077d8e5d2d",
+  "findings_hash": "70035d369de60795bb9891b67c97fecd85aa5941804ba84781087884d671c6b2",
   "history_reference": {
-    "previous_distinct_hash": ""
+    "previous_distinct_hash": "519399e9b10cfa5cfe44da4dded5cf07761c2ba83d13c41c151a1d3e734379a7"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 230,
-    "RISK": 245,
-    "VIOLATION": 90,
-    "WARN": 1089
+    "INFO": 4,
+    "RISK": 158,
+    "VIOLATION": 7,
+    "WARN": 830
   },
-  "total_findings": 1654
+  "total_findings": 999
 }

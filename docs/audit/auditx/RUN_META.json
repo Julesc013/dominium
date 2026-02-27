@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": false,
+  "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-02-27T17:04:10Z",
-  "graph_hash": "520ce601574093ae0a070d6650a6c063eb08ef802884da8c100bb253f2509290",
+  "generated_utc": "2026-02-27T22:00:33Z",
+  "graph_hash": "108a60b6f1d3a9a8f8347217ec0985a7363f04f473f740f09b99f5b9dc0958a6",
   "last_reviewed": "2026-02-27",
   "output_format": "both",
   "platform": "windows",
@@ -95,11 +95,21 @@
     "E5_CROSS_SHARD_WRITE_SMELL",
     "E60_HARDCODED_BLUEPRINT_SMELL",
     "E61_NONDETERMINISTIC_GRAPH_ORDER_SMELL",
+    "E62_SILENT_SHIPMENT_SMELL",
+    "E63_NONDETERMINISTIC_ROUTING_SMELL",
+    "E64_SILENT_CONSTRUCTION_SMELL",
+    "E65_MISSING_PROVENANCE_SMELL",
+    "E66_SILENT_FAILURE_SMELL",
+    "E67_NONDETERMINISTIC_HAZARD_SMELL",
+    "E68_MICRO_ENTITY_LEAK_SMELL",
+    "E69_COLLAPSE_DRIFT_SMELL",
     "E6_SHARD_MAP_DRIFT",
+    "E70_UNCOMMITTED_MACRO_CHANGE_SMELL",
+    "E71_REENACTMENT_LEAK_SMELL",
     "E7_EPISTEMIC_LEAK_SMELL",
     "E8_PRECISION_LEAK_SMELL",
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-0b404f6c0981d10b"
+  "workspace_id": "ws-df236aaf98c65206"
 }
