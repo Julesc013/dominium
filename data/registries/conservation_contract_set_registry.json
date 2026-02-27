@@ -20,6 +20,15 @@
             "notes": "Combined mass-energy channel must remain invariant."
           },
           {
+            "quantity_id": "quantity.mass",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Tracked material mass channel for stock accounting."
+          },
+          {
             "quantity_id": "quantity.charge_total",
             "mode": "enforce_strict",
             "tolerance": 0,
@@ -60,6 +69,15 @@
             "notes": "Violations allowed only when explicitly logged."
           },
           {
+            "quantity_id": "quantity.mass",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Tracked material mass channel for stock accounting."
+          },
+          {
             "quantity_id": "quantity.charge_total",
             "mode": "track_only",
             "tolerance": 0,
@@ -93,6 +111,15 @@
             "tolerance": 0,
             "allowed_exception_types": [],
             "notes": "Null profile ignores conservation enforcement."
+          },
+          {
+            "quantity_id": "quantity.mass",
+            "mode": "track_only",
+            "tolerance": 0,
+            "allowed_exception_types": [
+              "exception.numeric_error_budget"
+            ],
+            "notes": "Optional tracked material mass channel in null profile."
           },
           {
             "quantity_id": "quantity.charge_total",
