@@ -506,6 +506,16 @@ MULTIPLAYER_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
+MAT_SCALE_REGRESSION_LOCK_PATH = "data/regression/mat_scale_baseline.json"
+MAT_SCALE_REGRESSION_LOCK_REQUIRED_FIELDS = (
+    "baseline_id",
+    "scenario_id",
+    "degradation_order_fingerprint",
+    "hash_anchor_stream",
+    "inspection_cache_hit_pattern",
+    "update_policy",
+)
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -6510,6 +6520,227 @@ def _append_material_commitment_reenactment_invariant_findings(
             )
 
 
+def _append_material_scale_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    strategy_rel = "docs/materials/PERFORMANCE_AND_SCALE_STRATEGY.md"
+    strategy_abs = os.path.join(repo_root, strategy_rel.replace("/", os.sep))
+    try:
+        strategy_text = open(strategy_abs, "r", encoding="utf-8").read()
+    except OSError:
+        strategy_text = ""
+    if not strategy_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=strategy_rel,
+                line_number=1,
+                snippet="",
+                message="MAT scale strategy doctrine is missing",
+                rule_id="INV-MAT-SCALE-POLICY-DECLARED",
+            )
+        )
+    else:
+        for token in (
+            "No Lag Spikes Contract",
+            "Deterministic Degradation Priorities",
+            "cache snapshots by deterministic input hash anchors",
+            "Regression Locks",
+        ):
+            if token in strategy_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=strategy_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="MAT scale strategy missing required doctrine token",
+                    rule_id="INV-MAT-SCALE-POLICY-DECLARED",
+                )
+            )
+
+    required_tokens = {
+        "src/materials/performance/mat_scale_engine.py": (
+            "DEFAULT_MAT_DEGRADATION_ORDER",
+            "compute_mat_cost_usage(",
+            "apply_mat_degradation_policy(",
+            "run_stress_simulation(",
+            "_inspection_cache_key(",
+        ),
+        "tools/materials/tool_generate_factory_planet_scenario.py": (
+            "default_factory_planet_scenario(",
+            "deterministic_fingerprint",
+        ),
+        "tools/materials/tool_run_stress.py": (
+            "run_stress_simulation(",
+            "stress_report",
+            "inspection_cache_hit_rate_permille",
+        ),
+    }
+    for rel_path, tokens in required_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required MAT scale deterministic implementation file is missing",
+                    rule_id="INV-DEGRADE-NOT-MELTDOWN",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required MAT scale deterministic token is missing",
+                    rule_id="INV-DEGRADE-NOT-MELTDOWN",
+                )
+            )
+
+    wallclock_patterns = (
+        "time.time(",
+        "time.perf_counter(",
+        "time.monotonic(",
+        "datetime.now(",
+    )
+    for rel_path in (
+        "src/materials/performance/mat_scale_engine.py",
+        "tools/materials/tool_generate_factory_planet_scenario.py",
+        "tools/materials/tool_run_stress.py",
+    ):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        lowered = text.lower()
+        for token in wallclock_patterns:
+            if token not in lowered:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="MAT stress paths must not use wall-clock APIs",
+                    rule_id="INV-NO-WALLCLOCK-IN-STRESS",
+                )
+            )
+
+    payload, err = _load_json_object(repo_root, MAT_SCALE_REGRESSION_LOCK_PATH)
+    if err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MAT_SCALE_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="",
+                message="MAT scale regression baseline lock file is missing or invalid",
+                rule_id="INV-MAT-SCALE-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+    for field in MAT_SCALE_REGRESSION_LOCK_REQUIRED_FIELDS:
+        value = payload.get(field)
+        if value is None or (isinstance(value, str) and not str(value).strip()):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MAT_SCALE_REGRESSION_LOCK_PATH,
+                    line_number=1,
+                    snippet=field,
+                    message="MAT scale regression lock missing required field '{}'".format(field),
+                    rule_id="INV-MAT-SCALE-REGRESSION-LOCK-PRESENT",
+                )
+            )
+    hashes = payload.get("hash_anchor_stream")
+    if not isinstance(hashes, list) or not hashes:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MAT_SCALE_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="hash_anchor_stream",
+                message="MAT scale regression lock requires non-empty hash_anchor_stream",
+                rule_id="INV-MAT-SCALE-REGRESSION-LOCK-PRESENT",
+            )
+        )
+    hit_pattern = payload.get("inspection_cache_hit_pattern")
+    if not isinstance(hit_pattern, dict):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MAT_SCALE_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="inspection_cache_hit_pattern",
+                message="MAT scale regression lock requires inspection_cache_hit_pattern object",
+                rule_id="INV-MAT-SCALE-REGRESSION-LOCK-PRESENT",
+            )
+        )
+    required_tag = ""
+    update_policy = payload.get("update_policy")
+    if isinstance(update_policy, dict):
+        required_tag = str(update_policy.get("required_commit_tag", "")).strip()
+    if not required_tag:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MAT_SCALE_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="update_policy.required_commit_tag",
+                message="MAT scale regression lock must declare update_policy.required_commit_tag",
+                rule_id="INV-MAT-SCALE-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+    try:
+        proc = subprocess.run(
+            ["git", "log", "-1", "--pretty=%s", "--", MAT_SCALE_REGRESSION_LOCK_PATH],
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            check=False,
+        )
+    except OSError:
+        return
+    if int(proc.returncode) != 0:
+        return
+    subject = str(proc.stdout or "").strip()
+    if subject and required_tag not in subject:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MAT_SCALE_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet=subject[:140],
+                message="latest MAT scale baseline commit message must include '{}'".format(required_tag),
+                rule_id="INV-MAT-SCALE-REGRESSION-LOCK-PRESENT",
+            )
+        )
+
+
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -7534,6 +7765,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_material_commitment_reenactment_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_scale_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

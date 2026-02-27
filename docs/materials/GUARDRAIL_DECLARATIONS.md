@@ -200,6 +200,30 @@ Declare MAT-0 required future test coverage and guardrail identifiers for RepoX 
 - `InspectionLeakSmell`
 - `UnboundedInspectionSmell`
 
+## MAT-10 Additions (Performance Integration + Scale Stress)
+### TestX Declarations
+- `test_stress_scenario_deterministic`
+- `test_cost_usage_bounded_per_tick`
+- `test_degradation_order_deterministic`
+- `test_inspection_cache_prevents_thrashing`
+- `test_micro_materialization_bounded`
+- `test_hash_anchors_stable_under_stress`
+- `test_multiplayer_equal_share_arbitration`
+
+### RepoX Rule Declarations
+- `INV-MAT-SCALE-POLICY-DECLARED`
+  - MAT scale doctrine and deterministic degradation order must be declared in materials performance strategy docs.
+- `INV-NO-WALLCLOCK-IN-STRESS`
+  - MAT stress generators/harness and scale engine must not use wall-clock APIs.
+- `INV-DEGRADE-NOT-MELTDOWN`
+  - When budgets are exceeded, MAT workloads must degrade/refuse deterministically instead of unbounded execution.
+- `INV-MAT-SCALE-REGRESSION-LOCK-PRESENT`
+  - MAT scale regression baseline lock must exist with explicit update commit-tag policy.
+
+### AuditX Analyzer Declarations
+- `UnboundedWorkSmell`
+- `ThrashSmell`
+
 ## MAT-0 Status
 - These declarations are constitutional commitments in MAT-0.
 - Enforcement implementation and deeper runtime coverage are MAT-1..MAT-10 work.

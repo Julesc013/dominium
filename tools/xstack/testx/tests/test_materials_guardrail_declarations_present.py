@@ -70,6 +70,13 @@ def run(repo_root: str):
         "test_epistemic_redaction_applied",
         "test_history_query_deterministic",
         "test_multiplayer_inspection_fairness",
+        "test_stress_scenario_deterministic",
+        "test_cost_usage_bounded_per_tick",
+        "test_degradation_order_deterministic",
+        "test_inspection_cache_prevents_thrashing",
+        "test_micro_materialization_bounded",
+        "test_hash_anchors_stable_under_stress",
+        "test_multiplayer_equal_share_arbitration",
         "INV-MATERIAL-MUTATION-PROCESS-ONLY",
         "INV-PROVENANCE-REQUIRED",
         "INV-BATCH-LINEAGE-ACYCLIC",
@@ -98,6 +105,10 @@ def run(repo_root: str):
         "INV-INSPECTION-DERIVED-ONLY",
         "INV-NO-TRUTH-LEAK-VIA-INSPECTION",
         "INV-INSPECTION-BUDGETED",
+        "INV-MAT-SCALE-POLICY-DECLARED",
+        "INV-NO-WALLCLOCK-IN-STRESS",
+        "INV-DEGRADE-NOT-MELTDOWN",
+        "INV-MAT-SCALE-REGRESSION-LOCK-PRESENT",
         "SilentMaterialChangeSmell",
         "OrphanBatchSmell",
         "ProvenanceDriftSmell",
@@ -117,6 +128,8 @@ def run(repo_root: str):
         "ReenactmentLeakSmell",
         "InspectionLeakSmell",
         "UnboundedInspectionSmell",
+        "UnboundedWorkSmell",
+        "ThrashSmell",
     ]
     missing = [token for token in required_tokens if token not in text]
     if missing:
