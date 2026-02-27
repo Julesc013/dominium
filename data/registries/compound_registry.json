@@ -1,0 +1,65 @@
+{
+  "schema_id": "dominium.registry.compound_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compound_registry",
+    "registry_version": "1.0.0",
+    "compounds": [
+      {
+        "schema_version": "1.0.0",
+        "compound_id": "compound.H2O",
+        "composition": {
+          "element.H": 2,
+          "element.O": 1
+        },
+        "molar_mass_mode": "derived",
+        "molar_mass_raw": 0,
+        "tags": [
+          "baseline",
+          "real_world",
+          "oxide"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "compound_id": "compound.CO2",
+        "composition": {
+          "element.C": 1,
+          "element.O": 2
+        },
+        "molar_mass_mode": "derived",
+        "molar_mass_raw": 0,
+        "tags": [
+          "baseline",
+          "real_world",
+          "gas"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "compound_id": "compound.Fe2O3",
+        "composition": {
+          "element.Fe": 2,
+          "element.O": 3
+        },
+        "molar_mass_mode": "derived",
+        "molar_mass_raw": 0,
+        "tags": [
+          "baseline",
+          "real_world",
+          "oxide"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

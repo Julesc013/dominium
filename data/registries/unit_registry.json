@@ -139,6 +139,28 @@
       },
       {
         "schema_version": "1.0.0",
+        "unit_id": "unit.kg_per_m3",
+        "dimension_id": "dim.density",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "kg/m^3",
+        "description": "Canonical kilograms-per-cubic-meter unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.J_per_kg",
+        "dimension_id": "dim.specific_energy",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "J/kg",
+        "description": "Canonical joules-per-kilogram unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "unit_id": "unit.currency_unit",
         "dimension_id": "dim.currency",
         "scale_factor_to_canonical": 16777216,

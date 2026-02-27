@@ -1,0 +1,88 @@
+{
+  "schema_id": "dominium.registry.element_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.element_registry",
+    "registry_version": "1.0.0",
+    "elements": [
+      {
+        "schema_version": "1.0.0",
+        "element_id": "element.H",
+        "atomic_number": 1,
+        "molar_mass_raw": 16910,
+        "charge_default": 0,
+        "base_energy_content_raw": null,
+        "tags": [
+          "real_world",
+          "baseline"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "element_id": "element.O",
+        "atomic_number": 8,
+        "molar_mass_raw": 268419,
+        "charge_default": 0,
+        "base_energy_content_raw": null,
+        "tags": [
+          "real_world",
+          "baseline"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "element_id": "element.C",
+        "atomic_number": 6,
+        "molar_mass_raw": 201511,
+        "charge_default": 0,
+        "base_energy_content_raw": null,
+        "tags": [
+          "real_world",
+          "baseline"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "element_id": "element.Fe",
+        "atomic_number": 26,
+        "molar_mass_raw": 936849,
+        "charge_default": 0,
+        "base_energy_content_raw": null,
+        "tags": [
+          "real_world",
+          "baseline",
+          "metal"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "element_id": "element.Si",
+        "atomic_number": 14,
+        "molar_mass_raw": 471206,
+        "charge_default": 0,
+        "base_energy_content_raw": null,
+        "tags": [
+          "real_world",
+          "baseline",
+          "silicate"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

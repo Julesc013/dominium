@@ -56,6 +56,11 @@ REGISTRY_HASH_KEY_MAP = {
     "dimension_registry_hash": "dimension_registry",
     "unit_registry_hash": "unit_registry",
     "quantity_type_registry_hash": "quantity_type_registry",
+    "element_registry_hash": "element_registry",
+    "compound_registry_hash": "compound_registry",
+    "mixture_registry_hash": "mixture_registry",
+    "material_class_registry_hash": "material_class_registry",
+    "quality_distribution_registry_hash": "quality_distribution_registry",
     "domain_registry_hash": "domain_registry",
     "law_registry_hash": "law_registry",
     "experience_registry_hash": "experience_registry",
@@ -129,6 +134,11 @@ REGISTRY_FILE_MAP = {
     "dimension_registry_hash": "dimension.registry.json",
     "unit_registry_hash": "unit.registry.json",
     "quantity_type_registry_hash": "quantity_type.registry.json",
+    "element_registry_hash": "element.registry.json",
+    "compound_registry_hash": "compound.registry.json",
+    "mixture_registry_hash": "mixture.registry.json",
+    "material_class_registry_hash": "material_class.registry.json",
+    "quality_distribution_registry_hash": "quality_distribution.registry.json",
     "domain_registry_hash": "domain.registry.json",
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
@@ -1085,6 +1095,46 @@ def boot_session_spec(
     )
     if quantity_type_registry_error:
         return quantity_type_registry_error
+    element_registry, element_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["element_registry_hash"],
+        expected_hash=str(registries.get("element_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if element_registry_error:
+        return element_registry_error
+    compound_registry, compound_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["compound_registry_hash"],
+        expected_hash=str(registries.get("compound_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if compound_registry_error:
+        return compound_registry_error
+    mixture_registry, mixture_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["mixture_registry_hash"],
+        expected_hash=str(registries.get("mixture_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if mixture_registry_error:
+        return mixture_registry_error
+    material_class_registry, material_class_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["material_class_registry_hash"],
+        expected_hash=str(registries.get("material_class_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if material_class_registry_error:
+        return material_class_registry_error
+    quality_distribution_registry, quality_distribution_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["quality_distribution_registry_hash"],
+        expected_hash=str(registries.get("quality_distribution_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if quality_distribution_registry_error:
+        return quality_distribution_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1680,6 +1730,11 @@ def boot_session_spec(
                 "dimension_registry": dimension_registry,
                 "unit_registry": unit_registry,
                 "quantity_type_registry": quantity_type_registry,
+                "element_registry": element_registry,
+                "compound_registry": compound_registry,
+                "mixture_registry": mixture_registry,
+                "material_class_registry": material_class_registry,
+                "quality_distribution_registry": quality_distribution_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1770,6 +1825,11 @@ def boot_session_spec(
                 "dimension_registry": dimension_registry,
                 "unit_registry": unit_registry,
                 "quantity_type_registry": quantity_type_registry,
+                "element_registry": element_registry,
+                "compound_registry": compound_registry,
+                "mixture_registry": mixture_registry,
+                "material_class_registry": material_class_registry,
+                "quality_distribution_registry": quality_distribution_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -2132,6 +2192,11 @@ def boot_session_spec(
             "dimension_registry": dimension_registry,
             "unit_registry": unit_registry,
             "quantity_type_registry": quantity_type_registry,
+            "element_registry": element_registry,
+            "compound_registry": compound_registry,
+            "mixture_registry": mixture_registry,
+            "material_class_registry": material_class_registry,
+            "quality_distribution_registry": quality_distribution_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
