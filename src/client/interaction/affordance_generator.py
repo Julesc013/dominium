@@ -8,7 +8,16 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 
 
-_KNOWN_TARGET_KINDS = ("agent", "cohort", "faction", "territory", "blueprint")
+_KNOWN_TARGET_KINDS = (
+    "agent",
+    "cohort",
+    "faction",
+    "territory",
+    "blueprint",
+    "logistics_node",
+    "manifest",
+    "shipment_commitment",
+)
 _KNOWN_PREVIEW_MODES = ("none", "cheap", "expensive")
 
 
@@ -61,6 +70,12 @@ def _target_kind_from_prefix(target_semantic_id: str) -> str:
     token = str(target_semantic_id or "").strip()
     if token.startswith("blueprint."):
         return "blueprint"
+    if token.startswith("logistics.node.") or token.startswith("node."):
+        return "logistics_node"
+    if token.startswith("manifest.") or token.startswith("shipment.manifest."):
+        return "manifest"
+    if token.startswith("commitment.shipment.") or token.startswith("shipment.commitment."):
+        return "shipment_commitment"
     if token.startswith("agent.") or token.startswith("body.") or token.startswith("camera."):
         return "agent"
     if token.startswith("cohort.") or token.startswith("population."):
