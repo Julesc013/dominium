@@ -1,5 +1,19 @@
 """Materials deterministic helpers."""
 
+from .composition_engine import (
+    DEFAULT_FRACTION_SCALE,
+    DEFAULT_FRACTION_TOLERANCE_RAW,
+    REFUSAL_MATERIAL_DIMENSION_MISMATCH,
+    REFUSAL_MATERIAL_INVALID_COMPOSITION,
+    REFUSAL_MATERIAL_MASS_FRACTION_MISMATCH,
+    CompositionError,
+    create_material_batch,
+    derive_compound_molar_mass,
+    validate_compound_composition,
+    validate_element_registry,
+    validate_material_class,
+    validate_mixture_composition,
+)
 from .dimension_engine import (
     DEFAULT_FRACTIONAL_BITS,
     INT64_MAX,
@@ -24,15 +38,23 @@ from .dimension_engine import (
 )
 
 __all__ = [
+    "DEFAULT_FRACTION_SCALE",
+    "DEFAULT_FRACTION_TOLERANCE_RAW",
     "DEFAULT_FRACTIONAL_BITS",
     "INT64_MAX",
     "INT64_MIN",
+    "REFUSAL_MATERIAL_DIMENSION_MISMATCH",
+    "REFUSAL_MATERIAL_INVALID_COMPOSITION",
+    "REFUSAL_MATERIAL_MASS_FRACTION_MISMATCH",
     "REFUSAL_DIMENSION_MISMATCH",
     "REFUSAL_NUMERIC_OVERFLOW",
     "REFUSAL_UNIT_INVALID_CONVERSION",
+    "CompositionError",
     "DimensionError",
     "FixedPointConfig",
     "FixedPointOverflow",
+    "create_material_batch",
+    "derive_compound_molar_mass",
     "dimension_add",
     "dimension_div",
     "dimension_equals",
@@ -42,6 +64,10 @@ __all__ = [
     "fixed_point_div",
     "fixed_point_mul",
     "fixed_point_type",
+    "validate_compound_composition",
+    "validate_element_registry",
+    "validate_material_class",
+    "validate_mixture_composition",
     "quantity_add",
     "quantity_convert",
 ]
