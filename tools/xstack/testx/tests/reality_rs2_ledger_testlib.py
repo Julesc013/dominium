@@ -97,6 +97,15 @@ _QUANTITIES = [
     {"quantity_id": "quantity.entropy_metric"},
 ]
 
+_QUANTITY_TYPES = [
+    {"quantity_id": "quantity.mass_energy_total", "dimension_id": "dim.energy"},
+    {"quantity_id": "quantity.mass", "dimension_id": "dim.mass"},
+    {"quantity_id": "quantity.energy", "dimension_id": "dim.energy"},
+    {"quantity_id": "quantity.charge_total", "dimension_id": "dim.charge"},
+    {"quantity_id": "quantity.ledger_balance", "dimension_id": "dim.currency"},
+    {"quantity_id": "quantity.entropy_metric", "dimension_id": "dim.energy_per_temperature"},
+]
+
 _EXCEPTION_TYPES = [
     {"exception_type_id": "exception.boundary_flux"},
     {"exception_type_id": "exception.field_exchange"},
@@ -107,9 +116,13 @@ _EXCEPTION_TYPES = [
 ]
 
 
-def build_policy_context(contract_set_id: str, physics_profile_id: str = "") -> dict:
+def build_policy_context(
+    contract_set_id: str,
+    physics_profile_id: str = "",
+    include_quantity_type_registry: bool = False,
+) -> dict:
     profile_id = str(physics_profile_id).strip() or "physics.test.{}".format(str(contract_set_id).replace(".", "_"))
-    return {
+    policy_context = {
         "active_shard_id": "shard.0",
         "pack_lock_hash": "pack_lock_hash.testx.rs2",
         "physics_profile_id": profile_id,
@@ -132,3 +145,8 @@ def build_policy_context(contract_set_id: str, physics_profile_id: str = "") -> 
             "exception_types": copy.deepcopy(_EXCEPTION_TYPES),
         },
     }
+    if bool(include_quantity_type_registry):
+        policy_context["quantity_type_registry"] = {
+            "quantity_types": copy.deepcopy(_QUANTITY_TYPES),
+        }
+    return policy_context

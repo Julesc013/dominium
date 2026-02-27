@@ -81,6 +81,8 @@ from analyzers import e52_interaction_bypass_smell
 from analyzers import e53_preview_info_leak_smell
 from analyzers import e54_platform_leak_smell
 from analyzers import e55_renderer_backend_truth_leak_smell
+from analyzers import e56_raw_float_in_invariant_smell
+from analyzers import e57_dimension_drift_smell
 
 
 ANALYZERS = (
@@ -165,6 +167,8 @@ ANALYZERS = (
     e53_preview_info_leak_smell,
     e54_platform_leak_smell,
     e55_renderer_backend_truth_leak_smell,
+    e56_raw_float_in_invariant_smell,
+    e57_dimension_drift_smell,
 )
 
 
