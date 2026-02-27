@@ -10,6 +10,12 @@
         "policy_id": "default_null",
         "invariant_numeric_type": "fixed_point",
         "solver_numeric_type": "fixed_point",
+        "fixed_point": {
+          "fractional_bits": 24,
+          "storage_bits": 64,
+          "overflow_behavior": "refuse",
+          "error_budget_max": 0
+        },
         "quantization_rules": {},
         "error_accumulation_strategy": "none",
         "extensions": {}
@@ -19,6 +25,12 @@
         "policy_id": "precision.fixed_point_default",
         "invariant_numeric_type": "fixed_point",
         "solver_numeric_type": "fixed_point",
+        "fixed_point": {
+          "fractional_bits": 24,
+          "storage_bits": 64,
+          "overflow_behavior": "refuse",
+          "error_budget_max": 64
+        },
         "quantization_rules": {
           "distance_quantization_mm": 1
         },
