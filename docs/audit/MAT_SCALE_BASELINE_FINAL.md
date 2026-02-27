@@ -82,7 +82,7 @@ Compatibility: Bound to MAT-10 constitutional scope and canon.
    - result: `status=pass`, findings=0
 2. AuditX run
    - command: `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`
-   - result: `status=pass`, findings=870 (warn-level findings)
+   - result: `status=pass`, findings=819 (warn-level findings)
 3. TestX PASS (MAT-10 required subset + guard presence)
    - command: `py -3 tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset testx.materials.stress_scenario_deterministic,testx.materials.cost_usage_bounded_per_tick,testx.materials.degradation_order_deterministic,testx.materials.inspection_cache_prevents_thrashing,testx.materials.micro_materialization_bounded,testx.materials.hash_anchors_stable_under_stress,testx.materials.multiplayer_equal_share_arbitration,testx.materials.guardrail_declarations_present`
    - result: `status=pass`, selected_tests=8
