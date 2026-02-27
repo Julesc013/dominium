@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Provenance Event Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic construction provenance event payload.",
+  "x-doc-ref": [
+    "docs/materials/PROVENANCE_EVENTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "tick",
+    "event_type_id",
+    "actor_subject_id",
+    "site_ref",
+    "inputs",
+    "outputs",
+    "ledger_deltas",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "event_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "site_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ledger_deltas": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "linked_project_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "linked_step_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

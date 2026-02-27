@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Construction Project Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic construction project payload.",
+  "x-doc-ref": [
+    "docs/materials/CONSTRUCTION_AND_INSTALLATION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "project_id",
+    "blueprint_id",
+    "compiled_ag_id",
+    "bom_id",
+    "site_ref",
+    "logistics_node_id",
+    "created_tick",
+    "status",
+    "milestone_commitment_ids",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "blueprint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "compiled_ag_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bom_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "site_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_faction_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "logistics_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "executing",
+        "paused",
+        "completed",
+        "failed"
+      ]
+    },
+    "milestone_commitment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "progress_state_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

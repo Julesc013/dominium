@@ -1,0 +1,28 @@
+SCHEMA: materials/provenance_event.schema
+schema_id: dominium.schema.materials.provenance_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical deterministic construction provenance events.
+
+REQUIRED SHAPE:
+record provenance_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - tick: int
+    - event_type_id: id
+    - actor_subject_id: id
+    - site_ref: string
+    - inputs: list<id>
+    - outputs: list<id>
+    - ledger_deltas: map
+    - linked_project_id: id|null
+    - linked_step_id: id|null
+    - deterministic_fingerprint: hash64
+    - extensions: map
+
+INVARIANTS:
+- event_id and deterministic_fingerprint must be stable for equivalent inputs.
+- inputs/outputs must preserve lineage continuity.

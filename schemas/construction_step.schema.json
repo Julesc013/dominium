@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Construction Step Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic construction step payload.",
+  "x-doc-ref": [
+    "docs/materials/CONSTRUCTION_AND_INSTALLATION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "step_id",
+    "project_id",
+    "ag_node_id",
+    "required_materials",
+    "scheduled_start_tick",
+    "scheduled_end_tick",
+    "status",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "step_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ag_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_materials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "material_id_or_class",
+          "quantity_mass_raw"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "material_id_or_class": {
+            "type": "string",
+            "minLength": 1
+          },
+          "quantity_mass_raw": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "required_part_classes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "part_class_id",
+          "count"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "part_class_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "scheduled_start_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scheduled_end_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "executing",
+        "completed",
+        "failed"
+      ]
+    },
+    "output_batch_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
