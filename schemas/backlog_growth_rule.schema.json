@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Backlog Growth Rule Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic backlog growth rule entry payload.",
+  "x-doc-ref": [
+    "docs/materials/DECAY_FAILURE_MAINTENANCE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "rule_id",
+    "description",
+    "model_kind",
+    "base_increment_per_tick",
+    "thresholds",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "model_kind": {
+      "type": "string",
+      "enum": [
+        "linear",
+        "stepwise",
+        "none"
+      ]
+    },
+    "base_increment_per_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "thresholds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

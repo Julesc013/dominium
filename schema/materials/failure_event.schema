@@ -1,0 +1,25 @@
+SCHEMA: materials/failure_event.schema
+schema_id: dominium.schema.materials.failure_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic failure event payloads emitted by decay/maintenance processes.
+
+REQUIRED SHAPE:
+record failure_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - tick: int
+    - asset_id: id
+    - failure_mode_id: id
+    - severity: u32
+    - consequences: map
+    - provenance_event_id: id
+    - deterministic_fingerprint: hash64
+    - extensions: map
+
+INVARIANTS:
+- failure_event payload must be replay-stable for equivalent inputs.
+- provenance_event_id must resolve to emitted MAT provenance event row.

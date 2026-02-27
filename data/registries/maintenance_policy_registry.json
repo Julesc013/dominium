@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.registry.maintenance_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.maintenance_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "maintenance_policy_id": "maint.policy.default_realistic",
+        "description": "Default realistic cadence with periodic inspection and maintenance.",
+        "inspection_interval_ticks": 1440,
+        "maintenance_interval_ticks": 4320,
+        "backlog_growth_rule_id": "backlog.linear_stub",
+        "max_backlog": 1000000,
+        "extensions": {
+          "risk_quantization_step": 100
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "maintenance_policy_id": "maint.policy.rank_strict",
+        "description": "Conservative ranked cadence with tighter windows.",
+        "inspection_interval_ticks": 720,
+        "maintenance_interval_ticks": 2160,
+        "backlog_growth_rule_id": "backlog.stepwise_stub",
+        "max_backlog": 750000,
+        "extensions": {
+          "rank_profile": true,
+          "risk_quantization_step": 50
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "maintenance_policy_id": "maint.policy.none",
+        "description": "No scheduled maintenance commitments; decay/failure still tracked.",
+        "inspection_interval_ticks": 0,
+        "maintenance_interval_ticks": 0,
+        "backlog_growth_rule_id": "backlog.linear_stub",
+        "max_backlog": 2000000,
+        "extensions": {
+          "maintenance_disabled": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

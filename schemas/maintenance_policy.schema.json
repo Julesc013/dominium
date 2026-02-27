@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Maintenance Policy Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic maintenance policy entry payload.",
+  "x-doc-ref": [
+    "docs/materials/DECAY_FAILURE_MAINTENANCE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "maintenance_policy_id",
+    "description",
+    "inspection_interval_ticks",
+    "maintenance_interval_ticks",
+    "backlog_growth_rule_id",
+    "max_backlog",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "maintenance_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "inspection_interval_ticks": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "maintenance_interval_ticks": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "backlog_growth_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_backlog": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

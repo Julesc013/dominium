@@ -68,6 +68,9 @@ REGISTRY_HASH_KEY_MAP = {
     "logistics_graph_registry_hash": "logistics_graph_registry",
     "provenance_event_type_registry_hash": "provenance_event_type_registry",
     "construction_policy_registry_hash": "construction_policy_registry",
+    "failure_mode_registry_hash": "failure_mode_registry",
+    "maintenance_policy_registry_hash": "maintenance_policy_registry",
+    "backlog_growth_rule_registry_hash": "backlog_growth_rule_registry",
     "domain_registry_hash": "domain_registry",
     "law_registry_hash": "law_registry",
     "experience_registry_hash": "experience_registry",
@@ -153,6 +156,9 @@ REGISTRY_FILE_MAP = {
     "logistics_graph_registry_hash": "logistics_graph.registry.json",
     "provenance_event_type_registry_hash": "provenance_event_type.registry.json",
     "construction_policy_registry_hash": "construction_policy.registry.json",
+    "failure_mode_registry_hash": "failure_mode.registry.json",
+    "maintenance_policy_registry_hash": "maintenance_policy.registry.json",
+    "backlog_growth_rule_registry_hash": "backlog_growth_rule.registry.json",
     "domain_registry_hash": "domain.registry.json",
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
@@ -1205,6 +1211,30 @@ def boot_session_spec(
     )
     if construction_policy_registry_error:
         return construction_policy_registry_error
+    failure_mode_registry, failure_mode_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["failure_mode_registry_hash"],
+        expected_hash=str(registries.get("failure_mode_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if failure_mode_registry_error:
+        return failure_mode_registry_error
+    maintenance_policy_registry, maintenance_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["maintenance_policy_registry_hash"],
+        expected_hash=str(registries.get("maintenance_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if maintenance_policy_registry_error:
+        return maintenance_policy_registry_error
+    backlog_growth_rule_registry, backlog_growth_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["backlog_growth_rule_registry_hash"],
+        expected_hash=str(registries.get("backlog_growth_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if backlog_growth_rule_registry_error:
+        return backlog_growth_rule_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1812,6 +1842,9 @@ def boot_session_spec(
                 "logistics_graph_registry": logistics_graph_registry,
                 "provenance_event_type_registry": provenance_event_type_registry,
                 "construction_policy_registry": construction_policy_registry,
+                "failure_mode_registry": failure_mode_registry,
+                "maintenance_policy_registry": maintenance_policy_registry,
+                "backlog_growth_rule_registry": backlog_growth_rule_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1914,6 +1947,9 @@ def boot_session_spec(
                 "logistics_graph_registry": logistics_graph_registry,
                 "provenance_event_type_registry": provenance_event_type_registry,
                 "construction_policy_registry": construction_policy_registry,
+                "failure_mode_registry": failure_mode_registry,
+                "maintenance_policy_registry": maintenance_policy_registry,
+                "backlog_growth_rule_registry": backlog_growth_rule_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -2288,6 +2324,9 @@ def boot_session_spec(
             "logistics_graph_registry": logistics_graph_registry,
             "provenance_event_type_registry": provenance_event_type_registry,
             "construction_policy_registry": construction_policy_registry,
+            "failure_mode_registry": failure_mode_registry,
+            "maintenance_policy_registry": maintenance_policy_registry,
+            "backlog_growth_rule_registry": backlog_growth_rule_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,

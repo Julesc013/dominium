@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.registry.backlog_growth_rule_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.backlog_growth_rule_registry",
+    "registry_version": "1.0.0",
+    "rules": [
+      {
+        "schema_version": "1.0.0",
+        "rule_id": "backlog.linear_stub",
+        "description": "Linear backlog increase per tick when due maintenance is pending.",
+        "model_kind": "linear",
+        "base_increment_per_tick": 25,
+        "thresholds": [],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "rule_id": "backlog.stepwise_stub",
+        "description": "Stepwise backlog acceleration at fixed thresholds.",
+        "model_kind": "stepwise",
+        "base_increment_per_tick": 10,
+        "thresholds": [
+          {
+            "at_backlog": 200000,
+            "increment_per_tick": 25
+          },
+          {
+            "at_backlog": 500000,
+            "increment_per_tick": 40
+          }
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

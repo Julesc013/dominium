@@ -1,0 +1,25 @@
+SCHEMA: materials/failure_mode.schema
+schema_id: dominium.schema.materials.failure_mode
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define registry-driven deterministic failure mode declarations.
+
+REQUIRED SHAPE:
+record failure_mode
+  required:
+    - schema_version: semver
+    - failure_mode_id: id
+    - description: string
+    - applies_to_part_classes: list<id>
+    - hazard_inputs: list<string>
+    - base_hazard_rate_per_tick: fixed_raw
+    - modifiers: map
+    - failure_event_type_id: id
+    - maintenance_effect_model_id: string
+    - extensions: map
+
+INVARIANTS:
+- failure_mode_id must be registry-unique.
+- base_hazard_rate_per_tick must be deterministic fixed-point raw integer.

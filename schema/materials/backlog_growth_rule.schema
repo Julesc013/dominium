@@ -1,0 +1,22 @@
+SCHEMA: materials/backlog_growth_rule.schema
+schema_id: dominium.schema.materials.backlog_growth_rule
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic backlog growth model declarations.
+
+REQUIRED SHAPE:
+record backlog_growth_rule
+  required:
+    - schema_version: semver
+    - rule_id: id
+    - description: string
+    - model_kind: enum(linear|stepwise|none)
+    - base_increment_per_tick: fixed_raw
+    - thresholds: list<map>
+    - extensions: map
+
+INVARIANTS:
+- rule_id must be registry-unique.
+- base_increment_per_tick must be >= 0.
