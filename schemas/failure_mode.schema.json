@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Failure Mode Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic failure mode entry payload.",
+  "x-doc-ref": [
+    "docs/materials/DECAY_FAILURE_MAINTENANCE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "failure_mode_id",
+    "description",
+    "applies_to_part_classes",
+    "hazard_inputs",
+    "base_hazard_rate_per_tick",
+    "modifiers",
+    "failure_event_type_id",
+    "maintenance_effect_model_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "failure_mode_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "applies_to_part_classes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hazard_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "base_hazard_rate_per_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "modifiers": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "failure_event_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "maintenance_effect_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

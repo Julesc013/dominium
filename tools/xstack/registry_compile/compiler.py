@@ -1526,6 +1526,9 @@ def _interaction_registry_rows(
         "construction_project",
         "installed_structure",
         "provenance_event",
+        "asset_health",
+        "failure_event",
+        "maintenance_commitment",
     }
     allowed_preview_modes = {"none", "cheap", "expensive"}
     for entry in sorted(action_rows_raw, key=lambda row: str((row or {}).get("action_id", ""))):
@@ -4073,6 +4076,235 @@ def _construction_registry_rows(
     policy_rows = sorted(policy_rows, key=lambda row: str(row.get("policy_id", "")))
 
     return event_type_rows, policy_rows, errors
+
+
+def _maintenance_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _failure_mode_record, failure_mode_rows_raw, failure_mode_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/failure_mode_registry.json",
+        expected_schema_id="dominium.registry.failure_mode_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="failure_modes",
+    )
+    if failure_mode_load_errors:
+        return [], [], [], failure_mode_load_errors
+
+    _maintenance_policy_record, maintenance_policy_rows_raw, maintenance_policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/maintenance_policy_registry.json",
+        expected_schema_id="dominium.registry.maintenance_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if maintenance_policy_load_errors:
+        return [], [], [], maintenance_policy_load_errors
+
+    _backlog_rule_record, backlog_rule_rows_raw, backlog_rule_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/backlog_growth_rule_registry.json",
+        expected_schema_id="dominium.registry.backlog_growth_rule_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="rules",
+    )
+    if backlog_rule_load_errors:
+        return [], [], [], backlog_rule_load_errors
+
+    failure_mode_rows: List[dict] = []
+    failure_mode_ids = set()
+    for entry in sorted(failure_mode_rows_raw, key=lambda row: str((row or {}).get("failure_mode_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_failure_mode_entry",
+                    "message": "failure mode entry must be object",
+                    "path": "$.failure_modes",
+                }
+            )
+            continue
+        failure_mode_id = str(entry.get("failure_mode_id", "")).strip()
+        if not failure_mode_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_failure_mode_entry",
+                    "message": "failure mode entry missing failure_mode_id",
+                    "path": "$.failure_modes.failure_mode_id",
+                }
+            )
+            continue
+        if failure_mode_id in failure_mode_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_failure_mode_id",
+                    "message": "duplicate failure mode_id '{}'".format(failure_mode_id),
+                    "path": "$.failure_modes.failure_mode_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="failure_mode",
+            payload=entry,
+            path="data/registries/failure_mode_registry.json#{}".format(failure_mode_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        failure_mode_ids.add(failure_mode_id)
+        failure_mode_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "failure_mode_id": failure_mode_id,
+                "description": str(entry.get("description", "")).strip(),
+                "applies_to_part_classes": _sorted_unique_strings(entry.get("applies_to_part_classes")),
+                "hazard_inputs": _sorted_unique_strings(entry.get("hazard_inputs")),
+                "base_hazard_rate_per_tick": int(max(0, _as_int(entry.get("base_hazard_rate_per_tick", 0), 0))),
+                "modifiers": dict(entry.get("modifiers") or {}),
+                "failure_event_type_id": str(entry.get("failure_event_type_id", "")).strip(),
+                "maintenance_effect_model_id": str(entry.get("maintenance_effect_model_id", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    failure_mode_rows = sorted(failure_mode_rows, key=lambda row: str(row.get("failure_mode_id", "")))
+
+    backlog_rule_rows: List[dict] = []
+    backlog_rule_ids = set()
+    for entry in sorted(backlog_rule_rows_raw, key=lambda row: str((row or {}).get("rule_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_backlog_growth_rule_entry",
+                    "message": "backlog growth rule entry must be object",
+                    "path": "$.rules",
+                }
+            )
+            continue
+        rule_id = str(entry.get("rule_id", "")).strip()
+        if not rule_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_backlog_growth_rule_entry",
+                    "message": "backlog growth rule entry missing rule_id",
+                    "path": "$.rules.rule_id",
+                }
+            )
+            continue
+        if rule_id in backlog_rule_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_backlog_growth_rule_id",
+                    "message": "duplicate backlog growth rule_id '{}'".format(rule_id),
+                    "path": "$.rules.rule_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="backlog_growth_rule",
+            payload=entry,
+            path="data/registries/backlog_growth_rule_registry.json#{}".format(rule_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        backlog_rule_ids.add(rule_id)
+        thresholds = []
+        for threshold in sorted(
+            (item for item in list(entry.get("thresholds") or []) if isinstance(item, dict)),
+            key=lambda item: (_as_int(item.get("at_backlog", 0), 0), _as_int(item.get("increment_per_tick", 0), 0)),
+        ):
+            thresholds.append(
+                {
+                    "at_backlog": int(max(0, _as_int(threshold.get("at_backlog", 0), 0))),
+                    "increment_per_tick": int(max(0, _as_int(threshold.get("increment_per_tick", 0), 0))),
+                }
+            )
+        backlog_rule_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "rule_id": rule_id,
+                "description": str(entry.get("description", "")).strip(),
+                "model_kind": str(entry.get("model_kind", "linear")).strip() or "linear",
+                "base_increment_per_tick": int(max(0, _as_int(entry.get("base_increment_per_tick", 0), 0))),
+                "thresholds": thresholds,
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    backlog_rule_rows = sorted(backlog_rule_rows, key=lambda row: str(row.get("rule_id", "")))
+
+    maintenance_policy_rows: List[dict] = []
+    maintenance_policy_ids = set()
+    for entry in sorted(maintenance_policy_rows_raw, key=lambda row: str((row or {}).get("maintenance_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_maintenance_policy_entry",
+                    "message": "maintenance policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("maintenance_policy_id", "")).strip()
+        if not policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_maintenance_policy_entry",
+                    "message": "maintenance policy entry missing maintenance_policy_id",
+                    "path": "$.policies.maintenance_policy_id",
+                }
+            )
+            continue
+        if policy_id in maintenance_policy_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_maintenance_policy_id",
+                    "message": "duplicate maintenance policy_id '{}'".format(policy_id),
+                    "path": "$.policies.maintenance_policy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="maintenance_policy",
+            payload=entry,
+            path="data/registries/maintenance_policy_registry.json#{}".format(policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        backlog_growth_rule_id = str(entry.get("backlog_growth_rule_id", "")).strip()
+        if backlog_growth_rule_id and backlog_growth_rule_id not in backlog_rule_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_maintenance_policy_entry",
+                    "message": "maintenance policy '{}' references unknown backlog_growth_rule_id '{}'".format(
+                        policy_id,
+                        backlog_growth_rule_id,
+                    ),
+                    "path": "$.policies.backlog_growth_rule_id",
+                }
+            )
+            continue
+        maintenance_policy_ids.add(policy_id)
+        maintenance_policy_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "maintenance_policy_id": policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "inspection_interval_ticks": int(max(0, _as_int(entry.get("inspection_interval_ticks", 0), 0))),
+                "maintenance_interval_ticks": int(max(0, _as_int(entry.get("maintenance_interval_ticks", 0), 0))),
+                "backlog_growth_rule_id": backlog_growth_rule_id,
+                "max_backlog": int(max(0, _as_int(entry.get("max_backlog", 0), 0))),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    maintenance_policy_rows = sorted(maintenance_policy_rows, key=lambda row: str(row.get("maintenance_policy_id", "")))
+
+    return failure_mode_rows, maintenance_policy_rows, backlog_rule_rows, errors
 
 
 def _universe_physics_registry_rows(
@@ -7802,6 +8034,15 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        failure_mode_rows,
+        maintenance_policy_rows,
+        backlog_growth_rule_rows,
+        maintenance_registry_errors,
+    ) = _maintenance_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         budget_envelope_rows,
         arbitration_policy_rows,
         inspection_cache_policy_rows,
@@ -8037,6 +8278,7 @@ def compile_bundle(
         + material_structure_registry_errors
         + logistics_registry_errors
         + construction_registry_errors
+        + maintenance_registry_errors
         + materials_reference_errors
         + performance_registry_errors
         + universe_physics_registry_errors
@@ -8282,6 +8524,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "policies": construction_policy_rows,
+        }
+    )
+    failure_mode_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "failure_modes": failure_mode_rows,
+        }
+    )
+    maintenance_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": maintenance_policy_rows,
+        }
+    )
+    backlog_growth_rule_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "rules": backlog_growth_rule_rows,
         }
     )
     domain_payload = _finalize_registry_payload(
@@ -8668,6 +8931,9 @@ def compile_bundle(
         "logistics_graph_registry": ("logistics_graph_registry", logistics_graph_payload),
         "provenance_event_type_registry": ("provenance_event_type_registry", provenance_event_type_payload),
         "construction_policy_registry": ("construction_policy_registry", construction_policy_payload),
+        "failure_mode_registry": ("failure_mode_registry", failure_mode_payload),
+        "maintenance_policy_registry": ("maintenance_policy_registry", maintenance_policy_payload),
+        "backlog_growth_rule_registry": ("backlog_growth_rule_registry", backlog_growth_rule_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
         "time_control_policy_registry": ("time_control_policy_registry", time_control_policy_payload),
@@ -8761,6 +9027,9 @@ def compile_bundle(
         "logistics_graph_registry",
         "provenance_event_type_registry",
         "construction_policy_registry",
+        "failure_mode_registry",
+        "maintenance_policy_registry",
+        "backlog_growth_rule_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
         "time_control_policy_registry",
@@ -8871,6 +9140,9 @@ def compile_bundle(
             "logistics_graph_registry_hash": registry_hashes["logistics_graph_registry_hash"],
             "provenance_event_type_registry_hash": registry_hashes["provenance_event_type_registry_hash"],
             "construction_policy_registry_hash": registry_hashes["construction_policy_registry_hash"],
+            "failure_mode_registry_hash": registry_hashes["failure_mode_registry_hash"],
+            "maintenance_policy_registry_hash": registry_hashes["maintenance_policy_registry_hash"],
+            "backlog_growth_rule_registry_hash": registry_hashes["backlog_growth_rule_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
             "time_control_policy_registry_hash": registry_hashes["time_control_policy_registry_hash"],

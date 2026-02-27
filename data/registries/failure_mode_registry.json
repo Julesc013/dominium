@@ -1,0 +1,99 @@
+{
+  "schema_id": "dominium.registry.failure_mode_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.failure_mode_registry",
+    "registry_version": "1.0.0",
+    "failure_modes": [
+      {
+        "schema_version": "1.0.0",
+        "failure_mode_id": "failure.corrosion.basic",
+        "description": "Baseline corrosion wear progression.",
+        "applies_to_part_classes": [
+          "partclass.beam.generic",
+          "partclass.panel.generic",
+          "partclass.pipe.generic"
+        ],
+        "hazard_inputs": [
+          "ch.env.humidity",
+          "ch.env.salinity"
+        ],
+        "base_hazard_rate_per_tick": 4,
+        "modifiers": {
+          "phase.solid": 1,
+          "environment.moisture_sensitive": 2
+        },
+        "failure_event_type_id": "event.failure.triggered",
+        "maintenance_effect_model_id": "maint.effect.partial_reset",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "failure_mode_id": "failure.fatigue.basic",
+        "description": "Baseline cyclic fatigue accumulation.",
+        "applies_to_part_classes": [
+          "partclass.bolt.generic",
+          "partclass.beam.generic",
+          "partclass.bearing.generic"
+        ],
+        "hazard_inputs": [
+          "ch.load.cycle_count",
+          "ch.load.stress_ratio"
+        ],
+        "base_hazard_rate_per_tick": 3,
+        "modifiers": {
+          "load.cyclic": 2,
+          "maintenance.overdue": 3
+        },
+        "failure_event_type_id": "event.failure.triggered",
+        "maintenance_effect_model_id": "maint.effect.partial_reset",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "failure_mode_id": "failure.thermal_cycling.basic",
+        "description": "Baseline thermal cycling expansion/contraction wear.",
+        "applies_to_part_classes": [
+          "partclass.panel.generic",
+          "partclass.pipe.generic",
+          "partclass.circuit.generic"
+        ],
+        "hazard_inputs": [
+          "ch.env.temperature_delta",
+          "ch.env.temperature_gradient"
+        ],
+        "base_hazard_rate_per_tick": 2,
+        "modifiers": {
+          "environment.high_gradient": 3
+        },
+        "failure_event_type_id": "event.failure.triggered",
+        "maintenance_effect_model_id": "maint.effect.partial_reset",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "failure_mode_id": "failure.wear.general",
+        "description": "Generic wear accumulation fallback.",
+        "applies_to_part_classes": [
+          "partclass.bolt.generic",
+          "partclass.beam.generic",
+          "partclass.panel.generic",
+          "partclass.pipe.generic",
+          "partclass.gear.generic",
+          "partclass.bearing.generic",
+          "partclass.motor.generic",
+          "partclass.circuit.generic"
+        ],
+        "hazard_inputs": [
+          "ch.load.utilization"
+        ],
+        "base_hazard_rate_per_tick": 1,
+        "modifiers": {},
+        "failure_event_type_id": "event.failure.triggered",
+        "maintenance_effect_model_id": "maint.effect.partial_reset",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
