@@ -1,0 +1,69 @@
+{
+  "schema_id": "dominium.registry.blueprint_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.blueprint_registry",
+    "registry_version": "1.0.0",
+    "blueprints": [
+      {
+        "blueprint_id": "blueprint.house.basic",
+        "description": "Small deterministic house blueprint.",
+        "blueprint_path": "packs/blueprints/blueprints.default.m1/data/blueprint.house.basic.json",
+        "tags": [
+          "baseline",
+          "structure",
+          "house"
+        ],
+        "extensions": {}
+      },
+      {
+        "blueprint_id": "blueprint.lathe.basic",
+        "description": "Basic deterministic lathe blueprint.",
+        "blueprint_path": "packs/blueprints/blueprints.default.m1/data/blueprint.lathe.basic.json",
+        "tags": [
+          "baseline",
+          "machine",
+          "lathe"
+        ],
+        "extensions": {}
+      },
+      {
+        "blueprint_id": "blueprint.road.segment.basic",
+        "description": "Basic deterministic road-segment blueprint.",
+        "blueprint_path": "packs/blueprints/blueprints.default.m1/data/blueprint.road.segment.basic.json",
+        "tags": [
+          "baseline",
+          "infrastructure",
+          "road"
+        ],
+        "extensions": {}
+      },
+      {
+        "blueprint_id": "blueprint.simple_bridge.basic",
+        "description": "Simple deterministic bridge blueprint.",
+        "blueprint_path": "packs/blueprints/blueprints.default.m1/data/blueprint.simple_bridge.basic.json",
+        "tags": [
+          "baseline",
+          "infrastructure",
+          "bridge"
+        ],
+        "extensions": {}
+      },
+      {
+        "blueprint_id": "blueprint.space_elevator.template",
+        "description": "Placeholder megastructure blueprint template.",
+        "blueprint_path": "packs/blueprints/blueprints.default.m1/data/blueprint.space_elevator.template.json",
+        "tags": [
+          "baseline",
+          "megastructure",
+          "template",
+          "stub"
+        ],
+        "extensions": {
+          "stub": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

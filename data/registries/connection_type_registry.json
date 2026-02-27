@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.registry.connection_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.connection_type_registry",
+    "registry_version": "1.0.0",
+    "connection_types": [
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.bolted",
+        "description": "Bolted connection tag.",
+        "requires_part_classes": [
+          "partclass.bolt.generic"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.welded",
+        "description": "Welded connection tag.",
+        "requires_part_classes": [],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.riveted",
+        "description": "Riveted connection tag.",
+        "requires_part_classes": [],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.press_fit",
+        "description": "Press-fit connection tag.",
+        "requires_part_classes": [],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.mortar",
+        "description": "Mortar connection tag for masonry assemblies.",
+        "requires_part_classes": [],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

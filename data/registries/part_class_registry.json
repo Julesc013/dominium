@@ -1,0 +1,105 @@
+{
+  "schema_id": "dominium.registry.part_class_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.part_class_registry",
+    "registry_version": "1.0.0",
+    "part_classes": [
+      {
+        "schema_version": "1.0.0",
+        "part_class_id": "partclass.bolt.generic",
+        "description": "Generic threaded fastener placeholder.",
+        "default_material_class": "material.steel_basic",
+        "default_shape_tag": "shape.cylinder",
+        "failure_mode_tags": [
+          "failure.shear",
+          "failure.fatigue"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "part_class_id": "partclass.beam.generic",
+        "description": "Generic structural beam placeholder.",
+        "default_material_class": "material.steel_basic",
+        "default_shape_tag": "shape.prism",
+        "failure_mode_tags": [
+          "failure.buckle",
+          "failure.yield"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "part_class_id": "partclass.panel.generic",
+        "description": "Generic panel placeholder.",
+        "default_material_class": "material.wood_basic",
+        "default_shape_tag": "shape.panel",
+        "failure_mode_tags": [
+          "failure.crack"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "part_class_id": "partclass.pipe.generic",
+        "description": "Generic pipe placeholder.",
+        "default_material_class": "material.steel_basic",
+        "default_shape_tag": "shape.pipe",
+        "failure_mode_tags": [
+          "failure.leak"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "part_class_id": "partclass.gear.generic",
+        "description": "Generic gear placeholder.",
+        "default_material_class": "material.iron",
+        "default_shape_tag": "shape.gear",
+        "failure_mode_tags": [
+          "failure.tooth_wear"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "part_class_id": "partclass.bearing.generic",
+        "description": "Generic bearing placeholder.",
+        "default_material_class": "material.iron",
+        "default_shape_tag": "shape.bearing",
+        "failure_mode_tags": [
+          "failure.friction_spike"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "part_class_id": "partclass.motor.generic",
+        "description": "Generic motor stub part class.",
+        "default_material_class": "material.steel_basic",
+        "default_shape_tag": "shape.motor",
+        "failure_mode_tags": [
+          "failure.thermal"
+        ],
+        "extensions": {
+          "stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "part_class_id": "partclass.circuit.generic",
+        "description": "Generic circuit stub part class.",
+        "default_material_class": "material.stone_basic",
+        "default_shape_tag": "shape.board",
+        "failure_mode_tags": [
+          "failure.open_circuit"
+        ],
+        "extensions": {
+          "stub": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
