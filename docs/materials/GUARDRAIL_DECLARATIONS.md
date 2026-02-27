@@ -52,6 +52,26 @@ Declare MAT-0 required future test coverage and guardrail identifiers for RepoX 
 - `HardcodedPeriodicTableSmell`
 - `MaterialMassDriftSmell`
 
+## MAT-3 Additions (BOM + Assembly Graph + Blueprint Compile)
+### TestX Declarations
+- `test_blueprint_compile_deterministic`
+- `test_bom_ag_schema_valid`
+- `test_instancing_expansion_deterministic`
+- `test_missing_part_class_refusal`
+- `test_blueprint_visualization_render_model_hash_stable`
+
+### RepoX Rule Declarations
+- `INV-BLUEPRINTS-DATA-ONLY`
+  - Blueprint templates and baseline structures must be defined in data packs/registries, not hardcoded in runtime source.
+- `INV-DETERMINISTIC-BLUEPRINT-COMPILATION`
+  - Blueprint compilation must produce canonical BOM/AG artifacts under deterministic ordering and instancing rules.
+- `INV-NO-HARDCODED-STRUCTURES`
+  - Runtime source must not embed fixed concrete structures that bypass blueprint registry flow.
+
+### AuditX Analyzer Declarations
+- `HardcodedBlueprintSmell`
+- `NonDeterministicGraphOrderSmell`
+
 ## MAT-0 Status
 - These declarations are constitutional commitments in MAT-0.
 - Enforcement implementation and deeper runtime coverage are MAT-1..MAT-10 work.
