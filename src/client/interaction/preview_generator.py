@@ -2,8 +2,16 @@
 
 from __future__ import annotations
 
+import json
+import os
 from typing import Dict
 
+from src.materials.blueprint_engine import (
+    BlueprintCompileError,
+    blueprint_bom_summary,
+    build_blueprint_ghost_overlay,
+    compile_blueprint_artifacts,
+)
 from src.performance.cost_engine import normalize_budget_envelope, reserve_inspection_budget
 from src.performance.inspection_cache import (
     build_cache_key as inspection_build_cache_key,
@@ -12,6 +20,12 @@ from src.performance.inspection_cache import (
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
+
+_BLUEPRINT_PREVIEW_PROCESSES = {
+    "process.blueprint_inspect",
+    "process.blueprint_place_ghost",
+    "process.blueprint_generate_bom_summary",
+}
 
 
 def _to_int(value: object, default_value: int = 0) -> int:
@@ -23,6 +37,24 @@ def _to_int(value: object, default_value: int = 0) -> int:
 
 def _sorted_unique_strings(values: list[object]) -> list[str]:
     return sorted(set(str(item).strip() for item in (values or []) if str(item).strip()))
+
+
+def _read_json_payload(path: str) -> dict:
+    try:
+        payload = json.load(open(path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _resolve_registry(runtime: dict, key: str, repo_root: str, fallback_rel_path: str) -> dict:
+    payload = dict(runtime.get(key) or {})
+    if payload:
+        return payload
+    if not str(repo_root).strip():
+        return {}
+    path = os.path.join(str(repo_root), fallback_rel_path.replace("/", os.sep))
+    return _read_json_payload(path)
 
 
 def _canonical_payload(value: object):
@@ -174,6 +206,92 @@ def _ranked_redact_preview(runtime: dict, payload: dict) -> dict:
     return redacted
 
 
+def _blueprint_preview_payload(
+    *,
+    repo_root: str,
+    runtime: dict,
+    process_id: str,
+    target_semantic_id: str,
+    parameters: dict,
+    tick: int,
+) -> Dict[str, object]:
+    blueprint_id = str(target_semantic_id).strip()
+    if not blueprint_id.startswith("blueprint."):
+        blueprint_id = str((dict(parameters or {})).get("blueprint_id", "")).strip()
+    if not blueprint_id.startswith("blueprint."):
+        return _refusal(
+            "refusal.blueprint.invalid_graph",
+            "blueprint preview target is missing a blueprint id",
+            "Set target_semantic_id to a blueprint id or provide blueprint_id in parameters.",
+            {"target_semantic_id": target_semantic_id},
+            "$.target_semantic_id",
+        )
+
+    blueprint_registry = _resolve_registry(runtime, "blueprint_registry", repo_root, "data/registries/blueprint_registry.json")
+    part_class_registry = _resolve_registry(runtime, "part_class_registry", repo_root, "data/registries/part_class_registry.json")
+    connection_type_registry = _resolve_registry(runtime, "connection_type_registry", repo_root, "data/registries/connection_type_registry.json")
+    material_class_registry = _resolve_registry(runtime, "material_class_registry", repo_root, "data/registries/material_class_registry.json")
+    if not blueprint_registry or not part_class_registry or not connection_type_registry:
+        return _refusal(
+            "refusal.blueprint.invalid_graph",
+            "required blueprint registries are unavailable for preview generation",
+            "Load blueprint, part-class, and connection registries before requesting preview.",
+            {"blueprint_id": blueprint_id},
+            "$.registry_payloads",
+        )
+
+    try:
+        compiled = compile_blueprint_artifacts(
+            repo_root=str(repo_root),
+            blueprint_id=blueprint_id,
+            parameter_values=dict(parameters or {}),
+            pack_lock_hash=str(runtime.get("pack_lock_hash", "")).strip() or "pack_lock_hash.preview",
+            blueprint_registry=blueprint_registry,
+            part_class_registry=part_class_registry,
+            connection_type_registry=connection_type_registry,
+            material_class_registry=material_class_registry,
+        )
+    except BlueprintCompileError as exc:
+        return _refusal(
+            str(exc.reason_code),
+            str(exc),
+            "Fix blueprint references or parameters and retry preview generation.",
+            dict(exc.details),
+            "$.blueprint_compile",
+        )
+
+    bom_summary = blueprint_bom_summary(dict(compiled.get("compiled_bom_artifact") or {}))
+    ghost_overlay = build_blueprint_ghost_overlay(
+        compiled_ag_artifact=dict(compiled.get("compiled_ag_artifact") or {}),
+        blueprint_id=blueprint_id,
+        include_labels=bool(runtime.get("blueprint_preview_labels", True)),
+    )
+    payload = _base_preview(
+        tick=tick,
+        target_semantic_id=blueprint_id,
+        process_id=process_id,
+        parameters=_canonical_payload(parameters),
+        predicted_effects={
+            "summary": "blueprint {} compiled for preview".format(blueprint_id),
+            "compiled_bom_hash": str((dict(compiled.get("compiled_bom_artifact") or {})).get("artifact_hash", "")),
+            "compiled_ag_hash": str((dict(compiled.get("compiled_ag_artifact") or {})).get("artifact_hash", "")),
+            "bom_summary": bom_summary,
+        },
+    )
+    payload["extensions"] = {
+        "preview_capability": "cheap",
+        "blueprint_id": blueprint_id,
+        "cache_key": str(compiled.get("cache_key", "")),
+        "blueprint_ghost_overlay": ghost_overlay,
+    }
+    return {
+        "result": "complete",
+        "preview": payload,
+        "preview_hash": str(payload.get("preview_hash", "")),
+        "preview_runtime": runtime,
+    }
+
+
 def generate_interaction_preview(
     *,
     perceived_model: dict,
@@ -190,6 +308,28 @@ def generate_interaction_preview(
     preview_capability = str(affordance.get("preview_capability", "none")).strip() or "none"
     tick = _preview_tick(perceived_model)
     canonical_parameters = _canonical_payload(dict(parameters or {}))
+
+    if process_id in _BLUEPRINT_PREVIEW_PROCESSES:
+        preview_result = _blueprint_preview_payload(
+            repo_root=str(repo_root or ""),
+            runtime=runtime,
+            process_id=process_id,
+            target_semantic_id=target_semantic_id,
+            parameters=dict(canonical_parameters or {}),
+            tick=int(tick),
+        )
+        if str(preview_result.get("result", "")) != "complete":
+            return preview_result
+        payload = _ranked_redact_preview(runtime=runtime, payload=dict(preview_result.get("preview") or {}))
+        valid = _validate_preview(repo_root=repo_root, payload=payload)
+        if str(valid.get("result", "")) != "complete":
+            return valid
+        return {
+            "result": "complete",
+            "preview": payload,
+            "preview_hash": str(payload.get("preview_hash", "")),
+            "preview_runtime": dict(preview_result.get("preview_runtime") or runtime),
+        }
 
     if preview_capability == "none":
         payload = _base_preview(

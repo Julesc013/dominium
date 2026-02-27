@@ -8,7 +8,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 
 
-_KNOWN_TARGET_KINDS = ("agent", "cohort", "faction", "territory")
+_KNOWN_TARGET_KINDS = ("agent", "cohort", "faction", "territory", "blueprint")
 _KNOWN_PREVIEW_MODES = ("none", "cheap", "expensive")
 
 
@@ -59,6 +59,8 @@ def _stable_id(prefix: str, payload: dict) -> str:
 
 def _target_kind_from_prefix(target_semantic_id: str) -> str:
     token = str(target_semantic_id or "").strip()
+    if token.startswith("blueprint."):
+        return "blueprint"
     if token.startswith("agent.") or token.startswith("body.") or token.startswith("camera."):
         return "agent"
     if token.startswith("cohort.") or token.startswith("population."):
@@ -328,4 +330,3 @@ def build_affordance_list(
         "affordance_list": payload,
         "list_hash": str(payload.get("list_hash", "")),
     }
-

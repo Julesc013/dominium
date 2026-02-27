@@ -28,6 +28,57 @@
         "extensions": {}
       },
       {
+        "action_id": "interaction.inspect_blueprint",
+        "process_id": "process.blueprint_inspect",
+        "display_name": "Inspect Blueprint",
+        "target_kinds": [
+          "blueprint"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "blueprint",
+          "icon": "glyph.blueprint.inspect",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.place_blueprint_ghost",
+        "process_id": "process.blueprint_place_ghost",
+        "display_name": "Place Blueprint Ghost",
+        "target_kinds": [
+          "blueprint"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "blueprint",
+          "icon": "glyph.blueprint.ghost",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.generate_bom_summary",
+        "process_id": "process.blueprint_generate_bom_summary",
+        "display_name": "Generate BOM Summary",
+        "target_kinds": [
+          "blueprint"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "blueprint",
+          "icon": "glyph.blueprint.bom",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
         "action_id": "interaction.move_agent",
         "process_id": "process.agent_move",
         "display_name": "Move",

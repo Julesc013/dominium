@@ -2,8 +2,16 @@
 
 from __future__ import annotations
 
+import json
+import os
 from typing import Dict
 
+from src.materials.blueprint_engine import (
+    BlueprintCompileError,
+    blueprint_bom_summary,
+    build_blueprint_ghost_overlay,
+    compile_blueprint_artifacts,
+)
 from src.performance.cost_engine import normalize_budget_envelope, reserve_inspection_budget
 from src.performance.inspection_cache import (
     build_cache_key as inspection_build_cache_key,
@@ -23,6 +31,24 @@ def _to_int(value: object, default_value: int = 0) -> int:
 def _sorted_unique_strings(values: list[object]) -> list[str]:
     return sorted(set(str(item).strip() for item in (values or []) if str(item).strip())
 )
+
+
+def _read_json_payload(path: str) -> dict:
+    try:
+        payload = json.load(open(path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _resolve_registry(runtime: dict, key: str, repo_root: str, fallback_rel_path: str) -> dict:
+    payload = dict(runtime.get(key) or {})
+    if payload:
+        return payload
+    if not str(repo_root).strip():
+        return {}
+    path = os.path.join(str(repo_root), fallback_rel_path.replace("/", os.sep))
+    return _read_json_payload(path)
 
 
 def _target_payload_from_perceived(perceived_model: dict, target_semantic_id: str) -> dict:
@@ -141,6 +167,93 @@ def _overlay_renderables(
     return sorted(rows, key=lambda row: str(row.get("renderable_id", "")))
 
 
+def _blueprint_overlay_payload(
+    *,
+    target_semantic_id: str,
+    runtime: dict,
+) -> Dict[str, object]:
+    repo_root = str(runtime.get("repo_root", "")).strip()
+    blueprint_id = str(target_semantic_id).strip()
+    blueprint_registry = _resolve_registry(runtime, "blueprint_registry", repo_root, "data/registries/blueprint_registry.json")
+    part_class_registry = _resolve_registry(runtime, "part_class_registry", repo_root, "data/registries/part_class_registry.json")
+    connection_type_registry = _resolve_registry(runtime, "connection_type_registry", repo_root, "data/registries/connection_type_registry.json")
+    material_class_registry = _resolve_registry(runtime, "material_class_registry", repo_root, "data/registries/material_class_registry.json")
+    if not blueprint_registry or not part_class_registry or not connection_type_registry:
+        return {
+            "mode": "macro_summary",
+            "summary": "blueprint:{} unavailable".format(blueprint_id),
+            "target_semantic_id": blueprint_id,
+            "inspection_snapshot": {},
+            "renderables": _overlay_renderables(
+                target_semantic_id=blueprint_id,
+                summary_label="blueprint unavailable",
+                mode="macro_summary",
+            ),
+            "materials": _overlay_materials(target_semantic_id=blueprint_id),
+            "degraded": True,
+            "extensions": {"blueprint_id": blueprint_id, "compile_status": "registry_missing"},
+        }
+
+    try:
+        compiled = compile_blueprint_artifacts(
+            repo_root=repo_root or os.getcwd(),
+            blueprint_id=blueprint_id,
+            parameter_values={},
+            pack_lock_hash=str(runtime.get("pack_lock_hash", "")).strip() or "pack_lock_hash.overlay",
+            blueprint_registry=blueprint_registry,
+            part_class_registry=part_class_registry,
+            connection_type_registry=connection_type_registry,
+            material_class_registry=material_class_registry,
+        )
+    except BlueprintCompileError as exc:
+        return {
+            "mode": "macro_summary",
+            "summary": "blueprint:{} refused".format(blueprint_id),
+            "target_semantic_id": blueprint_id,
+            "inspection_snapshot": {},
+            "renderables": _overlay_renderables(
+                target_semantic_id=blueprint_id,
+                summary_label="compile refused",
+                mode="macro_summary",
+            ),
+            "materials": _overlay_materials(target_semantic_id=blueprint_id),
+            "degraded": True,
+            "extensions": {
+                "blueprint_id": blueprint_id,
+                "compile_status": "refused",
+                "reason_code": str(exc.reason_code),
+                "details": dict(exc.details),
+            },
+        }
+
+    summary = blueprint_bom_summary(dict(compiled.get("compiled_bom_artifact") or {}))
+    ghost = build_blueprint_ghost_overlay(
+        compiled_ag_artifact=dict(compiled.get("compiled_ag_artifact") or {}),
+        blueprint_id=blueprint_id,
+        include_labels=bool(runtime.get("blueprint_preview_labels", True)),
+    )
+    return {
+        "mode": "blueprint_preview",
+        "summary": "blueprint:{} ghost".format(blueprint_id),
+        "target_semantic_id": blueprint_id,
+        "inspection_snapshot": {
+            "summary_hash": str(summary.get("summary_hash", "")),
+            "total_mass_raw": int(summary.get("total_mass_raw", 0) or 0),
+            "total_part_count": int(summary.get("total_part_count", 0) or 0),
+        },
+        "renderables": list(ghost.get("renderables") or []),
+        "materials": list(ghost.get("materials") or []),
+        "degraded": False,
+        "extensions": {
+            "blueprint_id": blueprint_id,
+            "cache_key": str(compiled.get("cache_key", "")),
+            "bom_summary": summary,
+            "compiled_bom_hash": str((dict(compiled.get("compiled_bom_artifact") or {})).get("artifact_hash", "")),
+            "compiled_ag_hash": str((dict(compiled.get("compiled_ag_artifact") or {})).get("artifact_hash", "")),
+        },
+    }
+
+
 def build_inspection_overlays(
     *,
     perceived_model: dict,
@@ -155,6 +268,17 @@ def build_inspection_overlays(
     perceived = dict(perceived_model or {})
     target_id = str(target_semantic_id).strip()
     tick = int(max(0, _to_int((dict(perceived.get("time_state") or {})).get("tick", 0), 0)))
+    if target_id.startswith("blueprint."):
+        blueprint_overlay = _blueprint_overlay_payload(
+            target_semantic_id=target_id,
+            runtime=runtime,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": blueprint_overlay,
+            "overlay_runtime": runtime,
+        }
+
     entitlements = set(_sorted_unique_strings(list((dict(authority_context or {})).get("entitlements") or [])))
     budget_envelope_registry = dict(runtime.get("budget_envelope_registry") or {})
     budget_policy_row = dict(runtime.get("budget_policy") or {})
@@ -256,4 +380,3 @@ def build_inspection_overlays(
         "inspection_overlays": overlay_payload,
         "overlay_runtime": runtime,
     }
-
