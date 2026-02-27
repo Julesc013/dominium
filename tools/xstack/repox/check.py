@@ -5810,6 +5810,199 @@ def _append_material_logistics_invariant_findings(
             )
 
 
+def _append_material_construction_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_registry_paths = (
+        "data/registries/provenance_event_type_registry.json",
+        "data/registries/construction_policy_registry.json",
+    )
+    for rel_path in required_registry_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="construction/provenance registries must be declared as data-only inputs",
+                rule_id="INV-PROVENANCE-EVENTS-REQUIRED",
+            )
+        )
+
+    process_only_fields = (
+        "state[\"construction_projects\"]",
+        "state[\"construction_steps\"]",
+        "state[\"construction_commitments\"]",
+        "state[\"construction_provenance_events\"]",
+        "state[\"installed_structure_instances\"]",
+    )
+    process_only_allowed_prefixes = (
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(process_only_allowed_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if not any(field in token for field in process_only_fields):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token[:140],
+                    message="construction/install state mutation must occur only through process runtime commit paths",
+                    rule_id="INV-NO-SILENT-INSTALL",
+                )
+            )
+
+    required_commitment_tokens = {
+        "src/materials/construction/construction_engine.py": (
+            "_construction_commitment_row(",
+            "milestone_commitment_ids",
+            "start_commitment_id",
+            "end_commitment_id",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "process.construction_project_create",
+            "process.construction_project_tick",
+            "_persist_construction_state(",
+        ),
+    }
+    for rel_path, tokens in required_commitment_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required construction commitment implementation file is missing",
+                    rule_id="INV-CONSTRUCTION-REQUIRES-COMMITMENTS",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required construction commitment token is missing",
+                    rule_id="INV-CONSTRUCTION-REQUIRES-COMMITMENTS",
+                )
+            )
+
+    required_provenance_tokens = {
+        "src/materials/construction/construction_engine.py": (
+            "_event_row(",
+            "event.construct_project_created",
+            "event.construct_step_started",
+            "event.construct_step_completed",
+            "event.install_part",
+            "event.material_consumed",
+            "event.batch_created",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "construction_provenance_events",
+            "_persist_construction_state(",
+        ),
+    }
+    for rel_path, tokens in required_provenance_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required construction provenance implementation file is missing",
+                    rule_id="INV-PROVENANCE-EVENTS-REQUIRED",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required construction provenance token is missing",
+                    rule_id="INV-PROVENANCE-EVENTS-REQUIRED",
+                )
+            )
+
+    required_ledger_tokens = {
+        "src/materials/construction/construction_engine.py": (
+            "ledger_deltas={\"quantity.mass\": -1 * int(total_mass_raw)}",
+            "ledger_deltas={\"quantity.mass\": int(total_mass_raw)}",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "_finalize_conservation_or_refusal(",
+        ),
+    }
+    for rel_path, tokens in required_ledger_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required construction ledger accounting file is missing",
+                    rule_id="INV-LEDGER-DEBIT-CREDIT-REQUIRED",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required construction ledger debit/credit token is missing",
+                    rule_id="INV-LEDGER-DEBIT-CREDIT-REQUIRED",
+                )
+            )
+
+
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -6710,6 +6903,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_material_logistics_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_construction_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
