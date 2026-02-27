@@ -619,6 +619,22 @@ def run_intent_script(
     )
     if logistics_graph_registry_error:
         return logistics_graph_registry_error
+    provenance_event_type_registry, provenance_event_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["provenance_event_type_registry_hash"],
+        expected_hash=str(registries.get("provenance_event_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if provenance_event_type_registry_error:
+        return provenance_event_type_registry_error
+    construction_policy_registry, construction_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["construction_policy_registry_hash"],
+        expected_hash=str(registries.get("construction_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if construction_policy_registry_error:
+        return construction_policy_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1083,6 +1099,8 @@ def run_intent_script(
         "blueprint_registry": blueprint_registry,
         "logistics_routing_rule_registry": logistics_routing_rule_registry,
         "logistics_graph_registry": logistics_graph_registry,
+        "provenance_event_type_registry": provenance_event_type_registry,
+        "construction_policy_registry": construction_policy_registry,
         "governance_type_registry": governance_type_registry,
         "diplomatic_state_registry": diplomatic_state_registry,
         "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -1208,6 +1226,8 @@ def run_intent_script(
             "blueprint_registry": blueprint_registry,
             "logistics_routing_rule_registry": logistics_routing_rule_registry,
             "logistics_graph_registry": logistics_graph_registry,
+            "provenance_event_type_registry": provenance_event_type_registry,
+            "construction_policy_registry": construction_policy_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,

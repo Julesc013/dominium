@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.registry.construction_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.construction_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "build.policy.default",
+        "default_step_duration_ticks": {
+          "default": 3,
+          "part": 2,
+          "subassembly": 4,
+          "connector": 1,
+          "site_anchor": 5
+        },
+        "allow_parallel_steps": true,
+        "max_parallel_steps": 4,
+        "deterministic_scheduling_rule_id": "schedule.ag_node_lexicographic",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "build.policy.rank_strict",
+        "default_step_duration_ticks": {
+          "default": 5,
+          "part": 4,
+          "subassembly": 6,
+          "connector": 2,
+          "site_anchor": 8
+        },
+        "allow_parallel_steps": false,
+        "max_parallel_steps": 1,
+        "deterministic_scheduling_rule_id": "schedule.ag_node_lexicographic",
+        "extensions": {
+          "rank_profile": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

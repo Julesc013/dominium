@@ -29,6 +29,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "blueprint_registry": "blueprint.registry.json",
     "logistics_routing_rule_registry": "logistics_routing_rule.registry.json",
     "logistics_graph_registry": "logistics_graph.registry.json",
+    "provenance_event_type_registry": "provenance_event_type.registry.json",
+    "construction_policy_registry": "construction_policy.registry.json",
     "universe_physics_profile_registry": "universe_physics_profile.registry.json",
     "time_model_registry": "time_model.registry.json",
     "numeric_precision_policy_registry": "numeric_precision_policy.registry.json",

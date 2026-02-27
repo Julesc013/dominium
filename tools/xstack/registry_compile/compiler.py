@@ -3924,6 +3924,154 @@ def _logistics_registry_rows(
     return routing_rule_rows, graph_rows, errors
 
 
+def _construction_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _event_type_record, event_type_rows_raw, event_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/provenance_event_type_registry.json",
+        expected_schema_id="dominium.registry.provenance_event_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="event_types",
+    )
+    if event_type_load_errors:
+        return [], [], event_type_load_errors
+
+    _construction_policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/construction_policy_registry.json",
+        expected_schema_id="dominium.registry.construction_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], policy_load_errors
+
+    event_type_rows: List[dict] = []
+    event_type_ids = set()
+    for entry in sorted(event_type_rows_raw, key=lambda row: str((row or {}).get("event_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_provenance_event_type_entry",
+                    "message": "provenance event type entry must be object",
+                    "path": "$.event_types",
+                }
+            )
+            continue
+        event_type_id = str(entry.get("event_type_id", "")).strip()
+        if not event_type_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_provenance_event_type_entry",
+                    "message": "provenance event type entry missing event_type_id",
+                    "path": "$.event_types.event_type_id",
+                }
+            )
+            continue
+        if event_type_id in event_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_provenance_event_type_id",
+                    "message": "duplicate provenance event_type_id '{}'".format(event_type_id),
+                    "path": "$.event_types.event_type_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="event_type_registry",
+            payload=entry,
+            path="data/registries/provenance_event_type_registry.json#{}".format(event_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        event_type_ids.add(event_type_id)
+        event_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "event_type_id": event_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    event_type_rows = sorted(event_type_rows, key=lambda row: str(row.get("event_type_id", "")))
+
+    policy_rows: List[dict] = []
+    policy_ids = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_construction_policy_entry",
+                    "message": "construction policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        if not policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_construction_policy_entry",
+                    "message": "construction policy entry missing policy_id",
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        if policy_id in policy_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_construction_policy_id",
+                    "message": "duplicate construction policy_id '{}'".format(policy_id),
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="construction_policy",
+            payload=entry,
+            path="data/registries/construction_policy_registry.json#{}".format(policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        max_parallel_steps = int(_as_int(entry.get("max_parallel_steps", 1), 1))
+        if max_parallel_steps < 1:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_construction_policy_entry",
+                    "message": "construction policy '{}' max_parallel_steps must be >= 1".format(policy_id),
+                    "path": "$.policies.max_parallel_steps",
+                }
+            )
+            continue
+        policy_ids.add(policy_id)
+        policy_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "policy_id": policy_id,
+                "default_step_duration_ticks": (
+                    dict(entry.get("default_step_duration_ticks") or {})
+                    if isinstance(entry.get("default_step_duration_ticks"), dict)
+                    else int(_as_int(entry.get("default_step_duration_ticks", 0), 0))
+                ),
+                "allow_parallel_steps": bool(entry.get("allow_parallel_steps", False)),
+                "max_parallel_steps": int(max_parallel_steps),
+                "deterministic_scheduling_rule_id": str(entry.get("deterministic_scheduling_rule_id", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    policy_rows = sorted(policy_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    return event_type_rows, policy_rows, errors
+
+
 def _universe_physics_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -7643,6 +7791,14 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        provenance_event_type_rows,
+        construction_policy_rows,
+        construction_registry_errors,
+    ) = _construction_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         budget_envelope_rows,
         arbitration_policy_rows,
         inspection_cache_policy_rows,
@@ -7877,6 +8033,7 @@ def compile_bundle(
         + material_taxonomy_registry_errors
         + material_structure_registry_errors
         + logistics_registry_errors
+        + construction_registry_errors
         + materials_reference_errors
         + performance_registry_errors
         + universe_physics_registry_errors
@@ -8108,6 +8265,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "graphs": logistics_graph_rows,
+        }
+    )
+    provenance_event_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "event_types": provenance_event_type_rows,
+        }
+    )
+    construction_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": construction_policy_rows,
         }
     )
     domain_payload = _finalize_registry_payload(
@@ -8492,6 +8663,8 @@ def compile_bundle(
         "blueprint_registry": ("blueprint_registry", blueprint_payload),
         "logistics_routing_rule_registry": ("logistics_routing_rule_registry", logistics_routing_rule_payload),
         "logistics_graph_registry": ("logistics_graph_registry", logistics_graph_payload),
+        "provenance_event_type_registry": ("provenance_event_type_registry", provenance_event_type_payload),
+        "construction_policy_registry": ("construction_policy_registry", construction_policy_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
         "time_control_policy_registry": ("time_control_policy_registry", time_control_policy_payload),
@@ -8583,6 +8756,8 @@ def compile_bundle(
         "blueprint_registry",
         "logistics_routing_rule_registry",
         "logistics_graph_registry",
+        "provenance_event_type_registry",
+        "construction_policy_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
         "time_control_policy_registry",
@@ -8691,6 +8866,8 @@ def compile_bundle(
             "blueprint_registry_hash": registry_hashes["blueprint_registry_hash"],
             "logistics_routing_rule_registry_hash": registry_hashes["logistics_routing_rule_registry_hash"],
             "logistics_graph_registry_hash": registry_hashes["logistics_graph_registry_hash"],
+            "provenance_event_type_registry_hash": registry_hashes["provenance_event_type_registry_hash"],
+            "construction_policy_registry_hash": registry_hashes["construction_policy_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
             "time_control_policy_registry_hash": registry_hashes["time_control_policy_registry_hash"],
