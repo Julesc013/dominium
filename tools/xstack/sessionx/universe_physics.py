@@ -473,8 +473,6 @@ _NULL_REGISTRY_LIST_KEYS = {
     "order_type_registry": "order_types",
     "role_registry": "roles",
     "institution_type_registry": "institution_types",
-    "commitment_type_registry": "commitment_types",
-    "causality_strictness_registry": "strictness_levels",
     "transition_policy_registry": "policies",
     "arbitration_rule_registry": "rules",
     "budget_envelope_registry": "envelopes",

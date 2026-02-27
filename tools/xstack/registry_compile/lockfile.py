@@ -146,8 +146,6 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "order_type_registry_hash",
             "role_registry_hash",
             "institution_type_registry_hash",
-            "commitment_type_registry_hash",
-            "causality_strictness_registry_hash",
             "demography_policy_registry_hash",
             "death_model_registry_hash",
             "birth_model_registry_hash",
