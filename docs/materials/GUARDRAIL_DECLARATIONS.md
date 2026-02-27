@@ -72,6 +72,27 @@ Declare MAT-0 required future test coverage and guardrail identifiers for RepoX 
 - `HardcodedBlueprintSmell`
 - `NonDeterministicGraphOrderSmell`
 
+## MAT-4 Additions (Logistics Graph + Manifests + Delivery Commitments)
+### TestX Declarations
+- `test_manifest_create_deterministic`
+- `test_manifest_tick_delivery_deterministic`
+- `test_loss_fraction_deterministic`
+- `test_conservation_ledger_transfer_balanced`
+- `test_budget_degrade_order_deterministic`
+- `test_visual_overlay_render_model_hash_stable`
+
+### RepoX Rule Declarations
+- `INV-NO-SILENT-TRANSFER`
+  - Logistics stock transfer must always be represented by manifest commitments/events and process commits.
+- `INV-MANIFESTS-PROCESS-ONLY`
+  - Manifest, shipment commitment, and node-inventory state mutation is process-runtime only.
+- `INV-LOGISTICS-DETERMINISTIC-ROUTING`
+  - Routing and manifest progression must use deterministic ordering/tie-breaks.
+
+### AuditX Analyzer Declarations
+- `SilentShipmentSmell`
+- `NonDeterministicRoutingSmell`
+
 ## MAT-0 Status
 - These declarations are constitutional commitments in MAT-0.
 - Enforcement implementation and deeper runtime coverage are MAT-1..MAT-10 work.

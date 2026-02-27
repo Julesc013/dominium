@@ -5619,7 +5619,9 @@ def _append_material_structure_invariant_findings(
         ),
         "tools/xstack/registry_compile/compiler.py": (
             "_materials_structure_registry_rows(",
-            "allowed_target_kinds = {\"agent\", \"cohort\", \"faction\", \"territory\", \"blueprint\"}",
+            "allowed_target_kinds = {",
+            "\"blueprint\"",
+            "\"logistics_node\"",
         ),
     }
     for rel_path, tokens in required_tokens.items():
@@ -5651,6 +5653,159 @@ def _append_material_structure_invariant_findings(
                     snippet=token,
                     message="required blueprint deterministic compilation token is missing",
                     rule_id="INV-DETERMINISTIC-BLUEPRINT-COMPILATION",
+                )
+            )
+
+
+def _append_material_logistics_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_registry_paths = (
+        "data/registries/logistics_routing_rule_registry.json",
+        "data/registries/logistics_graph_registry.json",
+    )
+    for rel_path in required_registry_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="logistics registry artifacts must be declared as data-only inputs",
+                rule_id="INV-MANIFESTS-PROCESS-ONLY",
+            )
+        )
+
+    process_only_fields = (
+        "state[\"logistics_manifests\"]",
+        "state[\"shipment_commitments\"]",
+        "state[\"logistics_node_inventories\"]",
+        "state[\"logistics_provenance_events\"]",
+    )
+    process_only_allowed_prefixes = (
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(process_only_allowed_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if not any(field in token for field in process_only_fields):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token[:140],
+                    message="logistics state mutation must occur only through process runtime commit paths",
+                    rule_id="INV-MANIFESTS-PROCESS-ONLY",
+                )
+            )
+
+    required_no_silent_transfer_tokens = {
+        "src/logistics/logistics_engine.py": (
+            "create_manifest_and_commitment(",
+            "tick_manifests(",
+            "shipment_depart",
+            "shipment_arrive",
+            "shipment_lost",
+            "REFUSAL_LOGISTICS_INSUFFICIENT_STOCK",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "process.manifest_create",
+            "process.manifest_tick",
+            "_persist_logistics_state(",
+            "_ledger_emit_exception(",
+        ),
+    }
+    for rel_path, tokens in required_no_silent_transfer_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required logistics transfer/refusal implementation file is missing",
+                    rule_id="INV-NO-SILENT-TRANSFER",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required logistics transfer token is missing",
+                    rule_id="INV-NO-SILENT-TRANSFER",
+                )
+            )
+
+    required_routing_tokens = {
+        "src/logistics/logistics_engine.py": (
+            "_best_route(",
+            "sorted(",
+            "heapq",
+            "route.shortest_delay",
+            "route.min_cost_units",
+            "edge_id",
+        ),
+        "tools/xstack/sessionx/scheduler.py": (
+            "process.manifest_create",
+            "process.manifest_tick",
+        ),
+    }
+    for rel_path, tokens in required_routing_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required deterministic logistics routing file is missing",
+                    rule_id="INV-LOGISTICS-DETERMINISTIC-ROUTING",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required deterministic logistics routing token is missing",
+                    rule_id="INV-LOGISTICS-DETERMINISTIC-ROUTING",
                 )
             )
 
@@ -6550,6 +6705,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_material_structure_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_logistics_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

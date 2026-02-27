@@ -32,6 +32,12 @@ def run(repo_root: str):
         "test_instancing_expansion_deterministic",
         "test_missing_part_class_refusal",
         "test_blueprint_visualization_render_model_hash_stable",
+        "test_manifest_create_deterministic",
+        "test_manifest_tick_delivery_deterministic",
+        "test_loss_fraction_deterministic",
+        "test_conservation_ledger_transfer_balanced",
+        "test_budget_degrade_order_deterministic",
+        "test_visual_overlay_render_model_hash_stable",
         "INV-MATERIAL-MUTATION-PROCESS-ONLY",
         "INV-PROVENANCE-REQUIRED",
         "INV-BATCH-LINEAGE-ACYCLIC",
@@ -42,6 +48,9 @@ def run(repo_root: str):
         "INV-BLUEPRINTS-DATA-ONLY",
         "INV-DETERMINISTIC-BLUEPRINT-COMPILATION",
         "INV-NO-HARDCODED-STRUCTURES",
+        "INV-NO-SILENT-TRANSFER",
+        "INV-MANIFESTS-PROCESS-ONLY",
+        "INV-LOGISTICS-DETERMINISTIC-ROUTING",
         "SilentMaterialChangeSmell",
         "OrphanBatchSmell",
         "ProvenanceDriftSmell",
@@ -49,6 +58,8 @@ def run(repo_root: str):
         "MaterialMassDriftSmell",
         "HardcodedBlueprintSmell",
         "NonDeterministicGraphOrderSmell",
+        "SilentShipmentSmell",
+        "NonDeterministicRoutingSmell",
     ]
     missing = [token for token in required_tokens if token not in text]
     if missing:
