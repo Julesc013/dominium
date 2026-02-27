@@ -1676,6 +1676,280 @@
           }
         }
       }
+    },
+    "logistics_manifests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "manifest_id",
+          "graph_id",
+          "from_node_id",
+          "to_node_id",
+          "batch_id",
+          "material_id",
+          "quantity_mass",
+          "scheduled_depart_tick",
+          "scheduled_arrive_tick",
+          "status",
+          "provenance_event_ids",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "manifest_id": {
+            "type": "string"
+          },
+          "graph_id": {
+            "type": "string"
+          },
+          "from_node_id": {
+            "type": "string"
+          },
+          "to_node_id": {
+            "type": "string"
+          },
+          "batch_id": {
+            "type": "string"
+          },
+          "material_id": {
+            "type": "string"
+          },
+          "quantity_mass": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scheduled_depart_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scheduled_arrive_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "in_transit",
+              "delivered",
+              "lost",
+              "failed"
+            ]
+          },
+          "provenance_event_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "shipment_commitments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "commitment_id",
+          "manifest_id",
+          "actor_subject_id",
+          "created_tick",
+          "status",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "commitment_id": {
+            "type": "string"
+          },
+          "manifest_id": {
+            "type": "string"
+          },
+          "actor_subject_id": {
+            "type": "string"
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "scheduled",
+              "executing",
+              "completed",
+              "failed"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "logistics_node_inventories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "node_id",
+          "material_stocks",
+          "inventory_hash",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "node_id": {
+            "type": "string"
+          },
+          "material_stocks": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "batch_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "inventory_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "logistics_provenance_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "event_id",
+          "event_type",
+          "manifest_id",
+          "commitment_id",
+          "tick",
+          "quantity_mass",
+          "material_id",
+          "batch_id",
+          "route_edge_ids",
+          "actor_subject_id",
+          "event_fingerprint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "event_id": {
+            "type": "string"
+          },
+          "event_type": {
+            "type": "string"
+          },
+          "manifest_id": {
+            "type": "string"
+          },
+          "commitment_id": {
+            "type": "string"
+          },
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "quantity_mass": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "material_id": {
+            "type": "string"
+          },
+          "batch_id": {
+            "type": "string"
+          },
+          "route_edge_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "actor_subject_id": {
+            "type": "string"
+          },
+          "event_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "logistics_runtime_state": {
+      "type": "object",
+      "required": [
+        "next_event_sequence",
+        "last_manifest_tick",
+        "last_budget_outcome",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "next_event_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_manifest_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_budget_outcome": {
+          "type": "string",
+          "enum": [
+            "none",
+            "complete",
+            "degraded"
+          ]
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
     }
   },
   "examples": [
