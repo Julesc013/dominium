@@ -76,6 +76,12 @@ _NULL_PRECISION_POLICY = {
     "policy_id": "default_null",
     "invariant_numeric_type": "fixed_point",
     "solver_numeric_type": "fixed_point",
+    "fixed_point": {
+        "fractional_bits": 24,
+        "storage_bits": 64,
+        "overflow_behavior": "refuse",
+        "error_budget_max": 0,
+    },
     "quantization_rules": {},
     "error_accumulation_strategy": "none",
     "extensions": {},
@@ -199,6 +205,182 @@ _NULL_QUANTITIES = [
         "description": "Null profile tracked ledger balance channel.",
         "numeric_type": "fixed_point",
         "units_id": "unit.ledger_balance.stub",
+        "extensions": {},
+    },
+]
+
+_NULL_BASE_DIMENSIONS = [
+    {
+        "base_dimension_id": "M",
+        "description": "Mass base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "base_dimension_id": "L",
+        "description": "Length base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "base_dimension_id": "T",
+        "description": "Time base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "base_dimension_id": "Q",
+        "description": "Charge base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "base_dimension_id": "THETA",
+        "description": "Temperature base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "base_dimension_id": "I",
+        "description": "Ledger balance/currency base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+]
+
+_NULL_DIMENSIONS = [
+    {
+        "dimension_id": "dim.mass",
+        "base_exponents": {"M": 1},
+        "description": "Mass dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "dimension_id": "dim.energy",
+        "base_exponents": {"M": 1, "L": 2, "T": -2},
+        "description": "Energy dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "dimension_id": "dim.charge",
+        "base_exponents": {"Q": 1},
+        "description": "Charge dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "dimension_id": "dim.currency",
+        "base_exponents": {"I": 1},
+        "description": "Currency dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "dimension_id": "dim.energy_per_temperature",
+        "base_exponents": {"M": 1, "L": 2, "T": -2, "THETA": -1},
+        "description": "Entropy-like energy-per-temperature dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+]
+
+_NULL_UNITS = [
+    {
+        "unit_id": "unit.kg",
+        "dimension_id": "dim.mass",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "kg",
+        "description": "Canonical kilogram unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "unit_id": "unit.J",
+        "dimension_id": "dim.energy",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "J",
+        "description": "Canonical joule unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "unit_id": "unit.J_per_K",
+        "dimension_id": "dim.energy_per_temperature",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "J/K",
+        "description": "Canonical joule-per-kelvin unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "unit_id": "unit.C",
+        "dimension_id": "dim.charge",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "C",
+        "description": "Canonical coulomb unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+    {
+        "unit_id": "unit.currency_unit",
+        "dimension_id": "dim.currency",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "CU",
+        "description": "Canonical ledger currency unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": False,
+        "extensions": {},
+    },
+]
+
+_NULL_QUANTITY_TYPES = [
+    {
+        "quantity_id": "quantity.mass_energy_total",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": True,
+        "extensions": {},
+    },
+    {
+        "quantity_id": "quantity.charge_total",
+        "dimension_id": "dim.charge",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.C",
+        "conservation_applicable": True,
+        "extensions": {},
+    },
+    {
+        "quantity_id": "quantity.entropy_metric",
+        "dimension_id": "dim.energy_per_temperature",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J_per_K",
+        "conservation_applicable": False,
+        "extensions": {"stub": True},
+    },
+    {
+        "quantity_id": "quantity.ledger_balance",
+        "dimension_id": "dim.currency",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.currency_unit",
+        "conservation_applicable": True,
         "extensions": {},
     },
 ]
@@ -460,6 +642,10 @@ _NULL_REGISTRY_LIST_KEYS = {
     "conservation_contract_set_registry": "contract_sets",
     "quantity_registry": "quantities",
     "exception_type_registry": "exception_types",
+    "base_dimension_registry": "base_dimensions",
+    "dimension_registry": "dimensions",
+    "unit_registry": "units",
+    "quantity_type_registry": "quantity_types",
     "domain_registry": "domains",
     "law_registry": "law_profiles",
     "experience_registry": "experience_profiles",
@@ -577,6 +763,10 @@ def default_null_runtime_registries() -> Dict[str, dict]:
     payloads["quantity_registry"]["quantities"] = [copy.deepcopy(row) for row in _NULL_QUANTITIES]
     payloads["exception_type_registry"]["exception_types"] = [copy.deepcopy(row) for row in _NULL_EXCEPTION_TYPES]
     payloads["conservation_contract_set_registry"]["contract_sets"] = [copy.deepcopy(_NULL_CONSERVATION_CONTRACT_SET)]
+    payloads["base_dimension_registry"]["base_dimensions"] = [copy.deepcopy(row) for row in _NULL_BASE_DIMENSIONS]
+    payloads["dimension_registry"]["dimensions"] = [copy.deepcopy(row) for row in _NULL_DIMENSIONS]
+    payloads["unit_registry"]["units"] = [copy.deepcopy(row) for row in _NULL_UNITS]
+    payloads["quantity_type_registry"]["quantity_types"] = [copy.deepcopy(row) for row in _NULL_QUANTITY_TYPES]
 
     payloads["law_registry"]["law_profiles"] = [copy.deepcopy(_NULL_LAW_PROFILE)]
     payloads["experience_registry"]["experience_profiles"] = [copy.deepcopy(_NULL_EXPERIENCE_PROFILE)]
