@@ -5424,6 +5424,109 @@ def _append_material_dimension_invariant_findings(
             )
 
 
+def _append_material_taxonomy_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    material_registry_paths = (
+        "data/registries/element_registry.json",
+        "data/registries/compound_registry.json",
+        "data/registries/mixture_registry.json",
+        "data/registries/material_class_registry.json",
+        "data/registries/quality_distribution_registry.json",
+    )
+    for rel_path in material_registry_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="material definitions must remain data-only registry artifacts",
+                rule_id="INV-MATERIAL-DEFINITIONS-DATA-ONLY",
+            )
+        )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.startswith("src/"):
+            continue
+        if not rel_path.endswith((".py", ".c", ".h", ".cpp", ".hpp")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            lowered = token.lower()
+            if "material registry" in lowered:
+                continue
+            if "element." not in token:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token[:140],
+                    message="runtime source must not hardcode concrete element ids",
+                    rule_id="INV-NO-HARDCODED-ELEMENTS",
+                )
+            )
+
+    required_tokens = {
+        "src/materials/composition_engine.py": (
+            "validate_compound_composition(",
+            "validate_mixture_composition(",
+            "validate_material_class(",
+            "REFUSAL_MATERIAL_INVALID_COMPOSITION",
+            "REFUSAL_MATERIAL_MASS_FRACTION_MISMATCH",
+            "REFUSAL_MATERIAL_DIMENSION_MISMATCH",
+        ),
+        "tools/xstack/registry_compile/compiler.py": (
+            "_material_taxonomy_registry_rows(",
+            "refuse.material.invalid_composition",
+            "refuse.material.mass_fraction_mismatch",
+            "refuse.material.dimension_mismatch",
+        ),
+    }
+    for rel_path, tokens in required_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="material composition validation implementation file is missing",
+                    rule_id="INV-COMPOSITION-VALIDATED",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required composition validation token is missing",
+                    rule_id="INV-COMPOSITION-VALIDATED",
+                )
+            )
+
+
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -6309,6 +6412,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_material_dimension_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_taxonomy_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
