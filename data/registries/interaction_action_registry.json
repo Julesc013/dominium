@@ -199,6 +199,75 @@
         "extensions": {}
       },
       {
+        "action_id": "interaction.inspect_asset_health",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Asset Health",
+        "target_kinds": [
+          "asset_health"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "maintenance",
+          "icon": "glyph.maintenance.inspect",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_failure_events",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Failures",
+        "target_kinds": [
+          "failure_event"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "maintenance",
+          "icon": "glyph.maintenance.failure",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.schedule_maintenance",
+        "process_id": "process.maintenance_schedule",
+        "display_name": "Schedule Maintenance",
+        "target_kinds": [
+          "asset_health"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "maintenance",
+          "icon": "glyph.maintenance.schedule",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.perform_maintenance",
+        "process_id": "process.maintenance_perform",
+        "display_name": "Perform Maintenance",
+        "target_kinds": [
+          "asset_health",
+          "maintenance_commitment"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "maintenance",
+          "icon": "glyph.maintenance.perform",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
         "action_id": "interaction.move_agent",
         "process_id": "process.agent_move",
         "display_name": "Move",

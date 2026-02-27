@@ -20,6 +20,9 @@ _KNOWN_TARGET_KINDS = (
     "construction_project",
     "installed_structure",
     "provenance_event",
+    "asset_health",
+    "failure_event",
+    "maintenance_commitment",
 )
 _KNOWN_PREVIEW_MODES = ("none", "cheap", "expensive")
 
@@ -85,6 +88,12 @@ def _target_kind_from_prefix(target_semantic_id: str) -> str:
         return "installed_structure"
     if token.startswith("provenance.event."):
         return "provenance_event"
+    if token.startswith("asset.health.") or token.startswith("asset_health."):
+        return "asset_health"
+    if token.startswith("failure.event."):
+        return "failure_event"
+    if token.startswith("commitment.maintenance."):
+        return "maintenance_commitment"
     if token.startswith("agent.") or token.startswith("body.") or token.startswith("camera."):
         return "agent"
     if token.startswith("cohort.") or token.startswith("population."):

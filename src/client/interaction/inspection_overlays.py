@@ -708,6 +708,119 @@ def _provenance_overlay_payload(
     }
 
 
+def _maintenance_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    extensions = dict(payload.get("extensions") or {})
+    target_id = str(target_semantic_id).strip()
+    if collection == "failure_events":
+        failure_mode_id = str(target_row.get("failure_mode_id", "")).strip() or "failure.unknown"
+        severity = int(max(0, _to_int(target_row.get("severity", 0), 0)))
+        summary_label = "failure:{} severity={}".format(failure_mode_id, severity)
+        return {
+            "mode": "maintenance_overlay",
+            "summary": summary_label,
+            "target_semantic_id": target_id,
+            "inspection_snapshot": dict(inspection_snapshot or {}),
+            "renderables": _overlay_renderables(
+                target_semantic_id=target_id,
+                summary_label=summary_label,
+                mode="maintenance_failure",
+            ),
+            "materials": _overlay_materials(target_semantic_id=target_id),
+            "degraded": False,
+            "extensions": {
+                "overlay_kind": "maintenance_failure",
+                "failure_mode_id": failure_mode_id,
+                "severity": severity,
+                "asset_id": str(target_row.get("asset_id", "")).strip(),
+            },
+        }
+    if collection == "maintenance_commitments":
+        summary_label = "maintenance:{} {}@{}".format(
+            str(target_row.get("commitment_kind", "")).strip() or "commitment",
+            str(target_row.get("status", "")).strip() or "planned",
+            int(max(0, _to_int(target_row.get("scheduled_tick", 0), 0))),
+        )
+        return {
+            "mode": "maintenance_overlay",
+            "summary": summary_label,
+            "target_semantic_id": target_id,
+            "inspection_snapshot": dict(inspection_snapshot or {}),
+            "renderables": _overlay_renderables(
+                target_semantic_id=target_id,
+                summary_label=summary_label,
+                mode="maintenance_commitment",
+            ),
+            "materials": _overlay_materials(target_semantic_id=target_id),
+            "degraded": False,
+            "extensions": {
+                "overlay_kind": "maintenance_commitment",
+                "asset_id": str(target_row.get("asset_id", "")).strip(),
+                "maintenance_policy_id": str(target_row.get("maintenance_policy_id", "")).strip(),
+            },
+        }
+
+    # asset_health_states (default maintenance inspection target)
+    asset_id = str(target_row.get("asset_id", "")).strip() or target_id
+    backlog_raw = int(max(0, _to_int(target_row.get("maintenance_backlog", 0), 0)))
+    failed_mode_ids = _sorted_unique_strings(list((dict(target_row.get("hazard_state") or {})).get("failed_mode_ids") or []))
+    risk_rows = list((dict(extensions.get("failure_risk_summary") or {})).get("risk_rows") or [])
+    next_commitment_ids = _sorted_unique_strings(list(extensions.get("next_maintenance_commitment_ids") or []))
+    summary_label = "maintenance:{} backlog={} failed_modes={} commitments={}".format(
+        asset_id or "unknown",
+        backlog_raw,
+        len(failed_mode_ids),
+        len(next_commitment_ids),
+    )
+    warn = bool(failed_mode_ids) or backlog_raw > 0
+    materials = _overlay_materials(target_semantic_id=target_id)
+    if warn:
+        materials = sorted(
+            list(materials)
+            + [
+                {
+                    "schema_version": "1.0.0",
+                    "material_id": "mat.inspect.maintenance.warn.{}".format(canonical_sha256({"target": target_id})[:12]),
+                    "base_color": {"r": 232, "g": 94, "b": 64},
+                    "roughness": 240,
+                    "metallic": 0,
+                    "emission": {"r": 232, "g": 94, "b": 64, "strength": 300},
+                    "transparency": None,
+                    "pattern_id": None,
+                    "extensions": {"interaction_overlay": True, "overlay_kind": "maintenance_warning"},
+                }
+            ],
+            key=lambda row: str(row.get("material_id", "")),
+        )
+    return {
+        "mode": "maintenance_overlay",
+        "summary": summary_label,
+        "target_semantic_id": target_id,
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": _overlay_renderables(
+            target_semantic_id=target_id,
+            summary_label=summary_label,
+            mode="maintenance_asset",
+        ),
+        "materials": list(materials),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "maintenance_asset",
+            "asset_id": asset_id,
+            "maintenance_backlog_raw": backlog_raw,
+            "failed_mode_ids": list(failed_mode_ids),
+            "risk_rows": [dict(row) for row in risk_rows if isinstance(row, dict)],
+            "next_maintenance_commitment_ids": list(next_commitment_ids),
+        },
+    }
+
+
 def build_inspection_overlays(
     *,
     perceived_model: dict,
@@ -771,6 +884,27 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": provenance_overlay,
+            "overlay_runtime": runtime,
+        }
+    if (
+        target_id.startswith("asset.health.")
+        or target_id.startswith("asset_health.")
+        or target_id.startswith("failure.event.")
+        or target_id.startswith("commitment.maintenance.")
+        or snapshot_collection in (
+            "asset_health_states",
+            "failure_events",
+            "maintenance_commitments",
+            "maintenance_provenance_events",
+        )
+    ):
+        maintenance_overlay = _maintenance_overlay_payload(
+            target_semantic_id=target_id,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": maintenance_overlay,
             "overlay_runtime": runtime,
         }
     if target_id.startswith("blueprint."):
