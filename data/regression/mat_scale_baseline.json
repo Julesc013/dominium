@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "mat.scale.factory_planet.v1",
+  "description": "Deterministic MAT-10 factory-planet stress baseline lock (bounded work + deterministic degradation).",
+  "scenario_id": "scenario.factory_planet.seed_202610",
+  "scenario_parameters": {
+    "seed": 202610,
+    "factory_complex_count": 18,
+    "logistics_node_count": 96,
+    "active_project_count": 72,
+    "player_count": 48,
+    "tick_count": 12
+  },
+  "budget_envelope": {
+    "envelope_id": "budget.factory_planet.default",
+    "max_solver_cost_units_per_tick": 9000,
+    "max_inspection_cost_units_per_tick": 600,
+    "max_micro_parts_per_roi": 96
+  },
+  "degradation_order": [
+    "inspection_fidelity_reduce",
+    "materialization_cap",
+    "construction_parallel_reduce",
+    "logistics_batching",
+    "maintenance_deferral",
+    "creation_refusal"
+  ],
+  "degradation_order_fingerprint": "6faa5279f8bba04bda7e28f24de43a2c9004705c08e6faea0d8d95234470c293",
+  "degradation_sequence_fingerprint": "2492470714aec63c1888bdb1402386403c188e32b810a439ad7455b610071022",
+  "hash_anchor_stream": [
+    "8162ec8a453ffc6aa3a605a2aabb66936f39ae60959a2d7696ac151a6b62ff1b",
+    "43ebea41907e7958a1acc5fbd307db323c4e879ebe2ecdd992b82b97cd48dc95",
+    "1bc02159032226214025d8028b87b977aef33e08667d1370986df32aab8b8da5",
+    "e48496c9b59513c5deb6538f3533c8253e4d2e04d102e6604f83c375cefc0cfa",
+    "5e497e5bb381f23bba36f16c3d9c798ecf2191bd1fb594ff7b79681f2d63c2aa",
+    "b5abcb9273ad1ad796fc2392f519d1c132d82fa659aa40738384344701726455",
+    "b537dc5e02ef2352e593db4761026423ccaa02884fd7d8c7dcd9187f86a4dcb6",
+    "ad827b1172e30fa38e4271880544c9d62abdfe7e69a4ae5dc140490afbf5ee43",
+    "cfa710750db15f36778dd88fe5d6c750941ed09a47d424ebff491c88a9294b49",
+    "e568680a47fa3bb8f5f72c5eadfb40c1a28179730b9666fe2a899627b532b292",
+    "9991412604f8f831de6162ea959502366b344f62658d63053913d963826df655",
+    "debbe23818a794e995e5e84f3432c3f70ea3285fcb70d6849b08540c9a256e8c"
+  ],
+  "inspection_cache_hit_pattern": {
+    "hits": 528,
+    "misses": 48,
+    "hit_rate_permille": 916,
+    "max_cache_entries": 48
+  },
+  "final_deterministic_fingerprint": "b15aa3efcf3b07e4a7287a4596eca444493f3f1411b61ed8a60e32223995088e",
+  "update_policy": {
+    "required_commit_tag": "MAT-SCALE-REGRESSION-UPDATE",
+    "notes": "Baseline updates require explicit MAT scale review, deterministic rerun, and commit message tag MAT-SCALE-REGRESSION-UPDATE."
+  }
+}
