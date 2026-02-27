@@ -1,0 +1,197 @@
+{
+  "schema_version": "1.0.0",
+  "blueprint_id": "blueprint.space_elevator.template",
+  "description": "Placeholder megastructure blueprint template.",
+  "parameters": [
+    {
+      "parameter_id": "segment_count",
+      "value_type": "int",
+      "required": false,
+      "default_value": 3
+    }
+  ],
+  "bom_ref": {
+    "schema_version": "1.0.0",
+    "bom_id": "bom.space_elevator.template",
+    "description": "Placeholder megastructure material plan.",
+    "required_materials": [
+      {
+        "material_id_or_class": "material.steel_basic",
+        "quantity_mass_raw": 16777216000
+      },
+      {
+        "material_id_or_class": "material.steel_basic",
+        "quantity_mass_raw": 8388608000
+      }
+    ],
+    "required_part_classes": [
+      {
+        "part_class_id": "partclass.beam.generic",
+        "count": 1000
+      },
+      {
+        "part_class_id": "partclass.pipe.generic",
+        "count": 400
+      },
+      {
+        "part_class_id": "partclass.circuit.generic",
+        "count": 120
+      }
+    ],
+    "tolerances": {
+      "stub": true
+    },
+    "version_introduced": "1.0.0",
+    "extensions": {
+      "stub": true
+    }
+  },
+  "ag_ref": {
+    "schema_version": "1.0.0",
+    "ag_id": "ag.space_elevator.template",
+    "description": "Placeholder megastructure assembly graph with deterministic instancing.",
+    "root_node_id": "node.se.root",
+    "nodes": {
+      "node.se.root": {
+        "schema_version": "1.0.0",
+        "node_id": "node.se.root",
+        "node_kind": "subassembly",
+        "part_class_id": null,
+        "material_requirements": [],
+        "children": [
+          "node.se.base",
+          "node.se.cable.segment"
+        ],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.se.base",
+          "commit.se.cable"
+        ],
+        "tags": [
+          "megastructure",
+          "root"
+        ],
+        "extensions": {
+          "stub": true
+        }
+      },
+      "node.se.base": {
+        "schema_version": "1.0.0",
+        "node_id": "node.se.base",
+        "node_kind": "site_anchor",
+        "part_class_id": null,
+        "material_requirements": [],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.se.base"
+        ],
+        "tags": [
+          "base"
+        ],
+        "extensions": {
+          "stub": true
+        }
+      },
+      "node.se.cable.segment": {
+        "schema_version": "1.0.0",
+        "node_id": "node.se.cable.segment",
+        "node_kind": "part",
+        "part_class_id": "partclass.pipe.generic",
+        "material_requirements": [],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 1000000
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.se.cable"
+        ],
+        "tags": [
+          "instance_template",
+          "cable"
+        ],
+        "extensions": {
+          "stub": true
+        }
+      }
+    },
+    "edges": [
+      {
+        "schema_version": "1.0.0",
+        "edge_id": "edge.se.base.cable",
+        "from_node_id": "node.se.base",
+        "to_node_id": "node.se.cable.segment",
+        "connection_type_id": "conn.welded",
+        "connection_params": {},
+        "extensions": {
+          "stub": true
+        }
+      }
+    ],
+    "instancing_rules": {
+      "rules": [
+        {
+          "rule_id": "instance.se.cable",
+          "template_node_id": "node.se.cable.segment",
+          "instance_prefix": "node.se.cable.segment",
+          "default_count": 3,
+          "count_parameter": "segment_count",
+          "step_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 1000000
+          }
+        }
+      ]
+    },
+    "constraints": {
+      "stub": true
+    },
+    "version_introduced": "1.0.0",
+    "extensions": {
+      "stub": true
+    }
+  },
+  "tags": [
+    "baseline",
+    "megastructure",
+    "stub"
+  ],
+  "extensions": {
+    "stub": true
+  }
+}

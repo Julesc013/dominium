@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "blueprint_id": "blueprint.road.segment.basic",
+  "description": "Basic deterministic road segment blueprint.",
+  "parameters": [],
+  "bom_ref": {
+    "schema_version": "1.0.0",
+    "bom_id": "bom.road.segment.basic",
+    "description": "Baseline road segment material plan.",
+    "required_materials": [
+      {
+        "material_id_or_class": "material.stone_basic",
+        "quantity_mass_raw": 5033164800
+      }
+    ],
+    "required_part_classes": [
+      {
+        "part_class_id": "partclass.panel.generic",
+        "count": 16
+      }
+    ],
+    "tolerances": {
+      "grade_permille": 0
+    },
+    "version_introduced": "1.0.0",
+    "extensions": {}
+  },
+  "ag_ref": {
+    "schema_version": "1.0.0",
+    "ag_id": "ag.road.segment.basic",
+    "description": "Baseline road segment assembly graph.",
+    "root_node_id": "node.road.root",
+    "nodes": {
+      "node.road.root": {
+        "schema_version": "1.0.0",
+        "node_id": "node.road.root",
+        "node_kind": "subassembly",
+        "part_class_id": null,
+        "material_requirements": [],
+        "children": [
+          "node.road.panel.0"
+        ],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.road.grade"
+        ],
+        "tags": [
+          "road",
+          "segment"
+        ],
+        "extensions": {}
+      },
+      "node.road.panel.0": {
+        "schema_version": "1.0.0",
+        "node_id": "node.road.panel.0",
+        "node_kind": "part",
+        "part_class_id": "partclass.panel.generic",
+        "material_requirements": [],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [],
+        "tags": [
+          "surface"
+        ],
+        "extensions": {}
+      }
+    },
+    "edges": [],
+    "instancing_rules": {
+      "rules": [
+        {
+          "rule_id": "instance.road_panels",
+          "template_node_id": "node.road.panel.0",
+          "instance_prefix": "node.road.panel",
+          "default_count": 4,
+          "count_parameter": "panel_count",
+          "step_mm": {
+            "x": 4000,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ]
+    },
+    "constraints": {},
+    "version_introduced": "1.0.0",
+    "extensions": {}
+  },
+  "tags": [
+    "baseline",
+    "road"
+  ],
+  "extensions": {}
+}
