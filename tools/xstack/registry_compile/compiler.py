@@ -96,6 +96,13 @@ def _sorted_unique_strings(values: List[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in (values or []) if str(item).strip()))
 
 
+def _as_int(value: object, default: int = 0) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return int(default)
+
+
 def _search_index(rows: List[dict], id_field: str) -> Dict[str, List[str]]:
     bucket: Dict[str, List[str]] = {}
     for row in rows:
@@ -1525,10 +1532,17 @@ def _interaction_registry_rows(
         "shipment_commitment",
         "construction_project",
         "installed_structure",
+        "micro_part",
+        "materialization_state",
+        "distribution_aggregate",
         "provenance_event",
         "asset_health",
         "failure_event",
         "maintenance_commitment",
+        "commitment",
+        "event_stream",
+        "reenactment_request",
+        "reenactment_artifact",
     }
     allowed_preview_modes = {"none", "cheap", "expensive"}
     for entry in sorted(action_rows_raw, key=lambda row: str((row or {}).get("action_id", ""))):
@@ -4305,6 +4319,167 @@ def _maintenance_registry_rows(
     maintenance_policy_rows = sorted(maintenance_policy_rows, key=lambda row: str(row.get("maintenance_policy_id", "")))
 
     return failure_mode_rows, maintenance_policy_rows, backlog_rule_rows, errors
+
+
+def _commitment_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _commitment_record, commitment_rows_raw, commitment_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/commitment_type_registry.json",
+        expected_schema_id="dominium.registry.commitment_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="commitment_types",
+    )
+    if commitment_load_errors:
+        return [], [], commitment_load_errors
+
+    _strictness_record, strictness_rows_raw, strictness_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/causality_strictness_registry.json",
+        expected_schema_id="dominium.registry.causality_strictness_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="strictness_levels",
+    )
+    if strictness_load_errors:
+        return [], [], strictness_load_errors
+
+    strictness_rows: List[dict] = []
+    strictness_ids = set()
+    for entry in sorted(strictness_rows_raw, key=lambda row: str((row or {}).get("causality_strictness_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_causality_strictness_entry",
+                    "message": "causality strictness entry must be object",
+                    "path": "$.strictness_levels",
+                }
+            )
+            continue
+        strictness_id = str(entry.get("causality_strictness_id", "")).strip()
+        if not strictness_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_causality_strictness_entry",
+                    "message": "causality strictness entry missing causality_strictness_id",
+                    "path": "$.strictness_levels.causality_strictness_id",
+                }
+            )
+            continue
+        if strictness_id in strictness_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_causality_strictness_id",
+                    "message": "duplicate causality_strictness_id '{}'".format(strictness_id),
+                    "path": "$.strictness_levels.causality_strictness_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="causality_strictness",
+            payload=entry,
+            path="data/registries/causality_strictness_registry.json#{}".format(strictness_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        level = str(entry.get("level", "")).strip()
+        if level not in ("C0", "C1", "C2"):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_causality_strictness_entry",
+                    "message": "causality strictness '{}' has unsupported level '{}'".format(strictness_id, level),
+                    "path": "$.strictness_levels.level",
+                }
+            )
+            continue
+        strictness_ids.add(strictness_id)
+        strictness_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "causality_strictness_id": strictness_id,
+                "level": level,
+                "description": str(entry.get("description", "")).strip(),
+                "major_change_requires_commitment": bool(entry.get("major_change_requires_commitment", False)),
+                "event_required_for_macro_change": bool(entry.get("event_required_for_macro_change", True)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    strictness_rows = sorted(strictness_rows, key=lambda row: str(row.get("causality_strictness_id", "")))
+
+    commitment_rows: List[dict] = []
+    commitment_type_ids = set()
+    for entry in sorted(commitment_rows_raw, key=lambda row: str((row or {}).get("commitment_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_commitment_type_entry",
+                    "message": "commitment type entry must be object",
+                    "path": "$.commitment_types",
+                }
+            )
+            continue
+        commitment_type_id = str(entry.get("commitment_type_id", "")).strip()
+        if not commitment_type_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_commitment_type_entry",
+                    "message": "commitment type entry missing commitment_type_id",
+                    "path": "$.commitment_types.commitment_type_id",
+                }
+            )
+            continue
+        if commitment_type_id in commitment_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_commitment_type_id",
+                    "message": "duplicate commitment_type_id '{}'".format(commitment_type_id),
+                    "path": "$.commitment_types.commitment_type_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="commitment_type",
+            payload=entry,
+            path="data/registries/commitment_type_registry.json#{}".format(commitment_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        strictness_requirements = _sorted_unique_strings(entry.get("strictness_requirements") or [])
+        unknown_strictness = [token for token in strictness_requirements if token not in strictness_ids]
+        if unknown_strictness:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_commitment_type_entry",
+                    "message": "commitment type '{}' references unknown strictness id(s): {}".format(
+                        commitment_type_id,
+                        ",".join(unknown_strictness),
+                    ),
+                    "path": "$.commitment_types.strictness_requirements",
+                }
+            )
+            continue
+        commitment_type_ids.add(commitment_type_id)
+        commitment_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "commitment_type_id": commitment_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "required_entitlements": _sorted_unique_strings(entry.get("required_entitlements") or []),
+                "produces_event_type_ids": _sorted_unique_strings(entry.get("produces_event_type_ids") or []),
+                "strictness_requirements": list(strictness_requirements),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    commitment_rows = sorted(commitment_rows, key=lambda row: str(row.get("commitment_type_id", "")))
+
+    return commitment_rows, strictness_rows, errors
 
 
 def _universe_physics_registry_rows(
@@ -8043,6 +8218,14 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        commitment_type_rows,
+        causality_strictness_rows,
+        commitment_registry_errors,
+    ) = _commitment_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         budget_envelope_rows,
         arbitration_policy_rows,
         inspection_cache_policy_rows,
@@ -8279,6 +8462,7 @@ def compile_bundle(
         + logistics_registry_errors
         + construction_registry_errors
         + maintenance_registry_errors
+        + commitment_registry_errors
         + materials_reference_errors
         + performance_registry_errors
         + universe_physics_registry_errors
@@ -8545,6 +8729,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "rules": backlog_growth_rule_rows,
+        }
+    )
+    commitment_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "commitment_types": commitment_type_rows,
+        }
+    )
+    causality_strictness_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "strictness_levels": causality_strictness_rows,
         }
     )
     domain_payload = _finalize_registry_payload(
@@ -8934,6 +9132,8 @@ def compile_bundle(
         "failure_mode_registry": ("failure_mode_registry", failure_mode_payload),
         "maintenance_policy_registry": ("maintenance_policy_registry", maintenance_policy_payload),
         "backlog_growth_rule_registry": ("backlog_growth_rule_registry", backlog_growth_rule_payload),
+        "commitment_type_registry": ("commitment_type_registry", commitment_type_payload),
+        "causality_strictness_registry": ("causality_strictness_registry", causality_strictness_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
         "time_control_policy_registry": ("time_control_policy_registry", time_control_policy_payload),
@@ -9030,6 +9230,8 @@ def compile_bundle(
         "failure_mode_registry",
         "maintenance_policy_registry",
         "backlog_growth_rule_registry",
+        "commitment_type_registry",
+        "causality_strictness_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
         "time_control_policy_registry",
@@ -9143,6 +9345,8 @@ def compile_bundle(
             "failure_mode_registry_hash": registry_hashes["failure_mode_registry_hash"],
             "maintenance_policy_registry_hash": registry_hashes["maintenance_policy_registry_hash"],
             "backlog_growth_rule_registry_hash": registry_hashes["backlog_growth_rule_registry_hash"],
+            "commitment_type_registry_hash": registry_hashes["commitment_type_registry_hash"],
+            "causality_strictness_registry_hash": registry_hashes["causality_strictness_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
             "time_control_policy_registry_hash": registry_hashes["time_control_policy_registry_hash"],

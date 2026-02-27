@@ -6199,6 +6199,317 @@ def _append_material_maintenance_invariant_findings(
             )
 
 
+def _append_material_materialization_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_schema_paths = (
+        "schemas/micro_part_instance.schema.json",
+        "schemas/materialization_state.schema.json",
+        "schemas/distribution_aggregate.schema.json",
+        "schemas/reenactment_descriptor.schema.json",
+    )
+    for rel_path in required_schema_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="materialization schema artifact missing",
+                rule_id="INV-MACRO-STOCK-CANONICAL",
+            )
+        )
+
+    process_only_fields = (
+        "state[\"micro_part_instances\"]",
+        "state[\"materialization_states\"]",
+        "state[\"distribution_aggregates\"]",
+        "state[\"materialization_reenactment_descriptors\"]",
+    )
+    process_only_allowed_prefixes = (
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(process_only_allowed_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if not any(field in token for field in process_only_fields):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token[:140],
+                    message="materialization state mutation must occur only through process runtime commit paths",
+                    rule_id="INV-MACRO-STOCK-CANONICAL",
+                )
+            )
+
+    no_global_tokens = {
+        "src/materials/materialization/materialization_engine.py": (
+            "max_micro_parts",
+            "REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED",
+            "materialize_structure_roi(",
+            "dematerialize_structure_roi(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "process.materialize_structure_roi",
+            "process.dematerialize_structure_roi",
+            "_persist_materialization_state(",
+        ),
+        "tools/xstack/sessionx/scheduler.py": (
+            "process.materialize_structure_roi",
+            "process.dematerialize_structure_roi",
+        ),
+    }
+    for rel_path, tokens in no_global_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required materialization budget/process file is missing",
+                    rule_id="INV-NO-GLOBAL-MICRO-PARTS",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required materialization budget/process token is missing",
+                    rule_id="INV-NO-GLOBAL-MICRO-PARTS",
+                )
+            )
+
+    deterministic_tokens = {
+        "src/materials/materialization/materialization_engine.py": (
+            "canonical_sha256",
+            "\"stream\": \"materialization\"",
+            "_stable_materialization_seed(",
+            "_micro_part_id(",
+            "sorted(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "inv.transition.expand_materialization",
+            "inv.transition.collapse_materialization",
+            "exception.numeric_error_budget",
+        ),
+    }
+    for rel_path, tokens in deterministic_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required deterministic materialization file is missing",
+                    rule_id="INV-MATERIALIZATION-DETERMINISTIC",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required deterministic materialization token is missing",
+                    rule_id="INV-MATERIALIZATION-DETERMINISTIC",
+                )
+            )
+
+
+def _append_material_commitment_reenactment_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_schema_paths = (
+        "schemas/commitment.schema.json",
+        "schemas/event_stream_index.schema.json",
+        "schemas/reenactment_request.schema.json",
+        "schemas/reenactment_artifact.schema.json",
+    )
+    for rel_path in required_schema_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="commitment/reenactment schema artifact missing",
+                rule_id="INV-REENACTMENT_DERIVED_ONLY",
+            )
+        )
+
+    process_only_fields = (
+        "state[\"material_commitments\"]",
+        "state[\"event_stream_indices\"]",
+        "state[\"reenactment_requests\"]",
+        "state[\"reenactment_artifacts\"]",
+    )
+    process_only_allowed_prefixes = (
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(process_only_allowed_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if not any(field in token for field in process_only_fields):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token[:140],
+                    message="commitment/reenactment state mutation must occur only through process runtime commit paths",
+                    rule_id="INV-REENACTMENT_DERIVED_ONLY",
+                )
+            )
+
+    causality_tokens = {
+        "src/materials/commitments/commitment_engine.py": (
+            "strictness_requires_commitment(",
+            "REFUSAL_COMMITMENT_REQUIRED_MISSING",
+            "resolve_causality_strictness_row(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "_enforce_causality_commitment_requirement(",
+            "process.commitment_create",
+            "process.event_stream_index_rebuild",
+            "process.reenactment_generate",
+            "process.reenactment_play",
+        ),
+    }
+    for rel_path, tokens in causality_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required causality strictness implementation file is missing",
+                    rule_id="INV-NO_SILENT_MACRO_CHANGE",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required causality strictness token is missing",
+                    rule_id="INV-NO_SILENT_MACRO_CHANGE",
+                )
+            )
+
+    derived_only_tokens = {
+        "src/materials/commitments/commitment_engine.py": (
+            "\"derived_only\": True",
+            "build_reenactment_artifact(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "process.reenactment_generate",
+            "process.reenactment_play",
+            "skip_state_log = True",
+        ),
+        "tools/materials/tool_reenact_generate.py": (
+            "tool.materials.tool_reenact_generate",
+            "build_reenactment_artifact(",
+            "\"derived_only\"",
+        ),
+    }
+    for rel_path, tokens in derived_only_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required reenactment derived-only implementation file is missing",
+                    rule_id="INV-REENACTMENT_DERIVED_ONLY",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required reenactment derived-only token is missing",
+                    rule_id="INV-REENACTMENT_DERIVED_ONLY",
+                )
+            )
+
+
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -7109,6 +7420,16 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_material_maintenance_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_materialization_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_commitment_reenactment_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

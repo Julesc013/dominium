@@ -696,6 +696,8 @@ _NULL_REGISTRY_LIST_KEYS = {
     "failure_mode_registry": "failure_modes",
     "maintenance_policy_registry": "policies",
     "backlog_growth_rule_registry": "rules",
+    "commitment_type_registry": "commitment_types",
+    "causality_strictness_registry": "strictness_levels",
     "domain_registry": "domains",
     "law_registry": "law_profiles",
     "experience_registry": "experience_profiles",

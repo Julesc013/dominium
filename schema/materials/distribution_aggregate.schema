@@ -1,0 +1,22 @@
+SCHEMA: materials/distribution_aggregate.schema
+schema_id: dominium.schema.materials.distribution_aggregate
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Represent canonical macro aggregates reconstructed from micro part collapse.
+
+REQUIRED SHAPE:
+record distribution_aggregate
+  required:
+    - schema_version: semver
+    - structure_id: id
+    - ag_node_id: id
+    - total_mass: fixed_raw
+    - defect_distribution_vector: map<string,fixed_raw>
+    - wear_distribution_vector: map<string,fixed_raw>
+    - extensions: map
+
+INVARIANTS:
+- total_mass must equal the aggregate of mapped micro part mass within tolerance.
+- defect/wear vectors must be deterministic and replayable.

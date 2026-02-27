@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Causality Strictness Schema",
+  "version": "1.0.0",
+  "description": "Policy row for MAT-8 causality strictness levels.",
+  "x-doc-ref": [
+    "docs/materials/NOTHING_JUST_HAPPENS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "causality_strictness_id",
+    "level",
+    "description",
+    "major_change_requires_commitment",
+    "event_required_for_macro_change",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "causality_strictness_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "C0",
+        "C1",
+        "C2"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "major_change_requires_commitment": {
+      "type": "boolean"
+    },
+    "event_required_for_macro_change": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

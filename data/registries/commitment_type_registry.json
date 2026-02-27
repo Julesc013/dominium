@@ -1,0 +1,140 @@
+{
+  "schema_id": "dominium.registry.commitment_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.commitment_type_registry",
+    "registry_version": "1.0.0",
+    "commitment_types": [
+      {
+        "schema_version": "1.0.0",
+        "commitment_type_id": "commit.construction.project",
+        "description": "Commitment to create and complete a construction project.",
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "produces_event_type_ids": [
+          "event.construct_project_created",
+          "event.construct_step_started",
+          "event.construct_step_completed",
+          "event.install_part"
+        ],
+        "strictness_requirements": [
+          "causality.C1",
+          "causality.C2"
+        ],
+        "extensions": {
+          "major_change": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "commitment_type_id": "commit.construction.step",
+        "description": "Commitment for deterministic execution of a construction step milestone.",
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "produces_event_type_ids": [
+          "event.construct_step_started",
+          "event.construct_step_completed",
+          "event.material_consumed",
+          "event.batch_created"
+        ],
+        "strictness_requirements": [
+          "causality.C1",
+          "causality.C2"
+        ],
+        "extensions": {
+          "major_change": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "commitment_type_id": "commit.logistics.shipment",
+        "description": "Commitment for deterministic shipment lifecycle execution.",
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "produces_event_type_ids": [
+          "event.shipment_depart",
+          "event.shipment_arrive",
+          "event.shipment_lost"
+        ],
+        "strictness_requirements": [
+          "causality.C1",
+          "causality.C2"
+        ],
+        "extensions": {
+          "major_change": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "commitment_type_id": "commit.maintenance.inspect",
+        "description": "Commitment to perform deterministic maintenance inspection.",
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "produces_event_type_ids": [
+          "event.inspection_performed"
+        ],
+        "strictness_requirements": [
+          "causality.C1",
+          "causality.C2"
+        ],
+        "extensions": {
+          "major_change": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "commitment_type_id": "commit.maintenance.repair",
+        "description": "Commitment to perform deterministic maintenance repair.",
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "produces_event_type_ids": [
+          "event.maintenance_performed"
+        ],
+        "strictness_requirements": [
+          "causality.C1",
+          "causality.C2"
+        ],
+        "extensions": {
+          "major_change": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "commitment_type_id": "commit.demography.tick",
+        "description": "Optional commitment type for deterministic macro demography update windows.",
+        "required_entitlements": [
+          "session.boot"
+        ],
+        "produces_event_type_ids": [],
+        "strictness_requirements": [
+          "causality.C1",
+          "causality.C2"
+        ],
+        "extensions": {
+          "optional": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "commitment_type_id": "commit.custom",
+        "description": "Custom commitment type placeholder for mod extensions.",
+        "required_entitlements": [],
+        "produces_event_type_ids": [],
+        "strictness_requirements": [
+          "causality.C0",
+          "causality.C1",
+          "causality.C2"
+        ],
+        "extensions": {
+          "stub": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

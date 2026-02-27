@@ -635,6 +635,22 @@ def run_intent_script(
     )
     if construction_policy_registry_error:
         return construction_policy_registry_error
+    commitment_type_registry, commitment_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["commitment_type_registry_hash"],
+        expected_hash=str(registries.get("commitment_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if commitment_type_registry_error:
+        return commitment_type_registry_error
+    causality_strictness_registry, causality_strictness_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["causality_strictness_registry_hash"],
+        expected_hash=str(registries.get("causality_strictness_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if causality_strictness_registry_error:
+        return causality_strictness_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1101,6 +1117,8 @@ def run_intent_script(
         "logistics_graph_registry": logistics_graph_registry,
         "provenance_event_type_registry": provenance_event_type_registry,
         "construction_policy_registry": construction_policy_registry,
+        "commitment_type_registry": commitment_type_registry,
+        "causality_strictness_registry": causality_strictness_registry,
         "governance_type_registry": governance_type_registry,
         "diplomatic_state_registry": diplomatic_state_registry,
         "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -1228,6 +1246,8 @@ def run_intent_script(
             "logistics_graph_registry": logistics_graph_registry,
             "provenance_event_type_registry": provenance_event_type_registry,
             "construction_policy_registry": construction_policy_registry,
+            "commitment_type_registry": commitment_type_registry,
+            "causality_strictness_registry": causality_strictness_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,

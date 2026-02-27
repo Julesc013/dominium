@@ -1,0 +1,29 @@
+SCHEMA: materials/micro_part_instance.schema
+schema_id: dominium.schema.materials.micro_part_instance
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic ROI micro part instance payloads derived from macro assembly/material aggregates.
+
+REQUIRED SHAPE:
+record micro_part_instance
+  required:
+    - schema_version: semver
+    - micro_part_id: id
+    - parent_structure_id: id
+    - ag_node_id: id
+    - batch_id: id
+    - material_id: id
+    - mass: fixed_raw
+    - transform: map
+    - deterministic_seed: hash64
+    - extensions: map
+  optional:
+    - defect_flags: list<string>
+    - wear_state: map
+
+INVARIANTS:
+- micro_part_id must be deterministic for equivalent inputs.
+- mass must be non-negative fixed-point raw integer.
+- deterministic_seed must be derived from named materialization stream inputs.

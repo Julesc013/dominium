@@ -34,6 +34,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "failure_mode_registry": "failure_mode.registry.json",
     "maintenance_policy_registry": "maintenance_policy.registry.json",
     "backlog_growth_rule_registry": "backlog_growth_rule.registry.json",
+    "commitment_type_registry": "commitment_type.registry.json",
+    "causality_strictness_registry": "causality_strictness.registry.json",
     "universe_physics_profile_registry": "universe_physics_profile.registry.json",
     "time_model_registry": "time_model.registry.json",
     "numeric_precision_policy_registry": "numeric_precision_policy.registry.json",

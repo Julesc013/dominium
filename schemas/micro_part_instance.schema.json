@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Micro Part Instance Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic ROI micro part instance payload.",
+  "x-doc-ref": [
+    "docs/materials/MACRO_MICRO_MAPPING.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "micro_part_id",
+    "parent_structure_id",
+    "ag_node_id",
+    "batch_id",
+    "material_id",
+    "mass",
+    "transform",
+    "deterministic_seed",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "micro_part_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_structure_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ag_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "batch_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "material_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mass": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "defect_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "wear_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "transform": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "deterministic_seed": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

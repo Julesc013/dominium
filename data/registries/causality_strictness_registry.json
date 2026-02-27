@@ -1,0 +1,49 @@
+{
+  "schema_id": "dominium.registry.causality_strictness_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.causality_strictness_registry",
+    "registry_version": "1.0.0",
+    "strictness_levels": [
+      {
+        "schema_version": "1.0.0",
+        "causality_strictness_id": "causality.C0",
+        "level": "C0",
+        "description": "Macro/meso events mandatory; commitments optional except domain-specific recommendations.",
+        "major_change_requires_commitment": false,
+        "event_required_for_macro_change": true,
+        "extensions": {
+          "default": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "causality_strictness_id": "causality.C1",
+        "level": "C1",
+        "description": "Major macro/meso changes require commitments and provenance events.",
+        "major_change_requires_commitment": true,
+        "event_required_for_macro_change": true,
+        "extensions": {
+          "major_change_process_families": [
+            "construction",
+            "logistics",
+            "maintenance"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "causality_strictness_id": "causality.C2",
+        "level": "C2",
+        "description": "Reserved stricter mode for bounded micro zones with explicit micro commitments.",
+        "major_change_requires_commitment": true,
+        "event_required_for_macro_change": true,
+        "extensions": {
+          "reserved": true,
+          "micro_zone_commitments_required": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

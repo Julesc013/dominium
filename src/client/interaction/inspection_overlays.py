@@ -469,6 +469,257 @@ def _runtime_rows(runtime: dict, key: str) -> list[dict]:
     )
 
 
+def _has_materialized_micro_for_structure(runtime: dict, structure_id: str) -> bool:
+    token = str(structure_id).strip()
+    if not token:
+        return False
+    for row in _runtime_rows(runtime, "micro_part_instances"):
+        if str(row.get("parent_structure_id", "")).strip() == token:
+            return True
+    return False
+
+
+def _materialization_overlay_payload(
+    *,
+    target_semantic_id: str,
+    runtime: dict,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    target_id = str(target_semantic_id).strip()
+
+    micro_rows = _runtime_rows(runtime, "micro_part_instances")
+    state_rows = _runtime_rows(runtime, "materialization_states")
+    aggregate_rows = _runtime_rows(runtime, "distribution_aggregates")
+
+    structure_id = ""
+    roi_id = ""
+    if collection == "micro_part_instances":
+        structure_id = str(target_row.get("parent_structure_id", "")).strip()
+        roi_id = str((dict(target_row.get("extensions") or {})).get("roi_id", "")).strip()
+    elif collection == "materialization_states":
+        structure_id = str(target_row.get("structure_id", "")).strip()
+        roi_id = str(target_row.get("roi_id", "")).strip()
+    elif collection == "distribution_aggregates":
+        structure_id = str(target_row.get("structure_id", "")).strip()
+    elif collection == "materialization_reenactment_descriptors":
+        structure_id = str(target_row.get("structure_id", "")).strip()
+    elif collection == "installed_structure_instances":
+        structure_id = str(target_row.get("instance_id", "")).strip()
+    elif target_id.startswith("materialization.state."):
+        suffix = target_id[len("materialization.state."):]
+        if "::" in suffix:
+            structure_id, roi_id = suffix.split("::", 1)
+    elif target_id.startswith("micro.part."):
+        for row in micro_rows:
+            if str(row.get("micro_part_id", "")).strip() == target_id:
+                structure_id = str(row.get("parent_structure_id", "")).strip()
+                roi_id = str((dict(row.get("extensions") or {})).get("roi_id", "")).strip()
+                break
+
+    filtered_micro_rows = [
+        dict(row)
+        for row in micro_rows
+        if (not structure_id or str(row.get("parent_structure_id", "")).strip() == structure_id)
+        and (
+            (not roi_id)
+            or str((dict(row.get("extensions") or {})).get("roi_id", "")).strip() == roi_id
+        )
+    ]
+    filtered_micro_rows = sorted(
+        filtered_micro_rows,
+        key=lambda row: (
+            str(row.get("ag_node_id", "")),
+            str(row.get("batch_id", "")),
+            str(row.get("micro_part_id", "")),
+        ),
+    )
+    filtered_aggregate_rows = [
+        dict(row)
+        for row in aggregate_rows
+        if (not structure_id or str(row.get("structure_id", "")).strip() == structure_id)
+    ]
+    filtered_state_rows = [
+        dict(row)
+        for row in state_rows
+        if (not structure_id or str(row.get("structure_id", "")).strip() == structure_id)
+        and ((not roi_id) or str(row.get("roi_id", "")).strip() == roi_id)
+    ]
+    micro_mass_total = int(sum(max(0, _to_int(row.get("mass", 0), 0)) for row in filtered_micro_rows))
+    aggregate_mass_total = int(sum(max(0, _to_int(row.get("total_mass", 0), 0)) for row in filtered_aggregate_rows))
+    remaining_macro_mass = int(max(0, aggregate_mass_total - micro_mass_total))
+
+    structure_token = structure_id or (str(target_row.get("instance_id", "")).strip() or "unknown")
+    part_material_id = "mat.inspect.materialization.part.{}".format(
+        canonical_sha256({"structure_id": structure_token, "kind": "part"})[:12]
+    )
+    label_material_id = "mat.inspect.materialization.label.{}".format(
+        canonical_sha256({"structure_id": structure_token, "kind": "label"})[:12]
+    )
+    macro_material_id = "mat.inspect.materialization.macro.{}".format(
+        canonical_sha256({"structure_id": structure_token, "kind": "macro"})[:12]
+    )
+    materials = sorted(
+        [
+            {
+                "schema_version": "1.0.0",
+                "material_id": part_material_id,
+                "base_color": _color_from_seed({"structure_id": structure_token, "kind": "micro_part"}, floor=64),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": 112, "g": 226, "b": 174, "strength": 120},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "materialization_part"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": macro_material_id,
+                "base_color": {"r": 102, "g": 126, "b": 146},
+                "roughness": 420,
+                "metallic": 0,
+                "emission": None,
+                "transparency": {"mode": "alpha", "value_permille": 620},
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "materialization_macro"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": label_material_id,
+                "base_color": {"r": 230, "g": 236, "b": 242},
+                "roughness": 260,
+                "metallic": 20,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "materialization_label"},
+            },
+        ],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+
+    renderables: list[dict] = []
+    max_renderable_parts = int(max(0, _to_int(runtime.get("materialization_overlay_max_parts", 256), 256)))
+    selected_micro_rows = list(filtered_micro_rows[:max_renderable_parts])
+    truncated = len(filtered_micro_rows) > len(selected_micro_rows)
+    primitive_cycle = ("prim.box.debug", "prim.cylinder.debug", "prim.capsule.debug")
+    for index, row in enumerate(selected_micro_rows):
+        micro_part_id = str(row.get("micro_part_id", "")).strip()
+        if not micro_part_id:
+            continue
+        transform = dict(row.get("transform") or {})
+        if not isinstance(transform, dict) or not transform:
+            transform = {
+                "position_mm": {"x": int(index * 120), "y": 0, "z": 0},
+                "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                "scale_permille": 1000,
+            }
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.materialization.part.{}".format(
+                    canonical_sha256({"micro_part_id": micro_part_id})[:16]
+                ),
+                "semantic_id": "overlay.inspect.materialization.part.{}".format(micro_part_id),
+                "primitive_id": primitive_cycle[index % len(primitive_cycle)],
+                "transform": transform,
+                "material_id": part_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": True},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "materialization_part",
+                    "micro_part_id": micro_part_id,
+                    "ag_node_id": str(row.get("ag_node_id", "")).strip(),
+                    "batch_id": str(row.get("batch_id", "")).strip(),
+                    "material_id": str(row.get("material_id", "")).strip(),
+                },
+            }
+        )
+
+    summary_label = "materialization:{} micro_parts={} macro_remaining_mass={}".format(
+        structure_token or target_id or "unknown",
+        int(len(filtered_micro_rows)),
+        int(remaining_macro_mass),
+    )
+    renderables.append(
+        {
+            "schema_version": "1.0.0",
+            "renderable_id": "overlay.inspect.materialization.label.{}".format(
+                canonical_sha256({"target": target_id, "structure_id": structure_token})[:16]
+            ),
+            "semantic_id": "overlay.inspect.materialization.label.{}".format(structure_token),
+            "primitive_id": "prim.glyph.label",
+            "transform": {
+                "position_mm": {"x": 0, "y": 0, "z": 0},
+                "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                "scale_permille": 1000,
+            },
+            "material_id": label_material_id,
+            "layer_tags": ["overlay", "ui"],
+            "label": summary_label,
+            "lod_hint": "lod.band.near",
+            "flags": {"selectable": False, "highlighted": False},
+            "extensions": {
+                "interaction_overlay": True,
+                "overlay_kind": "materialization_label",
+            },
+        }
+    )
+    if not filtered_micro_rows:
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.materialization.macro.{}".format(
+                    canonical_sha256({"target": target_id, "structure_id": structure_token, "macro": True})[:16]
+                ),
+                "semantic_id": "overlay.inspect.materialization.macro.{}".format(structure_token),
+                "primitive_id": "prim.line.debug",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": macro_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "materialization_macro_placeholder",
+                },
+            }
+        )
+
+    return {
+        "mode": "materialization_overlay",
+        "summary": summary_label,
+        "target_semantic_id": target_id,
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": sorted(renderables, key=lambda row: str(row.get("renderable_id", ""))),
+        "materials": list(materials),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "materialization",
+            "structure_id": structure_token,
+            "roi_id": roi_id,
+            "materialized_part_count": int(len(filtered_micro_rows)),
+            "materialization_state_count": int(len(filtered_state_rows)),
+            "micro_mass_total": int(micro_mass_total),
+            "aggregate_mass_total": int(aggregate_mass_total),
+            "remaining_macro_mass": int(remaining_macro_mass),
+            "truncated": bool(truncated),
+            "truncated_count": int(max(0, len(filtered_micro_rows) - len(selected_micro_rows))),
+            "hide_macro_ghost": bool(len(filtered_micro_rows) > 0),
+        },
+    }
+
+
 def _construction_overlay_payload(
     *,
     target_semantic_id: str,
@@ -821,6 +1072,70 @@ def _maintenance_overlay_payload(
     }
 
 
+def _commitment_reenactment_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    target_id = str(target_semantic_id).strip()
+    extensions = dict(payload.get("extensions") or {})
+
+    summary_label = "history:{} unavailable".format(target_id or "unknown")
+    mode = "history_overlay"
+    overlay_kind = "history"
+    if collection == "material_commitments":
+        summary_label = "commitment:{} {} {}".format(
+            str(target_row.get("commitment_type_id", "")).strip() or "type.unknown",
+            str(target_row.get("status", "")).strip() or "planned",
+            str(target_row.get("target_id", "")).strip() or "target.unknown",
+        )
+        overlay_kind = "commitment"
+    elif collection == "event_stream_indices":
+        summary_label = "history_stream:{} events={}".format(
+            str(target_row.get("target_id", "")).strip() or target_id or "unknown",
+            int(len(list(target_row.get("event_ids") or []))),
+        )
+        overlay_kind = "event_stream"
+    elif collection == "reenactment_requests":
+        summary_label = "reenactment_request:{} fidelity={} budget={}".format(
+            str(target_row.get("target_id", "")).strip() or "unknown",
+            str(target_row.get("desired_fidelity", "")).strip() or "macro",
+            int(max(0, _to_int(target_row.get("max_cost_units", 0), 0))),
+        )
+        overlay_kind = "reenactment_request"
+    elif collection == "reenactment_artifacts":
+        artifact_ext = dict(target_row.get("extensions") or {})
+        summary_label = "reenactment:{} fidelity={} degraded={}".format(
+            str(target_row.get("reenactment_id", "")).strip() or target_id or "unknown",
+            str(target_row.get("fidelity_achieved", "")).strip() or "macro",
+            bool(artifact_ext.get("degraded", False)),
+        )
+        overlay_kind = "reenactment_artifact"
+
+    return {
+        "mode": mode,
+        "summary": summary_label,
+        "target_semantic_id": target_id,
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": _overlay_renderables(
+            target_semantic_id=target_id,
+            summary_label=summary_label,
+            mode=mode,
+        ),
+        "materials": _overlay_materials(target_semantic_id=target_id),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": overlay_kind,
+            "collection": collection,
+            "target_row": target_row,
+            "snapshot_extensions": extensions,
+        },
+    }
+
+
 def build_inspection_overlays(
     *,
     perceived_model: dict,
@@ -856,6 +1171,36 @@ def build_inspection_overlays(
             "inspection_overlays": logistics_overlay,
             "overlay_runtime": runtime,
         }
+    installed_structure_target = ""
+    if snapshot_collection == "installed_structure_instances":
+        installed_structure_target = str((dict(snapshot_target.get("row") or {})).get("instance_id", "")).strip()
+    elif target_id.startswith("assembly.structure_instance."):
+        installed_structure_target = target_id
+    if (
+        target_id.startswith("micro.part.")
+        or target_id.startswith("materialization.state.")
+        or target_id.startswith("distribution.aggregate.")
+        or snapshot_collection in (
+            "micro_part_instances",
+            "materialization_states",
+            "distribution_aggregates",
+            "materialization_reenactment_descriptors",
+        )
+        or (
+            installed_structure_target
+            and _has_materialized_micro_for_structure(runtime, installed_structure_target)
+        )
+    ):
+        materialization_overlay = _materialization_overlay_payload(
+            target_semantic_id=target_id,
+            runtime=runtime,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": materialization_overlay,
+            "overlay_runtime": runtime,
+        }
     if (
         target_id.startswith("project.construction.")
         or target_id.startswith("assembly.structure_instance.")
@@ -884,6 +1229,26 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": provenance_overlay,
+            "overlay_runtime": runtime,
+        }
+    if (
+        target_id.startswith("commitment.")
+        or target_id.startswith("stream.event.")
+        or target_id.startswith("reenactment.")
+        or snapshot_collection in (
+            "material_commitments",
+            "event_stream_indices",
+            "reenactment_requests",
+            "reenactment_artifacts",
+        )
+    ):
+        history_overlay = _commitment_reenactment_overlay_payload(
+            target_semantic_id=target_id,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": history_overlay,
             "overlay_runtime": runtime,
         }
     if (
