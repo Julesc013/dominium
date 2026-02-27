@@ -36,6 +36,14 @@ from src.logistics.logistics_engine import (
     routing_rule_rows_by_id,
     tick_manifests,
 )
+from src.materials.construction.construction_engine import (
+    ConstructionError,
+    REFUSAL_CONSTRUCTION_BLUEPRINT_MISSING,
+    REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL,
+    REFUSAL_CONSTRUCTION_SITE_INVALID,
+    create_construction_project,
+    tick_construction_projects,
+)
 from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
     advance_time as time_advance,
@@ -100,6 +108,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.region_collapse": "session.boot",
     "process.manifest_create": "entitlement.control.admin",
     "process.manifest_tick": "session.boot",
+    "process.construction_project_create": "entitlement.control.admin",
+    "process.construction_project_tick": "session.boot",
+    "process.construction_pause": "entitlement.control.admin",
+    "process.construction_resume": "entitlement.control.admin",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -150,6 +162,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.region_collapse": "observer",
     "process.manifest_create": "operator",
     "process.manifest_tick": "observer",
+    "process.construction_project_create": "operator",
+    "process.construction_project_tick": "observer",
+    "process.construction_pause": "operator",
+    "process.construction_resume": "operator",
 }
 PRIVILEGE_RANK = {
     "observer": 0,
@@ -282,6 +298,10 @@ LOGISTICS_DEFAULT_MAX_MANIFESTS_PER_TICK = 128
 LOGISTICS_DEFAULT_MAX_ACTIVE_MANIFESTS = 100000
 LOGISTICS_DEFAULT_COST_UNITS_PER_MANIFEST = 1
 LOGISTICS_DEFAULT_COST_UNITS_PER_ROUTE_COMPUTE = 1
+CONSTRUCTION_DEFAULT_POLICY_ID = "build.policy.default"
+CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK = 256
+CONSTRUCTION_DEFAULT_MAX_PARALLEL_STEPS_OVERRIDE = 0
+CONSTRUCTION_DEFAULT_COST_UNITS_PER_ACTIVE_STEP = 1
 ZERO_HASH = "0" * 64
 
 
@@ -1432,6 +1452,238 @@ def _persist_logistics_state(
     _ensure_logistics_node_inventories(state)
     _ensure_logistics_provenance_events(state)
     _ensure_logistics_runtime_state(state)
+
+
+def _normalize_construction_project_status(token: object) -> str:
+    value = str(token or "").strip() or "planned"
+    if value not in ("planned", "executing", "paused", "completed", "failed"):
+        return "planned"
+    return value
+
+
+def _normalize_construction_step_status(token: object) -> str:
+    value = str(token or "").strip() or "planned"
+    if value not in ("planned", "executing", "completed", "failed"):
+        return "planned"
+    return value
+
+
+def _normalize_commitment_status(token: object) -> str:
+    value = str(token or "").strip() or "planned"
+    if value not in ("planned", "scheduled", "executing", "completed", "failed"):
+        return "planned"
+    return value
+
+
+def _ensure_construction_projects(state: dict) -> List[dict]:
+    rows = state.get("construction_projects")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("project_id", ""))):
+        project_id = str(row.get("project_id", "")).strip()
+        if not project_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "project_id": project_id,
+                "blueprint_id": str(row.get("blueprint_id", "")).strip(),
+                "compiled_ag_id": str(row.get("compiled_ag_id", "")).strip(),
+                "bom_id": str(row.get("bom_id", "")).strip(),
+                "site_ref": str(row.get("site_ref", "")).strip(),
+                "owner_faction_id": (None if row.get("owner_faction_id") is None else str(row.get("owner_faction_id", "")).strip() or None),
+                "logistics_node_id": str(row.get("logistics_node_id", "")).strip(),
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "status": _normalize_construction_project_status(row.get("status", "planned")),
+                "milestone_commitment_ids": _sorted_tokens(list(row.get("milestone_commitment_ids") or [])),
+                "progress_state_ref": (None if row.get("progress_state_ref") is None else str(row.get("progress_state_ref", "")).strip() or None),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["construction_projects"] = normalized
+    return normalized
+
+
+def _ensure_construction_steps(state: dict) -> List[dict]:
+    rows = state.get("construction_steps")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (str(item.get("project_id", "")), str(item.get("ag_node_id", "")), str(item.get("step_id", ""))),
+    ):
+        step_id = str(row.get("step_id", "")).strip()
+        project_id = str(row.get("project_id", "")).strip()
+        ag_node_id = str(row.get("ag_node_id", "")).strip()
+        if not step_id or not project_id or not ag_node_id:
+            continue
+        required_materials = []
+        for item in sorted((entry for entry in list(row.get("required_materials") or []) if isinstance(entry, dict)), key=lambda entry: str(entry.get("material_id_or_class", ""))):
+            material_id_or_class = str(item.get("material_id_or_class", "")).strip()
+            if not material_id_or_class:
+                continue
+            required_materials.append(
+                {
+                    "material_id_or_class": material_id_or_class,
+                    "quantity_mass_raw": max(0, _as_int(item.get("quantity_mass_raw", 0), 0)),
+                }
+            )
+        required_part_classes = []
+        for item in sorted((entry for entry in list(row.get("required_part_classes") or []) if isinstance(entry, dict)), key=lambda entry: str(entry.get("part_class_id", ""))):
+            part_class_id = str(item.get("part_class_id", "")).strip()
+            if not part_class_id:
+                continue
+            required_part_classes.append(
+                {
+                    "part_class_id": part_class_id,
+                    "count": max(0, _as_int(item.get("count", 0), 0)),
+                }
+            )
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "step_id": step_id,
+                "project_id": project_id,
+                "ag_node_id": ag_node_id,
+                "required_materials": required_materials,
+                "required_part_classes": required_part_classes,
+                "scheduled_start_tick": max(0, _as_int(row.get("scheduled_start_tick", 0), 0)),
+                "scheduled_end_tick": max(0, _as_int(row.get("scheduled_end_tick", row.get("scheduled_start_tick", 0)), 0)),
+                "status": _normalize_construction_step_status(row.get("status", "planned")),
+                "output_batch_id": (None if row.get("output_batch_id") is None else str(row.get("output_batch_id", "")).strip() or None),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["construction_steps"] = normalized
+    return normalized
+
+
+def _ensure_construction_commitments(state: dict) -> List[dict]:
+    rows = state.get("construction_commitments")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("commitment_id", ""))):
+        commitment_id = str(row.get("commitment_id", "")).strip()
+        if not commitment_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "commitment_id": commitment_id,
+                "project_id": str(row.get("project_id", "")).strip(),
+                "step_id": str(row.get("step_id", "")).strip(),
+                "commitment_kind": str(row.get("commitment_kind", "")).strip(),
+                "scheduled_tick": max(0, _as_int(row.get("scheduled_tick", 0), 0)),
+                "status": _normalize_commitment_status(row.get("status", "planned")),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip(),
+                "manifest_ids": _sorted_tokens(list(row.get("manifest_ids") or [])),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["construction_commitments"] = normalized
+    return normalized
+
+
+def _ensure_construction_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("construction_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", "")))):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "event_id": event_id,
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type_id": str(row.get("event_type_id", "")).strip(),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip(),
+                "site_ref": str(row.get("site_ref", "")).strip(),
+                "inputs": _sorted_tokens(list(row.get("inputs") or [])),
+                "outputs": _sorted_tokens(list(row.get("outputs") or [])),
+                "ledger_deltas": dict(
+                    (str(key).strip(), _as_int(value, 0))
+                    for key, value in sorted((dict(row.get("ledger_deltas") or {})).items(), key=lambda item: str(item[0]))
+                    if str(key).strip()
+                ),
+                "linked_project_id": (None if row.get("linked_project_id") is None else str(row.get("linked_project_id", "")).strip() or None),
+                "linked_step_id": (None if row.get("linked_step_id") is None else str(row.get("linked_step_id", "")).strip() or None),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["construction_provenance_events"] = normalized
+    return normalized
+
+
+def _ensure_installed_structure_instances(state: dict) -> List[dict]:
+    rows = state.get("installed_structure_instances")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("instance_id", ""))):
+        instance_id = str(row.get("instance_id", "")).strip()
+        if not instance_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "instance_id": instance_id,
+                "project_id": str(row.get("project_id", "")).strip(),
+                "ag_id": str(row.get("ag_id", "")).strip(),
+                "site_ref": str(row.get("site_ref", "")).strip(),
+                "installed_node_states": _sorted_tokens(list(row.get("installed_node_states") or [])),
+                "maintenance_backlog": dict(row.get("maintenance_backlog") or {}) if isinstance(row.get("maintenance_backlog"), dict) else {},
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["installed_structure_instances"] = normalized
+    return normalized
+
+
+def _ensure_construction_runtime_state(state: dict) -> dict:
+    row = state.get("construction_runtime_state")
+    if not isinstance(row, dict):
+        row = {}
+    normalized = {
+        "next_event_sequence": max(0, _as_int(row.get("next_event_sequence", 0), 0)),
+        "last_project_tick": max(0, _as_int(row.get("last_project_tick", 0), 0)),
+        "last_budget_outcome": str(row.get("last_budget_outcome", "")).strip() or "none",
+        "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+    }
+    state["construction_runtime_state"] = normalized
+    return normalized
+
+
+def _persist_construction_state(
+    state: dict,
+    *,
+    projects: List[dict],
+    steps: List[dict],
+    commitments: List[dict],
+    installed_structures: List[dict],
+    events: List[dict] | None = None,
+    runtime_state: dict | None = None,
+) -> None:
+    state["construction_projects"] = [dict(row) for row in list(projects or []) if isinstance(row, dict)]
+    state["construction_steps"] = [dict(row) for row in list(steps or []) if isinstance(row, dict)]
+    state["construction_commitments"] = [dict(row) for row in list(commitments or []) if isinstance(row, dict)]
+    state["installed_structure_instances"] = [dict(row) for row in list(installed_structures or []) if isinstance(row, dict)]
+    if events is not None:
+        state["construction_provenance_events"] = [dict(row) for row in list(events or []) if isinstance(row, dict)]
+    if runtime_state is not None:
+        state["construction_runtime_state"] = dict(runtime_state)
+    _ensure_construction_projects(state)
+    _ensure_construction_steps(state)
+    _ensure_construction_commitments(state)
+    _ensure_installed_structure_instances(state)
+    _ensure_construction_provenance_events(state)
+    _ensure_construction_runtime_state(state)
 
 
 def _find_cohort(cohort_rows: List[dict], cohort_id: str) -> dict:
@@ -3750,6 +4002,27 @@ def _policy_payload(policy_context: dict | None, key: str) -> dict:
     return row
 
 
+def _read_registry_fallback(
+    *,
+    repo_root: str,
+    registry_rel_path: str,
+    default_payload: dict | None = None,
+) -> dict:
+    if not str(repo_root).strip():
+        return dict(default_payload or {})
+    abs_path = os.path.join(str(repo_root), str(registry_rel_path).replace("/", os.sep))
+    try:
+        payload = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return dict(default_payload or {})
+    if not isinstance(payload, dict):
+        return dict(default_payload or {})
+    direct = dict(payload)
+    if "record" in payload and isinstance(payload.get("record"), dict):
+        direct = dict(payload.get("record") or {})
+    return direct
+
+
 def _registry_row_by_id(registry_payload: dict, list_key: str, id_key: str, token: str) -> dict:
     rows = list((registry_payload.get(list_key) or [])) if isinstance(registry_payload, dict) else []
     normalized = str(token).strip()
@@ -3943,6 +4216,86 @@ def _logistics_manifest_tick_budget(
     }
 
 
+def _construction_actor_subject_id(authority_context: dict) -> str:
+    subject_id = str((authority_context or {}).get("subject_id", "")).strip()
+    peer_id = str((authority_context or {}).get("peer_id", "")).strip()
+    token = subject_id or peer_id
+    if token:
+        return token
+    return "subject.system"
+
+
+def _construction_tick_budget(
+    *,
+    policy_context: dict | None,
+    requested_max_projects: int,
+) -> dict:
+    policy_payload = dict(policy_context or {})
+    configured_max_projects = max(
+        1,
+        _as_int(
+            policy_payload.get("construction_max_projects_per_tick", CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK),
+            CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK,
+        ),
+    )
+    requested_projects = int(max(1, _as_int(requested_max_projects, configured_max_projects)))
+    requested_projects = min(requested_projects, configured_max_projects)
+    configured_parallel_override = max(
+        0,
+        _as_int(
+            policy_payload.get("construction_max_parallel_steps_override", CONSTRUCTION_DEFAULT_MAX_PARALLEL_STEPS_OVERRIDE),
+            CONSTRUCTION_DEFAULT_MAX_PARALLEL_STEPS_OVERRIDE,
+        ),
+    )
+    cost_per_active_step = max(
+        1,
+        _as_int(
+            policy_payload.get("construction_cost_units_per_active_step", CONSTRUCTION_DEFAULT_COST_UNITS_PER_ACTIVE_STEP),
+            CONSTRUCTION_DEFAULT_COST_UNITS_PER_ACTIVE_STEP,
+        ),
+    )
+
+    budget_policy = dict(policy_payload.get("budget_policy") or {})
+    budget_envelope_registry = _policy_payload(policy_context, "budget_envelope_registry")
+    budget_envelope_id = str(policy_payload.get("budget_envelope_id", "")).strip()
+    selected_budget_envelope = _registry_row_by_id(
+        budget_envelope_registry,
+        "envelopes",
+        "envelope_id",
+        budget_envelope_id,
+    )
+    normalized_budget_envelope = normalize_budget_envelope(
+        envelope=selected_budget_envelope,
+        budget_policy=budget_policy,
+    )
+    max_compute_units = max(
+        0,
+        min(
+            _as_int(budget_policy.get("max_compute_units_per_tick", 0), 0),
+            _as_int(normalized_budget_envelope.get("max_solver_cost_units_per_tick", 0), 0),
+        ),
+    )
+    has_budget_inputs = bool(budget_policy) or bool(selected_budget_envelope)
+    if has_budget_inputs:
+        max_projects_by_compute = int(max(0, int(max_compute_units) // int(cost_per_active_step)))
+    else:
+        max_projects_by_compute = int(requested_projects)
+    effective_max_projects = int(max(0, min(int(requested_projects), int(max_projects_by_compute))))
+    budget_outcome = "complete"
+    if int(effective_max_projects) < int(requested_projects):
+        budget_outcome = "degraded"
+    return {
+        "requested_max_projects": int(requested_projects),
+        "configured_max_projects": int(configured_max_projects),
+        "max_projects_by_compute": int(max_projects_by_compute),
+        "effective_max_projects": int(effective_max_projects),
+        "max_parallel_steps_override": int(configured_parallel_override),
+        "cost_units_per_active_step": int(cost_per_active_step),
+        "max_compute_units_per_tick": int(max_compute_units),
+        "budget_outcome": budget_outcome,
+    }
+
+
 def _inspection_target_payload(state: dict, target_id: str) -> dict:
     token = str(target_id).strip()
     if not token:
@@ -3985,6 +4338,11 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("logistics_node_inventories", "node_id"),
         ("logistics_manifests", "manifest_id"),
         ("shipment_commitments", "commitment_id"),
+        ("construction_projects", "project_id"),
+        ("construction_steps", "step_id"),
+        ("construction_commitments", "commitment_id"),
+        ("construction_provenance_events", "event_id"),
+        ("installed_structure_instances", "instance_id"),
         ("role_assignments", "role_assignment_id"),
     )
     for list_key, id_key in id_table:
@@ -6197,6 +6555,12 @@ def execute_intent(
     logistics_inventory_rows = _ensure_logistics_node_inventories(state)
     logistics_provenance_events = _ensure_logistics_provenance_events(state)
     logistics_runtime_state = _ensure_logistics_runtime_state(state)
+    construction_projects = _ensure_construction_projects(state)
+    construction_steps = _ensure_construction_steps(state)
+    construction_commitments = _ensure_construction_commitments(state)
+    installed_structure_instances = _ensure_installed_structure_instances(state)
+    construction_provenance_events = _ensure_construction_provenance_events(state)
+    construction_runtime_state = _ensure_construction_runtime_state(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     arrived_cohort_ids = _apply_pending_cohort_arrivals(cohorts, current_tick)
@@ -8686,6 +9050,383 @@ def execute_intent(
                 "active_manifest_count": int(_active_manifest_count(logistics_manifests)),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.construction_project_create":
+        blueprint_id = str(inputs.get("blueprint_id", "")).strip()
+        site_ref = str(inputs.get("site_ref", "")).strip()
+        logistics_node_id = str(inputs.get("logistics_node_id", "")).strip()
+        if not blueprint_id:
+            return refusal(
+                REFUSAL_CONSTRUCTION_BLUEPRINT_MISSING,
+                "process.construction_project_create requires blueprint_id",
+                "Provide blueprint_id from blueprint_registry.",
+                {"process_id": process_id},
+                "$.intent.inputs.blueprint_id",
+            )
+        if not site_ref or not logistics_node_id:
+            return refusal(
+                REFUSAL_CONSTRUCTION_SITE_INVALID,
+                "process.construction_project_create requires site_ref and logistics_node_id",
+                "Provide deterministic site_ref and logistics_node_id inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        parameter_values = inputs.get("parameters")
+        if parameter_values is None:
+            parameter_values = {}
+        if not isinstance(parameter_values, dict):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "construction parameters must be an object",
+                "Set inputs.parameters as a JSON object.",
+                {"process_id": process_id},
+                "$.intent.inputs.parameters",
+            )
+        required_manifest_ids = _sorted_tokens(list(inputs.get("required_manifest_ids") or []))
+        construction_policy_registry = _policy_payload(policy_context, "construction_policy_registry")
+        selected_policy_id = str(
+            inputs.get("construction_policy_id", "")
+            or (dict(policy_context or {})).get("construction_policy_id", "")
+            or CONSTRUCTION_DEFAULT_POLICY_ID
+        ).strip() or CONSTRUCTION_DEFAULT_POLICY_ID
+        owner_faction_raw = inputs.get("owner_faction_id")
+        owner_faction_id = None if owner_faction_raw is None else str(owner_faction_raw).strip() or None
+        blueprint_registry = _policy_payload(policy_context, "blueprint_registry")
+        part_class_registry = _policy_payload(policy_context, "part_class_registry")
+        connection_type_registry = _policy_payload(policy_context, "connection_type_registry")
+        material_class_registry = _policy_payload(policy_context, "material_class_registry")
+        if not blueprint_registry:
+            blueprint_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/blueprint_registry.json",
+                default_payload={"blueprints": []},
+            )
+        if not part_class_registry:
+            part_class_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/part_class_registry.json",
+                default_payload={"part_classes": []},
+            )
+        if not connection_type_registry:
+            connection_type_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/connection_type_registry.json",
+                default_payload={"connection_types": []},
+            )
+        if not material_class_registry:
+            material_class_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/material_class_registry.json",
+                default_payload={"materials": []},
+            )
+        try:
+            created = create_construction_project(
+                repo_root=REPO_ROOT_HINT,
+                blueprint_id=blueprint_id,
+                parameter_values=dict(parameter_values or {}),
+                pack_lock_hash=str((dict(policy_context or {})).get("pack_lock_hash", "")).strip() or ("0" * 64),
+                site_ref=site_ref,
+                logistics_node_id=logistics_node_id,
+                construction_policy_registry=construction_policy_registry,
+                construction_policy_id=selected_policy_id,
+                blueprint_registry=blueprint_registry,
+                part_class_registry=part_class_registry,
+                connection_type_registry=connection_type_registry,
+                material_class_registry=material_class_registry,
+                actor_subject_id=_construction_actor_subject_id(authority_context),
+                intent_id=intent_id,
+                current_tick=int(current_tick),
+                event_sequence_start=max(0, _as_int(construction_runtime_state.get("next_event_sequence", 0), 0)),
+                owner_faction_id=owner_faction_id,
+            )
+        except ConstructionError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix construction blueprint/site/material preconditions and retry project creation.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        project_row = dict(created.get("project") or {})
+        project_id = str(project_row.get("project_id", "")).strip()
+        step_rows = [dict(row) for row in list(created.get("steps") or []) if isinstance(row, dict)]
+        commitment_rows = [dict(row) for row in list(created.get("commitments") or []) if isinstance(row, dict)]
+        if required_manifest_ids:
+            for row in commitment_rows:
+                extensions = dict(row.get("extensions") or {})
+                extensions["required_manifest_ids"] = list(required_manifest_ids)
+                row["extensions"] = extensions
+                row["manifest_ids"] = list(required_manifest_ids)
+            project_extensions = dict(project_row.get("extensions") or {})
+            project_extensions["required_manifest_ids"] = list(required_manifest_ids)
+            project_row["extensions"] = project_extensions
+        structure_row = dict(created.get("installed_structure_instance") or {})
+        project_map = dict((str(row.get("project_id", "")), dict(row)) for row in list(construction_projects or []) if isinstance(row, dict) and str(row.get("project_id", "")).strip())
+        step_map = dict((str(row.get("step_id", "")), dict(row)) for row in list(construction_steps or []) if isinstance(row, dict) and str(row.get("step_id", "")).strip())
+        commitment_map = dict((str(row.get("commitment_id", "")), dict(row)) for row in list(construction_commitments or []) if isinstance(row, dict) and str(row.get("commitment_id", "")).strip())
+        structure_map = dict((str(row.get("instance_id", "")), dict(row)) for row in list(installed_structure_instances or []) if isinstance(row, dict) and str(row.get("instance_id", "")).strip())
+        if project_id:
+            project_map[project_id] = dict(project_row)
+        for row in step_rows:
+            step_id = str(row.get("step_id", "")).strip()
+            if step_id:
+                step_map[step_id] = dict(row)
+        for row in commitment_rows:
+            commitment_id = str(row.get("commitment_id", "")).strip()
+            if commitment_id:
+                commitment_map[commitment_id] = dict(row)
+        instance_id = str(structure_row.get("instance_id", "")).strip()
+        if instance_id:
+            structure_map[instance_id] = dict(structure_row)
+        construction_projects = [dict(project_map[key]) for key in sorted(project_map.keys())]
+        construction_steps = [dict(step_map[key]) for key in sorted(step_map.keys())]
+        construction_commitments = [dict(commitment_map[key]) for key in sorted(commitment_map.keys())]
+        installed_structure_instances = [dict(structure_map[key]) for key in sorted(structure_map.keys())]
+        event_rows = list(construction_provenance_events or [])
+        event_rows.extend(dict(row) for row in list(created.get("provenance_events") or []) if isinstance(row, dict))
+        construction_provenance_events = sorted(
+            (
+                dict(row)
+                for row in event_rows
+                if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+            ),
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        construction_runtime_state["next_event_sequence"] = max(
+            0,
+            _as_int(
+                created.get("next_event_sequence", construction_runtime_state.get("next_event_sequence", 0)),
+                _as_int(construction_runtime_state.get("next_event_sequence", 0), 0),
+            ),
+        )
+        construction_runtime_state["last_project_tick"] = int(max(0, int(current_tick)))
+        construction_runtime_state["last_budget_outcome"] = "complete"
+        _persist_construction_state(
+            state,
+            projects=construction_projects,
+            steps=construction_steps,
+            commitments=construction_commitments,
+            installed_structures=installed_structure_instances,
+            events=construction_provenance_events,
+            runtime_state=construction_runtime_state,
+        )
+        result_metadata = {
+            "project_id": project_id,
+            "blueprint_id": blueprint_id,
+            "site_ref": site_ref,
+            "logistics_node_id": logistics_node_id,
+            "construction_policy_id": selected_policy_id,
+            "required_manifest_ids": list(required_manifest_ids),
+            "step_count": len(step_rows),
+            "commitment_count": len(commitment_rows),
+            "structure_instance_id": str((dict(structure_row)).get("instance_id", "")),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.construction_project_tick":
+        requested_max_projects = _as_int(inputs.get("max_projects_per_tick", 0), 0)
+        if requested_max_projects <= 0:
+            requested_max_projects = _as_int(
+                (dict(policy_context or {})).get("construction_max_projects_per_tick", CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK),
+                CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK,
+            )
+        budget = _construction_tick_budget(
+            policy_context=policy_context,
+            requested_max_projects=int(requested_max_projects),
+        )
+        try:
+            ticked = tick_construction_projects(
+                projects=construction_projects,
+                steps=construction_steps,
+                commitments=construction_commitments,
+                installed_structures=installed_structure_instances,
+                inventory_index=build_inventory_index(logistics_inventory_rows),
+                current_tick=int(current_tick),
+                actor_subject_id=_construction_actor_subject_id(authority_context),
+                construction_policy_registry=_policy_payload(policy_context, "construction_policy_registry"),
+                event_sequence_start=max(0, _as_int(construction_runtime_state.get("next_event_sequence", 0), 0)),
+                max_projects_to_tick=int(max(0, _as_int(budget.get("effective_max_projects", 0), 0))),
+                max_parallel_steps_override=int(max(0, _as_int(budget.get("max_parallel_steps_override", 0), 0))),
+            )
+        except ConstructionError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix construction project inputs or material availability and retry construction tick.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        construction_projects = [dict(row) for row in list(ticked.get("projects") or []) if isinstance(row, dict)]
+        construction_steps = [dict(row) for row in list(ticked.get("steps") or []) if isinstance(row, dict)]
+        construction_commitments = [dict(row) for row in list(ticked.get("commitments") or []) if isinstance(row, dict)]
+        installed_structure_instances = [dict(row) for row in list(ticked.get("installed_structures") or []) if isinstance(row, dict)]
+        logistics_inventory_rows = inventory_rows_from_index(dict(ticked.get("inventory_index") or {}))
+        event_rows = list(construction_provenance_events or [])
+        event_rows.extend(dict(row) for row in list(ticked.get("events") or []) if isinstance(row, dict))
+        construction_provenance_events = sorted(
+            (
+                dict(row)
+                for row in event_rows
+                if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+            ),
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        construction_runtime_state["next_event_sequence"] = max(
+            0,
+            _as_int(
+                ticked.get("next_event_sequence", construction_runtime_state.get("next_event_sequence", 0)),
+                _as_int(construction_runtime_state.get("next_event_sequence", 0), 0),
+            ),
+        )
+        construction_runtime_state["last_project_tick"] = int(max(0, int(current_tick)))
+        budget_outcome = str(budget.get("budget_outcome", "complete")).strip() or "complete"
+        if list(ticked.get("skipped_project_ids") or []):
+            budget_outcome = "degraded"
+        construction_runtime_state["last_budget_outcome"] = budget_outcome
+        runtime_extensions = dict(construction_runtime_state.get("extensions") or {})
+        runtime_extensions["last_budget_decision"] = {
+            "tick": int(max(0, int(current_tick))),
+            "requested_max_projects": int(budget.get("requested_max_projects", 0)),
+            "effective_max_projects": int(budget.get("effective_max_projects", 0)),
+            "max_projects_by_compute": int(budget.get("max_projects_by_compute", 0)),
+            "max_parallel_steps_override": int(budget.get("max_parallel_steps_override", 0)),
+            "cost_units_per_active_step": int(budget.get("cost_units_per_active_step", 0)),
+            "skipped_project_ids": list(ticked.get("skipped_project_ids") or []),
+            "budget_outcome": budget_outcome,
+        }
+        construction_runtime_state["extensions"] = runtime_extensions
+        _persist_logistics_state(
+            state,
+            manifests=logistics_manifests,
+            commitments=shipment_commitment_rows,
+            inventories=logistics_inventory_rows,
+            events=logistics_provenance_events,
+            runtime_state=logistics_runtime_state,
+        )
+        _persist_construction_state(
+            state,
+            projects=construction_projects,
+            steps=construction_steps,
+            commitments=construction_commitments,
+            installed_structures=installed_structure_instances,
+            events=construction_provenance_events,
+            runtime_state=construction_runtime_state,
+        )
+        result_metadata = {
+            "processed_project_count": int(ticked.get("processed_project_count", 0)),
+            "started_step_count": int(ticked.get("started_step_count", 0)),
+            "completed_step_count": int(ticked.get("completed_step_count", 0)),
+            "active_step_count": int(ticked.get("active_step_count", 0)),
+            "skipped_project_ids": list(ticked.get("skipped_project_ids") or []),
+            "budget_outcome": str(construction_runtime_state.get("last_budget_outcome", "complete")),
+            "requested_max_projects": int(budget.get("requested_max_projects", 0)),
+            "effective_max_projects": int(budget.get("effective_max_projects", 0)),
+            "max_projects_by_compute": int(budget.get("max_projects_by_compute", 0)),
+            "max_parallel_steps_override": int(budget.get("max_parallel_steps_override", 0)),
+            "cost_units_per_active_step": int(budget.get("cost_units_per_active_step", 0)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.construction_pause":
+        project_id = str(inputs.get("project_id", "")).strip()
+        if not project_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.construction_pause requires project_id",
+                "Provide project_id from construction project state.",
+                {"process_id": process_id},
+                "$.intent.inputs.project_id",
+            )
+        project_row = {}
+        for row in construction_projects:
+            if str((dict(row)).get("project_id", "")).strip() == project_id:
+                project_row = row
+                break
+        if not project_row:
+            return refusal(
+                REFUSAL_CONSTRUCTION_SITE_INVALID,
+                "construction project '{}' is not present".format(project_id),
+                "Provide an existing project_id from construction_projects.",
+                {"project_id": project_id},
+                "$.intent.inputs.project_id",
+            )
+        status = _normalize_construction_project_status(project_row.get("status", "planned"))
+        if status in ("completed", "failed"):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "construction project '{}' is terminal and cannot be paused".format(project_id),
+                "Pause only projects in planned/executing state.",
+                {"project_id": project_id, "status": status},
+                "$.intent.inputs.project_id",
+            )
+        project_row["status"] = "paused"
+        project_extensions = dict(project_row.get("extensions") or {})
+        project_extensions["paused_tick"] = int(max(0, int(current_tick)))
+        project_row["extensions"] = project_extensions
+        construction_projects = sorted(
+            (dict(row) for row in construction_projects if isinstance(row, dict)),
+            key=lambda row: str(row.get("project_id", "")),
+        )
+        _persist_construction_state(
+            state,
+            projects=construction_projects,
+            steps=construction_steps,
+            commitments=construction_commitments,
+            installed_structures=installed_structure_instances,
+            events=construction_provenance_events,
+            runtime_state=construction_runtime_state,
+        )
+        result_metadata = {"project_id": project_id, "status": "paused"}
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.construction_resume":
+        project_id = str(inputs.get("project_id", "")).strip()
+        if not project_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.construction_resume requires project_id",
+                "Provide project_id from construction project state.",
+                {"process_id": process_id},
+                "$.intent.inputs.project_id",
+            )
+        project_row = {}
+        for row in construction_projects:
+            if str((dict(row)).get("project_id", "")).strip() == project_id:
+                project_row = row
+                break
+        if not project_row:
+            return refusal(
+                REFUSAL_CONSTRUCTION_SITE_INVALID,
+                "construction project '{}' is not present".format(project_id),
+                "Provide an existing project_id from construction_projects.",
+                {"project_id": project_id},
+                "$.intent.inputs.project_id",
+            )
+        status = _normalize_construction_project_status(project_row.get("status", "planned"))
+        if status in ("completed", "failed"):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "construction project '{}' is terminal and cannot be resumed".format(project_id),
+                "Resume only paused projects.",
+                {"project_id": project_id, "status": status},
+                "$.intent.inputs.project_id",
+            )
+        if status == "paused":
+            project_row["status"] = "executing"
+            project_extensions = dict(project_row.get("extensions") or {})
+            project_extensions["resumed_tick"] = int(max(0, int(current_tick)))
+            project_row["extensions"] = project_extensions
+        construction_projects = sorted(
+            (dict(row) for row in construction_projects if isinstance(row, dict)),
+            key=lambda row: str(row.get("project_id", "")),
+        )
+        _persist_construction_state(
+            state,
+            projects=construction_projects,
+            steps=construction_steps,
+            commitments=construction_commitments,
+            installed_structures=installed_structure_instances,
+            events=construction_provenance_events,
+            runtime_state=construction_runtime_state,
+        )
+        result_metadata = {"project_id": project_id, "status": str(project_row.get("status", ""))}
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.role_assign":
         if law_profile.get("allow_role_delegation") is False:
             return refusal(

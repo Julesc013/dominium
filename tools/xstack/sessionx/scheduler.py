@@ -53,6 +53,10 @@ PROCESS_PRIORITY = {
     "process.role_revoke": 26,
     "process.manifest_create": 26,
     "process.manifest_tick": 27,
+    "process.construction_project_create": 26,
+    "process.construction_project_tick": 27,
+    "process.construction_pause": 26,
+    "process.construction_resume": 26,
     "process.control_bind_camera": 25,
     "process.control_unbind_camera": 25,
     "process.control_possess_agent": 25,
@@ -97,6 +101,10 @@ PROCESS_ENTITY_SCOPE = {
     "process.role_revoke": "institution.unknown",
     "process.manifest_create": "logistics.manifest.create",
     "process.manifest_tick": "logistics.manifest.tick",
+    "process.construction_project_create": "construction.project.create",
+    "process.construction_project_tick": "construction.project.tick",
+    "process.construction_pause": "construction.project",
+    "process.construction_resume": "construction.project",
     "process.control_bind_camera": "controller.binding.camera",
     "process.control_unbind_camera": "controller.binding.camera",
     "process.control_possess_agent": "controller.binding.possess",
@@ -141,6 +149,10 @@ PROCESS_FIELD_SCOPE = {
     "process.role_revoke": "civ.institution.state",
     "process.manifest_create": "logistics.manifest.state",
     "process.manifest_tick": "logistics.manifest.state",
+    "process.construction_project_create": "construction.project.state",
+    "process.construction_project_tick": "construction.project.state",
+    "process.construction_pause": "construction.project.state",
+    "process.construction_resume": "construction.project.state",
     "process.control_bind_camera": "control.binding.camera",
     "process.control_unbind_camera": "control.binding.camera",
     "process.control_possess_agent": "control.binding.possess",
@@ -289,6 +301,21 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
         graph_id = str(inputs.get("graph_id", "")).strip()
         if graph_id:
             entity_scope = "manifest.tick.{}".format(graph_id)
+    if process_id == "process.construction_project_create":
+        blueprint_id = str(inputs.get("blueprint_id", "")).strip()
+        site_ref = str(inputs.get("site_ref", "")).strip()
+        if blueprint_id and site_ref:
+            entity_scope = "construction.create.{}::{}".format(site_ref, blueprint_id)
+    if process_id == "process.construction_project_tick":
+        project_id = str(inputs.get("project_id", "")).strip()
+        if project_id:
+            entity_scope = "construction.tick.{}".format(project_id)
+        else:
+            entity_scope = "construction.tick"
+    if process_id in ("process.construction_pause", "process.construction_resume"):
+        project_id = str(inputs.get("project_id", "")).strip()
+        if project_id:
+            entity_scope = project_id
     return {
         "envelope_id": str(envelope.get("envelope_id", "")),
         "script_step": int(script_step),
