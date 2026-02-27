@@ -8,32 +8,26 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 230
-- RISK: 245
-- VIOLATION: 90
-- WARN: 1089
+- INFO: 4
+- RISK: 158
+- VIOLATION: 7
+- WARN: 830
 
 ## Counts By Category
 
-- canon_drift: 652
+- canon_drift: 660
 - capability_bypass_smell: 1
-- capability_misuse: 139
 - civilisation.nondeterministic_cohort_mapping_smell: 1
-- derived_freshness: 131
+- derived_freshness: 15
 - epistemics.hidden_state_leak_smell: 6
-- legacy_contamination: 6
-- materials.hardcoded_blueprint_smell: 16
-- mode_flag_smell: 64
+- materials.hardcoded_blueprint_smell: 5
+- materials.reenactment_leak_smell: 1
+- mode_flag_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
-- ownership_boundary: 9
-- reachability: 80
+- reachability: 14
 - schema_usage: 160
-- security.boundary_io: 29
-- security.privilege_bypass: 9
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
-- terminology_misuse: 1
-- ui_parity: 215
