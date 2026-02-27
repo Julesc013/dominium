@@ -461,6 +461,253 @@ def _blueprint_overlay_payload(
     }
 
 
+def _runtime_rows(runtime: dict, key: str) -> list[dict]:
+    rows = list((dict(runtime or {})).get(key) or [])
+    return sorted(
+        [dict(item) for item in rows if isinstance(item, dict)],
+        key=lambda item: str(item.get("project_id", "")) + "|" + str(item.get("step_id", "")) + "|" + str(item.get("instance_id", "")) + "|" + str(item.get("event_id", "")),
+    )
+
+
+def _construction_overlay_payload(
+    *,
+    target_semantic_id: str,
+    runtime: dict,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    project_id = str(target_row.get("project_id", "")).strip()
+    target_id = str(target_semantic_id).strip()
+    if target_id.startswith("project.construction."):
+        project_id = target_id
+    projects = _runtime_rows(runtime, "construction_projects")
+    steps = _runtime_rows(runtime, "construction_steps")
+    commitments = _runtime_rows(runtime, "construction_commitments")
+    structures = _runtime_rows(runtime, "installed_structure_instances")
+    events = _runtime_rows(runtime, "construction_provenance_events")
+
+    project_row = {}
+    if project_id:
+        for row in projects:
+            if str(row.get("project_id", "")).strip() == project_id:
+                project_row = dict(row)
+                break
+    if (not project_row) and collection == "construction_projects":
+        project_row = dict(target_row)
+        project_id = str(project_row.get("project_id", "")).strip()
+    if not project_id and collection == "installed_structure_instances":
+        project_id = str(target_row.get("project_id", "")).strip()
+
+    project_steps = [
+        dict(row)
+        for row in steps
+        if str(row.get("project_id", "")).strip() == project_id
+    ]
+    installed_row = {}
+    for row in structures:
+        if str(row.get("project_id", "")).strip() == project_id:
+            installed_row = dict(row)
+            break
+    if (not installed_row) and collection == "installed_structure_instances":
+        installed_row = dict(target_row)
+
+    completed_nodes = _sorted_unique_strings(list(installed_row.get("installed_node_states") or []))
+    if not completed_nodes:
+        completed_nodes = _sorted_unique_strings(
+            [
+                str(row.get("ag_node_id", "")).strip()
+                for row in project_steps
+                if str(row.get("status", "")).strip() == "completed"
+            ]
+        )
+    total_nodes = len(project_steps)
+    completed_count = len(completed_nodes)
+    progress_permille = 0
+    if total_nodes > 0:
+        progress_permille = int((int(completed_count) * 1000) // int(total_nodes))
+
+    material_events = [
+        dict(row)
+        for row in events
+        if str(row.get("linked_project_id", "")).strip() == project_id
+        and str(row.get("event_type_id", "")).strip() == "event.material_consumed"
+    ]
+    materials_consumed_mass = 0
+    for row in material_events:
+        ledger_deltas = dict(row.get("ledger_deltas") or {})
+        mass_delta = int(_to_int(ledger_deltas.get("quantity.mass", 0), 0))
+        materials_consumed_mass += int(abs(mass_delta))
+
+    next_commitments = sorted(
+        [
+            dict(row)
+            for row in commitments
+            if str(row.get("project_id", "")).strip() == project_id
+            and str(row.get("status", "")).strip() in ("planned", "scheduled")
+        ],
+        key=lambda row: (_to_int(row.get("scheduled_tick", 0), 0), str(row.get("commitment_id", ""))),
+    )
+    next_commitment_ids = [str(row.get("commitment_id", "")).strip() for row in next_commitments[:4] if str(row.get("commitment_id", "")).strip()]
+    project_extensions = dict(project_row.get("extensions") or {})
+    manifests_required = _sorted_unique_strings(list(project_extensions.get("required_manifest_ids") or []))
+
+    planned_material_id = "mat.inspect.construction.planned.{}".format(canonical_sha256({"project_id": project_id, "kind": "planned"})[:12])
+    completed_material_id = "mat.inspect.construction.completed.{}".format(canonical_sha256({"project_id": project_id, "kind": "completed"})[:12])
+    label_material_id = "mat.inspect.construction.label.{}".format(canonical_sha256({"project_id": project_id, "kind": "label"})[:12])
+    materials = sorted(
+        [
+            {
+                "schema_version": "1.0.0",
+                "material_id": planned_material_id,
+                "base_color": {"r": 120, "g": 170, "b": 220},
+                "roughness": 420,
+                "metallic": 0,
+                "emission": {"r": 120, "g": 170, "b": 220, "strength": 120},
+                "transparency": {"mode": "alpha", "value_permille": 560},
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "construction_planned"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": completed_material_id,
+                "base_color": {"r": 144, "g": 214, "b": 124},
+                "roughness": 280,
+                "metallic": 40,
+                "emission": {"r": 144, "g": 214, "b": 124, "strength": 80},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "construction_completed"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": label_material_id,
+                "base_color": {"r": 232, "g": 238, "b": 242},
+                "roughness": 260,
+                "metallic": 20,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "construction_label"},
+            },
+        ],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+
+    renderables: list[dict] = []
+    for idx, step in enumerate(sorted(project_steps, key=lambda row: (str(row.get("ag_node_id", "")), str(row.get("step_id", ""))))):
+        ag_node_id = str(step.get("ag_node_id", "")).strip()
+        if not ag_node_id:
+            continue
+        is_completed = ag_node_id in set(completed_nodes)
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.construction.node.{}".format(canonical_sha256({"project_id": project_id, "ag_node_id": ag_node_id})[:16]),
+                "semantic_id": "overlay.inspect.construction.node.{}".format(ag_node_id),
+                "primitive_id": "prim.box.debug" if is_completed else "prim.line.debug",
+                "transform": {
+                    "position_mm": {"x": int(idx * 250), "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": completed_material_id if is_completed else planned_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": bool(is_completed)},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "construction_node",
+                    "project_id": project_id,
+                    "ag_node_id": ag_node_id,
+                    "step_status": str(step.get("status", "")).strip(),
+                },
+            }
+        )
+
+    summary_label = "construction:{} progress={}permille steps={}/{} consumed_mass={}".format(
+        project_id or target_id or "unknown",
+        int(progress_permille),
+        int(completed_count),
+        int(total_nodes),
+        int(materials_consumed_mass),
+    )
+    renderables.append(
+        {
+            "schema_version": "1.0.0",
+            "renderable_id": "overlay.inspect.construction.label.{}".format(canonical_sha256({"project_id": project_id, "summary": True})[:16]),
+            "semantic_id": "overlay.inspect.construction.label.{}".format(project_id or target_id),
+            "primitive_id": "prim.glyph.label",
+            "transform": {
+                "position_mm": {"x": 0, "y": 0, "z": 0},
+                "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                "scale_permille": 1000,
+            },
+            "material_id": label_material_id,
+            "layer_tags": ["overlay", "ui"],
+            "label": summary_label,
+            "lod_hint": "lod.band.near",
+            "flags": {"selectable": False, "highlighted": False},
+            "extensions": {
+                "interaction_overlay": True,
+                "overlay_kind": "construction_label",
+                "project_id": project_id,
+            },
+        }
+    )
+    return {
+        "mode": "construction_overlay",
+        "summary": summary_label,
+        "target_semantic_id": target_id,
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": sorted(renderables, key=lambda row: str(row.get("renderable_id", ""))),
+        "materials": list(materials),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "construction",
+            "project_id": project_id,
+            "progress_permille": int(progress_permille),
+            "materials_consumed_mass": int(materials_consumed_mass),
+            "next_commitment_ids": list(next_commitment_ids),
+            "manifests_required": list(manifests_required),
+        },
+    }
+
+
+def _provenance_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    event_id = str(target_row.get("event_id", "")).strip() or str(target_semantic_id).strip()
+    event_type_id = str(target_row.get("event_type_id", "")).strip() or "event.unknown"
+    summary_label = "provenance:{} {}".format(event_id, event_type_id)
+    return {
+        "mode": "provenance_overlay",
+        "summary": summary_label,
+        "target_semantic_id": str(target_semantic_id),
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": _overlay_renderables(
+            target_semantic_id=str(target_semantic_id),
+            summary_label=summary_label,
+            mode="provenance_overlay",
+        ),
+        "materials": _overlay_materials(target_semantic_id=str(target_semantic_id)),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "provenance",
+            "event_id": event_id,
+            "event_type_id": event_type_id,
+            "linked_project_id": str(target_row.get("linked_project_id", "")).strip(),
+            "linked_step_id": str(target_row.get("linked_step_id", "")).strip(),
+        },
+    }
+
+
 def build_inspection_overlays(
     *,
     perceived_model: dict,
@@ -494,6 +741,36 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": logistics_overlay,
+            "overlay_runtime": runtime,
+        }
+    if (
+        target_id.startswith("project.construction.")
+        or target_id.startswith("assembly.structure_instance.")
+        or snapshot_collection in (
+            "construction_projects",
+            "construction_steps",
+            "construction_commitments",
+            "installed_structure_instances",
+        )
+    ):
+        construction_overlay = _construction_overlay_payload(
+            target_semantic_id=target_id,
+            runtime=runtime,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": construction_overlay,
+            "overlay_runtime": runtime,
+        }
+    if target_id.startswith("provenance.event.") or snapshot_collection == "construction_provenance_events":
+        provenance_overlay = _provenance_overlay_payload(
+            target_semantic_id=target_id,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": provenance_overlay,
             "overlay_runtime": runtime,
         }
     if target_id.startswith("blueprint."):

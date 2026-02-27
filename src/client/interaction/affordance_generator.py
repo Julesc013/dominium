@@ -17,6 +17,9 @@ _KNOWN_TARGET_KINDS = (
     "logistics_node",
     "manifest",
     "shipment_commitment",
+    "construction_project",
+    "installed_structure",
+    "provenance_event",
 )
 _KNOWN_PREVIEW_MODES = ("none", "cheap", "expensive")
 
@@ -76,6 +79,12 @@ def _target_kind_from_prefix(target_semantic_id: str) -> str:
         return "manifest"
     if token.startswith("commitment.shipment.") or token.startswith("shipment.commitment."):
         return "shipment_commitment"
+    if token.startswith("project.construction."):
+        return "construction_project"
+    if token.startswith("assembly.structure_instance."):
+        return "installed_structure"
+    if token.startswith("provenance.event."):
+        return "provenance_event"
     if token.startswith("agent.") or token.startswith("body.") or token.startswith("camera."):
         return "agent"
     if token.startswith("cohort.") or token.startswith("population."):
