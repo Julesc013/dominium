@@ -64,6 +64,8 @@ REGISTRY_HASH_KEY_MAP = {
     "part_class_registry_hash": "part_class_registry",
     "connection_type_registry_hash": "connection_type_registry",
     "blueprint_registry_hash": "blueprint_registry",
+    "logistics_routing_rule_registry_hash": "logistics_routing_rule_registry",
+    "logistics_graph_registry_hash": "logistics_graph_registry",
     "domain_registry_hash": "domain_registry",
     "law_registry_hash": "law_registry",
     "experience_registry_hash": "experience_registry",
@@ -145,6 +147,8 @@ REGISTRY_FILE_MAP = {
     "part_class_registry_hash": "part_class.registry.json",
     "connection_type_registry_hash": "connection_type.registry.json",
     "blueprint_registry_hash": "blueprint.registry.json",
+    "logistics_routing_rule_registry_hash": "logistics_routing_rule.registry.json",
+    "logistics_graph_registry_hash": "logistics_graph.registry.json",
     "domain_registry_hash": "domain.registry.json",
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
@@ -1165,6 +1169,22 @@ def boot_session_spec(
     )
     if blueprint_registry_error:
         return blueprint_registry_error
+    logistics_routing_rule_registry, logistics_routing_rule_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["logistics_routing_rule_registry_hash"],
+        expected_hash=str(registries.get("logistics_routing_rule_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if logistics_routing_rule_registry_error:
+        return logistics_routing_rule_registry_error
+    logistics_graph_registry, logistics_graph_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["logistics_graph_registry_hash"],
+        expected_hash=str(registries.get("logistics_graph_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if logistics_graph_registry_error:
+        return logistics_graph_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1768,6 +1788,8 @@ def boot_session_spec(
                 "part_class_registry": part_class_registry,
                 "connection_type_registry": connection_type_registry,
                 "blueprint_registry": blueprint_registry,
+                "logistics_routing_rule_registry": logistics_routing_rule_registry,
+                "logistics_graph_registry": logistics_graph_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1866,6 +1888,8 @@ def boot_session_spec(
                 "part_class_registry": part_class_registry,
                 "connection_type_registry": connection_type_registry,
                 "blueprint_registry": blueprint_registry,
+                "logistics_routing_rule_registry": logistics_routing_rule_registry,
+                "logistics_graph_registry": logistics_graph_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -2236,6 +2260,8 @@ def boot_session_spec(
             "part_class_registry": part_class_registry,
             "connection_type_registry": connection_type_registry,
             "blueprint_registry": blueprint_registry,
+            "logistics_routing_rule_registry": logistics_routing_rule_registry,
+            "logistics_graph_registry": logistics_graph_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,

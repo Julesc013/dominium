@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.registry.logistics_routing_rule_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.logistics_routing_rule_registry",
+    "registry_version": "1.0.0",
+    "routing_rules": [
+      {
+        "schema_version": "1.0.0",
+        "rule_id": "route.direct_only",
+        "description": "Direct edge only; deterministic refusal when direct edge missing.",
+        "tie_break_policy": "edge_id_lexicographic",
+        "allow_multi_hop": false,
+        "constraints": {},
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "rule_id": "route.shortest_delay",
+        "description": "Minimum total delay path with deterministic edge_id tie-break.",
+        "tie_break_policy": "edge_id_lexicographic",
+        "allow_multi_hop": true,
+        "constraints": {},
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "rule_id": "route.min_cost_units",
+        "description": "Minimum aggregate cost_units_per_mass path with deterministic edge_id tie-break.",
+        "tie_break_policy": "edge_id_lexicographic",
+        "allow_multi_hop": true,
+        "constraints": {},
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
