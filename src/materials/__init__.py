@@ -46,6 +46,20 @@ from .dimension_engine import (
     quantity_add,
     quantity_convert,
 )
+from .maintenance.decay_engine import (
+    REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+    REFUSAL_MAINTENANCE_MATERIALS_MISSING,
+    MaintenanceError,
+    backlog_growth_rule_rows_by_id,
+    failure_mode_rows_by_id,
+    maintenance_policy_rows_by_id,
+    normalize_asset_health_state,
+    perform_inspection,
+    perform_maintenance,
+    quantized_failure_risk_summary,
+    schedule_maintenance_commitments,
+    tick_decay,
+)
 
 __all__ = [
     "DEFAULT_FRACTION_SCALE",
@@ -88,4 +102,16 @@ __all__ = [
     "blueprint_compile_cache_key",
     "build_blueprint_ghost_overlay",
     "compile_blueprint_artifacts",
+    "REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW",
+    "REFUSAL_MAINTENANCE_MATERIALS_MISSING",
+    "MaintenanceError",
+    "failure_mode_rows_by_id",
+    "maintenance_policy_rows_by_id",
+    "backlog_growth_rule_rows_by_id",
+    "normalize_asset_health_state",
+    "schedule_maintenance_commitments",
+    "perform_inspection",
+    "perform_maintenance",
+    "tick_decay",
+    "quantized_failure_risk_summary",
 ]
