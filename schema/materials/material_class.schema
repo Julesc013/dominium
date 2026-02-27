@@ -1,0 +1,35 @@
+SCHEMA: materials/material_class.schema
+schema_id: dominium.schema.materials.material_class
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical material classes with typed dimensional properties.
+
+REQUIRED SHAPE:
+record material_class
+  required:
+    - schema_version: semver
+    - material_id: id
+    - base_type: enum(element|compound|mixture)
+    - base_ref_id: id
+    - density: quantity_property
+    - specific_energy: quantity_property
+    - conductivity: quantity_property|null
+    - heat_capacity: quantity_property|null
+    - phase_tags: list<string>
+    - quality_distribution_model_id: id|null
+    - tags: list<string>
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+
+record quantity_property
+  required:
+    - value_raw: int
+    - dimension_id: id
+    - unit_id: id
+
+INVARIANTS:
+- Property dimensions must match declared dimensional intent.
+- Material classes are data-defined and pack-versioned.

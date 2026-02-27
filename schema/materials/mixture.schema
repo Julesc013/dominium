@@ -1,0 +1,22 @@
+SCHEMA: materials/mixture.schema
+schema_id: dominium.schema.materials.mixture
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define mass-fraction composition across compounds/materials.
+
+REQUIRED SHAPE:
+record mixture
+  required:
+    - schema_version: semver
+    - mixture_id: id
+    - components: map<compound_or_material_id,mass_fraction_raw>
+    - tags: list<string>
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+
+INVARIANTS:
+- Components use fixed-point mass fractions.
+- Mixture mass fractions are validated against canonical sum rules.

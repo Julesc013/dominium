@@ -1,0 +1,24 @@
+SCHEMA: materials/compound.schema
+schema_id: dominium.schema.materials.compound
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define stoichiometric element composition for compounds.
+
+REQUIRED SHAPE:
+record compound
+  required:
+    - schema_version: semver
+    - compound_id: id
+    - composition: map<element_id,int_ratio>
+    - molar_mass_mode: enum(declared|derived)
+    - molar_mass_raw: int
+    - tags: list<string>
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+
+INVARIANTS:
+- Composition is explicit and positive-valued.
+- Compound definitions do not encode reaction behavior.

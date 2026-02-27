@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mixture Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic mixture registry output.",
+  "x-doc-ref": [
+    "docs/materials/MATERIAL_TAXONOMY.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "mixtures",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "mixtures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "mixture_id",
+          "components",
+          "mass_fraction_sum_raw",
+          "tags",
+          "version_introduced",
+          "deprecated",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mixture_id": {
+            "type": "string"
+          },
+          "components": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "mass_fraction_sum_raw": {
+            "type": "integer"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version_introduced": {
+            "type": "string"
+          },
+          "deprecated": {
+            "type": "boolean"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}
