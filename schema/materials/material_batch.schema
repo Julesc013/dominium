@@ -1,0 +1,24 @@
+SCHEMA: materials/material_batch.schema
+schema_id: dominium.schema.materials.material_batch
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical material batch provenance units.
+
+REQUIRED SHAPE:
+record material_batch
+  required:
+    - schema_version: semver
+    - batch_id: id
+    - material_id: id
+    - quantity_mass_raw: int
+    - origin_process_id: id
+    - origin_tick: int
+    - parent_batch_ids: list<id>
+    - quality_distribution: map
+    - extensions: map
+
+INVARIANTS:
+- batch_id is deterministic for equivalent inputs.
+- parent_batch_ids encode lineage and must remain traceable.
