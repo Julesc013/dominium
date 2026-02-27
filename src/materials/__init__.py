@@ -14,6 +14,16 @@ from .composition_engine import (
     validate_material_class,
     validate_mixture_composition,
 )
+from .blueprint_engine import (
+    REFUSAL_BLUEPRINT_INVALID_GRAPH,
+    REFUSAL_BLUEPRINT_MISSING_PART_CLASS,
+    REFUSAL_BLUEPRINT_PARAMETER_INVALID,
+    BlueprintCompileError,
+    blueprint_bom_summary,
+    blueprint_compile_cache_key,
+    build_blueprint_ghost_overlay,
+    compile_blueprint_artifacts,
+)
 from .dimension_engine import (
     DEFAULT_FRACTIONAL_BITS,
     INT64_MAX,
@@ -46,10 +56,14 @@ __all__ = [
     "REFUSAL_MATERIAL_DIMENSION_MISMATCH",
     "REFUSAL_MATERIAL_INVALID_COMPOSITION",
     "REFUSAL_MATERIAL_MASS_FRACTION_MISMATCH",
+    "REFUSAL_BLUEPRINT_INVALID_GRAPH",
+    "REFUSAL_BLUEPRINT_MISSING_PART_CLASS",
+    "REFUSAL_BLUEPRINT_PARAMETER_INVALID",
     "REFUSAL_DIMENSION_MISMATCH",
     "REFUSAL_NUMERIC_OVERFLOW",
     "REFUSAL_UNIT_INVALID_CONVERSION",
     "CompositionError",
+    "BlueprintCompileError",
     "DimensionError",
     "FixedPointConfig",
     "FixedPointOverflow",
@@ -70,4 +84,8 @@ __all__ = [
     "validate_mixture_composition",
     "quantity_add",
     "quantity_convert",
+    "blueprint_bom_summary",
+    "blueprint_compile_cache_key",
+    "build_blueprint_ghost_overlay",
+    "compile_blueprint_artifacts",
 ]

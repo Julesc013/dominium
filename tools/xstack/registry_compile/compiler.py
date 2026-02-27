@@ -1514,7 +1514,7 @@ def _interaction_registry_rows(
     errors: List[dict] = []
     action_rows: List[dict] = []
     action_seen = set()
-    allowed_target_kinds = {"agent", "cohort", "faction", "territory"}
+    allowed_target_kinds = {"agent", "cohort", "faction", "territory", "blueprint"}
     allowed_preview_modes = {"none", "cheap", "expensive"}
     for entry in sorted(action_rows_raw, key=lambda row: str((row or {}).get("action_id", ""))):
         if not isinstance(entry, dict):
@@ -3510,6 +3510,269 @@ def _material_taxonomy_registry_rows(
             )
 
     return element_rows, compound_rows, mixture_rows, material_rows, quality_rows, errors
+
+
+def _materials_structure_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _part_class_record, part_class_rows_raw, part_class_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/part_class_registry.json",
+        expected_schema_id="dominium.registry.part_class_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="part_classes",
+    )
+    if part_class_load_errors:
+        return [], [], [], part_class_load_errors
+
+    _connection_type_record, connection_type_rows_raw, connection_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/connection_type_registry.json",
+        expected_schema_id="dominium.registry.connection_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="connection_types",
+    )
+    if connection_type_load_errors:
+        return [], [], [], connection_type_load_errors
+
+    _blueprint_record, blueprint_rows_raw, blueprint_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/blueprint_registry.json",
+        expected_schema_id="dominium.registry.blueprint_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="blueprints",
+    )
+    if blueprint_load_errors:
+        return [], [], [], blueprint_load_errors
+
+    part_class_rows: List[dict] = []
+    part_class_ids = set()
+    for entry in sorted(part_class_rows_raw, key=lambda row: str((row or {}).get("part_class_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_part_class_entry",
+                    "message": "part class entry must be object",
+                    "path": "$.part_classes",
+                }
+            )
+            continue
+        part_class_id = str(entry.get("part_class_id", "")).strip()
+        if not part_class_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_part_class_entry",
+                    "message": "part_class_id is missing",
+                    "path": "$.part_classes.part_class_id",
+                }
+            )
+            continue
+        if part_class_id in part_class_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_part_class_id",
+                    "message": "duplicate part_class_id '{}'".format(part_class_id),
+                    "path": "$.part_classes.part_class_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="part_class",
+            payload=entry,
+            path="data/registries/part_class_registry.json#{}".format(part_class_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        part_class_ids.add(part_class_id)
+        part_class_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "part_class_id": part_class_id,
+                "description": str(entry.get("description", "")).strip(),
+                "default_material_class": None
+                if entry.get("default_material_class") is None
+                else str(entry.get("default_material_class", "")).strip(),
+                "default_shape_tag": None
+                if entry.get("default_shape_tag") is None
+                else str(entry.get("default_shape_tag", "")).strip(),
+                "failure_mode_tags": sorted(
+                    set(str(item).strip() for item in list(entry.get("failure_mode_tags") or []) if str(item).strip())
+                ),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    part_class_rows = sorted(part_class_rows, key=lambda row: str(row.get("part_class_id", "")))
+
+    connection_type_rows: List[dict] = []
+    connection_type_ids = set()
+    for entry in sorted(connection_type_rows_raw, key=lambda row: str((row or {}).get("connection_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_connection_type_entry",
+                    "message": "connection type entry must be object",
+                    "path": "$.connection_types",
+                }
+            )
+            continue
+        connection_type_id = str(entry.get("connection_type_id", "")).strip()
+        if not connection_type_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_connection_type_entry",
+                    "message": "connection_type_id is missing",
+                    "path": "$.connection_types.connection_type_id",
+                }
+            )
+            continue
+        if connection_type_id in connection_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_connection_type_id",
+                    "message": "duplicate connection_type_id '{}'".format(connection_type_id),
+                    "path": "$.connection_types.connection_type_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="connection_type",
+            payload=entry,
+            path="data/registries/connection_type_registry.json#{}".format(connection_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        requires_part_classes = sorted(
+            set(str(item).strip() for item in list(entry.get("requires_part_classes") or []) if str(item).strip())
+        )
+        missing_part_classes = sorted(set(requires_part_classes) - set(part_class_ids))
+        if missing_part_classes:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.connection_type_part_class_missing",
+                    "message": "connection type '{}' references unknown part classes: {}".format(
+                        connection_type_id,
+                        ",".join(missing_part_classes),
+                    ),
+                    "path": "$.connection_types.requires_part_classes",
+                }
+            )
+            continue
+        connection_type_ids.add(connection_type_id)
+        connection_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "connection_type_id": connection_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "requires_part_classes": list(requires_part_classes),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    connection_type_rows = sorted(connection_type_rows, key=lambda row: str(row.get("connection_type_id", "")))
+
+    blueprint_rows: List[dict] = []
+    blueprint_ids = set()
+    for entry in sorted(blueprint_rows_raw, key=lambda row: str((row or {}).get("blueprint_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_blueprint_registry_entry",
+                    "message": "blueprint registry entry must be object",
+                    "path": "$.blueprints",
+                }
+            )
+            continue
+        blueprint_id = str(entry.get("blueprint_id", "")).strip()
+        blueprint_path = str(entry.get("blueprint_path", "")).strip()
+        if not blueprint_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_blueprint_registry_entry",
+                    "message": "blueprint_id is missing",
+                    "path": "$.blueprints.blueprint_id",
+                }
+            )
+            continue
+        if blueprint_id in blueprint_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_blueprint_id",
+                    "message": "duplicate blueprint_id '{}'".format(blueprint_id),
+                    "path": "$.blueprints.blueprint_id",
+                }
+            )
+            continue
+        if not blueprint_path:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.blueprint_path_missing",
+                    "message": "blueprint '{}' is missing blueprint_path".format(blueprint_id),
+                    "path": "$.blueprints.blueprint_path",
+                }
+            )
+            continue
+        blueprint_abs = os.path.join(repo_root, blueprint_path.replace("/", os.sep))
+        if not os.path.isfile(blueprint_abs):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.blueprint_path_missing",
+                    "message": "blueprint '{}' path '{}' does not exist".format(blueprint_id, blueprint_path),
+                    "path": "$.blueprints.blueprint_path",
+                }
+            )
+            continue
+        blueprint_payload, blueprint_payload_err = _read_json_payload(blueprint_abs)
+        if blueprint_payload_err:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_blueprint_payload",
+                    "message": "blueprint '{}' payload is invalid JSON".format(blueprint_id),
+                    "path": "$.blueprints.blueprint_path",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="blueprint",
+            payload=blueprint_payload,
+            path="{}#{}".format(_norm(blueprint_path), blueprint_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        payload_blueprint_id = str(blueprint_payload.get("blueprint_id", "")).strip()
+        if payload_blueprint_id != blueprint_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.blueprint_id_mismatch",
+                    "message": "blueprint payload id '{}' does not match registry id '{}'".format(
+                        payload_blueprint_id,
+                        blueprint_id,
+                    ),
+                    "path": "$.blueprints.blueprint_id",
+                }
+            )
+            continue
+        blueprint_ids.add(blueprint_id)
+        blueprint_rows.append(
+            {
+                "blueprint_id": blueprint_id,
+                "description": str(entry.get("description", "")).strip()
+                or str(blueprint_payload.get("description", "")).strip(),
+                "blueprint_path": _norm(blueprint_path),
+                "tags": sorted(set(str(item).strip() for item in list(entry.get("tags") or []) if str(item).strip())),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    blueprint_rows = sorted(blueprint_rows, key=lambda row: str(row.get("blueprint_id", "")))
+
+    return part_class_rows, connection_type_rows, blueprint_rows, errors
 
 
 def _universe_physics_registry_rows(
@@ -7214,6 +7477,15 @@ def compile_bundle(
         unit_rows=unit_rows,
     )
     (
+        part_class_rows,
+        connection_type_rows,
+        blueprint_rows,
+        material_structure_registry_errors,
+    ) = _materials_structure_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         budget_envelope_rows,
         arbitration_policy_rows,
         inspection_cache_policy_rows,
@@ -7446,6 +7718,7 @@ def compile_bundle(
         + conservation_registry_errors
         + materials_dimension_registry_errors
         + material_taxonomy_registry_errors
+        + material_structure_registry_errors
         + materials_reference_errors
         + performance_registry_errors
         + universe_physics_registry_errors
@@ -7642,6 +7915,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "quality_distribution_models": quality_distribution_rows,
+        }
+    )
+    part_class_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "part_classes": part_class_rows,
+        }
+    )
+    connection_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "connection_types": connection_type_rows,
+        }
+    )
+    blueprint_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "blueprints": blueprint_rows,
         }
     )
     domain_payload = _finalize_registry_payload(
@@ -8021,6 +8315,9 @@ def compile_bundle(
         "mixture_registry": ("mixture_registry", mixture_payload),
         "material_class_registry": ("material_class_registry", material_class_payload),
         "quality_distribution_registry": ("quality_distribution_registry", quality_distribution_payload),
+        "part_class_registry": ("part_class_registry", part_class_payload),
+        "connection_type_registry": ("connection_type_registry", connection_type_payload),
+        "blueprint_registry": ("blueprint_registry", blueprint_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
         "time_control_policy_registry": ("time_control_policy_registry", time_control_policy_payload),
@@ -8107,6 +8404,9 @@ def compile_bundle(
         "mixture_registry",
         "material_class_registry",
         "quality_distribution_registry",
+        "part_class_registry",
+        "connection_type_registry",
+        "blueprint_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
         "time_control_policy_registry",
@@ -8210,6 +8510,9 @@ def compile_bundle(
             "mixture_registry_hash": registry_hashes["mixture_registry_hash"],
             "material_class_registry_hash": registry_hashes["material_class_registry_hash"],
             "quality_distribution_registry_hash": registry_hashes["quality_distribution_registry_hash"],
+            "part_class_registry_hash": registry_hashes["part_class_registry_hash"],
+            "connection_type_registry_hash": registry_hashes["connection_type_registry_hash"],
+            "blueprint_registry_hash": registry_hashes["blueprint_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
             "time_control_policy_registry_hash": registry_hashes["time_control_policy_registry_hash"],
