@@ -5188,6 +5188,68 @@ def _performance_registry_rows(
     return budget_envelope_rows, arbitration_policy_rows, inspection_cache_policy_rows, errors
 
 
+def _inspection_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict]]:
+    errors: List[dict] = []
+    _inspection_record, section_rows_raw, section_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/inspection_section_registry.json",
+        expected_schema_id="dominium.registry.inspection_section_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="sections",
+    )
+    if section_load_errors:
+        return [], section_load_errors
+
+    section_rows: List[dict] = []
+    section_seen = set()
+    for entry in sorted(section_rows_raw, key=lambda row: str((row or {}).get("section_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_inspection_section_entry",
+                    "message": "inspection section entry must be object",
+                    "path": "$.sections",
+                }
+            )
+            continue
+        section_id = str(entry.get("section_id", "")).strip()
+        if not section_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_inspection_section_entry",
+                    "message": "inspection section id is missing",
+                    "path": "$.sections.section_id",
+                }
+            )
+            continue
+        if section_id in section_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_inspection_section_id",
+                    "message": "duplicate section_id '{}'".format(section_id),
+                    "path": "$.sections.section_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="inspection_section",
+            payload=entry,
+            path="data/registries/inspection_section_registry.json#{}".format(section_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        section_seen.add(section_id)
+        section_rows.append(dict(entry))
+
+    section_rows = sorted(section_rows, key=lambda row: str(row.get("section_id", "")))
+    return section_rows, errors
+
+
 def _time_control_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -8235,6 +8297,13 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        inspection_section_rows,
+        inspection_registry_errors,
+    ) = _inspection_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         universe_physics_profile_rows,
         time_model_rows,
         numeric_precision_policy_rows,
@@ -8465,6 +8534,7 @@ def compile_bundle(
         + commitment_registry_errors
         + materials_reference_errors
         + performance_registry_errors
+        + inspection_registry_errors
         + universe_physics_registry_errors
         + transition_registry_errors
         + transition_reference_errors
@@ -8568,6 +8638,13 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "policies": inspection_cache_policy_rows,
+        }
+    )
+    inspection_section_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "sections": inspection_section_rows,
         }
     )
     boundary_model_payload = _finalize_registry_payload(
@@ -9146,6 +9223,7 @@ def compile_bundle(
         "budget_envelope_registry": ("budget_envelope_registry", budget_envelope_payload),
         "arbitration_policy_registry": ("arbitration_policy_registry", arbitration_policy_payload),
         "inspection_cache_policy_registry": ("inspection_cache_policy_registry", inspection_cache_policy_payload),
+        "inspection_section_registry": ("inspection_section_registry", inspection_section_payload),
         "boundary_model_registry": ("boundary_model_registry", boundary_model_payload),
         "domain_registry": ("domain_registry", domain_payload),
         "law_registry": ("law_registry", law_payload),
@@ -9244,6 +9322,7 @@ def compile_bundle(
         "budget_envelope_registry",
         "arbitration_policy_registry",
         "inspection_cache_policy_registry",
+        "inspection_section_registry",
         "boundary_model_registry",
         "domain_registry",
         "law_registry",
@@ -9359,6 +9438,7 @@ def compile_bundle(
             "budget_envelope_registry_hash": registry_hashes["budget_envelope_registry_hash"],
             "arbitration_policy_registry_hash": registry_hashes["arbitration_policy_registry_hash"],
             "inspection_cache_policy_registry_hash": registry_hashes["inspection_cache_policy_registry_hash"],
+            "inspection_section_registry_hash": registry_hashes["inspection_section_registry_hash"],
             "boundary_model_registry_hash": registry_hashes["boundary_model_registry_hash"],
             "domain_registry_hash": registry_hashes["domain_registry_hash"],
             "law_registry_hash": registry_hashes["law_registry_hash"],

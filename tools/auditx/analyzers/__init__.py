@@ -97,6 +97,8 @@ from analyzers import e68_micro_entity_leak_smell
 from analyzers import e69_collapse_drift_smell
 from analyzers import e70_uncommitted_macro_change_smell
 from analyzers import e71_reenactment_leak_smell
+from analyzers import e72_inspection_leak_smell
+from analyzers import e73_unbounded_inspection_smell
 
 
 ANALYZERS = (
@@ -197,6 +199,8 @@ ANALYZERS = (
     e69_collapse_drift_smell,
     e70_uncommitted_macro_change_smell,
     e71_reenactment_leak_smell,
+    e72_inspection_leak_smell,
+    e73_unbounded_inspection_smell,
 )
 
 

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Inspection Section Schema",
+  "version": "1.0.0",
+  "description": "Deterministic bounded section payload for inspection snapshots.",
+  "x-doc-ref": [
+    "docs/materials/INSPECTION_SYSTEM.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "section_id",
+    "title",
+    "data",
+    "epistemic_redaction_level",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "section_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "epistemic_redaction_level": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

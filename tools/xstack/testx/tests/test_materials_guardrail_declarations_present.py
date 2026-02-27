@@ -64,6 +64,12 @@ def run(repo_root: str):
         "test_reenactment_deterministic_hash",
         "test_reenactment_budget_degrades",
         "test_epistemic_gating_of_reenactment_detail",
+        "test_inspection_snapshot_deterministic",
+        "test_cache_reuse_same_anchor",
+        "test_degrade_micro_to_meso_under_budget",
+        "test_epistemic_redaction_applied",
+        "test_history_query_deterministic",
+        "test_multiplayer_inspection_fairness",
         "INV-MATERIAL-MUTATION-PROCESS-ONLY",
         "INV-PROVENANCE-REQUIRED",
         "INV-BATCH-LINEAGE-ACYCLIC",
@@ -89,6 +95,9 @@ def run(repo_root: str):
         "INV-MATERIALIZATION-DETERMINISTIC",
         "INV-NO_SILENT_MACRO_CHANGE",
         "INV-REENACTMENT_DERIVED_ONLY",
+        "INV-INSPECTION-DERIVED-ONLY",
+        "INV-NO-TRUTH-LEAK-VIA-INSPECTION",
+        "INV-INSPECTION-BUDGETED",
         "SilentMaterialChangeSmell",
         "OrphanBatchSmell",
         "ProvenanceDriftSmell",
@@ -106,6 +115,8 @@ def run(repo_root: str):
         "CollapseDriftSmell",
         "UncommittedMacroChangeSmell",
         "ReenactmentLeakSmell",
+        "InspectionLeakSmell",
+        "UnboundedInspectionSmell",
     ]
     missing = [token for token in required_tokens if token not in text]
     if missing:

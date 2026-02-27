@@ -1,0 +1,141 @@
+{
+  "schema_id": "dominium.registry.inspection_section_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.inspection_section_registry",
+    "registry_version": "1.0.0",
+    "sections": [
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.material_stocks",
+        "title": "Material Stocks",
+        "data": {
+          "data_kind": "stocks"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.batches_summary",
+        "title": "Batches Summary",
+        "data": {
+          "data_kind": "batches"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.flow_summary",
+        "title": "Flow Summary",
+        "data": {
+          "data_kind": "flows"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.ag_progress",
+        "title": "Assembly Progress",
+        "data": {
+          "data_kind": "assembly_progress"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.maintenance_backlog",
+        "title": "Maintenance Backlog",
+        "data": {
+          "data_kind": "maintenance_backlog"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.failure_risk_summary",
+        "title": "Failure Risk Summary",
+        "data": {
+          "data_kind": "failure_risk"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.commitments_summary",
+        "title": "Commitments",
+        "data": {
+          "data_kind": "commitments"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.events_summary",
+        "title": "Events",
+        "data": {
+          "data_kind": "events"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.reenactment_link",
+        "title": "Reenactment",
+        "data": {
+          "data_kind": "reenactment_link"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.micro_parts_summary",
+        "title": "Micro Parts Summary",
+        "data": {
+          "data_kind": "micro_parts"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "micro",
+          "cost_units": 4
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

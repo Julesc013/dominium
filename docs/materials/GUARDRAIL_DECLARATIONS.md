@@ -179,6 +179,27 @@ Declare MAT-0 required future test coverage and guardrail identifiers for RepoX 
 - `UncommittedMacroChangeSmell`
 - `ReenactmentLeakSmell`
 
+## MAT-9 Additions (Inspection Deep Integration)
+### TestX Declarations
+- `test_inspection_snapshot_deterministic`
+- `test_cache_reuse_same_anchor`
+- `test_degrade_micro_to_meso_under_budget`
+- `test_epistemic_redaction_applied`
+- `test_history_query_deterministic`
+- `test_multiplayer_inspection_fairness`
+
+### RepoX Rule Declarations
+- `INV-INSPECTION-DERIVED-ONLY`
+  - Inspection snapshots are derived artifacts and must not mutate canonical truth state.
+- `INV-NO-TRUTH-LEAK-VIA-INSPECTION`
+  - Inspection output must respect law/epistemic redaction and never expose forbidden hidden detail.
+- `INV-INSPECTION-BUDGETED`
+  - Inspection must enforce deterministic section/tick budgets and deterministic degradation/refusal paths.
+
+### AuditX Analyzer Declarations
+- `InspectionLeakSmell`
+- `UnboundedInspectionSmell`
+
 ## MAT-0 Status
 - These declarations are constitutional commitments in MAT-0.
 - Enforcement implementation and deeper runtime coverage are MAT-1..MAT-10 work.

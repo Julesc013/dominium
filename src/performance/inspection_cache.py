@@ -21,6 +21,9 @@ def build_cache_key(
     policy_id: str,
     physics_profile_id: str,
     pack_lock_hash: str,
+    desired_fidelity: str = "",
+    epistemic_policy_id: str = "",
+    section_policy_id: str = "",
 ) -> str:
     payload = {
         "target_id": str(target_id),
@@ -28,6 +31,9 @@ def build_cache_key(
         "policy_id": str(policy_id),
         "physics_profile_id": str(physics_profile_id),
         "pack_lock_hash": str(pack_lock_hash),
+        "desired_fidelity": str(desired_fidelity),
+        "epistemic_policy_id": str(epistemic_policy_id),
+        "section_policy_id": str(section_policy_id),
     }
     return str(canonical_sha256(payload))
 
@@ -158,4 +164,3 @@ def cache_lookup_or_store(
         },
         "evicted_keys": sorted(set(str(item) for item in evicted if str(item).strip())),
     }
-

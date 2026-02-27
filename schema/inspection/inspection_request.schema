@@ -1,0 +1,26 @@
+SCHEMA: inspection/inspection_request.schema
+schema_id: dominium.schema.inspection.inspection_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic inspection request intent payload.
+
+REQUIRED SHAPE:
+record inspection_request
+  required:
+    - schema_version: semver
+    - request_id: id
+    - requester_subject_id: id
+    - target_kind: enum(structure|project|node|manifest|cohort|faction)
+    - target_id: id
+    - desired_fidelity: enum(macro|meso|micro)
+    - tick: int
+    - max_cost_units: int
+    - extensions: map
+  optional:
+    - time_range: map|null
+
+INVARIANTS:
+- max_cost_units must be non-negative.
+- time_range, when provided, must satisfy start_tick <= end_tick.
