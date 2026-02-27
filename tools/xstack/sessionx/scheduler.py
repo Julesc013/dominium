@@ -51,6 +51,8 @@ PROCESS_PRIORITY = {
     "process.cohort_relocate": 26,
     "process.role_assign": 26,
     "process.role_revoke": 26,
+    "process.manifest_create": 26,
+    "process.manifest_tick": 27,
     "process.control_bind_camera": 25,
     "process.control_unbind_camera": 25,
     "process.control_possess_agent": 25,
@@ -93,6 +95,8 @@ PROCESS_ENTITY_SCOPE = {
     "process.cohort_relocate": "cohort.unknown",
     "process.role_assign": "institution.unknown",
     "process.role_revoke": "institution.unknown",
+    "process.manifest_create": "logistics.manifest.create",
+    "process.manifest_tick": "logistics.manifest.tick",
     "process.control_bind_camera": "controller.binding.camera",
     "process.control_unbind_camera": "controller.binding.camera",
     "process.control_possess_agent": "controller.binding.possess",
@@ -135,6 +139,8 @@ PROCESS_FIELD_SCOPE = {
     "process.cohort_relocate": "civ.cohort.state",
     "process.role_assign": "civ.institution.state",
     "process.role_revoke": "civ.institution.state",
+    "process.manifest_create": "logistics.manifest.state",
+    "process.manifest_tick": "logistics.manifest.state",
     "process.control_bind_camera": "control.binding.camera",
     "process.control_unbind_camera": "control.binding.camera",
     "process.control_possess_agent": "control.binding.possess",
@@ -273,6 +279,16 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
         assignment_id = str(inputs.get("assignment_id", "")).strip()
         if assignment_id:
             entity_scope = assignment_id
+    if process_id == "process.manifest_create":
+        from_node_id = str(inputs.get("from_node_id", "")).strip()
+        to_node_id = str(inputs.get("to_node_id", "")).strip()
+        batch_id = str(inputs.get("batch_id", "")).strip()
+        if from_node_id and to_node_id and batch_id:
+            entity_scope = "manifest.create.{}::{}::{}".format(from_node_id, to_node_id, batch_id)
+    if process_id == "process.manifest_tick":
+        graph_id = str(inputs.get("graph_id", "")).strip()
+        if graph_id:
+            entity_scope = "manifest.tick.{}".format(graph_id)
     return {
         "envelope_id": str(envelope.get("envelope_id", "")),
         "script_step": int(script_step),

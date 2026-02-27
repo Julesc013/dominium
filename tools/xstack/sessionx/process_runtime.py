@@ -27,6 +27,15 @@ from src.performance.inspection_cache import (
     build_inspection_snapshot,
     cache_lookup_or_store as inspection_cache_lookup_or_store,
 )
+from src.logistics.logistics_engine import (
+    LogisticsError,
+    build_inventory_index,
+    create_manifest_and_commitment,
+    graph_rows_by_id,
+    inventory_rows_from_index,
+    routing_rule_rows_by_id,
+    tick_manifests,
+)
 from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
     advance_time as time_advance,
@@ -89,6 +98,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.region_management_tick": "session.boot",
     "process.region_expand": "session.boot",
     "process.region_collapse": "session.boot",
+    "process.manifest_create": "entitlement.control.admin",
+    "process.manifest_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -137,6 +148,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.region_management_tick": "observer",
     "process.region_expand": "observer",
     "process.region_collapse": "observer",
+    "process.manifest_create": "operator",
+    "process.manifest_tick": "observer",
 }
 PRIVILEGE_RANK = {
     "observer": 0,
@@ -262,6 +275,13 @@ INSTRUMENT_TYPE_BY_ID = dict((value, key) for key, value in INSTRUMENT_TYPE_ID_B
 CONSERVATION_DEFAULT_QUANTITY_ID = "quantity.mass_energy_total"
 CONSERVATION_DEFAULT_DOMAIN_ID = "domain.reality"
 CONSERVATION_CONTROL_DOMAIN_ID = "domain.control"
+LOGISTICS_DEFAULT_QUANTITY_ID = "quantity.mass"
+LOGISTICS_DEFAULT_GRAPH_ID = "graph.default"
+LOGISTICS_DEFAULT_ROUTING_RULE_ID = "route.direct_only"
+LOGISTICS_DEFAULT_MAX_MANIFESTS_PER_TICK = 128
+LOGISTICS_DEFAULT_MAX_ACTIVE_MANIFESTS = 100000
+LOGISTICS_DEFAULT_COST_UNITS_PER_MANIFEST = 1
+LOGISTICS_DEFAULT_COST_UNITS_PER_ROUTE_COMPUTE = 1
 ZERO_HASH = "0" * 64
 
 
@@ -1253,6 +1273,165 @@ def _ensure_role_assignment_assemblies(state: dict) -> List[dict]:
         )
     state["role_assignment_assemblies"] = normalized
     return normalized
+
+
+def _normalize_manifest_status(token: object) -> str:
+    value = str(token or "").strip() or "planned"
+    if value not in ("planned", "in_transit", "delivered", "lost", "failed"):
+        return "planned"
+    return value
+
+
+def _normalize_shipment_commitment_status(token: object) -> str:
+    value = str(token or "").strip() or "planned"
+    if value not in ("planned", "scheduled", "executing", "completed", "failed"):
+        return "planned"
+    return value
+
+
+def _ensure_logistics_manifests(state: dict) -> List[dict]:
+    rows = state.get("logistics_manifests")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("manifest_id", ""))):
+        manifest_id = str(row.get("manifest_id", "")).strip()
+        if not manifest_id:
+            continue
+        extensions = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "manifest_id": manifest_id,
+                "graph_id": str(row.get("graph_id", "")).strip(),
+                "from_node_id": str(row.get("from_node_id", "")).strip(),
+                "to_node_id": str(row.get("to_node_id", "")).strip(),
+                "batch_id": str(row.get("batch_id", "")).strip(),
+                "material_id": str(row.get("material_id", "")).strip(),
+                "quantity_mass": max(0, _as_int(row.get("quantity_mass", 0), 0)),
+                "scheduled_depart_tick": max(0, _as_int(row.get("scheduled_depart_tick", 0), 0)),
+                "scheduled_arrive_tick": max(
+                    0,
+                    _as_int(row.get("scheduled_arrive_tick", row.get("scheduled_depart_tick", 0)), 0),
+                ),
+                "status": _normalize_manifest_status(row.get("status", "planned")),
+                "provenance_event_ids": _sorted_tokens(list(row.get("provenance_event_ids") or [])),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                "extensions": extensions,
+            }
+        )
+    state["logistics_manifests"] = normalized
+    return normalized
+
+
+def _ensure_shipment_commitments(state: dict) -> List[dict]:
+    rows = state.get("shipment_commitments")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("commitment_id", ""))):
+        commitment_id = str(row.get("commitment_id", "")).strip()
+        if not commitment_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "commitment_id": commitment_id,
+                "manifest_id": str(row.get("manifest_id", "")).strip(),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip(),
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "status": _normalize_shipment_commitment_status(row.get("status", "planned")),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["shipment_commitments"] = normalized
+    return normalized
+
+
+def _ensure_logistics_node_inventories(state: dict) -> List[dict]:
+    rows = state.get("logistics_node_inventories")
+    if not isinstance(rows, list):
+        rows = []
+    inventory_index: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("node_id", ""))):
+        try:
+            partial = build_inventory_index([row])
+        except LogisticsError:
+            continue
+        for node_id in sorted(partial.keys()):
+            inventory_index[str(node_id)] = dict(partial[node_id])
+    normalized_rows = inventory_rows_from_index(inventory_index)
+    state["logistics_node_inventories"] = list(normalized_rows)
+    return list(normalized_rows)
+
+
+def _ensure_logistics_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("logistics_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        normalized.append(
+            {
+                "event_id": event_id,
+                "event_type": str(row.get("event_type", "")).strip(),
+                "manifest_id": str(row.get("manifest_id", "")).strip(),
+                "commitment_id": str(row.get("commitment_id", "")).strip(),
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "quantity_mass": max(0, _as_int(row.get("quantity_mass", 0), 0)),
+                "material_id": str(row.get("material_id", "")).strip(),
+                "batch_id": str(row.get("batch_id", "")).strip(),
+                "route_edge_ids": _sorted_tokens(list(row.get("route_edge_ids") or [])),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip(),
+                "event_fingerprint": str(row.get("event_fingerprint", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["logistics_provenance_events"] = normalized
+    return normalized
+
+
+def _ensure_logistics_runtime_state(state: dict) -> dict:
+    row = state.get("logistics_runtime_state")
+    if not isinstance(row, dict):
+        row = {}
+    normalized = {
+        "next_event_sequence": max(0, _as_int(row.get("next_event_sequence", 0), 0)),
+        "last_manifest_tick": max(0, _as_int(row.get("last_manifest_tick", 0), 0)),
+        "last_budget_outcome": str(row.get("last_budget_outcome", "")).strip() or "none",
+        "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+    }
+    state["logistics_runtime_state"] = normalized
+    return normalized
+
+
+def _persist_logistics_state(
+    state: dict,
+    *,
+    manifests: List[dict],
+    commitments: List[dict],
+    inventories: List[dict],
+    events: List[dict] | None = None,
+    runtime_state: dict | None = None,
+) -> None:
+    state["logistics_manifests"] = [dict(row) for row in list(manifests or []) if isinstance(row, dict)]
+    state["shipment_commitments"] = [dict(row) for row in list(commitments or []) if isinstance(row, dict)]
+    state["logistics_node_inventories"] = [dict(row) for row in list(inventories or []) if isinstance(row, dict)]
+    if events is not None:
+        state["logistics_provenance_events"] = [dict(row) for row in list(events or []) if isinstance(row, dict)]
+    if runtime_state is not None:
+        state["logistics_runtime_state"] = dict(runtime_state)
+    _ensure_logistics_manifests(state)
+    _ensure_shipment_commitments(state)
+    _ensure_logistics_node_inventories(state)
+    _ensure_logistics_provenance_events(state)
+    _ensure_logistics_runtime_state(state)
 
 
 def _find_cohort(cohort_rows: List[dict], cohort_id: str) -> dict:
@@ -3582,6 +3761,188 @@ def _registry_row_by_id(registry_payload: dict, list_key: str, id_key: str, toke
     return {}
 
 
+def _logistics_actor_subject_id(authority_context: dict) -> str:
+    peer_id = str((authority_context or {}).get("peer_id", "")).strip()
+    subject_id = str((authority_context or {}).get("subject_id", "")).strip()
+    token = subject_id or peer_id
+    if token:
+        return token
+    return "subject.system"
+
+
+def _select_logistics_graph_and_rule(
+    *,
+    policy_context: dict | None,
+    inputs: dict,
+    manifests: List[dict] | None = None,
+) -> Tuple[dict, dict, Dict[str, object]]:
+    graph_registry = _policy_payload(policy_context, "logistics_graph_registry")
+    graph_map = graph_rows_by_id(graph_registry)
+    graph_id = str(
+        (inputs or {}).get("graph_id", "")
+        or (policy_context or {}).get("logistics_graph_id", "")
+    ).strip()
+    if not graph_id:
+        manifest_graph_ids = sorted(
+            set(
+                str(item.get("graph_id", "")).strip()
+                for item in list(manifests or [])
+                if isinstance(item, dict) and str(item.get("graph_id", "")).strip()
+            )
+        )
+        if manifest_graph_ids:
+            graph_id = manifest_graph_ids[0]
+        elif graph_map:
+            graph_id = sorted(graph_map.keys())[0]
+        else:
+            return {}, {}, refusal(
+                "refusal.logistics.invalid_route",
+                "no logistics graph is available for manifest process execution",
+                "Provide graph_id in inputs or load logistics_graph_registry entries.",
+                {},
+                "$.intent.inputs.graph_id",
+            )
+    graph_row = dict(graph_map.get(graph_id) or {})
+    if not graph_row:
+        return {}, {}, refusal(
+            "refusal.logistics.invalid_route",
+            "logistics graph '{}' is not present in registry".format(graph_id),
+            "Use graph_id from logistics_graph_registry.",
+            {"graph_id": graph_id},
+            "$.intent.inputs.graph_id",
+        )
+
+    routing_registry = _policy_payload(policy_context, "logistics_routing_rule_registry")
+    routing_map = routing_rule_rows_by_id(routing_registry)
+    routing_rule_id = str(
+        (inputs or {}).get("routing_rule_id", "")
+        or graph_row.get("deterministic_routing_rule_id", "")
+        or (policy_context or {}).get("logistics_routing_rule_id", "")
+    ).strip()
+    if not routing_rule_id:
+        routing_rule_id = LOGISTICS_DEFAULT_ROUTING_RULE_ID
+    routing_rule_row = dict(routing_map.get(routing_rule_id) or {})
+    if not routing_rule_row:
+        return {}, {}, refusal(
+            "refusal.logistics.invalid_route",
+            "routing rule '{}' is not present in registry".format(routing_rule_id),
+            "Use deterministic routing rule id from logistics_routing_rule_registry.",
+            {"routing_rule_id": routing_rule_id},
+            "$.intent.inputs.routing_rule_id",
+        )
+    return graph_row, routing_rule_row, {}
+
+
+def _logistics_loss_exception_type(policy_context: dict | None) -> str:
+    allowed_types = _sorted_tokens(list((dict(policy_context or {})).get("allowed_exception_types") or []))
+    if not allowed_types:
+        profile_registry = _policy_payload(policy_context, "universe_physics_profile_registry")
+        profile_id = str((dict(policy_context or {})).get("physics_profile_id", "")).strip()
+        profile_row = _registry_row_by_id(
+            profile_registry,
+            "physics_profiles",
+            "physics_profile_id",
+            profile_id,
+        )
+        allowed_types = _sorted_tokens(list(profile_row.get("allowed_exception_types") or []))
+    if "exception.boundary_flux" in set(allowed_types):
+        return "exception.boundary_flux"
+    if "exception.creation_annihilation" in set(allowed_types):
+        return "exception.creation_annihilation"
+    return "exception.boundary_flux"
+
+
+def _active_manifest_count(manifest_rows: List[dict]) -> int:
+    terminal = {"delivered", "lost", "failed"}
+    count = 0
+    for row in list(manifest_rows or []):
+        if not isinstance(row, dict):
+            continue
+        status = str(row.get("status", "")).strip() or "planned"
+        if status in terminal:
+            continue
+        count += 1
+    return int(count)
+
+
+def _logistics_manifest_tick_budget(
+    *,
+    policy_context: dict | None,
+    requested_max_updates: int,
+    route_computation_count: int = 0,
+) -> dict:
+    policy_payload = dict(policy_context or {})
+    configured_max = max(
+        1,
+        _as_int(
+            policy_payload.get("logistics_manifest_tick_budget", LOGISTICS_DEFAULT_MAX_MANIFESTS_PER_TICK),
+            LOGISTICS_DEFAULT_MAX_MANIFESTS_PER_TICK,
+        ),
+    )
+    requested = int(max(1, _as_int(requested_max_updates, configured_max)))
+    requested = min(requested, configured_max)
+
+    cost_per_manifest = max(
+        1,
+        _as_int(
+            policy_payload.get("logistics_cost_units_per_manifest", LOGISTICS_DEFAULT_COST_UNITS_PER_MANIFEST),
+            LOGISTICS_DEFAULT_COST_UNITS_PER_MANIFEST,
+        ),
+    )
+    cost_per_route = max(
+        0,
+        _as_int(
+            policy_payload.get("logistics_cost_units_per_route_compute", LOGISTICS_DEFAULT_COST_UNITS_PER_ROUTE_COMPUTE),
+            LOGISTICS_DEFAULT_COST_UNITS_PER_ROUTE_COMPUTE,
+        ),
+    )
+
+    budget_policy = dict(policy_payload.get("budget_policy") or {})
+    budget_envelope_registry = _policy_payload(policy_context, "budget_envelope_registry")
+    budget_envelope_id = str(policy_payload.get("budget_envelope_id", "")).strip()
+    selected_budget_envelope = _registry_row_by_id(
+        budget_envelope_registry,
+        "envelopes",
+        "envelope_id",
+        budget_envelope_id,
+    )
+    normalized_budget_envelope = normalize_budget_envelope(
+        envelope=selected_budget_envelope,
+        budget_policy=budget_policy,
+    )
+    max_compute_units = max(
+        0,
+        min(
+            _as_int(budget_policy.get("max_compute_units_per_tick", 0), 0),
+            _as_int(normalized_budget_envelope.get("max_solver_cost_units_per_tick", 0), 0),
+        ),
+    )
+
+    has_budget_inputs = bool(budget_policy) or bool(selected_budget_envelope)
+    if has_budget_inputs:
+        reserved_for_routes = int(max(0, int(route_computation_count)) * int(cost_per_route))
+        available_compute = int(max(0, int(max_compute_units) - int(reserved_for_routes)))
+        max_by_compute = int(max(0, int(available_compute) // int(cost_per_manifest)))
+    else:
+        available_compute = 0
+        max_by_compute = int(requested)
+
+    effective_max = int(max(0, min(int(requested), int(max_by_compute))))
+    budget_outcome = "complete"
+    if int(effective_max) < int(requested):
+        budget_outcome = "degraded"
+    return {
+        "effective_max_updates": int(effective_max),
+        "requested_max_updates": int(requested),
+        "max_by_compute": int(max_by_compute),
+        "budget_outcome": budget_outcome,
+        "cost_units_per_manifest": int(cost_per_manifest),
+        "cost_units_per_route_compute": int(cost_per_route),
+        "max_compute_units_per_tick": int(max_compute_units),
+        "available_compute_units": int(available_compute),
+    }
+
+
 def _inspection_target_payload(state: dict, target_id: str) -> dict:
     token = str(target_id).strip()
     if not token:
@@ -3621,6 +3982,9 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("body_assemblies", "body_id"),
         ("order_assemblies", "order_id"),
         ("institution_assemblies", "institution_id"),
+        ("logistics_node_inventories", "node_id"),
+        ("logistics_manifests", "manifest_id"),
+        ("shipment_commitments", "commitment_id"),
         ("role_assignments", "role_assignment_id"),
     )
     for list_key, id_key in id_table:
@@ -5828,6 +6192,11 @@ def execute_intent(
     queue_rows = _ensure_order_queue_assemblies(state)
     institution_rows = _ensure_institution_assemblies(state)
     role_assignment_rows = _ensure_role_assignment_assemblies(state)
+    logistics_manifests = _ensure_logistics_manifests(state)
+    shipment_commitment_rows = _ensure_shipment_commitments(state)
+    logistics_inventory_rows = _ensure_logistics_node_inventories(state)
+    logistics_provenance_events = _ensure_logistics_provenance_events(state)
+    logistics_runtime_state = _ensure_logistics_runtime_state(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     arrived_cohort_ids = _apply_pending_cohort_arrivals(cohorts, current_tick)
@@ -8021,6 +8390,302 @@ def execute_intent(
             "failed_order_ids": list(tick_summary.get("failed_order_ids") or []),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.manifest_create":
+        from_node_id = str(inputs.get("from_node_id", "")).strip()
+        to_node_id = str(inputs.get("to_node_id", "")).strip()
+        batch_id = str(inputs.get("batch_id", "")).strip()
+        material_id = str(inputs.get("material_id", "")).strip()
+        if not from_node_id or not to_node_id or not batch_id or not material_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.manifest_create requires from_node_id, to_node_id, batch_id, and material_id",
+                "Provide deterministic logistics node IDs and batch/material identifiers.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        quantity_mass = _as_int(inputs.get("quantity_mass", -1), -1)
+        if quantity_mass < 0:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.manifest_create requires quantity_mass >= 0",
+                "Provide non-negative quantity_mass in fixed-point integer units.",
+                {"quantity_mass": str(quantity_mass)},
+                "$.intent.inputs.quantity_mass",
+            )
+        earliest_depart_tick = max(0, _as_int(inputs.get("earliest_depart_tick", current_tick), current_tick))
+        graph_row, routing_rule_row, graph_refusal = _select_logistics_graph_and_rule(
+            policy_context=policy_context,
+            inputs=dict(inputs),
+            manifests=logistics_manifests,
+        )
+        if graph_refusal:
+            return graph_refusal
+
+        max_active_manifests = max(
+            1,
+            _as_int(
+                (dict(policy_context or {})).get("logistics_max_active_manifests", LOGISTICS_DEFAULT_MAX_ACTIVE_MANIFESTS),
+                LOGISTICS_DEFAULT_MAX_ACTIVE_MANIFESTS,
+            ),
+        )
+        active_count = _active_manifest_count(logistics_manifests)
+        if active_count >= max_active_manifests:
+            return refusal(
+                "refusal.logistics.invalid_route",
+                "active manifest capacity is exhausted for this simulation shard",
+                "Wait for manifest_tick completion or raise logistics_max_active_manifests policy budget.",
+                {
+                    "active_count": str(active_count),
+                    "max_active_manifests": str(max_active_manifests),
+                },
+                "$.intent.inputs",
+            )
+
+        try:
+            created = create_manifest_and_commitment(
+                graph_row=graph_row,
+                routing_rule_row=routing_rule_row,
+                inventory_index=build_inventory_index(logistics_inventory_rows),
+                from_node_id=from_node_id,
+                to_node_id=to_node_id,
+                batch_id=batch_id,
+                material_id=material_id,
+                quantity_mass=int(quantity_mass),
+                earliest_depart_tick=int(earliest_depart_tick),
+                actor_subject_id=_logistics_actor_subject_id(authority_context),
+                intent_id=intent_id,
+                current_tick=int(current_tick),
+                numeric_policy=dict((dict(policy_context or {})).get("numeric_precision_policy") or {}),
+            )
+        except LogisticsError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix route/stock inputs and retry manifest creation.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+
+        manifest_row = dict(created.get("manifest") or {})
+        commitment_row = dict(created.get("commitment") or {})
+        manifest_by_id = dict(
+            (str(row.get("manifest_id", "")), dict(row))
+            for row in list(logistics_manifests or [])
+            if isinstance(row, dict) and str(row.get("manifest_id", "")).strip()
+        )
+        commitment_by_id = dict(
+            (str(row.get("commitment_id", "")), dict(row))
+            for row in list(shipment_commitment_rows or [])
+            if isinstance(row, dict) and str(row.get("commitment_id", "")).strip()
+        )
+        if manifest_row:
+            manifest_by_id[str(manifest_row.get("manifest_id", ""))] = manifest_row
+        if commitment_row:
+            commitment_by_id[str(commitment_row.get("commitment_id", ""))] = commitment_row
+        logistics_manifests = [dict(manifest_by_id[key]) for key in sorted(manifest_by_id.keys())]
+        shipment_commitment_rows = [dict(commitment_by_id[key]) for key in sorted(commitment_by_id.keys())]
+        logistics_inventory_rows = inventory_rows_from_index(dict(created.get("inventory_index") or {}))
+        _persist_logistics_state(
+            state,
+            manifests=logistics_manifests,
+            commitments=shipment_commitment_rows,
+            inventories=logistics_inventory_rows,
+            events=logistics_provenance_events,
+            runtime_state=logistics_runtime_state,
+        )
+        result_metadata = {
+            "graph_id": str((manifest_row or {}).get("graph_id", "")),
+            "manifest_id": str((manifest_row or {}).get("manifest_id", "")),
+            "commitment_id": str((commitment_row or {}).get("commitment_id", "")),
+            "from_node_id": from_node_id,
+            "to_node_id": to_node_id,
+            "batch_id": batch_id,
+            "material_id": material_id,
+            "quantity_mass": int(quantity_mass),
+            "earliest_depart_tick": int(earliest_depart_tick),
+            "active_manifest_count": int(_active_manifest_count(logistics_manifests)),
+            "max_active_manifests": int(max_active_manifests),
+            "route_edge_ids": list(created.get("route_edge_ids") or []),
+            "loss_fraction": int(created.get("loss_fraction", 0) or 0),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.manifest_tick":
+        requested_max_updates = _as_int(inputs.get("max_manifests_per_tick", 0), 0)
+        if requested_max_updates <= 0:
+            requested_max_updates = _as_int(
+                (dict(policy_context or {})).get("logistics_manifest_tick_budget", LOGISTICS_DEFAULT_MAX_MANIFESTS_PER_TICK),
+                LOGISTICS_DEFAULT_MAX_MANIFESTS_PER_TICK,
+            )
+        budget = _logistics_manifest_tick_budget(
+            policy_context=policy_context,
+            requested_max_updates=int(requested_max_updates),
+            route_computation_count=0,
+        )
+        graph_row, routing_rule_row, graph_refusal = _select_logistics_graph_and_rule(
+            policy_context=policy_context,
+            inputs=dict(inputs),
+            manifests=logistics_manifests,
+        )
+        if graph_refusal and logistics_manifests:
+            return graph_refusal
+        if graph_refusal and (not logistics_manifests):
+            logistics_runtime_state["last_manifest_tick"] = int(max(0, int(current_tick)))
+            logistics_runtime_state["last_budget_outcome"] = "complete"
+            _persist_logistics_state(
+                state,
+                manifests=logistics_manifests,
+                commitments=shipment_commitment_rows,
+                inventories=logistics_inventory_rows,
+                events=logistics_provenance_events,
+                runtime_state=logistics_runtime_state,
+            )
+            result_metadata = {
+                "graph_id": "",
+                "processed_count": 0,
+                "remaining_count": 0,
+                "event_count": 0,
+                "loss_count": 0,
+                "budget_outcome": "complete",
+                "effective_max_updates": int(budget.get("effective_max_updates", 0)),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            selected_graph_id = str(graph_row.get("graph_id", "")).strip()
+            scoped_manifests = [
+                dict(row)
+                for row in list(logistics_manifests or [])
+                if isinstance(row, dict) and str(row.get("graph_id", "")).strip() == selected_graph_id
+            ]
+            passthrough_manifests = [
+                dict(row)
+                for row in list(logistics_manifests or [])
+                if isinstance(row, dict) and str(row.get("graph_id", "")).strip() != selected_graph_id
+            ]
+            try:
+                ticked = tick_manifests(
+                    graph_row=graph_row,
+                    manifests=scoped_manifests,
+                    commitments=shipment_commitment_rows,
+                    inventory_index=build_inventory_index(logistics_inventory_rows),
+                    current_tick=int(current_tick),
+                    max_updates=int(max(0, int(budget.get("effective_max_updates", 0)))),
+                    actor_subject_id=_logistics_actor_subject_id(authority_context),
+                    numeric_policy=dict((dict(policy_context or {})).get("numeric_precision_policy") or {}),
+                    event_sequence_start=max(0, _as_int(logistics_runtime_state.get("next_event_sequence", 0), 0)),
+                )
+            except LogisticsError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Fix manifest graph/inventory state and retry manifest_tick.",
+                    dict(exc.details),
+                    "$.intent.inputs",
+                )
+
+            manifest_by_id = dict(
+                (str(row.get("manifest_id", "")), dict(row))
+                for row in list(passthrough_manifests or [])
+                if isinstance(row, dict) and str(row.get("manifest_id", "")).strip()
+            )
+            for row in list(ticked.get("manifests") or []):
+                if not isinstance(row, dict):
+                    continue
+                manifest_id = str(row.get("manifest_id", "")).strip()
+                if manifest_id:
+                    manifest_by_id[manifest_id] = dict(row)
+            logistics_manifests = [dict(manifest_by_id[key]) for key in sorted(manifest_by_id.keys())]
+
+            commitment_by_id = dict(
+                (str(row.get("commitment_id", "")), dict(row))
+                for row in list(shipment_commitment_rows or [])
+                if isinstance(row, dict) and str(row.get("commitment_id", "")).strip()
+            )
+            for row in list(ticked.get("commitments") or []):
+                if not isinstance(row, dict):
+                    continue
+                commitment_id = str(row.get("commitment_id", "")).strip()
+                if commitment_id:
+                    commitment_by_id[commitment_id] = dict(row)
+            shipment_commitment_rows = [dict(commitment_by_id[key]) for key in sorted(commitment_by_id.keys())]
+
+            logistics_inventory_rows = inventory_rows_from_index(dict(ticked.get("inventory_index") or {}))
+            provenance_rows = list(logistics_provenance_events or [])
+            provenance_rows.extend(
+                dict(row)
+                for row in list(ticked.get("events") or [])
+                if isinstance(row, dict)
+            )
+            logistics_provenance_events = sorted(
+                (
+                    dict(row)
+                    for row in provenance_rows
+                    if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+                ),
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+            )
+            logistics_runtime_state["next_event_sequence"] = max(
+                0,
+                _as_int(
+                    ticked.get("next_event_sequence", logistics_runtime_state.get("next_event_sequence", 0)),
+                    _as_int(logistics_runtime_state.get("next_event_sequence", 0), 0),
+                ),
+            )
+            logistics_runtime_state["last_manifest_tick"] = int(max(0, int(current_tick)))
+            budget_outcome = str(budget.get("budget_outcome", "complete")).strip() or "complete"
+            if _as_int(ticked.get("remaining_count", 0), 0) > 0:
+                budget_outcome = "degraded"
+            logistics_runtime_state["last_budget_outcome"] = budget_outcome
+
+            loss_entries = [
+                dict(row)
+                for row in list(ticked.get("loss_entries") or [])
+                if isinstance(row, dict) and _as_int(row.get("lost_mass", 0), 0) > 0
+            ]
+            if loss_entries:
+                exception_type_id = _logistics_loss_exception_type(policy_context)
+                for row in loss_entries:
+                    _ledger_emit_exception(
+                        policy_context=policy_context,
+                        quantity_id=LOGISTICS_DEFAULT_QUANTITY_ID,
+                        delta=-1 * _as_int(row.get("lost_mass", 0), 0),
+                        material_id=str(row.get("material_id", "")).strip(),
+                        exception_type_id=exception_type_id,
+                        domain_id=CONSERVATION_DEFAULT_DOMAIN_ID,
+                        process_id=process_id,
+                        reason_code="logistics.shipment_loss",
+                        evidence=[
+                            "manifest_id={}".format(str(row.get("manifest_id", ""))),
+                            "graph_id={}".format(selected_graph_id),
+                        ],
+                    )
+
+            _persist_logistics_state(
+                state,
+                manifests=logistics_manifests,
+                commitments=shipment_commitment_rows,
+                inventories=logistics_inventory_rows,
+                events=logistics_provenance_events,
+                runtime_state=logistics_runtime_state,
+            )
+            result_metadata = {
+                "graph_id": selected_graph_id,
+                "routing_rule_id": str(routing_rule_row.get("rule_id", "")),
+                "processed_count": int(_as_int(ticked.get("processed_count", 0), 0)),
+                "remaining_count": int(_as_int(ticked.get("remaining_count", 0), 0)),
+                "event_count": len(list(ticked.get("events") or [])),
+                "loss_count": len(loss_entries),
+                "loss_entries": loss_entries,
+                "budget_outcome": str(logistics_runtime_state.get("last_budget_outcome", "complete")),
+                "requested_max_updates": int(budget.get("requested_max_updates", 0)),
+                "effective_max_updates": int(budget.get("effective_max_updates", 0)),
+                "max_by_compute": int(budget.get("max_by_compute", 0)),
+                "cost_units_per_manifest": int(budget.get("cost_units_per_manifest", 0)),
+                "cost_units_per_route_compute": int(budget.get("cost_units_per_route_compute", 0)),
+                "max_compute_units_per_tick": int(budget.get("max_compute_units_per_tick", 0)),
+                "available_compute_units": int(budget.get("available_compute_units", 0)),
+                "active_manifest_count": int(_active_manifest_count(logistics_manifests)),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.role_assign":
         if law_profile.get("allow_role_delegation") is False:
             return refusal(
