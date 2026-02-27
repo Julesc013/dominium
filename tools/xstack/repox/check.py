@@ -455,6 +455,17 @@ PHYSICS_LITERAL_ALLOWED_PATH_PREFIXES = (
     "tools/xstack/repox/check.py",
 )
 
+BLUEPRINT_LITERAL_ALLOWED_PATH_PREFIXES = (
+    "packs/",
+    "data/registries/",
+    "docs/",
+    "schemas/",
+    "schema/",
+    "tools/auditx/",
+    "tools/xstack/testx/tests/",
+    "tools/xstack/repox/check.py",
+)
+
 AUDITX_FINDINGS_PATH = "docs/audit/auditx/FINDINGS.json"
 AUDITX_RUNTIME_PROBE_OUTPUT_ROOT = ".xstack_cache/auditx/repox_probe"
 AUDITX_HIGH_RISK_CONFIDENCE = 0.85
@@ -5527,6 +5538,123 @@ def _append_material_taxonomy_invariant_findings(
             )
 
 
+def _append_material_structure_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_registry_paths = (
+        "data/registries/part_class_registry.json",
+        "data/registries/connection_type_registry.json",
+        "data/registries/blueprint_registry.json",
+    )
+    for rel_path in required_registry_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="blueprint/assembly definitions must remain data-only registry artifacts",
+                rule_id="INV-BLUEPRINTS-DATA-ONLY",
+            )
+        )
+
+    structure_literals = (
+        "blueprint.house.basic",
+        "blueprint.lathe.basic",
+        "blueprint.road.segment.basic",
+        "blueprint.simple_bridge.basic",
+        "blueprint.space_elevator.template",
+    )
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith((".py", ".c", ".h", ".cpp", ".hpp", ".json", ".md")):
+            continue
+        if rel_path.startswith(BLUEPRINT_LITERAL_ALLOWED_PATH_PREFIXES):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if not any(literal in token for literal in structure_literals):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token[:140],
+                    message="runtime/source must not hardcode baseline blueprint structure identifiers",
+                    rule_id="INV-NO-HARDCODED-STRUCTURES",
+                )
+            )
+
+    required_tokens = {
+        "src/materials/blueprint_engine.py": (
+            "compile_blueprint_artifacts(",
+            "blueprint_compile_cache_key(",
+            "REFUSAL_BLUEPRINT_MISSING_PART_CLASS",
+            "REFUSAL_BLUEPRINT_INVALID_GRAPH",
+            "REFUSAL_BLUEPRINT_PARAMETER_INVALID",
+        ),
+        "tools/materials/tool_blueprint_compile.py": (
+            "compile_blueprint_artifacts(",
+            "cache_key",
+            "pack_lock_hash",
+        ),
+        "src/client/interaction/preview_generator.py": (
+            "_blueprint_preview_payload(",
+            "process.blueprint_inspect",
+            "build_blueprint_ghost_overlay(",
+        ),
+        "src/client/interaction/inspection_overlays.py": (
+            "_blueprint_overlay_payload(",
+            "build_blueprint_ghost_overlay(",
+            "blueprint_bom_summary(",
+        ),
+        "tools/xstack/registry_compile/compiler.py": (
+            "_materials_structure_registry_rows(",
+            "allowed_target_kinds = {\"agent\", \"cohort\", \"faction\", \"territory\", \"blueprint\"}",
+        ),
+    }
+    for rel_path, tokens in required_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required blueprint deterministic compilation/runtime file is missing",
+                    rule_id="INV-DETERMINISTIC-BLUEPRINT-COMPILATION",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required blueprint deterministic compilation token is missing",
+                    rule_id="INV-DETERMINISTIC-BLUEPRINT-COMPILATION",
+                )
+            )
+
+
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -6417,6 +6545,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_material_taxonomy_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_structure_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

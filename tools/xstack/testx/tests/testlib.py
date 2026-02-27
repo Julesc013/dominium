@@ -69,6 +69,12 @@ def make_temp_repo_with_test_packs(source_repo_root: str) -> str:
     src_packs = os.path.join(source_repo_root, "tools", "xstack", "testdata", "packs")
     dst_packs = os.path.join(temp_root, "packs")
     shutil.copytree(src_packs, dst_packs)
+    # MAT-3 baseline adds blueprint registries whose entries resolve into packs/blueprints.
+    # Fixture repos must include these pack paths so registry compile remains deterministic.
+    src_blueprints = os.path.join(source_repo_root, "packs", "blueprints")
+    if os.path.isdir(src_blueprints):
+        dst_blueprints = os.path.join(dst_packs, "blueprints")
+        shutil.copytree(src_blueprints, dst_blueprints)
     src_bundles = os.path.join(source_repo_root, "tools", "xstack", "testdata", "bundles")
     dst_bundles = os.path.join(temp_root, "bundles")
     shutil.copytree(src_bundles, dst_bundles)

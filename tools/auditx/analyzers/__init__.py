@@ -85,6 +85,8 @@ from analyzers import e56_raw_float_in_invariant_smell
 from analyzers import e57_dimension_drift_smell
 from analyzers import e58_hardcoded_periodic_table_smell
 from analyzers import e59_material_mass_drift_smell
+from analyzers import e60_hardcoded_blueprint_smell
+from analyzers import e61_nondeterministic_graph_order_smell
 
 
 ANALYZERS = (
@@ -173,6 +175,8 @@ ANALYZERS = (
     e57_dimension_drift_smell,
     e58_hardcoded_periodic_table_smell,
     e59_material_mass_drift_smell,
+    e60_hardcoded_blueprint_smell,
+    e61_nondeterministic_graph_order_smell,
 )
 
 
