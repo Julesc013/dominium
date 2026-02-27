@@ -1,70 +1,56 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 646,
+    "canon_drift": 650,
     "capability_bypass_smell": 1,
-    "capability_misuse": 139,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
-    "derived_freshness": 131,
+    "derived_freshness": 12,
     "epistemics.hidden_state_leak_smell": 6,
-    "legacy_contamination": 6,
-    "mode_flag_smell": 63,
+    "mode_flag_smell": 1,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
-    "ownership_boundary": 9,
-    "reachability": 80,
-    "schema_usage": 160,
-    "security.boundary_io": 29,
-    "security.privilege_bypass": 9,
+    "reachability": 7,
+    "schema_usage": 155,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
-    "semantic.workspace_contamination": 1,
-    "terminology_misuse": 1,
-    "ui_parity": 207
+    "semantic.workspace_contamination": 1
   },
   "delta_over_time": {
     "category_frequency": {
-      "canon_drift": 646,
+      "canon_drift": 650,
       "capability_bypass_smell": 1,
-      "capability_misuse": 139,
       "civilisation.nondeterministic_cohort_mapping_smell": 1,
-      "derived_freshness": 131,
+      "derived_freshness": 12,
       "epistemics.hidden_state_leak_smell": 6,
-      "legacy_contamination": 6,
-      "mode_flag_smell": 63,
+      "mode_flag_smell": 1,
       "net.precision_leak_smell": 2,
       "net.truth_over_net_smell": 6,
-      "ownership_boundary": 9,
-      "reachability": 80,
-      "schema_usage": 160,
-      "security.boundary_io": 29,
-      "security.privilege_bypass": 9,
+      "reachability": 7,
+      "schema_usage": 155,
       "semantic.capability_drift": 5,
       "semantic.derived_artifact_contract": 1,
       "semantic.schema_shadowing": 120,
-      "semantic.workspace_contamination": 1,
-      "terminology_misuse": 1,
-      "ui_parity": 207
+      "semantic.workspace_contamination": 1
     },
     "severity_distribution": {
-      "INFO": 230,
-      "RISK": 243,
-      "VIOLATION": 73,
-      "WARN": 1077
+      "INFO": 1,
+      "RISK": 158,
+      "VIOLATION": 2,
+      "WARN": 807
     }
   },
-  "findings_hash": "9e2399fde492dcfb2c244c5ec67bbef62c69b4bdff8da6279f1c74a518795803",
+  "findings_hash": "bd68a29d8d5627752163ca465d754e14bef880c03bb965f8089ad31c87a51223",
   "history_reference": {
     "previous_distinct_hash": ""
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 230,
-    "RISK": 243,
-    "VIOLATION": 73,
-    "WARN": 1077
+    "INFO": 1,
+    "RISK": 158,
+    "VIOLATION": 2,
+    "WARN": 807
   },
-  "total_findings": 1623
+  "total_findings": 968
 }
