@@ -2909,6 +2909,609 @@ def _materials_dimension_registry_rows(
     return base_dimension_rows, dimension_rows, unit_rows, quantity_type_rows, errors
 
 
+def _material_taxonomy_registry_rows(
+    repo_root: str,
+    schema_root: str,
+    *,
+    dimension_rows: List[dict],
+    unit_rows: List[dict],
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _element_record, element_rows_raw, element_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/element_registry.json",
+        expected_schema_id="dominium.registry.element_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="elements",
+    )
+    if element_load_errors:
+        return [], [], [], [], [], element_load_errors
+
+    _compound_record, compound_rows_raw, compound_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/compound_registry.json",
+        expected_schema_id="dominium.registry.compound_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="compounds",
+    )
+    if compound_load_errors:
+        return [], [], [], [], [], compound_load_errors
+
+    _mixture_record, mixture_rows_raw, mixture_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mixture_registry.json",
+        expected_schema_id="dominium.registry.mixture_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="mixtures",
+    )
+    if mixture_load_errors:
+        return [], [], [], [], [], mixture_load_errors
+
+    _material_record, material_rows_raw, material_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/material_class_registry.json",
+        expected_schema_id="dominium.registry.material_class_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="materials",
+    )
+    if material_load_errors:
+        return [], [], [], [], [], material_load_errors
+
+    _quality_record, quality_rows_raw, quality_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/quality_distribution_registry.json",
+        expected_schema_id="dominium.registry.quality_distribution_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="quality_distribution_models",
+    )
+    if quality_load_errors:
+        return [], [], [], [], [], quality_load_errors
+
+    dimension_ids = set(str(row.get("dimension_id", "")).strip() for row in dimension_rows if str(row.get("dimension_id", "")).strip())
+    unit_dimension_by_id = {
+        str(row.get("unit_id", "")).strip(): str(row.get("dimension_id", "")).strip()
+        for row in unit_rows
+        if str(row.get("unit_id", "")).strip()
+    }
+    fixed_scale = 16777216
+    fixed_tolerance = 1
+
+    def _round_div_away_from_zero(numerator: int, denominator: int) -> int:
+        if int(denominator) == 0:
+            return 0
+        n = int(numerator)
+        d = int(denominator)
+        sign = -1 if (n < 0) ^ (d < 0) else 1
+        abs_n = abs(n)
+        abs_d = abs(d)
+        out = abs_n // abs_d
+        rem = abs_n % abs_d
+        if rem * 2 >= abs_d:
+            out += 1
+        return int(sign * out)
+
+    element_rows: List[dict] = []
+    element_mass_by_id: Dict[str, int] = {}
+    element_id_seen = set()
+    for entry in sorted(element_rows_raw, key=lambda row: str((row or {}).get("element_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_element_entry",
+                    "message": "element entry must be object",
+                    "path": "$.elements",
+                }
+            )
+            continue
+        element_id = str(entry.get("element_id", "")).strip()
+        if not element_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_element_entry",
+                    "message": "element_id is missing",
+                    "path": "$.elements.element_id",
+                }
+            )
+            continue
+        if element_id in element_id_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_element_id",
+                    "message": "duplicate element_id '{}'".format(element_id),
+                    "path": "$.elements.element_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="element",
+            payload=entry,
+            path="data/registries/element_registry.json#{}".format(element_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        molar_mass_raw = int(entry.get("molar_mass_raw", 0) or 0)
+        atomic_number = entry.get("atomic_number")
+        if molar_mass_raw <= 0:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_element_entry",
+                    "message": "element '{}' must declare molar_mass_raw > 0".format(element_id),
+                    "path": "$.elements.molar_mass_raw",
+                }
+            )
+            continue
+        if atomic_number is not None and int(atomic_number) <= 0:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_element_entry",
+                    "message": "element '{}' atomic_number must be null or >= 1".format(element_id),
+                    "path": "$.elements.atomic_number",
+                }
+            )
+            continue
+        element_id_seen.add(element_id)
+        element_mass_by_id[element_id] = int(molar_mass_raw)
+        element_rows.append(
+            {
+                "element_id": element_id,
+                "atomic_number": None if atomic_number is None else int(atomic_number),
+                "molar_mass_raw": int(molar_mass_raw),
+                "charge_default": None if entry.get("charge_default") is None else int(entry.get("charge_default", 0) or 0),
+                "base_energy_content_raw": None
+                if entry.get("base_energy_content_raw") is None
+                else int(entry.get("base_energy_content_raw", 0) or 0),
+                "tags": sorted(set(str(item).strip() for item in list(entry.get("tags") or []) if str(item).strip())),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    element_rows = sorted(element_rows, key=lambda row: str(row.get("element_id", "")))
+    element_ids = set(str(row.get("element_id", "")).strip() for row in element_rows)
+
+    compound_rows: List[dict] = []
+    compound_id_seen = set()
+    for entry in sorted(compound_rows_raw, key=lambda row: str((row or {}).get("compound_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compound_entry",
+                    "message": "compound entry must be object",
+                    "path": "$.compounds",
+                }
+            )
+            continue
+        compound_id = str(entry.get("compound_id", "")).strip()
+        if not compound_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compound_entry",
+                    "message": "compound_id is missing",
+                    "path": "$.compounds.compound_id",
+                }
+            )
+            continue
+        if compound_id in compound_id_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_compound_id",
+                    "message": "duplicate compound_id '{}'".format(compound_id),
+                    "path": "$.compounds.compound_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="compound",
+            payload=entry,
+            path="data/registries/compound_registry.json#{}".format(compound_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        raw_composition = dict(entry.get("composition") or {})
+        normalized_composition: Dict[str, int] = {}
+        missing_element_refs = []
+        for element_id in sorted(raw_composition.keys()):
+            token = str(element_id).strip()
+            if not token:
+                continue
+            ratio = int(raw_composition.get(element_id, 0) or 0)
+            if ratio <= 0:
+                continue
+            if token not in element_ids:
+                missing_element_refs.append(token)
+                continue
+            normalized_composition[token] = int(ratio)
+        if missing_element_refs:
+            errors.append(
+                {
+                    "code": "refuse.material.invalid_composition",
+                    "message": "compound '{}' references unknown elements: {}".format(
+                        compound_id,
+                        ",".join(sorted(set(missing_element_refs))),
+                    ),
+                    "path": "$.compounds.composition",
+                }
+            )
+            continue
+        if not normalized_composition:
+            errors.append(
+                {
+                    "code": "refuse.material.invalid_composition",
+                    "message": "compound '{}' requires at least one composition component".format(compound_id),
+                    "path": "$.compounds.composition",
+                }
+            )
+            continue
+        molar_mass_mode = str(entry.get("molar_mass_mode", "derived")).strip() or "derived"
+        declared_molar_mass_raw = int(entry.get("molar_mass_raw", 0) or 0)
+        derived_molar_mass_raw = 0
+        for element_id, ratio in sorted(normalized_composition.items()):
+            derived_molar_mass_raw += int(ratio) * int(element_mass_by_id.get(element_id, 0))
+        if derived_molar_mass_raw <= 0:
+            errors.append(
+                {
+                    "code": "refuse.material.invalid_composition",
+                    "message": "compound '{}' derived molar mass is invalid".format(compound_id),
+                    "path": "$.compounds",
+                }
+            )
+            continue
+        if molar_mass_mode == "declared" and declared_molar_mass_raw > 0:
+            molar_mass_raw = int(declared_molar_mass_raw)
+        else:
+            molar_mass_raw = int(derived_molar_mass_raw)
+            molar_mass_mode = "derived"
+        mass_fraction_map: Dict[str, int] = {}
+        assigned = 0
+        element_tokens = sorted(normalized_composition.keys())
+        for idx, element_id in enumerate(element_tokens):
+            ratio = int(normalized_composition.get(element_id, 0))
+            component_mass = int(ratio) * int(element_mass_by_id.get(element_id, 0))
+            if idx < len(element_tokens) - 1:
+                value_raw = _round_div_away_from_zero(component_mass * fixed_scale, molar_mass_raw)
+                assigned += int(value_raw)
+                mass_fraction_map[element_id] = int(value_raw)
+            else:
+                mass_fraction_map[element_id] = int(fixed_scale - assigned)
+        if sum(int(value) for value in mass_fraction_map.values()) != fixed_scale:
+            errors.append(
+                {
+                    "code": "refuse.material.mass_fraction_mismatch",
+                    "message": "compound '{}' mass fractions failed fixed-point normalization".format(compound_id),
+                    "path": "$.compounds.composition",
+                }
+            )
+            continue
+        compound_id_seen.add(compound_id)
+        compound_rows.append(
+            {
+                "compound_id": compound_id,
+                "composition": dict(normalized_composition),
+                "molar_mass_mode": str(molar_mass_mode),
+                "molar_mass_raw": int(molar_mass_raw),
+                "mass_fractions_raw": dict(mass_fraction_map),
+                "tags": sorted(set(str(item).strip() for item in list(entry.get("tags") or []) if str(item).strip())),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    compound_rows = sorted(compound_rows, key=lambda row: str(row.get("compound_id", "")))
+    compound_ids = set(str(row.get("compound_id", "")).strip() for row in compound_rows)
+
+    mixture_rows: List[dict] = []
+    mixture_id_seen = set()
+    for entry in sorted(mixture_rows_raw, key=lambda row: str((row or {}).get("mixture_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mixture_entry",
+                    "message": "mixture entry must be object",
+                    "path": "$.mixtures",
+                }
+            )
+            continue
+        mixture_id = str(entry.get("mixture_id", "")).strip()
+        if not mixture_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mixture_entry",
+                    "message": "mixture_id is missing",
+                    "path": "$.mixtures.mixture_id",
+                }
+            )
+            continue
+        if mixture_id in mixture_id_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mixture_id",
+                    "message": "duplicate mixture_id '{}'".format(mixture_id),
+                    "path": "$.mixtures.mixture_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="mixture",
+            payload=entry,
+            path="data/registries/mixture_registry.json#{}".format(mixture_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        raw_components = dict(entry.get("components") or {})
+        normalized_components: Dict[str, int] = {}
+        for component_id in sorted(raw_components.keys()):
+            token = str(component_id).strip()
+            if not token:
+                continue
+            value_raw = int(raw_components.get(component_id, 0) or 0)
+            if value_raw <= 0:
+                continue
+            normalized_components[token] = int(value_raw)
+        if not normalized_components:
+            errors.append(
+                {
+                    "code": "refuse.material.invalid_composition",
+                    "message": "mixture '{}' must include at least one positive component".format(mixture_id),
+                    "path": "$.mixtures.components",
+                }
+            )
+            continue
+        mass_fraction_sum_raw = sum(int(value) for value in normalized_components.values())
+        if abs(int(mass_fraction_sum_raw) - int(fixed_scale)) > int(fixed_tolerance):
+            errors.append(
+                {
+                    "code": "refuse.material.mass_fraction_mismatch",
+                    "message": "mixture '{}' mass fractions sum {} but expected {}".format(
+                        mixture_id,
+                        int(mass_fraction_sum_raw),
+                        int(fixed_scale),
+                    ),
+                    "path": "$.mixtures.components",
+                }
+            )
+            continue
+        mixture_id_seen.add(mixture_id)
+        mixture_rows.append(
+            {
+                "mixture_id": mixture_id,
+                "components": dict(normalized_components),
+                "mass_fraction_sum_raw": int(mass_fraction_sum_raw),
+                "tags": sorted(set(str(item).strip() for item in list(entry.get("tags") or []) if str(item).strip())),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    mixture_rows = sorted(mixture_rows, key=lambda row: str(row.get("mixture_id", "")))
+    mixture_ids = set(str(row.get("mixture_id", "")).strip() for row in mixture_rows)
+
+    quality_rows: List[dict] = []
+    quality_id_seen = set()
+    for entry in sorted(quality_rows_raw, key=lambda row: str((row or {}).get("quality_distribution_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quality_distribution_entry",
+                    "message": "quality distribution entry must be object",
+                    "path": "$.quality_distribution_models",
+                }
+            )
+            continue
+        quality_distribution_model_id = str(entry.get("quality_distribution_model_id", "")).strip()
+        if not quality_distribution_model_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quality_distribution_entry",
+                    "message": "quality_distribution_model_id is missing",
+                    "path": "$.quality_distribution_models.quality_distribution_model_id",
+                }
+            )
+            continue
+        if quality_distribution_model_id in quality_id_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_quality_distribution_id",
+                    "message": "duplicate quality_distribution_model_id '{}'".format(quality_distribution_model_id),
+                    "path": "$.quality_distribution_models.quality_distribution_model_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="quality_distribution",
+            payload=entry,
+            path="data/registries/quality_distribution_registry.json#{}".format(quality_distribution_model_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        quality_id_seen.add(quality_distribution_model_id)
+        quality_rows.append(
+            {
+                "quality_distribution_model_id": quality_distribution_model_id,
+                "description": str(entry.get("description", "")).strip(),
+                "parameters": dict(entry.get("parameters") or {}),
+                "tags": sorted(set(str(item).strip() for item in list(entry.get("tags") or []) if str(item).strip())),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    quality_rows = sorted(quality_rows, key=lambda row: str(row.get("quality_distribution_model_id", "")))
+    quality_ids = set(str(row.get("quality_distribution_model_id", "")).strip() for row in quality_rows)
+
+    material_rows: List[dict] = []
+    material_id_seen = set()
+    for entry in sorted(material_rows_raw, key=lambda row: str((row or {}).get("material_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_material_class_entry",
+                    "message": "material class entry must be object",
+                    "path": "$.materials",
+                }
+            )
+            continue
+        material_id = str(entry.get("material_id", "")).strip()
+        if not material_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_material_class_entry",
+                    "message": "material_id is missing",
+                    "path": "$.materials.material_id",
+                }
+            )
+            continue
+        if material_id in material_id_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_material_id",
+                    "message": "duplicate material_id '{}'".format(material_id),
+                    "path": "$.materials.material_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="material_class",
+            payload=entry,
+            path="data/registries/material_class_registry.json#{}".format(material_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+
+        base_type = str(entry.get("base_type", "")).strip()
+        base_ref_id = str(entry.get("base_ref_id", "")).strip()
+        missing_ref = False
+        if base_type == "element" and base_ref_id not in element_ids:
+            missing_ref = True
+        elif base_type == "compound" and base_ref_id not in compound_ids:
+            missing_ref = True
+        elif base_type == "mixture" and base_ref_id not in mixture_ids:
+            missing_ref = True
+        if missing_ref:
+            errors.append(
+                {
+                    "code": "refuse.material.invalid_composition",
+                    "message": "material '{}' base_ref_id '{}' not found for base_type '{}'".format(
+                        material_id,
+                        base_ref_id,
+                        base_type,
+                    ),
+                    "path": "$.materials.base_ref_id",
+                }
+            )
+            continue
+
+        def _normalize_property(field_name: str, expected_dimension_id: str = "") -> dict:
+            row = entry.get(field_name)
+            if not isinstance(row, dict):
+                return {}
+            unit_id = str(row.get("unit_id", "")).strip()
+            dimension_id = str(row.get("dimension_id", "")).strip()
+            value_raw = int(row.get("value_raw", 0) or 0)
+            if not unit_id or not dimension_id:
+                return {}
+            if dimension_id not in dimension_ids:
+                return {}
+            unit_dimension_id = str(unit_dimension_by_id.get(unit_id, "")).strip()
+            if not unit_dimension_id or unit_dimension_id != dimension_id:
+                return {}
+            if expected_dimension_id and dimension_id != expected_dimension_id:
+                return {}
+            return {
+                "value_raw": int(value_raw),
+                "dimension_id": dimension_id,
+                "unit_id": unit_id,
+            }
+
+        density = _normalize_property("density", expected_dimension_id="dim.density")
+        specific_energy = _normalize_property("specific_energy", expected_dimension_id="dim.specific_energy")
+        conductivity = entry.get("conductivity")
+        heat_capacity = entry.get("heat_capacity")
+        conductivity_row = None if conductivity is None else _normalize_property("conductivity")
+        heat_capacity_row = None if heat_capacity is None else _normalize_property("heat_capacity")
+
+        if not density or not specific_energy or (conductivity is not None and conductivity_row is None) or (heat_capacity is not None and heat_capacity_row is None):
+            errors.append(
+                {
+                    "code": "refuse.material.dimension_mismatch",
+                    "message": "material '{}' property dimensions or units are invalid".format(material_id),
+                    "path": "$.materials",
+                }
+            )
+            continue
+
+        quality_distribution_model_id = entry.get("quality_distribution_model_id")
+        quality_distribution_token = None if quality_distribution_model_id is None else str(quality_distribution_model_id).strip()
+        if quality_distribution_token and quality_distribution_token not in quality_ids:
+            errors.append(
+                {
+                    "code": "refuse.material.invalid_composition",
+                    "message": "material '{}' references unknown quality_distribution_model_id '{}'".format(
+                        material_id,
+                        quality_distribution_token,
+                    ),
+                    "path": "$.materials.quality_distribution_model_id",
+                }
+            )
+            continue
+
+        material_id_seen.add(material_id)
+        material_rows.append(
+            {
+                "material_id": material_id,
+                "base_type": base_type,
+                "base_ref_id": base_ref_id,
+                "density": dict(density),
+                "specific_energy": dict(specific_energy),
+                "conductivity": None if conductivity is None else dict(conductivity_row or {}),
+                "heat_capacity": None if heat_capacity is None else dict(heat_capacity_row or {}),
+                "phase_tags": sorted(set(str(item).strip() for item in list(entry.get("phase_tags") or []) if str(item).strip())),
+                "quality_distribution_model_id": quality_distribution_token,
+                "tags": sorted(set(str(item).strip() for item in list(entry.get("tags") or []) if str(item).strip())),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    material_rows = sorted(material_rows, key=lambda row: str(row.get("material_id", "")))
+    material_ids = set(str(row.get("material_id", "")).strip() for row in material_rows)
+
+    for mixture_row in mixture_rows:
+        mixture_id = str(mixture_row.get("mixture_id", "")).strip() or "<unknown>"
+        components = dict(mixture_row.get("components") or {})
+        missing_component_refs = []
+        for component_id in sorted(components.keys()):
+            token = str(component_id).strip()
+            if not token:
+                continue
+            if token in compound_ids or token in material_ids:
+                continue
+            missing_component_refs.append(token)
+        if missing_component_refs:
+            errors.append(
+                {
+                    "code": "refuse.material.invalid_composition",
+                    "message": "mixture '{}' references unknown component ids: {}".format(
+                        mixture_id,
+                        ",".join(sorted(set(missing_component_refs))),
+                    ),
+                    "path": "$.mixtures.components",
+                }
+            )
+
+    return element_rows, compound_rows, mixture_rows, material_rows, quality_rows, errors
+
+
 def _universe_physics_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -6598,6 +7201,19 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        element_rows,
+        compound_rows,
+        mixture_rows,
+        material_class_rows,
+        quality_distribution_rows,
+        material_taxonomy_registry_errors,
+    ) = _material_taxonomy_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+        dimension_rows=dimension_rows,
+        unit_rows=unit_rows,
+    )
+    (
         budget_envelope_rows,
         arbitration_policy_rows,
         inspection_cache_policy_rows,
@@ -6829,6 +7445,7 @@ def compile_bundle(
         + civilisation_registry_errors
         + conservation_registry_errors
         + materials_dimension_registry_errors
+        + material_taxonomy_registry_errors
         + materials_reference_errors
         + performance_registry_errors
         + universe_physics_registry_errors
@@ -6990,6 +7607,41 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "quantity_types": quantity_type_rows,
+        }
+    )
+    element_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "elements": element_rows,
+        }
+    )
+    compound_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "compounds": compound_rows,
+        }
+    )
+    mixture_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "mixtures": mixture_rows,
+        }
+    )
+    material_class_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "materials": material_class_rows,
+        }
+    )
+    quality_distribution_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "quality_distribution_models": quality_distribution_rows,
         }
     )
     domain_payload = _finalize_registry_payload(
@@ -7364,6 +8016,11 @@ def compile_bundle(
         "dimension_registry": ("dimension_registry", dimension_payload),
         "unit_registry": ("unit_registry", unit_payload),
         "quantity_type_registry": ("quantity_type_registry", quantity_type_payload),
+        "element_registry": ("element_registry", element_payload),
+        "compound_registry": ("compound_registry", compound_payload),
+        "mixture_registry": ("mixture_registry", mixture_payload),
+        "material_class_registry": ("material_class_registry", material_class_payload),
+        "quality_distribution_registry": ("quality_distribution_registry", quality_distribution_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
         "time_control_policy_registry": ("time_control_policy_registry", time_control_policy_payload),
@@ -7445,6 +8102,11 @@ def compile_bundle(
         "dimension_registry",
         "unit_registry",
         "quantity_type_registry",
+        "element_registry",
+        "compound_registry",
+        "mixture_registry",
+        "material_class_registry",
+        "quality_distribution_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
         "time_control_policy_registry",
@@ -7543,6 +8205,11 @@ def compile_bundle(
             "dimension_registry_hash": registry_hashes["dimension_registry_hash"],
             "unit_registry_hash": registry_hashes["unit_registry_hash"],
             "quantity_type_registry_hash": registry_hashes["quantity_type_registry_hash"],
+            "element_registry_hash": registry_hashes["element_registry_hash"],
+            "compound_registry_hash": registry_hashes["compound_registry_hash"],
+            "mixture_registry_hash": registry_hashes["mixture_registry_hash"],
+            "material_class_registry_hash": registry_hashes["material_class_registry_hash"],
+            "quality_distribution_registry_hash": registry_hashes["quality_distribution_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
             "time_control_policy_registry_hash": registry_hashes["time_control_policy_registry_hash"],
