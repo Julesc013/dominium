@@ -3230,6 +3230,7 @@ def _ledger_emit_exception(
     *,
     quantity_id: str,
     delta: int,
+    material_id: str = "",
     exception_type_id: str,
     domain_id: str,
     process_id: str,
@@ -3242,6 +3243,7 @@ def _ledger_emit_exception(
         policy_context=policy_context,
         quantity_id=str(quantity_id),
         dimension_id=_quantity_dimension_id(policy_context=policy_context, quantity_id=str(quantity_id)),
+        material_id=str(material_id).strip(),
         delta=int(_as_int(delta, 0)),
         exception_type_id=str(exception_type_id),
         domain_id=str(domain_id),
@@ -3255,6 +3257,7 @@ def _record_unaccounted_conservation_delta(
     policy_context: dict | None,
     *,
     quantity_id: str,
+    material_id: str = "",
     delta: int,
 ) -> None:
     if not isinstance(policy_context, dict):
@@ -3263,6 +3266,7 @@ def _record_unaccounted_conservation_delta(
         policy_context=policy_context,
         quantity_id=str(quantity_id),
         dimension_id=_quantity_dimension_id(policy_context=policy_context, quantity_id=str(quantity_id)),
+        material_id=str(material_id).strip(),
         delta=int(_as_int(delta, 0)),
     )
 

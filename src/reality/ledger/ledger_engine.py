@@ -184,6 +184,7 @@ def _new_runtime(policy_context: dict, shard_id: str) -> dict:
         "pending_entries": [],
         "pending_total_deltas": {},
         "pending_unaccounted_deltas": {},
+        "pending_material_mass_deltas": {},
         "pending_dimension_refusals": [],
     }
 
@@ -207,6 +208,7 @@ def begin_process_accounting(policy_context: dict | None, process_id: str = "") 
     runtime["pending_entries"] = []
     runtime["pending_total_deltas"] = {}
     runtime["pending_unaccounted_deltas"] = {}
+    runtime["pending_material_mass_deltas"] = {}
     runtime["pending_dimension_refusals"] = []
     runtime["pending_process_id"] = str(process_id or "")
     return runtime
@@ -284,6 +286,7 @@ def emit_exception(
     quantity_id: str,
     delta: int,
     dimension_id: str = "",
+    material_id: str = "",
     exception_type_id: str,
     domain_id: str,
     process_id: str,
@@ -301,6 +304,7 @@ def emit_exception(
         "quantity_id": str(quantity_id).strip(),
         "delta": int(_as_int(delta, 0)),
         "dimension_id": str(dimension_id).strip(),
+        "material_id": str(material_id).strip(),
         "exception_type_id": str(exception_type_id).strip(),
         "domain_id": str(domain_id).strip(),
         "process_id": str(process_id).strip(),
@@ -310,6 +314,8 @@ def emit_exception(
     rows.append(row)
     runtime["pending_entries"] = rows
     _increment_delta(runtime["pending_total_deltas"], str(quantity_id), int(row["delta"]))
+    if str(quantity_id).strip() == "quantity.mass" and str(row.get("material_id", "")).strip():
+        _increment_delta(runtime["pending_material_mass_deltas"], str(row.get("material_id", "")), int(row["delta"]))
     return {"result": "complete"}
 
 
@@ -318,6 +324,7 @@ def record_unaccounted_delta(
     *,
     quantity_id: str,
     dimension_id: str = "",
+    material_id: str = "",
     delta: int,
 ) -> dict:
     runtime = resolve_conservation_runtime(policy_context)
@@ -328,6 +335,8 @@ def record_unaccounted_delta(
         return _record_dimension_refusal(runtime, dimension_validation)
     _increment_delta(runtime["pending_total_deltas"], str(quantity_id), int(_as_int(delta, 0)))
     _increment_delta(runtime["pending_unaccounted_deltas"], str(quantity_id), int(_as_int(delta, 0)))
+    if str(quantity_id).strip() == "quantity.mass" and str(material_id).strip():
+        _increment_delta(runtime["pending_material_mass_deltas"], str(material_id), int(_as_int(delta, 0)))
     return {"result": "complete"}
 
 
@@ -335,6 +344,7 @@ def _entry_sort_key(row: dict) -> Tuple[str, str, str, str, int, str]:
     return (
         str(row.get("quantity_id", "")),
         str(row.get("dimension_id", "")),
+        str(row.get("material_id", "")),
         str(row.get("process_id", "")),
         str(row.get("exception_type_id", "")),
         int(_as_int(row.get("delta", 0), 0)),
@@ -351,6 +361,7 @@ def _entry_payload(
 ) -> dict:
     quantity_id = str(row.get("quantity_id", "")).strip()
     dimension_id = str(row.get("dimension_id", "")).strip()
+    material_id = str(row.get("material_id", "")).strip()
     process_id = str(row.get("process_id", "")).strip()
     exception_type_id = str(row.get("exception_type_id", "")).strip()
     delta = int(_as_int(row.get("delta", 0), 0))
@@ -360,6 +371,7 @@ def _entry_payload(
             "shard_id": str(shard_id),
             "quantity_id": quantity_id,
             "dimension_id": dimension_id,
+            "material_id": material_id,
             "process_id": process_id,
             "exception_type_id": exception_type_id,
             "delta": int(delta),
@@ -373,6 +385,7 @@ def _entry_payload(
             "shard_id": str(shard_id),
             "quantity_id": quantity_id,
             "dimension_id": dimension_id,
+            "material_id": material_id,
             "exception_type_id": exception_type_id,
             "domain_id": str(row.get("domain_id", "")),
             "process_id": process_id,
@@ -387,6 +400,7 @@ def _entry_payload(
         "shard_id": str(shard_id),
         "quantity_id": quantity_id,
         "dimension_id": dimension_id,
+        "material_id": material_id,
         "exception_type_id": exception_type_id,
         "domain_id": str(row.get("domain_id", "")),
         "process_id": process_id,
@@ -585,6 +599,7 @@ def finalize_process_accounting(
     pending_entries = sorted((dict(row) for row in list(runtime.get("pending_entries") or []) if isinstance(row, dict)), key=_entry_sort_key)
     pending_total_deltas = dict(runtime.get("pending_total_deltas") or {})
     pending_unaccounted_deltas = dict(runtime.get("pending_unaccounted_deltas") or {})
+    pending_material_mass_deltas = dict(runtime.get("pending_material_mass_deltas") or {})
     pending_dimension_refusals = list(runtime.get("pending_dimension_refusals") or [])
 
     if pending_dimension_refusals:
@@ -592,6 +607,7 @@ def finalize_process_accounting(
         runtime["pending_entries"] = []
         runtime["pending_total_deltas"] = {}
         runtime["pending_unaccounted_deltas"] = {}
+        runtime["pending_material_mass_deltas"] = {}
         runtime["pending_dimension_refusals"] = []
         return {
             "result": "refused",
@@ -653,6 +669,20 @@ def finalize_process_accounting(
         "previous_ledger_hash": str(runtime.get("previous_ledger_hash", "")) or None,
         "extensions": {
             "process_id": str(process_id),
+            "material_mass_totals": [
+                {
+                    "material_id": str(material_id),
+                    "net_delta": int(_as_int(delta_raw, 0)),
+                }
+                for material_id, delta_raw in sorted(
+                    (
+                        (str(token).strip(), int(_as_int(value, 0)))
+                        for token, value in pending_material_mass_deltas.items()
+                        if str(token).strip()
+                    ),
+                    key=lambda item: item[0],
+                )
+            ],
         },
     }
     ledger["ledger_hash"] = canonical_sha256(_ledger_hash_payload(ledger))
@@ -661,6 +691,7 @@ def finalize_process_accounting(
     runtime["pending_entries"] = []
     runtime["pending_total_deltas"] = {}
     runtime["pending_unaccounted_deltas"] = {}
+    runtime["pending_material_mass_deltas"] = {}
     runtime["pending_dimension_refusals"] = []
 
     if refusal_payload:

@@ -16,6 +16,12 @@ _CONTRACT_SETS = [
                 "allowed_exception_types": ["exception.numeric_error_budget"],
             },
             {
+                "quantity_id": "quantity.mass",
+                "mode": "track_only",
+                "tolerance": 0,
+                "allowed_exception_types": ["exception.numeric_error_budget"],
+            },
+            {
                 "quantity_id": "quantity.charge_total",
                 "mode": "enforce_strict",
                 "tolerance": 0,
@@ -44,6 +50,12 @@ _CONTRACT_SETS = [
                 ],
             },
             {
+                "quantity_id": "quantity.mass",
+                "mode": "track_only",
+                "tolerance": 0,
+                "allowed_exception_types": ["exception.numeric_error_budget"],
+            },
+            {
                 "quantity_id": "quantity.charge_total",
                 "mode": "track_only",
                 "tolerance": 0,
@@ -65,6 +77,12 @@ _CONTRACT_SETS = [
                 "mode": "ignore",
                 "tolerance": 0,
                 "allowed_exception_types": [],
+            },
+            {
+                "quantity_id": "quantity.mass",
+                "mode": "track_only",
+                "tolerance": 0,
+                "allowed_exception_types": ["exception.numeric_error_budget"],
             },
             {
                 "quantity_id": "quantity.charge_total",
