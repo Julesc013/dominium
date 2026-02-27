@@ -1,0 +1,22 @@
+SCHEMA: materials/quantity_type.schema
+schema_id: dominium.schema.materials.quantity_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Bind conserved quantity channels to dimension and numeric constraints.
+
+REQUIRED SHAPE:
+record quantity_type
+  required:
+    - schema_version: semver
+    - quantity_id: id
+    - dimension_id: id
+    - invariant_numeric_type: enum(fixed_point|required)
+    - default_unit_id: id
+    - conservation_applicable: bool
+    - extensions: map
+
+INVARIANTS:
+- quantity_id is stable and referenced by conservation contracts.
+- invariant_numeric_type must be fixed-point for authoritative invariants.

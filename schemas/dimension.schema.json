@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dimension Schema",
+  "version": "1.0.0",
+  "description": "Canonical dimension vector declaration.",
+  "x-doc-ref": [
+    "docs/materials/UNITS_AND_DIMENSIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dimension_id",
+    "base_exponents",
+    "description",
+    "version_introduced",
+    "deprecated",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "dimension_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_exponents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version_introduced": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deprecated": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

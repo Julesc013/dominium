@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quantity Type Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic quantity-type registry output.",
+  "x-doc-ref": [
+    "docs/materials/UNITS_AND_DIMENSIONS.md",
+    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "quantity_types",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "quantity_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "quantity_id",
+          "dimension_id",
+          "invariant_numeric_type",
+          "default_unit_id",
+          "conservation_applicable",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "quantity_id": {
+            "type": "string"
+          },
+          "dimension_id": {
+            "type": "string"
+          },
+          "invariant_numeric_type": {
+            "type": "string",
+            "enum": [
+              "fixed_point",
+              "required"
+            ]
+          },
+          "default_unit_id": {
+            "type": "string"
+          },
+          "conservation_applicable": {
+            "type": "boolean"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

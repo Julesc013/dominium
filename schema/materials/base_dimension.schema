@@ -1,0 +1,21 @@
+SCHEMA: materials/base_dimension.schema
+schema_id: dominium.schema.materials.base_dimension
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical base dimensions used for dimensional vectors.
+
+REQUIRED SHAPE:
+record base_dimension
+  required:
+    - schema_version: semver
+    - base_dimension_id: id
+    - description: text
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+
+INVARIANTS:
+- base_dimension_id is stable and registry-governed.
+- Base dimensions are additive exponent axes for dimension vectors.
