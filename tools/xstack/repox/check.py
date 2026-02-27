@@ -6003,6 +6003,202 @@ def _append_material_construction_invariant_findings(
             )
 
 
+def _append_material_maintenance_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_registry_paths = (
+        "data/registries/failure_mode_registry.json",
+        "data/registries/maintenance_policy_registry.json",
+        "data/registries/backlog_growth_rule_registry.json",
+    )
+    for rel_path in required_registry_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="maintenance/failure registries must be declared as data-only inputs",
+                rule_id="INV-FAILURE-MODES-REGISTRY-DRIVEN",
+            )
+        )
+
+    required_registry_tokens = {
+        "src/materials/maintenance/decay_engine.py": (
+            "failure_mode_rows_by_id(",
+            "maintenance_policy_rows_by_id(",
+            "backlog_growth_rule_rows_by_id(",
+            "tick_decay(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "_policy_payload(policy_context, \"failure_mode_registry\")",
+            "_policy_payload(policy_context, \"maintenance_policy_registry\")",
+            "_policy_payload(policy_context, \"backlog_growth_rule_registry\")",
+            "process.decay_tick",
+        ),
+    }
+    for rel_path, tokens in required_registry_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required maintenance/failure registry-driven implementation file is missing",
+                    rule_id="INV-FAILURE-MODES-REGISTRY-DRIVEN",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required maintenance/failure registry token is missing",
+                    rule_id="INV-FAILURE-MODES-REGISTRY-DRIVEN",
+                )
+            )
+
+    process_only_fields = (
+        "state[\"asset_health_states\"]",
+        "state[\"failure_events\"]",
+        "state[\"maintenance_commitments\"]",
+        "state[\"maintenance_provenance_events\"]",
+    )
+    process_only_allowed_prefixes = (
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(process_only_allowed_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if not any(field in token for field in process_only_fields):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token[:140],
+                    message="failure/maintenance state mutation must occur only through process runtime commit paths",
+                    rule_id="INV-NO-SILENT-FAILURES",
+                )
+            )
+
+    required_no_silent_failure_tokens = {
+        "src/materials/maintenance/decay_engine.py": (
+            "_failure_event(",
+            "_provenance_event(",
+            "failed_mode_ids",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "process.decay_tick",
+            "_persist_maintenance_state(",
+            "failure_events",
+            "maintenance_provenance_events",
+        ),
+    }
+    for rel_path, tokens in required_no_silent_failure_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required explicit failure/provenance implementation file is missing",
+                    rule_id="INV-NO-SILENT-FAILURES",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required explicit failure/provenance token is missing",
+                    rule_id="INV-NO-SILENT-FAILURES",
+                )
+            )
+
+    required_commitment_tokens = {
+        "src/materials/maintenance/decay_engine.py": (
+            "schedule_maintenance_commitments(",
+            "perform_inspection(",
+            "perform_maintenance(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "process.maintenance_schedule",
+            "process.inspection_perform",
+            "process.maintenance_perform",
+            "maintenance_commitments",
+        ),
+    }
+    for rel_path, tokens in required_commitment_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required maintenance commitment implementation file is missing",
+                    rule_id="INV-MAINTENANCE-IS-COMMITMENT-DRIVEN",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required maintenance commitment token is missing",
+                    rule_id="INV-MAINTENANCE-IS-COMMITMENT-DRIVEN",
+                )
+            )
+
+
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -6908,6 +7104,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_material_construction_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_material_maintenance_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
