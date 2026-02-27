@@ -1,0 +1,22 @@
+SCHEMA: logistics/node_inventory.schema
+schema_id: dominium.schema.logistics.node_inventory
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic macro inventory state per logistics node.
+
+REQUIRED SHAPE:
+record node_inventory
+  required:
+    - schema_version: semver
+    - node_id: id
+    - material_stocks: map<string,int>
+    - inventory_hash: hash64
+    - extensions: map
+  optional:
+    - batch_refs: list<string>
+
+INVARIANTS:
+- material_stocks quantities must be non-negative fixed-point integers.
+- inventory_hash must be deterministic over canonical stock payload.

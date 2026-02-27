@@ -1,0 +1,28 @@
+SCHEMA: logistics/logistics_edge.schema
+schema_id: dominium.schema.logistics.logistics_edge
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic logistics edge declarations.
+
+REQUIRED SHAPE:
+record logistics_edge
+  required:
+    - schema_version: semver
+    - edge_id: id
+    - from_node_id: id
+    - to_node_id: id
+    - transport_mode: enum(road|rail|sea|air|space|abstract)
+    - capacity_mass_per_tick: int
+    - delay_ticks: int
+    - tags: list<string>
+    - extensions: map
+  optional:
+    - loss_fraction: int
+    - cost_units_per_mass: int
+
+INVARIANTS:
+- delay_ticks must be >= 0.
+- capacity_mass_per_tick must be >= 0.
+- loss_fraction, when present, must be in [0, 1.0] fixed-point scale.

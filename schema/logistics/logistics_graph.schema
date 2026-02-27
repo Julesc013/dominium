@@ -1,0 +1,22 @@
+SCHEMA: logistics/logistics_graph.schema
+schema_id: dominium.schema.logistics.logistics_graph
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic logistics graph payload.
+
+REQUIRED SHAPE:
+record logistics_graph
+  required:
+    - schema_version: semver
+    - graph_id: id
+    - nodes: list<logistics_node>
+    - edges: list<logistics_edge>
+    - deterministic_routing_rule_id: id
+    - version_introduced: semver
+    - extensions: map
+
+INVARIANTS:
+- node_id and edge_id sets must be unique.
+- edges must reference existing node ids.
