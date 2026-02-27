@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.registry.base_dimension_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.base_dimension_registry",
+    "registry_version": "1.0.0",
+    "base_dimensions": [
+      {
+        "schema_version": "1.0.0",
+        "base_dimension_id": "M",
+        "description": "Mass base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "base_dimension_id": "L",
+        "description": "Length base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "base_dimension_id": "T",
+        "description": "Time base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "base_dimension_id": "Q",
+        "description": "Charge base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "base_dimension_id": "THETA",
+        "description": "Temperature base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "base_dimension_id": "I",
+        "description": "Ledger balance/currency base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

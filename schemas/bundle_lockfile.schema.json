@@ -59,6 +59,10 @@
         "conservation_contract_set_registry_hash",
         "quantity_registry_hash",
         "exception_type_registry_hash",
+        "base_dimension_registry_hash",
+        "dimension_registry_hash",
+        "unit_registry_hash",
+        "quantity_type_registry_hash",
         "universe_physics_profile_registry_hash",
         "time_model_registry_hash",
         "time_control_policy_registry_hash",
@@ -135,6 +139,22 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "exception_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "base_dimension_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "dimension_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "unit_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "quantity_type_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },

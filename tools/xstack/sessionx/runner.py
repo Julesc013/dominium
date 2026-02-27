@@ -52,6 +52,10 @@ REGISTRY_HASH_KEY_MAP = {
     "conservation_contract_set_registry_hash": "conservation_contract_set_registry",
     "quantity_registry_hash": "quantity_registry",
     "exception_type_registry_hash": "exception_type_registry",
+    "base_dimension_registry_hash": "base_dimension_registry",
+    "dimension_registry_hash": "dimension_registry",
+    "unit_registry_hash": "unit_registry",
+    "quantity_type_registry_hash": "quantity_type_registry",
     "domain_registry_hash": "domain_registry",
     "law_registry_hash": "law_registry",
     "experience_registry_hash": "experience_registry",
@@ -121,6 +125,10 @@ REGISTRY_FILE_MAP = {
     "conservation_contract_set_registry_hash": "conservation_contract_set.registry.json",
     "quantity_registry_hash": "quantity.registry.json",
     "exception_type_registry_hash": "exception_type.registry.json",
+    "base_dimension_registry_hash": "base_dimension.registry.json",
+    "dimension_registry_hash": "dimension.registry.json",
+    "unit_registry_hash": "unit.registry.json",
+    "quantity_type_registry_hash": "quantity_type.registry.json",
     "domain_registry_hash": "domain.registry.json",
     "law_registry_hash": "law.registry.json",
     "experience_registry_hash": "experience.registry.json",
@@ -1045,6 +1053,38 @@ def boot_session_spec(
     )
     if exception_type_registry_error:
         return exception_type_registry_error
+    base_dimension_registry, base_dimension_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["base_dimension_registry_hash"],
+        expected_hash=str(registries.get("base_dimension_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if base_dimension_registry_error:
+        return base_dimension_registry_error
+    dimension_registry, dimension_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["dimension_registry_hash"],
+        expected_hash=str(registries.get("dimension_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if dimension_registry_error:
+        return dimension_registry_error
+    unit_registry, unit_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["unit_registry_hash"],
+        expected_hash=str(registries.get("unit_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if unit_registry_error:
+        return unit_registry_error
+    quantity_type_registry, quantity_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["quantity_type_registry_hash"],
+        expected_hash=str(registries.get("quantity_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if quantity_type_registry_error:
+        return quantity_type_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -1636,6 +1676,10 @@ def boot_session_spec(
                 "conservation_contract_set_registry": conservation_contract_set_registry,
                 "quantity_registry": quantity_registry,
                 "exception_type_registry": exception_type_registry,
+                "base_dimension_registry": base_dimension_registry,
+                "dimension_registry": dimension_registry,
+                "unit_registry": unit_registry,
+                "quantity_type_registry": quantity_type_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -1722,6 +1766,10 @@ def boot_session_spec(
                 "conservation_contract_set_registry": conservation_contract_set_registry,
                 "quantity_registry": quantity_registry,
                 "exception_type_registry": exception_type_registry,
+                "base_dimension_registry": base_dimension_registry,
+                "dimension_registry": dimension_registry,
+                "unit_registry": unit_registry,
+                "quantity_type_registry": quantity_type_registry,
                 "astronomy_catalog_index": astronomy_registry,
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
@@ -2080,6 +2128,10 @@ def boot_session_spec(
             "conservation_contract_set_registry": conservation_contract_set_registry,
             "quantity_registry": quantity_registry,
             "exception_type_registry": exception_type_registry,
+            "base_dimension_registry": base_dimension_registry,
+            "dimension_registry": dimension_registry,
+            "unit_registry": unit_registry,
+            "quantity_type_registry": quantity_type_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,

@@ -1,0 +1,154 @@
+{
+  "schema_id": "dominium.registry.unit_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.unit_registry",
+    "registry_version": "1.0.0",
+    "units": [
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.kg",
+        "dimension_id": "dim.mass",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "kg",
+        "description": "Canonical kilogram unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.m",
+        "dimension_id": "dim.length",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "m",
+        "description": "Canonical meter unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.s",
+        "dimension_id": "dim.time",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "s",
+        "description": "Canonical second unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.C",
+        "dimension_id": "dim.charge",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "C",
+        "description": "Canonical coulomb unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.K",
+        "dimension_id": "dim.temperature",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "K",
+        "description": "Canonical kelvin unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.N",
+        "dimension_id": "dim.force",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "N",
+        "description": "Canonical newton unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.J",
+        "dimension_id": "dim.energy",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "J",
+        "description": "Canonical joule unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.W",
+        "dimension_id": "dim.power",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "W",
+        "description": "Canonical watt unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.J_per_K",
+        "dimension_id": "dim.energy_per_temperature",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "J/K",
+        "description": "Canonical joule-per-kelvin stub unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.Pa",
+        "dimension_id": "dim.pressure",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "Pa",
+        "description": "Canonical pascal unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.m_per_s",
+        "dimension_id": "dim.velocity",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "m/s",
+        "description": "Canonical meters-per-second unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.m_per_s2",
+        "dimension_id": "dim.acceleration",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "m/s^2",
+        "description": "Canonical meters-per-second-squared unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.currency_unit",
+        "dimension_id": "dim.currency",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "CU",
+        "description": "Canonical ledger currency unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

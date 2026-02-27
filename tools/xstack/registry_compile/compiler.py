@@ -2559,6 +2559,356 @@ def _conservation_registry_rows(
     return quantity_rows, exception_type_rows, contract_set_rows, errors
 
 
+def _materials_dimension_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _base_record, base_rows_raw, base_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/base_dimension_registry.json",
+        expected_schema_id="dominium.registry.base_dimension_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="base_dimensions",
+    )
+    if base_load_errors:
+        return [], [], [], [], base_load_errors
+
+    _dimension_record, dimension_rows_raw, dimension_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/dimension_registry.json",
+        expected_schema_id="dominium.registry.dimension_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="dimensions",
+    )
+    if dimension_load_errors:
+        return [], [], [], [], dimension_load_errors
+
+    _unit_record, unit_rows_raw, unit_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/unit_registry.json",
+        expected_schema_id="dominium.registry.unit_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="units",
+    )
+    if unit_load_errors:
+        return [], [], [], [], unit_load_errors
+
+    _quantity_type_record, quantity_type_rows_raw, quantity_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/quantity_type_registry.json",
+        expected_schema_id="dominium.registry.quantity_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="quantity_types",
+    )
+    if quantity_type_load_errors:
+        return [], [], [], [], quantity_type_load_errors
+
+    base_dimension_rows: List[dict] = []
+    seen_base_ids = set()
+    for entry in sorted(base_rows_raw, key=lambda row: str((row or {}).get("base_dimension_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_base_dimension_entry",
+                    "message": "base dimension entry must be object",
+                    "path": "$.base_dimensions",
+                }
+            )
+            continue
+        base_dimension_id = str(entry.get("base_dimension_id", "")).strip()
+        if not base_dimension_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_base_dimension_entry",
+                    "message": "base_dimension_id is missing",
+                    "path": "$.base_dimensions.base_dimension_id",
+                }
+            )
+            continue
+        if base_dimension_id in seen_base_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_base_dimension_id",
+                    "message": "duplicate base_dimension_id '{}'".format(base_dimension_id),
+                    "path": "$.base_dimensions.base_dimension_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="base_dimension",
+            payload=entry,
+            path="data/registries/base_dimension_registry.json#{}".format(base_dimension_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_base_ids.add(base_dimension_id)
+        base_dimension_rows.append(
+            {
+                "base_dimension_id": base_dimension_id,
+                "description": str(entry.get("description", "")).strip(),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    base_dimension_rows = sorted(base_dimension_rows, key=lambda row: str(row.get("base_dimension_id", "")))
+    base_dimension_ids = set(str(row.get("base_dimension_id", "")).strip() for row in base_dimension_rows)
+
+    dimension_rows: List[dict] = []
+    seen_dimension_ids = set()
+    for entry in sorted(dimension_rows_raw, key=lambda row: str((row or {}).get("dimension_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_dimension_entry",
+                    "message": "dimension entry must be object",
+                    "path": "$.dimensions",
+                }
+            )
+            continue
+        dimension_id = str(entry.get("dimension_id", "")).strip()
+        if not dimension_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_dimension_entry",
+                    "message": "dimension_id is missing",
+                    "path": "$.dimensions.dimension_id",
+                }
+            )
+            continue
+        if dimension_id in seen_dimension_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_dimension_id",
+                    "message": "duplicate dimension_id '{}'".format(dimension_id),
+                    "path": "$.dimensions.dimension_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="dimension",
+            payload=entry,
+            path="data/registries/dimension_registry.json#{}".format(dimension_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        raw_exponents = dict(entry.get("base_exponents") or {})
+        normalized_exponents = {}
+        missing_base_ids = []
+        for base_dimension_id in sorted(raw_exponents.keys()):
+            token = str(base_dimension_id).strip()
+            if not token:
+                continue
+            exponent = int(raw_exponents.get(base_dimension_id, 0) or 0)
+            if exponent == 0:
+                continue
+            if token not in base_dimension_ids:
+                missing_base_ids.append(token)
+                continue
+            normalized_exponents[token] = int(exponent)
+        if missing_base_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.dimension_reference_missing",
+                    "message": "dimension '{}' references unknown base dimensions: {}".format(
+                        dimension_id,
+                        ",".join(sorted(set(missing_base_ids))),
+                    ),
+                    "path": "$.dimensions.base_exponents",
+                }
+            )
+            continue
+        seen_dimension_ids.add(dimension_id)
+        dimension_rows.append(
+            {
+                "dimension_id": dimension_id,
+                "base_exponents": dict(normalized_exponents),
+                "description": str(entry.get("description", "")).strip(),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    dimension_rows = sorted(dimension_rows, key=lambda row: str(row.get("dimension_id", "")))
+    dimension_ids = set(str(row.get("dimension_id", "")).strip() for row in dimension_rows)
+
+    unit_rows: List[dict] = []
+    seen_unit_ids = set()
+    for entry in sorted(unit_rows_raw, key=lambda row: str((row or {}).get("unit_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_unit_entry",
+                    "message": "unit entry must be object",
+                    "path": "$.units",
+                }
+            )
+            continue
+        unit_id = str(entry.get("unit_id", "")).strip()
+        if not unit_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_unit_entry",
+                    "message": "unit_id is missing",
+                    "path": "$.units.unit_id",
+                }
+            )
+            continue
+        if unit_id in seen_unit_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_unit_id",
+                    "message": "duplicate unit_id '{}'".format(unit_id),
+                    "path": "$.units.unit_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="unit",
+            payload=entry,
+            path="data/registries/unit_registry.json#{}".format(unit_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        dimension_id = str(entry.get("dimension_id", "")).strip()
+        if dimension_id not in dimension_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.unit_reference_missing",
+                    "message": "unit '{}' references unknown dimension_id '{}'".format(unit_id, dimension_id),
+                    "path": "$.units.dimension_id",
+                }
+            )
+            continue
+        scale_factor_to_canonical = int(entry.get("scale_factor_to_canonical", 0) or 0)
+        if scale_factor_to_canonical <= 0:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_unit_entry",
+                    "message": "unit '{}' must declare scale_factor_to_canonical > 0".format(unit_id),
+                    "path": "$.units.scale_factor_to_canonical",
+                }
+            )
+            continue
+        seen_unit_ids.add(unit_id)
+        unit_rows.append(
+            {
+                "unit_id": unit_id,
+                "dimension_id": dimension_id,
+                "scale_factor_to_canonical": int(scale_factor_to_canonical),
+                "display_symbol": str(entry.get("display_symbol", "")).strip(),
+                "description": str(entry.get("description", "")).strip(),
+                "version_introduced": str(entry.get("version_introduced", "")).strip(),
+                "deprecated": bool(entry.get("deprecated", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    unit_rows = sorted(unit_rows, key=lambda row: str(row.get("unit_id", "")))
+    unit_ids = set(str(row.get("unit_id", "")).strip() for row in unit_rows)
+    unit_dimension_by_id = {
+        str(row.get("unit_id", "")).strip(): str(row.get("dimension_id", "")).strip()
+        for row in unit_rows
+        if str(row.get("unit_id", "")).strip()
+    }
+
+    quantity_type_rows: List[dict] = []
+    seen_quantity_ids = set()
+    for entry in sorted(quantity_type_rows_raw, key=lambda row: str((row or {}).get("quantity_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quantity_type_entry",
+                    "message": "quantity type entry must be object",
+                    "path": "$.quantity_types",
+                }
+            )
+            continue
+        quantity_id = str(entry.get("quantity_id", "")).strip()
+        if not quantity_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quantity_type_entry",
+                    "message": "quantity_id is missing",
+                    "path": "$.quantity_types.quantity_id",
+                }
+            )
+            continue
+        if quantity_id in seen_quantity_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_quantity_type_id",
+                    "message": "duplicate quantity_id '{}'".format(quantity_id),
+                    "path": "$.quantity_types.quantity_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="quantity_type",
+            payload=entry,
+            path="data/registries/quantity_type_registry.json#{}".format(quantity_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        dimension_id = str(entry.get("dimension_id", "")).strip()
+        default_unit_id = str(entry.get("default_unit_id", "")).strip()
+        missing_refs = []
+        if dimension_id not in dimension_ids:
+            missing_refs.append("dimension_id={}".format(dimension_id))
+        if default_unit_id not in unit_ids:
+            missing_refs.append("default_unit_id={}".format(default_unit_id))
+        if missing_refs:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.quantity_type_reference_missing",
+                    "message": "quantity type '{}' references unknown ids: {}".format(
+                        quantity_id,
+                        ",".join(sorted(set(missing_refs))),
+                    ),
+                    "path": "$.quantity_types",
+                }
+            )
+            continue
+        unit_dimension_id = str(unit_dimension_by_id.get(default_unit_id, "")).strip()
+        if unit_dimension_id and unit_dimension_id != dimension_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.quantity_type_dimension_mismatch",
+                    "message": "quantity type '{}' dimension '{}' does not match default unit '{}' dimension '{}'".format(
+                        quantity_id,
+                        dimension_id,
+                        default_unit_id,
+                        unit_dimension_id,
+                    ),
+                    "path": "$.quantity_types",
+                }
+            )
+            continue
+        seen_quantity_ids.add(quantity_id)
+        quantity_type_rows.append(
+            {
+                "quantity_id": quantity_id,
+                "dimension_id": dimension_id,
+                "invariant_numeric_type": str(entry.get("invariant_numeric_type", "")).strip(),
+                "default_unit_id": default_unit_id,
+                "conservation_applicable": bool(entry.get("conservation_applicable", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    quantity_type_rows = sorted(quantity_type_rows, key=lambda row: str(row.get("quantity_id", "")))
+
+    return base_dimension_rows, dimension_rows, unit_rows, quantity_type_rows, errors
+
+
 def _universe_physics_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -6238,6 +6588,16 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        base_dimension_rows,
+        dimension_rows,
+        unit_rows,
+        quantity_type_rows,
+        materials_dimension_registry_errors,
+    ) = _materials_dimension_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         budget_envelope_rows,
         arbitration_policy_rows,
         inspection_cache_policy_rows,
@@ -6438,6 +6798,25 @@ def compile_bundle(
         schema_root=schema_root,
     )
     ui_rows, ui_errors = _ui_rows(contributions, schema_root=schema_root)
+    materials_reference_errors: List[dict] = []
+    quantity_type_id_set = set(str(row.get("quantity_id", "")).strip() for row in quantity_type_rows if str(row.get("quantity_id", "")).strip())
+    for contract_set_row in conservation_contract_set_rows:
+        contract_set_id = str(contract_set_row.get("contract_set_id", "")).strip() or "<unknown>"
+        for quantity_row in list(contract_set_row.get("quantities") or []):
+            if not isinstance(quantity_row, dict):
+                continue
+            quantity_id = str(quantity_row.get("quantity_id", "")).strip()
+            if quantity_id and quantity_id not in quantity_type_id_set:
+                materials_reference_errors.append(
+                    {
+                        "code": "refuse.registry_compile.conservation_quantity_type_missing",
+                        "message": "conservation contract '{}' references quantity_id '{}' missing from quantity_type_registry".format(
+                            contract_set_id,
+                            quantity_id,
+                        ),
+                        "path": "$.contract_sets.quantities.quantity_id",
+                    }
+                )
     all_errors = (
         domain_errors
         + law_errors
@@ -6449,6 +6828,8 @@ def compile_bundle(
         + interaction_registry_errors
         + civilisation_registry_errors
         + conservation_registry_errors
+        + materials_dimension_registry_errors
+        + materials_reference_errors
         + performance_registry_errors
         + universe_physics_registry_errors
         + transition_registry_errors
@@ -6581,6 +6962,34 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "exception_types": exception_type_rows,
+        }
+    )
+    base_dimension_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "base_dimensions": base_dimension_rows,
+        }
+    )
+    dimension_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "dimensions": dimension_rows,
+        }
+    )
+    unit_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "units": unit_rows,
+        }
+    )
+    quantity_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "quantity_types": quantity_type_rows,
         }
     )
     domain_payload = _finalize_registry_payload(
@@ -6951,6 +7360,10 @@ def compile_bundle(
         ),
         "quantity_registry": ("quantity_registry", quantity_payload),
         "exception_type_registry": ("exception_type_registry", exception_type_payload),
+        "base_dimension_registry": ("base_dimension_registry", base_dimension_payload),
+        "dimension_registry": ("dimension_registry", dimension_payload),
+        "unit_registry": ("unit_registry", unit_payload),
+        "quantity_type_registry": ("quantity_type_registry", quantity_type_payload),
         "universe_physics_profile_registry": ("universe_physics_profile_registry", universe_physics_profile_payload),
         "time_model_registry": ("time_model_registry", time_model_payload),
         "time_control_policy_registry": ("time_control_policy_registry", time_control_policy_payload),
@@ -7028,6 +7441,10 @@ def compile_bundle(
         "conservation_contract_set_registry",
         "quantity_registry",
         "exception_type_registry",
+        "base_dimension_registry",
+        "dimension_registry",
+        "unit_registry",
+        "quantity_type_registry",
         "universe_physics_profile_registry",
         "time_model_registry",
         "time_control_policy_registry",
@@ -7122,6 +7539,10 @@ def compile_bundle(
             "conservation_contract_set_registry_hash": registry_hashes["conservation_contract_set_registry_hash"],
             "quantity_registry_hash": registry_hashes["quantity_registry_hash"],
             "exception_type_registry_hash": registry_hashes["exception_type_registry_hash"],
+            "base_dimension_registry_hash": registry_hashes["base_dimension_registry_hash"],
+            "dimension_registry_hash": registry_hashes["dimension_registry_hash"],
+            "unit_registry_hash": registry_hashes["unit_registry_hash"],
+            "quantity_type_registry_hash": registry_hashes["quantity_type_registry_hash"],
             "universe_physics_profile_registry_hash": registry_hashes["universe_physics_profile_registry_hash"],
             "time_model_registry_hash": registry_hashes["time_model_registry_hash"],
             "time_control_policy_registry_hash": registry_hashes["time_control_policy_registry_hash"],

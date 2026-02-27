@@ -1,0 +1,155 @@
+{
+  "schema_id": "dominium.registry.dimension_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.dimension_registry",
+    "registry_version": "1.0.0",
+    "dimensions": [
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.mass",
+        "base_exponents": {"M": 1},
+        "description": "Mass dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.length",
+        "base_exponents": {"L": 1},
+        "description": "Length dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.time",
+        "base_exponents": {"T": 1},
+        "description": "Time dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.charge",
+        "base_exponents": {"Q": 1},
+        "description": "Charge dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.temperature",
+        "base_exponents": {"THETA": 1},
+        "description": "Temperature dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.velocity",
+        "base_exponents": {"L": 1, "T": -1},
+        "description": "Velocity dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.acceleration",
+        "base_exponents": {"L": 1, "T": -2},
+        "description": "Acceleration dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.force",
+        "base_exponents": {"M": 1, "L": 1, "T": -2},
+        "description": "Force dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.energy",
+        "base_exponents": {"M": 1, "L": 2, "T": -2},
+        "description": "Energy dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.power",
+        "base_exponents": {"M": 1, "L": 2, "T": -3},
+        "description": "Power dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.pressure",
+        "base_exponents": {"M": 1, "L": -1, "T": -2},
+        "description": "Pressure dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.density",
+        "base_exponents": {"M": 1, "L": -3},
+        "description": "Density dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.momentum",
+        "base_exponents": {"M": 1, "L": 1, "T": -1},
+        "description": "Linear momentum dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.angular_momentum",
+        "base_exponents": {"M": 1, "L": 2, "T": -1},
+        "description": "Angular momentum dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.currency",
+        "base_exponents": {"I": 1},
+        "description": "Ledger balance/currency dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.energy_per_temperature",
+        "base_exponents": {"M": 1, "L": 2, "T": -2, "THETA": -1},
+        "description": "Entropy-like energy-per-temperature stub dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

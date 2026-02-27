@@ -1,0 +1,67 @@
+{
+  "schema_id": "dominium.registry.quantity_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.quantity_type_registry",
+    "registry_version": "1.0.0",
+    "quantity_types": [
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass_energy_total",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass",
+        "dimension_id": "dim.mass",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.kg",
+        "conservation_applicable": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.charge_total",
+        "dimension_id": "dim.charge",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.C",
+        "conservation_applicable": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.entropy_metric",
+        "dimension_id": "dim.energy_per_temperature",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J_per_K",
+        "conservation_applicable": false,
+        "extensions": {
+          "stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.ledger_balance",
+        "dimension_id": "dim.currency",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.currency_unit",
+        "conservation_applicable": true,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
