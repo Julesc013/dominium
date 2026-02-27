@@ -580,22 +580,6 @@ def run_intent_script(
     )
     if institution_type_registry_error:
         return institution_type_registry_error
-    commitment_type_registry, commitment_type_registry_error = _load_registry_payload(
-        repo_root=repo_root,
-        file_name=REGISTRY_FILE_MAP["commitment_type_registry_hash"],
-        expected_hash=str(registries.get("commitment_type_registry_hash", "")),
-        registries_dir=registries_dir,
-    )
-    if commitment_type_registry_error:
-        return commitment_type_registry_error
-    causality_strictness_registry, causality_strictness_registry_error = _load_registry_payload(
-        repo_root=repo_root,
-        file_name=REGISTRY_FILE_MAP["causality_strictness_registry_hash"],
-        expected_hash=str(registries.get("causality_strictness_registry_hash", "")),
-        registries_dir=registries_dir,
-    )
-    if causality_strictness_registry_error:
-        return causality_strictness_registry_error
     demography_policy_registry, demography_policy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["demography_policy_registry_hash"],
@@ -979,8 +963,6 @@ def run_intent_script(
         "order_type_registry": order_type_registry,
         "role_registry": role_registry,
         "institution_type_registry": institution_type_registry,
-        "commitment_type_registry": commitment_type_registry,
-        "causality_strictness_registry": causality_strictness_registry,
         "demography_policy_registry": demography_policy_registry,
         "death_model_registry": death_model_registry,
         "birth_model_registry": birth_model_registry,
@@ -1096,8 +1078,6 @@ def run_intent_script(
             "order_type_registry": order_type_registry,
             "role_registry": role_registry,
             "institution_type_registry": institution_type_registry,
-            "commitment_type_registry": commitment_type_registry,
-            "causality_strictness_registry": causality_strictness_registry,
             "demography_policy_registry": demography_policy_registry,
             "death_model_registry": death_model_registry,
             "birth_model_registry": birth_model_registry,
