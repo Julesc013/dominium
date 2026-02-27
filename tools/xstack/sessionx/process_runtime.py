@@ -44,6 +44,16 @@ from src.materials.construction.construction_engine import (
     create_construction_project,
     tick_construction_projects,
 )
+from src.materials.maintenance.decay_engine import (
+    MaintenanceError,
+    REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+    normalize_asset_health_state,
+    perform_inspection,
+    perform_maintenance,
+    quantized_failure_risk_summary,
+    schedule_maintenance_commitments,
+    tick_decay,
+)
 from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
     advance_time as time_advance,
@@ -112,6 +122,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.construction_project_tick": "session.boot",
     "process.construction_pause": "entitlement.control.admin",
     "process.construction_resume": "entitlement.control.admin",
+    "process.decay_tick": "session.boot",
+    "process.maintenance_schedule": "entitlement.control.admin",
+    "process.inspection_perform": "entitlement.control.admin",
+    "process.maintenance_perform": "entitlement.control.admin",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -166,6 +180,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.construction_project_tick": "observer",
     "process.construction_pause": "operator",
     "process.construction_resume": "operator",
+    "process.decay_tick": "observer",
+    "process.maintenance_schedule": "operator",
+    "process.inspection_perform": "operator",
+    "process.maintenance_perform": "operator",
 }
 PRIVILEGE_RANK = {
     "observer": 0,
@@ -227,9 +245,20 @@ CAMERA_REQUIRED_PROCESS_IDS = {
     "process.camera_set_view_mode",
     "process.camera_set_lens",
 }
+MAINTENANCE_PROCESS_IDS = {
+    "process.decay_tick",
+    "process.maintenance_schedule",
+    "process.inspection_perform",
+    "process.maintenance_perform",
+}
 CONTROL_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.control.law_forbidden",
     "ENTITLEMENT_MISSING": "refusal.control.entitlement_missing",
+}
+MAINTENANCE_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+    "ENTITLEMENT_MISSING": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+    "PRIVILEGE_INSUFFICIENT": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
 }
 COSMETIC_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.cosmetic.forbidden",
@@ -302,6 +331,7 @@ CONSTRUCTION_DEFAULT_POLICY_ID = "build.policy.default"
 CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK = 256
 CONSTRUCTION_DEFAULT_MAX_PARALLEL_STEPS_OVERRIDE = 0
 CONSTRUCTION_DEFAULT_COST_UNITS_PER_ACTIVE_STEP = 1
+MAINTENANCE_DEFAULT_POLICY_ID = "maint.policy.default_realistic"
 ZERO_HASH = "0" * 64
 
 
@@ -1684,6 +1714,156 @@ def _persist_construction_state(
     _ensure_installed_structure_instances(state)
     _ensure_construction_provenance_events(state)
     _ensure_construction_runtime_state(state)
+
+
+def _normalize_maintenance_commitment_status(token: object) -> str:
+    value = str(token or "").strip() or "planned"
+    if value not in ("planned", "scheduled", "executing", "completed", "failed"):
+        return "planned"
+    return value
+
+
+def _ensure_asset_health_states(state: dict) -> List[dict]:
+    rows = state.get("asset_health_states")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("asset_id", ""))):
+        try:
+            payload = normalize_asset_health_state(row)
+        except MaintenanceError:
+            continue
+        normalized.append(dict(payload))
+    state["asset_health_states"] = normalized
+    return normalized
+
+
+def _ensure_failure_events(state: dict) -> List[dict]:
+    rows = state.get("failure_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "event_id": event_id,
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "asset_id": str(row.get("asset_id", "")).strip(),
+                "failure_mode_id": str(row.get("failure_mode_id", "")).strip(),
+                "severity": max(0, _as_int(row.get("severity", 0), 0)),
+                "consequences": dict(row.get("consequences") or {}) if isinstance(row.get("consequences"), dict) else {},
+                "provenance_event_id": str(row.get("provenance_event_id", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["failure_events"] = normalized
+    return normalized
+
+
+def _ensure_maintenance_commitments(state: dict) -> List[dict]:
+    rows = state.get("maintenance_commitments")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("commitment_id", ""))):
+        commitment_id = str(row.get("commitment_id", "")).strip()
+        if not commitment_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "commitment_id": commitment_id,
+                "asset_id": str(row.get("asset_id", "")).strip(),
+                "maintenance_policy_id": str(row.get("maintenance_policy_id", "")).strip() or MAINTENANCE_DEFAULT_POLICY_ID,
+                "commitment_kind": str(row.get("commitment_kind", "")).strip(),
+                "scheduled_tick": max(0, _as_int(row.get("scheduled_tick", 0), 0)),
+                "status": _normalize_maintenance_commitment_status(row.get("status", "planned")),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip() or "subject.system",
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["maintenance_commitments"] = normalized
+    return normalized
+
+
+def _ensure_maintenance_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("maintenance_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", "")))):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "event_id": event_id,
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type_id": str(row.get("event_type_id", "")).strip(),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip(),
+                "site_ref": str(row.get("site_ref", "")).strip(),
+                "inputs": _sorted_tokens(list(row.get("inputs") or [])),
+                "outputs": _sorted_tokens(list(row.get("outputs") or [])),
+                "ledger_deltas": dict(
+                    (str(key).strip(), _as_int(value, 0))
+                    for key, value in sorted((dict(row.get("ledger_deltas") or {})).items(), key=lambda item: str(item[0]))
+                    if str(key).strip()
+                ),
+                "linked_project_id": (None if row.get("linked_project_id") is None else str(row.get("linked_project_id", "")).strip() or None),
+                "linked_step_id": (None if row.get("linked_step_id") is None else str(row.get("linked_step_id", "")).strip() or None),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["maintenance_provenance_events"] = normalized
+    return normalized
+
+
+def _ensure_maintenance_runtime_state(state: dict) -> dict:
+    row = state.get("maintenance_runtime_state")
+    if not isinstance(row, dict):
+        row = {}
+    normalized = {
+        "next_event_sequence": max(0, _as_int(row.get("next_event_sequence", 0), 0)),
+        "last_decay_tick": max(0, _as_int(row.get("last_decay_tick", 0), 0)),
+        "last_schedule_tick": max(0, _as_int(row.get("last_schedule_tick", 0), 0)),
+        "last_inspection_tick": max(0, _as_int(row.get("last_inspection_tick", 0), 0)),
+        "last_maintenance_tick": max(0, _as_int(row.get("last_maintenance_tick", 0), 0)),
+        "last_budget_outcome": str(row.get("last_budget_outcome", "")).strip() or "none",
+        "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+    }
+    state["maintenance_runtime_state"] = normalized
+    return normalized
+
+
+def _persist_maintenance_state(
+    state: dict,
+    *,
+    asset_health_states: List[dict],
+    failure_events: List[dict],
+    commitments: List[dict],
+    provenance_events: List[dict],
+    runtime_state: dict,
+) -> None:
+    state["asset_health_states"] = [dict(row) for row in list(asset_health_states or []) if isinstance(row, dict)]
+    state["failure_events"] = [dict(row) for row in list(failure_events or []) if isinstance(row, dict)]
+    state["maintenance_commitments"] = [dict(row) for row in list(commitments or []) if isinstance(row, dict)]
+    state["maintenance_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
+    state["maintenance_runtime_state"] = dict(runtime_state or {})
+    _ensure_asset_health_states(state)
+    _ensure_failure_events(state)
+    _ensure_maintenance_commitments(state)
+    _ensure_maintenance_provenance_events(state)
+    _ensure_maintenance_runtime_state(state)
 
 
 def _find_cohort(cohort_rows: List[dict], cohort_id: str) -> dict:
@@ -4225,6 +4405,15 @@ def _construction_actor_subject_id(authority_context: dict) -> str:
     return "subject.system"
 
 
+def _maintenance_actor_subject_id(authority_context: dict) -> str:
+    subject_id = str((authority_context or {}).get("subject_id", "")).strip()
+    peer_id = str((authority_context or {}).get("peer_id", "")).strip()
+    token = subject_id or peer_id
+    if token:
+        return token
+    return "subject.system"
+
+
 def _construction_tick_budget(
     *,
     policy_context: dict | None,
@@ -4296,6 +4485,105 @@ def _construction_tick_budget(
     }
 
 
+def _maintenance_quantization_step(
+    *,
+    authority_context: dict,
+    policy_context: dict | None,
+    asset_health_row: dict,
+) -> int:
+    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+    if visibility_level == "diegetic":
+        return 200
+    maintenance_policy_id = str(
+        (dict(asset_health_row.get("extensions") or {})).get("maintenance_policy_id", "")
+        or (dict(policy_context or {})).get("maintenance_policy_id", "")
+        or MAINTENANCE_DEFAULT_POLICY_ID
+    ).strip() or MAINTENANCE_DEFAULT_POLICY_ID
+    maintenance_policy_row = _registry_row_by_id(
+        _policy_payload(policy_context, "maintenance_policy_registry"),
+        "policies",
+        "maintenance_policy_id",
+        maintenance_policy_id,
+    )
+    policy_extensions = dict(maintenance_policy_row.get("extensions") or {})
+    return max(1, _as_int(policy_extensions.get("risk_quantization_step", 50), 50))
+
+
+def _augment_inspection_target_payload_for_maintenance(
+    *,
+    state: dict,
+    policy_context: dict | None,
+    authority_context: dict,
+    target_payload: dict,
+) -> dict:
+    payload = dict(target_payload or {})
+    if str(payload.get("collection", "")).strip() != "asset_health_states":
+        return payload
+    row = dict(payload.get("row") or {})
+    if not row:
+        return payload
+    quantization_step = _maintenance_quantization_step(
+        authority_context=authority_context,
+        policy_context=policy_context,
+        asset_health_row=row,
+    )
+    risk_summary = quantized_failure_risk_summary(
+        asset_health_row=row,
+        failure_mode_registry=_policy_payload(policy_context, "failure_mode_registry"),
+        quantization_step=int(quantization_step),
+    )
+    wear_quantization_step = max(1, _as_int((dict(row.get("extensions") or {})).get("wear_quantization_step", 1000), 1000))
+    wear_quantized = dict(
+        (
+            str(key).strip(),
+            int((_as_int(value, 0) // wear_quantization_step) * wear_quantization_step),
+        )
+        for key, value in sorted((dict(row.get("accumulated_wear") or {})).items(), key=lambda item: str(item[0]))
+        if str(key).strip()
+    )
+    backlog_quantized = int((_as_int(row.get("maintenance_backlog", 0), 0) // wear_quantization_step) * wear_quantization_step)
+    asset_id = str(row.get("asset_id", "")).strip()
+    commitment_rows = sorted(
+        (
+            dict(item)
+            for item in list(state.get("maintenance_commitments") or [])
+            if isinstance(item, dict) and str(item.get("asset_id", "")).strip() == asset_id
+        ),
+        key=lambda item: (_as_int(item.get("scheduled_tick", 0), 0), str(item.get("commitment_id", ""))),
+    )
+    upcoming = [
+        dict(item)
+        for item in commitment_rows
+        if str(item.get("status", "")).strip() in ("planned", "scheduled", "executing")
+    ]
+    extensions = dict(payload.get("extensions") or {})
+    extensions.update(
+        {
+            "failure_risk_summary": risk_summary,
+            "wear_quantized": wear_quantized,
+            "maintenance_backlog_quantized": int(max(0, backlog_quantized)),
+            "next_maintenance_commitment_ids": [
+                str(item.get("commitment_id", "")).strip()
+                for item in upcoming[:6]
+                if str(item.get("commitment_id", "")).strip()
+            ],
+            "next_maintenance_commitments": [
+                {
+                    "commitment_id": str(item.get("commitment_id", "")).strip(),
+                    "commitment_kind": str(item.get("commitment_kind", "")).strip(),
+                    "scheduled_tick": int(_as_int(item.get("scheduled_tick", 0), 0)),
+                    "status": str(item.get("status", "")).strip(),
+                }
+                for item in upcoming[:6]
+            ],
+            "risk_quantization_step": int(quantization_step),
+            "wear_quantization_step": int(wear_quantization_step),
+        }
+    )
+    payload["extensions"] = extensions
+    return payload
+
+
 def _inspection_target_payload(state: dict, target_id: str) -> dict:
     token = str(target_id).strip()
     if not token:
@@ -4343,6 +4631,10 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("construction_commitments", "commitment_id"),
         ("construction_provenance_events", "event_id"),
         ("installed_structure_instances", "instance_id"),
+        ("asset_health_states", "asset_id"),
+        ("failure_events", "event_id"),
+        ("maintenance_commitments", "commitment_id"),
+        ("maintenance_provenance_events", "event_id"),
         ("role_assignments", "role_assignment_id"),
     )
     for list_key, id_key in id_table:
@@ -6521,6 +6813,8 @@ def execute_intent(
     if gate.get("result") != "complete":
         if process_id == "process.cosmetic_assign":
             return _control_gate_refusal(gate, reason_map=COSMETIC_GATE_REASON_MAP)
+        if process_id in MAINTENANCE_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=MAINTENANCE_GATE_REASON_MAP)
         if process_id in CIV_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=CIV_GATE_REASON_MAP)
         if process_id in CONTROL_PROCESS_IDS:
@@ -9427,6 +9721,409 @@ def execute_intent(
         )
         result_metadata = {"project_id": project_id, "status": str(project_row.get("status", ""))}
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.decay_tick":
+        dt_ticks = max(0, _as_int(inputs.get("dt_ticks", 1), 1))
+        asset_health_states = _ensure_asset_health_states(state)
+        failure_events = _ensure_failure_events(state)
+        maintenance_commitments = _ensure_maintenance_commitments(state)
+        maintenance_provenance_events = _ensure_maintenance_provenance_events(state)
+        maintenance_runtime_state = _ensure_maintenance_runtime_state(state)
+        ticked = tick_decay(
+            asset_health_states=asset_health_states,
+            failure_mode_registry=_policy_payload(policy_context, "failure_mode_registry"),
+            maintenance_policy_registry=_policy_payload(policy_context, "maintenance_policy_registry"),
+            backlog_growth_rule_registry=_policy_payload(policy_context, "backlog_growth_rule_registry"),
+            current_tick=int(current_tick),
+            dt_ticks=int(dt_ticks),
+            actor_subject_id=_maintenance_actor_subject_id(authority_context),
+            numeric_policy=dict((dict(policy_context or {})).get("numeric_precision_policy") or {}),
+            event_sequence_start=max(0, _as_int(maintenance_runtime_state.get("next_event_sequence", 0), 0)),
+        )
+        asset_health_states = [dict(row) for row in list(ticked.get("asset_health_states") or []) if isinstance(row, dict)]
+        new_failure_rows = [dict(row) for row in list(ticked.get("failure_events") or []) if isinstance(row, dict)]
+        new_provenance_rows = [dict(row) for row in list(ticked.get("provenance_events") or []) if isinstance(row, dict)]
+        failure_by_id = dict(
+            (str(row.get("event_id", "")), dict(row))
+            for row in list(failure_events or [])
+            if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+        )
+        for row in new_failure_rows:
+            event_id = str(row.get("event_id", "")).strip()
+            if event_id:
+                failure_by_id[event_id] = dict(row)
+        failure_events = [dict(failure_by_id[key]) for key in sorted(failure_by_id.keys())]
+
+        provenance_by_id = dict(
+            (str(row.get("event_id", "")), dict(row))
+            for row in list(maintenance_provenance_events or [])
+            if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+        )
+        for row in new_provenance_rows:
+            event_id = str(row.get("event_id", "")).strip()
+            if event_id:
+                provenance_by_id[event_id] = dict(row)
+        maintenance_provenance_events = sorted(
+            (dict(provenance_by_id[key]) for key in sorted(provenance_by_id.keys())),
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        provenance_lookup = dict(
+            (str(row.get("event_id", "")).strip(), dict(row))
+            for row in maintenance_provenance_events
+            if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+        )
+        runtime_extensions = dict(maintenance_runtime_state.get("extensions") or {})
+        for failure_row in new_failure_rows:
+            consequences = dict(failure_row.get("consequences") or {})
+            loss_raw = max(0, _as_int(consequences.get("usable_material_loss_raw", 0), 0))
+            source_material_id = str(consequences.get("source_material_id", "")).strip() or "material.unknown"
+            scrap_material_id = str(consequences.get("scrap_material_id", "")).strip() or "material.scrap.generic"
+            if loss_raw > 0:
+                _ledger_emit_exception(
+                    policy_context=policy_context,
+                    quantity_id=LOGISTICS_DEFAULT_QUANTITY_ID,
+                    delta=int(loss_raw),
+                    material_id=source_material_id,
+                    exception_type_id="exception.boundary_flux",
+                    domain_id=CONSERVATION_DEFAULT_DOMAIN_ID,
+                    process_id=process_id,
+                    reason_code="materials.failure.mass_to_scrap",
+                    evidence=[
+                        "asset_id={}".format(str(failure_row.get("asset_id", ""))),
+                        "failure_mode_id={}".format(str(failure_row.get("failure_mode_id", ""))),
+                        "scrap_material_id={}".format(scrap_material_id),
+                    ],
+                )
+                runtime_extensions["last_scrap_transform"] = {
+                    "asset_id": str(failure_row.get("asset_id", "")),
+                    "failure_mode_id": str(failure_row.get("failure_mode_id", "")),
+                    "source_material_id": source_material_id,
+                    "scrap_material_id": scrap_material_id,
+                    "mass_raw": int(loss_raw),
+                    "tick": int(current_tick),
+                }
+            provenance_event_id = str(failure_row.get("provenance_event_id", "")).strip()
+            provenance_row = dict(provenance_lookup.get(provenance_event_id) or {})
+            entropy_delta = max(
+                0,
+                _as_int(
+                    (dict(provenance_row.get("ledger_deltas") or {})).get("quantity.entropy_metric", 0),
+                    0,
+                ),
+            )
+            if entropy_delta > 0:
+                _ledger_emit_exception(
+                    policy_context=policy_context,
+                    quantity_id="quantity.entropy_metric",
+                    delta=int(entropy_delta),
+                    exception_type_id="exception.boundary_flux",
+                    domain_id=CONSERVATION_DEFAULT_DOMAIN_ID,
+                    process_id=process_id,
+                    reason_code="materials.failure.entropy_increase",
+                    evidence=[
+                        "asset_id={}".format(str(failure_row.get("asset_id", ""))),
+                        "failure_mode_id={}".format(str(failure_row.get("failure_mode_id", ""))),
+                    ],
+                )
+        maintenance_runtime_state["next_event_sequence"] = max(
+            0,
+            _as_int(
+                ticked.get("next_event_sequence", maintenance_runtime_state.get("next_event_sequence", 0)),
+                _as_int(maintenance_runtime_state.get("next_event_sequence", 0), 0),
+            ),
+        )
+        maintenance_runtime_state["last_decay_tick"] = int(max(0, int(current_tick)))
+        maintenance_runtime_state["last_budget_outcome"] = "complete"
+        maintenance_runtime_state["extensions"] = runtime_extensions
+        _persist_maintenance_state(
+            state,
+            asset_health_states=asset_health_states,
+            failure_events=failure_events,
+            commitments=maintenance_commitments,
+            provenance_events=maintenance_provenance_events,
+            runtime_state=maintenance_runtime_state,
+        )
+        result_metadata = {
+            "dt_ticks": int(dt_ticks),
+            "tracked_asset_count": len(asset_health_states),
+            "new_failure_count": len(new_failure_rows),
+            "total_failure_count": len(failure_events),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.maintenance_schedule":
+        if law_profile.get("allow_maintenance") is False:
+            return refusal(
+                REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+                "active law profile forbids maintenance scheduling",
+                "Enable maintenance in law profile or use a policy that allows maintenance processes.",
+                {"law_profile_id": str(law_profile.get("law_profile_id", ""))},
+                "$.law_profile.allow_maintenance",
+            )
+        asset_health_states = _ensure_asset_health_states(state)
+        failure_events = _ensure_failure_events(state)
+        maintenance_commitments = _ensure_maintenance_commitments(state)
+        maintenance_provenance_events = _ensure_maintenance_provenance_events(state)
+        maintenance_runtime_state = _ensure_maintenance_runtime_state(state)
+        selected_policy_id = (
+            str(inputs.get("maintenance_policy_id", "")).strip()
+            or str((dict(policy_context or {})).get("maintenance_policy_id", "")).strip()
+            or MAINTENANCE_DEFAULT_POLICY_ID
+        )
+        schedule_result = schedule_maintenance_commitments(
+            asset_health_states=asset_health_states,
+            maintenance_commitments=maintenance_commitments,
+            current_tick=int(current_tick),
+            actor_subject_id=_maintenance_actor_subject_id(authority_context),
+            maintenance_policy_registry=_policy_payload(policy_context, "maintenance_policy_registry"),
+            backlog_growth_rule_registry=_policy_payload(policy_context, "backlog_growth_rule_registry"),
+            maintenance_policy_id=selected_policy_id,
+            asset_id=str(inputs.get("asset_id", "")).strip(),
+            event_sequence_start=max(0, _as_int(maintenance_runtime_state.get("next_event_sequence", 0), 0)),
+        )
+        asset_health_states = [dict(row) for row in list(schedule_result.get("asset_health_states") or []) if isinstance(row, dict)]
+        commitment_rows = [dict(row) for row in list(schedule_result.get("maintenance_commitments") or []) if isinstance(row, dict)]
+        new_provenance_rows = [dict(row) for row in list(schedule_result.get("provenance_events") or []) if isinstance(row, dict)]
+        maintenance_commitments = sorted(
+            (dict(row) for row in commitment_rows if isinstance(row, dict)),
+            key=lambda row: str(row.get("commitment_id", "")),
+        )
+        provenance_rows = list(maintenance_provenance_events or [])
+        provenance_rows.extend(new_provenance_rows)
+        maintenance_provenance_events = sorted(
+            (
+                dict(row)
+                for row in provenance_rows
+                if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+            ),
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        maintenance_runtime_state["next_event_sequence"] = max(
+            0,
+            _as_int(
+                schedule_result.get("next_event_sequence", maintenance_runtime_state.get("next_event_sequence", 0)),
+                _as_int(maintenance_runtime_state.get("next_event_sequence", 0), 0),
+            ),
+        )
+        maintenance_runtime_state["last_schedule_tick"] = int(max(0, int(current_tick)))
+        maintenance_runtime_state["last_budget_outcome"] = "complete"
+        _persist_maintenance_state(
+            state,
+            asset_health_states=asset_health_states,
+            failure_events=failure_events,
+            commitments=maintenance_commitments,
+            provenance_events=maintenance_provenance_events,
+            runtime_state=maintenance_runtime_state,
+        )
+        result_metadata = {
+            "asset_id": str(inputs.get("asset_id", "")).strip(),
+            "maintenance_policy_id": selected_policy_id,
+            "created_commitment_count": len(new_provenance_rows),
+            "total_commitment_count": len(maintenance_commitments),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.inspection_perform":
+        if law_profile.get("allow_maintenance") is False:
+            return refusal(
+                REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+                "active law profile forbids maintenance inspection",
+                "Enable maintenance in law profile or use a policy that allows maintenance processes.",
+                {"law_profile_id": str(law_profile.get("law_profile_id", ""))},
+                "$.law_profile.allow_maintenance",
+            )
+        asset_id = str(inputs.get("asset_id", "")).strip()
+        if not asset_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.inspection_perform requires asset_id",
+                "Provide deterministic asset_id from asset_health_states.",
+                {"process_id": process_id},
+                "$.intent.inputs.asset_id",
+            )
+        asset_health_states = _ensure_asset_health_states(state)
+        failure_events = _ensure_failure_events(state)
+        maintenance_commitments = _ensure_maintenance_commitments(state)
+        maintenance_provenance_events = _ensure_maintenance_provenance_events(state)
+        maintenance_runtime_state = _ensure_maintenance_runtime_state(state)
+        try:
+            inspected = perform_inspection(
+                asset_health_states=asset_health_states,
+                maintenance_commitments=maintenance_commitments,
+                current_tick=int(current_tick),
+                asset_id=asset_id,
+                actor_subject_id=_maintenance_actor_subject_id(authority_context),
+                event_sequence_start=max(0, _as_int(maintenance_runtime_state.get("next_event_sequence", 0), 0)),
+            )
+        except MaintenanceError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Provide a valid asset_id and retry maintenance inspection.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        asset_health_states = [dict(row) for row in list(inspected.get("asset_health_states") or []) if isinstance(row, dict)]
+        maintenance_commitments = [
+            dict(row) for row in list(inspected.get("maintenance_commitments") or []) if isinstance(row, dict)
+        ]
+        maintenance_provenance_events = sorted(
+            [dict(row) for row in list(maintenance_provenance_events or []) if isinstance(row, dict)]
+            + [dict(row) for row in list(inspected.get("provenance_events") or []) if isinstance(row, dict)],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        maintenance_runtime_state["next_event_sequence"] = max(
+            0,
+            _as_int(
+                inspected.get("next_event_sequence", maintenance_runtime_state.get("next_event_sequence", 0)),
+                _as_int(maintenance_runtime_state.get("next_event_sequence", 0), 0),
+            ),
+        )
+        maintenance_runtime_state["last_inspection_tick"] = int(max(0, int(current_tick)))
+        maintenance_runtime_state["last_budget_outcome"] = "complete"
+        _persist_maintenance_state(
+            state,
+            asset_health_states=asset_health_states,
+            failure_events=failure_events,
+            commitments=maintenance_commitments,
+            provenance_events=maintenance_provenance_events,
+            runtime_state=maintenance_runtime_state,
+        )
+        result_metadata = {
+            "asset_id": asset_id,
+            "completed_commitment_count": len(
+                [
+                    row
+                    for row in maintenance_commitments
+                    if str(row.get("asset_id", "")).strip() == asset_id
+                    and str(row.get("commitment_kind", "")).strip() == "inspection_due"
+                    and str(row.get("status", "")).strip() == "completed"
+                ]
+            ),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.maintenance_perform":
+        if law_profile.get("allow_maintenance") is False:
+            return refusal(
+                REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+                "active law profile forbids maintenance execution",
+                "Enable maintenance in law profile or use a policy that allows maintenance processes.",
+                {"law_profile_id": str(law_profile.get("law_profile_id", ""))},
+                "$.law_profile.allow_maintenance",
+            )
+        asset_id = str(inputs.get("asset_id", "")).strip()
+        if not asset_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.maintenance_perform requires asset_id",
+                "Provide deterministic asset_id from asset_health_states.",
+                {"process_id": process_id},
+                "$.intent.inputs.asset_id",
+            )
+        required_materials_raw = dict(inputs.get("required_materials") or {})
+        required_materials = dict(
+            (str(key).strip(), max(0, _as_int(value, 0)))
+            for key, value in sorted(required_materials_raw.items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        )
+        logistics_node_id = str(inputs.get("logistics_node_id", "")).strip()
+        available_materials = dict(
+            (str(key).strip(), max(0, _as_int(value, 0)))
+            for key, value in sorted((dict(inputs.get("available_materials") or {})).items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        )
+        if logistics_node_id:
+            inventory_index = build_inventory_index(logistics_inventory_rows)
+            node_entry = dict(inventory_index.get(logistics_node_id) or {})
+            available_materials = dict(
+                (str(key).strip(), max(0, _as_int(value, 0)))
+                for key, value in sorted((dict(node_entry.get("material_stocks") or {})).items(), key=lambda item: str(item[0]))
+                if str(key).strip()
+            )
+        asset_health_states = _ensure_asset_health_states(state)
+        failure_events = _ensure_failure_events(state)
+        maintenance_commitments = _ensure_maintenance_commitments(state)
+        maintenance_provenance_events = _ensure_maintenance_provenance_events(state)
+        maintenance_runtime_state = _ensure_maintenance_runtime_state(state)
+        try:
+            maintained = perform_maintenance(
+                asset_health_states=asset_health_states,
+                maintenance_commitments=maintenance_commitments,
+                current_tick=int(current_tick),
+                asset_id=asset_id,
+                actor_subject_id=_maintenance_actor_subject_id(authority_context),
+                available_materials=available_materials,
+                required_materials=required_materials,
+                reset_fraction_numerator=max(0, _as_int(inputs.get("reset_fraction_numerator", 1), 1)),
+                reset_fraction_denominator=max(1, _as_int(inputs.get("reset_fraction_denominator", 2), 2)),
+                event_sequence_start=max(0, _as_int(maintenance_runtime_state.get("next_event_sequence", 0), 0)),
+            )
+        except MaintenanceError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Provide required maintenance materials and legal authority, then retry.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        if required_materials and logistics_node_id:
+            inventory_index = build_inventory_index(logistics_inventory_rows)
+            node_entry = dict(inventory_index.get(logistics_node_id) or {})
+            stocks = dict(node_entry.get("material_stocks") or {})
+            for material_id, required_mass in sorted(required_materials.items(), key=lambda item: str(item[0])):
+                current_mass = max(0, _as_int(stocks.get(material_id, 0), 0))
+                stocks[material_id] = max(0, int(current_mass - int(required_mass)))
+            node_entry["material_stocks"] = dict((key, int(stocks[key])) for key in sorted(stocks.keys()))
+            inventory_index[logistics_node_id] = node_entry
+            logistics_inventory_rows = inventory_rows_from_index(inventory_index)
+            _persist_logistics_state(
+                state,
+                manifests=logistics_manifests,
+                commitments=shipment_commitment_rows,
+                inventories=logistics_inventory_rows,
+                events=logistics_provenance_events,
+                runtime_state=logistics_runtime_state,
+            )
+        asset_health_states = [dict(row) for row in list(maintained.get("asset_health_states") or []) if isinstance(row, dict)]
+        maintenance_commitments = [
+            dict(row) for row in list(maintained.get("maintenance_commitments") or []) if isinstance(row, dict)
+        ]
+        new_provenance_rows = [dict(row) for row in list(maintained.get("provenance_events") or []) if isinstance(row, dict)]
+        if new_provenance_rows and (required_materials or logistics_node_id):
+            event_row = dict(new_provenance_rows[0])
+            event_extensions = dict(event_row.get("extensions") or {})
+            if required_materials:
+                event_extensions["consumed_materials"] = dict(required_materials)
+            if logistics_node_id:
+                event_extensions["logistics_node_id"] = logistics_node_id
+            event_row["extensions"] = event_extensions
+            new_provenance_rows[0] = event_row
+        maintenance_provenance_events = sorted(
+            [dict(row) for row in list(maintenance_provenance_events or []) if isinstance(row, dict)] + new_provenance_rows,
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        maintenance_runtime_state["next_event_sequence"] = max(
+            0,
+            _as_int(
+                maintained.get("next_event_sequence", maintenance_runtime_state.get("next_event_sequence", 0)),
+                _as_int(maintenance_runtime_state.get("next_event_sequence", 0), 0),
+            ),
+        )
+        maintenance_runtime_state["last_maintenance_tick"] = int(max(0, int(current_tick)))
+        maintenance_runtime_state["last_budget_outcome"] = "complete"
+        _persist_maintenance_state(
+            state,
+            asset_health_states=asset_health_states,
+            failure_events=failure_events,
+            commitments=maintenance_commitments,
+            provenance_events=maintenance_provenance_events,
+            runtime_state=maintenance_runtime_state,
+        )
+        result_metadata = {
+            "asset_id": asset_id,
+            "backlog_before": int(maintained.get("backlog_before", 0)),
+            "backlog_after": int(maintained.get("backlog_after", 0)),
+            "logistics_node_id": logistics_node_id,
+            "required_materials": dict(required_materials),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.role_assign":
         if law_profile.get("allow_role_delegation") is False:
             return refusal(
@@ -10200,6 +10897,12 @@ def execute_intent(
             }
         truth_hash_anchor = canonical_sha256(state)
         target_payload = _inspection_target_payload(state=state, target_id=target_id)
+        target_payload = _augment_inspection_target_payload_for_maintenance(
+            state=state,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            target_payload=target_payload,
+        )
         snapshot = build_inspection_snapshot(
             target_id=target_id,
             tick=int(current_tick),

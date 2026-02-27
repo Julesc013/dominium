@@ -51,6 +51,24 @@
       },
       {
         "schema_version": "1.0.0",
+        "event_type_id": "event.failure.triggered",
+        "description": "Asset failure event emitted by deterministic decay threshold crossing.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.inspection_performed",
+        "description": "Maintenance inspection completed for tracked asset health state.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "event_type_id": "event.maintenance_performed",
+        "description": "Maintenance execution completed for tracked asset health state.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "event_type_id": "event.maintenance_scheduled",
         "description": "Maintenance scheduling provenance stub.",
         "extensions": {
