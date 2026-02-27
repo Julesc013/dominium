@@ -1,0 +1,192 @@
+{
+  "schema_id": "dominium.registry.material_class_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.material_class_registry",
+    "registry_version": "1.0.0",
+    "materials": [
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.water",
+        "base_type": "compound",
+        "base_ref_id": "compound.H2O",
+        "density": {
+          "value_raw": 16777216000,
+          "dimension_id": "dim.density",
+          "unit_id": "unit.kg_per_m3"
+        },
+        "specific_energy": {
+          "value_raw": 0,
+          "dimension_id": "dim.specific_energy",
+          "unit_id": "unit.J_per_kg"
+        },
+        "conductivity": null,
+        "heat_capacity": null,
+        "phase_tags": [
+          "liquid"
+        ],
+        "quality_distribution_model_id": "quality.uniform_stub",
+        "tags": [
+          "baseline",
+          "real_world"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.iron",
+        "base_type": "element",
+        "base_ref_id": "element.Fe",
+        "density": {
+          "value_raw": 132103798784,
+          "dimension_id": "dim.density",
+          "unit_id": "unit.kg_per_m3"
+        },
+        "specific_energy": {
+          "value_raw": 0,
+          "dimension_id": "dim.specific_energy",
+          "unit_id": "unit.J_per_kg"
+        },
+        "conductivity": null,
+        "heat_capacity": null,
+        "phase_tags": [
+          "solid"
+        ],
+        "quality_distribution_model_id": "quality.uniform_stub",
+        "tags": [
+          "baseline",
+          "real_world",
+          "metal"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.steel_basic",
+        "base_type": "mixture",
+        "base_ref_id": "mixture.steel_basic",
+        "density": {
+          "value_raw": 131701145600,
+          "dimension_id": "dim.density",
+          "unit_id": "unit.kg_per_m3"
+        },
+        "specific_energy": {
+          "value_raw": 0,
+          "dimension_id": "dim.specific_energy",
+          "unit_id": "unit.J_per_kg"
+        },
+        "conductivity": null,
+        "heat_capacity": null,
+        "phase_tags": [
+          "solid"
+        ],
+        "quality_distribution_model_id": "quality.basic_defect_stub",
+        "tags": [
+          "baseline",
+          "placeholder",
+          "alloy"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.wood_basic",
+        "base_type": "mixture",
+        "base_ref_id": "mixture.wood_basic",
+        "density": {
+          "value_raw": 11744051200,
+          "dimension_id": "dim.density",
+          "unit_id": "unit.kg_per_m3"
+        },
+        "specific_energy": {
+          "value_raw": 285212672000000,
+          "dimension_id": "dim.specific_energy",
+          "unit_id": "unit.J_per_kg"
+        },
+        "conductivity": null,
+        "heat_capacity": null,
+        "phase_tags": [
+          "solid",
+          "organic"
+        ],
+        "quality_distribution_model_id": "quality.basic_defect_stub",
+        "tags": [
+          "baseline",
+          "placeholder",
+          "composite",
+          "fuel_class"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.stone_basic",
+        "base_type": "element",
+        "base_ref_id": "element.Si",
+        "density": {
+          "value_raw": 43620761600,
+          "dimension_id": "dim.density",
+          "unit_id": "unit.kg_per_m3"
+        },
+        "specific_energy": {
+          "value_raw": 0,
+          "dimension_id": "dim.specific_energy",
+          "unit_id": "unit.J_per_kg"
+        },
+        "conductivity": null,
+        "heat_capacity": null,
+        "phase_tags": [
+          "solid"
+        ],
+        "quality_distribution_model_id": "quality.uniform_stub",
+        "tags": [
+          "baseline",
+          "placeholder",
+          "aggregate"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.air",
+        "base_type": "mixture",
+        "base_ref_id": "mixture.air",
+        "density": {
+          "value_raw": 20552090,
+          "dimension_id": "dim.density",
+          "unit_id": "unit.kg_per_m3"
+        },
+        "specific_energy": {
+          "value_raw": 0,
+          "dimension_id": "dim.specific_energy",
+          "unit_id": "unit.J_per_kg"
+        },
+        "conductivity": null,
+        "heat_capacity": null,
+        "phase_tags": [
+          "gas"
+        ],
+        "quality_distribution_model_id": "quality.uniform_stub",
+        "tags": [
+          "baseline",
+          "placeholder",
+          "atmosphere"
+        ],
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

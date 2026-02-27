@@ -63,6 +63,11 @@
         "dimension_registry_hash",
         "unit_registry_hash",
         "quantity_type_registry_hash",
+        "element_registry_hash",
+        "compound_registry_hash",
+        "mixture_registry_hash",
+        "material_class_registry_hash",
+        "quality_distribution_registry_hash",
         "universe_physics_profile_registry_hash",
         "time_model_registry_hash",
         "time_control_policy_registry_hash",
@@ -155,6 +160,26 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "quantity_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "element_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "compound_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mixture_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "material_class_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "quality_distribution_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },

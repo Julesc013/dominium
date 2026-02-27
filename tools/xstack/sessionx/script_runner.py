@@ -539,6 +539,46 @@ def run_intent_script(
     )
     if quantity_type_registry_error:
         return quantity_type_registry_error
+    element_registry, element_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["element_registry_hash"],
+        expected_hash=str(registries.get("element_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if element_registry_error:
+        return element_registry_error
+    compound_registry, compound_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["compound_registry_hash"],
+        expected_hash=str(registries.get("compound_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if compound_registry_error:
+        return compound_registry_error
+    mixture_registry, mixture_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["mixture_registry_hash"],
+        expected_hash=str(registries.get("mixture_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if mixture_registry_error:
+        return mixture_registry_error
+    material_class_registry, material_class_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["material_class_registry_hash"],
+        expected_hash=str(registries.get("material_class_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if material_class_registry_error:
+        return material_class_registry_error
+    quality_distribution_registry, quality_distribution_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["quality_distribution_registry_hash"],
+        expected_hash=str(registries.get("quality_distribution_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if quality_distribution_registry_error:
+        return quality_distribution_registry_error
 
     law_registry, law_registry_error = _load_registry_payload(
         repo_root=repo_root,
@@ -993,6 +1033,11 @@ def run_intent_script(
         "dimension_registry": dimension_registry,
         "unit_registry": unit_registry,
         "quantity_type_registry": quantity_type_registry,
+        "element_registry": element_registry,
+        "compound_registry": compound_registry,
+        "mixture_registry": mixture_registry,
+        "material_class_registry": material_class_registry,
+        "quality_distribution_registry": quality_distribution_registry,
         "governance_type_registry": governance_type_registry,
         "diplomatic_state_registry": diplomatic_state_registry,
         "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -1108,6 +1153,11 @@ def run_intent_script(
             "dimension_registry": dimension_registry,
             "unit_registry": unit_registry,
             "quantity_type_registry": quantity_type_registry,
+            "element_registry": element_registry,
+            "compound_registry": compound_registry,
+            "mixture_registry": mixture_registry,
+            "material_class_registry": material_class_registry,
+            "quality_distribution_registry": quality_distribution_registry,
             "astronomy_catalog_index": astronomy_registry,
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,

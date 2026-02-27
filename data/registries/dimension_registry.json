@@ -88,6 +88,15 @@
       },
       {
         "schema_version": "1.0.0",
+        "dimension_id": "dim.specific_energy",
+        "base_exponents": {"L": 2, "T": -2},
+        "description": "Specific energy dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "dimension_id": "dim.power",
         "base_exponents": {"M": 1, "L": 2, "T": -3},
         "description": "Power dimension.",
