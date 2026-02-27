@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AG Edge Schema",
+  "version": "1.0.0",
+  "description": "Assembly graph edge declaration.",
+  "x-doc-ref": [
+    "docs/materials/BOM_AND_ASSEMBLY_GRAPH.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_id",
+    "from_node_id",
+    "to_node_id",
+    "connection_type_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "connection_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "connection_params": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_id": "edge.example",
+      "from_node_id": "node.a",
+      "to_node_id": "node.b",
+      "connection_type_id": "conn.bolted",
+      "connection_params": {},
+      "extensions": {}
+    }
+  ]
+}

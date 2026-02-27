@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Connection Type Schema",
+  "version": "1.0.0",
+  "description": "Assembly graph connection type declaration.",
+  "x-doc-ref": [
+    "docs/materials/BOM_AND_ASSEMBLY_GRAPH.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "connection_type_id",
+    "description",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "connection_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "requires_part_classes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "connection_type_id": "conn.example",
+      "description": "Example connection type.",
+      "requires_part_classes": [
+        "partclass.bolt.generic"
+      ],
+      "extensions": {}
+    }
+  ]
+}

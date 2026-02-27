@@ -1,0 +1,27 @@
+SCHEMA: materials/assembly_graph.schema
+schema_id: dominium.schema.materials.assembly_graph
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic hierarchical assembly graphs.
+
+REQUIRED SHAPE:
+record assembly_graph
+  required:
+    - schema_version: semver
+    - ag_id: id
+    - description: string
+    - root_node_id: id
+    - nodes: map<id,ag_node>
+    - edges: list<ag_edge>
+    - version_introduced: semver
+    - extensions: map
+  optional:
+    - instancing_rules: map
+    - constraints: map
+
+INVARIANTS:
+- root_node_id must exist in nodes.
+- Node ids are unique map keys.
+- Edges must reference existing node ids.

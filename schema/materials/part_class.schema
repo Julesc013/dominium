@@ -1,0 +1,22 @@
+SCHEMA: materials/part_class.schema
+schema_id: dominium.schema.materials.part_class
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical abstract part-class declarations used by BOM and AG nodes.
+
+REQUIRED SHAPE:
+record part_class
+  required:
+    - schema_version: semver
+    - part_class_id: id
+    - description: string
+    - extensions: map
+  optional:
+    - default_material_class: id|null
+    - default_shape_tag: string|null
+    - failure_mode_tags: list<string>
+
+INVARIANTS:
+- Part classes are abstract type declarations; they are not material stock quantities.
