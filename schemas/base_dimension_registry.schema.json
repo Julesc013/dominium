@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Base Dimension Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic base dimension registry output.",
+  "x-doc-ref": [
+    "docs/materials/UNITS_AND_DIMENSIONS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "base_dimensions",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "base_dimensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "base_dimension_id",
+          "description",
+          "version_introduced",
+          "deprecated",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "base_dimension_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "version_introduced": {
+            "type": "string"
+          },
+          "deprecated": {
+            "type": "boolean"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

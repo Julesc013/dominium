@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quantity Type Schema",
+  "version": "1.0.0",
+  "description": "Canonical quantity-type declaration with dimensional binding.",
+  "x-doc-ref": [
+    "docs/materials/UNITS_AND_DIMENSIONS.md",
+    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "quantity_id",
+    "dimension_id",
+    "invariant_numeric_type",
+    "default_unit_id",
+    "conservation_applicable",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "quantity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dimension_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "invariant_numeric_type": {
+      "type": "string",
+      "enum": [
+        "fixed_point",
+        "required"
+      ]
+    },
+    "default_unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "conservation_applicable": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

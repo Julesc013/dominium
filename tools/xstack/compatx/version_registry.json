@@ -287,6 +287,20 @@
         "1.0.0"
       ]
     },
+    "base_dimension": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "base_dimension_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "birth_model": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -344,6 +358,20 @@
       ]
     },
     "dem_source": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dimension": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dimension_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -938,6 +966,20 @@
         "1.0.0"
       ]
     },
+    "quantity_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "quantity_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "retention_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1163,6 +1205,20 @@
       ]
     },
     "time_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "unit": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "unit_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
