@@ -57,6 +57,10 @@ PROCESS_PRIORITY = {
     "process.construction_project_tick": 27,
     "process.construction_pause": 26,
     "process.construction_resume": 26,
+    "process.maintenance_schedule": 26,
+    "process.inspection_perform": 26,
+    "process.maintenance_perform": 26,
+    "process.decay_tick": 27,
     "process.control_bind_camera": 25,
     "process.control_unbind_camera": 25,
     "process.control_possess_agent": 25,
@@ -105,6 +109,10 @@ PROCESS_ENTITY_SCOPE = {
     "process.construction_project_tick": "construction.project.tick",
     "process.construction_pause": "construction.project",
     "process.construction_resume": "construction.project",
+    "process.maintenance_schedule": "maintenance.asset",
+    "process.inspection_perform": "maintenance.asset",
+    "process.maintenance_perform": "maintenance.asset",
+    "process.decay_tick": "maintenance.decay.tick",
     "process.control_bind_camera": "controller.binding.camera",
     "process.control_unbind_camera": "controller.binding.camera",
     "process.control_possess_agent": "controller.binding.possess",
@@ -153,6 +161,10 @@ PROCESS_FIELD_SCOPE = {
     "process.construction_project_tick": "construction.project.state",
     "process.construction_pause": "construction.project.state",
     "process.construction_resume": "construction.project.state",
+    "process.maintenance_schedule": "maintenance.commitment.state",
+    "process.inspection_perform": "maintenance.health.state",
+    "process.maintenance_perform": "maintenance.health.state",
+    "process.decay_tick": "maintenance.health.state",
     "process.control_bind_camera": "control.binding.camera",
     "process.control_unbind_camera": "control.binding.camera",
     "process.control_possess_agent": "control.binding.possess",
@@ -316,6 +328,16 @@ def _proposal_from_envelope(envelope: dict, script_step: int) -> dict:
         project_id = str(inputs.get("project_id", "")).strip()
         if project_id:
             entity_scope = project_id
+    if process_id in ("process.maintenance_schedule", "process.inspection_perform", "process.maintenance_perform"):
+        asset_id = str(inputs.get("asset_id", "")).strip()
+        if asset_id:
+            entity_scope = asset_id
+    if process_id == "process.decay_tick":
+        asset_id = str(inputs.get("asset_id", "")).strip()
+        if asset_id:
+            entity_scope = "maintenance.decay.{}".format(asset_id)
+        else:
+            entity_scope = "maintenance.decay.tick"
     return {
         "envelope_id": str(envelope.get("envelope_id", "")),
         "script_step": int(script_step),

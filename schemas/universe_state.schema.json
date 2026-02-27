@@ -2331,6 +2331,306 @@
           "additionalProperties": true
         }
       }
+    },
+    "asset_health_states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "asset_id",
+          "failure_mode_ids",
+          "accumulated_wear",
+          "maintenance_backlog",
+          "last_inspection_tick",
+          "last_maintenance_tick",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "asset_id": {
+            "type": "string"
+          },
+          "failure_mode_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accumulated_wear": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "hazard_state": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "maintenance_backlog": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "last_inspection_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "last_maintenance_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "failure_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "event_id",
+          "tick",
+          "asset_id",
+          "failure_mode_id",
+          "severity",
+          "consequences",
+          "provenance_event_id",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "event_id": {
+            "type": "string"
+          },
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "asset_id": {
+            "type": "string"
+          },
+          "failure_mode_id": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "consequences": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "provenance_event_id": {
+            "type": "string"
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "maintenance_commitments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "commitment_id",
+          "asset_id",
+          "maintenance_policy_id",
+          "commitment_kind",
+          "scheduled_tick",
+          "status",
+          "actor_subject_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "commitment_id": {
+            "type": "string"
+          },
+          "asset_id": {
+            "type": "string"
+          },
+          "maintenance_policy_id": {
+            "type": "string"
+          },
+          "commitment_kind": {
+            "type": "string"
+          },
+          "scheduled_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "scheduled",
+              "executing",
+              "completed",
+              "failed"
+            ]
+          },
+          "actor_subject_id": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "maintenance_provenance_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "event_id",
+          "tick",
+          "event_type_id",
+          "actor_subject_id",
+          "site_ref",
+          "inputs",
+          "outputs",
+          "ledger_deltas",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "event_id": {
+            "type": "string"
+          },
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "event_type_id": {
+            "type": "string"
+          },
+          "actor_subject_id": {
+            "type": "string"
+          },
+          "site_ref": {
+            "type": "string"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ledger_deltas": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "linked_project_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "linked_step_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "maintenance_runtime_state": {
+      "type": "object",
+      "required": [
+        "next_event_sequence",
+        "last_decay_tick",
+        "last_schedule_tick",
+        "last_inspection_tick",
+        "last_maintenance_tick",
+        "last_budget_outcome",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "next_event_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_decay_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_schedule_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_inspection_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_maintenance_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_budget_outcome": {
+          "type": "string",
+          "enum": [
+            "none",
+            "complete",
+            "degraded"
+          ]
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
     }
   },
   "examples": [
