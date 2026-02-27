@@ -1,0 +1,181 @@
+{
+  "schema_version": "1.0.0",
+  "blueprint_id": "blueprint.lathe.basic",
+  "description": "Basic deterministic lathe structural blueprint.",
+  "parameters": [],
+  "bom_ref": {
+    "schema_version": "1.0.0",
+    "bom_id": "bom.lathe.basic",
+    "description": "Baseline lathe material plan.",
+    "required_materials": [
+      {
+        "material_id_or_class": "material.steel_basic",
+        "quantity_mass_raw": 2013265920
+      }
+    ],
+    "required_part_classes": [
+      {
+        "part_class_id": "partclass.bearing.generic",
+        "count": 4
+      },
+      {
+        "part_class_id": "partclass.gear.generic",
+        "count": 6
+      },
+      {
+        "part_class_id": "partclass.motor.generic",
+        "count": 1
+      }
+    ],
+    "tolerances": {
+      "fit_class": "medium"
+    },
+    "version_introduced": "1.0.0",
+    "extensions": {}
+  },
+  "ag_ref": {
+    "schema_version": "1.0.0",
+    "ag_id": "ag.lathe.basic",
+    "description": "Baseline lathe assembly graph.",
+    "root_node_id": "node.lathe.root",
+    "nodes": {
+      "node.lathe.root": {
+        "schema_version": "1.0.0",
+        "node_id": "node.lathe.root",
+        "node_kind": "subassembly",
+        "part_class_id": null,
+        "material_requirements": [],
+        "children": [
+          "node.lathe.bed",
+          "node.lathe.drive"
+        ],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.lathe.assembly"
+        ],
+        "tags": [
+          "machine"
+        ],
+        "extensions": {}
+      },
+      "node.lathe.bed": {
+        "schema_version": "1.0.0",
+        "node_id": "node.lathe.bed",
+        "node_kind": "part",
+        "part_class_id": "partclass.beam.generic",
+        "material_requirements": [],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [],
+        "tags": [
+          "bed"
+        ],
+        "extensions": {}
+      },
+      "node.lathe.drive": {
+        "schema_version": "1.0.0",
+        "node_id": "node.lathe.drive",
+        "node_kind": "subassembly",
+        "part_class_id": null,
+        "material_requirements": [],
+        "children": [
+          "node.lathe.motor"
+        ],
+        "local_transform": {
+          "position_mm": {
+            "x": 1000,
+            "y": 0,
+            "z": 800
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [],
+        "tags": [
+          "drive"
+        ],
+        "extensions": {}
+      },
+      "node.lathe.motor": {
+        "schema_version": "1.0.0",
+        "node_id": "node.lathe.motor",
+        "node_kind": "part",
+        "part_class_id": "partclass.motor.generic",
+        "material_requirements": [],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.lathe.install_motor"
+        ],
+        "tags": [
+          "motor"
+        ],
+        "extensions": {
+          "stub": true
+        }
+      }
+    },
+    "edges": [
+      {
+        "schema_version": "1.0.0",
+        "edge_id": "edge.lathe.bed.drive",
+        "from_node_id": "node.lathe.bed",
+        "to_node_id": "node.lathe.drive",
+        "connection_type_id": "conn.bolted",
+        "connection_params": {
+          "bolt_count": 8
+        },
+        "extensions": {}
+      }
+    ],
+    "instancing_rules": {},
+    "constraints": {},
+    "version_introduced": "1.0.0",
+    "extensions": {}
+  },
+  "tags": [
+    "baseline",
+    "lathe"
+  ],
+  "extensions": {}
+}

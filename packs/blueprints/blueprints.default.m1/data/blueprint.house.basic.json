@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0.0",
+  "blueprint_id": "blueprint.house.basic",
+  "description": "Small deterministic structural house blueprint.",
+  "parameters": [],
+  "bom_ref": {
+    "schema_version": "1.0.0",
+    "bom_id": "bom.house.basic",
+    "description": "Baseline small house material plan.",
+    "required_materials": [
+      {
+        "material_id_or_class": "material.wood_basic",
+        "quantity_mass_raw": 2516582400
+      },
+      {
+        "material_id_or_class": "material.stone_basic",
+        "quantity_mass_raw": 3355443200
+      }
+    ],
+    "required_part_classes": [
+      {
+        "part_class_id": "partclass.beam.generic",
+        "count": 24
+      },
+      {
+        "part_class_id": "partclass.panel.generic",
+        "count": 40
+      },
+      {
+        "part_class_id": "partclass.bolt.generic",
+        "count": 160
+      }
+    ],
+    "tolerances": {
+      "fit_class": "coarse"
+    },
+    "version_introduced": "1.0.0",
+    "extensions": {}
+  },
+  "ag_ref": {
+    "schema_version": "1.0.0",
+    "ag_id": "ag.house.basic",
+    "description": "Baseline small house assembly graph.",
+    "root_node_id": "node.house.root",
+    "nodes": {
+      "node.house.root": {
+        "schema_version": "1.0.0",
+        "node_id": "node.house.root",
+        "node_kind": "subassembly",
+        "part_class_id": null,
+        "material_requirements": [
+          {
+            "bom_item_ref": "material.wood_basic"
+          }
+        ],
+        "children": [
+          "node.house.frame",
+          "node.house.panel"
+        ],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.house.foundation",
+          "commit.house.frame"
+        ],
+        "tags": [
+          "residential",
+          "root"
+        ],
+        "extensions": {}
+      },
+      "node.house.frame": {
+        "schema_version": "1.0.0",
+        "node_id": "node.house.frame",
+        "node_kind": "part",
+        "part_class_id": "partclass.beam.generic",
+        "material_requirements": [
+          {
+            "bom_item_ref": "partclass.beam.generic"
+          }
+        ],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.house.frame"
+        ],
+        "tags": [
+          "frame"
+        ],
+        "extensions": {}
+      },
+      "node.house.panel": {
+        "schema_version": "1.0.0",
+        "node_id": "node.house.panel",
+        "node_kind": "part",
+        "part_class_id": "partclass.panel.generic",
+        "material_requirements": [
+          {
+            "bom_item_ref": "partclass.panel.generic"
+          }
+        ],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 2500
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.house.enclosure"
+        ],
+        "tags": [
+          "enclosure"
+        ],
+        "extensions": {}
+      }
+    },
+    "edges": [
+      {
+        "schema_version": "1.0.0",
+        "edge_id": "edge.house.frame.panel",
+        "from_node_id": "node.house.frame",
+        "to_node_id": "node.house.panel",
+        "connection_type_id": "conn.bolted",
+        "connection_params": {
+          "bolt_count": 16
+        },
+        "extensions": {}
+      }
+    ],
+    "instancing_rules": {},
+    "constraints": {},
+    "version_introduced": "1.0.0",
+    "extensions": {}
+  },
+  "tags": [
+    "baseline",
+    "house"
+  ],
+  "extensions": {}
+}

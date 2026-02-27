@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.0.0",
+  "blueprint_id": "blueprint.simple_bridge.basic",
+  "description": "Simple deterministic bridge blueprint.",
+  "parameters": [],
+  "bom_ref": {
+    "schema_version": "1.0.0",
+    "bom_id": "bom.simple_bridge.basic",
+    "description": "Baseline simple bridge material plan.",
+    "required_materials": [
+      {
+        "material_id_or_class": "material.steel_basic",
+        "quantity_mass_raw": 6710886400
+      },
+      {
+        "material_id_or_class": "material.stone_basic",
+        "quantity_mass_raw": 3355443200
+      }
+    ],
+    "required_part_classes": [
+      {
+        "part_class_id": "partclass.beam.generic",
+        "count": 32
+      },
+      {
+        "part_class_id": "partclass.bolt.generic",
+        "count": 240
+      }
+    ],
+    "tolerances": {
+      "sag_permille": 8
+    },
+    "version_introduced": "1.0.0",
+    "extensions": {}
+  },
+  "ag_ref": {
+    "schema_version": "1.0.0",
+    "ag_id": "ag.simple_bridge.basic",
+    "description": "Baseline simple bridge assembly graph.",
+    "root_node_id": "node.bridge.root",
+    "nodes": {
+      "node.bridge.root": {
+        "schema_version": "1.0.0",
+        "node_id": "node.bridge.root",
+        "node_kind": "subassembly",
+        "part_class_id": null,
+        "material_requirements": [],
+        "children": [
+          "node.bridge.span",
+          "node.bridge.anchor.a",
+          "node.bridge.anchor.b"
+        ],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [
+          "commit.bridge.foundation",
+          "commit.bridge.span"
+        ],
+        "tags": [
+          "bridge"
+        ],
+        "extensions": {}
+      },
+      "node.bridge.span": {
+        "schema_version": "1.0.0",
+        "node_id": "node.bridge.span",
+        "node_kind": "part",
+        "part_class_id": "partclass.beam.generic",
+        "material_requirements": [],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 1000
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [],
+        "tags": [
+          "span"
+        ],
+        "extensions": {}
+      },
+      "node.bridge.anchor.a": {
+        "schema_version": "1.0.0",
+        "node_id": "node.bridge.anchor.a",
+        "node_kind": "site_anchor",
+        "part_class_id": null,
+        "material_requirements": [],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": -12000,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [],
+        "tags": [
+          "anchor"
+        ],
+        "extensions": {}
+      },
+      "node.bridge.anchor.b": {
+        "schema_version": "1.0.0",
+        "node_id": "node.bridge.anchor.b",
+        "node_kind": "site_anchor",
+        "part_class_id": null,
+        "material_requirements": [],
+        "children": [],
+        "local_transform": {
+          "position_mm": {
+            "x": 12000,
+            "y": 0,
+            "z": 0
+          },
+          "orientation_mdeg": {
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0
+          },
+          "scale_permille": 1000
+        },
+        "planned_commitment_ids": [],
+        "tags": [
+          "anchor"
+        ],
+        "extensions": {}
+      }
+    },
+    "edges": [
+      {
+        "schema_version": "1.0.0",
+        "edge_id": "edge.bridge.anchor_a.span",
+        "from_node_id": "node.bridge.anchor.a",
+        "to_node_id": "node.bridge.span",
+        "connection_type_id": "conn.bolted",
+        "connection_params": {},
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "edge_id": "edge.bridge.anchor_b.span",
+        "from_node_id": "node.bridge.anchor.b",
+        "to_node_id": "node.bridge.span",
+        "connection_type_id": "conn.bolted",
+        "connection_params": {},
+        "extensions": {}
+      }
+    ],
+    "instancing_rules": {},
+    "constraints": {},
+    "version_introduced": "1.0.0",
+    "extensions": {}
+  },
+  "tags": [
+    "baseline",
+    "bridge"
+  ],
+  "extensions": {}
+}
