@@ -32,6 +32,26 @@ Declare MAT-0 required future test coverage and guardrail identifiers for RepoX 
 - `OrphanBatchSmell`
 - `ProvenanceDriftSmell`
 
+## MAT-2 Additions (Material Taxonomy)
+### TestX Declarations
+- `test_element_registry_valid`
+- `test_compound_mass_fraction_sum`
+- `test_mixture_mass_fraction_sum`
+- `test_material_batch_creation_deterministic`
+- `test_ledger_mass_tracking_by_material`
+
+### RepoX Rule Declarations
+- `INV-MATERIAL-DEFINITIONS-DATA-ONLY`
+  - Elements, compounds, mixtures, and material classes must be declared in registries.
+- `INV-NO-HARDCODED-ELEMENTS`
+  - Runtime source must not embed fixed periodic-table element IDs.
+- `INV-COMPOSITION-VALIDATED`
+  - Composition and dimensional compatibility checks must run through deterministic validators.
+
+### AuditX Analyzer Declarations
+- `HardcodedPeriodicTableSmell`
+- `MaterialMassDriftSmell`
+
 ## MAT-0 Status
 - These declarations are constitutional commitments in MAT-0.
 - Enforcement implementation and deeper runtime coverage are MAT-1..MAT-10 work.

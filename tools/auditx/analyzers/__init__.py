@@ -83,6 +83,8 @@ from analyzers import e54_platform_leak_smell
 from analyzers import e55_renderer_backend_truth_leak_smell
 from analyzers import e56_raw_float_in_invariant_smell
 from analyzers import e57_dimension_drift_smell
+from analyzers import e58_hardcoded_periodic_table_smell
+from analyzers import e59_material_mass_drift_smell
 
 
 ANALYZERS = (
@@ -169,6 +171,8 @@ ANALYZERS = (
     e55_renderer_backend_truth_leak_smell,
     e56_raw_float_in_invariant_smell,
     e57_dimension_drift_smell,
+    e58_hardcoded_periodic_table_smell,
+    e59_material_mass_drift_smell,
 )
 
 
