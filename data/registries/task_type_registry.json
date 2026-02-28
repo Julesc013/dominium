@@ -1,0 +1,113 @@
+{
+  "schema_id": "dominium.registry.task_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.task_type_registry",
+    "registry_version": "1.0.0",
+    "task_types": [
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.cut_tree",
+        "description": "Stub deterministic tree-cutting task.",
+        "default_progress_units_total": 25165824,
+        "required_tool_tags": [
+          "tool_tag.cutting"
+        ],
+        "allowed_surface_types": [
+          "surface.seam",
+          "surface.grip"
+        ],
+        "completion_process_id": "process.tree_fell",
+        "progress_model_id": "progress.heavy_work_default",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.loosen_fastener",
+        "description": "Stub deterministic fastener loosening task.",
+        "default_progress_units_total": 16777216,
+        "required_tool_tags": [
+          "tool_tag.fastening"
+        ],
+        "allowed_surface_types": [
+          "surface.fastener"
+        ],
+        "completion_process_id": "process.fastener_turn",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "direction": "loosen"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.machine_adjust",
+        "description": "Stub deterministic machine adjustment task.",
+        "default_progress_units_total": 12582912,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.handle",
+          "surface.port"
+        ],
+        "completion_process_id": "process.machine_adjust_parameter",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.repair_basic",
+        "description": "Stub deterministic repair task.",
+        "default_progress_units_total": 20971520,
+        "required_tool_tags": [
+          "tool_tag.fastening",
+          "tool_tag.operating",
+          "tool_tag.welding"
+        ],
+        "allowed_surface_types": [
+          "surface.fastener",
+          "surface.panel",
+          "surface.seam",
+          "surface.port"
+        ],
+        "completion_process_id": "process.maintenance_perform",
+        "progress_model_id": "progress.heavy_work_default",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.saw_plank",
+        "description": "Stub deterministic sawing task.",
+        "default_progress_units_total": 20971520,
+        "required_tool_tags": [
+          "tool_tag.cutting"
+        ],
+        "allowed_surface_types": [
+          "surface.seam"
+        ],
+        "completion_process_id": "process.saw_batch",
+        "progress_model_id": "progress.heavy_work_default",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.tighten_fastener",
+        "description": "Stub deterministic fastener tightening task.",
+        "default_progress_units_total": 16777216,
+        "required_tool_tags": [
+          "tool_tag.fastening"
+        ],
+        "allowed_surface_types": [
+          "surface.fastener"
+        ],
+        "completion_process_id": "process.fastener_turn",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "direction": "tighten"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

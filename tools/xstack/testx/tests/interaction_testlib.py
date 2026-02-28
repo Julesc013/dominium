@@ -27,6 +27,11 @@ def base_state() -> dict:
     state.setdefault("institution_assemblies", [])
     state.setdefault("role_assignment_assemblies", [])
     state.setdefault("instrument_assemblies", [])
+    state.setdefault("tool_assemblies", [])
+    state.setdefault("tool_bindings", [])
+    state.setdefault("tasks", [])
+    state.setdefault("task_provenance_events", [])
+    state.setdefault("pending_task_completion_intents", [])
     return state
 
 
@@ -181,6 +186,67 @@ def policy_context(*, max_inspection_budget_per_tick: int = 32) -> dict:
                     "requires_lens_channel": None,
                     "extensions": {},
                 },
+            ]
+        },
+        "tool_type_registry": {
+            "tool_types": [
+                {
+                    "schema_version": "1.0.0",
+                    "tool_type_id": "tool.wrench.basic",
+                    "description": "Baseline wrench test fixture",
+                    "default_tool_tags": ["tool_tag.fastening"],
+                    "allowed_surface_types": ["surface.handle", "surface.port", "surface.fastener"],
+                    "allowed_process_ids": ["process.agent_move", "process.inspect_generate_snapshot", "process.tool_use_prepare"],
+                    "provides_instrument_channels": ["ch.diegetic.tool.torque"],
+                    "extensions": {},
+                }
+            ]
+        },
+        "tool_effect_model_registry": {
+            "effect_models": [
+                {
+                    "schema_version": "1.0.0",
+                    "effect_model_id": "effect.basic_fastening",
+                    "description": "Baseline fastening effect fixture",
+                    "parameters": {
+                        "efficiency_multiplier": 1000,
+                        "precision_level": "medium",
+                        "torque_limit": 5000,
+                        "rate_limit": 1200,
+                    },
+                    "deterministic_rules": {
+                        "randomness": "none",
+                    },
+                    "extensions": {},
+                }
+            ]
+        },
+        "task_type_registry": {
+            "task_types": [
+                {
+                    "schema_version": "1.0.0",
+                    "task_type_id": "task.tighten_fastener",
+                    "description": "Deterministic fastening task fixture",
+                    "default_progress_units_total": 16777216,
+                    "required_tool_tags": ["tool_tag.fastening"],
+                    "allowed_surface_types": ["surface.fastener", "surface.handle"],
+                    "completion_process_id": "process.fastener_turn",
+                    "progress_model_id": "progress.linear_default",
+                    "extensions": {},
+                }
+            ]
+        },
+        "progress_model_registry": {
+            "progress_models": [
+                {
+                    "schema_version": "1.0.0",
+                    "progress_model_id": "progress.linear_default",
+                    "description": "Deterministic linear task progress fixture",
+                    "progress_rate_base": 4194304,
+                    "tool_efficiency_applies": True,
+                    "actor_efficiency_applies": False,
+                    "extensions": {},
+                }
             ]
         },
         "held_tool_tags": ["tool_tag.operating"],

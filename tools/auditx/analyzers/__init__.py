@@ -103,6 +103,10 @@ from analyzers import e74_unbounded_work_smell
 from analyzers import e75_thrash_smell
 from analyzers import e76_hardcoded_interaction_smell
 from analyzers import e77_surface_leak_smell
+from analyzers import e78_tool_bypass_smell
+from analyzers import e79_tool_truth_leak_smell
+from analyzers import e80_task_nondeterminism_smell
+from analyzers import e81_task_bypass_smell
 
 
 ANALYZERS = (
@@ -209,6 +213,10 @@ ANALYZERS = (
     e75_thrash_smell,
     e76_hardcoded_interaction_smell,
     e77_surface_leak_smell,
+    e78_tool_bypass_smell,
+    e79_tool_truth_leak_smell,
+    e80_task_nondeterminism_smell,
+    e81_task_bypass_smell,
 )
 
 

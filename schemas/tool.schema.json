@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tool Schema",
+  "version": "1.0.0",
+  "description": "Deterministic tool assembly metadata used by ActionSurface capability filtering.",
+  "x-doc-ref": [
+    "docs/interaction/TOOLS_AND_EFFECTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_id",
+    "tool_type_id",
+    "tool_tags",
+    "effect_model_id",
+    "equipped_by_agent_id",
+    "durability_state",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tool_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tool_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tool_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "effect_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "equipped_by_agent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "durability_state": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "tool_id": "tool.instance.wrench.alpha",
+      "tool_type_id": "tool.wrench.basic",
+      "tool_tags": [
+        "tool_tag.fastening",
+        "tool_tag.operating"
+      ],
+      "effect_model_id": "effect.basic_fastening",
+      "equipped_by_agent_id": null,
+      "durability_state": null,
+      "extensions": {}
+    }
+  ]
+}

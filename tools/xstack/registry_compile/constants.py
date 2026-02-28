@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.19.0"
+COMPILER_VERSION = "1.20.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -62,7 +62,11 @@ REGISTRY_OUTPUT_FILENAMES = {
     "interaction_action_registry": "interaction_action.registry.json",
     "surface_type_registry": "surface_type.registry.json",
     "tool_tag_registry": "tool_tag.registry.json",
+    "tool_type_registry": "tool_type.registry.json",
+    "tool_effect_model_registry": "tool_effect_model.registry.json",
     "surface_visibility_policy_registry": "surface_visibility_policy.registry.json",
+    "task_type_registry": "task_type.registry.json",
+    "progress_model_registry": "progress_model.registry.json",
     "controller_type_registry": "controller_type.registry.json",
     "governance_type_registry": "governance_type.registry.json",
     "diplomatic_state_registry": "diplomatic_state.registry.json",

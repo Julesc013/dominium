@@ -1,0 +1,22 @@
+SCHEMA: interaction/tool_bind.schema
+schema_id: dominium.schema.interaction.tool_bind
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic subject-to-tool binding state.
+
+REQUIRED SHAPE:
+record tool_bind
+  required:
+    - schema_version: semver
+    - bind_id: id
+    - subject_id: id
+    - tool_id: id
+    - created_tick: u64
+    - active: bool
+    - extensions: map
+
+INVARIANTS:
+- Binding state is authoritative only through process execution.
+- At most one active bind per subject by default policy.

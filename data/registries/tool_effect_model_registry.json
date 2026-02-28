@@ -1,0 +1,91 @@
+{
+  "schema_id": "dominium.registry.tool_effect_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.tool_effect_model_registry",
+    "registry_version": "1.0.0",
+    "effect_models": [
+      {
+        "schema_version": "1.0.0",
+        "effect_model_id": "effect.basic_cutting",
+        "description": "Baseline deterministic cutting effect profile.",
+        "parameters": {
+          "efficiency_multiplier": 1050,
+          "precision_level": "medium",
+          "torque_limit": null,
+          "rate_limit": 1400
+        },
+        "deterministic_rules": {
+          "randomness": "none",
+          "rounding_rule": "fixed_point_floor"
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_model_id": "effect.basic_fastening",
+        "description": "Baseline deterministic fastening effect profile.",
+        "parameters": {
+          "efficiency_multiplier": 1000,
+          "precision_level": "medium",
+          "torque_limit": 5000,
+          "rate_limit": 1200
+        },
+        "deterministic_rules": {
+          "randomness": "none",
+          "rounding_rule": "fixed_point_floor"
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_model_id": "effect.basic_hand_tool",
+        "description": "Fallback deterministic hand-tool effect profile.",
+        "parameters": {
+          "efficiency_multiplier": 1000,
+          "precision_level": "low",
+          "torque_limit": 2500,
+          "rate_limit": 1000
+        },
+        "deterministic_rules": {
+          "randomness": "none",
+          "rounding_rule": "fixed_point_floor"
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_model_id": "effect.basic_measurement",
+        "description": "Baseline deterministic measurement effect profile.",
+        "parameters": {
+          "efficiency_multiplier": 1000,
+          "precision_level": "high",
+          "torque_limit": null,
+          "rate_limit": 1000
+        },
+        "deterministic_rules": {
+          "randomness": "none",
+          "rounding_rule": "fixed_point_floor"
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_model_id": "effect.basic_welding_stub",
+        "description": "Stub deterministic welding effect profile.",
+        "parameters": {
+          "efficiency_multiplier": 950,
+          "precision_level": "medium",
+          "torque_limit": null,
+          "rate_limit": 800
+        },
+        "deterministic_rules": {
+          "randomness": "none",
+          "rounding_rule": "fixed_point_floor"
+        },
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

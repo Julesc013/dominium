@@ -1622,7 +1622,7 @@ def _interaction_registry_rows(
 
 def _action_surface_registry_rows(
     repo_root: str,
-) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
 
     _surface_type_record, surface_type_rows_raw, surface_type_load_errors = _load_registry_record(
@@ -1633,7 +1633,7 @@ def _action_surface_registry_rows(
         expected_entry_key="surface_types",
     )
     if surface_type_load_errors:
-        return [], [], [], surface_type_load_errors
+        return [], [], [], [], [], surface_type_load_errors
 
     surface_type_rows: List[dict] = []
     surface_type_seen = set()
@@ -1694,7 +1694,7 @@ def _action_surface_registry_rows(
         expected_entry_key="tool_tags",
     )
     if tool_tag_load_errors:
-        return [], [], [], tool_tag_load_errors
+        return [], [], [], [], [], tool_tag_load_errors
 
     tool_tag_rows: List[dict] = []
     tool_tag_seen = set()
@@ -1740,6 +1740,166 @@ def _action_surface_registry_rows(
         )
     tool_tag_rows = sorted(tool_tag_rows, key=lambda row: str(row.get("tool_tag_id", "")))
 
+    _tool_type_record, tool_type_rows_raw, tool_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/tool_type_registry.json",
+        expected_schema_id="dominium.registry.tool_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="tool_types",
+    )
+    if tool_type_load_errors:
+        return [], [], [], [], [], tool_type_load_errors
+
+    tool_type_rows: List[dict] = []
+    tool_type_seen = set()
+    for entry in sorted(tool_type_rows_raw, key=lambda row: str((row or {}).get("tool_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tool_type_entry",
+                    "message": "tool type entry must be object",
+                    "path": "$.tool_types",
+                }
+            )
+            continue
+        tool_type_id = str(entry.get("tool_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        default_tool_tags = entry.get("default_tool_tags")
+        allowed_surface_types = entry.get("allowed_surface_types")
+        allowed_process_ids = entry.get("allowed_process_ids")
+        provides_instrument_channels = entry.get("provides_instrument_channels")
+        extensions = entry.get("extensions")
+        if (
+            not tool_type_id
+            or not description
+            or not isinstance(default_tool_tags, list)
+            or not isinstance(allowed_surface_types, list)
+            or not isinstance(allowed_process_ids, list)
+            or not isinstance(provides_instrument_channels, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tool_type_entry",
+                    "message": "tool type entry missing required fields",
+                    "path": "$.tool_types",
+                }
+            )
+            continue
+        if tool_type_id in tool_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_tool_type_id",
+                    "message": "duplicate tool_type_id '{}'".format(tool_type_id),
+                    "path": "$.tool_types.tool_type_id",
+                }
+            )
+            continue
+        tool_type_seen.add(tool_type_id)
+        tool_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "tool_type_id": tool_type_id,
+                "description": description,
+                "default_tool_tags": _sorted_unique_strings(default_tool_tags),
+                "allowed_surface_types": _sorted_unique_strings(allowed_surface_types),
+                "allowed_process_ids": _sorted_unique_strings(allowed_process_ids),
+                "provides_instrument_channels": _sorted_unique_strings(provides_instrument_channels),
+                "extensions": dict(extensions),
+            }
+        )
+    tool_type_rows = sorted(tool_type_rows, key=lambda row: str(row.get("tool_type_id", "")))
+
+    _tool_effect_record, tool_effect_rows_raw, tool_effect_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/tool_effect_model_registry.json",
+        expected_schema_id="dominium.registry.tool_effect_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="effect_models",
+    )
+    if tool_effect_load_errors:
+        return [], [], [], [], [], tool_effect_load_errors
+
+    tool_effect_rows: List[dict] = []
+    tool_effect_seen = set()
+    allowed_precision_levels = {"low", "medium", "high", "lab"}
+    for entry in sorted(tool_effect_rows_raw, key=lambda row: str((row or {}).get("effect_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tool_effect_model_entry",
+                    "message": "tool effect model entry must be object",
+                    "path": "$.effect_models",
+                }
+            )
+            continue
+        effect_model_id = str(entry.get("effect_model_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        parameters = entry.get("parameters")
+        deterministic_rules = entry.get("deterministic_rules")
+        extensions = entry.get("extensions")
+        if (
+            not effect_model_id
+            or not description
+            or not isinstance(parameters, dict)
+            or not isinstance(deterministic_rules, dict)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tool_effect_model_entry",
+                    "message": "tool effect model entry missing required fields",
+                    "path": "$.effect_models",
+                }
+            )
+            continue
+        if effect_model_id in tool_effect_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_tool_effect_model_id",
+                    "message": "duplicate effect_model_id '{}'".format(effect_model_id),
+                    "path": "$.effect_models.effect_model_id",
+                }
+            )
+            continue
+        efficiency_multiplier = parameters.get("efficiency_multiplier")
+        precision_level = str(parameters.get("precision_level", "")).strip()
+        torque_limit = parameters.get("torque_limit")
+        rate_limit = parameters.get("rate_limit")
+        if (
+            not isinstance(efficiency_multiplier, int)
+            or precision_level not in allowed_precision_levels
+            or (torque_limit is not None and not isinstance(torque_limit, int))
+            or (rate_limit is not None and not isinstance(rate_limit, int))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tool_effect_model_parameters",
+                    "message": "tool effect model '{}' has invalid parameters payload".format(
+                        effect_model_id or "<missing>"
+                    ),
+                    "path": "$.effect_models.parameters",
+                }
+            )
+            continue
+        tool_effect_seen.add(effect_model_id)
+        tool_effect_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "effect_model_id": effect_model_id,
+                "description": description,
+                "parameters": {
+                    "efficiency_multiplier": int(efficiency_multiplier),
+                    "precision_level": precision_level,
+                    "torque_limit": int(torque_limit) if isinstance(torque_limit, int) else None,
+                    "rate_limit": int(rate_limit) if isinstance(rate_limit, int) else None,
+                },
+                "deterministic_rules": dict((str(key), deterministic_rules[key]) for key in sorted(deterministic_rules.keys())),
+                "extensions": dict(extensions),
+            }
+        )
+    tool_effect_rows = sorted(tool_effect_rows, key=lambda row: str(row.get("effect_model_id", "")))
+
     _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
         registry_rel_path="data/registries/surface_visibility_policy_registry.json",
@@ -1748,7 +1908,7 @@ def _action_surface_registry_rows(
         expected_entry_key="policies",
     )
     if policy_load_errors:
-        return [], [], [], policy_load_errors
+        return [], [], [], [], [], policy_load_errors
 
     visibility_policy_rows: List[dict] = []
     policy_seen = set()
@@ -1804,7 +1964,144 @@ def _action_surface_registry_rows(
             }
         )
     visibility_policy_rows = sorted(visibility_policy_rows, key=lambda row: str(row.get("policy_id", "")))
-    return surface_type_rows, tool_tag_rows, visibility_policy_rows, errors
+    return surface_type_rows, tool_tag_rows, tool_type_rows, tool_effect_rows, visibility_policy_rows, errors
+
+
+def _task_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+    _task_type_record, task_type_rows_raw, task_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/task_type_registry.json",
+        expected_schema_id="dominium.registry.task_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="task_types",
+    )
+    if task_type_load_errors:
+        return [], [], task_type_load_errors
+
+    task_type_rows: List[dict] = []
+    task_type_seen = set()
+    for entry in sorted(task_type_rows_raw, key=lambda row: str((row or {}).get("task_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_task_type_entry",
+                    "message": "task type entry must be object",
+                    "path": "$.task_types",
+                }
+            )
+            continue
+        task_type_id = str(entry.get("task_type_id", "")).strip()
+        if not task_type_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_task_type_entry",
+                    "message": "task type entry missing task_type_id",
+                    "path": "$.task_types.task_type_id",
+                }
+            )
+            continue
+        if task_type_id in task_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_task_type_id",
+                    "message": "duplicate task_type_id '{}'".format(task_type_id),
+                    "path": "$.task_types.task_type_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="task_type",
+            payload=entry,
+            path="data/registries/task_type_registry.json#{}".format(task_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        task_type_seen.add(task_type_id)
+        task_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "task_type_id": task_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "default_progress_units_total": int(entry.get("default_progress_units_total", 0) or 0),
+                "required_tool_tags": _sorted_unique_strings(entry.get("required_tool_tags")),
+                "allowed_surface_types": _sorted_unique_strings(entry.get("allowed_surface_types")),
+                "completion_process_id": str(entry.get("completion_process_id", "")).strip(),
+                "progress_model_id": str(entry.get("progress_model_id", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    task_type_rows = sorted(task_type_rows, key=lambda row: str(row.get("task_type_id", "")))
+
+    _progress_record, progress_rows_raw, progress_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/progress_model_registry.json",
+        expected_schema_id="dominium.registry.progress_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="progress_models",
+    )
+    if progress_load_errors:
+        return [], [], progress_load_errors
+
+    progress_rows: List[dict] = []
+    progress_seen = set()
+    for entry in sorted(progress_rows_raw, key=lambda row: str((row or {}).get("progress_model_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_progress_model_entry",
+                    "message": "progress model entry must be object",
+                    "path": "$.progress_models",
+                }
+            )
+            continue
+        progress_model_id = str(entry.get("progress_model_id", "")).strip()
+        if not progress_model_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_progress_model_entry",
+                    "message": "progress model entry missing progress_model_id",
+                    "path": "$.progress_models.progress_model_id",
+                }
+            )
+            continue
+        if progress_model_id in progress_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_progress_model_id",
+                    "message": "duplicate progress_model_id '{}'".format(progress_model_id),
+                    "path": "$.progress_models.progress_model_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="progress_model",
+            payload=entry,
+            path="data/registries/progress_model_registry.json#{}".format(progress_model_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        progress_seen.add(progress_model_id)
+        progress_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "progress_model_id": progress_model_id,
+                "description": str(entry.get("description", "")).strip(),
+                "progress_rate_base": int(entry.get("progress_rate_base", 0) or 0),
+                "tool_efficiency_applies": bool(entry.get("tool_efficiency_applies", False)),
+                "actor_efficiency_applies": bool(entry.get("actor_efficiency_applies", False)),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    progress_rows = sorted(progress_rows, key=lambda row: str(row.get("progress_model_id", "")))
+    return task_type_rows, progress_rows, errors
 
 
 def _civilisation_registry_rows(
@@ -8388,10 +8685,20 @@ def compile_bundle(
     (
         surface_type_rows,
         tool_tag_rows,
+        tool_type_rows,
+        tool_effect_model_rows,
         surface_visibility_policy_rows,
         action_surface_registry_errors,
     ) = _action_surface_registry_rows(
         repo_root=repo_root,
+    )
+    (
+        task_type_rows,
+        progress_model_rows,
+        task_registry_errors,
+    ) = _task_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
     )
     (
         governance_type_rows,
@@ -8719,6 +9026,7 @@ def compile_bundle(
         + control_registry_errors
         + interaction_registry_errors
         + action_surface_registry_errors
+        + task_registry_errors
         + civilisation_registry_errors
         + conservation_registry_errors
         + materials_dimension_registry_errors
@@ -9074,11 +9382,39 @@ def compile_bundle(
             "tool_tags": tool_tag_rows,
         }
     )
+    tool_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "tool_types": tool_type_rows,
+        }
+    )
+    tool_effect_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "effect_models": tool_effect_model_rows,
+        }
+    )
     surface_visibility_policy_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "policies": surface_visibility_policy_rows,
+        }
+    )
+    task_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "task_types": task_type_rows,
+        }
+    )
+    progress_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "progress_models": progress_model_rows,
         }
     )
     controller_type_payload = _finalize_registry_payload(
@@ -9450,10 +9786,14 @@ def compile_bundle(
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "surface_type_registry": ("surface_type_registry", surface_type_payload),
         "tool_tag_registry": ("tool_tag_registry", tool_tag_payload),
+        "tool_type_registry": ("tool_type_registry", tool_type_payload),
+        "tool_effect_model_registry": ("tool_effect_model_registry", tool_effect_model_payload),
         "surface_visibility_policy_registry": (
             "surface_visibility_policy_registry",
             surface_visibility_policy_payload,
         ),
+        "task_type_registry": ("task_type_registry", task_type_payload),
+        "progress_model_registry": ("progress_model_registry", progress_model_payload),
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
         "governance_type_registry": ("governance_type_registry", governance_type_payload),
         "diplomatic_state_registry": ("diplomatic_state_registry", diplomatic_state_payload),
@@ -9555,7 +9895,11 @@ def compile_bundle(
         "interaction_action_registry",
         "surface_type_registry",
         "tool_tag_registry",
+        "tool_type_registry",
+        "tool_effect_model_registry",
         "surface_visibility_policy_registry",
+        "task_type_registry",
+        "progress_model_registry",
         "controller_type_registry",
         "governance_type_registry",
         "diplomatic_state_registry",
@@ -9674,9 +10018,13 @@ def compile_bundle(
             "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
             "surface_type_registry_hash": registry_hashes["surface_type_registry_hash"],
             "tool_tag_registry_hash": registry_hashes["tool_tag_registry_hash"],
+            "tool_type_registry_hash": registry_hashes["tool_type_registry_hash"],
+            "tool_effect_model_registry_hash": registry_hashes["tool_effect_model_registry_hash"],
             "surface_visibility_policy_registry_hash": registry_hashes[
                 "surface_visibility_policy_registry_hash"
             ],
+            "task_type_registry_hash": registry_hashes["task_type_registry_hash"],
+            "progress_model_registry_hash": registry_hashes["progress_model_registry_hash"],
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
             "governance_type_registry_hash": registry_hashes["governance_type_registry_hash"],
             "diplomatic_state_registry_hash": registry_hashes["diplomatic_state_registry_hash"],

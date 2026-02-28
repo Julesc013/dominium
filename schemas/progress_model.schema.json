@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Progress Model Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ACT-3 task progress model.",
+  "x-doc-ref": [
+    "docs/interaction/TASK_AND_WORK_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "progress_model_id",
+    "description",
+    "progress_rate_base",
+    "tool_efficiency_applies",
+    "actor_efficiency_applies",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "progress_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "progress_rate_base": {
+      "type": "integer"
+    },
+    "tool_efficiency_applies": {
+      "type": "boolean"
+    },
+    "actor_efficiency_applies": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "progress_model_id": "progress.linear_default",
+      "description": "Linear deterministic progress model baseline.",
+      "progress_rate_base": 4194304,
+      "tool_efficiency_applies": true,
+      "actor_efficiency_applies": false,
+      "extensions": {}
+    }
+  ]
+}
