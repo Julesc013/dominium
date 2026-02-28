@@ -12,12 +12,16 @@ record constraint_component
     - schema_version: semver
     - constraint_id: id
     - constraint_type_id: id
-    - participants: list[id]
+    - participant_ids: list[id]
     - parameters: map
     - enforcement_policy_id: id
+    - active: bool
     - extensions: map
 
 INVARIANTS:
 - Constraint participants are explicit; implicit participant inference is forbidden.
 - Enforcement resolves by policy and deterministic participant ordering.
+- Inactive constraints must not be evaluated for enforcement.
 
+COMPATIBILITY:
+- Legacy field `participants` may be accepted by runtime normalizers as an alias for `participant_ids`.

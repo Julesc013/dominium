@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Constraint Type Schema",
+  "version": "1.0.0",
+  "description": "Deterministic generic constraint type declaration.",
+  "x-doc-ref": [
+    "docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "constraint_type_id",
+    "description",
+    "applicable_entity_kinds",
+    "enforcement_tier",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "constraint_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "applicable_entity_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "enforcement_tier": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

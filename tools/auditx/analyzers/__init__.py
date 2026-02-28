@@ -118,6 +118,9 @@ from analyzers import e89_nondeterministic_routing_smell
 from analyzers import e90_silent_flow_smell
 from analyzers import e91_nondeterministic_flow_smell
 from analyzers import e92_flow_bypass_ledger_smell
+from analyzers import e93_adhoc_state_flag_smell
+from analyzers import e94_duplicate_scheduler_smell
+from analyzers import e95_hazard_logic_duplication_smell
 
 
 ANALYZERS = (
@@ -239,6 +242,9 @@ ANALYZERS = (
     e90_silent_flow_smell,
     e91_nondeterministic_flow_smell,
     e92_flow_bypass_ledger_smell,
+    e93_adhoc_state_flag_smell,
+    e94_duplicate_scheduler_smell,
+    e95_hazard_logic_duplication_smell,
 )
 
 

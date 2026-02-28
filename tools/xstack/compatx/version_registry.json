@@ -1995,7 +1995,21 @@
         "1.0.0"
       ]
     },
+    "constraint_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "constraint_component": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "state_transition": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

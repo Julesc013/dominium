@@ -16,9 +16,10 @@ record hazard_model
     - accumulation: fixed
     - threshold: fixed
     - consequence_process_id: id
+    - active: bool
     - extensions: map
 
 INVARIANTS:
 - Default triggering is deterministic threshold crossing.
 - Optional stochastic behavior must be policy-controlled and named-RNG bound.
-
+- Inactive hazards must not accumulate or emit consequences.

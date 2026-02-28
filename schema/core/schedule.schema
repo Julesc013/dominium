@@ -16,9 +16,10 @@ record schedule
     - recurrence_rule: map
     - next_due_tick: u64
     - cancellation_policy: id
+    - active: bool
     - extensions: map
 
 INVARIANTS:
 - Recurrence expansion and next-due computation are deterministic from schedule state.
 - Cancellation behavior is policy-declared and explicit.
-
+- Inactive schedules must not emit due events.

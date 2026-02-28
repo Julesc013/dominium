@@ -5,6 +5,7 @@ from .hazard_engine import (
     accumulate_hazard,
     hazard_triggered,
     normalize_hazard_model,
+    tick_hazard_models,
 )
 
 __all__ = [
@@ -12,5 +13,5 @@ __all__ = [
     "accumulate_hazard",
     "hazard_triggered",
     "normalize_hazard_model",
+    "tick_hazard_models",
 ]
-

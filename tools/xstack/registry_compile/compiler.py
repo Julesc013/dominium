@@ -4778,7 +4778,14 @@ def _core_abstraction_registry_rows(
             )
             continue
         constraint_type_id = str(entry.get("constraint_type_id", "")).strip()
-        if not constraint_type_id or not isinstance(entry.get("extensions"), dict):
+        applicable_entity_kinds = entry.get("applicable_entity_kinds")
+        enforcement_tier = str(entry.get("enforcement_tier", "")).strip()
+        if (
+            not constraint_type_id
+            or not isinstance(applicable_entity_kinds, list)
+            or enforcement_tier not in {"macro", "meso", "micro"}
+            or not isinstance(entry.get("extensions"), dict)
+        ):
             errors.append(
                 {
                     "code": "refuse.registry_compile.invalid_core_constraint_type_entry",
@@ -4802,6 +4809,8 @@ def _core_abstraction_registry_rows(
                 "schema_version": "1.0.0",
                 "constraint_type_id": constraint_type_id,
                 "description": str(entry.get("description", "")).strip(),
+                "applicable_entity_kinds": _sorted_unique_strings(list(applicable_entity_kinds or [])),
+                "enforcement_tier": enforcement_tier,
                 "extensions": dict(entry.get("extensions") or {}),
             }
         )

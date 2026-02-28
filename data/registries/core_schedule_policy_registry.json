@@ -7,10 +7,10 @@
     "schedule_policies": [
       {
         "schema_version": "1.0.0",
-        "schedule_policy_id": "schedule.one_shot",
-        "description": "Single-fire schedule policy with no recurrence.",
-        "default_rule_type": "none",
-        "default_interval_ticks": 0,
+        "schedule_policy_id": "schedule.deferred_low_priority",
+        "description": "Deterministic low-priority recurrence policy for budgeted workloads.",
+        "default_rule_type": "interval",
+        "default_interval_ticks": 5,
         "extensions": {}
       },
       {
@@ -23,14 +23,13 @@
       },
       {
         "schema_version": "1.0.0",
-        "schedule_policy_id": "schedule.deferred_low_priority",
-        "description": "Deterministic low-priority recurrence policy for budgeted workloads.",
-        "default_rule_type": "interval",
-        "default_interval_ticks": 5,
+        "schedule_policy_id": "schedule.one_shot",
+        "description": "Single-fire schedule policy with no recurrence.",
+        "default_rule_type": "none",
+        "default_interval_ticks": 0,
         "extensions": {}
       }
     ],
     "extensions": {}
   }
 }
-
