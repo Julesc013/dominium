@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Governance Deprecation Registry Schema",
+  "version": "1.0.0",
+  "description": "Canonical governance registry for deprecation lifecycle, quarantine, and adapter tracking.",
+  "x-doc-ref": [
+    "docs/architecture/DEPRECATION_LIFECYCLE.md",
+    "docs/architecture/ADAPTER_PATTERN.md"
+  ],
+  "type": "object",
+  "required": [
+    "registry_id",
+    "entries",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "registry_id": {
+      "type": "string",
+      "const": "dominium.governance.deprecations"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "deprecation_entry.schema.json"
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "registry_id": "dominium.governance.deprecations",
+      "entries": [],
+      "deterministic_fingerprint": "f7b1213ec47de4f7c3264904b12eaaf77ecfdecf61765ea53bfeb6982f5a89ca",
+      "extensions": {}
+    }
+  ]
+}

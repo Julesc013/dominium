@@ -1,0 +1,28 @@
+SCHEMA: governance/deprecation_entry.schema
+schema_id: dominium.schema.governance.deprecation_entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deprecation declaration record for schema/API/process/registry/module lifecycle management.
+
+REQUIRED SHAPE:
+record deprecation_entry
+  required:
+    - deprecated_id: id
+    - deprecated_kind: enum(schema|api|process|registry|module)
+    - replacement_id: id
+    - reason: text
+    - introduced_version: semver
+    - deprecated_version: semver
+    - removal_target_version: semver
+    - status: enum(active|deprecated|quarantined|removed)
+    - adapter_path: optional_text
+    - notes: text
+    - extensions: map
+
+INVARIANTS:
+- Deprecated items must declare replacement and target removal version.
+- Quarantined access must be adapter-only and adapter paths must exist.
+- Removed entries must not remain referenced by active topology nodes.
+

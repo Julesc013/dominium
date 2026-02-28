@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Governance Deprecation Entry Schema",
+  "version": "1.0.0",
+  "description": "Canonical governance deprecation declaration for schema/API/process/registry/module lifecycle management.",
+  "x-doc-ref": [
+    "docs/architecture/DEPRECATION_LIFECYCLE.md",
+    "docs/architecture/ADAPTER_PATTERN.md"
+  ],
+  "type": "object",
+  "required": [
+    "deprecated_id",
+    "deprecated_kind",
+    "replacement_id",
+    "reason",
+    "introduced_version",
+    "deprecated_version",
+    "removal_target_version",
+    "status",
+    "adapter_path",
+    "notes",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "deprecated_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deprecated_kind": {
+      "type": "string",
+      "enum": [
+        "schema",
+        "api",
+        "process",
+        "registry",
+        "module"
+      ]
+    },
+    "replacement_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "introduced_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "deprecated_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "removal_target_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "deprecated",
+        "quarantined",
+        "removed"
+      ]
+    },
+    "adapter_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "deprecated_id": "data/registries/deprecation_registry.json",
+      "deprecated_kind": "registry",
+      "replacement_id": "data/governance/deprecations.json",
+      "reason": "ARCH4 governance registry supersedes legacy deprecation registry location",
+      "introduced_version": "1.0.0",
+      "deprecated_version": "1.0.0",
+      "removal_target_version": "2.0.0",
+      "status": "deprecated",
+      "adapter_path": "tools/governance/adapters/deprecation_registry_adapter.py",
+      "notes": "Temporary adapter until all tools migrate to governance registry path",
+      "extensions": {}
+    }
+  ]
+}
