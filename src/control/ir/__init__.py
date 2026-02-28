@@ -9,6 +9,7 @@ from .control_ir_verifier import (
 )
 from .control_ir_compiler import (
     compile_control_ir,
+    reconstruct_ir_action_sequence,
     verify_and_compile_control_ir,
 )
 from .control_ir_programs import (
@@ -28,6 +29,7 @@ __all__ = [
     "build_blueprint_execution_ir",
     "compile_control_ir",
     "compile_ir_program",
+    "reconstruct_ir_action_sequence",
     "verify_control_ir",
     "verify_and_compile_control_ir",
 ]

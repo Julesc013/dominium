@@ -17,6 +17,7 @@ from .ir import (
     build_blueprint_execution_ir,
     compile_control_ir,
     compile_ir_program,
+    reconstruct_ir_action_sequence,
     verify_control_ir,
     verify_and_compile_control_ir,
 )
@@ -36,6 +37,7 @@ __all__ = [
     "compile_ir_program",
     "control_action_rows_by_id",
     "control_policy_rows_by_id",
+    "reconstruct_ir_action_sequence",
     "verify_control_ir",
     "verify_and_compile_control_ir",
 ]
