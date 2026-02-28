@@ -2723,6 +2723,69 @@ def _ensure_reenactment_artifacts(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_fidelity_decision_entries(state: dict) -> List[dict]:
+    rows = state.get("fidelity_decision_entries")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("allocation_id", ""))):
+        allocation_id = str(row.get("allocation_id", "")).strip()
+        request_id = str(row.get("fidelity_request_id", "")).strip()
+        if not allocation_id or not request_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "fidelity_request_id": request_id,
+            "allocation_id": allocation_id,
+            "resolved_level": str(row.get("resolved_level", "macro")).strip() or "macro",
+            "cost_allocated": max(0, _as_int(row.get("cost_allocated", 0), 0)),
+            "downgrade_reason": str(row.get("downgrade_reason", "")).strip() or "none",
+            "envelope_id": str(row.get("envelope_id", "")).strip() or "budget.unknown",
+            "policy_id": str(row.get("policy_id", "")).strip() or DEFAULT_FIDELITY_POLICY_ID,
+            "refusal_codes": _sorted_tokens(list(row.get("refusal_codes") or [])),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        if not payload["deterministic_fingerprint"]:
+            seed = dict(payload)
+            seed["deterministic_fingerprint"] = ""
+            payload["deterministic_fingerprint"] = canonical_sha256(seed)
+        normalized[allocation_id] = payload
+    ordered = [dict(normalized[key]) for key in sorted(normalized.keys())]
+    state["fidelity_decision_entries"] = ordered
+    return ordered
+
+
+def _append_fidelity_decision_entries(
+    state: dict,
+    *,
+    entries: List[dict],
+    process_id: str,
+    tick: int,
+) -> List[dict]:
+    existing = _ensure_fidelity_decision_entries(state)
+    merged: Dict[str, dict] = dict(
+        (str(row.get("allocation_id", "")).strip(), dict(row))
+        for row in existing
+        if str(row.get("allocation_id", "")).strip()
+    )
+    for row in list(entries or []):
+        if not isinstance(row, dict):
+            continue
+        allocation_id = str(row.get("allocation_id", "")).strip()
+        request_id = str(row.get("fidelity_request_id", "")).strip()
+        if not allocation_id or not request_id:
+            continue
+        payload = dict(row)
+        ext = dict(payload.get("extensions") or {})
+        ext["process_id"] = str(process_id).strip()
+        ext["tick"] = int(max(0, _as_int(tick, 0)))
+        payload["extensions"] = dict((str(key), ext[key]) for key in sorted(ext.keys()) if str(key).strip())
+        merged[allocation_id] = payload
+    state["fidelity_decision_entries"] = [dict(merged[key]) for key in sorted(merged.keys())]
+    return _ensure_fidelity_decision_entries(state)
+
+
 def _ensure_tasks(state: dict) -> List[dict]:
     rows = state.get("tasks")
     normalized = normalize_task_rows(rows)
@@ -7252,6 +7315,16 @@ def _execute_inspection_snapshot_process(
     inspection_allocation = dict(inspection_allocations[0] if inspection_allocations else {})
     inspection_allocation_ext = dict(inspection_allocation.get("extensions") or {})
     refusal_codes = _sorted_tokens(list(inspection_allocation_ext.get("refusal_codes") or []))
+    inspection_decision_entries = _append_fidelity_decision_entries(
+        state,
+        entries=[
+            dict(row)
+            for row in list(inspection_fidelity_arbitration.get("decision_log_entries") or [])
+            if isinstance(row, dict)
+        ],
+        process_id="process.inspect_generate_snapshot",
+        tick=int(current_tick),
+    )
     fair_share_cap = max(0, _as_int(inspection_allocation_ext.get("share_limit", 0), 0))
     budget_records = [
         dict(row) for row in list(inspection_fidelity_arbitration.get("budget_allocation_records") or []) if isinstance(row, dict)
@@ -7436,6 +7509,7 @@ def _execute_inspection_snapshot_process(
         "inspection_fidelity_request": dict(inspection_fidelity_request),
         "inspection_fidelity_allocation": dict(inspection_allocation),
         "inspection_fidelity_arbitration": dict(inspection_fidelity_arbitration),
+        "inspection_fidelity_decision_entries": list(inspection_decision_entries),
         "desired_fidelity": str(inspection_request_row.get("desired_fidelity", "")),
         "achieved_fidelity": str((cache_result.get("snapshot") or {}).get("achieved_fidelity", "")),
         "inspection_degraded": bool((dict((cache_result.get("snapshot") or {}).get("extensions") or {})).get("degraded", False)),
@@ -17086,6 +17160,16 @@ def execute_intent(
         reenactment_fidelity_allocation = dict(reenactment_allocations[0] if reenactment_allocations else {})
         reenactment_allocation_ext = dict(reenactment_fidelity_allocation.get("extensions") or {})
         reenactment_refusal_codes = _sorted_tokens(list(reenactment_allocation_ext.get("refusal_codes") or []))
+        reenactment_decision_entries = _append_fidelity_decision_entries(
+            state,
+            entries=[
+                dict(row)
+                for row in list(reenactment_fidelity_arbitration.get("decision_log_entries") or [])
+                if isinstance(row, dict)
+            ],
+            process_id=process_id,
+            tick=int(current_tick),
+        )
         reenactment_budget_records = [
             dict(row)
             for row in list(reenactment_fidelity_arbitration.get("budget_allocation_records") or [])
@@ -17248,6 +17332,17 @@ def execute_intent(
             dict(artifact_row, deterministic_fingerprint="")
         )
         reenactment_artifacts = _upsert_reenactment_artifact(reenactment_artifacts, artifact_row)
+        artifact_fidelity_arbitration = dict((dict(artifact_row.get("extensions") or {})).get("fidelity_arbitration") or {})
+        reenactment_artifact_decision_entries = _append_fidelity_decision_entries(
+            state,
+            entries=[
+                dict(row)
+                for row in list(artifact_fidelity_arbitration.get("decision_log_entries") or [])
+                if isinstance(row, dict)
+            ],
+            process_id=process_id,
+            tick=int(current_tick),
+        )
         _persist_commitment_reenactment_state(
             state,
             commitments=material_commitments,
@@ -17271,6 +17366,8 @@ def execute_intent(
             "fidelity_arbitration": dict(reenactment_fidelity_arbitration),
             "fidelity_budget_used_before": int(_as_int(reenactment_subject_budget_ext.get("used_before", 0), 0)),
             "fidelity_budget_used_after": int(_as_int(reenactment_subject_budget_ext.get("used_after", 0), 0)),
+            "fidelity_decision_entries": list(reenactment_decision_entries),
+            "artifact_fidelity_decision_entries": list(reenactment_artifact_decision_entries),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.reenactment_play":
@@ -17419,6 +17516,16 @@ def execute_intent(
             )
         materialization_arbitration = dict(materialized.get("fidelity_arbitration") or {})
         materialization_allocation = dict(materialized.get("fidelity_allocation") or {})
+        materialization_decision_entries = _append_fidelity_decision_entries(
+            state,
+            entries=[
+                dict(row)
+                for row in list(materialization_arbitration.get("decision_log_entries") or [])
+                if isinstance(row, dict)
+            ],
+            process_id=process_id,
+            tick=int(current_tick),
+        )
         if isinstance(policy_context, dict) and materialization_arbitration:
             policy_context["materialization_runtime_budget_state"] = dict(materialization_arbitration.get("runtime_budget_state") or {})
             fairness_out = dict(materialization_arbitration.get("fairness_state") or {})
@@ -17567,6 +17674,7 @@ def execute_intent(
             "fidelity_downgrade_reason": str(materialization_allocation.get("downgrade_reason", "")),
             "fidelity_cost_allocated": int(_as_int(materialization_allocation.get("cost_allocated", 0), 0)),
             "fidelity_request_id": str((dict(materialized.get("fidelity_request") or {})).get("fidelity_request_id", "")),
+            "fidelity_decision_entries": list(materialization_decision_entries),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.dematerialize_structure_roi":
