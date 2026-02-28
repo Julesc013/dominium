@@ -143,6 +143,8 @@ from analyzers import e114_adapter_missing_smell
 from analyzers import e115_removed_still_referenced_smell
 from analyzers import e116_macro_behavior_smell
 from analyzers import e117_ir_nondeterminism_smell
+from analyzers import e118_silent_downgrade_smell
+from analyzers import e119_unlogged_refusal_smell
 
 
 ANALYZERS = (
@@ -289,6 +291,8 @@ ANALYZERS = (
     e115_removed_still_referenced_smell,
     e116_macro_behavior_smell,
     e117_ir_nondeterminism_smell,
+    e118_silent_downgrade_smell,
+    e119_unlogged_refusal_smell,
 )
 
 
