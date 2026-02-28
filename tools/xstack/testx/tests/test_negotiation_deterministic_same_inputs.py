@@ -34,7 +34,7 @@ def run(repo_root: str):
         },
         "extensions": {
             "required_entitlements": ["entitlement.control.admin"],
-            "fidelity_cost_by_level": {"micro": 5, "meso": 3, "macro": 1},
+            "fidelity_cost_by_level": {"micro": 5, "meso": 3},
         },
     }
     rs5_state = {
@@ -78,4 +78,3 @@ def run(repo_root: str):
     if str(first.get("deterministic_fingerprint", "")) != str(second.get("deterministic_fingerprint", "")):
         return {"status": "fail", "message": "negotiation deterministic_fingerprint mismatch for identical inputs"}
     return {"status": "pass", "message": "negotiation kernel deterministic output check passed"}
-
