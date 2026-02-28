@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tool Tag Schema",
+  "version": "1.0.0",
+  "description": "Tool compatibility tag used for ActionSurface filtering.",
+  "x-doc-ref": [
+    "docs/interaction/ACTION_SURFACE_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_tag_id",
+    "description",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tool_tag_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "tool_tag_id": "tool_tag.fastening",
+      "description": "Fastening tool capability tag.",
+      "extensions": {}
+    }
+  ]
+}
