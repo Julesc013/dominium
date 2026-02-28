@@ -97,6 +97,48 @@ def _first_non_freecam(values: Sequence[str]) -> str:
     return ""
 
 
+def _view_mode_for_policy(view_policy_id: str) -> str:
+    token = str(view_policy_id or "").strip().lower()
+    if not token:
+        return "unknown"
+    if "freecam" in token or token.endswith(".freecam") or ".free." in token:
+        return "freecam"
+    if "third_person" in token or "third.person" in token or "third_person" in token:
+        return "third_person"
+    if "first_person" in token or "first.person" in token or "first_person" in token:
+        return "first_person"
+    if "spectator" in token:
+        return "spectator"
+    if "replay" in token:
+        return "replay"
+    return "unknown"
+
+
+def _first_view_by_mode(values: Sequence[str], mode: str) -> str:
+    target_mode = str(mode or "").strip()
+    rows = [
+        str(token).strip()
+        for token in list(values or [])
+        if str(token).strip() and _view_mode_for_policy(str(token)) == target_mode
+    ]
+    if not rows:
+        return ""
+    return sorted(set(rows))[0]
+
+
+def _view_downgrade_target(allowed_view: Sequence[str], requested_view: str) -> str:
+    requested_mode = _view_mode_for_policy(requested_view)
+    if requested_mode == "freecam":
+        for mode in ("third_person", "first_person"):
+            candidate = _first_view_by_mode(allowed_view, mode)
+            if candidate:
+                return candidate
+        return ""
+    if requested_mode == "third_person":
+        return _first_view_by_mode(allowed_view, "first_person")
+    return ""
+
+
 def _min_fidelity(requested: str, allowed: Sequence[str]) -> str:
     rows = [token for token in list(allowed or []) if token in _FIDELITY_RANK]
     if not rows:
@@ -300,29 +342,31 @@ def negotiate_request(
     )
     resolved_view = requested_view
     if allowed_view and requested_view not in allowed_view:
-        resolved_view = allowed_view[0]
-        _append_downgrade(
-            downgrades,
-            axis="view",
-            from_value=requested_view,
-            to_value=resolved_view,
-            reason_code=DOWNGRADE_POLICY,
-            remediation_hint="remedy.ctrl.select_allowed_view",
-        )
-    if is_ranked and "freecam" in resolved_view.lower():
-        fallback_view = _first_non_freecam(allowed_view) or DEFAULT_VIEW_POLICY_ID
-        if fallback_view != resolved_view:
+        resolved_view = _view_downgrade_target(allowed_view, requested_view) or allowed_view[0]
+        if resolved_view:
+            _append_downgrade(
+                downgrades,
+                axis="view",
+                from_value=requested_view,
+                to_value=resolved_view,
+                reason_code=DOWNGRADE_POLICY,
+                remediation_hint="remedy.ctrl.select_allowed_view",
+            )
+    forbid_freecam = bool(is_ranked or request_ext.get("forbid_freecam", False))
+    if forbid_freecam and _view_mode_for_policy(resolved_view) == "freecam":
+        fallback_view = _view_downgrade_target(allowed_view, resolved_view) or _first_non_freecam(allowed_view)
+        if fallback_view and fallback_view != resolved_view:
             _append_downgrade(
                 downgrades,
                 axis="view",
                 from_value=resolved_view,
                 to_value=fallback_view,
-                reason_code=DOWNGRADE_RANK_FAIRNESS,
-                remediation_hint="remedy.ctrl.rank_use_diegetic_view",
+                reason_code=DOWNGRADE_RANK_FAIRNESS if is_ranked else DOWNGRADE_POLICY,
+                remediation_hint="remedy.ctrl.rank_use_diegetic_view" if is_ranked else "remedy.ctrl.select_allowed_view",
             )
             resolved_view = fallback_view
-        if "freecam" in resolved_view.lower():
-            refusals.append(REFUSAL_CTRL_VIEW_FORBIDDEN)
+    if forbid_freecam and _view_mode_for_policy(resolved_view) == "freecam":
+        refusals.append(REFUSAL_CTRL_VIEW_FORBIDDEN)
 
     # 5) Epistemic axis.
     requested_epistemic = (

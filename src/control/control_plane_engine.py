@@ -192,6 +192,20 @@ def _path_allowed(action_id: str, patterns: List[str]) -> bool:
     return False
 
 
+def _replay_read_only_process_allowed(process_id: str) -> bool:
+    token = str(process_id or "").strip()
+    if not token:
+        return True
+    return token in {
+        "process.camera_set_view_mode",
+        "process.view_bind",
+        "process.reenactment_generate",
+        "process.reenactment_play",
+        "process.reenactment_request",
+        "process.fidelity_request",
+    }
+
+
 def _resolve_policy_id(control_intent: Mapping[str, object], policy_context: Mapping[str, object] | None) -> str:
     intent_ext = dict((dict(control_intent or {})).get("extensions") or {})
     for token in (
@@ -906,6 +920,33 @@ def build_control_resolution(
             refusal_payload=refusal_payload,
             negotiation_for_log=_negotiation_with_refusal_code(negotiation_payload, CONTROL_REFUSAL_FORBIDDEN_BY_LAW),
         )
+
+    if bool(policy_extensions.get("replay_only", False)):
+        replay_action_allowed = (
+            str(action_id) == "action.view.change"
+            or str(action_id).startswith("action.replay.")
+            or str(action_id) == "action.fidelity.request"
+        )
+        replay_process_allowed = _replay_read_only_process_allowed(process_id)
+        if (not replay_action_allowed) or (not replay_process_allowed) or bool(task_type_id) or bool(plan_intent_type):
+            refusal_payload = _refusal(
+                CONTROL_REFUSAL_REPLAY_MUTATION_FORBIDDEN,
+                "replay mode only permits read-only view/fidelity/reenactment control",
+                "Use action.view.change or replay-safe action/process while replay policy is active.",
+                {
+                    "requested_action_id": action_id,
+                    "process_id": process_id,
+                    "control_policy_id": control_policy_id,
+                },
+                "$.requested_action_id",
+            )
+            return _finalize_refusal(
+                refusal_payload=refusal_payload,
+                negotiation_for_log=_negotiation_with_refusal_code(
+                    negotiation_payload,
+                    CONTROL_REFUSAL_REPLAY_MUTATION_FORBIDDEN,
+                ),
+            )
 
     emitted_intents: List[dict] = []
     if plan_intent_type and str(resolved_vector.get("abstraction_level_resolved", "")) in ("AL0", "AL1", "AL2"):
