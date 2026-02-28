@@ -308,6 +308,7 @@ def compile_control_ir(
     created_tick_base = int(max(0, _to_int(_as_map(ir.get("metadata")).get("tick", 0), 0)))
     requester_subject_id = _requester_subject_id(authority_context)
 
+    ir_id = str(ir.get("control_ir_id", "")).strip()
     op_execution_order: List[str] = []
     compiled_actions: List[dict] = []
     op_to_emitted: List[dict] = []
@@ -326,6 +327,7 @@ def compile_control_ir(
             "op_type": op_type,
             "control_intent_id": "",
             "resolution_id": "",
+            "decision_log_ref": "",
             "emitted_intent_ids": [],
             "emitted_envelope_ids": [],
             "emitted_commitment_ids": [],
@@ -389,6 +391,15 @@ def compile_control_ir(
         control_policy_context = dict(policy_context or {})
         control_policy_context.setdefault("submission_tick", int(created_tick_base + op_index))
         control_policy_context.setdefault("deterministic_sequence_number", int(op_index))
+        control_policy_context["control_ir_execution"] = {
+            "ir_id": ir_id,
+            "verification_report_hash": verification_hash,
+            "op_id": op_id,
+            "op_type": op_type,
+            "block_id": str(block_id),
+            "op_index": int(op_index),
+            "control_action_id": action_id,
+        }
 
         resolved = build_control_resolution(
             control_intent=dict(control_intent),
@@ -424,6 +435,7 @@ def compile_control_ir(
 
         resolution = dict(resolved.get("resolution") or {})
         mapping_row["resolution_id"] = str(resolution.get("resolution_id", ""))
+        mapping_row["decision_log_ref"] = str(resolution.get("decision_log_ref", ""))
         emitted_intents = [dict(row) for row in list(resolution.get("emitted_intents") or []) if isinstance(row, Mapping)]
         emitted_envelopes = [
             dict(row) for row in list(resolution.get("emitted_intent_envelopes") or []) if isinstance(row, Mapping)
@@ -492,13 +504,14 @@ def compile_control_ir(
 
     compiled = {
         "result": "complete",
-        "control_ir_id": str(ir.get("control_ir_id", "")).strip(),
+        "control_ir_id": ir_id,
         "verification_report_hash": verification_hash,
         "rs5_budget_units": int(resolved_budget),
         "cost_estimate_used": int(max_cost_estimate),
         "op_execution_order": op_execution_order,
         "compiled_actions": compiled_actions,
         "op_to_emitted": op_to_emitted,
+        "decision_log_refs": _sorted_unique_strings([row.get("decision_log_ref") for row in op_to_emitted]),
         "task_starts": task_starts,
         "commitment_creations": commitment_creations,
         "wait_conditions": wait_conditions,
@@ -513,6 +526,69 @@ def compile_control_ir(
     seed["deterministic_fingerprint"] = ""
     compiled["deterministic_fingerprint"] = canonical_sha256(seed)
     return compiled
+
+
+def reconstruct_ir_action_sequence(
+    *,
+    decision_log_rows: Sequence[Mapping[str, object]],
+    ir_id: str = "",
+) -> dict:
+    """Reconstruct deterministic IR action sequence from control decision-log rows."""
+
+    requested_ir_id = str(ir_id or "").strip()
+    sequence_rows: List[dict] = []
+    resolved_ir_id = requested_ir_id
+    for row in list(decision_log_rows or []):
+        if not isinstance(row, Mapping):
+            continue
+        ext = _as_map((dict(row or {})).get("extensions"))
+        ir_ext = _as_map(ext.get("control_ir_execution"))
+        row_ir_id = str(ir_ext.get("ir_id", "")).strip()
+        if not row_ir_id:
+            continue
+        if requested_ir_id and row_ir_id != requested_ir_id:
+            continue
+        if not resolved_ir_id:
+            resolved_ir_id = row_ir_id
+        if row_ir_id != resolved_ir_id:
+            continue
+        reasons = _as_map((dict(row or {})).get("reasons"))
+        refusal_row = _as_map(reasons.get("refusal"))
+        sequence_rows.append(
+            {
+                "op_index": int(max(0, _to_int(ir_ext.get("op_index", 0), 0))),
+                "op_id": str(ir_ext.get("op_id", "")).strip(),
+                "op_type": str(ir_ext.get("op_type", "")).strip(),
+                "block_id": str(ir_ext.get("block_id", "")).strip(),
+                "control_action_id": str(ir_ext.get("control_action_id", "")).strip(),
+                "control_intent_id": str((dict(row or {})).get("control_intent_id", "")).strip(),
+                "tick": int(max(0, _to_int((dict(row or {})).get("tick", 0), 0))),
+                "control_policy_id": str((dict(row or {})).get("control_policy_id", "")).strip(),
+                "emitted_ids": _sorted_unique_strings((dict(row or {})).get("emitted_ids")),
+                "downgrade_reasons": _sorted_unique_strings(reasons.get("downgrade_reasons")),
+                "refusal_code": str(refusal_row.get("reason_code", "")).strip(),
+                "verification_report_hash": str(ir_ext.get("verification_report_hash", "")).strip(),
+                "log_id": str((dict(row or {})).get("log_id", "")).strip(),
+            }
+        )
+    ordered = sorted(
+        sequence_rows,
+        key=lambda row: (
+            int(row.get("op_index", 0) or 0),
+            int(row.get("tick", 0) or 0),
+            str(row.get("control_intent_id", "")),
+            str(row.get("log_id", "")),
+        ),
+    )
+    out = {
+        "ir_id": resolved_ir_id or "control.ir.unknown",
+        "action_sequence": ordered,
+        "deterministic_fingerprint": "",
+    }
+    seed = dict(out)
+    seed["deterministic_fingerprint"] = ""
+    out["deterministic_fingerprint"] = canonical_sha256(seed)
+    return out
 
 
 def verify_and_compile_control_ir(
@@ -554,5 +630,6 @@ def verify_and_compile_control_ir(
 
 __all__ = [
     "compile_control_ir",
+    "reconstruct_ir_action_sequence",
     "verify_and_compile_control_ir",
 ]

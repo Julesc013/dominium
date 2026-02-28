@@ -394,6 +394,32 @@ def _build_envelope(
     }
 
 
+def _decision_log_extensions(policy_context: Mapping[str, object] | None) -> dict:
+    payload = dict(policy_context or {})
+    ir_context = dict(payload.get("control_ir_execution") or {})
+    if not ir_context:
+        return {}
+    normalized = {}
+    for key in sorted(ir_context.keys()):
+        token = str(key).strip()
+        if not token:
+            continue
+        value = ir_context.get(key)
+        if isinstance(value, (str, int, float, bool)) or value is None:
+            if isinstance(value, str):
+                stripped = str(value).strip()
+                if not stripped:
+                    continue
+                normalized[token] = stripped
+            elif value is not None:
+                normalized[token] = value
+            continue
+        normalized[token] = _canon_params(value)
+    if not normalized:
+        return {}
+    return {"control_ir_execution": normalized}
+
+
 def _decision_log_row(
     *,
     control_intent: Mapping[str, object],
@@ -402,6 +428,7 @@ def _decision_log_row(
     refusal: Mapping[str, object] | None,
     downgrade_reasons: List[str],
     emitted_envelopes: List[Mapping[str, object]],
+    decision_extensions: Mapping[str, object] | None = None,
 ) -> dict:
     tick = int(max(0, _to_int((dict(control_intent or {})).get("created_tick", 0), 0)))
     emitted_ids = sorted(
@@ -439,7 +466,7 @@ def _decision_log_row(
         },
         "emitted_ids": list(emitted_ids),
         "deterministic_fingerprint": "",
-        "extensions": {},
+        "extensions": dict(decision_extensions or {}),
     }
     row_seed = dict(row)
     row_seed["deterministic_fingerprint"] = ""
@@ -508,6 +535,7 @@ def build_control_resolution(
     authority = dict(authority_context or {})
     law = dict(law_profile or {})
     policy_context_payload = dict(policy_context or {})
+    decision_log_extensions = _decision_log_extensions(policy_context_payload)
 
     control_intent_id = str(intent.get("control_intent_id", "")).strip()
     if not control_intent_id:
@@ -612,6 +640,7 @@ def build_control_resolution(
             refusal=refusal_payload,
             downgrade_reasons=downgrade_reasons,
             emitted_envelopes=[],
+            decision_extensions=decision_log_extensions,
         )
         log_ref = _write_decision_log(repo_root, log_row)
         return {
@@ -646,6 +675,7 @@ def build_control_resolution(
             refusal=refusal_payload,
             downgrade_reasons=downgrade_reasons,
             emitted_envelopes=[],
+            decision_extensions=decision_log_extensions,
         )
         log_ref = _write_decision_log(repo_root, log_row)
         return {
@@ -676,6 +706,7 @@ def build_control_resolution(
             refusal=refusal_payload,
             downgrade_reasons=sorted(set(downgrade_reasons + [DOWNGRADE_RANK_FAIRNESS])),
             emitted_envelopes=[],
+            decision_extensions=decision_log_extensions,
         )
         log_ref = _write_decision_log(repo_root, log_row)
         return {
@@ -712,6 +743,7 @@ def build_control_resolution(
             refusal=refusal_payload,
             downgrade_reasons=downgrade_reasons,
             emitted_envelopes=[],
+            decision_extensions=decision_log_extensions,
         )
         log_ref = _write_decision_log(repo_root, log_row)
         return {
@@ -754,6 +786,7 @@ def build_control_resolution(
                 refusal=refusal_payload,
                 downgrade_reasons=downgrade_reasons,
                 emitted_envelopes=[],
+                decision_extensions=decision_log_extensions,
             )
             log_ref = _write_decision_log(repo_root, log_row)
             return {
@@ -785,6 +818,7 @@ def build_control_resolution(
         refusal=None,
         downgrade_reasons=downgrade_reasons,
         emitted_envelopes=emitted_envelopes,
+        decision_extensions=decision_log_extensions,
     )
     log_ref = _write_decision_log(repo_root, log_row)
 
