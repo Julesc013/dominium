@@ -312,6 +312,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-VIEW-CHANGES-THROUGH-CONTROL",
     "INV-NO-DIRECT-CAMERA-TOGGLE",
     "INV-NO-TRUTH-ACCESS-IN-RENDER",
+    "INV-NO-TYPE-BRANCHING",
+    "INV-CAPABILITY-REGISTRY-REQUIRED",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -10278,6 +10280,179 @@ def _append_plan_execution_enforcement_invariant_findings(
             )
 
 
+def _append_capability_enforcement_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    capability_registry_rel = "data/registries/capability_registry.json"
+    capability_engine_rel = "src/control/capability/capability_engine.py"
+    control_plane_rel = "src/control/control_plane_engine.py"
+    plan_engine_rel = "src/control/planning/plan_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+
+    capability_registry_text = _file_text(repo_root, capability_registry_rel)
+    capability_engine_text = _file_text(repo_root, capability_engine_rel)
+    if not capability_registry_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=capability_registry_rel,
+                line_number=1,
+                snippet="",
+                message="capability registry is required for capability-driven feature declarations",
+                rule_id="INV-CAPABILITY-REGISTRY-REQUIRED",
+            )
+        )
+    if not capability_engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=capability_engine_rel,
+                line_number=1,
+                snippet="",
+                message="capability engine module is required",
+                rule_id="INV-CAPABILITY-REGISTRY-REQUIRED",
+            )
+        )
+    else:
+        for token in ("def has_capability(", "def get_capability_params(", "normalize_capability_binding_rows("):
+            if token in capability_engine_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=capability_engine_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="capability engine missing required deterministic query API",
+                    rule_id="INV-CAPABILITY-REGISTRY-REQUIRED",
+                )
+            )
+
+    control_plane_text = _file_text(repo_root, control_plane_rel)
+    for token in ("required_capabilities", "resolve_missing_capabilities("):
+        if token in control_plane_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=control_plane_rel,
+                line_number=1,
+                snippet=token,
+                message="control resolution must validate required capabilities through capability bindings",
+                rule_id="INV-CAPABILITY-REGISTRY-REQUIRED",
+            )
+        )
+
+    plan_engine_text = _file_text(repo_root, plan_engine_rel)
+    for token in ("capability.can_be_planned", "has_capability("):
+        if token in plan_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=plan_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="planning path must use capability.can_be_planned checks",
+                rule_id="INV-NO-TYPE-BRANCHING",
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in ("capability.has_pose_slots", "capability.has_ports"):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="runtime pose/port paths must gate via capability bindings",
+                rule_id="INV-CAPABILITY-REGISTRY-REQUIRED",
+            )
+        )
+
+    capability_ids = set()
+    if capability_registry_text:
+        try:
+            capability_payload = json.loads(capability_registry_text)
+        except ValueError:
+            capability_payload = {}
+        record = dict(capability_payload.get("record") or {})
+        rows = list(record.get("capabilities") or [])
+        for row in rows:
+            if isinstance(row, dict):
+                token = str(row.get("capability_id", "")).strip()
+                if token:
+                    capability_ids.add(token)
+    control_action_registry_text = _file_text(repo_root, "data/registries/control_action_registry.json")
+    if control_action_registry_text:
+        try:
+            action_payload = json.loads(control_action_registry_text)
+        except ValueError:
+            action_payload = {}
+        actions = list(dict(action_payload.get("record") or {}).get("actions") or [])
+        for row in actions:
+            if not isinstance(row, dict):
+                continue
+            action_id = str(row.get("action_id", "")).strip() or "<unknown>"
+            required_caps = sorted(
+                set(str(item).strip() for item in list(row.get("required_capabilities") or []) if str(item).strip())
+            )
+            for capability_id in required_caps:
+                if capability_id in capability_ids:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/control_action_registry.json",
+                        line_number=1,
+                        snippet=capability_id,
+                        message="control action '{}' references capability '{}' missing from capability registry".format(
+                            action_id,
+                            capability_id,
+                        ),
+                        rule_id="INV-CAPABILITY-REGISTRY-REQUIRED",
+                    )
+                )
+
+    # Static scan for gameplay type-branching heuristics in production code.
+    type_branch_patterns = (
+        re.compile(r"\b(entity_type|assembly_type|entity_class|assembly_class)\b\s*=="),
+        re.compile(r"\b\w*type\w*\s*==\s*[\"'](?:vehicle|building|machine)[\"']"),
+    )
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(("tools/xstack/testx/tests/", "tools/auditx/analyzers/", "docs/")):
+            continue
+        if not rel_path.startswith(("src/control/", "src/interaction/", "tools/xstack/sessionx/")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            for pattern in type_branch_patterns:
+                if not pattern.search(snippet):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="core gameplay branching should use capabilities, not type/class checks",
+                        rule_id="INV-NO-TYPE-BRANCHING",
+                    )
+                )
+                break
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -10429,6 +10604,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_plan_execution_enforcement_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_capability_enforcement_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

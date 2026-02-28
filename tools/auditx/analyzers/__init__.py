@@ -150,6 +150,8 @@ from analyzers import e121_plan_bypass_smell
 from analyzers import e122_silent_fidelity_downgrade_smell
 from analyzers import e123_unbounded_cost_smell
 from analyzers import e124_camera_bypass_smell
+from analyzers import e125_type_branch_smell
+from analyzers import e126_hidden_feature_flag_smell
 
 
 ANALYZERS = (
@@ -303,6 +305,8 @@ ANALYZERS = (
     e122_silent_fidelity_downgrade_smell,
     e123_unbounded_cost_smell,
     e124_camera_bypass_smell,
+    e125_type_branch_smell,
+    e126_hidden_feature_flag_smell,
 )
 
 
