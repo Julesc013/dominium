@@ -134,6 +134,9 @@ Tool payload wrapper:
 - `refusal.ctrl.planning_only`
 - `refusal.ctrl.meta_forbidden`
 - `refusal.ctrl.replay_mutation_forbidden`
+- `refusal.ctrl.ir_invalid`
+- `refusal.ctrl.ir_forbidden_op`
+- `refusal.ctrl.ir_cost_exceeded`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
 - `refusal.net.handshake_pack_lock_mismatch`: reconnect using identical bundle + lockfile; regenerate client dist if needed.

@@ -171,11 +171,59 @@ def _load_anti_cheat_rows(repo_root: str, run_meta: dict, manifest_abs: str) -> 
     return rows, ""
 
 
+def _load_control_ir_verification_hashes(repo_root: str, run_meta: dict, run_meta_abs: str) -> Tuple[dict, str]:
+    candidate_dirs: List[str] = []
+    if run_meta_abs:
+        run_meta_dir = os.path.dirname(run_meta_abs)
+        candidate_dirs.append(os.path.join(run_meta_dir, "control_decisions"))
+    for key in ("control_ir_decision_log_dir", "control_decision_log_dir"):
+        token = str(run_meta.get(key, "")).strip()
+        if token:
+            candidate_dirs.append(_abs(repo_root, token))
+    candidate_dirs.append(os.path.join(repo_root, "run_meta", "control_decisions"))
+
+    unique_dirs: List[str] = []
+    for path in candidate_dirs:
+        normalized = os.path.normpath(str(path or ""))
+        if not normalized or normalized in unique_dirs:
+            continue
+        unique_dirs.append(normalized)
+
+    verification_hashes = set()
+    scanned_files = 0
+    for directory in unique_dirs:
+        if not os.path.isdir(directory):
+            continue
+        for name in sorted(os.listdir(directory)):
+            if not str(name).lower().endswith(".json"):
+                continue
+            abs_path = os.path.join(directory, name)
+            payload, err = _load_json(abs_path)
+            if err:
+                return {}, "invalid control decision log '{}'".format(norm(os.path.relpath(abs_path, repo_root)))
+            ext = dict(payload.get("extensions") or {})
+            ir_ext = dict(ext.get("control_ir_execution") or {})
+            report_hash = str(ir_ext.get("verification_report_hash", "")).strip()
+            if report_hash:
+                verification_hashes.add(report_hash)
+            scanned_files += 1
+    return {
+        "verification_report_hashes": sorted(verification_hashes),
+        "decision_log_count": int(scanned_files),
+        "decision_log_dirs": [
+            norm(os.path.relpath(path, repo_root))
+            for path in unique_dirs
+            if os.path.isdir(path)
+        ],
+    }, ""
+
+
 def _build_markdown(bundle: dict) -> str:
     pack_signatures = list(bundle.get("pack_signatures") or [])
     hash_anchors = list(bundle.get("hash_anchor_frames") or [])
     anti_cheat_events = list(bundle.get("anti_cheat_events") or [])
     anti_cheat_actions = list(bundle.get("enforcement_actions") or [])
+    ir_hashes = list(bundle.get("control_ir_verification_report_hashes") or [])
     lines = [
         "# Ranked Proof Bundle",
         "",
@@ -190,6 +238,7 @@ def _build_markdown(bundle: dict) -> str:
         "- Hash Anchor Frames: `{}`".format(int(len(hash_anchors))),
         "- Anti-Cheat Events: `{}`".format(int(len(anti_cheat_events))),
         "- Enforcement Actions: `{}`".format(int(len(anti_cheat_actions))),
+        "- Control IR Verification Hashes: `{}`".format(int(len(ir_hashes))),
         "",
         "## Registry Hashes",
     ]
@@ -198,7 +247,14 @@ def _build_markdown(bundle: dict) -> str:
     lines.append("")
     lines.append("## Source Artifacts")
     source = dict(bundle.get("source_artifacts") or {})
-    for key in ("run_meta_path", "handshake_path", "lockfile_path", "anti_cheat_manifest_path", "hash_anchor_path"):
+    for key in (
+        "run_meta_path",
+        "handshake_path",
+        "lockfile_path",
+        "anti_cheat_manifest_path",
+        "hash_anchor_path",
+        "control_ir_decision_log_dirs",
+    ):
         lines.append("- `{}`: `{}`".format(key, str(source.get(key, "")) or "<none>"))
     return "\n".join(lines) + "\n"
 
@@ -341,6 +397,25 @@ def main() -> int:
             )
         )
         return 2
+    control_ir_hashes, control_ir_hashes_err = _load_control_ir_verification_hashes(
+        repo_root=repo_root,
+        run_meta=run_meta,
+        run_meta_abs=run_meta_abs,
+    )
+    if control_ir_hashes_err:
+        print(
+            json.dumps(
+                _refusal(
+                    "refusal.net.envelope_invalid",
+                    control_ir_hashes_err,
+                    "Repair control decision-log artifacts before exporting ranked proof bundle.",
+                    {"run_meta_path": norm(run_meta_abs) if run_meta_abs else ""},
+                ),
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return 2
 
     handshake_response = dict(handshake_payload.get("response") or {})
     network_handshake = dict(run_meta.get("network_handshake") or {})
@@ -353,6 +428,7 @@ def main() -> int:
     pack_signatures = _pack_signatures(lock_payload)
     anti_cheat_events = list(anti_cheat_rows.get("events") or [])
     enforcement_actions = list(anti_cheat_rows.get("actions") or [])
+    ir_verification_report_hashes = list(control_ir_hashes.get("verification_report_hashes") or [])
 
     deterministic_seed = {
         "pack_lock_hash": pack_lock_hash,
@@ -362,6 +438,7 @@ def main() -> int:
         "hash_anchor_frames_hash": canonical_sha256(hash_anchor_frames),
         "anti_cheat_events_hash": canonical_sha256(anti_cheat_events),
         "enforcement_actions_hash": canonical_sha256(enforcement_actions),
+        "control_ir_verification_report_hashes_hash": canonical_sha256(ir_verification_report_hashes),
     }
     proof_bundle_hash = canonical_sha256(deterministic_seed)
     proof_bundle_id = "ranked.proof.{}".format(proof_bundle_hash[:16])
@@ -383,12 +460,14 @@ def main() -> int:
         "hash_anchor_frames": hash_anchor_frames,
         "anti_cheat_events": anti_cheat_events,
         "enforcement_actions": enforcement_actions,
+        "control_ir_verification_report_hashes": ir_verification_report_hashes,
         "source_artifacts": {
             "run_meta_path": norm(os.path.relpath(run_meta_abs, repo_root)) if run_meta_abs else "",
             "handshake_path": norm(os.path.relpath(handshake_abs, repo_root)),
             "lockfile_path": norm(os.path.relpath(lock_abs, repo_root)),
             "anti_cheat_manifest_path": str(anti_cheat_rows.get("manifest_path", "")),
             "hash_anchor_path": norm(os.path.relpath(anchor_abs, repo_root)) if anchor_abs else "",
+            "control_ir_decision_log_dirs": list(control_ir_hashes.get("decision_log_dirs") or []),
         },
         "provenance": {
             "artifact_type_id": "net.ranked_proof_bundle",
@@ -401,7 +480,9 @@ def main() -> int:
             "pack_lock_hash": pack_lock_hash,
             "deterministic": True,
         },
-        "extensions": {},
+        "extensions": {
+            "control_ir_decision_log_count": int(control_ir_hashes.get("decision_log_count", 0) or 0),
+        },
     }
     bundle["proof_bundle_hash"] = canonical_sha256(bundle)
 
@@ -426,6 +507,7 @@ def main() -> int:
             "hash_anchor_frames": len(hash_anchor_frames),
             "anti_cheat_events": len(anti_cheat_events),
             "enforcement_actions": len(enforcement_actions),
+            "control_ir_verification_report_hashes": len(ir_verification_report_hashes),
         },
     }
     print(json.dumps(response, indent=2, sort_keys=True))

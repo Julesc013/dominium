@@ -18,6 +18,10 @@ from .control_ir_programs import (
     build_blueprint_execution_ir,
     compile_ir_program,
 )
+from .control_ir_multiplayer import (
+    multiplayer_ir_mode,
+    validate_control_ir_multiplayer,
+)
 
 __all__ = [
     "ALLOWED_CONTROL_IR_OP_TYPES",
@@ -29,7 +33,9 @@ __all__ = [
     "build_blueprint_execution_ir",
     "compile_control_ir",
     "compile_ir_program",
+    "multiplayer_ir_mode",
     "reconstruct_ir_action_sequence",
+    "validate_control_ir_multiplayer",
     "verify_control_ir",
     "verify_and_compile_control_ir",
 ]
