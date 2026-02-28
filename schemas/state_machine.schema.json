@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic process-triggered state machine component.",
   "x-doc-ref": [
-    "docs/architecture/CORE_ABSTRACTIONS.md"
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md"
   ],
   "type": "object",
   "required": [
@@ -36,41 +37,59 @@
     "transitions": {
       "type": "array",
       "items": {
-        "type": "object",
-        "required": [
-          "transition_id",
-          "from_state_id",
-          "to_state_id",
-          "trigger_process_id",
-          "priority",
-          "extensions"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "transition_id": {
+        "oneOf": [
+          {
             "type": "string",
             "minLength": 1
           },
-          "from_state_id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "to_state_id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "trigger_process_id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "priority": {
-            "type": "integer"
-          },
-          "extensions": {
+          {
             "type": "object",
-            "additionalProperties": true
+            "required": [
+              "transition_id",
+              "from_state_id",
+              "to_state_id",
+              "trigger_process_id",
+              "priority",
+              "extensions"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "transition_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "from_state_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to_state_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "trigger_process_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "guard_conditions": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "extensions": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
           }
-        }
+        ]
+      }
+    },
+    "transition_rows": {
+      "type": "array",
+      "items": {
+        "$ref": "state_transition.schema.json"
       }
     },
     "extensions": {
@@ -85,11 +104,16 @@
       "machine_type_id": "state_machine.door",
       "state_id": "closed",
       "transitions": [
+        "door.open"
+      ],
+      "transition_rows": [
         {
+          "schema_version": "1.0.0",
           "transition_id": "door.open",
-          "from_state_id": "closed",
-          "to_state_id": "open",
+          "from_state": "closed",
+          "to_state": "open",
           "trigger_process_id": "process.door_open",
+          "guard_conditions": {},
           "priority": 10,
           "extensions": {}
         }
@@ -98,4 +122,3 @@
     }
   ]
 }
-

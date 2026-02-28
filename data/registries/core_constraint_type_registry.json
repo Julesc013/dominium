@@ -9,28 +9,51 @@
         "schema_version": "1.0.0",
         "constraint_type_id": "constraint.guide_rail",
         "description": "Guided movement constraint (rails/lanes).",
+        "applicable_entity_kinds": [
+          "mobility",
+          "assembly",
+          "vehicle"
+        ],
+        "enforcement_tier": "micro",
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "constraint_type_id": "constraint.docking",
         "description": "Docking/alignment constraint for couplers and ports.",
+        "applicable_entity_kinds": [
+          "assembly",
+          "port",
+          "connector"
+        ],
+        "enforcement_tier": "meso",
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "constraint_type_id": "constraint.coupling",
         "description": "Mechanical coupling constraint.",
+        "applicable_entity_kinds": [
+          "assembly",
+          "vehicle",
+          "cohort"
+        ],
+        "enforcement_tier": "meso",
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "constraint_type_id": "constraint.sealing",
         "description": "Sealing constraint for pressure/fluid boundaries.",
+        "applicable_entity_kinds": [
+          "portal",
+          "assembly",
+          "volume"
+        ],
+        "enforcement_tier": "micro",
         "extensions": {}
       }
     ],
     "extensions": {}
   }
 }
-

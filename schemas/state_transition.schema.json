@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "State Transition Schema",
+  "version": "1.0.0",
+  "description": "Deterministic transition row for state machines.",
+  "x-doc-ref": [
+    "docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "transition_id",
+    "from_state",
+    "to_state",
+    "trigger_process_id",
+    "guard_conditions",
+    "priority",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "transition_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_state": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_state": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger_process_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "guard_conditions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "priority": {
+      "type": "integer"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

@@ -13,19 +13,12 @@ record state_machine
     - machine_id: id
     - machine_type_id: id
     - state_id: id
-    - transitions: list[transition]
-    - extensions: map
-
-record transition
-  required:
-    - transition_id: id
-    - from_state_id: id
-    - to_state_id: id
-    - trigger_process_id: id
-    - priority: i32
+    - transitions: list[id]
     - extensions: map
 
 INVARIANTS:
 - State transitions are process-triggered only.
 - Conflict resolution among candidate transitions is deterministic by priority then transition ID.
 
+COMPATIBILITY:
+- Runtime normalizers may ingest legacy inline transition objects for backward compatibility.

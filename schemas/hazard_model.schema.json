@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic hazard accumulation and threshold declaration.",
   "x-doc-ref": [
-    "docs/architecture/CORE_ABSTRACTIONS.md"
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md"
   ],
   "type": "object",
   "required": [
@@ -15,6 +16,7 @@
     "accumulation",
     "threshold",
     "consequence_process_id",
+    "active",
     "extensions"
   ],
   "additionalProperties": false,
@@ -47,6 +49,9 @@
       "type": "string",
       "minLength": 1
     },
+    "active": {
+      "type": "boolean"
+    },
     "extensions": {
       "type": "object",
       "additionalProperties": true
@@ -61,8 +66,8 @@
       "accumulation": 10,
       "threshold": 100,
       "consequence_process_id": "process.hazard_apply_consequence",
+      "active": true,
       "extensions": {}
     }
   ]
 }
-

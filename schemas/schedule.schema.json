@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic reusable scheduling component.",
   "x-doc-ref": [
-    "docs/architecture/CORE_ABSTRACTIONS.md"
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md"
   ],
   "type": "object",
   "required": [
@@ -15,6 +16,7 @@
     "recurrence_rule",
     "next_due_tick",
     "cancellation_policy",
+    "active",
     "extensions"
   ],
   "additionalProperties": false,
@@ -55,6 +57,10 @@
           "type": "integer",
           "minimum": 0
         },
+        "trigger_process_id": {
+          "type": "string",
+          "minLength": 1
+        },
         "extensions": {
           "type": "object",
           "additionalProperties": true
@@ -68,6 +74,9 @@
     "cancellation_policy": {
       "type": "string",
       "minLength": 1
+    },
+    "active": {
+      "type": "boolean"
     },
     "extensions": {
       "type": "object",
@@ -87,8 +96,8 @@
       },
       "next_due_tick": 150,
       "cancellation_policy": "keep",
+      "active": true,
       "extensions": {}
     }
   ]
 }
-

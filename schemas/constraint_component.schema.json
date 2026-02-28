@@ -4,19 +4,32 @@
   "version": "1.0.0",
   "description": "Deterministic generic constraint component.",
   "x-doc-ref": [
-    "docs/architecture/CORE_ABSTRACTIONS.md"
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md"
   ],
   "type": "object",
   "required": [
     "schema_version",
     "constraint_id",
     "constraint_type_id",
-    "participants",
     "parameters",
     "enforcement_policy_id",
+    "active",
     "extensions"
   ],
   "additionalProperties": false,
+  "anyOf": [
+    {
+      "required": [
+        "participant_ids"
+      ]
+    },
+    {
+      "required": [
+        "participants"
+      ]
+    }
+  ],
   "properties": {
     "schema_version": {
       "type": "string",
@@ -29,6 +42,13 @@
     "constraint_type_id": {
       "type": "string",
       "minLength": 1
+    },
+    "participant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
     },
     "participants": {
       "type": "array",
@@ -45,6 +65,9 @@
       "type": "string",
       "minLength": 1
     },
+    "active": {
+      "type": "boolean"
+    },
     "extensions": {
       "type": "object",
       "additionalProperties": true
@@ -55,7 +78,7 @@
       "schema_version": "1.0.0",
       "constraint_id": "constraint.docking.alpha",
       "constraint_type_id": "constraint.docking",
-      "participants": [
+      "participant_ids": [
         "assembly.ship.alpha",
         "assembly.port.alpha"
       ],
@@ -63,8 +86,8 @@
         "max_alignment_error_mm": 50
       },
       "enforcement_policy_id": "constraint.policy.strict",
+      "active": true,
       "extensions": {}
     }
   ]
 }
-

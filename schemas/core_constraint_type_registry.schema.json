@@ -5,6 +5,7 @@
   "description": "Derived deterministic core constraint type registry output.",
   "x-doc-ref": [
     "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",
@@ -31,6 +32,8 @@
           "schema_version",
           "constraint_type_id",
           "description",
+          "applicable_entity_kinds",
+          "enforcement_tier",
           "extensions"
         ],
         "additionalProperties": false,
@@ -45,6 +48,20 @@
           },
           "description": {
             "type": "string"
+          },
+          "applicable_entity_kinds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "enforcement_tier": {
+            "type": "string",
+            "enum": [
+              "macro",
+              "meso",
+              "micro"
+            ]
           },
           "extensions": {
             "type": "object",
@@ -67,4 +84,3 @@
     }
   ]
 }
-

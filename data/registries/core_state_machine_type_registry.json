@@ -7,6 +7,17 @@
     "machine_types": [
       {
         "schema_version": "1.0.0",
+        "machine_type_id": "state_machine.asset_health",
+        "description": "Generic asset health and maintenance state machine profile.",
+        "states": [
+          "healthy",
+          "degraded",
+          "failed"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "machine_type_id": "state_machine.door",
         "description": "Generic door-like state machine profile.",
         "states": [
@@ -15,17 +26,6 @@
           "open",
           "closing",
           "locked"
-        ],
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
-        "machine_type_id": "state_machine.signal",
-        "description": "Generic signal state machine profile.",
-        "states": [
-          "inactive",
-          "active",
-          "fault"
         ],
         "extensions": {}
       },
@@ -40,9 +40,19 @@
           "failed"
         ],
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "state_machine.signal",
+        "description": "Generic signal state machine profile.",
+        "states": [
+          "inactive",
+          "active",
+          "fault"
+        ],
+        "extensions": {}
       }
     ],
     "extensions": {}
   }
 }
-

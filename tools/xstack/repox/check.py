@@ -6785,6 +6785,16 @@ def _append_core_abstraction_invariant_findings(
             ("normalize_state_machine(", "apply_transition(", "trigger_process_id"),
             "core state-machine substrate file missing deterministic transition tokens",
         ),
+        "src/core/constraints/constraint_engine.py": (
+            "INV-CONSTRAINTS-USE-COMPONENT",
+            ("normalize_constraint_component(", "tick_constraints(", "build_constraint_enforcement_hooks("),
+            "core constraint substrate file missing deterministic constraint component tokens",
+        ),
+        "src/core/hazards/hazard_engine.py": (
+            "INV-NO-ADHOC-HAZARD-LOOPS",
+            ("normalize_hazard_model(", "tick_hazard_models(", "consequence_process_id"),
+            "core hazard substrate file missing deterministic hazard component tokens",
+        ),
         "src/core/flow/flow_engine.py": (
             "INV-NO-DUPLICATE-FLOW-LOGIC",
             ("normalize_flow_channel(", "tick_flow_channels(", "normalize_flow_transfer_event(", "quantity_id"),
@@ -6990,6 +7000,59 @@ def _append_core_abstraction_invariant_findings(
                     rule_id="INV-FLOW-USES-LEDGER-FOR-CONSERVED",
                 )
             )
+
+    behavior_required_tokens = {
+        "src/materials/maintenance/decay_engine.py": {
+            "INV-NO-ADHOC-STATE-FLAGS": ("apply_transition(", "state_machine", "_STATE_MACHINE_TYPE_ID"),
+            "INV-NO-ADHOC-SCHEDULERS": ("tick_schedules(", "_schedule_id(", "schedule_component"),
+            "INV-NO-ADHOC-HAZARD-LOOPS": ("tick_hazard_models(", "_hazard_id(", "hazard_type_id"),
+        }
+    }
+    for rel_path, rule_map in behavior_required_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            for rule_id in sorted(rule_map.keys()):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="behavioral component migration file missing for ABS-4 invariants",
+                        rule_id=rule_id,
+                    )
+                )
+            continue
+        lowered = text.lower()
+        if "import random" in lowered or "from random import" in lowered or "random." in lowered:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="random",
+                    message="hazard behavior must remain deterministic and component-driven",
+                    rule_id="INV-NO-ADHOC-HAZARD-LOOPS",
+                )
+            )
+        for rule_id, tokens in sorted(rule_map.items(), key=lambda item: str(item[0])):
+            for token in tokens:
+                if token in text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="behavioral component invariants require component-engine usage tokens",
+                        rule_id=rule_id,
+                    )
+                )
             continue
         for token in tokens:
             if token in text:

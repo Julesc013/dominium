@@ -70,7 +70,7 @@ def run(graph, repo_root, changed_files=None):
                         file_path=rel_path,
                         line=1,
                         evidence=["schedule recurrence tokens detected outside core schedule substrate"],
-                        suggested_classification="NEEDS_REVIEW",
+                        suggested_classification="TODO-BLOCKED",
                         recommended_action="ADD_RULE",
                         related_invariants=["INV-NO-DUPLICATE-SCHEDULERS"],
                         related_paths=[rel_path, core_path],
@@ -81,4 +81,3 @@ def run(graph, repo_root, changed_files=None):
         findings,
         key=lambda item: (_norm(item.location.file_path), item.location.line_start, item.severity),
     )
-
