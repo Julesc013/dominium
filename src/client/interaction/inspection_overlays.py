@@ -419,11 +419,21 @@ def _interior_overlay_payload(
     target_row = dict(payload.get("row") or {})
     collection = str(payload.get("collection", "")).strip()
     sections = dict((dict(inspection_snapshot or {})).get("summary_sections") or {})
-    layout_data = dict((dict(sections.get("section.interior.layout") or {})).get("data") or {})
-    portal_data = dict((dict(sections.get("section.interior.portal_states") or {})).get("data") or {})
-    pressure_data = dict((dict(sections.get("section.interior.pressure_map") or {})).get("data") or {})
-    flood_data = dict((dict(sections.get("section.interior.flood_map") or {})).get("data") or {})
-    leak_data = dict((dict(sections.get("section.interior.portal_leaks") or {})).get("data") or {})
+    connectivity_data = dict((dict(sections.get("section.interior.connectivity_summary") or {})).get("data") or {})
+    layout_data = connectivity_data or dict((dict(sections.get("section.interior.layout") or {})).get("data") or {})
+    portal_data = dict((dict(sections.get("section.interior.portal_state_table") or {})).get("data") or {})
+    if not portal_data:
+        portal_data = dict((dict(sections.get("section.interior.portal_states") or {})).get("data") or {})
+    pressure_data = dict((dict(sections.get("section.interior.pressure_summary") or {})).get("data") or {})
+    if not pressure_data:
+        pressure_data = dict((dict(sections.get("section.interior.pressure_map") or {})).get("data") or {})
+    flood_data = dict((dict(sections.get("section.interior.flood_summary") or {})).get("data") or {})
+    if not flood_data:
+        flood_data = dict((dict(sections.get("section.interior.flood_map") or {})).get("data") or {})
+    smoke_data = dict((dict(sections.get("section.interior.smoke_summary") or {})).get("data") or {})
+    leak_data = dict((dict(sections.get("section.interior.flow_summary") or {})).get("data") or {})
+    if not leak_data:
+        leak_data = dict((dict(sections.get("section.interior.portal_leaks") or {})).get("data") or {})
 
     graph_id = (
         str(layout_data.get("graph_id", "")).strip()
@@ -480,9 +490,13 @@ def _interior_overlay_payload(
         for row in flood_rows
         if str(row.get("volume_id", "")).strip()
     }
+    smoke_rows = sorted(
+        [dict(item) for item in list(smoke_data.get("rows") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("volume_id", "")),
+    )
     smoke_by_volume = {
         str(row.get("volume_id", "")).strip(): int(max(0, _to_int(row.get("smoke_density", 0), 0)))
-        for row in flood_rows
+        for row in (smoke_rows or flood_rows)
         if str(row.get("volume_id", "")).strip()
     }
     indexed_volume_ids = [
@@ -759,6 +773,39 @@ def _interior_overlay_payload(
                 },
             }
         )
+    for index, smoke in enumerate(smoke_rows[:128]):
+        volume_id = str(smoke.get("volume_id", "")).strip()
+        smoke_density = int(max(0, _to_int(smoke.get("smoke_density", 0), 0)))
+        if not volume_id or smoke_density < 200:
+            continue
+        severity = "DANGER" if smoke_density >= 450 else "WARN"
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.interior.smoke.{}".format(
+                    canonical_sha256({"graph_id": graph_id, "volume_id": volume_id, "smoke": True})[:16]
+                ),
+                "semantic_id": "overlay.inspect.interior.smoke.{}".format(volume_id),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": int(index * 1500), "y": 4800, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": leak_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": "SMOKE {} {}".format(severity, volume_id),
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": True},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "interior_smoke_alarm",
+                    "volume_id": volume_id,
+                    "smoke_density": smoke_density,
+                    "severity": severity,
+                },
+            }
+        )
     renderables = sorted(
         [dict(item) for item in renderables if isinstance(item, dict)],
         key=lambda row: str(row.get("renderable_id", "")),
@@ -780,6 +827,9 @@ def _interior_overlay_payload(
             "portal_count": int(portal_count),
             "pressure_volume_count": len(pressure_rows),
             "flooded_count": int(max(0, _to_int(flood_data.get("flooded_count", 0), 0))),
+            "smoke_warn_count": len(
+                [row for row in smoke_rows if int(max(0, _to_int(row.get("smoke_density", 0), 0))) >= 200]
+            ),
             "leak_count": len(leak_rows),
         },
     }
@@ -1073,6 +1123,148 @@ def _blueprint_overlay_payload(
             "bom_summary": summary,
             "compiled_bom_hash": str((dict(compiled.get("compiled_bom_artifact") or {})).get("artifact_hash", "")),
             "compiled_ag_hash": str((dict(compiled.get("compiled_ag_artifact") or {})).get("artifact_hash", "")),
+        },
+    }
+
+
+def _plan_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    snapshot = dict(inspection_snapshot or {})
+    payload = dict(snapshot.get("target_payload") or {})
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    plan_id = str(row.get("plan_id", "")).strip() or str(target_semantic_id).strip()
+    if collection != "plan_artifacts" or not row:
+        return {
+            "mode": "macro_summary",
+            "summary": "plan:{} unavailable".format(plan_id or "unknown"),
+            "target_semantic_id": str(target_semantic_id),
+            "inspection_snapshot": dict(snapshot),
+            "renderables": _overlay_renderables(
+                target_semantic_id=str(target_semantic_id),
+                summary_label="plan unavailable",
+                mode="macro_summary",
+            ),
+            "materials": _overlay_materials(target_semantic_id=str(target_semantic_id)),
+            "degraded": True,
+            "extensions": {"overlay_kind": "plan_ghost", "available": False},
+        }
+
+    preview = dict(row.get("spatial_preview_data") or {})
+    preview_renderables = [dict(item) for item in list(preview.get("renderables") or []) if isinstance(item, dict)]
+    preview_materials = [dict(item) for item in list(preview.get("materials") or []) if isinstance(item, dict)]
+    resources = dict(row.get("required_resources_summary") or {})
+    if not preview_renderables:
+        return {
+            "mode": "plan_preview",
+            "summary": "plan:{} empty_preview".format(plan_id),
+            "target_semantic_id": str(target_semantic_id),
+            "inspection_snapshot": dict(snapshot),
+            "renderables": _overlay_renderables(
+                target_semantic_id=str(target_semantic_id),
+                summary_label="empty plan preview",
+                mode="plan_preview",
+            ),
+            "materials": _overlay_materials(target_semantic_id=str(target_semantic_id)),
+            "degraded": False,
+            "extensions": {
+                "overlay_kind": "plan_ghost",
+                "available": True,
+                "plan_id": plan_id,
+            },
+        }
+
+    material_rows: Dict[str, dict] = {}
+    for row_material in preview_materials:
+        material_id = str(row_material.get("material_id", "")).strip()
+        if not material_id:
+            continue
+        seeded_color = _color_from_seed({"plan_id": plan_id, "material_id": material_id}, floor=70)
+        material_rows[material_id] = {
+            **dict(row_material),
+            "material_id": material_id,
+            "base_color": dict(seeded_color),
+            "roughness": 300,
+            "metallic": 0,
+            "emission": {
+                "r": int(seeded_color["r"]),
+                "g": int(seeded_color["g"]),
+                "b": int(seeded_color["b"]),
+                "strength": 180,
+            },
+            "transparency": {"alpha_permille": 620},
+            "extensions": {
+                **dict(row_material.get("extensions") or {}),
+                "interaction_overlay": True,
+                "overlay_kind": "plan_ghost_material",
+                "derived_only": True,
+            },
+        }
+    if not material_rows:
+        fallback_material_id = "mat.plan.ghost.{}".format(canonical_sha256({"plan_id": plan_id})[:12])
+        color = _color_from_seed({"plan_id": plan_id, "kind": "fallback"}, floor=72)
+        material_rows[fallback_material_id] = {
+            "schema_version": "1.0.0",
+            "material_id": fallback_material_id,
+            "base_color": dict(color),
+            "roughness": 320,
+            "metallic": 0,
+            "emission": {"r": color["r"], "g": color["g"], "b": color["b"], "strength": 160},
+            "transparency": {"alpha_permille": 620},
+            "pattern_id": None,
+            "extensions": {"interaction_overlay": True, "overlay_kind": "plan_ghost_material", "derived_only": True},
+        }
+
+    default_material_id = sorted(material_rows.keys())[0]
+    renderables = []
+    for index, row_renderable in enumerate(sorted(preview_renderables, key=lambda item: str(item.get("renderable_id", "")))):
+        renderable_id = str(row_renderable.get("renderable_id", "")).strip() or "overlay.plan.ghost.{}".format(str(index).zfill(4))
+        material_id = str(row_renderable.get("material_id", "")).strip()
+        if material_id not in material_rows:
+            material_id = default_material_id
+        renderable = dict(row_renderable)
+        renderable["renderable_id"] = "overlay.plan.ghost.{}".format(
+            canonical_sha256({"plan_id": plan_id, "renderable_id": renderable_id})[:16]
+        )
+        renderable["semantic_id"] = "overlay.plan.ghost.{}".format(renderable_id)
+        renderable["material_id"] = material_id
+        renderable["layer_tags"] = ["overlay", "ui", "ghost"]
+        renderable["flags"] = {"selectable": False, "highlighted": False}
+        renderable["extensions"] = {
+            **dict(row_renderable.get("extensions") or {}),
+            "interaction_overlay": True,
+            "overlay_kind": "plan_ghost",
+            "plan_id": plan_id,
+            "derived_only": True,
+        }
+        renderables.append(renderable)
+
+    return {
+        "mode": "plan_preview",
+        "summary": "plan:{} ghost type={} status={}".format(
+            plan_id,
+            str(row.get("plan_type_id", "")).strip() or "custom",
+            str(row.get("status", "")).strip() or "draft",
+        ),
+        "target_semantic_id": str(target_semantic_id),
+        "inspection_snapshot": dict(snapshot),
+        "renderables": sorted(renderables, key=lambda item: str(item.get("renderable_id", ""))),
+        "materials": [dict(material_rows[key]) for key in sorted(material_rows.keys())],
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "plan_ghost",
+            "available": True,
+            "derived_only": True,
+            "plan_id": plan_id,
+            "plan_type_id": str(row.get("plan_type_id", "")).strip() or "custom",
+            "status": str(row.get("status", "")).strip() or "draft",
+            "resource_summary": {
+                "total_mass_raw": int(max(0, _to_int(resources.get("total_mass_raw", 0), 0))),
+                "total_part_count": int(max(0, _to_int(resources.get("total_part_count", 0), 0))),
+            },
         },
     }
 
@@ -1867,6 +2059,182 @@ def _commitment_reenactment_overlay_payload(
     }
 
 
+def _pose_mount_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    target_id = str(target_semantic_id).strip()
+    snapshot = dict(inspection_snapshot or {})
+    sections = dict(snapshot.get("summary_sections") or {})
+    pose_data = dict((dict(sections.get("section.pose_slots_summary") or {})).get("data") or {})
+    mount_data = dict((dict(sections.get("section.mount_points_summary") or {})).get("data") or {})
+    pose_rows = [dict(item) for item in list(pose_data.get("rows") or []) if isinstance(item, dict)]
+    mount_rows = [dict(item) for item in list(mount_data.get("rows") or []) if isinstance(item, dict)]
+    pose_count = int(max(0, _to_int(pose_data.get("slot_count", len(pose_rows)), len(pose_rows))))
+    mount_count = int(max(0, _to_int(mount_data.get("mount_point_count", len(mount_rows)), len(mount_rows))))
+
+    pose_material_id = "mat.inspect.pose.slot.{}".format(canonical_sha256({"target": target_id, "kind": "pose"})[:12])
+    pose_occupied_material_id = "mat.inspect.pose.slot.occupied.{}".format(
+        canonical_sha256({"target": target_id, "kind": "pose_occupied"})[:12]
+    )
+    mount_material_id = "mat.inspect.mount.point.{}".format(canonical_sha256({"target": target_id, "kind": "mount"})[:12])
+    occupant_material_id = "mat.inspect.pose.occupant.{}".format(canonical_sha256({"target": target_id, "kind": "occupant"})[:12])
+
+    materials = sorted(
+        [
+            {
+                "schema_version": "1.0.0",
+                "material_id": pose_material_id,
+                "base_color": _color_from_seed({"target": target_id, "kind": "pose"}, floor=80),
+                "roughness": 260,
+                "metallic": 0,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "pose_slot"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": pose_occupied_material_id,
+                "base_color": _color_from_seed({"target": target_id, "kind": "pose_occupied"}, floor=84),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": 232, "g": 198, "b": 86, "strength": 260},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "pose_slot_occupied"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": mount_material_id,
+                "base_color": _color_from_seed({"target": target_id, "kind": "mount"}, floor=72),
+                "roughness": 260,
+                "metallic": 0,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "mount_point"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": occupant_material_id,
+                "base_color": {"r": 245, "g": 235, "b": 220},
+                "roughness": 180,
+                "metallic": 0,
+                "emission": {"r": 245, "g": 235, "b": 220, "strength": 220},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "pose_occupant"},
+            },
+        ],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+
+    renderables: list[dict] = []
+    for index, row in enumerate(sorted(pose_rows, key=lambda item: str(item.get("pose_slot_id", "")))):
+        pose_slot_id = str(row.get("pose_slot_id", "")).strip() or "pose.slot.{}".format(str(index).zfill(4))
+        occupied = bool(row.get("occupied", False))
+        material_id = pose_occupied_material_id if occupied else pose_material_id
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.pose.slot.{}".format(canonical_sha256({"target": target_id, "pose_slot_id": pose_slot_id})[:16]),
+                "semantic_id": "overlay.inspect.pose.slot.{}".format(pose_slot_id),
+                "primitive_id": "prim.glyph.dot",
+                "transform": {
+                    "position_mm": {"x": int(index) * 140, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 900,
+                },
+                "material_id": material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": occupied},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "pose_slot",
+                    "pose_slot_id": pose_slot_id,
+                    "occupied": occupied,
+                },
+            }
+        )
+        if occupied:
+            renderables.append(
+                {
+                    "schema_version": "1.0.0",
+                    "renderable_id": "overlay.inspect.pose.occupant.{}".format(
+                        canonical_sha256({"target": target_id, "pose_slot_id": pose_slot_id, "occupant": True})[:16]
+                    ),
+                    "semantic_id": "overlay.inspect.pose.occupant.{}".format(pose_slot_id),
+                    "primitive_id": "prim.glyph.person",
+                    "transform": {
+                        "position_mm": {"x": int(index) * 140, "y": 0, "z": 120},
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 800,
+                    },
+                    "material_id": occupant_material_id,
+                    "layer_tags": ["overlay", "ui"],
+                    "label": None,
+                    "lod_hint": "lod.band.near",
+                    "flags": {"selectable": False, "highlighted": True},
+                    "extensions": {
+                        "interaction_overlay": True,
+                        "overlay_kind": "pose_occupant",
+                        "pose_slot_id": pose_slot_id,
+                    },
+                }
+            )
+
+    for index, row in enumerate(sorted(mount_rows, key=lambda item: str(item.get("mount_point_id", "")))):
+        mount_point_id = str(row.get("mount_point_id", "")).strip() or "mount.point.{}".format(str(index).zfill(4))
+        attached = bool(row.get("attached", False))
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.mount.point.{}".format(
+                    canonical_sha256({"target": target_id, "mount_point_id": mount_point_id})[:16]
+                ),
+                "semantic_id": "overlay.inspect.mount.point.{}".format(mount_point_id),
+                "primitive_id": "prim.glyph.anchor",
+                "transform": {
+                    "position_mm": {"x": int(index) * 140, "y": 220, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 900,
+                },
+                "material_id": mount_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": attached},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "mount_point",
+                    "mount_point_id": mount_point_id,
+                    "attached": attached,
+                    "connected_to_mount_point_id": str(row.get("connected_to_mount_point_id", "")).strip() or None,
+                },
+            }
+        )
+
+    summary_label = "pose_mount:{} slots={} mounts={}".format(target_id or "unknown", pose_count, mount_count)
+    return {
+        "mode": "pose_mount_overlay",
+        "summary": summary_label,
+        "target_semantic_id": target_id,
+        "inspection_snapshot": dict(snapshot),
+        "renderables": sorted(renderables, key=lambda row: str(row.get("renderable_id", ""))),
+        "materials": list(materials),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "pose_mount",
+            "pose_slot_count": pose_count,
+            "mount_point_count": mount_count,
+        },
+    }
+
+
 def build_inspection_overlays(
     *,
     perceived_model: dict,
@@ -1894,6 +2262,20 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": graph_overlay,
+            "overlay_runtime": runtime,
+        }
+    if (
+        target_id.startswith("pose.slot.")
+        or target_id.startswith("mount.point.")
+        or snapshot_collection in ("pose_slots", "mount_points", "pose_mount_provenance_events")
+    ):
+        pose_mount_overlay = _pose_mount_overlay_payload(
+            target_semantic_id=target_id,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": pose_mount_overlay,
             "overlay_runtime": runtime,
         }
     if (
@@ -2048,6 +2430,16 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": maintenance_overlay,
+            "overlay_runtime": runtime,
+        }
+    if target_id.startswith("plan.") or snapshot_collection == "plan_artifacts":
+        plan_overlay = _plan_overlay_payload(
+            target_semantic_id=target_id,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": plan_overlay,
             "overlay_runtime": runtime,
         }
     if target_id.startswith("blueprint."):
