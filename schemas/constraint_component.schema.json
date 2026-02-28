@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Constraint Component Schema",
+  "version": "1.0.0",
+  "description": "Deterministic generic constraint component.",
+  "x-doc-ref": [
+    "docs/architecture/CORE_ABSTRACTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "constraint_id",
+    "constraint_type_id",
+    "participants",
+    "parameters",
+    "enforcement_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "constraint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "constraint_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "enforcement_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "constraint_id": "constraint.docking.alpha",
+      "constraint_type_id": "constraint.docking",
+      "participants": [
+        "assembly.ship.alpha",
+        "assembly.port.alpha"
+      ],
+      "parameters": {
+        "max_alignment_error_mm": 50
+      },
+      "enforcement_policy_id": "constraint.policy.strict",
+      "extensions": {}
+    }
+  ]
+}
+

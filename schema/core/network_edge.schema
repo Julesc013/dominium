@@ -1,0 +1,26 @@
+SCHEMA: core/network_edge.schema
+schema_id: dominium.schema.core.network_edge
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic universal edge payloads for NetworkGraph.
+
+REQUIRED SHAPE:
+record network_edge
+  required:
+    - schema_version: semver
+    - edge_id: id
+    - from_node_id: id
+    - to_node_id: id
+    - edge_type_id: id
+    - payload_ref: map
+    - capacity: optional_fixed
+    - delay_ticks: optional_u64
+    - loss_fraction: optional_fixed
+    - extensions: map
+
+INVARIANTS:
+- Edges reference known node IDs in the same graph.
+- Capacity/delay/loss fields are deterministic scalar controls, not solver-specific state.
+

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Graph Schema",
+  "version": "1.0.0",
+  "description": "Deterministic universal graph substrate for logistics/mobility/interiors/utilities.",
+  "x-doc-ref": [
+    "docs/architecture/CORE_ABSTRACTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "graph_id",
+    "node_type_schema_id",
+    "edge_type_schema_id",
+    "nodes",
+    "edges",
+    "deterministic_routing_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_type_schema_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edge_type_schema_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "network_node.schema.json"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "network_edge.schema.json"
+      }
+    },
+    "deterministic_routing_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "graph_id": "graph.logistics.alpha",
+      "node_type_schema_id": "logistics_node",
+      "edge_type_schema_id": "logistics_edge",
+      "nodes": [
+        {
+          "schema_version": "1.0.0",
+          "node_id": "node.factory.alpha",
+          "node_type_id": "factory",
+          "payload_ref": {
+            "location_ref": "site.factory.alpha"
+          },
+          "tags": [],
+          "extensions": {}
+        }
+      ],
+      "edges": [],
+      "deterministic_routing_policy_id": "route.direct_only",
+      "extensions": {}
+    }
+  ]
+}
+

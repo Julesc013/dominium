@@ -6757,6 +6757,187 @@ def _append_material_scale_invariant_findings(
         )
 
 
+def _append_core_abstraction_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_files = {
+        "src/core/graph/network_graph_engine.py": (
+            "INV-NO-DUPLICATE-GRAPH-SUBSTRATES",
+            ("normalize_network_graph(", "route_query(", "heapq.heappush("),
+            "core graph substrate file missing deterministic graph tokens",
+        ),
+        "src/core/schedule/schedule_engine.py": (
+            "INV-NO-DUPLICATE-SCHEDULERS",
+            ("normalize_schedule(", "advance_schedule(", "recurrence_rule"),
+            "core schedule substrate file missing deterministic schedule tokens",
+        ),
+        "src/core/state/state_machine_engine.py": (
+            "INV-NO-ADHOC-STATE-MACHINES",
+            ("normalize_state_machine(", "apply_transition(", "trigger_process_id"),
+            "core state-machine substrate file missing deterministic transition tokens",
+        ),
+        "src/core/flow/flow_engine.py": (
+            "INV-FLOW-USES-LEDGER",
+            ("normalize_flow_channel(", "flow_transfer(", "quantity_id"),
+            "core flow substrate file missing deterministic flow tokens",
+        ),
+    }
+    for rel_path, (rule_id, tokens, message) in required_files.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message=message,
+                    rule_id=rule_id,
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message=message,
+                    rule_id=rule_id,
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/graph/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        if (
+            "heapq.heappush(" in text
+            and "from_node_id" in text
+            and "to_node_id" in text
+            and "edge_id" in text
+        ):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="heapq.heappush(",
+                    message="graph traversal/path search must be implemented in src/core/graph only",
+                    rule_id="INV-NO-DUPLICATE-GRAPH-SUBSTRATES",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/schedule/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        if "recurrence_rule" in text and "next_due_tick" in text and "def " in text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="recurrence_rule",
+                    message="schedule recurrence logic must use src/core/schedule substrate",
+                    rule_id="INV-NO-DUPLICATE-SCHEDULERS",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/state/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        if "from_state_id" in text and "to_state_id" in text and "trigger_process_id" in text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="trigger_process_id",
+                    message="state transition models must use src/core/state substrate",
+                    rule_id="INV-NO-ADHOC-STATE-MACHINES",
+                )
+            )
+
+    flow_required_tokens = {
+        "src/logistics/logistics_engine.py": ("flow_transfer(", "_best_route("),
+        "tools/xstack/sessionx/process_runtime.py": ("_ledger_emit_exception(", "process.manifest_tick"),
+    }
+    for rel_path, tokens in flow_required_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="flow subsystem integration file missing for ledger coupling checks",
+                    rule_id="INV-FLOW-USES-LEDGER",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="flow paths must remain process-driven and ledger-accounted",
+                    rule_id="INV-FLOW-USES-LEDGER",
+                )
+            )
+
+
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -8339,6 +8520,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_material_scale_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_core_abstraction_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

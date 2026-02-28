@@ -1,0 +1,36 @@
+{
+  "schema_id": "dominium.registry.core_constraint_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.core_constraint_type_registry",
+    "registry_version": "1.0.0",
+    "constraint_types": [
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.guide_rail",
+        "description": "Guided movement constraint (rails/lanes).",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.docking",
+        "description": "Docking/alignment constraint for couplers and ports.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.coupling",
+        "description": "Mechanical coupling constraint.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.sealing",
+        "description": "Sealing constraint for pressure/fluid boundaries.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

@@ -109,6 +109,10 @@ from analyzers import e80_task_nondeterminism_smell
 from analyzers import e81_task_bypass_smell
 from analyzers import e82_silent_batch_creation_smell
 from analyzers import e83_port_truth_leak_smell
+from analyzers import e84_graph_duplication_smell
+from analyzers import e85_adhoc_scheduler_smell
+from analyzers import e86_adhoc_state_machine_smell
+from analyzers import e87_flow_bypass_smell
 
 
 ANALYZERS = (
@@ -221,6 +225,10 @@ ANALYZERS = (
     e81_task_bypass_smell,
     e82_silent_batch_creation_smell,
     e83_port_truth_leak_smell,
+    e84_graph_duplication_smell,
+    e85_adhoc_scheduler_smell,
+    e86_adhoc_state_machine_smell,
+    e87_flow_bypass_smell,
 )
 
 

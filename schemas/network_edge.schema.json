@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network Edge Schema",
+  "version": "1.0.0",
+  "description": "Deterministic universal NetworkGraph edge payload.",
+  "x-doc-ref": [
+    "docs/architecture/CORE_ABSTRACTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_id",
+    "from_node_id",
+    "to_node_id",
+    "edge_type_id",
+    "payload_ref",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edge_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload_ref": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "capacity": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "delay_ticks": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "loss_fraction": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_id": "edge.factory_to_port.alpha",
+      "from_node_id": "node.factory.alpha",
+      "to_node_id": "node.port.alpha",
+      "edge_type_id": "transport.rail",
+      "payload_ref": {
+        "cost_units_per_mass": 3
+      },
+      "capacity": 25000,
+      "delay_ticks": 4,
+      "loss_fraction": 0,
+      "extensions": {}
+    }
+  ]
+}
+

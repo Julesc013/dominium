@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.registry.core_state_machine_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.core_state_machine_type_registry",
+    "registry_version": "1.0.0",
+    "machine_types": [
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "state_machine.door",
+        "description": "Generic door-like state machine profile.",
+        "states": [
+          "closed",
+          "opening",
+          "open",
+          "closing",
+          "locked"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "state_machine.signal",
+        "description": "Generic signal state machine profile.",
+        "states": [
+          "inactive",
+          "active",
+          "fault"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "state_machine.machine_operation",
+        "description": "Generic machine operational state profile.",
+        "states": [
+          "idle",
+          "running",
+          "blocked",
+          "failed"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

@@ -134,6 +134,15 @@ def logistics_routing_rule_registry() -> dict:
                 "constraints": {},
                 "extensions": {},
             },
+            {
+                "schema_version": "1.0.0",
+                "rule_id": "route.min_cost_units",
+                "description": "minimum cost units",
+                "tie_break_policy": "edge_id_lexicographic",
+                "allow_multi_hop": True,
+                "constraints": {},
+                "extensions": {},
+            },
         ]
     }
 

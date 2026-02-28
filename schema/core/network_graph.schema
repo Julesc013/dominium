@@ -1,0 +1,25 @@
+SCHEMA: core/network_graph.schema
+schema_id: dominium.schema.core.network_graph
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic universal NetworkGraph payloads shared by logistics, interiors, mobility, utility networks, and future institutional graphs.
+
+REQUIRED SHAPE:
+record network_graph
+  required:
+    - schema_version: semver
+    - graph_id: id
+    - node_type_schema_id: id
+    - edge_type_schema_id: id
+    - nodes: list[network_node]
+    - edges: list[network_edge]
+    - deterministic_routing_policy_id: id
+    - extensions: map
+
+INVARIANTS:
+- Node and edge ordering is deterministic by lexical ID.
+- Routing tie-break policy must be explicit and deterministic.
+- Graph payload carries type indirection through schema IDs, not hardcoded subsystem assumptions.
+

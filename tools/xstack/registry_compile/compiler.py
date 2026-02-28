@@ -4562,6 +4562,368 @@ def _materials_structure_registry_rows(
     return part_class_rows, connection_type_rows, blueprint_rows, errors
 
 
+def _core_abstraction_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _routing_record, routing_rows_raw, routing_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/core_routing_policy_registry.json",
+        expected_schema_id="dominium.registry.core_routing_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="routing_policies",
+    )
+    if routing_load_errors:
+        return [], [], [], [], [], [], routing_load_errors
+
+    _solver_record, solver_rows_raw, solver_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/core_flow_solver_policy_registry.json",
+        expected_schema_id="dominium.registry.core_flow_solver_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="solver_policies",
+    )
+    if solver_load_errors:
+        return [], [], [], [], [], [], solver_load_errors
+
+    _constraint_record, constraint_rows_raw, constraint_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/core_constraint_type_registry.json",
+        expected_schema_id="dominium.registry.core_constraint_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="constraint_types",
+    )
+    if constraint_load_errors:
+        return [], [], [], [], [], [], constraint_load_errors
+
+    _machine_record, machine_rows_raw, machine_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/core_state_machine_type_registry.json",
+        expected_schema_id="dominium.registry.core_state_machine_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="machine_types",
+    )
+    if machine_load_errors:
+        return [], [], [], [], [], [], machine_load_errors
+
+    _hazard_record, hazard_rows_raw, hazard_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/core_hazard_type_registry.json",
+        expected_schema_id="dominium.registry.core_hazard_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="hazard_types",
+    )
+    if hazard_load_errors:
+        return [], [], [], [], [], [], hazard_load_errors
+
+    _schedule_record, schedule_rows_raw, schedule_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/core_schedule_policy_registry.json",
+        expected_schema_id="dominium.registry.core_schedule_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="schedule_policies",
+    )
+    if schedule_load_errors:
+        return [], [], [], [], [], [], schedule_load_errors
+
+    routing_rows: List[dict] = []
+    routing_ids = set()
+    for entry in sorted(routing_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_routing_policy_entry",
+                    "message": "core routing policy entry must be object",
+                    "path": "$.routing_policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        tie_break_policy = str(entry.get("tie_break_policy", "")).strip()
+        optimization_metric = str(entry.get("optimization_metric", "")).strip()
+        if (
+            not policy_id
+            or not tie_break_policy
+            or not optimization_metric
+            or not isinstance(entry.get("allow_multi_hop"), bool)
+            or not isinstance(entry.get("extensions"), dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_routing_policy_entry",
+                    "message": "core routing policy entry missing required fields",
+                    "path": "$.routing_policies",
+                }
+            )
+            continue
+        if policy_id in routing_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_core_routing_policy_id",
+                    "message": "duplicate core routing policy id '{}'".format(policy_id),
+                    "path": "$.routing_policies.policy_id",
+                }
+            )
+            continue
+        routing_ids.add(policy_id)
+        routing_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "policy_id": policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "tie_break_policy": tie_break_policy,
+                "allow_multi_hop": bool(entry.get("allow_multi_hop", False)),
+                "optimization_metric": optimization_metric,
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    routing_rows = sorted(routing_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    solver_rows: List[dict] = []
+    solver_ids = set()
+    for entry in sorted(solver_rows_raw, key=lambda row: str((row or {}).get("solver_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_flow_solver_policy_entry",
+                    "message": "core flow solver policy entry must be object",
+                    "path": "$.solver_policies",
+                }
+            )
+            continue
+        solver_policy_id = str(entry.get("solver_policy_id", "")).strip()
+        solver_kind = str(entry.get("solver_kind", "")).strip()
+        if not solver_policy_id or not solver_kind or not isinstance(entry.get("extensions"), dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_flow_solver_policy_entry",
+                    "message": "core flow solver policy entry missing required fields",
+                    "path": "$.solver_policies",
+                }
+            )
+            continue
+        if solver_policy_id in solver_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_core_flow_solver_policy_id",
+                    "message": "duplicate core flow solver policy id '{}'".format(solver_policy_id),
+                    "path": "$.solver_policies.solver_policy_id",
+                }
+            )
+            continue
+        solver_ids.add(solver_policy_id)
+        solver_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "solver_policy_id": solver_policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "solver_kind": solver_kind,
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    solver_rows = sorted(solver_rows, key=lambda row: str(row.get("solver_policy_id", "")))
+
+    constraint_rows: List[dict] = []
+    constraint_ids = set()
+    for entry in sorted(constraint_rows_raw, key=lambda row: str((row or {}).get("constraint_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_constraint_type_entry",
+                    "message": "core constraint type entry must be object",
+                    "path": "$.constraint_types",
+                }
+            )
+            continue
+        constraint_type_id = str(entry.get("constraint_type_id", "")).strip()
+        if not constraint_type_id or not isinstance(entry.get("extensions"), dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_constraint_type_entry",
+                    "message": "core constraint type entry missing required fields",
+                    "path": "$.constraint_types",
+                }
+            )
+            continue
+        if constraint_type_id in constraint_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_core_constraint_type_id",
+                    "message": "duplicate core constraint type id '{}'".format(constraint_type_id),
+                    "path": "$.constraint_types.constraint_type_id",
+                }
+            )
+            continue
+        constraint_ids.add(constraint_type_id)
+        constraint_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "constraint_type_id": constraint_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    constraint_rows = sorted(constraint_rows, key=lambda row: str(row.get("constraint_type_id", "")))
+
+    machine_rows: List[dict] = []
+    machine_ids = set()
+    for entry in sorted(machine_rows_raw, key=lambda row: str((row or {}).get("machine_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_state_machine_type_entry",
+                    "message": "core state machine type entry must be object",
+                    "path": "$.machine_types",
+                }
+            )
+            continue
+        machine_type_id = str(entry.get("machine_type_id", "")).strip()
+        states = entry.get("states")
+        if (
+            not machine_type_id
+            or not isinstance(states, list)
+            or not isinstance(entry.get("extensions"), dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_state_machine_type_entry",
+                    "message": "core state machine type entry missing required fields",
+                    "path": "$.machine_types",
+                }
+            )
+            continue
+        if machine_type_id in machine_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_core_state_machine_type_id",
+                    "message": "duplicate core state machine type id '{}'".format(machine_type_id),
+                    "path": "$.machine_types.machine_type_id",
+                }
+            )
+            continue
+        machine_ids.add(machine_type_id)
+        machine_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "machine_type_id": machine_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "states": _sorted_unique_strings(states),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    machine_rows = sorted(machine_rows, key=lambda row: str(row.get("machine_type_id", "")))
+
+    hazard_rows: List[dict] = []
+    hazard_ids = set()
+    for entry in sorted(hazard_rows_raw, key=lambda row: str((row or {}).get("hazard_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_hazard_type_entry",
+                    "message": "core hazard type entry must be object",
+                    "path": "$.hazard_types",
+                }
+            )
+            continue
+        hazard_type_id = str(entry.get("hazard_type_id", "")).strip()
+        trigger_mode = str(entry.get("trigger_mode", "")).strip()
+        if (
+            not hazard_type_id
+            or not trigger_mode
+            or not isinstance(entry.get("extensions"), dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_hazard_type_entry",
+                    "message": "core hazard type entry missing required fields",
+                    "path": "$.hazard_types",
+                }
+            )
+            continue
+        if hazard_type_id in hazard_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_core_hazard_type_id",
+                    "message": "duplicate core hazard type id '{}'".format(hazard_type_id),
+                    "path": "$.hazard_types.hazard_type_id",
+                }
+            )
+            continue
+        hazard_ids.add(hazard_type_id)
+        hazard_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "hazard_type_id": hazard_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "trigger_mode": trigger_mode,
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    hazard_rows = sorted(hazard_rows, key=lambda row: str(row.get("hazard_type_id", "")))
+
+    schedule_rows: List[dict] = []
+    schedule_ids = set()
+    for entry in sorted(schedule_rows_raw, key=lambda row: str((row or {}).get("schedule_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_schedule_policy_entry",
+                    "message": "core schedule policy entry must be object",
+                    "path": "$.schedule_policies",
+                }
+            )
+            continue
+        schedule_policy_id = str(entry.get("schedule_policy_id", "")).strip()
+        default_rule_type = str(entry.get("default_rule_type", "")).strip()
+        default_interval_ticks = int(_as_int(entry.get("default_interval_ticks", 0), 0))
+        if (
+            not schedule_policy_id
+            or default_rule_type not in {"none", "interval"}
+            or default_interval_ticks < 0
+            or not isinstance(entry.get("extensions"), dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_schedule_policy_entry",
+                    "message": "core schedule policy entry missing required fields",
+                    "path": "$.schedule_policies",
+                }
+            )
+            continue
+        if schedule_policy_id in schedule_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_core_schedule_policy_id",
+                    "message": "duplicate core schedule policy id '{}'".format(schedule_policy_id),
+                    "path": "$.schedule_policies.schedule_policy_id",
+                }
+            )
+            continue
+        schedule_ids.add(schedule_policy_id)
+        schedule_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "schedule_policy_id": schedule_policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "default_rule_type": default_rule_type,
+                "default_interval_ticks": int(default_interval_ticks),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    schedule_rows = sorted(schedule_rows, key=lambda row: str(row.get("schedule_policy_id", "")))
+
+    return (
+        routing_rows,
+        solver_rows,
+        constraint_rows,
+        machine_rows,
+        hazard_rows,
+        schedule_rows,
+        errors,
+    )
+
+
 def _logistics_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -9041,6 +9403,17 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        core_routing_policy_rows,
+        core_flow_solver_policy_rows,
+        core_constraint_type_rows,
+        core_state_machine_type_rows,
+        core_hazard_type_rows,
+        core_schedule_policy_rows,
+        core_abstraction_registry_errors,
+    ) = _core_abstraction_registry_rows(
+        repo_root=repo_root,
+    )
+    (
         logistics_routing_rule_rows,
         logistics_graph_rows,
         logistics_registry_errors,
@@ -9317,6 +9690,7 @@ def compile_bundle(
         + materials_dimension_registry_errors
         + material_taxonomy_registry_errors
         + material_structure_registry_errors
+        + core_abstraction_registry_errors
         + logistics_registry_errors
         + construction_registry_errors
         + maintenance_registry_errors
@@ -9546,6 +9920,48 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "blueprints": blueprint_rows,
+        }
+    )
+    core_routing_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "routing_policies": core_routing_policy_rows,
+        }
+    )
+    core_flow_solver_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "solver_policies": core_flow_solver_policy_rows,
+        }
+    )
+    core_constraint_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "constraint_types": core_constraint_type_rows,
+        }
+    )
+    core_state_machine_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "machine_types": core_state_machine_type_rows,
+        }
+    )
+    core_hazard_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "hazard_types": core_hazard_type_rows,
+        }
+    )
+    core_schedule_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "schedule_policies": core_schedule_policy_rows,
         }
     )
     logistics_routing_rule_payload = _finalize_registry_payload(
@@ -10068,6 +10484,24 @@ def compile_bundle(
         "part_class_registry": ("part_class_registry", part_class_payload),
         "connection_type_registry": ("connection_type_registry", connection_type_payload),
         "blueprint_registry": ("blueprint_registry", blueprint_payload),
+        "core_routing_policy_registry": ("core_routing_policy_registry", core_routing_policy_payload),
+        "core_flow_solver_policy_registry": (
+            "core_flow_solver_policy_registry",
+            core_flow_solver_policy_payload,
+        ),
+        "core_constraint_type_registry": (
+            "core_constraint_type_registry",
+            core_constraint_type_payload,
+        ),
+        "core_state_machine_type_registry": (
+            "core_state_machine_type_registry",
+            core_state_machine_type_payload,
+        ),
+        "core_hazard_type_registry": ("core_hazard_type_registry", core_hazard_type_payload),
+        "core_schedule_policy_registry": (
+            "core_schedule_policy_registry",
+            core_schedule_policy_payload,
+        ),
         "logistics_routing_rule_registry": ("logistics_routing_rule_registry", logistics_routing_rule_payload),
         "logistics_graph_registry": ("logistics_graph_registry", logistics_graph_payload),
         "provenance_event_type_registry": ("provenance_event_type_registry", provenance_event_type_payload),
@@ -10184,6 +10618,12 @@ def compile_bundle(
         "part_class_registry",
         "connection_type_registry",
         "blueprint_registry",
+        "core_routing_policy_registry",
+        "core_flow_solver_policy_registry",
+        "core_constraint_type_registry",
+        "core_state_machine_type_registry",
+        "core_hazard_type_registry",
+        "core_schedule_policy_registry",
         "logistics_routing_rule_registry",
         "logistics_graph_registry",
         "provenance_event_type_registry",
@@ -10311,6 +10751,12 @@ def compile_bundle(
             "part_class_registry_hash": registry_hashes["part_class_registry_hash"],
             "connection_type_registry_hash": registry_hashes["connection_type_registry_hash"],
             "blueprint_registry_hash": registry_hashes["blueprint_registry_hash"],
+            "core_routing_policy_registry_hash": registry_hashes["core_routing_policy_registry_hash"],
+            "core_flow_solver_policy_registry_hash": registry_hashes["core_flow_solver_policy_registry_hash"],
+            "core_constraint_type_registry_hash": registry_hashes["core_constraint_type_registry_hash"],
+            "core_state_machine_type_registry_hash": registry_hashes["core_state_machine_type_registry_hash"],
+            "core_hazard_type_registry_hash": registry_hashes["core_hazard_type_registry_hash"],
+            "core_schedule_policy_registry_hash": registry_hashes["core_schedule_policy_registry_hash"],
             "logistics_routing_rule_registry_hash": registry_hashes["logistics_routing_rule_registry_hash"],
             "logistics_graph_registry_hash": registry_hashes["logistics_graph_registry_hash"],
             "provenance_event_type_registry_hash": registry_hashes["provenance_event_type_registry_hash"],

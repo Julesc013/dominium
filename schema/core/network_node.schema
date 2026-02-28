@@ -1,0 +1,22 @@
+SCHEMA: core/network_node.schema
+schema_id: dominium.schema.core.network_node
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic universal node payloads for NetworkGraph.
+
+REQUIRED SHAPE:
+record network_node
+  required:
+    - schema_version: semver
+    - node_id: id
+    - node_type_id: id
+    - payload_ref: map
+    - tags: list[id]
+    - extensions: map
+
+INVARIANTS:
+- `node_id` is unique within a graph.
+- Node payload remains typed via graph-level schema references.
+

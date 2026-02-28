@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Schedule Schema",
+  "version": "1.0.0",
+  "description": "Deterministic reusable scheduling component.",
+  "x-doc-ref": [
+    "docs/architecture/CORE_ABSTRACTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "schedule_id",
+    "target_id",
+    "start_tick",
+    "recurrence_rule",
+    "next_due_tick",
+    "cancellation_policy",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "schedule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "start_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "recurrence_rule": {
+      "type": "object",
+      "required": [
+        "rule_type",
+        "interval_ticks",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "rule_type": {
+          "type": "string",
+          "enum": [
+            "none",
+            "interval"
+          ]
+        },
+        "interval_ticks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "next_due_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cancellation_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "schedule_id": "schedule.maintenance.alpha",
+      "target_id": "assembly.structure.alpha",
+      "start_tick": 100,
+      "recurrence_rule": {
+        "rule_type": "interval",
+        "interval_ticks": 50,
+        "extensions": {}
+      },
+      "next_due_tick": 150,
+      "cancellation_policy": "keep",
+      "extensions": {}
+    }
+  ]
+}
+

@@ -1,0 +1,24 @@
+SCHEMA: core/hazard_model.schema
+schema_id: dominium.schema.core.hazard_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic hazard accumulation/threshold contracts shared by decay, failure, and future hazard domains.
+
+REQUIRED SHAPE:
+record hazard_model
+  required:
+    - schema_version: semver
+    - hazard_id: id
+    - hazard_type_id: id
+    - target_id: id
+    - accumulation: fixed
+    - threshold: fixed
+    - consequence_process_id: id
+    - extensions: map
+
+INVARIANTS:
+- Default triggering is deterministic threshold crossing.
+- Optional stochastic behavior must be policy-controlled and named-RNG bound.
+
