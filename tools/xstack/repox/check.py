@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import hashlib
 import json
 import os
 import re
 import subprocess
 import sys
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, Iterable, List, Set, Tuple
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -245,6 +246,42 @@ RENDER_SNAPSHOT_DERIVED_FILES = (
     "src/client/render/renderers/null_renderer.py",
     "src/client/render/renderers/software_renderer.py",
     "tools/render/tool_render_capture.py",
+)
+
+INTENT_DISPATCH_WHITELIST_REGISTRY_REL = "data/registries/intent_dispatch_whitelist.json"
+DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS = (
+    "src/net/**",
+    "src/client/interaction/interaction_dispatch.py",
+    "src/interaction/task/task_engine.py",
+    "tools/xstack/sessionx/**",
+    "tools/xstack/testx/tests/**",
+)
+
+BOUNDARY_ALIAS_RULES = {
+    "INV-NO-DUPLICATE-GRAPH-SUBSTRATE": {
+        "INV-NO-DUPLICATE-GRAPH",
+        "INV-NO-DUPLICATE-GRAPH-SUBSTRATES",
+    },
+    "INV-NO-DUPLICATE-FLOW-SUBSTRATE": {
+        "INV-NO-DUPLICATE-FLOW",
+        "INV-NO-DUPLICATE-FLOW-LOGIC",
+    },
+    "INV-RENDER-TRUTH-ISOLATION": {
+        "INV-RENDERER-TRUTH-ISOLATION",
+        "repox.renderer_truth_import",
+        "repox.renderer_truth_symbol",
+    },
+}
+
+BOUNDARY_BLOCKER_RULE_IDS = (
+    "INV-NO-DUPLICATE-GRAPH-SUBSTRATE",
+    "INV-NO-DUPLICATE-FLOW-SUBSTRATE",
+    "INV-NO-ADHOC-STATE-FLAG",
+    "INV-NO-ADHOC-SCHEDULER",
+    "INV-PLATFORM-ISOLATION",
+    "INV-RENDER-TRUTH-ISOLATION",
+    "INV-NO-TOOLS-IN-RUNTIME",
+    "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -7088,6 +7125,16 @@ def _append_core_abstraction_invariant_findings(
                 "instrument.interior.pressure",
                 "instrument.interior.alarm",
             ),
+            "INV-INTERIOR-STATE-DIEGETIC-GATED": (
+                "ch.diegetic.pressure_status",
+                "ch.diegetic.oxygen_status",
+                "ch.diegetic.door_indicator",
+            ),
+            "INV-NO-OMNISCIENT-INTERIOR-UI": (
+                "_viewer_graph_portal_entity_ids(",
+                "viewer_graph_id",
+                "interior.portal.",
+            ),
         },
         "src/interior/compartment_flow_builder.py": {
             "INV-INTERIOR-FLOWS-USE-FLOWSYSTEM": (
@@ -7111,6 +7158,25 @@ def _append_core_abstraction_invariant_findings(
                 "_pressure_from_air_mass(",
                 "_substeps_for_dt(",
                 "_flow_balance_for_medium(",
+            ),
+        },
+        "src/inspection/inspection_engine.py": {
+            "INV-INTERIOR-STATE-DIEGETIC-GATED": (
+                "section.interior.connectivity_summary",
+                "section.interior.flow_summary",
+                "allow_hidden_state",
+            ),
+            "INV-NO-OMNISCIENT-INTERIOR-UI": (
+                "epistemic_redaction_level",
+                "quant_step",
+                "target_kind",
+            ),
+        },
+        "src/client/interaction/inspection_overlays.py": {
+            "INV-NO-OMNISCIENT-INTERIOR-UI": (
+                "_interior_overlay_payload(",
+                "section.interior.pressure_summary",
+                "inspection_snapshot",
             ),
         },
     }
@@ -7143,7 +7209,123 @@ def _append_core_abstraction_invariant_findings(
                         file_path=rel_path,
                         line_number=1,
                         snippet=token,
-                        message="interior subsystem invariants require deterministic occlusion/state-machine tokens",
+                    message="interior subsystem invariants require deterministic occlusion/state-machine tokens",
+                    rule_id=rule_id,
+                )
+            )
+
+    pose_mount_required_tokens = {
+        "tools/xstack/sessionx/process_runtime.py": {
+            "INV-POSE-REQUIRES-PROCESS": (
+                "process.pose_enter",
+                "process.pose_exit",
+                "process.meta_pose_override",
+                "enter_pose_slot(",
+                "exit_pose_slot(",
+                "_persist_pose_mount_state(",
+            ),
+            "INV-MOUNT-REQUIRES-PROCESS": (
+                "process.mount_attach",
+                "process.mount_detach",
+                "attach_mount_points(",
+                "detach_mount_point(",
+                "_persist_pose_mount_state(",
+            ),
+            "INV-NO-TELEPORT-OCCUPY": (
+                "_pose_slot_accessible_by_path(",
+                "path_exists(",
+                "REFUSAL_POSE_NO_ACCESS_PATH",
+            ),
+        },
+        "src/interaction/pose/pose_engine.py": {
+            "INV-POSE-REQUIRES-PROCESS": (
+                "def enter_pose_slot(",
+                "def exit_pose_slot(",
+                "REFUSAL_POSE_OCCUPIED",
+                "REFUSAL_POSE_NOT_OCCUPANT",
+            ),
+        },
+        "src/interaction/mount/mount_engine.py": {
+            "INV-MOUNT-REQUIRES-PROCESS": (
+                "def attach_mount_points(",
+                "def detach_mount_point(",
+                "REFUSAL_MOUNT_INCOMPATIBLE",
+                "REFUSAL_MOUNT_ALREADY_ATTACHED",
+            ),
+        },
+    }
+    for rel_path, rule_map in sorted(pose_mount_required_tokens.items(), key=lambda item: str(item[0])):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            for rule_id in sorted(rule_map.keys()):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="POSE/Mount invariant file missing",
+                        rule_id=rule_id,
+                    )
+                )
+            continue
+        for rule_id, tokens in sorted(rule_map.items(), key=lambda item: str(item[0])):
+            for token in tokens:
+                if token in text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="POSE/Mount invariants require deterministic process-driven occupancy/attachment tokens",
+                        rule_id=rule_id,
+                    )
+                )
+
+    pose_mount_mutation_allowed_prefixes = (
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(pose_mount_mutation_allowed_prefixes):
+            continue
+        if rel_path == "tools/xstack/repox/check.py":
+            continue
+        if rel_path.startswith(("tools/xstack/out/", "tools/auditx/cache/")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if any(
+                marker in token
+                for marker in (
+                    'state["pose_slots"]',
+                    "state['pose_slots']",
+                    'state["mount_points"]',
+                    "state['mount_points']",
+                    'state["pose_mount_provenance_events"]',
+                    "state['pose_mount_provenance_events']",
+                )
+            ):
+                rule_id = "INV-POSE-REQUIRES-PROCESS"
+                if "mount_points" in token:
+                    rule_id = "INV-MOUNT-REQUIRES-PROCESS"
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=token[:140],
+                        message="pose/mount state mutation must occur only through deterministic process runtime commit paths",
                         rule_id=rule_id,
                     )
                 )
@@ -7222,6 +7404,610 @@ def _append_core_abstraction_invariant_findings(
                     rule_id="INV-NO-TRUTH-LEAK-IN-INSTRUMENTS",
                 )
             )
+
+
+def _load_intent_dispatch_whitelist_patterns(repo_root: str) -> Tuple[List[str], str]:
+    rel_path = INTENT_DISPATCH_WHITELIST_REGISTRY_REL
+    abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+    try:
+        payload = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return list(DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS), "missing or invalid whitelist registry"
+    if not isinstance(payload, dict):
+        return list(DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS), "invalid whitelist root object"
+    record = payload.get("record")
+    if not isinstance(record, dict):
+        return list(DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS), "missing whitelist record object"
+    rows = record.get("allowed_file_patterns")
+    if not isinstance(rows, list):
+        return list(DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS), "missing allowed_file_patterns list"
+    patterns = sorted(
+        set(_norm(str(item).strip()) for item in rows if str(item).strip())
+    )
+    if not patterns:
+        return list(DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS), "empty allowed_file_patterns list"
+    return patterns, ""
+
+
+def _path_matches_glob_pattern(rel_path: str, patterns: List[str]) -> bool:
+    token = _norm(rel_path)
+    for pattern in list(patterns or []):
+        matcher = _norm(pattern)
+        if not matcher:
+            continue
+        if fnmatch.fnmatch(token, matcher):
+            return True
+    return False
+
+
+def _append_boundary_blocker_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    existing_keys = set(
+        (
+            str(row.get("rule_id", "")),
+            str(row.get("file_path", "")),
+            int(row.get("line_number", 0) or 0),
+            str(row.get("snippet", "")),
+            str(row.get("message", "")),
+        )
+        for row in list(findings or [])
+        if isinstance(row, dict)
+    )
+    for row in list(findings or []):
+        if not isinstance(row, dict):
+            continue
+        src_rule_id = str(row.get("rule_id", "")).strip()
+        for alias_rule_id, source_rule_ids in BOUNDARY_ALIAS_RULES.items():
+            if src_rule_id not in source_rule_ids:
+                continue
+            key = (
+                alias_rule_id,
+                str(row.get("file_path", "")),
+                int(row.get("line_number", 0) or 0),
+                str(row.get("snippet", "")),
+                str(row.get("message", "")),
+            )
+            if key in existing_keys:
+                continue
+            existing_keys.add(key)
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=str(row.get("file_path", "")),
+                    line_number=int(row.get("line_number", 0) or 0),
+                    snippet=str(row.get("snippet", "")),
+                    message=str(row.get("message", "")),
+                    rule_id=alias_rule_id,
+                )
+            )
+
+    runtime_roots = ("src/", "engine/", "game/", "client/", "server/")
+    runtime_skip_prefixes = (
+        "tools/",
+        "docs/",
+        "build/",
+        "dist/",
+        "legacy/",
+        ".xstack_cache/",
+    )
+    tool_include_patterns = (
+        re.compile(r"^\s*from\s+tools\.auditx\b", re.IGNORECASE),
+        re.compile(r"^\s*import\s+tools\.auditx\b", re.IGNORECASE),
+        re.compile(r"^\s*from\s+tools\.governance\b", re.IGNORECASE),
+        re.compile(r"^\s*import\s+tools\.governance\b", re.IGNORECASE),
+        re.compile(r"^\s*from\s+tools\.xstack\.(repox|testx|auditx|controlx)\b", re.IGNORECASE),
+        re.compile(r"^\s*import\s+tools\.xstack\.(repox|testx|auditx|controlx)\b", re.IGNORECASE),
+        re.compile(r'^\s*#\s*include\s*[<"]tools/', re.IGNORECASE),
+        re.compile(r'^\s*#\s*include\s*[<"]\.\./tools/', re.IGNORECASE),
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.startswith(runtime_roots):
+            continue
+        if rel_norm.startswith(runtime_skip_prefixes):
+            continue
+        _, ext = os.path.splitext(rel_norm.lower())
+        if ext not in (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp"):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            token = str(line).strip()
+            if not token:
+                continue
+            if not any(pattern.search(token) for pattern in tool_include_patterns):
+                continue
+            key = (
+                "INV-NO-TOOLS-IN-RUNTIME",
+                rel_norm,
+                int(line_no),
+                token[:140],
+                "runtime modules must not import/include tool-suite paths",
+            )
+            if key in existing_keys:
+                continue
+            existing_keys.add(key)
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=int(line_no),
+                    snippet=token[:140],
+                    message="runtime modules must not import/include tool-suite paths",
+                    rule_id="INV-NO-TOOLS-IN-RUNTIME",
+                )
+            )
+
+    whitelist_patterns, whitelist_error = _load_intent_dispatch_whitelist_patterns(repo_root)
+    if whitelist_error:
+        key = (
+            "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+            INTENT_DISPATCH_WHITELIST_REGISTRY_REL,
+            1,
+            "",
+            "intent dispatch whitelist registry is missing or invalid",
+        )
+        if key not in existing_keys:
+            existing_keys.add(key)
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=INTENT_DISPATCH_WHITELIST_REGISTRY_REL,
+                    line_number=1,
+                    snippet="",
+                    message="intent dispatch whitelist registry is missing or invalid",
+                    rule_id="INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+                )
+            )
+
+    envelope_file_roots = ("src/", "tools/xstack/sessionx/")
+    envelope_skip_prefixes = (
+        "tools/xstack/testx/tests/",
+        "tools/xstack/out/",
+        "tools/auditx/analyzers/",
+        "tests/",
+    )
+    required_envelope_markers = (
+        '"intent_id"',
+        '"process_id"',
+        '"inputs"',
+        '"authority_origin"',
+    )
+    explicit_builder_tokens = (
+        "build_client_intent_envelope(",
+        "build_interaction_intent(",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(envelope_file_roots):
+            continue
+        if rel_norm.startswith(envelope_skip_prefixes):
+            continue
+        abs_path = os.path.join(repo_root, rel_norm.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        has_envelope_literal = all(marker in text for marker in required_envelope_markers)
+        has_builder_token = any(marker in text for marker in explicit_builder_tokens)
+        if (not has_envelope_literal) and (not has_builder_token):
+            continue
+        if _path_matches_glob_pattern(rel_norm, whitelist_patterns):
+            continue
+        snippet = "intent envelope construction markers"
+        if has_builder_token:
+            snippet = (
+                "build_client_intent_envelope("
+                if "build_client_intent_envelope(" in text
+                else "build_interaction_intent("
+            )
+        key = (
+            "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+            rel_norm,
+            1,
+            snippet,
+            "intent envelope construction is restricted to whitelist-registry paths",
+        )
+        if key in existing_keys:
+            continue
+        existing_keys.add(key)
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_norm,
+                line_number=1,
+                snippet=snippet,
+                message="intent envelope construction is restricted to whitelist-registry paths",
+                rule_id="INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+            )
+        )
+
+
+def _append_retro_consistency_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    retro_required_files = {
+        "src/core/graph/network_graph_engine.py": (
+            "INV-NO-DUPLICATE-GRAPH",
+            ("normalize_network_graph(", "route_query("),
+            "retro-consistency requires canonical core graph substrate",
+        ),
+        "src/core/flow/flow_engine.py": (
+            "INV-NO-DUPLICATE-FLOW",
+            ("normalize_flow_channel(", "tick_flow_channels("),
+            "retro-consistency requires canonical core flow substrate",
+        ),
+        "src/core/state/state_machine_engine.py": (
+            "INV-NO-ADHOC-STATE-FLAG",
+            ("normalize_state_machine(", "apply_transition("),
+            "retro-consistency requires canonical state-machine substrate",
+        ),
+        "src/core/schedule/schedule_engine.py": (
+            "INV-NO-ADHOC-SCHEDULER",
+            ("normalize_schedule(", "tick_schedules("),
+            "retro-consistency requires canonical schedule substrate",
+        ),
+        "src/core/hazards/hazard_engine.py": (
+            "INV-NO-ADHOC-HAZARD",
+            ("normalize_hazard_model(", "tick_hazard_models("),
+            "retro-consistency requires canonical hazard substrate",
+        ),
+    }
+    for rel_path, (rule_id, tokens, message) in sorted(retro_required_files.items(), key=lambda item: str(item[0])):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message=message,
+                    rule_id=rule_id,
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message=message,
+                    rule_id=rule_id,
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/graph/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if (
+            text
+            and "heapq.heappush(" in text
+            and "from_node_id" in text
+            and "to_node_id" in text
+            and "edge_id" in text
+        ):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="heapq.heappush(",
+                    message="graph traversal/path search must stay in src/core/graph substrate",
+                    rule_id="INV-NO-DUPLICATE-GRAPH",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/flow/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if (not text) or ("def " not in text):
+            continue
+        if "def flow_transfer(" in text or "def tick_flow_channels(" in text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="def flow_transfer(" if "def flow_transfer(" in text else "def tick_flow_channels(",
+                    message="flow transfer logic must stay in src/core/flow substrate",
+                    rule_id="INV-NO-DUPLICATE-FLOW",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/state/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if text and "from_state_id" in text and "to_state_id" in text and "trigger_process_id" in text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="trigger_process_id",
+                    message="state transition logic must use StateMachine substrate",
+                    rule_id="INV-NO-ADHOC-STATE-FLAG",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/schedule/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if text and "recurrence_rule" in text and "next_due_tick" in text and "def " in text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="recurrence_rule",
+                    message="recurrence/scheduling logic must use Schedule substrate",
+                    rule_id="INV-NO-ADHOC-SCHEDULER",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/hazards/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if (
+            text
+            and "base_hazard_rate_per_tick" in text
+            and "accumulation" in text
+            and "threshold" in text
+            and "consequence_process_id" in text
+        ):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="base_hazard_rate_per_tick",
+                    message="hazard accumulation/threshold logic must use Hazard substrate",
+                    rule_id="INV-NO-ADHOC-HAZARD",
+                )
+            )
+
+    allowed_intent_dispatch_paths = {
+        INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE,
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/sessionx/scheduler.py",
+        "src/net/srz/shard_coordinator.py",
+        "src/net/policies/policy_server_authoritative.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_path.startswith(
+            (
+                "tools/xstack/testx/tests/",
+                "tests/",
+                "tools/xstack/out/",
+                "tools/auditx/analyzers/",
+            )
+        ):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        if rel_path not in allowed_intent_dispatch_paths and (
+            "execute_intent(" in text or "build_interaction_intent(" in text
+        ):
+            snippet = "execute_intent(" if "execute_intent(" in text else "build_interaction_intent("
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=snippet,
+                    message="direct intent dispatch is restricted to canonical control/interaction pipeline files",
+                    rule_id="INV-NO-DIRECT-INTENT-DISPATCH",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith((".py", ".cpp", ".h", ".hpp", ".c", ".cc")):
+            continue
+        if not rel_path.startswith(("src/", "engine/", "game/", "server/", "client/")):
+            continue
+        if rel_path.startswith(
+            (
+                "legacy/",
+                "docs/",
+                "tools/xstack/testx/tests/",
+                "tools/xstack/out/",
+            )
+        ):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line)
+            if "legacy/" not in token and "legacy\\" not in token:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token.strip()[:140],
+                    message="production/runtime code must not reference legacy quarantine paths",
+                    rule_id="INV-NO-LEGACY-REFERENCE",
+                )
+            )
+
+
+def _append_topology_map_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = "warn" if str(profile).strip().upper() == "FAST" else _invariant_severity(profile)
+    topology_rel = "docs/audit/TOPOLOGY_MAP.json"
+    topology_abs = os.path.join(repo_root, topology_rel.replace("/", os.sep))
+    try:
+        topology_payload = json.load(open(topology_abs, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        topology_payload = {}
+
+    if not isinstance(topology_payload, dict):
+        topology_payload = {}
+    topology_nodes = list(topology_payload.get("nodes") or []) if isinstance(topology_payload, dict) else []
+    if not topology_payload or not isinstance(topology_nodes, list):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=topology_rel,
+                line_number=1,
+                snippet="",
+                message="topology map artifact must exist and be valid JSON",
+                rule_id="INV-TOPOLOGY-MAP-PRESENT",
+            )
+        )
+        return
+
+    declared_schema_paths: Set[str] = set()
+    declared_registry_paths: Set[str] = set()
+    for row in topology_nodes:
+        if not isinstance(row, dict):
+            continue
+        node_kind = str(row.get("node_kind", "")).strip()
+        node_path = _norm(str(row.get("path", "")).strip())
+        if not node_path:
+            continue
+        if node_kind == "schema":
+            declared_schema_paths.add(node_path)
+        elif node_kind == "registry":
+            declared_registry_paths.add(node_path)
+
+    def _iter_schema_paths() -> List[str]:
+        out: List[str] = []
+        schema_root = os.path.join(repo_root, "schema")
+        if os.path.isdir(schema_root):
+            for walk_root, dirs, files in os.walk(schema_root):
+                dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
+                for name in sorted(files):
+                    if not name.endswith(".schema"):
+                        continue
+                    rel = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                    out.append(rel)
+        schemas_root = os.path.join(repo_root, "schemas")
+        if os.path.isdir(schemas_root):
+            for walk_root, dirs, files in os.walk(schemas_root):
+                dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
+                for name in sorted(files):
+                    if not name.endswith(".schema.json"):
+                        continue
+                    rel = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                    out.append(rel)
+        return sorted(set(out))
+
+    def _iter_registry_paths() -> List[str]:
+        out: List[str] = []
+        registry_root = os.path.join(repo_root, "data", "registries")
+        if not os.path.isdir(registry_root):
+            return out
+        for walk_root, dirs, files in os.walk(registry_root):
+            dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
+            for name in sorted(files):
+                if not name.endswith(".json"):
+                    continue
+                rel = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                out.append(rel)
+        return sorted(set(out))
+
+    for rel_path in _iter_schema_paths():
+        if rel_path in declared_schema_paths:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="schema must be declared in docs/audit/TOPOLOGY_MAP.json",
+                rule_id="INV-NO-UNDECLARED-SCHEMA",
+            )
+        )
+
+    for rel_path in _iter_registry_paths():
+        if rel_path in declared_registry_paths:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="registry must be declared in docs/audit/TOPOLOGY_MAP.json",
+                rule_id="INV-NO-UNDECLARED-REGISTRY",
+            )
+        )
 
 
 def _append_time_constitution_invariant_findings(
@@ -8815,6 +9601,16 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         repo_root=repo_root,
         profile=token,
     )
+    _append_retro_consistency_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_topology_map_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
     _append_time_constitution_invariant_findings(
         findings=findings,
         repo_root=repo_root,
@@ -8836,6 +9632,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_platform_renderer_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_boundary_blocker_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
