@@ -11,7 +11,7 @@ REFUSAL_INSPECT_FORBIDDEN_BY_LAW = "refusal.inspect.forbidden_by_law"
 REFUSAL_INSPECT_BUDGET_EXCEEDED = "refusal.inspect.budget_exceeded"
 REFUSAL_INSPECT_TARGET_INVALID = "refusal.inspect.target_invalid"
 
-_VALID_TARGET_KINDS = {"structure", "project", "node", "manifest", "cohort", "faction", "machine", "port"}
+_VALID_TARGET_KINDS = {"structure", "project", "node", "manifest", "cohort", "faction", "machine", "port", "graph"}
 _VALID_FIDELITY = ("macro", "meso", "micro")
 _SECTION_IDS_BY_FIDELITY = {
     "macro": [
@@ -46,10 +46,31 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.micro_parts_summary",
     ],
 }
+_SECTION_IDS_BY_FIDELITY_GRAPH = {
+    "macro": [
+        "section.networkgraph.summary",
+    ],
+    "meso": [
+        "section.networkgraph.summary",
+        "section.networkgraph.route",
+        "section.networkgraph.capacity_utilization",
+    ],
+    "micro": [
+        "section.networkgraph.summary",
+        "section.networkgraph.route",
+        "section.networkgraph.capacity_utilization",
+    ],
+}
 _DEFAULT_SECTION_ROWS = {
     "section.material_stocks": {"title": "Material Stocks", "extensions": {"cost_units": 1}},
     "section.batches_summary": {"title": "Batches Summary", "extensions": {"cost_units": 2}},
     "section.flow_summary": {"title": "Flow Summary", "extensions": {"cost_units": 1}},
+    "section.networkgraph.summary": {"title": "NetworkGraph Summary", "extensions": {"cost_units": 1}},
+    "section.networkgraph.route": {"title": "NetworkGraph Route", "extensions": {"cost_units": 2}},
+    "section.networkgraph.capacity_utilization": {
+        "title": "NetworkGraph Capacity Utilization",
+        "extensions": {"cost_units": 2},
+    },
     "section.ag_progress": {"title": "Assembly Progress", "extensions": {"cost_units": 2}},
     "section.maintenance_backlog": {"title": "Maintenance Backlog", "extensions": {"cost_units": 1}},
     "section.failure_risk_summary": {"title": "Failure Risk Summary", "extensions": {"cost_units": 1}},
@@ -98,6 +119,8 @@ def _quantize_map(values: object, *, step: int) -> dict:
 
 def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
+    if token.startswith("graph."):
+        return "graph"
     if token.startswith("machine."):
         return "machine"
     if token.startswith("port."):
@@ -204,9 +227,19 @@ def _section_cost(section_rows: Mapping[str, dict], section_ids: List[str]) -> i
     )
 
 
+def _section_ids_for_fidelity(*, fidelity: str, target_kind: str) -> List[str]:
+    token = str(fidelity).strip() or "macro"
+    if token not in _VALID_FIDELITY:
+        token = "macro"
+    if str(target_kind).strip() == "graph":
+        return list(_SECTION_IDS_BY_FIDELITY_GRAPH[token])
+    return list(_SECTION_IDS_BY_FIDELITY[token])
+
+
 def _resolve_fidelity(
     *,
     desired_fidelity: str,
+    target_kind: str,
     max_cost_units: int,
     section_rows: Mapping[str, dict],
     micro_allowed: bool,
@@ -233,10 +266,10 @@ def _resolve_fidelity(
 
     budget = max(0, _as_int(max_cost_units, 0))
     fallback = "macro"
-    fallback_sections = list(_SECTION_IDS_BY_FIDELITY["macro"])
+    fallback_sections = _section_ids_for_fidelity(fidelity="macro", target_kind=target_kind)
     fallback_cost = _section_cost(section_rows, fallback_sections)
     for token in ordered:
-        section_ids = list(_SECTION_IDS_BY_FIDELITY[token])
+        section_ids = _section_ids_for_fidelity(fidelity=token, target_kind=target_kind)
         cost = _section_cost(section_rows, section_ids)
         if budget <= 0 or cost <= budget:
             return token, section_ids, int(cost), bool(token != desired)
@@ -312,6 +345,19 @@ def _events_for_target(state: Mapping[str, object], target_id: str, time_range: 
 
 def _build_section_data(section_id: str, *, state: Mapping[str, object], target_payload: Mapping[str, object], request: Mapping[str, object], quant_step: int, include_part_ids: bool) -> dict:
     row = dict(target_payload.get("row") or {})
+    payload_extensions = dict(target_payload.get("extensions") or {})
+
+    def _graph_row() -> dict:
+        graph_id = str(row.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip()
+        if isinstance(row.get("nodes"), list) and isinstance(row.get("edges"), list):
+            return dict(row)
+        for candidate in list((dict(state or {})).get("network_graphs") or []):
+            if not isinstance(candidate, dict):
+                continue
+            if str(candidate.get("graph_id", "")).strip() == graph_id:
+                return dict(candidate)
+        return dict(row)
+
     if section_id == "section.material_stocks":
         port_contents = list(row.get("current_contents") or [])
         if port_contents:
@@ -356,6 +402,61 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
             status = str(item.get("status", "planned")).strip() or "planned"
             status_counts[status] = _as_int(status_counts.get(status, 0), 0) + 1
         return {"manifest_count": len(manifests), "status_counts": dict((k, status_counts[k]) for k in sorted(status_counts.keys()))}
+    if section_id == "section.networkgraph.summary":
+        graph = _graph_row()
+        node_rows = [dict(item) for item in list(graph.get("nodes") or []) if isinstance(item, dict)]
+        edge_rows = [dict(item) for item in list(graph.get("edges") or []) if isinstance(item, dict)]
+        validation_mode = str(graph.get("validation_mode", "")).strip() or "strict"
+        return {
+            "graph_id": str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip(),
+            "node_count": len(node_rows),
+            "edge_count": len(edge_rows),
+            "validation_mode": validation_mode,
+            "routing_policy_id": str(graph.get("deterministic_routing_policy_id", "")).strip(),
+            "graph_partition_id": str(graph.get("graph_partition_id", "")).strip() or None,
+        }
+    if section_id == "section.networkgraph.route":
+        route_payload = {}
+        for candidate in (
+            dict(payload_extensions.get("route_result") or {}),
+            dict((dict(row.get("extensions") or {})).get("route_result") or {}),
+            dict((dict(request.get("extensions") or {})).get("route_result") or {}),
+        ):
+            if candidate:
+                route_payload = candidate
+                break
+        path_edge_ids = [str(item).strip() for item in list(route_payload.get("path_edge_ids") or []) if str(item).strip()]
+        path_node_ids = [str(item).strip() for item in list(route_payload.get("path_node_ids") or []) if str(item).strip()]
+        return {
+            "available": bool(route_payload),
+            "path_node_ids": list(path_node_ids),
+            "path_edge_ids": list(path_edge_ids),
+            "total_cost": int(max(0, _as_int(route_payload.get("total_cost", 0), 0))),
+            "route_policy_id": str(route_payload.get("route_policy_id", "")).strip(),
+        }
+    if section_id == "section.networkgraph.capacity_utilization":
+        graph = _graph_row()
+        edge_rows = [dict(item) for item in list(graph.get("edges") or []) if isinstance(item, dict)]
+        used_by_edge = dict(payload_extensions.get("capacity_used_by_edge") or {})
+        capacity_total = 0
+        used_total = 0
+        edges_with_capacity = 0
+        for edge in edge_rows:
+            edge_id = str(edge.get("edge_id", "")).strip()
+            capacity = edge.get("capacity")
+            if capacity is None:
+                continue
+            cap_val = max(0, _as_int(capacity, 0))
+            capacity_total += cap_val
+            edges_with_capacity += 1
+            used_total += max(0, _as_int(used_by_edge.get(edge_id, 0), 0))
+        utilization_permille = int((1000 * used_total) // capacity_total) if capacity_total > 0 else 0
+        return {
+            "edge_with_capacity_count": int(edges_with_capacity),
+            "capacity_total": int(_quantize_map({"value": capacity_total}, step=quant_step).get("value", 0)),
+            "capacity_used_total": int(_quantize_map({"value": used_total}, step=quant_step).get("value", 0)),
+            "utilization_permille": int(utilization_permille),
+        }
     if section_id == "section.ag_progress":
         projects = [dict(item) for item in list((dict(state or {})).get("construction_projects") or []) if isinstance(item, dict)]
         steps = [dict(item) for item in list((dict(state or {})).get("construction_steps") or []) if isinstance(item, dict)]
@@ -437,6 +538,7 @@ def build_inspection_snapshot_artifact(
     section_rows = inspection_section_rows_by_id(section_registry_payload)
     achieved_fidelity, section_ids, section_cost_units, degraded = _resolve_fidelity(
         desired_fidelity=str(request.get("desired_fidelity", "macro")),
+        target_kind=str(request.get("target_kind", "")),
         max_cost_units=_as_int(request.get("max_cost_units", 0), 0),
         section_rows=section_rows,
         micro_allowed=micro_allowed,

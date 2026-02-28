@@ -187,6 +187,207 @@ def _logistics_graph_rows(runtime: dict, repo_root: str) -> list[dict]:
     )
 
 
+def _network_graph_overlay_payload(
+    *,
+    target_semantic_id: str,
+    runtime: dict,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    graph_row = {}
+    if collection == "network_graphs" and isinstance(target_row.get("nodes"), list):
+        graph_row = dict(target_row)
+    elif isinstance(target_row.get("nodes"), list) and isinstance(target_row.get("edges"), list):
+        graph_row = dict(target_row)
+    else:
+        for row in sorted(
+            [dict(item) for item in list(runtime.get("network_graph_rows") or []) if isinstance(item, dict)],
+            key=lambda item: str(item.get("graph_id", "")),
+        ):
+            if str(row.get("graph_id", "")).strip() == str(target_semantic_id).strip():
+                graph_row = dict(row)
+                break
+    if not graph_row:
+        return {
+            "mode": "networkgraph_overlay",
+            "summary": "graph:{} unavailable".format(str(target_semantic_id)),
+            "target_semantic_id": str(target_semantic_id),
+            "inspection_snapshot": dict(inspection_snapshot or {}),
+            "renderables": _overlay_renderables(
+                target_semantic_id=str(target_semantic_id),
+                summary_label="graph unavailable",
+                mode="networkgraph_overlay",
+            ),
+            "materials": _overlay_materials(target_semantic_id=str(target_semantic_id)),
+            "degraded": True,
+            "extensions": {"overlay_kind": "networkgraph", "graph_status": "missing"},
+        }
+
+    graph_id = str(graph_row.get("graph_id", "")).strip() or str(target_semantic_id).strip()
+    node_rows = sorted(
+        [dict(item) for item in list(graph_row.get("nodes") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("node_id", "")),
+    )
+    edge_rows = sorted(
+        [dict(item) for item in list(graph_row.get("edges") or []) if isinstance(item, dict)],
+        key=lambda item: (str(item.get("from_node_id", "")), str(item.get("to_node_id", "")), str(item.get("edge_id", ""))),
+    )
+    sections = dict((dict(inspection_snapshot or {})).get("summary_sections") or {})
+    route_section = dict(sections.get("section.networkgraph.route") or {})
+    route_data = dict(route_section.get("data") or {})
+    route_edge_ids = set(_sorted_unique_strings(route_data.get("path_edge_ids")))
+    edge_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_edge"}, floor=60)
+    node_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_node"}, floor=72)
+    route_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_route"}, floor=68)
+    edge_material_id = "mat.inspect.networkgraph.edge.{}".format(canonical_sha256({"graph_id": graph_id})[:12])
+    node_material_id = "mat.inspect.networkgraph.node.{}".format(canonical_sha256({"graph_id": graph_id, "node": True})[:12])
+    route_material_id = "mat.inspect.networkgraph.route.{}".format(canonical_sha256({"graph_id": graph_id, "route": True})[:12])
+    materials = sorted(
+        [
+            {
+                "schema_version": "1.0.0",
+                "material_id": edge_material_id,
+                "base_color": dict(edge_color),
+                "roughness": 340,
+                "metallic": 0,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_edge"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": node_material_id,
+                "base_color": dict(node_color),
+                "roughness": 200,
+                "metallic": 0,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_node"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": route_material_id,
+                "base_color": dict(route_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": route_color["r"], "g": route_color["g"], "b": route_color["b"], "strength": 280},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_route"},
+            },
+        ],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+    renderables: list[dict] = []
+    for edge in edge_rows:
+        edge_id = str(edge.get("edge_id", "")).strip()
+        if not edge_id:
+            continue
+        is_route = edge_id in route_edge_ids
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.networkgraph.edge.{}".format(canonical_sha256({"graph_id": graph_id, "edge_id": edge_id})[:16]),
+                "semantic_id": "overlay.inspect.networkgraph.edge.{}".format(edge_id),
+                "primitive_id": "prim.line.debug",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": route_material_id if is_route else edge_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": bool(is_route)},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "networkgraph_edge",
+                    "edge_id": edge_id,
+                    "from_node_id": str(edge.get("from_node_id", "")).strip(),
+                    "to_node_id": str(edge.get("to_node_id", "")).strip(),
+                    "directional": True,
+                },
+            }
+        )
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.networkgraph.arrow.{}".format(canonical_sha256({"graph_id": graph_id, "edge_id": edge_id, "arrow": True})[:16]),
+                "semantic_id": "overlay.inspect.networkgraph.arrow.{}".format(edge_id),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": route_material_id if is_route else edge_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": ">",
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": bool(is_route)},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "networkgraph_direction",
+                    "edge_id": edge_id,
+                },
+            }
+        )
+    for node in node_rows:
+        node_id = str(node.get("node_id", "")).strip()
+        if not node_id:
+            continue
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.networkgraph.node.{}".format(canonical_sha256({"graph_id": graph_id, "node_id": node_id})[:16]),
+                "semantic_id": "overlay.inspect.networkgraph.node.{}".format(node_id),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": node_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": node_id,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "networkgraph_node",
+                    "node_id": node_id,
+                },
+            }
+        )
+    summary = "graph:{} nodes={} edges={} route_edges={}".format(
+        graph_id,
+        len(node_rows),
+        len(edge_rows),
+        len(route_edge_ids),
+    )
+    return {
+        "mode": "networkgraph_overlay",
+        "summary": summary,
+        "target_semantic_id": str(target_semantic_id),
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": sorted(renderables, key=lambda row: str(row.get("renderable_id", ""))),
+        "materials": materials,
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "networkgraph",
+            "graph_id": graph_id,
+            "node_count": len(node_rows),
+            "edge_count": len(edge_rows),
+            "route_edge_ids": sorted(route_edge_ids),
+        },
+    }
+
+
 def _logistics_graph_for_target(graph_rows: list[dict], target_row: dict, target_semantic_id: str) -> dict:
     graph_id = str((dict(target_row or {})).get("graph_id", "")).strip()
     if graph_id:
@@ -1269,6 +1470,17 @@ def build_inspection_overlays(
     snapshot_payload = dict(inspection_snapshot or {})
     snapshot_target = dict(snapshot_payload.get("target_payload") or {})
     snapshot_collection = str(snapshot_target.get("collection", "")).strip()
+    if target_id.startswith("graph.") or snapshot_collection == "network_graphs":
+        graph_overlay = _network_graph_overlay_payload(
+            target_semantic_id=target_id,
+            runtime=runtime,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": graph_overlay,
+            "overlay_runtime": runtime,
+        }
     if (
         target_id.startswith("manifest.")
         or target_id.startswith("commitment.shipment.")

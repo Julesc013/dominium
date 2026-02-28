@@ -2,16 +2,16 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Network Node Schema",
   "version": "1.0.0",
-  "description": "Deterministic universal NetworkGraph node payload.",
+  "description": "Deterministic universal NetworkGraph node payload with inline or referenced typed payload.",
   "x-doc-ref": [
-    "docs/architecture/CORE_ABSTRACTIONS.md"
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/NETWORKGRAPH_STANDARD.md"
   ],
   "type": "object",
   "required": [
     "schema_version",
     "node_id",
     "node_type_id",
-    "payload_ref",
     "tags",
     "extensions"
   ],
@@ -29,9 +29,21 @@
       "type": "string",
       "minLength": 1
     },
-    "payload_ref": {
+    "payload": {
       "type": "object",
       "additionalProperties": true
+    },
+    "payload_ref": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": true
+        }
+      ]
     },
     "tags": {
       "type": "array",
@@ -44,14 +56,31 @@
       "additionalProperties": true
     }
   },
+  "allOf": [
+    {
+      "anyOf": [
+        {
+          "required": [
+            "payload"
+          ]
+        },
+        {
+          "required": [
+            "payload_ref"
+          ]
+        }
+      ]
+    }
+  ],
   "examples": [
     {
       "schema_version": "1.0.0",
       "node_id": "node.factory.alpha",
       "node_type_id": "logistics.factory",
-      "payload_ref": {
+      "payload": {
         "location_ref": "site.factory.alpha"
       },
+      "payload_ref": "pack://graphs/node.factory.alpha",
       "tags": [
         "baseline"
       ],
@@ -59,4 +88,3 @@
     }
   ]
 }
-

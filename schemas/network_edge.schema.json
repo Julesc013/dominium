@@ -2,9 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Network Edge Schema",
   "version": "1.0.0",
-  "description": "Deterministic universal NetworkGraph edge payload.",
+  "description": "Deterministic universal NetworkGraph edge payload with generic capacity/delay/loss/cost attributes.",
   "x-doc-ref": [
-    "docs/architecture/CORE_ABSTRACTIONS.md"
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/NETWORKGRAPH_STANDARD.md"
   ],
   "type": "object",
   "required": [
@@ -13,7 +14,6 @@
     "from_node_id",
     "to_node_id",
     "edge_type_id",
-    "payload_ref",
     "extensions"
   ],
   "additionalProperties": false,
@@ -38,9 +38,21 @@
       "type": "string",
       "minLength": 1
     },
-    "payload_ref": {
+    "payload": {
       "type": "object",
       "additionalProperties": true
+    },
+    "payload_ref": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": true
+        }
+      ]
     },
     "capacity": {
       "type": [
@@ -63,11 +75,34 @@
       ],
       "minimum": 0
     },
+    "cost_units": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
     "extensions": {
       "type": "object",
       "additionalProperties": true
     }
   },
+  "allOf": [
+    {
+      "anyOf": [
+        {
+          "required": [
+            "payload"
+          ]
+        },
+        {
+          "required": [
+            "payload_ref"
+          ]
+        }
+      ]
+    }
+  ],
   "examples": [
     {
       "schema_version": "1.0.0",
@@ -81,8 +116,8 @@
       "capacity": 25000,
       "delay_ticks": 4,
       "loss_fraction": 0,
+      "cost_units": 3,
       "extensions": {}
     }
   ]
 }
-

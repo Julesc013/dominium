@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Graph Partition Schema",
+  "version": "1.0.0",
+  "description": "Deterministic graph partition metadata for shard-ready routing plans.",
+  "x-doc-ref": [
+    "docs/architecture/NETWORKGRAPH_STANDARD.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "partition_id",
+    "graph_id",
+    "node_shard_map",
+    "edge_shard_map",
+    "cross_shard_boundary_nodes",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "partition_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_shard_map": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "edge_shard_map": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "cross_shard_boundary_nodes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

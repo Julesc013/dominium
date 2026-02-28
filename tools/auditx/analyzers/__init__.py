@@ -113,6 +113,8 @@ from analyzers import e84_graph_duplication_smell
 from analyzers import e85_adhoc_scheduler_smell
 from analyzers import e86_adhoc_state_machine_smell
 from analyzers import e87_flow_bypass_smell
+from analyzers import e88_routing_duplication_smell
+from analyzers import e89_nondeterministic_routing_smell
 
 
 ANALYZERS = (
@@ -229,6 +231,8 @@ ANALYZERS = (
     e85_adhoc_scheduler_smell,
     e86_adhoc_state_machine_smell,
     e87_flow_bypass_smell,
+    e88_routing_duplication_smell,
+    e89_nondeterministic_routing_smell,
 )
 
 

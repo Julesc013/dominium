@@ -1,0 +1,21 @@
+SCHEMA: core/route_result.schema
+schema_id: dominium.schema.core.route_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic route result payloads emitted by NetworkGraph routing.
+
+REQUIRED SHAPE:
+record route_result
+  required:
+    - schema_version: semver
+    - path_node_ids: ordered_list[id]
+    - path_edge_ids: ordered_list[id]
+    - total_cost: fixed_point
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- Path ordering is deterministic.
+- Deterministic fingerprint is a canonical hash over route payload.
