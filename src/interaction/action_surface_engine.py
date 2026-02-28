@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
+from src.control.capability import resolve_missing_capabilities
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -199,6 +200,7 @@ def resolve_action_surfaces(
     tool_type_registry: Mapping[str, object] | None = None,
     tool_effect_model_registry: Mapping[str, object] | None = None,
     surface_visibility_policy_registry: Mapping[str, object] | None = None,
+    capability_bindings: object = None,
     held_tool_tags: object = None,
     active_tool: Mapping[str, object] | None = None,
 ) -> Dict[str, object]:
@@ -256,6 +258,21 @@ def resolve_action_surfaces(
             normalized_tool_tags = _sorted_unique_strings(list(raw.get("compatible_tool_tags") or []))
             if known_tool_tags:
                 normalized_tool_tags = [tag for tag in normalized_tool_tags if tag in known_tool_tags]
+            required_capabilities = _sorted_unique_strings(
+                list(raw.get("required_capabilities") or [])
+            )
+            if not required_capabilities:
+                required_capabilities = _sorted_unique_strings(
+                    list((dict(raw.get("extensions") or {})).get("required_capabilities") or [])
+                )
+            if required_capabilities:
+                missing_caps = resolve_missing_capabilities(
+                    entity_id=target_id,
+                    required_capabilities=required_capabilities,
+                    capability_bindings=capability_bindings,
+                )
+                if missing_caps:
+                    continue
             visibility_policy_id = str(raw.get("visibility_policy_id", "")).strip() or "visibility.default"
             policy_row = dict(visibility_policies.get(visibility_policy_id) or visibility_policies["visibility.default"])
             if not _visible_under_policy(policy_row, authority_entitlements, channels):
@@ -300,6 +317,7 @@ def resolve_action_surfaces(
                 "extensions": {
                     "source": source_name,
                     "source_index": int(max(0, _to_int(source_index, 0))),
+                    "required_capabilities": list(required_capabilities),
                     "tool_compatible": bool(tool_compatible),
                     "tool_surface_compatible": bool(tool_surface_compatible),
                     "tool_tag_compatible": bool(tool_tag_compatible),
