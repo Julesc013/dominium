@@ -98,6 +98,32 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.interior.layout",
+        "title": "Interior Layout",
+        "data": {
+          "data_kind": "interior_layout"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.interior.portal_states",
+        "title": "Interior Portal States",
+        "data": {
+          "data_kind": "interior_portal_states"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.ag_progress",
         "title": "Assembly Progress",
         "data": {

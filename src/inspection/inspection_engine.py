@@ -11,7 +11,7 @@ REFUSAL_INSPECT_FORBIDDEN_BY_LAW = "refusal.inspect.forbidden_by_law"
 REFUSAL_INSPECT_BUDGET_EXCEEDED = "refusal.inspect.budget_exceeded"
 REFUSAL_INSPECT_TARGET_INVALID = "refusal.inspect.target_invalid"
 
-_VALID_TARGET_KINDS = {"structure", "project", "node", "manifest", "cohort", "faction", "machine", "port", "graph"}
+_VALID_TARGET_KINDS = {"structure", "project", "node", "manifest", "cohort", "faction", "machine", "port", "graph", "interior"}
 _VALID_FIDELITY = ("macro", "meso", "micro")
 _SECTION_IDS_BY_FIDELITY = {
     "macro": [
@@ -28,6 +28,8 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.batches_summary",
         "section.flow_summary",
         "section.flow_utilization",
+        "section.interior.layout",
+        "section.interior.portal_states",
         "section.ag_progress",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
@@ -40,6 +42,8 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.batches_summary",
         "section.flow_summary",
         "section.flow_utilization",
+        "section.interior.layout",
+        "section.interior.portal_states",
         "section.ag_progress",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
@@ -75,6 +79,8 @@ _DEFAULT_SECTION_ROWS = {
         "title": "NetworkGraph Capacity Utilization",
         "extensions": {"cost_units": 2},
     },
+    "section.interior.layout": {"title": "Interior Layout", "extensions": {"cost_units": 2}},
+    "section.interior.portal_states": {"title": "Interior Portal States", "extensions": {"cost_units": 2}},
     "section.ag_progress": {"title": "Assembly Progress", "extensions": {"cost_units": 2}},
     "section.maintenance_backlog": {"title": "Maintenance Backlog", "extensions": {"cost_units": 1}},
     "section.failure_risk_summary": {"title": "Failure Risk Summary", "extensions": {"cost_units": 1}},
@@ -125,6 +131,10 @@ def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
     if token.startswith("graph."):
         return "graph"
+    if token.startswith("interior.graph."):
+        return "graph"
+    if token.startswith("interior.volume.") or token.startswith("interior.portal."):
+        return "interior"
     if token.startswith("machine."):
         return "machine"
     if token.startswith("port."):
@@ -347,6 +357,77 @@ def _events_for_target(state: Mapping[str, object], target_id: str, time_range: 
     return sorted(rows, key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))))
 
 
+def _row_index(rows: object, key: str) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in list(rows or []) if isinstance(item, dict)), key=lambda item: str(item.get(key, ""))):
+        token = str(row.get(key, "")).strip()
+        if not token:
+            continue
+        out[token] = dict(row)
+    return out
+
+
+def _portal_state_id(portal_row: Mapping[str, object], portal_state_index: Mapping[str, dict]) -> str:
+    portal = dict(portal_row or {})
+    machine_id = str(portal.get("state_machine_id", "")).strip()
+    if machine_id:
+        machine = dict(portal_state_index.get(machine_id) or {})
+        token = str(machine.get("state_id", "")).strip()
+        if token:
+            return token
+    ext = dict(portal.get("extensions") or {})
+    return str(ext.get("state_id", "")).strip() or "open"
+
+
+def _graph_for_target(state: Mapping[str, object], target_payload: Mapping[str, object], request: Mapping[str, object]) -> dict:
+    payload = dict(target_payload or {})
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    target_id = str(request.get("target_id", "")).strip()
+    graph_rows = _row_index((dict(state or {})).get("interior_graphs"), "graph_id")
+
+    if collection == "interior_graphs":
+        graph_id = str(row.get("graph_id", "")).strip()
+        if graph_id:
+            return dict(graph_rows.get(graph_id) or row)
+    if target_id.startswith("interior.graph."):
+        token = str(target_id[len("interior.graph."):]).strip()
+        if token:
+            return dict(graph_rows.get(token) or {})
+    if target_id.startswith("graph."):
+        return dict(graph_rows.get(target_id) or {})
+
+    graph_id = (
+        str(row.get("interior_graph_id", "")).strip()
+        or str((dict(row.get("extensions") or {})).get("interior_graph_id", "")).strip()
+    )
+    if not graph_id and collection in {"installed_structure_instances", "machine_assemblies"}:
+        structure_id = str(row.get("instance_id", "")).strip() or str(row.get("machine_id", "")).strip()
+        for binding in sorted(
+            (item for item in list((dict(state or {})).get("interior_structure_bindings") or []) if isinstance(item, dict)),
+            key=lambda item: (str(item.get("structure_id", "")), str(item.get("graph_id", ""))),
+        ):
+            if str(binding.get("structure_id", "")).strip() != structure_id:
+                continue
+            graph_id = str(binding.get("graph_id", "")).strip()
+            if graph_id:
+                break
+    if graph_id:
+        return dict(graph_rows.get(graph_id) or {})
+
+    if collection == "interior_volumes":
+        volume_id = str(row.get("volume_id", "")).strip()
+        for graph_row in sorted(graph_rows.values(), key=lambda item: str(item.get("graph_id", ""))):
+            if volume_id and volume_id in set(_sorted_unique_strings(graph_row.get("volumes"))):
+                return dict(graph_row)
+    if collection == "interior_portals":
+        portal_id = str(row.get("portal_id", "")).strip()
+        for graph_row in sorted(graph_rows.values(), key=lambda item: str(item.get("graph_id", ""))):
+            if portal_id and portal_id in set(_sorted_unique_strings(graph_row.get("portals"))):
+                return dict(graph_row)
+    return {}
+
+
 def _build_section_data(section_id: str, *, state: Mapping[str, object], target_payload: Mapping[str, object], request: Mapping[str, object], quant_step: int, include_part_ids: bool) -> dict:
     row = dict(target_payload.get("row") or {})
     payload_extensions = dict(target_payload.get("extensions") or {})
@@ -560,6 +641,53 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
             "capacity_total": int(_quantize_map({"value": capacity_total}, step=quant_step).get("value", 0)),
             "capacity_used_total": int(_quantize_map({"value": used_total}, step=quant_step).get("value", 0)),
             "utilization_permille": int(utilization_permille),
+        }
+    if section_id == "section.interior.layout":
+        graph = _graph_for_target(state, target_payload, request)
+        if not graph:
+            return {"available": False}
+        volume_rows_by_id = _row_index((dict(state or {})).get("interior_volumes"), "volume_id")
+        volume_ids = _sorted_unique_strings(graph.get("volumes"))
+        volume_type_counts: Dict[str, int] = {}
+        for volume_id in volume_ids:
+            volume = dict(volume_rows_by_id.get(volume_id) or {})
+            volume_type_id = str(volume.get("volume_type_id", "volume.unknown")).strip() or "volume.unknown"
+            volume_type_counts[volume_type_id] = _as_int(volume_type_counts.get(volume_type_id, 0), 0) + 1
+        return {
+            "available": True,
+            "graph_id": str(graph.get("graph_id", "")).strip(),
+            "volume_count": len(volume_ids),
+            "portal_count": len(_sorted_unique_strings(graph.get("portals"))),
+            "volume_type_counts": dict((k, volume_type_counts[k]) for k in sorted(volume_type_counts.keys())),
+        }
+    if section_id == "section.interior.portal_states":
+        graph = _graph_for_target(state, target_payload, request)
+        if not graph:
+            return {"available": False, "portal_count": 0, "portal_states": []}
+        portal_rows_by_id = _row_index((dict(state or {})).get("interior_portals"), "portal_id")
+        state_machine_rows_by_id = _row_index((dict(state or {})).get("interior_portal_state_machines"), "machine_id")
+        portal_states = []
+        for portal_id in _sorted_unique_strings(graph.get("portals")):
+            portal = dict(portal_rows_by_id.get(portal_id) or {})
+            if not portal:
+                continue
+            state_id = _portal_state_id(portal, state_machine_rows_by_id)
+            portal_states.append(
+                {
+                    "portal_id": portal_id,
+                    "portal_type_id": str(portal.get("portal_type_id", "")).strip(),
+                    "from_volume_id": str(portal.get("from_volume_id", "")).strip(),
+                    "to_volume_id": str(portal.get("to_volume_id", "")).strip(),
+                    "state_machine_id": str(portal.get("state_machine_id", "")).strip(),
+                    "state_id": state_id,
+                    "sealing_coefficient": int(max(0, _as_int(portal.get("sealing_coefficient", 0), 0))),
+                }
+            )
+        return {
+            "available": True,
+            "graph_id": str(graph.get("graph_id", "")).strip(),
+            "portal_count": len(portal_states),
+            "portal_states": sorted(portal_states, key=lambda item: str(item.get("portal_id", "")))[:256],
         }
     if section_id == "section.ag_progress":
         projects = [dict(item) for item in list((dict(state or {})).get("construction_projects") or []) if isinstance(item, dict)]

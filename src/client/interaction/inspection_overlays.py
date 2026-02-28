@@ -408,6 +408,173 @@ def _logistics_graph_for_target(graph_rows: list[dict], target_row: dict, target
     return dict(graph_rows[0]) if graph_rows else {}
 
 
+def _interior_overlay_payload(
+    *,
+    target_semantic_id: str,
+    runtime: dict,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    del runtime
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    sections = dict((dict(inspection_snapshot or {})).get("summary_sections") or {})
+    layout_data = dict((dict(sections.get("section.interior.layout") or {})).get("data") or {})
+    portal_data = dict((dict(sections.get("section.interior.portal_states") or {})).get("data") or {})
+
+    graph_id = (
+        str(layout_data.get("graph_id", "")).strip()
+        or str(portal_data.get("graph_id", "")).strip()
+        or str(target_row.get("graph_id", "")).strip()
+        or str(target_semantic_id).strip()
+    )
+    available = bool(layout_data.get("available", False)) or bool(portal_data.get("available", False))
+    if not available:
+        return {
+            "mode": "interior_overlay",
+            "summary": "interior:{} unavailable".format(graph_id or str(target_semantic_id)),
+            "target_semantic_id": str(target_semantic_id),
+            "inspection_snapshot": dict(inspection_snapshot or {}),
+            "renderables": _overlay_renderables(
+                target_semantic_id=str(target_semantic_id),
+                summary_label="interior unavailable",
+                mode="interior_overlay",
+            ),
+            "materials": _overlay_materials(target_semantic_id=str(target_semantic_id)),
+            "degraded": True,
+            "extensions": {"overlay_kind": "interior", "collection": collection, "graph_status": "missing"},
+        }
+
+    volume_count = max(0, _to_int(layout_data.get("volume_count", 0), 0))
+    portal_states = sorted(
+        [dict(item) for item in list(portal_data.get("portal_states") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("portal_id", "")),
+    )
+    portal_count = max(len(portal_states), max(0, _to_int(layout_data.get("portal_count", 0), 0)))
+
+    volume_material_id = "mat.inspect.interior.volume.{}".format(canonical_sha256({"graph_id": graph_id, "kind": "volume"})[:12])
+    portal_open_material_id = "mat.inspect.interior.portal.open.{}".format(canonical_sha256({"graph_id": graph_id, "kind": "portal_open"})[:12])
+    portal_closed_material_id = "mat.inspect.interior.portal.closed.{}".format(canonical_sha256({"graph_id": graph_id, "kind": "portal_closed"})[:12])
+
+    materials = _overlay_materials(target_semantic_id=str(target_semantic_id))
+    materials.extend(
+        [
+            {
+                "schema_version": "1.0.0",
+                "material_id": volume_material_id,
+                "base_color": _color_from_seed({"graph_id": graph_id, "kind": "volume"}, floor=72),
+                "roughness": 320,
+                "metallic": 0,
+                "emission": None,
+                "transparency": 220,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_volume"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": portal_open_material_id,
+                "base_color": {"r": 86, "g": 214, "b": 124},
+                "roughness": 280,
+                "metallic": 0,
+                "emission": {"r": 86, "g": 214, "b": 124, "strength": 320},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_portal_open"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": portal_closed_material_id,
+                "base_color": {"r": 220, "g": 98, "b": 84},
+                "roughness": 280,
+                "metallic": 0,
+                "emission": {"r": 220, "g": 98, "b": 84, "strength": 300},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_portal_closed"},
+            },
+        ]
+    )
+    materials = sorted(
+        [dict(item) for item in materials if isinstance(item, dict)],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+
+    renderables = _overlay_renderables(
+        target_semantic_id=str(target_semantic_id),
+        summary_label="interior:{} volumes={} portals={}".format(graph_id, volume_count, portal_count),
+        mode="interior_overlay",
+    )
+    max_volume_markers = max(0, _to_int((dict(target_row.get("extensions") or {})).get("max_volume_markers", 128), 128))
+    for index in range(min(volume_count, max_volume_markers)):
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.interior.volume.{}".format(canonical_sha256({"graph_id": graph_id, "volume_index": index})[:16]),
+                "semantic_id": "overlay.inspect.interior.volume.{}".format(str(index).zfill(4)),
+                "primitive_id": "prim.box.debug",
+                "transform": {
+                    "position_mm": {"x": int(index * 1500), "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": volume_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_volume"},
+            }
+        )
+    for index, portal in enumerate(portal_states[:256]):
+        portal_id = str(portal.get("portal_id", "")).strip()
+        state_id = str(portal.get("state_id", "")).strip() or "unknown"
+        is_open = state_id in {"open", "opening", "unlocked", "permeable"}
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.interior.portal.{}".format(canonical_sha256({"graph_id": graph_id, "portal_id": portal_id})[:16]),
+                "semantic_id": "overlay.inspect.interior.portal.{}".format(portal_id or str(index).zfill(4)),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": int(index * 1500), "y": 1200, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": portal_open_material_id if is_open else portal_closed_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": "{} ({})".format(portal_id or "portal", state_id),
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "interior_portal_state",
+                    "state_id": state_id,
+                },
+            }
+        )
+    renderables = sorted(
+        [dict(item) for item in renderables if isinstance(item, dict)],
+        key=lambda row: str(row.get("renderable_id", "")),
+    )
+
+    return {
+        "mode": "interior_overlay",
+        "summary": "interior:{} volumes={} portals={}".format(graph_id, volume_count, portal_count),
+        "target_semantic_id": str(target_semantic_id),
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": renderables,
+        "materials": materials,
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "interior",
+            "collection": collection,
+            "graph_id": graph_id,
+            "volume_count": int(volume_count),
+            "portal_count": int(portal_count),
+        },
+    }
+
+
 def _logistics_overlay_payload(
     *,
     target_semantic_id: str,
@@ -1517,6 +1684,22 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": graph_overlay,
+            "overlay_runtime": runtime,
+        }
+    if (
+        target_id.startswith("interior.graph.")
+        or target_id.startswith("interior.volume.")
+        or target_id.startswith("interior.portal.")
+        or snapshot_collection in ("interior_graphs", "interior_volumes", "interior_portals")
+    ):
+        interior_overlay = _interior_overlay_payload(
+            target_semantic_id=target_id,
+            runtime=runtime,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": interior_overlay,
             "overlay_runtime": runtime,
         }
     if (
