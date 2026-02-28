@@ -1,0 +1,20 @@
+SCHEMA: governance/deprecation_registry.schema
+schema_id: dominium.schema.governance.deprecation_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic governance registry for deprecation lifecycle tracking and migration enforcement.
+
+REQUIRED SHAPE:
+record deprecation_registry
+  required:
+    - registry_id: id
+    - entries: list[deprecation_entry]
+    - deterministic_fingerprint: hash64
+    - extensions: map
+
+INVARIANTS:
+- Entries are ordered deterministically by deprecated_id.
+- Registry is governance-only and must not mutate runtime simulation semantics.
+

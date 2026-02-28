@@ -1,0 +1,33 @@
+{
+  "deterministic_fingerprint": "0e076fb52230ee76ab5a447a89fbfb5c1697b2012d89fbc1093a30580aed88be",
+  "entries": [
+    {
+      "adapter_path": "tools/governance/adapters/deprecation_registry_adapter.py",
+      "deprecated_id": "data/registries/deprecation_registry.json",
+      "deprecated_kind": "registry",
+      "deprecated_version": "1.0.0",
+      "extensions": {},
+      "introduced_version": "1.0.0",
+      "notes": "Legacy registry path retained for compatibility tooling only.",
+      "reason": "Governance deprecations moved to canonical data/governance path.",
+      "removal_target_version": "2.0.0",
+      "replacement_id": "data/governance/deprecations.json",
+      "status": "deprecated"
+    },
+    {
+      "adapter_path": "tools/governance/adapters/deprecation_schema_adapter.py",
+      "deprecated_id": "schema/deprecation/deprecation_entry.schema",
+      "deprecated_kind": "schema",
+      "deprecated_version": "1.0.0",
+      "extensions": {},
+      "introduced_version": "1.0.0",
+      "notes": "Legacy schema location remains for migration-only compatibility.",
+      "reason": "Deprecation schema moved under governance namespace.",
+      "removal_target_version": "2.0.0",
+      "replacement_id": "schema/governance/deprecation_entry.schema",
+      "status": "quarantined"
+    }
+  ],
+  "extensions": {},
+  "registry_id": "dominium.governance.deprecations"
+}
