@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Flow Channel Schema",
+  "version": "1.0.0",
+  "description": "Deterministic flow channel declaration over NetworkGraph.",
+  "x-doc-ref": [
+    "docs/architecture/CORE_ABSTRACTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "channel_id",
+    "graph_id",
+    "quantity_id",
+    "source_node_id",
+    "sink_node_id",
+    "solver_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quantity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sink_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capacity_per_tick": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "delay_ticks": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "loss_fraction": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "solver_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "channel_id": "flow.logistics.mass.alpha",
+      "graph_id": "graph.logistics.alpha",
+      "quantity_id": "quantity.mass",
+      "source_node_id": "node.factory.alpha",
+      "sink_node_id": "node.port.alpha",
+      "capacity_per_tick": 10000,
+      "delay_ticks": 4,
+      "loss_fraction": 0,
+      "solver_policy_id": "flow.coarse_default",
+      "extensions": {}
+    }
+  ]
+}
+

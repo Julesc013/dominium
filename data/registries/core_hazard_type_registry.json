@@ -1,0 +1,33 @@
+{
+  "schema_id": "dominium.registry.core_hazard_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.core_hazard_type_registry",
+    "registry_version": "1.0.0",
+    "hazard_types": [
+      {
+        "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.corrosion.basic",
+        "description": "Baseline corrosion hazard model family.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.fatigue.basic",
+        "description": "Baseline fatigue hazard model family.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.fire.basic",
+        "description": "Baseline fire hazard model family.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

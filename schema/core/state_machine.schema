@@ -1,0 +1,31 @@
+SCHEMA: core/state_machine.schema
+schema_id: dominium.schema.core.state_machine
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic process-triggered state machines shared across doors, signals, machine states, and projects.
+
+REQUIRED SHAPE:
+record state_machine
+  required:
+    - schema_version: semver
+    - machine_id: id
+    - machine_type_id: id
+    - state_id: id
+    - transitions: list[transition]
+    - extensions: map
+
+record transition
+  required:
+    - transition_id: id
+    - from_state_id: id
+    - to_state_id: id
+    - trigger_process_id: id
+    - priority: i32
+    - extensions: map
+
+INVARIANTS:
+- State transitions are process-triggered only.
+- Conflict resolution among candidate transitions is deterministic by priority then transition ID.
+

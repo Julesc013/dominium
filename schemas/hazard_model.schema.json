@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hazard Model Schema",
+  "version": "1.0.0",
+  "description": "Deterministic hazard accumulation and threshold declaration.",
+  "x-doc-ref": [
+    "docs/architecture/CORE_ABSTRACTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "hazard_id",
+    "hazard_type_id",
+    "target_id",
+    "accumulation",
+    "threshold",
+    "consequence_process_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "hazard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hazard_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accumulation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "threshold": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "consequence_process_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "hazard_id": "hazard.structure.alpha.corrosion",
+      "hazard_type_id": "hazard.corrosion.basic",
+      "target_id": "assembly.structure.alpha",
+      "accumulation": 10,
+      "threshold": 100,
+      "consequence_process_id": "process.hazard_apply_consequence",
+      "extensions": {}
+    }
+  ]
+}
+

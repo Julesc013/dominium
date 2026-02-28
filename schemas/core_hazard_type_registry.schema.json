@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Core Hazard Type Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic core hazard type registry output.",
+  "x-doc-ref": [
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "hazard_types",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "hazard_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "hazard_type_id",
+          "description",
+          "trigger_mode",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "hazard_type_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "trigger_mode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "hazard_types": [],
+      "registry_hash": "8fabda90ac8e607d4ad57adb4d81a8552bb84468457ed8bbf5f13f35656abf6f"
+    }
+  ]
+}
+

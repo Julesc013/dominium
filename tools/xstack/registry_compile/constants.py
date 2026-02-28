@@ -1,7 +1,7 @@
 """Registry compile constants and output naming contract."""
 
 REGISTRY_FORMAT_VERSION = "1.0.0"
-COMPILER_VERSION = "1.20.0"
+COMPILER_VERSION = "1.21.0"
 DEFAULT_BUNDLE_ID = "bundle.base.lab"
 DEFAULT_REGISTRY_OUT_DIR_REL = "build/registries"
 DEFAULT_LOCKFILE_OUT_REL = "build/lockfile.json"
@@ -27,6 +27,12 @@ REGISTRY_OUTPUT_FILENAMES = {
     "part_class_registry": "part_class.registry.json",
     "connection_type_registry": "connection_type.registry.json",
     "blueprint_registry": "blueprint.registry.json",
+    "core_routing_policy_registry": "core_routing_policy.registry.json",
+    "core_flow_solver_policy_registry": "core_flow_solver_policy.registry.json",
+    "core_constraint_type_registry": "core_constraint_type.registry.json",
+    "core_state_machine_type_registry": "core_state_machine_type.registry.json",
+    "core_hazard_type_registry": "core_hazard_type.registry.json",
+    "core_schedule_policy_registry": "core_schedule_policy.registry.json",
     "logistics_routing_rule_registry": "logistics_routing_rule.registry.json",
     "logistics_graph_registry": "logistics_graph.registry.json",
     "provenance_event_type_registry": "provenance_event_type.registry.json",

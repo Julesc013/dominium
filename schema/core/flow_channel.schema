@@ -1,0 +1,27 @@
+SCHEMA: core/flow_channel.schema
+schema_id: dominium.schema.core.flow_channel
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic flow channels over NetworkGraph for material/energy/fluid/signal-like transfers.
+
+REQUIRED SHAPE:
+record flow_channel
+  required:
+    - schema_version: semver
+    - channel_id: id
+    - graph_id: id
+    - quantity_id: id
+    - source_node_id: id
+    - sink_node_id: id
+    - capacity_per_tick: optional_fixed
+    - delay_ticks: optional_u64
+    - loss_fraction: optional_fixed
+    - solver_policy_id: id
+    - extensions: map
+
+INVARIANTS:
+- Quantity channels are explicit (`quantity_id`) and ledger-compatible.
+- Flow channels carry deterministic coarse controls and remain process-accounted.
+

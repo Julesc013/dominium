@@ -2,9 +2,16 @@
 
 from __future__ import annotations
 
-import heapq
-from typing import Dict, List, Mapping, Tuple
+from typing import Dict, List, Mapping
 
+from src.core.flow.flow_engine import flow_transfer
+from src.core.graph.network_graph_engine import (
+    NetworkGraphError,
+    normalize_network_graph as core_normalize_network_graph,
+    route_delay_ticks as core_route_delay_ticks,
+    route_loss_fraction as core_route_loss_fraction,
+    route_query as core_route_query,
+)
 from src.materials.dimension_engine import fixed_point_config_from_policy
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -44,25 +51,6 @@ def _rows_by_id(rows: object, key_field: str) -> Dict[str, dict]:
         if token:
             out[token] = dict(row)
     return out
-
-
-def _round_div_away_from_zero(numerator: int, denominator: int) -> int:
-    if int(denominator) == 0:
-        raise LogisticsError(
-            REFUSAL_LOGISTICS_INVALID_ROUTE,
-            "division by zero in logistics fixed-point calculation",
-            {"denominator": str(denominator)},
-        )
-    n = int(numerator)
-    d = int(denominator)
-    sign = -1 if (n < 0) ^ (d < 0) else 1
-    abs_n = abs(n)
-    abs_d = abs(d)
-    quotient = abs_n // abs_d
-    remainder = abs_n % abs_d
-    if remainder * 2 >= abs_d:
-        quotient += 1
-    return int(sign * quotient)
 
 
 def _inventory_hash(node_id: str, material_stocks: Mapping[str, object], batch_refs: List[object]) -> str:
@@ -339,127 +327,114 @@ def graph_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str,
     return rows
 
 
-def _edge_index(graph_row: Mapping[str, object]) -> Dict[str, dict]:
-    return _rows_by_id((graph_row or {}).get("edges"), "edge_id")
-
-
-def _adjacency(graph_row: Mapping[str, object]) -> Dict[str, List[dict]]:
-    out: Dict[str, List[dict]] = {}
-    for edge in sorted((item for item in list((graph_row or {}).get("edges") or []) if isinstance(item, dict)), key=lambda item: str(item.get("edge_id", ""))):
-        from_node_id = str(edge.get("from_node_id", "")).strip()
-        if not from_node_id:
-            continue
-        out.setdefault(from_node_id, []).append(dict(edge))
-    for key in sorted(out.keys()):
-        out[key] = sorted(out[key], key=lambda item: str(item.get("edge_id", "")))
-    return out
-
-
-def _direct_route(graph_row: Mapping[str, object], from_node_id: str, to_node_id: str) -> List[str]:
-    candidates = []
-    for edge in sorted((item for item in list((graph_row or {}).get("edges") or []) if isinstance(item, dict)), key=lambda item: str(item.get("edge_id", ""))):
-        if str(edge.get("from_node_id", "")).strip() != str(from_node_id).strip():
-            continue
-        if str(edge.get("to_node_id", "")).strip() != str(to_node_id).strip():
-            continue
-        candidates.append(str(edge.get("edge_id", "")).strip())
-    candidates = [token for token in candidates if token]
-    return sorted(set(candidates))[:1]
-
-
-def _metric_cost(edge_row: Mapping[str, object], metric: str) -> int:
-    if str(metric) == "min_cost_units":
-        value = edge_row.get("cost_units_per_mass")
-        return int(_as_int(0 if value is None else value, 0))
-    return int(_as_int(edge_row.get("delay_ticks", 0), 0))
-
-
-def _best_route(graph_row: Mapping[str, object], from_node_id: str, to_node_id: str, routing_rule: Mapping[str, object]) -> List[str]:
+def _core_graph_payload(graph_row: Mapping[str, object]) -> dict:
     graph = normalize_logistics_graph(graph_row)
-    from_node = str(from_node_id).strip()
-    to_node = str(to_node_id).strip()
-    if from_node == to_node:
-        return []
-
-    rule = _normalize_routing_rule(routing_rule)
-    rule_id = str(rule.get("rule_id", ""))
-    allow_multi_hop = bool(rule.get("allow_multi_hop", False))
-
-    if rule_id == "route.direct_only" or not allow_multi_hop:
-        direct = _direct_route(graph, from_node, to_node)
-        if direct:
-            return list(direct)
-        raise LogisticsError(
-            REFUSAL_LOGISTICS_INVALID_ROUTE,
-            "no direct route exists between logistics nodes",
-            {"from_node_id": from_node, "to_node_id": to_node, "rule_id": rule_id},
+    core_nodes = []
+    core_edges = []
+    for node in list(graph.get("nodes") or []):
+        node_row = dict(node)
+        core_nodes.append(
+            {
+                "schema_version": "1.0.0",
+                "node_id": str(node_row.get("node_id", "")).strip(),
+                "node_type_id": str(node_row.get("node_type", "")).strip(),
+                "payload_ref": {
+                    "location_ref": str(node_row.get("location_ref", "")).strip(),
+                    "capacity_storage": node_row.get("capacity_storage"),
+                    "tags": list(node_row.get("tags") or []),
+                },
+                "tags": list(node_row.get("tags") or []),
+                "extensions": dict(node_row.get("extensions") or {}),
+            }
         )
-
-    metric = "delay"
-    if rule_id == "route.shortest_delay":
-        metric = "delay"
-    elif rule_id == "route.min_cost_units":
-        metric = "min_cost_units"
-
-    adjacency = _adjacency(graph)
-    heap: List[Tuple[int, str, str, str, Tuple[str, ...]]] = []
-    # key: (metric_total, tie_break_path, node_id, last_edge_id, route_edges)
-    heapq.heappush(heap, (0, "", from_node, "", tuple()))
-    best_seen: Dict[str, Tuple[int, str]] = {}
-
-    while heap:
-        metric_total, tie_path, node_id, _last_edge_id, route_tuple = heapq.heappop(heap)
-        prior = best_seen.get(node_id)
-        if prior is not None and (metric_total, tie_path) > prior:
-            continue
-        best_seen[node_id] = (metric_total, tie_path)
-        if node_id == to_node:
-            return list(route_tuple)
-
-        for edge in adjacency.get(node_id, []):
-            edge_id = str(edge.get("edge_id", "")).strip()
-            if not edge_id:
-                continue
-            next_node = str(edge.get("to_node_id", "")).strip()
-            if not next_node:
-                continue
-            step = _metric_cost(edge, metric)
-            next_metric = int(metric_total) + int(step)
-            next_route = tuple(list(route_tuple) + [edge_id])
-            next_tie = "|".join(next_route)
-            prior_next = best_seen.get(next_node)
-            if prior_next is not None and (next_metric, next_tie) >= prior_next:
-                continue
-            heapq.heappush(heap, (next_metric, next_tie, next_node, edge_id, next_route))
-
-    raise LogisticsError(
-        REFUSAL_LOGISTICS_INVALID_ROUTE,
-        "no route exists between logistics nodes",
+    for edge in list(graph.get("edges") or []):
+        edge_row = dict(edge)
+        core_edges.append(
+            {
+                "schema_version": "1.0.0",
+                "edge_id": str(edge_row.get("edge_id", "")).strip(),
+                "from_node_id": str(edge_row.get("from_node_id", "")).strip(),
+                "to_node_id": str(edge_row.get("to_node_id", "")).strip(),
+                "edge_type_id": str(edge_row.get("transport_mode", "")).strip(),
+                "payload_ref": {
+                    "cost_units_per_mass": edge_row.get("cost_units_per_mass"),
+                    "transport_mode": str(edge_row.get("transport_mode", "")).strip(),
+                },
+                "capacity": edge_row.get("capacity_mass_per_tick"),
+                "delay_ticks": edge_row.get("delay_ticks"),
+                "loss_fraction": edge_row.get("loss_fraction"),
+                "extensions": dict(edge_row.get("extensions") or {}),
+            }
+        )
+    return core_normalize_network_graph(
         {
-            "from_node_id": from_node,
-            "to_node_id": to_node,
-            "rule_id": str(rule.get("rule_id", "")),
-        },
+        "schema_version": "1.0.0",
+        "graph_id": str(graph.get("graph_id", "")).strip(),
+        "node_type_schema_id": "logistics_node",
+        "edge_type_schema_id": "logistics_edge",
+        "nodes": core_nodes,
+        "edges": core_edges,
+        "deterministic_routing_policy_id": str(graph.get("deterministic_routing_rule_id", "")).strip(),
+        "extensions": {"source_subsystem": "materials.logistics"},
+        }
     )
 
 
+def _core_routing_policy(rule_row: Mapping[str, object]) -> dict:
+    rule = _normalize_routing_rule(rule_row)
+    rule_id = str(rule.get("rule_id", "")).strip()
+    optimization_metric = "delay_ticks"
+    # Deterministic shortest-path tie-break is delegated to core_route_query (heapq-based).
+    if rule_id == "route.shortest_delay":
+        optimization_metric = "delay_ticks"
+    elif rule_id == "route.min_cost_units":
+        optimization_metric = "min_cost_units"
+    return {
+        "policy_id": rule_id,
+        "description": str(rule.get("description", "")).strip(),
+        "tie_break_policy": str(rule.get("tie_break_policy", "")).strip() or "edge_id_lexicographic",
+        "allow_multi_hop": bool(rule.get("allow_multi_hop", False)),
+        "optimization_metric": optimization_metric,
+        "extensions": dict(rule.get("extensions") or {}),
+    }
+
+
+def _best_route(graph_row: Mapping[str, object], from_node_id: str, to_node_id: str, routing_rule: Mapping[str, object]) -> List[str]:
+    try:
+        return core_route_query(
+            _core_graph_payload(graph_row),
+            _core_routing_policy(routing_rule),
+            str(from_node_id).strip(),
+            str(to_node_id).strip(),
+        )
+    except NetworkGraphError as exc:
+        raise LogisticsError(
+            REFUSAL_LOGISTICS_INVALID_ROUTE,
+            str(exc),
+            dict(exc.details),
+        ) from exc
+
+
 def _route_delay_ticks(graph_row: Mapping[str, object], edge_ids: List[str]) -> int:
-    edge_index = _edge_index(graph_row)
-    return int(sum(int(_as_int((edge_index.get(edge_id) or {}).get("delay_ticks", 0), 0)) for edge_id in list(edge_ids or [])))
+    try:
+        return int(core_route_delay_ticks(_core_graph_payload(graph_row), list(edge_ids or [])))
+    except NetworkGraphError as exc:
+        raise LogisticsError(
+            REFUSAL_LOGISTICS_INVALID_ROUTE,
+            str(exc),
+            dict(exc.details),
+        ) from exc
 
 
 def _route_loss_fraction_raw(graph_row: Mapping[str, object], edge_ids: List[str], *, scale: int) -> int:
-    edge_index = _edge_index(graph_row)
-    survival = int(scale)
-    for edge_id in list(edge_ids or []):
-        edge_row = dict(edge_index.get(str(edge_id).strip()) or {})
-        loss_fraction = int(_as_int(edge_row.get("loss_fraction", 0), 0))
-        if loss_fraction < 0:
-            loss_fraction = 0
-        if loss_fraction > int(scale):
-            loss_fraction = int(scale)
-        survival = int(_round_div_away_from_zero(int(survival) * int(scale - loss_fraction), int(scale)))
-    return int(max(0, int(scale - survival)))
+    try:
+        return int(core_route_loss_fraction(_core_graph_payload(graph_row), list(edge_ids or []), scale=int(scale)))
+    except NetworkGraphError as exc:
+        raise LogisticsError(
+            REFUSAL_LOGISTICS_INVALID_ROUTE,
+            str(exc),
+            dict(exc.details),
+        ) from exc
 
 
 def _manifest_fingerprint(manifest_row: Mapping[str, object]) -> str:
@@ -731,13 +706,6 @@ def _commitment_rows_by_manifest(rows: object) -> Dict[str, dict]:
     return out
 
 
-def _manifest_loss_mass(quantity_mass: int, loss_fraction_raw: int, scale: int) -> int:
-    if int(quantity_mass) <= 0 or int(loss_fraction_raw) <= 0:
-        return 0
-    fraction = max(0, min(int(scale), int(loss_fraction_raw)))
-    return int(max(0, _round_div_away_from_zero(int(quantity_mass) * int(fraction), int(scale))))
-
-
 def tick_manifests(
     *,
     graph_row: Mapping[str, object],
@@ -828,8 +796,15 @@ def tick_manifests(
                 status = "in_transit"
 
         if str(row.get("status", "")).strip() == "in_transit" and int(current_tick) >= int(arrive_tick):
-            loss_mass = _manifest_loss_mass(quantity_mass=quantity_mass, loss_fraction_raw=loss_fraction_raw, scale=int(policy.scale))
-            delivered_mass = int(max(0, int(quantity_mass) - int(loss_mass)))
+            flow_result = flow_transfer(
+                quantity=int(quantity_mass),
+                loss_fraction=int(loss_fraction_raw),
+                scale=int(policy.scale),
+                capacity_per_tick=None,
+                delay_ticks=0,
+            )
+            loss_mass = int(flow_result.get("loss_mass", 0))
+            delivered_mass = int(flow_result.get("delivered_mass", 0))
             if delivered_mass > 0:
                 _inventory_apply(
                     inventory,

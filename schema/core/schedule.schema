@@ -1,0 +1,24 @@
+SCHEMA: core/schedule.schema
+schema_id: dominium.schema.core.schedule
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic schedule components reused by construction, logistics, maintenance, and future timetables.
+
+REQUIRED SHAPE:
+record schedule
+  required:
+    - schema_version: semver
+    - schedule_id: id
+    - target_id: id
+    - start_tick: u64
+    - recurrence_rule: map
+    - next_due_tick: u64
+    - cancellation_policy: id
+    - extensions: map
+
+INVARIANTS:
+- Recurrence expansion and next-due computation are deterministic from schedule state.
+- Cancellation behavior is policy-declared and explicit.
+
