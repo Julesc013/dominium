@@ -1128,6 +1128,27 @@
         "1.0.0"
       ]
     },
+    "plan_artifact": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "plan_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "execute_plan_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "order_move": {
       "current_version": "1.0.0",
       "migrations": {},

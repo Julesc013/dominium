@@ -1,0 +1,24 @@
+SCHEMA: control/plan_intent.schema
+schema_id: dominium.schema.control.plan_intent
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic planning request artifact for derived-only plan creation.
+
+REQUIRED SHAPE:
+record plan_intent
+  required:
+    - schema_version: semver
+    - plan_intent_id: id
+    - requester_subject_id: id
+    - target_context: map
+    - plan_type_id: enum(structure|track|road|vehicle|custom)
+    - parameters: map
+    - created_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- plan_intent is derived-only and must not mutate Truth directly.
+- target_context must identify at least one deterministic spatial context key.
