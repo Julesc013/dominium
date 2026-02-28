@@ -7,6 +7,7 @@ from typing import Dict, List, Tuple
 
 from src.diegetics import compute_diegetic_instruments
 from src.epistemics.memory import update_memory_store
+from src.interior import InteriorError, path_exists
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -55,6 +56,191 @@ def _agent_entity_ids(truth: dict) -> List[str]:
                 continue
         out.append("agent.index.{}".format(idx))
     return sorted(out)
+
+
+def _interior_row_index(rows: object, id_key: str) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    if not isinstance(rows, list):
+        return out
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(id_key, ""))):
+        token = str(row.get(id_key, "")).strip()
+        if not token:
+            continue
+        out[token] = dict(row)
+    return out
+
+
+def _interior_entity_volume_map(state: dict) -> Dict[str, str]:
+    out: Dict[str, str] = {}
+
+    explicit_rows = list(state.get("interior_entity_locations") or [])
+    for row in sorted(
+        (item for item in explicit_rows if isinstance(item, dict)),
+        key=lambda item: (
+            str(item.get("entity_id", "")),
+            str(item.get("agent_id", "")),
+            str(item.get("volume_id", "")),
+        ),
+    ):
+        entity_id = (
+            str(row.get("entity_id", "")).strip()
+            or str(row.get("agent_id", "")).strip()
+            or str(row.get("semantic_id", "")).strip()
+        )
+        volume_id = (
+            str(row.get("volume_id", "")).strip()
+            or str(row.get("interior_volume_id", "")).strip()
+            or str((dict(row.get("extensions") or {})).get("volume_id", "")).strip()
+        )
+        if entity_id and volume_id:
+            out[entity_id] = volume_id
+
+    for row in sorted((item for item in list(state.get("agent_states") or []) if isinstance(item, dict)), key=lambda item: str(item.get("agent_id", ""))):
+        entity_id = str(row.get("entity_id", "")).strip() or str(row.get("agent_id", "")).strip()
+        ext = dict(row.get("extensions") or {})
+        volume_id = (
+            str(row.get("interior_volume_id", "")).strip()
+            or str(row.get("current_volume_id", "")).strip()
+            or str(row.get("volume_id", "")).strip()
+            or str(ext.get("interior_volume_id", "")).strip()
+            or str(ext.get("volume_id", "")).strip()
+        )
+        if entity_id and volume_id and entity_id not in out:
+            out[entity_id] = volume_id
+    return dict((key, out[key]) for key in sorted(out.keys()))
+
+
+def _viewer_interior_volume_id(*, state: dict, camera: dict, authority_context: dict, entity_volume_by_id: Dict[str, str]) -> str:
+    camera_ext = dict(camera.get("extensions") or {})
+    for token in (
+        str(camera.get("interior_volume_id", "")).strip(),
+        str(camera.get("current_volume_id", "")).strip(),
+        str(camera.get("volume_id", "")).strip(),
+        str(camera_ext.get("interior_volume_id", "")).strip(),
+    ):
+        if token:
+            return token
+
+    scope = dict(authority_context.get("epistemic_scope") or {})
+    scope_ext = dict(scope.get("extensions") or {})
+    for token in (
+        str(scope.get("interior_volume_id", "")).strip(),
+        str(scope.get("current_volume_id", "")).strip(),
+        str(scope.get("volume_id", "")).strip(),
+        str(scope_ext.get("interior_volume_id", "")).strip(),
+    ):
+        if token:
+            return token
+
+    subject_tokens = _sorted_unique(
+        [
+            str(scope.get("subject_id", "")).strip(),
+            str(authority_context.get("subject_id", "")).strip(),
+            str(authority_context.get("peer_id", "")).strip(),
+        ]
+    )
+    for subject_id in subject_tokens:
+        volume_id = str(entity_volume_by_id.get(subject_id, "")).strip()
+        if volume_id:
+            return volume_id
+    return ""
+
+
+def _interior_occlusion_bypass_allowed(*, law_profile: dict, lens: dict, lens_type: str) -> bool:
+    lens_id = str(lens.get("lens_id", "")).strip()
+    limits = dict(law_profile.get("epistemic_limits") or {})
+    if lens_id == "lens.nondiegetic.freecam":
+        return True
+    if str(lens_type).strip() == "nondiegetic" and bool(limits.get("allow_freecam_occlusion_bypass", False)):
+        return True
+    return bool(limits.get("allow_interior_occlusion_bypass", False))
+
+
+def _apply_interior_occlusion(
+    *,
+    truth_model: dict,
+    observed_entities: List[str],
+    camera: dict,
+    lens: dict,
+    lens_type: str,
+    law_profile: dict,
+    authority_context: dict,
+) -> Tuple[List[str], dict]:
+    state = truth_model.get("universe_state")
+    if not isinstance(state, dict):
+        return sorted(_sorted_unique(list(observed_entities or []))), {"applied": False, "reason": "no_state"}
+
+    if _interior_occlusion_bypass_allowed(law_profile=law_profile, lens=lens, lens_type=lens_type):
+        return sorted(_sorted_unique(list(observed_entities or []))), {"applied": False, "reason": "bypass_allowed"}
+
+    graph_rows = [dict(item) for item in list(state.get("interior_graphs") or []) if isinstance(item, dict)]
+    volume_rows = [dict(item) for item in list(state.get("interior_volumes") or []) if isinstance(item, dict)]
+    portal_rows = [dict(item) for item in list(state.get("interior_portals") or []) if isinstance(item, dict)]
+    if not graph_rows or not volume_rows:
+        return sorted(_sorted_unique(list(observed_entities or []))), {"applied": False, "reason": "no_interior_graph"}
+
+    entity_volume_by_id = _interior_entity_volume_map(state)
+    viewer_volume_id = _viewer_interior_volume_id(
+        state=state,
+        camera=dict(camera or {}),
+        authority_context=dict(authority_context or {}),
+        entity_volume_by_id=entity_volume_by_id,
+    )
+    if not viewer_volume_id:
+        return sorted(_sorted_unique(list(observed_entities or []))), {"applied": False, "reason": "no_viewer_volume"}
+
+    graph_by_id = _interior_row_index(graph_rows, "graph_id")
+    graph_for_volume: Dict[str, str] = {}
+    for graph_id in sorted(graph_by_id.keys()):
+        graph = dict(graph_by_id.get(graph_id) or {})
+        volume_ids = _sorted_unique(list(graph.get("volumes") or []))
+        for volume_id in volume_ids:
+            if volume_id and volume_id not in graph_for_volume:
+                graph_for_volume[volume_id] = graph_id
+
+    viewer_graph_id = str(graph_for_volume.get(viewer_volume_id, "")).strip()
+    if not viewer_graph_id:
+        return sorted(_sorted_unique(list(observed_entities or []))), {"applied": False, "reason": "viewer_not_in_graph"}
+
+    viewer_graph = dict(graph_by_id.get(viewer_graph_id) or {})
+    portal_state_rows = list(state.get("interior_portal_state_machines") or [])
+    visible = []
+    hidden = []
+    for entity_id in sorted(_sorted_unique(list(observed_entities or []))):
+        entity_volume_id = str(entity_volume_by_id.get(entity_id, "")).strip()
+        if not entity_volume_id:
+            visible.append(entity_id)
+            continue
+        if entity_volume_id == viewer_volume_id:
+            visible.append(entity_id)
+            continue
+        entity_graph_id = str(graph_for_volume.get(entity_volume_id, "")).strip()
+        if entity_graph_id != viewer_graph_id:
+            visible.append(entity_id)
+            continue
+        try:
+            if path_exists(
+                graph_row=viewer_graph,
+                volume_rows=volume_rows,
+                portal_rows=portal_rows,
+                from_volume_id=viewer_volume_id,
+                to_volume_id=entity_volume_id,
+                portal_state_rows=portal_state_rows,
+            ):
+                visible.append(entity_id)
+            else:
+                hidden.append(entity_id)
+        except InteriorError:
+            visible.append(entity_id)
+
+    return sorted(visible), {
+        "applied": True,
+        "viewer_volume_id": viewer_volume_id,
+        "viewer_graph_id": viewer_graph_id,
+        "visible_count": len(visible),
+        "hidden_count": len(hidden),
+        "hidden_entity_ids": list(sorted(hidden))[:64],
+    }
 
 
 def _simulation_tick(truth: dict) -> int:
@@ -1666,6 +1852,15 @@ def observe_truth(
         )
 
     observed_entities = _agent_entity_ids(truth_model)
+    observed_entities, interior_occlusion_meta = _apply_interior_occlusion(
+        truth_model=truth_model,
+        observed_entities=observed_entities,
+        camera=camera,
+        lens=lens,
+        lens_type=lens_type,
+        law_profile=law_profile,
+        authority_context=authority_context,
+    )
     simulation_tick = _simulation_tick(truth_model)
     time_control = _time_control(truth_model)
     epistemic_limits = law_profile.get("epistemic_limits")
@@ -1782,6 +1977,7 @@ def observe_truth(
             "eviction_rule_id": str(active_eviction_rule.get("eviction_rule_id", "")),
             "deterministic_filter_chain": list(filter_chain),
             "epistemic_visibility_policy": str((lens.get("epistemic_constraints") or {}).get("visibility_policy", "")),
+            "interior_occlusion": dict(interior_occlusion_meta),
         },
         "watermark": watermark_payload,
     }
