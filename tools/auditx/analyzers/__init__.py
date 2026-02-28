@@ -149,6 +149,7 @@ from analyzers import e120_direct_assembly_mutation_smell
 from analyzers import e121_plan_bypass_smell
 from analyzers import e122_silent_fidelity_downgrade_smell
 from analyzers import e123_unbounded_cost_smell
+from analyzers import e124_camera_bypass_smell
 
 
 ANALYZERS = (
@@ -301,6 +302,7 @@ ANALYZERS = (
     e121_plan_bypass_smell,
     e122_silent_fidelity_downgrade_smell,
     e123_unbounded_cost_smell,
+    e124_camera_bypass_smell,
 )
 
 
