@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interior Graph Schema",
+  "version": "1.0.0",
+  "description": "Deterministic InteriorVolumeGraph index payload.",
+  "x-doc-ref": [
+    "docs/interior/INTERIOR_VOLUME_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "graph_id",
+    "volumes",
+    "portals",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "volumes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "portals": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

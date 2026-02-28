@@ -1,0 +1,21 @@
+SCHEMA: interior/interior_graph.schema
+schema_id: dominium.schema.interior.interior_graph
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic InteriorVolumeGraph index payload.
+
+REQUIRED SHAPE:
+record interior_graph
+  required:
+    - schema_version: semver
+    - graph_id: id
+    - volumes: list<volume_id>
+    - portals: list<portal_id>
+    - extensions: map
+
+INVARIANTS:
+- volume IDs and portal IDs are deterministic ordered sets.
+- connectivity semantics must derive from referenced portal state machines.
+- graph metadata must not embed ad-hoc domain behavior flags.

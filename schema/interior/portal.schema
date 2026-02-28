@@ -1,0 +1,25 @@
+SCHEMA: interior/portal.schema
+schema_id: dominium.schema.interior.portal
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic portal payload connecting interior volumes.
+
+REQUIRED SHAPE:
+record portal
+  required:
+    - schema_version: semver
+    - portal_id: id
+    - from_volume_id: id
+    - to_volume_id: id
+    - portal_type_id: id
+    - state_machine_id: id
+    - sealing_coefficient: fixed_point
+    - tags: list<string>
+    - extensions: map
+
+INVARIANTS:
+- Portal transition state is sourced from StateMachineComponent, not ad-hoc flags.
+- Portal IDs are unique within a graph.
+- `from_volume_id` and `to_volume_id` must resolve to interior volumes.
