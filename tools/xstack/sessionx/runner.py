@@ -81,10 +81,14 @@ REGISTRY_HASH_KEY_MAP = {
     "control_action_registry_hash": "control_action_registry",
     "interaction_action_registry_hash": "interaction_action_registry",
     "surface_type_registry_hash": "surface_type_registry",
+    "port_type_registry_hash": "port_type_registry",
     "tool_tag_registry_hash": "tool_tag_registry",
     "tool_type_registry_hash": "tool_type_registry",
     "tool_effect_model_registry_hash": "tool_effect_model_registry",
     "surface_visibility_policy_registry_hash": "surface_visibility_policy_registry",
+    "port_visibility_policy_registry_hash": "port_visibility_policy_registry",
+    "machine_type_registry_hash": "machine_type_registry",
+    "machine_operation_registry_hash": "machine_operation_registry",
     "task_type_registry_hash": "task_type_registry",
     "progress_model_registry_hash": "progress_model_registry",
     "controller_type_registry_hash": "controller_type_registry",
@@ -179,10 +183,14 @@ REGISTRY_FILE_MAP = {
     "control_action_registry_hash": "control_action.registry.json",
     "interaction_action_registry_hash": "interaction_action.registry.json",
     "surface_type_registry_hash": "surface_type.registry.json",
+    "port_type_registry_hash": "port_type.registry.json",
     "tool_tag_registry_hash": "tool_tag.registry.json",
     "tool_type_registry_hash": "tool_type.registry.json",
     "tool_effect_model_registry_hash": "tool_effect_model.registry.json",
     "surface_visibility_policy_registry_hash": "surface_visibility_policy.registry.json",
+    "port_visibility_policy_registry_hash": "port_visibility_policy.registry.json",
+    "machine_type_registry_hash": "machine_type.registry.json",
+    "machine_operation_registry_hash": "machine_operation.registry.json",
     "task_type_registry_hash": "task_type.registry.json",
     "progress_model_registry_hash": "progress_model.registry.json",
     "controller_type_registry_hash": "controller_type.registry.json",
@@ -1320,6 +1328,14 @@ def boot_session_spec(
     )
     if surface_type_registry_error:
         return surface_type_registry_error
+    port_type_registry, port_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["port_type_registry_hash"],
+        expected_hash=str(registries.get("port_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if port_type_registry_error:
+        return port_type_registry_error
     tool_tag_registry, tool_tag_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["tool_tag_registry_hash"],
@@ -1352,6 +1368,30 @@ def boot_session_spec(
     )
     if surface_visibility_policy_registry_error:
         return surface_visibility_policy_registry_error
+    port_visibility_policy_registry, port_visibility_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["port_visibility_policy_registry_hash"],
+        expected_hash=str(registries.get("port_visibility_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if port_visibility_policy_registry_error:
+        return port_visibility_policy_registry_error
+    machine_type_registry, machine_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["machine_type_registry_hash"],
+        expected_hash=str(registries.get("machine_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if machine_type_registry_error:
+        return machine_type_registry_error
+    machine_operation_registry, machine_operation_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["machine_operation_registry_hash"],
+        expected_hash=str(registries.get("machine_operation_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if machine_operation_registry_error:
+        return machine_operation_registry_error
     task_type_registry, task_type_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["task_type_registry_hash"],
@@ -1954,10 +1994,14 @@ def boot_session_spec(
                 "terrain_tile_registry": terrain_tile_registry,
                 "interaction_action_registry": interaction_action_registry,
                 "surface_type_registry": surface_type_registry,
+                "port_type_registry": port_type_registry,
                 "tool_tag_registry": tool_tag_registry,
                 "tool_type_registry": tool_type_registry,
                 "tool_effect_model_registry": tool_effect_model_registry,
                 "surface_visibility_policy_registry": surface_visibility_policy_registry,
+                "port_visibility_policy_registry": port_visibility_policy_registry,
+                "machine_type_registry": machine_type_registry,
+                "machine_operation_registry": machine_operation_registry,
                 "task_type_registry": task_type_registry,
                 "progress_model_registry": progress_model_registry,
                 "governance_type_registry": governance_type_registry,
@@ -2069,10 +2113,14 @@ def boot_session_spec(
                 "terrain_tile_registry": terrain_tile_registry,
                 "interaction_action_registry": interaction_action_registry,
                 "surface_type_registry": surface_type_registry,
+                "port_type_registry": port_type_registry,
                 "tool_tag_registry": tool_tag_registry,
                 "tool_type_registry": tool_type_registry,
                 "tool_effect_model_registry": tool_effect_model_registry,
                 "surface_visibility_policy_registry": surface_visibility_policy_registry,
+                "port_visibility_policy_registry": port_visibility_policy_registry,
+                "machine_type_registry": machine_type_registry,
+                "machine_operation_registry": machine_operation_registry,
                 "task_type_registry": task_type_registry,
                 "progress_model_registry": progress_model_registry,
                 "governance_type_registry": governance_type_registry,
@@ -2455,10 +2503,14 @@ def boot_session_spec(
             "terrain_tile_registry": terrain_tile_registry,
             "interaction_action_registry": interaction_action_registry,
             "surface_type_registry": surface_type_registry,
+            "port_type_registry": port_type_registry,
             "tool_tag_registry": tool_tag_registry,
             "tool_type_registry": tool_type_registry,
             "tool_effect_model_registry": tool_effect_model_registry,
             "surface_visibility_policy_registry": surface_visibility_policy_registry,
+            "port_visibility_policy_registry": port_visibility_policy_registry,
+            "machine_type_registry": machine_type_registry,
+            "machine_operation_registry": machine_operation_registry,
             "task_type_registry": task_type_registry,
             "progress_model_registry": progress_model_registry,
             "governance_type_registry": governance_type_registry,
