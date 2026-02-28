@@ -1620,6 +1620,193 @@ def _interaction_registry_rows(
     return action_rows, errors
 
 
+def _action_surface_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _surface_type_record, surface_type_rows_raw, surface_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/surface_type_registry.json",
+        expected_schema_id="dominium.registry.surface_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="surface_types",
+    )
+    if surface_type_load_errors:
+        return [], [], [], surface_type_load_errors
+
+    surface_type_rows: List[dict] = []
+    surface_type_seen = set()
+    for entry in sorted(surface_type_rows_raw, key=lambda row: str((row or {}).get("surface_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_surface_type_entry",
+                    "message": "surface type entry must be object",
+                    "path": "$.surface_types",
+                }
+            )
+            continue
+        surface_type_id = str(entry.get("surface_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        default_icon_tag = entry.get("default_icon_tag")
+        extensions = entry.get("extensions")
+        if (
+            (not surface_type_id)
+            or (not description)
+            or (default_icon_tag is not None and not isinstance(default_icon_tag, str))
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_surface_type_entry",
+                    "message": "surface type entry missing required fields",
+                    "path": "$.surface_types",
+                }
+            )
+            continue
+        if surface_type_id in surface_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_surface_type_id",
+                    "message": "duplicate surface_type_id '{}'".format(surface_type_id),
+                    "path": "$.surface_types.surface_type_id",
+                }
+            )
+            continue
+        surface_type_seen.add(surface_type_id)
+        surface_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "surface_type_id": surface_type_id,
+                "description": description,
+                "default_icon_tag": str(default_icon_tag).strip() if isinstance(default_icon_tag, str) else None,
+                "extensions": dict(extensions),
+            }
+        )
+    surface_type_rows = sorted(surface_type_rows, key=lambda row: str(row.get("surface_type_id", "")))
+
+    _tool_tag_record, tool_tag_rows_raw, tool_tag_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/tool_tag_registry.json",
+        expected_schema_id="dominium.registry.tool_tag_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="tool_tags",
+    )
+    if tool_tag_load_errors:
+        return [], [], [], tool_tag_load_errors
+
+    tool_tag_rows: List[dict] = []
+    tool_tag_seen = set()
+    for entry in sorted(tool_tag_rows_raw, key=lambda row: str((row or {}).get("tool_tag_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tool_tag_entry",
+                    "message": "tool tag entry must be object",
+                    "path": "$.tool_tags",
+                }
+            )
+            continue
+        tool_tag_id = str(entry.get("tool_tag_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if (not tool_tag_id) or (not description) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tool_tag_entry",
+                    "message": "tool tag entry missing required fields",
+                    "path": "$.tool_tags",
+                }
+            )
+            continue
+        if tool_tag_id in tool_tag_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_tool_tag_id",
+                    "message": "duplicate tool_tag_id '{}'".format(tool_tag_id),
+                    "path": "$.tool_tags.tool_tag_id",
+                }
+            )
+            continue
+        tool_tag_seen.add(tool_tag_id)
+        tool_tag_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "tool_tag_id": tool_tag_id,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    tool_tag_rows = sorted(tool_tag_rows, key=lambda row: str(row.get("tool_tag_id", "")))
+
+    _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/surface_visibility_policy_registry.json",
+        expected_schema_id="dominium.registry.surface_visibility_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], [], policy_load_errors
+
+    visibility_policy_rows: List[dict] = []
+    policy_seen = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_surface_visibility_policy_entry",
+                    "message": "surface visibility policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        requires_entitlement = entry.get("requires_entitlement")
+        requires_lens_channel = entry.get("requires_lens_channel")
+        extensions = entry.get("extensions")
+        if (
+            (not policy_id)
+            or (requires_entitlement is not None and not isinstance(requires_entitlement, str))
+            or (requires_lens_channel is not None and not isinstance(requires_lens_channel, str))
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_surface_visibility_policy_entry",
+                    "message": "surface visibility policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if policy_id in policy_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_surface_visibility_policy_id",
+                    "message": "duplicate surface visibility policy id '{}'".format(policy_id),
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        policy_seen.add(policy_id)
+        visibility_policy_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "policy_id": policy_id,
+                "requires_entitlement": (
+                    str(requires_entitlement).strip() if isinstance(requires_entitlement, str) else None
+                ),
+                "requires_lens_channel": (
+                    str(requires_lens_channel).strip() if isinstance(requires_lens_channel, str) else None
+                ),
+                "extensions": dict(extensions),
+            }
+        )
+    visibility_policy_rows = sorted(visibility_policy_rows, key=lambda row: str(row.get("policy_id", "")))
+    return surface_type_rows, tool_tag_rows, visibility_policy_rows, errors
+
+
 def _civilisation_registry_rows(
     repo_root: str,
 ) -> Tuple[
@@ -8199,6 +8386,14 @@ def compile_bundle(
         repo_root=repo_root,
     )
     (
+        surface_type_rows,
+        tool_tag_rows,
+        surface_visibility_policy_rows,
+        action_surface_registry_errors,
+    ) = _action_surface_registry_rows(
+        repo_root=repo_root,
+    )
+    (
         governance_type_rows,
         diplomatic_state_rows,
         cohort_mapping_policy_rows,
@@ -8523,6 +8718,7 @@ def compile_bundle(
         + worldgen_constraints_errors
         + control_registry_errors
         + interaction_registry_errors
+        + action_surface_registry_errors
         + civilisation_registry_errors
         + conservation_registry_errors
         + materials_dimension_registry_errors
@@ -8862,6 +9058,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "actions": interaction_action_rows,
+        }
+    )
+    surface_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "surface_types": surface_type_rows,
+        }
+    )
+    tool_tag_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "tool_tags": tool_tag_rows,
+        }
+    )
+    surface_visibility_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": surface_visibility_policy_rows,
         }
     )
     controller_type_payload = _finalize_registry_payload(
@@ -9231,6 +9448,12 @@ def compile_bundle(
         "lens_registry": ("lens_registry", lens_payload),
         "control_action_registry": ("control_action_registry", control_action_payload),
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
+        "surface_type_registry": ("surface_type_registry", surface_type_payload),
+        "tool_tag_registry": ("tool_tag_registry", tool_tag_payload),
+        "surface_visibility_policy_registry": (
+            "surface_visibility_policy_registry",
+            surface_visibility_policy_payload,
+        ),
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
         "governance_type_registry": ("governance_type_registry", governance_type_payload),
         "diplomatic_state_registry": ("diplomatic_state_registry", diplomatic_state_payload),
@@ -9330,6 +9553,9 @@ def compile_bundle(
         "lens_registry",
         "control_action_registry",
         "interaction_action_registry",
+        "surface_type_registry",
+        "tool_tag_registry",
+        "surface_visibility_policy_registry",
         "controller_type_registry",
         "governance_type_registry",
         "diplomatic_state_registry",
@@ -9446,6 +9672,11 @@ def compile_bundle(
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
             "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
+            "surface_type_registry_hash": registry_hashes["surface_type_registry_hash"],
+            "tool_tag_registry_hash": registry_hashes["tool_tag_registry_hash"],
+            "surface_visibility_policy_registry_hash": registry_hashes[
+                "surface_visibility_policy_registry_hash"
+            ],
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],
             "governance_type_registry_hash": registry_hashes["governance_type_registry_hash"],
             "diplomatic_state_registry_hash": registry_hashes["diplomatic_state_registry_hash"],

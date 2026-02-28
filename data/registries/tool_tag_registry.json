@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.tool_tag_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.tool_tag_registry",
+    "registry_version": "1.0.0",
+    "tool_tags": [
+      {
+        "schema_version": "1.0.0",
+        "tool_tag_id": "tool_tag.cutting",
+        "description": "Tool is compatible with cutting-type surfaces/processes.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_tag_id": "tool_tag.fastening",
+        "description": "Tool is compatible with fastening-type surfaces/processes.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_tag_id": "tool_tag.welding",
+        "description": "Tool is compatible with welding-type surfaces/processes.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_tag_id": "tool_tag.lifting",
+        "description": "Tool is compatible with lifting/gripping-type surfaces/processes.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_tag_id": "tool_tag.operating",
+        "description": "Tool is compatible with operating/controls surfaces/processes.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_id": "dominium.registry.surface_visibility_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.surface_visibility_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "visibility.default",
+        "requires_entitlement": null,
+        "requires_lens_channel": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "visibility.lab_only",
+        "requires_entitlement": "entitlement.debug_view",
+        "requires_lens_channel": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "visibility.diegetic_only",
+        "requires_entitlement": null,
+        "requires_lens_channel": "ch.core.entities",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
