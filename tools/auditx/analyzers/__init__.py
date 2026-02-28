@@ -121,6 +121,8 @@ from analyzers import e92_flow_bypass_ledger_smell
 from analyzers import e93_adhoc_state_flag_smell
 from analyzers import e94_duplicate_scheduler_smell
 from analyzers import e95_hazard_logic_duplication_smell
+from analyzers import e96_interior_occlusion_leak_smell
+from analyzers import e97_duplicate_interior_graph_smell
 
 
 ANALYZERS = (
@@ -245,6 +247,8 @@ ANALYZERS = (
     e93_adhoc_state_flag_smell,
     e94_duplicate_scheduler_smell,
     e95_hazard_logic_duplication_smell,
+    e96_interior_occlusion_leak_smell,
+    e97_duplicate_interior_graph_smell,
 )
 
 
