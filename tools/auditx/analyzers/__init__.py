@@ -101,6 +101,8 @@ from analyzers import e72_inspection_leak_smell
 from analyzers import e73_unbounded_inspection_smell
 from analyzers import e74_unbounded_work_smell
 from analyzers import e75_thrash_smell
+from analyzers import e76_hardcoded_interaction_smell
+from analyzers import e77_surface_leak_smell
 
 
 ANALYZERS = (
@@ -205,6 +207,8 @@ ANALYZERS = (
     e73_unbounded_inspection_smell,
     e74_unbounded_work_smell,
     e75_thrash_smell,
+    e76_hardcoded_interaction_smell,
+    e77_surface_leak_smell,
 )
 
 

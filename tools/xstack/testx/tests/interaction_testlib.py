@@ -9,6 +9,19 @@ from tools.xstack.testx.tests.cohort_testlib import base_state as cohort_base_st
 
 def base_state() -> dict:
     state = copy.deepcopy(cohort_base_state())
+    agent_rows = [dict(item) for item in list(state.get("agent_states") or []) if isinstance(item, dict)]
+    if not any(str(row.get("agent_id", "")).strip() == "agent.alpha" for row in agent_rows):
+        agent_rows.append(
+            {
+                "agent_id": "agent.alpha",
+                "body_id": "body.agent.alpha",
+                "faction_id": "faction.alpha",
+                "status": "active",
+                "position_mm": {"x": 0, "y": 0, "z": 0},
+                "velocity_mm_per_tick": {"x": 0, "y": 0, "z": 0},
+            }
+        )
+    state["agent_states"] = sorted(agent_rows, key=lambda row: str(row.get("agent_id", "")))
     state.setdefault("order_assemblies", [])
     state.setdefault("order_queue_assemblies", [])
     state.setdefault("institution_assemblies", [])
@@ -118,6 +131,59 @@ def policy_context(*, max_inspection_budget_per_tick: int = 32) -> dict:
         "pack_lock_hash": "a" * 64,
         "net_policy_id": "net.policy.server_authoritative.v1",
         "registry_hashes": {"interaction_action_registry_hash": "b" * 64},
+        "surface_type_registry": {
+            "surface_types": [
+                {
+                    "schema_version": "1.0.0",
+                    "surface_type_id": "surface.handle",
+                    "description": "Handle surface",
+                    "default_icon_tag": "glyph.surface.handle",
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "surface_type_id": "surface.port",
+                    "description": "Port surface",
+                    "default_icon_tag": "glyph.surface.port",
+                    "extensions": {},
+                },
+            ]
+        },
+        "tool_tag_registry": {
+            "tool_tags": [
+                {
+                    "schema_version": "1.0.0",
+                    "tool_tag_id": "tool_tag.operating",
+                    "description": "Operating-capable tool",
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "tool_tag_id": "tool_tag.fastening",
+                    "description": "Fastening-capable tool",
+                    "extensions": {},
+                },
+            ]
+        },
+        "surface_visibility_policy_registry": {
+            "policies": [
+                {
+                    "schema_version": "1.0.0",
+                    "policy_id": "visibility.default",
+                    "requires_entitlement": None,
+                    "requires_lens_channel": None,
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "policy_id": "visibility.lab_only",
+                    "requires_entitlement": "entitlement.debug_view",
+                    "requires_lens_channel": None,
+                    "extensions": {},
+                },
+            ]
+        },
+        "held_tool_tags": ["tool_tag.operating"],
         "budget_policy": {
             "policy_id": "policy.budget.test.interaction",
             "max_regions_micro": 0,
