@@ -69,6 +69,7 @@ REGISTRY_OUTPUT_FILENAMES = {
     "shard_map_registry": "shard_map.registry.json",
     "perception_interest_policy_registry": "perception_interest_policy.registry.json",
     "control_action_registry": "control_action.registry.json",
+    "capability_registry": "capability.registry.json",
     "control_policy_registry": "control_policy.registry.json",
     "interaction_action_registry": "interaction_action.registry.json",
     "surface_type_registry": "surface_type.registry.json",

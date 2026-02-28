@@ -204,6 +204,13 @@
         "1.0.0"
       ]
     },
+    "capability_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "control_intent": {
       "current_version": "1.0.0",
       "migrations": {},

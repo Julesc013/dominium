@@ -707,6 +707,7 @@ _NULL_REGISTRY_LIST_KEYS = {
     "experience_registry": "experience_profiles",
     "lens_registry": "lenses",
     "control_action_registry": "actions",
+    "capability_registry": "capabilities",
     "control_policy_registry": "policies",
     "interaction_action_registry": "actions",
     "surface_type_registry": "surface_types",
