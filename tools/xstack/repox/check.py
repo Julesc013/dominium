@@ -249,6 +249,7 @@ RENDER_SNAPSHOT_DERIVED_FILES = (
 )
 
 INTENT_DISPATCH_WHITELIST_REGISTRY_REL = "data/registries/intent_dispatch_whitelist.json"
+DEPRECATIONS_REGISTRY_REL = "data/governance/deprecations.json"
 DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS = (
     "src/net/**",
     "src/client/interaction/interaction_dispatch.py",
@@ -271,6 +272,9 @@ BOUNDARY_ALIAS_RULES = {
         "repox.renderer_truth_import",
         "repox.renderer_truth_symbol",
     },
+    "INV-NO-PRODUCTION-LEGACY-IMPORT": {
+        "INV-NO-LEGACY-REFERENCE",
+    },
 }
 
 BOUNDARY_BLOCKER_RULE_IDS = (
@@ -282,6 +286,7 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-RENDER-TRUTH-ISOLATION",
     "INV-NO-TOOLS-IN-RUNTIME",
     "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+    "INV-NO-PRODUCTION-LEGACY-IMPORT",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -7440,6 +7445,58 @@ def _path_matches_glob_pattern(rel_path: str, patterns: List[str]) -> bool:
     return False
 
 
+def _read_json_object(path: str) -> Dict[str, object]:
+    try:
+        payload = json.load(open(path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _load_deprecation_entries(repo_root: str) -> Tuple[List[Dict[str, object]], str]:
+    registry_abs = os.path.join(repo_root, DEPRECATIONS_REGISTRY_REL.replace("/", os.sep))
+    payload = _read_json_object(registry_abs)
+    if not payload:
+        return [], "missing or invalid deprecations registry JSON"
+    rows = payload.get("entries")
+    if not isinstance(rows, list):
+        return [], "deprecations registry missing entries list"
+    out = [row for row in rows if isinstance(row, dict)]
+    return out, ""
+
+
+def _collect_changed_paths(repo_root: str) -> List[str]:
+    try:
+        proc = subprocess.run(
+            ["git", "status", "--porcelain", "-uall"],
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            check=False,
+        )
+    except OSError:
+        return []
+    if int(proc.returncode) != 0:
+        return []
+    out: List[str] = []
+    for line in str(proc.stdout or "").splitlines():
+        token = str(line[3:] if len(line) >= 3 else line).strip()
+        if not token:
+            continue
+        out.append(_norm(token))
+    return sorted(set(out))
+
+
+def _file_text(repo_root: str, rel_path: str) -> str:
+    abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+    try:
+        return open(abs_path, "r", encoding="utf-8", errors="ignore").read()
+    except OSError:
+        return ""
+
+
 def _append_boundary_blocker_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -7628,6 +7685,173 @@ def _append_boundary_blocker_invariant_findings(
                 rule_id="INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
             )
         )
+
+
+def _append_deprecation_framework_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    try:
+        from tools.governance.tool_deprecation_check import validate_deprecation_registry
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=DEPRECATIONS_REGISTRY_REL,
+                line_number=1,
+                snippet="",
+                message="unable to import deprecation validator: {}".format(str(exc)),
+                rule_id="INV-DEPRECATION-REGISTRY-VALID",
+            )
+        )
+        return
+
+    validation = validate_deprecation_registry(
+        repo_root=repo_root,
+        deprecations_rel=DEPRECATIONS_REGISTRY_REL,
+        topology_map_rel="docs/audit/TOPOLOGY_MAP.json",
+    )
+    if str(validation.get("result", "")) != "pass":
+        for row in list(validation.get("errors") or []):
+            if not isinstance(row, dict):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=DEPRECATIONS_REGISTRY_REL,
+                    line_number=1,
+                    snippet=str(row.get("path", "")),
+                    message="{} ({})".format(str(row.get("message", "")), str(row.get("code", ""))),
+                    rule_id="INV-DEPRECATION-REGISTRY-VALID",
+                )
+            )
+
+    entries, load_err = _load_deprecation_entries(repo_root)
+    if load_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=DEPRECATIONS_REGISTRY_REL,
+                line_number=1,
+                snippet="",
+                message=load_err,
+                rule_id="INV-DEPRECATION-REGISTRY-VALID",
+            )
+        )
+        return
+
+    adapter_paths = sorted(
+        set(
+            _norm(str(row.get("adapter_path", "")).strip())
+            for row in entries
+            if isinstance(row, dict) and str(row.get("adapter_path", "")).strip()
+        )
+    )
+    deprecated_ids = sorted(
+        set(
+            str(row.get("deprecated_id", "")).strip()
+            for row in entries
+            if isinstance(row, dict)
+            and str(row.get("deprecated_id", "")).strip()
+            and str(row.get("status", "")).strip() in {"deprecated", "quarantined", "removed"}
+        )
+    )
+
+    runtime_prefixes = ("src/", "engine/", "game/", "client/", "server/", "platform/")
+    runtime_file_exts = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp")
+    all_code_prefixes = runtime_prefixes + ("tools/",)
+    legacy_import_patterns = (
+        re.compile(r"^\s*from\s+(legacy|quarantine)\b"),
+        re.compile(r"^\s*import\s+(legacy|quarantine)\b"),
+        re.compile(r'^\s*#\s*include\s*[<"](?:\.\./)*(legacy|quarantine)/', re.IGNORECASE),
+        re.compile(r'^\s*#\s*include\s*[<"](?:\.\./)*(legacy|quarantine)\\', re.IGNORECASE),
+    )
+
+    for root in runtime_prefixes:
+        abs_root = os.path.join(repo_root, root.replace("/", os.sep))
+        if not os.path.isdir(abs_root):
+            continue
+        for walk_root, dirs, files in os.walk(abs_root):
+            dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
+            for name in sorted(files):
+                if not name.endswith(runtime_file_exts):
+                    continue
+                rel_norm = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                for line_no, line in _iter_lines(repo_root, rel_norm):
+                    token = str(line)
+                    if not any(pattern.search(token) for pattern in legacy_import_patterns):
+                        continue
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=str(line).strip()[:140],
+                            message="production/runtime code must not import/reference legacy or quarantine paths",
+                            rule_id="INV-NO-PRODUCTION-LEGACY-IMPORT",
+                        )
+                    )
+
+    for root in all_code_prefixes:
+        abs_root = os.path.join(repo_root, root.replace("/", os.sep))
+        if not os.path.isdir(abs_root):
+            continue
+        for walk_root, dirs, files in os.walk(abs_root):
+            dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
+            for name in sorted(files):
+                if not name.endswith(runtime_file_exts):
+                    continue
+                rel_norm = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/out/", "build/", "dist/")):
+                    continue
+                for line_no, line in _iter_lines(repo_root, rel_norm):
+                    token = str(line)
+                    if not any(pattern.search(token) for pattern in legacy_import_patterns):
+                        continue
+                    if rel_norm in adapter_paths:
+                        continue
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=token.strip()[:140],
+                            message="legacy/quarantine access is allowed only from declared adapter paths",
+                            rule_id="INV-ADAPTER-ONLY-ACCESS",
+                        )
+                    )
+                    break
+
+    changed_paths = _collect_changed_paths(repo_root)
+    for rel_norm in changed_paths:
+        if not rel_norm.startswith(all_code_prefixes):
+            continue
+        if rel_norm.startswith(("docs/", "data/", "schema/", "schemas/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        text = _file_text(repo_root, rel_norm)
+        if not text:
+            continue
+        for deprecated_id in deprecated_ids:
+            if deprecated_id not in text:
+                continue
+            if rel_norm == DEPRECATIONS_REGISTRY_REL:
+                continue
+            if rel_norm in adapter_paths:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=1,
+                    snippet=deprecated_id[:140],
+                    message="new code paths must not introduce deprecated identifier references",
+                    rule_id="INV-NO-NEW-USE-OF-DEPRECATED",
+                )
+            )
+            break
 
 
 def _append_retro_consistency_invariant_findings(
@@ -7888,7 +8112,12 @@ def _append_retro_consistency_invariant_findings(
             continue
         for line_no, line in _iter_lines(repo_root, rel_path):
             token = str(line)
-            if "legacy/" not in token and "legacy\\" not in token:
+            if (
+                "legacy/" not in token
+                and "legacy\\" not in token
+                and "quarantine/" not in token
+                and "quarantine\\" not in token
+            ):
                 continue
             findings.append(
                 _finding(
@@ -7896,7 +8125,7 @@ def _append_retro_consistency_invariant_findings(
                     file_path=rel_path,
                     line_number=line_no,
                     snippet=token.strip()[:140],
-                    message="production/runtime code must not reference legacy quarantine paths",
+                    message="production/runtime code must not reference legacy/quarantine paths",
                     rule_id="INV-NO-LEGACY-REFERENCE",
                 )
             )
@@ -7969,16 +8198,20 @@ def _append_topology_map_invariant_findings(
 
     def _iter_registry_paths() -> List[str]:
         out: List[str] = []
-        registry_root = os.path.join(repo_root, "data", "registries")
-        if not os.path.isdir(registry_root):
-            return out
-        for walk_root, dirs, files in os.walk(registry_root):
-            dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
-            for name in sorted(files):
-                if not name.endswith(".json"):
-                    continue
-                rel = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
-                out.append(rel)
+        registry_roots = (
+            os.path.join(repo_root, "data", "registries"),
+            os.path.join(repo_root, "data", "governance"),
+        )
+        for registry_root in registry_roots:
+            if not os.path.isdir(registry_root):
+                continue
+            for walk_root, dirs, files in os.walk(registry_root):
+                dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
+                for name in sorted(files):
+                    if not name.endswith(".json"):
+                        continue
+                    rel = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                    out.append(rel)
         return sorted(set(out))
 
     for rel_path in _iter_schema_paths():
@@ -9602,6 +9835,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_retro_consistency_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_deprecation_framework_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -137,6 +137,10 @@ from analyzers import e108_undeclared_registry_smell
 from analyzers import e109_boundary_violation_analyzer
 from analyzers import e110_tools_contamination_smell
 from analyzers import e111_intent_bypass_smell
+from analyzers import e112_legacy_import_smell
+from analyzers import e113_deprecated_usage_smell
+from analyzers import e114_adapter_missing_smell
+from analyzers import e115_removed_still_referenced_smell
 
 
 ANALYZERS = (
@@ -277,6 +281,10 @@ ANALYZERS = (
     e109_boundary_violation_analyzer,
     e110_tools_contamination_smell,
     e111_intent_bypass_smell,
+    e112_legacy_import_smell,
+    e113_deprecated_usage_smell,
+    e114_adapter_missing_smell,
+    e115_removed_still_referenced_smell,
 )
 
 

@@ -20,6 +20,9 @@ WATCH_PREFIXES = (
     "scripts/verify_build_target_boundaries.py",
     "CMakeLists.txt",
     "data/registries/intent_dispatch_whitelist.json",
+    "data/governance/deprecations.json",
+    "legacy/",
+    "quarantine/",
 )
 
 BOUNDARY_CODE_TO_RULE = {
@@ -29,6 +32,9 @@ BOUNDARY_CODE_TO_RULE = {
     "BOUNDARY-CORE-001": "INV-NO-DUPLICATE-GRAPH-SUBSTRATE",
     "BOUNDARY-CMAKE-001": "INV-NO-TOOLS-IN-RUNTIME",
     "BOUNDARY-CMAKE-002": "INV-NO-TOOLS-IN-RUNTIME",
+    "BOUNDARY-CMAKE-003": "INV-NO-PRODUCTION-LEGACY-IMPORT",
+    "BOUNDARY-LEGACY-000": "INV-NO-PRODUCTION-LEGACY-IMPORT",
+    "BOUNDARY-LEGACY-001": "INV-NO-PRODUCTION-LEGACY-IMPORT",
 }
 
 
