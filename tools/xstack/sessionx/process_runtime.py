@@ -194,6 +194,11 @@ from src.control.planning.plan_engine import (
     create_plan_artifact,
     update_plan_artifact_incremental,
 )
+from src.control.capability import (
+    capability_binding_rows,
+    has_capability,
+    normalize_capability_binding_rows,
+)
 from src.control.view import (
     REFUSAL_VIEW_ENTITLEMENT_MISSING as REFUSAL_VIEW_POLICY_ENTITLEMENT_MISSING,
     REFUSAL_VIEW_POLICY_FORBIDDEN as REFUSAL_VIEW_POLICY_FORBIDDEN,
@@ -6078,6 +6083,60 @@ def _policy_payload(policy_context: dict | None, key: str) -> dict:
     if not isinstance(row, dict):
         return {}
     return row
+
+
+def _derived_capability_binding_rows(state: dict) -> List[dict]:
+    rows: List[dict] = []
+    for pose_slot in sorted(
+        (item for item in list((dict(state or {})).get("pose_slots") or []) if isinstance(item, dict)),
+        key=lambda item: str(item.get("pose_slot_id", "")),
+    ):
+        parent_assembly_id = str(pose_slot.get("parent_assembly_id", "")).strip()
+        pose_slot_id = str(pose_slot.get("pose_slot_id", "")).strip()
+        if not parent_assembly_id:
+            continue
+        rows.append(
+            {
+                "binding_id": "cap.bind.pose.{}".format(canonical_sha256({"entity_id": parent_assembly_id, "pose_slot_id": pose_slot_id})[:16]),
+                "entity_id": parent_assembly_id,
+                "capability_id": "capability.has_pose_slots",
+                "parameters": {"pose_slot_id": pose_slot_id} if pose_slot_id else {},
+                "created_tick": 0,
+                "extensions": {"source": "state.pose_slots"},
+            }
+        )
+    for port_row in sorted(
+        (item for item in list((dict(state or {})).get("machine_ports") or []) if isinstance(item, dict)),
+        key=lambda item: str(item.get("port_id", "")),
+    ):
+        machine_id = str(port_row.get("machine_id", "")).strip()
+        port_id = str(port_row.get("port_id", "")).strip()
+        if not machine_id:
+            continue
+        rows.append(
+            {
+                "binding_id": "cap.bind.port.{}".format(canonical_sha256({"entity_id": machine_id, "port_id": port_id})[:16]),
+                "entity_id": machine_id,
+                "capability_id": "capability.has_ports",
+                "parameters": {"port_id": port_id} if port_id else {},
+                "created_tick": 0,
+                "extensions": {"source": "state.machine_ports"},
+            }
+        )
+    return normalize_capability_binding_rows(rows)
+
+
+def _runtime_capability_bindings(state: dict, policy_context: dict | None) -> List[dict]:
+    explicit_payload: object = {}
+    if isinstance(policy_context, dict):
+        for key in ("capability_bindings", "capability_binding_registry"):
+            value = policy_context.get(key)
+            if isinstance(value, (dict, list)):
+                explicit_payload = value
+                break
+    explicit_rows = capability_binding_rows(explicit_payload)
+    derived_rows = _derived_capability_binding_rows(state)
+    return normalize_capability_binding_rows(list(explicit_rows) + list(derived_rows))
 
 
 def _read_registry_fallback(
@@ -12040,6 +12099,20 @@ def execute_intent(
                 {"pose_slot_id": pose_slot_id},
                 "$.intent.inputs.pose_slot_id",
             )
+        runtime_capability_bindings = _runtime_capability_bindings(state, policy_context)
+        parent_assembly_id = str(pose_slot_row.get("parent_assembly_id", "")).strip()
+        if parent_assembly_id and runtime_capability_bindings and not has_capability(
+            entity_id=parent_assembly_id,
+            capability_id="capability.has_pose_slots",
+            capability_bindings=runtime_capability_bindings,
+        ):
+            return refusal(
+                "refusal.control.target_invalid",
+                "pose slot parent entity '{}' does not expose capability.has_pose_slots".format(parent_assembly_id),
+                "Bind capability.has_pose_slots to the parent entity before pose interactions.",
+                {"process_id": process_id, "entity_id": parent_assembly_id, "pose_slot_id": pose_slot_id},
+                "$.intent.inputs.pose_slot_id",
+            )
         override = process_id == "process.meta_pose_override"
         if should_enter and (not override) and bool(pose_slot_row.get("requires_access_path", True)):
             if not _pose_slot_accessible_by_path(state=state, agent_row=agent, pose_slot_row=pose_slot_row):
@@ -12329,6 +12402,20 @@ def execute_intent(
                 {"port_id": port_id},
                 "$.intent.inputs.port_id",
             )
+        runtime_capability_bindings = _runtime_capability_bindings(state, policy_context)
+        machine_id_for_capability = str(port_row.get("machine_id", "")).strip()
+        if machine_id_for_capability and runtime_capability_bindings and not has_capability(
+            entity_id=machine_id_for_capability,
+            capability_id="capability.has_ports",
+            capability_bindings=runtime_capability_bindings,
+        ):
+            return refusal(
+                "refusal.control.target_invalid",
+                "machine '{}' does not expose capability.has_ports".format(machine_id_for_capability),
+                "Bind capability.has_ports to the machine entity before port operations.",
+                {"process_id": process_id, "machine_id": machine_id_for_capability, "port_id": port_id},
+                "$.intent.inputs.port_id",
+            )
         port_type_id = str(port_row.get("port_type_id", "")).strip()
         port_type_row = dict(port_type_rows.get(port_type_id) or {})
         if _port_payload_kind(port_type_row) != "material":
@@ -12502,6 +12589,20 @@ def execute_intent(
                 "port_id '{}' does not exist".format(port_id),
                 "Use an existing machine port.",
                 {"port_id": port_id},
+                "$.intent.inputs.port_id",
+            )
+        runtime_capability_bindings = _runtime_capability_bindings(state, policy_context)
+        machine_id_for_capability = str(port_row.get("machine_id", "")).strip()
+        if machine_id_for_capability and runtime_capability_bindings and not has_capability(
+            entity_id=machine_id_for_capability,
+            capability_id="capability.has_ports",
+            capability_bindings=runtime_capability_bindings,
+        ):
+            return refusal(
+                "refusal.control.target_invalid",
+                "machine '{}' does not expose capability.has_ports".format(machine_id_for_capability),
+                "Bind capability.has_ports to the machine entity before port operations.",
+                {"process_id": process_id, "machine_id": machine_id_for_capability, "port_id": port_id},
                 "$.intent.inputs.port_id",
             )
         port_type_id = str(port_row.get("port_type_id", "")).strip()
@@ -12699,6 +12800,20 @@ def execute_intent(
                 {"from_port_id": from_port_id},
                 "$.intent.inputs.from_port_id",
             )
+        runtime_capability_bindings = _runtime_capability_bindings(state, policy_context)
+        from_machine_id = str(from_port_row.get("machine_id", "")).strip()
+        if from_machine_id and runtime_capability_bindings and not has_capability(
+            entity_id=from_machine_id,
+            capability_id="capability.has_ports",
+            capability_bindings=runtime_capability_bindings,
+        ):
+            return refusal(
+                "refusal.control.target_invalid",
+                "machine '{}' does not expose capability.has_ports".format(from_machine_id),
+                "Bind capability.has_ports to the machine entity before port operations.",
+                {"process_id": process_id, "machine_id": from_machine_id, "port_id": from_port_id},
+                "$.intent.inputs.from_port_id",
+            )
         if to_port_id:
             to_port_row = dict(port_map.get(to_port_id) or {})
             if not to_port_row:
@@ -12707,6 +12822,19 @@ def execute_intent(
                     "to_port_id '{}' does not exist".format(to_port_id),
                     "Use existing machine ports for connection endpoints.",
                     {"to_port_id": to_port_id},
+                    "$.intent.inputs.to_port_id",
+                )
+            to_machine_id = str(to_port_row.get("machine_id", "")).strip()
+            if to_machine_id and runtime_capability_bindings and not has_capability(
+                entity_id=to_machine_id,
+                capability_id="capability.has_ports",
+                capability_bindings=runtime_capability_bindings,
+            ):
+                return refusal(
+                    "refusal.control.target_invalid",
+                    "machine '{}' does not expose capability.has_ports".format(to_machine_id),
+                    "Bind capability.has_ports to the machine entity before port operations.",
+                    {"process_id": process_id, "machine_id": to_machine_id, "port_id": to_port_id},
                     "$.intent.inputs.to_port_id",
                 )
             from_port_type = dict(port_type_rows.get(str(from_port_row.get("port_type_id", "")).strip()) or {})
@@ -12859,6 +12987,20 @@ def execute_intent(
             port_map[to_token] = row
         machine_ports = normalize_port_rows([dict(port_map[key]) for key in sorted(port_map.keys())])
         from_port_row = dict(port_map.get(from_token) or {})
+        runtime_capability_bindings = _runtime_capability_bindings(state, policy_context)
+        machine_id_for_capability = str(from_port_row.get("machine_id", "")).strip()
+        if machine_id_for_capability and runtime_capability_bindings and not has_capability(
+            entity_id=machine_id_for_capability,
+            capability_id="capability.has_ports",
+            capability_bindings=runtime_capability_bindings,
+        ):
+            return refusal(
+                "refusal.control.target_invalid",
+                "machine '{}' does not expose capability.has_ports".format(machine_id_for_capability),
+                "Bind capability.has_ports to the machine entity before port operations.",
+                {"process_id": process_id, "machine_id": machine_id_for_capability, "connection_id": connection_id},
+                "$.intent.inputs.connection_id",
+            )
         machine_id = str(from_port_row.get("machine_id", "")).strip()
         site_ref = str(inputs.get("site_ref", "")).strip()
         event_row = _machine_event_row(
@@ -15657,6 +15799,7 @@ def execute_intent(
         plan_policy_context["control_policy_id"] = str(
             selected_control_policy.get("control_policy_id", "")
         ).strip() or "ctrl.policy.planner"
+        plan_policy_context["capability_bindings"] = _runtime_capability_bindings(state, policy_context)
 
         created_plan = create_plan_artifact(
             plan_intent=plan_intent,
