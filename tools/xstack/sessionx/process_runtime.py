@@ -173,7 +173,21 @@ from src.control.ir.control_ir_verifier import (
     REFUSAL_CTRL_IR_INVALID,
     verify_control_ir,
 )
+from src.control.control_plane_engine import (
+    build_control_intent,
+    build_control_resolution,
+)
 from src.control.negotiation import negotiate_request
+from src.control.planning.plan_engine import (
+    REFUSAL_PLAN_INVALID,
+    REFUSAL_PLAN_NOT_FOUND,
+    REFUSAL_PLAN_POLICY_REFUSED,
+    build_execute_plan_intent,
+    build_plan_execution_ir,
+    build_plan_intent,
+    create_plan_artifact,
+    update_plan_artifact_incremental,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -262,6 +276,9 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.task_pause": "entitlement.tool.use",
     "process.task_resume": "entitlement.tool.use",
     "process.task_cancel": "entitlement.tool.use",
+    "process.plan_create": "entitlement.inspect",
+    "process.plan_update_incremental": "entitlement.inspect",
+    "process.plan_execute": "entitlement.control.admin",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -360,6 +377,9 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.task_pause": "operator",
     "process.task_resume": "operator",
     "process.task_cancel": "operator",
+    "process.plan_create": "operator",
+    "process.plan_update_incremental": "operator",
+    "process.plan_execute": "operator",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -405,6 +425,9 @@ CONTROL_PROCESS_IDS = {
     "process.body_move_attempt",
     "process.control_ir.autopilot_stub",
     "process.control_ir.ai_controller_stub",
+    "process.plan_create",
+    "process.plan_update_incremental",
+    "process.plan_execute",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -2299,6 +2322,74 @@ def _persist_construction_state(
     _ensure_installed_structure_instances(state)
     _ensure_construction_provenance_events(state)
     _ensure_construction_runtime_state(state)
+
+
+def _normalize_plan_artifact_status(token: object) -> str:
+    value = str(token or "").strip() or "draft"
+    if value not in ("draft", "validated", "approved", "executed", "cancelled"):
+        return "draft"
+    return value
+
+
+def _ensure_plan_artifacts(state: dict) -> List[dict]:
+    rows = state.get("plan_artifacts")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("plan_id", ""))):
+        plan_id = str(row.get("plan_id", "")).strip()
+        if not plan_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "plan_id": plan_id,
+                "plan_type_id": str(row.get("plan_type_id", "")).strip() or "custom",
+                "compiled_ir_id": None if row.get("compiled_ir_id") is None else str(row.get("compiled_ir_id", "")).strip() or None,
+                "compiled_blueprint_ref": (
+                    None if row.get("compiled_blueprint_ref") is None else str(row.get("compiled_blueprint_ref", "")).strip() or None
+                ),
+                "estimated_bom_ref": (
+                    None if row.get("estimated_bom_ref") is None else str(row.get("estimated_bom_ref", "")).strip() or None
+                ),
+                "spatial_preview_data": dict(row.get("spatial_preview_data") or {})
+                if isinstance(row.get("spatial_preview_data"), dict)
+                else {"renderables": [], "materials": [], "metadata": {}},
+                "required_resources_summary": dict(row.get("required_resources_summary") or {})
+                if isinstance(row.get("required_resources_summary"), dict)
+                else {},
+                "status": _normalize_plan_artifact_status(row.get("status")),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["plan_artifacts"] = normalized
+    return normalized
+
+
+def _upsert_plan_artifact(plan_rows: List[dict], plan_artifact: dict) -> List[dict]:
+    plan_id = str((dict(plan_artifact) or {}).get("plan_id", "")).strip()
+    if not plan_id:
+        return _ensure_plan_artifacts({"plan_artifacts": list(plan_rows or [])})
+    rows_by_id: Dict[str, dict] = {}
+    for row in list(plan_rows or []):
+        if not isinstance(row, dict):
+            continue
+        token = str(row.get("plan_id", "")).strip()
+        if token:
+            rows_by_id[token] = dict(row)
+    rows_by_id[plan_id] = dict(plan_artifact)
+    return _ensure_plan_artifacts({"plan_artifacts": [dict(rows_by_id[key]) for key in sorted(rows_by_id.keys())]})
+
+
+def _find_plan_artifact(plan_rows: List[dict], plan_id: str) -> dict:
+    token = str(plan_id).strip()
+    if not token:
+        return {}
+    for row in list(plan_rows or []):
+        if str((dict(row)).get("plan_id", "")).strip() == token:
+            return dict(row)
+    return {}
 
 
 def _normalize_maintenance_commitment_status(token: object) -> str:
@@ -5898,16 +5989,19 @@ def _resolve_control_policy_row_for_ir(
     control_policy_registry: dict,
     preferred_policy_id: str,
 ) -> dict:
+    normalized_registry = dict(control_policy_registry or {})
+    if not isinstance(normalized_registry.get("policies"), list):
+        normalized_registry = dict(normalized_registry.get("record") or {})
     preferred = str(preferred_policy_id or "").strip()
     if preferred:
-        row = _registry_row_by_id(control_policy_registry, "policies", "control_policy_id", preferred)
+        row = _registry_row_by_id(normalized_registry, "policies", "control_policy_id", preferred)
         if row:
             return row
     for fallback in ("ctrl.policy.scheduler", "ctrl.policy.player.assisted", "ctrl.policy.player.diegetic"):
-        row = _registry_row_by_id(control_policy_registry, "policies", "control_policy_id", fallback)
+        row = _registry_row_by_id(normalized_registry, "policies", "control_policy_id", fallback)
         if row:
             return row
-    rows = list(control_policy_registry.get("policies") or [])
+    rows = list(normalized_registry.get("policies") or [])
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("control_policy_id", ""))):
         return dict(row)
     return {}
@@ -7008,6 +7102,7 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("construction_steps", "step_id"),
         ("construction_commitments", "commitment_id"),
         ("construction_provenance_events", "event_id"),
+        ("plan_artifacts", "plan_id"),
         ("installed_structure_instances", "instance_id"),
         ("micro_part_instances", "micro_part_id"),
         ("materialization_reenactment_descriptors", "structure_id"),
@@ -7067,6 +7162,7 @@ def _execute_inspection_snapshot_process(
             {"process_id": "process.inspect_generate_snapshot"},
             "$.intent.inputs.target_id",
         )
+    _ensure_plan_artifacts(state)
     requested_cost_units = max(0, _as_int(inputs.get("cost_units", inputs.get("max_cost_units", 1)), 1))
     current_tick = max(0, _as_int((dict(state.get("simulation_time") or {})).get("tick", 0), 0))
     budget_envelope_registry = _policy_payload(policy_context, "budget_envelope_registry")
@@ -9548,6 +9644,7 @@ def execute_intent(
     installed_structure_instances = _ensure_installed_structure_instances(state)
     construction_provenance_events = _ensure_construction_provenance_events(state)
     construction_runtime_state = _ensure_construction_runtime_state(state)
+    plan_artifacts = _ensure_plan_artifacts(state)
     micro_part_instances = _ensure_micro_part_instances(state)
     materialization_states = _ensure_materialization_states(state)
     distribution_aggregates = _ensure_distribution_aggregates(state)
@@ -14791,6 +14888,469 @@ def execute_intent(
             "controller_id": controller_id,
             "control_ir_program": dict(ir_program),
             "control_ir_execution": _control_ir_stub_result_metadata(compiled_ir),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.plan_create":
+        plan_intent_payload = dict(inputs.get("plan_intent") or {})
+        if not plan_intent_payload:
+            plan_intent_payload = {
+                "requester_subject_id": str(
+                    inputs.get("requester_subject_id", "")
+                    or authority_context.get("subject_id", "")
+                    or authority_context.get("peer_id", "")
+                ).strip()
+                or "subject.system",
+                "target_context": dict(inputs.get("target_context") or {}),
+                "plan_type_id": str(inputs.get("plan_type_id", "custom")).strip() or "custom",
+                "parameters": dict(inputs.get("parameters") or {}),
+                "created_tick": int(max(0, int(current_tick))),
+            }
+            if not plan_intent_payload["target_context"]:
+                plan_intent_payload["target_context"] = {
+                    "site_ref": str(
+                        inputs.get("site_ref", "")
+                        or inputs.get("target_id", "")
+                    ).strip()
+                    or "site.unknown"
+                }
+        plan_intent = build_plan_intent(
+            requester_subject_id=str(plan_intent_payload.get("requester_subject_id", "")).strip()
+            or str(authority_context.get("subject_id", "")).strip()
+            or str(authority_context.get("peer_id", "")).strip()
+            or "subject.system",
+            target_context=dict(plan_intent_payload.get("target_context") or {}),
+            plan_type_id=str(plan_intent_payload.get("plan_type_id", "custom")).strip() or "custom",
+            parameters=dict(plan_intent_payload.get("parameters") or {}),
+            created_tick=max(
+                0,
+                _as_int(plan_intent_payload.get("created_tick", current_tick), int(current_tick)),
+            ),
+            plan_intent_id=str(plan_intent_payload.get("plan_intent_id", "")).strip(),
+        )
+
+        control_action_registry = _control_ir_registry_payload(
+            policy_context=policy_context,
+            key="control_action_registry",
+            registry_rel_path="data/registries/control_action_registry.json",
+            default_payload={"actions": []},
+        )
+        control_policy_registry = _control_ir_registry_payload(
+            policy_context=policy_context,
+            key="control_policy_registry",
+            registry_rel_path="data/registries/control_policy_registry.json",
+            default_payload={"policies": []},
+        )
+        selected_control_policy = _resolve_control_policy_row_for_ir(
+            control_policy_registry=control_policy_registry,
+            preferred_policy_id=str(
+                inputs.get("control_policy_id", "")
+                or (dict(policy_context or {})).get("control_policy_id", "")
+                or "ctrl.policy.planner"
+            ).strip(),
+        )
+        if not selected_control_policy:
+            return refusal(
+                REFUSAL_PLAN_POLICY_REFUSED,
+                "process.plan_create cannot resolve control policy",
+                "Provide control_policy_registry with a planner-capable policy.",
+                {"process_id": process_id},
+                "$.policy_context.control_policy_registry",
+            )
+
+        blueprint_registry = _policy_payload(policy_context, "blueprint_registry")
+        part_class_registry = _policy_payload(policy_context, "part_class_registry")
+        connection_type_registry = _policy_payload(policy_context, "connection_type_registry")
+        material_class_registry = _policy_payload(policy_context, "material_class_registry")
+        if not blueprint_registry:
+            blueprint_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/blueprint_registry.json",
+                default_payload={"blueprints": []},
+            )
+        if not part_class_registry:
+            part_class_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/part_class_registry.json",
+                default_payload={"part_classes": []},
+            )
+        if not connection_type_registry:
+            connection_type_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/connection_type_registry.json",
+                default_payload={"connection_types": []},
+            )
+        if not material_class_registry:
+            material_class_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/material_class_registry.json",
+                default_payload={"materials": []},
+            )
+        plan_policy_context = dict(policy_context or {})
+        plan_policy_context["control_policy_id"] = str(
+            selected_control_policy.get("control_policy_id", "")
+        ).strip() or "ctrl.policy.planner"
+
+        created_plan = create_plan_artifact(
+            plan_intent=plan_intent,
+            law_profile=law_profile,
+            authority_context=authority_context,
+            control_policy=dict(selected_control_policy),
+            control_action_registry=control_action_registry,
+            control_policy_registry=control_policy_registry,
+            policy_context=plan_policy_context,
+            repo_root=REPO_ROOT_HINT,
+            pack_lock_hash=str((dict(policy_context or {})).get("pack_lock_hash", "")).strip() or ("0" * 64),
+            blueprint_registry=blueprint_registry,
+            part_class_registry=part_class_registry,
+            connection_type_registry=connection_type_registry,
+            material_class_registry=material_class_registry,
+        )
+        if str(created_plan.get("result", "")) != "complete":
+            return dict(created_plan)
+        plan_artifact = dict(created_plan.get("plan_artifact") or {})
+        plan_artifacts = _upsert_plan_artifact(plan_artifacts, plan_artifact)
+        state["plan_artifacts"] = [dict(row) for row in list(plan_artifacts or []) if isinstance(row, dict)]
+        result_metadata = {
+            "plan_intent_id": str((dict(created_plan.get("plan_intent") or {})).get("plan_intent_id", "")).strip(),
+            "plan_id": str(plan_artifact.get("plan_id", "")).strip(),
+            "plan_type_id": str(plan_artifact.get("plan_type_id", "")).strip(),
+            "status": str(plan_artifact.get("status", "")).strip(),
+            "control_decision_log_ref": str(
+                (dict(plan_artifact.get("extensions") or {})).get("control_decision_log_ref", "")
+            ).strip(),
+            "control_resolution_id": str(
+                (dict(plan_artifact.get("extensions") or {})).get("control_resolution_id", "")
+            ).strip(),
+            "compiled_blueprint_ref": str(plan_artifact.get("compiled_blueprint_ref") or "").strip() or None,
+            "estimated_bom_ref": str(plan_artifact.get("estimated_bom_ref") or "").strip() or None,
+            "required_resources_summary": dict(plan_artifact.get("required_resources_summary") or {}),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.plan_update_incremental":
+        plan_id = str(
+            inputs.get("plan_id", "")
+            or (dict(inputs.get("plan_artifact") or {})).get("plan_id", "")
+        ).strip()
+        if not plan_id:
+            return refusal(
+                REFUSAL_PLAN_INVALID,
+                "process.plan_update_incremental requires plan_id",
+                "Provide plan_id for incremental planning updates.",
+                {"process_id": process_id},
+                "$.intent.inputs.plan_id",
+            )
+        current_plan = _find_plan_artifact(plan_artifacts, plan_id)
+        if not current_plan:
+            return refusal(
+                REFUSAL_PLAN_NOT_FOUND,
+                "plan artifact '{}' was not found".format(plan_id),
+                "Create plan via process.plan_create before incremental updates.",
+                {"plan_id": plan_id},
+                "$.intent.inputs.plan_id",
+            )
+        update_payload = dict(inputs.get("update_payload") or {})
+        if not update_payload:
+            update_payload = {
+                "change_kind": str(inputs.get("change_kind", "manual")).strip() or "manual",
+                "add_renderables": [dict(row) for row in list(inputs.get("add_renderables") or []) if isinstance(row, dict)],
+                "remove_renderable_ids": _sorted_tokens(list(inputs.get("remove_renderable_ids") or [])),
+                "add_materials": [dict(row) for row in list(inputs.get("add_materials") or []) if isinstance(row, dict)],
+                "material_mass_delta": dict(inputs.get("material_mass_delta") or {}),
+                "part_count_delta": int(_as_int(inputs.get("part_count_delta", 0), 0)),
+            }
+        updated = update_plan_artifact_incremental(
+            plan_artifact=current_plan,
+            update_payload=update_payload,
+            current_tick=int(max(0, int(current_tick))),
+        )
+        if str(updated.get("result", "")) != "complete":
+            return dict(updated)
+        updated_plan = dict(updated.get("plan_artifact") or {})
+        plan_artifacts = _upsert_plan_artifact(plan_artifacts, updated_plan)
+        state["plan_artifacts"] = [dict(row) for row in list(plan_artifacts or []) if isinstance(row, dict)]
+        result_metadata = {
+            "plan_id": str(updated_plan.get("plan_id", "")).strip(),
+            "status": str(updated_plan.get("status", "")).strip(),
+            "update_id": str(updated.get("update_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.plan_execute":
+        execute_payload = dict(inputs.get("execute_plan_intent") or {})
+        plan_id = str(
+            execute_payload.get("plan_id", "")
+            or inputs.get("plan_id", "")
+        ).strip()
+        if not plan_id:
+            return refusal(
+                REFUSAL_PLAN_INVALID,
+                "process.plan_execute requires plan_id",
+                "Provide plan_id for execution intent.",
+                {"process_id": process_id},
+                "$.intent.inputs.plan_id",
+            )
+        current_plan = _find_plan_artifact(plan_artifacts, plan_id)
+        if not current_plan:
+            return refusal(
+                REFUSAL_PLAN_NOT_FOUND,
+                "plan artifact '{}' was not found".format(plan_id),
+                "Create plan via process.plan_create before execution.",
+                {"plan_id": plan_id},
+                "$.intent.inputs.plan_id",
+            )
+        if str(current_plan.get("status", "")).strip() == "cancelled":
+            return refusal(
+                REFUSAL_PLAN_INVALID,
+                "cancelled plan artifact cannot be executed",
+                "Create a new plan artifact for execution.",
+                {"plan_id": plan_id},
+                "$.intent.inputs.plan_id",
+            )
+        execute_intent_row = build_execute_plan_intent(
+            plan_id=plan_id,
+            abstraction_level_requested=str(
+                execute_payload.get("abstraction_level_requested", "")
+                or inputs.get("abstraction_level_requested", "AL3")
+            ).strip()
+            or "AL3",
+            created_tick=max(0, _as_int(execute_payload.get("created_tick", current_tick), int(current_tick))),
+            execute_plan_intent_id=str(execute_payload.get("execute_plan_intent_id", "")).strip(),
+        )
+
+        control_action_registry = _control_ir_registry_payload(
+            policy_context=policy_context,
+            key="control_action_registry",
+            registry_rel_path="data/registries/control_action_registry.json",
+            default_payload={"actions": []},
+        )
+        control_policy_registry = _control_ir_registry_payload(
+            policy_context=policy_context,
+            key="control_policy_registry",
+            registry_rel_path="data/registries/control_policy_registry.json",
+            default_payload={"policies": []},
+        )
+        execution_control_intent = build_control_intent(
+            requester_subject_id=str(authority_context.get("subject_id", "")).strip()
+            or str(authority_context.get("peer_id", "")).strip()
+            or "subject.system",
+            requested_action_id="action.interaction.execute_process",
+            target_kind="structure",
+            target_id=plan_id,
+            parameters={
+                "process_id": "process.commitment_create",
+                "plan_id": plan_id,
+                "execute_plan_intent_id": str(execute_intent_row.get("execute_plan_intent_id", "")),
+            },
+            abstraction_level_requested=str(execute_intent_row.get("abstraction_level_requested", "AL3")),
+            fidelity_requested=str(inputs.get("fidelity_requested", "meso")).strip() or "meso",
+            view_requested=str(
+                inputs.get("view_requested", (dict(policy_context or {})).get("view_requested", "view.mode.first_person"))
+            ).strip()
+            or "view.mode.first_person",
+            created_tick=max(0, _as_int(execute_intent_row.get("created_tick", current_tick), int(current_tick))),
+        )
+        execution_resolution_result = build_control_resolution(
+            control_intent=execution_control_intent,
+            law_profile=law_profile,
+            authority_context=authority_context,
+            policy_context=policy_context,
+            control_action_registry=control_action_registry,
+            control_policy_registry=control_policy_registry,
+            repo_root=REPO_ROOT_HINT,
+        )
+        if str(execution_resolution_result.get("result", "")) != "complete":
+            refusal_row = dict(execution_resolution_result.get("refusal") or {})
+            if refusal_row:
+                return {"result": "refused", "refusal": refusal_row}
+            return refusal(
+                REFUSAL_PLAN_POLICY_REFUSED,
+                "process.plan_execute refused by control policy negotiation",
+                "Resolve control policy or authority constraints and retry plan execution.",
+                {"plan_id": plan_id},
+                "$.intent.inputs",
+            )
+        execution_resolution = dict(execution_resolution_result.get("resolution") or {})
+        execution_ir = build_plan_execution_ir(
+            plan_artifact=current_plan,
+            actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+            tick=int(max(0, int(current_tick))),
+        )
+        if str(execution_ir.get("result", "")) != "complete":
+            return dict(execution_ir)
+        ir_program = dict(execution_ir.get("ir_program") or {})
+        compiled_ir = _compile_control_ir_stub_program(
+            ir_program=ir_program,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            law_profile=law_profile,
+            fallback_control_policy_id=str((dict(policy_context or {})).get("control_policy_id", "")).strip()
+            or "ctrl.policy.scheduler",
+            rs5_budget_units=_as_int(
+                inputs.get("rs5_budget_units", (dict(policy_context or {})).get("control_ir_rs5_budget_units", 0)),
+                0,
+            ),
+        )
+        if str(compiled_ir.get("result", "")) != "complete":
+            return dict(compiled_ir)
+
+        emitted_commitments: List[dict] = []
+        emitted_events: List[dict] = []
+        actor_subject_id = _material_commitment_actor_subject_id(authority_context)
+        plan_extensions = dict(current_plan.get("extensions") or {})
+        site_ref = str(plan_extensions.get("site_ref", "")).strip()
+        for row in list(compiled_ir.get("commitment_creations") or []):
+            if not isinstance(row, dict):
+                continue
+            op_id = str(row.get("op_id", "")).strip()
+            payload = dict(row.get("inputs") or {})
+            step_id = str(payload.get("step_id", "")).strip() or str(payload.get("ag_node_id", "")).strip() or op_id
+            commitment_kind = str(payload.get("commitment_kind", "construction.step")).strip() or "construction.step"
+            commitment_id = "commitment.construction.{}".format(
+                canonical_sha256(
+                    {
+                        "plan_id": plan_id,
+                        "op_id": op_id,
+                        "step_id": step_id,
+                        "kind": commitment_kind,
+                        "tick": int(current_tick),
+                        "ir_id": str(ir_program.get("control_ir_id", "")),
+                    }
+                )[:16]
+            )
+            commitment_row = {
+                "schema_version": "1.0.0",
+                "commitment_id": commitment_id,
+                "project_id": plan_id,
+                "step_id": step_id,
+                "commitment_kind": commitment_kind,
+                "scheduled_tick": int(max(0, int(current_tick))),
+                "status": "planned",
+                "actor_subject_id": str(payload.get("actor_subject_id", "")).strip() or actor_subject_id,
+                "manifest_ids": _sorted_tokens(list(payload.get("required_manifest_ids") or [])),
+                "extensions": {
+                    "plan_id": plan_id,
+                    "control_ir_id": str(ir_program.get("control_ir_id", "")),
+                    "op_id": op_id,
+                },
+            }
+            emitted_commitments.append(commitment_row)
+            event_id = "provenance.construction.plan.{}".format(
+                canonical_sha256(
+                    {
+                        "commitment_id": commitment_id,
+                        "tick": int(current_tick),
+                    }
+                )[:16]
+            )
+            emitted_events.append(
+                {
+                    "schema_version": "1.0.0",
+                    "event_id": event_id,
+                    "tick": int(max(0, int(current_tick))),
+                    "event_type_id": "construction.plan.commitment_emitted",
+                    "actor_subject_id": str(commitment_row.get("actor_subject_id", "")),
+                    "site_ref": site_ref,
+                    "inputs": [plan_id, step_id],
+                    "outputs": [commitment_id],
+                    "ledger_deltas": {},
+                    "linked_project_id": plan_id,
+                    "linked_step_id": step_id,
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "control_ir_id": str(ir_program.get("control_ir_id", "")),
+                        "op_id": op_id,
+                        "plan_id": plan_id,
+                    },
+                }
+            )
+        event_rows = list(construction_provenance_events or [])
+        event_rows.extend(dict(row) for row in emitted_events if isinstance(row, dict))
+        construction_provenance_events = sorted(
+            (
+                dict(row)
+                for row in event_rows
+                if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+            ),
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        commitment_rows = list(construction_commitments or [])
+        commitment_rows.extend(dict(row) for row in emitted_commitments if isinstance(row, dict))
+        construction_commitments = _ensure_construction_commitments(
+            {"construction_commitments": commitment_rows}
+        )
+        project_rows_by_id = dict(
+            (str(row.get("project_id", "")).strip(), dict(row))
+            for row in list(construction_projects or [])
+            if isinstance(row, dict) and str(row.get("project_id", "")).strip()
+        )
+        project_row = dict(project_rows_by_id.get(plan_id) or {})
+        if not project_row:
+            project_row = {
+                "schema_version": "1.0.0",
+                "project_id": plan_id,
+                "blueprint_id": str(plan_extensions.get("blueprint_id", "")).strip(),
+                "compiled_ag_id": "",
+                "bom_id": str(current_plan.get("estimated_bom_ref") or "").strip(),
+                "site_ref": site_ref,
+                "owner_faction_id": None,
+                "logistics_node_id": "",
+                "created_tick": int(max(0, int(current_tick))),
+                "status": "executing",
+                "milestone_commitment_ids": _sorted_tokens([row.get("commitment_id") for row in emitted_commitments]),
+                "progress_state_ref": None,
+                "extensions": {},
+            }
+        else:
+            project_row["status"] = "executing"
+            milestone_ids = _sorted_tokens(list(project_row.get("milestone_commitment_ids") or []))
+            milestone_ids.extend(_sorted_tokens([row.get("commitment_id") for row in emitted_commitments]))
+            project_row["milestone_commitment_ids"] = _sorted_tokens(milestone_ids)
+        project_extensions = dict(project_row.get("extensions") or {})
+        project_extensions["plan_id"] = plan_id
+        project_extensions["control_ir_id"] = str(ir_program.get("control_ir_id", "")).strip()
+        project_row["extensions"] = project_extensions
+        project_rows_by_id[plan_id] = project_row
+        construction_projects = [dict(project_rows_by_id[key]) for key in sorted(project_rows_by_id.keys())]
+
+        _persist_construction_state(
+            state,
+            projects=construction_projects,
+            steps=construction_steps,
+            commitments=construction_commitments,
+            installed_structures=installed_structure_instances,
+            events=construction_provenance_events,
+            runtime_state=construction_runtime_state,
+        )
+
+        updated_plan = dict(current_plan)
+        updated_plan["status"] = "approved"
+        updated_plan["compiled_ir_id"] = str(ir_program.get("control_ir_id", "")).strip() or None
+        updated_plan_ext = dict(updated_plan.get("extensions") or {})
+        updated_plan_ext["last_execute_plan_intent_id"] = str(
+            execute_intent_row.get("execute_plan_intent_id", "")
+        ).strip()
+        updated_plan_ext["last_control_resolution_id"] = str(
+            execution_resolution.get("resolution_id", "")
+        ).strip()
+        updated_plan_ext["last_control_decision_log_ref"] = str(
+            execution_resolution.get("decision_log_ref", "")
+        ).strip()
+        updated_plan_ext["last_control_ir_fingerprint"] = str(compiled_ir.get("deterministic_fingerprint", "")).strip()
+        updated_plan["extensions"] = updated_plan_ext
+        seed_plan = dict(updated_plan)
+        seed_plan["deterministic_fingerprint"] = ""
+        updated_plan["deterministic_fingerprint"] = canonical_sha256(seed_plan)
+        plan_artifacts = _upsert_plan_artifact(plan_artifacts, updated_plan)
+        state["plan_artifacts"] = [dict(row) for row in list(plan_artifacts or []) if isinstance(row, dict)]
+
+        result_metadata = {
+            "plan_id": plan_id,
+            "execute_plan_intent": dict(execute_intent_row),
+            "execution_control_resolution_id": str(execution_resolution.get("resolution_id", "")).strip(),
+            "execution_decision_log_ref": str(execution_resolution.get("decision_log_ref", "")).strip(),
+            "control_ir_program": dict(ir_program),
+            "control_ir_execution": _control_ir_stub_result_metadata(compiled_ir),
+            "emitted_commitment_count": len(emitted_commitments),
+            "emitted_event_count": len(emitted_events),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.construction_project_create":
