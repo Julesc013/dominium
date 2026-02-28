@@ -31,6 +31,9 @@ CONTROL_PLANE_PREFIXES = (
     "tools/xstack/run.py",
     "src/control/",
 )
+CTRL_MODULE_PREFIXES = (
+    "src/control/",
+)
 NETWORKGRAPH_FLOW_PREFIXES = (
     "src/core/graph/",
     "src/core/flow/",
@@ -74,6 +77,20 @@ SUITE_TO_TEST_IDS = {
         "testx.materials.epistemic_no_leak_outside_roi",
         "testx.interior.epistemic_redaction_of_values",
         "testx.interior.no_truth_access_in_instruments",
+    ),
+    "suite.rs5.arbitration": (
+        "testx.materials.multiplayer_equal_share_arbitration",
+        "testx.materials.multiplayer_inspection_fairness",
+        "testx.performance.arbitration_equal_share",
+        "testx.performance.multiplayer_fairness_under_spread_players",
+        "testx.reality.multiplayer_distributed_players_arbitration",
+    ),
+    "suite.replay.reenactment": (
+        "testx.materials.reenactment_deterministic_hash",
+        "testx.materials.reenactment_budget_degrades",
+        "testx.materials.reenactment_seed_reproducible",
+        "testx.srz.hash_anchor_replay",
+        "testx.time.compaction_preserves_replay",
     ),
 }
 
@@ -160,6 +177,9 @@ def _suite_required_for_path(path: str) -> Set[str]:
         out.add("suite.registry.compile")
     if rel.startswith(CONTROL_PLANE_PREFIXES):
         out.add("suite.multiplayer.determinism_envelope")
+    if rel.startswith(CTRL_MODULE_PREFIXES):
+        out.add("suite.rs5.arbitration")
+        out.add("suite.replay.reenactment")
     if rel.startswith(NETWORKGRAPH_FLOW_PREFIXES):
         out.add("suite.networkgraph_flow.regression")
     if rel.startswith(EPISTEMIC_PREFIXES):
