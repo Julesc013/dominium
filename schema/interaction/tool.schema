@@ -1,0 +1,23 @@
+SCHEMA: interaction/tool.schema
+schema_id: dominium.schema.interaction.tool
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical tool assembly metadata used by ActionSurface capability filtering and process parameterization.
+
+REQUIRED SHAPE:
+record tool
+  required:
+    - schema_version: semver
+    - tool_id: id
+    - tool_type_id: id
+    - tool_tags: list[id]
+    - effect_model_id: id
+    - equipped_by_agent_id: optional_id
+    - durability_state: optional_map
+    - extensions: map
+
+INVARIANTS:
+- Tool rows are data-driven and deterministic.
+- Tool rows never mutate authoritative state except through process runtime.

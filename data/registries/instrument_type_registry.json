@@ -88,6 +88,71 @@
         }
       },
       {
+        "instrument_type_id": "instr.tool.health",
+        "description": "Diegetic tool health readout channel emitted by process.tool_readout_tick.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.tool.health"
+        ],
+        "update_process_id": "process.tool_readout_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.tool.measurement",
+        "description": "Diegetic tool measurement readout channel emitted by process.tool_readout_tick.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.tool.measurement"
+        ],
+        "update_process_id": "process.tool_readout_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.tool.torque",
+        "description": "Diegetic tool torque readout channel emitted by process.tool_readout_tick.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.tool.torque"
+        ],
+        "update_process_id": "process.tool_readout_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.task.progress",
+        "description": "Diegetic task progress summary emitted by process.task_* updates.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.task.progress"
+        ],
+        "update_process_id": "process.task_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.task.status",
+        "description": "Diegetic task status summary emitted by process.task_* updates.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.task.status"
+        ],
+        "update_process_id": "process.task_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
         "instrument_type_id": "instr.rangefinder",
         "description": "Rangefinder stub for future domain sensor channels.",
         "required_channels_in": [

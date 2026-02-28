@@ -105,6 +105,28 @@ def _visibility_policy_rows(registry_payload: Mapping[str, object] | None) -> Di
     return out
 
 
+def _tool_type_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    rows = _rows_from_registry(dict(registry_payload or {}), "tool_types")
+    out: Dict[str, dict] = {}
+    for row in sorted(rows, key=lambda item: str(item.get("tool_type_id", ""))):
+        tool_type_id = str(row.get("tool_type_id", "")).strip()
+        if not tool_type_id:
+            continue
+        out[tool_type_id] = dict(row)
+    return out
+
+
+def _tool_effect_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    rows = _rows_from_registry(dict(registry_payload or {}), "effect_models")
+    out: Dict[str, dict] = {}
+    for row in sorted(rows, key=lambda item: str(item.get("effect_model_id", ""))):
+        effect_model_id = str(row.get("effect_model_id", "")).strip()
+        if not effect_model_id:
+            continue
+        out[effect_model_id] = dict(row)
+    return out
+
+
 def _visible_under_policy(policy_row: Mapping[str, object], entitlements: set[str], channels: set[str]) -> bool:
     raw_entitlement = policy_row.get("requires_entitlement")
     requires_entitlement = (
@@ -174,8 +196,11 @@ def resolve_action_surfaces(
     authority_context: Mapping[str, object],
     surface_type_registry: Mapping[str, object] | None = None,
     tool_tag_registry: Mapping[str, object] | None = None,
+    tool_type_registry: Mapping[str, object] | None = None,
+    tool_effect_model_registry: Mapping[str, object] | None = None,
     surface_visibility_policy_registry: Mapping[str, object] | None = None,
     held_tool_tags: object = None,
+    active_tool: Mapping[str, object] | None = None,
 ) -> Dict[str, object]:
     target_id = str(target_semantic_id).strip()
     if not target_id:
@@ -192,8 +217,27 @@ def resolve_action_surfaces(
     process_entitlement_requirements = dict((dict(law_profile or {})).get("process_entitlement_requirements") or {})
     known_surface_types = _surface_type_set(surface_type_registry)
     known_tool_tags = _tool_tag_set(tool_tag_registry)
+    tool_type_rows = _tool_type_rows_by_id(tool_type_registry)
+    tool_effect_rows = _tool_effect_rows_by_id(tool_effect_model_registry)
     visibility_policies = _visibility_policy_rows(surface_visibility_policy_registry)
     held_tags = set(_held_tool_tags(held_tool_tags, authority_context))
+    active_tool_row = dict(active_tool or {})
+    active_tool_id = str(active_tool_row.get("tool_id", "")).strip()
+    active_tool_type_id = str(active_tool_row.get("tool_type_id", "")).strip()
+    active_tool_effect_model_id = str(active_tool_row.get("effect_model_id", "")).strip()
+    active_tool_type_row = dict(tool_type_rows.get(active_tool_type_id) or {})
+    active_tool_effect_row = dict(tool_effect_rows.get(active_tool_effect_model_id) or {})
+    active_tool_default_tags = set(_sorted_unique_strings(list(active_tool_type_row.get("default_tool_tags") or [])))
+    active_tool_tags = set(_sorted_unique_strings(list(active_tool_row.get("tool_tags") or [])))
+    active_tool_tags = set(_sorted_unique_strings(list(active_tool_tags) + list(active_tool_default_tags) + list(held_tags)))
+    active_tool_allowed_surface_types = set(
+        _sorted_unique_strings(list(active_tool_type_row.get("allowed_surface_types") or []))
+    )
+    active_tool_allowed_process_ids = set(
+        _sorted_unique_strings(list(active_tool_type_row.get("allowed_process_ids") or []))
+    )
+    active_tool_effect_parameters = dict(active_tool_effect_row.get("parameters") or {})
+    active_tool_enabled = bool(active_tool_id and active_tool_type_id)
 
     candidates: List[dict] = []
     source_lists = _surface_lists_from_entity(entity_row, interaction_block, target_id)
@@ -227,9 +271,20 @@ def resolve_action_surfaces(
             filtered_allowed = _sorted_unique_strings(filtered_allowed)
             if not filtered_allowed:
                 continue
-            tool_compatible = True
+            tool_surface_compatible = True
+            if active_tool_enabled and active_tool_allowed_surface_types:
+                tool_surface_compatible = surface_type_id in active_tool_allowed_surface_types
+            tool_tag_compatible = True
             if normalized_tool_tags:
-                tool_compatible = bool(held_tags.intersection(set(normalized_tool_tags)))
+                tool_tag_compatible = bool(active_tool_tags.intersection(set(normalized_tool_tags)))
+            tool_compatible = bool(tool_surface_compatible and tool_tag_compatible)
+            tool_process_allowed_ids = list(filtered_allowed)
+            tool_process_disallowed_ids: List[str] = []
+            if active_tool_enabled and active_tool_allowed_process_ids:
+                tool_process_allowed_ids = [token for token in filtered_allowed if token in active_tool_allowed_process_ids]
+                tool_process_disallowed_ids = [
+                    token for token in filtered_allowed if token not in active_tool_allowed_process_ids
+                ]
             normalized = {
                 "schema_version": "1.0.0",
                 "surface_id": "",
@@ -246,7 +301,16 @@ def resolve_action_surfaces(
                     "source": source_name,
                     "source_index": int(max(0, _to_int(source_index, 0))),
                     "tool_compatible": bool(tool_compatible),
+                    "tool_surface_compatible": bool(tool_surface_compatible),
+                    "tool_tag_compatible": bool(tool_tag_compatible),
+                    "tool_process_allowed_ids": _sorted_unique_strings(tool_process_allowed_ids),
+                    "tool_process_disallowed_ids": _sorted_unique_strings(tool_process_disallowed_ids),
                     "held_tool_tags": sorted(held_tags),
+                    "active_tool_id": active_tool_id or None,
+                    "active_tool_type_id": active_tool_type_id or None,
+                    "active_tool_effect_model_id": active_tool_effect_model_id or None,
+                    "active_tool_tags": _sorted_unique_strings(list(active_tool_tags)),
+                    "active_tool_effect_parameters": dict(active_tool_effect_parameters),
                 },
             }
             sort_hash = canonical_sha256(

@@ -334,6 +334,11 @@ def _default_lens_channels(lens_type: str) -> List[str]:
         "ch.diegetic.notebook",
         "ch.diegetic.radio_text",
         "ch.diegetic.map_local",
+        "ch.diegetic.tool.torque",
+        "ch.diegetic.tool.measurement",
+        "ch.diegetic.tool.health",
+        "ch.diegetic.task.progress",
+        "ch.diegetic.task.status",
     ]
 
 
@@ -497,6 +502,16 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.notebook": dict(instruments.get("instrument.notebook") or {})}
     if channel_id == "ch.diegetic.radio_text":
         return {"instrument.radio_text": dict(instruments.get("instrument.radio_text") or {})}
+    if channel_id == "ch.diegetic.tool.torque":
+        return {"instrument.tool.torque": dict(instruments.get("instrument.tool.torque") or {})}
+    if channel_id == "ch.diegetic.tool.measurement":
+        return {"instrument.tool.measurement": dict(instruments.get("instrument.tool.measurement") or {})}
+    if channel_id == "ch.diegetic.tool.health":
+        return {"instrument.tool.health": dict(instruments.get("instrument.tool.health") or {})}
+    if channel_id == "ch.diegetic.task.progress":
+        return {"instrument.task.progress": dict(instruments.get("instrument.task.progress") or {})}
+    if channel_id == "ch.diegetic.task.status":
+        return {"instrument.task.status": dict(instruments.get("instrument.task.status") or {})}
     truth_overlay = dict(perceived_model.get("truth_overlay") or {})
     if channel_id == "ch.truth.overlay.terrain_height":
         return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
@@ -556,6 +571,11 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.map_local": "ch.diegetic.map_local",
         "instrument.notebook": "ch.diegetic.notebook",
         "instrument.radio_text": "ch.diegetic.radio_text",
+        "instrument.tool.torque": "ch.diegetic.tool.torque",
+        "instrument.tool.measurement": "ch.diegetic.tool.measurement",
+        "instrument.tool.health": "ch.diegetic.tool.health",
+        "instrument.task.progress": "ch.diegetic.task.progress",
+        "instrument.task.status": "ch.diegetic.task.status",
     }
     for instrument_id, channel_id in sorted(instrument_channels.items()):
         if channel_id not in allowed:
@@ -667,11 +687,17 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
         "instrument.map_local": {},
         "instrument.notebook": {},
         "instrument.radio_text": {},
+        "instrument.tool.torque": {},
+        "instrument.tool.measurement": {},
+        "instrument.tool.health": {},
+        "instrument.task.progress": {},
+        "instrument.task.status": {},
     }
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
         assembly_id = str(row.get("assembly_id", "")).strip()
         if assembly_id in payload:
             payload[assembly_id] = {
+                "assembly_id": assembly_id,
                 "reading": copy.deepcopy(row.get("reading")),
                 "quality": str(row.get("quality", "")),
                 "quality_value": int(row.get("quality_value", 0) or 0),

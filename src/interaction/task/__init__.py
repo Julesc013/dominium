@@ -1,7 +1,6 @@
-"""Interaction semantic helpers."""
+"""Task engine exports."""
 
-from .action_surface_engine import resolve_action_surfaces
-from .task.task_engine import (
+from .task_engine import (
     REFUSAL_TASK_BUDGET_EXCEEDED,
     REFUSAL_TASK_FORBIDDEN_BY_LAW,
     REFUSAL_TASK_TOOL_REQUIRED,
@@ -18,7 +17,6 @@ from .task.task_engine import (
 )
 
 __all__ = [
-    "resolve_action_surfaces",
     "TaskError",
     "REFUSAL_TASK_TOOL_REQUIRED",
     "REFUSAL_TASK_FORBIDDEN_BY_LAW",

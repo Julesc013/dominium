@@ -82,7 +82,11 @@ REGISTRY_HASH_KEY_MAP = {
     "interaction_action_registry_hash": "interaction_action_registry",
     "surface_type_registry_hash": "surface_type_registry",
     "tool_tag_registry_hash": "tool_tag_registry",
+    "tool_type_registry_hash": "tool_type_registry",
+    "tool_effect_model_registry_hash": "tool_effect_model_registry",
     "surface_visibility_policy_registry_hash": "surface_visibility_policy_registry",
+    "task_type_registry_hash": "task_type_registry",
+    "progress_model_registry_hash": "progress_model_registry",
     "controller_type_registry_hash": "controller_type_registry",
     "governance_type_registry_hash": "governance_type_registry",
     "diplomatic_state_registry_hash": "diplomatic_state_registry",
@@ -176,7 +180,11 @@ REGISTRY_FILE_MAP = {
     "interaction_action_registry_hash": "interaction_action.registry.json",
     "surface_type_registry_hash": "surface_type.registry.json",
     "tool_tag_registry_hash": "tool_tag.registry.json",
+    "tool_type_registry_hash": "tool_type.registry.json",
+    "tool_effect_model_registry_hash": "tool_effect_model.registry.json",
     "surface_visibility_policy_registry_hash": "surface_visibility_policy.registry.json",
+    "task_type_registry_hash": "task_type.registry.json",
+    "progress_model_registry_hash": "progress_model.registry.json",
     "controller_type_registry_hash": "controller_type.registry.json",
     "governance_type_registry_hash": "governance_type.registry.json",
     "diplomatic_state_registry_hash": "diplomatic_state.registry.json",
@@ -1320,6 +1328,22 @@ def boot_session_spec(
     )
     if tool_tag_registry_error:
         return tool_tag_registry_error
+    tool_type_registry, tool_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["tool_type_registry_hash"],
+        expected_hash=str(registries.get("tool_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if tool_type_registry_error:
+        return tool_type_registry_error
+    tool_effect_model_registry, tool_effect_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["tool_effect_model_registry_hash"],
+        expected_hash=str(registries.get("tool_effect_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if tool_effect_model_registry_error:
+        return tool_effect_model_registry_error
     surface_visibility_policy_registry, surface_visibility_policy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["surface_visibility_policy_registry_hash"],
@@ -1328,6 +1352,22 @@ def boot_session_spec(
     )
     if surface_visibility_policy_registry_error:
         return surface_visibility_policy_registry_error
+    task_type_registry, task_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["task_type_registry_hash"],
+        expected_hash=str(registries.get("task_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if task_type_registry_error:
+        return task_type_registry_error
+    progress_model_registry, progress_model_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["progress_model_registry_hash"],
+        expected_hash=str(registries.get("progress_model_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if progress_model_registry_error:
+        return progress_model_registry_error
     governance_type_registry, governance_type_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["governance_type_registry_hash"],
@@ -1915,7 +1955,11 @@ def boot_session_spec(
                 "interaction_action_registry": interaction_action_registry,
                 "surface_type_registry": surface_type_registry,
                 "tool_tag_registry": tool_tag_registry,
+                "tool_type_registry": tool_type_registry,
+                "tool_effect_model_registry": tool_effect_model_registry,
                 "surface_visibility_policy_registry": surface_visibility_policy_registry,
+                "task_type_registry": task_type_registry,
+                "progress_model_registry": progress_model_registry,
                 "governance_type_registry": governance_type_registry,
                 "diplomatic_state_registry": diplomatic_state_registry,
                 "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -2026,7 +2070,11 @@ def boot_session_spec(
                 "interaction_action_registry": interaction_action_registry,
                 "surface_type_registry": surface_type_registry,
                 "tool_tag_registry": tool_tag_registry,
+                "tool_type_registry": tool_type_registry,
+                "tool_effect_model_registry": tool_effect_model_registry,
                 "surface_visibility_policy_registry": surface_visibility_policy_registry,
+                "task_type_registry": task_type_registry,
+                "progress_model_registry": progress_model_registry,
                 "governance_type_registry": governance_type_registry,
                 "diplomatic_state_registry": diplomatic_state_registry,
                 "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -2408,7 +2456,11 @@ def boot_session_spec(
             "interaction_action_registry": interaction_action_registry,
             "surface_type_registry": surface_type_registry,
             "tool_tag_registry": tool_tag_registry,
+            "tool_type_registry": tool_type_registry,
+            "tool_effect_model_registry": tool_effect_model_registry,
             "surface_visibility_policy_registry": surface_visibility_policy_registry,
+            "task_type_registry": task_type_registry,
+            "progress_model_registry": progress_model_registry,
             "governance_type_registry": governance_type_registry,
             "diplomatic_state_registry": diplomatic_state_registry,
             "cohort_mapping_policy_registry": cohort_mapping_policy_registry,

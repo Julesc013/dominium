@@ -295,6 +295,10 @@ ACTION_SURFACE_REGISTRY_FILES = (
     "data/registries/tool_tag_registry.json",
     "data/registries/surface_visibility_policy_registry.json",
 )
+TOOL_REGISTRY_FILES = (
+    "data/registries/tool_type_registry.json",
+    "data/registries/tool_effect_model_registry.json",
+)
 INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS = (
     "agent_states",
     "world_assemblies",
@@ -7549,6 +7553,286 @@ def _append_interaction_invariant_findings(
                 rule_id="INV-ACTION-PROCESS-ONLY",
             )
         )
+
+    for rel_path in TOOL_REGISTRY_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="required ToolEffect registry file is missing",
+                rule_id="INV-TOOLS-DATA-DRIVEN",
+            )
+        )
+
+    process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_runtime_abs = os.path.join(repo_root, process_runtime_rel.replace("/", os.sep))
+    try:
+        process_runtime_text = open(process_runtime_abs, "r", encoding="utf-8").read()
+    except OSError:
+        process_runtime_text = ""
+
+    if not process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime file missing; tool process enforcement unavailable",
+                rule_id="INV-TOOL_USE_REQUIRES_BIND",
+            )
+        )
+    else:
+        for token in (
+            "process.tool_bind",
+            "process.tool_unbind",
+            "process.tool_use_prepare",
+            "process.tool_readout_tick",
+            "_active_tool_binding(tool_bindings, subject_id)",
+            "refusal.tool.bind_required",
+        ):
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="tool runtime must enforce active bind before use/readout",
+                    rule_id="INV-TOOL_USE_REQUIRES_BIND",
+                )
+            )
+        for token in (
+            "_tool_type_rows(policy_context)",
+            "_tool_effect_model_rows(policy_context)",
+            "tool_type_registry",
+            "tool_effect_model_registry",
+        ):
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="tool runtime must resolve tool types/effects from registries, not hardcoded literals",
+                    rule_id="INV-TOOLS-DATA-DRIVEN",
+                )
+            )
+
+    for rel_path, text, tokens in (
+        (
+            action_surface_rel,
+            action_surface_text,
+            (
+                "_tool_type_rows_by_id(",
+                "_tool_effect_rows_by_id(",
+                "tool_process_allowed_ids",
+                "active_tool_effect_parameters",
+            ),
+        ),
+        (
+            affordance_rel,
+            affordance_text,
+            (
+                "tool_process_allowed_ids",
+                "tool_process_compatible",
+                "active_tool_effect_parameters",
+                "refusal.tool.incompatible",
+            ),
+        ),
+        (
+            dispatch_rel,
+            dispatch_text,
+            (
+                "_active_tool_context(",
+                "tool_effect",
+                "tool_effect_model_id",
+                "refusal.tool.bind_required",
+            ),
+        ),
+    ):
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="tool integration surface missing; cannot validate data-driven flow",
+                    rule_id="INV-TOOLS-DATA-DRIVEN",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="tool interactions must remain registry-driven and parameterized",
+                    rule_id="INV-TOOLS-DATA-DRIVEN",
+                )
+            )
+
+    task_engine_rel = "src/interaction/task/task_engine.py"
+    task_engine_abs = os.path.join(repo_root, task_engine_rel.replace("/", os.sep))
+    try:
+        task_engine_text = open(task_engine_abs, "r", encoding="utf-8").read()
+    except OSError:
+        task_engine_text = ""
+    if not task_engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=task_engine_rel,
+                line_number=1,
+                snippet="",
+                message="task engine file missing; deterministic task progression unavailable",
+                rule_id="INV-TASKS-PROCESS-ONLY-MUTATION",
+            )
+        )
+    else:
+        for token in (
+            "def create_task_row(",
+            "def tick_tasks(",
+            "completion_intents",
+            "process_id_to_execute",
+            "dt_ticks",
+        ):
+            if token in task_engine_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=task_engine_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="task engine must expose deterministic create/tick/completion handoff primitives",
+                    rule_id="INV-TASKS-PROCESS-ONLY-MUTATION",
+                )
+            )
+        for token in (
+            "time.time(",
+            "datetime.",
+            "perf_counter(",
+            "monotonic(",
+        ):
+            if token not in task_engine_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=task_engine_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="task progression must never use wall-clock timing APIs",
+                    rule_id="INV-NO-WALLCLOCK-IN-TASKS",
+                )
+            )
+
+    if not process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime file missing; task process enforcement unavailable",
+                rule_id="INV-TASKS-PROCESS-ONLY-MUTATION",
+            )
+        )
+    else:
+        for token in (
+            "process.task_create",
+            "process.task_tick",
+            "process.task_pause",
+            "process.task_resume",
+            "process.task_cancel",
+            "_persist_task_state(",
+            "pending_task_completion_intents",
+        ):
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="task runtime must route work through canonical task process family and pending completion intents",
+                    rule_id="INV-TASKS-PROCESS-ONLY-MUTATION",
+                )
+            )
+        for token in (
+            "time.time(",
+            "datetime.",
+            "perf_counter(",
+            "monotonic(",
+        ):
+            if token not in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="task runtime integration must not depend on wall-clock APIs",
+                    rule_id="INV-NO-WALLCLOCK-IN-TASKS",
+                )
+            )
+
+    if dispatch_text and "process.task_create" not in dispatch_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=dispatch_rel,
+                line_number=1,
+                snippet="process.task_create",
+                message="interaction dispatch must map long-running surface actions into process.task_create when task mappings exist",
+                rule_id="INV-TASKS-PROCESS-ONLY-MUTATION",
+            )
+        )
+
+    hardcoded_tool_patterns = (
+        re.compile(r"(==|!=)\s*['\"]tool\.[^'\"]+['\"]"),
+        re.compile(r"startswith\(\s*['\"]tool\."),
+        re.compile(r"endswith\(\s*['\"]tool\."),
+    )
+    for rel_path in (action_surface_rel, affordance_rel, dispatch_rel, process_runtime_rel):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if token.startswith("#"):
+                continue
+            if "data/registries/" in token:
+                continue
+            if any(pattern.search(token) for pattern in hardcoded_tool_patterns):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=token[:140],
+                        message="tool runtime/interaction must not hardcode specific tool ids in logic",
+                        rule_id="INV-NO-HARDCODED-TOOL-LOGIC",
+                    )
+                )
 
     mutation_pattern = re.compile(
         r"\[\s*['\"](" + "|".join(INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS) + r")['\"]\s*\]\s*="

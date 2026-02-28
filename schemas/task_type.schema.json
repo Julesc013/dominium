@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task Type Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ACT-3 task type template.",
+  "x-doc-ref": [
+    "docs/interaction/TASK_AND_WORK_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_type_id",
+    "description",
+    "default_progress_units_total",
+    "required_tool_tags",
+    "allowed_surface_types",
+    "completion_process_id",
+    "progress_model_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "task_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "default_progress_units_total": {
+      "type": "integer"
+    },
+    "required_tool_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_surface_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "completion_process_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "progress_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "task_type_id": "task.tighten_fastener",
+      "description": "Deterministic fastener tightening work item.",
+      "default_progress_units_total": 16777216,
+      "required_tool_tags": [
+        "tool_tag.fastening"
+      ],
+      "allowed_surface_types": [
+        "surface.fastener"
+      ],
+      "completion_process_id": "process.fastener_turn",
+      "progress_model_id": "progress.linear_default",
+      "extensions": {}
+    }
+  ]
+}

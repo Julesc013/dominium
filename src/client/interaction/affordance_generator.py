@@ -265,9 +265,13 @@ def _surface_affordance_row(
 
     surface_extensions = dict((dict(surface_row or {})).get("extensions") or {})
     tool_compatible = bool(surface_extensions.get("tool_compatible", True))
-    enabled = (not missing_entitlements) and (not missing_lens_channels) and tool_compatible
+    tool_process_allowed_ids = _sorted_unique_strings(list(surface_extensions.get("tool_process_allowed_ids") or []))
+    tool_process_compatible = True
+    if tool_process_allowed_ids:
+        tool_process_compatible = process_id in set(tool_process_allowed_ids)
+    enabled = (not missing_entitlements) and (not missing_lens_channels) and tool_compatible and tool_process_compatible
     disabled_reason_code = ""
-    if not tool_compatible:
+    if (not tool_compatible) or (not tool_process_compatible):
         disabled_reason_code = "refusal.tool.incompatible"
     elif missing_entitlements:
         disabled_reason_code = "ENTITLEMENT_MISSING"
@@ -318,6 +322,14 @@ def _surface_affordance_row(
             "surface_visibility_policy_id": str((dict(surface_row or {})).get("visibility_policy_id", "")).strip(),
             "compatible_tool_tags": _sorted_unique_strings(list((dict(surface_row or {})).get("compatible_tool_tags") or [])),
             "tool_compatible": bool(tool_compatible),
+            "tool_process_compatible": bool(tool_process_compatible),
+            "tool_process_allowed_ids": list(tool_process_allowed_ids),
+            "tool_process_disallowed_ids": _sorted_unique_strings(list(surface_extensions.get("tool_process_disallowed_ids") or [])),
+            "active_tool_id": surface_extensions.get("active_tool_id"),
+            "active_tool_type_id": surface_extensions.get("active_tool_type_id"),
+            "active_tool_effect_model_id": surface_extensions.get("active_tool_effect_model_id"),
+            "active_tool_tags": _sorted_unique_strings(list(surface_extensions.get("active_tool_tags") or [])),
+            "active_tool_effect_parameters": dict(surface_extensions.get("active_tool_effect_parameters") or {}),
             "disabled_reason_code": disabled_reason_code,
         },
     }
@@ -415,8 +427,11 @@ def build_affordance_list(
     interaction_action_registry: dict,
     surface_type_registry: dict | None = None,
     tool_tag_registry: dict | None = None,
+    tool_type_registry: dict | None = None,
+    tool_effect_model_registry: dict | None = None,
     surface_visibility_policy_registry: dict | None = None,
     held_tool_tags: list[object] | None = None,
+    active_tool: dict | None = None,
     include_disabled: bool = True,
     repo_root: str = "",
 ) -> Dict[str, object]:
@@ -439,8 +454,11 @@ def build_affordance_list(
         authority_context=dict(authority_context or {}),
         surface_type_registry=dict(surface_type_registry or {}),
         tool_tag_registry=dict(tool_tag_registry or {}),
+        tool_type_registry=dict(tool_type_registry or {}),
+        tool_effect_model_registry=dict(tool_effect_model_registry or {}),
         surface_visibility_policy_registry=dict(surface_visibility_policy_registry or {}),
         held_tool_tags=list(held_tool_tags or []),
+        active_tool=dict(active_tool or {}),
     )
     surface_rows = [
         dict(row)
@@ -519,6 +537,8 @@ def build_affordance_list(
                     "surface_type_id": str(row.get("surface_type_id", "")).strip(),
                     "local_transform": dict(row.get("local_transform") or {}),
                     "tool_compatible": bool(dict(row.get("extensions") or {}).get("tool_compatible", True)),
+                    "active_tool_id": (dict(row.get("extensions") or {})).get("active_tool_id"),
+                    "active_tool_type_id": (dict(row.get("extensions") or {})).get("active_tool_type_id"),
                 }
                 for row in sorted(surface_rows, key=lambda item: str(item.get("surface_id", "")))
             ],

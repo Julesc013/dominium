@@ -106,6 +106,12 @@
               "null"
             ]
           },
+          "equipped_tool_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "orientation_mdeg": {
             "type": "object",
             "required": [
@@ -358,6 +364,103 @@
         }
       }
     },
+    "tool_assemblies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "tool_id",
+          "tool_type_id",
+          "tool_tags",
+          "effect_model_id",
+          "equipped_by_agent_id",
+          "durability_state",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "tool_id": {
+            "type": "string"
+          },
+          "tool_type_id": {
+            "type": "string"
+          },
+          "tool_tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "effect_model_id": {
+            "type": "string"
+          },
+          "equipped_by_agent_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "durability_state": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "tool_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "bind_id",
+          "subject_id",
+          "tool_id",
+          "created_tick",
+          "active",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "bind_id": {
+            "type": "string"
+          },
+          "subject_id": {
+            "type": "string"
+          },
+          "tool_id": {
+            "type": "string"
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
     "controller_assemblies": {
       "type": "array",
       "items": {
@@ -401,6 +504,12 @@
             "enum": [
               "active",
               "inactive"
+            ]
+          },
+          "active_tool_id": {
+            "type": [
+              "string",
+              "null"
             ]
           }
         }
@@ -3102,6 +3211,252 @@
           "requester_subject_id": {
             "type": "string",
             "minLength": 1
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "task_id",
+          "task_type_id",
+          "actor_subject_id",
+          "target_semantic_id",
+          "process_id_to_execute",
+          "parameters",
+          "created_tick",
+          "status",
+          "progress_units_total",
+          "progress_units_done",
+          "cost_units_per_tick",
+          "linked_event_ids",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "task_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "task_type_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "actor_subject_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_semantic_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "surface_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "tool_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "process_id_to_execute": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "created_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "started_tick": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "last_progress_tick": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "running",
+              "paused",
+              "completed",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "progress_units_total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "progress_units_done": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost_units_per_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "linked_commitment_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "linked_event_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "task_provenance_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "event_id",
+          "tick",
+          "event_type_id",
+          "actor_subject_id",
+          "site_ref",
+          "inputs",
+          "outputs",
+          "ledger_deltas",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "event_type_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "actor_subject_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "site_ref": {
+            "type": "string"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ledger_deltas": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "linked_project_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "linked_step_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "pending_task_completion_intents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "intent_id",
+          "process_id",
+          "inputs",
+          "authority_context_ref",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "intent_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "process_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "inputs": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "authority_context_ref": {
+            "type": "object",
+            "additionalProperties": true
           },
           "extensions": {
             "type": "object",

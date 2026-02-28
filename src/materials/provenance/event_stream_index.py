@@ -40,6 +40,9 @@ def _event_matches_target(event_row: Mapping[str, object], target_id: str) -> bo
         str(extensions.get("manifest_id", "")).strip(),
         str(extensions.get("project_id", "")).strip(),
         str(extensions.get("asset_id", "")).strip(),
+        str(extensions.get("task_id", "")).strip(),
+        str(extensions.get("target_semantic_id", "")).strip(),
+        str(extensions.get("tool_id", "")).strip(),
     }
     candidates.update(str(item).strip() for item in list(row.get("inputs") or []) if str(item).strip())
     candidates.update(str(item).strip() for item in list(row.get("outputs") or []) if str(item).strip())

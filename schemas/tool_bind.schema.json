@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tool Bind Schema",
+  "version": "1.0.0",
+  "description": "Deterministic subject-to-tool binding row.",
+  "x-doc-ref": [
+    "docs/interaction/TOOLS_AND_EFFECTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "bind_id",
+    "subject_id",
+    "tool_id",
+    "created_tick",
+    "active",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bind_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tool_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "bind_id": "tool.bind.79aef5d200712b31",
+      "subject_id": "agent.alpha",
+      "tool_id": "tool.instance.wrench.alpha",
+      "created_tick": 42,
+      "active": true,
+      "extensions": {}
+    }
+  ]
+}

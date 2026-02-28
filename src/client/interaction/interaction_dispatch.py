@@ -12,6 +12,7 @@ from src.net.policies.policy_lockstep import POLICY_ID_LOCKSTEP
 from src.net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE
 from src.net.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from src.interaction.task import resolve_task_type_for_completion_process
 
 from .affordance_generator import build_affordance_list
 from .inspection_overlays import build_inspection_overlays
@@ -32,6 +33,87 @@ def _registry_payload(policy_context: dict | None, key: str) -> dict:
 
 def _held_tool_tags(policy_context: dict | None) -> List[object]:
     return list((dict(policy_context or {})).get("held_tool_tags") or [])
+
+
+def _active_tool_context(state: dict | None, authority_context: dict | None, policy_context: dict | None) -> dict:
+    state_payload = dict(state or {})
+    authority = dict(authority_context or {})
+    policy = dict(policy_context or {})
+    candidates = []
+    for token in (
+        authority.get("subject_id"),
+        authority.get("agent_id"),
+        authority.get("controller_id"),
+        (dict(authority.get("extensions") or {})).get("subject_id"),
+        (dict(authority.get("extensions") or {})).get("agent_id"),
+        (dict(authority.get("extensions") or {})).get("controller_id"),
+        policy.get("active_subject_id"),
+        policy.get("active_agent_id"),
+        policy.get("active_controller_id"),
+    ):
+        candidate = str(token or "").strip()
+        if candidate and candidate not in candidates:
+            candidates.append(candidate)
+    tool_bindings = [
+        dict(item)
+        for item in list(state_payload.get("tool_bindings") or [])
+        if isinstance(item, dict) and bool(item.get("active", False))
+    ]
+    tool_bindings = sorted(
+        tool_bindings,
+        key=lambda item: (
+            str(item.get("subject_id", "")),
+            str(item.get("bind_id", "")),
+            str(item.get("tool_id", "")),
+        ),
+    )
+    active_binding = {}
+    for subject_id in candidates:
+        for row in tool_bindings:
+            if str(row.get("subject_id", "")).strip() == subject_id:
+                active_binding = dict(row)
+                break
+        if active_binding:
+            break
+    if not active_binding and tool_bindings:
+        active_binding = dict(tool_bindings[0])
+
+    tool_rows = [
+        dict(item)
+        for item in list(state_payload.get("tool_assemblies") or [])
+        if isinstance(item, dict)
+    ]
+    tool_rows = sorted(tool_rows, key=lambda item: str(item.get("tool_id", "")))
+    active_tool_id = str(active_binding.get("tool_id", "")).strip()
+    active_tool_row = {}
+    for row in tool_rows:
+        if str(row.get("tool_id", "")).strip() == active_tool_id:
+            active_tool_row = dict(row)
+            break
+
+    if not active_tool_row:
+        explicit = dict(policy.get("active_tool") or {})
+        if str(explicit.get("tool_id", "")).strip():
+            active_tool_row = explicit
+            active_tool_id = str(explicit.get("tool_id", "")).strip()
+
+    if not active_tool_row:
+        return {}
+
+    tool_tags = sorted(
+        set(
+            str(item).strip()
+            for item in list(active_tool_row.get("tool_tags") or [])
+            if str(item).strip()
+        )
+    )
+    return {
+        "tool_id": active_tool_id,
+        "tool_type_id": str(active_tool_row.get("tool_type_id", "")).strip(),
+        "effect_model_id": str(active_tool_row.get("effect_model_id", "")).strip(),
+        "tool_tags": tool_tags,
+        "subject_id": str(active_binding.get("subject_id", "")).strip() or None,
+    }
 
 
 def _hash64(token: str, fallback_seed: object) -> str:
@@ -269,6 +351,7 @@ def build_interaction_intent(
     affordance_row: dict,
     parameters: dict,
     authority_context: dict,
+    policy_context: dict | None = None,
     tick: int,
 ) -> Dict[str, object]:
     process_id = str((dict(affordance_row or {})).get("process_id", "")).strip()
@@ -282,11 +365,65 @@ def build_interaction_intent(
             "$.affordance",
         )
     canonical_parameters = _canonical_parameters(dict(parameters or {}))
+    if not isinstance(canonical_parameters, dict):
+        canonical_parameters = {}
+    extensions = dict((dict(affordance_row or {})).get("extensions") or {})
+    active_tool_effect_parameters = dict(extensions.get("active_tool_effect_parameters") or {})
+    if active_tool_effect_parameters and "tool_effect" not in canonical_parameters:
+        canonical_parameters["tool_effect"] = _canonical_parameters(active_tool_effect_parameters)
+    active_tool_id = str(extensions.get("active_tool_id", "")).strip()
+    if active_tool_id and "tool_id" not in canonical_parameters:
+        canonical_parameters["tool_id"] = active_tool_id
+    active_tool_type_id = str(extensions.get("active_tool_type_id", "")).strip()
+    if active_tool_type_id and "tool_type_id" not in canonical_parameters:
+        canonical_parameters["tool_type_id"] = active_tool_type_id
+    active_tool_effect_model_id = str(extensions.get("active_tool_effect_model_id", "")).strip()
+    if active_tool_effect_model_id and "tool_effect_model_id" not in canonical_parameters:
+        canonical_parameters["tool_effect_model_id"] = active_tool_effect_model_id
+    active_tool_tags = _sorted_unique_strings(list(extensions.get("active_tool_tags") or []))
+    if active_tool_tags and "active_tool_tags" not in canonical_parameters:
+        canonical_parameters["active_tool_tags"] = list(active_tool_tags)
+
+    surface_id = str(extensions.get("surface_id", "")).strip()
+    surface_type_id = str(extensions.get("surface_type_id", "")).strip()
+    target_semantic_id = str((dict(affordance_row or {})).get("target_semantic_id", "")).strip()
+    task_type_registry = _registry_payload(policy_context, "task_type_registry")
+    task_type_row = resolve_task_type_for_completion_process(
+        completion_process_id=process_id,
+        surface_type_id=surface_type_id,
+        task_type_registry=task_type_registry,
+    )
+    dispatch_process_id = process_id
+    if task_type_row and surface_id:
+        dispatch_process_id = "process.task_create"
+        if "task_type_id" not in canonical_parameters:
+            canonical_parameters["task_type_id"] = str(task_type_row.get("task_type_id", "")).strip()
+        if "process_id_to_execute" not in canonical_parameters:
+            canonical_parameters["process_id_to_execute"] = process_id
+        if "target_semantic_id" not in canonical_parameters and target_semantic_id:
+            canonical_parameters["target_semantic_id"] = target_semantic_id
+        if "surface_id" not in canonical_parameters:
+            canonical_parameters["surface_id"] = surface_id
+        if "surface_type_id" not in canonical_parameters and surface_type_id:
+            canonical_parameters["surface_type_id"] = surface_type_id
+        actor_subject_id = str(
+            canonical_parameters.get("actor_subject_id")
+            or canonical_parameters.get("subject_id")
+            or canonical_parameters.get("agent_id")
+            or canonical_parameters.get("controller_id")
+            or (dict(authority_context or {})).get("subject_id")
+            or (dict(authority_context or {})).get("agent_id")
+            or (dict(authority_context or {})).get("controller_id")
+            or (dict(authority_context or {})).get("peer_id")
+            or ""
+        ).strip()
+        if actor_subject_id:
+            canonical_parameters["actor_subject_id"] = actor_subject_id
     intent_id = "intent.interact.{}".format(
         canonical_sha256(
             {
                 "affordance_id": affordance_id,
-                "process_id": process_id,
+                "process_id": dispatch_process_id,
                 "tick": int(max(0, _to_int(tick, 0))),
                 "parameters": canonical_parameters,
             }
@@ -294,7 +431,7 @@ def build_interaction_intent(
     )
     intent = {
         "intent_id": intent_id,
-        "process_id": process_id,
+        "process_id": dispatch_process_id,
         "inputs": canonical_parameters,
         "authority_context_ref": {
             "authority_origin": str((dict(authority_context or {})).get("authority_origin", "")),
@@ -302,7 +439,13 @@ def build_interaction_intent(
         },
         "extensions": {
             "affordance_id": affordance_id,
-            "target_semantic_id": str((dict(affordance_row or {})).get("target_semantic_id", "")).strip(),
+            "target_semantic_id": target_semantic_id,
+            "active_tool_id": active_tool_id or None,
+            "active_tool_type_id": active_tool_type_id or None,
+            "active_tool_effect_model_id": active_tool_effect_model_id or None,
+            "completion_process_id": process_id,
+            "task_type_id": str(task_type_row.get("task_type_id", "")).strip() or None,
+            "surface_id": surface_id or None,
         },
     }
     return {
@@ -443,6 +586,7 @@ def execute_affordance(
         affordance_row=affordance_row,
         parameters=dict(parameters or {}),
         authority_context=dict(authority_context or {}),
+        policy_context=policy_context,
         tick=tick,
     )
     if str(built_intent.get("result", "")) != "complete":
@@ -504,6 +648,17 @@ def execute_affordance(
         policy_context=policy_context,
     )
     if str(execution.get("result", "")) != "complete":
+        refusal_payload = dict((dict(execution or {})).get("refusal") or {})
+        reason_code = str(refusal_payload.get("reason_code", "")).strip()
+        if reason_code in {"refusal.tool.bind_required", "refusal.tool.not_found"}:
+            _record_authority_violation(
+                repo_root=repo_root,
+                policy_context=policy_context,
+                authority_context=authority_context,
+                tick=int(tick),
+                reason_code=reason_code,
+                evidence=["tool spoof attempt detected during interaction execution"],
+            )
         out = dict(execution)
         out["intent"] = intent
         out["envelope"] = envelope
@@ -580,8 +735,11 @@ def run_interaction_command(
             interaction_action_registry=interaction_action_registry,
             surface_type_registry=_registry_payload(policy_context, "surface_type_registry"),
             tool_tag_registry=_registry_payload(policy_context, "tool_tag_registry"),
+            tool_type_registry=_registry_payload(policy_context, "tool_type_registry"),
+            tool_effect_model_registry=_registry_payload(policy_context, "tool_effect_model_registry"),
             surface_visibility_policy_registry=_registry_payload(policy_context, "surface_visibility_policy_registry"),
             held_tool_tags=_held_tool_tags(policy_context),
+            active_tool=_active_tool_context(state=state, authority_context=authority_context, policy_context=policy_context),
             include_disabled=bool(include_disabled),
             repo_root=repo_root,
         )
@@ -607,8 +765,11 @@ def run_interaction_command(
             interaction_action_registry=interaction_action_registry,
             surface_type_registry=_registry_payload(policy_context, "surface_type_registry"),
             tool_tag_registry=_registry_payload(policy_context, "tool_tag_registry"),
+            tool_type_registry=_registry_payload(policy_context, "tool_type_registry"),
+            tool_effect_model_registry=_registry_payload(policy_context, "tool_effect_model_registry"),
             surface_visibility_policy_registry=_registry_payload(policy_context, "surface_visibility_policy_registry"),
             held_tool_tags=_held_tool_tags(policy_context),
+            active_tool=_active_tool_context(state=state, authority_context=authority_context, policy_context=policy_context),
             include_disabled=bool(include_disabled),
             repo_root=repo_root,
         )
@@ -650,8 +811,11 @@ def run_interaction_command(
                         interaction_action_registry=interaction_action_registry,
                         surface_type_registry=_registry_payload(policy_context, "surface_type_registry"),
                         tool_tag_registry=_registry_payload(policy_context, "tool_tag_registry"),
+                        tool_type_registry=_registry_payload(policy_context, "tool_type_registry"),
+                        tool_effect_model_registry=_registry_payload(policy_context, "tool_effect_model_registry"),
                         surface_visibility_policy_registry=_registry_payload(policy_context, "surface_visibility_policy_registry"),
                         held_tool_tags=_held_tool_tags(policy_context),
+                        active_tool=_active_tool_context(state=state, authority_context=authority_context, policy_context=policy_context),
                         include_disabled=bool(include_disabled),
                         repo_root=repo_root,
                     )
@@ -681,8 +845,11 @@ def run_interaction_command(
             interaction_action_registry=interaction_action_registry,
             surface_type_registry=_registry_payload(policy_context, "surface_type_registry"),
             tool_tag_registry=_registry_payload(policy_context, "tool_tag_registry"),
+            tool_type_registry=_registry_payload(policy_context, "tool_type_registry"),
+            tool_effect_model_registry=_registry_payload(policy_context, "tool_effect_model_registry"),
             surface_visibility_policy_registry=_registry_payload(policy_context, "surface_visibility_policy_registry"),
             held_tool_tags=_held_tool_tags(policy_context),
+            active_tool=_active_tool_context(state=state, authority_context=authority_context, policy_context=policy_context),
             include_disabled=bool(include_disabled),
             repo_root=repo_root,
         )

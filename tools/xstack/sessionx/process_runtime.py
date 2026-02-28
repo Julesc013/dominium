@@ -86,6 +86,17 @@ from src.materials.provenance.event_stream_index import (
     build_event_stream_index,
     normalize_event_stream_index_row,
 )
+from src.interaction.task.task_engine import (
+    REFUSAL_TASK_BUDGET_EXCEEDED,
+    REFUSAL_TASK_FORBIDDEN_BY_LAW,
+    REFUSAL_TASK_TOOL_REQUIRED,
+    TaskError,
+    build_task_timeline,
+    create_task_row,
+    normalize_task_rows,
+    set_task_status,
+    tick_tasks,
+)
 from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
     advance_time as time_advance,
@@ -164,6 +175,15 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.event_stream_index_rebuild": "entitlement.inspect",
     "process.reenactment_generate": "entitlement.inspect",
     "process.reenactment_play": "entitlement.inspect",
+    "process.tool_bind": "entitlement.tool.equip",
+    "process.tool_unbind": "entitlement.tool.equip",
+    "process.tool_use_prepare": "entitlement.tool.use",
+    "process.tool_readout_tick": "entitlement.tool.use",
+    "process.task_create": "entitlement.tool.use",
+    "process.task_tick": "session.boot",
+    "process.task_pause": "entitlement.tool.use",
+    "process.task_resume": "entitlement.tool.use",
+    "process.task_cancel": "entitlement.tool.use",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -228,6 +248,15 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.event_stream_index_rebuild": "observer",
     "process.reenactment_generate": "observer",
     "process.reenactment_play": "observer",
+    "process.tool_bind": "operator",
+    "process.tool_unbind": "operator",
+    "process.tool_use_prepare": "operator",
+    "process.tool_readout_tick": "observer",
+    "process.task_create": "operator",
+    "process.task_tick": "observer",
+    "process.task_pause": "operator",
+    "process.task_resume": "operator",
+    "process.task_cancel": "operator",
 }
 PRIVILEGE_RANK = {
     "observer": 0,
@@ -295,14 +324,37 @@ MAINTENANCE_PROCESS_IDS = {
     "process.inspection_perform",
     "process.maintenance_perform",
 }
+TOOL_PROCESS_IDS = {
+    "process.tool_bind",
+    "process.tool_unbind",
+    "process.tool_use_prepare",
+    "process.tool_readout_tick",
+}
+TASK_PROCESS_IDS = {
+    "process.task_create",
+    "process.task_tick",
+    "process.task_pause",
+    "process.task_resume",
+    "process.task_cancel",
+}
 CONTROL_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.control.law_forbidden",
     "ENTITLEMENT_MISSING": "refusal.control.entitlement_missing",
+}
+TOOL_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": "refusal.tool.forbidden_by_law",
+    "ENTITLEMENT_MISSING": "refusal.tool.forbidden_by_law",
+    "PRIVILEGE_INSUFFICIENT": "refusal.tool.forbidden_by_law",
 }
 MAINTENANCE_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
     "ENTITLEMENT_MISSING": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
     "PRIVILEGE_INSUFFICIENT": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+}
+TASK_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": REFUSAL_TASK_FORBIDDEN_BY_LAW,
+    "ENTITLEMENT_MISSING": REFUSAL_TASK_FORBIDDEN_BY_LAW,
+    "PRIVILEGE_INSUFFICIENT": REFUSAL_TASK_FORBIDDEN_BY_LAW,
 }
 COSMETIC_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.cosmetic.forbidden",
@@ -376,6 +428,7 @@ CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK = 256
 CONSTRUCTION_DEFAULT_MAX_PARALLEL_STEPS_OVERRIDE = 0
 CONSTRUCTION_DEFAULT_COST_UNITS_PER_ACTIVE_STEP = 1
 MAINTENANCE_DEFAULT_POLICY_ID = "maint.policy.default_realistic"
+TASK_DEFAULT_MAX_COST_UNITS_PER_TICK = 128
 ZERO_HASH = "0" * 64
 
 
@@ -574,6 +627,232 @@ def _ensure_instrument_assemblies(state: dict) -> List[dict]:
     return normalized
 
 
+def _ensure_tool_assemblies(state: dict) -> List[dict]:
+    rows = state.get("tool_assemblies")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("tool_id", ""))):
+        tool_id = str(row.get("tool_id", "")).strip()
+        if not tool_id:
+            continue
+        tool_type_id = str(row.get("tool_type_id", "")).strip()
+        effect_model_id = str(row.get("effect_model_id", "")).strip()
+        if not tool_type_id or not effect_model_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "tool_id": tool_id,
+                "tool_type_id": tool_type_id,
+                "tool_tags": _sorted_tokens(list(row.get("tool_tags") or [])),
+                "effect_model_id": effect_model_id,
+                "equipped_by_agent_id": (
+                    None
+                    if row.get("equipped_by_agent_id") is None
+                    else str(row.get("equipped_by_agent_id", "")).strip() or None
+                ),
+                "durability_state": dict(row.get("durability_state") or {})
+                if isinstance(row.get("durability_state"), dict)
+                else None,
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["tool_assemblies"] = normalized
+    return normalized
+
+
+def _ensure_tool_bindings(state: dict) -> List[dict]:
+    rows = state.get("tool_bindings")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (str(item.get("subject_id", "")), str(item.get("bind_id", ""))),
+    ):
+        bind_id = str(row.get("bind_id", "")).strip()
+        subject_id = str(row.get("subject_id", "")).strip()
+        tool_id = str(row.get("tool_id", "")).strip()
+        if not bind_id or not subject_id or not tool_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "bind_id": bind_id,
+                "subject_id": subject_id,
+                "tool_id": tool_id,
+                "created_tick": max(0, _as_int(row.get("created_tick", 0), 0)),
+                "active": bool(row.get("active", False)),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["tool_bindings"] = normalized
+    return normalized
+
+
+def _tool_type_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "tool_type_registry")
+    rows = payload.get("tool_types")
+    if not isinstance(rows, list):
+        return {}
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("tool_type_id", ""))):
+        tool_type_id = str(row.get("tool_type_id", "")).strip()
+        if not tool_type_id:
+            continue
+        out[tool_type_id] = dict(row)
+    return out
+
+
+def _tool_effect_model_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "tool_effect_model_registry")
+    rows = payload.get("effect_models")
+    if not isinstance(rows, list):
+        return {}
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("effect_model_id", ""))):
+        effect_model_id = str(row.get("effect_model_id", "")).strip()
+        if not effect_model_id:
+            continue
+        out[effect_model_id] = dict(row)
+    return out
+
+
+def _tool_row_by_id(tool_rows: List[dict], tool_id: str) -> dict:
+    token = str(tool_id).strip()
+    if not token:
+        return {}
+    for row in sorted((item for item in tool_rows if isinstance(item, dict)), key=lambda item: str(item.get("tool_id", ""))):
+        if str(row.get("tool_id", "")).strip() == token:
+            return row
+    return {}
+
+
+def _active_tool_binding(tool_bindings: List[dict], subject_id: str) -> dict:
+    token = str(subject_id).strip()
+    if not token:
+        return {}
+    active_rows = []
+    for row in sorted(
+        (item for item in tool_bindings if isinstance(item, dict)),
+        key=lambda item: (str(item.get("bind_id", "")), str(item.get("tool_id", ""))),
+    ):
+        if not bool(row.get("active", False)):
+            continue
+        if str(row.get("subject_id", "")).strip() != token:
+            continue
+        active_rows.append(dict(row))
+    if not active_rows:
+        return {}
+    return dict(active_rows[0])
+
+
+def _upsert_tool_readout_instrument(
+    instrument_rows: List[dict],
+    *,
+    assembly_id: str,
+    instrument_type: str,
+    instrument_type_id: str,
+    channel_id: str,
+    reading_payload: dict,
+    tick: int,
+) -> None:
+    token = str(assembly_id).strip()
+    if not token:
+        return
+    found = None
+    for row in instrument_rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("assembly_id", "")).strip() == token:
+            found = row
+            break
+    if not isinstance(found, dict):
+        found = {
+            "assembly_id": token,
+            "instrument_type": str(instrument_type),
+            "instrument_type_id": str(instrument_type_id),
+            "carrier_agent_id": None,
+            "station_site_id": None,
+            "reading": {},
+            "state": {},
+            "outputs": {},
+            "quality": "nominal",
+            "quality_value": 1000,
+            "last_update_tick": int(max(0, _as_int(tick, 0))),
+        }
+        instrument_rows.append(found)
+    found["instrument_type"] = str(instrument_type)
+    found["instrument_type_id"] = str(instrument_type_id)
+    found["reading"] = dict(reading_payload or {})
+    outputs = dict(found.get("outputs") or {}) if isinstance(found.get("outputs"), dict) else {}
+    outputs[str(channel_id)] = dict(reading_payload or {})
+    found["outputs"] = outputs
+    found["last_update_tick"] = int(max(0, _as_int(tick, 0)))
+
+
+def _upsert_task_readout_instruments(
+    instrument_rows: List[dict],
+    *,
+    task_rows: List[dict],
+    actor_subject_id: str,
+    tick: int,
+) -> None:
+    actor = str(actor_subject_id).strip()
+    if not actor:
+        return
+    rows = [
+        dict(row)
+        for row in list(task_rows or [])
+        if isinstance(row, dict) and str(row.get("actor_subject_id", "")).strip() == actor
+    ]
+    rows = sorted(rows, key=lambda row: str(row.get("task_id", "")))
+    active_rows = [
+        row for row in rows if str(row.get("status", "")).strip() in {"planned", "running", "paused"}
+    ]
+    total_done = sum(max(0, _as_int(row.get("progress_units_done", 0), 0)) for row in active_rows)
+    total_total = sum(max(1, _as_int(row.get("progress_units_total", 1), 1)) for row in active_rows)
+    progress_permille = 0
+    if total_total > 0:
+        progress_permille = int(max(0, min(1000, (int(total_done) * 1000) // int(total_total))))
+    status_token = "idle"
+    if active_rows:
+        status_token = "running"
+        if all(str(row.get("status", "")).strip() == "paused" for row in active_rows):
+            status_token = "paused"
+    progress_payload = {
+        "subject_id": actor,
+        "active_task_count": int(len(active_rows)),
+        "progress_permille": int(progress_permille),
+        "tick": int(max(0, _as_int(tick, 0))),
+    }
+    status_payload = {
+        "subject_id": actor,
+        "status": status_token,
+        "active_task_count": int(len(active_rows)),
+        "tick": int(max(0, _as_int(tick, 0))),
+    }
+    _upsert_tool_readout_instrument(
+        instrument_rows,
+        assembly_id="instrument.task.progress",
+        instrument_type="task_progress",
+        instrument_type_id="instr.task.progress",
+        channel_id="ch.diegetic.task.progress",
+        reading_payload=progress_payload,
+        tick=int(max(0, _as_int(tick, 0))),
+    )
+    _upsert_tool_readout_instrument(
+        instrument_rows,
+        assembly_id="instrument.task.status",
+        instrument_type="task_status",
+        instrument_type_id="instr.task.status",
+        channel_id="ch.diegetic.task.status",
+        reading_payload=status_payload,
+        tick=int(max(0, _as_int(tick, 0))),
+    )
+
+
 def _author_subject_id(authority_context: dict) -> str:
     peer_id = str(authority_context.get("peer_id", "")).strip()
     if peer_id:
@@ -727,6 +1006,9 @@ def _ensure_agent_states(state: dict) -> List[dict]:
                 "location_ref": row.get("location_ref")
                 if row.get("location_ref") is None
                 else str(row.get("location_ref", "")).strip(),
+                "equipped_tool_id": row.get("equipped_tool_id")
+                if row.get("equipped_tool_id") is None
+                else str(row.get("equipped_tool_id", "")).strip(),
                 "orientation_mdeg": {
                     "yaw": _as_int((orientation or {}).get("yaw", 0), 0),
                     "pitch": _as_int((orientation or {}).get("pitch", 0), 0),
@@ -755,6 +1037,9 @@ def _ensure_controller_assemblies(state: dict) -> List[dict]:
                 "allowed_actions": _sorted_tokens(list(row.get("allowed_actions") or [])),
                 "binding_ids": _sorted_tokens(list(row.get("binding_ids") or [])),
                 "status": str(row.get("status", "active")).strip() or "active",
+                "active_tool_id": row.get("active_tool_id")
+                if row.get("active_tool_id") is None
+                else str(row.get("active_tool_id", "")).strip(),
             }
         )
     state["controller_assemblies"] = normalized
@@ -819,6 +1104,11 @@ def _upsert_controller(
         existing["owner_peer_id"] = normalized_owner
         existing["allowed_actions"] = _controller_actions_for_type(controller_type_token)
         existing["status"] = str(existing.get("status", "active")).strip() or "active"
+        existing["active_tool_id"] = (
+            existing.get("active_tool_id")
+            if existing.get("active_tool_id") is None
+            else str(existing.get("active_tool_id", "")).strip()
+        )
         return existing
     created = {
         "assembly_id": token,
@@ -827,6 +1117,7 @@ def _upsert_controller(
         "allowed_actions": _controller_actions_for_type(controller_type_token),
         "binding_ids": [],
         "status": "active",
+        "active_tool_id": None,
     }
     controllers.append(created)
     return created
@@ -2085,6 +2376,94 @@ def _ensure_reenactment_artifacts(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_tasks(state: dict) -> List[dict]:
+    rows = state.get("tasks")
+    normalized = normalize_task_rows(rows)
+    state["tasks"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_task_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("task_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "event_id": event_id,
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type_id": str(row.get("event_type_id", "")).strip(),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip() or "subject.system",
+                "site_ref": str(row.get("site_ref", "")).strip(),
+                "inputs": _sorted_tokens(list(row.get("inputs") or [])),
+                "outputs": _sorted_tokens(list(row.get("outputs") or [])),
+                "ledger_deltas": dict(
+                    (str(key).strip(), _as_int(value, 0))
+                    for key, value in sorted((dict(row.get("ledger_deltas") or {})).items(), key=lambda item: str(item[0]))
+                    if str(key).strip()
+                ),
+                "linked_project_id": None if row.get("linked_project_id") is None else str(row.get("linked_project_id", "")).strip() or None,
+                "linked_step_id": None if row.get("linked_step_id") is None else str(row.get("linked_step_id", "")).strip() or None,
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["task_provenance_events"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_pending_task_completion_intents(state: dict) -> List[dict]:
+    rows = state.get("pending_task_completion_intents")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("intent_id", ""))):
+        intent_id = str(row.get("intent_id", "")).strip()
+        process_id = str(row.get("process_id", "")).strip()
+        if not intent_id or not process_id:
+            continue
+        payload = {
+            "intent_id": intent_id,
+            "process_id": process_id,
+            "inputs": dict(row.get("inputs") or {}) if isinstance(row.get("inputs"), dict) else {},
+            "authority_context_ref": (
+                dict(row.get("authority_context_ref") or {})
+                if isinstance(row.get("authority_context_ref"), dict)
+                else {}
+            ),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        out[intent_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["pending_task_completion_intents"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _persist_task_state(
+    state: dict,
+    *,
+    tasks: List[dict],
+    provenance_events: List[dict],
+    pending_completion_intents: List[dict],
+) -> None:
+    state["tasks"] = [dict(row) for row in list(tasks or []) if isinstance(row, dict)]
+    state["task_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
+    state["pending_task_completion_intents"] = [
+        dict(row) for row in list(pending_completion_intents or []) if isinstance(row, dict)
+    ]
+    _ensure_tasks(state)
+    _ensure_task_provenance_events(state)
+    _ensure_pending_task_completion_intents(state)
+
+
 def _persist_commitment_reenactment_state(
     state: dict,
     *,
@@ -2108,6 +2487,7 @@ def _build_material_provenance_events(
     logistics_events: List[dict],
     construction_events: List[dict],
     maintenance_events: List[dict],
+    task_events: List[dict],
 ) -> List[dict]:
     rows: List[dict] = []
     for row in list(logistics_events or []):
@@ -2152,6 +2532,20 @@ def _build_material_provenance_events(
                 "event_type": str(row.get("event_type_id", "")).strip(),
                 "event_type_id": str(row.get("event_type_id", "")).strip(),
                 "asset_id": str((dict(row.get("extensions") or {})).get("asset_id", "")).strip(),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    for row in list(task_events or []):
+        if not isinstance(row, dict):
+            continue
+        rows.append(
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type": str(row.get("event_type_id", "")).strip(),
+                "event_type_id": str(row.get("event_type_id", "")).strip(),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip(),
+                "site_ref": str(row.get("site_ref", "")).strip(),
                 "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
             }
         )
@@ -2269,6 +2663,7 @@ def _material_provenance_events_for_reenactment(state: dict) -> List[dict]:
         logistics_events=_ensure_logistics_provenance_events(state),
         construction_events=_ensure_construction_provenance_events(state),
         maintenance_events=_ensure_maintenance_provenance_events(state),
+        task_events=_ensure_task_provenance_events(state),
     )
 
 
@@ -5527,6 +5922,8 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("failure_events", "event_id"),
         ("maintenance_commitments", "commitment_id"),
         ("maintenance_provenance_events", "event_id"),
+        ("tasks", "task_id"),
+        ("task_provenance_events", "event_id"),
         ("material_commitments", "commitment_id"),
         ("event_stream_indices", "stream_id"),
         ("reenactment_requests", "request_id"),
@@ -7938,6 +8335,10 @@ def execute_intent(
     if gate.get("result") != "complete":
         if process_id == "process.cosmetic_assign":
             return _control_gate_refusal(gate, reason_map=COSMETIC_GATE_REASON_MAP)
+        if process_id in TASK_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=TASK_GATE_REASON_MAP)
+        if process_id in TOOL_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=TOOL_GATE_REASON_MAP)
         if process_id in MAINTENANCE_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=MAINTENANCE_GATE_REASON_MAP)
         if process_id in CIV_PROCESS_IDS:
@@ -7971,6 +8372,8 @@ def execute_intent(
     agents = _ensure_agent_states(state)
     controllers = _ensure_controller_assemblies(state)
     bindings = _ensure_control_bindings(state)
+    tool_assemblies = _ensure_tool_assemblies(state)
+    tool_bindings = _ensure_tool_bindings(state)
     bodies = _ensure_body_assemblies(state)
     cohorts = _ensure_cohort_assemblies(state)
     order_rows = _ensure_order_assemblies(state)
@@ -7996,6 +8399,9 @@ def execute_intent(
     event_stream_indices = _ensure_event_stream_indices(state)
     reenactment_requests = _ensure_reenactment_requests(state)
     reenactment_artifacts = _ensure_reenactment_artifacts(state)
+    tasks = _ensure_tasks(state)
+    task_provenance_events = _ensure_task_provenance_events(state)
+    pending_task_completion_intents = _ensure_pending_task_completion_intents(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     strictness_row = resolve_causality_strictness_row(
@@ -8809,6 +9215,849 @@ def execute_intent(
                 continue
             row["active"] = False
         _store_control_state(state=state, controllers=controllers, bindings=bindings)
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.tool_bind":
+        subject_id = str(inputs.get("subject_id", "") or inputs.get("agent_id", "") or inputs.get("controller_id", "")).strip()
+        tool_id = str(inputs.get("tool_id", "")).strip()
+        if not subject_id or not tool_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.tool_bind requires subject_id and tool_id",
+                "Provide deterministic subject_id and tool_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        tool_row = _tool_row_by_id(tool_assemblies, tool_id)
+        if not tool_row:
+            return refusal(
+                "refusal.tool.not_found",
+                "tool '{}' is not present in tool assemblies".format(tool_id),
+                "Spawn or register the tool assembly before binding.",
+                {"tool_id": tool_id},
+                "$.intent.inputs.tool_id",
+            )
+        tool_type_id = str(tool_row.get("tool_type_id", "")).strip()
+        effect_model_id = str(tool_row.get("effect_model_id", "")).strip()
+        known_tool_types = _tool_type_rows(policy_context)
+        known_effect_models = _tool_effect_model_rows(policy_context)
+        if known_tool_types and tool_type_id not in known_tool_types:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "tool type '{}' is not present in tool_type_registry".format(tool_type_id or "<missing>"),
+                "Declare tool type in tool_type_registry or update tool assembly metadata.",
+                {"tool_id": tool_id, "tool_type_id": tool_type_id or "<missing>"},
+                "$.intent.inputs.tool_id",
+            )
+        if known_effect_models and effect_model_id not in known_effect_models:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "effect model '{}' is not present in tool_effect_model_registry".format(effect_model_id or "<missing>"),
+                "Declare effect model in tool_effect_model_registry or update tool assembly metadata.",
+                {"tool_id": tool_id, "effect_model_id": effect_model_id or "<missing>"},
+                "$.intent.inputs.tool_id",
+            )
+
+        for row in tool_bindings:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("subject_id", "")).strip() == subject_id:
+                row["active"] = False
+
+        bind_id = "tool.bind.{}".format(
+            canonical_sha256(
+                {
+                    "subject_id": subject_id,
+                    "tool_id": tool_id,
+                }
+            )[:16]
+        )
+        binding_row = {}
+        for row in tool_bindings:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("bind_id", "")).strip() == bind_id:
+                binding_row = row
+                break
+        if not binding_row:
+            binding_row = {
+                "schema_version": "1.0.0",
+                "bind_id": bind_id,
+                "subject_id": subject_id,
+                "tool_id": tool_id,
+                "created_tick": int(current_tick),
+                "active": True,
+                "extensions": {},
+            }
+            tool_bindings.append(binding_row)
+        else:
+            binding_row["subject_id"] = subject_id
+            binding_row["tool_id"] = tool_id
+            binding_row["active"] = True
+            binding_row["created_tick"] = max(0, _as_int(binding_row.get("created_tick", current_tick), current_tick))
+            binding_row["extensions"] = (
+                dict(binding_row.get("extensions") or {}) if isinstance(binding_row.get("extensions"), dict) else {}
+            )
+
+        for row in tool_assemblies:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("tool_id", "")).strip() != tool_id:
+                if str(row.get("equipped_by_agent_id", "")).strip() == subject_id:
+                    row["equipped_by_agent_id"] = None
+                continue
+            row_extensions = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+            row_extensions["bound_subject_id"] = subject_id
+            row["extensions"] = row_extensions
+            if any(
+                str(agent.get("agent_id", "")).strip() == subject_id
+                for agent in agents
+                if isinstance(agent, dict)
+            ):
+                row["equipped_by_agent_id"] = subject_id
+            else:
+                row["equipped_by_agent_id"] = None
+
+        for row in agents:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("agent_id", "")).strip() == subject_id:
+                row["equipped_tool_id"] = tool_id
+            elif str(row.get("equipped_tool_id", "")).strip() == tool_id:
+                row["equipped_tool_id"] = None
+
+        for row in controllers:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("assembly_id", "")).strip() == subject_id:
+                row["active_tool_id"] = tool_id
+            elif str(row.get("active_tool_id", "")).strip() == tool_id:
+                row["active_tool_id"] = None
+
+        state["tool_bindings"] = sorted(
+            (dict(item) for item in tool_bindings if isinstance(item, dict)),
+            key=lambda item: (str(item.get("subject_id", "")), str(item.get("bind_id", ""))),
+        )
+        state["tool_assemblies"] = sorted(
+            (dict(item) for item in tool_assemblies if isinstance(item, dict)),
+            key=lambda item: str(item.get("tool_id", "")),
+        )
+        state["agent_states"] = sorted(
+            (dict(item) for item in agents if isinstance(item, dict)),
+            key=lambda item: str(item.get("agent_id", "")),
+        )
+        state["controller_assemblies"] = sorted(
+            (dict(item) for item in controllers if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        result_metadata = {
+            "subject_id": subject_id,
+            "tool_id": tool_id,
+            "tool_type_id": tool_type_id,
+            "effect_model_id": effect_model_id,
+            "bind_id": bind_id,
+            "tool_bind_active": True,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.tool_unbind":
+        subject_id = str(inputs.get("subject_id", "") or inputs.get("agent_id", "") or inputs.get("controller_id", "")).strip()
+        if not subject_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.tool_unbind requires subject_id",
+                "Provide deterministic subject_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.subject_id",
+            )
+        unbound_tool_ids: List[str] = []
+        for row in tool_bindings:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("subject_id", "")).strip() != subject_id:
+                continue
+            if bool(row.get("active", False)):
+                token = str(row.get("tool_id", "")).strip()
+                if token:
+                    unbound_tool_ids.append(token)
+            row["active"] = False
+        for row in tool_assemblies:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("equipped_by_agent_id", "")).strip() == subject_id:
+                row["equipped_by_agent_id"] = None
+            if str(row.get("tool_id", "")).strip() in set(unbound_tool_ids):
+                row_extensions = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+                if str(row_extensions.get("bound_subject_id", "")).strip() == subject_id:
+                    row_extensions["bound_subject_id"] = ""
+                row["extensions"] = row_extensions
+
+        for row in agents:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("agent_id", "")).strip() != subject_id:
+                continue
+            row["equipped_tool_id"] = None
+
+        for row in controllers:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("assembly_id", "")).strip() != subject_id:
+                continue
+            row["active_tool_id"] = None
+
+        state["tool_bindings"] = sorted(
+            (dict(item) for item in tool_bindings if isinstance(item, dict)),
+            key=lambda item: (str(item.get("subject_id", "")), str(item.get("bind_id", ""))),
+        )
+        state["tool_assemblies"] = sorted(
+            (dict(item) for item in tool_assemblies if isinstance(item, dict)),
+            key=lambda item: str(item.get("tool_id", "")),
+        )
+        state["agent_states"] = sorted(
+            (dict(item) for item in agents if isinstance(item, dict)),
+            key=lambda item: str(item.get("agent_id", "")),
+        )
+        state["controller_assemblies"] = sorted(
+            (dict(item) for item in controllers if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        result_metadata = {
+            "subject_id": subject_id,
+            "tool_bind_active": False,
+            "unbound_tool_ids": sorted(set(unbound_tool_ids)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.tool_use_prepare":
+        subject_id = str(inputs.get("subject_id", "") or inputs.get("agent_id", "") or inputs.get("controller_id", "")).strip()
+        if not subject_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.tool_use_prepare requires subject_id",
+                "Provide deterministic subject_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.subject_id",
+            )
+        active_binding = _active_tool_binding(tool_bindings, subject_id)
+        if not active_binding:
+            return refusal(
+                "refusal.tool.bind_required",
+                "subject '{}' has no active tool binding".format(subject_id),
+                "Bind a tool first via process.tool_bind.",
+                {"subject_id": subject_id},
+                "$.intent.inputs.subject_id",
+            )
+        active_tool_id = str(active_binding.get("tool_id", "")).strip()
+        requested_tool_id = str(inputs.get("tool_id", "")).strip()
+        if requested_tool_id and requested_tool_id != active_tool_id:
+            return refusal(
+                "refusal.tool.bind_required",
+                "requested tool '{}' is not currently bound to subject '{}'".format(requested_tool_id, subject_id),
+                "Use currently active tool or bind requested tool first.",
+                {"subject_id": subject_id, "tool_id": requested_tool_id, "active_tool_id": active_tool_id},
+                "$.intent.inputs.tool_id",
+            )
+        tool_row = _tool_row_by_id(tool_assemblies, active_tool_id)
+        if not tool_row:
+            return refusal(
+                "refusal.tool.not_found",
+                "active bound tool '{}' is missing from tool assemblies".format(active_tool_id),
+                "Restore tool assembly or clear stale tool binding.",
+                {"tool_id": active_tool_id, "subject_id": subject_id},
+                "$.tool_assemblies",
+            )
+        tool_extensions = dict(tool_row.get("extensions") or {}) if isinstance(tool_row.get("extensions"), dict) else {}
+        tool_extensions["last_used_tick"] = int(current_tick)
+        tool_row["extensions"] = tool_extensions
+        effect_rows = _tool_effect_model_rows(policy_context)
+        effect_model_id = str(tool_row.get("effect_model_id", "")).strip()
+        effect_row = dict(effect_rows.get(effect_model_id) or {})
+        effect_parameters = dict(effect_row.get("parameters") or {})
+        state["tool_assemblies"] = sorted(
+            (dict(item) for item in tool_assemblies if isinstance(item, dict)),
+            key=lambda item: str(item.get("tool_id", "")),
+        )
+        result_metadata = {
+            "subject_id": subject_id,
+            "tool_id": active_tool_id,
+            "bind_id": str(active_binding.get("bind_id", "")).strip(),
+            "effect_model_id": effect_model_id,
+            "tool_effect_parameters": dict(effect_parameters),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.tool_readout_tick":
+        subject_id = str(inputs.get("subject_id", "") or inputs.get("agent_id", "") or inputs.get("controller_id", "")).strip()
+        if not subject_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.tool_readout_tick requires subject_id",
+                "Provide deterministic subject_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.subject_id",
+            )
+        active_binding = _active_tool_binding(tool_bindings, subject_id)
+        if not active_binding:
+            return refusal(
+                "refusal.tool.bind_required",
+                "subject '{}' has no active tool binding for readout".format(subject_id),
+                "Bind a tool before requesting diegetic tool readouts.",
+                {"subject_id": subject_id},
+                "$.intent.inputs.subject_id",
+            )
+        tool_id = str(active_binding.get("tool_id", "")).strip()
+        tool_row = _tool_row_by_id(tool_assemblies, tool_id)
+        if not tool_row:
+            return refusal(
+                "refusal.tool.not_found",
+                "active bound tool '{}' is missing from tool assemblies".format(tool_id),
+                "Restore tool assembly or clear stale tool binding.",
+                {"tool_id": tool_id, "subject_id": subject_id},
+                "$.tool_assemblies",
+            )
+
+        effect_rows = _tool_effect_model_rows(policy_context)
+        effect_model_id = str(tool_row.get("effect_model_id", "")).strip()
+        effect_row = dict(effect_rows.get(effect_model_id) or {})
+        effect_parameters = dict(effect_row.get("parameters") or {})
+        precision_level = str(effect_parameters.get("precision_level", "medium")).strip() or "medium"
+        precision_steps = {
+            "low": 100,
+            "medium": 10,
+            "high": 1,
+            "lab": 1,
+        }
+        measurement_step = int(precision_steps.get(precision_level, 10))
+        raw_measurement_mm = _as_int(inputs.get("measurement_mm", 0), 0)
+        if raw_measurement_mm == 0:
+            perceived_now = dict(inputs.get("perceived_now") or {}) if isinstance(inputs.get("perceived_now"), dict) else {}
+            raw_measurement_mm = _as_int(
+                perceived_now.get("selected_dimension_mm", perceived_now.get("measurement_mm", 0)),
+                0,
+            )
+        step = int(max(1, measurement_step))
+        if raw_measurement_mm >= 0:
+            rounded_measurement_mm = int(((int(raw_measurement_mm) + (step // 2)) // step) * step)
+        else:
+            rounded_measurement_mm = int(-(((-int(raw_measurement_mm) + (step // 2)) // step) * step))
+        torque_limit = effect_parameters.get("torque_limit")
+        torque_value = _as_int(torque_limit if torque_limit is not None else inputs.get("torque_limit", 0), 0)
+        durability_state = dict(tool_row.get("durability_state") or {}) if isinstance(tool_row.get("durability_state"), dict) else {}
+        health_permille = max(0, min(1000, _as_int(durability_state.get("health_permille", 1000), 1000)))
+
+        torque_readout = {
+            "tool_id": tool_id,
+            "subject_id": subject_id,
+            "torque_limit": int(max(0, torque_value)),
+            "tick": int(current_tick),
+        }
+        measurement_readout = {
+            "tool_id": tool_id,
+            "subject_id": subject_id,
+            "measurement_mm": int(rounded_measurement_mm),
+            "precision_level": precision_level,
+            "tick": int(current_tick),
+        }
+        health_readout = {
+            "tool_id": tool_id,
+            "subject_id": subject_id,
+            "health_permille": int(health_permille),
+            "tick": int(current_tick),
+        }
+
+        instrument_rows = _ensure_instrument_assemblies(state)
+        _upsert_tool_readout_instrument(
+            instrument_rows,
+            assembly_id="instrument.tool.torque",
+            instrument_type="tool_torque",
+            instrument_type_id="instr.tool.torque",
+            channel_id="ch.diegetic.tool.torque",
+            reading_payload=torque_readout,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            instrument_rows,
+            assembly_id="instrument.tool.measurement",
+            instrument_type="tool_measurement",
+            instrument_type_id="instr.tool.measurement",
+            channel_id="ch.diegetic.tool.measurement",
+            reading_payload=measurement_readout,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            instrument_rows,
+            assembly_id="instrument.tool.health",
+            instrument_type="tool_health",
+            instrument_type_id="instr.tool.health",
+            channel_id="ch.diegetic.tool.health",
+            reading_payload=health_readout,
+            tick=int(current_tick),
+        )
+        state["instrument_assemblies"] = sorted(
+            (dict(item) for item in instrument_rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        result_metadata = {
+            "subject_id": subject_id,
+            "tool_id": tool_id,
+            "effect_model_id": effect_model_id,
+            "tool_readouts": {
+                "ch.diegetic.tool.torque": dict(torque_readout),
+                "ch.diegetic.tool.measurement": dict(measurement_readout),
+                "ch.diegetic.tool.health": dict(health_readout),
+            },
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.task_create":
+        actor_subject_id = str(
+            inputs.get("actor_subject_id", "")
+            or inputs.get("subject_id", "")
+            or inputs.get("agent_id", "")
+            or inputs.get("controller_id", "")
+            or authority_context.get("subject_id", "")
+            or authority_context.get("agent_id", "")
+            or authority_context.get("controller_id", "")
+            or authority_context.get("peer_id", "")
+        ).strip()
+        if not actor_subject_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.task_create requires actor_subject_id (or subject_id/agent_id/controller_id)",
+                "Provide a deterministic actor subject for task creation.",
+                {"process_id": process_id},
+                "$.intent.inputs.actor_subject_id",
+            )
+        target_semantic_id = str(inputs.get("target_semantic_id", "") or inputs.get("target_id", "")).strip()
+        if not target_semantic_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.task_create requires target_semantic_id (or target_id)",
+                "Provide deterministic target_semantic_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_semantic_id",
+            )
+        task_type_registry = _policy_payload(policy_context, "task_type_registry")
+        progress_model_registry = _policy_payload(policy_context, "progress_model_registry")
+        task_inputs = dict(inputs)
+        task_inputs["actor_subject_id"] = actor_subject_id
+        task_inputs["target_semantic_id"] = target_semantic_id
+        task_inputs["created_tick"] = int(current_tick)
+        active_tool_tags = _sorted_tokens(list(task_inputs.get("active_tool_tags") or []))
+        tool_id = str(task_inputs.get("tool_id", "")).strip()
+        if not tool_id:
+            active_binding = _active_tool_binding(tool_bindings, actor_subject_id)
+            if active_binding:
+                tool_id = str(active_binding.get("tool_id", "")).strip()
+                if tool_id:
+                    task_inputs["tool_id"] = tool_id
+        if tool_id:
+            active_binding = _active_tool_binding(tool_bindings, actor_subject_id)
+            if (not active_binding) or str(active_binding.get("tool_id", "")).strip() != tool_id:
+                return refusal(
+                    REFUSAL_TASK_TOOL_REQUIRED,
+                    "task tool '{}' is not actively bound to subject '{}'".format(tool_id, actor_subject_id),
+                    "Bind the required tool before creating a task.",
+                    {"subject_id": actor_subject_id, "tool_id": tool_id},
+                    "$.intent.inputs.tool_id",
+                )
+            tool_row = _tool_row_by_id(tool_assemblies, tool_id)
+            tool_type_id = str(task_inputs.get("tool_type_id", "")).strip() or str(tool_row.get("tool_type_id", "")).strip()
+            tool_type_row = dict((_tool_type_rows(policy_context)).get(tool_type_id) or {})
+            active_tool_tags = _sorted_tokens(
+                list(active_tool_tags)
+                + list(tool_row.get("tool_tags") or [])
+                + list(tool_type_row.get("default_tool_tags") or [])
+            )
+            if active_tool_tags:
+                task_inputs["active_tool_tags"] = active_tool_tags
+        linked_commitment_id = None
+        if strictness_requires_commitment(process_id=process_id, strictness_row=strictness_row):
+            try:
+                commitment_row = create_commitment_row(
+                    commitment_type_id="commit.custom",
+                    actor_subject_id=actor_subject_id,
+                    target_kind="custom",
+                    target_id=target_semantic_id,
+                    created_tick=int(max(0, int(current_tick))),
+                    scheduled_start_tick=int(max(0, int(current_tick))),
+                    status="planned",
+                    extensions={
+                        "source_process_id": process_id,
+                        "causality_strictness_id": str(strictness_row.get("causality_strictness_id", "")),
+                    },
+                )
+            except CommitmentError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Fix task commitment metadata and retry.",
+                    dict(exc.details),
+                    "$.intent.inputs",
+                )
+            linked_commitment_id = str(commitment_row.get("commitment_id", "")).strip() or None
+            if linked_commitment_id:
+                material_commitments = _upsert_material_commitment(material_commitments, commitment_row)
+        if linked_commitment_id:
+            task_inputs["linked_commitment_id"] = linked_commitment_id
+        try:
+            task_row = create_task_row(
+                inputs=task_inputs,
+                current_tick=int(current_tick),
+                task_type_registry=task_type_registry,
+                progress_model_registry=progress_model_registry,
+                numeric_policy=dict((dict(policy_context or {})).get("numeric_precision_policy") or {}),
+            )
+        except TaskError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix task creation payload/tool compatibility and retry.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+
+        task_id = str(task_row.get("task_id", "")).strip()
+        event_sequence = int(len(list(task_provenance_events or [])))
+        task_event = {
+            "schema_version": "1.0.0",
+            "event_id": "provenance.event.{}".format(
+                canonical_sha256(
+                    {
+                        "task_id": task_id,
+                        "event_type_id": "event.task_created",
+                        "tick": int(max(0, int(current_tick))),
+                        "sequence": int(event_sequence),
+                    }
+                )[:24]
+            ),
+            "tick": int(max(0, int(current_tick))),
+            "event_type_id": "event.task_created",
+            "actor_subject_id": actor_subject_id,
+            "site_ref": "task:{}".format(target_semantic_id),
+            "inputs": [],
+            "outputs": [],
+            "ledger_deltas": {},
+            "linked_project_id": None,
+            "linked_step_id": None,
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "task_id": task_id,
+                "task_type_id": str(task_row.get("task_type_id", "")).strip(),
+                "target_semantic_id": target_semantic_id,
+                "surface_id": None if task_row.get("surface_id") is None else str(task_row.get("surface_id", "")).strip() or None,
+                "tool_id": None if task_row.get("tool_id") is None else str(task_row.get("tool_id", "")).strip() or None,
+                "commitment_id": linked_commitment_id,
+                "progress_units_done": int(_as_int(task_row.get("progress_units_done", 0), 0)),
+                "progress_units_total": int(max(1, _as_int(task_row.get("progress_units_total", 1), 1))),
+            },
+        }
+        task_event["deterministic_fingerprint"] = canonical_sha256(dict(task_event, deterministic_fingerprint=""))
+        task_row["linked_event_ids"] = _sorted_tokens(list(task_row.get("linked_event_ids") or []) + [str(task_event.get("event_id", ""))])
+        task_row["deterministic_fingerprint"] = canonical_sha256(dict(task_row, deterministic_fingerprint=""))
+
+        task_by_id = dict(
+            (str(row.get("task_id", "")).strip(), dict(row))
+            for row in list(tasks or [])
+            if isinstance(row, dict) and str(row.get("task_id", "")).strip()
+        )
+        task_by_id[task_id] = dict(task_row)
+        tasks = normalize_task_rows([dict(task_by_id[key]) for key in sorted(task_by_id.keys())])
+        task_provenance_events = sorted(
+            [dict(row) for row in list(task_provenance_events or []) if isinstance(row, dict)] + [task_event],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_task_state(
+            state,
+            tasks=tasks,
+            provenance_events=task_provenance_events,
+            pending_completion_intents=pending_task_completion_intents,
+        )
+
+        if linked_commitment_id:
+            commitment_map = dict(
+                (str(row.get("commitment_id", "")).strip(), dict(row))
+                for row in list(material_commitments or [])
+                if isinstance(row, dict) and str(row.get("commitment_id", "")).strip()
+            )
+            commitment_row = dict(commitment_map.get(linked_commitment_id) or {})
+            if commitment_row:
+                commitment_row["status"] = "executing"
+                commitment_row["linked_event_ids"] = _sorted_tokens(
+                    list(commitment_row.get("linked_event_ids") or []) + [str(task_event.get("event_id", ""))]
+                )
+                extensions = dict(commitment_row.get("extensions") or {}) if isinstance(commitment_row.get("extensions"), dict) else {}
+                extensions["task_id"] = task_id
+                extensions["task_type_id"] = str(task_row.get("task_type_id", "")).strip()
+                commitment_row["extensions"] = extensions
+                commitment_row["deterministic_fingerprint"] = canonical_sha256(
+                    dict(commitment_row, deterministic_fingerprint="")
+                )
+                commitment_map[linked_commitment_id] = commitment_row
+                material_commitments = normalize_commitment_rows([dict(commitment_map[key]) for key in sorted(commitment_map.keys())])
+                _persist_commitment_reenactment_state(
+                    state,
+                    commitments=material_commitments,
+                    event_stream_indices=event_stream_indices,
+                    reenactment_requests=reenactment_requests,
+                    reenactment_artifacts=reenactment_artifacts,
+                )
+        instrument_rows = _ensure_instrument_assemblies(state)
+        _upsert_task_readout_instruments(
+            instrument_rows,
+            task_rows=tasks,
+            actor_subject_id=actor_subject_id,
+            tick=int(current_tick),
+        )
+        state["instrument_assemblies"] = sorted(
+            (dict(item) for item in instrument_rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        result_metadata = {
+            "task_id": task_id,
+            "task_type_id": str(task_row.get("task_type_id", "")).strip(),
+            "status": str(task_row.get("status", "")).strip(),
+            "linked_commitment_id": linked_commitment_id,
+            "created_event_id": str(task_event.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.task_tick":
+        requested_max_cost = max(
+            0,
+            _as_int(
+                inputs.get("max_cost_units", (dict(policy_context or {})).get("task_max_cost_units_per_tick", TASK_DEFAULT_MAX_COST_UNITS_PER_TICK)),
+                TASK_DEFAULT_MAX_COST_UNITS_PER_TICK,
+            ),
+        )
+        strict_budget = bool((dict(policy_context or {})).get("strict_contracts", False) or bool(inputs.get("strict_budget", False)))
+        dt_ticks = max(1, _as_int(inputs.get("dt_ticks", 1), 1))
+        try:
+            ticked = tick_tasks(
+                task_rows=tasks,
+                current_tick=int(current_tick),
+                dt_ticks=int(dt_ticks),
+                task_type_registry=_policy_payload(policy_context, "task_type_registry"),
+                progress_model_registry=_policy_payload(policy_context, "progress_model_registry"),
+                numeric_policy=dict((dict(policy_context or {})).get("numeric_precision_policy") or {}),
+                max_cost_units=int(requested_max_cost),
+                strict_budget=bool(strict_budget),
+                event_sequence_start=int(len(list(task_provenance_events or []))),
+            )
+        except TaskError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Reduce task load, adjust task budgets, or fix deterministic task inputs.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        task_by_id = dict(
+            (str(row.get("task_id", "")).strip(), dict(row))
+            for row in list(ticked.get("tasks") or [])
+            if isinstance(row, dict) and str(row.get("task_id", "")).strip()
+        )
+        new_events = [dict(row) for row in list(ticked.get("events") or []) if isinstance(row, dict)]
+        for event_row in new_events:
+            ext = dict(event_row.get("extensions") or {}) if isinstance(event_row.get("extensions"), dict) else {}
+            event_task_id = str(ext.get("task_id", "")).strip()
+            if not event_task_id or event_task_id not in task_by_id:
+                continue
+            task_row = dict(task_by_id[event_task_id])
+            task_row["linked_event_ids"] = _sorted_tokens(
+                list(task_row.get("linked_event_ids") or []) + [str(event_row.get("event_id", "")).strip()]
+            )
+            task_row["deterministic_fingerprint"] = canonical_sha256(dict(task_row, deterministic_fingerprint=""))
+            task_by_id[event_task_id] = task_row
+        tasks = normalize_task_rows([dict(task_by_id[key]) for key in sorted(task_by_id.keys())])
+        task_provenance_events = sorted(
+            [dict(row) for row in list(task_provenance_events or []) if isinstance(row, dict)] + new_events,
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+
+        completion_intent_map = dict(
+            (str(row.get("intent_id", "")).strip(), dict(row))
+            for row in list(pending_task_completion_intents or [])
+            if isinstance(row, dict) and str(row.get("intent_id", "")).strip()
+        )
+        for row in list(ticked.get("completion_intents") or []):
+            if not isinstance(row, dict):
+                continue
+            intent_id = str(row.get("intent_id", "")).strip()
+            if not intent_id:
+                continue
+            completion_intent_map[intent_id] = dict(row)
+        pending_task_completion_intents = [dict(completion_intent_map[key]) for key in sorted(completion_intent_map.keys())]
+        _persist_task_state(
+            state,
+            tasks=tasks,
+            provenance_events=task_provenance_events,
+            pending_completion_intents=pending_task_completion_intents,
+        )
+
+        commitment_by_id = dict(
+            (str(row.get("commitment_id", "")).strip(), dict(row))
+            for row in list(material_commitments or [])
+            if isinstance(row, dict) and str(row.get("commitment_id", "")).strip()
+        )
+        for task_row in list(tasks or []):
+            if not isinstance(task_row, dict):
+                continue
+            commitment_id = str(task_row.get("linked_commitment_id", "")).strip()
+            if not commitment_id or commitment_id not in commitment_by_id:
+                continue
+            row = dict(commitment_by_id[commitment_id])
+            task_status = str(task_row.get("status", "")).strip()
+            next_status = "executing"
+            if task_status == "paused":
+                next_status = "scheduled"
+            elif task_status == "completed":
+                next_status = "completed"
+            elif task_status == "failed":
+                next_status = "failed"
+            elif task_status == "cancelled":
+                next_status = "cancelled"
+            row["status"] = next_status
+            row["linked_event_ids"] = _sorted_tokens(
+                list(row.get("linked_event_ids") or []) + list(task_row.get("linked_event_ids") or [])
+            )
+            row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+            commitment_by_id[commitment_id] = row
+        material_commitments = normalize_commitment_rows([dict(commitment_by_id[key]) for key in sorted(commitment_by_id.keys())])
+        _persist_commitment_reenactment_state(
+            state,
+            commitments=material_commitments,
+            event_stream_indices=event_stream_indices,
+            reenactment_requests=reenactment_requests,
+            reenactment_artifacts=reenactment_artifacts,
+        )
+
+        instrument_rows = _ensure_instrument_assemblies(state)
+        actor_subject_ids = _sorted_tokens(
+            [str((dict(row)).get("actor_subject_id", "")).strip() for row in list(tasks or []) if isinstance(row, dict)]
+        )
+        for actor_subject_id in actor_subject_ids:
+            _upsert_task_readout_instruments(
+                instrument_rows,
+                task_rows=tasks,
+                actor_subject_id=actor_subject_id,
+                tick=int(current_tick),
+            )
+        state["instrument_assemblies"] = sorted(
+            (dict(item) for item in instrument_rows if isinstance(item, dict)),
+            key=lambda item: str(item.get("assembly_id", "")),
+        )
+        result_metadata = {
+            "processed_task_ids": list(ticked.get("processed_task_ids") or []),
+            "degraded_task_ids": list(ticked.get("degraded_task_ids") or []),
+            "completed_task_ids": list(ticked.get("completed_task_ids") or []),
+            "completion_intent_ids": [
+                str((dict(row)).get("intent_id", "")).strip()
+                for row in list(ticked.get("completion_intents") or [])
+                if isinstance(row, dict)
+            ],
+            "cost_units_used": int(_as_int(ticked.get("cost_units_used", 0), 0)),
+            "max_cost_units": int(requested_max_cost),
+            "budget_outcome": "degraded" if list(ticked.get("degraded_task_ids") or []) else "complete",
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id in ("process.task_pause", "process.task_resume", "process.task_cancel"):
+        task_id = str(inputs.get("task_id", "")).strip()
+        if not task_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "{} requires task_id".format(process_id),
+                "Provide deterministic task_id in process inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.task_id",
+            )
+        next_status = "paused"
+        if process_id == "process.task_resume":
+            next_status = "running"
+        elif process_id == "process.task_cancel":
+            next_status = "cancelled"
+        try:
+            status_result = set_task_status(
+                task_rows=tasks,
+                task_id=task_id,
+                status=next_status,
+                current_tick=int(current_tick),
+                event_sequence_start=int(len(list(task_provenance_events or []))),
+            )
+        except TaskError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Use an existing task_id and valid status transition target.",
+                dict(exc.details),
+                "$.intent.inputs.task_id",
+            )
+        tasks = normalize_task_rows(list(status_result.get("tasks") or []))
+        new_events = [dict(row) for row in list(status_result.get("events") or []) if isinstance(row, dict)]
+        task_provenance_events = sorted(
+            [dict(row) for row in list(task_provenance_events or []) if isinstance(row, dict)] + new_events,
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_task_state(
+            state,
+            tasks=tasks,
+            provenance_events=task_provenance_events,
+            pending_completion_intents=pending_task_completion_intents,
+        )
+        task_row = {}
+        for row in list(tasks or []):
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("task_id", "")).strip() != task_id:
+                continue
+            task_row = dict(row)
+            break
+        commitment_id = str(task_row.get("linked_commitment_id", "")).strip()
+        if commitment_id:
+            commitment_map = dict(
+                (str(row.get("commitment_id", "")).strip(), dict(row))
+                for row in list(material_commitments or [])
+                if isinstance(row, dict) and str(row.get("commitment_id", "")).strip()
+            )
+            commitment_row = dict(commitment_map.get(commitment_id) or {})
+            if commitment_row:
+                mapped_status = "scheduled"
+                if next_status == "running":
+                    mapped_status = "executing"
+                elif next_status == "cancelled":
+                    mapped_status = "cancelled"
+                commitment_row["status"] = mapped_status
+                commitment_row["linked_event_ids"] = _sorted_tokens(
+                    list(commitment_row.get("linked_event_ids") or []) + list(task_row.get("linked_event_ids") or [])
+                )
+                commitment_row["deterministic_fingerprint"] = canonical_sha256(
+                    dict(commitment_row, deterministic_fingerprint="")
+                )
+                commitment_map[commitment_id] = commitment_row
+                material_commitments = normalize_commitment_rows(
+                    [dict(commitment_map[key]) for key in sorted(commitment_map.keys())]
+                )
+                _persist_commitment_reenactment_state(
+                    state,
+                    commitments=material_commitments,
+                    event_stream_indices=event_stream_indices,
+                    reenactment_requests=reenactment_requests,
+                    reenactment_artifacts=reenactment_artifacts,
+                )
+        actor_subject_id = str(task_row.get("actor_subject_id", "")).strip()
+        if actor_subject_id:
+            instrument_rows = _ensure_instrument_assemblies(state)
+            _upsert_task_readout_instruments(
+                instrument_rows,
+                task_rows=tasks,
+                actor_subject_id=actor_subject_id,
+                tick=int(current_tick),
+            )
+            state["instrument_assemblies"] = sorted(
+                (dict(item) for item in instrument_rows if isinstance(item, dict)),
+                key=lambda item: str(item.get("assembly_id", "")),
+            )
+        result_metadata = {
+            "task_id": task_id,
+            "status": next_status,
+            "event_count": int(len(new_events)),
+            "linked_commitment_id": commitment_id or None,
+        }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.faction_create":
         founder_agent_raw = inputs.get("founder_agent_id")

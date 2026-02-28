@@ -28,6 +28,7 @@ _MAJOR_CHANGE_PROCESS_IDS = {
     "process.construction_project_tick",
     "process.maintenance_schedule",
     "process.maintenance_perform",
+    "process.task_create",
 }
 
 
