@@ -48,5 +48,15 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "port_type_id": "port.material_in",
+      "description": "Material input port",
+      "direction": "in",
+      "payload_kind": "material",
+      "extensions": {}
+    }
+  ]
 }

@@ -49,5 +49,26 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "machine_type_id": "machine.sawmill.basic",
+      "description": "Baseline sawmill machine",
+      "required_ports": [
+        "port.material_in",
+        "port.material_out"
+      ],
+      "supported_process_ids": [
+        "op.saw_planks",
+        "process.machine_operate",
+        "process.machine_pull_from_node",
+        "process.machine_push_to_node"
+      ],
+      "default_rate_params": {
+        "rate_units_per_tick": 1000
+      },
+      "extensions": {}
+    }
+  ]
 }

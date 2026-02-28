@@ -84,5 +84,30 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     }
-  }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "operations": [
+        {
+          "schema_version": "1.0.0",
+          "operation_id": "op.saw_planks",
+          "description": "Convert wood logs to planks",
+          "machine_type_ids": [
+            "machine.sawmill.basic"
+          ],
+          "input_materials": {
+            "material.wood_basic": 1000
+          },
+          "output_materials": {
+            "material.wood_basic": 1000
+          },
+          "energy_delta_raw": 0,
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84"
+    }
+  ]
 }
