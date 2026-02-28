@@ -12,11 +12,12 @@ record network_node
     - schema_version: semver
     - node_id: id
     - node_type_id: id
-    - payload_ref: map
+    - payload: optional_map
+    - payload_ref: optional_ref(map|string)
     - tags: list[id]
     - extensions: map
 
 INVARIANTS:
 - `node_id` is unique within a graph.
+- `payload` or `payload_ref` must be present.
 - Node payload remains typed via graph-level schema references.
-

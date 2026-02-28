@@ -2,9 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Network Graph Schema",
   "version": "1.0.0",
-  "description": "Deterministic universal graph substrate for logistics/mobility/interiors/utilities.",
+  "description": "Deterministic universal graph substrate with payload typing, validation mode, and partition hooks.",
   "x-doc-ref": [
-    "docs/architecture/CORE_ABSTRACTIONS.md"
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/NETWORKGRAPH_STANDARD.md"
   ],
   "type": "object",
   "required": [
@@ -12,6 +13,8 @@
     "graph_id",
     "node_type_schema_id",
     "edge_type_schema_id",
+    "payload_schema_versions",
+    "validation_mode",
     "nodes",
     "edges",
     "deterministic_routing_policy_id",
@@ -33,6 +36,29 @@
     },
     "edge_type_schema_id": {
       "type": "string",
+      "minLength": 1
+    },
+    "payload_schema_versions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+      }
+    },
+    "validation_mode": {
+      "type": "string",
+      "enum": [
+        "strict",
+        "warn",
+        "off"
+      ]
+    },
+    "graph_partition_id": {
+      "type": [
+        "string",
+        "null"
+      ],
       "minLength": 1
     },
     "nodes": {
@@ -60,16 +86,23 @@
     {
       "schema_version": "1.0.0",
       "graph_id": "graph.logistics.alpha",
-      "node_type_schema_id": "logistics_node",
-      "edge_type_schema_id": "logistics_edge",
+      "node_type_schema_id": "logistics_node.payload",
+      "edge_type_schema_id": "logistics_edge.payload",
+      "payload_schema_versions": {
+        "logistics_edge.payload": "1.0.0",
+        "logistics_node.payload": "1.0.0"
+      },
+      "validation_mode": "strict",
+      "graph_partition_id": "partition.graph.alpha",
       "nodes": [
         {
           "schema_version": "1.0.0",
           "node_id": "node.factory.alpha",
           "node_type_id": "factory",
-          "payload_ref": {
+          "payload": {
             "location_ref": "site.factory.alpha"
           },
+          "payload_ref": "pack://graphs/node.factory.alpha",
           "tags": [],
           "extensions": {}
         }
@@ -80,4 +113,3 @@
     }
   ]
 }
-

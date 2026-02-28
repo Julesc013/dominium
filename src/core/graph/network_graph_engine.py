@@ -51,6 +51,72 @@ def _round_div_away_from_zero(numerator: int, denominator: int) -> int:
     return int(sign * quotient)
 
 
+def _is_semver(value: str) -> bool:
+    parts = str(value or "").strip().split(".")
+    if len(parts) != 3:
+        return False
+    for token in parts:
+        if not token.isdigit():
+            return False
+    return True
+
+
+def _canonicalize_value(value: object) -> object:
+    if isinstance(value, dict):
+        out: Dict[str, object] = {}
+        for key in sorted(value.keys(), key=lambda item: str(item)):
+            token = str(key)
+            out[token] = _canonicalize_value(value[key])
+        return out
+    if isinstance(value, list):
+        return [_canonicalize_value(item) for item in list(value)]
+    return value
+
+
+def _normalize_payload_payload_ref(
+    *,
+    row: Mapping[str, object],
+    reason_details: Mapping[str, object],
+) -> Tuple[dict | None, dict | str | None]:
+    payload = row.get("payload")
+    payload_ref = row.get("payload_ref")
+    if payload is None and payload_ref is None:
+        raise NetworkGraphError(
+            REFUSAL_CORE_GRAPH_INVALID,
+            "network payload requires payload or payload_ref",
+            dict(reason_details),
+        )
+    normalized_payload = None
+    if payload is not None:
+        if not isinstance(payload, dict):
+            raise NetworkGraphError(
+                REFUSAL_CORE_GRAPH_INVALID,
+                "network payload must be object when provided",
+                dict(reason_details),
+            )
+        normalized_payload = dict(_canonicalize_value(dict(payload)))
+    normalized_payload_ref: dict | str | None = None
+    if payload_ref is not None:
+        if isinstance(payload_ref, dict):
+            normalized_payload_ref = dict(_canonicalize_value(dict(payload_ref)))
+        elif isinstance(payload_ref, str):
+            token = str(payload_ref).strip()
+            if not token:
+                raise NetworkGraphError(
+                    REFUSAL_CORE_GRAPH_INVALID,
+                    "network payload_ref string must be non-empty",
+                    dict(reason_details),
+                )
+            normalized_payload_ref = token
+        else:
+            raise NetworkGraphError(
+                REFUSAL_CORE_GRAPH_INVALID,
+                "network payload_ref must be object or string",
+                dict(reason_details),
+            )
+    return normalized_payload, normalized_payload_ref
+
+
 def normalize_network_node(row: Mapping[str, object]) -> dict:
     payload = dict(row or {})
     node_id = str(payload.get("node_id", "")).strip()
@@ -61,26 +127,27 @@ def normalize_network_node(row: Mapping[str, object]) -> dict:
             "network node missing required node_id/node_type_id",
             {"node_id": node_id, "node_type_id": node_type_id},
         )
-    payload_ref = payload.get("payload_ref")
-    if payload_ref is None:
-        payload_ref = {}
-    if not isinstance(payload_ref, dict):
-        raise NetworkGraphError(
-            REFUSAL_CORE_GRAPH_INVALID,
-            "network node payload_ref must be object",
-            {"node_id": node_id},
-        )
+    normalized_payload, normalized_payload_ref = _normalize_payload_payload_ref(
+        row=payload,
+        reason_details={"node_id": node_id},
+    )
     extensions = payload.get("extensions")
     if not isinstance(extensions, dict):
         extensions = {}
-    return {
+    out = {
         "schema_version": "1.0.0",
         "node_id": node_id,
         "node_type_id": node_type_id,
-        "payload_ref": dict(payload_ref),
         "tags": _sorted_unique_strings(payload.get("tags")),
-        "extensions": dict(extensions),
+        "extensions": dict(_canonicalize_value(dict(extensions))),
     }
+    if normalized_payload is not None:
+        out["payload"] = dict(normalized_payload)
+    if normalized_payload_ref is not None:
+        out["payload_ref"] = (
+            dict(normalized_payload_ref) if isinstance(normalized_payload_ref, dict) else str(normalized_payload_ref)
+        )
+    return out
 
 
 def normalize_network_edge(row: Mapping[str, object], node_ids: set[str]) -> dict:
@@ -106,15 +173,10 @@ def normalize_network_edge(row: Mapping[str, object], node_ids: set[str]) -> dic
             "network edge references unknown node",
             {"edge_id": edge_id, "from_node_id": from_node_id, "to_node_id": to_node_id},
         )
-    payload_ref = payload.get("payload_ref")
-    if payload_ref is None:
-        payload_ref = {}
-    if not isinstance(payload_ref, dict):
-        raise NetworkGraphError(
-            REFUSAL_CORE_GRAPH_INVALID,
-            "network edge payload_ref must be object",
-            {"edge_id": edge_id},
-        )
+    normalized_payload, normalized_payload_ref = _normalize_payload_payload_ref(
+        row=payload,
+        reason_details={"edge_id": edge_id},
+    )
     capacity = payload.get("capacity")
     if capacity is None:
         normalized_capacity = None
@@ -148,21 +210,39 @@ def normalize_network_edge(row: Mapping[str, object], node_ids: set[str]) -> dic
                 "network edge loss_fraction must be >= 0",
                 {"edge_id": edge_id, "loss_fraction": int(normalized_loss_fraction)},
             )
+    cost_units = payload.get("cost_units")
+    if cost_units is None:
+        normalized_cost_units = None
+    else:
+        normalized_cost_units = _as_int(cost_units, 0)
+        if normalized_cost_units < 0:
+            raise NetworkGraphError(
+                REFUSAL_CORE_GRAPH_INVALID,
+                "network edge cost_units must be >= 0",
+                {"edge_id": edge_id, "cost_units": int(normalized_cost_units)},
+            )
     extensions = payload.get("extensions")
     if not isinstance(extensions, dict):
         extensions = {}
-    return {
+    out = {
         "schema_version": "1.0.0",
         "edge_id": edge_id,
         "from_node_id": from_node_id,
         "to_node_id": to_node_id,
         "edge_type_id": edge_type_id,
-        "payload_ref": dict(payload_ref),
         "capacity": normalized_capacity,
         "delay_ticks": normalized_delay_ticks,
         "loss_fraction": normalized_loss_fraction,
-        "extensions": dict(extensions),
+        "cost_units": normalized_cost_units,
+        "extensions": dict(_canonicalize_value(dict(extensions))),
     }
+    if normalized_payload is not None:
+        out["payload"] = dict(normalized_payload)
+    if normalized_payload_ref is not None:
+        out["payload_ref"] = (
+            dict(normalized_payload_ref) if isinstance(normalized_payload_ref, dict) else str(normalized_payload_ref)
+        )
+    return out
 
 
 def normalize_network_graph(row: Mapping[str, object]) -> dict:
@@ -178,6 +258,44 @@ def normalize_network_graph(row: Mapping[str, object]) -> dict:
                 "deterministic_routing_policy_id": deterministic_routing_policy_id,
             },
         )
+    node_type_schema_id = str(payload.get("node_type_schema_id", "")).strip()
+    edge_type_schema_id = str(payload.get("edge_type_schema_id", "")).strip()
+    payload_schema_versions_raw = payload.get("payload_schema_versions")
+    payload_schema_versions = {}
+    if isinstance(payload_schema_versions_raw, dict):
+        for key in sorted(payload_schema_versions_raw.keys(), key=lambda item: str(item)):
+            schema_id = str(key).strip()
+            version = str(payload_schema_versions_raw.get(key, "")).strip()
+            if schema_id and version:
+                payload_schema_versions[schema_id] = version
+    if node_type_schema_id and node_type_schema_id not in payload_schema_versions:
+        payload_schema_versions[node_type_schema_id] = "1.0.0"
+    if edge_type_schema_id and edge_type_schema_id not in payload_schema_versions:
+        payload_schema_versions[edge_type_schema_id] = "1.0.0"
+    validation_mode = str(payload.get("validation_mode", "strict")).strip() or "strict"
+    if validation_mode not in {"strict", "warn", "off"}:
+        validation_mode = "strict"
+    if validation_mode == "strict":
+        if not node_type_schema_id or not edge_type_schema_id:
+            raise NetworkGraphError(
+                REFUSAL_CORE_GRAPH_INVALID,
+                "strict network graph validation requires node/edge payload schema IDs",
+                {"graph_id": graph_id},
+            )
+        for schema_id in (node_type_schema_id, edge_type_schema_id):
+            version = str(payload_schema_versions.get(schema_id, "")).strip()
+            if not version:
+                raise NetworkGraphError(
+                    REFUSAL_CORE_GRAPH_INVALID,
+                    "strict network graph validation requires payload schema version mapping",
+                    {"graph_id": graph_id, "schema_id": schema_id},
+                )
+            if not _is_semver(version):
+                raise NetworkGraphError(
+                    REFUSAL_CORE_GRAPH_INVALID,
+                    "payload schema version must be semantic version",
+                    {"graph_id": graph_id, "schema_id": schema_id, "version": version},
+                )
     nodes_raw = payload.get("nodes")
     edges_raw = payload.get("edges")
     if not isinstance(nodes_raw, list) or not isinstance(edges_raw, list):
@@ -198,8 +316,16 @@ def normalize_network_graph(row: Mapping[str, object]) -> dict:
             )
         nodes[node_id] = normalized
     edges: Dict[str, dict] = {}
+    edge_order: List[str] = []
     node_id_set = set(nodes.keys())
-    for edge in sorted((item for item in edges_raw if isinstance(item, dict)), key=lambda item: str(item.get("edge_id", ""))):
+    for edge in sorted(
+        (item for item in edges_raw if isinstance(item, dict)),
+        key=lambda item: (
+            str(item.get("from_node_id", "")),
+            str(item.get("to_node_id", "")),
+            str(item.get("edge_id", "")),
+        ),
+    ):
         normalized = normalize_network_edge(edge, node_id_set)
         edge_id = str(normalized.get("edge_id", ""))
         if edge_id in edges:
@@ -209,15 +335,32 @@ def normalize_network_graph(row: Mapping[str, object]) -> dict:
                 {"graph_id": graph_id, "edge_id": edge_id},
             )
         edges[edge_id] = normalized
+        edge_order.append(edge_id)
+    graph_partition_id_raw = payload.get("graph_partition_id")
+    graph_partition_id = None
+    if graph_partition_id_raw is not None:
+        token = str(graph_partition_id_raw).strip()
+        if token:
+            graph_partition_id = token
+    extensions = payload.get("extensions")
+    if not isinstance(extensions, dict):
+        extensions = {}
     return {
         "schema_version": "1.0.0",
         "graph_id": graph_id,
-        "node_type_schema_id": str(payload.get("node_type_schema_id", "")).strip(),
-        "edge_type_schema_id": str(payload.get("edge_type_schema_id", "")).strip(),
+        "node_type_schema_id": node_type_schema_id,
+        "edge_type_schema_id": edge_type_schema_id,
+        "payload_schema_versions": dict(
+            (str(key), str(payload_schema_versions[key]).strip())
+            for key in sorted(payload_schema_versions.keys())
+            if str(key).strip()
+        ),
+        "validation_mode": validation_mode,
+        "graph_partition_id": graph_partition_id,
         "nodes": [dict(nodes[node_id]) for node_id in sorted(nodes.keys())],
-        "edges": [dict(edges[edge_id]) for edge_id in sorted(edges.keys())],
+        "edges": [dict(edges[edge_id]) for edge_id in edge_order],
         "deterministic_routing_policy_id": deterministic_routing_policy_id,
-        "extensions": dict(payload.get("extensions") or {}),
+        "extensions": dict(_canonicalize_value(dict(extensions))),
     }
 
 
@@ -256,8 +399,11 @@ def _direct_route(graph_row: Mapping[str, object], from_node_id: str, to_node_id
 
 def _metric_cost(edge_row: Mapping[str, object], metric: str) -> int:
     if str(metric) == "min_cost_units":
-        payload_ref = dict(edge_row.get("payload_ref") or {})
-        value = payload_ref.get("cost_units_per_mass")
+        if edge_row.get("cost_units") is not None:
+            return int(_as_int(edge_row.get("cost_units"), 0))
+        payload_ref_raw = edge_row.get("payload_ref")
+        payload_ref = payload_ref_raw if isinstance(payload_ref_raw, dict) else {}
+        value = dict(payload_ref).get("cost_units_per_mass")
         return int(_as_int(0 if value is None else value, 0))
     delay_ticks = edge_row.get("delay_ticks")
     if delay_ticks is None:
@@ -351,4 +497,3 @@ def route_loss_fraction(graph_row: Mapping[str, object], edge_ids: List[str], *,
             loss_fraction = int(scale)
         survival = int(_round_div_away_from_zero(int(survival) * int(scale - loss_fraction), int(scale)))
     return int(max(0, int(scale - survival)))
-

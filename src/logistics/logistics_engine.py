@@ -10,8 +10,8 @@ from src.core.graph.network_graph_engine import (
     normalize_network_graph as core_normalize_network_graph,
     route_delay_ticks as core_route_delay_ticks,
     route_loss_fraction as core_route_loss_fraction,
-    route_query as core_route_query,
 )
+from src.core.graph.routing_engine import RoutingError, route_query_edges
 from src.materials.dimension_engine import fixed_point_config_from_policy
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -401,12 +401,19 @@ def _core_routing_policy(rule_row: Mapping[str, object]) -> dict:
 
 def _best_route(graph_row: Mapping[str, object], from_node_id: str, to_node_id: str, routing_rule: Mapping[str, object]) -> List[str]:
     try:
-        return core_route_query(
+        return route_query_edges(
             _core_graph_payload(graph_row),
             _core_routing_policy(routing_rule),
             str(from_node_id).strip(),
             str(to_node_id).strip(),
+            constraints_row=dict(_normalize_routing_rule(routing_rule).get("constraints") or {}),
         )
+    except RoutingError as exc:
+        raise LogisticsError(
+            REFUSAL_LOGISTICS_INVALID_ROUTE,
+            str(exc),
+            dict(exc.details),
+        ) from exc
     except NetworkGraphError as exc:
         raise LogisticsError(
             REFUSAL_LOGISTICS_INVALID_ROUTE,

@@ -1953,6 +1953,27 @@
         "1.0.0"
       ]
     },
+    "graph_partition": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "route_query": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "route_result": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "flow_channel": {
       "current_version": "1.0.0",
       "migrations": {},

@@ -6259,6 +6259,8 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("machine_ports", "port_id"),
         ("machine_port_connections", "connection_id"),
         ("machine_provenance_events", "event_id"),
+        ("network_graphs", "graph_id"),
+        ("graph_partitions", "partition_id"),
         ("material_commitments", "commitment_id"),
         ("event_stream_indices", "stream_id"),
         ("reenactment_requests", "request_id"),

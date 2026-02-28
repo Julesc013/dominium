@@ -13,13 +13,17 @@ record network_graph
     - graph_id: id
     - node_type_schema_id: id
     - edge_type_schema_id: id
+    - payload_schema_versions: map[schema_id -> semver]
+    - validation_mode: enum(strict|warn|off)
+    - graph_partition_id: optional_id
     - nodes: list[network_node]
     - edges: list[network_edge]
     - deterministic_routing_policy_id: id
     - extensions: map
 
 INVARIANTS:
-- Node and edge ordering is deterministic by lexical ID.
+- Node ordering is deterministic by lexical `node_id`.
+- Edge ordering is deterministic by `(from_node_id,to_node_id,edge_id)`.
+- `payload_schema_versions` must include `node_type_schema_id` and `edge_type_schema_id` when validation_mode is strict.
 - Routing tie-break policy must be explicit and deterministic.
 - Graph payload carries type indirection through schema IDs, not hardcoded subsystem assumptions.
-

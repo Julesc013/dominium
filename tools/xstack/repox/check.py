@@ -6770,6 +6770,11 @@ def _append_core_abstraction_invariant_findings(
             ("normalize_network_graph(", "route_query(", "heapq.heappush("),
             "core graph substrate file missing deterministic graph tokens",
         ),
+        "src/core/graph/routing_engine.py": (
+            "INV-NETWORKGRAPH-ONLY",
+            ("query_route_result(", "route_query_edges(", "build_route_cache_key("),
+            "core routing substrate file missing deterministic NetworkGraph routing tokens",
+        ),
         "src/core/schedule/schedule_engine.py": (
             "INV-NO-DUPLICATE-SCHEDULERS",
             ("normalize_schedule(", "advance_schedule(", "recurrence_rule"),
@@ -6846,6 +6851,43 @@ def _append_core_abstraction_invariant_findings(
                     snippet="heapq.heappush(",
                     message="graph traversal/path search must be implemented in src/core/graph only",
                     rule_id="INV-NO-DUPLICATE-GRAPH-SUBSTRATES",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/graph/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        has_custom_routing_tokens = (
+            "heapq.heappush(" in text
+            and "route_policy_id" in text
+            and "path_edge_ids" in text
+            and "path_node_ids" in text
+        )
+        imports_core_graph = (
+            "from src.core.graph" in text
+            or "import src.core.graph" in text
+            or "src.core.graph." in text
+        )
+        if has_custom_routing_tokens and (not imports_core_graph):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="heapq.heappush(",
+                    message="NetworkGraph routing implementations must live in src/core/graph or wrap it explicitly",
+                    rule_id="INV-NETWORKGRAPH-ONLY",
                 )
             )
 

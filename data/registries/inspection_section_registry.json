@@ -46,6 +46,45 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.networkgraph.summary",
+        "title": "NetworkGraph Summary",
+        "data": {
+          "data_kind": "networkgraph_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.networkgraph.route",
+        "title": "NetworkGraph Route",
+        "data": {
+          "data_kind": "networkgraph_route"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.networkgraph.capacity_utilization",
+        "title": "NetworkGraph Capacity Utilization",
+        "data": {
+          "data_kind": "networkgraph_capacity"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.ag_progress",
         "title": "Assembly Progress",
         "data": {

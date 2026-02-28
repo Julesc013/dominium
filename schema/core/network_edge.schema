@@ -14,13 +14,14 @@ record network_edge
     - from_node_id: id
     - to_node_id: id
     - edge_type_id: id
-    - payload_ref: map
+    - payload: optional_map
+    - payload_ref: optional_ref(map|string)
     - capacity: optional_fixed
     - delay_ticks: optional_u64
     - loss_fraction: optional_fixed
+    - cost_units: optional_fixed
     - extensions: map
 
 INVARIANTS:
 - Edges reference known node IDs in the same graph.
-- Capacity/delay/loss fields are deterministic scalar controls, not solver-specific state.
-
+- Capacity/delay/loss/cost fields are deterministic generic scalar controls, not solver-specific state.
