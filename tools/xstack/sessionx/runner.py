@@ -65,6 +65,10 @@ REGISTRY_HASH_KEY_MAP = {
     "part_class_registry_hash": "part_class_registry",
     "connection_type_registry_hash": "connection_type_registry",
     "blueprint_registry_hash": "blueprint_registry",
+    "interior_volume_type_registry_hash": "interior_volume_type_registry",
+    "portal_type_registry_hash": "portal_type_registry",
+    "compartment_flow_policy_registry_hash": "compartment_flow_policy_registry",
+    "portal_flow_template_registry_hash": "portal_flow_template_registry",
     "logistics_routing_rule_registry_hash": "logistics_routing_rule_registry",
     "logistics_graph_registry_hash": "logistics_graph_registry",
     "provenance_event_type_registry_hash": "provenance_event_type_registry",
@@ -167,6 +171,10 @@ REGISTRY_FILE_MAP = {
     "part_class_registry_hash": "part_class.registry.json",
     "connection_type_registry_hash": "connection_type.registry.json",
     "blueprint_registry_hash": "blueprint.registry.json",
+    "interior_volume_type_registry_hash": "interior_volume_type.registry.json",
+    "portal_type_registry_hash": "portal_type.registry.json",
+    "compartment_flow_policy_registry_hash": "compartment_flow_policy.registry.json",
+    "portal_flow_template_registry_hash": "portal_flow_template.registry.json",
     "logistics_routing_rule_registry_hash": "logistics_routing_rule.registry.json",
     "logistics_graph_registry_hash": "logistics_graph.registry.json",
     "provenance_event_type_registry_hash": "provenance_event_type.registry.json",
@@ -1215,6 +1223,38 @@ def boot_session_spec(
     )
     if blueprint_registry_error:
         return blueprint_registry_error
+    interior_volume_type_registry, interior_volume_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["interior_volume_type_registry_hash"],
+        expected_hash=str(registries.get("interior_volume_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if interior_volume_type_registry_error:
+        return interior_volume_type_registry_error
+    portal_type_registry, portal_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["portal_type_registry_hash"],
+        expected_hash=str(registries.get("portal_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if portal_type_registry_error:
+        return portal_type_registry_error
+    compartment_flow_policy_registry, compartment_flow_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["compartment_flow_policy_registry_hash"],
+        expected_hash=str(registries.get("compartment_flow_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if compartment_flow_policy_registry_error:
+        return compartment_flow_policy_registry_error
+    portal_flow_template_registry, portal_flow_template_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["portal_flow_template_registry_hash"],
+        expected_hash=str(registries.get("portal_flow_template_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if portal_flow_template_registry_error:
+        return portal_flow_template_registry_error
     logistics_routing_rule_registry, logistics_routing_rule_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["logistics_routing_rule_registry_hash"],
@@ -1979,6 +2019,10 @@ def boot_session_spec(
                 "part_class_registry": part_class_registry,
                 "connection_type_registry": connection_type_registry,
                 "blueprint_registry": blueprint_registry,
+                "interior_volume_type_registry": interior_volume_type_registry,
+                "portal_type_registry": portal_type_registry,
+                "compartment_flow_policy_registry": compartment_flow_policy_registry,
+                "portal_flow_template_registry": portal_flow_template_registry,
                 "logistics_routing_rule_registry": logistics_routing_rule_registry,
                 "logistics_graph_registry": logistics_graph_registry,
                 "provenance_event_type_registry": provenance_event_type_registry,
@@ -2098,6 +2142,10 @@ def boot_session_spec(
                 "part_class_registry": part_class_registry,
                 "connection_type_registry": connection_type_registry,
                 "blueprint_registry": blueprint_registry,
+                "interior_volume_type_registry": interior_volume_type_registry,
+                "portal_type_registry": portal_type_registry,
+                "compartment_flow_policy_registry": compartment_flow_policy_registry,
+                "portal_flow_template_registry": portal_flow_template_registry,
                 "logistics_routing_rule_registry": logistics_routing_rule_registry,
                 "logistics_graph_registry": logistics_graph_registry,
                 "provenance_event_type_registry": provenance_event_type_registry,
@@ -2488,6 +2536,10 @@ def boot_session_spec(
             "part_class_registry": part_class_registry,
             "connection_type_registry": connection_type_registry,
             "blueprint_registry": blueprint_registry,
+            "interior_volume_type_registry": interior_volume_type_registry,
+            "portal_type_registry": portal_type_registry,
+            "compartment_flow_policy_registry": compartment_flow_policy_registry,
+            "portal_flow_template_registry": portal_flow_template_registry,
             "logistics_routing_rule_registry": logistics_routing_rule_registry,
             "logistics_graph_registry": logistics_graph_registry,
             "provenance_event_type_registry": provenance_event_type_registry,

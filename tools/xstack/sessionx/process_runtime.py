@@ -98,6 +98,19 @@ from src.interaction.task.task_engine import (
     set_task_status,
     tick_tasks,
 )
+from src.interior.compartment_flow_builder import (
+    normalize_compartment_state,
+    normalize_leak_hazard,
+    normalize_portal_flow_params,
+)
+from src.interior.compartment_flow_engine import (
+    CompartmentFlowEngineError,
+    REFUSAL_COMPARTMENT_FLOW_BUDGET_EXCEEDED,
+    REFUSAL_COMPARTMENT_FLOW_INVALID,
+    resolve_compartment_flow_policy_row,
+    tick_compartment_flows,
+)
+from src.interior.interior_engine import InteriorError, apply_portal_transition
 from src.machines.port_engine import (
     PortError,
     REFUSAL_PORT_EMPTY,
@@ -191,6 +204,13 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.maintenance_schedule": "entitlement.control.admin",
     "process.inspection_perform": "entitlement.control.admin",
     "process.maintenance_perform": "entitlement.control.admin",
+    "process.compartment_flow_tick": "session.boot",
+    "process.portal_open": "entitlement.tool.operating",
+    "process.portal_close": "entitlement.tool.operating",
+    "process.hatch_open": "entitlement.tool.operating",
+    "process.hatch_close": "entitlement.tool.operating",
+    "process.vent_open": "entitlement.tool.operating",
+    "process.vent_close": "entitlement.tool.operating",
     "process.materialize_structure_roi": "entitlement.control.admin",
     "process.dematerialize_structure_roi": "entitlement.control.admin",
     "process.commitment_create": "entitlement.control.admin",
@@ -271,6 +291,13 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.maintenance_schedule": "operator",
     "process.inspection_perform": "operator",
     "process.maintenance_perform": "operator",
+    "process.compartment_flow_tick": "observer",
+    "process.portal_open": "operator",
+    "process.portal_close": "operator",
+    "process.hatch_open": "operator",
+    "process.hatch_close": "operator",
+    "process.vent_open": "operator",
+    "process.vent_close": "operator",
     "process.materialize_structure_roi": "operator",
     "process.dematerialize_structure_roi": "operator",
     "process.commitment_create": "operator",
@@ -360,6 +387,15 @@ MAINTENANCE_PROCESS_IDS = {
     "process.inspection_perform",
     "process.maintenance_perform",
 }
+INTERIOR_PROCESS_IDS = {
+    "process.compartment_flow_tick",
+    "process.portal_open",
+    "process.portal_close",
+    "process.hatch_open",
+    "process.hatch_close",
+    "process.vent_open",
+    "process.vent_close",
+}
 TOOL_PROCESS_IDS = {
     "process.tool_bind",
     "process.tool_unbind",
@@ -395,6 +431,11 @@ MAINTENANCE_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
     "ENTITLEMENT_MISSING": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
     "PRIVILEGE_INSUFFICIENT": REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+}
+INTERIOR_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": "refusal.interior.flow.forbidden_by_law",
+    "ENTITLEMENT_MISSING": "refusal.interior.flow.forbidden_by_law",
+    "PRIVILEGE_INSUFFICIENT": "refusal.interior.flow.forbidden_by_law",
 }
 TASK_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": REFUSAL_TASK_FORBIDDEN_BY_LAW,
@@ -478,6 +519,8 @@ CONSTRUCTION_DEFAULT_MAX_PROJECTS_PER_TICK = 256
 CONSTRUCTION_DEFAULT_MAX_PARALLEL_STEPS_OVERRIDE = 0
 CONSTRUCTION_DEFAULT_COST_UNITS_PER_ACTIVE_STEP = 1
 MAINTENANCE_DEFAULT_POLICY_ID = "maint.policy.default_realistic"
+INTERIOR_DEFAULT_FLOW_POLICY_ID = "flow.policy.default"
+INTERIOR_DEFAULT_FIXED_POINT_SCALE = 1000
 TASK_DEFAULT_MAX_COST_UNITS_PER_TICK = 128
 ZERO_HASH = "0" * 64
 
@@ -2647,6 +2690,184 @@ def _persist_machine_state(
     _ensure_machine_ports(state)
     _ensure_machine_port_connections(state)
     _ensure_machine_provenance_events(state)
+
+
+def _ensure_interior_graph_rows(state: dict) -> List[dict]:
+    rows = state.get("interior_graphs")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("graph_id", ""))):
+        graph_id = str(row.get("graph_id", "")).strip()
+        if not graph_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "graph_id": graph_id,
+                "volumes": _sorted_tokens(list(row.get("volumes") or [])),
+                "portals": _sorted_tokens(list(row.get("portals") or [])),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    state["interior_graphs"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_interior_volume_rows(state: dict) -> List[dict]:
+    rows = state.get("interior_volumes")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("volume_id", ""))):
+        volume_id = str(row.get("volume_id", "")).strip()
+        if not volume_id:
+            continue
+        normalized.append(dict(row))
+    state["interior_volumes"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_interior_portal_rows(state: dict) -> List[dict]:
+    rows = state.get("interior_portals")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("portal_id", ""))):
+        portal_id = str(row.get("portal_id", "")).strip()
+        if not portal_id:
+            continue
+        normalized.append(dict(row))
+    state["interior_portals"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_interior_portal_state_machines(state: dict) -> List[dict]:
+    rows = state.get("interior_portal_state_machines")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("machine_id", ""))):
+        machine_id = str(row.get("machine_id", "")).strip()
+        if not machine_id:
+            continue
+        normalized.append(dict(row))
+    state["interior_portal_state_machines"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_compartment_states(state: dict) -> List[dict]:
+    rows = state.get("compartment_states")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("volume_id", ""))):
+        try:
+            normalized.append(normalize_compartment_state(row))
+        except Exception:
+            continue
+    state["compartment_states"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_portal_flow_params(state: dict) -> List[dict]:
+    rows = state.get("portal_flow_params")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("portal_id", ""))):
+        try:
+            normalized.append(normalize_portal_flow_params(row))
+        except Exception:
+            continue
+    state["portal_flow_params"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_leak_hazards(state: dict) -> List[dict]:
+    rows = state.get("interior_leak_hazards")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("leak_id", ""))):
+        try:
+            normalized.append(normalize_leak_hazard(row))
+        except Exception:
+            continue
+    state["interior_leak_hazards"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_compartment_hazard_models(state: dict) -> List[dict]:
+    rows = state.get("compartment_hazard_models")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = [dict(row) for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("hazard_id", "")))]
+    state["compartment_hazard_models"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_compartment_flow_runtime_state(state: dict) -> dict:
+    row = state.get("compartment_flow_runtime_state")
+    if not isinstance(row, dict):
+        row = {}
+    normalized = {
+        "schema_version": "1.0.0",
+        "last_tick": max(0, _as_int(row.get("last_tick", 0), 0)),
+        "channel_runtime": dict(
+            (str(key), dict(value))
+            for key, value in sorted((dict(row.get("channel_runtime") or {})).items(), key=lambda item: str(item[0]))
+            if str(key).strip() and isinstance(value, dict)
+        ),
+        "outside_reservoir": dict(
+            (str(key), max(0, _as_int(value, 0)))
+            for key, value in sorted((dict(row.get("outside_reservoir") or {})).items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        ),
+        "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+    }
+    state["compartment_flow_runtime_state"] = normalized
+    return dict(normalized)
+
+
+def _ensure_compartment_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("compartment_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = [
+        dict(row)
+        for row in sorted(
+            (item for item in rows if isinstance(item, dict)),
+            key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+        )
+        if str(row.get("event_id", "")).strip()
+    ]
+    state["compartment_provenance_events"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _persist_compartment_flow_state(
+    state: dict,
+    *,
+    compartment_states: List[dict],
+    portal_flow_params: List[dict],
+    leak_hazards: List[dict],
+    hazard_models: List[dict],
+    runtime_state: dict,
+    provenance_events: List[dict],
+) -> None:
+    state["compartment_states"] = [dict(row) for row in list(compartment_states or []) if isinstance(row, dict)]
+    state["portal_flow_params"] = [dict(row) for row in list(portal_flow_params or []) if isinstance(row, dict)]
+    state["interior_leak_hazards"] = [dict(row) for row in list(leak_hazards or []) if isinstance(row, dict)]
+    state["compartment_hazard_models"] = [dict(row) for row in list(hazard_models or []) if isinstance(row, dict)]
+    state["compartment_flow_runtime_state"] = dict(runtime_state or {})
+    state["compartment_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
+    _ensure_compartment_states(state)
+    _ensure_portal_flow_params(state)
+    _ensure_leak_hazards(state)
+    _ensure_compartment_hazard_models(state)
+    _ensure_compartment_flow_runtime_state(state)
+    _ensure_compartment_provenance_events(state)
 
 
 def _machine_output_batch_id(*, intent_id: str, machine_id: str, operation_id: str, material_id: str, output_index: int) -> str:
@@ -8716,6 +8937,8 @@ def execute_intent(
             return _control_gate_refusal(gate, reason_map=MACHINE_GATE_REASON_MAP)
         if process_id in MAINTENANCE_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=MAINTENANCE_GATE_REASON_MAP)
+        if process_id in INTERIOR_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=INTERIOR_GATE_REASON_MAP)
         if process_id in CIV_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=CIV_GATE_REASON_MAP)
         if process_id in CONTROL_PROCESS_IDS:
@@ -8764,6 +8987,16 @@ def execute_intent(
     logistics_inventory_rows = _ensure_logistics_node_inventories(state)
     logistics_provenance_events = _ensure_logistics_provenance_events(state)
     logistics_runtime_state = _ensure_logistics_runtime_state(state)
+    interior_graph_rows = _ensure_interior_graph_rows(state)
+    interior_volume_rows = _ensure_interior_volume_rows(state)
+    interior_portal_rows = _ensure_interior_portal_rows(state)
+    interior_portal_state_rows = _ensure_interior_portal_state_machines(state)
+    compartment_states = _ensure_compartment_states(state)
+    portal_flow_params = _ensure_portal_flow_params(state)
+    interior_leak_hazards = _ensure_leak_hazards(state)
+    compartment_hazard_models = _ensure_compartment_hazard_models(state)
+    compartment_flow_runtime_state = _ensure_compartment_flow_runtime_state(state)
+    compartment_provenance_events = _ensure_compartment_provenance_events(state)
     construction_projects = _ensure_construction_projects(state)
     construction_steps = _ensure_construction_steps(state)
     construction_commitments = _ensure_construction_commitments(state)
@@ -14402,6 +14635,490 @@ def execute_intent(
             "backlog_after": int(maintained.get("backlog_after", 0)),
             "logistics_node_id": logistics_node_id,
             "required_materials": dict(required_materials),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.compartment_flow_tick":
+        dt_ticks = max(1, _as_int(inputs.get("dt_ticks", 1), 1))
+        requested_graph_id = str(
+            inputs.get("graph_id", "")
+            or inputs.get("interior_graph_id", "")
+            or inputs.get("target_graph_id", "")
+        ).strip()
+        policy_id = str(
+            inputs.get("flow_policy_id", "")
+            or inputs.get("policy_id", "")
+            or (dict(policy_context or {})).get("compartment_flow_policy_id", "")
+            or "flow.policy.default"
+        ).strip()
+        graph_rows_by_id = dict(
+            (str(row.get("graph_id", "")).strip(), dict(row))
+            for row in list(interior_graph_rows or [])
+            if isinstance(row, dict) and str(row.get("graph_id", "")).strip()
+        )
+        selected_graph_id = requested_graph_id
+        if not selected_graph_id and graph_rows_by_id:
+            selected_graph_id = sorted(graph_rows_by_id.keys())[0]
+        selected_graph = dict(graph_rows_by_id.get(selected_graph_id) or {})
+        if requested_graph_id and not selected_graph:
+            return refusal(
+                REFUSAL_COMPARTMENT_FLOW_INVALID,
+                "interior graph '{}' was not found".format(requested_graph_id),
+                "Provide an existing interior graph_id or omit graph_id for deterministic default selection.",
+                {"graph_id": requested_graph_id},
+                "$.intent.inputs.graph_id",
+            )
+        if not selected_graph:
+            result_metadata = {
+                "graph_id": "",
+                "policy_id": policy_id,
+                "dt_ticks": int(dt_ticks),
+                "processed_channel_count": 0,
+                "remaining_channel_count": 0,
+                "processed_hazard_count": 0,
+                "deferred_hazard_count": 0,
+                "cost_units": 0,
+                "budget_outcome": "complete",
+                "flow_transfer_event_count": 0,
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            flow_policy_row = resolve_compartment_flow_policy_row(
+                policy_id=policy_id,
+                policy_registry_payload=_policy_payload(policy_context, "compartment_flow_policy_registry"),
+            )
+            runtime_extensions = dict(compartment_flow_runtime_state.get("extensions") or {})
+            selected_partition = {}
+            for row in sorted(
+                (item for item in list(state.get("graph_partitions") or []) if isinstance(item, dict)),
+                key=lambda item: str(item.get("partition_id", "")),
+            ):
+                if str(row.get("graph_id", "")).strip() != str(selected_graph.get("graph_id", "")).strip():
+                    continue
+                selected_partition = dict(row)
+                break
+            try:
+                ticked = tick_compartment_flows(
+                    interior_graph_row=selected_graph,
+                    volume_rows=interior_volume_rows,
+                    portal_rows=interior_portal_rows,
+                    portal_state_rows=interior_portal_state_rows,
+                    compartment_state_rows=compartment_states,
+                    portal_flow_param_rows=portal_flow_params,
+                    leak_hazard_rows=interior_leak_hazards,
+                    leak_hazard_models=compartment_hazard_models,
+                    portal_flow_template_registry=_policy_payload(policy_context, "portal_flow_template_registry"),
+                    compartment_flow_policy_row=flow_policy_row,
+                    flow_solver_policy_registry=_policy_payload(policy_context, "core_flow_solver_policy_registry"),
+                    current_tick=int(current_tick),
+                    dt_ticks=int(dt_ticks),
+                    numeric_policy=dict((dict(policy_context or {})).get("numeric_precision_policy") or {}),
+                    channel_runtime=dict(compartment_flow_runtime_state.get("channel_runtime") or {}),
+                    outside_reservoir=dict(compartment_flow_runtime_state.get("outside_reservoir") or {}),
+                    include_smoke=bool(inputs.get("include_smoke", True)),
+                    conserved_quantity_ids=["quantity.mass"],
+                    graph_partition_row=selected_partition,
+                    cost_units_per_channel=max(1, _as_int(inputs.get("cost_units_per_channel", 1), 1)),
+                    cost_units_per_hazard=max(1, _as_int(inputs.get("cost_units_per_hazard", 1), 1)),
+                )
+            except CompartmentFlowEngineError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Adjust compartment flow state/policy inputs and retry process.compartment_flow_tick.",
+                    dict(exc.details),
+                    "$.intent.inputs",
+                )
+
+            compartment_states = sorted(
+                [dict(row) for row in list(ticked.get("states") or []) if isinstance(row, dict)],
+                key=lambda row: str(row.get("volume_id", "")),
+            )
+            compartment_hazard_models = sorted(
+                [dict(row) for row in list(ticked.get("hazards") or []) if isinstance(row, dict)],
+                key=lambda row: str(row.get("hazard_id", "")),
+            )
+            compartment_flow_runtime_state = {
+                "schema_version": "1.0.0",
+                "last_tick": int(max(0, int(current_tick))),
+                "channel_runtime": dict(ticked.get("channel_runtime") or {}),
+                "outside_reservoir": dict(ticked.get("outside_reservoir") or {}),
+                "extensions": {
+                    **runtime_extensions,
+                    "last_graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                    "last_budget_outcome": str(ticked.get("budget_outcome", "complete")).strip() or "complete",
+                    "last_cost_units": int(_as_int(ticked.get("cost_units", 0), 0)),
+                    "last_flow_build": dict(ticked.get("flow_build") or {}),
+                    "last_flow_loss_entries": [
+                        dict(row)
+                        for row in list(ticked.get("flow_loss_entries") or [])
+                        if isinstance(row, dict)
+                    ],
+                    "last_alarm_summary": [
+                        dict(row)
+                        for row in list(ticked.get("alarm_summary") or [])
+                        if isinstance(row, dict)
+                    ],
+                },
+            }
+
+            new_provenance_rows: List[dict] = []
+            for row in list(ticked.get("flow_transfer_events") or []):
+                if not isinstance(row, dict):
+                    continue
+                event_id = str(row.get("event_id", "")).strip()
+                if not event_id:
+                    continue
+                flow_tick = int(max(0, _as_int(row.get("tick", int(current_tick)), int(current_tick))))
+                extensions = dict(row.get("extensions") or {})
+                extensions["source_process_id"] = process_id
+                extensions["graph_id"] = str(selected_graph.get("graph_id", "")).strip()
+                provenance_row = {
+                    "schema_version": "1.0.0",
+                    "event_id": event_id,
+                    "tick": flow_tick,
+                    "event_type": "compartment_flow_transfer",
+                    "deterministic_fingerprint": "",
+                    "extensions": extensions,
+                }
+                provenance_row["deterministic_fingerprint"] = canonical_sha256(
+                    dict(provenance_row, deterministic_fingerprint="")
+                )
+                new_provenance_rows.append(provenance_row)
+            for row in list(ticked.get("hazard_consequence_events") or []):
+                if not isinstance(row, dict):
+                    continue
+                event_tick = int(max(0, _as_int(row.get("tick", int(current_tick)), int(current_tick))))
+                event_id = "provenance.compartment.hazard.{}".format(
+                    canonical_sha256(
+                        {
+                            "hazard_id": str(row.get("hazard_id", "")).strip(),
+                            "tick": event_tick,
+                            "consequence_process_id": str(row.get("consequence_process_id", "")).strip(),
+                            "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                        }
+                    )[:24]
+                )
+                provenance_row = {
+                    "schema_version": "1.0.0",
+                    "event_id": event_id,
+                    "tick": event_tick,
+                    "event_type": "compartment_hazard_triggered",
+                    "deterministic_fingerprint": "",
+                    "extensions": dict(row),
+                }
+                provenance_row["deterministic_fingerprint"] = canonical_sha256(
+                    dict(provenance_row, deterministic_fingerprint="")
+                )
+                new_provenance_rows.append(provenance_row)
+            provenance_by_id = dict(
+                (str(row.get("event_id", "")).strip(), dict(row))
+                for row in list(compartment_provenance_events or [])
+                if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+            )
+            for row in new_provenance_rows:
+                event_id = str(row.get("event_id", "")).strip()
+                if event_id:
+                    provenance_by_id[event_id] = dict(row)
+            compartment_provenance_events = sorted(
+                (dict(provenance_by_id[key]) for key in sorted(provenance_by_id.keys())),
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+            )
+
+            state["interior_movement_constraints"] = sorted(
+                [
+                    dict(row)
+                    for row in list(ticked.get("movement_constraints") or [])
+                    if isinstance(row, dict)
+                ],
+                key=lambda row: str(row.get("volume_id", "")),
+            )
+
+            alarms = [
+                dict(row)
+                for row in list(ticked.get("alarm_summary") or [])
+                if isinstance(row, dict)
+            ]
+            pressure_rows = sorted(
+                (
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "pressure": int(max(0, _as_int(row.get("derived_pressure", 0), 0))),
+                    }
+                    for row in list(compartment_states or [])
+                    if isinstance(row, dict) and str(row.get("volume_id", "")).strip()
+                ),
+                key=lambda row: str(row.get("volume_id", "")),
+            )
+            oxygen_rows = sorted(
+                (
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "oxygen_fraction": int(max(0, _as_int(row.get("oxygen_fraction", 0), 0))),
+                    }
+                    for row in list(compartment_states or [])
+                    if isinstance(row, dict) and str(row.get("volume_id", "")).strip()
+                ),
+                key=lambda row: str(row.get("volume_id", "")),
+            )
+            smoke_rows = sorted(
+                (
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "smoke_density": int(max(0, _as_int(row.get("smoke_density", 0), 0))),
+                    }
+                    for row in list(compartment_states or [])
+                    if isinstance(row, dict) and str(row.get("volume_id", "")).strip()
+                ),
+                key=lambda row: str(row.get("volume_id", "")),
+            )
+            flood_rows = sorted(
+                (
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "water_volume": int(max(0, _as_int(row.get("water_volume", 0), 0))),
+                    }
+                    for row in list(compartment_states or [])
+                    if isinstance(row, dict) and str(row.get("volume_id", "")).strip()
+                ),
+                key=lambda row: str(row.get("volume_id", "")),
+            )
+            alarm_state = "OK"
+            for row in alarms:
+                state_token = str(row.get("overall", "")).strip()
+                if state_token == "DANGER":
+                    alarm_state = "DANGER"
+                    break
+                if state_token == "WARN":
+                    alarm_state = "WARN"
+            instrument_rows = _ensure_instrument_assemblies(state)
+            gauge_payloads = {
+                "instrument.interior.pressure": {
+                    "assembly_id": "instrument.interior.pressure",
+                    "instrument_type": "gauge.pressure",
+                    "quality": "coarse",
+                    "quality_value": 600,
+                    "reading": "{} compartments".format(len(pressure_rows)),
+                    "state": {"status": alarm_state},
+                    "outputs": {"rows": pressure_rows[:64]},
+                },
+                "instrument.interior.oxygen": {
+                    "assembly_id": "instrument.interior.oxygen",
+                    "instrument_type": "gauge.oxygen",
+                    "quality": "coarse",
+                    "quality_value": 600,
+                    "reading": "{} compartments".format(len(oxygen_rows)),
+                    "state": {"status": alarm_state},
+                    "outputs": {"rows": oxygen_rows[:64]},
+                },
+                "instrument.interior.smoke": {
+                    "assembly_id": "instrument.interior.smoke",
+                    "instrument_type": "alarm.smoke",
+                    "quality": "coarse",
+                    "quality_value": 600,
+                    "reading": alarm_state,
+                    "state": {"status": alarm_state},
+                    "outputs": {"rows": smoke_rows[:64]},
+                },
+                "instrument.interior.flood": {
+                    "assembly_id": "instrument.interior.flood",
+                    "instrument_type": "alarm.flood",
+                    "quality": "coarse",
+                    "quality_value": 600,
+                    "reading": alarm_state,
+                    "state": {"status": alarm_state},
+                    "outputs": {"rows": flood_rows[:64]},
+                },
+                "instrument.interior.alarm": {
+                    "assembly_id": "instrument.interior.alarm",
+                    "instrument_type": "alarm.general",
+                    "quality": "coarse",
+                    "quality_value": 600,
+                    "reading": alarm_state,
+                    "state": {"status": alarm_state},
+                    "outputs": {"rows": alarms[:64]},
+                },
+            }
+            instrument_by_id = dict(
+                (str(row.get("assembly_id", "")).strip(), dict(row))
+                for row in list(instrument_rows or [])
+                if isinstance(row, dict) and str(row.get("assembly_id", "")).strip()
+            )
+            for assembly_id, payload in sorted(gauge_payloads.items(), key=lambda item: str(item[0])):
+                row = dict(payload)
+                row["last_update_tick"] = int(max(0, int(current_tick)))
+                row["schema_version"] = "1.0.0"
+                row["instrument_type_id"] = str(payload.get("instrument_type", ""))
+                row["extensions"] = {
+                    "source_process_id": process_id,
+                    "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                }
+                instrument_by_id[assembly_id] = row
+            state["instrument_assemblies"] = sorted(
+                (dict(instrument_by_id[key]) for key in sorted(instrument_by_id.keys())),
+                key=lambda row: str(row.get("assembly_id", "")),
+            )
+
+            _persist_compartment_flow_state(
+                state,
+                compartment_states=compartment_states,
+                portal_flow_params=portal_flow_params,
+                leak_hazards=interior_leak_hazards,
+                hazard_models=compartment_hazard_models,
+                runtime_state=compartment_flow_runtime_state,
+                provenance_events=compartment_provenance_events,
+            )
+            result_metadata = {
+                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                "policy_id": str(flow_policy_row.get("policy_id", "")).strip(),
+                "dt_ticks": int(dt_ticks),
+                "processed_channel_count": int(_as_int(ticked.get("processed_channel_count", 0), 0)),
+                "remaining_channel_count": int(_as_int(ticked.get("remaining_channel_count", 0), 0)),
+                "processed_hazard_count": int(_as_int(ticked.get("processed_hazard_count", 0), 0)),
+                "deferred_hazard_count": int(_as_int(ticked.get("deferred_hazard_count", 0), 0)),
+                "cost_units": int(_as_int(ticked.get("cost_units", 0), 0)),
+                "budget_outcome": str(ticked.get("budget_outcome", "complete")).strip() or "complete",
+                "flow_transfer_event_count": int(len(list(ticked.get("flow_transfer_events") or []))),
+                "hazard_event_count": int(len(list(ticked.get("hazard_consequence_events") or []))),
+                "alarm_state": alarm_state,
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id in (
+        "process.portal_open",
+        "process.portal_close",
+        "process.hatch_open",
+        "process.hatch_close",
+        "process.vent_open",
+        "process.vent_close",
+    ):
+        portal_id = str(inputs.get("portal_id", "")).strip()
+        if not portal_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "{} requires portal_id".format(process_id),
+                "Provide deterministic portal_id from interior_portals.",
+                {"process_id": process_id},
+                "$.intent.inputs.portal_id",
+            )
+        portal_rows_by_id = dict(
+            (str(row.get("portal_id", "")).strip(), dict(row))
+            for row in list(interior_portal_rows or [])
+            if isinstance(row, dict) and str(row.get("portal_id", "")).strip()
+        )
+        portal_row = dict(portal_rows_by_id.get(portal_id) or {})
+        if not portal_row:
+            return refusal(
+                REFUSAL_COMPARTMENT_FLOW_INVALID,
+                "portal '{}' was not found".format(portal_id),
+                "Use an existing portal_id from interior_portals.",
+                {"portal_id": portal_id},
+                "$.intent.inputs.portal_id",
+            )
+        portal_type_id = str(portal_row.get("portal_type_id", "")).strip()
+        if process_id.startswith("process.hatch_") and portal_type_id not in ("portal.hatch", ""):
+            return refusal(
+                REFUSAL_COMPARTMENT_FLOW_INVALID,
+                "hatch process cannot target portal_type_id '{}'".format(portal_type_id),
+                "Use process.portal_open/close for generic portals or target hatch portals only.",
+                {"portal_id": portal_id, "portal_type_id": portal_type_id},
+                "$.intent.inputs.portal_id",
+            )
+        if process_id.startswith("process.vent_") and portal_type_id not in ("portal.vent", ""):
+            return refusal(
+                REFUSAL_COMPARTMENT_FLOW_INVALID,
+                "vent process cannot target portal_type_id '{}'".format(portal_type_id),
+                "Use process.portal_open/close for generic portals or target vent portals only.",
+                {"portal_id": portal_id, "portal_type_id": portal_type_id},
+                "$.intent.inputs.portal_id",
+            )
+        transition_trigger = "process.portal_open" if process_id.endswith("_open") else "process.portal_close"
+        try:
+            transitioned = apply_portal_transition(
+                portal_row=portal_row,
+                portal_state_rows=interior_portal_state_rows,
+                trigger_process_id=transition_trigger,
+                current_tick=int(current_tick),
+            )
+        except InteriorError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Use valid portal transition process_id and state-machine transition definitions.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        portal_rows_by_id[portal_id] = dict(transitioned.get("portal") or {})
+        interior_portal_rows = [dict(portal_rows_by_id[key]) for key in sorted(portal_rows_by_id.keys())]
+        state_machine_rows_by_id = dict(
+            (str(row.get("machine_id", "")).strip(), dict(row))
+            for row in list(interior_portal_state_rows or [])
+            if isinstance(row, dict) and str(row.get("machine_id", "")).strip()
+        )
+        transitioned_machine = dict(transitioned.get("state_machine") or {})
+        transitioned_machine_id = str(transitioned_machine.get("machine_id", "")).strip()
+        if transitioned_machine_id:
+            state_machine_rows_by_id[transitioned_machine_id] = transitioned_machine
+        interior_portal_state_rows = [dict(state_machine_rows_by_id[key]) for key in sorted(state_machine_rows_by_id.keys())]
+        state["interior_portals"] = [dict(row) for row in list(interior_portal_rows or []) if isinstance(row, dict)]
+        state["interior_portal_state_machines"] = [
+            dict(row) for row in list(interior_portal_state_rows or []) if isinstance(row, dict)
+        ]
+        _ensure_interior_portal_rows(state)
+        _ensure_interior_portal_state_machines(state)
+
+        event_payload = {
+            "schema_version": "1.0.0",
+            "event_id": "provenance.interior.portal.{}".format(
+                canonical_sha256(
+                    {
+                        "portal_id": portal_id,
+                        "process_id": process_id,
+                        "tick": int(max(0, int(current_tick))),
+                        "intent_id": str(intent_id),
+                    }
+                )[:24]
+            ),
+            "tick": int(max(0, int(current_tick))),
+            "event_type": "interior_portal_transition",
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "portal_id": portal_id,
+                "portal_type_id": portal_type_id,
+                "trigger_process_id": transition_trigger,
+                "source_process_id": process_id,
+                "applied_transition": dict(transitioned.get("applied_transition") or {}),
+                "state_machine_id": transitioned_machine_id,
+                "state_id": str(transitioned_machine.get("state_id", "")).strip(),
+            },
+        }
+        event_payload["deterministic_fingerprint"] = canonical_sha256(
+            dict(event_payload, deterministic_fingerprint="")
+        )
+        provenance_by_id = dict(
+            (str(row.get("event_id", "")).strip(), dict(row))
+            for row in list(compartment_provenance_events or [])
+            if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+        )
+        provenance_by_id[str(event_payload.get("event_id", "")).strip()] = event_payload
+        compartment_provenance_events = sorted(
+            (dict(provenance_by_id[key]) for key in sorted(provenance_by_id.keys())),
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_compartment_flow_state(
+            state,
+            compartment_states=compartment_states,
+            portal_flow_params=portal_flow_params,
+            leak_hazards=interior_leak_hazards,
+            hazard_models=compartment_hazard_models,
+            runtime_state=compartment_flow_runtime_state,
+            provenance_events=compartment_provenance_events,
+        )
+        result_metadata = {
+            "portal_id": portal_id,
+            "portal_type_id": portal_type_id,
+            "trigger_process_id": transition_trigger,
+            "state_machine_id": transitioned_machine_id,
+            "state_id": str(transitioned_machine.get("state_id", "")).strip(),
+            "event_id": str(event_payload.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.commitment_create":

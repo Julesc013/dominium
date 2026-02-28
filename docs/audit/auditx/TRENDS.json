@@ -1,17 +1,20 @@
 {
   "artifact_class": "CANONICAL",
   "category_frequency": {
-    "canon_drift": 660,
+    "architecture.adhoc_scheduler_smell": 1,
+    "architecture.adhoc_state_flag_smell": 2,
+    "canon_drift": 670,
     "capability_bypass_smell": 1,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
-    "derived_freshness": 15,
+    "derived_freshness": 11,
     "epistemics.hidden_state_leak_smell": 6,
-    "materials.hardcoded_blueprint_smell": 5,
+    "materials.hardcoded_blueprint_smell": 2,
+    "materials.inspection_leak_smell": 2,
     "materials.reenactment_leak_smell": 1,
     "mode_flag_smell": 1,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
-    "reachability": 14,
+    "reachability": 7,
     "schema_usage": 160,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
@@ -20,12 +23,15 @@
   },
   "delta_over_time": {
     "category_frequency": {
+      "architecture.adhoc_scheduler_smell": 0,
+      "architecture.adhoc_state_flag_smell": 0,
       "canon_drift": 0,
       "capability_bypass_smell": 0,
       "civilisation.nondeterministic_cohort_mapping_smell": 0,
       "derived_freshness": 0,
       "epistemics.hidden_state_leak_smell": 0,
       "materials.hardcoded_blueprint_smell": 0,
+      "materials.inspection_leak_smell": 0,
       "materials.reenactment_leak_smell": 0,
       "mode_flag_smell": 0,
       "net.precision_leak_smell": 0,
@@ -38,23 +44,21 @@
       "semantic.workspace_contamination": 0
     },
     "severity_distribution": {
-      "INFO": 0,
-      "RISK": -1,
+      "RISK": 0,
       "VIOLATION": 0,
-      "WARN": 1
+      "WARN": 0
     }
   },
-  "findings_hash": "70035d369de60795bb9891b67c97fecd85aa5941804ba84781087884d671c6b2",
+  "findings_hash": "dbf62d6113a8f56b07de685eb569ca89c51fa37e5be349f8a698a1c576858b86",
   "history_reference": {
-    "previous_distinct_hash": "519399e9b10cfa5cfe44da4dded5cf07761c2ba83d13c41c151a1d3e734379a7"
+    "previous_distinct_hash": "6941944977ad4a4c8fa0895d1457b07c4cef97a84bca89702e3f15bbe7ef4ee8"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "INFO": 4,
-    "RISK": 158,
-    "VIOLATION": 7,
-    "WARN": 830
+    "RISK": 185,
+    "VIOLATION": 4,
+    "WARN": 811
   },
-  "total_findings": 999
+  "total_findings": 1000
 }

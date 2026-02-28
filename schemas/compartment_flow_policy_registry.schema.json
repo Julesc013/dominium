@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Compartment Flow Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic compartment flow policy registry output.",
+  "x-doc-ref": [
+    "docs/interior/COMPARTMENT_FLOWS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "policy_id",
+          "description",
+          "flow_solver_policy_id",
+          "update_interval_ticks",
+          "max_substep_ticks",
+          "strict_budget",
+          "max_channels_per_tick",
+          "max_hazards_per_tick",
+          "pressure_warn_threshold",
+          "pressure_danger_threshold",
+          "oxygen_warn_fraction",
+          "oxygen_danger_fraction",
+          "smoke_warn_density",
+          "smoke_danger_density",
+          "flood_warn_volume",
+          "flood_danger_volume",
+          "movement_slow_flood_volume",
+          "movement_block_flood_volume",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "policy_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "flow_solver_policy_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "update_interval_ticks": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max_substep_ticks": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "strict_budget": {
+            "type": "boolean"
+          },
+          "max_channels_per_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max_hazards_per_tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pressure_warn_threshold": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pressure_danger_threshold": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "oxygen_warn_fraction": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "oxygen_danger_fraction": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "smoke_warn_density": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "smoke_danger_density": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "flood_warn_volume": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "flood_danger_volume": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "movement_slow_flood_volume": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "movement_block_flood_volume": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

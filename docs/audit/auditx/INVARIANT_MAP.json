@@ -2,9 +2,9 @@
   "artifact_class": "CANONICAL",
   "invariants": {
     "INV-CANON-INDEX": {
-      "finding_count": 660,
+      "finding_count": 670,
       "recommended_actions": {
-        "DOC_FIX": 660
+        "DOC_FIX": 670
       },
       "sample_findings": [
         {
@@ -34,7 +34,7 @@
         }
       ],
       "severities": {
-        "WARN": 660
+        "WARN": 670
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -106,9 +106,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 15,
+      "finding_count": 11,
       "recommended_actions": {
-        "ADD_RULE": 15
+        "ADD_RULE": 11
       },
       "sample_findings": [
         {
@@ -138,7 +138,6 @@
         }
       ],
       "severities": {
-        "INFO": 4,
         "RISK": 11
       }
     },
@@ -179,6 +178,27 @@
         "VIOLATION": 1
       }
     },
+    "INV-NO-ADHOC-STATE-FLAGS": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.adhoc_state_flag_smell",
+          "finding_id": "E93_ADHOC_STATE_FLAG_SMELL:0001",
+          "location": "src/client/interaction/inspection_overlays.py"
+        },
+        {
+          "category": "architecture.adhoc_state_flag_smell",
+          "finding_id": "E93_ADHOC_STATE_FLAG_SMELL:0002",
+          "location": "src/machines/port_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
     "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
       "finding_count": 6,
       "recommended_actions": {
@@ -215,6 +235,22 @@
         "RISK": 6
       }
     },
+    "INV-NO-DUPLICATE-SCHEDULERS": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.adhoc_scheduler_smell",
+          "finding_id": "E85_ADHOC_SCHEDULER_SMELL:0001",
+          "location": "src/materials/maintenance/decay_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-NO-HARDCODED-MODE-BRANCH": {
       "finding_count": 1,
       "recommended_actions": {
@@ -232,39 +268,45 @@
       }
     },
     "INV-NO-HARDCODED-STRUCTURES": {
-      "finding_count": 5,
+      "finding_count": 2,
       "recommended_actions": {
-        "REWRITE": 5
+        "REWRITE": 2
       },
       "sample_findings": [
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0001",
-          "location": "data/registries/interaction_action_registry.json"
-        },
-        {
-          "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
-          "location": "data/registries/interaction_action_registry.json"
-        },
-        {
-          "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0003",
-          "location": "data/registries/interaction_action_registry.json"
-        },
-        {
-          "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0004",
           "location": "tools/xstack/registry_compile/constants.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0005",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
           "location": "tools/xstack/sessionx/runner.py"
         }
       ],
       "severities": {
-        "VIOLATION": 5
+        "VIOLATION": 2
+      }
+    },
+    "INV-NO-TRUTH-LEAK-VIA-INSPECTION": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "materials.inspection_leak_smell",
+          "finding_id": "E72_INSPECTION_LEAK_SMELL:0001",
+          "location": "src/client/interaction/inspection_overlays.py"
+        },
+        {
+          "category": "materials.inspection_leak_smell",
+          "finding_id": "E72_INSPECTION_LEAK_SMELL:0002",
+          "location": "src/client/interaction/inspection_overlays.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
       }
     },
     "INV-NO-TRUTH-OVER-NET": {
@@ -388,46 +430,46 @@
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 14,
+      "finding_count": 7,
       "recommended_actions": {
-        "RETIRE": 14
+        "RETIRE": 7
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "src/materials/__init__.py"
+          "location": "src/interior/__init__.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "src/materials/commitments/__init__.py"
+          "location": "tools/auditx/analyzers/__init__.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "src/materials/materialization/__init__.py"
+          "location": "tools/auditx/analyzers/e98_compartment_flow_duplication_smell.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "src/materials/provenance/__init__.py"
+          "location": "tools/auditx/analyzers/e99_instrument_truth_leak_smell.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "src/materials/provenance/event_stream_index.py"
+          "location": "tools/xstack/registry_compile/constants.py"
         }
       ],
       "severities": {
-        "WARN": 14
+        "WARN": 7
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
       "finding_count": 160,
       "recommended_actions": {
-        "ADD_RULE": 133,
-        "ADD_TEST": 27
+        "ADD_RULE": 155,
+        "ADD_TEST": 5
       },
       "sample_findings": [
         {
@@ -448,17 +490,17 @@
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "src/materials/materialization/materialization_engine.py"
+          "location": "src/core/flow/flow_engine.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "src/materials/provenance/event_stream_index.py"
+          "location": "src/inspection/inspection_engine.py"
         }
       ],
       "severities": {
-        "RISK": 133,
-        "WARN": 27
+        "RISK": 155,
+        "WARN": 5
       }
     }
   },

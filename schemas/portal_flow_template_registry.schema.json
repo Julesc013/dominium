@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Portal Flow Template Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic portal flow template registry output.",
+  "x-doc-ref": [
+    "docs/interior/COMPARTMENT_FLOWS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "templates",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "template_id",
+          "description",
+          "portal_type_id",
+          "conductance_air",
+          "conductance_water",
+          "conductance_smoke",
+          "sealing_coefficient",
+          "open_state_multiplier",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "template_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "portal_type_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "conductance_air": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "conductance_water": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "conductance_smoke": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sealing_coefficient": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "open_state_multiplier": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

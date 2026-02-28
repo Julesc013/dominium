@@ -421,6 +421,9 @@ def _interior_overlay_payload(
     sections = dict((dict(inspection_snapshot or {})).get("summary_sections") or {})
     layout_data = dict((dict(sections.get("section.interior.layout") or {})).get("data") or {})
     portal_data = dict((dict(sections.get("section.interior.portal_states") or {})).get("data") or {})
+    pressure_data = dict((dict(sections.get("section.interior.pressure_map") or {})).get("data") or {})
+    flood_data = dict((dict(sections.get("section.interior.flood_map") or {})).get("data") or {})
+    leak_data = dict((dict(sections.get("section.interior.portal_leaks") or {})).get("data") or {})
 
     graph_id = (
         str(layout_data.get("graph_id", "")).strip()
@@ -451,10 +454,68 @@ def _interior_overlay_payload(
         key=lambda item: str(item.get("portal_id", "")),
     )
     portal_count = max(len(portal_states), max(0, _to_int(layout_data.get("portal_count", 0), 0)))
+    pressure_rows = sorted(
+        [dict(item) for item in list(pressure_data.get("rows") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("volume_id", "")),
+    )
+    flood_rows = sorted(
+        [dict(item) for item in list(flood_data.get("rows") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("volume_id", "")),
+    )
+    leak_rows = sorted(
+        [dict(item) for item in list(leak_data.get("leaks") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("leak_id", "")),
+    )
+    portal_flow_rows = sorted(
+        [dict(item) for item in list(leak_data.get("portal_flow_rows") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("portal_id", "")),
+    )
+    pressure_by_volume = {
+        str(row.get("volume_id", "")).strip(): int(max(0, _to_int(row.get("derived_pressure", 0), 0)))
+        for row in pressure_rows
+        if str(row.get("volume_id", "")).strip()
+    }
+    flood_by_volume = {
+        str(row.get("volume_id", "")).strip(): int(max(0, _to_int(row.get("water_volume", 0), 0)))
+        for row in flood_rows
+        if str(row.get("volume_id", "")).strip()
+    }
+    smoke_by_volume = {
+        str(row.get("volume_id", "")).strip(): int(max(0, _to_int(row.get("smoke_density", 0), 0)))
+        for row in flood_rows
+        if str(row.get("volume_id", "")).strip()
+    }
+    indexed_volume_ids = [
+        str(token).strip()
+        for token in sorted(
+            set(
+                list(pressure_by_volume.keys())
+                + list(flood_by_volume.keys())
+                + [
+                    str(item.get("volume_id", "")).strip()
+                    for item in list(portal_states or [])
+                    if str(item.get("from_volume_id", "")).strip()
+                ]
+            )
+        )
+        if str(token).strip()
+    ]
+    if not indexed_volume_ids and volume_count > 0:
+        indexed_volume_ids = ["volume.{:04d}".format(index) for index in range(int(volume_count))]
 
     volume_material_id = "mat.inspect.interior.volume.{}".format(canonical_sha256({"graph_id": graph_id, "kind": "volume"})[:12])
+    volume_warn_material_id = "mat.inspect.interior.volume.warn.{}".format(
+        canonical_sha256({"graph_id": graph_id, "kind": "volume_warn"})[:12]
+    )
+    volume_danger_material_id = "mat.inspect.interior.volume.danger.{}".format(
+        canonical_sha256({"graph_id": graph_id, "kind": "volume_danger"})[:12]
+    )
+    volume_flood_material_id = "mat.inspect.interior.volume.flood.{}".format(
+        canonical_sha256({"graph_id": graph_id, "kind": "volume_flood"})[:12]
+    )
     portal_open_material_id = "mat.inspect.interior.portal.open.{}".format(canonical_sha256({"graph_id": graph_id, "kind": "portal_open"})[:12])
     portal_closed_material_id = "mat.inspect.interior.portal.closed.{}".format(canonical_sha256({"graph_id": graph_id, "kind": "portal_closed"})[:12])
+    leak_material_id = "mat.inspect.interior.leak.{}".format(canonical_sha256({"graph_id": graph_id, "kind": "leak"})[:12])
 
     materials = _overlay_materials(target_semantic_id=str(target_semantic_id))
     materials.extend(
@@ -469,6 +530,39 @@ def _interior_overlay_payload(
                 "transparency": 220,
                 "pattern_id": None,
                 "extensions": {"interaction_overlay": True, "overlay_kind": "interior_volume"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": volume_warn_material_id,
+                "base_color": {"r": 239, "g": 186, "b": 70},
+                "roughness": 300,
+                "metallic": 0,
+                "emission": {"r": 239, "g": 186, "b": 70, "strength": 220},
+                "transparency": 220,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_volume_warn"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": volume_danger_material_id,
+                "base_color": {"r": 229, "g": 93, "b": 86},
+                "roughness": 280,
+                "metallic": 0,
+                "emission": {"r": 229, "g": 93, "b": 86, "strength": 280},
+                "transparency": 220,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_volume_danger"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": volume_flood_material_id,
+                "base_color": {"r": 70, "g": 132, "b": 228},
+                "roughness": 260,
+                "metallic": 0,
+                "emission": {"r": 70, "g": 132, "b": 228, "strength": 260},
+                "transparency": 190,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_volume_flood"},
             },
             {
                 "schema_version": "1.0.0",
@@ -492,6 +586,17 @@ def _interior_overlay_payload(
                 "pattern_id": None,
                 "extensions": {"interaction_overlay": True, "overlay_kind": "interior_portal_closed"},
             },
+            {
+                "schema_version": "1.0.0",
+                "material_id": leak_material_id,
+                "base_color": {"r": 214, "g": 84, "b": 170},
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": 214, "g": 84, "b": 170, "strength": 320},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_leak"},
+            },
         ]
     )
     materials = sorted(
@@ -501,28 +606,58 @@ def _interior_overlay_payload(
 
     renderables = _overlay_renderables(
         target_semantic_id=str(target_semantic_id),
-        summary_label="interior:{} volumes={} portals={}".format(graph_id, volume_count, portal_count),
+        summary_label="interior:{} volumes={} portals={} leaks={}".format(
+            graph_id,
+            volume_count,
+            portal_count,
+            len(leak_rows),
+        ),
         mode="interior_overlay",
     )
     max_volume_markers = max(0, _to_int((dict(target_row.get("extensions") or {})).get("max_volume_markers", 128), 128))
-    for index in range(min(volume_count, max_volume_markers)):
+    for index, volume_id in enumerate(indexed_volume_ids[: max(0, min(max_volume_markers, max(volume_count, len(indexed_volume_ids))))]):
+        pressure = int(max(0, _to_int(pressure_by_volume.get(volume_id, 0), 0)))
+        flood = int(max(0, _to_int(flood_by_volume.get(volume_id, 0), 0)))
+        smoke = int(max(0, _to_int(smoke_by_volume.get(volume_id, 0), 0)))
+        if flood >= 600:
+            volume_material = volume_flood_material_id
+            severity = "flood"
+        elif pressure > 0 and pressure <= 100:
+            volume_material = volume_danger_material_id
+            severity = "danger"
+        elif flood >= 200 or (pressure > 0 and pressure <= 200) or smoke >= 200:
+            volume_material = volume_warn_material_id
+            severity = "warn"
+        else:
+            volume_material = volume_material_id
+            severity = "ok"
         renderables.append(
             {
                 "schema_version": "1.0.0",
-                "renderable_id": "overlay.inspect.interior.volume.{}".format(canonical_sha256({"graph_id": graph_id, "volume_index": index})[:16]),
-                "semantic_id": "overlay.inspect.interior.volume.{}".format(str(index).zfill(4)),
+                "renderable_id": "overlay.inspect.interior.volume.{}".format(
+                    canonical_sha256({"graph_id": graph_id, "volume_id": volume_id})[:16]
+                ),
+                "semantic_id": "overlay.inspect.interior.volume.{}".format(volume_id),
                 "primitive_id": "prim.box.debug",
                 "transform": {
                     "position_mm": {"x": int(index * 1500), "y": 0, "z": 0},
                     "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
                     "scale_permille": 1000,
                 },
-                "material_id": volume_material_id,
+                "material_id": volume_material,
                 "layer_tags": ["overlay", "ui"],
-                "label": None,
+                "label": "{} P:{} W:{}".format(volume_id, pressure, flood),
                 "lod_hint": "lod.band.near",
                 "flags": {"selectable": False, "highlighted": False},
-                "extensions": {"interaction_overlay": True, "overlay_kind": "interior_volume"},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "interior_volume",
+                    "volume_id": volume_id,
+                    "derived_pressure": int(pressure),
+                    "water_volume": int(flood),
+                    "smoke_density": int(smoke),
+                    "severity": severity,
+                },
             }
         )
     for index, portal in enumerate(portal_states[:256]):
@@ -552,6 +687,78 @@ def _interior_overlay_payload(
                 },
             }
         )
+    for index, leak in enumerate(leak_rows[:128]):
+        leak_id = str(leak.get("leak_id", "")).strip() or "leak.{}".format(index)
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.interior.leak.{}".format(
+                    canonical_sha256({"graph_id": graph_id, "leak_id": leak_id})[:16]
+                ),
+                "semantic_id": "overlay.inspect.interior.leak.{}".format(leak_id),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": int(index * 1500), "y": 2400, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": leak_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": "{} A:{} W:{}".format(
+                    leak_id,
+                    int(max(0, _to_int(leak.get("leak_rate_air", 0), 0))),
+                    int(max(0, _to_int(leak.get("leak_rate_water", 0), 0))),
+                ),
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": True},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "interior_leak",
+                    "leak_id": leak_id,
+                    "volume_id": str(leak.get("volume_id", "")).strip(),
+                },
+            }
+        )
+    for index, portal_flow in enumerate(portal_flow_rows[:128]):
+        portal_id = str(portal_flow.get("portal_id", "")).strip()
+        if not portal_id:
+            continue
+        sealing = int(max(0, _to_int(portal_flow.get("sealing_coefficient", 0), 0)))
+        conductance = int(
+            max(
+                0,
+                _to_int(portal_flow.get("conductance_air", 0), 0)
+                + _to_int(portal_flow.get("conductance_smoke", 0), 0)
+                + _to_int(portal_flow.get("conductance_water", 0), 0),
+            )
+        )
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.interior.portal.flow.{}".format(
+                    canonical_sha256({"graph_id": graph_id, "portal_id": portal_id, "flow": True})[:16]
+                ),
+                "semantic_id": "overlay.inspect.interior.portal.flow.{}".format(portal_id),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": int(index * 1500), "y": 3600, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": leak_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": "{} C:{} S:{}".format(portal_id, conductance, sealing),
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "interior_portal_flow",
+                    "portal_id": portal_id,
+                    "conductance_total": conductance,
+                    "sealing_coefficient": sealing,
+                },
+            }
+        )
     renderables = sorted(
         [dict(item) for item in renderables if isinstance(item, dict)],
         key=lambda row: str(row.get("renderable_id", "")),
@@ -571,6 +778,9 @@ def _interior_overlay_payload(
             "graph_id": graph_id,
             "volume_count": int(volume_count),
             "portal_count": int(portal_count),
+            "pressure_volume_count": len(pressure_rows),
+            "flooded_count": int(max(0, _to_int(flood_data.get("flooded_count", 0), 0))),
+            "leak_count": len(leak_rows),
         },
     }
 

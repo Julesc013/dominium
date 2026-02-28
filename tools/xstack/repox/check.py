@@ -7000,6 +7000,20 @@ def _append_core_abstraction_invariant_findings(
                     rule_id="INV-FLOW-USES-LEDGER-FOR-CONSERVED",
                 )
             )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="flow paths must remain process-driven and ledger-accounted",
+                    rule_id="INV-FLOW-USES-LEDGER-FOR-CONSERVED",
+                )
+            )
 
     behavior_required_tokens = {
         "src/materials/maintenance/decay_engine.py": {
@@ -7053,20 +7067,6 @@ def _append_core_abstraction_invariant_findings(
                         rule_id=rule_id,
                     )
                 )
-            continue
-        for token in tokens:
-            if token in text:
-                continue
-            findings.append(
-                _finding(
-                    severity=severity,
-                    file_path=rel_path,
-                    line_number=1,
-                    snippet=token,
-                    message="flow paths must remain process-driven and ledger-accounted",
-                    rule_id="INV-FLOW-USES-LEDGER-FOR-CONSERVED",
-                )
-            )
 
     interior_required_tokens = {
         "src/interior/interior_engine.py": {
@@ -7082,6 +7082,35 @@ def _append_core_abstraction_invariant_findings(
                 "_apply_interior_occlusion(",
                 "path_exists(",
                 "interior_portal_state_machines",
+            ),
+            "INV-NO-TRUTH-LEAK-IN-INSTRUMENTS": (
+                "_instrument_channel_view(",
+                "instrument.interior.pressure",
+                "instrument.interior.alarm",
+            ),
+        },
+        "src/interior/compartment_flow_builder.py": {
+            "INV-INTERIOR-FLOWS-USE-FLOWSYSTEM": (
+                "normalize_flow_channel(",
+                "build_compartment_flow_channels(",
+                "channel.interior.",
+            ),
+            "INV-NO-ADHOC-CFD": (
+                "conductance_air",
+                "conductance_water",
+                "conductance_smoke",
+            ),
+        },
+        "src/interior/compartment_flow_engine.py": {
+            "INV-INTERIOR-FLOWS-USE-FLOWSYSTEM": (
+                "tick_flow_channels(",
+                "build_compartment_flow_channels(",
+                "flow_solver_policy_registry",
+            ),
+            "INV-NO-ADHOC-CFD": (
+                "_pressure_from_air_mass(",
+                "_substeps_for_dt(",
+                "_flow_balance_for_medium(",
             ),
         },
     }
@@ -7152,6 +7181,45 @@ def _append_core_abstraction_invariant_findings(
                     snippet="interior_volume_id",
                     message="interior occlusion/path logic must be centralized in src/interior and observation integration",
                     rule_id="INV-NO-ADHOC-OCCLUSION",
+                )
+            )
+        ad_hoc_compartment_flow_tokens = (
+            "air_mass" in text
+            and "water_volume" in text
+            and "portal" in text
+            and ("tick_flow_channels(" not in text and "build_compartment_flow_channels(" not in text)
+        )
+        if ad_hoc_compartment_flow_tokens and not uses_interior_substrate:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="air_mass",
+                    message="interior compartment flows must use src/interior + FlowSystem substrate; ad-hoc CFD/flow loops are forbidden",
+                    rule_id="INV-NO-ADHOC-CFD",
+                )
+            )
+
+    observation_rel = "tools/xstack/sessionx/observation.py"
+    observation_abs = os.path.join(repo_root, observation_rel.replace("/", os.sep))
+    try:
+        observation_text = open(observation_abs, "r", encoding="utf-8").read()
+    except OSError:
+        observation_text = ""
+    if observation_text:
+        forbidden_truth_tokens = ("compartment_states", "interior_leak_hazards", "portal_flow_params")
+        for token in forbidden_truth_tokens:
+            if token not in observation_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=observation_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="diegetic interior instrument channels must remain derived from instrument assemblies/perceived model",
+                    rule_id="INV-NO-TRUTH-LEAK-IN-INSTRUMENTS",
                 )
             )
 

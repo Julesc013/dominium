@@ -1,5 +1,26 @@
 """Interior subsystem exports."""
 
+from .compartment_flow_builder import (
+    CompartmentFlowBuilderError,
+    REFUSAL_INTERIOR_FLOW_INVALID,
+    build_compartment_flow_channels,
+    compartment_flow_policy_rows_by_id,
+    compartment_state_rows_by_volume_id,
+    leak_hazard_rows_by_id,
+    normalize_compartment_state,
+    normalize_leak_hazard,
+    normalize_portal_flow_params,
+    portal_flow_param_rows_by_portal_id,
+    portal_flow_template_rows_by_id,
+)
+from .compartment_flow_engine import (
+    CompartmentFlowEngineError,
+    REFUSAL_COMPARTMENT_FLOW_BUDGET_EXCEEDED,
+    REFUSAL_COMPARTMENT_FLOW_INVALID,
+    normalize_compartment_flow_policy_row,
+    resolve_compartment_flow_policy_row,
+    tick_compartment_flows,
+)
 from .interior_engine import (
     InteriorError,
     REFUSAL_INTERIOR_INVALID,
@@ -20,20 +41,37 @@ from .interior_engine import (
 )
 
 __all__ = [
+    "CompartmentFlowBuilderError",
+    "CompartmentFlowEngineError",
+    "REFUSAL_COMPARTMENT_FLOW_BUDGET_EXCEEDED",
+    "REFUSAL_COMPARTMENT_FLOW_INVALID",
+    "REFUSAL_INTERIOR_FLOW_INVALID",
     "InteriorError",
     "REFUSAL_INTERIOR_INVALID",
     "REFUSAL_INTERIOR_PATH_NOT_FOUND",
     "REFUSAL_INTERIOR_STATE_TRANSITION",
     "apply_portal_transition",
+    "build_compartment_flow_channels",
     "build_connectivity_cache_key",
+    "compartment_flow_policy_rows_by_id",
+    "compartment_state_rows_by_volume_id",
     "interior_graph_rows_by_id",
+    "leak_hazard_rows_by_id",
+    "normalize_compartment_flow_policy_row",
+    "normalize_compartment_state",
     "normalize_interior_graph",
     "normalize_interior_volume",
+    "normalize_leak_hazard",
     "normalize_portal",
+    "normalize_portal_flow_params",
     "path_exists",
     "portal_allows_connectivity",
+    "portal_flow_param_rows_by_portal_id",
+    "portal_flow_template_rows_by_id",
     "portal_rows_by_id",
     "reachable_volumes",
     "resolve_volume_world_transform",
+    "resolve_compartment_flow_policy_row",
+    "tick_compartment_flows",
     "volume_rows_by_id",
 ]

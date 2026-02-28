@@ -153,6 +153,71 @@
         "extensions": {}
       },
       {
+        "instrument_type_id": "instr.interior.pressure",
+        "description": "Diegetic interior pressure gauge emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.interior.pressure"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.interior.oxygen",
+        "description": "Diegetic interior oxygen gauge emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.interior.oxygen"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.interior.smoke_alarm",
+        "description": "Diegetic smoke alarm emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.interior.smoke_alarm"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.interior.flood_alarm",
+        "description": "Diegetic flood alarm emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.interior.flood_alarm"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.interior.alarm",
+        "description": "Diegetic aggregate interior alarm emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.interior.alarm"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
         "instrument_type_id": "instr.rangefinder",
         "description": "Rangefinder stub for future domain sensor channels.",
         "required_channels_in": [
