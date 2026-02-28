@@ -1,0 +1,61 @@
+{
+  "schema_id": "dominium.registry.machine_operation_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.machine_operation_registry",
+    "registry_version": "1.0.0",
+    "operations": [
+      {
+        "schema_version": "1.0.0",
+        "operation_id": "op.cast_sheet",
+        "description": "Stub cast-sheet operation.",
+        "machine_type_ids": [
+          "machine.furnace.basic"
+        ],
+        "input_materials": {
+          "material.stone_basic": 1000
+        },
+        "output_materials": {
+          "material.stone_basic": 1000
+        },
+        "energy_delta_raw": 0,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "operation_id": "op.saw_planks",
+        "description": "Transform wood logs into planks using sawmill ports.",
+        "machine_type_ids": [
+          "machine.sawmill.basic"
+        ],
+        "input_materials": {
+          "material.wood_basic": 1000
+        },
+        "output_materials": {
+          "material.wood_basic": 1000
+        },
+        "energy_delta_raw": 0,
+        "extensions": {
+          "recipe_tag": "wood_log_to_plank"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "operation_id": "op.turn_bolt",
+        "description": "Stub bolt turning operation.",
+        "machine_type_ids": [
+          "machine.lathe.basic"
+        ],
+        "input_materials": {
+          "material.iron": 100
+        },
+        "output_materials": {
+          "material.iron": 100
+        },
+        "energy_delta_raw": 0,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
