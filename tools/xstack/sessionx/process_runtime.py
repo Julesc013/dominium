@@ -169,8 +169,10 @@ from src.control.ir.control_ir_programs import (
     build_blueprint_execution_ir,
     compile_ir_program,
 )
+from src.control.ir.control_ir_multiplayer import validate_control_ir_multiplayer
 from src.control.ir.control_ir_verifier import (
     REFUSAL_CTRL_IR_INVALID,
+    verify_control_ir,
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -5986,6 +5988,20 @@ def _compile_control_ir_stub_program(
     )
     compile_policy_context.setdefault("fidelity_requested", "meso")
     compile_policy_context.setdefault("view_requested", "view.mode.first_person")
+
+    verification_report = verify_control_ir(
+        ir_program=dict(ir_program or {}),
+        control_policy=dict(selected_control_policy),
+        authority_context=dict(authority_context or {}),
+        capability_registry=dict(capability_registry or {}) if isinstance(capability_registry, dict) else {},
+    )
+    multiplayer_guard = validate_control_ir_multiplayer(
+        ir_program=dict(ir_program or {}),
+        verification_report=verification_report,
+        policy_context=compile_policy_context,
+    )
+    if str(multiplayer_guard.get("result", "")) != "complete":
+        return dict(multiplayer_guard)
 
     return compile_ir_program(
         ir_program=dict(ir_program or {}),
