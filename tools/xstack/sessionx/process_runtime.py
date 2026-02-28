@@ -37,6 +37,7 @@ from src.logistics.logistics_engine import (
     create_manifest_and_commitment,
     graph_rows_by_id,
     inventory_rows_from_index,
+    normalize_node_inventory,
     routing_rule_rows_by_id,
     tick_manifests,
 )
@@ -96,6 +97,27 @@ from src.interaction.task.task_engine import (
     normalize_task_rows,
     set_task_status,
     tick_tasks,
+)
+from src.machines.port_engine import (
+    PortError,
+    REFUSAL_PORT_EMPTY,
+    REFUSAL_PORT_FORBIDDEN_BY_LAW,
+    REFUSAL_PORT_FULL,
+    REFUSAL_PORT_MATERIAL_NOT_ACCEPTED,
+    extract_from_port,
+    insert_into_port,
+    machine_operation_rows_by_id,
+    machine_rows_by_id,
+    machine_type_rows_by_id,
+    material_tag_index,
+    normalize_machine_rows,
+    normalize_port_connection_rows,
+    normalize_port_rows,
+    port_connection_rows_by_id,
+    port_total_mass,
+    port_rows_by_id,
+    port_rows_for_machine,
+    port_type_rows_by_id,
 )
 from src.reality.transitions import compute_transition_plan
 from src.time.time_engine import (
@@ -184,6 +206,13 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.task_pause": "entitlement.tool.use",
     "process.task_resume": "entitlement.tool.use",
     "process.task_cancel": "entitlement.tool.use",
+    "process.port_insert_batch": "entitlement.tool.operating",
+    "process.port_extract_batch": "entitlement.tool.operating",
+    "process.port_connect": "entitlement.tool.operating",
+    "process.port_disconnect": "entitlement.tool.operating",
+    "process.machine_operate": "entitlement.tool.operating",
+    "process.machine_pull_from_node": "entitlement.tool.operating",
+    "process.machine_push_to_node": "entitlement.tool.operating",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -257,6 +286,13 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.task_pause": "operator",
     "process.task_resume": "operator",
     "process.task_cancel": "operator",
+    "process.port_insert_batch": "operator",
+    "process.port_extract_batch": "operator",
+    "process.port_connect": "operator",
+    "process.port_disconnect": "operator",
+    "process.machine_operate": "operator",
+    "process.machine_pull_from_node": "operator",
+    "process.machine_push_to_node": "operator",
 }
 PRIVILEGE_RANK = {
     "observer": 0,
@@ -337,6 +373,15 @@ TASK_PROCESS_IDS = {
     "process.task_resume",
     "process.task_cancel",
 }
+MACHINE_PROCESS_IDS = {
+    "process.port_insert_batch",
+    "process.port_extract_batch",
+    "process.port_connect",
+    "process.port_disconnect",
+    "process.machine_operate",
+    "process.machine_pull_from_node",
+    "process.machine_push_to_node",
+}
 CONTROL_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.control.law_forbidden",
     "ENTITLEMENT_MISSING": "refusal.control.entitlement_missing",
@@ -355,6 +400,11 @@ TASK_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": REFUSAL_TASK_FORBIDDEN_BY_LAW,
     "ENTITLEMENT_MISSING": REFUSAL_TASK_FORBIDDEN_BY_LAW,
     "PRIVILEGE_INSUFFICIENT": REFUSAL_TASK_FORBIDDEN_BY_LAW,
+}
+MACHINE_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": REFUSAL_PORT_FORBIDDEN_BY_LAW,
+    "ENTITLEMENT_MISSING": REFUSAL_PORT_FORBIDDEN_BY_LAW,
+    "PRIVILEGE_INSUFFICIENT": REFUSAL_PORT_FORBIDDEN_BY_LAW,
 }
 COSMETIC_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.cosmetic.forbidden",
@@ -717,6 +767,62 @@ def _tool_effect_model_rows(policy_context: dict | None) -> Dict[str, dict]:
             continue
         out[effect_model_id] = dict(row)
     return out
+
+
+def _port_type_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "port_type_registry")
+    return port_type_rows_by_id(payload)
+
+
+def _machine_type_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "machine_type_registry")
+    return machine_type_rows_by_id(payload)
+
+
+def _machine_operation_rows(policy_context: dict | None) -> Dict[str, dict]:
+    payload = _policy_payload(policy_context, "machine_operation_registry")
+    return machine_operation_rows_by_id(payload)
+
+
+def _material_tags_by_material_id(policy_context: dict | None) -> Dict[str, List[str]]:
+    payload = _policy_payload(policy_context, "material_class_registry")
+    return material_tag_index(payload)
+
+
+def _port_direction_allows(port_type_row: dict, *, required_direction: str) -> bool:
+    direction = str((dict(port_type_row or {})).get("direction", "")).strip() or "in"
+    required = str(required_direction).strip() or "in"
+    return direction in (required, "bidirectional")
+
+
+def _port_payload_kind(port_type_row: dict) -> str:
+    return str((dict(port_type_row or {})).get("payload_kind", "")).strip() or "material"
+
+
+def _machine_port_candidates(
+    *,
+    machine_id: str,
+    machine_ports: List[dict],
+    port_type_rows: Dict[str, dict],
+    payload_kind: str,
+    direction: str,
+) -> List[dict]:
+    rows: List[dict] = []
+    machine_token = str(machine_id).strip()
+    for row in sorted(
+        (item for item in list(machine_ports or []) if isinstance(item, dict)),
+        key=lambda item: str(item.get("port_id", "")),
+    ):
+        if str(row.get("machine_id", "")).strip() != machine_token:
+            continue
+        port_type_id = str(row.get("port_type_id", "")).strip()
+        port_type_row = dict(port_type_rows.get(port_type_id) or {})
+        if payload_kind and _port_payload_kind(port_type_row) != str(payload_kind).strip():
+            continue
+        if direction and not _port_direction_allows(port_type_row, required_direction=str(direction)):
+            continue
+        rows.append(dict(row))
+    return rows
 
 
 def _tool_row_by_id(tool_rows: List[dict], tool_id: str) -> dict:
@@ -2464,6 +2570,211 @@ def _persist_task_state(
     _ensure_pending_task_completion_intents(state)
 
 
+def _ensure_machine_assemblies(state: dict) -> List[dict]:
+    rows = state.get("machine_assemblies")
+    normalized = normalize_machine_rows(rows)
+    state["machine_assemblies"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_machine_ports(state: dict) -> List[dict]:
+    rows = state.get("machine_ports")
+    normalized = normalize_port_rows(rows)
+    state["machine_ports"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_machine_port_connections(state: dict) -> List[dict]:
+    rows = state.get("machine_port_connections")
+    normalized = normalize_port_connection_rows(rows)
+    state["machine_port_connections"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_machine_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("machine_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": max(0, _as_int(row.get("tick", 0), 0)),
+            "event_type_id": str(row.get("event_type_id", "")).strip(),
+            "actor_subject_id": str(row.get("actor_subject_id", "")).strip() or "subject.system",
+            "site_ref": str(row.get("site_ref", "")).strip(),
+            "inputs": _sorted_tokens(list(row.get("inputs") or [])),
+            "outputs": _sorted_tokens(list(row.get("outputs") or [])),
+            "ledger_deltas": dict(
+                (str(key).strip(), _as_int(value, 0))
+                for key, value in sorted((dict(row.get("ledger_deltas") or {})).items(), key=lambda item: str(item[0]))
+                if str(key).strip()
+            ),
+            "linked_project_id": (None if row.get("linked_project_id") is None else str(row.get("linked_project_id", "")).strip() or None),
+            "linked_step_id": (None if row.get("linked_step_id") is None else str(row.get("linked_step_id", "")).strip() or None),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        if not payload["deterministic_fingerprint"]:
+            fingerprint_payload = dict(payload)
+            fingerprint_payload["deterministic_fingerprint"] = ""
+            payload["deterministic_fingerprint"] = canonical_sha256(fingerprint_payload)
+        normalized.append(payload)
+    state["machine_provenance_events"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _persist_machine_state(
+    state: dict,
+    *,
+    machines: List[dict],
+    ports: List[dict],
+    connections: List[dict],
+    provenance_events: List[dict],
+) -> None:
+    state["machine_assemblies"] = [dict(row) for row in list(machines or []) if isinstance(row, dict)]
+    state["machine_ports"] = [dict(row) for row in list(ports or []) if isinstance(row, dict)]
+    state["machine_port_connections"] = [dict(row) for row in list(connections or []) if isinstance(row, dict)]
+    state["machine_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
+    _ensure_machine_assemblies(state)
+    _ensure_machine_ports(state)
+    _ensure_machine_port_connections(state)
+    _ensure_machine_provenance_events(state)
+
+
+def _machine_output_batch_id(*, intent_id: str, machine_id: str, operation_id: str, material_id: str, output_index: int) -> str:
+    return "batch.machine.{}".format(
+        canonical_sha256(
+            {
+                "intent_id": str(intent_id),
+                "machine_id": str(machine_id),
+                "operation_id": str(operation_id),
+                "material_id": str(material_id),
+                "output_index": int(output_index),
+            }
+        )[:24]
+    )
+
+
+def _machine_event_row(
+    *,
+    current_tick: int,
+    event_type_id: str,
+    actor_subject_id: str,
+    machine_id: str,
+    site_ref: str,
+    inputs: List[str],
+    outputs: List[str],
+    ledger_deltas: dict,
+    extensions: dict,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": "",
+        "tick": int(max(0, int(current_tick))),
+        "event_type_id": str(event_type_id).strip(),
+        "actor_subject_id": str(actor_subject_id).strip() or "subject.system",
+        "site_ref": str(site_ref).strip(),
+        "inputs": _sorted_tokens(list(inputs or [])),
+        "outputs": _sorted_tokens(list(outputs or [])),
+        "ledger_deltas": dict(
+            (str(key).strip(), _as_int(value, 0))
+            for key, value in sorted((dict(ledger_deltas or {})).items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        ),
+        "linked_project_id": None,
+        "linked_step_id": None,
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    payload["event_id"] = "provenance.machine.{}".format(
+        canonical_sha256(
+            {
+                "tick": int(payload["tick"]),
+                "event_type_id": str(payload["event_type_id"]),
+                "machine_id": str(machine_id),
+                "inputs": list(payload["inputs"]),
+                "outputs": list(payload["outputs"]),
+            }
+        )[:24]
+    )
+    fingerprint_payload = dict(payload)
+    fingerprint_payload["deterministic_fingerprint"] = ""
+    payload["deterministic_fingerprint"] = canonical_sha256(fingerprint_payload)
+    return payload
+
+
+def _inventory_debit(
+    *,
+    inventory_index: Dict[str, dict],
+    node_id: str,
+    material_id: str,
+    mass: int,
+    batch_id: str,
+) -> None:
+    node_token = str(node_id).strip()
+    material_token = str(material_id).strip()
+    batch_token = str(batch_id).strip()
+    mass_raw = max(0, _as_int(mass, 0))
+    node_row = dict(inventory_index.get(node_token) or {})
+    if not node_row:
+        raise LogisticsError(
+            "refusal.logistics.insufficient_stock",
+            "node inventory '{}' is missing".format(node_token),
+            {"node_id": node_token},
+        )
+    stocks = dict(node_row.get("material_stocks") or {})
+    available = max(0, _as_int(stocks.get(material_token, 0), 0))
+    if available < mass_raw:
+        raise LogisticsError(
+            "refusal.logistics.insufficient_stock",
+            "insufficient stock at node '{}'".format(node_token),
+            {
+                "node_id": node_token,
+                "material_id": material_token,
+                "required_mass": str(mass_raw),
+                "available_mass": str(available),
+            },
+        )
+    stocks[material_token] = int(available - mass_raw)
+    batch_refs = _sorted_tokens(list(node_row.get("batch_refs") or []))
+    if batch_token and batch_token not in batch_refs:
+        batch_refs.append(batch_token)
+    node_row["material_stocks"] = dict((k, v) for k, v in sorted(stocks.items(), key=lambda item: str(item[0])) if _as_int(v, 0) > 0)
+    node_row["batch_refs"] = _sorted_tokens(batch_refs)
+    inventory_index[node_token] = normalize_node_inventory(node_row)
+
+
+def _inventory_credit(
+    *,
+    inventory_index: Dict[str, dict],
+    node_id: str,
+    material_id: str,
+    mass: int,
+    batch_id: str,
+) -> None:
+    node_token = str(node_id).strip()
+    material_token = str(material_id).strip()
+    batch_token = str(batch_id).strip()
+    mass_raw = max(0, _as_int(mass, 0))
+    node_row = dict(inventory_index.get(node_token) or {"schema_version": "1.0.0", "node_id": node_token, "material_stocks": {}, "batch_refs": [], "inventory_hash": "", "extensions": {}})
+    stocks = dict(node_row.get("material_stocks") or {})
+    stocks[material_token] = max(0, _as_int(stocks.get(material_token, 0), 0)) + int(mass_raw)
+    batch_refs = _sorted_tokens(list(node_row.get("batch_refs") or []))
+    if batch_token:
+        batch_refs = _sorted_tokens(batch_refs + [batch_token])
+    node_row["material_stocks"] = dict((k, v) for k, v in sorted(stocks.items(), key=lambda item: str(item[0])) if _as_int(v, 0) > 0)
+    node_row["batch_refs"] = batch_refs
+    inventory_index[node_token] = normalize_node_inventory(node_row)
+
+
 def _persist_commitment_reenactment_state(
     state: dict,
     *,
@@ -2488,6 +2799,7 @@ def _build_material_provenance_events(
     construction_events: List[dict],
     maintenance_events: List[dict],
     task_events: List[dict],
+    machine_events: List[dict],
 ) -> List[dict]:
     rows: List[dict] = []
     for row in list(logistics_events or []):
@@ -2547,6 +2859,24 @@ def _build_material_provenance_events(
                 "actor_subject_id": str(row.get("actor_subject_id", "")).strip(),
                 "site_ref": str(row.get("site_ref", "")).strip(),
                 "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+            }
+        )
+    for row in list(machine_events or []):
+        if not isinstance(row, dict):
+            continue
+        row_extensions = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+        rows.append(
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type": str(row.get("event_type_id", "")).strip(),
+                "event_type_id": str(row.get("event_type_id", "")).strip(),
+                "actor_subject_id": str(row.get("actor_subject_id", "")).strip(),
+                "site_ref": str(row.get("site_ref", "")).strip(),
+                "machine_id": str(row_extensions.get("machine_id", "")).strip(),
+                "port_id": str(row_extensions.get("port_id", "")).strip(),
+                "operation_id": str(row_extensions.get("operation_id", "")).strip(),
+                "extensions": row_extensions,
             }
         )
     return sorted(
@@ -2664,6 +2994,7 @@ def _material_provenance_events_for_reenactment(state: dict) -> List[dict]:
         construction_events=_ensure_construction_provenance_events(state),
         maintenance_events=_ensure_maintenance_provenance_events(state),
         task_events=_ensure_task_provenance_events(state),
+        machine_events=_ensure_machine_provenance_events(state),
     )
 
 
@@ -5924,6 +6255,10 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("maintenance_provenance_events", "event_id"),
         ("tasks", "task_id"),
         ("task_provenance_events", "event_id"),
+        ("machine_assemblies", "machine_id"),
+        ("machine_ports", "port_id"),
+        ("machine_port_connections", "connection_id"),
+        ("machine_provenance_events", "event_id"),
         ("material_commitments", "commitment_id"),
         ("event_stream_indices", "stream_id"),
         ("reenactment_requests", "request_id"),
@@ -8339,6 +8674,8 @@ def execute_intent(
             return _control_gate_refusal(gate, reason_map=TASK_GATE_REASON_MAP)
         if process_id in TOOL_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=TOOL_GATE_REASON_MAP)
+        if process_id in MACHINE_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=MACHINE_GATE_REASON_MAP)
         if process_id in MAINTENANCE_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=MAINTENANCE_GATE_REASON_MAP)
         if process_id in CIV_PROCESS_IDS:
@@ -8374,6 +8711,10 @@ def execute_intent(
     bindings = _ensure_control_bindings(state)
     tool_assemblies = _ensure_tool_assemblies(state)
     tool_bindings = _ensure_tool_bindings(state)
+    machine_assemblies = _ensure_machine_assemblies(state)
+    machine_ports = _ensure_machine_ports(state)
+    machine_port_connections = _ensure_machine_port_connections(state)
+    machine_provenance_events = _ensure_machine_provenance_events(state)
     bodies = _ensure_body_assemblies(state)
     cohorts = _ensure_cohort_assemblies(state)
     order_rows = _ensure_order_assemblies(state)
@@ -10057,6 +10398,1342 @@ def execute_intent(
             "status": next_status,
             "event_count": int(len(new_events)),
             "linked_commitment_id": commitment_id or None,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.port_insert_batch":
+        port_id = str(inputs.get("port_id", "")).strip()
+        batch_id = str(inputs.get("batch_id", "")).strip()
+        material_id = str(inputs.get("material_id", "")).strip()
+        quantity_mass = max(0, _as_int(inputs.get("mass", inputs.get("quantity_mass", 0)), 0))
+        if not port_id or not batch_id or not material_id or quantity_mass <= 0:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.port_insert_batch requires port_id, batch_id, material_id, and mass > 0",
+                "Provide deterministic port and batch identifiers plus positive mass.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        port_type_rows = _port_type_rows(policy_context)
+        port_map = port_rows_by_id(machine_ports)
+        port_row = dict(port_map.get(port_id) or {})
+        if not port_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "port_id '{}' does not exist".format(port_id),
+                "Use an existing machine port.",
+                {"port_id": port_id},
+                "$.intent.inputs.port_id",
+            )
+        port_type_id = str(port_row.get("port_type_id", "")).strip()
+        port_type_row = dict(port_type_rows.get(port_type_id) or {})
+        if _port_payload_kind(port_type_row) != "material":
+            return refusal(
+                REFUSAL_PORT_MATERIAL_NOT_ACCEPTED,
+                "port '{}' payload_kind '{}' is not material".format(port_id, _port_payload_kind(port_type_row)),
+                "Use a material port for batch insertion.",
+                {"port_id": port_id, "port_type_id": port_type_id},
+                "$.intent.inputs.port_id",
+            )
+        if not _port_direction_allows(port_type_row, required_direction="in"):
+            return refusal(
+                REFUSAL_PORT_FORBIDDEN_BY_LAW,
+                "port '{}' does not accept inbound material".format(port_id),
+                "Use an input/bidirectional port.",
+                {"port_id": port_id, "port_type_id": port_type_id},
+                "$.intent.inputs.port_id",
+            )
+        material_tags = list((_material_tags_by_material_id(policy_context)).get(material_id) or [])
+        inventory_index = build_inventory_index(logistics_inventory_rows)
+        source_node_id = str(inputs.get("source_node_id", "")).strip()
+        source_kind = str(inputs.get("source_kind", "")).strip().lower()
+        if not source_kind:
+            source_kind = "node"
+        if source_kind not in ("node", "micro"):
+            source_kind = "node"
+        if source_kind == "node" and not source_node_id:
+            connected_to = str(port_row.get("connected_to", "")).strip()
+            if connected_to and connected_to in inventory_index:
+                source_node_id = connected_to
+            else:
+                for row in sorted(
+                    (item for item in list(machine_port_connections or []) if isinstance(item, dict)),
+                    key=lambda item: str(item.get("connection_id", "")),
+                ):
+                    if not bool(row.get("active", False)):
+                        continue
+                    from_port_id = str(row.get("from_port_id", "")).strip()
+                    to_port_id = str(row.get("to_port_id", "")).strip()
+                    logistics_node_id = str(row.get("logistics_node_id", "")).strip()
+                    if not logistics_node_id:
+                        continue
+                    if port_id in (from_port_id, to_port_id):
+                        source_node_id = logistics_node_id
+                        break
+        if source_kind == "node":
+            if not source_node_id:
+                return refusal(
+                    "refusal.logistics.invalid_route",
+                    "no source logistics node is bound to port '{}'".format(port_id),
+                    "Set inputs.source_node_id or create an active port connection to a logistics node.",
+                    {"port_id": port_id},
+                    "$.intent.inputs.source_node_id",
+                )
+            try:
+                _inventory_debit(
+                    inventory_index=inventory_index,
+                    node_id=source_node_id,
+                    material_id=material_id,
+                    mass=int(quantity_mass),
+                    batch_id=batch_id,
+                )
+            except LogisticsError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Provide available node stock before inserting into port.",
+                    dict(exc.details),
+                    "$.intent.inputs",
+                )
+        try:
+            updated_port = insert_into_port(
+                port_row=port_row,
+                batch_id=batch_id,
+                material_id=material_id,
+                mass=int(quantity_mass),
+                material_tags=material_tags,
+            )
+        except PortError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Adjust port material/capacity constraints and retry.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        port_map[port_id] = dict(updated_port)
+        machine_ports = normalize_port_rows([dict(port_map[key]) for key in sorted(port_map.keys())])
+        machine_map = machine_rows_by_id(machine_assemblies)
+        machine_id = str(updated_port.get("machine_id", "")).strip()
+        site_ref = str(inputs.get("site_ref", "")).strip()
+        if machine_id and machine_id in machine_map:
+            machine_row = dict(machine_map.get(machine_id) or {})
+            machine_row["operational_state"] = "running"
+            extensions = dict(machine_row.get("extensions") or {})
+            extensions["last_port_mutation_tick"] = int(max(0, int(current_tick)))
+            extensions["last_port_process_id"] = process_id
+            machine_row["extensions"] = extensions
+            machine_map[machine_id] = machine_row
+            machine_assemblies = normalize_machine_rows([dict(machine_map[key]) for key in sorted(machine_map.keys())])
+            site_ref = site_ref or str(extensions.get("site_ref", "")).strip()
+        event_row = _machine_event_row(
+            current_tick=int(current_tick),
+            event_type_id="event.material_consumed",
+            actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+            machine_id=machine_id or "machine.unknown",
+            site_ref=site_ref,
+            inputs=[batch_id],
+            outputs=[port_id],
+            ledger_deltas={"quantity.mass": 0},
+            extensions={
+                "machine_id": machine_id,
+                "port_id": port_id,
+                "batch_id": batch_id,
+                "material_id": material_id,
+                "quantity_mass": int(quantity_mass),
+                "source_kind": source_kind,
+                "source_node_id": source_node_id or None,
+                "process_id": process_id,
+            },
+        )
+        machine_provenance_events = sorted(
+            [dict(row) for row in list(machine_provenance_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_machine_state(
+            state,
+            machines=machine_assemblies,
+            ports=machine_ports,
+            connections=machine_port_connections,
+            provenance_events=machine_provenance_events,
+        )
+        if source_kind == "node":
+            logistics_inventory_rows = inventory_rows_from_index(inventory_index)
+            _persist_logistics_state(
+                state,
+                manifests=logistics_manifests,
+                commitments=shipment_commitment_rows,
+                inventories=logistics_inventory_rows,
+                events=logistics_provenance_events,
+                runtime_state=logistics_runtime_state,
+            )
+        result_metadata = {
+            "port_id": port_id,
+            "machine_id": machine_id or None,
+            "batch_id": batch_id,
+            "material_id": material_id,
+            "quantity_mass": int(quantity_mass),
+            "source_kind": source_kind,
+            "source_node_id": source_node_id or None,
+            "event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.port_extract_batch":
+        port_id = str(inputs.get("port_id", "")).strip()
+        quantity_mass = max(0, _as_int(inputs.get("mass", inputs.get("quantity_mass", 0)), 0))
+        if not port_id or quantity_mass <= 0:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.port_extract_batch requires port_id and mass > 0",
+                "Provide deterministic port_id and positive extraction mass.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        port_type_rows = _port_type_rows(policy_context)
+        port_map = port_rows_by_id(machine_ports)
+        port_row = dict(port_map.get(port_id) or {})
+        if not port_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "port_id '{}' does not exist".format(port_id),
+                "Use an existing machine port.",
+                {"port_id": port_id},
+                "$.intent.inputs.port_id",
+            )
+        port_type_id = str(port_row.get("port_type_id", "")).strip()
+        port_type_row = dict(port_type_rows.get(port_type_id) or {})
+        if _port_payload_kind(port_type_row) != "material":
+            return refusal(
+                REFUSAL_PORT_MATERIAL_NOT_ACCEPTED,
+                "port '{}' payload_kind '{}' is not material".format(port_id, _port_payload_kind(port_type_row)),
+                "Use a material output port for extraction.",
+                {"port_id": port_id, "port_type_id": port_type_id},
+                "$.intent.inputs.port_id",
+            )
+        if not (
+            _port_direction_allows(port_type_row, required_direction="out")
+            or _port_direction_allows(port_type_row, required_direction="in")
+        ):
+            return refusal(
+                REFUSAL_PORT_FORBIDDEN_BY_LAW,
+                "port '{}' does not permit extraction".format(port_id),
+                "Use a material port that allows deterministic extraction.",
+                {"port_id": port_id, "port_type_id": port_type_id},
+                "$.intent.inputs.port_id",
+            )
+        requested_batch_id = str(inputs.get("batch_id", "")).strip()
+        requested_material_id = str(inputs.get("material_id", "")).strip()
+        try:
+            updated_port, extracted_rows = extract_from_port(
+                port_row=port_row,
+                mass=int(quantity_mass),
+                batch_id=requested_batch_id,
+                material_id=requested_material_id,
+            )
+        except PortError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Adjust extraction batch/material filters and available contents.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        port_map[port_id] = dict(updated_port)
+        machine_ports = normalize_port_rows([dict(port_map[key]) for key in sorted(port_map.keys())])
+        machine_map = machine_rows_by_id(machine_assemblies)
+        machine_id = str(updated_port.get("machine_id", "")).strip()
+        site_ref = str(inputs.get("site_ref", "")).strip()
+        if machine_id and machine_id in machine_map:
+            machine_row = dict(machine_map.get(machine_id) or {})
+            machine_row["operational_state"] = "running"
+            extensions = dict(machine_row.get("extensions") or {})
+            extensions["last_port_mutation_tick"] = int(max(0, int(current_tick)))
+            extensions["last_port_process_id"] = process_id
+            machine_row["extensions"] = extensions
+            machine_map[machine_id] = machine_row
+            machine_assemblies = normalize_machine_rows([dict(machine_map[key]) for key in sorted(machine_map.keys())])
+            site_ref = site_ref or str(extensions.get("site_ref", "")).strip()
+        output_batches: List[dict] = []
+        output_index = 0
+        for row in sorted(
+            (item for item in list(extracted_rows or []) if isinstance(item, dict)),
+            key=lambda item: (str(item.get("batch_id", "")), str(item.get("material_id", ""))),
+        ):
+            source_batch_id = str(row.get("batch_id", "")).strip()
+            extracted_material_id = str(row.get("material_id", "")).strip()
+            extracted_mass = max(0, _as_int(row.get("mass", 0), 0))
+            if not source_batch_id or not extracted_material_id or extracted_mass <= 0:
+                continue
+            output_batch_id = "batch.port.extract.{}".format(
+                canonical_sha256(
+                    {
+                        "intent_id": str(intent_id),
+                        "port_id": port_id,
+                        "source_batch_id": source_batch_id,
+                        "material_id": extracted_material_id,
+                        "mass": int(extracted_mass),
+                        "output_index": int(output_index),
+                    }
+                )[:24]
+            )
+            output_batches.append(
+                {
+                    "source_batch_id": source_batch_id,
+                    "batch_id": output_batch_id,
+                    "material_id": extracted_material_id,
+                    "mass": int(extracted_mass),
+                }
+            )
+            output_index += 1
+        destination_node_id = str(inputs.get("destination_node_id", "")).strip() or str(inputs.get("target_node_id", "")).strip()
+        inventory_index = build_inventory_index(logistics_inventory_rows)
+        if not destination_node_id:
+            connected_to = str(updated_port.get("connected_to", "")).strip()
+            if connected_to and connected_to in inventory_index:
+                destination_node_id = connected_to
+            else:
+                for row in sorted(
+                    (item for item in list(machine_port_connections or []) if isinstance(item, dict)),
+                    key=lambda item: str(item.get("connection_id", "")),
+                ):
+                    if not bool(row.get("active", False)):
+                        continue
+                    from_port_id = str(row.get("from_port_id", "")).strip()
+                    to_port_id = str(row.get("to_port_id", "")).strip()
+                    logistics_node_id = str(row.get("logistics_node_id", "")).strip()
+                    if not logistics_node_id:
+                        continue
+                    if port_id in (from_port_id, to_port_id):
+                        destination_node_id = logistics_node_id
+                        break
+        if destination_node_id:
+            for row in output_batches:
+                _inventory_credit(
+                    inventory_index=inventory_index,
+                    node_id=destination_node_id,
+                    material_id=str(row.get("material_id", "")),
+                    mass=int(_as_int(row.get("mass", 0), 0)),
+                    batch_id=str(row.get("batch_id", "")),
+                )
+            logistics_inventory_rows = inventory_rows_from_index(inventory_index)
+            _persist_logistics_state(
+                state,
+                manifests=logistics_manifests,
+                commitments=shipment_commitment_rows,
+                inventories=logistics_inventory_rows,
+                events=logistics_provenance_events,
+                runtime_state=logistics_runtime_state,
+            )
+        event_row = _machine_event_row(
+            current_tick=int(current_tick),
+            event_type_id="event.batch_created",
+            actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+            machine_id=machine_id or "machine.unknown",
+            site_ref=site_ref,
+            inputs=[
+                str((dict(row)).get("source_batch_id", "")).strip()
+                for row in list(output_batches or [])
+                if isinstance(row, dict)
+            ],
+            outputs=[
+                str((dict(row)).get("batch_id", "")).strip()
+                for row in list(output_batches or [])
+                if isinstance(row, dict)
+            ],
+            ledger_deltas={"quantity.mass": 0},
+            extensions={
+                "machine_id": machine_id,
+                "port_id": port_id,
+                "destination_node_id": destination_node_id or None,
+                "output_batches": [dict(row) for row in list(output_batches or []) if isinstance(row, dict)],
+                "process_id": process_id,
+            },
+        )
+        machine_provenance_events = sorted(
+            [dict(row) for row in list(machine_provenance_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_machine_state(
+            state,
+            machines=machine_assemblies,
+            ports=machine_ports,
+            connections=machine_port_connections,
+            provenance_events=machine_provenance_events,
+        )
+        result_metadata = {
+            "port_id": port_id,
+            "machine_id": machine_id or None,
+            "destination_node_id": destination_node_id or None,
+            "quantity_mass": int(quantity_mass),
+            "output_batches": [dict(row) for row in list(output_batches or []) if isinstance(row, dict)],
+            "event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.port_connect":
+        from_port_id = str(inputs.get("from_port_id", "")).strip()
+        to_port_id = str(inputs.get("to_port_id", "")).strip()
+        logistics_node_id = str(inputs.get("logistics_node_id", "")).strip()
+        connection_kind = str(inputs.get("connection_kind", "direct")).strip() or "direct"
+        if connection_kind not in ("direct", "pipe", "wire", "hose"):
+            connection_kind = "direct"
+        if not from_port_id or (bool(to_port_id) == bool(logistics_node_id)):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.port_connect requires from_port_id and exactly one of to_port_id/logistics_node_id",
+                "Provide deterministic connection endpoints.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        port_type_rows = _port_type_rows(policy_context)
+        port_map = port_rows_by_id(machine_ports)
+        from_port_row = dict(port_map.get(from_port_id) or {})
+        if not from_port_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "from_port_id '{}' does not exist".format(from_port_id),
+                "Use existing machine ports for connection endpoints.",
+                {"from_port_id": from_port_id},
+                "$.intent.inputs.from_port_id",
+            )
+        if to_port_id:
+            to_port_row = dict(port_map.get(to_port_id) or {})
+            if not to_port_row:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "to_port_id '{}' does not exist".format(to_port_id),
+                    "Use existing machine ports for connection endpoints.",
+                    {"to_port_id": to_port_id},
+                    "$.intent.inputs.to_port_id",
+                )
+            from_port_type = dict(port_type_rows.get(str(from_port_row.get("port_type_id", "")).strip()) or {})
+            to_port_type = dict(port_type_rows.get(str(to_port_row.get("port_type_id", "")).strip()) or {})
+            if _port_payload_kind(from_port_type) != _port_payload_kind(to_port_type):
+                return refusal(
+                    REFUSAL_PORT_MATERIAL_NOT_ACCEPTED,
+                    "port payload kinds must match for direct port-to-port connection",
+                    "Connect ports with matching payload_kind.",
+                    {
+                        "from_port_id": from_port_id,
+                        "to_port_id": to_port_id,
+                        "from_payload_kind": _port_payload_kind(from_port_type),
+                        "to_payload_kind": _port_payload_kind(to_port_type),
+                    },
+                    "$.intent.inputs",
+                )
+        if logistics_node_id:
+            from_port_type = dict(port_type_rows.get(str(from_port_row.get("port_type_id", "")).strip()) or {})
+            if _port_payload_kind(from_port_type) != "material":
+                return refusal(
+                    REFUSAL_PORT_MATERIAL_NOT_ACCEPTED,
+                    "only material ports can connect to logistics nodes",
+                    "Use a material port for logistics-node connections.",
+                    {"from_port_id": from_port_id, "logistics_node_id": logistics_node_id},
+                    "$.intent.inputs",
+                )
+        connection_id = str(inputs.get("connection_id", "")).strip()
+        if not connection_id:
+            connection_id = "port.connection.{}".format(
+                canonical_sha256(
+                    {
+                        "from_port_id": from_port_id,
+                        "to_port_id": to_port_id or None,
+                        "logistics_node_id": logistics_node_id or None,
+                        "connection_kind": connection_kind,
+                    }
+                )[:24]
+            )
+        connection_map = port_connection_rows_by_id(machine_port_connections)
+        connection_map[connection_id] = {
+            "schema_version": "1.0.0",
+            "connection_id": connection_id,
+            "from_port_id": from_port_id,
+            "to_port_id": to_port_id or None,
+            "logistics_node_id": logistics_node_id or None,
+            "connection_kind": connection_kind,
+            "created_tick": int(max(0, int(current_tick))),
+            "active": True,
+            "extensions": {},
+        }
+        machine_port_connections = normalize_port_connection_rows(
+            [dict(connection_map[key]) for key in sorted(connection_map.keys())]
+        )
+        from_port_row["connected_to"] = to_port_id or logistics_node_id or None
+        port_map[from_port_id] = dict(from_port_row)
+        if to_port_id:
+            to_port_row = dict(port_map.get(to_port_id) or {})
+            if to_port_row:
+                to_port_row["connected_to"] = from_port_id
+                port_map[to_port_id] = to_port_row
+        machine_ports = normalize_port_rows([dict(port_map[key]) for key in sorted(port_map.keys())])
+        machine_id = str(from_port_row.get("machine_id", "")).strip()
+        site_ref = str(inputs.get("site_ref", "")).strip()
+        event_row = _machine_event_row(
+            current_tick=int(current_tick),
+            event_type_id="event.port_connected",
+            actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+            machine_id=machine_id or "machine.unknown",
+            site_ref=site_ref,
+            inputs=[from_port_id],
+            outputs=[to_port_id or logistics_node_id],
+            ledger_deltas={"quantity.mass": 0},
+            extensions={
+                "machine_id": machine_id,
+                "port_id": from_port_id,
+                "to_port_id": to_port_id or None,
+                "logistics_node_id": logistics_node_id or None,
+                "connection_id": connection_id,
+                "connection_kind": connection_kind,
+                "process_id": process_id,
+            },
+        )
+        machine_provenance_events = sorted(
+            [dict(row) for row in list(machine_provenance_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_machine_state(
+            state,
+            machines=machine_assemblies,
+            ports=machine_ports,
+            connections=machine_port_connections,
+            provenance_events=machine_provenance_events,
+        )
+        result_metadata = {
+            "connection_id": connection_id,
+            "from_port_id": from_port_id,
+            "to_port_id": to_port_id or None,
+            "logistics_node_id": logistics_node_id or None,
+            "connection_kind": connection_kind,
+            "event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.port_disconnect":
+        requested_connection_id = str(inputs.get("connection_id", "")).strip()
+        from_port_id = str(inputs.get("from_port_id", "")).strip() or str(inputs.get("port_id", "")).strip()
+        connection_map = port_connection_rows_by_id(machine_port_connections)
+        target_connection = {}
+        if requested_connection_id:
+            target_connection = dict(connection_map.get(requested_connection_id) or {})
+        elif from_port_id:
+            for row in sorted(
+                (item for item in connection_map.values() if isinstance(item, dict)),
+                key=lambda item: str(item.get("connection_id", "")),
+            ):
+                if not bool(row.get("active", False)):
+                    continue
+                if str(row.get("from_port_id", "")).strip() == from_port_id or str(row.get("to_port_id", "")).strip() == from_port_id:
+                    target_connection = dict(row)
+                    requested_connection_id = str(row.get("connection_id", "")).strip()
+                    break
+        if not target_connection:
+            return refusal(
+                REFUSAL_PORT_EMPTY,
+                "no active port connection matched the disconnect request",
+                "Provide an existing connection_id or connected from_port_id.",
+                {
+                    "connection_id": requested_connection_id or None,
+                    "from_port_id": from_port_id or None,
+                },
+                "$.intent.inputs",
+            )
+        connection_id = str(target_connection.get("connection_id", "")).strip()
+        target_connection["active"] = False
+        connection_map[connection_id] = target_connection
+        machine_port_connections = normalize_port_connection_rows(
+            [dict(connection_map[key]) for key in sorted(connection_map.keys())]
+        )
+        port_map = port_rows_by_id(machine_ports)
+        from_token = str(target_connection.get("from_port_id", "")).strip()
+        to_token = str(target_connection.get("to_port_id", "")).strip()
+        node_token = str(target_connection.get("logistics_node_id", "")).strip()
+        if from_token in port_map:
+            row = dict(port_map[from_token])
+            row["connected_to"] = None
+            port_map[from_token] = row
+        if to_token and to_token in port_map:
+            row = dict(port_map[to_token])
+            row["connected_to"] = None
+            port_map[to_token] = row
+        machine_ports = normalize_port_rows([dict(port_map[key]) for key in sorted(port_map.keys())])
+        from_port_row = dict(port_map.get(from_token) or {})
+        machine_id = str(from_port_row.get("machine_id", "")).strip()
+        site_ref = str(inputs.get("site_ref", "")).strip()
+        event_row = _machine_event_row(
+            current_tick=int(current_tick),
+            event_type_id="event.port_disconnected",
+            actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+            machine_id=machine_id or "machine.unknown",
+            site_ref=site_ref,
+            inputs=[from_token],
+            outputs=[to_token or node_token],
+            ledger_deltas={"quantity.mass": 0},
+            extensions={
+                "machine_id": machine_id,
+                "port_id": from_token,
+                "to_port_id": to_token or None,
+                "logistics_node_id": node_token or None,
+                "connection_id": connection_id,
+                "process_id": process_id,
+            },
+        )
+        machine_provenance_events = sorted(
+            [dict(row) for row in list(machine_provenance_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_machine_state(
+            state,
+            machines=machine_assemblies,
+            ports=machine_ports,
+            connections=machine_port_connections,
+            provenance_events=machine_provenance_events,
+        )
+        result_metadata = {
+            "connection_id": connection_id,
+            "from_port_id": from_token or None,
+            "to_port_id": to_token or None,
+            "logistics_node_id": node_token or None,
+            "event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.machine_operate":
+        machine_id = str(inputs.get("machine_id", "")).strip()
+        operation_id = str(inputs.get("operation_id", "")).strip()
+        if not machine_id or not operation_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.machine_operate requires machine_id and operation_id",
+                "Provide deterministic machine_id and operation_id.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        machine_map = machine_rows_by_id(machine_assemblies)
+        machine_row = dict(machine_map.get(machine_id) or {})
+        if not machine_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "machine_id '{}' does not exist".format(machine_id),
+                "Use an existing machine assembly.",
+                {"machine_id": machine_id},
+                "$.intent.inputs.machine_id",
+            )
+        machine_type_id = str(machine_row.get("machine_type_id", "")).strip()
+        machine_type_rows = _machine_type_rows(policy_context)
+        machine_type_row = dict(machine_type_rows.get(machine_type_id) or {})
+        if not machine_type_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "machine_type_id '{}' is not registered".format(machine_type_id),
+                "Declare machine_type_id in machine_type_registry.",
+                {"machine_type_id": machine_type_id},
+                "$.state.machine_assemblies",
+            )
+        supported_ids = set(_sorted_tokens(list(machine_type_row.get("supported_process_ids") or [])))
+        if operation_id not in supported_ids:
+            return refusal(
+                REFUSAL_PORT_FORBIDDEN_BY_LAW,
+                "operation_id '{}' is not supported by machine_type_id '{}'".format(operation_id, machine_type_id),
+                "Use an operation listed in machine_type_registry.supported_process_ids.",
+                {"machine_id": machine_id, "operation_id": operation_id},
+                "$.intent.inputs.operation_id",
+            )
+        operation_rows = _machine_operation_rows(policy_context)
+        operation_row = dict(operation_rows.get(operation_id) or {})
+        if not operation_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "operation_id '{}' is not registered".format(operation_id),
+                "Declare operation_id in machine_operation_registry.",
+                {"operation_id": operation_id},
+                "$.intent.inputs.operation_id",
+            )
+        operation_machine_types = set(_sorted_tokens(list(operation_row.get("machine_type_ids") or [])))
+        if operation_machine_types and machine_type_id not in operation_machine_types:
+            return refusal(
+                REFUSAL_PORT_FORBIDDEN_BY_LAW,
+                "operation '{}' is not valid for machine_type_id '{}'".format(operation_id, machine_type_id),
+                "Use operation definitions that include machine_type_id.",
+                {"machine_id": machine_id, "operation_id": operation_id},
+                "$.intent.inputs.operation_id",
+            )
+        input_materials = dict(
+            (str(key).strip(), max(0, _as_int(value, 0)))
+            for key, value in sorted((dict(operation_row.get("input_materials") or {})).items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        )
+        output_materials = dict(
+            (str(key).strip(), max(0, _as_int(value, 0)))
+            for key, value in sorted((dict(operation_row.get("output_materials") or {})).items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        )
+        input_total_mass = int(sum(max(0, _as_int(value, 0)) for value in input_materials.values()))
+        output_total_mass = int(sum(max(0, _as_int(value, 0)) for value in output_materials.values()))
+        if input_total_mass != output_total_mass:
+            return refusal(
+                "refusal.conservation_unaccounted",
+                "operation '{}' mass totals are unbalanced".format(operation_id),
+                "Adjust machine_operation_registry so input and output masses match or add explicit conversion exception handling.",
+                {
+                    "operation_id": operation_id,
+                    "input_total_mass": str(input_total_mass),
+                    "output_total_mass": str(output_total_mass),
+                },
+                "$.intent.inputs.operation_id",
+            )
+        port_type_rows = _port_type_rows(policy_context)
+        port_map = port_rows_by_id(machine_ports)
+        sorted_port_rows = [dict(port_map[key]) for key in sorted(port_map.keys())]
+        input_port_rows = _machine_port_candidates(
+            machine_id=machine_id,
+            machine_ports=sorted_port_rows,
+            port_type_rows=port_type_rows,
+            payload_kind="material",
+            direction="in",
+        )
+        output_port_rows = _machine_port_candidates(
+            machine_id=machine_id,
+            machine_ports=sorted_port_rows,
+            port_type_rows=port_type_rows,
+            payload_kind="material",
+            direction="out",
+        )
+        if not input_port_rows:
+            return refusal(
+                REFUSAL_PORT_EMPTY,
+                "machine '{}' has no material input ports".format(machine_id),
+                "Declare at least one material input port for machine operation.",
+                {"machine_id": machine_id},
+                "$.state.machine_ports",
+            )
+        if not output_port_rows:
+            return refusal(
+                REFUSAL_PORT_FULL,
+                "machine '{}' has no material output ports".format(machine_id),
+                "Declare at least one material output port for machine operation.",
+                {"machine_id": machine_id},
+                "$.state.machine_ports",
+            )
+        available_by_material: Dict[str, int] = {}
+        for row in input_port_rows:
+            for content in list((dict(row).get("current_contents") or [])):
+                if not isinstance(content, dict):
+                    continue
+                material_token = str(content.get("material_id", "")).strip()
+                if not material_token:
+                    continue
+                available_by_material[material_token] = _as_int(available_by_material.get(material_token, 0), 0) + max(
+                    0, _as_int(content.get("mass", 0), 0)
+                )
+        for material_token, required_mass in sorted(input_materials.items(), key=lambda item: str(item[0])):
+            if max(0, _as_int(available_by_material.get(material_token, 0), 0)) < max(0, _as_int(required_mass, 0)):
+                return refusal(
+                    REFUSAL_PORT_EMPTY,
+                    "insufficient '{}' mass in machine input ports".format(material_token),
+                    "Insert required material batches before machine operation.",
+                    {
+                        "machine_id": machine_id,
+                        "material_id": material_token,
+                        "required_mass": str(max(0, _as_int(required_mass, 0))),
+                        "available_mass": str(max(0, _as_int(available_by_material.get(material_token, 0), 0))),
+                    },
+                    "$.state.machine_ports",
+                )
+        output_capacity_rows = []
+        total_output_capacity = 0
+        has_unbounded_capacity = False
+        for row in output_port_rows:
+            capacity_raw = row.get("capacity_mass")
+            current_mass = port_total_mass(row)
+            if capacity_raw is None:
+                has_unbounded_capacity = True
+                remaining = -1
+            else:
+                remaining = max(0, _as_int(capacity_raw, 0) - int(current_mass))
+                total_output_capacity += int(remaining)
+            output_capacity_rows.append({"port_id": str(row.get("port_id", "")).strip(), "remaining": int(remaining)})
+        if (not has_unbounded_capacity) and int(total_output_capacity) < int(output_total_mass):
+            return refusal(
+                REFUSAL_PORT_FULL,
+                "machine output ports do not have enough free capacity",
+                "Extract output batches or increase output-port capacity.",
+                {
+                    "machine_id": machine_id,
+                    "required_mass": str(output_total_mass),
+                    "available_mass": str(total_output_capacity),
+                },
+                "$.state.machine_ports",
+            )
+        consumed_rows: List[dict] = []
+        for material_token, required_mass in sorted(input_materials.items(), key=lambda item: str(item[0])):
+            remaining = max(0, _as_int(required_mass, 0))
+            for row in sorted(input_port_rows, key=lambda item: str(item.get("port_id", ""))):
+                if remaining <= 0:
+                    break
+                port_token = str(row.get("port_id", "")).strip()
+                working_port = dict(port_map.get(port_token) or {})
+                if not working_port:
+                    continue
+                material_available = 0
+                for content in list(working_port.get("current_contents") or []):
+                    if not isinstance(content, dict):
+                        continue
+                    if str(content.get("material_id", "")).strip() != material_token:
+                        continue
+                    material_available += max(0, _as_int(content.get("mass", 0), 0))
+                if material_available <= 0:
+                    continue
+                requested = min(int(material_available), int(remaining))
+                try:
+                    updated_port, extracted_rows = extract_from_port(
+                        port_row=working_port,
+                        mass=int(requested),
+                        material_id=material_token,
+                    )
+                except PortError as exc:
+                    return refusal(
+                        str(exc.reason_code),
+                        str(exc),
+                        "Ensure input ports contain required material batches.",
+                        dict(exc.details),
+                        "$.state.machine_ports",
+                    )
+                port_map[port_token] = dict(updated_port)
+                for extracted in list(extracted_rows or []):
+                    if not isinstance(extracted, dict):
+                        continue
+                    consumed_rows.append(
+                        {
+                            "port_id": port_token,
+                            "batch_id": str(extracted.get("batch_id", "")).strip(),
+                            "material_id": str(extracted.get("material_id", "")).strip(),
+                            "mass": max(0, _as_int(extracted.get("mass", 0), 0)),
+                        }
+                    )
+                remaining = max(0, int(remaining) - int(requested))
+            if remaining > 0:
+                return refusal(
+                    REFUSAL_PORT_EMPTY,
+                    "input extraction underflow while consuming machine materials",
+                    "Reinsert required inputs and retry machine operation.",
+                    {"machine_id": machine_id, "material_id": material_token, "remaining_mass": str(remaining)},
+                    "$.state.machine_ports",
+                )
+        material_tags_by_id = _material_tags_by_material_id(policy_context)
+        produced_rows: List[dict] = []
+        output_index = 0
+        slot_rows = [dict(row) for row in sorted(output_capacity_rows, key=lambda item: str(item.get("port_id", "")))]
+        for material_token, requested_mass in sorted(output_materials.items(), key=lambda item: str(item[0])):
+            remaining = max(0, _as_int(requested_mass, 0))
+            while remaining > 0:
+                slot = None
+                for row in slot_rows:
+                    if _as_int(row.get("remaining", 0), 0) == 0:
+                        continue
+                    slot = row
+                    break
+                if slot is None:
+                    return refusal(
+                        REFUSAL_PORT_FULL,
+                        "output port allocation underflow while producing machine materials",
+                        "Provide available output capacity and retry machine operation.",
+                        {"machine_id": machine_id, "material_id": material_token, "remaining_mass": str(remaining)},
+                        "$.state.machine_ports",
+                    )
+                slot_port_id = str(slot.get("port_id", "")).strip()
+                working_port = dict(port_map.get(slot_port_id) or {})
+                if not working_port:
+                    return refusal(
+                        REFUSAL_PORT_FULL,
+                        "output port '{}' is unavailable".format(slot_port_id),
+                        "Repair machine port configuration and retry.",
+                        {"machine_id": machine_id, "port_id": slot_port_id},
+                        "$.state.machine_ports",
+                    )
+                slot_remaining = _as_int(slot.get("remaining", -1), -1)
+                if slot_remaining < 0:
+                    allocated = int(remaining)
+                else:
+                    allocated = min(int(remaining), int(slot_remaining))
+                if allocated <= 0:
+                    break
+                output_batch_id = _machine_output_batch_id(
+                    intent_id=intent_id,
+                    machine_id=machine_id,
+                    operation_id=operation_id,
+                    material_id=material_token,
+                    output_index=int(output_index),
+                )
+                try:
+                    updated_port = insert_into_port(
+                        port_row=working_port,
+                        batch_id=output_batch_id,
+                        material_id=material_token,
+                        mass=int(allocated),
+                        material_tags=list(material_tags_by_id.get(material_token) or []),
+                    )
+                except PortError as exc:
+                    return refusal(
+                        str(exc.reason_code),
+                        str(exc),
+                        "Adjust machine output material acceptance or capacity before operation.",
+                        dict(exc.details),
+                        "$.state.machine_ports",
+                    )
+                port_map[slot_port_id] = dict(updated_port)
+                produced_rows.append(
+                    {
+                        "port_id": slot_port_id,
+                        "batch_id": output_batch_id,
+                        "material_id": material_token,
+                        "mass": int(allocated),
+                    }
+                )
+                remaining = max(0, int(remaining) - int(allocated))
+                if slot_remaining >= 0:
+                    slot["remaining"] = max(0, int(slot_remaining) - int(allocated))
+                output_index += 1
+        machine_ports = normalize_port_rows([dict(port_map[key]) for key in sorted(port_map.keys())])
+        machine_row["operational_state"] = "running"
+        machine_extensions = dict(machine_row.get("extensions") or {})
+        machine_extensions["last_operation_id"] = operation_id
+        machine_extensions["last_operation_tick"] = int(max(0, int(current_tick)))
+        machine_extensions["last_operation_intent_id"] = str(intent_id)
+        machine_row["extensions"] = machine_extensions
+        machine_map[machine_id] = machine_row
+        machine_assemblies = normalize_machine_rows([dict(machine_map[key]) for key in sorted(machine_map.keys())])
+        site_ref = str(inputs.get("site_ref", "")).strip() or str(machine_extensions.get("site_ref", "")).strip()
+        consumed_batch_ids = _sorted_tokens(
+            [str((dict(row)).get("batch_id", "")).strip() for row in consumed_rows if isinstance(row, dict)]
+        )
+        produced_batch_ids = _sorted_tokens(
+            [str((dict(row)).get("batch_id", "")).strip() for row in produced_rows if isinstance(row, dict)]
+        )
+        event_rows = [
+            _machine_event_row(
+                current_tick=int(current_tick),
+                event_type_id="event.material_consumed",
+                actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+                machine_id=machine_id,
+                site_ref=site_ref,
+                inputs=list(consumed_batch_ids),
+                outputs=[],
+                ledger_deltas={"quantity.mass": 0},
+                extensions={
+                    "machine_id": machine_id,
+                    "operation_id": operation_id,
+                    "consumed_rows": [dict(row) for row in list(consumed_rows or []) if isinstance(row, dict)],
+                    "process_id": process_id,
+                },
+            ),
+            _machine_event_row(
+                current_tick=int(current_tick),
+                event_type_id="event.batch_created",
+                actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+                machine_id=machine_id,
+                site_ref=site_ref,
+                inputs=[],
+                outputs=list(produced_batch_ids),
+                ledger_deltas={"quantity.mass": 0},
+                extensions={
+                    "machine_id": machine_id,
+                    "operation_id": operation_id,
+                    "produced_rows": [dict(row) for row in list(produced_rows or []) if isinstance(row, dict)],
+                    "process_id": process_id,
+                },
+            ),
+            _machine_event_row(
+                current_tick=int(current_tick),
+                event_type_id="event.machine_operated",
+                actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+                machine_id=machine_id,
+                site_ref=site_ref,
+                inputs=list(consumed_batch_ids),
+                outputs=list(produced_batch_ids),
+                ledger_deltas={"quantity.mass": 0},
+                extensions={
+                    "machine_id": machine_id,
+                    "operation_id": operation_id,
+                    "energy_delta_raw": int(_as_int(operation_row.get("energy_delta_raw", 0), 0)),
+                    "process_id": process_id,
+                },
+            ),
+        ]
+        machine_provenance_events = sorted(
+            [dict(row) for row in list(machine_provenance_events or []) if isinstance(row, dict)]
+            + [dict(row) for row in event_rows if isinstance(row, dict)],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_machine_state(
+            state,
+            machines=machine_assemblies,
+            ports=machine_ports,
+            connections=machine_port_connections,
+            provenance_events=machine_provenance_events,
+        )
+        result_metadata = {
+            "machine_id": machine_id,
+            "machine_type_id": machine_type_id,
+            "operation_id": operation_id,
+            "consumed_rows": [dict(row) for row in consumed_rows],
+            "produced_rows": [dict(row) for row in produced_rows],
+            "event_ids": _sorted_tokens([str(row.get("event_id", "")).strip() for row in event_rows]),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.machine_pull_from_node":
+        machine_id = str(inputs.get("machine_id", "")).strip()
+        material_id = str(inputs.get("material_id", "")).strip()
+        batch_id = str(inputs.get("batch_id", "")).strip()
+        quantity_mass = max(0, _as_int(inputs.get("mass", inputs.get("quantity_mass", 0)), 0))
+        if not machine_id or not material_id or not batch_id or quantity_mass <= 0:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.machine_pull_from_node requires machine_id, material_id, batch_id, and mass > 0",
+                "Provide deterministic machine and material transfer parameters.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        machine_map = machine_rows_by_id(machine_assemblies)
+        machine_row = dict(machine_map.get(machine_id) or {})
+        if not machine_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "machine_id '{}' does not exist".format(machine_id),
+                "Use an existing machine assembly.",
+                {"machine_id": machine_id},
+                "$.intent.inputs.machine_id",
+            )
+        machine_type_id = str(machine_row.get("machine_type_id", "")).strip()
+        machine_type_rows = _machine_type_rows(policy_context)
+        machine_type_row = dict(machine_type_rows.get(machine_type_id) or {})
+        supported_ids = set(_sorted_tokens(list(machine_type_row.get("supported_process_ids") or [])))
+        if machine_type_row and "process.machine_pull_from_node" not in supported_ids:
+            return refusal(
+                REFUSAL_PORT_FORBIDDEN_BY_LAW,
+                "machine '{}' does not support process.machine_pull_from_node".format(machine_id),
+                "Allow process.machine_pull_from_node in machine_type_registry.supported_process_ids.",
+                {"machine_id": machine_id, "machine_type_id": machine_type_id},
+                "$.state.machine_assemblies",
+            )
+        port_type_rows = _port_type_rows(policy_context)
+        port_map = port_rows_by_id(machine_ports)
+        requested_port_id = str(inputs.get("port_id", "")).strip()
+        input_ports = _machine_port_candidates(
+            machine_id=machine_id,
+            machine_ports=[dict(port_map[key]) for key in sorted(port_map.keys())],
+            port_type_rows=port_type_rows,
+            payload_kind="material",
+            direction="in",
+        )
+        selected_port = {}
+        if requested_port_id:
+            selected_port = dict(port_map.get(requested_port_id) or {})
+            if str(selected_port.get("machine_id", "")).strip() != machine_id:
+                selected_port = {}
+        if not selected_port and input_ports:
+            selected_port = dict(sorted(input_ports, key=lambda row: str(row.get("port_id", "")))[0])
+        if not selected_port:
+            return refusal(
+                REFUSAL_PORT_EMPTY,
+                "machine '{}' has no eligible material input port".format(machine_id),
+                "Provide port_id for an input material port.",
+                {"machine_id": machine_id},
+                "$.state.machine_ports",
+            )
+        selected_port_id = str(selected_port.get("port_id", "")).strip()
+        node_id = str(inputs.get("node_id", "")).strip() or str(inputs.get("source_node_id", "")).strip()
+        inventory_index = build_inventory_index(logistics_inventory_rows)
+        if not node_id:
+            connected_to = str(selected_port.get("connected_to", "")).strip()
+            if connected_to and connected_to in inventory_index:
+                node_id = connected_to
+            else:
+                for row in sorted(
+                    (item for item in list(machine_port_connections or []) if isinstance(item, dict)),
+                    key=lambda item: str(item.get("connection_id", "")),
+                ):
+                    if not bool(row.get("active", False)):
+                        continue
+                    if selected_port_id not in (
+                        str(row.get("from_port_id", "")).strip(),
+                        str(row.get("to_port_id", "")).strip(),
+                    ):
+                        continue
+                    logistics_node_id = str(row.get("logistics_node_id", "")).strip()
+                    if logistics_node_id:
+                        node_id = logistics_node_id
+                        break
+        if not node_id:
+            return refusal(
+                "refusal.logistics.invalid_route",
+                "no logistics node is bound for machine pull on port '{}'".format(selected_port_id),
+                "Set inputs.node_id or connect the port to a logistics node first.",
+                {"machine_id": machine_id, "port_id": selected_port_id},
+                "$.intent.inputs.node_id",
+            )
+        try:
+            _inventory_debit(
+                inventory_index=inventory_index,
+                node_id=node_id,
+                material_id=material_id,
+                mass=int(quantity_mass),
+                batch_id=batch_id,
+            )
+            updated_port = insert_into_port(
+                port_row=selected_port,
+                batch_id=batch_id,
+                material_id=material_id,
+                mass=int(quantity_mass),
+                material_tags=list((_material_tags_by_material_id(policy_context)).get(material_id) or []),
+            )
+        except LogisticsError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Provide source stock before machine pull.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        except PortError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Adjust port capacity/material acceptance and retry machine pull.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        port_map[selected_port_id] = dict(updated_port)
+        machine_ports = normalize_port_rows([dict(port_map[key]) for key in sorted(port_map.keys())])
+        machine_row["operational_state"] = "running"
+        machine_extensions = dict(machine_row.get("extensions") or {})
+        machine_extensions["last_operation_tick"] = int(max(0, int(current_tick)))
+        machine_extensions["last_operation_intent_id"] = str(intent_id)
+        machine_row["extensions"] = machine_extensions
+        machine_map[machine_id] = machine_row
+        machine_assemblies = normalize_machine_rows([dict(machine_map[key]) for key in sorted(machine_map.keys())])
+        logistics_inventory_rows = inventory_rows_from_index(inventory_index)
+        _persist_logistics_state(
+            state,
+            manifests=logistics_manifests,
+            commitments=shipment_commitment_rows,
+            inventories=logistics_inventory_rows,
+            events=logistics_provenance_events,
+            runtime_state=logistics_runtime_state,
+        )
+        event_row = _machine_event_row(
+            current_tick=int(current_tick),
+            event_type_id="event.material_consumed",
+            actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+            machine_id=machine_id,
+            site_ref=str(inputs.get("site_ref", "")).strip() or str(machine_extensions.get("site_ref", "")).strip(),
+            inputs=[batch_id],
+            outputs=[selected_port_id],
+            ledger_deltas={"quantity.mass": 0},
+            extensions={
+                "machine_id": machine_id,
+                "port_id": selected_port_id,
+                "source_node_id": node_id,
+                "batch_id": batch_id,
+                "material_id": material_id,
+                "quantity_mass": int(quantity_mass),
+                "process_id": process_id,
+            },
+        )
+        machine_provenance_events = sorted(
+            [dict(row) for row in list(machine_provenance_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_machine_state(
+            state,
+            machines=machine_assemblies,
+            ports=machine_ports,
+            connections=machine_port_connections,
+            provenance_events=machine_provenance_events,
+        )
+        result_metadata = {
+            "machine_id": machine_id,
+            "port_id": selected_port_id,
+            "source_node_id": node_id,
+            "batch_id": batch_id,
+            "material_id": material_id,
+            "quantity_mass": int(quantity_mass),
+            "event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.machine_push_to_node":
+        machine_id = str(inputs.get("machine_id", "")).strip()
+        quantity_mass = max(0, _as_int(inputs.get("mass", inputs.get("quantity_mass", 0)), 0))
+        if not machine_id or quantity_mass <= 0:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.machine_push_to_node requires machine_id and mass > 0",
+                "Provide deterministic machine and transfer mass.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        machine_map = machine_rows_by_id(machine_assemblies)
+        machine_row = dict(machine_map.get(machine_id) or {})
+        if not machine_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "machine_id '{}' does not exist".format(machine_id),
+                "Use an existing machine assembly.",
+                {"machine_id": machine_id},
+                "$.intent.inputs.machine_id",
+            )
+        machine_type_id = str(machine_row.get("machine_type_id", "")).strip()
+        machine_type_rows = _machine_type_rows(policy_context)
+        machine_type_row = dict(machine_type_rows.get(machine_type_id) or {})
+        supported_ids = set(_sorted_tokens(list(machine_type_row.get("supported_process_ids") or [])))
+        if machine_type_row and "process.machine_push_to_node" not in supported_ids:
+            return refusal(
+                REFUSAL_PORT_FORBIDDEN_BY_LAW,
+                "machine '{}' does not support process.machine_push_to_node".format(machine_id),
+                "Allow process.machine_push_to_node in machine_type_registry.supported_process_ids.",
+                {"machine_id": machine_id, "machine_type_id": machine_type_id},
+                "$.state.machine_assemblies",
+            )
+        port_type_rows = _port_type_rows(policy_context)
+        port_map = port_rows_by_id(machine_ports)
+        requested_port_id = str(inputs.get("port_id", "")).strip()
+        output_ports = _machine_port_candidates(
+            machine_id=machine_id,
+            machine_ports=[dict(port_map[key]) for key in sorted(port_map.keys())],
+            port_type_rows=port_type_rows,
+            payload_kind="material",
+            direction="out",
+        )
+        selected_port = {}
+        if requested_port_id:
+            selected_port = dict(port_map.get(requested_port_id) or {})
+            if str(selected_port.get("machine_id", "")).strip() != machine_id:
+                selected_port = {}
+        if not selected_port and output_ports:
+            selected_port = dict(sorted(output_ports, key=lambda row: str(row.get("port_id", "")))[0])
+        if not selected_port:
+            return refusal(
+                REFUSAL_PORT_EMPTY,
+                "machine '{}' has no eligible material output port".format(machine_id),
+                "Provide port_id for an output material port.",
+                {"machine_id": machine_id},
+                "$.state.machine_ports",
+            )
+        selected_port_id = str(selected_port.get("port_id", "")).strip()
+        node_id = str(inputs.get("node_id", "")).strip() or str(inputs.get("destination_node_id", "")).strip()
+        inventory_index = build_inventory_index(logistics_inventory_rows)
+        if not node_id:
+            connected_to = str(selected_port.get("connected_to", "")).strip()
+            if connected_to and connected_to in inventory_index:
+                node_id = connected_to
+            else:
+                for row in sorted(
+                    (item for item in list(machine_port_connections or []) if isinstance(item, dict)),
+                    key=lambda item: str(item.get("connection_id", "")),
+                ):
+                    if not bool(row.get("active", False)):
+                        continue
+                    if selected_port_id not in (
+                        str(row.get("from_port_id", "")).strip(),
+                        str(row.get("to_port_id", "")).strip(),
+                    ):
+                        continue
+                    logistics_node_id = str(row.get("logistics_node_id", "")).strip()
+                    if logistics_node_id:
+                        node_id = logistics_node_id
+                        break
+        if not node_id:
+            return refusal(
+                "refusal.logistics.invalid_route",
+                "no logistics node is bound for machine push on port '{}'".format(selected_port_id),
+                "Set inputs.node_id or connect the port to a logistics node first.",
+                {"machine_id": machine_id, "port_id": selected_port_id},
+                "$.intent.inputs.node_id",
+            )
+        requested_batch_id = str(inputs.get("batch_id", "")).strip()
+        requested_material_id = str(inputs.get("material_id", "")).strip()
+        try:
+            updated_port, extracted_rows = extract_from_port(
+                port_row=selected_port,
+                mass=int(quantity_mass),
+                batch_id=requested_batch_id,
+                material_id=requested_material_id,
+            )
+        except PortError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Ensure machine output port contains requested batches before push.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        port_map[selected_port_id] = dict(updated_port)
+        for row in list(extracted_rows or []):
+            if not isinstance(row, dict):
+                continue
+            _inventory_credit(
+                inventory_index=inventory_index,
+                node_id=node_id,
+                material_id=str(row.get("material_id", "")),
+                mass=max(0, _as_int(row.get("mass", 0), 0)),
+                batch_id=str(row.get("batch_id", "")),
+            )
+        machine_ports = normalize_port_rows([dict(port_map[key]) for key in sorted(port_map.keys())])
+        machine_row["operational_state"] = "running"
+        machine_extensions = dict(machine_row.get("extensions") or {})
+        machine_extensions["last_operation_tick"] = int(max(0, int(current_tick)))
+        machine_extensions["last_operation_intent_id"] = str(intent_id)
+        machine_row["extensions"] = machine_extensions
+        machine_map[machine_id] = machine_row
+        machine_assemblies = normalize_machine_rows([dict(machine_map[key]) for key in sorted(machine_map.keys())])
+        logistics_inventory_rows = inventory_rows_from_index(inventory_index)
+        _persist_logistics_state(
+            state,
+            manifests=logistics_manifests,
+            commitments=shipment_commitment_rows,
+            inventories=logistics_inventory_rows,
+            events=logistics_provenance_events,
+            runtime_state=logistics_runtime_state,
+        )
+        output_rows = [
+            {
+                "batch_id": str((dict(row)).get("batch_id", "")).strip(),
+                "material_id": str((dict(row)).get("material_id", "")).strip(),
+                "mass": max(0, _as_int((dict(row)).get("mass", 0), 0)),
+            }
+            for row in list(extracted_rows or [])
+            if isinstance(row, dict)
+        ]
+        event_row = _machine_event_row(
+            current_tick=int(current_tick),
+            event_type_id="event.material_consumed",
+            actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+            machine_id=machine_id,
+            site_ref=str(inputs.get("site_ref", "")).strip() or str(machine_extensions.get("site_ref", "")).strip(),
+            inputs=[selected_port_id],
+            outputs=[node_id],
+            ledger_deltas={"quantity.mass": 0},
+            extensions={
+                "machine_id": machine_id,
+                "port_id": selected_port_id,
+                "destination_node_id": node_id,
+                "output_rows": output_rows,
+                "process_id": process_id,
+            },
+        )
+        machine_provenance_events = sorted(
+            [dict(row) for row in list(machine_provenance_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_machine_state(
+            state,
+            machines=machine_assemblies,
+            ports=machine_ports,
+            connections=machine_port_connections,
+            provenance_events=machine_provenance_events,
+        )
+        result_metadata = {
+            "machine_id": machine_id,
+            "port_id": selected_port_id,
+            "destination_node_id": node_id,
+            "quantity_mass": int(quantity_mass),
+            "output_rows": output_rows,
+            "event_id": str(event_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.faction_create":
