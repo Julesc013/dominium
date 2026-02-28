@@ -138,6 +138,7 @@
         "migration_model_registry_hash",
         "body_shape_registry_hash",
         "view_mode_registry_hash",
+        "view_policy_registry_hash",
         "instrument_type_registry_hash",
         "calibration_model_registry_hash",
         "render_proxy_registry_hash",
@@ -501,6 +502,10 @@
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
+        "view_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
         "instrument_type_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
@@ -696,6 +701,7 @@
         "migration_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "body_shape_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "view_mode_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "view_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "instrument_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "calibration_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "render_proxy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",

@@ -64,6 +64,16 @@ from .planning import (
     create_plan_artifact,
     update_plan_artifact_incremental,
 )
+from .view import (
+    REFUSAL_VIEW_ENTITLEMENT_MISSING,
+    REFUSAL_VIEW_POLICY_FORBIDDEN,
+    REFUSAL_VIEW_REQUIRES_EMBODIMENT,
+    REFUSAL_VIEW_TARGET_INVALID,
+    apply_view_binding,
+    normalize_view_binding_rows,
+    resolve_view_policy_id,
+    view_policy_rows_by_id,
+)
 
 __all__ = [
     "ALLOWED_CONTROL_IR_OP_TYPES",
@@ -91,7 +101,12 @@ __all__ = [
     "REFUSAL_PLAN_INVALID",
     "REFUSAL_PLAN_NOT_FOUND",
     "REFUSAL_PLAN_POLICY_REFUSED",
+    "REFUSAL_VIEW_ENTITLEMENT_MISSING",
+    "REFUSAL_VIEW_POLICY_FORBIDDEN",
+    "REFUSAL_VIEW_REQUIRES_EMBODIMENT",
+    "REFUSAL_VIEW_TARGET_INVALID",
     "SINGLEPLAYER_RELAXED_POLICY_ID",
+    "apply_view_binding",
     "arbitrate_fidelity_requests",
     "arbitrate_negotiation_requests",
     "build_ai_controller_stub_ir",
@@ -115,8 +130,11 @@ __all__ = [
     "multiplayer_ir_mode",
     "negotiate_request",
     "reconstruct_ir_action_sequence",
+    "resolve_view_policy_id",
+    "normalize_view_binding_rows",
     "update_plan_artifact_incremental",
     "validate_control_ir_multiplayer",
     "verify_control_ir",
     "verify_and_compile_control_ir",
+    "view_policy_rows_by_id",
 ]

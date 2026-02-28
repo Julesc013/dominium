@@ -318,6 +318,29 @@
           "none",
           "structure"
         ],
+        "extensions": {
+          "compat_alias": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.view.change_policy",
+        "display_name": "Change View Policy",
+        "produces": {
+          "process_id": "process.camera_set_view_mode",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.camera_control"
+        ],
+        "required_capabilities": [
+          "capability.view.change"
+        ],
+        "target_kinds": [
+          "none",
+          "structure"
+        ],
         "extensions": {}
       }
     ],

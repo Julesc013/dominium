@@ -39,7 +39,8 @@
         "description": "Planning-only policy for AL3 ghost/blueprint workflows.",
         "allowed_actions": [
           "action.plan.*",
-          "action.view.change"
+          "action.view.change",
+          "action.view.change_policy"
         ],
         "allowed_abstraction_levels": [
           "AL3"
@@ -68,7 +69,8 @@
           "action.surface.*",
           "action.pose.*",
           "action.mount.*",
-          "action.view.change"
+          "action.view.change",
+          "action.view.change_policy"
         ],
         "allowed_abstraction_levels": [
           "AL0",
@@ -119,6 +121,7 @@
         "description": "Replay policy allowing non-mutating history/view actions only.",
         "allowed_actions": [
           "action.view.change",
+          "action.view.change_policy",
           "action.replay.*"
         ],
         "allowed_abstraction_levels": [
@@ -152,7 +155,8 @@
           "action.surface.*",
           "action.pose.*",
           "action.mount.*",
-          "action.view.change"
+          "action.view.change",
+          "action.view.change_policy"
         ],
         "allowed_abstraction_levels": [
           "AL2"
