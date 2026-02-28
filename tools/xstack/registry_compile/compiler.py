@@ -2104,6 +2104,280 @@ def _task_registry_rows(
     return task_type_rows, progress_rows, errors
 
 
+def _machine_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _port_type_record, port_type_rows_raw, port_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/port_type_registry.json",
+        expected_schema_id="dominium.registry.port_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="port_types",
+    )
+    if port_type_load_errors:
+        return [], [], [], [], port_type_load_errors
+
+    port_type_rows: List[dict] = []
+    port_type_seen = set()
+    for entry in sorted(port_type_rows_raw, key=lambda row: str((row or {}).get("port_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_port_type_entry",
+                    "message": "port type entry must be object",
+                    "path": "$.port_types",
+                }
+            )
+            continue
+        port_type_id = str(entry.get("port_type_id", "")).strip()
+        if not port_type_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_port_type_entry",
+                    "message": "port type entry missing port_type_id",
+                    "path": "$.port_types.port_type_id",
+                }
+            )
+            continue
+        if port_type_id in port_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_port_type_id",
+                    "message": "duplicate port_type_id '{}'".format(port_type_id),
+                    "path": "$.port_types.port_type_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="port_type",
+            payload=entry,
+            path="data/registries/port_type_registry.json#{}".format(port_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        port_type_seen.add(port_type_id)
+        port_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "port_type_id": port_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "direction": str(entry.get("direction", "")).strip(),
+                "payload_kind": str(entry.get("payload_kind", "")).strip(),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    port_type_rows = sorted(port_type_rows, key=lambda row: str(row.get("port_type_id", "")))
+
+    _machine_type_record, machine_type_rows_raw, machine_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/machine_type_registry.json",
+        expected_schema_id="dominium.registry.machine_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="machine_types",
+    )
+    if machine_type_load_errors:
+        return [], [], [], [], machine_type_load_errors
+
+    machine_type_rows: List[dict] = []
+    machine_type_seen = set()
+    for entry in sorted(machine_type_rows_raw, key=lambda row: str((row or {}).get("machine_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_machine_type_entry",
+                    "message": "machine type entry must be object",
+                    "path": "$.machine_types",
+                }
+            )
+            continue
+        machine_type_id = str(entry.get("machine_type_id", "")).strip()
+        if not machine_type_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_machine_type_entry",
+                    "message": "machine type entry missing machine_type_id",
+                    "path": "$.machine_types.machine_type_id",
+                }
+            )
+            continue
+        if machine_type_id in machine_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_machine_type_id",
+                    "message": "duplicate machine_type_id '{}'".format(machine_type_id),
+                    "path": "$.machine_types.machine_type_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="machine_type",
+            payload=entry,
+            path="data/registries/machine_type_registry.json#{}".format(machine_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        machine_type_seen.add(machine_type_id)
+        machine_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "machine_type_id": machine_type_id,
+                "description": str(entry.get("description", "")).strip(),
+                "required_ports": _sorted_unique_strings(entry.get("required_ports")),
+                "supported_process_ids": _sorted_unique_strings(entry.get("supported_process_ids")),
+                "default_rate_params": dict(entry.get("default_rate_params") or {}),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    machine_type_rows = sorted(machine_type_rows, key=lambda row: str(row.get("machine_type_id", "")))
+
+    _port_vis_record, port_vis_rows_raw, port_vis_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/port_visibility_policy_registry.json",
+        expected_schema_id="dominium.registry.port_visibility_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if port_vis_load_errors:
+        return [], [], [], [], port_vis_load_errors
+
+    port_visibility_rows: List[dict] = []
+    port_visibility_seen = set()
+    for entry in sorted(port_vis_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_port_visibility_policy_entry",
+                    "message": "port visibility policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        if not policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_port_visibility_policy_entry",
+                    "message": "port visibility policy entry missing policy_id",
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        if policy_id in port_visibility_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_port_visibility_policy_id",
+                    "message": "duplicate port visibility policy id '{}'".format(policy_id),
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        port_visibility_seen.add(policy_id)
+        port_visibility_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "policy_id": policy_id,
+                "requires_entitlement": (
+                    str(entry.get("requires_entitlement")).strip()
+                    if isinstance(entry.get("requires_entitlement"), str)
+                    else None
+                ),
+                "requires_lens_channel": (
+                    str(entry.get("requires_lens_channel")).strip()
+                    if isinstance(entry.get("requires_lens_channel"), str)
+                    else None
+                ),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    port_visibility_rows = sorted(port_visibility_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    _machine_op_record, machine_op_rows_raw, machine_op_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/machine_operation_registry.json",
+        expected_schema_id="dominium.registry.machine_operation_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="operations",
+    )
+    if machine_op_load_errors:
+        return [], [], [], [], machine_op_load_errors
+
+    machine_operation_rows: List[dict] = []
+    machine_operation_seen = set()
+    for entry in sorted(machine_op_rows_raw, key=lambda row: str((row or {}).get("operation_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_machine_operation_entry",
+                    "message": "machine operation entry must be object",
+                    "path": "$.operations",
+                }
+            )
+            continue
+        operation_id = str(entry.get("operation_id", "")).strip()
+        if not operation_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_machine_operation_entry",
+                    "message": "machine operation entry missing operation_id",
+                    "path": "$.operations.operation_id",
+                }
+            )
+            continue
+        if operation_id in machine_operation_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_machine_operation_id",
+                    "message": "duplicate machine operation id '{}'".format(operation_id),
+                    "path": "$.operations.operation_id",
+                }
+            )
+            continue
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="machine_operation_registry",
+            payload={
+                "format_version": "1.0.0",
+                "generated_from": [],
+                "operations": [dict(entry)],
+                "registry_hash": "0" * 64,
+            },
+            path="data/registries/machine_operation_registry.json#{}".format(operation_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        machine_operation_seen.add(operation_id)
+        machine_operation_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "operation_id": operation_id,
+                "description": str(entry.get("description", "")).strip(),
+                "machine_type_ids": _sorted_unique_strings(entry.get("machine_type_ids")),
+                "input_materials": dict(
+                    (str(key).strip(), max(0, _as_int(value, 0)))
+                    for key, value in sorted((dict(entry.get("input_materials") or {})).items(), key=lambda item: str(item[0]))
+                    if str(key).strip()
+                ),
+                "output_materials": dict(
+                    (str(key).strip(), max(0, _as_int(value, 0)))
+                    for key, value in sorted((dict(entry.get("output_materials") or {})).items(), key=lambda item: str(item[0]))
+                    if str(key).strip()
+                ),
+                "energy_delta_raw": _as_int(entry.get("energy_delta_raw", 0), 0),
+                "extensions": dict(entry.get("extensions") or {}),
+            }
+        )
+    machine_operation_rows = sorted(machine_operation_rows, key=lambda row: str(row.get("operation_id", "")))
+    return port_type_rows, machine_type_rows, port_visibility_rows, machine_operation_rows, errors
+
+
 def _civilisation_registry_rows(
     repo_root: str,
 ) -> Tuple[
@@ -8701,6 +8975,16 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        port_type_rows,
+        machine_type_rows,
+        port_visibility_policy_rows,
+        machine_operation_rows,
+        machine_registry_errors,
+    ) = _machine_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         governance_type_rows,
         diplomatic_state_rows,
         cohort_mapping_policy_rows,
@@ -9027,6 +9311,7 @@ def compile_bundle(
         + interaction_registry_errors
         + action_surface_registry_errors
         + task_registry_errors
+        + machine_registry_errors
         + civilisation_registry_errors
         + conservation_registry_errors
         + materials_dimension_registry_errors
@@ -9375,6 +9660,13 @@ def compile_bundle(
             "surface_types": surface_type_rows,
         }
     )
+    port_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "port_types": port_type_rows,
+        }
+    )
     tool_tag_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -9401,6 +9693,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "policies": surface_visibility_policy_rows,
+        }
+    )
+    port_visibility_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": port_visibility_policy_rows,
+        }
+    )
+    machine_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "machine_types": machine_type_rows,
+        }
+    )
+    machine_operation_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "operations": machine_operation_rows,
         }
     )
     task_type_payload = _finalize_registry_payload(
@@ -9785,6 +10098,7 @@ def compile_bundle(
         "control_action_registry": ("control_action_registry", control_action_payload),
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "surface_type_registry": ("surface_type_registry", surface_type_payload),
+        "port_type_registry": ("port_type_registry", port_type_payload),
         "tool_tag_registry": ("tool_tag_registry", tool_tag_payload),
         "tool_type_registry": ("tool_type_registry", tool_type_payload),
         "tool_effect_model_registry": ("tool_effect_model_registry", tool_effect_model_payload),
@@ -9792,6 +10106,12 @@ def compile_bundle(
             "surface_visibility_policy_registry",
             surface_visibility_policy_payload,
         ),
+        "port_visibility_policy_registry": (
+            "port_visibility_policy_registry",
+            port_visibility_policy_payload,
+        ),
+        "machine_type_registry": ("machine_type_registry", machine_type_payload),
+        "machine_operation_registry": ("machine_operation_registry", machine_operation_payload),
         "task_type_registry": ("task_type_registry", task_type_payload),
         "progress_model_registry": ("progress_model_registry", progress_model_payload),
         "controller_type_registry": ("controller_type_registry", controller_type_payload),
@@ -9894,10 +10214,14 @@ def compile_bundle(
         "control_action_registry",
         "interaction_action_registry",
         "surface_type_registry",
+        "port_type_registry",
         "tool_tag_registry",
         "tool_type_registry",
         "tool_effect_model_registry",
         "surface_visibility_policy_registry",
+        "port_visibility_policy_registry",
+        "machine_type_registry",
+        "machine_operation_registry",
         "task_type_registry",
         "progress_model_registry",
         "controller_type_registry",
@@ -10017,12 +10341,18 @@ def compile_bundle(
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
             "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
             "surface_type_registry_hash": registry_hashes["surface_type_registry_hash"],
+            "port_type_registry_hash": registry_hashes["port_type_registry_hash"],
             "tool_tag_registry_hash": registry_hashes["tool_tag_registry_hash"],
             "tool_type_registry_hash": registry_hashes["tool_type_registry_hash"],
             "tool_effect_model_registry_hash": registry_hashes["tool_effect_model_registry_hash"],
             "surface_visibility_policy_registry_hash": registry_hashes[
                 "surface_visibility_policy_registry_hash"
             ],
+            "port_visibility_policy_registry_hash": registry_hashes[
+                "port_visibility_policy_registry_hash"
+            ],
+            "machine_type_registry_hash": registry_hashes["machine_type_registry_hash"],
+            "machine_operation_registry_hash": registry_hashes["machine_operation_registry_hash"],
             "task_type_registry_hash": registry_hashes["task_type_registry_hash"],
             "progress_model_registry_hash": registry_hashes["progress_model_registry_hash"],
             "controller_type_registry_hash": registry_hashes["controller_type_registry_hash"],

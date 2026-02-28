@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Port Type Schema",
+  "version": "1.0.0",
+  "description": "Data-defined machine port type.",
+  "x-doc-ref": [
+    "docs/interaction/MACHINE_PORTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "port_type_id",
+    "description",
+    "direction",
+    "payload_kind",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "port_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "in",
+        "out",
+        "bidirectional"
+      ]
+    },
+    "payload_kind": {
+      "type": "string",
+      "enum": [
+        "material",
+        "energy",
+        "signal"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

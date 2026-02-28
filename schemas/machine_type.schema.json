@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Machine Type Schema",
+  "version": "1.0.0",
+  "description": "Data-defined machine capability contract.",
+  "x-doc-ref": [
+    "docs/interaction/MACHINE_PORTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "machine_type_id",
+    "description",
+    "required_ports",
+    "supported_process_ids",
+    "default_rate_params",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "machine_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "required_ports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "supported_process_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default_rate_params": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

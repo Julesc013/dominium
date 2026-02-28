@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Port Visibility Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic machine port visibility policy registry output.",
+  "x-doc-ref": [
+    "docs/interaction/MACHINE_PORTS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "$ref": "surface_visibility_policy.schema.json"
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

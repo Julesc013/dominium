@@ -1,0 +1,21 @@
+SCHEMA: machines/machine.schema
+schema_id: dominium.schema.machines.machine
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical machine assembly state with explicit port references.
+
+REQUIRED SHAPE:
+record machine
+  required:
+    - schema_version: semver
+    - machine_id: id
+    - machine_type_id: id
+    - ports: list[id]
+    - operational_state: enum(idle|running|blocked|failed)
+    - policy_ids: list[id]
+    - extensions: map
+
+INVARIANTS:
+- Machine operations must be validated against machine_type_registry and operation registry.

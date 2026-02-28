@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Port Connection Schema",
+  "version": "1.0.0",
+  "description": "Deterministic connection between ports and ports/logistics nodes.",
+  "x-doc-ref": [
+    "docs/interaction/MACHINE_PORTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "connection_id",
+    "from_port_id",
+    "to_port_id",
+    "logistics_node_id",
+    "connection_kind",
+    "created_tick",
+    "active",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "connection_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_port_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_port_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "logistics_node_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "connection_kind": {
+      "type": "string",
+      "enum": [
+        "direct",
+        "pipe",
+        "wire",
+        "hose"
+      ]
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "oneOf": [
+        {
+          "required": [
+            "to_port_id"
+          ],
+          "properties": {
+            "to_port_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "logistics_node_id": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "required": [
+            "logistics_node_id"
+          ],
+          "properties": {
+            "logistics_node_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "to_port_id": {
+              "type": "null"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

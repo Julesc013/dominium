@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Machine Schema",
+  "version": "1.0.0",
+  "description": "Deterministic machine assembly row.",
+  "x-doc-ref": [
+    "docs/interaction/MACHINE_PORTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "machine_id",
+    "machine_type_id",
+    "ports",
+    "operational_state",
+    "policy_ids",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "machine_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "machine_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operational_state": {
+      "type": "string",
+      "enum": [
+        "idle",
+        "running",
+        "blocked",
+        "failed"
+      ]
+    },
+    "policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

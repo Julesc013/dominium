@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Port Schema",
+  "version": "1.0.0",
+  "description": "Deterministic machine/structure port row.",
+  "x-doc-ref": [
+    "docs/interaction/MACHINE_PORTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "port_id",
+    "machine_id",
+    "parent_structure_id",
+    "port_type_id",
+    "accepted_material_tags",
+    "accepted_material_ids",
+    "capacity_mass",
+    "current_contents",
+    "connected_to",
+    "visibility_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "port_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "machine_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parent_structure_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "port_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accepted_material_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "accepted_material_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capacity_mass": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "current_contents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "batch_id",
+          "material_id",
+          "mass"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "batch_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "material_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mass": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "connected_to": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "visibility_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "anyOf": [
+        {
+          "required": [
+            "machine_id"
+          ],
+          "properties": {
+            "machine_id": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "required": [
+            "parent_structure_id"
+          ],
+          "properties": {
+            "parent_structure_id": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "port_id": "port.sawmill.input.01",
+      "machine_id": "machine.sawmill.alpha",
+      "parent_structure_id": null,
+      "port_type_id": "port.material_in",
+      "accepted_material_tags": [
+        "tag.wood"
+      ],
+      "accepted_material_ids": [
+        "material.wood_basic"
+      ],
+      "capacity_mass": 100000,
+      "current_contents": [],
+      "connected_to": null,
+      "visibility_policy_id": "visibility.default",
+      "extensions": {}
+    }
+  ]
+}

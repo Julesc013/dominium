@@ -1,0 +1,20 @@
+SCHEMA: machines/port_type.schema
+schema_id: dominium.schema.machines.port_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define data-driven machine port categories and payload semantics.
+
+REQUIRED SHAPE:
+record port_type
+  required:
+    - schema_version: semver
+    - port_type_id: id
+    - description: text
+    - direction: enum(in|out|bidirectional)
+    - payload_kind: enum(material|energy|signal)
+    - extensions: map
+
+INVARIANTS:
+- Port type semantics are registry-driven and never hardcoded by item name.
