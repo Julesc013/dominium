@@ -289,6 +289,12 @@ INTERACTION_UI_SURFACE_FILES = (
 
 INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "src/client/interaction/interaction_dispatch.py"
 INTERACTION_AFFORDANCE_FILE = "src/client/interaction/affordance_generator.py"
+ACTION_SURFACE_ENGINE_FILE = "src/interaction/action_surface_engine.py"
+ACTION_SURFACE_REGISTRY_FILES = (
+    "data/registries/surface_type_registry.json",
+    "data/registries/tool_tag_registry.json",
+    "data/registries/surface_visibility_policy_registry.json",
+)
 INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS = (
     "agent_states",
     "world_assemblies",
@@ -7437,6 +7443,112 @@ def _append_interaction_invariant_findings(
                     rule_id="INV-AFFORDANCES-DERIVED-FROM-LAW",
                 )
             )
+
+    for rel_path in ACTION_SURFACE_REGISTRY_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="required ActionSurface registry file is missing",
+                rule_id="INV-ACTION-SURFACE-DATA-DRIVEN",
+            )
+        )
+
+    action_surface_rel = ACTION_SURFACE_ENGINE_FILE
+    action_surface_abs = os.path.join(repo_root, action_surface_rel.replace("/", os.sep))
+    try:
+        action_surface_text = open(action_surface_abs, "r", encoding="utf-8").read()
+    except OSError:
+        action_surface_text = ""
+    if not action_surface_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=action_surface_rel,
+                line_number=1,
+                snippet="",
+                message="ActionSurface engine file missing; registry-driven surface resolution unavailable",
+                rule_id="INV-ACTION-SURFACE-DATA-DRIVEN",
+            )
+        )
+    else:
+        for token in (
+            "_rows_from_registry(",
+            "_surface_type_set(",
+            "_tool_tag_set(",
+            "_visibility_policy_rows(",
+            "_surface_lists_from_entity(",
+            "allowed_process_ids",
+        ):
+            if token in action_surface_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=action_surface_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="ActionSurface resolution must remain registry-driven and metadata-derived",
+                    rule_id="INV-ACTION-SURFACE-DATA-DRIVEN",
+                )
+            )
+        for token in (
+            'surface_type_id == "surface.',
+            "startswith(\"surface.",
+            "startswith('surface.",
+        ):
+            if token not in action_surface_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=action_surface_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="ActionSurface engine must not hardcode literal surface-type branching",
+                    rule_id="INV-NO-HARDCODED-SURFACE-LOGIC",
+                )
+            )
+
+    for token in (
+        "resolve_action_surfaces(",
+        "_surface_affordance_row(",
+        "allowed_process_ids",
+    ):
+        if token in affordance_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=affordance_rel,
+                line_number=1,
+                snippet=token,
+                message="affordance generation must resolve ActionSurfaces and bind process ids from surface metadata",
+                rule_id="INV-ACTION-SURFACE-DATA-DRIVEN",
+            )
+        )
+    for token in (
+        "execute_intent(",
+        "build_interaction_intent(",
+        "build_interaction_envelope(",
+    ):
+        if token in dispatch_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=dispatch_rel,
+                line_number=1,
+                snippet=token,
+                message="ActionSurface interactions must route through intent + process runtime only",
+                rule_id="INV-ACTION-PROCESS-ONLY",
+            )
+        )
 
     mutation_pattern = re.compile(
         r"\[\s*['\"](" + "|".join(INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS) + r")['\"]\s*\]\s*="
