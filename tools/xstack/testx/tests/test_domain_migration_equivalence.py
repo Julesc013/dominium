@@ -1,24 +1,24 @@
-"""STRICT test: MAT-7/MAT-9 migration to negotiation kernel preserves deterministic equivalence."""
+"""STRICT test: MAT-7/MAT-8/MAT-9 fidelity migration preserves deterministic engine equivalence."""
 
 from __future__ import annotations
 
-import copy
 import sys
 
 
 TEST_ID = "test_domain_migration_equivalence"
-TEST_TAGS = ["strict", "control", "negotiation", "materials", "inspection"]
+TEST_TAGS = ["strict", "control", "fidelity", "materials", "inspection", "reenactment"]
 
 
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.negotiation import negotiate_request
+    from src.control.fidelity import DEFAULT_FIDELITY_POLICY_ID, arbitrate_fidelity_requests
     from src.inspection import inspection_engine as inspect_engine
+    from src.materials.commitments.commitment_engine import build_reenactment_artifact
     from src.materials.materialization.materialization_engine import materialize_structure_roi
 
-    # MAT-9 equivalence: inspection fidelity resolver must match direct kernel negotiation.
+    # MAT-9 equivalence: inspection fidelity resolver must match direct fidelity arbitration output.
     section_rows = {}
     for fidelity in ("macro", "meso", "micro"):
         for section_id in inspect_engine._section_ids_for_fidelity(fidelity=fidelity, target_kind="structure"):
@@ -27,7 +27,7 @@ def run(repo_root: str):
                 "extensions": {"cost_units": 1},
             }
     desired_fidelity = "micro"
-    achieved, _, _, _ = inspect_engine._resolve_fidelity(
+    achieved, _, _, _, inspection_request, inspection_allocation, _ = inspect_engine._resolve_fidelity(
         desired_fidelity=desired_fidelity,
         target_kind="structure",
         max_cost_units=2,
@@ -35,56 +35,37 @@ def run(repo_root: str):
         micro_allowed=True,
         micro_available=True,
         strict_budget=False,
+        requester_subject_id="subject.inspect",
+        tick=0,
+        server_profile_id="server.profile.inspect",
+        fidelity_policy_id=DEFAULT_FIDELITY_POLICY_ID,
     )
-    fidelity_cost_by_level = {}
-    for fidelity in ("macro", "meso", "micro"):
-        section_ids = inspect_engine._section_ids_for_fidelity(fidelity=fidelity, target_kind="structure")
-        fidelity_cost_by_level[fidelity] = int(inspect_engine._section_cost(section_rows, section_ids))
-    desired_cost = int(fidelity_cost_by_level.get(desired_fidelity, 0))
-    direct_inspection = negotiate_request(
-        negotiation_request={
-            "schema_version": "1.0.0",
-            "requester_subject_id": "subject.inspect",
-            "request_vector": {
-                "abstraction_level_requested": "AL0",
-                "fidelity_requested": desired_fidelity,
-                "view_requested": "view.mode.first_person",
-                "epistemic_scope_requested": "ep.scope.default",
-                "budget_requested": desired_cost,
-            },
-            "context": {"law_profile_id": "law.inspect", "server_profile_id": "server.profile.inspect"},
-            "extensions": {
-                "micro_allowed": True,
-                "micro_available": True,
-                "budget_refuse_on_shortfall": False,
-                "budget_refusal_code": "refusal.inspect.budget_exceeded",
-                "budget_zero_means_unbounded": True,
-                "fidelity_cost_by_level": dict(fidelity_cost_by_level),
-            },
-        },
+    direct_inspection = arbitrate_fidelity_requests(
+        fidelity_requests=[dict(inspection_request)],
         rs5_budget_state={
             "tick": 0,
-            "requested_cost_units": desired_cost,
+            "envelope_id": "budget.inspect",
+            "fidelity_policy_id": DEFAULT_FIDELITY_POLICY_ID,
             "max_cost_units_per_tick": 2,
             "runtime_budget_state": {},
             "fairness_state": {},
             "connected_subject_ids": ["subject.inspect"],
         },
-        control_policy={
-            "control_policy_id": "ctrl.policy.inspect",
-            "allowed_abstraction_levels": ["AL0"],
-            "allowed_view_policies": ["view.mode.first_person"],
-            "allowed_fidelity_ranges": ["macro", "meso", "micro"],
-            "extensions": {},
-        },
-        authority_context={"entitlements": []},
-        law_profile={"allowed_processes": [], "forbidden_processes": []},
+        server_profile={"server_profile_id": "server.profile.inspect"},
+        fidelity_policy={"policy_id": DEFAULT_FIDELITY_POLICY_ID},
     )
-    direct_fidelity = str((dict(direct_inspection.get("resolved_vector") or {})).get("fidelity_resolved", "")).strip()
+    direct_inspection_allocations = [
+        dict(row) for row in list(direct_inspection.get("fidelity_allocations") or []) if isinstance(row, dict)
+    ]
+    if not direct_inspection_allocations:
+        return {"status": "fail", "message": "direct MAT-9 fidelity arbitration returned no allocations"}
+    direct_fidelity = str(direct_inspection_allocations[0].get("resolved_level", "")).strip()
     if achieved != direct_fidelity:
-        return {"status": "fail", "message": "MAT-9 fidelity resolution drifted from direct negotiation kernel result"}
+        return {"status": "fail", "message": "MAT-9 fidelity resolution drifted from direct fidelity engine result"}
+    if str(inspection_allocation.get("resolved_level", "")).strip() != direct_fidelity:
+        return {"status": "fail", "message": "MAT-9 fidelity allocation row diverged from direct arbitration"}
 
-    # MAT-7 equivalence: materialization budget truncation must match direct kernel budget allocation.
+    # MAT-7 equivalence: materialization fidelity allocation must match direct fidelity arbitration.
     structure_id = "assembly.structure_instance.alpha"
     structure_row = {"instance_id": structure_id, "installed_node_states": ["ag.node.001"]}
     distribution_rows = [
@@ -102,7 +83,7 @@ def run(repo_root: str):
             },
         }
     ]
-    authority_context = {
+    authority = {
         "subject_id": "subject.materialize",
         "epistemic_scope": {"scope_id": "ep.scope.standard"},
         "entitlements": [],
@@ -118,55 +99,102 @@ def run(repo_root: str):
         strict_budget=False,
         roi_node_ids=["ag.node.001"],
         law_profile={"law_profile_id": "law.materialize", "allowed_processes": [], "forbidden_processes": []},
-        authority_context=copy.deepcopy(authority_context),
+        authority_context=dict(authority),
         policy_context={"server_profile_id": "server.profile.private"},
     )
-    materialization_negotiation = dict(materialized.get("negotiation_result") or {})
-    materialization_budget = int(
-        max(0, int((dict(materialization_negotiation.get("resolved_vector") or {})).get("budget_allocated", 0)))
-    )
-    direct_materialization = negotiate_request(
-        negotiation_request={
-            "schema_version": "1.0.0",
-            "requester_subject_id": "subject.materialize",
-            "request_vector": {
-                "abstraction_level_requested": "AL1",
-                "fidelity_requested": "micro",
-                "view_requested": "view.mode.first_person",
-                "epistemic_scope_requested": "ep.scope.standard",
-                "budget_requested": 5,
-            },
-            "context": {"law_profile_id": "law.materialize", "server_profile_id": "server.profile.private"},
-            "extensions": {
-                "required_process_id": "process.materialize_structure_roi",
-                "budget_refuse_on_shortfall": False,
-                "budget_refusal_code": "refusal.materialization.budget_exceeded",
-                "budget_zero_means_unbounded": False,
-                "fidelity_cost_by_level": {"micro": 5, "meso": 2},
-            },
-        },
+    mat_request = dict(materialized.get("fidelity_request") or {})
+    mat_allocation = dict(materialized.get("fidelity_allocation") or {})
+    mat_arbitration = dict(materialized.get("fidelity_arbitration") or {})
+    direct_materialization = arbitrate_fidelity_requests(
+        fidelity_requests=[dict(mat_request)],
         rs5_budget_state={
             "tick": 9,
-            "requested_cost_units": 5,
+            "envelope_id": str(mat_arbitration.get("envelope_id", "budget.unknown")),
+            "fidelity_policy_id": str(mat_arbitration.get("policy_id", DEFAULT_FIDELITY_POLICY_ID)),
             "max_cost_units_per_tick": 2,
             "runtime_budget_state": {},
             "fairness_state": {},
             "connected_subject_ids": ["subject.materialize"],
         },
-        control_policy={
-            "control_policy_id": "ctrl.policy.materialization",
-            "allowed_abstraction_levels": ["AL1", "AL2", "AL3", "AL4"],
-            "allowed_view_policies": ["view.mode.first_person"],
-            "allowed_fidelity_ranges": ["macro", "meso", "micro"],
+        server_profile={"server_profile_id": "server.profile.private"},
+        fidelity_policy={"policy_id": str(mat_arbitration.get("policy_id", DEFAULT_FIDELITY_POLICY_ID))},
+    )
+    direct_materialization_allocations = [
+        dict(row)
+        for row in list(direct_materialization.get("fidelity_allocations") or [])
+        if isinstance(row, dict)
+    ]
+    if not direct_materialization_allocations:
+        return {"status": "fail", "message": "direct MAT-7 fidelity arbitration returned no allocations"}
+    direct_mat_allocation = direct_materialization_allocations[0]
+    if int(max(0, int(mat_allocation.get("cost_allocated", 0) or 0))) != int(max(0, int(direct_mat_allocation.get("cost_allocated", 0) or 0))):
+        return {"status": "fail", "message": "MAT-7 allocated cost diverged from direct fidelity arbitration"}
+    if str(mat_allocation.get("resolved_level", "")).strip() != str(direct_mat_allocation.get("resolved_level", "")).strip():
+        return {"status": "fail", "message": "MAT-7 resolved fidelity diverged from direct fidelity arbitration"}
+    expected_parts = min(
+        int(max(0, int(mat_request.get("cost_estimate", 0) or 0))),
+        int(max(0, int(mat_allocation.get("cost_allocated", 0) or 0))),
+    )
+    if int(len(list(materialized.get("micro_parts") or []))) != int(expected_parts):
+        return {"status": "fail", "message": "MAT-7 micro part truncation diverged from fidelity allocation budget"}
+
+    # MAT-8 equivalence: reenactment artifact fidelity allocation must align with direct fidelity arbitration.
+    artifact_row, _timeline = build_reenactment_artifact(
+        request_row={
+            "schema_version": "1.0.0",
+            "request_id": "reenactment.request.alpha",
+            "target_id": "manifest.alpha",
+            "tick_range": {"start_tick": 0, "end_tick": 4},
+            "desired_fidelity": "micro",
+            "max_cost_units": 4,
+            "requester_subject_id": "subject.reenact",
+            "created_tick": 4,
             "extensions": {},
         },
-        authority_context=copy.deepcopy(authority_context),
-        law_profile={"law_profile_id": "law.materialize", "allowed_processes": [], "forbidden_processes": []},
+        event_stream_row={
+            "stream_hash": "stream.hash.alpha",
+            "event_ids": ["event.alpha.1", "event.alpha.2"],
+            "event_rows": [
+                {"event_id": "event.alpha.1", "tick": 1, "event_type_id": "event.test"},
+                {"event_id": "event.alpha.2", "tick": 2, "event_type_id": "event.test"},
+            ],
+        },
+        commitment_rows=[],
+        batch_lineage_rows=[{"batch_id": "batch.alpha"}],
+        max_cost_units=4,
+        allow_micro_detail=True,
+        fidelity_policy_id=DEFAULT_FIDELITY_POLICY_ID,
+        server_profile_id="server.profile.private",
+        envelope_id="budget.reenactment",
     )
-    direct_budget = int(max(0, int((dict(direct_materialization.get("resolved_vector") or {})).get("budget_allocated", 0))))
-    if materialization_budget != direct_budget:
-        return {"status": "fail", "message": "MAT-7 budget allocation drifted from direct negotiation kernel result"}
-    if int(len(list(materialized.get("micro_parts") or []))) != int(min(2, materialization_budget)):
-        return {"status": "fail", "message": "MAT-7 truncation does not match negotiated budget allocation"}
+    reenactment_ext = dict(artifact_row.get("extensions") or {})
+    reenactment_request = dict(reenactment_ext.get("fidelity_request") or {})
+    reenactment_allocation = dict(reenactment_ext.get("fidelity_allocation") or {})
+    if not reenactment_request or not reenactment_allocation:
+        return {"status": "fail", "message": "MAT-8 artifact missing embedded fidelity request/allocation"}
+    direct_reenactment = arbitrate_fidelity_requests(
+        fidelity_requests=[dict(reenactment_request)],
+        rs5_budget_state={
+            "tick": 4,
+            "envelope_id": "budget.reenactment",
+            "fidelity_policy_id": DEFAULT_FIDELITY_POLICY_ID,
+            "max_cost_units_per_tick": 4,
+            "runtime_budget_state": {},
+            "fairness_state": {},
+            "connected_subject_ids": ["subject.reenact"],
+        },
+        server_profile={"server_profile_id": "server.profile.private"},
+        fidelity_policy={"policy_id": DEFAULT_FIDELITY_POLICY_ID},
+    )
+    direct_reenactment_allocations = [
+        dict(row) for row in list(direct_reenactment.get("fidelity_allocations") or []) if isinstance(row, dict)
+    ]
+    if not direct_reenactment_allocations:
+        return {"status": "fail", "message": "direct MAT-8 fidelity arbitration returned no allocations"}
+    direct_reenactment_allocation = direct_reenactment_allocations[0]
+    if str(reenactment_allocation.get("resolved_level", "")).strip() != str(direct_reenactment_allocation.get("resolved_level", "")).strip():
+        return {"status": "fail", "message": "MAT-8 resolved fidelity diverged from direct fidelity arbitration"}
+    if str(artifact_row.get("fidelity_achieved", "")).strip() != str(reenactment_allocation.get("resolved_level", "")).strip():
+        return {"status": "fail", "message": "MAT-8 artifact fidelity_achieved is not aligned to fidelity allocation"}
 
-    return {"status": "pass", "message": "domain migration negotiation equivalence checks passed"}
+    return {"status": "pass", "message": "domain migration fidelity equivalence checks passed"}
