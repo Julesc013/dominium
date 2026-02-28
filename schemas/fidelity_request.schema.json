@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fidelity Request Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-5 fidelity arbitration request payload.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "fidelity_request_id",
+    "requester_subject_id",
+    "target_kind",
+    "target_id",
+    "requested_level",
+    "cost_estimate",
+    "priority",
+    "created_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "fidelity_request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requester_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_kind": {
+      "type": "string",
+      "enum": [
+        "structure",
+        "region",
+        "graph",
+        "vehicle",
+        "replay"
+      ]
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requested_level": {
+      "type": "string",
+      "enum": [
+        "micro",
+        "meso",
+        "macro"
+      ]
+    },
+    "cost_estimate": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "fidelity_request_id": "fidelity.request.10d6f63a3d3a2f5a",
+      "requester_subject_id": "peer.alpha",
+      "target_kind": "structure",
+      "target_id": "assembly.structure_instance.alpha",
+      "requested_level": "micro",
+      "cost_estimate": 12,
+      "priority": 10,
+      "created_tick": 42,
+      "deterministic_fingerprint": "5a5e0484fe9b8f24973366f77b30bbce8d4e7d0aaf22dd9038bc7437b5466bc7",
+      "extensions": {
+        "fidelity_cost_by_level": {
+          "micro": 12,
+          "meso": 6,
+          "macro": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fidelity Allocation Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-5 fidelity arbitration allocation payload.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "allocation_id",
+    "fidelity_request_id",
+    "resolved_level",
+    "cost_allocated",
+    "downgrade_reason",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "allocation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fidelity_request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resolved_level": {
+      "type": "string",
+      "enum": [
+        "micro",
+        "meso",
+        "macro"
+      ]
+    },
+    "cost_allocated": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "downgrade_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "allocation_id": "fidelity.alloc.77e591a39d9aa66a",
+      "fidelity_request_id": "fidelity.request.10d6f63a3d3a2f5a",
+      "resolved_level": "meso",
+      "cost_allocated": 6,
+      "downgrade_reason": "downgrade.budget_insufficient",
+      "deterministic_fingerprint": "0f8a3932e6b07649eaad82df44f319e26457d895e8eebd0b7cd0e43f55a6f9d2",
+      "extensions": {
+        "refusal_codes": [],
+        "requested_level": "micro",
+        "envelope_id": "budget.default_realistic"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+SCHEMA: control/fidelity_allocation.schema
+schema_id: dominium.schema.control.fidelity_allocation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic fidelity arbitration allocation result for a single request.
+
+REQUIRED SHAPE:
+record fidelity_allocation
+  required:
+    - schema_version: semver
+    - allocation_id: id
+    - fidelity_request_id: id
+    - resolved_level: enum(micro|meso|macro)
+    - cost_allocated: u32
+    - downgrade_reason: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Allocation must not exceed RS-5 envelope budget.
+- Any downgrade/refusal-adjacent outcome is explicit and auditable.

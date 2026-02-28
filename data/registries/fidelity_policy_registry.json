@@ -1,0 +1,45 @@
+{
+  "schema_id": "dominium.registry.fidelity_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.fidelity_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "fidelity.policy.default",
+        "description": "Default deterministic priority-first fidelity arbitration.",
+        "arbitration_mode": "priority",
+        "extensions": {
+          "priority_descending": true,
+          "equal_share_first": false,
+          "singleplayer_relaxed": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "fidelity.policy.rank_fair",
+        "description": "Ranked fairness policy with equal baseline share then deterministic leftover allocation.",
+        "arbitration_mode": "equal_share",
+        "extensions": {
+          "priority_descending": true,
+          "equal_share_first": true,
+          "singleplayer_relaxed": false,
+          "ranked_recommended": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "fidelity.policy.singleplayer_relaxed",
+        "description": "Singleplayer relaxed policy using envelope bound without per-subject equal-share caps.",
+        "arbitration_mode": "relaxed",
+        "extensions": {
+          "priority_descending": true,
+          "equal_share_first": false,
+          "singleplayer_relaxed": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

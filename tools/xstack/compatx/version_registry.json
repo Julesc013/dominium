@@ -98,6 +98,13 @@
         "1.0.0"
       ]
     },
+    "budget_allocation_record": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "budget_envelope": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -596,6 +603,13 @@
         "1.0.0"
       ]
     },
+    "fidelity_allocation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "fidelity_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -604,6 +618,13 @@
       ]
     },
     "fidelity_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fidelity_request": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
