@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from src.control.negotiation import negotiate_request
+from src.control.fidelity import (
+    DEFAULT_FIDELITY_POLICY_ID,
+    REFUSAL_CTRL_FIDELITY_DENIED,
+    RANK_FAIR_POLICY_ID,
+    arbitrate_fidelity_requests,
+    build_fidelity_request,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -417,53 +423,59 @@ def materialize_structure_roi(
         or str(authority.get("peer_id", "")).strip()
         or "subject.system"
     )
-    materialization_negotiation = negotiate_request(
-        negotiation_request={
-            "schema_version": "1.0.0",
-            "requester_subject_id": requester_subject_id,
-            "request_vector": {
-                "abstraction_level_requested": "AL1",
-                "fidelity_requested": "micro",
-                "view_requested": "view.mode.first_person",
-                "epistemic_scope_requested": str((dict(authority.get("epistemic_scope") or {})).get("scope_id", "ep.scope.default")).strip() or "ep.scope.default",
-                "budget_requested": int(desired_count),
+    connected_subject_ids = _sorted_unique_strings(list(policy.get("connected_peer_ids") or []))
+    if requester_subject_id not in connected_subject_ids:
+        connected_subject_ids.append(requester_subject_id)
+    fidelity_policy_id = (
+        str(policy.get("fidelity_policy_id", "")).strip()
+        or (RANK_FAIR_POLICY_ID if "rank" in str(policy.get("server_profile_id", "")).strip().lower() else DEFAULT_FIDELITY_POLICY_ID)
+    )
+    fidelity_request = build_fidelity_request(
+        requester_subject_id=requester_subject_id,
+        target_kind="structure",
+        target_id=str(structure_id),
+        requested_level="micro",
+        cost_estimate=int(desired_count),
+        priority=_as_int((dict(policy.get("extensions") or {})).get("materialization_priority", 0), 0),
+        created_tick=int(max(0, int(current_tick))),
+        extensions={
+            "allowed_levels": ["micro", "meso", "macro"],
+            "fidelity_cost_by_level": {
+                "micro": int(max(1, int(desired_count))),
+                "meso": int(max(1, int(desired_count // 2))),
+                "macro": 1,
             },
-            "context": {
-                "law_profile_id": str(law.get("law_profile_id", "law.unknown")).strip() or "law.unknown",
-                "server_profile_id": str(policy.get("server_profile_id", "server.profile.unknown")).strip() or "server.profile.unknown",
-            },
-            "extensions": {
-                "required_process_id": "process.materialize_structure_roi",
-                "budget_refuse_on_shortfall": bool(strict_budget),
-                "budget_refusal_code": REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED,
-                "budget_zero_means_unbounded": False,
-                "fidelity_cost_by_level": {
-                    "micro": int(desired_count),
-                    "meso": int(max(1, int(desired_count // 2))),
-                    "macro": 1,
-                },
-            },
+            "micro_allowed": True,
+            "micro_available": True,
+            "strict_budget": bool(strict_budget),
+            "law_profile_id": str(law.get("law_profile_id", "law.unknown")).strip() or "law.unknown",
         },
+    )
+    materialization_arbitration = arbitrate_fidelity_requests(
+        fidelity_requests=[dict(fidelity_request)],
         rs5_budget_state={
             "tick": int(max(0, int(current_tick))),
-            "requested_cost_units": int(desired_count),
-            "max_cost_units_per_tick": int(budget),
-            "runtime_budget_state": {},
-            "fairness_state": {},
-            "connected_subject_ids": [requester_subject_id],
+            "envelope_id": str(policy.get("budget_envelope_id", "")).strip() or "budget.unknown",
+            "fidelity_policy_id": str(fidelity_policy_id),
+            "max_cost_units_per_tick": int(max(0, int(budget))),
+            "runtime_budget_state": dict(policy.get("materialization_runtime_budget_state") or {}),
+            "fairness_state": {
+                "connected_subject_ids": list(connected_subject_ids),
+                "used_by_tick_subject": dict((dict(policy.get("materialization_arbitration_state") or {})).get("used_by_tick_peer") or {}),
+            },
+            "connected_subject_ids": list(connected_subject_ids),
         },
-        control_policy={
-            "control_policy_id": "ctrl.policy.materialization",
-            "allowed_abstraction_levels": ["AL1", "AL2", "AL3", "AL4"],
-            "allowed_view_policies": ["view.mode.first_person"],
-            "allowed_fidelity_ranges": ["macro", "meso", "micro"],
-            "extensions": {},
-        },
-        authority_context=authority,
-        law_profile=law,
+        server_profile={"server_profile_id": str(policy.get("server_profile_id", "")).strip() or "server.profile.unknown"},
+        fidelity_policy={"policy_id": str(fidelity_policy_id)},
     )
-    refusal_codes = _sorted_unique_strings(materialization_negotiation.get("refusal_codes"))
-    if REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED in refusal_codes:
+    materialization_allocations = [
+        dict(row) for row in list(materialization_arbitration.get("fidelity_allocations") or []) if isinstance(row, dict)
+    ]
+    materialization_allocation = dict(materialization_allocations[0] if materialization_allocations else {})
+    allocation_ext = dict(materialization_allocation.get("extensions") or {})
+    refusal_codes = _sorted_unique_strings(list(allocation_ext.get("refusal_codes") or []))
+    allocation_cost = int(max(0, _as_int(materialization_allocation.get("cost_allocated", 0), 0)))
+    if REFUSAL_CTRL_FIDELITY_DENIED in set(refusal_codes) and bool(strict_budget):
         raise MaterializationError(
             REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED,
             "materialization budget exceeded",
@@ -472,15 +484,10 @@ def materialize_structure_roi(
                 "roi_id": roi_token,
                 "requested_parts": int(desired_count),
                 "max_micro_parts": int(budget),
+                "fidelity_request_id": str(fidelity_request.get("fidelity_request_id", "")),
             },
         )
-    negotiated_budget = int(
-        max(
-            0,
-            _as_int((dict(materialization_negotiation.get("resolved_vector") or {})).get("budget_allocated", budget), budget),
-        )
-    )
-    effective_budget = int(min(max(0, int(budget)), int(negotiated_budget)))
+    effective_budget = int(min(max(0, int(budget)), int(allocation_cost)))
     if desired_count > effective_budget:
         candidates = list(candidates[:effective_budget])
         truncated = True
@@ -544,7 +551,14 @@ def materialize_structure_roi(
                 "requested_parts": int(desired_count),
                 "materialized_parts": int(len(micro_rows)),
                 "truncated_count": int(truncated_count),
-                "negotiation_result": dict(materialization_negotiation),
+                "resolved_fidelity": str(materialization_allocation.get("resolved_level", "macro")).strip() or "macro",
+                "fidelity_request": dict(fidelity_request),
+                "fidelity_allocation": dict(materialization_allocation),
+                "fidelity_policy_id": str(materialization_arbitration.get("policy_id", fidelity_policy_id)),
+                "fidelity_runtime_budget_state": dict(materialization_arbitration.get("runtime_budget_state") or {}),
+                "fidelity_fairness_state": dict(materialization_arbitration.get("fairness_state") or {}),
+                # Backward-compatible alias retained while callers migrate from CTRL-3 terminology.
+                "negotiation_result": dict(materialization_arbitration),
             },
         }
     )
@@ -590,7 +604,10 @@ def materialize_structure_roi(
         "invariant_delta": int(invariant_delta),
         "truncated": bool(truncated),
         "truncated_count": int(truncated_count),
-        "negotiation_result": dict(materialization_negotiation),
+        "fidelity_request": dict(fidelity_request),
+        "fidelity_allocation": dict(materialization_allocation),
+        "fidelity_arbitration": dict(materialization_arbitration),
+        "negotiation_result": dict(materialization_arbitration),
         "remaining_micro_parts": list(remaining_micro_parts),
         "remaining_materialization_states": list(remaining_states),
         "reenactment_descriptor": descriptors,

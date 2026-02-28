@@ -4,6 +4,13 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
+from src.control.fidelity import (
+    DEFAULT_FIDELITY_POLICY_ID,
+    NO_DOWNGRADE,
+    REFUSAL_CTRL_FIDELITY_DENIED,
+    arbitrate_fidelity_requests,
+    build_fidelity_request,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -332,6 +339,9 @@ def build_reenactment_artifact(
     batch_lineage_rows: List[dict] | None,
     max_cost_units: int,
     allow_micro_detail: bool,
+    fidelity_policy_id: str = DEFAULT_FIDELITY_POLICY_ID,
+    server_profile_id: str = "server.profile.reenactment",
+    envelope_id: str = "budget.reenactment",
 ) -> Tuple[dict, dict]:
     req = dict(request_row or {})
     stream = dict(event_stream_row or {})
@@ -359,12 +369,53 @@ def build_reenactment_artifact(
     micro_cost = max(meso_cost, event_count * 5 + commitment_count * 2 + batch_count)
 
     desired_max_cost = max(0, _as_int(max_cost_units, 0))
-    fidelity_achieved = desired_fidelity
-    if desired_fidelity == "micro" and micro_cost > desired_max_cost:
-        fidelity_achieved = "meso"
-    if fidelity_achieved == "meso" and meso_cost > desired_max_cost:
-        fidelity_achieved = "macro"
-    if macro_cost > desired_max_cost:
+    requester_subject_id = str(req.get("requester_subject_id", "")).strip() or "subject.system"
+    request_tick = max(
+        0,
+        _as_int(
+            req.get("created_tick", (dict(req.get("tick_range") or {})).get("end_tick", 0)),
+            0,
+        ),
+    )
+    requested_cost = {"macro": int(macro_cost), "meso": int(meso_cost), "micro": int(micro_cost)}.get(
+        desired_fidelity,
+        int(macro_cost),
+    )
+    fidelity_request = build_fidelity_request(
+        requester_subject_id=requester_subject_id,
+        target_kind="replay",
+        target_id=str(req.get("target_id", "")).strip() or "target.unknown",
+        requested_level=desired_fidelity,
+        cost_estimate=int(requested_cost),
+        priority=_as_int((dict(req.get("extensions") or {})).get("priority", 0), 0),
+        created_tick=int(request_tick),
+        extensions={
+            "allowed_levels": ["micro", "meso", "macro"],
+            "fidelity_cost_by_level": {"micro": int(micro_cost), "meso": int(meso_cost), "macro": int(macro_cost)},
+            "micro_allowed": bool(allow_micro_detail),
+            "micro_available": True,
+            "strict_budget": True,
+        },
+    )
+    arbitration = arbitrate_fidelity_requests(
+        fidelity_requests=[dict(fidelity_request)],
+        rs5_budget_state={
+            "tick": int(request_tick),
+            "envelope_id": str(envelope_id).strip() or "budget.reenactment",
+            "fidelity_policy_id": str(fidelity_policy_id).strip() or DEFAULT_FIDELITY_POLICY_ID,
+            "max_cost_units_per_tick": int(desired_max_cost),
+            "runtime_budget_state": {},
+            "fairness_state": {},
+            "connected_subject_ids": [requester_subject_id],
+        },
+        server_profile={"server_profile_id": str(server_profile_id).strip() or "server.profile.reenactment"},
+        fidelity_policy={"policy_id": str(fidelity_policy_id).strip() or DEFAULT_FIDELITY_POLICY_ID},
+    )
+    allocations = [dict(row) for row in list(arbitration.get("fidelity_allocations") or []) if isinstance(row, dict)]
+    allocation = dict(allocations[0] if allocations else {})
+    allocation_ext = dict(allocation.get("extensions") or {})
+    refusal_codes = _sorted_unique_strings(list(allocation_ext.get("refusal_codes") or []))
+    if REFUSAL_CTRL_FIDELITY_DENIED in set(refusal_codes):
         raise CommitmentError(
             REFUSAL_REENACTMENT_BUDGET_EXCEEDED,
             "reenactment budget cannot satisfy macro fidelity",
@@ -372,8 +423,12 @@ def build_reenactment_artifact(
                 "request_id": str(req.get("request_id", "")),
                 "max_cost_units": int(desired_max_cost),
                 "required_macro_cost": int(macro_cost),
+                "fidelity_request_id": str(fidelity_request.get("fidelity_request_id", "")),
             },
         )
+    fidelity_achieved = str(allocation.get("resolved_level", "")).strip() or "macro"
+    if fidelity_achieved not in ("macro", "meso", "micro"):
+        fidelity_achieved = "macro"
 
     timeline_payload = _build_timeline(
         fidelity=fidelity_achieved,
@@ -438,7 +493,13 @@ def build_reenactment_artifact(
                 "micro_cost": int(micro_cost),
             },
             "derived_only": True,
-            "degraded": fidelity_achieved != desired_fidelity,
+            "degraded": bool(
+                fidelity_achieved != desired_fidelity
+                or str(allocation.get("downgrade_reason", NO_DOWNGRADE)).strip() not in ("", NO_DOWNGRADE)
+            ),
+            "fidelity_request": dict(fidelity_request),
+            "fidelity_allocation": dict(allocation),
+            "fidelity_arbitration": dict(arbitration),
         },
     }
     artifact_row["deterministic_fingerprint"] = _row_fingerprint(artifact_row)

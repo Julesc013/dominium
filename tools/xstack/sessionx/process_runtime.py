@@ -177,7 +177,13 @@ from src.control.control_plane_engine import (
     build_control_intent,
     build_control_resolution,
 )
-from src.control.negotiation import negotiate_request
+from src.control.fidelity import (
+    DEFAULT_FIDELITY_POLICY_ID,
+    RANK_FAIR_POLICY_ID,
+    REFUSAL_CTRL_FIDELITY_DENIED,
+    arbitrate_fidelity_requests,
+    build_fidelity_request,
+)
 from src.control.planning.plan_engine import (
     REFUSAL_PLAN_INVALID,
     REFUSAL_PLAN_NOT_FOUND,
@@ -7189,57 +7195,76 @@ def _execute_inspection_snapshot_process(
     desired_fidelity = str(inputs.get("desired_fidelity", "macro")).strip() or "macro"
     if desired_fidelity not in ("macro", "meso", "micro"):
         desired_fidelity = "macro"
-    tick_token = str(int(current_tick))
-    fairness_state = dict((policy_context or {}).get("inspection_arbitration_state") or {})
-    budget_negotiation = negotiate_request(
-        negotiation_request={
-            "schema_version": "1.0.0",
-            "requester_subject_id": requester_subject_id,
-            "request_vector": {
-                "abstraction_level_requested": "AL0",
-                "fidelity_requested": desired_fidelity,
-                "view_requested": "view.mode.first_person",
-                "epistemic_scope_requested": str((dict(authority_context.get("epistemic_scope") or {})).get("scope_id", "ep.scope.default")).strip() or "ep.scope.default",
-                "budget_requested": int(requested_cost_units),
-            },
-            "context": {
-                "law_profile_id": str((dict(law_profile or {})).get("law_profile_id", "law.unknown")).strip() or "law.unknown",
-                "server_profile_id": str((dict(policy_context or {})).get("server_profile_id", "server.profile.unknown")).strip() or "server.profile.unknown",
-            },
-            "extensions": {
-                "required_process_id": "process.inspect_generate_snapshot",
-                "budget_refuse_on_shortfall": True,
-                "budget_refusal_code": "refusal.inspect.budget_exceeded",
-                "budget_zero_means_unbounded": False,
-            },
+    inspection_policy_context = dict(policy_context or {})
+    inspection_server_profile_id = (
+        str(inspection_policy_context.get("server_profile_id", "")).strip()
+        or "server.profile.unknown"
+    )
+    inspection_fidelity_policy_id = (
+        str(inspection_policy_context.get("inspection_fidelity_policy_id", "")).strip()
+        or str(inspection_policy_context.get("fidelity_policy_id", "")).strip()
+        or (RANK_FAIR_POLICY_ID if "rank" in inspection_server_profile_id.lower() else DEFAULT_FIDELITY_POLICY_ID)
+    )
+    inspection_target_kind = str(inputs.get("target_kind", "")).strip() or "structure"
+    inspection_cost_by_level = {"macro": 1, "meso": max(1, int(requested_cost_units // 2)), "micro": int(max(1, requested_cost_units))}
+    if desired_fidelity == "meso":
+        inspection_cost_by_level["macro"] = max(1, int(requested_cost_units // 2))
+        inspection_cost_by_level["meso"] = int(max(1, requested_cost_units))
+    elif desired_fidelity == "macro":
+        inspection_cost_by_level["macro"] = int(max(1, requested_cost_units))
+    inspection_fidelity_request = build_fidelity_request(
+        requester_subject_id=requester_subject_id,
+        target_kind=inspection_target_kind,
+        target_id=target_id,
+        requested_level=desired_fidelity,
+        cost_estimate=int(max(1, requested_cost_units)),
+        priority=_as_int((dict(inputs.get("extensions") or {})).get("priority", 0), 0),
+        created_tick=int(current_tick),
+        extensions={
+            "allowed_levels": ["micro", "meso", "macro"],
+            "fidelity_cost_by_level": dict(inspection_cost_by_level),
+            "micro_allowed": True,
+            "micro_available": True,
+            "strict_budget": True,
         },
+    )
+    inspection_fairness_state = dict(inspection_policy_context.get("inspection_arbitration_state") or {})
+    inspection_fidelity_arbitration = arbitrate_fidelity_requests(
+        fidelity_requests=[dict(inspection_fidelity_request)],
         rs5_budget_state={
             "tick": int(current_tick),
-            "requested_cost_units": int(requested_cost_units),
+            "envelope_id": str(inspection_policy_context.get("budget_envelope_id", "")).strip() or "budget.unknown",
+            "fidelity_policy_id": str(inspection_fidelity_policy_id),
             "max_cost_units_per_tick": int(max_inspection_budget),
-            "runtime_budget_state": dict((policy_context or {}).get("inspection_runtime_budget_state") or {}),
+            "runtime_budget_state": dict(inspection_policy_context.get("inspection_runtime_budget_state") or {}),
             "fairness_state": {
                 "connected_subject_ids": list(active_peer_ids),
-                "used_by_tick_subject": dict(fairness_state.get("used_by_tick_peer") or {}),
+                "used_by_tick_subject": dict(inspection_fairness_state.get("used_by_tick_peer") or {}),
             },
             "connected_subject_ids": list(active_peer_ids),
         },
-        control_policy={
-            "control_policy_id": "ctrl.policy.inspect",
-            "allowed_abstraction_levels": ["AL0"],
-            "allowed_view_policies": ["view.mode.first_person"],
-            "allowed_fidelity_ranges": ["macro", "meso", "micro"],
-            "extensions": {},
-        },
-        authority_context=dict(authority_context or {}),
-        law_profile=dict(law_profile or {}),
+        server_profile={"server_profile_id": inspection_server_profile_id},
+        fidelity_policy={"policy_id": str(inspection_fidelity_policy_id)},
     )
-    budget_ext = dict((dict(budget_negotiation.get("extensions") or {})).get("budget") or {})
-    fair_share_cap = max(0, _as_int(budget_ext.get("fair_share_cap", 0), 0))
-    used_by_peer = max(0, _as_int(budget_ext.get("used_by_subject_before", 0), 0))
-    allocated_budget = max(0, _as_int((dict(budget_negotiation.get("resolved_vector") or {})).get("budget_allocated", 0), 0))
-    refusal_codes = _sorted_tokens(list(budget_negotiation.get("refusal_codes") or []))
-    if "refusal.inspect.budget_exceeded" in set(refusal_codes):
+    inspection_allocations = [
+        dict(row) for row in list(inspection_fidelity_arbitration.get("fidelity_allocations") or []) if isinstance(row, dict)
+    ]
+    inspection_allocation = dict(inspection_allocations[0] if inspection_allocations else {})
+    inspection_allocation_ext = dict(inspection_allocation.get("extensions") or {})
+    refusal_codes = _sorted_tokens(list(inspection_allocation_ext.get("refusal_codes") or []))
+    fair_share_cap = max(0, _as_int(inspection_allocation_ext.get("share_limit", 0), 0))
+    budget_records = [
+        dict(row) for row in list(inspection_fidelity_arbitration.get("budget_allocation_records") or []) if isinstance(row, dict)
+    ]
+    subject_budget_record = {}
+    for row in budget_records:
+        if str(row.get("subject_id", "")).strip() == requester_subject_id:
+            subject_budget_record = dict(row)
+            break
+    subject_budget_ext = dict(subject_budget_record.get("extensions") or {})
+    used_by_peer = max(0, _as_int(subject_budget_ext.get("used_before", 0), 0))
+    allocated_budget = max(0, _as_int(inspection_allocation.get("cost_allocated", 0), 0))
+    if REFUSAL_CTRL_FIDELITY_DENIED in set(refusal_codes):
         if fair_share_cap > 0 and used_by_peer + requested_cost_units > fair_share_cap:
             refusal_message = "inspection arbitration fair-share cap exceeded for this tick"
             remediation_hint = "Reduce cost_units, retry next tick, or increase inspection budget envelope."
@@ -7260,8 +7285,8 @@ def _execute_inspection_snapshot_process(
             "$.intent.inputs.cost_units",
         )
     if isinstance(policy_context, dict):
-        policy_context["inspection_runtime_budget_state"] = dict(budget_ext.get("runtime_budget_state") or {})
-        fairness_out = dict(budget_ext.get("fairness_state") or {})
+        policy_context["inspection_runtime_budget_state"] = dict(inspection_fidelity_arbitration.get("runtime_budget_state") or {})
+        fairness_out = dict(inspection_fidelity_arbitration.get("fairness_state") or {})
         policy_context["inspection_arbitration_state"] = {
             "used_by_tick_peer": dict(
                 (str(key), dict(value))
@@ -7270,8 +7295,17 @@ def _execute_inspection_snapshot_process(
             ),
             "connected_peer_ids": _sorted_tokens(list(fairness_out.get("connected_subject_ids") or [])),
         }
+        policy_context["inspection_fidelity_policy_id"] = str(inspection_fidelity_arbitration.get("policy_id", inspection_fidelity_policy_id))
     requested_cost_units = int(allocated_budget)
-    used_by_peer_after = int(max(0, used_by_peer + requested_cost_units))
+    used_by_peer_after = int(
+        max(
+            0,
+            _as_int(
+                subject_budget_ext.get("used_after", used_by_peer + requested_cost_units),
+                used_by_peer + requested_cost_units,
+            ),
+        )
+    )
 
     cache_policy_registry = _policy_payload(policy_context, "inspection_cache_policy_registry")
     cache_policy_id = str((policy_context or {}).get("inspection_cache_policy_id", "")).strip()
@@ -7399,6 +7433,9 @@ def _execute_inspection_snapshot_process(
         "inspection_cost_units": int(requested_cost_units),
         "inspection_budget_share_per_peer": int(fair_share_cap),
         "inspection_budget_used_by_peer": int(used_by_peer_after),
+        "inspection_fidelity_request": dict(inspection_fidelity_request),
+        "inspection_fidelity_allocation": dict(inspection_allocation),
+        "inspection_fidelity_arbitration": dict(inspection_fidelity_arbitration),
         "desired_fidelity": str(inspection_request_row.get("desired_fidelity", "")),
         "achieved_fidelity": str((cache_result.get("snapshot") or {}).get("achieved_fidelity", "")),
         "inspection_degraded": bool((dict((cache_result.get("snapshot") or {}).get("extensions") or {})).get("degraded", False)),
@@ -16967,6 +17004,133 @@ def execute_intent(
             ),
         )
         requester_subject_id = _material_commitment_actor_subject_id(authority_context)
+        allow_micro_detail = _reenactment_micro_detail_allowed(
+            authority_context=authority_context,
+            law_profile=law_profile,
+        )
+        if desired_fidelity == "micro" and not bool(allow_micro_detail):
+            return refusal(
+                REFUSAL_REENACTMENT_FORBIDDEN_BY_LAW,
+                "micro reenactment detail is forbidden by law profile",
+                "Use meso/macro fidelity or elevate epistemic entitlements under allowed law profile.",
+                {"target_id": target_id, "requester_subject_id": requester_subject_id},
+                "$.intent.inputs.desired_fidelity",
+            )
+
+        connected_peer_ids = _sorted_tokens(list((policy_context or {}).get("connected_peer_ids") or []))
+        active_peer_ids = sorted(set(connected_peer_ids + [requester_subject_id])) if connected_peer_ids else [requester_subject_id]
+        reenactment_server_profile_id = (
+            str((dict(policy_context or {})).get("server_profile_id", "")).strip()
+            or "server.profile.unknown"
+        )
+        reenactment_fidelity_policy_id = (
+            str((dict(policy_context or {})).get("reenactment_fidelity_policy_id", "")).strip()
+            or str((dict(policy_context or {})).get("fidelity_policy_id", "")).strip()
+            or (RANK_FAIR_POLICY_ID if "rank" in reenactment_server_profile_id.lower() else DEFAULT_FIDELITY_POLICY_ID)
+        )
+        reenactment_budget_limit = max(
+            0,
+            _as_int(
+                (dict(policy_context or {})).get(
+                    "reenactment_max_cost_units_per_tick",
+                    (dict(policy_context or {})).get("reenactment_max_cost_units", max_cost_units),
+                ),
+                max_cost_units,
+            ),
+        )
+        reenactment_cost_by_level = {"macro": 1, "meso": max(1, int(max_cost_units // 2)), "micro": int(max(1, max_cost_units))}
+        if desired_fidelity == "meso":
+            reenactment_cost_by_level["macro"] = max(1, int(max_cost_units // 2))
+            reenactment_cost_by_level["meso"] = int(max(1, max_cost_units))
+        elif desired_fidelity == "macro":
+            reenactment_cost_by_level["macro"] = int(max(1, max_cost_units))
+        reenactment_fidelity_request = build_fidelity_request(
+            requester_subject_id=requester_subject_id,
+            target_kind="replay",
+            target_id=target_id,
+            requested_level=desired_fidelity,
+            cost_estimate=int(max(1, max_cost_units)),
+            priority=_as_int((dict(inputs.get("extensions") or {})).get("priority", 0), 0),
+            created_tick=int(current_tick),
+            extensions={
+                "allowed_levels": ["micro", "meso", "macro"],
+                "fidelity_cost_by_level": dict(reenactment_cost_by_level),
+                "micro_allowed": bool(allow_micro_detail),
+                "micro_available": True,
+                "strict_budget": True,
+            },
+        )
+        reenactment_fairness_state = dict((dict(policy_context or {})).get("reenactment_arbitration_state") or {})
+        reenactment_fidelity_arbitration = arbitrate_fidelity_requests(
+            fidelity_requests=[dict(reenactment_fidelity_request)],
+            rs5_budget_state={
+                "tick": int(current_tick),
+                "envelope_id": str((dict(policy_context or {})).get("budget_envelope_id", "")).strip() or "budget.unknown",
+                "fidelity_policy_id": str(reenactment_fidelity_policy_id),
+                "max_cost_units_per_tick": int(reenactment_budget_limit),
+                "runtime_budget_state": dict((dict(policy_context or {})).get("reenactment_runtime_budget_state") or {}),
+                "fairness_state": {
+                    "connected_subject_ids": list(active_peer_ids),
+                    "used_by_tick_subject": dict(reenactment_fairness_state.get("used_by_tick_peer") or {}),
+                },
+                "connected_subject_ids": list(active_peer_ids),
+            },
+            server_profile={"server_profile_id": reenactment_server_profile_id},
+            fidelity_policy={"policy_id": str(reenactment_fidelity_policy_id)},
+        )
+        reenactment_allocations = [
+            dict(row)
+            for row in list(reenactment_fidelity_arbitration.get("fidelity_allocations") or [])
+            if isinstance(row, dict)
+        ]
+        reenactment_fidelity_allocation = dict(reenactment_allocations[0] if reenactment_allocations else {})
+        reenactment_allocation_ext = dict(reenactment_fidelity_allocation.get("extensions") or {})
+        reenactment_refusal_codes = _sorted_tokens(list(reenactment_allocation_ext.get("refusal_codes") or []))
+        reenactment_budget_records = [
+            dict(row)
+            for row in list(reenactment_fidelity_arbitration.get("budget_allocation_records") or [])
+            if isinstance(row, dict)
+        ]
+        reenactment_subject_budget_row = {}
+        for row in reenactment_budget_records:
+            if str(row.get("subject_id", "")).strip() == requester_subject_id:
+                reenactment_subject_budget_row = dict(row)
+                break
+        reenactment_subject_budget_ext = dict(reenactment_subject_budget_row.get("extensions") or {})
+        if REFUSAL_CTRL_FIDELITY_DENIED in set(reenactment_refusal_codes):
+            return refusal(
+                REFUSAL_REENACTMENT_BUDGET_EXCEEDED,
+                "reenactment budget cannot satisfy macro fidelity",
+                "Reduce requested cost/fidelity, retry next tick, or increase reenactment budget envelope.",
+                {
+                    "target_id": target_id,
+                    "requester_subject_id": requester_subject_id,
+                    "max_cost_units": str(max_cost_units),
+                    "max_cost_units_per_tick": str(reenactment_budget_limit),
+                },
+                "$.intent.inputs.max_cost_units",
+            )
+        if isinstance(policy_context, dict):
+            policy_context["reenactment_runtime_budget_state"] = dict(
+                reenactment_fidelity_arbitration.get("runtime_budget_state") or {}
+            )
+            fairness_out = dict(reenactment_fidelity_arbitration.get("fairness_state") or {})
+            policy_context["reenactment_arbitration_state"] = {
+                "used_by_tick_peer": dict(
+                    (str(key), dict(value))
+                    for key, value in sorted(
+                        dict(fairness_out.get("used_by_tick_subject") or {}).items(),
+                        key=lambda item: str(item[0]),
+                    )
+                    if isinstance(value, dict)
+                ),
+                "connected_peer_ids": _sorted_tokens(list(fairness_out.get("connected_subject_ids") or [])),
+            }
+            policy_context["reenactment_fidelity_policy_id"] = str(
+                reenactment_fidelity_arbitration.get("policy_id", reenactment_fidelity_policy_id)
+            )
+        max_cost_units = max(0, _as_int(reenactment_fidelity_allocation.get("cost_allocated", 0), 0))
+
         request_id = str(inputs.get("request_id", "")).strip()
         if not request_id:
             request_id = "reenactment.request.{}".format(
@@ -17053,10 +17217,6 @@ def execute_intent(
             if token:
                 batch_ids.add(token)
         batch_lineage_rows = [{"batch_id": token} for token in sorted(batch_ids)]
-        allow_micro_detail = _reenactment_micro_detail_allowed(
-            authority_context=authority_context,
-            law_profile=law_profile,
-        )
         try:
             artifact_row, timeline_payload = build_reenactment_artifact(
                 request_row=request_row,
@@ -17065,6 +17225,9 @@ def execute_intent(
                 batch_lineage_rows=batch_lineage_rows,
                 max_cost_units=int(max_cost_units),
                 allow_micro_detail=bool(allow_micro_detail),
+                fidelity_policy_id=str(reenactment_fidelity_arbitration.get("policy_id", reenactment_fidelity_policy_id)),
+                server_profile_id=reenactment_server_profile_id,
+                envelope_id=str(reenactment_fidelity_arbitration.get("envelope_id", "budget.unknown")),
             )
         except CommitmentError as exc:
             return refusal(
@@ -17103,6 +17266,11 @@ def execute_intent(
             "degraded": bool((dict(artifact_row.get("extensions") or {})).get("degraded", False)),
             "max_cost_units": int(max_cost_units),
             "budget": dict(budget_info),
+            "fidelity_request": dict(reenactment_fidelity_request),
+            "fidelity_allocation": dict(reenactment_fidelity_allocation),
+            "fidelity_arbitration": dict(reenactment_fidelity_arbitration),
+            "fidelity_budget_used_before": int(_as_int(reenactment_subject_budget_ext.get("used_before", 0), 0)),
+            "fidelity_budget_used_after": int(_as_int(reenactment_subject_budget_ext.get("used_after", 0), 0)),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.reenactment_play":
@@ -17249,6 +17417,25 @@ def execute_intent(
                 dict(exc.details),
                 "$.intent.inputs",
             )
+        materialization_arbitration = dict(materialized.get("fidelity_arbitration") or {})
+        materialization_allocation = dict(materialized.get("fidelity_allocation") or {})
+        if isinstance(policy_context, dict) and materialization_arbitration:
+            policy_context["materialization_runtime_budget_state"] = dict(materialization_arbitration.get("runtime_budget_state") or {})
+            fairness_out = dict(materialization_arbitration.get("fairness_state") or {})
+            policy_context["materialization_arbitration_state"] = {
+                "used_by_tick_peer": dict(
+                    (str(key), dict(value))
+                    for key, value in sorted(
+                        dict(fairness_out.get("used_by_tick_subject") or {}).items(),
+                        key=lambda item: str(item[0]),
+                    )
+                    if isinstance(value, dict)
+                ),
+                "connected_peer_ids": _sorted_tokens(list(fairness_out.get("connected_subject_ids") or [])),
+            }
+            policy_context["materialization_fidelity_policy_id"] = str(
+                materialization_arbitration.get("policy_id", "")
+            ).strip()
 
         micro_part_instances = sorted(
             list(materialized.get("remaining_micro_parts") or []) + list(materialized.get("micro_parts") or []),
@@ -17376,6 +17563,10 @@ def execute_intent(
             "invariant_delta": int(invariant_delta),
             "truncated": bool(materialized.get("truncated", False)),
             "truncated_count": int(_as_int(materialized.get("truncated_count", 0), 0)),
+            "fidelity_resolved": str(materialization_allocation.get("resolved_level", "")),
+            "fidelity_downgrade_reason": str(materialization_allocation.get("downgrade_reason", "")),
+            "fidelity_cost_allocated": int(_as_int(materialization_allocation.get("cost_allocated", 0), 0)),
+            "fidelity_request_id": str((dict(materialized.get("fidelity_request") or {})).get("fidelity_request_id", "")),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.dematerialize_structure_roi":
