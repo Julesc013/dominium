@@ -55,5 +55,21 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "machine_id": "machine.sawmill.alpha",
+      "machine_type_id": "machine.sawmill.basic",
+      "ports": [
+        "port.sawmill.input",
+        "port.sawmill.output"
+      ],
+      "operational_state": "idle",
+      "policy_ids": [],
+      "extensions": {
+        "site_ref": "site.factory.alpha"
+      }
+    }
+  ]
 }
