@@ -142,7 +142,7 @@ def run(repo_root: str):
                 "budget_refuse_on_shortfall": False,
                 "budget_refusal_code": "refusal.materialization.budget_exceeded",
                 "budget_zero_means_unbounded": False,
-                "fidelity_cost_by_level": {"micro": 5, "meso": 2, "macro": 1},
+                "fidelity_cost_by_level": {"micro": 5, "meso": 2},
             },
         },
         rs5_budget_state={
@@ -170,4 +170,3 @@ def run(repo_root: str):
         return {"status": "fail", "message": "MAT-7 truncation does not match negotiated budget allocation"}
 
     return {"status": "pass", "message": "domain migration negotiation equivalence checks passed"}
-

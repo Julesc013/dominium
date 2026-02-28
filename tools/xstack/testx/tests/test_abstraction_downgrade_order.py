@@ -41,7 +41,7 @@ def run(repo_root: str):
             "server_profile_id": "server.profile.ranked.strict",
         },
         "extensions": {
-            "fidelity_cost_by_level": {"micro": 5, "meso": 3, "macro": 1},
+            "fidelity_cost_by_level": {"micro": 5, "meso": 3},
         },
     }
     result = negotiate_request(
@@ -79,4 +79,3 @@ def run(repo_root: str):
             return {"status": "fail", "message": "downgrade axis ordering is non-canonical"}
         previous_rank = rank
     return {"status": "pass", "message": "downgrade axis ordering is canonical"}
-
