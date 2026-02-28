@@ -24,6 +24,33 @@ def _panel_slot_id(target_semantic_id: str, affordance_id: str) -> str:
     return "slot.{}".format(canonical_sha256({"target": target_semantic_id, "affordance_id": affordance_id})[:12])
 
 
+def _to_int(value: object, default_value: int = 0) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return int(default_value)
+
+
+def _normalize_surface_transform(row: dict) -> dict:
+    payload = dict(row or {})
+    transform = dict(payload.get("local_transform") or {})
+    position = dict(transform.get("position_mm") or {})
+    orientation = dict(transform.get("orientation_mdeg") or {})
+    return {
+        "position_mm": {
+            "x": _to_int(position.get("x", 0), 0),
+            "y": _to_int(position.get("y", 0), 0),
+            "z": _to_int(position.get("z", 0), 0),
+        },
+        "orientation_mdeg": {
+            "yaw": _to_int(orientation.get("yaw", 0), 0),
+            "pitch": _to_int(orientation.get("pitch", 0), 0),
+            "roll": _to_int(orientation.get("roll", 0), 0),
+        },
+        "scale_permille": max(1, _to_int(transform.get("scale_permille", 300), 300)),
+    }
+
+
 def build_interaction_panel(
     *,
     affordance_list: dict,
@@ -41,6 +68,9 @@ def build_interaction_panel(
         extensions = dict(row.get("extensions") or {})
         ui_hints = dict(extensions.get("default_ui_hints") or {})
         enabled = bool(extensions.get("enabled", False))
+        disabled_reason = str(extensions.get("disabled_reason_code", "")).strip()
+        if not disabled_reason:
+            disabled_reason = ",".join(_sorted_unique_strings(list(extensions.get("missing_entitlements") or [])))
         rows.append(
             {
                 "slot_id": _panel_slot_id(target_semantic_id=target_semantic_id, affordance_id=affordance_id),
@@ -52,7 +82,7 @@ def build_interaction_panel(
                 "glyph_id": str(ui_hints.get("icon", "glyph.action")).strip() or "glyph.action",
                 "group": str(ui_hints.get("group", "general")).strip() or "general",
                 "color_rgb": _hash_color(process_id or affordance_id),
-                "disabled_reason": ",".join(_sorted_unique_strings(list(extensions.get("missing_entitlements") or []))),
+                "disabled_reason": disabled_reason,
             }
         )
     rows = sorted(rows, key=lambda row: (str(row.get("display_name", "")).lower(), str(row.get("affordance_id", ""))))
@@ -68,17 +98,71 @@ def build_interaction_panel(
     return panel_payload
 
 
-def build_selection_overlay(target_semantic_id: str) -> dict:
+def build_selection_overlay(target_semantic_id: str, action_surfaces: list[dict] | None = None) -> dict:
     token = str(target_semantic_id).strip()
     highlight_material_id = "mat.select.highlight.{}".format(canonical_sha256({"target": token})[:12])
     label_material_id = "mat.select.label.{}".format(canonical_sha256({"target": token, "label": True})[:12])
+    surfaces = [
+        dict(item)
+        for item in list(action_surfaces or [])
+        if isinstance(item, dict) and str(item.get("surface_id", "")).strip()
+    ]
+    surface_rows = sorted(surfaces, key=lambda row: str(row.get("surface_id", "")))
+    surface_material_rows = []
+    surface_renderable_rows = []
+    for surface_row in surface_rows:
+        surface_id = str(surface_row.get("surface_id", "")).strip()
+        surface_type_id = str(surface_row.get("surface_type_id", "")).strip() or "surface.unknown"
+        material_id = "mat.select.surface.{}".format(canonical_sha256({"surface_id": surface_id})[:12])
+        color = _hash_color(surface_type_id)
+        surface_material_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "material_id": material_id,
+                "base_color": {"r": color["r"], "g": color["g"], "b": color["b"]},
+                "roughness": 260,
+                "metallic": 0,
+                "emission": {"r": color["r"], "g": color["g"], "b": color["b"], "strength": 120},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "action_surface_marker",
+                    "surface_id": surface_id,
+                    "surface_type_id": surface_type_id,
+                },
+            }
+        )
+        surface_renderable_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.select.surface.{}".format(canonical_sha256({"surface_id": surface_id})[:12]),
+                "semantic_id": "overlay.select.surface.{}.{}".format(token, surface_id),
+                "primitive_id": "prim.glyph.label",
+                "transform": _normalize_surface_transform(surface_row),
+                "material_id": material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": surface_type_id,
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": bool(surface_row.get("tool_compatible", True))},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "action_surface_marker",
+                    "target_semantic_id": token,
+                    "surface_id": surface_id,
+                    "surface_type_id": surface_type_id,
+                    "tool_compatible": bool(surface_row.get("tool_compatible", True)),
+                },
+            }
+        )
     return {
         "mode": "selection",
         "summary": "selected {}".format(token or "unknown"),
         "target_semantic_id": token,
         "degraded": False,
         "inspection_snapshot": {},
-        "materials": [
+        "materials": sorted(
+            [
             {
                 "schema_version": "1.0.0",
                 "material_id": highlight_material_id,
@@ -101,8 +185,12 @@ def build_selection_overlay(target_semantic_id: str) -> dict:
                 "pattern_id": None,
                 "extensions": {"interaction_overlay": True, "overlay_kind": "selection_label"},
             },
-        ],
-        "renderables": [
+        ]
+            + list(surface_material_rows),
+            key=lambda row: str(row.get("material_id", "")),
+        ),
+        "renderables": sorted(
+            [
             {
                 "schema_version": "1.0.0",
                 "renderable_id": "overlay.select.highlight.{}".format(canonical_sha256({"target": token})[:12]),
@@ -137,6 +225,9 @@ def build_selection_overlay(target_semantic_id: str) -> dict:
                 "flags": {"selectable": False, "highlighted": False},
                 "extensions": {"interaction_overlay": True, "target_semantic_id": token},
             },
-        ],
+        ]
+            + list(surface_renderable_rows),
+            key=lambda row: str(row.get("renderable_id", "")),
+        ),
+        "action_surfaces": surface_rows,
     }
-
