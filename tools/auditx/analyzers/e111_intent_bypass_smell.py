@@ -19,21 +19,19 @@ WATCH_PREFIXES = (
 WHITELIST_REL = "data/registries/intent_dispatch_whitelist.json"
 DEFAULT_PATTERNS = (
     "src/net/**",
-    "src/client/interaction/interaction_dispatch.py",
-    "src/interaction/task/task_engine.py",
-    "tools/xstack/sessionx/**",
+    "src/control/**",
     "tools/xstack/testx/tests/**",
 )
 
 REQUIRED_MARKERS = (
-    '"intent_id"',
-    '"process_id"',
-    '"inputs"',
-    '"authority_origin"',
+    '"envelope_id"',
+    '"payload_schema_id"',
+    '"pack_lock_hash"',
+    '"authority_summary"',
 )
 BUILDER_TOKENS = (
     "build_client_intent_envelope(",
-    "build_interaction_intent(",
+    "_build_envelope(",
 )
 
 
@@ -87,15 +85,12 @@ def run(graph, repo_root, changed_files=None):
                 evidence=[err],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
-                related_invariants=["INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION"],
+                related_invariants=["INV-CONTROL-PLANE-ONLY-DISPATCH"],
                 related_paths=[WHITELIST_REL],
             )
         )
 
-    roots = (
-        os.path.join(repo_root, "src"),
-        os.path.join(repo_root, "tools", "xstack", "sessionx"),
-    )
+    roots = (os.path.join(repo_root, "src"),)
     for abs_root in roots:
         if not os.path.isdir(abs_root):
             continue
@@ -125,7 +120,7 @@ def run(graph, repo_root, changed_files=None):
                     snippet = (
                         "build_client_intent_envelope("
                         if "build_client_intent_envelope(" in text
-                        else "build_interaction_intent("
+                        else "_build_envelope("
                     )
                 findings.append(
                     make_finding(
@@ -138,7 +133,7 @@ def run(graph, repo_root, changed_files=None):
                         evidence=[snippet, "intent envelope construction outside whitelist"],
                         suggested_classification="INVALID",
                         recommended_action="REWRITE",
-                        related_invariants=["INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION"],
+                        related_invariants=["INV-CONTROL-PLANE-ONLY-DISPATCH"],
                         related_paths=[rel_path, WHITELIST_REL],
                     )
                 )

@@ -252,9 +252,7 @@ INTENT_DISPATCH_WHITELIST_REGISTRY_REL = "data/registries/intent_dispatch_whitel
 DEPRECATIONS_REGISTRY_REL = "data/governance/deprecations.json"
 DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS = (
     "src/net/**",
-    "src/client/interaction/interaction_dispatch.py",
-    "src/interaction/task/task_engine.py",
-    "tools/xstack/sessionx/**",
+    "src/control/**",
     "tools/xstack/testx/tests/**",
 )
 
@@ -275,6 +273,14 @@ BOUNDARY_ALIAS_RULES = {
     "INV-NO-PRODUCTION-LEGACY-IMPORT": {
         "INV-NO-LEGACY-REFERENCE",
     },
+    "INV-CONTROL-PLANE-ONLY-DISPATCH": {
+        "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+        "INV-NO-DIRECT-INTENT-DISPATCH",
+    },
+    "INV-NO-MODE-FLAGS": {
+        "repox.forbidden_identifier",
+        "repox.mode_flag_heuristic",
+    },
 }
 
 BOUNDARY_BLOCKER_RULE_IDS = (
@@ -286,6 +292,7 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-RENDER-TRUTH-ISOLATION",
     "INV-NO-TOOLS-IN-RUNTIME",
     "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+    "INV-CONTROL-PLANE-ONLY-DISPATCH",
     "INV-NO-PRODUCTION-LEGACY-IMPORT",
 )
 
@@ -3005,7 +3012,7 @@ def _append_forbidden_identifier_findings(
                     line_number=line_no,
                     snippet=line.strip()[:140],
                     message="forbidden identifier '{}' detected".format(token),
-                    rule_id="repox.forbidden_identifier",
+                    rule_id="INV-NO-MODE-FLAGS",
                 )
             )
 
@@ -3035,7 +3042,7 @@ def _append_mode_flag_findings(
             line_number=line_no,
             snippet=line.strip()[:140],
             message="mode-flag heuristic matched '{}'".format(lhs),
-            rule_id="repox.mode_flag_heuristic",
+            rule_id="INV-NO-MODE-FLAGS",
         )
     )
 
@@ -7601,7 +7608,7 @@ def _append_boundary_blocker_invariant_findings(
     whitelist_patterns, whitelist_error = _load_intent_dispatch_whitelist_patterns(repo_root)
     if whitelist_error:
         key = (
-            "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+            "INV-CONTROL-PLANE-ONLY-DISPATCH",
             INTENT_DISPATCH_WHITELIST_REGISTRY_REL,
             1,
             "",
@@ -7616,11 +7623,11 @@ def _append_boundary_blocker_invariant_findings(
                     line_number=1,
                     snippet="",
                     message="intent dispatch whitelist registry is missing or invalid",
-                    rule_id="INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+                    rule_id="INV-CONTROL-PLANE-ONLY-DISPATCH",
                 )
             )
 
-    envelope_file_roots = ("src/", "tools/xstack/sessionx/")
+    envelope_file_roots = ("src/",)
     envelope_skip_prefixes = (
         "tools/xstack/testx/tests/",
         "tools/xstack/out/",
@@ -7628,14 +7635,14 @@ def _append_boundary_blocker_invariant_findings(
         "tests/",
     )
     required_envelope_markers = (
-        '"intent_id"',
-        '"process_id"',
-        '"inputs"',
-        '"authority_origin"',
+        '"envelope_id"',
+        '"payload_schema_id"',
+        '"pack_lock_hash"',
+        '"authority_summary"',
     )
     explicit_builder_tokens = (
         "build_client_intent_envelope(",
-        "build_interaction_intent(",
+        "_build_envelope(",
     )
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -7663,10 +7670,10 @@ def _append_boundary_blocker_invariant_findings(
             snippet = (
                 "build_client_intent_envelope("
                 if "build_client_intent_envelope(" in text
-                else "build_interaction_intent("
+                else "_build_envelope("
             )
         key = (
-            "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+            "INV-CONTROL-PLANE-ONLY-DISPATCH",
             rel_norm,
             1,
             snippet,
@@ -7682,7 +7689,7 @@ def _append_boundary_blocker_invariant_findings(
                 line_number=1,
                 snippet=snippet,
                 message="intent envelope construction is restricted to whitelist-registry paths",
-                rule_id="INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
+                rule_id="INV-CONTROL-PLANE-ONLY-DISPATCH",
             )
         )
 
@@ -8054,16 +8061,15 @@ def _append_retro_consistency_invariant_findings(
             )
 
     allowed_intent_dispatch_paths = {
-        INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE,
-        "tools/xstack/sessionx/process_runtime.py",
-        "tools/xstack/sessionx/scheduler.py",
+        "src/control/control_plane_engine.py",
+        "src/client/interaction/interaction_dispatch.py",
         "src/net/srz/shard_coordinator.py",
         "src/net/policies/policy_server_authoritative.py",
     }
     for rel_path in _scan_files(repo_root):
         if not rel_path.endswith(".py"):
             continue
-        if not rel_path.startswith(("src/", "tools/xstack/sessionx/")):
+        if not rel_path.startswith("src/"):
             continue
         if rel_path.startswith(
             (
@@ -8081,10 +8087,14 @@ def _append_retro_consistency_invariant_findings(
             text = ""
         if not text:
             continue
-        if rel_path not in allowed_intent_dispatch_paths and (
-            "execute_intent(" in text or "build_interaction_intent(" in text
-        ):
-            snippet = "execute_intent(" if "execute_intent(" in text else "build_interaction_intent("
+        has_execute_call = ("execute_intent(" in text) and ("def execute_intent(" not in text)
+        has_envelope_builder = ("build_client_intent_envelope(" in text) or ("_build_envelope(" in text)
+        if rel_path not in allowed_intent_dispatch_paths and (has_execute_call or has_envelope_builder):
+            snippet = (
+                "execute_intent("
+                if has_execute_call
+                else ("build_client_intent_envelope(" if "build_client_intent_envelope(" in text else "_build_envelope(")
+            )
             findings.append(
                 _finding(
                     severity=severity,
@@ -8092,9 +8102,23 @@ def _append_retro_consistency_invariant_findings(
                     line_number=1,
                     snippet=snippet,
                     message="direct intent dispatch is restricted to canonical control/interaction pipeline files",
-                    rule_id="INV-NO-DIRECT-INTENT-DISPATCH",
+                    rule_id="INV-CONTROL-PLANE-ONLY-DISPATCH",
                 )
             )
+
+    control_plane_path = "src/control/control_plane_engine.py"
+    control_plane_text = _file_text(repo_root, control_plane_path)
+    if (not control_plane_text) or ("_write_decision_log(" not in control_plane_text) or ('"decision_log_ref"' not in control_plane_text):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=control_plane_path,
+                line_number=1,
+                snippet="_write_decision_log(",
+                message="control plane resolutions must emit deterministic decision logs",
+                rule_id="INV-DECISION-LOG-REQUIRED",
+            )
+        )
 
     for rel_path in _scan_files(repo_root):
         if not rel_path.endswith((".py", ".cpp", ".h", ".hpp", ".c", ".cc")):
@@ -8883,8 +8907,8 @@ def _append_interaction_invariant_findings(
         for token in (
             "def run_interaction_command(",
             "build_affordance_list(",
-            "build_interaction_intent(",
-            "build_interaction_envelope(",
+            "build_interaction_control_intent(",
+            "build_control_resolution(",
             "execute_intent(",
             "interact.list_affordances",
             "interact.execute",
@@ -9030,8 +9054,8 @@ def _append_interaction_invariant_findings(
         )
     for token in (
         "execute_intent(",
-        "build_interaction_intent(",
-        "build_interaction_envelope(",
+        "build_interaction_control_intent(",
+        "build_control_resolution(",
     ):
         if token in dispatch_text:
             continue

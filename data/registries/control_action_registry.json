@@ -6,76 +6,319 @@
     "registry_version": "1.0.0",
     "actions": [
       {
-        "action_id": "control.action.bind_camera",
-        "description": "Bind a controller to a camera assembly.",
+        "schema_version": "1.0.0",
+        "action_id": "action.admin.meta_override",
+        "display_name": "Meta Override",
+        "produces": {
+          "process_id": "process.meta_pose_override",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
         "required_entitlements": [
-          "entitlement.control.camera"
+          "entitlement.control.admin"
         ],
-        "produces_intent_id": "intent.control.bind_camera",
-        "payload_schema_id": "dominium.control.payload.bind_camera.v1",
+        "required_capabilities": [
+          "capability.meta.override"
+        ],
+        "target_kinds": [
+          "pose_slot",
+          "mount_point",
+          "structure"
+        ],
         "extensions": {
-          "process_id": "process.control_bind_camera"
+          "admin_only": true
         }
       },
       {
-        "action_id": "control.action.unbind_camera",
-        "description": "Remove a camera binding from a controller.",
-        "required_entitlements": [
-          "entitlement.control.camera"
-        ],
-        "produces_intent_id": "intent.control.unbind_camera",
-        "payload_schema_id": "dominium.control.payload.unbind_camera.v1",
-        "extensions": {
-          "process_id": "process.control_unbind_camera"
-        }
-      },
-      {
-        "action_id": "control.action.possess_agent",
-        "description": "Bind a controller as possessor for an agent target.",
-        "required_entitlements": [
-          "entitlement.control.possess"
-        ],
-        "produces_intent_id": "intent.control.possess_agent",
-        "payload_schema_id": "dominium.control.payload.possess_agent.v1",
-        "extensions": {
-          "process_id": "process.control_possess_agent"
-        }
-      },
-      {
-        "action_id": "control.action.release_agent",
-        "description": "Release a possession binding from an agent target.",
-        "required_entitlements": [
-          "entitlement.control.possess"
-        ],
-        "produces_intent_id": "intent.control.release_agent",
-        "payload_schema_id": "dominium.control.payload.release_agent.v1",
-        "extensions": {
-          "process_id": "process.control_release_agent"
-        }
-      },
-      {
+        "schema_version": "1.0.0",
         "action_id": "control.action.assign_cosmetic",
-        "description": "Assign cosmetic render profile metadata to an agent target.",
+        "display_name": "Assign Cosmetic",
+        "produces": {
+          "process_id": "process.cosmetic_assign",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
         "required_entitlements": [
           "entitlement.cosmetic.assign"
         ],
-        "produces_intent_id": "intent.control.assign_cosmetic",
-        "payload_schema_id": "dominium.control.payload.assign_cosmetic.v1",
+        "required_capabilities": [],
+        "target_kinds": [
+          "none",
+          "structure"
+        ],
         "extensions": {
-          "process_id": "process.cosmetic_assign"
+          "compat_alias": true
         }
       },
       {
+        "schema_version": "1.0.0",
+        "action_id": "control.action.bind_camera",
+        "display_name": "Bind Camera",
+        "produces": {
+          "process_id": "process.control_bind_camera",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "none",
+          "structure"
+        ],
+        "extensions": {
+          "compat_alias": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "control.action.possess_agent",
+        "display_name": "Possess Agent",
+        "produces": {
+          "process_id": "process.control_possess_agent",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.possess"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "none",
+          "structure"
+        ],
+        "extensions": {
+          "compat_alias": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "control.action.release_agent",
+        "display_name": "Release Agent",
+        "produces": {
+          "process_id": "process.control_release_agent",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.possess"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "none",
+          "structure"
+        ],
+        "extensions": {
+          "compat_alias": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "action_id": "control.action.set_view_lens",
-        "description": "Override current view lens for a controller viewpoint.",
+        "display_name": "Set View Lens",
+        "produces": {
+          "process_id": "process.control_set_view_lens",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
         "required_entitlements": [
           "entitlement.control.lens_override"
         ],
-        "produces_intent_id": "intent.control.set_view_lens",
-        "payload_schema_id": "dominium.control.payload.set_view_lens.v1",
+        "required_capabilities": [],
+        "target_kinds": [
+          "none",
+          "structure"
+        ],
         "extensions": {
-          "process_id": "process.control_set_view_lens"
+          "compat_alias": true
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "control.action.unbind_camera",
+        "display_name": "Unbind Camera",
+        "produces": {
+          "process_id": "process.control_unbind_camera",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "none",
+          "structure"
+        ],
+        "extensions": {
+          "compat_alias": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.interaction.execute_process",
+        "display_name": "Execute Process",
+        "produces": {
+          "process_id": "",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [],
+        "required_capabilities": [],
+        "target_kinds": [
+          "graph",
+          "machine",
+          "mount_point",
+          "none",
+          "pose_slot",
+          "structure",
+          "surface"
+        ],
+        "extensions": {
+          "adapter": "legacy.process_id"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.mount.attach",
+        "display_name": "Attach Mount",
+        "produces": {
+          "process_id": "process.mount_attach",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.mount.attach"
+        ],
+        "target_kinds": [
+          "mount_point"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.mount.detach",
+        "display_name": "Detach Mount",
+        "produces": {
+          "process_id": "process.mount_detach",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.mount.detach"
+        ],
+        "target_kinds": [
+          "mount_point"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.plan.blueprint",
+        "display_name": "Plan Blueprint",
+        "produces": {
+          "process_id": "",
+          "task_type_id": "",
+          "plan_intent_type": "plan.blueprint"
+        },
+        "required_entitlements": [
+          "entitlement.inspect"
+        ],
+        "required_capabilities": [
+          "capability.plan.blueprint"
+        ],
+        "target_kinds": [
+          "structure"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.pose.enter",
+        "display_name": "Enter Pose Slot",
+        "produces": {
+          "process_id": "process.pose_enter",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.agent.move"
+        ],
+        "required_capabilities": [
+          "capability.pose.enter"
+        ],
+        "target_kinds": [
+          "pose_slot"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.pose.exit",
+        "display_name": "Exit Pose Slot",
+        "produces": {
+          "process_id": "process.pose_exit",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.agent.move"
+        ],
+        "required_capabilities": [
+          "capability.pose.exit"
+        ],
+        "target_kinds": [
+          "pose_slot"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.surface.execute_task",
+        "display_name": "Execute Surface Task",
+        "produces": {
+          "process_id": "process.task_create",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.use"
+        ],
+        "required_capabilities": [
+          "capability.surface.execute"
+        ],
+        "target_kinds": [
+          "surface"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.view.change",
+        "display_name": "Change View",
+        "produces": {
+          "process_id": "process.camera_set_view_mode",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.camera_control"
+        ],
+        "required_capabilities": [
+          "capability.view.change"
+        ],
+        "target_kinds": [
+          "none",
+          "structure"
+        ],
+        "extensions": {}
       }
     ],
     "extensions": {}

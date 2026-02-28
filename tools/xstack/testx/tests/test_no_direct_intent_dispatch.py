@@ -14,20 +14,18 @@ TEST_TAGS = ["fast", "architecture", "control"]
 WHITELIST_REGISTRY = "data/registries/intent_dispatch_whitelist.json"
 DEFAULT_PATTERNS = (
     "src/net/**",
-    "src/client/interaction/interaction_dispatch.py",
-    "src/interaction/task/task_engine.py",
-    "tools/xstack/sessionx/**",
+    "src/control/**",
     "tools/xstack/testx/tests/**",
 )
 REQUIRED_MARKERS = (
-    '"intent_id"',
-    '"process_id"',
-    '"inputs"',
-    '"authority_origin"',
+    '"envelope_id"',
+    '"payload_schema_id"',
+    '"pack_lock_hash"',
+    '"authority_summary"',
 )
 BUILDER_TOKENS = (
     "build_client_intent_envelope(",
-    "build_interaction_intent(",
+    "_build_envelope(",
 )
 
 
@@ -68,7 +66,7 @@ def run(repo_root: str):
 
     patterns = _load_patterns(repo_root)
     hits = []
-    for rel_root in ("src", "tools/xstack/sessionx"):
+    for rel_root in ("src",):
         abs_root = os.path.join(repo_root, rel_root.replace("/", os.sep))
         if not os.path.isdir(abs_root):
             continue

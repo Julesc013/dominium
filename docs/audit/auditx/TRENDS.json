@@ -3,62 +3,78 @@
   "category_frequency": {
     "architecture.adhoc_scheduler_smell": 1,
     "architecture.adhoc_state_flag_smell": 2,
-    "canon_drift": 670,
+    "architecture.intent_bypass_smell": 2,
+    "canon_drift": 673,
     "capability_bypass_smell": 1,
+    "capability_misuse": 140,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
-    "derived_freshness": 11,
+    "derived_freshness": 131,
     "epistemics.hidden_state_leak_smell": 6,
-    "materials.hardcoded_blueprint_smell": 2,
+    "interaction.interaction_bypass_smell": 2,
+    "legacy_contamination": 11,
+    "materials.hardcoded_blueprint_smell": 18,
     "materials.inspection_leak_smell": 2,
     "materials.reenactment_leak_smell": 1,
-    "mode_flag_smell": 1,
+    "mode_flag_smell": 64,
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
-    "reachability": 7,
+    "ownership_boundary": 9,
+    "reachability": 80,
     "schema_usage": 160,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
-    "semantic.workspace_contamination": 1
+    "semantic.workspace_contamination": 1,
+    "terminology_misuse": 1,
+    "ui_parity": 226
   },
   "delta_over_time": {
     "category_frequency": {
       "architecture.adhoc_scheduler_smell": 0,
       "architecture.adhoc_state_flag_smell": 0,
+      "architecture.intent_bypass_smell": 0,
       "canon_drift": 0,
       "capability_bypass_smell": 0,
+      "capability_misuse": 133,
       "civilisation.nondeterministic_cohort_mapping_smell": 0,
-      "derived_freshness": 0,
+      "derived_freshness": 120,
       "epistemics.hidden_state_leak_smell": 0,
-      "materials.hardcoded_blueprint_smell": 0,
+      "interaction.interaction_bypass_smell": 0,
+      "legacy_contamination": 9,
+      "materials.hardcoded_blueprint_smell": 13,
       "materials.inspection_leak_smell": 0,
       "materials.reenactment_leak_smell": 0,
-      "mode_flag_smell": 0,
+      "mode_flag_smell": 63,
       "net.precision_leak_smell": 0,
       "net.truth_over_net_smell": 0,
-      "reachability": 0,
+      "ownership_boundary": 9,
+      "reachability": 62,
       "schema_usage": 0,
       "semantic.capability_drift": 0,
       "semantic.derived_artifact_contract": 0,
       "semantic.schema_shadowing": 0,
-      "semantic.workspace_contamination": 0
+      "semantic.workspace_contamination": 0,
+      "terminology_misuse": 1,
+      "ui_parity": 226
     },
     "severity_distribution": {
-      "RISK": 0,
-      "VIOLATION": 0,
-      "WARN": 0
+      "INFO": 224,
+      "RISK": 69,
+      "VIOLATION": 76,
+      "WARN": 267
     }
   },
-  "findings_hash": "dbf62d6113a8f56b07de685eb569ca89c51fa37e5be349f8a698a1c576858b86",
+  "findings_hash": "74eef056e81c101e49d713f0bb2e748f412afb7cc1f9ea1c8cceae066c63a77b",
   "history_reference": {
-    "previous_distinct_hash": "6941944977ad4a4c8fa0895d1457b07c4cef97a84bca89702e3f15bbe7ef4ee8"
+    "previous_distinct_hash": "c6c041582ef357c2ae822dd770dff6497f4b972aec2713692dcfc1ecd0e96aca"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "RISK": 185,
-    "VIOLATION": 4,
-    "WARN": 811
+    "INFO": 231,
+    "RISK": 222,
+    "VIOLATION": 85,
+    "WARN": 1128
   },
-  "total_findings": 1000
+  "total_findings": 1666
 }
