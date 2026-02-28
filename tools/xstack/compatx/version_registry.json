@@ -190,6 +190,20 @@
         "1.0.0"
       ]
     },
+    "capability": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "capability_binding": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "control_intent": {
       "current_version": "1.0.0",
       "migrations": {},
