@@ -12,7 +12,9 @@ from .ir import (
     REFUSAL_CTRL_IR_COST_EXCEEDED,
     REFUSAL_CTRL_IR_FORBIDDEN_OP,
     REFUSAL_CTRL_IR_INVALID,
+    compile_control_ir,
     verify_control_ir,
+    verify_and_compile_control_ir,
 )
 
 __all__ = [
@@ -23,7 +25,9 @@ __all__ = [
     "REFUSAL_CTRL_IR_INVALID",
     "build_control_intent",
     "build_control_resolution",
+    "compile_control_ir",
     "control_action_rows_by_id",
     "control_policy_rows_by_id",
     "verify_control_ir",
+    "verify_and_compile_control_ir",
 ]
