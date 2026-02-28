@@ -190,6 +190,7 @@ def _load_control_ir_verification_hashes(repo_root: str, run_meta: dict, run_met
         unique_dirs.append(normalized)
 
     verification_hashes = set()
+    decision_log_hashes = set()
     scanned_files = 0
     for directory in unique_dirs:
         if not os.path.isdir(directory):
@@ -206,9 +207,15 @@ def _load_control_ir_verification_hashes(repo_root: str, run_meta: dict, run_met
             report_hash = str(ir_ext.get("verification_report_hash", "")).strip()
             if report_hash:
                 verification_hashes.add(report_hash)
+            decision_hash = str(payload.get("deterministic_fingerprint", "")).strip()
+            if not decision_hash:
+                decision_hash = canonical_sha256(payload)
+            if decision_hash:
+                decision_log_hashes.add(decision_hash)
             scanned_files += 1
     return {
         "verification_report_hashes": sorted(verification_hashes),
+        "decision_log_hashes": sorted(decision_log_hashes),
         "decision_log_count": int(scanned_files),
         "decision_log_dirs": [
             norm(os.path.relpath(path, repo_root))
@@ -224,6 +231,7 @@ def _build_markdown(bundle: dict) -> str:
     anti_cheat_events = list(bundle.get("anti_cheat_events") or [])
     anti_cheat_actions = list(bundle.get("enforcement_actions") or [])
     ir_hashes = list(bundle.get("control_ir_verification_report_hashes") or [])
+    decision_hashes = list(bundle.get("control_decision_log_hashes") or [])
     lines = [
         "# Ranked Proof Bundle",
         "",
@@ -239,6 +247,7 @@ def _build_markdown(bundle: dict) -> str:
         "- Anti-Cheat Events: `{}`".format(int(len(anti_cheat_events))),
         "- Enforcement Actions: `{}`".format(int(len(anti_cheat_actions))),
         "- Control IR Verification Hashes: `{}`".format(int(len(ir_hashes))),
+        "- Control Decision Hashes: `{}`".format(int(len(decision_hashes))),
         "",
         "## Registry Hashes",
     ]
@@ -429,6 +438,7 @@ def main() -> int:
     anti_cheat_events = list(anti_cheat_rows.get("events") or [])
     enforcement_actions = list(anti_cheat_rows.get("actions") or [])
     ir_verification_report_hashes = list(control_ir_hashes.get("verification_report_hashes") or [])
+    control_decision_log_hashes = list(control_ir_hashes.get("decision_log_hashes") or [])
 
     deterministic_seed = {
         "pack_lock_hash": pack_lock_hash,
@@ -439,6 +449,7 @@ def main() -> int:
         "anti_cheat_events_hash": canonical_sha256(anti_cheat_events),
         "enforcement_actions_hash": canonical_sha256(enforcement_actions),
         "control_ir_verification_report_hashes_hash": canonical_sha256(ir_verification_report_hashes),
+        "control_decision_log_hashes_hash": canonical_sha256(control_decision_log_hashes),
     }
     proof_bundle_hash = canonical_sha256(deterministic_seed)
     proof_bundle_id = "ranked.proof.{}".format(proof_bundle_hash[:16])
@@ -461,6 +472,7 @@ def main() -> int:
         "anti_cheat_events": anti_cheat_events,
         "enforcement_actions": enforcement_actions,
         "control_ir_verification_report_hashes": ir_verification_report_hashes,
+        "control_decision_log_hashes": control_decision_log_hashes,
         "source_artifacts": {
             "run_meta_path": norm(os.path.relpath(run_meta_abs, repo_root)) if run_meta_abs else "",
             "handshake_path": norm(os.path.relpath(handshake_abs, repo_root)),
@@ -482,6 +494,7 @@ def main() -> int:
         },
         "extensions": {
             "control_ir_decision_log_count": int(control_ir_hashes.get("decision_log_count", 0) or 0),
+            "control_decision_log_hash_count": int(len(control_decision_log_hashes)),
         },
     }
     bundle["proof_bundle_hash"] = canonical_sha256(bundle)
@@ -508,6 +521,7 @@ def main() -> int:
             "anti_cheat_events": len(anti_cheat_events),
             "enforcement_actions": len(enforcement_actions),
             "control_ir_verification_report_hashes": len(ir_verification_report_hashes),
+            "control_decision_log_hashes": len(control_decision_log_hashes),
         },
     }
     print(json.dumps(response, indent=2, sort_keys=True))

@@ -27,6 +27,12 @@ def _network_policy_id(policy_context: Mapping[str, object] | None) -> str:
     return ""
 
 
+def _is_ranked_profile(policy_context: Mapping[str, object] | None) -> bool:
+    payload = dict(policy_context or {})
+    token = str(payload.get("server_profile_id", "")).strip().lower()
+    return "rank" in token
+
+
 def multiplayer_ir_mode(policy_context: Mapping[str, object] | None) -> str:
     policy_id = _network_policy_id(policy_context)
     if policy_id in _SERVER_AUTH_POLICIES:
@@ -52,6 +58,8 @@ def validate_control_ir_multiplayer(
             "result": "complete",
             "mode": mode,
             "requires_server_verification": False,
+            "requires_decision_logging": False,
+            "client_resolution_payload": "full",
             "verification_report_hash": str((dict(verification_report or {})).get("deterministic_fingerprint", "")).strip(),
         }
 
@@ -107,6 +115,9 @@ def validate_control_ir_multiplayer(
         "result": "complete",
         "mode": mode,
         "requires_server_verification": mode in ("server_authoritative", "srz_hybrid", "lockstep"),
+        "requires_decision_logging": mode in ("server_authoritative", "srz_hybrid", "lockstep"),
+        "client_resolution_payload": "resolved_vector_only" if mode in ("server_authoritative", "srz_hybrid", "lockstep") else "full",
+        "ranked_proof_requires_decision_log_hash": bool(_is_ranked_profile(policy_context)),
         "verification_report_hash": report_hash,
     }
 
@@ -115,4 +126,3 @@ __all__ = [
     "multiplayer_ir_mode",
     "validate_control_ir_multiplayer",
 ]
-
