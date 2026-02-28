@@ -6161,13 +6161,16 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
     if not token:
         return {"exists": False}
 
-    def _row_by_id(rows: object, key: str) -> dict:
+    def _row_by_id_value(rows: object, key: str, value: str) -> dict:
         if not isinstance(rows, list):
             return {}
         for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(key, ""))):
-            if str(row.get(key, "")).strip() == token:
+            if str(row.get(key, "")).strip() == str(value).strip():
                 return dict(row)
         return {}
+
+    def _row_by_id(rows: object, key: str) -> dict:
+        return _row_by_id_value(rows, key, token)
 
     if token.startswith("region."):
         interest = _row_by_id(state.get("interest_regions"), "region_id")
@@ -6230,6 +6233,36 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
                 "collection": "distribution_aggregates",
                 "row": dict(row),
             }
+    if token.startswith("interior.graph."):
+        graph_id = str(token[len("interior.graph."):]).strip()
+        row = _row_by_id_value(state.get("interior_graphs"), "graph_id", graph_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "interior_graphs",
+                "row": row,
+            }
+    if token.startswith("interior.volume."):
+        volume_id = str(token[len("interior.volume."):]).strip()
+        row = _row_by_id_value(state.get("interior_volumes"), "volume_id", volume_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "interior_volumes",
+                "row": row,
+            }
+    if token.startswith("interior.portal."):
+        portal_id = str(token[len("interior.portal."):]).strip()
+        row = _row_by_id_value(state.get("interior_portals"), "portal_id", portal_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "interior_portals",
+                "row": row,
+            }
 
     id_table = (
         ("cohort_assemblies", "cohort_id"),
@@ -6261,6 +6294,9 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("machine_provenance_events", "event_id"),
         ("network_graphs", "graph_id"),
         ("graph_partitions", "partition_id"),
+        ("interior_graphs", "graph_id"),
+        ("interior_volumes", "volume_id"),
+        ("interior_portals", "portal_id"),
         ("material_commitments", "commitment_id"),
         ("event_stream_indices", "stream_id"),
         ("reenactment_requests", "request_id"),
