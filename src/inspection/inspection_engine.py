@@ -11,7 +11,7 @@ REFUSAL_INSPECT_FORBIDDEN_BY_LAW = "refusal.inspect.forbidden_by_law"
 REFUSAL_INSPECT_BUDGET_EXCEEDED = "refusal.inspect.budget_exceeded"
 REFUSAL_INSPECT_TARGET_INVALID = "refusal.inspect.target_invalid"
 
-_VALID_TARGET_KINDS = {"structure", "project", "node", "manifest", "cohort", "faction"}
+_VALID_TARGET_KINDS = {"structure", "project", "node", "manifest", "cohort", "faction", "machine", "port"}
 _VALID_FIDELITY = ("macro", "meso", "micro")
 _SECTION_IDS_BY_FIDELITY = {
     "macro": [
@@ -98,6 +98,10 @@ def _quantize_map(values: object, *, step: int) -> dict:
 
 def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
+    if token.startswith("machine."):
+        return "machine"
+    if token.startswith("port."):
+        return "port"
     if token.startswith("assembly.structure_instance."):
         return "structure"
     if token.startswith("project.construction."):
@@ -271,7 +275,12 @@ def _target_structure_id(target_payload: Mapping[str, object], target_id: str) -
 def _events_for_target(state: Mapping[str, object], target_id: str, time_range: Mapping[str, object] | None) -> List[dict]:
     token = str(target_id).strip()
     rows = []
-    for key in ("logistics_provenance_events", "construction_provenance_events", "maintenance_provenance_events"):
+    for key in (
+        "logistics_provenance_events",
+        "construction_provenance_events",
+        "maintenance_provenance_events",
+        "machine_provenance_events",
+    ):
         for row in list((dict(state or {})).get(key) or []):
             if not isinstance(row, dict):
                 continue
@@ -286,6 +295,10 @@ def _events_for_target(state: Mapping[str, object], target_id: str, time_range: 
                 str(ext.get("asset_id", "")).strip(),
                 str(ext.get("project_id", "")).strip(),
                 str(ext.get("manifest_id", "")).strip(),
+                str(ext.get("machine_id", "")).strip(),
+                str(ext.get("port_id", "")).strip(),
+                str(ext.get("operation_id", "")).strip(),
+                str(ext.get("connection_id", "")).strip(),
             }
             if token not in candidates:
                 continue
@@ -300,6 +313,15 @@ def _events_for_target(state: Mapping[str, object], target_id: str, time_range: 
 def _build_section_data(section_id: str, *, state: Mapping[str, object], target_payload: Mapping[str, object], request: Mapping[str, object], quant_step: int, include_part_ids: bool) -> dict:
     row = dict(target_payload.get("row") or {})
     if section_id == "section.material_stocks":
+        port_contents = list(row.get("current_contents") or [])
+        if port_contents:
+            stocks: Dict[str, int] = {}
+            for item in sorted((entry for entry in port_contents if isinstance(entry, dict)), key=lambda entry: (str(entry.get("material_id", "")), str(entry.get("batch_id", "")))):
+                material_id = str(item.get("material_id", "")).strip()
+                if not material_id:
+                    continue
+                stocks[material_id] = _as_int(stocks.get(material_id, 0), 0) + max(0, _as_int(item.get("mass", 0), 0))
+            return {"stocks": _quantize_map(stocks, step=quant_step), "material_count": len(stocks.keys())}
         stocks = dict(row.get("material_stocks") or {})
         if not stocks:
             stocks = {}
@@ -316,6 +338,18 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
         batches = [dict(item) for item in list((dict(state or {})).get("material_batches") or []) if isinstance(item, dict)]
         return {"batch_count": len(batches), "sample_batch_ids": [str(item.get("batch_id", "")).strip() for item in batches[:16] if str(item.get("batch_id", "")).strip()]}
     if section_id == "section.flow_summary":
+        if "machine_ports" in dict(state or {}):
+            ports = [dict(item) for item in list((dict(state or {})).get("machine_ports") or []) if isinstance(item, dict)]
+            connections = [
+                dict(item)
+                for item in list((dict(state or {})).get("machine_port_connections") or [])
+                if isinstance(item, dict) and bool(item.get("active", False))
+            ]
+            if str(request.get("target_kind", "")) in {"machine", "port"}:
+                return {
+                    "machine_port_count": len(ports),
+                    "active_port_connection_count": len(connections),
+                }
         manifests = [dict(item) for item in list((dict(state or {})).get("logistics_manifests") or []) if isinstance(item, dict)]
         status_counts: Dict[str, int] = {}
         for item in manifests:
