@@ -327,7 +327,7 @@
         "action_id": "action.view.change_policy",
         "display_name": "Change View Policy",
         "produces": {
-          "process_id": "process.camera_set_view_mode",
+          "process_id": "process.view_bind",
           "task_type_id": "",
           "plan_intent_type": ""
         },
