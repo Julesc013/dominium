@@ -98,6 +98,27 @@ from src.interaction.task.task_engine import (
     set_task_status,
     tick_tasks,
 )
+from src.interaction.pose import (
+    PoseError,
+    REFUSAL_POSE_FORBIDDEN_BY_LAW,
+    REFUSAL_POSE_INVALID_POSTURE,
+    REFUSAL_POSE_NO_ACCESS_PATH,
+    REFUSAL_POSE_NOT_OCCUPANT,
+    REFUSAL_POSE_OCCUPIED,
+    enter_pose_slot,
+    exit_pose_slot,
+    grants_for_subject,
+    normalize_pose_slot_rows,
+)
+from src.interaction.mount import (
+    MountError,
+    REFUSAL_MOUNT_ALREADY_ATTACHED,
+    REFUSAL_MOUNT_FORBIDDEN_BY_LAW,
+    REFUSAL_MOUNT_INCOMPATIBLE,
+    attach_mount_points,
+    detach_mount_point,
+    normalize_mount_point_rows,
+)
 from src.interior.compartment_flow_builder import (
     normalize_compartment_state,
     normalize_leak_hazard,
@@ -110,7 +131,7 @@ from src.interior.compartment_flow_engine import (
     resolve_compartment_flow_policy_row,
     tick_compartment_flows,
 )
-from src.interior.interior_engine import InteriorError, apply_portal_transition
+from src.interior.interior_engine import InteriorError, apply_portal_transition, path_exists
 from src.machines.port_engine import (
     PortError,
     REFUSAL_PORT_EMPTY,
@@ -141,6 +162,15 @@ from src.time.time_engine import (
     policy_allows_pause as time_policy_allows_pause,
     policy_allows_rate_change as time_policy_allows_rate_change,
     policy_rate_bounds as time_policy_rate_bounds,
+)
+from src.control.ir.control_ir_programs import (
+    build_ai_controller_stub_ir,
+    build_autopilot_stub_ir,
+    build_blueprint_execution_ir,
+    compile_ir_program,
+)
+from src.control.ir.control_ir_verifier import (
+    REFUSAL_CTRL_IR_INVALID,
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -207,6 +237,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.compartment_flow_tick": "session.boot",
     "process.portal_open": "entitlement.tool.operating",
     "process.portal_close": "entitlement.tool.operating",
+    "process.portal_lock": "entitlement.tool.operating",
+    "process.portal_unlock": "entitlement.tool.operating",
+    "process.portal_seal_breach": "entitlement.tool.operating",
+    "process.vent_activate": "entitlement.tool.operating",
     "process.hatch_open": "entitlement.tool.operating",
     "process.hatch_close": "entitlement.tool.operating",
     "process.vent_open": "entitlement.tool.operating",
@@ -226,6 +260,13 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.task_pause": "entitlement.tool.use",
     "process.task_resume": "entitlement.tool.use",
     "process.task_cancel": "entitlement.tool.use",
+    "process.pose_enter": "entitlement.tool.operating",
+    "process.pose_exit": "entitlement.tool.operating",
+    "process.mount_attach": "entitlement.tool.operating",
+    "process.mount_detach": "entitlement.tool.operating",
+    "process.meta_pose_override": "entitlement.control.admin",
+    "process.control_ir.autopilot_stub": "entitlement.tool.operating",
+    "process.control_ir.ai_controller_stub": "entitlement.control.admin",
     "process.port_insert_batch": "entitlement.tool.operating",
     "process.port_extract_batch": "entitlement.tool.operating",
     "process.port_connect": "entitlement.tool.operating",
@@ -294,6 +335,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.compartment_flow_tick": "observer",
     "process.portal_open": "operator",
     "process.portal_close": "operator",
+    "process.portal_lock": "operator",
+    "process.portal_unlock": "operator",
+    "process.portal_seal_breach": "operator",
+    "process.vent_activate": "operator",
     "process.hatch_open": "operator",
     "process.hatch_close": "operator",
     "process.vent_open": "operator",
@@ -313,6 +358,13 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.task_pause": "operator",
     "process.task_resume": "operator",
     "process.task_cancel": "operator",
+    "process.pose_enter": "operator",
+    "process.pose_exit": "operator",
+    "process.mount_attach": "operator",
+    "process.mount_detach": "operator",
+    "process.meta_pose_override": "operator",
+    "process.control_ir.autopilot_stub": "operator",
+    "process.control_ir.ai_controller_stub": "operator",
     "process.port_insert_batch": "operator",
     "process.port_extract_batch": "operator",
     "process.port_connect": "operator",
@@ -349,6 +401,8 @@ CONTROL_PROCESS_IDS = {
     "process.instrument_notebook_add_note",
     "process.instrument_radio_send_text",
     "process.body_move_attempt",
+    "process.control_ir.autopilot_stub",
+    "process.control_ir.ai_controller_stub",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -391,6 +445,10 @@ INTERIOR_PROCESS_IDS = {
     "process.compartment_flow_tick",
     "process.portal_open",
     "process.portal_close",
+    "process.portal_lock",
+    "process.portal_unlock",
+    "process.portal_seal_breach",
+    "process.vent_activate",
     "process.hatch_open",
     "process.hatch_close",
     "process.vent_open",
@@ -408,6 +466,13 @@ TASK_PROCESS_IDS = {
     "process.task_pause",
     "process.task_resume",
     "process.task_cancel",
+}
+POSE_PROCESS_IDS = {
+    "process.pose_enter",
+    "process.pose_exit",
+    "process.mount_attach",
+    "process.mount_detach",
+    "process.meta_pose_override",
 }
 MACHINE_PROCESS_IDS = {
     "process.port_insert_batch",
@@ -441,6 +506,11 @@ TASK_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": REFUSAL_TASK_FORBIDDEN_BY_LAW,
     "ENTITLEMENT_MISSING": REFUSAL_TASK_FORBIDDEN_BY_LAW,
     "PRIVILEGE_INSUFFICIENT": REFUSAL_TASK_FORBIDDEN_BY_LAW,
+}
+POSE_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": REFUSAL_POSE_FORBIDDEN_BY_LAW,
+    "ENTITLEMENT_MISSING": REFUSAL_POSE_FORBIDDEN_BY_LAW,
+    "PRIVILEGE_INSUFFICIENT": REFUSAL_POSE_FORBIDDEN_BY_LAW,
 }
 MACHINE_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": REFUSAL_PORT_FORBIDDEN_BY_LAW,
@@ -501,6 +571,11 @@ INSTRUMENT_TYPE_ID_BY_TYPE = {
     "map_local": "instr.map_local",
     "notebook": "instr.notebook",
     "radio_text": "instr.radio_text",
+    "gauge.pressure": "instr.gauge.pressure",
+    "gauge.oxygen": "instr.gauge.oxygen",
+    "alarm.smoke": "instr.alarm.smoke",
+    "alarm.flood": "instr.alarm.flood",
+    "panel.portal_state": "instr.panel.portal_state",
 }
 INSTRUMENT_TYPE_BY_ID = dict((value, key) for key, value in INSTRUMENT_TYPE_ID_BY_TYPE.items())
 
@@ -810,6 +885,19 @@ def _tool_effect_model_rows(policy_context: dict | None) -> Dict[str, dict]:
             continue
         out[effect_model_id] = dict(row)
     return out
+
+
+def _pose_control_binding_registry_payload(policy_context: dict | None) -> dict:
+    payload = _policy_payload(policy_context, "control_binding_registry")
+    rows = payload.get("control_bindings")
+    if isinstance(rows, list):
+        return payload
+    fallback = _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/control_binding_registry.json",
+        default_payload={},
+    )
+    return dict(fallback)
 
 
 def _port_type_rows(policy_context: dict | None) -> Dict[str, dict]:
@@ -1134,6 +1222,13 @@ def _ensure_agent_states(state: dict) -> List[dict]:
         if not _is_sha256_hex(state_hash):
             state_hash = canonical_sha256({"agent_id": agent_id})
         orientation = _angles_int(row.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+        extensions = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+        interior_volume_id = (
+            str(row.get("interior_volume_id", "")).strip()
+            or str(extensions.get("interior_volume_id", "")).strip()
+        )
+        posture = str(row.get("posture", "")).strip()
+        pose_slot_id = str(row.get("pose_slot_id", "")).strip()
         normalized.append(
             {
                 "agent_id": agent_id,
@@ -1158,11 +1253,15 @@ def _ensure_agent_states(state: dict) -> List[dict]:
                 "equipped_tool_id": row.get("equipped_tool_id")
                 if row.get("equipped_tool_id") is None
                 else str(row.get("equipped_tool_id", "")).strip(),
+                "interior_volume_id": interior_volume_id or None,
+                "posture": posture or None,
+                "pose_slot_id": pose_slot_id or None,
                 "orientation_mdeg": {
                     "yaw": _as_int((orientation or {}).get("yaw", 0), 0),
                     "pitch": _as_int((orientation or {}).get("pitch", 0), 0),
                     "roll": _as_int((orientation or {}).get("roll", 0), 0),
                 },
+                "extensions": extensions,
             }
         )
     state["agent_states"] = normalized
@@ -2613,6 +2712,73 @@ def _persist_task_state(
     _ensure_pending_task_completion_intents(state)
 
 
+def _ensure_pose_slots(state: dict) -> List[dict]:
+    rows = state.get("pose_slots")
+    normalized = normalize_pose_slot_rows(rows)
+    state["pose_slots"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_mount_points(state: dict) -> List[dict]:
+    rows = state.get("mount_points")
+    normalized = normalize_mount_point_rows(rows)
+    state["mount_points"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_pose_mount_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("pose_mount_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": max(0, _as_int(row.get("tick", 0), 0)),
+            "event_type_id": str(row.get("event_type_id", "")).strip(),
+            "actor_subject_id": str(row.get("actor_subject_id", "")).strip() or "subject.system",
+            "site_ref": str(row.get("site_ref", "")).strip(),
+            "inputs": _sorted_tokens(list(row.get("inputs") or [])),
+            "outputs": _sorted_tokens(list(row.get("outputs") or [])),
+            "ledger_deltas": dict(
+                (str(key).strip(), _as_int(value, 0))
+                for key, value in sorted((dict(row.get("ledger_deltas") or {})).items(), key=lambda item: str(item[0]))
+                if str(key).strip()
+            ),
+            "linked_project_id": None if row.get("linked_project_id") is None else str(row.get("linked_project_id", "")).strip() or None,
+            "linked_step_id": None if row.get("linked_step_id") is None else str(row.get("linked_step_id", "")).strip() or None,
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        if not payload["deterministic_fingerprint"]:
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["pose_mount_provenance_events"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _persist_pose_mount_state(
+    state: dict,
+    *,
+    pose_slots: List[dict],
+    mount_points: List[dict],
+    provenance_events: List[dict],
+) -> None:
+    state["pose_slots"] = [dict(row) for row in list(pose_slots or []) if isinstance(row, dict)]
+    state["mount_points"] = [dict(row) for row in list(mount_points or []) if isinstance(row, dict)]
+    state["pose_mount_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
+    _ensure_pose_slots(state)
+    _ensure_mount_points(state)
+    _ensure_pose_mount_provenance_events(state)
+
+
 def _ensure_machine_assemblies(state: dict) -> List[dict]:
     rows = state.get("machine_assemblies")
     normalized = normalize_machine_rows(rows)
@@ -2930,6 +3096,144 @@ def _machine_event_row(
     fingerprint_payload["deterministic_fingerprint"] = ""
     payload["deterministic_fingerprint"] = canonical_sha256(fingerprint_payload)
     return payload
+
+
+def _pose_mount_event_row(
+    *,
+    current_tick: int,
+    event_type_id: str,
+    actor_subject_id: str,
+    site_ref: str,
+    inputs: List[str],
+    outputs: List[str],
+    extensions: dict,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": "",
+        "tick": int(max(0, int(current_tick))),
+        "event_type_id": str(event_type_id).strip(),
+        "actor_subject_id": str(actor_subject_id).strip() or "subject.system",
+        "site_ref": str(site_ref).strip(),
+        "inputs": _sorted_tokens(list(inputs or [])),
+        "outputs": _sorted_tokens(list(outputs or [])),
+        "ledger_deltas": {},
+        "linked_project_id": None,
+        "linked_step_id": None,
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    payload["event_id"] = "provenance.pose_mount.{}".format(
+        canonical_sha256(
+            {
+                "tick": int(payload["tick"]),
+                "event_type_id": str(payload["event_type_id"]),
+                "actor_subject_id": str(payload["actor_subject_id"]),
+                "inputs": list(payload["inputs"]),
+                "outputs": list(payload["outputs"]),
+            }
+        )[:24]
+    )
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _agent_current_volume_id(agent_row: dict) -> str:
+    row = dict(agent_row or {})
+    ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+    for token in (
+        row.get("interior_volume_id"),
+        ext.get("interior_volume_id"),
+        row.get("position_ref"),
+        row.get("location_ref"),
+    ):
+        value = str(token or "").strip()
+        if value:
+            return value
+    return ""
+
+
+def _set_agent_current_volume_id(agent_row: dict, volume_id: str) -> None:
+    token = str(volume_id).strip()
+    if not token:
+        return
+    agent_row["interior_volume_id"] = token
+    ext = dict(agent_row.get("extensions") or {}) if isinstance(agent_row.get("extensions"), dict) else {}
+    ext["interior_volume_id"] = token
+    agent_row["extensions"] = ext
+
+
+def _pose_slot_graph_row(state: dict, pose_slot_row: dict) -> dict:
+    slot = dict(pose_slot_row or {})
+    slot_ext = dict(slot.get("extensions") or {}) if isinstance(slot.get("extensions"), dict) else {}
+    desired_graph_id = str(slot_ext.get("interior_graph_id", "")).strip()
+    if desired_graph_id:
+        for graph in sorted(
+            (item for item in list(state.get("interior_graphs") or []) if isinstance(item, dict)),
+            key=lambda item: str(item.get("graph_id", "")),
+        ):
+            if str(graph.get("graph_id", "")).strip() == desired_graph_id:
+                return dict(graph)
+    parent_assembly_id = str(slot.get("parent_assembly_id", "")).strip()
+    if parent_assembly_id:
+        for binding in sorted(
+            (item for item in list(state.get("interior_structure_bindings") or []) if isinstance(item, dict)),
+            key=lambda item: (str(item.get("structure_id", "")), str(item.get("graph_id", ""))),
+        ):
+            if str(binding.get("structure_id", "")).strip() != parent_assembly_id:
+                continue
+            graph_id = str(binding.get("graph_id", "")).strip()
+            if not graph_id:
+                continue
+            for graph in sorted(
+                (item for item in list(state.get("interior_graphs") or []) if isinstance(item, dict)),
+                key=lambda item: str(item.get("graph_id", "")),
+            ):
+                if str(graph.get("graph_id", "")).strip() == graph_id:
+                    return dict(graph)
+    slot_volume_id = str(slot.get("interior_volume_id", "")).strip()
+    if slot_volume_id:
+        for graph in sorted(
+            (item for item in list(state.get("interior_graphs") or []) if isinstance(item, dict)),
+            key=lambda item: str(item.get("graph_id", "")),
+        ):
+            graph_volume_ids = set(_sorted_tokens(list(graph.get("volumes") or [])))
+            if slot_volume_id in graph_volume_ids:
+                return dict(graph)
+    return {}
+
+
+def _pose_slot_accessible_by_path(
+    *,
+    state: dict,
+    agent_row: dict,
+    pose_slot_row: dict,
+) -> bool:
+    slot = dict(pose_slot_row or {})
+    if not bool(slot.get("requires_access_path", True)):
+        return True
+    from_volume_id = _agent_current_volume_id(agent_row)
+    to_volume_id = str(slot.get("interior_volume_id", "")).strip()
+    if (not from_volume_id) or (not to_volume_id):
+        return False
+    if from_volume_id == to_volume_id:
+        return True
+    graph_row = _pose_slot_graph_row(state, slot)
+    if not graph_row:
+        return False
+    try:
+        return bool(
+            path_exists(
+                graph_row=graph_row,
+                volume_rows=list(state.get("interior_volumes") or []),
+                portal_rows=list(state.get("interior_portals") or []),
+                from_volume_id=from_volume_id,
+                to_volume_id=to_volume_id,
+                portal_state_rows=list(state.get("interior_portal_state_machines") or []),
+            )
+        )
+    except InteriorError:
+        return False
 
 
 def _inventory_debit(
@@ -5570,6 +5874,174 @@ def _read_registry_fallback(
     return direct
 
 
+def _control_ir_registry_payload(
+    *,
+    policy_context: dict | None,
+    key: str,
+    registry_rel_path: str,
+    default_payload: dict | None,
+) -> dict:
+    payload = _policy_payload(policy_context, key)
+    if payload:
+        return dict(payload)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path=registry_rel_path,
+        default_payload=default_payload,
+    )
+
+
+def _resolve_control_policy_row_for_ir(
+    *,
+    control_policy_registry: dict,
+    preferred_policy_id: str,
+) -> dict:
+    preferred = str(preferred_policy_id or "").strip()
+    if preferred:
+        row = _registry_row_by_id(control_policy_registry, "policies", "control_policy_id", preferred)
+        if row:
+            return row
+    for fallback in ("ctrl.policy.scheduler", "ctrl.policy.player.assisted", "ctrl.policy.player.diegetic"):
+        row = _registry_row_by_id(control_policy_registry, "policies", "control_policy_id", fallback)
+        if row:
+            return row
+    rows = list(control_policy_registry.get("policies") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("control_policy_id", ""))):
+        return dict(row)
+    return {}
+
+
+def _summarize_compiled_actions_for_ir(compiled: dict) -> List[dict]:
+    out: List[dict] = []
+    for row in list(compiled.get("compiled_actions") or []):
+        if not isinstance(row, dict):
+            continue
+        control_intent = dict(row.get("control_intent") or {})
+        resolution = dict(row.get("resolution") or {})
+        out.append(
+            {
+                "op_id": str(row.get("op_id", "")).strip(),
+                "block_id": str(row.get("block_id", "")).strip(),
+                "op_type": str(row.get("op_type", "")).strip(),
+                "control_intent_id": str(control_intent.get("control_intent_id", "")).strip(),
+                "resolution_id": str(resolution.get("resolution_id", "")).strip(),
+            }
+        )
+    return sorted(
+        out,
+        key=lambda row: (
+            str(row.get("block_id", "")),
+            str(row.get("op_id", "")),
+            str(row.get("control_intent_id", "")),
+        ),
+    )
+
+
+def _compile_control_ir_stub_program(
+    *,
+    ir_program: dict,
+    policy_context: dict | None,
+    authority_context: dict,
+    law_profile: dict,
+    fallback_control_policy_id: str,
+    rs5_budget_units: int = 0,
+) -> dict:
+    control_action_registry = _control_ir_registry_payload(
+        policy_context=policy_context,
+        key="control_action_registry",
+        registry_rel_path="data/registries/control_action_registry.json",
+        default_payload={"actions": []},
+    )
+    control_policy_registry = _control_ir_registry_payload(
+        policy_context=policy_context,
+        key="control_policy_registry",
+        registry_rel_path="data/registries/control_policy_registry.json",
+        default_payload={"policies": []},
+    )
+    capability_registry = _policy_payload(policy_context, "capability_registry")
+
+    requested_policy_id = str(
+        (dict(policy_context or {})).get("control_policy_id", "")
+        or fallback_control_policy_id
+    ).strip()
+    selected_control_policy = _resolve_control_policy_row_for_ir(
+        control_policy_registry=control_policy_registry,
+        preferred_policy_id=requested_policy_id,
+    )
+    if not selected_control_policy:
+        return refusal(
+            REFUSAL_CTRL_IR_INVALID,
+            "control policy registry has no selectable policy for IR compilation",
+            "Provide control_policy_registry with at least one policy row.",
+            {"requested_control_policy_id": requested_policy_id},
+            "$.policy_context.control_policy_registry",
+        )
+
+    selected_policy_id = str(selected_control_policy.get("control_policy_id", "")).strip() or requested_policy_id
+    compile_policy_context = dict(policy_context or {})
+    compile_policy_context["control_policy_id"] = selected_policy_id
+    compile_policy_context.setdefault(
+        "abstraction_level_requested",
+        "AL2" if selected_policy_id == "ctrl.policy.scheduler" else "AL1",
+    )
+    compile_policy_context.setdefault("fidelity_requested", "meso")
+    compile_policy_context.setdefault("view_requested", "view.mode.first_person")
+
+    return compile_ir_program(
+        ir_program=dict(ir_program or {}),
+        control_policy=dict(selected_control_policy),
+        authority_context=dict(authority_context or {}),
+        capability_registry=dict(capability_registry or {}) if isinstance(capability_registry, dict) else {},
+        law_profile=dict(law_profile or {}),
+        control_action_registry=dict(control_action_registry or {}),
+        control_policy_registry=dict(control_policy_registry or {}),
+        policy_context=compile_policy_context,
+        repo_root=REPO_ROOT_HINT,
+        rs5_budget_units=int(max(0, _as_int(rs5_budget_units, 0))),
+    )
+
+
+def _control_ir_stub_result_metadata(compiled: dict) -> dict:
+    verification_report = dict(compiled.get("verification_report") or {})
+    return {
+        "control_ir_id": str(compiled.get("control_ir_id", "")).strip(),
+        "control_ir_fingerprint": str(compiled.get("deterministic_fingerprint", "")).strip(),
+        "verification_report_hash": str(compiled.get("verification_report_hash", "")).strip(),
+        "verification_valid": bool(verification_report.get("valid", False)),
+        "verification_fingerprint": str(verification_report.get("deterministic_fingerprint", "")).strip(),
+        "op_execution_order": _sorted_tokens(list(compiled.get("op_execution_order") or [])),
+        "compiled_actions": _summarize_compiled_actions_for_ir(compiled),
+        "downgrades": [
+            dict(row)
+            for row in sorted(
+                (item for item in list(compiled.get("downgrades") or []) if isinstance(item, dict)),
+                key=lambda item: (str(item.get("op_id", "")), str(item.get("reason_code", ""))),
+            )
+        ],
+        "wait_conditions": [
+            dict(row)
+            for row in sorted(
+                (item for item in list(compiled.get("wait_conditions") or []) if isinstance(item, dict)),
+                key=lambda item: str(item.get("wait_condition_id", "")),
+            )
+        ],
+        "task_starts": [
+            dict(row)
+            for row in sorted(
+                (item for item in list(compiled.get("task_starts") or []) if isinstance(item, dict)),
+                key=lambda item: (str(item.get("op_id", "")), str(item.get("intent_id", ""))),
+            )
+        ],
+        "commitment_creations": [
+            dict(row)
+            for row in sorted(
+                (item for item in list(compiled.get("commitment_creations") or []) if isinstance(item, dict)),
+                key=lambda item: (str(item.get("op_id", "")), str(item.get("intent_id", "")), str(item.get("commitment_id", ""))),
+            )
+        ],
+    }
+
+
 def _registry_row_by_id(registry_payload: dict, list_key: str, id_key: str, token: str) -> dict:
     rows = list((registry_payload.get(list_key) or [])) if isinstance(registry_payload, dict) else []
     normalized = str(token).strip()
@@ -6484,6 +6956,26 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
                 "collection": "interior_portals",
                 "row": row,
             }
+    if token.startswith("pose.slot."):
+        pose_slot_id = str(token).strip()
+        row = _row_by_id_value(state.get("pose_slots"), "pose_slot_id", pose_slot_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "pose_slots",
+                "row": row,
+            }
+    if token.startswith("mount.point."):
+        mount_point_id = str(token).strip()
+        row = _row_by_id_value(state.get("mount_points"), "mount_point_id", mount_point_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "mount_points",
+                "row": row,
+            }
 
     id_table = (
         ("cohort_assemblies", "cohort_id"),
@@ -6509,6 +7001,9 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("maintenance_provenance_events", "event_id"),
         ("tasks", "task_id"),
         ("task_provenance_events", "event_id"),
+        ("pose_slots", "pose_slot_id"),
+        ("mount_points", "mount_point_id"),
+        ("pose_mount_provenance_events", "event_id"),
         ("machine_assemblies", "machine_id"),
         ("machine_ports", "port_id"),
         ("machine_port_connections", "connection_id"),
@@ -8933,6 +9428,8 @@ def execute_intent(
             return _control_gate_refusal(gate, reason_map=TASK_GATE_REASON_MAP)
         if process_id in TOOL_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=TOOL_GATE_REASON_MAP)
+        if process_id in POSE_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=POSE_GATE_REASON_MAP)
         if process_id in MACHINE_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=MACHINE_GATE_REASON_MAP)
         if process_id in MAINTENANCE_PROCESS_IDS:
@@ -9014,6 +9511,9 @@ def execute_intent(
     tasks = _ensure_tasks(state)
     task_provenance_events = _ensure_task_provenance_events(state)
     pending_task_completion_intents = _ensure_pending_task_completion_intents(state)
+    pose_slots = _ensure_pose_slots(state)
+    mount_points = _ensure_mount_points(state)
+    pose_mount_provenance_events = _ensure_pose_mount_provenance_events(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     strictness_row = resolve_causality_strictness_row(
@@ -10670,6 +11170,327 @@ def execute_intent(
             "event_count": int(len(new_events)),
             "linked_commitment_id": commitment_id or None,
         }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id in ("process.pose_enter", "process.pose_exit", "process.meta_pose_override"):
+        meta_action = str(inputs.get("action", "enter")).strip() or "enter"
+        if process_id == "process.meta_pose_override" and meta_action not in {"enter", "exit"}:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.meta_pose_override action must be enter|exit",
+                "Set intent.inputs.action to enter or exit.",
+                {"process_id": process_id, "action": meta_action},
+                "$.intent.inputs.action",
+            )
+        should_enter = process_id == "process.pose_enter" or (
+            process_id == "process.meta_pose_override" and meta_action == "enter"
+        )
+        should_exit = process_id == "process.pose_exit" or (
+            process_id == "process.meta_pose_override" and meta_action == "exit"
+        )
+        agent_id = str(
+            inputs.get("agent_id", "")
+            or inputs.get("subject_id", "")
+            or inputs.get("actor_subject_id", "")
+            or authority_context.get("subject_id", "")
+            or authority_context.get("agent_id", "")
+            or ""
+        ).strip()
+        pose_slot_id = str(inputs.get("pose_slot_id", "")).strip()
+        if not agent_id or not pose_slot_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "{} requires agent_id and pose_slot_id".format(process_id),
+                "Provide deterministic agent_id and pose_slot_id in intent.inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        agent = _find_agent(agent_rows=agents, agent_id=agent_id)
+        if not agent:
+            return refusal(
+                "refusal.control.target_invalid",
+                "agent '{}' was not found".format(agent_id),
+                "Select an existing agent_id.",
+                {"agent_id": agent_id},
+                "$.intent.inputs.agent_id",
+            )
+        pose_by_id = dict(
+            (str(row.get("pose_slot_id", "")).strip(), dict(row))
+            for row in list(pose_slots or [])
+            if isinstance(row, dict) and str(row.get("pose_slot_id", "")).strip()
+        )
+        pose_slot_row = dict(pose_by_id.get(pose_slot_id) or {})
+        if not pose_slot_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "pose_slot_id '{}' was not found".format(pose_slot_id),
+                "Use a pose_slot_id from universe_state.pose_slots.",
+                {"pose_slot_id": pose_slot_id},
+                "$.intent.inputs.pose_slot_id",
+            )
+        override = process_id == "process.meta_pose_override"
+        if should_enter and (not override) and bool(pose_slot_row.get("requires_access_path", True)):
+            if not _pose_slot_accessible_by_path(state=state, agent_row=agent, pose_slot_row=pose_slot_row):
+                return refusal(
+                    REFUSAL_POSE_NO_ACCESS_PATH,
+                    "pose slot '{}' is not reachable through open portals".format(pose_slot_id),
+                    "Open required portals or move into a connected interior volume before entering the pose slot.",
+                    {"pose_slot_id": pose_slot_id, "agent_id": agent_id},
+                    "$.intent.inputs.pose_slot_id",
+                )
+        posture_id = ""
+        try:
+            if should_enter:
+                enter_result = enter_pose_slot(
+                    pose_slot_row=pose_slot_row,
+                    agent_id=agent_id,
+                    requested_posture=str(inputs.get("posture", "")).strip(),
+                    override=bool(override),
+                )
+                pose_slot_row = dict(enter_result.get("pose_slot") or {})
+                posture_id = str(enter_result.get("posture_id", "")).strip()
+            elif should_exit:
+                exit_result = exit_pose_slot(
+                    pose_slot_row=pose_slot_row,
+                    agent_id=agent_id,
+                    override=bool(override),
+                )
+                pose_slot_row = dict(exit_result.get("pose_slot") or {})
+        except PoseError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Adjust pose occupancy inputs or use meta override with proper entitlement.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        pose_by_id[pose_slot_id] = dict(pose_slot_row)
+        pose_slots = [dict(pose_by_id[key]) for key in sorted(pose_by_id.keys())]
+
+        if should_enter:
+            agent["pose_slot_id"] = pose_slot_id
+            if posture_id:
+                agent["posture"] = posture_id
+            _set_agent_current_volume_id(agent, str(pose_slot_row.get("interior_volume_id", "")).strip())
+        elif should_exit:
+            if str(agent.get("pose_slot_id", "")).strip() == pose_slot_id:
+                agent["pose_slot_id"] = None
+            current_posture = str(agent.get("posture", "")).strip()
+            if current_posture in {"posture.sit", "posture.lie", "sit", "lie"}:
+                agent["posture"] = "posture.stand"
+
+        control_binding_payload = _pose_control_binding_registry_payload(policy_context)
+        control_grants = grants_for_subject(
+            pose_slot_rows=pose_slots,
+            subject_id=agent_id,
+            control_binding_registry_payload=control_binding_payload,
+        )
+        agent_extensions = dict(agent.get("extensions") or {}) if isinstance(agent.get("extensions"), dict) else {}
+        agent_extensions["pose_control_binding_ids"] = _sorted_tokens(list(control_grants.get("control_binding_ids") or []))
+        agent_extensions["pose_granted_process_ids"] = _sorted_tokens(list(control_grants.get("granted_process_ids") or []))
+        agent_extensions["pose_granted_surface_ids"] = _sorted_tokens(list(control_grants.get("granted_surface_ids") or []))
+        agent_extensions["occupied_pose_slot_ids"] = _sorted_tokens(list(control_grants.get("pose_slot_ids") or []))
+        agent["extensions"] = agent_extensions
+
+        event_type_id = "event.pose_enter" if should_enter else "event.pose_exit"
+        if process_id == "process.meta_pose_override":
+            event_type_id = "event.pose_override"
+        event_row = _pose_mount_event_row(
+            current_tick=int(current_tick),
+            event_type_id=event_type_id,
+            actor_subject_id=agent_id,
+            site_ref="pose_slot:{}".format(pose_slot_id),
+            inputs=[agent_id, pose_slot_id],
+            outputs=[pose_slot_id],
+            extensions={
+                "process_id": process_id,
+                "agent_id": agent_id,
+                "pose_slot_id": pose_slot_id,
+                "posture": posture_id or None,
+                "override": bool(override),
+                "control_binding_ids": _sorted_tokens(list(control_grants.get("control_binding_ids") or [])),
+            },
+        )
+        pose_event_by_id = dict(
+            (str(row.get("event_id", "")).strip(), dict(row))
+            for row in list(pose_mount_provenance_events or [])
+            if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+        )
+        pose_event_by_id[str(event_row.get("event_id", "")).strip()] = event_row
+        pose_mount_provenance_events = sorted(
+            (dict(pose_event_by_id[key]) for key in sorted(pose_event_by_id.keys())),
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_pose_mount_state(
+            state,
+            pose_slots=pose_slots,
+            mount_points=mount_points,
+            provenance_events=pose_mount_provenance_events,
+        )
+        if process_id == "process.meta_pose_override":
+            _ledger_emit_exception(
+                policy_context=policy_context,
+                quantity_id=CONSERVATION_DEFAULT_QUANTITY_ID,
+                delta=0,
+                exception_type_id="exception.meta_law_override",
+                domain_id=CONSERVATION_CONTROL_DOMAIN_ID,
+                process_id=process_id,
+                reason_code="pose.meta_override",
+                evidence=[
+                    "agent_id={}".format(agent_id),
+                    "pose_slot_id={}".format(pose_slot_id),
+                    "action={}".format(meta_action),
+                ],
+            )
+        result_metadata = {
+            "agent_id": agent_id,
+            "pose_slot_id": pose_slot_id,
+            "action": "enter" if should_enter else "exit",
+            "posture": posture_id or None,
+            "control_binding_ids": _sorted_tokens(list(control_grants.get("control_binding_ids") or [])),
+            "granted_process_ids": _sorted_tokens(list(control_grants.get("granted_process_ids") or [])),
+            "granted_surface_ids": _sorted_tokens(list(control_grants.get("granted_surface_ids") or [])),
+            "event_id": str(event_row.get("event_id", "")).strip(),
+            "override": bool(override),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id in ("process.mount_attach", "process.mount_detach"):
+        mount_by_id = dict(
+            (str(row.get("mount_point_id", "")).strip(), dict(row))
+            for row in list(mount_points or [])
+            if isinstance(row, dict) and str(row.get("mount_point_id", "")).strip()
+        )
+        actor_subject_id = str(
+            inputs.get("actor_subject_id", "")
+            or inputs.get("subject_id", "")
+            or authority_context.get("subject_id", "")
+            or authority_context.get("peer_id", "")
+            or "subject.system"
+        ).strip()
+        if process_id == "process.mount_attach":
+            mount_point_a_id = str(inputs.get("mount_point_a_id", "")).strip()
+            mount_point_b_id = str(inputs.get("mount_point_b_id", "")).strip()
+            if not mount_point_a_id or not mount_point_b_id:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.mount_attach requires mount_point_a_id and mount_point_b_id",
+                    "Provide deterministic mount point ids in intent.inputs.",
+                    {"process_id": process_id},
+                    "$.intent.inputs",
+                )
+            mount_a = dict(mount_by_id.get(mount_point_a_id) or {})
+            mount_b = dict(mount_by_id.get(mount_point_b_id) or {})
+            if not mount_a or not mount_b:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "mount_attach requires existing mount points",
+                    "Use mount_point ids present in universe_state.mount_points.",
+                    {"mount_point_a_id": mount_point_a_id, "mount_point_b_id": mount_point_b_id},
+                    "$.intent.inputs",
+                )
+            try:
+                attached = attach_mount_points(
+                    mount_point_a_row=mount_a,
+                    mount_point_b_row=mount_b,
+                )
+            except MountError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Use compatible mount tags and unattached mount points.",
+                    dict(exc.details),
+                    "$.intent.inputs",
+                )
+            mount_by_id[mount_point_a_id] = dict(attached.get("mount_point_a") or {})
+            mount_by_id[mount_point_b_id] = dict(attached.get("mount_point_b") or {})
+            event_row = _pose_mount_event_row(
+                current_tick=int(current_tick),
+                event_type_id="event.mount_attach",
+                actor_subject_id=actor_subject_id,
+                site_ref="mount_point:{}".format(mount_point_a_id),
+                inputs=[mount_point_a_id, mount_point_b_id],
+                outputs=[mount_point_a_id, mount_point_b_id],
+                extensions={
+                    "process_id": process_id,
+                    "mount_point_a_id": mount_point_a_id,
+                    "mount_point_b_id": mount_point_b_id,
+                },
+            )
+            result_metadata = {
+                "mount_point_a_id": mount_point_a_id,
+                "mount_point_b_id": mount_point_b_id,
+                "attached": True,
+                "event_id": str(event_row.get("event_id", "")).strip(),
+            }
+        else:
+            mount_point_id = str(inputs.get("mount_point_id", "")).strip()
+            if not mount_point_id:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.mount_detach requires mount_point_id",
+                    "Provide deterministic mount_point_id in intent.inputs.",
+                    {"process_id": process_id},
+                    "$.intent.inputs.mount_point_id",
+                )
+            mount_row = dict(mount_by_id.get(mount_point_id) or {})
+            if not mount_row:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "mount_point_id '{}' was not found".format(mount_point_id),
+                    "Use mount_point_id present in universe_state.mount_points.",
+                    {"mount_point_id": mount_point_id},
+                    "$.intent.inputs.mount_point_id",
+                )
+            connected_to_mount_point_id = str(mount_row.get("connected_to_mount_point_id") or "").strip()
+            if not connected_to_mount_point_id:
+                return refusal(
+                    REFUSAL_MOUNT_INCOMPATIBLE,
+                    "mount point '{}' is not attached".format(mount_point_id),
+                    "Attach mount points before issuing detach.",
+                    {"mount_point_id": mount_point_id},
+                    "$.intent.inputs.mount_point_id",
+                )
+            detached = detach_mount_point(mount_point_row=mount_row)
+            mount_by_id[mount_point_id] = dict(detached.get("mount_point") or {})
+            connected_mount_row = dict(mount_by_id.get(connected_to_mount_point_id) or {})
+            if connected_mount_row:
+                detached_other = detach_mount_point(mount_point_row=connected_mount_row)
+                mount_by_id[connected_to_mount_point_id] = dict(detached_other.get("mount_point") or {})
+            event_row = _pose_mount_event_row(
+                current_tick=int(current_tick),
+                event_type_id="event.mount_detach",
+                actor_subject_id=actor_subject_id,
+                site_ref="mount_point:{}".format(mount_point_id),
+                inputs=[mount_point_id, connected_to_mount_point_id],
+                outputs=[mount_point_id],
+                extensions={
+                    "process_id": process_id,
+                    "mount_point_id": mount_point_id,
+                    "detached_from_mount_point_id": connected_to_mount_point_id or None,
+                },
+            )
+            result_metadata = {
+                "mount_point_id": mount_point_id,
+                "detached_from_mount_point_id": connected_to_mount_point_id or None,
+                "attached": False,
+                "event_id": str(event_row.get("event_id", "")).strip(),
+            }
+        mount_points = [dict(mount_by_id[key]) for key in sorted(mount_by_id.keys())]
+        pose_event_by_id = dict(
+            (str(row.get("event_id", "")).strip(), dict(row))
+            for row in list(pose_mount_provenance_events or [])
+            if isinstance(row, dict) and str(row.get("event_id", "")).strip()
+        )
+        pose_event_by_id[str(event_row.get("event_id", "")).strip()] = event_row
+        pose_mount_provenance_events = sorted(
+            (dict(pose_event_by_id[key]) for key in sorted(pose_event_by_id.keys())),
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_pose_mount_state(
+            state,
+            pose_slots=pose_slots,
+            mount_points=mount_points,
+            provenance_events=pose_mount_provenance_events,
+        )
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.port_insert_batch":
         port_id = str(inputs.get("port_id", "")).strip()
@@ -13833,6 +14654,97 @@ def execute_intent(
                 "active_manifest_count": int(_active_manifest_count(logistics_manifests)),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.control_ir.autopilot_stub":
+        controller_id = str(
+            inputs.get("controller_id", "")
+            or inputs.get("target_semantic_id", "")
+            or authority_context.get("subject_id", "")
+            or authority_context.get("peer_id", "")
+        ).strip()
+        if not controller_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.control_ir.autopilot_stub requires controller_id",
+                "Provide deterministic controller_id for autopilot IR stub compilation.",
+                {"process_id": process_id},
+                "$.intent.inputs.controller_id",
+            )
+        ir_program = build_autopilot_stub_ir(
+            controller_id=controller_id,
+            driver_pose_slot_id=str(inputs.get("driver_pose_slot_id", "pose.driver")).strip() or "pose.driver",
+            throttle_task_type_id=str(inputs.get("throttle_task_type_id", "task.vehicle.set_throttle")).strip()
+            or "task.vehicle.set_throttle",
+            reached_target_event_id=str(inputs.get("reached_target_event_id", "event.autopilot.reached_target")).strip()
+            or "event.autopilot.reached_target",
+            tick=int(max(0, int(current_tick))),
+        )
+        compiled_ir = _compile_control_ir_stub_program(
+            ir_program=ir_program,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            law_profile=law_profile,
+            fallback_control_policy_id="ctrl.policy.player.assisted",
+            rs5_budget_units=_as_int(
+                inputs.get("rs5_budget_units", (dict(policy_context or {})).get("control_ir_rs5_budget_units", 0)),
+                0,
+            ),
+        )
+        if str(compiled_ir.get("result", "")) != "complete":
+            return dict(compiled_ir)
+        result_metadata = {
+            "stub_kind": "autopilot",
+            "controller_id": controller_id,
+            "control_ir_program": dict(ir_program),
+            "control_ir_execution": _control_ir_stub_result_metadata(compiled_ir),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.control_ir.ai_controller_stub":
+        controller_id = str(
+            inputs.get("controller_id", "")
+            or inputs.get("target_semantic_id", "")
+            or authority_context.get("subject_id", "")
+            or authority_context.get("peer_id", "")
+        ).strip()
+        if not controller_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.control_ir.ai_controller_stub requires controller_id",
+                "Provide deterministic controller_id for AI controller IR stub compilation.",
+                {"process_id": process_id},
+                "$.intent.inputs.controller_id",
+            )
+        high_level_order = inputs.get("high_level_order")
+        if not isinstance(high_level_order, dict):
+            task_sequence = list(inputs.get("task_sequence") or [])
+            high_level_order = {
+                "order_id": str(inputs.get("order_id", "")).strip() or "order.ai.stub",
+                "task_sequence": task_sequence,
+            }
+        ir_program = build_ai_controller_stub_ir(
+            controller_id=controller_id,
+            high_level_order=dict(high_level_order),
+            tick=int(max(0, int(current_tick))),
+        )
+        compiled_ir = _compile_control_ir_stub_program(
+            ir_program=ir_program,
+            policy_context=policy_context,
+            authority_context=authority_context,
+            law_profile=law_profile,
+            fallback_control_policy_id="ctrl.policy.scheduler",
+            rs5_budget_units=_as_int(
+                inputs.get("rs5_budget_units", (dict(policy_context or {})).get("control_ir_rs5_budget_units", 0)),
+                0,
+            ),
+        )
+        if str(compiled_ir.get("result", "")) != "complete":
+            return dict(compiled_ir)
+        result_metadata = {
+            "stub_kind": "ai_controller",
+            "controller_id": controller_id,
+            "control_ir_program": dict(ir_program),
+            "control_ir_execution": _control_ir_stub_result_metadata(compiled_ir),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.construction_project_create":
         blueprint_id = str(inputs.get("blueprint_id", "")).strip()
         site_ref = str(inputs.get("site_ref", "")).strip()
@@ -13933,6 +14845,25 @@ def execute_intent(
         project_id = str(project_row.get("project_id", "")).strip()
         step_rows = [dict(row) for row in list(created.get("steps") or []) if isinstance(row, dict)]
         commitment_rows = [dict(row) for row in list(created.get("commitments") or []) if isinstance(row, dict)]
+        blueprint_ir_program = build_blueprint_execution_ir(
+            project_id=project_id or "project.construction.unknown",
+            blueprint_id=blueprint_id,
+            site_ref=site_ref,
+            ag_node_ids=[
+                str(row.get("ag_node_id", "")).strip()
+                for row in list(step_rows or [])
+                if isinstance(row, dict) and str(row.get("ag_node_id", "")).strip()
+            ],
+            actor_subject_id=_construction_actor_subject_id(authority_context),
+            tick=int(max(0, int(current_tick))),
+        )
+        project_extensions = dict(project_row.get("extensions") or {})
+        project_extensions["control_ir_id"] = str(blueprint_ir_program.get("control_ir_id", "")).strip()
+        project_extensions["control_ir_fingerprint"] = str(
+            blueprint_ir_program.get("deterministic_fingerprint", "")
+        ).strip()
+        project_extensions["control_ir_program"] = dict(blueprint_ir_program)
+        project_row["extensions"] = project_extensions
         if required_manifest_ids:
             for row in commitment_rows:
                 extensions = dict(row.get("extensions") or {})
@@ -14002,6 +14933,9 @@ def execute_intent(
             "step_count": len(step_rows),
             "commitment_count": len(commitment_rows),
             "structure_instance_id": str((dict(structure_row)).get("instance_id", "")),
+            "control_ir_program": dict(blueprint_ir_program),
+            "control_ir_id": str(blueprint_ir_program.get("control_ir_id", "")).strip(),
+            "control_ir_fingerprint": str(blueprint_ir_program.get("deterministic_fingerprint", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.construction_project_tick":
@@ -14890,11 +15824,35 @@ def execute_intent(
                     break
                 if state_token == "WARN":
                     alarm_state = "WARN"
+            portal_rows_by_id = dict(
+                (str(row.get("portal_id", "")).strip(), dict(row))
+                for row in list(interior_portal_rows or [])
+                if isinstance(row, dict) and str(row.get("portal_id", "")).strip()
+            )
+            portal_state_by_machine = dict(
+                (str(row.get("machine_id", "")).strip(), dict(row))
+                for row in list(interior_portal_state_rows or [])
+                if isinstance(row, dict) and str(row.get("machine_id", "")).strip()
+            )
+            portal_indicator_rows = []
+            for portal_id in sorted(portal_rows_by_id.keys()):
+                portal_row = dict(portal_rows_by_id.get(portal_id) or {})
+                machine_id = str(portal_row.get("state_machine_id", "")).strip()
+                machine_row = dict(portal_state_by_machine.get(machine_id) or {})
+                state_id = str(machine_row.get("state_id", "")).strip() or str((dict(portal_row.get("extensions") or {})).get("state_id", "")).strip() or "open"
+                portal_indicator_rows.append(
+                    {
+                        "portal_id": portal_id,
+                        "state_id": state_id,
+                        "portal_type_id": str(portal_row.get("portal_type_id", "")).strip(),
+                    }
+                )
             instrument_rows = _ensure_instrument_assemblies(state)
             gauge_payloads = {
                 "instrument.interior.pressure": {
                     "assembly_id": "instrument.interior.pressure",
                     "instrument_type": "gauge.pressure",
+                    "instrument_type_id": "instr.gauge.pressure",
                     "quality": "coarse",
                     "quality_value": 600,
                     "reading": "{} compartments".format(len(pressure_rows)),
@@ -14904,6 +15862,7 @@ def execute_intent(
                 "instrument.interior.oxygen": {
                     "assembly_id": "instrument.interior.oxygen",
                     "instrument_type": "gauge.oxygen",
+                    "instrument_type_id": "instr.gauge.oxygen",
                     "quality": "coarse",
                     "quality_value": 600,
                     "reading": "{} compartments".format(len(oxygen_rows)),
@@ -14913,6 +15872,7 @@ def execute_intent(
                 "instrument.interior.smoke": {
                     "assembly_id": "instrument.interior.smoke",
                     "instrument_type": "alarm.smoke",
+                    "instrument_type_id": "instr.alarm.smoke",
                     "quality": "coarse",
                     "quality_value": 600,
                     "reading": alarm_state,
@@ -14922,6 +15882,7 @@ def execute_intent(
                 "instrument.interior.flood": {
                     "assembly_id": "instrument.interior.flood",
                     "instrument_type": "alarm.flood",
+                    "instrument_type_id": "instr.alarm.flood",
                     "quality": "coarse",
                     "quality_value": 600,
                     "reading": alarm_state,
@@ -14931,11 +15892,22 @@ def execute_intent(
                 "instrument.interior.alarm": {
                     "assembly_id": "instrument.interior.alarm",
                     "instrument_type": "alarm.general",
+                    "instrument_type_id": "instr.interior.alarm",
                     "quality": "coarse",
                     "quality_value": 600,
                     "reading": alarm_state,
                     "state": {"status": alarm_state},
                     "outputs": {"rows": alarms[:64]},
+                },
+                "instrument.interior.portal_state": {
+                    "assembly_id": "instrument.interior.portal_state",
+                    "instrument_type": "panel.portal_state",
+                    "instrument_type_id": "instr.panel.portal_state",
+                    "quality": "coarse",
+                    "quality_value": 600,
+                    "reading": "{} portals".format(len(portal_indicator_rows)),
+                    "state": {"status": "OK" if portal_indicator_rows else "WARN"},
+                    "outputs": {"rows": portal_indicator_rows[:64]},
                 },
             }
             instrument_by_id = dict(
@@ -14947,7 +15919,7 @@ def execute_intent(
                 row = dict(payload)
                 row["last_update_tick"] = int(max(0, int(current_tick)))
                 row["schema_version"] = "1.0.0"
-                row["instrument_type_id"] = str(payload.get("instrument_type", ""))
+                row["instrument_type_id"] = str(payload.get("instrument_type_id", "")).strip() or str(payload.get("instrument_type", ""))
                 row["extensions"] = {
                     "source_process_id": process_id,
                     "graph_id": str(selected_graph.get("graph_id", "")).strip(),
@@ -14985,6 +15957,10 @@ def execute_intent(
     elif process_id in (
         "process.portal_open",
         "process.portal_close",
+        "process.portal_lock",
+        "process.portal_unlock",
+        "process.portal_seal_breach",
+        "process.vent_activate",
         "process.hatch_open",
         "process.hatch_close",
         "process.vent_open",
@@ -15030,33 +16006,143 @@ def execute_intent(
                 {"portal_id": portal_id, "portal_type_id": portal_type_id},
                 "$.intent.inputs.portal_id",
             )
-        transition_trigger = "process.portal_open" if process_id.endswith("_open") else "process.portal_close"
-        try:
-            transitioned = apply_portal_transition(
-                portal_row=portal_row,
-                portal_state_rows=interior_portal_state_rows,
-                trigger_process_id=transition_trigger,
-                current_tick=int(current_tick),
-            )
-        except InteriorError as exc:
-            return refusal(
-                str(exc.reason_code),
-                str(exc),
-                "Use valid portal transition process_id and state-machine transition definitions.",
-                dict(exc.details),
-                "$.intent.inputs",
-            )
-        portal_rows_by_id[portal_id] = dict(transitioned.get("portal") or {})
-        interior_portal_rows = [dict(portal_rows_by_id[key]) for key in sorted(portal_rows_by_id.keys())]
         state_machine_rows_by_id = dict(
             (str(row.get("machine_id", "")).strip(), dict(row))
             for row in list(interior_portal_state_rows or [])
             if isinstance(row, dict) and str(row.get("machine_id", "")).strip()
         )
-        transitioned_machine = dict(transitioned.get("state_machine") or {})
-        transitioned_machine_id = str(transitioned_machine.get("machine_id", "")).strip()
-        if transitioned_machine_id:
-            state_machine_rows_by_id[transitioned_machine_id] = transitioned_machine
+        portal_ext = dict(portal_row.get("extensions") or {})
+        if bool(inputs.get("simulate_jammed", False)) or bool(portal_ext.get("jammed", False)):
+            return refusal(
+                "refusal.interior.door_jammed",
+                "portal '{}' is jammed".format(portal_id),
+                "Clear jam state or perform maintenance before retrying portal interaction.",
+                {"portal_id": portal_id},
+                "$.intent.inputs.portal_id",
+            )
+        if bool(inputs.get("not_reachable", False)) or (
+            "reachable" in inputs and (not bool(inputs.get("reachable", True)))
+        ):
+            return refusal(
+                "refusal.interior.not_reachable",
+                "portal '{}' is not reachable from current pose".format(portal_id),
+                "Move into reach or wait for POSE reachability context support before retrying.",
+                {"portal_id": portal_id},
+                "$.intent.inputs.portal_id",
+            )
+
+        machine_id = str(portal_row.get("state_machine_id", "")).strip()
+        transitioned_machine = dict(state_machine_rows_by_id.get(machine_id) or {})
+        transitioned_machine_id = str(transitioned_machine.get("machine_id", "")).strip() or machine_id
+        transition_trigger = process_id
+        applied_transition = {}
+
+        if process_id in (
+            "process.portal_open",
+            "process.portal_close",
+            "process.hatch_open",
+            "process.hatch_close",
+            "process.vent_open",
+            "process.vent_close",
+        ):
+            transition_trigger = "process.portal_open" if process_id.endswith("_open") else "process.portal_close"
+            try:
+                transitioned = apply_portal_transition(
+                    portal_row=portal_row,
+                    portal_state_rows=interior_portal_state_rows,
+                    trigger_process_id=transition_trigger,
+                    current_tick=int(current_tick),
+                )
+            except InteriorError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Use valid portal transition process_id and state-machine transition definitions.",
+                    dict(exc.details),
+                    "$.intent.inputs",
+                )
+            portal_row = dict(transitioned.get("portal") or {})
+            transitioned_machine = dict(transitioned.get("state_machine") or {})
+            transitioned_machine_id = str(transitioned_machine.get("machine_id", "")).strip() or machine_id
+            applied_transition = dict(transitioned.get("applied_transition") or {})
+        else:
+            if process_id == "process.vent_activate" and portal_type_id not in ("portal.vent", ""):
+                return refusal(
+                    REFUSAL_COMPARTMENT_FLOW_INVALID,
+                    "vent activation cannot target portal_type_id '{}'".format(portal_type_id),
+                    "Target a portal.vent or use generic portal actions.",
+                    {"portal_id": portal_id, "portal_type_id": portal_type_id},
+                    "$.intent.inputs.portal_id",
+                )
+            if machine_id:
+                transitioned_machine = dict(state_machine_rows_by_id.get(machine_id) or {"machine_id": machine_id})
+            if process_id == "process.portal_lock":
+                portal_ext["lock_state"] = "locked"
+                if machine_id:
+                    transitioned_machine["state_id"] = "locked"
+            elif process_id == "process.portal_unlock":
+                portal_ext["lock_state"] = "unlocked"
+                if machine_id and str(transitioned_machine.get("state_id", "")).strip() == "locked":
+                    transitioned_machine["state_id"] = "closed"
+            elif process_id == "process.portal_seal_breach":
+                breach_magnitude = max(1, _as_int(inputs.get("breach_magnitude", 100), 100))
+                portal_ext["breach_state"] = "breached"
+                portal_ext["last_breach_tick"] = int(max(0, int(current_tick)))
+                portal_flow_by_id = dict(
+                    (str(row.get("portal_id", "")).strip(), dict(row))
+                    for row in list(portal_flow_params or [])
+                    if isinstance(row, dict) and str(row.get("portal_id", "")).strip()
+                )
+                flow_row = dict(portal_flow_by_id.get(portal_id) or {"portal_id": portal_id})
+                current_sealing = max(
+                    0,
+                    _as_int(flow_row.get("sealing_coefficient", portal_row.get("sealing_coefficient", 0)), 0),
+                )
+                flow_row["sealing_coefficient"] = max(0, current_sealing - breach_magnitude)
+                try:
+                    flow_row = normalize_portal_flow_params(flow_row)
+                except ValueError:
+                    flow_row = {
+                        "schema_version": "1.0.0",
+                        "portal_id": portal_id,
+                        "conductance_air": 0,
+                        "conductance_water": 0,
+                        "conductance_smoke": 0,
+                        "sealing_coefficient": int(max(0, current_sealing - breach_magnitude)),
+                        "open_state_multiplier": 1000,
+                        "extensions": {},
+                    }
+                portal_flow_by_id[portal_id] = dict(flow_row)
+                portal_flow_params = [
+                    dict(portal_flow_by_id[key])
+                    for key in sorted(portal_flow_by_id.keys())
+                ]
+            elif process_id == "process.vent_activate":
+                portal_ext["vent_active"] = bool(inputs.get("active", True))
+            if machine_id:
+                transitioned_machine = dict(transitioned_machine)
+                transitioned_machine.setdefault("schema_version", "1.0.0")
+                transitioned_machine.setdefault("machine_id", machine_id)
+                transitioned_machine.setdefault("machine_type_id", "state_machine.portal")
+                transitioned_machine.setdefault("transitions", [])
+                transitioned_machine.setdefault("transition_rows", [])
+                transitioned_machine.setdefault("extensions", {})
+                machine_ext = dict(transitioned_machine.get("extensions") or {})
+                machine_ext["last_manual_process_id"] = process_id
+                transitioned_machine["extensions"] = machine_ext
+                state_machine_rows_by_id[machine_id] = transitioned_machine
+            applied_transition = {
+                "transition_id": "transition.stub.{}".format(process_id),
+                "trigger_process_id": process_id,
+                "source_state_id": str(dict(state_machine_rows_by_id.get(machine_id) or {}).get("state_id", "")).strip() if machine_id else "",
+                "target_state_id": str(transitioned_machine.get("state_id", "")).strip() if machine_id else "",
+            }
+            portal_row["extensions"] = portal_ext
+
+        portal_rows_by_id[portal_id] = dict(portal_row)
+        if transitioned_machine_id and transitioned_machine:
+            state_machine_rows_by_id[transitioned_machine_id] = dict(transitioned_machine)
+        interior_portal_rows = [dict(portal_rows_by_id[key]) for key in sorted(portal_rows_by_id.keys())]
         interior_portal_state_rows = [dict(state_machine_rows_by_id[key]) for key in sorted(state_machine_rows_by_id.keys())]
         state["interior_portals"] = [dict(row) for row in list(interior_portal_rows or []) if isinstance(row, dict)]
         state["interior_portal_state_machines"] = [
@@ -15085,7 +16171,7 @@ def execute_intent(
                 "portal_type_id": portal_type_id,
                 "trigger_process_id": transition_trigger,
                 "source_process_id": process_id,
-                "applied_transition": dict(transitioned.get("applied_transition") or {}),
+                "applied_transition": dict(applied_transition or {}),
                 "state_machine_id": transitioned_machine_id,
                 "state_id": str(transitioned_machine.get("state_id", "")).strip(),
             },
