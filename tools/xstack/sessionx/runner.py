@@ -80,6 +80,9 @@ REGISTRY_HASH_KEY_MAP = {
     "lens_registry_hash": "lens_registry",
     "control_action_registry_hash": "control_action_registry",
     "interaction_action_registry_hash": "interaction_action_registry",
+    "surface_type_registry_hash": "surface_type_registry",
+    "tool_tag_registry_hash": "tool_tag_registry",
+    "surface_visibility_policy_registry_hash": "surface_visibility_policy_registry",
     "controller_type_registry_hash": "controller_type_registry",
     "governance_type_registry_hash": "governance_type_registry",
     "diplomatic_state_registry_hash": "diplomatic_state_registry",
@@ -171,6 +174,9 @@ REGISTRY_FILE_MAP = {
     "lens_registry_hash": "lens.registry.json",
     "control_action_registry_hash": "control_action.registry.json",
     "interaction_action_registry_hash": "interaction_action.registry.json",
+    "surface_type_registry_hash": "surface_type.registry.json",
+    "tool_tag_registry_hash": "tool_tag.registry.json",
+    "surface_visibility_policy_registry_hash": "surface_visibility_policy.registry.json",
     "controller_type_registry_hash": "controller_type.registry.json",
     "governance_type_registry_hash": "governance_type.registry.json",
     "diplomatic_state_registry_hash": "diplomatic_state.registry.json",
@@ -1298,6 +1304,30 @@ def boot_session_spec(
     )
     if interaction_action_registry_error:
         return interaction_action_registry_error
+    surface_type_registry, surface_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["surface_type_registry_hash"],
+        expected_hash=str(registries.get("surface_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if surface_type_registry_error:
+        return surface_type_registry_error
+    tool_tag_registry, tool_tag_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["tool_tag_registry_hash"],
+        expected_hash=str(registries.get("tool_tag_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if tool_tag_registry_error:
+        return tool_tag_registry_error
+    surface_visibility_policy_registry, surface_visibility_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["surface_visibility_policy_registry_hash"],
+        expected_hash=str(registries.get("surface_visibility_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if surface_visibility_policy_registry_error:
+        return surface_visibility_policy_registry_error
     governance_type_registry, governance_type_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["governance_type_registry_hash"],
@@ -1883,6 +1913,9 @@ def boot_session_spec(
                 "ephemeris_registry": ephemeris_registry,
                 "terrain_tile_registry": terrain_tile_registry,
                 "interaction_action_registry": interaction_action_registry,
+                "surface_type_registry": surface_type_registry,
+                "tool_tag_registry": tool_tag_registry,
+                "surface_visibility_policy_registry": surface_visibility_policy_registry,
                 "governance_type_registry": governance_type_registry,
                 "diplomatic_state_registry": diplomatic_state_registry,
                 "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -1991,6 +2024,9 @@ def boot_session_spec(
                 "ephemeris_registry": ephemeris_registry,
                 "terrain_tile_registry": terrain_tile_registry,
                 "interaction_action_registry": interaction_action_registry,
+                "surface_type_registry": surface_type_registry,
+                "tool_tag_registry": tool_tag_registry,
+                "surface_visibility_policy_registry": surface_visibility_policy_registry,
                 "governance_type_registry": governance_type_registry,
                 "diplomatic_state_registry": diplomatic_state_registry,
                 "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
@@ -2370,6 +2406,9 @@ def boot_session_spec(
             "ephemeris_registry": ephemeris_registry,
             "terrain_tile_registry": terrain_tile_registry,
             "interaction_action_registry": interaction_action_registry,
+            "surface_type_registry": surface_type_registry,
+            "tool_tag_registry": tool_tag_registry,
+            "surface_visibility_policy_registry": surface_visibility_policy_registry,
             "governance_type_registry": governance_type_registry,
             "diplomatic_state_registry": diplomatic_state_registry,
             "cohort_mapping_policy_registry": cohort_mapping_policy_registry,
