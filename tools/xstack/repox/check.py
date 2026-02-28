@@ -3067,6 +3067,17 @@ def _append_reserved_misuse_findings(
 ) -> None:
     if rel_path == "tools/xstack/repox/check.py":
         return
+    # Fidelity level maps use canonical enum keys ("micro|meso|macro") and are
+    # not generic mode/config flags.
+    if any(
+        token in line
+        for token in (
+            "fidelity_cost_by_level",
+            "inspection_cost_by_level",
+            "reenactment_cost_by_level",
+        )
+    ):
+        return
     rel_norm = _norm(rel_path)
     exempt_roots = (
         "schemas/",
@@ -8766,19 +8777,20 @@ def _append_performance_constitution_invariant_findings(
                     rule_id="INV-INSPECTION-DERIVED-ONLY",
                 )
             )
-        for token in (
-            "negotiate_request(",
-            "inspection_budget_share_per_peer",
-            "max_inspection_cost_units_per_tick",
-        ):
-            if token in process_runtime_text:
+        budget_token_groups = (
+            ("negotiate_request(", "arbitrate_fidelity_requests("),
+            ("inspection_budget_share_per_peer",),
+            ("max_inspection_cost_units_per_tick",),
+        )
+        for token_group in budget_token_groups:
+            if any(token in process_runtime_text for token in token_group):
                 continue
             findings.append(
                 _finding(
                     severity=severity,
                     file_path=process_runtime_rel,
                     line_number=1,
-                    snippet=token,
+                    snippet=str(token_group[0]),
                     message="inspection path must enforce deterministic per-tick budget controls",
                     rule_id="INV-INSPECTION-BUDGETED",
                 )
