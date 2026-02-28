@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.registry.port_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.port_type_registry",
+    "registry_version": "1.0.0",
+    "port_types": [
+      {
+        "schema_version": "1.0.0",
+        "port_type_id": "port.energy_in",
+        "description": "Energy input port.",
+        "direction": "in",
+        "payload_kind": "energy",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "port_type_id": "port.energy_out",
+        "description": "Energy output port.",
+        "direction": "out",
+        "payload_kind": "energy",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "port_type_id": "port.material_in",
+        "description": "Material input port.",
+        "direction": "in",
+        "payload_kind": "material",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "port_type_id": "port.material_out",
+        "description": "Material output port.",
+        "direction": "out",
+        "payload_kind": "material",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "port_type_id": "port.signal_in",
+        "description": "Signal input port (stub).",
+        "direction": "in",
+        "payload_kind": "signal",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "port_type_id": "port.signal_out",
+        "description": "Signal output port (stub).",
+        "direction": "out",
+        "payload_kind": "signal",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

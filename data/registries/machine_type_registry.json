@@ -1,0 +1,90 @@
+{
+  "schema_id": "dominium.registry.machine_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.machine_type_registry",
+    "registry_version": "1.0.0",
+    "machine_types": [
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "machine.furnace.basic",
+        "description": "Stub furnace machine type.",
+        "required_ports": [
+          "port.material_in",
+          "port.material_out",
+          "port.energy_in"
+        ],
+        "supported_process_ids": [
+          "op.cast_sheet",
+          "process.machine_operate",
+          "process.machine_pull_from_node",
+          "process.machine_push_to_node"
+        ],
+        "default_rate_params": {
+          "rate_units_per_tick": 1000
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "machine.lathe.basic",
+        "description": "Basic lathe machine type.",
+        "required_ports": [
+          "port.material_in",
+          "port.material_out",
+          "port.energy_in"
+        ],
+        "supported_process_ids": [
+          "op.turn_bolt",
+          "process.machine_operate",
+          "process.machine_pull_from_node",
+          "process.machine_push_to_node"
+        ],
+        "default_rate_params": {
+          "rate_units_per_tick": 1000
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "machine.pump.basic",
+        "description": "Stub pump machine type.",
+        "required_ports": [
+          "port.material_in",
+          "port.material_out",
+          "port.energy_in"
+        ],
+        "supported_process_ids": [
+          "process.machine_operate",
+          "process.machine_pull_from_node",
+          "process.machine_push_to_node"
+        ],
+        "default_rate_params": {
+          "rate_units_per_tick": 1000
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "machine.sawmill.basic",
+        "description": "Basic sawmill machine type.",
+        "required_ports": [
+          "port.material_in",
+          "port.material_out",
+          "port.energy_in"
+        ],
+        "supported_process_ids": [
+          "op.saw_planks",
+          "process.machine_operate",
+          "process.machine_pull_from_node",
+          "process.machine_push_to_node"
+        ],
+        "default_rate_params": {
+          "rate_units_per_tick": 1000
+        },
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
