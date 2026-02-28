@@ -13,6 +13,7 @@ from src.net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHOR
 from src.net.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
+from src.control import build_control_intent, build_control_resolution
 from src.interaction.task import resolve_task_type_for_completion_process
 
 from .affordance_generator import build_affordance_list
@@ -347,7 +348,7 @@ def _find_affordance(affordance_list: dict, affordance_id: str) -> dict:
     return {}
 
 
-def build_interaction_intent(
+def build_interaction_control_intent(
     *,
     affordance_row: dict,
     parameters: dict,
@@ -420,86 +421,52 @@ def build_interaction_intent(
         ).strip()
         if actor_subject_id:
             canonical_parameters["actor_subject_id"] = actor_subject_id
-    intent_id = "intent.interact.{}".format(
-        canonical_sha256(
-            {
-                "affordance_id": affordance_id,
-                "process_id": dispatch_process_id,
-                "tick": int(max(0, _to_int(tick, 0))),
-                "parameters": canonical_parameters,
-            }
-        )[:16]
+    action_id = str((dict(extensions).get("control_action_id", ""))).strip()
+    if not action_id:
+        action_id = "action.surface.execute_task" if task_type_row and surface_id else "action.interaction.execute_process"
+    control_parameters = dict(canonical_parameters)
+    control_parameters["process_id"] = dispatch_process_id
+    control_intent = build_control_intent(
+        requester_subject_id=str(
+            (dict(authority_context or {})).get("subject_id")
+            or (dict(authority_context or {})).get("agent_id")
+            or (dict(authority_context or {})).get("controller_id")
+            or (dict(authority_context or {})).get("peer_id")
+            or "subject.unknown"
+        ).strip(),
+        requested_action_id=action_id,
+        target_kind=str((dict(extensions).get("target_kind", ""))).strip() or "surface",
+        target_id=target_semantic_id or None,
+        parameters=control_parameters,
+        abstraction_level_requested=str((dict(policy_context or {})).get("abstraction_level_requested", "AL0")),
+        fidelity_requested=str((dict(policy_context or {})).get("fidelity_requested", "meso")),
+        view_requested=str((dict(policy_context or {})).get("view_requested", "")) or "view.mode.first_person",
+        inspection_requested=str((dict(policy_context or {})).get("inspection_requested", "none")),
+        reenactment_requested=str((dict(policy_context or {})).get("reenactment_requested", "none")),
+        created_tick=int(max(0, _to_int(tick, 0))),
     )
-    intent = {
-        "intent_id": intent_id,
-        "process_id": dispatch_process_id,
-        "inputs": canonical_parameters,
-        "authority_context_ref": {
-            "authority_origin": str((dict(authority_context or {})).get("authority_origin", "")),
-            "law_profile_id": str((dict(authority_context or {})).get("law_profile_id", "")),
-        },
-        "extensions": {
-            "affordance_id": affordance_id,
-            "target_semantic_id": target_semantic_id,
-            "active_tool_id": active_tool_id or None,
-            "active_tool_type_id": active_tool_type_id or None,
-            "active_tool_effect_model_id": active_tool_effect_model_id or None,
-            "completion_process_id": process_id,
-            "task_type_id": str(task_type_row.get("task_type_id", "")).strip() or None,
-            "surface_id": surface_id or None,
-        },
+    control_extensions = dict(control_intent.get("extensions") or {})
+    control_extensions["affordance_id"] = affordance_id
+    control_extensions["surface_id"] = surface_id or None
+    control_extensions["surface_type_id"] = surface_type_id or None
+    control_extensions["completion_process_id"] = process_id
+    control_extensions["task_type_id"] = str(task_type_row.get("task_type_id", "")).strip() or None
+    control_extensions["interaction_action_id"] = str((dict(extensions).get("action_id", "")).strip() or None)
+    control_extensions["active_tool_id"] = active_tool_id or None
+    control_extensions["active_tool_type_id"] = active_tool_type_id or None
+    control_extensions["active_tool_effect_model_id"] = active_tool_effect_model_id or None
+    control_extensions["active_tool_tags"] = list(active_tool_tags)
+    control_extensions["authority_context_ref"] = {
+        "authority_origin": str((dict(authority_context or {})).get("authority_origin", "")),
+        "law_profile_id": str((dict(authority_context or {})).get("law_profile_id", "")),
     }
+    control_intent["extensions"] = control_extensions
+    control_intent["deterministic_fingerprint"] = canonical_sha256(
+        dict(control_intent, deterministic_fingerprint="")
+    )
     return {
         "result": "complete",
-        "intent": intent,
-    }
-
-
-def build_interaction_envelope(
-    *,
-    peer_id: str,
-    intent: dict,
-    authority_context: dict,
-    pack_lock_hash: str,
-    registry_hashes: dict | None,
-    submission_tick: int,
-    deterministic_sequence_number: int,
-    source_shard_id: str = "shard.0",
-    target_shard_id: str = "shard.0",
-) -> Dict[str, object]:
-    peer_token = str(peer_id).strip() or str((dict(authority_context or {})).get("peer_id", "")).strip() or "peer.local"
-    tick = int(max(0, _to_int(submission_tick, 0)))
-    sequence = int(max(0, _to_int(deterministic_sequence_number, 0)))
-    intent_id = str((dict(intent or {})).get("intent_id", "")).strip()
-    envelope = {
-        "schema_version": "1.0.0",
-        "envelope_id": "env.{}.tick.{}.seq.{}".format(peer_token, tick, str(sequence).zfill(4)),
-        "authority_summary": {
-            "authority_origin": str((dict(authority_context or {})).get("authority_origin", "client")),
-            "law_profile_id": str((dict(authority_context or {})).get("law_profile_id", "")),
-        },
-        "source_peer_id": peer_token,
-        "source_shard_id": str(source_shard_id or "shard.0"),
-        "target_shard_id": str(target_shard_id or "shard.0"),
-        "submission_tick": tick,
-        "deterministic_sequence_number": sequence,
-        "intent_id": intent_id,
-        "payload_schema_id": "dominium.intent.process.v1",
-        "payload": {
-            "process_id": str((dict(intent or {})).get("process_id", "")),
-            "inputs": _canonical_parameters(dict((dict(intent or {})).get("inputs") or {})),
-        },
-        "pack_lock_hash": _hash64(pack_lock_hash, {"peer_id": peer_token}),
-        "registry_hashes": dict((dict(registry_hashes or {}))),
-        "signature": "",
-        "extensions": {
-            "interaction_dispatch": True,
-            "authority_origin": str((dict(authority_context or {})).get("authority_origin", "")),
-        },
-    }
-    return {
-        "result": "complete",
-        "envelope": envelope,
+        "control_intent": control_intent,
     }
 
 
@@ -583,16 +550,16 @@ def execute_affordance(
             evidence=["interaction spam threshold exceeded"],
         )
         return rate_limit
-    built_intent = build_interaction_intent(
+    built_control_intent = build_interaction_control_intent(
         affordance_row=affordance_row,
         parameters=dict(parameters or {}),
         authority_context=dict(authority_context or {}),
         policy_context=policy_context,
         tick=tick,
     )
-    if str(built_intent.get("result", "")) != "complete":
-        return built_intent
-    intent = dict(built_intent.get("intent") or {})
+    if str(built_control_intent.get("result", "")) != "complete":
+        return built_control_intent
+    control_intent = dict(built_control_intent.get("control_intent") or {})
 
     policy_id = _mp_policy_id(policy_context)
     active_shard_id = str((dict(policy_context or {})).get("active_shard_id", "shard.0")).strip() or "shard.0"
@@ -615,28 +582,64 @@ def execute_affordance(
             "$.target_shard_id",
         )
 
-    built_envelope = build_interaction_envelope(
-        peer_id=str(peer_id),
-        intent=intent,
-        authority_context=dict(authority_context or {}),
-        pack_lock_hash=str((dict(policy_context or {})).get("pack_lock_hash", "")),
-        registry_hashes=dict((dict(policy_context or {})).get("registry_hashes") or {}),
-        deterministic_sequence_number=int(max(0, _to_int(deterministic_sequence_number, 0))),
-        submission_tick=_policy_submission_tick(
-            policy_context=policy_context,
-            current_tick=int(tick),
-            requested_submission_tick=int(max(0, _to_int(submission_tick, tick))),
-        ),
-        source_shard_id=source_shard,
-        target_shard_id=target_shard,
+    control_policy_context = dict(policy_context or {})
+    control_policy_context["peer_id"] = str(peer_id or "")
+    control_policy_context["deterministic_sequence_number"] = int(max(0, _to_int(deterministic_sequence_number, 0)))
+    control_policy_context["submission_tick"] = _policy_submission_tick(
+        policy_context=policy_context,
+        current_tick=int(tick),
+        requested_submission_tick=int(max(0, _to_int(submission_tick, tick))),
     )
-    if str(built_envelope.get("result", "")) != "complete":
-        return built_envelope
-    envelope = dict(built_envelope.get("envelope") or {})
+    control_policy_context["source_shard_id"] = source_shard
+    control_policy_context["target_shard_id"] = target_shard
+    control_resolution = build_control_resolution(
+        control_intent=dict(control_intent),
+        law_profile=dict(law_profile or {}),
+        authority_context=dict(authority_context or {}),
+        policy_context=control_policy_context,
+        control_action_registry=_registry_payload(policy_context, "control_action_registry"),
+        control_policy_registry=_registry_payload(policy_context, "control_policy_registry"),
+        repo_root=repo_root,
+    )
+    if str(control_resolution.get("result", "")) != "complete":
+        refusal_payload = dict(control_resolution.get("refusal") or {})
+        return {
+            "result": "refused",
+            "refusal": refusal_payload,
+            "resolution": dict(control_resolution.get("resolution") or {}),
+            "control_intent": dict(control_intent),
+            "errors": [
+                {
+                    "code": str(refusal_payload.get("reason_code", "refusal.ctrl.forbidden_by_law")),
+                    "message": str(refusal_payload.get("message", "control resolution refused")),
+                    "path": str(refusal_payload.get("path", "$")),
+                }
+            ],
+        }
+    resolution = dict(control_resolution.get("resolution") or {})
+    emitted_intents = [
+        dict(row)
+        for row in list(resolution.get("emitted_intents") or [])
+        if isinstance(row, dict)
+    ]
+    emitted_envelopes = [
+        dict(row)
+        for row in list(resolution.get("emitted_intent_envelopes") or [])
+        if isinstance(row, dict)
+    ]
+    if not emitted_intents:
+        return {
+            "result": "complete",
+            "control_intent": control_intent,
+            "resolution": resolution,
+            "multiplayer_policy_id": policy_id,
+        }
+    intent = dict(emitted_intents[0])
+    envelope = dict(emitted_envelopes[0]) if emitted_envelopes else {}
 
-    from tools.xstack.sessionx.process_runtime import execute_intent
+    from tools.xstack.sessionx.process_runtime import execute_intent as runtime_execute_intent
 
-    execution = execute_intent(
+    execution = runtime_execute_intent(
         state=state,
         intent={
             "intent_id": str(intent.get("intent_id", "")),
@@ -672,6 +675,8 @@ def execute_affordance(
         out = dict(execution)
         out["intent"] = intent
         out["envelope"] = envelope
+        out["control_intent"] = control_intent
+        out["resolution"] = resolution
         return out
     interaction_overlay_payload = {}
     if str(intent.get("process_id", "")).strip() == "process.inspect_generate_snapshot":
@@ -696,6 +701,8 @@ def execute_affordance(
         "result": "complete",
         "intent": intent,
         "envelope": envelope,
+        "control_intent": control_intent,
+        "resolution": resolution,
         "execution": dict(execution),
         "multiplayer_policy_id": policy_id,
     }

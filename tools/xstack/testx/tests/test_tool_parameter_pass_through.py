@@ -15,7 +15,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from src.client.interaction.affordance_generator import build_affordance_list
-    from src.client.interaction.interaction_dispatch import build_interaction_intent
+    from src.client.interaction.interaction_dispatch import build_interaction_control_intent
     from tools.xstack.testx.tests.interaction_testlib import authority_context, policy_context
 
     perceived_model = {
@@ -104,22 +104,26 @@ def run(repo_root: str):
     if not bool((dict(affordance_row.get("extensions") or {})).get("enabled", False)):
         return {"status": "fail", "message": "tool_use_prepare affordance should be enabled"}
 
-    intent_result = build_interaction_intent(
+    intent_result = build_interaction_control_intent(
         affordance_row=copy.deepcopy(affordance_row),
         parameters={"target_id": "assembly.test.pass"},
         authority_context=copy.deepcopy(auth),
+        policy_context=copy.deepcopy(policy),
         tick=12,
     )
     if str(intent_result.get("result", "")) != "complete":
-        return {"status": "fail", "message": "build_interaction_intent refused unexpectedly"}
-    inputs = dict((dict(intent_result.get("intent") or {})).get("inputs") or {})
+        return {"status": "fail", "message": "build_interaction_control_intent refused unexpectedly"}
+    control_intent = dict(intent_result.get("control_intent") or {})
+    inputs = dict(control_intent.get("parameters") or {})
     effect = dict(inputs.get("tool_effect") or {})
+    if str(control_intent.get("requested_action_id", "")).strip() != "action.interaction.execute_process":
+        return {"status": "fail", "message": "requested_action_id should route through control action adapter"}
     if str(inputs.get("tool_id", "")).strip() != "tool.instance.wrench.alpha":
-        return {"status": "fail", "message": "tool_id missing from intent input payload"}
+        return {"status": "fail", "message": "tool_id missing from control intent parameters"}
     if str(inputs.get("tool_type_id", "")).strip() != "tool.wrench.basic":
-        return {"status": "fail", "message": "tool_type_id missing from intent input payload"}
+        return {"status": "fail", "message": "tool_type_id missing from control intent parameters"}
     if str(inputs.get("tool_effect_model_id", "")).strip() != "effect.basic_fastening":
-        return {"status": "fail", "message": "tool_effect_model_id missing from intent input payload"}
+        return {"status": "fail", "message": "tool_effect_model_id missing from control intent parameters"}
     if int(effect.get("torque_limit", 0) or 0) != 5000:
         return {"status": "fail", "message": "tool_effect.torque_limit missing or incorrect"}
     if int(effect.get("efficiency_multiplier", 0) or 0) != 1000:

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-1 control policy row.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "control_policy_id",
+    "description",
+    "allowed_actions",
+    "allowed_abstraction_levels",
+    "allowed_view_policies",
+    "allowed_fidelity_ranges",
+    "downgrade_rules",
+    "strictness",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "control_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_abstraction_levels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "AL0",
+          "AL1",
+          "AL2",
+          "AL3",
+          "AL4"
+        ]
+      }
+    },
+    "allowed_view_policies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_fidelity_ranges": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "macro",
+          "meso",
+          "micro"
+        ]
+      }
+    },
+    "downgrade_rules": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "strictness": {
+      "type": "string",
+      "enum": [
+        "C0",
+        "C1",
+        "C2"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "control_policy_id": "ctrl.policy.player.diegetic",
+      "description": "Diegetic player control policy.",
+      "allowed_actions": [
+        "action.surface.*",
+        "action.pose.*",
+        "action.mount.*"
+      ],
+      "allowed_abstraction_levels": [
+        "AL0"
+      ],
+      "allowed_view_policies": [
+        "view.mode.first_person",
+        "view.mode.third_person"
+      ],
+      "allowed_fidelity_ranges": [
+        "macro",
+        "meso"
+      ],
+      "downgrade_rules": {},
+      "strictness": "C0",
+      "extensions": {}
+    }
+  ]
+}

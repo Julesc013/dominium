@@ -1,0 +1,176 @@
+{
+  "schema_id": "dominium.registry.control_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.control_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "control_policy_id": "ctrl.policy.admin.meta",
+        "description": "Administrative AL4 policy with explicit meta-law override controls.",
+        "allowed_actions": [
+          "*"
+        ],
+        "allowed_abstraction_levels": [
+          "AL0",
+          "AL1",
+          "AL2",
+          "AL3",
+          "AL4"
+        ],
+        "allowed_view_policies": [
+          "view.*"
+        ],
+        "allowed_fidelity_ranges": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "downgrade_rules": {},
+        "strictness": "C1",
+        "extensions": {
+          "meta_allowed": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "control_policy_id": "ctrl.policy.planner",
+        "description": "Planning-only policy for AL3 ghost/blueprint workflows.",
+        "allowed_actions": [
+          "action.plan.*",
+          "action.view.change"
+        ],
+        "allowed_abstraction_levels": [
+          "AL3"
+        ],
+        "allowed_view_policies": [
+          "view.mode.first_person",
+          "view.mode.third_person",
+          "view.mode.spectator"
+        ],
+        "allowed_fidelity_ranges": [
+          "macro",
+          "meso"
+        ],
+        "downgrade_rules": {},
+        "strictness": "C1",
+        "extensions": {
+          "planning_only": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "control_policy_id": "ctrl.policy.player.assisted",
+        "description": "Player policy allowing AL0 and AL1 assisted actions.",
+        "allowed_actions": [
+          "action.interaction.*",
+          "action.surface.*",
+          "action.pose.*",
+          "action.mount.*",
+          "action.view.change"
+        ],
+        "allowed_abstraction_levels": [
+          "AL0",
+          "AL1"
+        ],
+        "allowed_view_policies": [
+          "view.mode.first_person",
+          "view.mode.third_person"
+        ],
+        "allowed_fidelity_ranges": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "downgrade_rules": {},
+        "strictness": "C0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "control_policy_id": "ctrl.policy.player.diegetic",
+        "description": "Player diegetic baseline policy (AL0 only).",
+        "allowed_actions": [
+          "action.interaction.*",
+          "action.surface.*",
+          "action.pose.*",
+          "action.mount.*"
+        ],
+        "allowed_abstraction_levels": [
+          "AL0"
+        ],
+        "allowed_view_policies": [
+          "view.mode.first_person",
+          "view.mode.third_person"
+        ],
+        "allowed_fidelity_ranges": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "downgrade_rules": {},
+        "strictness": "C0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "control_policy_id": "ctrl.policy.replay",
+        "description": "Replay policy allowing non-mutating history/view actions only.",
+        "allowed_actions": [
+          "action.view.change",
+          "action.replay.*"
+        ],
+        "allowed_abstraction_levels": [
+          "AL1",
+          "AL2",
+          "AL3"
+        ],
+        "allowed_view_policies": [
+          "view.mode.first_person",
+          "view.mode.third_person",
+          "view.mode.spectator",
+          "view.mode.replay"
+        ],
+        "allowed_fidelity_ranges": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "downgrade_rules": {},
+        "strictness": "C0",
+        "extensions": {
+          "replay_only": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "control_policy_id": "ctrl.policy.scheduler",
+        "description": "Scheduled AL2 control policy for commitments and queued execution.",
+        "allowed_actions": [
+          "action.interaction.*",
+          "action.surface.*",
+          "action.pose.*",
+          "action.mount.*",
+          "action.view.change"
+        ],
+        "allowed_abstraction_levels": [
+          "AL2"
+        ],
+        "allowed_view_policies": [
+          "view.mode.first_person",
+          "view.mode.third_person",
+          "view.mode.spectator"
+        ],
+        "allowed_fidelity_ranges": [
+          "macro",
+          "meso"
+        ],
+        "downgrade_rules": {},
+        "strictness": "C1",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

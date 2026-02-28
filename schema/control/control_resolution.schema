@@ -1,0 +1,31 @@
+SCHEMA: control/control_resolution.schema
+schema_id: dominium.schema.control.control_resolution
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical control-plane resolution output with deterministic downgrade/refusal details.
+
+REQUIRED SHAPE:
+record control_resolution
+  required:
+    - schema_version: semver
+    - resolution_id: id
+    - input_control_intent_id: id
+    - allowed: bool
+    - resolved_vector: map
+      required:
+        - abstraction_level_resolved: enum(AL0|AL1|AL2|AL3|AL4)
+        - fidelity_resolved: enum(macro|meso|micro)
+        - view_resolved: id
+    - emitted_intent_envelopes: list[map]
+    - emitted_commitment_ids: list[id]
+    - refusal: optional_map
+    - downgrade_reasons: list[id]
+    - decision_log_ref: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Resolutions are deterministic from input intent + policy context.
+- Refusals and downgrades must include reason codes.
