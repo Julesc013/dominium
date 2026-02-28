@@ -1,0 +1,23 @@
+SCHEMA: interior/leak_hazard.schema
+schema_id: dominium.schema.interior.leak_hazard
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic leak hazards connecting compartments to outside boundary flow nodes.
+
+REQUIRED SHAPE:
+record leak_hazard
+  required:
+    - schema_version: semver
+    - leak_id: id
+    - volume_id: id
+    - leak_rate_air: fixed_point
+    - leak_rate_water: fixed_point
+    - hazard_model_id: id
+    - extensions: map
+
+INVARIANTS:
+- Leak hazards are process-driven and hazard-model linked.
+- Leak rates must be non-negative fixed-point values.
+- Leak flow must be ledger-accounted through boundary model or explicit exception policy.

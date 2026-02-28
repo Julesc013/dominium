@@ -1,0 +1,25 @@
+SCHEMA: interior/compartment_state.schema
+schema_id: dominium.schema.interior.compartment_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic compartment environment state for coarse interior flow simulation.
+
+REQUIRED SHAPE:
+record compartment_state
+  required:
+    - schema_version: semver
+    - volume_id: id
+    - air_mass: fixed_point
+    - water_volume: fixed_point
+    - temperature: fixed_point|null
+    - oxygen_fraction: fixed_point|null
+    - smoke_density: fixed_point|null
+    - derived_pressure: fixed_point|null
+    - extensions: map
+
+INVARIANTS:
+- `air_mass` and `water_volume` are fixed-point invariant quantities.
+- `oxygen_fraction` must represent 0..1 in fixed-point scale when present.
+- `derived_pressure` is deterministic derived state and must not be manually authored by non-process paths.

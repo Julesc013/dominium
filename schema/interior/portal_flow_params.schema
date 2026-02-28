@@ -1,0 +1,24 @@
+SCHEMA: interior/portal_flow_params.schema
+schema_id: dominium.schema.interior.portal_flow_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic conductance parameters for portal-mediated compartment flows.
+
+REQUIRED SHAPE:
+record portal_flow_params
+  required:
+    - schema_version: semver
+    - portal_id: id
+    - conductance_air: fixed_point
+    - conductance_water: fixed_point
+    - conductance_smoke: fixed_point
+    - sealing_coefficient: fixed_point
+    - open_state_multiplier: fixed_point
+    - extensions: map
+
+INVARIANTS:
+- Conductance values must be non-negative fixed-point quantities.
+- `sealing_coefficient` controls closed-state attenuation deterministically.
+- Runtime effective conductance must derive from portal state machine + these params only.

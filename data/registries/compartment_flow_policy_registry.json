@@ -1,0 +1,83 @@
+{
+  "schema_id": "dominium.registry.compartment_flow_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compartment_flow_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "flow.policy.default",
+        "description": "Deterministic coarse compartment updates with bounded substeps and diegetic alarms.",
+        "flow_solver_policy_id": "flow.coarse_default",
+        "update_interval_ticks": 1,
+        "max_substep_ticks": 16,
+        "strict_budget": false,
+        "max_channels_per_tick": 1024,
+        "max_hazards_per_tick": 1024,
+        "pressure_warn_threshold": 200,
+        "pressure_danger_threshold": 100,
+        "oxygen_warn_fraction": 190,
+        "oxygen_danger_fraction": 150,
+        "smoke_warn_density": 200,
+        "smoke_danger_density": 450,
+        "flood_warn_volume": 250,
+        "flood_danger_volume": 700,
+        "movement_slow_flood_volume": 350,
+        "movement_block_flood_volume": 850,
+        "extensions": {
+          "outside_boundary_policy": "exception.boundary_flux"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "flow.policy.rank_strict",
+        "description": "Conservative ranked policy with tighter alarm thresholds and strict budget refusals.",
+        "flow_solver_policy_id": "flow.coarse_default",
+        "update_interval_ticks": 1,
+        "max_substep_ticks": 8,
+        "strict_budget": true,
+        "max_channels_per_tick": 768,
+        "max_hazards_per_tick": 768,
+        "pressure_warn_threshold": 260,
+        "pressure_danger_threshold": 150,
+        "oxygen_warn_fraction": 205,
+        "oxygen_danger_fraction": 175,
+        "smoke_warn_density": 160,
+        "smoke_danger_density": 360,
+        "flood_warn_volume": 180,
+        "flood_danger_volume": 520,
+        "movement_slow_flood_volume": 260,
+        "movement_block_flood_volume": 640,
+        "extensions": {
+          "outside_boundary_policy": "exception.boundary_flux"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "flow.policy.none",
+        "description": "Disable compartment flow updates while preserving deterministic state shape.",
+        "flow_solver_policy_id": "flow.coarse_default",
+        "update_interval_ticks": 0,
+        "max_substep_ticks": 0,
+        "strict_budget": false,
+        "max_channels_per_tick": 0,
+        "max_hazards_per_tick": 0,
+        "pressure_warn_threshold": 0,
+        "pressure_danger_threshold": 0,
+        "oxygen_warn_fraction": 0,
+        "oxygen_danger_fraction": 0,
+        "smoke_warn_density": 0,
+        "smoke_danger_density": 0,
+        "flood_warn_volume": 0,
+        "flood_danger_volume": 0,
+        "movement_slow_flood_volume": 0,
+        "movement_block_flood_volume": 0,
+        "extensions": {
+          "outside_boundary_policy": "none"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
