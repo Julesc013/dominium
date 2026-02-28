@@ -277,6 +277,9 @@ BOUNDARY_ALIAS_RULES = {
         "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
         "INV-NO-DIRECT-INTENT-DISPATCH",
     },
+    "INV-DECISION-LOG-MANDATORY": {
+        "INV-DECISION-LOG-REQUIRED",
+    },
     "INV-NO-MODE-FLAGS": {
         "repox.forbidden_identifier",
         "repox.mode_flag_heuristic",
@@ -296,6 +299,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-PRODUCTION-LEGACY-IMPORT",
     "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR",
     "INV-NO-DYNAMIC-EVAL",
+    "INV-NO-DOMAIN-DOWNGRADE-LOGIC",
+    "INV-DECISION-LOG-MANDATORY",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -8118,7 +8123,7 @@ def _append_retro_consistency_invariant_findings(
                 line_number=1,
                 snippet="_write_decision_log(",
                 message="control plane resolutions must emit deterministic decision logs",
-                rule_id="INV-DECISION-LOG-REQUIRED",
+                rule_id="INV-DECISION-LOG-MANDATORY",
             )
         )
 
@@ -8758,7 +8763,7 @@ def _append_performance_constitution_invariant_findings(
                 )
             )
         for token in (
-            "reserve_inspection_budget(",
+            "negotiate_request(",
             "inspection_budget_share_per_peer",
             "max_inspection_cost_units_per_tick",
         ):
@@ -9865,6 +9870,91 @@ def _append_control_ir_enforcement_invariant_findings(
                         break
 
 
+def _append_negotiation_kernel_enforcement_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_tokens_by_file = {
+        "src/control/negotiation/negotiation_kernel.py": (
+            "def negotiate_request(",
+            "NEGOTIATION_AXIS_ORDER",
+        ),
+        "src/control/control_plane_engine.py": (
+            "negotiate_request(",
+            "_decision_log_row(",
+        ),
+        "src/materials/materialization/materialization_engine.py": (
+            "negotiate_request(",
+        ),
+        "src/inspection/inspection_engine.py": (
+            "negotiate_request(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "negotiate_request(",
+        ),
+    }
+    for rel_path, required_tokens in sorted(required_tokens_by_file.items(), key=lambda item: item[0]):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required negotiation kernel integration file is missing",
+                    rule_id="INV-NO-DOMAIN-DOWNGRADE-LOGIC",
+                )
+            )
+            continue
+        text = _file_text(repo_root, rel_path)
+        for token in required_tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="downgrade/refusal decisions must flow through negotiation kernel integration points",
+                    rule_id="INV-NO-DOMAIN-DOWNGRADE-LOGIC",
+                )
+            )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(
+            (
+                "tools/xstack/testx/tests/",
+                "tools/auditx/analyzers/",
+                "tools/xstack/repox/",
+                "docs/",
+            )
+        ):
+            continue
+        if rel_path == "src/control/negotiation/negotiation_kernel.py":
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line)
+            if "build_downgrade_entry(" not in token:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=token.strip()[:140],
+                    message="downgrade entries must be constructed only in the negotiation kernel",
+                    rule_id="INV-NO-DOMAIN-DOWNGRADE-LOGIC",
+                )
+            )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -10001,6 +10091,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_control_ir_enforcement_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_negotiation_kernel_enforcement_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
