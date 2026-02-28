@@ -1,0 +1,23 @@
+SCHEMA: control/capability.schema
+schema_id: dominium.schema.control.capability
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic capability declaration artifact for CTRL-7 capability-driven control.
+
+REQUIRED SHAPE:
+record capability
+  required:
+    - schema_version: semver
+    - capability_id: id
+    - description: text
+    - applicable_entity_kinds: list[enum(assembly|structure|agent|graph|volume|custom)]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - parameters_schema_id: id
+
+INVARIANTS:
+- Capability declarations are data-driven and deterministic.
+- Capabilities define feature affordances without entity-class branching.

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Capability Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-7 capability declaration contract.",
+  "x-doc-ref": [
+    "docs/audit/CAPABILITY_REGISTRY_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "capability_id",
+    "description",
+    "applicable_entity_kinds",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "capability_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "applicable_entity_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "assembly",
+          "structure",
+          "agent",
+          "graph",
+          "volume",
+          "custom"
+        ]
+      }
+    },
+    "parameters_schema_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "capability_id": "capability.has_pose_slots",
+      "description": "Entity exposes deterministic pose-slot occupancy surfaces.",
+      "applicable_entity_kinds": [
+        "assembly"
+      ],
+      "parameters_schema_id": null,
+      "deterministic_fingerprint": "4d52ad8bd919bcab4faec5fbdf7d58f2bb4a8fcb4f16ff6f73324f9fcb18dfec",
+      "extensions": {}
+    }
+  ]
+}
