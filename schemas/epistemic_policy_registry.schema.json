@@ -131,6 +131,51 @@
               "type": "string"
             }
           },
+          "max_inspection_level": {
+            "type": "string",
+            "enum": [
+              "macro",
+              "meso",
+              "micro"
+            ]
+          },
+          "max_reenactment_level": {
+            "type": "string",
+            "enum": [
+              "macro",
+              "meso",
+              "micro"
+            ]
+          },
+          "redaction_rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "rule_id",
+                "channel_pattern",
+                "redaction_mode"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "rule_id": {
+                  "type": "string"
+                },
+                "channel_pattern": {
+                  "type": "string"
+                },
+                "redaction_mode": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "coarse",
+                    "diegetic",
+                    "masked"
+                  ]
+                }
+              }
+            }
+          },
           "extensions": {
             "type": "object",
             "additionalProperties": true
@@ -178,6 +223,15 @@
             "filter.channel_allow_deny",
             "filter.quantize_precision",
             "filter.redact_forbidden"
+          ],
+          "max_inspection_level": "meso",
+          "max_reenactment_level": "meso",
+          "redaction_rules": [
+            {
+              "rule_id": "redact.example.truth",
+              "channel_pattern": "ch.truth.overlay.*",
+              "redaction_mode": "masked"
+            }
           ],
           "extensions": {}
         }

@@ -7373,6 +7373,93 @@ def _view_mode_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     return sorted(rows, key=lambda row: str(row.get("view_mode_id", ""))), errors
 
 
+def _view_policy_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
+    _policy_record, policy_rows_raw, load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/view_policy_registry.json",
+        expected_schema_id="dominium.registry.view_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="view_policies",
+    )
+    if load_errors:
+        return [], load_errors
+
+    errors: List[dict] = []
+    rows: List[dict] = []
+    seen = set()
+    allowed_camera_modes = {"first_person", "third_person", "freecam", "spectator", "replay"}
+    allowed_abstraction_levels = {"AL0", "AL1", "AL2", "AL3", "AL4"}
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("view_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_view_policy_entry",
+                    "message": "view policy entry must be object",
+                    "path": "$.view_policies",
+                }
+            )
+            continue
+        view_policy_id = str(entry.get("view_policy_id", "")).strip()
+        camera_mode = str(entry.get("camera_mode", "")).strip()
+        allowed_epistemic_policy_ids = entry.get("allowed_epistemic_policy_ids")
+        allowed_abstraction = entry.get("allowed_abstraction_levels")
+        restrictions = entry.get("restrictions")
+        extensions = entry.get("extensions")
+        if (
+            not view_policy_id
+            or camera_mode not in allowed_camera_modes
+            or not isinstance(allowed_epistemic_policy_ids, list)
+            or not isinstance(allowed_abstraction, list)
+            or not isinstance(restrictions, dict)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_view_policy_entry",
+                    "message": "view policy '{}' missing required fields".format(view_policy_id or "<missing>"),
+                    "path": "$.view_policies",
+                }
+            )
+            continue
+        if view_policy_id in seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_view_policy_id",
+                    "message": "duplicate view_policy_id '{}'".format(view_policy_id),
+                    "path": "$.view_policies.view_policy_id",
+                }
+            )
+            continue
+        abstraction_levels = _sorted_unique_strings(allowed_abstraction)
+        invalid_abstraction = [token for token in abstraction_levels if token not in allowed_abstraction_levels]
+        if invalid_abstraction:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_view_policy_abstraction_level",
+                    "message": "view policy '{}' has invalid abstraction levels: {}".format(
+                        view_policy_id,
+                        ",".join(sorted(invalid_abstraction)),
+                    ),
+                    "path": "$.view_policies.allowed_abstraction_levels",
+                }
+            )
+            continue
+        seen.add(view_policy_id)
+        rows.append(
+            {
+                "schema_version": "1.0.0",
+                "view_policy_id": view_policy_id,
+                "description": str(entry.get("description", "")).strip(),
+                "camera_mode": camera_mode,
+                "allowed_epistemic_policy_ids": _sorted_unique_strings(allowed_epistemic_policy_ids),
+                "allowed_abstraction_levels": abstraction_levels,
+                "restrictions": dict((str(key), restrictions[key]) for key in sorted(restrictions.keys())),
+                "extensions": dict((str(key), extensions[key]) for key in sorted(extensions.keys())),
+            }
+        )
+    return sorted(rows, key=lambda row: str(row.get("view_policy_id", ""))), errors
+
+
 def _diegetic_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -9670,6 +9757,28 @@ def _epistemic_policy_rows(
                 }
             )
 
+        max_inspection_level = str(entry.get("max_inspection_level", "")).strip() or "meso"
+        if max_inspection_level not in ("macro", "meso", "micro"):
+            max_inspection_level = "meso"
+        max_reenactment_level = str(entry.get("max_reenactment_level", "")).strip() or "meso"
+        if max_reenactment_level not in ("macro", "meso", "micro"):
+            max_reenactment_level = "meso"
+        redaction_rows = []
+        for item in sorted(
+            (dict(row) for row in (entry.get("redaction_rules") or []) if isinstance(row, dict)),
+            key=lambda row: (str(row.get("channel_pattern", "")), str(row.get("rule_id", ""))),
+        ):
+            redaction_mode = str(item.get("redaction_mode", "masked")).strip() or "masked"
+            if redaction_mode not in ("none", "coarse", "diegetic", "masked"):
+                redaction_mode = "masked"
+            redaction_rows.append(
+                {
+                    "rule_id": str(item.get("rule_id", "")).strip(),
+                    "channel_pattern": str(item.get("channel_pattern", "")).strip(),
+                    "redaction_mode": redaction_mode,
+                }
+            )
+
         policy_rows.append(
             {
                 "epistemic_policy_id": epistemic_policy_id,
@@ -9680,6 +9789,9 @@ def _epistemic_policy_rows(
                 "inference_policy_id": entry.get("inference_policy_id"),
                 "max_precision_rules": precision_rows,
                 "deterministic_filters": _sorted_unique_strings(list(entry.get("deterministic_filters") or [])),
+                "max_inspection_level": max_inspection_level,
+                "max_reenactment_level": max_reenactment_level,
+                "redaction_rules": redaction_rows,
                 "extensions": dict(entry.get("extensions") or {}),
             }
         )
@@ -10214,6 +10326,9 @@ def compile_bundle(
     view_mode_rows, view_mode_registry_errors = _view_mode_registry_rows(
         repo_root=repo_root,
     )
+    view_policy_rows, view_policy_registry_errors = _view_policy_registry_rows(
+        repo_root=repo_root,
+    )
     (
         instrument_type_rows,
         calibration_model_rows,
@@ -10330,6 +10445,7 @@ def compile_bundle(
         + time_control_registry_errors
         + body_shape_registry_errors
         + view_mode_registry_errors
+        + view_policy_registry_errors
         + diegetic_registry_errors
         + representation_registry_errors
         + net_registry_errors
@@ -10919,6 +11035,13 @@ def compile_bundle(
             "view_modes": view_mode_rows,
         }
     )
+    view_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "view_policies": view_policy_rows,
+        }
+    )
     instrument_type_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -11260,6 +11383,7 @@ def compile_bundle(
         "migration_model_registry": ("migration_model_registry", migration_model_payload),
         "body_shape_registry": ("body_shape_registry", body_shape_payload),
         "view_mode_registry": ("view_mode_registry", view_mode_payload),
+        "view_policy_registry": ("view_policy_registry", view_policy_payload),
         "instrument_type_registry": ("instrument_type_registry", instrument_type_payload),
         "calibration_model_registry": ("calibration_model_registry", calibration_model_payload),
         "render_proxy_registry": ("render_proxy_registry", render_proxy_payload),
@@ -11384,6 +11508,7 @@ def compile_bundle(
         "migration_model_registry",
         "body_shape_registry",
         "view_mode_registry",
+        "view_policy_registry",
         "instrument_type_registry",
         "calibration_model_registry",
         "render_proxy_registry",
@@ -11529,6 +11654,7 @@ def compile_bundle(
             "migration_model_registry_hash": registry_hashes["migration_model_registry_hash"],
             "body_shape_registry_hash": registry_hashes["body_shape_registry_hash"],
             "view_mode_registry_hash": registry_hashes["view_mode_registry_hash"],
+            "view_policy_registry_hash": registry_hashes["view_policy_registry_hash"],
             "instrument_type_registry_hash": registry_hashes["instrument_type_registry_hash"],
             "calibration_model_registry_hash": registry_hashes["calibration_model_registry_hash"],
             "render_proxy_registry_hash": registry_hashes["render_proxy_registry_hash"],

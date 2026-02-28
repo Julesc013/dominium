@@ -738,6 +738,7 @@ _NULL_REGISTRY_LIST_KEYS = {
     "migration_model_registry": "migration_models",
     "body_shape_registry": "shape_types",
     "view_mode_registry": "view_modes",
+    "view_policy_registry": "view_policies",
     "instrument_type_registry": "instrument_types",
     "calibration_model_registry": "calibration_models",
     "render_proxy_registry": "render_proxies",

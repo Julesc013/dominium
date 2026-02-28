@@ -1849,6 +1849,7 @@ def build_truth_model(
             "birth_model_registry_hash": str(registries.get("birth_model_registry_hash", "")),
             "migration_model_registry_hash": str(registries.get("migration_model_registry_hash", "")),
             "view_mode_registry_hash": str(registries.get("view_mode_registry_hash", "")),
+            "view_policy_registry_hash": str(registries.get("view_policy_registry_hash", "")),
             "instrument_type_registry_hash": str(registries.get("instrument_type_registry_hash", "")),
             "calibration_model_registry_hash": str(registries.get("calibration_model_registry_hash", "")),
             "render_proxy_registry_hash": str(registries.get("render_proxy_registry_hash", "")),
