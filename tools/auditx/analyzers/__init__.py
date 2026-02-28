@@ -125,6 +125,18 @@ from analyzers import e96_interior_occlusion_leak_smell
 from analyzers import e97_duplicate_interior_graph_smell
 from analyzers import e98_compartment_flow_duplication_smell
 from analyzers import e99_instrument_truth_leak_smell
+from analyzers import e100_interior_info_leak_smell
+from analyzers import e101_alarm_truth_leak_smell
+from analyzers import e102_pose_bypass_smell
+from analyzers import e103_mount_bypass_smell
+from analyzers import e104_direct_intent_bypass_smell
+from analyzers import e105_legacy_reference_smell
+from analyzers import e106_undeclared_subsystem_smell
+from analyzers import e107_undeclared_schema_smell
+from analyzers import e108_undeclared_registry_smell
+from analyzers import e109_boundary_violation_analyzer
+from analyzers import e110_tools_contamination_smell
+from analyzers import e111_intent_bypass_smell
 
 
 ANALYZERS = (
@@ -253,6 +265,18 @@ ANALYZERS = (
     e97_duplicate_interior_graph_smell,
     e98_compartment_flow_duplication_smell,
     e99_instrument_truth_leak_smell,
+    e100_interior_info_leak_smell,
+    e101_alarm_truth_leak_smell,
+    e102_pose_bypass_smell,
+    e103_mount_bypass_smell,
+    e104_direct_intent_bypass_smell,
+    e105_legacy_reference_smell,
+    e106_undeclared_subsystem_smell,
+    e107_undeclared_schema_smell,
+    e108_undeclared_registry_smell,
+    e109_boundary_violation_analyzer,
+    e110_tools_contamination_smell,
+    e111_intent_bypass_smell,
 )
 
 
