@@ -2,19 +2,19 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Control Action Schema",
   "version": "1.0.0",
-  "description": "Canonical control action to process/intent mapping contract.",
+  "description": "Canonical control action to process/task/plan mapping contract.",
   "x-doc-ref": [
-    "docs/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
-    "docs/contracts/law_profile.md"
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [
     "schema_version",
     "action_id",
-    "description",
+    "display_name",
+    "produces",
     "required_entitlements",
-    "produces_intent_id",
-    "payload_schema_id",
+    "required_capabilities",
+    "target_kinds",
     "extensions"
   ],
   "additionalProperties": false,
@@ -26,8 +26,28 @@
     "action_id": {
       "type": "string"
     },
-    "description": {
+    "display_name": {
       "type": "string"
+    },
+    "produces": {
+      "type": "object",
+      "required": [
+        "process_id",
+        "task_type_id",
+        "plan_intent_type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "process_id": {
+          "type": "string"
+        },
+        "task_type_id": {
+          "type": "string"
+        },
+        "plan_intent_type": {
+          "type": "string"
+        }
+      }
     },
     "required_entitlements": {
       "type": "array",
@@ -35,11 +55,26 @@
         "type": "string"
       }
     },
-    "produces_intent_id": {
-      "type": "string"
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
-    "payload_schema_id": {
-      "type": "string"
+    "target_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "surface",
+          "pose_slot",
+          "mount_point",
+          "machine",
+          "structure",
+          "graph",
+          "none"
+        ]
+      }
     },
     "extensions": {
       "type": "object",
@@ -49,13 +84,22 @@
   "examples": [
     {
       "schema_version": "1.0.0",
-      "action_id": "control.action.bind_camera",
-      "description": "Bind a controller to a camera target.",
+      "action_id": "action.surface.execute_task",
+      "display_name": "Execute Surface Task",
+      "produces": {
+        "process_id": "",
+        "task_type_id": "task.tighten_fastener",
+        "plan_intent_type": ""
+      },
       "required_entitlements": [
-        "entitlement.control.camera"
+        "entitlement.tool.use"
       ],
-      "produces_intent_id": "intent.control.bind_camera",
-      "payload_schema_id": "dominium.control.bind_camera.payload.v1",
+      "required_capabilities": [
+        "capability.surface.execute"
+      ],
+      "target_kinds": [
+        "surface"
+      ],
       "extensions": {}
     }
   ]

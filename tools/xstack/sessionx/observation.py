@@ -58,6 +58,32 @@ def _agent_entity_ids(truth: dict) -> List[str]:
     return sorted(out)
 
 
+def _viewer_graph_portal_entity_ids(truth: dict, interior_occlusion_meta: dict) -> List[str]:
+    state = truth.get("universe_state")
+    if not isinstance(state, dict):
+        return []
+    viewer_graph_id = str((dict(interior_occlusion_meta or {})).get("viewer_graph_id", "")).strip()
+    if not viewer_graph_id:
+        return []
+    graph_rows = [
+        dict(item)
+        for item in list(state.get("interior_graphs") or [])
+        if isinstance(item, dict)
+    ]
+    graph_row = {}
+    for row in sorted(graph_rows, key=lambda item: str(item.get("graph_id", ""))):
+        if str(row.get("graph_id", "")).strip() == viewer_graph_id:
+            graph_row = dict(row)
+            break
+    if not graph_row:
+        return []
+    return [
+        "interior.portal.{}".format(token)
+        for token in _sorted_unique(list(graph_row.get("portals") or []))
+        if str(token).strip()
+    ]
+
+
 def _interior_row_index(rows: object, id_key: str) -> Dict[str, dict]:
     out: Dict[str, dict] = {}
     if not isinstance(rows, list):
@@ -525,11 +551,11 @@ def _default_lens_channels(lens_type: str) -> List[str]:
         "ch.diegetic.tool.health",
         "ch.diegetic.task.progress",
         "ch.diegetic.task.status",
-        "ch.diegetic.interior.pressure",
-        "ch.diegetic.interior.oxygen",
-        "ch.diegetic.interior.smoke_alarm",
-        "ch.diegetic.interior.flood_alarm",
-        "ch.diegetic.interior.alarm",
+        "ch.diegetic.pressure_status",
+        "ch.diegetic.oxygen_status",
+        "ch.diegetic.smoke_alarm",
+        "ch.diegetic.flood_alarm",
+        "ch.diegetic.door_indicator",
     ]
 
 
@@ -703,6 +729,18 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.task.progress": dict(instruments.get("instrument.task.progress") or {})}
     if channel_id == "ch.diegetic.task.status":
         return {"instrument.task.status": dict(instruments.get("instrument.task.status") or {})}
+    if channel_id == "ch.diegetic.pressure_status":
+        return {"instrument.interior.pressure": dict(instruments.get("instrument.interior.pressure") or {})}
+    if channel_id == "ch.diegetic.oxygen_status":
+        return {"instrument.interior.oxygen": dict(instruments.get("instrument.interior.oxygen") or {})}
+    if channel_id == "ch.diegetic.smoke_alarm":
+        return {"instrument.interior.smoke": dict(instruments.get("instrument.interior.smoke") or {})}
+    if channel_id == "ch.diegetic.flood_alarm":
+        return {"instrument.interior.flood": dict(instruments.get("instrument.interior.flood") or {})}
+    if channel_id == "ch.diegetic.door_indicator":
+        return {"instrument.interior.portal_state": dict(instruments.get("instrument.interior.portal_state") or {})}
+    if channel_id == "ch.diegetic.interior.alarm":
+        return {"instrument.interior.alarm": dict(instruments.get("instrument.interior.alarm") or {})}
     if channel_id == "ch.diegetic.interior.pressure":
         return {"instrument.interior.pressure": dict(instruments.get("instrument.interior.pressure") or {})}
     if channel_id == "ch.diegetic.interior.oxygen":
@@ -777,14 +815,20 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.tool.health": "ch.diegetic.tool.health",
         "instrument.task.progress": "ch.diegetic.task.progress",
         "instrument.task.status": "ch.diegetic.task.status",
-        "instrument.interior.pressure": "ch.diegetic.interior.pressure",
-        "instrument.interior.oxygen": "ch.diegetic.interior.oxygen",
-        "instrument.interior.smoke": "ch.diegetic.interior.smoke_alarm",
-        "instrument.interior.flood": "ch.diegetic.interior.flood_alarm",
+        "instrument.interior.portal_state": "ch.diegetic.door_indicator",
+        "instrument.interior.pressure": ["ch.diegetic.pressure_status", "ch.diegetic.interior.pressure"],
+        "instrument.interior.oxygen": ["ch.diegetic.oxygen_status", "ch.diegetic.interior.oxygen"],
+        "instrument.interior.smoke": ["ch.diegetic.smoke_alarm", "ch.diegetic.interior.smoke_alarm"],
+        "instrument.interior.flood": ["ch.diegetic.flood_alarm", "ch.diegetic.interior.flood_alarm"],
         "instrument.interior.alarm": "ch.diegetic.interior.alarm",
     }
-    for instrument_id, channel_id in sorted(instrument_channels.items()):
-        if channel_id not in allowed:
+    for instrument_id, channel_spec in sorted(instrument_channels.items()):
+        allowed_channels = (
+            _sorted_unique(list(channel_spec))
+            if isinstance(channel_spec, list)
+            else [str(channel_spec).strip()]
+        )
+        if not any(token in allowed for token in allowed_channels if token):
             instruments[instrument_id] = {}
     out["diegetic_instruments"] = instruments
 
@@ -898,6 +942,7 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
         "instrument.tool.health": {},
         "instrument.task.progress": {},
         "instrument.task.status": {},
+        "instrument.interior.portal_state": {},
         "instrument.interior.pressure": {},
         "instrument.interior.oxygen": {},
         "instrument.interior.smoke": {},
@@ -1144,7 +1189,92 @@ def _representation_assignments(truth: dict) -> Dict[str, dict]:
     return {}
 
 
-def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
+def _portal_graph_index(state: dict) -> Dict[str, str]:
+    out: Dict[str, str] = {}
+    for row in sorted(
+        (item for item in list(state.get("interior_graphs") or []) if isinstance(item, dict)),
+        key=lambda item: str(item.get("graph_id", "")),
+    ):
+        graph_id = str(row.get("graph_id", "")).strip()
+        if not graph_id:
+            continue
+        for portal_id in _sorted_unique(list(row.get("portals") or [])):
+            token = str(portal_id).strip()
+            if token and token not in out:
+                out[token] = graph_id
+    return dict((key, out[key]) for key in sorted(out.keys()))
+
+
+def _portal_state_index(state: dict) -> Dict[str, str]:
+    out: Dict[str, str] = {}
+    rows = [
+        dict(item)
+        for item in list(state.get("interior_portal_state_machines") or [])
+        if isinstance(item, dict)
+    ]
+    for row in sorted(rows, key=lambda item: str(item.get("machine_id", ""))):
+        machine_id = str(row.get("machine_id", "")).strip()
+        state_id = str(row.get("state_id", "")).strip()
+        if machine_id and state_id:
+            out[machine_id] = state_id
+    return dict((key, out[key]) for key in sorted(out.keys()))
+
+
+def _portal_surface_rows(portal_row: dict, portal_state_id: str) -> List[dict]:
+    portal = dict(portal_row or {})
+    portal_id = str(portal.get("portal_id", "")).strip()
+    state_id = str(portal_state_id).strip() or "unknown"
+    panel_state = "locked" if state_id == "locked" else "ready"
+    return sorted(
+        [
+            {
+                "surface_type_id": "surface.handle",
+                "compatible_tool_tags": ["tool_tag.operating"],
+                "allowed_process_ids": [
+                    "process.portal_open",
+                    "process.portal_close",
+                    "process.portal_lock",
+                    "process.portal_unlock",
+                ],
+                "parameter_schema_id": None,
+                "constraints": {
+                    "portal_id": portal_id,
+                    "state_id": state_id,
+                },
+                "visibility_policy_id": "visibility.default",
+                "local_transform": {
+                    "position_mm": {"x": 0, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "extensions": {},
+            },
+            {
+                "surface_type_id": "surface.panel",
+                "compatible_tool_tags": ["tool_tag.operating"],
+                "allowed_process_ids": [
+                    "process.vent_activate",
+                    "process.portal_seal_breach",
+                ],
+                "parameter_schema_id": None,
+                "constraints": {
+                    "portal_id": portal_id,
+                    "panel_state": panel_state,
+                },
+                "visibility_policy_id": "visibility.default",
+                "local_transform": {
+                    "position_mm": {"x": 250, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "extensions": {},
+            },
+        ],
+        key=lambda item: str(item.get("surface_type_id", "")),
+    )
+
+
+def _entity_view(truth: dict, observed_entities: List[str], interior_occlusion_meta: dict | None = None) -> dict:
     state = truth.get("universe_state")
     if not isinstance(state, dict):
         return {"entries": [], "selected_fields": []}
@@ -1157,10 +1287,54 @@ def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
     cosmetic_rows = dict(representation_index.get("cosmetics") or {})
     render_proxy_rows = dict(representation_index.get("render_proxies") or {})
     assignments = _representation_assignments(truth)
+    portal_rows_by_id = _interior_row_index(state.get("interior_portals"), "portal_id")
+    portal_state_by_machine = _portal_state_index(state)
+    portal_graph_by_id = _portal_graph_index(state)
+    viewer_graph_id = str((dict(interior_occlusion_meta or {})).get("viewer_graph_id", "")).strip()
     entries = []
     assignment_rows = []
     for token in known:
+        if token.startswith("interior.portal."):
+            portal_id = str(token[len("interior.portal."):]).strip()
+            portal = dict(portal_rows_by_id.get(portal_id) or {})
+            if not portal:
+                continue
+            machine_id = str(portal.get("state_machine_id", "")).strip()
+            state_id = str(portal_state_by_machine.get(machine_id, "")).strip() or "open"
+            graph_id = str(portal_graph_by_id.get(portal_id, "")).strip()
+            if viewer_graph_id and graph_id and graph_id != viewer_graph_id:
+                continue
+            entries.append(
+                {
+                    "entity_id": token,
+                    "semantic_id": token,
+                    "entity_kind": "interior_portal",
+                    "portal_id": portal_id,
+                    "interior_graph_id": graph_id or None,
+                    "representation": {
+                        "shape_type": "none",
+                        "cosmetic_id": DEFAULT_COSMETIC_ID,
+                        "render_proxy_id": DEFAULT_RENDER_PROXY_ID,
+                        "mesh_ref": "asset.mesh.pill.default",
+                        "material_ref": "asset.material.pill.default",
+                        "lod_set_ref": None,
+                        "fallback_proxy_id": DEFAULT_RENDER_PROXY_ID,
+                        "fallback_used": True,
+                    },
+                    "transform_mm": {"x": 0, "y": 0, "z": 0},
+                    "action_surfaces": _portal_surface_rows(portal, state_id),
+                    "extensions": {
+                        "portal_type_id": str(portal.get("portal_type_id", "")).strip(),
+                        "from_volume_id": str(portal.get("from_volume_id", "")).strip(),
+                        "to_volume_id": str(portal.get("to_volume_id", "")).strip(),
+                        "state_machine_id": machine_id or None,
+                        "state_id": state_id,
+                    },
+                }
+            )
+            continue
         agent = dict(agent_index.get(token) or {})
+        agent_ext = dict(agent.get("extensions") or {}) if isinstance(agent.get("extensions"), dict) else {}
         body_id = str(agent.get("body_id", "") or "").strip()
         body = dict(body_index.get(body_id) or {}) if body_id else {}
         shape_type = str(body.get("shape_type", "")).strip() or "capsule"
@@ -1181,6 +1355,8 @@ def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
         material_ref = str(cosmetic.get("material_ref_override") or "").strip() or str(proxy.get("material_ref", "")).strip() or "asset.material.pill.default"
         entry = {
             "entity_id": token,
+            "semantic_id": token,
+            "entity_kind": "agent",
             "agent_id": str(agent.get("agent_id", "")).strip() or token,
             "body_id": body_id,
             "owner_peer_id": str(agent.get("owner_peer_id", "")).strip() if agent.get("owner_peer_id") is not None else None,
@@ -1195,7 +1371,40 @@ def _entity_view(truth: dict, observed_entities: List[str]) -> dict:
                 "fallback_used": bool(used_fallback),
             },
             "transform_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
+            "extensions": {
+                "interior_volume_id": str(agent.get("interior_volume_id", "")).strip() or None,
+                "posture": str(agent.get("posture", "")).strip() or None,
+                "pose_slot_id": str(agent.get("pose_slot_id", "")).strip() or None,
+                "pose_control_binding_ids": _sorted_unique(list(agent_ext.get("pose_control_binding_ids") or [])),
+                "pose_granted_process_ids": _sorted_unique(list(agent_ext.get("pose_granted_process_ids") or [])),
+                "pose_granted_surface_ids": _sorted_unique(list(agent_ext.get("pose_granted_surface_ids") or [])),
+                "occupied_pose_slot_ids": _sorted_unique(list(agent_ext.get("occupied_pose_slot_ids") or [])),
+            },
         }
+        granted_process_ids = _sorted_unique(list(agent_ext.get("pose_granted_process_ids") or []))
+        granted_surface_ids = _sorted_unique(list(agent_ext.get("pose_granted_surface_ids") or []))
+        if granted_process_ids and granted_surface_ids:
+            entry["action_surfaces"] = [
+                {
+                    "surface_type_id": "surface.panel",
+                    "compatible_tool_tags": ["tool_tag.operating"],
+                    "allowed_process_ids": list(granted_process_ids),
+                    "parameter_schema_id": None,
+                    "constraints": {
+                        "control_grant_surface_id": str(surface_id),
+                    },
+                    "visibility_policy_id": "visibility.default",
+                    "local_transform": {
+                        "position_mm": {"x": int(index) * 120, "y": 0, "z": 0},
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 1000,
+                    },
+                    "extensions": {
+                        "control_grant_surface_id": str(surface_id),
+                    },
+                }
+                for index, surface_id in enumerate(granted_surface_ids)
+            ]
         entries.append(entry)
         if assignment:
             assignment_rows.append(
@@ -1627,6 +1836,7 @@ def build_truth_model(
             "experience_registry_hash": str(registries.get("experience_registry_hash", "")),
             "lens_registry_hash": str(registries.get("lens_registry_hash", "")),
             "control_action_registry_hash": str(registries.get("control_action_registry_hash", "")),
+            "control_policy_registry_hash": str(registries.get("control_policy_registry_hash", "")),
             "controller_type_registry_hash": str(registries.get("controller_type_registry_hash", "")),
             "governance_type_registry_hash": str(registries.get("governance_type_registry_hash", "")),
             "diplomatic_state_registry_hash": str(registries.get("diplomatic_state_registry_hash", "")),
@@ -1886,6 +2096,9 @@ def observe_truth(
         law_profile=law_profile,
         authority_context=authority_context,
     )
+    observed_entities = _sorted_unique(
+        list(observed_entities) + _viewer_graph_portal_entity_ids(truth_model, interior_occlusion_meta)
+    )
     simulation_tick = _simulation_tick(truth_model)
     time_control = _time_control(truth_model)
     epistemic_limits = law_profile.get("epistemic_limits")
@@ -1927,7 +2140,11 @@ def observe_truth(
     navigation = _navigation_view(truth_model)
     sites = _site_view(truth_model)
     process_log = _process_log_entries(truth_model)
-    entities = _entity_view(truth_model, observed_entities=observed_entities)
+    entities = _entity_view(
+        truth_model,
+        observed_entities=observed_entities,
+        interior_occlusion_meta=interior_occlusion_meta,
+    )
     populations = _population_view(
         truth_model,
         camera_viewpoint=camera_viewpoint,

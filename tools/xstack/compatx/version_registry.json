@@ -168,7 +168,42 @@
         "1.0.0"
       ]
     },
+    "control_decision_log": {
+      "current_version": "0.1.0",
+      "migrations": {},
+      "supported_versions": [
+        "0.1.0"
+      ]
+    },
     "control_binding": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_resolution": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -337,6 +372,20 @@
       ]
     },
     "death_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "deprecation_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "deprecation_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -721,6 +770,27 @@
         "1.0.0"
       ]
     },
+    "mount_point": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "pose_slot": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "pose_control_binding": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "surface_visibility_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -729,6 +799,27 @@
       ]
     },
     "surface_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "posture_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "mount_tag_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_binding_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1786,6 +1877,27 @@
       ]
     },
     "tier_taxonomy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "topology_edge": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "topology_map": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "topology_node": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

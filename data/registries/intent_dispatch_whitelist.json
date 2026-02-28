@@ -7,9 +7,6 @@
     "allowed_file_patterns": [
       "src/net/**",
       "src/control/**",
-      "src/client/interaction/interaction_dispatch.py",
-      "src/interaction/task/task_engine.py",
-      "tools/xstack/sessionx/**",
       "tools/xstack/testx/tests/**"
     ],
     "extensions": {}

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Control Action Registry Schema",
+  "title": "Control Policy Registry Schema",
   "version": "1.0.0",
-  "description": "Derived deterministic control action registry output.",
+  "description": "Derived deterministic control policy registry output.",
   "x-doc-ref": [
     "docs/control/CONTROL_PLANE_CONSTITUTION.md",
     "docs/architecture/registry_compile.md"
@@ -11,7 +11,7 @@
   "required": [
     "format_version",
     "generated_from",
-    "actions",
+    "policies",
     "registry_hash"
   ],
   "additionalProperties": false,
@@ -47,18 +47,20 @@
         }
       }
     },
-    "actions": {
+    "policies": {
       "type": "array",
       "items": {
         "type": "object",
         "required": [
           "schema_version",
-          "action_id",
-          "display_name",
-          "produces",
-          "required_entitlements",
-          "required_capabilities",
-          "target_kinds",
+          "control_policy_id",
+          "description",
+          "allowed_actions",
+          "allowed_abstraction_levels",
+          "allowed_view_policies",
+          "allowed_fidelity_ranges",
+          "downgrade_rules",
+          "strictness",
           "extensions"
         ],
         "additionalProperties": false,
@@ -67,49 +69,42 @@
             "type": "string",
             "const": "1.0.0"
           },
-          "action_id": {
+          "control_policy_id": {
             "type": "string"
           },
-          "display_name": {
+          "description": {
             "type": "string"
           },
-          "produces": {
+          "allowed_actions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_abstraction_levels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_view_policies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_fidelity_ranges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "downgrade_rules": {
             "type": "object",
-            "required": [
-              "process_id",
-              "task_type_id",
-              "plan_intent_type"
-            ],
-            "additionalProperties": false,
-            "properties": {
-              "process_id": {
-                "type": "string"
-              },
-              "task_type_id": {
-                "type": "string"
-              },
-              "plan_intent_type": {
-                "type": "string"
-              }
-            }
+            "additionalProperties": true
           },
-          "required_entitlements": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "required_capabilities": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "target_kinds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "strictness": {
+            "type": "string"
           },
           "extensions": {
             "type": "object",
@@ -127,7 +122,7 @@
     {
       "format_version": "1.0.0",
       "generated_from": [],
-      "actions": [],
+      "policies": [],
       "registry_hash": "90a0f3d307e94a17a665f8f8ead7db7f7931d61069b4b0c71f1014ec3e0f7187"
     }
   ]

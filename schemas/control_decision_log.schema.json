@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control Decision Log Schema",
+  "version": "0.1.0",
+  "description": "Deterministic CTRL-1 decision log artifact row.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "log_id",
+    "tick",
+    "requester_subject_id",
+    "control_intent_id",
+    "control_policy_id",
+    "resolved_vector",
+    "reasons",
+    "emitted_ids",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1.0"
+    },
+    "log_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "requester_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "control_intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "control_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resolved_vector": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "reasons": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "emitted_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "0.1.0",
+      "log_id": "control.log.90f0541ea9842f5b70db5810",
+      "tick": 12,
+      "requester_subject_id": "agent.alpha",
+      "control_intent_id": "control.intent.f6f9ca5b0b9ad85472fbe57a",
+      "control_policy_id": "ctrl.policy.player.diegetic",
+      "resolved_vector": {
+        "abstraction_level_resolved": "AL0",
+        "fidelity_resolved": "meso",
+        "view_resolved": "view.mode.first_person"
+      },
+      "reasons": {
+        "refusal": {},
+        "downgrade_reasons": []
+      },
+      "emitted_ids": [
+        "intent.control.a1f458fabcae76d7"
+      ],
+      "deterministic_fingerprint": "492957ac9236e3bd73f7031293fcb8e45ce2fa21cb2f2e4b9b8d13c46ed0c77f",
+      "extensions": {}
+    }
+  ]
+}

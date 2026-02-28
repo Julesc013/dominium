@@ -1,0 +1,27 @@
+SCHEMA: control/control_action.schema
+schema_id: dominium.schema.control.control_action
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical control action registry row mapping to process/task/plan outputs.
+
+REQUIRED SHAPE:
+record control_action
+  required:
+    - schema_version: semver
+    - action_id: id
+    - display_name: text
+    - produces: map
+      required_one_of:
+        - process_id: id
+        - task_type_id: id
+        - plan_intent_type: id
+    - required_entitlements: list[id]
+    - required_capabilities: optional_list[id]
+    - target_kinds: list[id]
+    - extensions: map
+
+INVARIANTS:
+- Actions are data-driven and deterministic.
+- Action rows cannot mutate truth without process dispatch.

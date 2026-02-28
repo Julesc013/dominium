@@ -83,8 +83,12 @@ REGISTRY_HASH_KEY_MAP = {
     "experience_registry_hash": "experience_registry",
     "lens_registry_hash": "lens_registry",
     "control_action_registry_hash": "control_action_registry",
+    "control_policy_registry_hash": "control_policy_registry",
     "interaction_action_registry_hash": "interaction_action_registry",
     "surface_type_registry_hash": "surface_type_registry",
+    "posture_registry_hash": "posture_registry",
+    "mount_tag_registry_hash": "mount_tag_registry",
+    "control_binding_registry_hash": "control_binding_registry",
     "port_type_registry_hash": "port_type_registry",
     "tool_tag_registry_hash": "tool_tag_registry",
     "tool_type_registry_hash": "tool_type_registry",
@@ -189,8 +193,12 @@ REGISTRY_FILE_MAP = {
     "experience_registry_hash": "experience.registry.json",
     "lens_registry_hash": "lens.registry.json",
     "control_action_registry_hash": "control_action.registry.json",
+    "control_policy_registry_hash": "control_policy.registry.json",
     "interaction_action_registry_hash": "interaction_action.registry.json",
     "surface_type_registry_hash": "surface_type.registry.json",
+    "posture_registry_hash": "posture.registry.json",
+    "mount_tag_registry_hash": "mount_tag.registry.json",
+    "control_binding_registry_hash": "control_binding.registry.json",
     "port_type_registry_hash": "port_type.registry.json",
     "tool_tag_registry_hash": "tool_tag.registry.json",
     "tool_type_registry_hash": "tool_type.registry.json",
@@ -1352,6 +1360,22 @@ def boot_session_spec(
     )
     if experience_registry_error:
         return experience_registry_error
+    control_action_registry, control_action_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["control_action_registry_hash"],
+        expected_hash=str(registries.get("control_action_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if control_action_registry_error:
+        return control_action_registry_error
+    control_policy_registry, control_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["control_policy_registry_hash"],
+        expected_hash=str(registries.get("control_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if control_policy_registry_error:
+        return control_policy_registry_error
     interaction_action_registry, interaction_action_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["interaction_action_registry_hash"],
@@ -1368,6 +1392,30 @@ def boot_session_spec(
     )
     if surface_type_registry_error:
         return surface_type_registry_error
+    posture_registry, posture_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["posture_registry_hash"],
+        expected_hash=str(registries.get("posture_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if posture_registry_error:
+        return posture_registry_error
+    mount_tag_registry, mount_tag_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["mount_tag_registry_hash"],
+        expected_hash=str(registries.get("mount_tag_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if mount_tag_registry_error:
+        return mount_tag_registry_error
+    control_binding_registry, control_binding_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["control_binding_registry_hash"],
+        expected_hash=str(registries.get("control_binding_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if control_binding_registry_error:
+        return control_binding_registry_error
     port_type_registry, port_type_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["port_type_registry_hash"],
@@ -2036,8 +2084,13 @@ def boot_session_spec(
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
                 "terrain_tile_registry": terrain_tile_registry,
+                "control_action_registry": control_action_registry,
+                "control_policy_registry": control_policy_registry,
                 "interaction_action_registry": interaction_action_registry,
                 "surface_type_registry": surface_type_registry,
+                "posture_registry": posture_registry,
+                "mount_tag_registry": mount_tag_registry,
+                "control_binding_registry": control_binding_registry,
                 "port_type_registry": port_type_registry,
                 "tool_tag_registry": tool_tag_registry,
                 "tool_type_registry": tool_type_registry,
@@ -2159,8 +2212,13 @@ def boot_session_spec(
                 "site_registry_index": site_registry,
                 "ephemeris_registry": ephemeris_registry,
                 "terrain_tile_registry": terrain_tile_registry,
+                "control_action_registry": control_action_registry,
+                "control_policy_registry": control_policy_registry,
                 "interaction_action_registry": interaction_action_registry,
                 "surface_type_registry": surface_type_registry,
+                "posture_registry": posture_registry,
+                "mount_tag_registry": mount_tag_registry,
+                "control_binding_registry": control_binding_registry,
                 "port_type_registry": port_type_registry,
                 "tool_tag_registry": tool_tag_registry,
                 "tool_type_registry": tool_type_registry,
@@ -2553,8 +2611,13 @@ def boot_session_spec(
             "site_registry_index": site_registry,
             "ephemeris_registry": ephemeris_registry,
             "terrain_tile_registry": terrain_tile_registry,
+            "control_action_registry": control_action_registry,
+            "control_policy_registry": control_policy_registry,
             "interaction_action_registry": interaction_action_registry,
             "surface_type_registry": surface_type_registry,
+            "posture_registry": posture_registry,
+            "mount_tag_registry": mount_tag_registry,
+            "control_binding_registry": control_binding_registry,
             "port_type_registry": port_type_registry,
             "tool_tag_registry": tool_tag_registry,
             "tool_type_registry": tool_type_registry,

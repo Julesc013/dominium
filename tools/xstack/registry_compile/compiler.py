@@ -1363,7 +1363,8 @@ def _load_registry_record(
 
 def _control_registry_rows(
     repo_root: str,
-) -> Tuple[List[dict], List[dict], List[dict]]:
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
 
     _action_record, action_rows_raw, action_load_errors = _load_registry_record(
@@ -1374,7 +1375,7 @@ def _control_registry_rows(
         expected_entry_key="actions",
     )
     if action_load_errors:
-        return [], [], action_load_errors
+        return [], [], [], action_load_errors
 
     control_action_rows: List[dict] = []
     action_id_set = set()
@@ -1389,13 +1390,31 @@ def _control_registry_rows(
             )
             continue
         action_id = str(entry.get("action_id", "")).strip()
+        display_name = str(entry.get("display_name", "")).strip() or str(entry.get("description", "")).strip()
         required_entitlements = entry.get("required_entitlements")
+        required_capabilities = entry.get("required_capabilities")
+        target_kinds = entry.get("target_kinds")
         extensions = entry.get("extensions")
+        raw_produces = entry.get("produces")
+        if not isinstance(raw_produces, dict):
+            raw_produces = {}
+        produces = {
+            "process_id": str(raw_produces.get("process_id", "")).strip(),
+            "task_type_id": str(raw_produces.get("task_type_id", "")).strip(),
+            "plan_intent_type": str(raw_produces.get("plan_intent_type", "")).strip(),
+        }
+        if (not produces["process_id"]) and (not produces["task_type_id"]) and (not produces["plan_intent_type"]):
+            legacy_process = str(entry.get("process_id", "")).strip() or str(
+                (dict(extensions or {})).get("process_id", "")
+            ).strip()
+            produces["process_id"] = legacy_process
+
         if (
             not action_id
+            or not display_name
             or not isinstance(required_entitlements, list)
-            or not str(entry.get("produces_intent_id", "")).strip()
-            or not str(entry.get("payload_schema_id", "")).strip()
+            or not isinstance(required_capabilities, list)
+            or not isinstance(target_kinds, list)
             or not isinstance(extensions, dict)
         ):
             errors.append(
@@ -1415,18 +1434,108 @@ def _control_registry_rows(
                 }
             )
             continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "action_id": action_id,
+            "display_name": display_name,
+            "produces": dict(produces),
+            "required_entitlements": list(required_entitlements),
+            "required_capabilities": list(required_capabilities),
+            "target_kinds": list(target_kinds),
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="control_action",
+            payload=schema_payload,
+            path="data/registries/control_action_registry.json#{}".format(action_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
         action_id_set.add(action_id)
         control_action_rows.append(
             {
+                "schema_version": "1.0.0",
                 "action_id": action_id,
-                "description": str(entry.get("description", "")).strip(),
+                "display_name": display_name,
                 "required_entitlements": _sorted_unique_strings(required_entitlements),
-                "produces_intent_id": str(entry.get("produces_intent_id", "")).strip(),
-                "payload_schema_id": str(entry.get("payload_schema_id", "")).strip(),
+                "required_capabilities": _sorted_unique_strings(required_capabilities),
+                "target_kinds": _sorted_unique_strings(target_kinds),
+                "produces": dict(
+                    (key, str(produces.get(key, "")).strip())
+                    for key in ("process_id", "task_type_id", "plan_intent_type")
+                ),
                 "extensions": dict(extensions),
             }
         )
     control_action_rows = sorted(control_action_rows, key=lambda row: str(row.get("action_id", "")))
+
+    _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/control_policy_registry.json",
+        expected_schema_id="dominium.registry.control_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], [], policy_load_errors
+
+    control_policy_rows: List[dict] = []
+    policy_id_set = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("control_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_control_policy_entry",
+                    "message": "control policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        control_policy_id = str(entry.get("control_policy_id", "")).strip()
+        if not control_policy_id:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_control_policy_entry",
+                    "message": "control policy id is missing",
+                    "path": "$.policies.control_policy_id",
+                }
+            )
+            continue
+        if control_policy_id in policy_id_set:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_control_policy_id",
+                    "message": "duplicate control_policy_id '{}'".format(control_policy_id),
+                    "path": "$.policies.control_policy_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "control_policy_id": control_policy_id,
+            "description": str(entry.get("description", "")).strip(),
+            "allowed_actions": list(entry.get("allowed_actions") or []),
+            "allowed_abstraction_levels": list(entry.get("allowed_abstraction_levels") or []),
+            "allowed_view_policies": list(entry.get("allowed_view_policies") or []),
+            "allowed_fidelity_ranges": list(entry.get("allowed_fidelity_ranges") or []),
+            "downgrade_rules": dict(entry.get("downgrade_rules") or {}),
+            "strictness": str(entry.get("strictness", "")).strip(),
+            "extensions": dict(entry.get("extensions") or {}),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="control_policy",
+            payload=schema_payload,
+            path="data/registries/control_policy_registry.json#{}".format(control_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        policy_id_set.add(control_policy_id)
+        control_policy_rows.append(schema_payload)
+    control_policy_rows = sorted(control_policy_rows, key=lambda row: str(row.get("control_policy_id", "")))
 
     _controller_record, controller_rows_raw, controller_load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -1436,7 +1545,7 @@ def _control_registry_rows(
         expected_entry_key="controller_types",
     )
     if controller_load_errors:
-        return [], [], controller_load_errors
+        return [], [], [], controller_load_errors
 
     controller_type_rows: List[dict] = []
     controller_type_set = set()
@@ -1500,9 +1609,9 @@ def _control_registry_rows(
                 "default_bindings": _sorted_unique_strings(default_bindings),
                 "extensions": dict(extensions),
             }
-        )
+    )
     controller_type_rows = sorted(controller_type_rows, key=lambda row: str(row.get("controller_type", "")))
-    return control_action_rows, controller_type_rows, errors
+    return control_action_rows, control_policy_rows, controller_type_rows, errors
 
 
 def _interaction_registry_rows(
@@ -1543,6 +1652,15 @@ def _interaction_registry_rows(
         "event_stream",
         "reenactment_request",
         "reenactment_artifact",
+        "machine",
+        "port",
+        "graph",
+        "interior",
+        "interior_graph",
+        "interior_volume",
+        "interior_portal",
+        "pose_slot",
+        "mount_point",
     }
     allowed_preview_modes = {"none", "cheap", "expensive"}
     for entry in sorted(action_rows_raw, key=lambda row: str((row or {}).get("action_id", ""))):
@@ -1965,6 +2083,180 @@ def _action_surface_registry_rows(
         )
     visibility_policy_rows = sorted(visibility_policy_rows, key=lambda row: str(row.get("policy_id", "")))
     return surface_type_rows, tool_tag_rows, tool_type_rows, tool_effect_rows, visibility_policy_rows, errors
+
+
+def _pose_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _posture_record, posture_rows_raw, posture_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/posture_registry.json",
+        expected_schema_id="dominium.registry.posture_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="postures",
+    )
+    if posture_load_errors:
+        return [], [], [], posture_load_errors
+    posture_rows: List[dict] = []
+    posture_seen = set()
+    for entry in sorted(posture_rows_raw, key=lambda row: str((row or {}).get("posture_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_posture_entry",
+                    "message": "posture entry must be object",
+                    "path": "$.postures",
+                }
+            )
+            continue
+        posture_id = str(entry.get("posture_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if (not posture_id) or (not description) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_posture_entry",
+                    "message": "posture entry missing required fields",
+                    "path": "$.postures",
+                }
+            )
+            continue
+        if posture_id in posture_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_posture_id",
+                    "message": "duplicate posture_id '{}'".format(posture_id),
+                    "path": "$.postures.posture_id",
+                }
+            )
+            continue
+        posture_seen.add(posture_id)
+        posture_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "posture_id": posture_id,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    posture_rows = sorted(posture_rows, key=lambda row: str(row.get("posture_id", "")))
+
+    _mount_tag_record, mount_tag_rows_raw, mount_tag_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mount_tag_registry.json",
+        expected_schema_id="dominium.registry.mount_tag_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="mount_tags",
+    )
+    if mount_tag_load_errors:
+        return [], [], [], mount_tag_load_errors
+    mount_tag_rows: List[dict] = []
+    mount_tag_seen = set()
+    for entry in sorted(mount_tag_rows_raw, key=lambda row: str((row or {}).get("mount_tag_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mount_tag_entry",
+                    "message": "mount tag entry must be object",
+                    "path": "$.mount_tags",
+                }
+            )
+            continue
+        mount_tag_id = str(entry.get("mount_tag_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if (not mount_tag_id) or (not description) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mount_tag_entry",
+                    "message": "mount tag entry missing required fields",
+                    "path": "$.mount_tags",
+                }
+            )
+            continue
+        if mount_tag_id in mount_tag_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mount_tag_id",
+                    "message": "duplicate mount_tag_id '{}'".format(mount_tag_id),
+                    "path": "$.mount_tags.mount_tag_id",
+                }
+            )
+            continue
+        mount_tag_seen.add(mount_tag_id)
+        mount_tag_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "mount_tag_id": mount_tag_id,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    mount_tag_rows = sorted(mount_tag_rows, key=lambda row: str(row.get("mount_tag_id", "")))
+
+    _control_binding_record, control_binding_rows_raw, control_binding_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/control_binding_registry.json",
+        expected_schema_id="dominium.registry.pose_control_binding_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="control_bindings",
+    )
+    if control_binding_load_errors:
+        return [], [], [], control_binding_load_errors
+    control_binding_rows: List[dict] = []
+    control_binding_seen = set()
+    for entry in sorted(control_binding_rows_raw, key=lambda row: str((row or {}).get("control_binding_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_control_binding_entry",
+                    "message": "control binding entry must be object",
+                    "path": "$.control_bindings",
+                }
+            )
+            continue
+        control_binding_id = str(entry.get("control_binding_id", "")).strip()
+        grants_process_ids = entry.get("grants_process_ids")
+        grants_surface_ids = entry.get("grants_surface_ids")
+        extensions = entry.get("extensions")
+        if (
+            (not control_binding_id)
+            or (not isinstance(grants_process_ids, list))
+            or (not isinstance(grants_surface_ids, list))
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_control_binding_entry",
+                    "message": "control binding entry missing required fields",
+                    "path": "$.control_bindings",
+                }
+            )
+            continue
+        if control_binding_id in control_binding_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_control_binding_id",
+                    "message": "duplicate control_binding_id '{}'".format(control_binding_id),
+                    "path": "$.control_bindings.control_binding_id",
+                }
+            )
+            continue
+        control_binding_seen.add(control_binding_id)
+        control_binding_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "control_binding_id": control_binding_id,
+                "grants_process_ids": _sorted_unique_strings(grants_process_ids),
+                "grants_surface_ids": _sorted_unique_strings(grants_surface_ids),
+                "extensions": dict(extensions),
+            }
+        )
+    control_binding_rows = sorted(control_binding_rows, key=lambda row: str(row.get("control_binding_id", "")))
+
+    return posture_rows, mount_tag_rows, control_binding_rows, errors
 
 
 def _task_registry_rows(
@@ -9626,8 +9918,9 @@ def compile_bundle(
         contributions,
         schema_root=schema_root,
     )
-    control_action_rows, controller_type_rows, control_registry_errors = _control_registry_rows(
+    control_action_rows, control_policy_rows, controller_type_rows, control_registry_errors = _control_registry_rows(
         repo_root=repo_root,
+        schema_root=schema_root,
     )
     interaction_action_rows, interaction_registry_errors = _interaction_registry_rows(
         repo_root=repo_root,
@@ -9640,6 +9933,14 @@ def compile_bundle(
         surface_visibility_policy_rows,
         action_surface_registry_errors,
     ) = _action_surface_registry_rows(
+        repo_root=repo_root,
+    )
+    (
+        posture_rows,
+        mount_tag_rows,
+        control_binding_rows,
+        pose_registry_errors,
+    ) = _pose_registry_rows(
         repo_root=repo_root,
     )
     (
@@ -10006,6 +10307,7 @@ def compile_bundle(
         + control_registry_errors
         + interaction_registry_errors
         + action_surface_registry_errors
+        + pose_registry_errors
         + task_registry_errors
         + machine_registry_errors
         + civilisation_registry_errors
@@ -10414,6 +10716,13 @@ def compile_bundle(
             "actions": control_action_rows,
         }
     )
+    control_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": control_policy_rows,
+        }
+    )
     interaction_action_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -10426,6 +10735,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "surface_types": surface_type_rows,
+        }
+    )
+    posture_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "postures": posture_rows,
+        }
+    )
+    mount_tag_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "mount_tags": mount_tag_rows,
+        }
+    )
+    control_binding_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "control_bindings": control_binding_rows,
         }
     )
     machine_port_type_payload = _finalize_registry_payload(
@@ -10895,8 +11225,12 @@ def compile_bundle(
         "experience_registry": ("experience_registry", experience_payload),
         "lens_registry": ("lens_registry", lens_payload),
         "control_action_registry": ("control_action_registry", control_action_payload),
+        "control_policy_registry": ("control_policy_registry", control_policy_payload),
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "surface_type_registry": ("surface_type_registry", surface_type_payload),
+        "posture_registry": ("posture_registry", posture_payload),
+        "mount_tag_registry": ("mount_tag_registry", mount_tag_payload),
+        "control_binding_registry": ("control_binding_registry", control_binding_payload),
         "port_type_registry": ("port_type_registry", machine_port_type_payload),
         "tool_tag_registry": ("tool_tag_registry", tool_tag_payload),
         "tool_type_registry": ("tool_type_registry", tool_type_payload),
@@ -11021,8 +11355,12 @@ def compile_bundle(
         "experience_registry",
         "lens_registry",
         "control_action_registry",
+        "control_policy_registry",
         "interaction_action_registry",
         "surface_type_registry",
+        "posture_registry",
+        "mount_tag_registry",
+        "control_binding_registry",
         "port_type_registry",
         "tool_tag_registry",
         "tool_type_registry",
@@ -11158,8 +11496,12 @@ def compile_bundle(
             "experience_registry_hash": registry_hashes["experience_registry_hash"],
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
+            "control_policy_registry_hash": registry_hashes["control_policy_registry_hash"],
             "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
             "surface_type_registry_hash": registry_hashes["surface_type_registry_hash"],
+            "posture_registry_hash": registry_hashes["posture_registry_hash"],
+            "mount_tag_registry_hash": registry_hashes["mount_tag_registry_hash"],
+            "control_binding_registry_hash": registry_hashes["control_binding_registry_hash"],
             "port_type_registry_hash": registry_hashes["port_type_registry_hash"],
             "tool_tag_registry_hash": registry_hashes["tool_tag_registry_hash"],
             "tool_type_registry_hash": registry_hashes["tool_type_registry_hash"],
