@@ -301,6 +301,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DYNAMIC-EVAL",
     "INV-NO-DOMAIN-DOWNGRADE-LOGIC",
     "INV-DECISION-LOG-MANDATORY",
+    "INV-NO-DIRECT-STRUCTURE-INSTALL",
+    "INV-GHOST-IS-DERIVED",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -9952,6 +9954,101 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
                     message="downgrade entries must be constructed only in the negotiation kernel",
                     rule_id="INV-NO-DOMAIN-DOWNGRADE-LOGIC",
                 )
+            ) 
+
+
+def _append_plan_execution_enforcement_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    if not runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime missing for plan execution enforcement checks",
+                rule_id="INV-NO-DIRECT-STRUCTURE-INSTALL",
+            )
+        )
+        return
+
+    plan_execute_token = 'elif process_id == "process.plan_execute":'
+    plan_create_token = 'elif process_id == "process.plan_create":'
+    plan_update_token = 'elif process_id == "process.plan_update_incremental":'
+    for token in (plan_create_token, plan_update_token, plan_execute_token):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="planning/execution pipeline must expose process.plan_* entrypoints",
+                rule_id="INV-NO-DIRECT-STRUCTURE-INSTALL",
+            )
+        )
+
+    branch_start = runtime_text.find(plan_execute_token)
+    branch_end = runtime_text.find('elif process_id == "process.construction_project_create":', max(0, branch_start))
+    if branch_start >= 0:
+        branch_text = runtime_text[branch_start : (branch_end if branch_end > branch_start else len(runtime_text))]
+        if "build_plan_execution_ir(" not in branch_text or "construction_commitments" not in branch_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=runtime_rel,
+                    line_number=1,
+                    snippet="build_plan_execution_ir/construction_commitments",
+                    message="plan execution must compile plan artifacts to IR and emit commitments",
+                    rule_id="INV-NO-DIRECT-STRUCTURE-INSTALL",
+                )
+            )
+        if "installed_structure_instances =" in branch_text or "create_construction_project(" in branch_text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=runtime_rel,
+                    line_number=1,
+                    snippet="installed_structure_instances =",
+                    message="plan_execute must not directly install structures",
+                    rule_id="INV-NO-DIRECT-STRUCTURE-INSTALL",
+                )
+            )
+
+    overlays_rel = "src/client/interaction/inspection_overlays.py"
+    overlays_text = _file_text(repo_root, overlays_rel)
+    if not overlays_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=overlays_rel,
+                line_number=1,
+                snippet="",
+                message="inspection overlay file missing for ghost derivation invariant",
+                rule_id="INV-GHOST-IS-DERIVED",
+            )
+        )
+    else:
+        for token in ("_plan_overlay_payload(", "overlay_kind\": \"plan_ghost", "\"derived_only\": True"):
+            if token in overlays_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=overlays_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="ghost overlays must be derived from plan artifacts and explicitly marked derived-only",
+                    rule_id="INV-GHOST-IS-DERIVED",
+                )
             )
 
 
@@ -10096,6 +10193,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_negotiation_kernel_enforcement_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_plan_execution_enforcement_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
