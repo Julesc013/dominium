@@ -3084,6 +3084,9 @@ def _append_reserved_misuse_findings(
             "fidelity_cost_by_level",
             "inspection_cost_by_level",
             "reenactment_cost_by_level",
+            "_FIDELITY_LEVEL_RANK",
+            "_FIDELITY_RANK",
+            "_FIDELITY_LEVELS",
         )
     ):
         return
