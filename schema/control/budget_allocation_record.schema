@@ -1,0 +1,24 @@
+SCHEMA: control/budget_allocation_record.schema
+schema_id: dominium.schema.control.budget_allocation_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic per-subject RS-5 budget allocation summary for fidelity arbitration.
+
+REQUIRED SHAPE:
+record budget_allocation_record
+  required:
+    - schema_version: semver
+    - allocation_record_id: id
+    - tick: u64
+    - subject_id: id
+    - total_cost_allocated: u32
+    - total_cost_requested: u32
+    - envelope_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Per-subject budget totals are deterministic for equal input request sets.
+- Sum of subject allocations for a tick must remain within envelope bound.

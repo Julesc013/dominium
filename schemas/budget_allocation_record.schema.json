@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Budget Allocation Record Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-5 per-subject budget allocation summary.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "allocation_record_id",
+    "tick",
+    "subject_id",
+    "total_cost_allocated",
+    "total_cost_requested",
+    "envelope_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "allocation_record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "total_cost_allocated": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "total_cost_requested": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "envelope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "allocation_record_id": "fidelity.budget.9a7f41c0e28abf71",
+      "tick": 42,
+      "subject_id": "peer.alpha",
+      "total_cost_allocated": 8,
+      "total_cost_requested": 12,
+      "envelope_id": "budget.default_realistic",
+      "deterministic_fingerprint": "3ca6f9b32f0b5aa95d4522f345ec6de8baf2df293f66a3556e676d92f2d46505",
+      "extensions": {
+        "policy_id": "fidelity.policy.rank_fair"
+      }
+    }
+  ]
+}

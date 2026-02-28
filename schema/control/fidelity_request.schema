@@ -1,0 +1,26 @@
+SCHEMA: control/fidelity_request.schema
+schema_id: dominium.schema.control.fidelity_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic fidelity arbitration request artifact for CTRL-5.
+
+REQUIRED SHAPE:
+record fidelity_request
+  required:
+    - schema_version: semver
+    - fidelity_request_id: id
+    - requester_subject_id: id
+    - target_kind: enum(structure|region|graph|vehicle|replay)
+    - target_id: id
+    - requested_level: enum(micro|meso|macro)
+    - cost_estimate: u32
+    - priority: i32
+    - created_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Fidelity requests are deterministic and replay-safe.
+- Requests are immutable inputs to fidelity arbitration for a tick.
