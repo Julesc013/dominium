@@ -7068,6 +7068,93 @@ def _append_core_abstraction_invariant_findings(
                 )
             )
 
+    interior_required_tokens = {
+        "src/interior/interior_engine.py": {
+            "INV-PORTAL-USES-STATE-MACHINE": (
+                "apply_portal_transition(",
+                "normalize_state_machine(",
+                "apply_transition(",
+                "state_machine_id",
+            ),
+        },
+        "tools/xstack/sessionx/observation.py": {
+            "INV-NO-ADHOC-OCCLUSION": (
+                "_apply_interior_occlusion(",
+                "path_exists(",
+                "interior_portal_state_machines",
+            ),
+        },
+    }
+    for rel_path, rule_map in sorted(interior_required_tokens.items(), key=lambda item: str(item[0])):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            for rule_id in sorted(rule_map.keys()):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="interior subsystem invariant file missing",
+                        rule_id=rule_id,
+                    )
+                )
+            continue
+        for rule_id, tokens in sorted(rule_map.items(), key=lambda item: str(item[0])):
+            for token in tokens:
+                if token in text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="interior subsystem invariants require deterministic occlusion/state-machine tokens",
+                        rule_id=rule_id,
+                    )
+                )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/interior/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        ad_hoc_occlusion_tokens = (
+            "interior_volume_id" in text
+            and "portal" in text
+            and ("path_exists(" in text or "reachable_volumes(" in text)
+        )
+        uses_interior_substrate = (
+            "from src.interior" in text
+            or "import src.interior" in text
+            or "src.interior." in text
+        )
+        if ad_hoc_occlusion_tokens and not uses_interior_substrate:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="interior_volume_id",
+                    message="interior occlusion/path logic must be centralized in src/interior and observation integration",
+                    rule_id="INV-NO-ADHOC-OCCLUSION",
+                )
+            )
+
 
 def _append_time_constitution_invariant_findings(
     findings: List[Dict[str, object]],
