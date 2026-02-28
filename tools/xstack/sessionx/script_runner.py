@@ -900,6 +900,14 @@ def run_intent_script(
     )
     if view_mode_registry_error:
         return view_mode_registry_error
+    view_policy_registry, view_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["view_policy_registry_hash"],
+        expected_hash=str(registries.get("view_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if view_policy_registry_error:
+        return view_policy_registry_error
     instrument_type_registry, instrument_type_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["instrument_type_registry_hash"],
@@ -1199,6 +1207,7 @@ def run_intent_script(
             "ephemeris_registry": ephemeris_registry,
             "terrain_tile_registry": terrain_tile_registry,
             "view_mode_registry": view_mode_registry,
+            "view_policy_registry": view_policy_registry,
         },
         policy_context=script_policy_context,
         pack_lock_hash=str(lock_payload.get("pack_lock_hash", "")),
@@ -1320,6 +1329,7 @@ def run_intent_script(
             "decay_model_registry": decay_model_registry,
             "eviction_rule_registry": eviction_rule_registry,
             "view_mode_registry": view_mode_registry,
+            "view_policy_registry": view_policy_registry,
             "instrument_type_registry": instrument_type_registry,
             "calibration_model_registry": calibration_model_registry,
             "render_proxy_registry": render_proxy_registry,

@@ -112,6 +112,7 @@ REGISTRY_HASH_KEY_MAP = {
     "migration_model_registry_hash": "migration_model_registry",
     "body_shape_registry_hash": "body_shape_registry",
     "view_mode_registry_hash": "view_mode_registry",
+    "view_policy_registry_hash": "view_policy_registry",
     "instrument_type_registry_hash": "instrument_type_registry",
     "calibration_model_registry_hash": "calibration_model_registry",
     "render_proxy_registry_hash": "render_proxy_registry",
@@ -222,6 +223,7 @@ REGISTRY_FILE_MAP = {
     "migration_model_registry_hash": "migration_model.registry.json",
     "body_shape_registry_hash": "body_shape.registry.json",
     "view_mode_registry_hash": "view_mode.registry.json",
+    "view_policy_registry_hash": "view_policy.registry.json",
     "instrument_type_registry_hash": "instrument_type.registry.json",
     "calibration_model_registry_hash": "calibration_model.registry.json",
     "render_proxy_registry_hash": "render_proxy.registry.json",
@@ -1736,6 +1738,14 @@ def boot_session_spec(
     )
     if view_mode_registry_error:
         return view_mode_registry_error
+    view_policy_registry, view_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["view_policy_registry_hash"],
+        expected_hash=str(registries.get("view_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if view_policy_registry_error:
+        return view_policy_registry_error
     instrument_type_registry, instrument_type_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["instrument_type_registry_hash"],
@@ -2120,6 +2130,7 @@ def boot_session_spec(
                 "decay_model_registry": decay_model_registry,
                 "eviction_rule_registry": eviction_rule_registry,
                 "view_mode_registry": view_mode_registry,
+                "view_policy_registry": view_policy_registry,
                 "render_proxy_registry": render_proxy_registry,
                 "cosmetic_registry": cosmetic_registry,
                 "cosmetic_policy_registry": cosmetic_policy_registry,
@@ -2248,6 +2259,7 @@ def boot_session_spec(
                 "decay_model_registry": decay_model_registry,
                 "eviction_rule_registry": eviction_rule_registry,
                 "view_mode_registry": view_mode_registry,
+                "view_policy_registry": view_policy_registry,
                 "render_proxy_registry": render_proxy_registry,
                 "cosmetic_registry": cosmetic_registry,
                 "cosmetic_policy_registry": cosmetic_policy_registry,
@@ -2647,6 +2659,7 @@ def boot_session_spec(
             "decay_model_registry": decay_model_registry,
             "eviction_rule_registry": eviction_rule_registry,
             "view_mode_registry": view_mode_registry,
+            "view_policy_registry": view_policy_registry,
             "instrument_type_registry": instrument_type_registry,
             "calibration_model_registry": calibration_model_registry,
             "render_proxy_registry": render_proxy_registry,

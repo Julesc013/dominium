@@ -53,7 +53,14 @@
           "filter.interest_cull.v1",
           "filter.redaction.v1"
         ],
-        "extensions": {}
+        "max_inspection_level": "micro",
+        "max_reenactment_level": "micro",
+        "redaction_rules": [],
+        "extensions": {
+          "legacy_aliases": [
+            "epistemic.admin_full"
+          ]
+        }
       },
       {
         "epistemic_policy_id": "ep.policy.observer_truth",
@@ -100,6 +107,9 @@
           "filter.precision_quantize.v1",
           "filter.interest_cull.v1"
         ],
+        "max_inspection_level": "micro",
+        "max_reenactment_level": "micro",
+        "redaction_rules": [],
         "extensions": {}
       },
       {
@@ -147,7 +157,20 @@
           "filter.precision_quantize.v1",
           "filter.interest_cull.v1"
         ],
-        "extensions": {}
+        "max_inspection_level": "meso",
+        "max_reenactment_level": "meso",
+        "redaction_rules": [
+          {
+            "rule_id": "redact.player.truth_overlay",
+            "channel_pattern": "ch.truth.overlay.*",
+            "redaction_mode": "masked"
+          }
+        ],
+        "extensions": {
+          "legacy_aliases": [
+            "epistemic.diegetic_default"
+          ]
+        }
       },
       {
         "epistemic_policy_id": "ep.policy.spectator_limited",
@@ -189,6 +212,203 @@
           "filter.entitlement_gate.v1",
           "filter.precision_quantize.v1",
           "filter.interest_cull.v1"
+        ],
+        "max_inspection_level": "macro",
+        "max_reenactment_level": "macro",
+        "redaction_rules": [
+          {
+            "rule_id": "redact.spectator.truth_overlay",
+            "channel_pattern": "ch.truth.overlay.*",
+            "redaction_mode": "masked"
+          }
+        ],
+        "extensions": {}
+      },
+      {
+        "epistemic_policy_id": "epistemic.diegetic_default",
+        "description": "CTRL-6 diegetic default epistemic policy.",
+        "allowed_observation_channels": [
+          "ch.core.time",
+          "ch.camera.state",
+          "ch.diegetic.compass",
+          "ch.diegetic.clock",
+          "ch.diegetic.altimeter",
+          "ch.diegetic.radio_text",
+          "ch.diegetic.notebook",
+          "ch.diegetic.map_local"
+        ],
+        "forbidden_channels": [
+          "ch.nondiegetic.*",
+          "ch.truth.overlay.*"
+        ],
+        "retention_policy_id": "ep.retention.session_basic",
+        "inference_policy_id": "ep.infer.none",
+        "max_precision_rules": [
+          {
+            "rule_id": "precision.ctrl6.diegetic",
+            "channel_id": "ch.camera.state",
+            "max_distance_mm": 1000000000000,
+            "position_quantization_mm": 1000,
+            "orientation_quantization_mdeg": 100
+          }
+        ],
+        "deterministic_filters": [
+          "filter.channel_allow_deny.v1",
+          "filter.precision_quantize.v1",
+          "filter.interest_cull.v1"
+        ],
+        "max_inspection_level": "meso",
+        "max_reenactment_level": "meso",
+        "redaction_rules": [
+          {
+            "rule_id": "redact.ctrl6.diegetic.truth",
+            "channel_pattern": "ch.truth.overlay.*",
+            "redaction_mode": "masked"
+          }
+        ],
+        "extensions": {
+          "compat_from": "ep.policy.player_diegetic"
+        }
+      },
+      {
+        "epistemic_policy_id": "epistemic.admin_full",
+        "description": "CTRL-6 admin/full epistemic policy with explicit observer authority.",
+        "allowed_observation_channels": [
+          "ch.core.time",
+          "ch.core.navigation",
+          "ch.core.sites",
+          "ch.core.entities",
+          "ch.core.process_log",
+          "ch.core.performance",
+          "ch.camera.state",
+          "ch.diegetic.compass",
+          "ch.diegetic.clock",
+          "ch.diegetic.altimeter",
+          "ch.diegetic.radio_text",
+          "ch.diegetic.notebook",
+          "ch.diegetic.map_local",
+          "ch.watermark.observer_mode",
+          "ch.nondiegetic.nav",
+          "ch.nondiegetic.entity_inspector",
+          "ch.nondiegetic.performance_monitor",
+          "ch.truth.overlay.terrain_height",
+          "ch.truth.overlay.anchor_hash"
+        ],
+        "forbidden_channels": [],
+        "retention_policy_id": "ep.retention.session_basic",
+        "inference_policy_id": "ep.infer.none",
+        "max_precision_rules": [
+          {
+            "rule_id": "precision.ctrl6.admin",
+            "channel_id": "ch.camera.state",
+            "max_distance_mm": 1000000000000,
+            "position_quantization_mm": 1,
+            "orientation_quantization_mdeg": 1
+          }
+        ],
+        "deterministic_filters": [
+          "filter.channel_allow_deny.v1",
+          "filter.entitlement_gate.v1",
+          "filter.precision_quantize.v1"
+        ],
+        "max_inspection_level": "micro",
+        "max_reenactment_level": "micro",
+        "redaction_rules": [],
+        "extensions": {
+          "compat_from": "ep.policy.lab_broad"
+        }
+      },
+      {
+        "epistemic_policy_id": "epistemic.rank_restricted",
+        "description": "CTRL-6 ranked epistemic policy with strict anti-omniscience redaction.",
+        "allowed_observation_channels": [
+          "ch.core.time",
+          "ch.camera.state",
+          "ch.diegetic.compass",
+          "ch.diegetic.clock",
+          "ch.diegetic.altimeter",
+          "ch.diegetic.radio_text",
+          "ch.diegetic.notebook",
+          "ch.diegetic.map_local",
+          "ch.watermark.observer_mode"
+        ],
+        "forbidden_channels": [
+          "ch.nondiegetic.*",
+          "ch.truth.overlay.*"
+        ],
+        "retention_policy_id": "ep.retention.session_basic",
+        "inference_policy_id": "ep.infer.none",
+        "max_precision_rules": [
+          {
+            "rule_id": "precision.ctrl6.rank",
+            "channel_id": "ch.camera.state",
+            "max_distance_mm": 1000000000000,
+            "position_quantization_mm": 1000,
+            "orientation_quantization_mdeg": 100
+          }
+        ],
+        "deterministic_filters": [
+          "filter.channel_allow_deny.v1",
+          "filter.precision_quantize.v1",
+          "filter.interest_cull.v1",
+          "filter.redaction.v1"
+        ],
+        "max_inspection_level": "macro",
+        "max_reenactment_level": "macro",
+        "redaction_rules": [
+          {
+            "rule_id": "redact.ctrl6.rank.truth",
+            "channel_pattern": "ch.truth.overlay.*",
+            "redaction_mode": "masked"
+          },
+          {
+            "rule_id": "redact.ctrl6.rank.nondiegetic",
+            "channel_pattern": "ch.nondiegetic.*",
+            "redaction_mode": "masked"
+          }
+        ],
+        "extensions": {}
+      },
+      {
+        "epistemic_policy_id": "epistemic.replay_readonly",
+        "description": "CTRL-6 replay epistemic policy with read-only replay-safe channels.",
+        "allowed_observation_channels": [
+          "ch.core.time",
+          "ch.core.navigation",
+          "ch.core.sites",
+          "ch.core.entities",
+          "ch.core.process_log",
+          "ch.camera.state",
+          "ch.nondiegetic.nav",
+          "ch.watermark.observer_mode"
+        ],
+        "forbidden_channels": [
+          "ch.truth.overlay.*"
+        ],
+        "retention_policy_id": "ep.retention.session_basic",
+        "inference_policy_id": "ep.infer.none",
+        "max_precision_rules": [
+          {
+            "rule_id": "precision.ctrl6.replay",
+            "channel_id": "ch.camera.state",
+            "max_distance_mm": 1000000000000,
+            "position_quantization_mm": 100,
+            "orientation_quantization_mdeg": 10
+          }
+        ],
+        "deterministic_filters": [
+          "filter.channel_allow_deny.v1",
+          "filter.precision_quantize.v1",
+          "filter.interest_cull.v1"
+        ],
+        "max_inspection_level": "meso",
+        "max_reenactment_level": "meso",
+        "redaction_rules": [
+          {
+            "rule_id": "redact.ctrl6.replay.truth",
+            "channel_pattern": "ch.truth.overlay.*",
+            "redaction_mode": "masked"
+          }
         ],
         "extensions": {}
       }

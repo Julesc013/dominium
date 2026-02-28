@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "View Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-6 view-policy contract for camera mode and epistemic constraints.",
+  "x-doc-ref": [
+    "docs/audit/VIEW_EPISTEMIC_CONTROL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "view_policy_id",
+    "description",
+    "camera_mode",
+    "allowed_epistemic_policy_ids",
+    "allowed_abstraction_levels",
+    "restrictions",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "view_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "camera_mode": {
+      "type": "string",
+      "enum": [
+        "first_person",
+        "third_person",
+        "freecam",
+        "spectator",
+        "replay"
+      ]
+    },
+    "allowed_epistemic_policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "allowed_abstraction_levels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "AL0",
+          "AL1",
+          "AL2",
+          "AL3",
+          "AL4"
+        ]
+      }
+    },
+    "restrictions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "view_policy_id": "view.first_person_diegetic",
+      "description": "Diegetic first-person camera policy.",
+      "camera_mode": "first_person",
+      "allowed_epistemic_policy_ids": [
+        "epistemic.diegetic_default",
+        "epistemic.rank_restricted"
+      ],
+      "allowed_abstraction_levels": [
+        "AL0",
+        "AL1"
+      ],
+      "restrictions": {
+        "no_direct_control": false
+      },
+      "extensions": {}
+    }
+  ]
+}

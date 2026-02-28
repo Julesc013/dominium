@@ -102,6 +102,53 @@
         "minLength": 1
       }
     },
+    "max_inspection_level": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "max_reenactment_level": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "redaction_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "channel_pattern",
+          "redaction_mode"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "channel_pattern": {
+            "type": "string",
+            "minLength": 1
+          },
+          "redaction_mode": {
+            "type": "string",
+            "enum": [
+              "none",
+              "coarse",
+              "diegetic",
+              "masked"
+            ]
+          }
+        }
+      }
+    },
     "extensions": {
       "type": "object",
       "additionalProperties": true
@@ -149,6 +196,15 @@
         "filter.entitlement_gate.v1",
         "filter.precision_quantize.v1",
         "filter.interest_cull.v1"
+      ],
+      "max_inspection_level": "meso",
+      "max_reenactment_level": "meso",
+      "redaction_rules": [
+        {
+          "rule_id": "redact.player.truth_overlay",
+          "channel_pattern": "ch.truth.overlay.*",
+          "redaction_mode": "masked"
+        }
       ],
       "extensions": {}
     }

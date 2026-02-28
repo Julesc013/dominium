@@ -1,0 +1,23 @@
+SCHEMA: control/view_policy.schema
+schema_id: dominium.schema.control.view_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic view-policy contract for CTRL-6 camera mode governance.
+
+REQUIRED SHAPE:
+record view_policy
+  required:
+    - schema_version: semver
+    - view_policy_id: id
+    - description: text
+    - camera_mode: enum(first_person|third_person|freecam|spectator|replay)
+    - allowed_epistemic_policy_ids: list[id]
+    - allowed_abstraction_levels: list[id]
+    - restrictions: map
+    - extensions: map
+
+INVARIANTS:
+- View policy selection must be lawful and deterministic.
+- View policy cannot grant truth mutation authority.

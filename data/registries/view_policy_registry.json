@@ -1,0 +1,164 @@
+{
+  "schema_id": "dominium.registry.view_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.view_policy_registry",
+    "registry_version": "1.0.0",
+    "view_policies": [
+      {
+        "schema_version": "1.0.0",
+        "view_policy_id": "view.first_person_diegetic",
+        "description": "Diegetic first-person camera for embodied play.",
+        "camera_mode": "first_person",
+        "allowed_epistemic_policy_ids": [
+          "epistemic.diegetic_default",
+          "epistemic.rank_restricted"
+        ],
+        "allowed_abstraction_levels": [
+          "AL0",
+          "AL1"
+        ],
+        "restrictions": {
+          "no_direct_control": false,
+          "requires_embodiment": true,
+          "replay_read_only": false
+        },
+        "extensions": {
+          "legacy_view_mode_ids": [
+            "view.mode.first_person",
+            "view.first_person.player"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_policy_id": "view.third_person_diegetic",
+        "description": "Diegetic third-person camera for embodied play.",
+        "camera_mode": "third_person",
+        "allowed_epistemic_policy_ids": [
+          "epistemic.diegetic_default",
+          "epistemic.rank_restricted"
+        ],
+        "allowed_abstraction_levels": [
+          "AL0",
+          "AL1",
+          "AL2"
+        ],
+        "restrictions": {
+          "no_direct_control": false,
+          "requires_embodiment": true,
+          "replay_read_only": false
+        },
+        "extensions": {
+          "legacy_view_mode_ids": [
+            "view.mode.third_person",
+            "view.third_person.player"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_policy_id": "view.spectator_limited",
+        "description": "Spectator view without omniscient truth channels.",
+        "camera_mode": "spectator",
+        "allowed_epistemic_policy_ids": [
+          "epistemic.rank_restricted",
+          "epistemic.diegetic_default"
+        ],
+        "allowed_abstraction_levels": [
+          "AL1",
+          "AL2",
+          "AL3"
+        ],
+        "restrictions": {
+          "no_direct_control": true,
+          "requires_embodiment": false,
+          "replay_read_only": false
+        },
+        "extensions": {
+          "legacy_view_mode_ids": [
+            "view.mode.spectator",
+            "view.follow.spectator"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_policy_id": "view.freecam_lab",
+        "description": "Lab free camera policy for non-ranked environments.",
+        "camera_mode": "freecam",
+        "allowed_epistemic_policy_ids": [
+          "epistemic.diegetic_default",
+          "epistemic.admin_full"
+        ],
+        "allowed_abstraction_levels": [
+          "AL1",
+          "AL2",
+          "AL3",
+          "AL4"
+        ],
+        "restrictions": {
+          "no_direct_control": true,
+          "requires_embodiment": false,
+          "replay_read_only": false
+        },
+        "extensions": {
+          "legacy_view_mode_ids": [
+            "view.mode.freecam",
+            "view.free.lab"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_policy_id": "view.observer_truth",
+        "description": "Observer/admin truth policy with explicit entitlement and watermark requirements.",
+        "camera_mode": "freecam",
+        "allowed_epistemic_policy_ids": [
+          "epistemic.admin_full"
+        ],
+        "allowed_abstraction_levels": [
+          "AL3",
+          "AL4"
+        ],
+        "restrictions": {
+          "no_direct_control": true,
+          "requires_embodiment": false,
+          "requires_observer_truth_entitlement": true,
+          "watermark_required": true,
+          "replay_read_only": false
+        },
+        "extensions": {
+          "legacy_view_mode_ids": [
+            "view.free.observer_truth"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_policy_id": "view.replay",
+        "description": "Replay-only view policy; control actions are read-only.",
+        "camera_mode": "replay",
+        "allowed_epistemic_policy_ids": [
+          "epistemic.replay_readonly"
+        ],
+        "allowed_abstraction_levels": [
+          "AL1",
+          "AL2",
+          "AL3"
+        ],
+        "restrictions": {
+          "no_direct_control": true,
+          "requires_embodiment": false,
+          "replay_read_only": true
+        },
+        "extensions": {
+          "legacy_view_mode_ids": [
+            "view.mode.replay"
+          ]
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
