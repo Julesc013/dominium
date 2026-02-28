@@ -924,6 +924,7 @@ def build_control_resolution(
     if bool(policy_extensions.get("replay_only", False)):
         replay_action_allowed = (
             str(action_id) == "action.view.change"
+            or str(action_id) == "action.view.change_policy"
             or str(action_id).startswith("action.replay.")
             or str(action_id) == "action.fidelity.request"
         )
