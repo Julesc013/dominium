@@ -1,0 +1,39 @@
+{
+  "schema_id": "dominium.registry.portal_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.portal_type_registry",
+    "registry_version": "1.0.0",
+    "portal_types": [
+      {
+        "schema_version": "1.0.0",
+        "portal_type_id": "portal.door",
+        "description": "Generic human-scale interior door portal.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "portal_type_id": "portal.hatch",
+        "description": "Generic hatch portal for technical compartments.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "portal_type_id": "portal.airlock",
+        "description": "Airlock-class portal with high sealing potential.",
+        "extensions": {
+          "default_sealing_class": "high"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "portal_type_id": "portal.vent",
+        "description": "Ventilation portal; traversal usually restricted.",
+        "extensions": {
+          "default_permeable": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

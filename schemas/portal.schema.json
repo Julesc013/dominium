@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interior Portal Schema",
+  "version": "1.0.0",
+  "description": "Deterministic portal payload linking interior volumes with state-machine gated traversal.",
+  "x-doc-ref": [
+    "docs/interior/INTERIOR_VOLUME_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "portal_id",
+    "from_volume_id",
+    "to_volume_id",
+    "portal_type_id",
+    "state_machine_id",
+    "sealing_coefficient",
+    "tags",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "portal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_volume_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_volume_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "portal_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state_machine_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sealing_coefficient": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

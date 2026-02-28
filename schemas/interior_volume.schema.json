@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interior Volume Schema",
+  "version": "1.0.0",
+  "description": "Deterministic interior volume payload attached to SpatialNode hierarchy.",
+  "x-doc-ref": [
+    "docs/interior/INTERIOR_VOLUME_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "volume_id",
+    "parent_spatial_id",
+    "local_transform",
+    "bounding_shape",
+    "volume_type_id",
+    "tags",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "volume_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_spatial_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "local_transform": {
+      "type": "object",
+      "required": [
+        "translation_mm",
+        "rotation_mdeg",
+        "scale_permille"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "translation_mm": {
+          "type": "object",
+          "required": ["x", "y", "z"],
+          "additionalProperties": false,
+          "properties": {
+            "x": {"type": "integer"},
+            "y": {"type": "integer"},
+            "z": {"type": "integer"}
+          }
+        },
+        "rotation_mdeg": {
+          "type": "object",
+          "required": ["yaw", "pitch", "roll"],
+          "additionalProperties": false,
+          "properties": {
+            "yaw": {"type": "integer"},
+            "pitch": {"type": "integer"},
+            "roll": {"type": "integer"}
+          }
+        },
+        "scale_permille": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "bounding_shape": {
+      "type": "object",
+      "required": ["shape_type", "shape_data"],
+      "additionalProperties": false,
+      "properties": {
+        "shape_type": {
+          "type": "string",
+          "enum": ["aabb", "convex_hull"]
+        },
+        "shape_data": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "volume_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

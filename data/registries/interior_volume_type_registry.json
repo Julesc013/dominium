@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.registry.interior_volume_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.interior_volume_type_registry",
+    "registry_version": "1.0.0",
+    "volume_types": [
+      {
+        "schema_version": "1.0.0",
+        "volume_type_id": "volume.room",
+        "description": "Generic enclosed room volume.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "volume_type_id": "volume.corridor",
+        "description": "Generic traversable corridor volume.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "volume_type_id": "volume.cabin",
+        "description": "Generic cabin volume for vehicles and ships.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "volume_type_id": "volume.shaft",
+        "description": "Generic shaft/vertical passage volume.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
