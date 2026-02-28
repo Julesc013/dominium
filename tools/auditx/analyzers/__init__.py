@@ -141,6 +141,8 @@ from analyzers import e112_legacy_import_smell
 from analyzers import e113_deprecated_usage_smell
 from analyzers import e114_adapter_missing_smell
 from analyzers import e115_removed_still_referenced_smell
+from analyzers import e116_macro_behavior_smell
+from analyzers import e117_ir_nondeterminism_smell
 
 
 ANALYZERS = (
@@ -285,6 +287,8 @@ ANALYZERS = (
     e113_deprecated_usage_smell,
     e114_adapter_missing_smell,
     e115_removed_still_referenced_smell,
+    e116_macro_behavior_smell,
+    e117_ir_nondeterminism_smell,
 )
 
 
