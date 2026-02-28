@@ -552,8 +552,30 @@ def reconstruct_ir_action_sequence(
             resolved_ir_id = row_ir_id
         if row_ir_id != resolved_ir_id:
             continue
-        reasons = _as_map((dict(row or {})).get("reasons"))
-        refusal_row = _as_map(reasons.get("refusal"))
+        policy_ids_applied = _sorted_unique_strings((dict(row or {})).get("policy_ids_applied"))
+        emitted_ids = _as_map((dict(row or {})).get("emitted_ids"))
+        downgrade_entries = [
+            dict(item)
+            for item in list(ext.get("downgrade_entries") or [])
+            if isinstance(item, Mapping)
+        ]
+        downgrade_reasons = _sorted_unique_strings([item.get("reason_code") for item in downgrade_entries])
+        refusal_codes = _sorted_unique_strings((dict(row or {})).get("refusals"))
+
+        # Backward compatibility with legacy CTRL-1/CTRL-2 decision-log rows.
+        if not downgrade_reasons or not refusal_codes:
+            reasons = _as_map((dict(row or {})).get("reasons"))
+            if not downgrade_reasons:
+                downgrade_reasons = _sorted_unique_strings(reasons.get("downgrade_reasons"))
+            if not refusal_codes:
+                legacy_refusal_row = _as_map(reasons.get("refusal"))
+                legacy_code = str(legacy_refusal_row.get("reason_code", "")).strip()
+                if legacy_code:
+                    refusal_codes = [legacy_code]
+
+        control_policy_id = str((dict(row or {})).get("control_policy_id", "")).strip()
+        if not control_policy_id and policy_ids_applied:
+            control_policy_id = str(policy_ids_applied[0])
         sequence_rows.append(
             {
                 "op_index": int(max(0, _to_int(ir_ext.get("op_index", 0), 0))),
@@ -563,12 +585,17 @@ def reconstruct_ir_action_sequence(
                 "control_action_id": str(ir_ext.get("control_action_id", "")).strip(),
                 "control_intent_id": str((dict(row or {})).get("control_intent_id", "")).strip(),
                 "tick": int(max(0, _to_int((dict(row or {})).get("tick", 0), 0))),
-                "control_policy_id": str((dict(row or {})).get("control_policy_id", "")).strip(),
-                "emitted_ids": _sorted_unique_strings((dict(row or {})).get("emitted_ids")),
-                "downgrade_reasons": _sorted_unique_strings(reasons.get("downgrade_reasons")),
-                "refusal_code": str(refusal_row.get("reason_code", "")).strip(),
+                "control_policy_id": control_policy_id,
+                "emitted_ids": {
+                    "intent_ids": _sorted_unique_strings(emitted_ids.get("intent_ids")),
+                    "commitment_ids": _sorted_unique_strings(emitted_ids.get("commitment_ids")),
+                    "envelope_ids": _sorted_unique_strings(emitted_ids.get("envelope_ids")),
+                },
+                "downgrade_reasons": downgrade_reasons,
+                "refusal_codes": refusal_codes,
+                "refusal_code": str((refusal_codes or [""])[0]),
                 "verification_report_hash": str(ir_ext.get("verification_report_hash", "")).strip(),
-                "log_id": str((dict(row or {})).get("log_id", "")).strip(),
+                "decision_id": str((dict(row or {})).get("decision_id", "")).strip(),
             }
         )
     ordered = sorted(
@@ -577,7 +604,7 @@ def reconstruct_ir_action_sequence(
             int(row.get("op_index", 0) or 0),
             int(row.get("tick", 0) or 0),
             str(row.get("control_intent_id", "")),
-            str(row.get("log_id", "")),
+            str(row.get("decision_id", "")),
         ),
     )
     out = {

@@ -8,6 +8,8 @@ from typing import Dict, List, Mapping, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
+from .negotiation import negotiate_request
+
 
 CONTROL_REFUSAL_FORBIDDEN_BY_LAW = "refusal.ctrl.forbidden_by_law"
 CONTROL_REFUSAL_ENTITLEMENT_MISSING = "refusal.ctrl.entitlement_missing"
@@ -420,54 +422,196 @@ def _decision_log_extensions(policy_context: Mapping[str, object] | None) -> dic
     return {"control_ir_execution": normalized}
 
 
+def _negotiation_downgrade_reasons(negotiation_result: Mapping[str, object]) -> List[str]:
+    reasons: List[str] = []
+    for row in list((dict(negotiation_result or {})).get("downgrade_entries") or []):
+        if not isinstance(row, Mapping):
+            continue
+        reason_code = str(row.get("reason_code", "")).strip()
+        if reason_code:
+            reasons.append(reason_code)
+    return sorted(set(reasons))
+
+
+def _policy_ids_applied(
+    negotiation_result: Mapping[str, object],
+    control_policy_id: str,
+) -> List[str]:
+    payload = dict(negotiation_result or {})
+    ext = dict(payload.get("extensions") or {})
+    policy_ids = _sorted_unique_strings(ext.get("policy_ids_applied"))
+    fallback = str(control_policy_id or "").strip()
+    if fallback and fallback not in policy_ids:
+        policy_ids.append(fallback)
+    return sorted(set(policy_ids))
+
+
+def _negotiation_with_refusal_code(
+    negotiation_result: Mapping[str, object],
+    reason_code: str,
+) -> dict:
+    payload = dict(negotiation_result or {})
+    refusal_codes = _sorted_unique_strings(payload.get("refusal_codes"))
+    token = str(reason_code or "").strip()
+    if token and token not in refusal_codes:
+        refusal_codes.append(token)
+    payload["refusal_codes"] = sorted(set(refusal_codes))
+    seed = dict(payload)
+    seed["deterministic_fingerprint"] = ""
+    payload["deterministic_fingerprint"] = canonical_sha256(seed)
+    return payload
+
+
+def _negotiation_refusal_payload(
+    *,
+    refusal_codes: List[str],
+    negotiation_result: Mapping[str, object],
+    requested_action_id: str,
+) -> dict:
+    primary_code = str((list(refusal_codes or []) or [""])[0]).strip()
+    extensions = dict((dict(negotiation_result or {})).get("extensions") or {})
+    validation = dict(extensions.get("validation") or {})
+    missing_entitlements = _sorted_unique_strings(validation.get("missing_entitlements"))
+    forbidden_process_id = str(validation.get("forbidden_process_id", "")).strip()
+    if primary_code == CONTROL_REFUSAL_ENTITLEMENT_MISSING:
+        return _refusal(
+            CONTROL_REFUSAL_ENTITLEMENT_MISSING,
+            "action requires missing entitlements",
+            "Grant missing entitlements or choose an action allowed by current authority.",
+            {
+                "missing_entitlements": ",".join(missing_entitlements),
+                "requested_action_id": str(requested_action_id),
+            },
+            "$.authority_context.entitlements",
+        )
+    if primary_code == CONTROL_REFUSAL_META_FORBIDDEN:
+        return _refusal(
+            CONTROL_REFUSAL_META_FORBIDDEN,
+            "ranked server forbids AL4 meta control intents",
+            "Use AL0-AL3 actions on ranked servers.",
+            {"requested_action_id": str(requested_action_id)},
+            "$.request_vector.abstraction_level_requested",
+        )
+    if primary_code == CONTROL_REFUSAL_VIEW_FORBIDDEN:
+        return _refusal(
+            CONTROL_REFUSAL_VIEW_FORBIDDEN,
+            "requested view policy is forbidden",
+            "Select a policy-allowed view mode for this authority context.",
+            {"requested_action_id": str(requested_action_id)},
+            "$.request_vector.view_requested",
+        )
+    if primary_code == CONTROL_REFUSAL_FIDELITY_DENIED:
+        return _refusal(
+            CONTROL_REFUSAL_FIDELITY_DENIED,
+            "requested fidelity cannot be granted under current constraints",
+            "Reduce requested fidelity or increase budget/authority as permitted.",
+            {"requested_action_id": str(requested_action_id)},
+            "$.request_vector.fidelity_requested",
+        )
+    if primary_code:
+        return _refusal(
+            primary_code,
+            "control negotiation refused request",
+            "Adjust request vector and authority/policy constraints before retrying.",
+            {
+                "requested_action_id": str(requested_action_id),
+                "forbidden_process_id": forbidden_process_id,
+            },
+            "$.request_vector",
+        )
+    return _refusal(
+        CONTROL_REFUSAL_FORBIDDEN_BY_LAW,
+        "control negotiation refused request",
+        "Adjust request vector and authority/policy constraints before retrying.",
+        {"requested_action_id": str(requested_action_id)},
+        "$.request_vector",
+    )
+
+
 def _decision_log_row(
     *,
     control_intent: Mapping[str, object],
-    control_policy_id: str,
-    resolved_vector: Mapping[str, object],
+    policy_ids_applied: List[str],
+    input_vector: Mapping[str, object],
+    negotiation_result: Mapping[str, object],
     refusal: Mapping[str, object] | None,
-    downgrade_reasons: List[str],
+    emitted_intents: List[Mapping[str, object]],
     emitted_envelopes: List[Mapping[str, object]],
+    emitted_commitment_ids: List[str] | None = None,
     decision_extensions: Mapping[str, object] | None = None,
 ) -> dict:
+    intent_payload = dict(control_intent or {})
+    negotiation_payload = dict(negotiation_result or {})
+    resolved_vector = dict(negotiation_payload.get("resolved_vector") or {})
+    downgrade_entries = [
+        dict(row)
+        for row in list(negotiation_payload.get("downgrade_entries") or [])
+        if isinstance(row, Mapping)
+    ]
+    refusal_codes = _sorted_unique_strings(negotiation_payload.get("refusal_codes"))
     tick = int(max(0, _to_int((dict(control_intent or {})).get("created_tick", 0), 0)))
-    emitted_ids = sorted(
-        set(
-            str((dict(row or {})).get("intent_id", "")).strip()
-            or str((dict(row or {})).get("envelope_id", "")).strip()
-            for row in list(emitted_envelopes or [])
-            if isinstance(row, Mapping)
-        )
+    intent_ids = sorted(
+        str((dict(row or {})).get("intent_id", "")).strip()
+        for row in list(emitted_intents or [])
+        if str((dict(row or {})).get("intent_id", "")).strip()
     )
+    envelope_ids = sorted(
+        str((dict(row or {})).get("envelope_id", "")).strip()
+        for row in list(emitted_envelopes or [])
+        if str((dict(row or {})).get("envelope_id", "")).strip()
+    )
+    commitment_ids = _sorted_unique_strings(emitted_commitment_ids)
+    downgrade_ids = _sorted_unique_strings([row.get("downgrade_id") for row in downgrade_entries])
+    ir_id = str((dict(decision_extensions or {})).get("control_ir_execution", {}).get("ir_id", "")).strip()
+    if not ir_id:
+        ir_id = str((dict(intent_payload.get("extensions") or {})).get("control_ir_id", "")).strip()
+
     seed = {
         "tick": int(tick),
-        "requester_subject_id": str((dict(control_intent or {})).get("requester_subject_id", "")),
-        "control_intent_id": str((dict(control_intent or {})).get("control_intent_id", "")),
-        "control_policy_id": str(control_policy_id),
+        "requester_subject_id": str(intent_payload.get("requester_subject_id", "")),
+        "control_intent_id": str(intent_payload.get("control_intent_id", "")),
+        "control_ir_id": str(ir_id),
+        "policy_ids_applied": list(policy_ids_applied or []),
+        "input_vector": dict(input_vector or {}),
         "resolved_vector": dict(resolved_vector or {}),
-        "reasons": dict(refusal or {}),
-        "downgrade_reasons": list(downgrade_reasons or []),
-        "emitted_ids": list(emitted_ids),
-    }
-    log_id = "control.log.{}".format(canonical_sha256(seed)[:24])
-    row = {
-        "schema_version": "0.1.0",
-        "log_id": log_id,
-        "tick": int(tick),
-        "requester_subject_id": str((dict(control_intent or {})).get("requester_subject_id", "")),
-        "control_intent_id": str((dict(control_intent or {})).get("control_intent_id", "")),
-        "control_policy_id": str(control_policy_id),
-        "resolved_vector": dict(resolved_vector or {}),
-        "reasons": {
-            "refusal": dict(refusal or {}),
-            "downgrade_reasons": sorted(
-                set(str(item).strip() for item in list(downgrade_reasons or []) if str(item).strip())
-            ),
+        "downgrades": list(downgrade_ids),
+        "refusals": list(refusal_codes),
+        "budget_allocated": int(max(0, _to_int(resolved_vector.get("budget_allocated", 0), 0))),
+        "emitted_ids": {
+            "intent_ids": list(intent_ids),
+            "envelope_ids": list(envelope_ids),
+            "commitment_ids": list(commitment_ids),
         },
-        "emitted_ids": list(emitted_ids),
-        "deterministic_fingerprint": "",
-        "extensions": dict(decision_extensions or {}),
+        "refusal_payload": dict(refusal or {}),
     }
+    decision_id = "control.decision.{}".format(canonical_sha256(seed)[:24])
+    row = {
+        "schema_version": "1.0.0",
+        "decision_id": decision_id,
+        "tick": int(tick),
+        "requester_subject_id": str(intent_payload.get("requester_subject_id", "")),
+        "policy_ids_applied": _sorted_unique_strings(policy_ids_applied),
+        "input_vector": dict(input_vector or {}),
+        "resolved_vector": dict(resolved_vector or {}),
+        "downgrades": list(downgrade_ids),
+        "refusals": list(refusal_codes),
+        "budget_allocated": int(max(0, _to_int(resolved_vector.get("budget_allocated", 0), 0))),
+        "emitted_ids": {
+            "intent_ids": list(intent_ids),
+            "commitment_ids": list(commitment_ids),
+            "envelope_ids": list(envelope_ids),
+        },
+        "deterministic_fingerprint": "",
+        "extensions": dict(decision_extensions or {}) | {
+            "downgrade_entries": list(downgrade_entries),
+            "refusal_payload": dict(refusal or {}),
+        },
+    }
+    control_intent_id = str(intent_payload.get("control_intent_id", "")).strip()
+    if control_intent_id:
+        row["control_intent_id"] = control_intent_id
+    if ir_id:
+        row["control_ir_id"] = ir_id
     row_seed = dict(row)
     row_seed["deterministic_fingerprint"] = ""
     row["deterministic_fingerprint"] = canonical_sha256(row_seed)
@@ -477,8 +621,13 @@ def _decision_log_row(
 def _write_decision_log(repo_root: str, log_row: Mapping[str, object]) -> str:
     repo = str(repo_root or "").strip()
     if not repo:
-        return str((dict(log_row or {})).get("log_id", ""))
-    rel = os.path.join("run_meta", "control_decisions", "{}.json".format(str((dict(log_row or {})).get("log_id", ""))))
+        return str((dict(log_row or {})).get("decision_id", ""))
+    tick = int(max(0, _to_int((dict(log_row or {})).get("tick", 0), 0)))
+    decision_id = str((dict(log_row or {})).get("decision_id", "")).strip()
+    rel = os.path.join("run_meta", "control_decisions", "{}.json".format(int(tick)))
+    abs_path = os.path.join(repo, rel)
+    if os.path.isfile(abs_path):
+        rel = os.path.join("run_meta", "control_decisions", "{}.{}.json".format(int(tick), decision_id))
     abs_path = os.path.join(repo, rel)
     parent = os.path.dirname(abs_path)
     if parent and not os.path.isdir(parent):
@@ -603,28 +752,148 @@ def build_control_resolution(
     requested_al = _al_requested(request_vector.get("abstraction_level_requested"))
     requested_fidelity = _fidelity_requested(request_vector.get("fidelity_requested"))
     requested_view = str(request_vector.get("view_requested", "")).strip() or DEFAULT_VIEW_POLICY_ID
-
-    resolved_al, al_reasons = _resolve_abstraction_level(
-        requested=requested_al,
-        allowed=_sorted_unique_strings(policy_row.get("allowed_abstraction_levels")),
-    )
-    resolved_fidelity, fidelity_reasons = _resolve_fidelity(
-        requested=requested_fidelity,
-        allowed=_sorted_unique_strings(policy_row.get("allowed_fidelity_ranges")),
-        policy_context=policy_context_payload,
-    )
-    resolved_view, view_reasons = _resolve_view(
-        requested=requested_view,
-        allowed=_sorted_unique_strings(policy_row.get("allowed_view_policies")),
-    )
-    resolved_vector = {
-        "abstraction_level_resolved": resolved_al,
-        "fidelity_resolved": resolved_fidelity,
-        "view_resolved": resolved_view,
+    input_vector = {
+        "abstraction_level_requested": requested_al,
+        "fidelity_requested": requested_fidelity,
+        "view_requested": requested_view,
     }
-    downgrade_reasons = sorted(set(al_reasons + fidelity_reasons + view_reasons))
+    epistemic_requested = str(request_vector.get("epistemic_scope_requested", "")).strip()
+    if epistemic_requested:
+        input_vector["epistemic_scope_requested"] = epistemic_requested
+    budget_requested = request_vector.get("budget_requested")
+    if budget_requested is not None:
+        input_vector["budget_requested"] = int(max(0, _to_int(budget_requested, 0)))
 
     allowed_action_patterns = _sorted_unique_strings(policy_row.get("allowed_actions"))
+
+    produces = dict(action_row.get("produces") or {})
+    process_id = str(produces.get("process_id", "")).strip() or str(params.get("process_id", "")).strip()
+    task_type_id = str(produces.get("task_type_id", "")).strip()
+    plan_intent_type = str(produces.get("plan_intent_type", "")).strip()
+    required_process_for_law = process_id if (process_id and not task_type_id) else ""
+
+    policy_extensions = dict(policy_row.get("extensions") or {})
+    negotiation_extensions = {
+        "required_entitlements": _sorted_unique_strings(action_row.get("required_entitlements")),
+    }
+    if required_process_for_law:
+        negotiation_extensions["required_process_id"] = str(required_process_for_law)
+    max_fidelity = str(policy_context_payload.get("max_control_fidelity", "")).strip() or str(
+        policy_extensions.get("max_control_fidelity", "")
+    ).strip()
+    if max_fidelity:
+        negotiation_extensions["max_fidelity"] = max_fidelity
+    if "budget_requested" in input_vector:
+        negotiation_extensions["budget_requested"] = int(max(0, _to_int(input_vector.get("budget_requested", 0), 0)))
+
+    submission_tick = int(max(0, _to_int(policy_context_payload.get("submission_tick", intent.get("created_tick", 0)), 0)))
+    rs5_budget_state = {
+        "tick": int(submission_tick),
+        "max_cost_units_per_tick": int(
+            max(
+                0,
+                _to_int(
+                    policy_context_payload.get(
+                        "max_control_cost_units",
+                        policy_context_payload.get("rs5_budget_units", 0),
+                    ),
+                    0,
+                ),
+            )
+        ),
+        "runtime_budget_state": dict(policy_context_payload.get("runtime_budget_state") or {}),
+        "fairness_state": dict(policy_context_payload.get("fairness_state") or {}),
+    }
+    connected_subject_ids = policy_context_payload.get("connected_subject_ids")
+    if isinstance(connected_subject_ids, list):
+        rs5_budget_state["connected_subject_ids"] = list(connected_subject_ids)
+
+    server_profile_id = str(policy_context_payload.get("server_profile_id", "")).strip()
+    negotiation_request = {
+        "schema_version": "1.0.0",
+        "requester_subject_id": str(intent.get("requester_subject_id", "")).strip() or "subject.unknown",
+        "control_intent_id": control_intent_id,
+        "request_vector": dict(input_vector),
+        "context": {
+            "law_profile_id": str(law.get("law_profile_id", "")).strip() or str(authority.get("law_profile_id", "")).strip() or "law.unknown",
+            "server_profile_id": server_profile_id or "server.profile.local",
+        },
+        "extensions": negotiation_extensions,
+    }
+    negotiation_result = negotiate_request(
+        negotiation_request=negotiation_request,
+        rs5_budget_state=rs5_budget_state,
+        control_policy=dict(policy_row),
+        view_policy={
+            "view_policy_id": requested_view,
+            "allowed_view_policies": _sorted_unique_strings(policy_row.get("allowed_view_policies")),
+        },
+        epistemic_policy={
+            "allowed_scope_ids": _sorted_unique_strings(policy_context_payload.get("allowed_scope_ids")),
+            "allowed_epistemic_scopes": _sorted_unique_strings(policy_context_payload.get("allowed_epistemic_scopes")),
+        },
+        server_profile={"server_profile_id": server_profile_id},
+        authority_context=dict(authority),
+        law_profile=dict(law),
+    )
+    negotiation_payload = dict(negotiation_result or {})
+    resolved_vector_full = dict(negotiation_payload.get("resolved_vector") or {})
+    resolved_vector_full["abstraction_level_resolved"] = _al_requested(
+        resolved_vector_full.get("abstraction_level_resolved", requested_al)
+    )
+    resolved_vector_full["fidelity_resolved"] = _fidelity_requested(
+        resolved_vector_full.get("fidelity_resolved", requested_fidelity)
+    )
+    resolved_vector_full["view_resolved"] = str(resolved_vector_full.get("view_resolved", requested_view)).strip() or DEFAULT_VIEW_POLICY_ID
+    if "budget_allocated" not in resolved_vector_full:
+        resolved_vector_full["budget_allocated"] = int(max(0, _to_int(input_vector.get("budget_requested", 0), 0)))
+    negotiation_payload["resolved_vector"] = resolved_vector_full
+
+    policy_ids_applied = _policy_ids_applied(negotiation_payload, control_policy_id=control_policy_id)
+    resolved_vector = {
+        "abstraction_level_resolved": str(resolved_vector_full.get("abstraction_level_resolved", DEFAULT_ABSTRACTION_LEVEL)),
+        "fidelity_resolved": str(resolved_vector_full.get("fidelity_resolved", DEFAULT_FIDELITY)),
+        "view_resolved": str(resolved_vector_full.get("view_resolved", DEFAULT_VIEW_POLICY_ID)),
+    }
+
+    def _finalize_refusal(
+        *,
+        refusal_payload: Mapping[str, object],
+        negotiation_for_log: Mapping[str, object],
+    ) -> dict:
+        log_row = _decision_log_row(
+            control_intent=intent,
+            policy_ids_applied=policy_ids_applied,
+            input_vector=input_vector,
+            negotiation_result=negotiation_for_log,
+            refusal=refusal_payload,
+            emitted_intents=[],
+            emitted_envelopes=[],
+            decision_extensions=decision_log_extensions,
+        )
+        log_ref = _write_decision_log(repo_root, log_row)
+        return {
+            "result": "refused",
+            "resolution": _build_refused_resolution(
+                control_intent_id=control_intent_id,
+                control_policy_id=control_policy_id,
+                resolved_vector=resolved_vector,
+                refusal_payload=refusal_payload,
+                downgrade_reasons=_negotiation_downgrade_reasons(negotiation_for_log),
+                log_ref=log_ref,
+            ),
+            "refusal": dict(refusal_payload),
+        }
+
+    refusal_codes = [str(item).strip() for item in list(negotiation_payload.get("refusal_codes") or []) if str(item).strip()]
+    if refusal_codes:
+        refusal_payload = _negotiation_refusal_payload(
+            refusal_codes=refusal_codes,
+            negotiation_result=negotiation_payload,
+            requested_action_id=action_id,
+        )
+        return _finalize_refusal(refusal_payload=refusal_payload, negotiation_for_log=negotiation_payload)
+
     if allowed_action_patterns and (not _path_allowed(action_id, allowed_action_patterns)):
         refusal_payload = _refusal(
             CONTROL_REFUSAL_FORBIDDEN_BY_LAW,
@@ -633,102 +902,13 @@ def build_control_resolution(
             {"requested_action_id": action_id, "control_policy_id": control_policy_id},
             "$.requested_action_id",
         )
-        log_row = _decision_log_row(
-            control_intent=intent,
-            control_policy_id=control_policy_id,
-            resolved_vector=resolved_vector,
-            refusal=refusal_payload,
-            downgrade_reasons=downgrade_reasons,
-            emitted_envelopes=[],
-            decision_extensions=decision_log_extensions,
+        return _finalize_refusal(
+            refusal_payload=refusal_payload,
+            negotiation_for_log=_negotiation_with_refusal_code(negotiation_payload, CONTROL_REFUSAL_FORBIDDEN_BY_LAW),
         )
-        log_ref = _write_decision_log(repo_root, log_row)
-        return {
-            "result": "refused",
-            "resolution": _build_refused_resolution(
-                control_intent_id=control_intent_id,
-                control_policy_id=control_policy_id,
-                resolved_vector=resolved_vector,
-                refusal_payload=refusal_payload,
-                downgrade_reasons=downgrade_reasons,
-                log_ref=log_ref,
-            ),
-            "refusal": refusal_payload,
-        }
-
-    authority_entitlements = set(_sorted_unique_strings(authority.get("entitlements")))
-    missing_entitlements = [
-        token for token in _sorted_unique_strings(action_row.get("required_entitlements")) if token not in authority_entitlements
-    ]
-    if missing_entitlements:
-        refusal_payload = _refusal(
-            CONTROL_REFUSAL_ENTITLEMENT_MISSING,
-            "action requires missing entitlements",
-            "Grant missing entitlements or choose an action allowed by current authority.",
-            {"missing_entitlements": ",".join(missing_entitlements), "requested_action_id": action_id},
-            "$.authority_context.entitlements",
-        )
-        log_row = _decision_log_row(
-            control_intent=intent,
-            control_policy_id=control_policy_id,
-            resolved_vector=resolved_vector,
-            refusal=refusal_payload,
-            downgrade_reasons=downgrade_reasons,
-            emitted_envelopes=[],
-            decision_extensions=decision_log_extensions,
-        )
-        log_ref = _write_decision_log(repo_root, log_row)
-        return {
-            "result": "refused",
-            "resolution": _build_refused_resolution(
-                control_intent_id=control_intent_id,
-                control_policy_id=control_policy_id,
-                resolved_vector=resolved_vector,
-                refusal_payload=refusal_payload,
-                downgrade_reasons=downgrade_reasons,
-                log_ref=log_ref,
-            ),
-            "refusal": refusal_payload,
-        }
-
-    if _is_ranked_server(policy_context_payload) and requested_al == "AL4":
-        refusal_payload = _refusal(
-            CONTROL_REFUSAL_META_FORBIDDEN,
-            "ranked server forbids AL4 meta control intents",
-            "Use AL0-AL3 actions on ranked servers.",
-            {"requested_action_id": action_id, "abstraction_level_requested": requested_al},
-            "$.request_vector.abstraction_level_requested",
-        )
-        log_row = _decision_log_row(
-            control_intent=intent,
-            control_policy_id=control_policy_id,
-            resolved_vector=resolved_vector,
-            refusal=refusal_payload,
-            downgrade_reasons=sorted(set(downgrade_reasons + [DOWNGRADE_RANK_FAIRNESS])),
-            emitted_envelopes=[],
-            decision_extensions=decision_log_extensions,
-        )
-        log_ref = _write_decision_log(repo_root, log_row)
-        return {
-            "result": "refused",
-            "resolution": _build_refused_resolution(
-                control_intent_id=control_intent_id,
-                control_policy_id=control_policy_id,
-                resolved_vector=resolved_vector,
-                refusal_payload=refusal_payload,
-                downgrade_reasons=sorted(set(downgrade_reasons + [DOWNGRADE_RANK_FAIRNESS])),
-                log_ref=log_ref,
-            ),
-            "refusal": refusal_payload,
-        }
-
-    produces = dict(action_row.get("produces") or {})
-    process_id = str(produces.get("process_id", "")).strip() or str(params.get("process_id", "")).strip()
-    task_type_id = str(produces.get("task_type_id", "")).strip()
-    plan_intent_type = str(produces.get("plan_intent_type", "")).strip()
 
     emitted_intents: List[dict] = []
-    if plan_intent_type and resolved_al in ("AL0", "AL1", "AL2"):
+    if plan_intent_type and str(resolved_vector.get("abstraction_level_resolved", "")) in ("AL0", "AL1", "AL2"):
         refusal_payload = _refusal(
             CONTROL_REFUSAL_PLANNING_ONLY,
             "planning actions are derived-only at current abstraction",
@@ -736,28 +916,10 @@ def build_control_resolution(
             {"requested_action_id": action_id, "plan_intent_type": plan_intent_type},
             "$.requested_action_id",
         )
-        log_row = _decision_log_row(
-            control_intent=intent,
-            control_policy_id=control_policy_id,
-            resolved_vector=resolved_vector,
-            refusal=refusal_payload,
-            downgrade_reasons=downgrade_reasons,
-            emitted_envelopes=[],
-            decision_extensions=decision_log_extensions,
+        return _finalize_refusal(
+            refusal_payload=refusal_payload,
+            negotiation_for_log=_negotiation_with_refusal_code(negotiation_payload, CONTROL_REFUSAL_PLANNING_ONLY),
         )
-        log_ref = _write_decision_log(repo_root, log_row)
-        return {
-            "result": "refused",
-            "resolution": _build_refused_resolution(
-                control_intent_id=control_intent_id,
-                control_policy_id=control_policy_id,
-                resolved_vector=resolved_vector,
-                refusal_payload=refusal_payload,
-                downgrade_reasons=downgrade_reasons,
-                log_ref=log_ref,
-            ),
-            "refusal": refusal_payload,
-        }
 
     if task_type_id:
         task_inputs = _resolve_process_inputs(params=params, process_id=process_id)
@@ -779,28 +941,10 @@ def build_control_resolution(
                 {"requested_action_id": action_id, "process_id": process_id},
                 "$.requested_action_id",
             )
-            log_row = _decision_log_row(
-                control_intent=intent,
-                control_policy_id=control_policy_id,
-                resolved_vector=resolved_vector,
-                refusal=refusal_payload,
-                downgrade_reasons=downgrade_reasons,
-                emitted_envelopes=[],
-                decision_extensions=decision_log_extensions,
+            return _finalize_refusal(
+                refusal_payload=refusal_payload,
+                negotiation_for_log=_negotiation_with_refusal_code(negotiation_payload, CONTROL_REFUSAL_FORBIDDEN_BY_LAW),
             )
-            log_ref = _write_decision_log(repo_root, log_row)
-            return {
-                "result": "refused",
-                "resolution": _build_refused_resolution(
-                    control_intent_id=control_intent_id,
-                    control_policy_id=control_policy_id,
-                    resolved_vector=resolved_vector,
-                    refusal_payload=refusal_payload,
-                    downgrade_reasons=downgrade_reasons,
-                    log_ref=log_ref,
-                ),
-                    "refusal": refusal_payload,
-                }
         emitted_intents.append(_intent_row(control_intent=intent, process_id=process_id, inputs=process_inputs))
 
     emitted_envelopes = sorted(
@@ -813,14 +957,16 @@ def build_control_resolution(
     )
     log_row = _decision_log_row(
         control_intent=intent,
-        control_policy_id=control_policy_id,
-        resolved_vector=resolved_vector,
+        policy_ids_applied=policy_ids_applied,
+        input_vector=input_vector,
+        negotiation_result=negotiation_payload,
         refusal=None,
-        downgrade_reasons=downgrade_reasons,
+        emitted_intents=emitted_intents,
         emitted_envelopes=emitted_envelopes,
         decision_extensions=decision_log_extensions,
     )
     log_ref = _write_decision_log(repo_root, log_row)
+    downgrade_reasons = _negotiation_downgrade_reasons(negotiation_payload)
 
     resolution = {
         "schema_version": "1.0.0",
@@ -845,6 +991,8 @@ def build_control_resolution(
             "control_policy_id": control_policy_id,
             "control_action_id": action_id,
             "strictness": str(policy_row.get("strictness", "C0")),
+            "policy_ids_applied": policy_ids_applied,
+            "negotiation_fingerprint": str(negotiation_payload.get("deterministic_fingerprint", "")).strip(),
         },
     }
     seed = dict(resolution)
