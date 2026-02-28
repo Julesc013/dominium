@@ -107,6 +107,8 @@ from analyzers import e78_tool_bypass_smell
 from analyzers import e79_tool_truth_leak_smell
 from analyzers import e80_task_nondeterminism_smell
 from analyzers import e81_task_bypass_smell
+from analyzers import e82_silent_batch_creation_smell
+from analyzers import e83_port_truth_leak_smell
 
 
 ANALYZERS = (
@@ -217,6 +219,8 @@ ANALYZERS = (
     e79_tool_truth_leak_smell,
     e80_task_nondeterminism_smell,
     e81_task_bypass_smell,
+    e82_silent_batch_creation_smell,
+    e83_port_truth_leak_smell,
 )
 
 
