@@ -127,6 +127,13 @@ Tool payload wrapper:
 - `refusal.civ.claim_forbidden`
 - `refusal.civ.relation_invalid`
 - `refusal.civ.ownership_violation`
+- `refusal.ctrl.forbidden_by_law`
+- `refusal.ctrl.entitlement_missing`
+- `refusal.ctrl.view_forbidden`
+- `refusal.ctrl.fidelity_denied`
+- `refusal.ctrl.planning_only`
+- `refusal.ctrl.meta_forbidden`
+- `refusal.ctrl.replay_mutation_forbidden`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
 - `refusal.net.handshake_pack_lock_mismatch`: reconnect using identical bundle + lockfile; regenerate client dist if needed.
@@ -171,6 +178,14 @@ Tool payload wrapper:
 - `refusal.civ.claim_forbidden`: faction is not eligible/owner for requested claim mutation; use owning faction authority.
 - `refusal.civ.relation_invalid`: relation payload must use registered diplomatic state and valid active faction IDs.
 - `refusal.civ.ownership_violation`: submit CIV mutation using authority context matching faction/subject ownership or admin override.
+
+## Control Plane Downgrade Codes (CTRL-0)
+- `refusal.ctrl.degraded` (control-plane downgrade marker; not a hard refusal)
+- `downgrade.budget_insufficient`
+- `downgrade.rank_fairness`
+- `downgrade.epistemic_limits`
+- `downgrade.policy_disallows`
+- `downgrade.target_not_available`
 
 ## Invariants
 - Refusals do not mutate authoritative state.
