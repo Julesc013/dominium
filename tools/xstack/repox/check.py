@@ -284,6 +284,10 @@ BOUNDARY_ALIAS_RULES = {
         "repox.forbidden_identifier",
         "repox.mode_flag_heuristic",
     },
+    "INV-NO-TRUTH-ACCESS-IN-RENDER": {
+        "INV-RENDERER-TRUTH-ISOLATION",
+        "INV-RENDERER-CONSUMES-RENDERMODEL-ONLY",
+    },
 }
 
 BOUNDARY_BLOCKER_RULE_IDS = (
@@ -305,6 +309,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FIDELITY-USES-ENGINE",
     "INV-NO-DIRECT-STRUCTURE-INSTALL",
     "INV-GHOST-IS-DERIVED",
+    "INV-VIEW-CHANGES-THROUGH-CONTROL",
+    "INV-NO-DIRECT-CAMERA-TOGGLE",
+    "INV-NO-TRUTH-ACCESS-IN-RENDER",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -3857,6 +3864,81 @@ def _append_negative_invariant_findings(
                     )
                 )
 
+        required_view_control_tokens = (
+            "elif process_id == \"process.view_bind\":",
+            "process_id = \"process.view_bind\"",
+            "apply_view_binding(",
+        )
+        for token in required_view_control_tokens:
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="camera/view changes must route through control-plane process.view_bind handler",
+                    rule_id="INV-VIEW-CHANGES-THROUGH-CONTROL",
+                )
+            )
+
+        legacy_camera_tokens = (
+            "\"process.camera_bind_target\"",
+            "\"process.camera_unbind_target\"",
+            "\"process.camera_set_view_mode\"",
+        )
+        has_view_bind_adapter = (
+            "if process_id in (" in process_runtime_text
+            and "process_id = \"process.view_bind\"" in process_runtime_text
+            and all(token in process_runtime_text for token in legacy_camera_tokens)
+        )
+        if not has_view_bind_adapter:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet="process_id = \"process.view_bind\"",
+                    message="legacy camera toggles must be adapter-routed through process.view_bind",
+                    rule_id="INV-NO-DIRECT-CAMERA-TOGGLE",
+                )
+            )
+
+        control_action_rel = "data/registries/control_action_registry.json"
+        control_action_payload, control_action_err = _load_json_object(repo_root, control_action_rel)
+        if control_action_err:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=control_action_rel,
+                    line_number=1,
+                    snippet="",
+                    message="control action registry missing; cannot verify view policy action routing",
+                    rule_id="INV-VIEW-CHANGES-THROUGH-CONTROL",
+                )
+            )
+        else:
+            action_rows = (((control_action_payload.get("record") or {}).get("actions")) or [])
+            if isinstance(action_rows, list):
+                view_change_policy_row = {}
+                for row in sorted((item for item in action_rows if isinstance(item, dict)), key=lambda item: str(item.get("action_id", ""))):
+                    if str(row.get("action_id", "")).strip() == "action.view.change_policy":
+                        view_change_policy_row = dict(row)
+                        break
+                produced_process_id = str((dict(view_change_policy_row.get("produces") or {})).get("process_id", "")).strip()
+                if produced_process_id != "process.view_bind":
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=control_action_rel,
+                            line_number=1,
+                            snippet="action.view.change_policy -> {}".format(produced_process_id or "<missing>"),
+                            message="action.view.change_policy must dispatch to process.view_bind",
+                            rule_id="INV-VIEW-CHANGES-THROUGH-CONTROL",
+                        )
+                    )
+
         if "refusal.view.watermark_required" not in process_runtime_text:
             findings.append(
                 _finding(
@@ -4917,6 +4999,35 @@ def _append_representation_invariant_findings(
                     snippet="render_model",
                     message="renderer path must consume RenderModel payloads",
                     rule_id="INV-RENDERER-CONSUMES-RENDERMODEL-ONLY",
+                )
+            )
+
+    no_truth_access_pattern = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)
+    for rel_path in RENDERER_RENDERMODEL_ONLY_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="renderer contract file is missing for truth-access boundary verification",
+                    rule_id="INV-NO-TRUTH-ACCESS-IN-RENDER",
+                )
+            )
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            if not no_truth_access_pattern.search(str(line)):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=str(line).strip()[:140],
+                    message="renderer path must not access truth-model symbols; consume Perceived/Render models only",
+                    rule_id="INV-NO-TRUTH-ACCESS-IN-RENDER",
                 )
             )
 
