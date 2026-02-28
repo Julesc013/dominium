@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Execute Plan Intent Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-4 execute-plan request payload.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "execute_plan_intent_id",
+    "plan_id",
+    "abstraction_level_requested",
+    "created_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "execute_plan_intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "abstraction_level_requested": {
+      "type": "string",
+      "enum": [
+        "AL0",
+        "AL1",
+        "AL2",
+        "AL3",
+        "AL4"
+      ]
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "execute_plan_intent_id": "execute.plan.intent.85501f88f6f57db24d16b619",
+      "plan_id": "plan.5d8cff251b652130fe23d37a",
+      "abstraction_level_requested": "AL3",
+      "created_tick": 44,
+      "deterministic_fingerprint": "e245e6de4f6f60a2050584a83d3136ff3152a08ba8dd26dd97f20d4bd216469e",
+      "extensions": {}
+    }
+  ]
+}
