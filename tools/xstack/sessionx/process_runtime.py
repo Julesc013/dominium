@@ -7400,6 +7400,107 @@ def _augment_inspection_target_payload_for_commitment_reenactment(
     return payload
 
 
+def _inspection_capability_entity_id(target_payload: dict) -> str:
+    payload = dict(target_payload or {})
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    if collection == "pose_slots":
+        return str(row.get("parent_assembly_id", "")).strip()
+    if collection == "mount_points":
+        return str(row.get("parent_assembly_id", "")).strip()
+    if collection == "machine_ports":
+        return str(row.get("machine_id", "")).strip()
+    if collection == "machine_assemblies":
+        return str(row.get("machine_id", "")).strip()
+    if collection == "installed_structure_instances":
+        return str(row.get("instance_id", "")).strip()
+    if collection == "plan_artifacts":
+        ext = dict(row.get("extensions") or {})
+        return str(ext.get("target_entity_id", "")).strip() or str(ext.get("site_ref", "")).strip()
+    return str(row.get("entity_id", "")).strip()
+
+
+def _subject_pose_parent_entity_id(state: dict, subject_id: str) -> str:
+    subject_token = str(subject_id or "").strip()
+    if not subject_token:
+        return ""
+    agent_rows = [
+        dict(item) for item in list((dict(state or {})).get("agent_states") or []) if isinstance(item, dict)
+    ]
+    pose_slot_id = ""
+    for row in sorted(agent_rows, key=lambda item: str(item.get("agent_id", ""))):
+        agent_id = str(row.get("agent_id", "")).strip()
+        if agent_id != subject_token:
+            continue
+        pose_slot_id = str(row.get("pose_slot_id", "")).strip()
+        if pose_slot_id:
+            break
+    if not pose_slot_id:
+        return ""
+    for row in sorted(
+        (item for item in list((dict(state or {})).get("pose_slots") or []) if isinstance(item, dict)),
+        key=lambda item: str(item.get("pose_slot_id", "")),
+    ):
+        if str(row.get("pose_slot_id", "")).strip() != pose_slot_id:
+            continue
+        return str(row.get("parent_assembly_id", "")).strip()
+    return ""
+
+
+def _augment_inspection_target_payload_for_capabilities(
+    *,
+    state: dict,
+    policy_context: dict | None,
+    authority_context: dict,
+    target_payload: dict,
+) -> dict:
+    payload = dict(target_payload or {})
+    if not bool(payload.get("exists", False)):
+        return payload
+    entity_id = _inspection_capability_entity_id(payload)
+    if not entity_id:
+        return payload
+    bindings = _runtime_capability_bindings(state, policy_context)
+    all_capability_ids = _sorted_tokens(
+        [
+            str(row.get("capability_id", "")).strip()
+            for row in bindings
+            if str(row.get("entity_id", "")).strip() == entity_id and str(row.get("capability_id", "")).strip()
+        ]
+    )
+    if not all_capability_ids:
+        return payload
+    visibility_level = str((dict((dict(authority_context or {})).get("epistemic_scope") or {})).get("visibility_level", "")).strip() or "diegetic"
+    entitlements = set(_sorted_tokens(list((dict(authority_context or {})).get("entitlements") or []))
+    )
+    allow_hidden_state = visibility_level != "diegetic" and "entitlement.inspect" in entitlements
+    visible_capability_ids = list(all_capability_ids)
+    redaction = "none"
+    if visibility_level == "diegetic" and not allow_hidden_state:
+        visible_set = set()
+        target_collection = str(payload.get("collection", "")).strip()
+        if target_collection in {"pose_slots", "mount_points"} and "capability.has_pose_slots" in all_capability_ids:
+            visible_set.add("capability.has_pose_slots")
+        if target_collection in {"machine_ports", "machine_assemblies"} and "capability.has_ports" in all_capability_ids:
+            visible_set.add("capability.has_ports")
+        requester_subject_id = str(authority_context.get("subject_id", "")).strip()
+        seated_parent = _subject_pose_parent_entity_id(state, requester_subject_id)
+        if seated_parent == entity_id and "capability.can_be_driven" in all_capability_ids:
+            visible_set.add("capability.can_be_driven")
+        visible_capability_ids = sorted(visible_set)
+        redaction = "diegetic_filtered"
+    extensions = dict(payload.get("extensions") or {})
+    extensions["capabilities_summary"] = {
+        "entity_id": entity_id,
+        "all_capability_ids": list(all_capability_ids),
+        "visible_capability_ids": list(visible_capability_ids),
+        "binding_count": len(all_capability_ids),
+        "epistemic_redaction": redaction,
+    }
+    payload["extensions"] = extensions
+    return payload
+
+
 def _inspection_target_payload(state: dict, target_id: str) -> dict:
     token = str(target_id).strip()
     if not token:
@@ -7807,6 +7908,12 @@ def _execute_inspection_snapshot_process(
         state=state,
         policy_context=policy_context,
         law_profile=law_profile,
+        authority_context=authority_context,
+        target_payload=target_payload,
+    )
+    target_payload = _augment_inspection_target_payload_for_capabilities(
+        state=state,
+        policy_context=policy_context,
         authority_context=authority_context,
         target_payload=target_payload,
     )
