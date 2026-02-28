@@ -1614,6 +1614,115 @@ def _control_registry_rows(
     return control_action_rows, control_policy_rows, controller_type_rows, errors
 
 
+def _capability_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict]]:
+    _record, rows_raw, load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/capability_registry.json",
+        expected_schema_id="dominium.registry.capability_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="capabilities",
+    )
+    if load_errors:
+        return [], load_errors
+
+    errors: List[dict] = []
+    capability_rows: List[dict] = []
+    seen_ids = set()
+    allowed_kinds = {"assembly", "structure", "agent", "graph", "volume", "custom"}
+    for entry in sorted(rows_raw, key=lambda row: str((row or {}).get("capability_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_capability_entry",
+                    "message": "capability entry must be object",
+                    "path": "$.capabilities",
+                }
+            )
+            continue
+        capability_id = str(entry.get("capability_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        applicable_entity_kinds = entry.get("applicable_entity_kinds")
+        parameters_schema_id = entry.get("parameters_schema_id")
+        extensions = entry.get("extensions")
+        if (
+            (not capability_id)
+            or (not description)
+            or (not isinstance(applicable_entity_kinds, list))
+            or (not isinstance(extensions, dict))
+            or (parameters_schema_id is not None and not isinstance(parameters_schema_id, str))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_capability_entry",
+                    "message": "capability entry missing required fields",
+                    "path": "$.capabilities",
+                }
+            )
+            continue
+        if capability_id in seen_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_capability_id",
+                    "message": "duplicate capability_id '{}'".format(capability_id),
+                    "path": "$.capabilities.capability_id",
+                }
+            )
+            continue
+        kind_tokens = _sorted_unique_strings(applicable_entity_kinds)
+        invalid_kinds = [token for token in kind_tokens if token not in allowed_kinds]
+        if invalid_kinds:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_capability_entity_kind",
+                    "message": "capability '{}' includes invalid applicable_entity_kinds: {}".format(
+                        capability_id,
+                        ",".join(sorted(invalid_kinds)),
+                    ),
+                    "path": "$.capabilities.applicable_entity_kinds",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "capability_id": capability_id,
+            "description": description,
+            "applicable_entity_kinds": list(kind_tokens),
+            "parameters_schema_id": (
+                str(parameters_schema_id).strip() if isinstance(parameters_schema_id, str) and str(parameters_schema_id).strip() else None
+            ),
+            "deterministic_fingerprint": canonical_sha256(
+                {
+                    "capability_id": capability_id,
+                    "description": description,
+                    "applicable_entity_kinds": list(kind_tokens),
+                    "parameters_schema_id": (
+                        str(parameters_schema_id).strip()
+                        if isinstance(parameters_schema_id, str) and str(parameters_schema_id).strip()
+                        else None
+                    ),
+                    "extensions": dict(extensions),
+                }
+            ),
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="capability",
+            payload=schema_payload,
+            path="data/registries/capability_registry.json#{}".format(capability_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_ids.add(capability_id)
+        capability_rows.append(schema_payload)
+    capability_rows = sorted(capability_rows, key=lambda row: str(row.get("capability_id", "")))
+    return capability_rows, errors
+
+
 def _interaction_registry_rows(
     repo_root: str,
 ) -> Tuple[List[dict], List[dict]]:
@@ -10034,6 +10143,10 @@ def compile_bundle(
         repo_root=repo_root,
         schema_root=schema_root,
     )
+    capability_rows, capability_registry_errors = _capability_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
     interaction_action_rows, interaction_registry_errors = _interaction_registry_rows(
         repo_root=repo_root,
     )
@@ -10420,6 +10533,7 @@ def compile_bundle(
         + policy_errors
         + worldgen_constraints_errors
         + control_registry_errors
+        + capability_registry_errors
         + interaction_registry_errors
         + action_surface_registry_errors
         + pose_registry_errors
@@ -10830,6 +10944,13 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "actions": control_action_rows,
+        }
+    )
+    capability_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "capabilities": capability_rows,
         }
     )
     control_policy_payload = _finalize_registry_payload(
@@ -11348,6 +11469,7 @@ def compile_bundle(
         "experience_registry": ("experience_registry", experience_payload),
         "lens_registry": ("lens_registry", lens_payload),
         "control_action_registry": ("control_action_registry", control_action_payload),
+        "capability_registry": ("capability_registry", capability_payload),
         "control_policy_registry": ("control_policy_registry", control_policy_payload),
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "surface_type_registry": ("surface_type_registry", surface_type_payload),
@@ -11479,6 +11601,7 @@ def compile_bundle(
         "experience_registry",
         "lens_registry",
         "control_action_registry",
+        "capability_registry",
         "control_policy_registry",
         "interaction_action_registry",
         "surface_type_registry",
@@ -11621,6 +11744,7 @@ def compile_bundle(
             "experience_registry_hash": registry_hashes["experience_registry_hash"],
             "lens_registry_hash": registry_hashes["lens_registry_hash"],
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
+            "capability_registry_hash": registry_hashes["capability_registry_hash"],
             "control_policy_registry_hash": registry_hashes["control_policy_registry_hash"],
             "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
             "surface_type_registry_hash": registry_hashes["surface_type_registry_hash"],
