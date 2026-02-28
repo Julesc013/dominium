@@ -23,6 +23,7 @@ from src.net.anti_cheat import (
 from src.reality.ledger import finalize_noop_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
+from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
 from tools.xstack.sessionx.common import norm, refusal, write_canonical_json
 from tools.xstack.sessionx.observation import build_truth_model, observe_truth
 from tools.xstack.sessionx.process_runtime import execute_intent
@@ -617,18 +618,21 @@ def _run_hybrid_demography_tick(state: dict, runtime: dict, tick: int, shard_id:
     demography_policy_id = str(session_ext.get("demography_policy_id", "")).strip()
     if demography_policy_id:
         inputs["demography_policy_id"] = demography_policy_id
-    return execute_intent(
+    intent_payload = {
+        "intent_id": "intent.server.demography.shard.{}.tick.{}".format(str(shard_id), int(tick)),
+        "process_id": process_id,
+        "inputs": inputs,
+    }
+    executed = execute_intent(
         state=state,
-        intent={
-            "intent_id": "intent.server.demography.shard.{}.tick.{}".format(str(shard_id), int(tick)),
-            "process_id": process_id,
-            "inputs": inputs,
-        },
+        intent=intent_payload,
         law_profile=law_profile,
         authority_context=authority_context,
         navigation_indices=dict(runtime.get("registry_payloads") or {}),
         policy_context=_runtime_policy_context(runtime, active_shard_id=str(shard_id)),
     )
+    debug_assert_after_execute(state=state, intent=intent_payload, result=dict(executed or {}))
+    return executed
 
 
 def _runtime_paths(runtime: dict) -> Tuple[str, str]:
@@ -2198,13 +2202,14 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
     for proposal in resolved:
         peer_id = str(proposal.get("source_peer_id", "")).strip()
         client = dict(clients.get(peer_id) or {})
+        intent_payload = {
+            "intent_id": str(proposal.get("intent_id", "")),
+            "process_id": str(proposal.get("process_id", "")),
+            "inputs": dict(proposal.get("inputs") or {}),
+        }
         executed = execute_intent(
             state=state,
-            intent={
-                "intent_id": str(proposal.get("intent_id", "")),
-                "process_id": str(proposal.get("process_id", "")),
-                "inputs": dict(proposal.get("inputs") or {}),
-            },
+            intent=intent_payload,
             law_profile=dict(client.get("law_profile") or {}),
             authority_context=dict(client.get("authority_context") or {}),
             navigation_indices=dict(runtime.get("registry_payloads") or {}),
@@ -2213,6 +2218,7 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
                 active_shard_id=str(proposal.get("target_shard_id", "")),
             ),
         )
+        debug_assert_after_execute(state=state, intent=intent_payload, result=dict(executed or {}))
         if str(executed.get("result", "")) != "complete":
             refusal_payload = dict(executed.get("refusal") or {})
             refusal_reason_code = str(refusal_payload.get("reason_code", "refusal.net.authority_violation"))

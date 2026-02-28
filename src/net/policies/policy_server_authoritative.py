@@ -26,6 +26,7 @@ from src.net.anti_cheat import (
 from src.reality.ledger import finalize_noop_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
+from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
 from tools.xstack.sessionx.common import norm, refusal, write_canonical_json
 from tools.xstack.sessionx.observation import build_truth_model, observe_truth
 from tools.xstack.sessionx.process_runtime import execute_intent
@@ -506,18 +507,21 @@ def _run_server_demography_tick(state: dict, runtime: dict, server_tick: int) ->
     demography_policy_id = str(session_ext.get("demography_policy_id", "")).strip()
     if demography_policy_id:
         inputs["demography_policy_id"] = demography_policy_id
-    return execute_intent(
+    intent_payload = {
+        "intent_id": "intent.server.demography.tick.{}".format(int(server_tick)),
+        "process_id": process_id,
+        "inputs": inputs,
+    }
+    executed = execute_intent(
         state=state,
-        intent={
-            "intent_id": "intent.server.demography.tick.{}".format(int(server_tick)),
-            "process_id": process_id,
-            "inputs": inputs,
-        },
+        intent=intent_payload,
         law_profile=law_profile,
         authority_context=authority_context,
         navigation_indices=dict(runtime.get("registry_payloads") or {}),
         policy_context=_runtime_policy_context(runtime),
     )
+    debug_assert_after_execute(state=state, intent=intent_payload, result=dict(executed or {}))
+    return executed
 
 
 def _runtime_paths(runtime: dict) -> Tuple[str, str]:
@@ -1499,18 +1503,20 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
                 )
             continue
 
+        intent_payload = {
+            "intent_id": str(envelope.get("intent_id", "")),
+            "process_id": process_id,
+            "inputs": dict(inputs),
+        }
         executed = execute_intent(
             state=state,
-            intent={
-                "intent_id": str(envelope.get("intent_id", "")),
-                "process_id": process_id,
-                "inputs": dict(inputs),
-            },
+            intent=intent_payload,
             law_profile=dict(client.get("law_profile") or {}),
             authority_context=dict(client.get("authority_context") or {}),
             navigation_indices=dict(runtime.get("registry_payloads") or {}),
             policy_context=_runtime_policy_context(runtime),
         )
+        debug_assert_after_execute(state=state, intent=intent_payload, result=dict(executed or {}))
         if str(executed.get("result", "")) != "complete":
             refusal_reason_code = str(((executed.get("refusal") or {}).get("reason_code", "refusal.net.authority_violation")))
             unauthorized_time_control = _is_unauthorized_time_control_refusal(

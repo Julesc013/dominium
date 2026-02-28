@@ -12,6 +12,7 @@ from src.net.policies.policy_lockstep import POLICY_ID_LOCKSTEP
 from src.net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE
 from src.net.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
 from src.interaction.task import resolve_task_type_for_completion_process
 
 from .affordance_generator import build_affordance_list
@@ -646,6 +647,15 @@ def execute_affordance(
         authority_context=dict(authority_context or {}),
         navigation_indices=navigation_indices,
         policy_context=policy_context,
+    )
+    debug_assert_after_execute(
+        state=state,
+        intent={
+            "intent_id": str(intent.get("intent_id", "")),
+            "process_id": str(intent.get("process_id", "")),
+            "inputs": dict(intent.get("inputs") or {}),
+        },
+        result=dict(execution or {}),
     )
     if str(execution.get("result", "")) != "complete":
         refusal_payload = dict((dict(execution or {})).get("refusal") or {})

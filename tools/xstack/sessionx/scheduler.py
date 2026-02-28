@@ -7,6 +7,7 @@ from typing import Dict, List, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
+from .boundary_debug import debug_assert_after_execute
 from .common import refusal
 from .process_runtime import execute_intent
 from .srz import (
@@ -547,13 +548,19 @@ def replay_intent_script_srz(
         tick_ledger_hash = ""
 
         for proposal in accepted:
+            intent_payload = dict(proposal.get("intent") or {})
             executed = execute_intent(
                 state=state,
-                intent=dict(proposal.get("intent") or {}),
+                intent=intent_payload,
                 law_profile=law_profile,
                 authority_context=authority_context,
                 navigation_indices=navigation_indices,
                 policy_context=policy_context,
+            )
+            debug_assert_after_execute(
+                state=state,
+                intent=intent_payload,
+                result=dict(executed or {}),
             )
             if executed.get("result") != "complete":
                 refused = dict(executed)
