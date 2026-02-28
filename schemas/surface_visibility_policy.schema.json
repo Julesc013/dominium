@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Surface Visibility Policy Schema",
+  "version": "1.0.0",
+  "description": "Visibility gating policy for ActionSurface exposure.",
+  "x-doc-ref": [
+    "docs/interaction/ACTION_SURFACE_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "requires_entitlement",
+    "requires_lens_channel",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requires_entitlement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "requires_lens_channel": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "visibility.default",
+      "requires_entitlement": null,
+      "requires_lens_channel": null,
+      "extensions": {}
+    }
+  ]
+}

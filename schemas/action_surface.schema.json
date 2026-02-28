@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Action Surface Schema",
+  "version": "1.0.0",
+  "description": "Deterministic semantic interaction surface attached to perceived assembly/AG metadata.",
+  "x-doc-ref": [
+    "docs/interaction/ACTION_SURFACE_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "surface_id",
+    "parent_semantic_id",
+    "surface_type_id",
+    "local_transform",
+    "compatible_tool_tags",
+    "allowed_process_ids",
+    "parameter_schema_id",
+    "constraints",
+    "visibility_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "surface_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_semantic_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surface_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "local_transform": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "compatible_tool_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_process_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parameter_schema_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "constraints": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "visibility_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "surface_id": "surface.1f0f6f2a5e0b3d4a8b9965aa",
+      "parent_semantic_id": "assembly.structure_instance.alpha",
+      "surface_type_id": "surface.fastener",
+      "local_transform": {
+        "position_mm": {
+          "x": 120,
+          "y": 0,
+          "z": 50
+        },
+        "orientation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        },
+        "scale_permille": 1000
+      },
+      "compatible_tool_tags": [
+        "tool_tag.fastening"
+      ],
+      "allowed_process_ids": [
+        "process.construct_step_complete"
+      ],
+      "parameter_schema_id": null,
+      "constraints": null,
+      "visibility_policy_id": "visibility.default",
+      "deterministic_fingerprint": "5a0e6dcfbe731ef38db0ebf0b2270c28fd83d8b7cb4262cb38dd15f1e6cb1ec0",
+      "extensions": {}
+    }
+  ]
+}

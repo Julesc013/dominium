@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Surface Type Schema",
+  "version": "1.0.0",
+  "description": "Semantic ActionSurface type definition.",
+  "x-doc-ref": [
+    "docs/interaction/ACTION_SURFACE_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "surface_type_id",
+    "description",
+    "default_icon_tag",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "surface_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "default_icon_tag": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "surface_type_id": "surface.handle",
+      "description": "Handle interaction surface.",
+      "default_icon_tag": "glyph.surface.handle",
+      "extensions": {}
+    }
+  ]
+}

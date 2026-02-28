@@ -1,0 +1,20 @@
+SCHEMA: interaction/surface_visibility_policy.schema
+schema_id: dominium.schema.interaction.surface_visibility_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define law/lens/entitlement gating for ActionSurface visibility.
+
+REQUIRED SHAPE:
+record surface_visibility_policy
+  required:
+    - schema_version: semver
+    - policy_id: id
+    - requires_entitlement: optional_id
+    - requires_lens_channel: optional_id
+    - extensions: map
+
+INVARIANTS:
+- Visibility policy is deterministic and authority/lens constrained.
+- Hidden surfaces must not leak through interaction affordances.
