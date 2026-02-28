@@ -294,6 +294,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
     "INV-CONTROL-PLANE-ONLY-DISPATCH",
     "INV-NO-PRODUCTION-LEGACY-IMPORT",
+    "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR",
+    "INV-NO-DYNAMIC-EVAL",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -9763,6 +9765,106 @@ def _append_platform_renderer_invariant_findings(
         )
 
 
+def _append_control_ir_enforcement_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_ir_files = (
+        "src/control/ir/control_ir_verifier.py",
+        "src/control/ir/control_ir_compiler.py",
+        "src/control/ir/control_ir_programs.py",
+    )
+    for rel_path in required_ir_files:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="required control IR module is missing",
+                rule_id="INV-NO-MACRO-BEHAVIOR-WITHOUT-IR",
+            )
+        )
+
+    process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_runtime_abs = os.path.join(repo_root, process_runtime_rel.replace("/", os.sep))
+    try:
+        process_runtime_text = open(process_runtime_abs, "r", encoding="utf-8").read()
+    except OSError:
+        process_runtime_text = ""
+    if not process_runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="",
+                message="process runtime file missing; cannot enforce Control IR macro integration",
+                rule_id="INV-NO-MACRO-BEHAVIOR-WITHOUT-IR",
+            )
+        )
+    else:
+        for token in (
+            "build_blueprint_execution_ir(",
+            "build_autopilot_stub_ir(",
+            "build_ai_controller_stub_ir(",
+            "compile_ir_program(",
+        ):
+            if token in process_runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="multi-step automation surfaces must route through Control IR builders/compile path",
+                    rule_id="INV-NO-MACRO-BEHAVIOR-WITHOUT-IR",
+                )
+            )
+
+    forbidden_tokens = ("eval(", "exec(", "__import__(", "ast.literal_eval(")
+    scan_roots = (
+        "src/control",
+        "tools/xstack/sessionx",
+        "src/materials/construction",
+    )
+    for root in scan_roots:
+        abs_root = os.path.join(repo_root, root.replace("/", os.sep))
+        if not os.path.isdir(abs_root):
+            continue
+        for walk_root, dirs, files in os.walk(abs_root):
+            dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
+            for name in sorted(files):
+                if not name.endswith(".py"):
+                    continue
+                rel_path = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                for line_no, line in _iter_lines(repo_root, rel_path):
+                    snippet = str(line).strip()
+                    if not snippet:
+                        continue
+                    for token in forbidden_tokens:
+                        if token not in snippet:
+                            continue
+                        findings.append(
+                            _finding(
+                                severity=severity,
+                                file_path=rel_path,
+                                line_number=line_no,
+                                snippet=snippet[:140],
+                                message="dynamic evaluation is forbidden in runtime and control paths",
+                                rule_id="INV-NO-DYNAMIC-EVAL",
+                            )
+                        )
+                        break
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -9894,6 +9996,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_platform_renderer_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_control_ir_enforcement_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
