@@ -642,6 +642,9 @@ MAINTENANCE_DEFAULT_POLICY_ID = "maint.policy.default_realistic"
 INTERIOR_DEFAULT_FLOW_POLICY_ID = "flow.policy.default"
 INTERIOR_DEFAULT_FIXED_POINT_SCALE = 1000
 TASK_DEFAULT_MAX_COST_UNITS_PER_TICK = 128
+VIEW_DEFAULT_POLICY_ID = "view.first_person_diegetic"
+EPISTEMIC_DEFAULT_POLICY_ID = "epistemic.diegetic_default"
+_FIDELITY_LEVEL_RANK = {"macro": 0, "meso": 1, "micro": 2}
 ZERO_HASH = "0" * 64
 
 
@@ -3742,9 +3745,13 @@ def _reenactment_micro_detail_allowed(
     *,
     authority_context: dict,
     law_profile: dict,
+    epistemic_policy: Mapping[str, object] | None = None,
 ) -> bool:
     visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
     if visibility_level == "diegetic":
+        return False
+    max_level = _normalize_fidelity_level((dict(epistemic_policy or {})).get("max_reenactment_level"), "micro")
+    if max_level != "micro":
         return False
     if not bool((dict(law_profile or {})).get("epistemic_limits", {}).get("allow_hidden_state_access", False)):
         return False
@@ -6290,6 +6297,215 @@ def _registry_row_by_id(registry_payload: dict, list_key: str, id_key: str, toke
     return {}
 
 
+def _normalize_fidelity_level(value: object, default_value: str = "macro") -> str:
+    token = str(value or "").strip().lower()
+    if token in _FIDELITY_LEVEL_RANK:
+        return token
+    fallback = str(default_value or "").strip().lower()
+    if fallback in _FIDELITY_LEVEL_RANK:
+        return fallback
+    return "macro"
+
+
+def _clamp_fidelity_level(requested: str, max_allowed: str) -> str:
+    req = _normalize_fidelity_level(requested, "macro")
+    limit = _normalize_fidelity_level(max_allowed, "macro")
+    if int(_FIDELITY_LEVEL_RANK[req]) <= int(_FIDELITY_LEVEL_RANK[limit]):
+        return req
+    return limit
+
+
+def _epistemic_policy_rows(policy_context: dict | None) -> Dict[str, dict]:
+    registry_payload = _control_ir_registry_payload(
+        policy_context=policy_context,
+        key="epistemic_policy_registry",
+        registry_rel_path="data/registries/epistemic_policy_registry.json",
+        default_payload={"policies": []},
+    )
+    rows = registry_payload.get("policies")
+    if not isinstance(rows, list):
+        rows = dict(registry_payload.get("record") or {}).get("policies")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("epistemic_policy_id", ""))):
+        epistemic_policy_id = str(row.get("epistemic_policy_id", "")).strip()
+        if epistemic_policy_id:
+            out[epistemic_policy_id] = dict(row)
+    return out
+
+
+def _view_policy_rows(policy_context: dict | None) -> Dict[str, dict]:
+    registry_payload = _control_ir_registry_payload(
+        policy_context=policy_context,
+        key="view_policy_registry",
+        registry_rel_path="data/registries/view_policy_registry.json",
+        default_payload={"view_policies": []},
+    )
+    return view_policy_rows_by_id(registry_payload if isinstance(registry_payload, dict) else {})
+
+
+def _epistemic_row_for_id(epistemic_rows: Mapping[str, Mapping[str, object]], policy_id: str) -> Tuple[dict, str]:
+    token = str(policy_id or "").strip()
+    if not token:
+        return {}, ""
+    direct = dict(epistemic_rows.get(token) or {})
+    if direct:
+        return direct, token
+    for row_id in sorted(epistemic_rows.keys()):
+        row = dict(epistemic_rows.get(row_id) or {})
+        ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+        aliases = _sorted_tokens(list(ext.get("legacy_aliases") or []))
+        compat_from = str(ext.get("compat_from", "")).strip()
+        if token == compat_from or token in set(aliases):
+            return row, str(row_id)
+    return {}, ""
+
+
+def _view_row_for_id(view_rows: Mapping[str, Mapping[str, object]], view_policy_id: str) -> Tuple[dict, str]:
+    token = str(view_policy_id or "").strip()
+    if not token:
+        return {}, ""
+    resolved = resolve_view_policy_id_from_registry(token, view_rows)
+    resolved = str(resolved or "").strip() or token
+    row = dict(view_rows.get(resolved) or {})
+    if row:
+        return row, resolved
+    return {}, ""
+
+
+def _authority_subject_id(authority_context: dict) -> str:
+    subject_id = str((dict(authority_context or {})).get("subject_id", "")).strip()
+    if subject_id:
+        return subject_id
+    peer_id = str((dict(authority_context or {})).get("peer_id", "")).strip()
+    if peer_id:
+        return peer_id
+    return "subject.unknown"
+
+
+def _active_view_policy_id_for_subject(state: dict, authority_context: dict) -> str:
+    subject_id = _authority_subject_id(authority_context)
+    rows = normalize_view_binding_rows((dict(state or {})).get("view_bindings"))
+    for row in rows:
+        if str(row.get("subject_id", "")).strip() != subject_id:
+            continue
+        token = str(row.get("current_view_policy_id", "")).strip()
+        if token:
+            return token
+    return ""
+
+
+def _epistemic_truth_redaction_required(policy_row: Mapping[str, object]) -> bool:
+    rules = list((dict(policy_row or {})).get("redaction_rules") or [])
+    for rule in rules:
+        if not isinstance(rule, dict):
+            continue
+        pattern = str(rule.get("channel_pattern", "")).strip()
+        mode = str(rule.get("redaction_mode", "")).strip().lower()
+        if not pattern:
+            continue
+        truth_pattern = pattern.startswith("ch.truth.overlay.") or pattern == "ch.truth.overlay.*"
+        nondiegetic_pattern = pattern.startswith("ch.nondiegetic.") or pattern == "ch.nondiegetic.*"
+        if truth_pattern or nondiegetic_pattern:
+            if mode in ("masked", "redacted", "summary", "drop", "coarse"):
+                return True
+    return False
+
+
+def _resolve_effective_epistemic_policy(
+    *,
+    state: dict,
+    authority_context: dict,
+    law_profile: dict,
+    policy_context: dict | None,
+) -> dict:
+    epistemic_rows = _epistemic_policy_rows(policy_context)
+    view_rows = _view_policy_rows(policy_context)
+    visibility_level = str((dict((dict(authority_context or {})).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+
+    active_view_policy_id = _active_view_policy_id_for_subject(state, authority_context)
+    if not active_view_policy_id:
+        active_view_policy_id = str((dict(policy_context or {})).get("view_policy_id", "")).strip()
+    view_row = {}
+    resolved_view_policy_id = ""
+    if active_view_policy_id:
+        view_row, resolved_view_policy_id = _view_row_for_id(view_rows, active_view_policy_id)
+    allowed_from_view = _sorted_tokens(list(view_row.get("allowed_epistemic_policy_ids") or []))
+
+    candidates = _ordered_unique_tokens(
+        [
+            (dict(policy_context or {})).get("epistemic_policy_id"),
+            (dict((dict(authority_context or {})).get("epistemic_scope") or {}).get("scope_id")),
+            (dict(law_profile or {})).get("epistemic_policy_id"),
+        ]
+    )
+    selected_row: dict = {}
+    selected_id = ""
+    for candidate in candidates:
+        row, resolved_id = _epistemic_row_for_id(epistemic_rows, str(candidate))
+        if row:
+            selected_row = row
+            selected_id = resolved_id
+            break
+
+    if allowed_from_view:
+        allowed_resolved: List[str] = []
+        for token in allowed_from_view:
+            _, resolved_id = _epistemic_row_for_id(epistemic_rows, token)
+            if resolved_id:
+                allowed_resolved.append(resolved_id)
+        allowed_resolved = _ordered_unique_tokens(allowed_resolved)
+        if allowed_resolved and selected_id not in set(allowed_resolved):
+            selected_row = {}
+            selected_id = ""
+            for allowed_id in allowed_resolved:
+                row = dict(epistemic_rows.get(allowed_id) or {})
+                if row:
+                    selected_row = row
+                    selected_id = allowed_id
+                    break
+
+    if not selected_row:
+        fallback_order: List[str]
+        if visibility_level == "diegetic":
+            fallback_order = [EPISTEMIC_DEFAULT_POLICY_ID, "ep.policy.player_diegetic", "epistemic.rank_restricted"]
+        else:
+            fallback_order = ["ep.policy.lab_broad", "epistemic.admin_full", EPISTEMIC_DEFAULT_POLICY_ID]
+        for candidate_id in fallback_order:
+            row = dict(epistemic_rows.get(candidate_id) or {})
+            if row:
+                selected_row = row
+                selected_id = str(candidate_id)
+                break
+    if not selected_row:
+        for candidate_id in sorted(epistemic_rows.keys()):
+            selected_row = dict(epistemic_rows.get(candidate_id) or {})
+            if selected_row:
+                selected_id = str(candidate_id)
+                break
+
+    max_inspection_level = _normalize_fidelity_level((dict(selected_row or {})).get("max_inspection_level"), "micro")
+    max_reenactment_level = _normalize_fidelity_level((dict(selected_row or {})).get("max_reenactment_level"), "micro")
+    if visibility_level == "diegetic":
+        max_inspection_level = _clamp_fidelity_level(max_inspection_level, "meso")
+        max_reenactment_level = _clamp_fidelity_level(max_reenactment_level, "meso")
+    truth_redaction = _epistemic_truth_redaction_required(selected_row)
+    inspection_redaction = bool(visibility_level == "diegetic" or truth_redaction or max_inspection_level != "micro")
+    reenactment_redaction = bool(visibility_level == "diegetic" or truth_redaction or max_reenactment_level != "micro")
+
+    return {
+        "epistemic_policy_id": str(selected_id),
+        "epistemic_policy": dict(selected_row),
+        "view_policy_id": str(resolved_view_policy_id or active_view_policy_id),
+        "max_inspection_level": str(max_inspection_level),
+        "max_reenactment_level": str(max_reenactment_level),
+        "inspection_redaction": bool(inspection_redaction),
+        "reenactment_redaction": bool(reenactment_redaction),
+        "visibility_level": str(visibility_level),
+    }
+
+
 def _logistics_actor_subject_id(authority_context: dict) -> str:
     peer_id = str((authority_context or {}).get("peer_id", "")).strip()
     subject_id = str((authority_context or {}).get("subject_id", "")).strip()
@@ -6729,10 +6945,10 @@ def _maintenance_quantization_step(
     *,
     authority_context: dict,
     policy_context: dict | None,
+    inspection_redaction: bool,
     asset_health_row: dict,
 ) -> int:
-    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
-    if visibility_level == "diegetic":
+    if bool(inspection_redaction):
         return 200
     maintenance_policy_id = str(
         (dict(asset_health_row.get("extensions") or {})).get("maintenance_policy_id", "")
@@ -6754,6 +6970,7 @@ def _augment_inspection_target_payload_for_maintenance(
     state: dict,
     policy_context: dict | None,
     authority_context: dict,
+    law_profile: dict,
     target_payload: dict,
 ) -> dict:
     payload = dict(target_payload or {})
@@ -6762,9 +6979,17 @@ def _augment_inspection_target_payload_for_maintenance(
     row = dict(payload.get("row") or {})
     if not row:
         return payload
+    epistemic_resolution = _resolve_effective_epistemic_policy(
+        state=state,
+        authority_context=authority_context,
+        law_profile=law_profile,
+        policy_context=policy_context,
+    )
+    inspection_redaction = bool(epistemic_resolution.get("inspection_redaction", False))
     quantization_step = _maintenance_quantization_step(
         authority_context=authority_context,
         policy_context=policy_context,
+        inspection_redaction=inspection_redaction,
         asset_health_row=row,
     )
     risk_summary = quantized_failure_risk_summary(
@@ -6818,6 +7043,7 @@ def _augment_inspection_target_payload_for_maintenance(
             ],
             "risk_quantization_step": int(quantization_step),
             "wear_quantization_step": int(wear_quantization_step),
+            "epistemic_policy_id": str(epistemic_resolution.get("epistemic_policy_id", "")).strip(),
         }
     )
     payload["extensions"] = extensions
@@ -6828,9 +7054,9 @@ def _materialization_quantization_step(
     *,
     authority_context: dict,
     policy_context: dict | None,
+    inspection_redaction: bool,
 ) -> int:
-    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
-    if visibility_level == "diegetic":
+    if bool(inspection_redaction):
         return 1000
     entitlements = set(_sorted_tokens(list((dict(authority_context or {})).get("entitlements") or [])))
     if "entitlement.inspect" in entitlements:
@@ -6860,6 +7086,7 @@ def _augment_inspection_target_payload_for_materialization(
     state: dict,
     policy_context: dict | None,
     authority_context: dict,
+    law_profile: dict,
     target_payload: dict,
 ) -> dict:
     payload = dict(target_payload or {})
@@ -6876,10 +7103,18 @@ def _augment_inspection_target_payload_for_materialization(
     ):
         return payload
 
-    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+    epistemic_resolution = _resolve_effective_epistemic_policy(
+        state=state,
+        authority_context=authority_context,
+        law_profile=law_profile,
+        policy_context=policy_context,
+    )
+    visibility_level = str(epistemic_resolution.get("visibility_level", "")).strip()
+    inspection_redaction = bool(epistemic_resolution.get("inspection_redaction", False))
     quantization_step = _materialization_quantization_step(
         authority_context=authority_context,
         policy_context=policy_context,
+        inspection_redaction=inspection_redaction,
     )
     micro_rows = sorted(
         [dict(item) for item in list(state.get("micro_part_instances") or []) if isinstance(item, dict)],
@@ -6901,7 +7136,7 @@ def _augment_inspection_target_payload_for_materialization(
     extensions = dict(payload.get("extensions") or {})
 
     if collection == "micro_part_instances":
-        if visibility_level == "diegetic":
+        if inspection_redaction:
             row.pop("deterministic_seed", None)
             row["wear_state"] = _quantize_numeric_map(dict(row.get("wear_state") or {}), step=quantization_step)
             row["defect_flags"] = _sorted_tokens(list(row.get("defect_flags") or []))[:1]
@@ -6919,9 +7154,10 @@ def _augment_inspection_target_payload_for_materialization(
             dict(row.get("wear_distribution_vector") or {}),
             step=quantization_step,
         )
-        if visibility_level == "diegetic":
+        if inspection_redaction:
             extensions["epistemic_redaction"] = "diegetic_distribution_quantized"
         extensions["quantization_step"] = int(quantization_step)
+        extensions["epistemic_policy_id"] = str(epistemic_resolution.get("epistemic_policy_id", "")).strip()
         payload["row"] = row
         payload["extensions"] = extensions
         return payload
@@ -6935,7 +7171,7 @@ def _augment_inspection_target_payload_for_materialization(
         structure_id = str(row.get("instance_id", "")).strip()
     elif collection == "materialization_reenactment_descriptors":
         structure_id = str(row.get("structure_id", "")).strip()
-        if visibility_level == "diegetic":
+        if inspection_redaction:
             row["seed_reference"] = ""
             extensions["epistemic_redaction"] = "diegetic_seed_redaction"
             payload["row"] = row
@@ -7008,10 +7244,11 @@ def _augment_inspection_target_payload_for_materialization(
             "quantization_step": int(quantization_step),
             "materialized_node_count": int(len(materialized_node_ids)),
             "materialized_roi_count": int(len(structure_states)),
-            "materialization_state_refs": state_refs if visibility_level != "diegetic" else [],
+            "materialization_state_refs": state_refs if not inspection_redaction else [],
+            "epistemic_policy_id": str(epistemic_resolution.get("epistemic_policy_id", "")).strip(),
         }
     )
-    if visibility_level == "diegetic":
+    if inspection_redaction:
         if collection == "materialization_states":
             row["materialized_part_ids"] = []
         extensions["epistemic_redaction"] = "diegetic_materialization_summary"
@@ -7022,6 +7259,9 @@ def _augment_inspection_target_payload_for_materialization(
 
 def _augment_inspection_target_payload_for_commitment_reenactment(
     *,
+    state: dict,
+    policy_context: dict | None,
+    law_profile: dict,
     authority_context: dict,
     target_payload: dict,
 ) -> dict:
@@ -7030,23 +7270,31 @@ def _augment_inspection_target_payload_for_commitment_reenactment(
     row = dict(payload.get("row") or {})
     if not row:
         return payload
-    visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
+    epistemic_resolution = _resolve_effective_epistemic_policy(
+        state=state,
+        authority_context=authority_context,
+        law_profile=law_profile,
+        policy_context=policy_context,
+    )
+    inspection_redaction = bool(epistemic_resolution.get("inspection_redaction", False))
+    reenactment_redaction = bool(epistemic_resolution.get("reenactment_redaction", False))
     extensions = dict(payload.get("extensions") or {})
     if collection == "material_commitments":
         linked_event_ids = _sorted_tokens(list(row.get("linked_event_ids") or []))
-        if visibility_level == "diegetic":
+        if inspection_redaction:
             row["required_inputs"] = []
             row["expected_outputs"] = []
             row["linked_event_ids"] = linked_event_ids[:1]
             extensions["epistemic_redaction"] = "diegetic_commitment_summary"
         extensions["linked_event_count"] = int(len(linked_event_ids))
+        extensions["epistemic_policy_id"] = str(epistemic_resolution.get("epistemic_policy_id", "")).strip()
         payload["row"] = row
         payload["extensions"] = extensions
         return payload
     if collection == "event_stream_indices":
         stream_extensions = dict(row.get("extensions") or {})
         event_rows = [dict(item) for item in list(stream_extensions.get("event_rows") or []) if isinstance(item, dict)]
-        if visibility_level == "diegetic":
+        if inspection_redaction:
             stream_extensions["event_rows"] = [
                 {
                     "event_id": str(item.get("event_id", "")).strip(),
@@ -7060,13 +7308,14 @@ def _augment_inspection_target_payload_for_commitment_reenactment(
             stream_extensions["event_rows"] = event_rows[:64]
         row["extensions"] = stream_extensions
         extensions["event_count"] = int(len(list(row.get("event_ids") or [])))
+        extensions["epistemic_policy_id"] = str(epistemic_resolution.get("epistemic_policy_id", "")).strip()
         payload["row"] = row
         payload["extensions"] = extensions
         return payload
     if collection == "reenactment_artifacts":
         artifact_extensions = dict(row.get("extensions") or {})
         timeline = dict(artifact_extensions.get("timeline") or {})
-        if visibility_level == "diegetic":
+        if reenactment_redaction:
             timeline.pop("micro_seed_refs", None)
             timeline_rows = [dict(item) for item in list(timeline.get("timeline") or []) if isinstance(item, dict)]
             timeline["timeline"] = [
@@ -7080,6 +7329,7 @@ def _augment_inspection_target_payload_for_commitment_reenactment(
             extensions["epistemic_redaction"] = "diegetic_reenactment_summary"
         artifact_extensions["timeline"] = timeline
         row["extensions"] = artifact_extensions
+        extensions["epistemic_policy_id"] = str(epistemic_resolution.get("epistemic_policy_id", "")).strip()
         payload["row"] = row
         payload["extensions"] = extensions
         return payload
@@ -7316,6 +7566,19 @@ def _execute_inspection_snapshot_process(
     desired_fidelity = str(inputs.get("desired_fidelity", "macro")).strip() or "macro"
     if desired_fidelity not in ("macro", "meso", "micro"):
         desired_fidelity = "macro"
+    epistemic_resolution = _resolve_effective_epistemic_policy(
+        state=state,
+        authority_context=authority_context,
+        law_profile=law_profile,
+        policy_context=policy_context,
+    )
+    epistemic_policy_id = str(epistemic_resolution.get("epistemic_policy_id", "")).strip()
+    max_inspection_level = str(epistemic_resolution.get("max_inspection_level", "micro")).strip() or "micro"
+    requested_fidelity = str(desired_fidelity)
+    desired_fidelity = _clamp_fidelity_level(desired_fidelity, max_inspection_level)
+    epistemic_downgraded = bool(desired_fidelity != requested_fidelity)
+    if isinstance(policy_context, dict) and epistemic_policy_id:
+        policy_context["epistemic_policy_id"] = epistemic_policy_id
     inspection_policy_context = dict(policy_context or {})
     inspection_server_profile_id = (
         str(inspection_policy_context.get("server_profile_id", "")).strip()
@@ -7347,6 +7610,10 @@ def _execute_inspection_snapshot_process(
             "micro_allowed": True,
             "micro_available": True,
             "strict_budget": True,
+            "epistemic_policy_id": epistemic_policy_id,
+            "epistemic_max_inspection_level": max_inspection_level,
+            "epistemic_downgraded": bool(epistemic_downgraded),
+            "requested_fidelity": requested_fidelity,
         },
     )
     inspection_fairness_state = dict(inspection_policy_context.get("inspection_arbitration_state") or {})
@@ -7462,15 +7729,20 @@ def _execute_inspection_snapshot_process(
         state=state,
         policy_context=policy_context,
         authority_context=authority_context,
+        law_profile=law_profile,
         target_payload=target_payload,
     )
     target_payload = _augment_inspection_target_payload_for_materialization(
         state=state,
         policy_context=policy_context,
         authority_context=authority_context,
+        law_profile=law_profile,
         target_payload=target_payload,
     )
     target_payload = _augment_inspection_target_payload_for_commitment_reenactment(
+        state=state,
+        policy_context=policy_context,
+        law_profile=law_profile,
         authority_context=authority_context,
         target_payload=target_payload,
     )
@@ -7568,10 +7840,14 @@ def _execute_inspection_snapshot_process(
         "inspection_fidelity_allocation": dict(inspection_allocation),
         "inspection_fidelity_arbitration": dict(inspection_fidelity_arbitration),
         "inspection_fidelity_decision_entries": list(inspection_decision_entries),
+        "requested_fidelity": str(requested_fidelity),
         "desired_fidelity": str(inspection_request_row.get("desired_fidelity", "")),
         "achieved_fidelity": str((cache_result.get("snapshot") or {}).get("achieved_fidelity", "")),
         "inspection_degraded": bool((dict((cache_result.get("snapshot") or {}).get("extensions") or {})).get("degraded", False)),
         "max_inspection_cost_units_per_tick": int(max_inspection_budget),
+        "epistemic_policy_id": epistemic_policy_id,
+        "epistemic_max_inspection_level": str(max_inspection_level),
+        "epistemic_downgraded": bool(epistemic_downgraded),
     }
     return result_payload
 
@@ -16842,67 +17118,120 @@ def execute_intent(
                         "portal_type_id": str(portal_row.get("portal_type_id", "")).strip(),
                     }
                 )
+            interior_epistemic_resolution = _resolve_effective_epistemic_policy(
+                state=state,
+                authority_context=authority_context,
+                law_profile=law_profile,
+                policy_context=policy_context,
+            )
+            interior_redaction = bool(interior_epistemic_resolution.get("inspection_redaction", False))
+            if interior_redaction:
+                pressure_rows = [
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "pressure": int((max(0, _as_int(row.get("pressure", 0), 0)) // 100) * 100),
+                    }
+                    for row in pressure_rows
+                ]
+                oxygen_rows = [
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "oxygen_fraction": int((max(0, _as_int(row.get("oxygen_fraction", 0), 0)) // 50) * 50),
+                    }
+                    for row in oxygen_rows
+                ]
+                smoke_rows = [
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "smoke_density": int((max(0, _as_int(row.get("smoke_density", 0), 0)) // 100) * 100),
+                    }
+                    for row in smoke_rows
+                ]
+                flood_rows = [
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "water_volume": int((max(0, _as_int(row.get("water_volume", 0), 0)) // 100) * 100),
+                    }
+                    for row in flood_rows
+                ]
+                alarms = [
+                    {
+                        "volume_id": str(row.get("volume_id", "")).strip(),
+                        "overall": str(row.get("overall", "")).strip() or alarm_state,
+                    }
+                    for row in list(alarms or [])
+                    if isinstance(row, dict)
+                ]
+                portal_indicator_rows = [
+                    {
+                        "portal_id": str(row.get("portal_id", "")).strip(),
+                        "state_id": str(row.get("state_id", "")).strip(),
+                    }
+                    for row in portal_indicator_rows
+                ]
             instrument_rows = _ensure_instrument_assemblies(state)
+            max_row_count = 16 if interior_redaction else 64
+            gauge_quality = 400 if interior_redaction else 600
             gauge_payloads = {
                 "instrument.interior.pressure": {
                     "assembly_id": "instrument.interior.pressure",
                     "instrument_type": "gauge.pressure",
                     "instrument_type_id": "instr.gauge.pressure",
                     "quality": "coarse",
-                    "quality_value": 600,
+                    "quality_value": gauge_quality,
                     "reading": "{} compartments".format(len(pressure_rows)),
                     "state": {"status": alarm_state},
-                    "outputs": {"rows": pressure_rows[:64]},
+                    "outputs": {"rows": pressure_rows[:max_row_count]},
                 },
                 "instrument.interior.oxygen": {
                     "assembly_id": "instrument.interior.oxygen",
                     "instrument_type": "gauge.oxygen",
                     "instrument_type_id": "instr.gauge.oxygen",
                     "quality": "coarse",
-                    "quality_value": 600,
+                    "quality_value": gauge_quality,
                     "reading": "{} compartments".format(len(oxygen_rows)),
                     "state": {"status": alarm_state},
-                    "outputs": {"rows": oxygen_rows[:64]},
+                    "outputs": {"rows": oxygen_rows[:max_row_count]},
                 },
                 "instrument.interior.smoke": {
                     "assembly_id": "instrument.interior.smoke",
                     "instrument_type": "alarm.smoke",
                     "instrument_type_id": "instr.alarm.smoke",
                     "quality": "coarse",
-                    "quality_value": 600,
+                    "quality_value": gauge_quality,
                     "reading": alarm_state,
                     "state": {"status": alarm_state},
-                    "outputs": {"rows": smoke_rows[:64]},
+                    "outputs": {"rows": smoke_rows[:max_row_count]},
                 },
                 "instrument.interior.flood": {
                     "assembly_id": "instrument.interior.flood",
                     "instrument_type": "alarm.flood",
                     "instrument_type_id": "instr.alarm.flood",
                     "quality": "coarse",
-                    "quality_value": 600,
+                    "quality_value": gauge_quality,
                     "reading": alarm_state,
                     "state": {"status": alarm_state},
-                    "outputs": {"rows": flood_rows[:64]},
+                    "outputs": {"rows": flood_rows[:max_row_count]},
                 },
                 "instrument.interior.alarm": {
                     "assembly_id": "instrument.interior.alarm",
                     "instrument_type": "alarm.general",
                     "instrument_type_id": "instr.interior.alarm",
                     "quality": "coarse",
-                    "quality_value": 600,
+                    "quality_value": gauge_quality,
                     "reading": alarm_state,
                     "state": {"status": alarm_state},
-                    "outputs": {"rows": alarms[:64]},
+                    "outputs": {"rows": alarms[:max_row_count]},
                 },
                 "instrument.interior.portal_state": {
                     "assembly_id": "instrument.interior.portal_state",
                     "instrument_type": "panel.portal_state",
                     "instrument_type_id": "instr.panel.portal_state",
                     "quality": "coarse",
-                    "quality_value": 600,
+                    "quality_value": gauge_quality,
                     "reading": "{} portals".format(len(portal_indicator_rows)),
                     "state": {"status": "OK" if portal_indicator_rows else "WARN"},
-                    "outputs": {"rows": portal_indicator_rows[:64]},
+                    "outputs": {"rows": portal_indicator_rows[:max_row_count]},
                 },
             }
             instrument_by_id = dict(
@@ -16918,6 +17247,8 @@ def execute_intent(
                 row["extensions"] = {
                     "source_process_id": process_id,
                     "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                    "epistemic_policy_id": str(interior_epistemic_resolution.get("epistemic_policy_id", "")).strip(),
+                    "epistemic_redaction": "diegetic_interior_summary" if interior_redaction else "none",
                 }
                 instrument_by_id[assembly_id] = row
             state["instrument_assemblies"] = sorted(
@@ -16947,6 +17278,8 @@ def execute_intent(
                 "flow_transfer_event_count": int(len(list(ticked.get("flow_transfer_events") or []))),
                 "hazard_event_count": int(len(list(ticked.get("hazard_consequence_events") or []))),
                 "alarm_state": alarm_state,
+                "epistemic_policy_id": str(interior_epistemic_resolution.get("epistemic_policy_id", "")).strip(),
+                "epistemic_redaction": bool(interior_redaction),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id in (
@@ -17346,6 +17679,20 @@ def execute_intent(
         desired_fidelity = str(inputs.get("desired_fidelity", "macro")).strip() or "macro"
         if desired_fidelity not in ("macro", "meso", "micro"):
             desired_fidelity = "macro"
+        reenactment_epistemic_resolution = _resolve_effective_epistemic_policy(
+            state=state,
+            authority_context=authority_context,
+            law_profile=law_profile,
+            policy_context=policy_context,
+        )
+        reenactment_epistemic_policy = dict(reenactment_epistemic_resolution.get("epistemic_policy") or {})
+        reenactment_epistemic_policy_id = str(reenactment_epistemic_resolution.get("epistemic_policy_id", "")).strip()
+        reenactment_max_level = str(reenactment_epistemic_resolution.get("max_reenactment_level", "micro")).strip() or "micro"
+        requested_reenactment_fidelity = str(desired_fidelity)
+        desired_fidelity = _clamp_fidelity_level(desired_fidelity, reenactment_max_level)
+        reenactment_epistemic_downgraded = bool(desired_fidelity != requested_reenactment_fidelity)
+        if isinstance(policy_context, dict) and reenactment_epistemic_policy_id:
+            policy_context["epistemic_policy_id"] = reenactment_epistemic_policy_id
         max_cost_units = max(
             0,
             _as_int(
@@ -17357,6 +17704,7 @@ def execute_intent(
         allow_micro_detail = _reenactment_micro_detail_allowed(
             authority_context=authority_context,
             law_profile=law_profile,
+            epistemic_policy=reenactment_epistemic_policy,
         )
         if desired_fidelity == "micro" and not bool(allow_micro_detail):
             return refusal(
@@ -17408,6 +17756,10 @@ def execute_intent(
                 "micro_allowed": bool(allow_micro_detail),
                 "micro_available": True,
                 "strict_budget": True,
+                "epistemic_policy_id": reenactment_epistemic_policy_id,
+                "epistemic_max_reenactment_level": reenactment_max_level,
+                "epistemic_downgraded": bool(reenactment_epistemic_downgraded),
+                "requested_fidelity": requested_reenactment_fidelity,
             },
         )
         reenactment_fairness_state = dict((dict(policy_context or {})).get("reenactment_arbitration_state") or {})
@@ -17637,6 +17989,7 @@ def execute_intent(
             "degraded": bool((dict(artifact_row.get("extensions") or {})).get("degraded", False)),
             "max_cost_units": int(max_cost_units),
             "budget": dict(budget_info),
+            "requested_fidelity": str(requested_reenactment_fidelity),
             "fidelity_request": dict(reenactment_fidelity_request),
             "fidelity_allocation": dict(reenactment_fidelity_allocation),
             "fidelity_arbitration": dict(reenactment_fidelity_arbitration),
@@ -17644,6 +17997,9 @@ def execute_intent(
             "fidelity_budget_used_after": int(_as_int(reenactment_subject_budget_ext.get("used_after", 0), 0)),
             "fidelity_decision_entries": list(reenactment_decision_entries),
             "artifact_fidelity_decision_entries": list(reenactment_artifact_decision_entries),
+            "epistemic_policy_id": reenactment_epistemic_policy_id,
+            "epistemic_max_reenactment_level": str(reenactment_max_level),
+            "epistemic_downgraded": bool(reenactment_epistemic_downgraded),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.reenactment_play":
@@ -17688,11 +18044,19 @@ def execute_intent(
                 },
                 "$.intent.inputs",
             )
+        playback_epistemic_resolution = _resolve_effective_epistemic_policy(
+            state=state,
+            authority_context=authority_context,
+            law_profile=law_profile,
+            policy_context=policy_context,
+        )
+        playback_epistemic_policy = dict(playback_epistemic_resolution.get("epistemic_policy") or {})
         if (
             str(selected_artifact.get("fidelity_achieved", "")).strip() == "micro"
             and not _reenactment_micro_detail_allowed(
                 authority_context=authority_context,
                 law_profile=law_profile,
+                epistemic_policy=playback_epistemic_policy,
             )
         ):
             return refusal(
@@ -17703,8 +18067,7 @@ def execute_intent(
                 "$.intent.inputs.reenactment_id",
             )
         playback_timeline = dict((dict(selected_artifact.get("extensions") or {})).get("timeline") or {})
-        visibility_level = str((dict((authority_context or {}).get("epistemic_scope") or {})).get("visibility_level", "")).strip()
-        if visibility_level == "diegetic":
+        if bool(playback_epistemic_resolution.get("reenactment_redaction", False)):
             playback_timeline.pop("micro_seed_refs", None)
             timeline_rows = list(playback_timeline.get("timeline") or [])
             playback_timeline["timeline"] = [
@@ -17727,6 +18090,7 @@ def execute_intent(
             "fidelity_achieved": str(selected_artifact.get("fidelity_achieved", "")),
             "output_timeline_ref": str(selected_artifact.get("output_timeline_ref", "")),
             "reenactment_timeline": playback_timeline,
+            "epistemic_policy_id": str(playback_epistemic_resolution.get("epistemic_policy_id", "")).strip(),
         }
     elif process_id == "process.materialize_structure_roi":
         structure_instance_id = str(
