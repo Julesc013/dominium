@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import os
 from typing import Dict, List
 
 from src.net.anti_cheat.anti_cheat_engine import (
@@ -27,6 +29,91 @@ _DEFAULT_INTERACTION_MAX_PER_TICK = 24
 
 def _sorted_unique_strings(values: List[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in (values or []) if str(item).strip()))
+
+
+def _read_decision_log_payload(repo_root: str, decision_log_ref: str) -> dict:
+    repo = str(repo_root or "").strip()
+    rel = str(decision_log_ref or "").strip()
+    if not repo or not rel:
+        return {}
+    abs_path = os.path.join(repo, rel.replace("/", os.sep))
+    try:
+        payload = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return dict(payload) if isinstance(payload, dict) else {}
+
+
+def _reason_token(reason_code: str) -> str:
+    token = str(reason_code or "").strip()
+    if not token:
+        return ""
+    return token.split(".")[-1]
+
+
+def _decision_log_ui_messages(decision_log_payload: dict) -> List[dict]:
+    payload = dict(decision_log_payload or {})
+    if not payload:
+        return []
+    ext = dict(payload.get("extensions") or {})
+    downgrade_entries = [
+        dict(item)
+        for item in list(ext.get("downgrade_entries") or [])
+        if isinstance(item, dict)
+    ]
+    downgrade_entries = sorted(
+        downgrade_entries,
+        key=lambda item: (
+            str(item.get("axis", "")),
+            str(item.get("from_value", "")),
+            str(item.get("to_value", "")),
+            str(item.get("reason_code", "")),
+            str(item.get("downgrade_id", "")),
+        ),
+    )
+    out: List[dict] = []
+    for row in downgrade_entries:
+        axis = str(row.get("axis", "")).strip()
+        from_value = str(row.get("from_value", "")).strip()
+        to_value = str(row.get("to_value", "")).strip()
+        reason_code = str(row.get("reason_code", "")).strip()
+        reason_token = _reason_token(reason_code)
+        if axis == "fidelity":
+            message = "Requested {} fidelity downgraded to {} ({}).".format(
+                from_value or "unknown",
+                to_value or "unknown",
+                reason_token or "downgrade",
+            )
+        else:
+            message = "Requested {} {} downgraded to {} ({}).".format(
+                axis or "setting",
+                from_value or "unknown",
+                to_value or "unknown",
+                reason_token or "downgrade",
+            )
+        out.append(
+            {
+                "kind": "downgrade",
+                "axis": axis,
+                "reason_code": reason_code,
+                "message": message,
+                "remediation_hint": str(row.get("remediation_hint", "")).strip(),
+            }
+        )
+    refusals = _sorted_unique_strings(payload.get("refusals"))
+    if refusals:
+        refusal_payload = dict(ext.get("refusal_payload") or {})
+        reason_code = str(refusals[0]).strip()
+        message = str(refusal_payload.get("message", "")).strip() or "control request refused ({})".format(reason_code)
+        out.append(
+            {
+                "kind": "refusal",
+                "reason_code": reason_code,
+                "message": message,
+                "remediation_hint": str(refusal_payload.get("remediation_hint", "")).strip(),
+            }
+        )
+    return out
 
 
 def _registry_payload(policy_context: dict | None, key: str) -> dict:
@@ -601,12 +688,16 @@ def execute_affordance(
         control_policy_registry=_registry_payload(policy_context, "control_policy_registry"),
         repo_root=repo_root,
     )
+    resolution = dict(control_resolution.get("resolution") or {})
+    decision_log_ref = str(resolution.get("decision_log_ref", "")).strip()
+    decision_log_payload = _read_decision_log_payload(repo_root=repo_root, decision_log_ref=decision_log_ref)
+    ui_messages = _decision_log_ui_messages(decision_log_payload)
     if str(control_resolution.get("result", "")) != "complete":
         refusal_payload = dict(control_resolution.get("refusal") or {})
-        return {
+        out = {
             "result": "refused",
             "refusal": refusal_payload,
-            "resolution": dict(control_resolution.get("resolution") or {}),
+            "resolution": dict(resolution),
             "control_intent": dict(control_intent),
             "errors": [
                 {
@@ -616,7 +707,9 @@ def execute_affordance(
                 }
             ],
         }
-    resolution = dict(control_resolution.get("resolution") or {})
+        if ui_messages:
+            out["ui_messages"] = ui_messages
+        return out
     emitted_intents = [
         dict(row)
         for row in list(resolution.get("emitted_intents") or [])
@@ -628,12 +721,15 @@ def execute_affordance(
         if isinstance(row, dict)
     ]
     if not emitted_intents:
-        return {
+        out = {
             "result": "complete",
             "control_intent": control_intent,
             "resolution": resolution,
             "multiplayer_policy_id": policy_id,
         }
+        if ui_messages:
+            out["ui_messages"] = ui_messages
+        return out
     intent = dict(emitted_intents[0])
     envelope = dict(emitted_envelopes[0]) if emitted_envelopes else {}
 
@@ -706,6 +802,8 @@ def execute_affordance(
         "execution": dict(execution),
         "multiplayer_policy_id": policy_id,
     }
+    if ui_messages:
+        out["ui_messages"] = ui_messages
     if interaction_overlay_payload:
         out["inspection_overlays"] = interaction_overlay_payload
         out["perceived_interaction_patch"] = {"inspection_overlays": interaction_overlay_payload}
