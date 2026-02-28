@@ -6786,8 +6786,8 @@ def _append_core_abstraction_invariant_findings(
             "core state-machine substrate file missing deterministic transition tokens",
         ),
         "src/core/flow/flow_engine.py": (
-            "INV-FLOW-USES-LEDGER",
-            ("normalize_flow_channel(", "flow_transfer(", "quantity_id"),
+            "INV-NO-DUPLICATE-FLOW-LOGIC",
+            ("normalize_flow_channel(", "tick_flow_channels(", "normalize_flow_transfer_event(", "quantity_id"),
             "core flow substrate file missing deterministic flow tokens",
         ),
     }
@@ -6943,9 +6943,35 @@ def _append_core_abstraction_invariant_findings(
                 )
             )
 
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if not rel_path.startswith("src/"):
+            continue
+        if rel_path.startswith(("src/core/flow/", "tools/xstack/testx/tests/", "tests/")):
+            continue
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            continue
+        if "def flow_transfer(" in text or "def tick_flow_channels(" in text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="def flow_transfer(" if "def flow_transfer(" in text else "def tick_flow_channels(",
+                    message="flow math engines must be implemented only in src/core/flow",
+                    rule_id="INV-NO-DUPLICATE-FLOW-LOGIC",
+                )
+            )
+
     flow_required_tokens = {
-        "src/logistics/logistics_engine.py": ("flow_transfer(", "_best_route("),
-        "tools/xstack/sessionx/process_runtime.py": ("_ledger_emit_exception(", "process.manifest_tick"),
+        "src/logistics/logistics_engine.py": ("tick_flow_channels(", "_best_route(", "flow_channel_id"),
+        "tools/xstack/sessionx/process_runtime.py": ("_ledger_emit_exception(", "process.manifest_tick", "flow_transfer_events"),
     }
     for rel_path, tokens in flow_required_tokens.items():
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -6961,7 +6987,7 @@ def _append_core_abstraction_invariant_findings(
                     line_number=1,
                     snippet="",
                     message="flow subsystem integration file missing for ledger coupling checks",
-                    rule_id="INV-FLOW-USES-LEDGER",
+                    rule_id="INV-FLOW-USES-LEDGER-FOR-CONSERVED",
                 )
             )
             continue
@@ -6975,7 +7001,7 @@ def _append_core_abstraction_invariant_findings(
                     line_number=1,
                     snippet=token,
                     message="flow paths must remain process-driven and ledger-accounted",
-                    rule_id="INV-FLOW-USES-LEDGER",
+                    rule_id="INV-FLOW-USES-LEDGER-FOR-CONSERVED",
                 )
             )
 

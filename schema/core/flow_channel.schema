@@ -19,9 +19,10 @@ record flow_channel
     - delay_ticks: optional_u64
     - loss_fraction: optional_fixed
     - solver_policy_id: id
+    - priority: u32
     - extensions: map
 
 INVARIANTS:
 - Quantity channels are explicit (`quantity_id`) and ledger-compatible.
 - Flow channels carry deterministic coarse controls and remain process-accounted.
-
+- Priority is deterministic and only affects stable ordering tie-breaks.

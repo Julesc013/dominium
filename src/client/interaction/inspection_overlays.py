@@ -441,59 +441,91 @@ def _logistics_overlay_payload(
         [dict(item) for item in list((dict(graph_row or {})).get("edges") or []) if isinstance(item, dict)],
         key=lambda item: str(item.get("edge_id", "")),
     )
+    sections = dict((dict(inspection_snapshot or {})).get("summary_sections") or {})
+    flow_util_section = dict(sections.get("section.flow_utilization") or {})
+    flow_util_data = dict(flow_util_section.get("data") or {})
+    flow_util_edges = {
+        str(item.get("edge_id", "")).strip(): dict(item)
+        for item in list(flow_util_data.get("edges") or [])
+        if isinstance(item, dict) and str(item.get("edge_id", "")).strip()
+    }
     route_edge_ids = _sorted_unique_strings(
         list((dict(target_row.get("extensions") or {})).get("route_edge_ids") or [])
     )
     material_id = str(target_row.get("material_id", "")).strip() or "material.unknown"
-    edge_color = _color_from_seed({"graph_id": graph_id, "kind": "edge"}, floor=58)
     flow_color = _color_from_seed({"material_id": material_id, "kind": "flow"}, floor=72)
-    edge_material_id = "mat.inspect.logistics.edge.{}".format(canonical_sha256({"graph_id": graph_id})[:12])
     flow_material_id = "mat.inspect.logistics.flow.{}".format(canonical_sha256({"material_id": material_id})[:12])
     node_material_id = "mat.inspect.logistics.node.{}".format(canonical_sha256({"target": target_semantic_id})[:12])
-    materials = sorted(
-        [
-            {
+    util_bucket_materials = {}
+    for edge_id in sorted(str(item.get("edge_id", "")).strip() for item in edge_rows if str(item.get("edge_id", "")).strip()):
+        util_row = dict(flow_util_edges.get(edge_id) or {})
+        util_permille = max(0, min(1000, _to_int(util_row.get("utilization_permille", 0), 0)))
+        bucket = int(util_permille // 200)
+        if bucket not in util_bucket_materials:
+            # Deterministic green->red bucket palette for utilization.
+            green = max(40, 220 - (bucket * 32))
+            red = min(235, 52 + (bucket * 36))
+            blue = max(32, 80 - (bucket * 6))
+            util_bucket_materials[bucket] = {
                 "schema_version": "1.0.0",
-                "material_id": edge_material_id,
-                "base_color": dict(edge_color),
+                "material_id": "mat.inspect.logistics.edge.util.{}.{}".format(bucket, canonical_sha256({"graph_id": graph_id, "bucket": bucket})[:8]),
+                "base_color": {"r": red, "g": green, "b": blue},
                 "roughness": 360,
                 "metallic": 0,
                 "emission": None,
                 "transparency": None,
                 "pattern_id": None,
-                "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_edge"},
-            },
-            {
-                "schema_version": "1.0.0",
-                "material_id": flow_material_id,
-                "base_color": dict(flow_color),
-                "roughness": 220,
-                "metallic": 0,
-                "emission": {"r": flow_color["r"], "g": flow_color["g"], "b": flow_color["b"], "strength": 280},
-                "transparency": None,
-                "pattern_id": None,
-                "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_flow"},
-            },
-            {
-                "schema_version": "1.0.0",
-                "material_id": node_material_id,
-                "base_color": _color_from_seed({"target": target_semantic_id, "kind": "node"}, floor=80),
-                "roughness": 180,
-                "metallic": 0,
-                "emission": None,
-                "transparency": None,
-                "pattern_id": None,
-                "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_node"},
-            },
-        ],
-        key=lambda row: str(row.get("material_id", "")),
-    )
+                "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_edge_utilization", "utilization_bucket": bucket},
+            }
+    default_edge_material_id = "mat.inspect.logistics.edge.default.{}".format(canonical_sha256({"graph_id": graph_id, "default": True})[:12])
+    materials = [
+        {
+            "schema_version": "1.0.0",
+            "material_id": default_edge_material_id,
+            "base_color": _color_from_seed({"graph_id": graph_id, "kind": "edge.default"}, floor=58),
+            "roughness": 360,
+            "metallic": 0,
+            "emission": None,
+            "transparency": None,
+            "pattern_id": None,
+            "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_edge"},
+        },
+        {
+            "schema_version": "1.0.0",
+            "material_id": flow_material_id,
+            "base_color": dict(flow_color),
+            "roughness": 220,
+            "metallic": 0,
+            "emission": {"r": flow_color["r"], "g": flow_color["g"], "b": flow_color["b"], "strength": 280},
+            "transparency": None,
+            "pattern_id": None,
+            "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_flow"},
+        },
+        {
+            "schema_version": "1.0.0",
+            "material_id": node_material_id,
+            "base_color": _color_from_seed({"target": target_semantic_id, "kind": "node"}, floor=80),
+            "roughness": 180,
+            "metallic": 0,
+            "emission": None,
+            "transparency": None,
+            "pattern_id": None,
+            "extensions": {"interaction_overlay": True, "overlay_kind": "logistics_node"},
+        },
+    ] + [dict(util_bucket_materials[key]) for key in sorted(util_bucket_materials.keys())]
+    materials = sorted(materials, key=lambda row: str(row.get("material_id", "")))
 
     renderables: list[dict] = []
     for edge in edge_rows:
         edge_id = str(edge.get("edge_id", "")).strip()
         if not edge_id:
             continue
+        util_row = dict(flow_util_edges.get(edge_id) or {})
+        util_permille = max(0, min(1000, _to_int(util_row.get("utilization_permille", 0), 0)))
+        util_bucket = int(util_permille // 200)
+        edge_material_id = str(
+            (dict(util_bucket_materials.get(util_bucket) or {})).get("material_id", "")
+        ).strip() or default_edge_material_id
         renderables.append(
             {
                 "schema_version": "1.0.0",
@@ -516,6 +548,7 @@ def _logistics_overlay_payload(
                     "edge_id": edge_id,
                     "from_node_id": str(edge.get("from_node_id", "")).strip(),
                     "to_node_id": str(edge.get("to_node_id", "")).strip(),
+                    "utilization_permille": int(util_permille),
                 },
             }
         )
@@ -549,6 +582,10 @@ def _logistics_overlay_payload(
     summary_bits = []
     summary_bits.append("graph={}".format(graph_id or "none"))
     summary_bits.append("edges={}".format(len(edge_rows)))
+    if flow_util_data:
+        summary_bits.append(
+            "util={}".format(int(max(0, _to_int(flow_util_data.get("utilization_permille", 0), 0))))
+        )
     if collection == "logistics_node_inventories":
         stocks = dict((dict(target_row or {})).get("material_stocks") or {})
         summary_bits.append("materials={}".format(len(stocks.keys())))
@@ -571,6 +608,7 @@ def _logistics_overlay_payload(
             "collection": collection,
             "route_edge_ids": list(route_edge_ids),
             "material_id": material_id,
+            "flow_utilization_edge_count": len(flow_util_edges.keys()),
         },
     }
 

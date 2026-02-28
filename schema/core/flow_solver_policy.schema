@@ -1,0 +1,21 @@
+SCHEMA: core/flow_solver_policy.schema
+schema_id: dominium.schema.core.flow_solver_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic FlowSystem solver policy behavior controls.
+
+REQUIRED SHAPE:
+record flow_solver_policy
+  required:
+    - schema_version: semver
+    - solver_policy_id: id
+    - mode: enum(bulk|segmented)
+    - allow_partial_transfer: bool
+    - overflow_policy: enum(refuse|queue|spill)
+    - extensions: map
+
+INVARIANTS:
+- Policy fields are explicit and deterministic; no implicit solver defaults.
+- Overflow handling must be policy-driven and refusal-safe.

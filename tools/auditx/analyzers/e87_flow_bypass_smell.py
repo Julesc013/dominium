@@ -30,8 +30,8 @@ def run(graph, repo_root, changed_files=None):
 
     required_tokens = {
         "src/core/flow/flow_engine.py": ("flow_transfer(", "quantity_id"),
-        "src/logistics/logistics_engine.py": ("flow_transfer(", "_best_route("),
-        "tools/xstack/sessionx/process_runtime.py": ("_ledger_emit_exception(", "process.manifest_tick"),
+        "src/logistics/logistics_engine.py": ("tick_flow_channels(", "_best_route(", "flow_channel_id"),
+        "tools/xstack/sessionx/process_runtime.py": ("_ledger_emit_exception(", "process.manifest_tick", "flow_transfer_events"),
     }
     for rel_path, tokens in required_tokens.items():
         text = _read_text(repo_root, rel_path)
@@ -47,7 +47,7 @@ def run(graph, repo_root, changed_files=None):
                     evidence=["required flow/ledger integration file missing"],
                     suggested_classification="INVALID",
                     recommended_action="REWRITE",
-                    related_invariants=["INV-FLOW-USES-LEDGER"],
+                    related_invariants=["INV-FLOW-USES-LEDGER-FOR-CONSERVED"],
                     related_paths=[rel_path],
                 )
             )
@@ -66,7 +66,7 @@ def run(graph, repo_root, changed_files=None):
                     evidence=["missing flow/ledger coupling token", token],
                     suggested_classification="NEEDS_REVIEW",
                     recommended_action="ADD_RULE",
-                    related_invariants=["INV-FLOW-USES-LEDGER"],
+                    related_invariants=["INV-FLOW-USES-LEDGER-FOR-CONSERVED"],
                     related_paths=[rel_path],
                 )
             )
@@ -75,4 +75,3 @@ def run(graph, repo_root, changed_files=None):
         findings,
         key=lambda item: (_norm(item.location.file_path), item.location.line_start, item.severity),
     )
-

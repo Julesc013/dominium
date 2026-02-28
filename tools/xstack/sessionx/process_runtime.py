@@ -13187,6 +13187,7 @@ def execute_intent(
                 intent_id=intent_id,
                 current_tick=int(current_tick),
                 numeric_policy=dict((dict(policy_context or {})).get("numeric_precision_policy") or {}),
+                flow_solver_policy_registry=_policy_payload(policy_context, "core_flow_solver_policy_registry"),
             )
         except LogisticsError as exc:
             return refusal(
@@ -13315,7 +13316,9 @@ def execute_intent(
             "active_manifest_count": int(_active_manifest_count(logistics_manifests)),
             "max_active_manifests": int(max_active_manifests),
             "route_edge_ids": list(created.get("route_edge_ids") or []),
+            "route_node_ids": list(created.get("route_node_ids") or []),
             "loss_fraction": int(created.get("loss_fraction", 0) or 0),
+            "flow_channel_id": str((dict(created.get("flow_channel") or {})).get("channel_id", "")),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.manifest_tick":
@@ -13394,6 +13397,15 @@ def execute_intent(
                     actor_subject_id=_logistics_actor_subject_id(authority_context),
                     numeric_policy=dict((dict(policy_context or {})).get("numeric_precision_policy") or {}),
                     event_sequence_start=max(0, _as_int(logistics_runtime_state.get("next_event_sequence", 0), 0)),
+                    flow_solver_policy_registry=_policy_payload(policy_context, "core_flow_solver_policy_registry"),
+                    graph_partition_row=next(
+                        (
+                            dict(row)
+                            for row in list(state.get("graph_partitions") or [])
+                            if isinstance(row, dict) and str(row.get("graph_id", "")).strip() == selected_graph_id
+                        ),
+                        {},
+                    ),
                 )
             except LogisticsError as exc:
                 return refusal(
@@ -13457,6 +13469,34 @@ def execute_intent(
             if _as_int(ticked.get("remaining_count", 0), 0) > 0:
                 budget_outcome = "degraded"
             logistics_runtime_state["last_budget_outcome"] = budget_outcome
+            runtime_extensions = dict(logistics_runtime_state.get("extensions") or {})
+            runtime_extensions["last_flow_transfer_events"] = sorted(
+                [
+                    dict(row)
+                    for row in list(ticked.get("flow_transfer_events") or [])
+                    if isinstance(row, dict)
+                ],
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+            )
+            runtime_extensions["last_flow_cross_shard_plans"] = sorted(
+                [
+                    dict(row)
+                    for row in list(ticked.get("flow_cross_shard_plans") or [])
+                    if isinstance(row, dict)
+                ],
+                key=lambda row: (str(row.get("channel_id", "")), _as_int(row.get("tick", 0), 0)),
+            )
+            runtime_extensions["last_flow_channel_results"] = sorted(
+                [
+                    dict(row)
+                    for row in list(ticked.get("channel_results") or [])
+                    if isinstance(row, dict)
+                ],
+                key=lambda row: str(row.get("channel_id", "")),
+            )
+            runtime_extensions["last_flow_budget_outcome"] = str(ticked.get("budget_outcome", "complete"))
+            runtime_extensions["last_flow_cost_units"] = int(_as_int(ticked.get("cost_units", 0), 0))
+            logistics_runtime_state["extensions"] = runtime_extensions
 
             loss_entries = [
                 dict(row)
@@ -13509,6 +13549,8 @@ def execute_intent(
                 "processed_count": int(_as_int(ticked.get("processed_count", 0), 0)),
                 "remaining_count": int(_as_int(ticked.get("remaining_count", 0), 0)),
                 "event_count": len(list(ticked.get("events") or [])),
+                "flow_transfer_event_count": len(list(ticked.get("flow_transfer_events") or [])),
+                "flow_cross_shard_plan_count": len(list(ticked.get("flow_cross_shard_plans") or [])),
                 "loss_count": len(loss_entries),
                 "loss_entries": loss_entries,
                 "budget_outcome": str(logistics_runtime_state.get("last_budget_outcome", "complete")),

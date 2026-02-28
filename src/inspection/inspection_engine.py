@@ -17,6 +17,7 @@ _SECTION_IDS_BY_FIDELITY = {
     "macro": [
         "section.material_stocks",
         "section.flow_summary",
+        "section.flow_utilization",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
         "section.commitments_summary",
@@ -26,6 +27,7 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.material_stocks",
         "section.batches_summary",
         "section.flow_summary",
+        "section.flow_utilization",
         "section.ag_progress",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
@@ -37,6 +39,7 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.material_stocks",
         "section.batches_summary",
         "section.flow_summary",
+        "section.flow_utilization",
         "section.ag_progress",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
@@ -65,6 +68,7 @@ _DEFAULT_SECTION_ROWS = {
     "section.material_stocks": {"title": "Material Stocks", "extensions": {"cost_units": 1}},
     "section.batches_summary": {"title": "Batches Summary", "extensions": {"cost_units": 2}},
     "section.flow_summary": {"title": "Flow Summary", "extensions": {"cost_units": 1}},
+    "section.flow_utilization": {"title": "Flow Utilization", "extensions": {"cost_units": 1}},
     "section.networkgraph.summary": {"title": "NetworkGraph Summary", "extensions": {"cost_units": 1}},
     "section.networkgraph.route": {"title": "NetworkGraph Route", "extensions": {"cost_units": 2}},
     "section.networkgraph.capacity_utilization": {
@@ -398,10 +402,110 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
                 }
         manifests = [dict(item) for item in list((dict(state or {})).get("logistics_manifests") or []) if isinstance(item, dict)]
         status_counts: Dict[str, int] = {}
+        channel_rows = []
+        scale = 1 << 24
+        runtime_state = dict((dict(state or {})).get("logistics_runtime_state") or {})
+        runtime_ext = dict(runtime_state.get("extensions") or {})
+        latest_flow_results = {
+            str(item.get("channel_id", "")).strip(): dict(item)
+            for item in list(runtime_ext.get("last_flow_channel_results") or [])
+            if isinstance(item, dict) and str(item.get("channel_id", "")).strip()
+        }
         for item in manifests:
             status = str(item.get("status", "planned")).strip() or "planned"
             status_counts[status] = _as_int(status_counts.get(status, 0), 0) + 1
-        return {"manifest_count": len(manifests), "status_counts": dict((k, status_counts[k]) for k in sorted(status_counts.keys()))}
+            ext = dict(item.get("extensions") or {})
+            flow_channel = dict(ext.get("flow_channel") or {})
+            channel_id = str(flow_channel.get("channel_id", "")).strip() or str(ext.get("flow_channel_id", "")).strip()
+            if not channel_id:
+                continue
+            capacity_per_tick = flow_channel.get("capacity_per_tick")
+            if capacity_per_tick is None:
+                capacity_int = 0
+            else:
+                capacity_int = max(0, _as_int(capacity_per_tick, 0))
+            loss_fraction = max(0, _as_int(flow_channel.get("loss_fraction", ext.get("loss_fraction", 0)), 0))
+            quantity_mass = max(0, _as_int(item.get("quantity_mass", 0), 0))
+            latest = dict(latest_flow_results.get(channel_id) or {})
+            throughput = max(0, _as_int(latest.get("transferred_amount", 0), 0))
+            if throughput <= 0 and status in {"delivered", "lost"}:
+                est_loss = _as_int((quantity_mass * loss_fraction) // max(1, int(scale)), 0)
+                throughput = max(0, quantity_mass - max(0, est_loss))
+            utilization_permille = 0
+            if capacity_int > 0:
+                utilization_permille = int((1000 * throughput) // capacity_int)
+            channel_rows.append(
+                {
+                    "channel_id": channel_id,
+                    "manifest_id": str(item.get("manifest_id", "")).strip(),
+                    "capacity_per_tick": int(capacity_int),
+                    "throughput": int(throughput),
+                    "loss_fraction": int(loss_fraction),
+                    "utilization_permille": int(max(0, utilization_permille)),
+                    "status": status,
+                    "route_edge_count": len(_sorted_unique_strings(list(ext.get("route_edge_ids") or []))),
+                }
+            )
+        return {
+            "manifest_count": len(manifests),
+            "status_counts": dict((k, status_counts[k]) for k in sorted(status_counts.keys())),
+            "channel_count": len(channel_rows),
+            "channels": sorted(channel_rows, key=lambda row: str(row.get("channel_id", "")))[:128],
+        }
+    if section_id == "section.flow_utilization":
+        manifests = [dict(item) for item in list((dict(state or {})).get("logistics_manifests") or []) if isinstance(item, dict)]
+        runtime_state = dict((dict(state or {})).get("logistics_runtime_state") or {})
+        runtime_ext = dict(runtime_state.get("extensions") or {})
+        latest_flow_results = {
+            str(item.get("channel_id", "")).strip(): dict(item)
+            for item in list(runtime_ext.get("last_flow_channel_results") or [])
+            if isinstance(item, dict) and str(item.get("channel_id", "")).strip()
+        }
+        by_edge: Dict[str, dict] = {}
+        for manifest in sorted(manifests, key=lambda row: str(row.get("manifest_id", ""))):
+            ext = dict(manifest.get("extensions") or {})
+            flow_channel = dict(ext.get("flow_channel") or {})
+            channel_id = str(flow_channel.get("channel_id", "")).strip() or str(ext.get("flow_channel_id", "")).strip()
+            route_edge_ids = _sorted_unique_strings(list(ext.get("route_edge_ids") or []))
+            if not channel_id or not route_edge_ids:
+                continue
+            capacity = flow_channel.get("capacity_per_tick")
+            capacity_int = max(0, _as_int(capacity, 0)) if capacity is not None else 0
+            latest = dict(latest_flow_results.get(channel_id) or {})
+            throughput = max(0, _as_int(latest.get("transferred_amount", 0), 0))
+            for edge_id in route_edge_ids:
+                bucket = dict(by_edge.get(edge_id) or {"capacity": 0, "throughput": 0, "channel_count": 0})
+                bucket["capacity"] = _as_int(bucket.get("capacity", 0), 0) + int(capacity_int)
+                bucket["throughput"] = _as_int(bucket.get("throughput", 0), 0) + int(throughput)
+                bucket["channel_count"] = _as_int(bucket.get("channel_count", 0), 0) + 1
+                by_edge[edge_id] = bucket
+        edge_rows = []
+        capacity_total = 0
+        throughput_total = 0
+        for edge_id in sorted(by_edge.keys()):
+            row = dict(by_edge.get(edge_id) or {})
+            capacity = max(0, _as_int(row.get("capacity", 0), 0))
+            throughput = max(0, _as_int(row.get("throughput", 0), 0))
+            capacity_total += capacity
+            throughput_total += throughput
+            util = int((1000 * throughput) // capacity) if capacity > 0 else 0
+            edge_rows.append(
+                {
+                    "edge_id": edge_id,
+                    "capacity": int(capacity),
+                    "throughput": int(throughput),
+                    "utilization_permille": int(max(0, util)),
+                    "channel_count": int(max(0, _as_int(row.get("channel_count", 0), 0))),
+                }
+            )
+        total_util = int((1000 * throughput_total) // capacity_total) if capacity_total > 0 else 0
+        return {
+            "edge_count": len(edge_rows),
+            "capacity_total": int(capacity_total),
+            "throughput_total": int(throughput_total),
+            "utilization_permille": int(max(0, total_util)),
+            "edges": edge_rows[:256],
+        }
     if section_id == "section.networkgraph.summary":
         graph = _graph_row()
         node_rows = [dict(item) for item in list(graph.get("nodes") or []) if isinstance(item, dict)]

@@ -4,7 +4,10 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from src.core.flow.flow_engine import flow_transfer
+from src.core.flow.flow_engine import (
+    flow_solver_policy_rows_by_id,
+    tick_flow_channels,
+)
 from src.core.graph.network_graph_engine import (
     NetworkGraphError,
     normalize_network_graph as core_normalize_network_graph,
@@ -18,6 +21,10 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 REFUSAL_LOGISTICS_INSUFFICIENT_STOCK = "refusal.logistics.insufficient_stock"
 REFUSAL_LOGISTICS_INVALID_ROUTE = "refusal.logistics.invalid_route"
+REFUSAL_LOGISTICS_FLOW_FAILURE = "refusal.logistics.flow_failure"
+
+LOGISTICS_FLOW_QUANTITY_ID = "quantity.mass"
+LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID = "flow.coarse_default"
 
 _MANIFEST_TERMINAL_STATUSES = {"delivered", "lost", "failed"}
 
@@ -444,6 +451,73 @@ def _route_loss_fraction_raw(graph_row: Mapping[str, object], edge_ids: List[str
         ) from exc
 
 
+def _route_node_ids(graph_row: Mapping[str, object], *, from_node_id: str, edge_ids: List[str]) -> List[str]:
+    graph = normalize_logistics_graph(graph_row)
+    edge_index: Dict[str, dict] = {}
+    for edge in list(graph.get("edges") or []):
+        row = dict(edge or {})
+        edge_id = str(row.get("edge_id", "")).strip()
+        if edge_id:
+            edge_index[edge_id] = row
+    current = str(from_node_id).strip()
+    nodes = [current] if current else []
+    for edge_id in list(edge_ids or []):
+        row = dict(edge_index.get(str(edge_id).strip()) or {})
+        if not row:
+            return []
+        from_node = str(row.get("from_node_id", "")).strip()
+        to_node = str(row.get("to_node_id", "")).strip()
+        if current and from_node != current:
+            return []
+        current = to_node
+        if current:
+            nodes.append(current)
+    return nodes
+
+
+def _manifest_flow_channel(
+    *,
+    manifest_row: Mapping[str, object],
+    fallback_solver_policy_id: str = LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID,
+) -> dict:
+    row = dict(manifest_row or {})
+    ext = dict(row.get("extensions") or {})
+    flow_channel = dict(ext.get("flow_channel") or {})
+    if flow_channel:
+        return flow_channel
+    channel_id = str(ext.get("flow_channel_id", "")).strip()
+    if not channel_id:
+        channel_id = "flow.channel.{}".format(
+            canonical_sha256(
+                {
+                    "manifest_id": str(row.get("manifest_id", "")).strip(),
+                    "batch_id": str(row.get("batch_id", "")).strip(),
+                    "material_id": str(row.get("material_id", "")).strip(),
+                }
+            )[:20]
+        )
+    return {
+        "schema_version": "1.0.0",
+        "channel_id": channel_id,
+        "graph_id": str(row.get("graph_id", "")).strip(),
+        "quantity_id": str(ext.get("flow_quantity_id", "")).strip() or LOGISTICS_FLOW_QUANTITY_ID,
+        "source_node_id": str(row.get("from_node_id", "")).strip(),
+        "sink_node_id": str(row.get("to_node_id", "")).strip(),
+        "capacity_per_tick": None,
+        "delay_ticks": 0,
+        "loss_fraction": int(_as_int(ext.get("loss_fraction", 0), 0)),
+        "solver_policy_id": str(ext.get("flow_solver_policy_id", "")).strip() or str(fallback_solver_policy_id).strip() or LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID,
+        "priority": int(max(0, _as_int(ext.get("flow_priority", 0), 0))),
+        "extensions": {
+            "manifest_id": str(row.get("manifest_id", "")).strip(),
+            "batch_id": str(row.get("batch_id", "")).strip(),
+            "material_id": str(row.get("material_id", "")).strip(),
+            "route_edge_ids": _sorted_unique_strings(list(ext.get("route_edge_ids") or [])),
+            "route_node_ids": _sorted_unique_strings(list(ext.get("route_node_ids") or [])),
+        },
+    }
+
+
 def _manifest_fingerprint(manifest_row: Mapping[str, object]) -> str:
     seed = dict(manifest_row or {})
     seed["deterministic_fingerprint"] = ""
@@ -573,6 +647,7 @@ def create_manifest_and_commitment(
     intent_id: str,
     current_tick: int,
     numeric_policy: Mapping[str, object] | None = None,
+    flow_solver_policy_registry: Mapping[str, object] | None = None,
 ) -> Dict[str, object]:
     graph = normalize_logistics_graph(graph_row)
     routing_rule = _normalize_routing_rule(routing_rule_row)
@@ -620,10 +695,29 @@ def create_manifest_and_commitment(
         )
 
     route_edge_ids = _best_route(graph, source_node, destination_node, routing_rule)
+    route_node_ids = _route_node_ids(graph, from_node_id=source_node, edge_ids=route_edge_ids)
     policy = fixed_point_config_from_policy(numeric_policy)
     loss_fraction_raw = _route_loss_fraction_raw(graph, route_edge_ids, scale=int(policy.scale))
     depart_tick = int(max(int(_as_int(current_tick, 0)), int(_as_int(earliest_depart_tick, 0))))
     arrive_tick = int(depart_tick + _route_delay_ticks(graph, route_edge_ids))
+
+    solver_policies = flow_solver_policy_rows_by_id(flow_solver_policy_registry)
+    if not solver_policies:
+        solver_policies = {
+            LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID: {
+                "schema_version": "1.0.0",
+                "solver_policy_id": LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID,
+                "mode": "bulk",
+                "allow_partial_transfer": True,
+                "overflow_policy": "queue",
+                "extensions": {},
+            }
+        }
+    selected_solver_policy_id = str(
+        (dict(routing_rule.get("extensions") or {})).get("flow_solver_policy_id", "")
+    ).strip() or LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID
+    if selected_solver_policy_id not in solver_policies:
+        selected_solver_policy_id = LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID
 
     identity = {
         "graph_id": str(graph.get("graph_id", "")),
@@ -642,6 +736,27 @@ def create_manifest_and_commitment(
     digest = canonical_sha256(identity)
     manifest_id = "manifest.{}".format(digest[:20])
     commitment_id = "commitment.shipment.{}".format(digest[:20])
+    flow_channel_id = "flow.channel.{}".format(digest[:20])
+    flow_channel = {
+        "schema_version": "1.0.0",
+        "channel_id": flow_channel_id,
+        "graph_id": str(graph.get("graph_id", "")),
+        "quantity_id": LOGISTICS_FLOW_QUANTITY_ID,
+        "source_node_id": source_node,
+        "sink_node_id": destination_node,
+        "capacity_per_tick": None,
+        "delay_ticks": 0,
+        "loss_fraction": int(loss_fraction_raw),
+        "solver_policy_id": selected_solver_policy_id,
+        "priority": 0,
+        "extensions": {
+            "manifest_id": manifest_id,
+            "batch_id": batch_token,
+            "material_id": material_token,
+            "route_edge_ids": list(route_edge_ids),
+            "route_node_ids": list(route_node_ids),
+        },
+    }
 
     manifest = {
         "schema_version": "1.0.0",
@@ -660,12 +775,18 @@ def create_manifest_and_commitment(
         "extensions": {
             "routing_rule_id": str(routing_rule.get("rule_id", "")),
             "route_edge_ids": list(route_edge_ids),
+            "route_node_ids": list(route_node_ids),
             "loss_fraction": int(loss_fraction_raw),
             "commitment_id": commitment_id,
             "created_tick": int(_as_int(current_tick, 0)),
             "actor_subject_id": actor_token,
+            "flow_channel_id": flow_channel_id,
+            "flow_quantity_id": LOGISTICS_FLOW_QUANTITY_ID,
+            "flow_solver_policy_id": selected_solver_policy_id,
+            "flow_channel": dict(flow_channel),
             "reenactment_descriptor": {
                 "route_edge_ids": list(route_edge_ids),
+                "route_node_ids": list(route_node_ids),
                 "departure_tick": int(depart_tick),
                 "arrival_tick": int(arrive_tick),
                 "quantity_mass": int(quantity_mass_raw),
@@ -692,7 +813,9 @@ def create_manifest_and_commitment(
         "manifest": manifest,
         "commitment": commitment,
         "route_edge_ids": list(route_edge_ids),
+        "route_node_ids": list(route_node_ids),
         "loss_fraction": int(loss_fraction_raw),
+        "flow_channel": dict(flow_channel),
         "inventory_index": inventory,
     }
 
@@ -724,6 +847,8 @@ def tick_manifests(
     actor_subject_id: str,
     numeric_policy: Mapping[str, object] | None = None,
     event_sequence_start: int = 0,
+    flow_solver_policy_registry: Mapping[str, object] | None = None,
+    graph_partition_row: Mapping[str, object] | None = None,
 ) -> Dict[str, object]:
     graph = normalize_logistics_graph(graph_row)
     policy = fixed_point_config_from_policy(numeric_policy)
@@ -735,8 +860,22 @@ def tick_manifests(
     processed_count = 0
     remaining_count = 0
     events: List[dict] = []
+    flow_transfer_events: List[dict] = []
+    flow_cross_shard_plans: List[dict] = []
     sequence = int(max(0, _as_int(event_sequence_start, 0)))
     loss_entries: List[dict] = []
+    solver_policies = flow_solver_policy_rows_by_id(flow_solver_policy_registry)
+    if not solver_policies:
+        solver_policies = {
+            LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID: {
+                "schema_version": "1.0.0",
+                "solver_policy_id": LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID,
+                "mode": "bulk",
+                "allow_partial_transfer": True,
+                "overflow_policy": "queue",
+                "extensions": {},
+            }
+        }
 
     for manifest_id in sorted(manifest_map.keys()):
         row = dict(manifest_map.get(manifest_id) or {})
@@ -763,7 +902,6 @@ def tick_manifests(
         arrive_tick = int(_as_int(row.get("scheduled_arrive_tick", depart_tick), depart_tick))
         route_edge_ids = _sorted_unique_strings(list(extensions.get("route_edge_ids") or []))
         commitment_id = str(extensions.get("commitment_id", "")).strip() or str(commitment.get("commitment_id", "")).strip()
-        loss_fraction_raw = int(_as_int(extensions.get("loss_fraction", 0), 0))
 
         if status == "planned" and int(current_tick) >= int(depart_tick):
             source_inventory = _inventory_ensure(inventory, source_node)
@@ -803,15 +941,54 @@ def tick_manifests(
                 status = "in_transit"
 
         if str(row.get("status", "")).strip() == "in_transit" and int(current_tick) >= int(arrive_tick):
-            flow_result = flow_transfer(
-                quantity=int(quantity_mass),
-                loss_fraction=int(loss_fraction_raw),
-                scale=int(policy.scale),
-                capacity_per_tick=None,
-                delay_ticks=0,
+            flow_channel = _manifest_flow_channel(
+                manifest_row=row,
+                fallback_solver_policy_id=LOGISTICS_FLOW_DEFAULT_SOLVER_POLICY_ID,
             )
-            loss_mass = int(flow_result.get("loss_mass", 0))
-            delivered_mass = int(flow_result.get("delivered_mass", 0))
+            try:
+                flow_tick = tick_flow_channels(
+                    channels=[flow_channel],
+                    node_balances={
+                        str(flow_channel.get("source_node_id", "")): int(quantity_mass),
+                        str(flow_channel.get("sink_node_id", "")): 0,
+                    },
+                    current_tick=int(current_tick),
+                    fixed_point_scale=int(policy.scale),
+                    solver_policies=solver_policies,
+                    conserved_quantity_ids=[LOGISTICS_FLOW_QUANTITY_ID],
+                    max_channels=1,
+                    strict_budget=False,
+                    sink_capacities={},
+                    channel_runtime={},
+                    graph_row=_core_graph_payload(graph),
+                    partition_row=graph_partition_row,
+                    cost_units_per_channel=1,
+                )
+            except Exception as exc:
+                raise LogisticsError(
+                    REFUSAL_LOGISTICS_FLOW_FAILURE,
+                    "flow channel tick failed during manifest delivery",
+                    {
+                        "manifest_id": manifest_id,
+                        "channel_id": str(flow_channel.get("channel_id", "")),
+                        "error": str(exc),
+                    },
+                ) from exc
+
+            flow_transfer_events.extend(
+                dict(item)
+                for item in list(flow_tick.get("transfer_events") or [])
+                if isinstance(item, dict)
+            )
+            flow_cross_shard_plans.extend(
+                dict(item)
+                for item in list(flow_tick.get("cross_shard_transfer_plans") or [])
+                if isinstance(item, dict)
+            )
+            channel_results = list(flow_tick.get("channel_results") or [])
+            channel_result = dict(channel_results[0] if channel_results else {})
+            loss_mass = int(_as_int(channel_result.get("lost_amount", 0), 0))
+            delivered_mass = int(_as_int(channel_result.get("transferred_amount", 0), 0))
             if delivered_mass > 0:
                 _inventory_apply(
                     inventory,
@@ -836,6 +1013,10 @@ def tick_manifests(
             sequence += 1
             events.append(arrive_event)
             provenance_event_ids = _sorted_unique_strings(provenance_event_ids + [str(arrive_event.get("event_id", ""))])
+            extensions["flow_channel"] = dict(flow_channel)
+            if flow_transfer_events:
+                latest_flow_event = dict(flow_transfer_events[-1])
+                extensions["last_flow_transfer_event_id"] = str(latest_flow_event.get("event_id", "")).strip()
 
             if loss_mass > 0:
                 loss_event = _event_row(
@@ -885,6 +1066,14 @@ def tick_manifests(
         "commitments": commitment_rows,
         "inventory_index": inventory,
         "events": sorted(events, key=lambda item: (int(item.get("tick", 0)), str(item.get("event_id", "")))),
+        "flow_transfer_events": sorted(
+            (dict(item) for item in flow_transfer_events if isinstance(item, dict)),
+            key=lambda item: (int(item.get("tick", 0)), str(item.get("event_id", ""))),
+        ),
+        "flow_cross_shard_plans": sorted(
+            (dict(item) for item in flow_cross_shard_plans if isinstance(item, dict)),
+            key=lambda item: (str(item.get("channel_id", "")), int(item.get("tick", 0))),
+        ),
         "processed_count": int(processed_count),
         "remaining_count": int(remaining_count),
         "loss_entries": sorted(

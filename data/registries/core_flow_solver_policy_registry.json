@@ -9,18 +9,30 @@
         "schema_version": "1.0.0",
         "solver_policy_id": "flow.coarse_default",
         "description": "Coarse deterministic per-channel capacity/delay/loss propagation.",
-        "solver_kind": "coarse_deterministic",
+        "mode": "bulk",
+        "allow_partial_transfer": true,
+        "overflow_policy": "queue",
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "solver_policy_id": "flow.batch_tick",
         "description": "Deterministic chunked flow updates under budget pressure.",
-        "solver_kind": "coarse_batch_tick",
+        "mode": "bulk",
+        "allow_partial_transfer": true,
+        "overflow_policy": "queue",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "solver_policy_id": "flow.segmented_stub",
+        "description": "Deterministic segmented flow updates for future meso occupancy models.",
+        "mode": "segmented",
+        "allow_partial_transfer": false,
+        "overflow_policy": "refuse",
         "extensions": {}
       }
     ],
     "extensions": {}
   }
 }
-
