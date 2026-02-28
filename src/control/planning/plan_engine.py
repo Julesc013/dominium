@@ -12,6 +12,7 @@ from src.materials.blueprint_engine import (
     build_blueprint_ghost_overlay,
     compile_blueprint_artifacts,
 )
+from src.control.capability import capability_binding_rows, has_capability
 
 from ..control_plane_engine import build_control_intent, build_control_resolution
 from ..ir.control_ir_programs import build_blueprint_execution_ir
@@ -94,6 +95,30 @@ def _target_context_ref(target_context: Mapping[str, object]) -> str:
         if token:
             return token
     return "site.unknown"
+
+
+def _capability_bindings(policy_context: Mapping[str, object] | None) -> List[dict]:
+    payload = _as_map(policy_context)
+    for key in ("capability_bindings", "capability_binding_registry"):
+        value = payload.get(key)
+        if isinstance(value, (dict, list)):
+            return capability_binding_rows(value)
+    return []
+
+
+def _plan_target_entity_id(plan_intent: Mapping[str, object]) -> str:
+    row = _as_map(plan_intent)
+    params = _as_map(row.get("parameters"))
+    for token in (
+        params.get("target_entity_id"),
+        params.get("target_id"),
+        _as_map(row.get("target_context")).get("spatial_node_id"),
+        _as_map(row.get("target_context")).get("site_ref"),
+    ):
+        value = str(token or "").strip()
+        if value:
+            return value
+    return ""
 
 
 def _refusal(
@@ -279,13 +304,22 @@ def create_plan_artifact(
     params = _as_map(intent.get("parameters"))
     blueprint_id = str(params.get("blueprint_id", "")).strip()
     site_ref = str(_target_context_ref(intent.get("target_context"))).strip()
+    plan_target_entity_id = _plan_target_entity_id(intent)
+    capability_rows = _capability_bindings(policy_context)
+    target_can_be_planned = bool(plan_type_id == "structure")
+    if plan_target_entity_id and capability_rows:
+        target_can_be_planned = has_capability(
+            entity_id=plan_target_entity_id,
+            capability_id="capability.can_be_planned",
+            capability_bindings=capability_rows,
+        )
     compile_cost_units = 1
     ag_node_ids = []
     compiled_blueprint_ref = None
     estimated_bom_ref = None
     required_resources_summary = _as_map(params.get("required_resources_summary"))
     spatial_preview_data = _fallback_preview(params, plan_id)
-    if plan_type_id == "structure" and blueprint_id:
+    if blueprint_id and target_can_be_planned:
         try:
             compiled = compile_blueprint_artifacts(
                 repo_root=str(repo_root or ""),
@@ -331,7 +365,7 @@ def create_plan_artifact(
     control_intent = build_control_intent(
         requester_subject_id=str(intent.get("requester_subject_id", "")),
         requested_action_id="action.plan.blueprint",
-        target_kind="structure" if plan_type_id == "structure" else "surface",
+        target_kind="structure" if target_can_be_planned else "surface",
         target_id=site_ref,
         parameters={"plan_intent_id": str(intent.get("plan_intent_id", "")), "plan_id": str(plan_id), "plan_type_id": str(plan_type_id), "plan_compile_cost_units": int(compile_cost_units), "site_ref": site_ref},
         abstraction_level_requested="AL3",
@@ -376,6 +410,8 @@ def create_plan_artifact(
             "blueprint_id": blueprint_id or None,
             "site_ref": site_ref,
             "ag_node_ids": list(ag_node_ids),
+            "target_entity_id": plan_target_entity_id or None,
+            "target_can_be_planned": bool(target_can_be_planned),
         },
     }
     seed = dict(artifact)
@@ -422,7 +458,8 @@ def build_plan_execution_ir(*, plan_artifact: Mapping[str, object], actor_subjec
     blueprint_id = str(ext.get("blueprint_id", "")).strip() or str(artifact.get("compiled_blueprint_ref", "")).strip()
     site_ref = str(ext.get("site_ref", "")).strip() or _target_context_ref(ext.get("target_context"))
     ag_node_ids = _sorted_unique_strings(ext.get("ag_node_ids"))
-    if plan_type_id == "structure" and blueprint_id:
+    target_can_be_planned = bool(ext.get("target_can_be_planned", plan_type_id == "structure"))
+    if blueprint_id and target_can_be_planned:
         return {"result": "complete", "ir_program": build_blueprint_execution_ir(project_id=str(plan_id), blueprint_id=str(blueprint_id), site_ref=site_ref or "site.unknown", ag_node_ids=list(ag_node_ids), actor_subject_id=str(actor_subject_id).strip() or "subject.system", tick=int(max(0, int(tick))))}
     step_rows = [dict(item) for item in list(ext.get("manual_steps") or []) if isinstance(item, Mapping)]
     return {"result": "complete", "ir_program": _generic_plan_execution_ir(str(plan_id), str(plan_type_id), str(actor_subject_id).strip() or "subject.system", step_rows, int(max(0, int(tick))))}
