@@ -30,6 +30,9 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.flow_utilization",
         "section.interior.layout",
         "section.interior.portal_states",
+        "section.interior.pressure_map",
+        "section.interior.flood_map",
+        "section.interior.portal_leaks",
         "section.ag_progress",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
@@ -44,6 +47,9 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.flow_utilization",
         "section.interior.layout",
         "section.interior.portal_states",
+        "section.interior.pressure_map",
+        "section.interior.flood_map",
+        "section.interior.portal_leaks",
         "section.ag_progress",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
@@ -81,6 +87,9 @@ _DEFAULT_SECTION_ROWS = {
     },
     "section.interior.layout": {"title": "Interior Layout", "extensions": {"cost_units": 2}},
     "section.interior.portal_states": {"title": "Interior Portal States", "extensions": {"cost_units": 2}},
+    "section.interior.pressure_map": {"title": "Interior Pressure Map", "extensions": {"cost_units": 2}},
+    "section.interior.flood_map": {"title": "Interior Flood Map", "extensions": {"cost_units": 2}},
+    "section.interior.portal_leaks": {"title": "Interior Portal Leaks", "extensions": {"cost_units": 2}},
     "section.ag_progress": {"title": "Assembly Progress", "extensions": {"cost_units": 2}},
     "section.maintenance_backlog": {"title": "Maintenance Backlog", "extensions": {"cost_units": 1}},
     "section.failure_risk_summary": {"title": "Failure Risk Summary", "extensions": {"cost_units": 1}},
@@ -428,6 +437,32 @@ def _graph_for_target(state: Mapping[str, object], target_payload: Mapping[str, 
     return {}
 
 
+def _compartment_rows_for_graph(state: Mapping[str, object], graph: Mapping[str, object]) -> List[dict]:
+    graph_volume_ids = set(_sorted_unique_strings((dict(graph or {})).get("volumes")))
+    rows = []
+    for row in list((dict(state or {})).get("compartment_states") or []):
+        if not isinstance(row, dict):
+            continue
+        volume_id = str(row.get("volume_id", "")).strip()
+        if not volume_id or volume_id not in graph_volume_ids:
+            continue
+        rows.append(dict(row))
+    return sorted(rows, key=lambda item: str(item.get("volume_id", "")))
+
+
+def _leak_rows_for_graph(state: Mapping[str, object], graph: Mapping[str, object]) -> List[dict]:
+    graph_volume_ids = set(_sorted_unique_strings((dict(graph or {})).get("volumes")))
+    rows = []
+    for row in list((dict(state or {})).get("interior_leak_hazards") or []):
+        if not isinstance(row, dict):
+            continue
+        volume_id = str(row.get("volume_id", "")).strip()
+        if not volume_id or volume_id not in graph_volume_ids:
+            continue
+        rows.append(dict(row))
+    return sorted(rows, key=lambda item: str(item.get("leak_id", "")))
+
+
 def _build_section_data(section_id: str, *, state: Mapping[str, object], target_payload: Mapping[str, object], request: Mapping[str, object], quant_step: int, include_part_ids: bool) -> dict:
     row = dict(target_payload.get("row") or {})
     payload_extensions = dict(target_payload.get("extensions") or {})
@@ -688,6 +723,103 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
             "graph_id": str(graph.get("graph_id", "")).strip(),
             "portal_count": len(portal_states),
             "portal_states": sorted(portal_states, key=lambda item: str(item.get("portal_id", "")))[:256],
+        }
+    if section_id == "section.interior.pressure_map":
+        graph = _graph_for_target(state, target_payload, request)
+        if not graph:
+            return {"available": False, "graph_id": "", "rows": []}
+        pressure_rows = []
+        for row in _compartment_rows_for_graph(state, graph):
+            volume_id = str(row.get("volume_id", "")).strip()
+            if not volume_id:
+                continue
+            pressure = _quantize_map({"value": max(0, _as_int(row.get("derived_pressure", 0), 0))}, step=quant_step).get("value", 0)
+            oxygen = _quantize_map({"value": max(0, _as_int(row.get("oxygen_fraction", 0), 0))}, step=quant_step).get("value", 0)
+            pressure_rows.append(
+                {
+                    "volume_id": volume_id,
+                    "derived_pressure": int(pressure),
+                    "oxygen_fraction": int(oxygen),
+                }
+            )
+        pressure_rows = sorted(pressure_rows, key=lambda item: str(item.get("volume_id", "")))
+        min_pressure = min((int(item.get("derived_pressure", 0)) for item in pressure_rows), default=0)
+        max_pressure = max((int(item.get("derived_pressure", 0)) for item in pressure_rows), default=0)
+        return {
+            "available": True,
+            "graph_id": str(graph.get("graph_id", "")).strip(),
+            "rows": pressure_rows[:512],
+            "volume_count": len(pressure_rows),
+            "min_pressure": int(min_pressure),
+            "max_pressure": int(max_pressure),
+        }
+    if section_id == "section.interior.flood_map":
+        graph = _graph_for_target(state, target_payload, request)
+        if not graph:
+            return {"available": False, "graph_id": "", "rows": []}
+        flood_rows = []
+        for row in _compartment_rows_for_graph(state, graph):
+            volume_id = str(row.get("volume_id", "")).strip()
+            if not volume_id:
+                continue
+            water_volume = _quantize_map({"value": max(0, _as_int(row.get("water_volume", 0), 0))}, step=quant_step).get("value", 0)
+            smoke_density = _quantize_map({"value": max(0, _as_int(row.get("smoke_density", 0), 0))}, step=quant_step).get("value", 0)
+            flood_rows.append(
+                {
+                    "volume_id": volume_id,
+                    "water_volume": int(water_volume),
+                    "smoke_density": int(smoke_density),
+                }
+            )
+        flood_rows = sorted(flood_rows, key=lambda item: str(item.get("volume_id", "")))
+        flooded_count = len([item for item in flood_rows if int(item.get("water_volume", 0)) > 0])
+        return {
+            "available": True,
+            "graph_id": str(graph.get("graph_id", "")).strip(),
+            "rows": flood_rows[:512],
+            "volume_count": len(flood_rows),
+            "flooded_count": int(flooded_count),
+        }
+    if section_id == "section.interior.portal_leaks":
+        graph = _graph_for_target(state, target_payload, request)
+        if not graph:
+            return {"available": False, "graph_id": "", "leaks": [], "portal_flow_rows": []}
+        portal_ids = _sorted_unique_strings((dict(graph or {})).get("portals"))
+        portal_rows_by_id = _row_index((dict(state or {})).get("interior_portals"), "portal_id")
+        portal_flow_rows_by_id = _row_index((dict(state or {})).get("portal_flow_params"), "portal_id")
+        leak_rows = []
+        for row in _leak_rows_for_graph(state, graph):
+            leak_rows.append(
+                {
+                    "leak_id": str(row.get("leak_id", "")).strip(),
+                    "volume_id": str(row.get("volume_id", "")).strip(),
+                    "leak_rate_air": int(_quantize_map({"value": max(0, _as_int(row.get("leak_rate_air", 0), 0))}, step=quant_step).get("value", 0)),
+                    "leak_rate_water": int(_quantize_map({"value": max(0, _as_int(row.get("leak_rate_water", 0), 0))}, step=quant_step).get("value", 0)),
+                    "hazard_model_id": str(row.get("hazard_model_id", "")).strip(),
+                }
+            )
+        flow_rows = []
+        for portal_id in portal_ids:
+            portal_row = dict(portal_rows_by_id.get(portal_id) or {})
+            flow_row = dict(portal_flow_rows_by_id.get(portal_id) or {})
+            if not portal_row and not flow_row:
+                continue
+            flow_rows.append(
+                {
+                    "portal_id": portal_id,
+                    "portal_type_id": str(portal_row.get("portal_type_id", "")).strip(),
+                    "sealing_coefficient": int(_quantize_map({"value": max(0, _as_int(flow_row.get("sealing_coefficient", portal_row.get("sealing_coefficient", 0)), 0))}, step=quant_step).get("value", 0)),
+                    "conductance_air": int(_quantize_map({"value": max(0, _as_int(flow_row.get("conductance_air", 0), 0))}, step=quant_step).get("value", 0)),
+                    "conductance_water": int(_quantize_map({"value": max(0, _as_int(flow_row.get("conductance_water", 0), 0))}, step=quant_step).get("value", 0)),
+                    "conductance_smoke": int(_quantize_map({"value": max(0, _as_int(flow_row.get("conductance_smoke", 0), 0))}, step=quant_step).get("value", 0)),
+                }
+            )
+        return {
+            "available": True,
+            "graph_id": str(graph.get("graph_id", "")).strip(),
+            "leak_count": len(leak_rows),
+            "leaks": sorted(leak_rows, key=lambda item: str(item.get("leak_id", "")))[:256],
+            "portal_flow_rows": sorted(flow_rows, key=lambda item: str(item.get("portal_id", "")))[:256],
         }
     if section_id == "section.ag_progress":
         projects = [dict(item) for item in list((dict(state or {})).get("construction_projects") or []) if isinstance(item, dict)]

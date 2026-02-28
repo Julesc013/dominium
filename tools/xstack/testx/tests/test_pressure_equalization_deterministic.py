@@ -1,0 +1,109 @@
+"""FAST test: INT-2 pressure equalization over compartment flows is deterministic."""
+
+from __future__ import annotations
+
+import copy
+import os
+import sys
+
+
+TEST_ID = "testx.interior.pressure_equalization_deterministic"
+TEST_TAGS = ["fast", "interior", "flow", "pressure", "determinism"]
+
+
+def _states() -> list[dict]:
+    return [
+        {
+            "schema_version": "1.0.0",
+            "volume_id": "volume.a",
+            "air_mass": 3000,
+            "water_volume": 0,
+            "temperature": None,
+            "oxygen_fraction": 210,
+            "smoke_density": 0,
+            "derived_pressure": 0,
+            "extensions": {},
+        },
+        {
+            "schema_version": "1.0.0",
+            "volume_id": "volume.b",
+            "air_mass": 0,
+            "water_volume": 0,
+            "temperature": None,
+            "oxygen_fraction": 210,
+            "smoke_density": 0,
+            "derived_pressure": 0,
+            "extensions": {},
+        },
+    ]
+
+
+def run(repo_root: str):
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    test_dir = os.path.dirname(os.path.abspath(__file__))
+    if test_dir not in sys.path:
+        sys.path.insert(0, test_dir)
+
+    from interior_testlib import (
+        compartment_flow_policy_row,
+        flow_solver_policy_registry,
+        interior_graph,
+        portal_flow_template_registry,
+        portal_rows,
+        portal_state_rows,
+        volume_rows,
+    )
+    from src.interior.compartment_flow_engine import tick_compartment_flows
+    from tools.xstack.compatx.canonical_json import canonical_sha256
+
+    common_kwargs = {
+        "interior_graph_row": interior_graph(),
+        "volume_rows": volume_rows(),
+        "portal_rows": portal_rows(),
+        "portal_state_rows": portal_state_rows(state_id="open"),
+        "portal_flow_param_rows": [],
+        "leak_hazard_rows": [],
+        "leak_hazard_models": [],
+        "portal_flow_template_registry": portal_flow_template_registry(),
+        "compartment_flow_policy_row": compartment_flow_policy_row(),
+        "flow_solver_policy_registry": flow_solver_policy_registry(),
+        "current_tick": 0,
+        "dt_ticks": 4,
+        "fixed_point_scale": 1000,
+        "channel_runtime": {},
+        "outside_reservoir": {},
+        "include_smoke": False,
+        "conserved_quantity_ids": ["quantity.mass"],
+        "graph_partition_row": None,
+        "cost_units_per_channel": 1,
+        "cost_units_per_hazard": 1,
+    }
+
+    first = tick_compartment_flows(compartment_state_rows=_states(), **common_kwargs)
+    second = tick_compartment_flows(compartment_state_rows=_states(), **common_kwargs)
+
+    if first != second:
+        return {"status": "fail", "message": "pressure equalization tick diverged across equivalent inputs"}
+    if canonical_sha256(first) != canonical_sha256(second):
+        return {"status": "fail", "message": "pressure equalization hash mismatch"}
+
+    state_rows = sorted(
+        [dict(row) for row in list(first.get("states") or []) if isinstance(row, dict)],
+        key=lambda row: str(row.get("volume_id", "")),
+    )
+    if len(state_rows) != 2:
+        return {"status": "fail", "message": "expected two compartment states after pressure equalization"}
+
+    by_id = dict((str(row.get("volume_id", "")).strip(), row) for row in state_rows)
+    a_air = int((dict(by_id.get("volume.a") or {})).get("air_mass", -1))
+    b_air = int((dict(by_id.get("volume.b") or {})).get("air_mass", -1))
+    if a_air >= 3000 or b_air <= 0:
+        return {"status": "fail", "message": "air mass did not equalize across connected compartments"}
+
+    a_pressure = int((dict(by_id.get("volume.a") or {})).get("derived_pressure", 0))
+    b_pressure = int((dict(by_id.get("volume.b") or {})).get("derived_pressure", 0))
+    if abs(a_pressure - b_pressure) >= 3000:
+        return {"status": "fail", "message": "pressure delta remained unrealistically high after equalization"}
+
+    return {"status": "pass", "message": "compartment pressure equalization deterministic behavior passed"}

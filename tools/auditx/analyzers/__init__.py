@@ -123,6 +123,8 @@ from analyzers import e94_duplicate_scheduler_smell
 from analyzers import e95_hazard_logic_duplication_smell
 from analyzers import e96_interior_occlusion_leak_smell
 from analyzers import e97_duplicate_interior_graph_smell
+from analyzers import e98_compartment_flow_duplication_smell
+from analyzers import e99_instrument_truth_leak_smell
 
 
 ANALYZERS = (
@@ -249,6 +251,8 @@ ANALYZERS = (
     e95_hazard_logic_duplication_smell,
     e96_interior_occlusion_leak_smell,
     e97_duplicate_interior_graph_smell,
+    e98_compartment_flow_duplication_smell,
+    e99_instrument_truth_leak_smell,
 )
 
 

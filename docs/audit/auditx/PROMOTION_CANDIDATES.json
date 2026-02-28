@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 8,
+  "candidate_count": 11,
   "candidates": [
     {
       "evidence_paths": [
@@ -13,7 +13,6 @@
     },
     {
       "evidence_paths": [
-        "data/registries/interaction_action_registry.json",
         "tools/xstack/registry_compile/constants.py",
         "tools/xstack/sessionx/runner.py"
       ],
@@ -37,6 +36,36 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.675,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/core/schedule/schedule_engine.py",
+        "src/materials/maintenance/decay_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.66,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/client/interaction/inspection_overlays.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.645,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/client/interaction/inspection_overlays.py",
+        "src/core/state/state_machine_engine.py",
+        "src/machines/port_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.645,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },

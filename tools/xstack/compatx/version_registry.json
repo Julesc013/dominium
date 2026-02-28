@@ -644,6 +644,20 @@
         "1.0.0"
       ]
     },
+    "compartment_flow_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "portal_flow_template_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "portal_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},

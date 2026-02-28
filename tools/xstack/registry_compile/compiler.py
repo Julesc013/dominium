@@ -4562,6 +4562,270 @@ def _materials_structure_registry_rows(
     return part_class_rows, connection_type_rows, blueprint_rows, errors
 
 
+def _interior_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _volume_type_record, volume_type_rows_raw, volume_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/interior_volume_type_registry.json",
+        expected_schema_id="dominium.registry.interior_volume_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="volume_types",
+    )
+    if volume_type_load_errors:
+        return [], [], [], [], volume_type_load_errors
+
+    _portal_type_record, portal_type_rows_raw, portal_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/portal_type_registry.json",
+        expected_schema_id="dominium.registry.portal_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="portal_types",
+    )
+    if portal_type_load_errors:
+        return [], [], [], [], portal_type_load_errors
+
+    _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/compartment_flow_policy_registry.json",
+        expected_schema_id="dominium.registry.compartment_flow_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], [], [], policy_load_errors
+
+    _template_record, template_rows_raw, template_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/portal_flow_template_registry.json",
+        expected_schema_id="dominium.registry.portal_flow_template_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="templates",
+    )
+    if template_load_errors:
+        return [], [], [], [], template_load_errors
+
+    volume_type_rows: List[dict] = []
+    volume_type_ids = set()
+    for entry in sorted(volume_type_rows_raw, key=lambda row: str((row or {}).get("volume_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_interior_volume_type_entry",
+                    "message": "interior volume type entry must be object",
+                    "path": "$.volume_types",
+                }
+            )
+            continue
+        volume_type_id = str(entry.get("volume_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if not volume_type_id or not description or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_interior_volume_type_entry",
+                    "message": "interior volume type entry missing required fields",
+                    "path": "$.volume_types",
+                }
+            )
+            continue
+        if volume_type_id in volume_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_interior_volume_type_id",
+                    "message": "duplicate interior volume_type_id '{}'".format(volume_type_id),
+                    "path": "$.volume_types.volume_type_id",
+                }
+            )
+            continue
+        volume_type_ids.add(volume_type_id)
+        volume_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "volume_type_id": volume_type_id,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    volume_type_rows = sorted(volume_type_rows, key=lambda row: str(row.get("volume_type_id", "")))
+
+    portal_type_rows: List[dict] = []
+    portal_type_ids = set()
+    for entry in sorted(portal_type_rows_raw, key=lambda row: str((row or {}).get("portal_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_portal_type_entry",
+                    "message": "portal type entry must be object",
+                    "path": "$.portal_types",
+                }
+            )
+            continue
+        portal_type_id = str(entry.get("portal_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if not portal_type_id or not description or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_portal_type_entry",
+                    "message": "portal type entry missing required fields",
+                    "path": "$.portal_types",
+                }
+            )
+            continue
+        if portal_type_id in portal_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_portal_type_id",
+                    "message": "duplicate portal_type_id '{}'".format(portal_type_id),
+                    "path": "$.portal_types.portal_type_id",
+                }
+            )
+            continue
+        portal_type_ids.add(portal_type_id)
+        portal_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "portal_type_id": portal_type_id,
+                "description": description,
+                "extensions": dict(extensions),
+            }
+        )
+    portal_type_rows = sorted(portal_type_rows, key=lambda row: str(row.get("portal_type_id", "")))
+
+    policy_rows: List[dict] = []
+    policy_ids = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compartment_flow_policy_entry",
+                    "message": "compartment flow policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("policy_id", "")).strip()
+        flow_solver_policy_id = str(entry.get("flow_solver_policy_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if not policy_id or not flow_solver_policy_id or not description or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compartment_flow_policy_entry",
+                    "message": "compartment flow policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if policy_id in policy_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_compartment_flow_policy_id",
+                    "message": "duplicate compartment flow policy id '{}'".format(policy_id),
+                    "path": "$.policies.policy_id",
+                }
+            )
+            continue
+        policy_ids.add(policy_id)
+        policy_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "policy_id": policy_id,
+                "description": description,
+                "flow_solver_policy_id": flow_solver_policy_id,
+                "update_interval_ticks": int(max(0, _as_int(entry.get("update_interval_ticks", 1), 1))),
+                "max_substep_ticks": int(max(0, _as_int(entry.get("max_substep_ticks", 16), 16))),
+                "strict_budget": bool(entry.get("strict_budget", False)),
+                "max_channels_per_tick": int(max(0, _as_int(entry.get("max_channels_per_tick", 1024), 1024))),
+                "max_hazards_per_tick": int(max(0, _as_int(entry.get("max_hazards_per_tick", 1024), 1024))),
+                "pressure_warn_threshold": int(max(0, _as_int(entry.get("pressure_warn_threshold", 200), 200))),
+                "pressure_danger_threshold": int(max(0, _as_int(entry.get("pressure_danger_threshold", 100), 100))),
+                "oxygen_warn_fraction": int(max(0, _as_int(entry.get("oxygen_warn_fraction", 190), 190))),
+                "oxygen_danger_fraction": int(max(0, _as_int(entry.get("oxygen_danger_fraction", 150), 150))),
+                "smoke_warn_density": int(max(0, _as_int(entry.get("smoke_warn_density", 200), 200))),
+                "smoke_danger_density": int(max(0, _as_int(entry.get("smoke_danger_density", 450), 450))),
+                "flood_warn_volume": int(max(0, _as_int(entry.get("flood_warn_volume", 250), 250))),
+                "flood_danger_volume": int(max(0, _as_int(entry.get("flood_danger_volume", 700), 700))),
+                "movement_slow_flood_volume": int(
+                    max(0, _as_int(entry.get("movement_slow_flood_volume", 350), 350))
+                ),
+                "movement_block_flood_volume": int(
+                    max(0, _as_int(entry.get("movement_block_flood_volume", 850), 850))
+                ),
+                "extensions": dict(extensions),
+            }
+        )
+    policy_rows = sorted(policy_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    template_rows: List[dict] = []
+    template_ids = set()
+    for entry in sorted(template_rows_raw, key=lambda row: str((row or {}).get("template_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_portal_flow_template_entry",
+                    "message": "portal flow template entry must be object",
+                    "path": "$.templates",
+                }
+            )
+            continue
+        template_id = str(entry.get("template_id", "")).strip()
+        portal_type_id = str(entry.get("portal_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if not template_id or not portal_type_id or not description or not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_portal_flow_template_entry",
+                    "message": "portal flow template entry missing required fields",
+                    "path": "$.templates",
+                }
+            )
+            continue
+        if template_id in template_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_portal_flow_template_id",
+                    "message": "duplicate portal flow template id '{}'".format(template_id),
+                    "path": "$.templates.template_id",
+                }
+            )
+            continue
+        if portal_type_id not in portal_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.portal_flow_template_portal_type_missing",
+                    "message": "portal flow template '{}' references unknown portal_type_id '{}'".format(
+                        template_id,
+                        portal_type_id,
+                    ),
+                    "path": "$.templates.portal_type_id",
+                }
+            )
+            continue
+        template_ids.add(template_id)
+        template_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "template_id": template_id,
+                "description": description,
+                "portal_type_id": portal_type_id,
+                "conductance_air": int(max(0, _as_int(entry.get("conductance_air", 0), 0))),
+                "conductance_water": int(max(0, _as_int(entry.get("conductance_water", 0), 0))),
+                "conductance_smoke": int(max(0, _as_int(entry.get("conductance_smoke", 0), 0))),
+                "sealing_coefficient": int(max(0, _as_int(entry.get("sealing_coefficient", 0), 0))),
+                "open_state_multiplier": int(max(0, _as_int(entry.get("open_state_multiplier", 1000), 1000))),
+                "extensions": dict(extensions),
+            }
+        )
+    template_rows = sorted(template_rows, key=lambda row: str(row.get("template_id", "")))
+
+    return volume_type_rows, portal_type_rows, policy_rows, template_rows, errors
+
+
 def _core_abstraction_registry_rows(
     repo_root: str,
 ) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
@@ -9453,6 +9717,15 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        interior_volume_type_rows,
+        portal_type_rows,
+        compartment_flow_policy_rows,
+        portal_flow_template_rows,
+        interior_registry_errors,
+    ) = _interior_registry_rows(
+        repo_root=repo_root,
+    )
+    (
         core_routing_policy_rows,
         core_flow_solver_policy_rows,
         core_constraint_type_rows,
@@ -9740,6 +10013,7 @@ def compile_bundle(
         + materials_dimension_registry_errors
         + material_taxonomy_registry_errors
         + material_structure_registry_errors
+        + interior_registry_errors
         + core_abstraction_registry_errors
         + logistics_registry_errors
         + construction_registry_errors
@@ -9972,6 +10246,34 @@ def compile_bundle(
             "blueprints": blueprint_rows,
         }
     )
+    interior_volume_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "volume_types": interior_volume_type_rows,
+        }
+    )
+    portal_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "portal_types": portal_type_rows,
+        }
+    )
+    compartment_flow_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": compartment_flow_policy_rows,
+        }
+    )
+    portal_flow_template_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "templates": portal_flow_template_rows,
+        }
+    )
     core_routing_policy_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -10126,7 +10428,7 @@ def compile_bundle(
             "surface_types": surface_type_rows,
         }
     )
-    port_type_payload = _finalize_registry_payload(
+    machine_port_type_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
@@ -10534,6 +10836,19 @@ def compile_bundle(
         "part_class_registry": ("part_class_registry", part_class_payload),
         "connection_type_registry": ("connection_type_registry", connection_type_payload),
         "blueprint_registry": ("blueprint_registry", blueprint_payload),
+        "interior_volume_type_registry": (
+            "interior_volume_type_registry",
+            interior_volume_type_payload,
+        ),
+        "portal_type_registry": ("portal_type_registry", portal_type_payload),
+        "compartment_flow_policy_registry": (
+            "compartment_flow_policy_registry",
+            compartment_flow_policy_payload,
+        ),
+        "portal_flow_template_registry": (
+            "portal_flow_template_registry",
+            portal_flow_template_payload,
+        ),
         "core_routing_policy_registry": ("core_routing_policy_registry", core_routing_policy_payload),
         "core_flow_solver_policy_registry": (
             "core_flow_solver_policy_registry",
@@ -10582,7 +10897,7 @@ def compile_bundle(
         "control_action_registry": ("control_action_registry", control_action_payload),
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "surface_type_registry": ("surface_type_registry", surface_type_payload),
-        "port_type_registry": ("port_type_registry", port_type_payload),
+        "port_type_registry": ("port_type_registry", machine_port_type_payload),
         "tool_tag_registry": ("tool_tag_registry", tool_tag_payload),
         "tool_type_registry": ("tool_type_registry", tool_type_payload),
         "tool_effect_model_registry": ("tool_effect_model_registry", tool_effect_model_payload),
@@ -10668,6 +10983,10 @@ def compile_bundle(
         "part_class_registry",
         "connection_type_registry",
         "blueprint_registry",
+        "interior_volume_type_registry",
+        "portal_type_registry",
+        "compartment_flow_policy_registry",
+        "portal_flow_template_registry",
         "core_routing_policy_registry",
         "core_flow_solver_policy_registry",
         "core_constraint_type_registry",
@@ -10801,6 +11120,10 @@ def compile_bundle(
             "part_class_registry_hash": registry_hashes["part_class_registry_hash"],
             "connection_type_registry_hash": registry_hashes["connection_type_registry_hash"],
             "blueprint_registry_hash": registry_hashes["blueprint_registry_hash"],
+            "interior_volume_type_registry_hash": registry_hashes["interior_volume_type_registry_hash"],
+            "portal_type_registry_hash": registry_hashes["portal_type_registry_hash"],
+            "compartment_flow_policy_registry_hash": registry_hashes["compartment_flow_policy_registry_hash"],
+            "portal_flow_template_registry_hash": registry_hashes["portal_flow_template_registry_hash"],
             "core_routing_policy_registry_hash": registry_hashes["core_routing_policy_registry_hash"],
             "core_flow_solver_policy_registry_hash": registry_hashes["core_flow_solver_policy_registry_hash"],
             "core_constraint_type_registry_hash": registry_hashes["core_constraint_type_registry_hash"],

@@ -478,6 +478,7 @@ def tick_flow_channels(
         consumed_from_queue = min(int(queued_amount), int(capacity_processed))
         consumed_from_source = int(max(0, int(capacity_processed) - int(consumed_from_queue)))
         queued_after = int(max(0, int(queued_amount) - int(consumed_from_queue)))
+        source_overflow = int(max(0, int(source_available) - int(consumed_from_source)))
 
         spill_loss = 0
         if overflow_from_capacity > 0:
@@ -488,13 +489,20 @@ def tick_flow_channels(
                     {"channel_id": channel_id, "overflow_amount": int(overflow_from_capacity)},
                 )
             if overflow_policy == "queue":
-                queued_after += int(overflow_from_capacity)
+                # Source-side overflow remains at source for next tick. We only
+                # track explicit queued/in-transit mass that has already left
+                # source custody.
+                pass
             elif overflow_policy == "spill":
-                spill_loss += int(overflow_from_capacity)
+                # Spilled overflow reflects source mass not launched this tick.
+                spill_loss += int(source_overflow)
 
         launched_amount = int(capacity_processed)
-        if consumed_from_source > 0:
-            balances[source_node_id] = int(max(0, int(source_available) - int(consumed_from_source)))
+        source_debit = int(consumed_from_source)
+        if overflow_from_capacity > 0 and overflow_policy == "spill":
+            source_debit += int(source_overflow)
+        if source_debit > 0:
+            balances[source_node_id] = int(max(0, int(source_available) - int(source_debit)))
 
         delay_ticks = int(max(0, _as_int(channel_row.get("delay_ticks", 0), 0)))
         immediate_arrival = 0
@@ -555,7 +563,7 @@ def tick_flow_channels(
         ledger_refs = _ledger_delta_refs(
             channel_id=channel_id,
             tick=int(tick),
-            source_debit=int(consumed_from_source),
+            source_debit=int(source_debit),
             sink_credit=int(net_transfer),
             lost_amount=int(total_lost),
         )

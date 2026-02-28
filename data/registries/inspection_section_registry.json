@@ -124,6 +124,45 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.interior.pressure_map",
+        "title": "Interior Pressure Map",
+        "data": {
+          "data_kind": "interior_pressure_map"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.interior.flood_map",
+        "title": "Interior Flood Map",
+        "data": {
+          "data_kind": "interior_flood_map"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.interior.portal_leaks",
+        "title": "Interior Portal Leaks",
+        "data": {
+          "data_kind": "interior_portal_leaks"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.ag_progress",
         "title": "Assembly Progress",
         "data": {

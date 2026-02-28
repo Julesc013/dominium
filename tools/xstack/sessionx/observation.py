@@ -525,6 +525,11 @@ def _default_lens_channels(lens_type: str) -> List[str]:
         "ch.diegetic.tool.health",
         "ch.diegetic.task.progress",
         "ch.diegetic.task.status",
+        "ch.diegetic.interior.pressure",
+        "ch.diegetic.interior.oxygen",
+        "ch.diegetic.interior.smoke_alarm",
+        "ch.diegetic.interior.flood_alarm",
+        "ch.diegetic.interior.alarm",
     ]
 
 
@@ -698,6 +703,16 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.task.progress": dict(instruments.get("instrument.task.progress") or {})}
     if channel_id == "ch.diegetic.task.status":
         return {"instrument.task.status": dict(instruments.get("instrument.task.status") or {})}
+    if channel_id == "ch.diegetic.interior.pressure":
+        return {"instrument.interior.pressure": dict(instruments.get("instrument.interior.pressure") or {})}
+    if channel_id == "ch.diegetic.interior.oxygen":
+        return {"instrument.interior.oxygen": dict(instruments.get("instrument.interior.oxygen") or {})}
+    if channel_id == "ch.diegetic.interior.smoke_alarm":
+        return {"instrument.interior.smoke": dict(instruments.get("instrument.interior.smoke") or {})}
+    if channel_id == "ch.diegetic.interior.flood_alarm":
+        return {"instrument.interior.flood": dict(instruments.get("instrument.interior.flood") or {})}
+    if channel_id == "ch.diegetic.interior.alarm":
+        return {"instrument.interior.alarm": dict(instruments.get("instrument.interior.alarm") or {})}
     truth_overlay = dict(perceived_model.get("truth_overlay") or {})
     if channel_id == "ch.truth.overlay.terrain_height":
         return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
@@ -762,6 +777,11 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.tool.health": "ch.diegetic.tool.health",
         "instrument.task.progress": "ch.diegetic.task.progress",
         "instrument.task.status": "ch.diegetic.task.status",
+        "instrument.interior.pressure": "ch.diegetic.interior.pressure",
+        "instrument.interior.oxygen": "ch.diegetic.interior.oxygen",
+        "instrument.interior.smoke": "ch.diegetic.interior.smoke_alarm",
+        "instrument.interior.flood": "ch.diegetic.interior.flood_alarm",
+        "instrument.interior.alarm": "ch.diegetic.interior.alarm",
     }
     for instrument_id, channel_id in sorted(instrument_channels.items()):
         if channel_id not in allowed:
@@ -878,6 +898,11 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
         "instrument.tool.health": {},
         "instrument.task.progress": {},
         "instrument.task.status": {},
+        "instrument.interior.pressure": {},
+        "instrument.interior.oxygen": {},
+        "instrument.interior.smoke": {},
+        "instrument.interior.flood": {},
+        "instrument.interior.alarm": {},
     }
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
         assembly_id = str(row.get("assembly_id", "")).strip()
