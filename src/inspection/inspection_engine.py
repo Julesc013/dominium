@@ -40,6 +40,7 @@ _VALID_TARGET_KINDS = {
 _VALID_FIDELITY = ("macro", "meso", "micro")
 _SECTION_IDS_BY_FIDELITY = {
     "macro": [
+        "section.capabilities_summary",
         "section.material_stocks",
         "section.flow_summary",
         "section.flow_utilization",
@@ -54,6 +55,7 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.events_summary",
     ],
     "meso": [
+        "section.capabilities_summary",
         "section.material_stocks",
         "section.batches_summary",
         "section.flow_summary",
@@ -77,6 +79,7 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.reenactment_link",
     ],
     "micro": [
+        "section.capabilities_summary",
         "section.material_stocks",
         "section.batches_summary",
         "section.flow_summary",
@@ -103,14 +106,17 @@ _SECTION_IDS_BY_FIDELITY = {
 }
 _SECTION_IDS_BY_FIDELITY_GRAPH = {
     "macro": [
+        "section.capabilities_summary",
         "section.networkgraph.summary",
     ],
     "meso": [
+        "section.capabilities_summary",
         "section.networkgraph.summary",
         "section.networkgraph.route",
         "section.networkgraph.capacity_utilization",
     ],
     "micro": [
+        "section.capabilities_summary",
         "section.networkgraph.summary",
         "section.networkgraph.route",
         "section.networkgraph.capacity_utilization",
@@ -118,45 +124,55 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
     "macro": [
+        "section.capabilities_summary",
         "section.pose_slots_summary",
     ],
     "meso": [
+        "section.capabilities_summary",
         "section.pose_slots_summary",
         "section.events_summary",
     ],
     "micro": [
+        "section.capabilities_summary",
         "section.pose_slots_summary",
         "section.events_summary",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_MOUNT = {
     "macro": [
+        "section.capabilities_summary",
         "section.mount_points_summary",
     ],
     "meso": [
+        "section.capabilities_summary",
         "section.mount_points_summary",
         "section.events_summary",
     ],
     "micro": [
+        "section.capabilities_summary",
         "section.mount_points_summary",
         "section.events_summary",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_PLAN = {
     "macro": [
+        "section.capabilities_summary",
         "section.plan_summary",
         "section.plan_resource_requirements",
     ],
     "meso": [
+        "section.capabilities_summary",
         "section.plan_summary",
         "section.plan_resource_requirements",
     ],
     "micro": [
+        "section.capabilities_summary",
         "section.plan_summary",
         "section.plan_resource_requirements",
     ],
 }
 _DEFAULT_SECTION_ROWS = {
+    "section.capabilities_summary": {"title": "Capabilities Summary", "extensions": {"cost_units": 1}},
     "section.material_stocks": {"title": "Material Stocks", "extensions": {"cost_units": 1}},
     "section.batches_summary": {"title": "Batches Summary", "extensions": {"cost_units": 2}},
     "section.flow_summary": {"title": "Flow Summary", "extensions": {"cost_units": 1}},
@@ -1309,6 +1325,35 @@ def _build_section_data(
             "mount_point_count": len(rows),
             "attached_count": len([item for item in rows if bool(item.get("attached", False))]),
             "rows": sorted(rows, key=lambda item: str(item.get("mount_point_id", "")))[:256],
+        }
+    if section_id == "section.capabilities_summary":
+        payload_ext = dict(target_payload.get("extensions") or {})
+        summary = dict(payload_ext.get("capabilities_summary") or {})
+        visible_capability_ids = _sorted_unique_strings(summary.get("visible_capability_ids"))
+        all_capability_ids = _sorted_unique_strings(summary.get("all_capability_ids"))
+        if not summary:
+            return {
+                "available": False,
+                "entity_id": str(summary.get("entity_id", "")).strip() or None,
+                "capability_count": 0,
+                "visible_capability_ids": [],
+                "epistemic_redaction": "unknown",
+            }
+        if allow_hidden_state:
+            return {
+                "available": True,
+                "entity_id": str(summary.get("entity_id", "")).strip() or None,
+                "capability_count": len(all_capability_ids),
+                "visible_capability_ids": list(all_capability_ids),
+                "all_capability_ids": list(all_capability_ids),
+                "epistemic_redaction": "none",
+            }
+        return {
+            "available": True,
+            "entity_id": str(summary.get("entity_id", "")).strip() or None,
+            "capability_count": len(visible_capability_ids),
+            "visible_capability_ids": list(visible_capability_ids),
+            "epistemic_redaction": str(summary.get("epistemic_redaction", "diegetic_filtered")).strip() or "diegetic_filtered",
         }
     if section_id == "section.plan_summary":
         target_collection = str(target_payload.get("collection", "")).strip()

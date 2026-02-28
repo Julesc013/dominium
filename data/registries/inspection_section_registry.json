@@ -267,6 +267,19 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.capabilities_summary",
+        "title": "Capabilities Summary",
+        "data": {
+          "data_kind": "capabilities_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.plan_summary",
         "title": "Plan Summary",
         "data": {
