@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Negotiation Request Schema",
+  "version": "1.0.0",
+  "description": "Deterministic request payload for centralized control negotiation.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "requester_subject_id",
+    "request_vector",
+    "context",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "requester_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "control_intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_vector": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "abstraction_level_requested": {
+          "type": "string"
+        },
+        "fidelity_requested": {
+          "type": "string"
+        },
+        "view_requested": {
+          "type": "string"
+        },
+        "epistemic_scope_requested": {
+          "type": "string"
+        },
+        "budget_requested": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "required": [
+        "law_profile_id",
+        "server_profile_id"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "law_profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "server_profile_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "requester_subject_id": "agent.alpha",
+      "control_intent_id": "control.intent.abc123",
+      "request_vector": {
+        "abstraction_level_requested": "AL0",
+        "fidelity_requested": "micro",
+        "view_requested": "view.mode.freecam",
+        "epistemic_scope_requested": "ep.scope.standard",
+        "budget_requested": 8
+      },
+      "context": {
+        "law_profile_id": "law.player.diegetic_default",
+        "server_profile_id": "server.profile.private.default"
+      },
+      "extensions": {}
+    }
+  ]
+}

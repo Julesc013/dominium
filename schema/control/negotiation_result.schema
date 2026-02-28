@@ -1,0 +1,22 @@
+SCHEMA: control/negotiation_result.schema
+schema_id: dominium.schema.control.negotiation_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic result payload for centralized control negotiation.
+
+REQUIRED SHAPE:
+record negotiation_result
+  required:
+    - schema_version: semver
+    - resolved_vector: map
+    - downgrade_entries: list[map]
+    - refusal_codes: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Negotiation result must be deterministic for equal inputs.
+- Downgrade ordering follows canonical axis order.
+

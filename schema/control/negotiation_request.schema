@@ -1,0 +1,26 @@
+SCHEMA: control/negotiation_request.schema
+schema_id: dominium.schema.control.negotiation_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic request payload for centralized control negotiation.
+
+REQUIRED SHAPE:
+record negotiation_request
+  required:
+    - schema_version: semver
+    - requester_subject_id: id
+    - request_vector: map
+    - context: map
+      required:
+        - law_profile_id: id
+        - server_profile_id: id
+    - extensions: map
+  optional:
+    - control_intent_id: id
+
+INVARIANTS:
+- Request vectors are data-only and deterministic.
+- Negotiation inputs must not include runtime code/eval payloads.
+

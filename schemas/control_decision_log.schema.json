@@ -1,21 +1,23 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Control Decision Log Schema",
-  "version": "0.1.0",
-  "description": "Deterministic CTRL-1 decision log artifact row.",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-3 control negotiation and resolution decision log artifact row.",
   "x-doc-ref": [
     "docs/control/CONTROL_PLANE_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [
     "schema_version",
-    "log_id",
+    "decision_id",
     "tick",
     "requester_subject_id",
-    "control_intent_id",
-    "control_policy_id",
+    "policy_ids_applied",
+    "input_vector",
     "resolved_vector",
-    "reasons",
+    "downgrades",
+    "refusals",
+    "budget_allocated",
     "emitted_ids",
     "deterministic_fingerprint",
     "extensions"
@@ -24,9 +26,9 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "0.1.0"
+      "const": "1.0.0"
     },
-    "log_id": {
+    "decision_id": {
       "type": "string",
       "minLength": 1
     },
@@ -42,22 +44,66 @@
       "type": "string",
       "minLength": 1
     },
-    "control_policy_id": {
+    "control_ir_id": {
       "type": "string",
       "minLength": 1
+    },
+    "policy_ids_applied": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "input_vector": {
+      "type": "object",
+      "additionalProperties": true
     },
     "resolved_vector": {
       "type": "object",
       "additionalProperties": true
     },
-    "reasons": {
-      "type": "object",
-      "additionalProperties": true
-    },
-    "emitted_ids": {
+    "downgrades": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "refusals": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "budget_allocated": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "emitted_ids": {
+      "type": "object",
+      "required": [
+        "intent_ids",
+        "commitment_ids"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "intent_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "commitment_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
       }
     },
     "deterministic_fingerprint": {
@@ -71,26 +117,56 @@
   },
   "examples": [
     {
-      "schema_version": "0.1.0",
-      "log_id": "control.log.90f0541ea9842f5b70db5810",
+      "schema_version": "1.0.0",
+      "decision_id": "control.decision.90f0541ea9842f5b70db5810",
       "tick": 12,
       "requester_subject_id": "agent.alpha",
       "control_intent_id": "control.intent.f6f9ca5b0b9ad85472fbe57a",
-      "control_policy_id": "ctrl.policy.player.diegetic",
+      "control_ir_id": "control.ir.autopilot.stub",
+      "policy_ids_applied": [
+        "ctrl.policy.player.diegetic",
+        "view.mode.first_person"
+      ],
+      "input_vector": {
+        "abstraction_level_requested": "AL0",
+        "fidelity_requested": "micro",
+        "view_requested": "view.mode.freecam",
+        "epistemic_scope_requested": "ep.scope.standard",
+        "budget_requested": 4
+      },
       "resolved_vector": {
         "abstraction_level_resolved": "AL0",
         "fidelity_resolved": "meso",
-        "view_resolved": "view.mode.first_person"
+        "view_resolved": "view.mode.first_person",
+        "epistemic_scope_resolved": "ep.scope.standard",
+        "budget_allocated": 4
       },
-      "reasons": {
-        "refusal": {},
-        "downgrade_reasons": []
-      },
-      "emitted_ids": [
-        "intent.control.a1f458fabcae76d7"
+      "downgrades": [
+        "downgrade.01"
       ],
+      "refusals": [],
+      "budget_allocated": 4,
+      "emitted_ids": {
+        "intent_ids": [
+          "intent.control.a1f458fabcae76d7"
+        ],
+        "commitment_ids": []
+      },
       "deterministic_fingerprint": "492957ac9236e3bd73f7031293fcb8e45ce2fa21cb2f2e4b9b8d13c46ed0c77f",
-      "extensions": {}
+      "extensions": {
+        "downgrade_entries": [
+          {
+            "schema_version": "1.0.0",
+            "downgrade_id": "downgrade.01",
+            "axis": "view",
+            "from_value": "view.mode.freecam",
+            "to_value": "view.mode.first_person",
+            "reason_code": "downgrade.policy_disallows",
+            "remediation_hint": "remedy.ctrl.select_allowed_view",
+            "extensions": {}
+          }
+        ]
+      }
     }
   ]
 }
