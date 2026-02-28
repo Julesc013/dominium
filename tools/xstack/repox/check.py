@@ -299,6 +299,12 @@ TOOL_REGISTRY_FILES = (
     "data/registries/tool_type_registry.json",
     "data/registries/tool_effect_model_registry.json",
 )
+MACHINE_REGISTRY_FILES = (
+    "data/registries/port_type_registry.json",
+    "data/registries/machine_type_registry.json",
+    "data/registries/machine_operation_registry.json",
+    "data/registries/port_visibility_policy_registry.json",
+)
 INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS = (
     "agent_states",
     "world_assemblies",
@@ -7927,8 +7933,175 @@ def _append_interaction_invariant_findings(
                     file_path=rel_path,
                     line_number=1,
                     snippet=token,
-                    message="interaction integration surfaces must delegate through canonical interaction dispatch APIs",
-                    rule_id="INV-INTERACTION-INTENTS-ONLY",
+                message="interaction integration surfaces must delegate through canonical interaction dispatch APIs",
+                rule_id="INV-INTERACTION-INTENTS-ONLY",
+            )
+        )
+
+    for rel_path in MACHINE_REGISTRY_FILES:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="required machine/port registry file is missing",
+                rule_id="INV-MACHINE_OPERATIONS-DATA-DRIVEN",
+            )
+        )
+
+    machine_runtime_tokens = (
+        "process.port_insert_batch",
+        "process.port_extract_batch",
+        "process.port_connect",
+        "process.port_disconnect",
+        "process.machine_operate",
+        "process.machine_pull_from_node",
+        "process.machine_push_to_node",
+        "_persist_machine_state(",
+        "_machine_event_row(",
+    )
+    for token in machine_runtime_tokens:
+        if token in process_runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="machine/port process runtime token is missing",
+                rule_id="INV-PORTS-PROCESS-ONLY",
+            )
+        )
+
+    for rel_path in _scan_files(repo_root):
+        if not rel_path.endswith(".py"):
+            continue
+        if rel_path.startswith(
+            (
+                "tools/xstack/sessionx/process_runtime.py",
+                "tools/xstack/testx/tests/",
+                "tools/xstack/repox/check.py",
+            )
+        ):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            token = str(line).strip()
+            if not token:
+                continue
+            if any(
+                marker in token
+                for marker in (
+                    'state["machine_ports"]',
+                    "state['machine_ports']",
+                    'state["machine_port_connections"]',
+                    "state['machine_port_connections']",
+                    'state["machine_assemblies"]',
+                    "state['machine_assemblies']",
+                    'state["machine_provenance_events"]',
+                    "state['machine_provenance_events']",
+                )
+            ):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=line_no,
+                        snippet=token[:140],
+                        message="machine/port state mutation must occur only through process runtime commit paths",
+                        rule_id="INV-PORTS-PROCESS-ONLY",
+                    )
+                )
+
+    machine_data_tokens = {
+        "src/machines/port_engine.py": (
+            "port_type_rows_by_id(",
+            "machine_type_rows_by_id(",
+            "machine_operation_rows_by_id(",
+            "validate_port_accepts_material(",
+            "insert_into_port(",
+            "extract_from_port(",
+        ),
+        process_runtime_rel: (
+            "_machine_type_rows(policy_context)",
+            "_machine_operation_rows(policy_context)",
+            "_port_type_rows(policy_context)",
+        ),
+    }
+    for rel_path, tokens in machine_data_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required machine/port data-driven implementation file is missing",
+                    rule_id="INV-MACHINE_OPERATIONS-DATA-DRIVEN",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required machine/port data-driven token is missing",
+                    rule_id="INV-MACHINE_OPERATIONS-DATA-DRIVEN",
+                )
+            )
+
+    no_silent_batch_tokens = {
+        process_runtime_rel: (
+            "event.batch_created",
+            "_machine_output_batch_id(",
+        ),
+        "src/machines/port_engine.py": (
+            "extract_from_port(",
+        ),
+    }
+    for rel_path, tokens in no_silent_batch_tokens.items():
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        try:
+            text = open(abs_path, "r", encoding="utf-8").read()
+        except OSError:
+            text = ""
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required batch provenance implementation file is missing",
+                    rule_id="INV-NO-SILENT-BATCH-CREATION",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="required batch provenance token is missing",
+                    rule_id="INV-NO-SILENT-BATCH-CREATION",
                 )
             )
 
