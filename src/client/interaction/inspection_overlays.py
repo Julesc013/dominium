@@ -720,6 +720,121 @@ def _materialization_overlay_payload(
     }
 
 
+def _machine_port_overlay_payload(
+    *,
+    target_semantic_id: str,
+    runtime: dict,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    target_id = str(target_semantic_id).strip()
+    machine_id = str(target_row.get("machine_id", "")).strip()
+    if not machine_id and target_id.startswith("machine."):
+        machine_id = target_id
+
+    machine_rows = _runtime_rows(runtime, "machine_assemblies")
+    port_rows = _runtime_rows(runtime, "machine_ports")
+    connection_rows = [
+        dict(row)
+        for row in _runtime_rows(runtime, "machine_port_connections")
+        if isinstance(row, dict) and bool(row.get("active", False))
+    ]
+    if machine_id:
+        port_rows = [dict(row) for row in list(port_rows or []) if str(row.get("machine_id", "")).strip() == machine_id]
+        connection_rows = [
+            dict(row)
+            for row in list(connection_rows or [])
+            if machine_id in {
+                str((dict(row)).get("machine_id", "")).strip(),
+                str((dict(row)).get("from_machine_id", "")).strip(),
+            }
+            or str((dict(row)).get("from_port_id", "")).strip() in {
+                str((dict(port)).get("port_id", "")).strip() for port in port_rows
+            }
+            or str((dict(row)).get("to_port_id", "")).strip() in {
+                str((dict(port)).get("port_id", "")).strip() for port in port_rows
+            }
+        ]
+
+    blocked = False
+    full_count = 0
+    empty_count = 0
+    for row in sorted((item for item in list(port_rows or []) if isinstance(item, dict)), key=lambda item: str(item.get("port_id", ""))):
+        current_mass = int(
+            sum(max(0, _to_int((dict(entry)).get("mass", 0), 0)) for entry in list((dict(row).get("current_contents") or [])))
+        )
+        capacity = row.get("capacity_mass")
+        if capacity is not None and current_mass >= int(max(0, _to_int(capacity, 0))):
+            full_count += 1
+        if current_mass == 0:
+            empty_count += 1
+    machine_row = {}
+    for row in sorted((item for item in machine_rows if isinstance(item, dict)), key=lambda item: str(item.get("machine_id", ""))):
+        if str(row.get("machine_id", "")).strip() == machine_id:
+            machine_row = dict(row)
+            break
+    machine_state = str(machine_row.get("operational_state", "")).strip()
+    if machine_state == "blocked":
+        blocked = True
+    summary_label = "machine:{} state={} ports={} full={} empty={} links={}".format(
+        machine_id or target_id or "unknown",
+        machine_state or "idle",
+        len(port_rows),
+        int(full_count),
+        int(empty_count),
+        len(connection_rows),
+    )
+    base_materials = _overlay_materials(target_semantic_id=target_id)
+    status_color = {"r": 90, "g": 210, "b": 130}
+    if blocked:
+        status_color = {"r": 232, "g": 94, "b": 64}
+    elif full_count:
+        status_color = {"r": 236, "g": 190, "b": 72}
+    status_material_id = "mat.inspect.machine.status.{}".format(canonical_sha256({"target": target_id, "state": machine_state})[:12])
+    materials = sorted(
+        list(base_materials)
+        + [
+            {
+                "schema_version": "1.0.0",
+                "material_id": status_material_id,
+                "base_color": dict(status_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": status_color["r"], "g": status_color["g"], "b": status_color["b"], "strength": 260},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "machine_port_status"},
+            }
+        ],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+    return {
+        "mode": "machine_port_overlay",
+        "summary": summary_label,
+        "target_semantic_id": target_id,
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": _overlay_renderables(
+            target_semantic_id=target_id,
+            summary_label=summary_label,
+            mode="machine_port_overlay",
+        ),
+        "materials": materials,
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "machine_port",
+            "collection": collection,
+            "machine_id": machine_id or None,
+            "port_count": len(port_rows),
+            "active_connection_count": len(connection_rows),
+            "full_port_count": int(full_count),
+            "empty_port_count": int(empty_count),
+            "blocked": bool(blocked),
+        },
+    }
+
+
 def _construction_overlay_payload(
     *,
     target_semantic_id: str,
@@ -1169,6 +1284,26 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": logistics_overlay,
+            "overlay_runtime": runtime,
+        }
+    if (
+        target_id.startswith("machine.")
+        or target_id.startswith("port.")
+        or snapshot_collection in (
+            "machine_assemblies",
+            "machine_ports",
+            "machine_port_connections",
+            "machine_provenance_events",
+        )
+    ):
+        machine_overlay = _machine_port_overlay_payload(
+            target_semantic_id=target_id,
+            runtime=runtime,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": machine_overlay,
             "overlay_runtime": runtime,
         }
     installed_structure_target = ""
