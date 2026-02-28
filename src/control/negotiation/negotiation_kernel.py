@@ -411,6 +411,7 @@ def negotiate_request(
         )
     )
     max_budget_per_tick = int(max(0, _to_int(rs5.get("max_cost_units_per_tick", rs5.get("max_budget_units", 0)), 0)))
+    zero_budget_means_unbounded = bool(request_ext.get("budget_zero_means_unbounded", False))
     tick = int(max(0, _to_int(rs5.get("tick", 0), 0)))
     tick_token = str(tick)
 
@@ -434,7 +435,7 @@ def negotiate_request(
     used_subject_before = int(max(0, _to_int(peer_usage.get(requester_subject_id, 0), 0)))
 
     if max_budget_per_tick <= 0:
-        allocated_budget = int(requested_budget)
+        allocated_budget = int(requested_budget if zero_budget_means_unbounded else 0)
     else:
         total_available = int(max(0, max_budget_per_tick - used_before))
         if fair_share_cap > 0:
@@ -443,7 +444,52 @@ def negotiate_request(
         else:
             allocated_budget = int(min(requested_budget, total_available))
 
-    if allocated_budget != requested_budget:
+    fidelity_cost_by_level = _as_map(request_ext.get("fidelity_cost_by_level"))
+    if fidelity_cost_by_level:
+        candidate_chain = _fidelity_candidates(resolved_fidelity)
+        if resolved_fidelity == "micro" and (not micro_allowed or not micro_available):
+            candidate_chain = ["meso", "macro"]
+        candidate_chain = [token for token in candidate_chain if token in allowed_fidelity]
+        if not candidate_chain:
+            candidate_chain = [_min_fidelity(requested=resolved_fidelity, allowed=allowed_fidelity)]
+
+        selected_fidelity = ""
+        fallback_fidelity = ""
+        for candidate in candidate_chain:
+            fallback_fidelity = candidate
+            candidate_cost = int(
+                max(
+                    0,
+                    _to_int(
+                        fidelity_cost_by_level.get(
+                            candidate,
+                            requested_budget if candidate == requested_fidelity else requested_budget,
+                        ),
+                        requested_budget,
+                    ),
+                )
+            )
+            if zero_budget_means_unbounded or candidate_cost <= allocated_budget:
+                selected_fidelity = candidate
+                break
+        if not selected_fidelity:
+            selected_fidelity = fallback_fidelity or candidate_chain[-1]
+        if selected_fidelity != resolved_fidelity:
+            _append_downgrade(
+                downgrades,
+                axis="fidelity",
+                from_value=resolved_fidelity,
+                to_value=selected_fidelity,
+                reason_code=DOWNGRADE_BUDGET,
+                remediation_hint="remedy.ctrl.reduce_requested_fidelity",
+                extensions={
+                    "allocated_budget": int(allocated_budget),
+                },
+            )
+            resolved_fidelity = selected_fidelity
+
+    budget_shortfall = allocated_budget != requested_budget
+    if budget_shortfall:
         _append_downgrade(
             downgrades,
             axis="budget",
@@ -620,4 +666,3 @@ __all__ = [
     "build_negotiation_request",
     "negotiate_request",
 ]
-

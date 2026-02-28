@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
+from src.control.negotiation import negotiate_request
+from src.interior import InteriorError, path_exists
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -11,13 +13,34 @@ REFUSAL_INSPECT_FORBIDDEN_BY_LAW = "refusal.inspect.forbidden_by_law"
 REFUSAL_INSPECT_BUDGET_EXCEEDED = "refusal.inspect.budget_exceeded"
 REFUSAL_INSPECT_TARGET_INVALID = "refusal.inspect.target_invalid"
 
-_VALID_TARGET_KINDS = {"structure", "project", "node", "manifest", "cohort", "faction", "machine", "port", "graph", "interior"}
+_VALID_TARGET_KINDS = {
+    "structure",
+    "project",
+    "node",
+    "manifest",
+    "cohort",
+    "faction",
+    "machine",
+    "port",
+    "graph",
+    "interior",
+    "interior_graph",
+    "interior_volume",
+    "interior_portal",
+    "pose_slot",
+    "mount_point",
+}
 _VALID_FIDELITY = ("macro", "meso", "micro")
 _SECTION_IDS_BY_FIDELITY = {
     "macro": [
         "section.material_stocks",
         "section.flow_summary",
         "section.flow_utilization",
+        "section.interior.connectivity_summary",
+        "section.interior.portal_state_table",
+        "section.interior.pressure_summary",
+        "section.interior.flood_summary",
+        "section.interior.smoke_summary",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
         "section.commitments_summary",
@@ -28,6 +51,12 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.batches_summary",
         "section.flow_summary",
         "section.flow_utilization",
+        "section.interior.connectivity_summary",
+        "section.interior.portal_state_table",
+        "section.interior.pressure_summary",
+        "section.interior.flood_summary",
+        "section.interior.smoke_summary",
+        "section.interior.flow_summary",
         "section.interior.layout",
         "section.interior.portal_states",
         "section.interior.pressure_map",
@@ -45,6 +74,12 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.batches_summary",
         "section.flow_summary",
         "section.flow_utilization",
+        "section.interior.connectivity_summary",
+        "section.interior.portal_state_table",
+        "section.interior.pressure_summary",
+        "section.interior.flood_summary",
+        "section.interior.smoke_summary",
+        "section.interior.flow_summary",
         "section.interior.layout",
         "section.interior.portal_states",
         "section.interior.pressure_map",
@@ -74,6 +109,32 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.networkgraph.capacity_utilization",
     ],
 }
+_SECTION_IDS_BY_FIDELITY_POSE = {
+    "macro": [
+        "section.pose_slots_summary",
+    ],
+    "meso": [
+        "section.pose_slots_summary",
+        "section.events_summary",
+    ],
+    "micro": [
+        "section.pose_slots_summary",
+        "section.events_summary",
+    ],
+}
+_SECTION_IDS_BY_FIDELITY_MOUNT = {
+    "macro": [
+        "section.mount_points_summary",
+    ],
+    "meso": [
+        "section.mount_points_summary",
+        "section.events_summary",
+    ],
+    "micro": [
+        "section.mount_points_summary",
+        "section.events_summary",
+    ],
+}
 _DEFAULT_SECTION_ROWS = {
     "section.material_stocks": {"title": "Material Stocks", "extensions": {"cost_units": 1}},
     "section.batches_summary": {"title": "Batches Summary", "extensions": {"cost_units": 2}},
@@ -85,6 +146,14 @@ _DEFAULT_SECTION_ROWS = {
         "title": "NetworkGraph Capacity Utilization",
         "extensions": {"cost_units": 2},
     },
+    "section.pose_slots_summary": {"title": "Pose Slots Summary", "extensions": {"cost_units": 1}},
+    "section.mount_points_summary": {"title": "Mount Points Summary", "extensions": {"cost_units": 1}},
+    "section.interior.connectivity_summary": {"title": "Interior Connectivity Summary", "extensions": {"cost_units": 1}},
+    "section.interior.portal_state_table": {"title": "Interior Portal State Table", "extensions": {"cost_units": 2}},
+    "section.interior.pressure_summary": {"title": "Interior Pressure Summary", "extensions": {"cost_units": 2}},
+    "section.interior.flood_summary": {"title": "Interior Flood Summary", "extensions": {"cost_units": 2}},
+    "section.interior.smoke_summary": {"title": "Interior Smoke Summary", "extensions": {"cost_units": 2}},
+    "section.interior.flow_summary": {"title": "Interior Flow Summary", "extensions": {"cost_units": 3}},
     "section.interior.layout": {"title": "Interior Layout", "extensions": {"cost_units": 2}},
     "section.interior.portal_states": {"title": "Interior Portal States", "extensions": {"cost_units": 2}},
     "section.interior.pressure_map": {"title": "Interior Pressure Map", "extensions": {"cost_units": 2}},
@@ -138,12 +207,18 @@ def _quantize_map(values: object, *, step: int) -> dict:
 
 def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
+    if token.startswith("pose.slot."):
+        return "pose_slot"
+    if token.startswith("mount.point."):
+        return "mount_point"
+    if token.startswith("interior.graph."):
+        return "interior_graph"
     if token.startswith("graph."):
         return "graph"
-    if token.startswith("interior.graph."):
-        return "graph"
-    if token.startswith("interior.volume.") or token.startswith("interior.portal."):
-        return "interior"
+    if token.startswith("interior.volume."):
+        return "interior_volume"
+    if token.startswith("interior.portal."):
+        return "interior_portal"
     if token.startswith("machine."):
         return "machine"
     if token.startswith("port."):
@@ -254,8 +329,13 @@ def _section_ids_for_fidelity(*, fidelity: str, target_kind: str) -> List[str]:
     token = str(fidelity).strip() or "macro"
     if token not in _VALID_FIDELITY:
         token = "macro"
-    if str(target_kind).strip() == "graph":
+    kind = str(target_kind).strip()
+    if kind == "graph":
         return list(_SECTION_IDS_BY_FIDELITY_GRAPH[token])
+    if kind == "pose_slot":
+        return list(_SECTION_IDS_BY_FIDELITY_POSE[token])
+    if kind == "mount_point":
+        return list(_SECTION_IDS_BY_FIDELITY_MOUNT[token])
     return list(_SECTION_IDS_BY_FIDELITY[token])
 
 
@@ -272,44 +352,75 @@ def _resolve_fidelity(
     desired = str(desired_fidelity).strip() or "macro"
     if desired not in _VALID_FIDELITY:
         desired = "macro"
-    candidates = [desired]
-    if desired == "micro":
-        candidates.extend(["meso", "macro"])
-    elif desired == "meso":
-        candidates.append("macro")
-    if desired == "micro" and (not micro_allowed or not micro_available):
-        candidates = ["meso", "macro"]
-    seen = set()
-    ordered = []
-    for token in candidates:
-        if token in seen:
-            continue
-        seen.add(token)
-        ordered.append(token)
-
     budget = max(0, _as_int(max_cost_units, 0))
-    fallback = "macro"
-    fallback_sections = _section_ids_for_fidelity(fidelity="macro", target_kind=target_kind)
-    fallback_cost = _section_cost(section_rows, fallback_sections)
-    for token in ordered:
+    fidelity_cost_by_level = {}
+    for token in _VALID_FIDELITY:
         section_ids = _section_ids_for_fidelity(fidelity=token, target_kind=target_kind)
-        cost = _section_cost(section_rows, section_ids)
-        if budget <= 0 or cost <= budget:
-            return token, section_ids, int(cost), bool(token != desired)
-        fallback = token
-        fallback_sections = section_ids
-        fallback_cost = cost
-    if strict_budget:
+        fidelity_cost_by_level[token] = int(_section_cost(section_rows, section_ids))
+
+    desired_cost = int(fidelity_cost_by_level.get(desired, fidelity_cost_by_level.get("macro", 0)))
+    negotiation_result = negotiate_request(
+        negotiation_request={
+            "schema_version": "1.0.0",
+            "requester_subject_id": "subject.inspect",
+            "request_vector": {
+                "abstraction_level_requested": "AL0",
+                "fidelity_requested": desired,
+                "view_requested": "view.mode.first_person",
+                "epistemic_scope_requested": "ep.scope.default",
+                "budget_requested": int(desired_cost),
+            },
+            "context": {
+                "law_profile_id": "law.inspect",
+                "server_profile_id": "server.profile.inspect",
+            },
+            "extensions": {
+                "micro_allowed": bool(micro_allowed),
+                "micro_available": bool(micro_available),
+                "budget_refuse_on_shortfall": bool(strict_budget),
+                "budget_refusal_code": REFUSAL_INSPECT_BUDGET_EXCEEDED,
+                "budget_zero_means_unbounded": True,
+                "fidelity_cost_by_level": dict(fidelity_cost_by_level),
+            },
+        },
+        rs5_budget_state={
+            "tick": 0,
+            "requested_cost_units": int(desired_cost),
+            "max_cost_units_per_tick": int(budget),
+            "runtime_budget_state": {},
+            "fairness_state": {},
+            "connected_subject_ids": ["subject.inspect"],
+        },
+        control_policy={
+            "control_policy_id": "ctrl.policy.inspect",
+            "allowed_abstraction_levels": ["AL0"],
+            "allowed_view_policies": ["view.mode.first_person"],
+            "allowed_fidelity_ranges": list(_VALID_FIDELITY),
+            "extensions": {},
+        },
+        authority_context={"entitlements": []},
+        law_profile={"allowed_processes": [], "forbidden_processes": []},
+    )
+    refusal_codes = _sorted_unique_strings(negotiation_result.get("refusal_codes"))
+    if strict_budget and REFUSAL_INSPECT_BUDGET_EXCEEDED in refusal_codes:
         raise InspectionError(
             REFUSAL_INSPECT_BUDGET_EXCEEDED,
             "inspection budget cannot satisfy requested fidelity",
             {
                 "desired_fidelity": desired,
-                "required_cost_units": int(fallback_cost),
+                "required_cost_units": int(desired_cost),
                 "max_cost_units": int(budget),
             },
         )
-    return fallback, fallback_sections, int(fallback_cost), True
+
+    resolved_vector = dict(negotiation_result.get("resolved_vector") or {})
+    achieved = str(resolved_vector.get("fidelity_resolved", "")).strip()
+    if achieved not in _VALID_FIDELITY:
+        achieved = "macro"
+    section_ids = _section_ids_for_fidelity(fidelity=achieved, target_kind=target_kind)
+    section_cost = int(_section_cost(section_rows, section_ids))
+    degraded = bool(achieved != desired or bool(list(negotiation_result.get("downgrade_entries") or [])))
+    return achieved, section_ids, section_cost, degraded
 
 
 def _target_structure_id(target_payload: Mapping[str, object], target_id: str) -> str:
@@ -374,6 +485,132 @@ def _row_index(rows: object, key: str) -> Dict[str, dict]:
             continue
         out[token] = dict(row)
     return out
+
+
+def _agent_row_by_id(state: Mapping[str, object], subject_id: str) -> dict:
+    token = str(subject_id).strip()
+    if not token:
+        return {}
+    rows = [dict(item) for item in list((dict(state or {})).get("agent_states") or []) if isinstance(item, dict)]
+    for row in sorted(rows, key=lambda item: str(item.get("agent_id", ""))):
+        if token in (
+            str(row.get("agent_id", "")).strip(),
+            str(row.get("entity_id", "")).strip(),
+        ):
+            return row
+    return {}
+
+
+def _requester_volume_id(state: Mapping[str, object], requester_subject_id: str) -> str:
+    agent = _agent_row_by_id(state, requester_subject_id)
+    ext = dict(agent.get("extensions") or {}) if isinstance(agent.get("extensions"), dict) else {}
+    return (
+        str(agent.get("interior_volume_id", "")).strip()
+        or str(agent.get("current_volume_id", "")).strip()
+        or str(agent.get("volume_id", "")).strip()
+        or str(ext.get("interior_volume_id", "")).strip()
+        or str(ext.get("volume_id", "")).strip()
+    )
+
+
+def _pose_slot_graph_for_slot(state: Mapping[str, object], slot: Mapping[str, object]) -> dict:
+    slot_row = dict(slot or {})
+    slot_ext = dict(slot_row.get("extensions") or {}) if isinstance(slot_row.get("extensions"), dict) else {}
+    desired_graph_id = str(slot_ext.get("interior_graph_id", "")).strip()
+    graph_rows = [
+        dict(item)
+        for item in list((dict(state or {})).get("interior_graphs") or [])
+        if isinstance(item, dict)
+    ]
+    if desired_graph_id:
+        for graph in sorted(graph_rows, key=lambda item: str(item.get("graph_id", ""))):
+            if str(graph.get("graph_id", "")).strip() == desired_graph_id:
+                return graph
+    parent_assembly_id = str(slot_row.get("parent_assembly_id", "")).strip()
+    if parent_assembly_id:
+        bindings = [
+            dict(item)
+            for item in list((dict(state or {})).get("interior_structure_bindings") or [])
+            if isinstance(item, dict)
+        ]
+        for binding in sorted(bindings, key=lambda item: (str(item.get("structure_id", "")), str(item.get("graph_id", "")))):
+            if str(binding.get("structure_id", "")).strip() != parent_assembly_id:
+                continue
+            graph_id = str(binding.get("graph_id", "")).strip()
+            if not graph_id:
+                continue
+            for graph in sorted(graph_rows, key=lambda item: str(item.get("graph_id", ""))):
+                if str(graph.get("graph_id", "")).strip() == graph_id:
+                    return graph
+    slot_volume_id = str(slot_row.get("interior_volume_id", "")).strip()
+    if slot_volume_id:
+        for graph in sorted(graph_rows, key=lambda item: str(item.get("graph_id", ""))):
+            if slot_volume_id in set(_sorted_unique_strings(graph.get("volumes"))):
+                return graph
+    return {}
+
+
+def _pose_slot_reachable(
+    state: Mapping[str, object],
+    *,
+    from_volume_id: str,
+    slot: Mapping[str, object],
+) -> bool:
+    slot_row = dict(slot or {})
+    if not bool(slot_row.get("requires_access_path", True)):
+        return True
+    source = str(from_volume_id).strip()
+    target = str(slot_row.get("interior_volume_id", "")).strip()
+    if (not source) or (not target):
+        return False
+    if source == target:
+        return True
+    graph_row = _pose_slot_graph_for_slot(state, slot_row)
+    if not graph_row:
+        return False
+    try:
+        return bool(
+            path_exists(
+                graph_row=graph_row,
+                volume_rows=list((dict(state or {})).get("interior_volumes") or []),
+                portal_rows=list((dict(state or {})).get("interior_portals") or []),
+                from_volume_id=source,
+                to_volume_id=target,
+                portal_state_rows=list((dict(state or {})).get("interior_portal_state_machines") or []),
+            )
+        )
+    except InteriorError:
+        return False
+
+
+def _visible_pose_slots(
+    state: Mapping[str, object],
+    *,
+    requester_subject_id: str,
+    allow_hidden_state: bool,
+) -> List[dict]:
+    rows = [
+        dict(item)
+        for item in list((dict(state or {})).get("pose_slots") or [])
+        if isinstance(item, dict)
+    ]
+    rows = sorted(rows, key=lambda item: str(item.get("pose_slot_id", "")))
+    if allow_hidden_state:
+        return rows
+    requester_id = str(requester_subject_id).strip()
+    requester_volume_id = _requester_volume_id(state, requester_id)
+    visible = []
+    for row in rows:
+        current_occupant_id = str(row.get("current_occupant_id", "")).strip()
+        ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+        occupant_ids = set(_sorted_unique_strings(ext.get("occupant_ids")))
+        if requester_id and (requester_id == current_occupant_id or requester_id in occupant_ids):
+            visible.append(row)
+            continue
+        if _pose_slot_reachable(state, from_volume_id=requester_volume_id, slot=row):
+            visible.append(row)
+            continue
+    return visible
 
 
 def _portal_state_id(portal_row: Mapping[str, object], portal_state_index: Mapping[str, dict]) -> str:
@@ -463,7 +700,16 @@ def _leak_rows_for_graph(state: Mapping[str, object], graph: Mapping[str, object
     return sorted(rows, key=lambda item: str(item.get("leak_id", "")))
 
 
-def _build_section_data(section_id: str, *, state: Mapping[str, object], target_payload: Mapping[str, object], request: Mapping[str, object], quant_step: int, include_part_ids: bool) -> dict:
+def _build_section_data(
+    section_id: str,
+    *,
+    state: Mapping[str, object],
+    target_payload: Mapping[str, object],
+    request: Mapping[str, object],
+    quant_step: int,
+    include_part_ids: bool,
+    allow_hidden_state: bool,
+) -> dict:
     row = dict(target_payload.get("row") or {})
     payload_extensions = dict(target_payload.get("extensions") or {})
 
@@ -677,25 +923,44 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
             "capacity_used_total": int(_quantize_map({"value": used_total}, step=quant_step).get("value", 0)),
             "utilization_permille": int(utilization_permille),
         }
-    if section_id == "section.interior.layout":
+    if section_id in {"section.interior.layout", "section.interior.connectivity_summary"}:
         graph = _graph_for_target(state, target_payload, request)
         if not graph:
             return {"available": False}
         volume_rows_by_id = _row_index((dict(state or {})).get("interior_volumes"), "volume_id")
         volume_ids = _sorted_unique_strings(graph.get("volumes"))
+        portal_ids = _sorted_unique_strings(graph.get("portals"))
+        portal_rows_by_id = _row_index((dict(state or {})).get("interior_portals"), "portal_id")
+        state_machine_rows_by_id = _row_index((dict(state or {})).get("interior_portal_state_machines"), "machine_id")
         volume_type_counts: Dict[str, int] = {}
         for volume_id in volume_ids:
             volume = dict(volume_rows_by_id.get(volume_id) or {})
             volume_type_id = str(volume.get("volume_type_id", "volume.unknown")).strip() or "volume.unknown"
             volume_type_counts[volume_type_id] = _as_int(volume_type_counts.get(volume_type_id, 0), 0) + 1
+        blocked_states = {"closed", "locked", "damaged", "blocked"}
+        open_states = {"open", "opening", "unlocked", "permeable"}
+        open_portal_count = 0
+        blocked_portal_count = 0
+        for portal_id in portal_ids:
+            portal = dict(portal_rows_by_id.get(portal_id) or {})
+            if not portal:
+                continue
+            state_id = _portal_state_id(portal, state_machine_rows_by_id)
+            if state_id in open_states:
+                open_portal_count += 1
+            elif state_id in blocked_states:
+                blocked_portal_count += 1
         return {
             "available": True,
             "graph_id": str(graph.get("graph_id", "")).strip(),
             "volume_count": len(volume_ids),
-            "portal_count": len(_sorted_unique_strings(graph.get("portals"))),
+            "portal_count": len(portal_ids),
+            "open_portal_count": int(open_portal_count),
+            "blocked_portal_count": int(blocked_portal_count),
+            "connectivity_status": "connected" if open_portal_count > 0 else "isolated",
             "volume_type_counts": dict((k, volume_type_counts[k]) for k in sorted(volume_type_counts.keys())),
         }
-    if section_id == "section.interior.portal_states":
+    if section_id in {"section.interior.portal_states", "section.interior.portal_state_table"}:
         graph = _graph_for_target(state, target_payload, request)
         if not graph:
             return {"available": False, "portal_count": 0, "portal_states": []}
@@ -718,13 +983,18 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
                     "sealing_coefficient": int(max(0, _as_int(portal.get("sealing_coefficient", 0), 0))),
                 }
             )
+        state_counts: Dict[str, int] = {}
+        for row in portal_states:
+            state_token = str(row.get("state_id", "")).strip() or "unknown"
+            state_counts[state_token] = _as_int(state_counts.get(state_token, 0), 0) + 1
         return {
             "available": True,
             "graph_id": str(graph.get("graph_id", "")).strip(),
             "portal_count": len(portal_states),
+            "state_counts": dict((k, state_counts[k]) for k in sorted(state_counts.keys())),
             "portal_states": sorted(portal_states, key=lambda item: str(item.get("portal_id", "")))[:256],
         }
-    if section_id == "section.interior.pressure_map":
+    if section_id in {"section.interior.pressure_map", "section.interior.pressure_summary"}:
         graph = _graph_for_target(state, target_payload, request)
         if not graph:
             return {"available": False, "graph_id": "", "rows": []}
@@ -753,7 +1023,7 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
             "min_pressure": int(min_pressure),
             "max_pressure": int(max_pressure),
         }
-    if section_id == "section.interior.flood_map":
+    if section_id in {"section.interior.flood_map", "section.interior.flood_summary"}:
         graph = _graph_for_target(state, target_payload, request)
         if not graph:
             return {"available": False, "graph_id": "", "rows": []}
@@ -780,7 +1050,33 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
             "volume_count": len(flood_rows),
             "flooded_count": int(flooded_count),
         }
-    if section_id == "section.interior.portal_leaks":
+    if section_id == "section.interior.smoke_summary":
+        graph = _graph_for_target(state, target_payload, request)
+        if not graph:
+            return {"available": False, "graph_id": "", "rows": []}
+        smoke_rows = []
+        warn_count = 0
+        danger_count = 0
+        for row in _compartment_rows_for_graph(state, graph):
+            volume_id = str(row.get("volume_id", "")).strip()
+            if not volume_id:
+                continue
+            smoke_density = _quantize_map({"value": max(0, _as_int(row.get("smoke_density", 0), 0))}, step=quant_step).get("value", 0)
+            smoke_rows.append({"volume_id": volume_id, "smoke_density": int(smoke_density)})
+            if int(smoke_density) >= 450:
+                danger_count += 1
+            elif int(smoke_density) >= 200:
+                warn_count += 1
+        smoke_rows = sorted(smoke_rows, key=lambda item: str(item.get("volume_id", "")))
+        return {
+            "available": True,
+            "graph_id": str(graph.get("graph_id", "")).strip(),
+            "rows": smoke_rows[:512],
+            "volume_count": len(smoke_rows),
+            "warn_count": int(warn_count),
+            "danger_count": int(danger_count),
+        }
+    if section_id in {"section.interior.portal_leaks", "section.interior.flow_summary"}:
         graph = _graph_for_target(state, target_payload, request)
         if not graph:
             return {"available": False, "graph_id": "", "leaks": [], "portal_flow_rows": []}
@@ -814,12 +1110,174 @@ def _build_section_data(section_id: str, *, state: Mapping[str, object], target_
                     "conductance_smoke": int(_quantize_map({"value": max(0, _as_int(flow_row.get("conductance_smoke", 0), 0))}, step=quant_step).get("value", 0)),
                 }
             )
+        if (not allow_hidden_state) and section_id == "section.interior.flow_summary":
+            return {
+                "available": True,
+                "graph_id": str(graph.get("graph_id", "")).strip(),
+                "redacted": True,
+                "summary": "detail_redacted",
+                "leak_count": int(len(leak_rows)),
+            }
         return {
             "available": True,
             "graph_id": str(graph.get("graph_id", "")).strip(),
             "leak_count": len(leak_rows),
             "leaks": sorted(leak_rows, key=lambda item: str(item.get("leak_id", "")))[:256],
             "portal_flow_rows": sorted(flow_rows, key=lambda item: str(item.get("portal_id", "")))[:256],
+        }
+    if section_id == "section.pose_slots_summary":
+        requester_subject_id = str(request.get("requester_subject_id", "")).strip()
+        target_collection = str(target_payload.get("collection", "")).strip()
+        target_slot_id = ""
+        target_parent_assembly_id = ""
+        if target_collection == "pose_slots":
+            target_slot_id = str(row.get("pose_slot_id", "")).strip()
+            target_parent_assembly_id = str(row.get("parent_assembly_id", "")).strip()
+        visible_rows = _visible_pose_slots(
+            state,
+            requester_subject_id=requester_subject_id,
+            allow_hidden_state=allow_hidden_state,
+        )
+        visible_by_id = dict((str(item.get("pose_slot_id", "")).strip(), dict(item)) for item in visible_rows if str(item.get("pose_slot_id", "")).strip())
+        all_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("pose_slots") or [])
+            if isinstance(item, dict)
+        ]
+        all_rows = sorted(all_rows, key=lambda item: str(item.get("pose_slot_id", "")))
+        if allow_hidden_state:
+            candidate_rows = list(all_rows)
+        else:
+            candidate_rows = list(visible_rows)
+        if target_slot_id:
+            candidate = dict(visible_by_id.get(target_slot_id) or {})
+            candidate_rows = [candidate] if candidate else []
+            if allow_hidden_state and not candidate_rows:
+                candidate_rows = [dict(item) for item in all_rows if str(item.get("pose_slot_id", "")).strip() == target_slot_id]
+        elif target_parent_assembly_id:
+            candidate_rows = [
+                dict(item)
+                for item in candidate_rows
+                if str(item.get("parent_assembly_id", "")).strip() == target_parent_assembly_id
+            ]
+        requester_volume_id = _requester_volume_id(state, requester_subject_id)
+        slot_rows = []
+        for slot in candidate_rows:
+            slot_id = str(slot.get("pose_slot_id", "")).strip()
+            if not slot_id:
+                continue
+            ext = dict(slot.get("extensions") or {}) if isinstance(slot.get("extensions"), dict) else {}
+            occupant_ids = _sorted_unique_strings(ext.get("occupant_ids"))
+            current_occupant_id = str(slot.get("current_occupant_id", "")).strip()
+            occupied = bool(current_occupant_id or occupant_ids)
+            show_occupant_id = (
+                bool(allow_hidden_state)
+                or bool(requester_subject_id and requester_subject_id == current_occupant_id)
+                or bool(requester_subject_id and requester_subject_id in set(occupant_ids))
+            )
+            slot_rows.append(
+                {
+                    "pose_slot_id": slot_id,
+                    "parent_assembly_id": str(slot.get("parent_assembly_id", "")).strip(),
+                    "interior_volume_id": str(slot.get("interior_volume_id", "")).strip(),
+                    "allowed_postures": _sorted_unique_strings(slot.get("allowed_postures")),
+                    "requires_access_path": bool(slot.get("requires_access_path", True)),
+                    "accessible": bool(
+                        requester_subject_id
+                        and _pose_slot_reachable(
+                            state,
+                            from_volume_id=requester_volume_id,
+                            slot=slot,
+                        )
+                    ),
+                    "exclusivity": str(slot.get("exclusivity", "single")).strip() or "single",
+                    "occupied": occupied,
+                    "current_occupant_id": current_occupant_id if show_occupant_id else None,
+                    "control_binding_id": (
+                        str(slot.get("control_binding_id", "")).strip() or None
+                    ) if allow_hidden_state else None,
+                }
+            )
+        return {
+            "slot_count": len(slot_rows),
+            "occupied_count": len([item for item in slot_rows if bool(item.get("occupied", False))]),
+            "rows": sorted(slot_rows, key=lambda item: str(item.get("pose_slot_id", "")))[:256],
+        }
+    if section_id == "section.mount_points_summary":
+        requester_subject_id = str(request.get("requester_subject_id", "")).strip()
+        target_collection = str(target_payload.get("collection", "")).strip()
+        target_mount_point_id = ""
+        if target_collection == "mount_points":
+            target_mount_point_id = str(row.get("mount_point_id", "")).strip()
+        visible_pose_rows = _visible_pose_slots(
+            state,
+            requester_subject_id=requester_subject_id,
+            allow_hidden_state=allow_hidden_state,
+        )
+        visible_parent_ids = set(
+            str(item.get("parent_assembly_id", "")).strip()
+            for item in visible_pose_rows
+            if str(item.get("parent_assembly_id", "")).strip()
+        )
+        all_mount_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("mount_points") or [])
+            if isinstance(item, dict)
+        ]
+        all_mount_rows = sorted(all_mount_rows, key=lambda item: str(item.get("mount_point_id", "")))
+        if allow_hidden_state:
+            candidate_rows = list(all_mount_rows)
+        else:
+            candidate_rows = [
+                dict(item)
+                for item in all_mount_rows
+                if str(item.get("parent_assembly_id", "")).strip() in visible_parent_ids
+            ]
+        if target_mount_point_id:
+            target_rows = [
+                dict(item)
+                for item in all_mount_rows
+                if str(item.get("mount_point_id", "")).strip() == target_mount_point_id
+            ]
+            if target_rows:
+                connected_id = str((dict(target_rows[0])).get("connected_to_mount_point_id", "")).strip()
+                if connected_id:
+                    target_rows.extend(
+                        [
+                            dict(item)
+                            for item in all_mount_rows
+                            if str(item.get("mount_point_id", "")).strip() == connected_id
+                        ]
+                    )
+            candidate_rows = sorted(
+                dict((str(item.get("mount_point_id", "")).strip(), dict(item)) for item in target_rows if str(item.get("mount_point_id", "")).strip()).values(),
+                key=lambda item: str(item.get("mount_point_id", "")),
+            )
+        visible_ids = set(str(item.get("mount_point_id", "")).strip() for item in candidate_rows)
+        rows = []
+        for mount in candidate_rows:
+            mount_point_id = str(mount.get("mount_point_id", "")).strip()
+            if not mount_point_id:
+                continue
+            connected_to = str(mount.get("connected_to_mount_point_id", "")).strip()
+            ext = dict(mount.get("extensions") or {}) if isinstance(mount.get("extensions"), dict) else {}
+            rows.append(
+                {
+                    "mount_point_id": mount_point_id,
+                    "parent_assembly_id": str(mount.get("parent_assembly_id", "")).strip(),
+                    "mount_tags": _sorted_unique_strings(mount.get("mount_tags")),
+                    "attached": bool(connected_to),
+                    "connected_to_mount_point_id": (
+                        connected_to if (allow_hidden_state or connected_to in visible_ids) else None
+                    ) or None,
+                    "state_machine_id": str(mount.get("state_machine_id", "")).strip() or None,
+                    "state_id": str(ext.get("state_id", "")).strip() or None,
+                }
+            )
+        return {
+            "mount_point_count": len(rows),
+            "attached_count": len([item for item in rows if bool(item.get("attached", False))]),
+            "rows": sorted(rows, key=lambda item: str(item.get("mount_point_id", "")))[:256],
         }
     if section_id == "section.ag_progress":
         projects = [dict(item) for item in list((dict(state or {})).get("construction_projects") or []) if isinstance(item, dict)]
@@ -928,6 +1386,7 @@ def build_inspection_snapshot_artifact(
                 request=request,
                 quant_step=int(quant_step),
                 include_part_ids=include_part_ids,
+                allow_hidden_state=allow_hidden_state,
             ),
             "epistemic_redaction_level": redaction_level,
             "extensions": {

@@ -20,7 +20,6 @@ from src.performance.cost_engine import (
     compute_cost_snapshot,
     evaluate_envelope,
     normalize_budget_envelope,
-    reserve_inspection_budget,
 )
 from src.performance.inspection_cache import (
     build_cache_key as inspection_build_cache_key,
@@ -174,6 +173,7 @@ from src.control.ir.control_ir_verifier import (
     REFUSAL_CTRL_IR_INVALID,
     verify_control_ir,
 )
+from src.control.negotiation import negotiate_request
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -7090,17 +7090,70 @@ def _execute_inspection_snapshot_process(
     )
     connected_peer_ids = _sorted_tokens(list((policy_context or {}).get("connected_peer_ids") or []))
     active_peer_ids = sorted(set(connected_peer_ids + [requester_subject_id])) if connected_peer_ids else [requester_subject_id]
-    fair_share_cap = max(0, max_inspection_budget // max(1, len(active_peer_ids)))
-    fairness_state = dict((policy_context or {}).get("inspection_arbitration_state") or {})
-    usage_by_tick_peer = dict(fairness_state.get("used_by_tick_peer") or {})
+    desired_fidelity = str(inputs.get("desired_fidelity", "macro")).strip() or "macro"
+    if desired_fidelity not in ("macro", "meso", "micro"):
+        desired_fidelity = "macro"
     tick_token = str(int(current_tick))
-    peer_usage = dict(usage_by_tick_peer.get(tick_token) or {})
-    used_by_peer = max(0, _as_int(peer_usage.get(requester_subject_id, 0), 0))
-    if max_inspection_budget > 0 and fair_share_cap > 0 and used_by_peer + requested_cost_units > fair_share_cap:
+    fairness_state = dict((policy_context or {}).get("inspection_arbitration_state") or {})
+    budget_negotiation = negotiate_request(
+        negotiation_request={
+            "schema_version": "1.0.0",
+            "requester_subject_id": requester_subject_id,
+            "request_vector": {
+                "abstraction_level_requested": "AL0",
+                "fidelity_requested": desired_fidelity,
+                "view_requested": "view.mode.first_person",
+                "epistemic_scope_requested": str((dict(authority_context.get("epistemic_scope") or {})).get("scope_id", "ep.scope.default")).strip() or "ep.scope.default",
+                "budget_requested": int(requested_cost_units),
+            },
+            "context": {
+                "law_profile_id": str((dict(law_profile or {})).get("law_profile_id", "law.unknown")).strip() or "law.unknown",
+                "server_profile_id": str((dict(policy_context or {})).get("server_profile_id", "server.profile.unknown")).strip() or "server.profile.unknown",
+            },
+            "extensions": {
+                "required_process_id": "process.inspect_generate_snapshot",
+                "budget_refuse_on_shortfall": True,
+                "budget_refusal_code": "refusal.inspect.budget_exceeded",
+                "budget_zero_means_unbounded": False,
+            },
+        },
+        rs5_budget_state={
+            "tick": int(current_tick),
+            "requested_cost_units": int(requested_cost_units),
+            "max_cost_units_per_tick": int(max_inspection_budget),
+            "runtime_budget_state": dict((policy_context or {}).get("inspection_runtime_budget_state") or {}),
+            "fairness_state": {
+                "connected_subject_ids": list(active_peer_ids),
+                "used_by_tick_subject": dict(fairness_state.get("used_by_tick_peer") or {}),
+            },
+            "connected_subject_ids": list(active_peer_ids),
+        },
+        control_policy={
+            "control_policy_id": "ctrl.policy.inspect",
+            "allowed_abstraction_levels": ["AL0"],
+            "allowed_view_policies": ["view.mode.first_person"],
+            "allowed_fidelity_ranges": ["macro", "meso", "micro"],
+            "extensions": {},
+        },
+        authority_context=dict(authority_context or {}),
+        law_profile=dict(law_profile or {}),
+    )
+    budget_ext = dict((dict(budget_negotiation.get("extensions") or {})).get("budget") or {})
+    fair_share_cap = max(0, _as_int(budget_ext.get("fair_share_cap", 0), 0))
+    used_by_peer = max(0, _as_int(budget_ext.get("used_by_subject_before", 0), 0))
+    allocated_budget = max(0, _as_int((dict(budget_negotiation.get("resolved_vector") or {})).get("budget_allocated", 0), 0))
+    refusal_codes = _sorted_tokens(list(budget_negotiation.get("refusal_codes") or []))
+    if "refusal.inspect.budget_exceeded" in set(refusal_codes):
+        if fair_share_cap > 0 and used_by_peer + requested_cost_units > fair_share_cap:
+            refusal_message = "inspection arbitration fair-share cap exceeded for this tick"
+            remediation_hint = "Reduce cost_units, retry next tick, or increase inspection budget envelope."
+        else:
+            refusal_message = "inspection budget envelope exceeded for this tick"
+            remediation_hint = "Retry next tick, lower inspection cost_units, or select a higher inspection budget envelope."
         return refusal(
             "refusal.inspect.budget_exceeded",
-            "inspection arbitration fair-share cap exceeded for this tick",
-            "Reduce cost_units, retry next tick, or increase inspection budget envelope.",
+            refusal_message,
+            remediation_hint,
             {
                 "target_id": target_id,
                 "requester_subject_id": requester_subject_id,
@@ -7110,39 +7163,19 @@ def _execute_inspection_snapshot_process(
             },
             "$.intent.inputs.cost_units",
         )
-    reservation = reserve_inspection_budget(
-        runtime_budget_state=dict((policy_context or {}).get("inspection_runtime_budget_state") or {}),
-        tick=int(current_tick),
-        requested_cost_units=int(requested_cost_units),
-        max_cost_units_per_tick=int(max_inspection_budget),
-    )
-    if str(reservation.get("result", "")) != "complete":
-        return refusal(
-            "refusal.inspect.budget_exceeded",
-            "inspection budget envelope exceeded for this tick",
-            "Retry next tick, lower inspection cost_units, or select a higher inspection budget envelope.",
-            {
-                "target_id": target_id,
-                "requested_cost_units": str(requested_cost_units),
-                "max_inspection_cost_units_per_tick": str(max_inspection_budget),
-            },
-            "$.intent.inputs.cost_units",
-        )
     if isinstance(policy_context, dict):
-        policy_context["inspection_runtime_budget_state"] = dict(reservation.get("runtime_budget_state") or {})
-        peer_usage[requester_subject_id] = int(max(0, used_by_peer + requested_cost_units))
-        usage_by_tick_peer[tick_token] = dict(
-            (str(key), int(max(0, _as_int(value, 0))))
-            for key, value in sorted(peer_usage.items(), key=lambda item: str(item[0]))
-            if str(key).strip()
-        )
+        policy_context["inspection_runtime_budget_state"] = dict(budget_ext.get("runtime_budget_state") or {})
+        fairness_out = dict(budget_ext.get("fairness_state") or {})
         policy_context["inspection_arbitration_state"] = {
             "used_by_tick_peer": dict(
                 (str(key), dict(value))
-                for key, value in sorted(usage_by_tick_peer.items(), key=lambda item: str(item[0]))
+                for key, value in sorted(dict(fairness_out.get("used_by_tick_subject") or {}).items(), key=lambda item: str(item[0]))
                 if isinstance(value, dict)
-            )
+            ),
+            "connected_peer_ids": _sorted_tokens(list(fairness_out.get("connected_subject_ids") or [])),
         }
+    requested_cost_units = int(allocated_budget)
+    used_by_peer_after = int(max(0, used_by_peer + requested_cost_units))
 
     cache_policy_registry = _policy_payload(policy_context, "inspection_cache_policy_registry")
     cache_policy_id = str((policy_context or {}).get("inspection_cache_policy_id", "")).strip()
@@ -7180,7 +7213,6 @@ def _execute_inspection_snapshot_process(
         authority_context=authority_context,
         target_payload=target_payload,
     )
-    desired_fidelity = str(inputs.get("desired_fidelity", "macro")).strip() or "macro"
     target_kind = str(inputs.get("target_kind", "")).strip()
     time_range_raw = inputs.get("time_range")
     normalized_time_range = None
@@ -7270,7 +7302,7 @@ def _execute_inspection_snapshot_process(
         "evicted_cache_keys": list(cache_result.get("evicted_keys") or []),
         "inspection_cost_units": int(requested_cost_units),
         "inspection_budget_share_per_peer": int(fair_share_cap),
-        "inspection_budget_used_by_peer": int(peer_usage.get(requester_subject_id, used_by_peer)),
+        "inspection_budget_used_by_peer": int(used_by_peer_after),
         "desired_fidelity": str(inspection_request_row.get("desired_fidelity", "")),
         "achieved_fidelity": str((cache_result.get("snapshot") or {}).get("achieved_fidelity", "")),
         "inspection_degraded": bool((dict((cache_result.get("snapshot") or {}).get("extensions") or {})).get("degraded", False)),
@@ -16645,6 +16677,9 @@ def execute_intent(
                 existing_materialization_states=materialization_states,
                 strict_budget=bool(strict_budget),
                 roi_node_ids=list(roi_node_ids),
+                law_profile=dict(law_profile or {}),
+                authority_context=dict(authority_context or {}),
+                policy_context=dict(policy_context or {}),
             )
         except MaterializationError as exc:
             return refusal(
@@ -17646,220 +17681,17 @@ def execute_intent(
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.inspect_generate_snapshot":
-        target_id = str(inputs.get("target_id", "") or inputs.get("target", "")).strip()
-        if not target_id:
-            return refusal(
-                "PROCESS_INPUT_INVALID",
-                "process.inspect_generate_snapshot requires target_id",
-                "Provide target_id in intent.inputs.target_id.",
-                {"process_id": process_id},
-                "$.intent.inputs.target_id",
-            )
-        requested_cost_units = max(0, _as_int(inputs.get("cost_units", inputs.get("max_cost_units", 1)), 1))
-        budget_envelope_registry = _policy_payload(policy_context, "budget_envelope_registry")
-        budget_envelope_id = str((policy_context or {}).get("budget_envelope_id", "")).strip()
-        selected_budget_envelope = _registry_row_by_id(
-            budget_envelope_registry,
-            "envelopes",
-            "envelope_id",
-            budget_envelope_id,
-        )
-        budget_policy_row = _policy_payload(policy_context, "budget_policy")
-        normalized_budget_envelope = normalize_budget_envelope(
-            envelope=selected_budget_envelope,
-            budget_policy=budget_policy_row,
-        )
-        max_inspection_budget = max(0, _as_int(normalized_budget_envelope.get("max_inspection_cost_units_per_tick", 0), 0))
-        requester_subject_id = (
-            str(inputs.get("requester_subject_id", "")).strip()
-            or str(authority_context.get("peer_id", "")).strip()
-            or "subject.system"
-        )
-        connected_peer_ids = _sorted_tokens(list((policy_context or {}).get("connected_peer_ids") or []))
-        active_peer_ids = sorted(set(connected_peer_ids + [requester_subject_id])) if connected_peer_ids else [requester_subject_id]
-        fair_share_cap = max(0, max_inspection_budget // max(1, len(active_peer_ids)))
-        fairness_state = dict((policy_context or {}).get("inspection_arbitration_state") or {})
-        usage_by_tick_peer = dict(fairness_state.get("used_by_tick_peer") or {})
-        tick_token = str(int(current_tick))
-        peer_usage = dict(usage_by_tick_peer.get(tick_token) or {})
-        used_by_peer = max(0, _as_int(peer_usage.get(requester_subject_id, 0), 0))
-        if max_inspection_budget > 0 and fair_share_cap > 0 and used_by_peer + requested_cost_units > fair_share_cap:
-            return refusal(
-                "refusal.inspect.budget_exceeded",
-                "inspection arbitration fair-share cap exceeded for this tick",
-                "Reduce cost_units, retry next tick, or increase inspection budget envelope.",
-                {
-                    "target_id": target_id,
-                    "requester_subject_id": requester_subject_id,
-                    "requested_cost_units": str(requested_cost_units),
-                    "fair_share_cap": str(fair_share_cap),
-                    "max_inspection_cost_units_per_tick": str(max_inspection_budget),
-                },
-                "$.intent.inputs.cost_units",
-            )
-        reservation = reserve_inspection_budget(
-            runtime_budget_state=dict((policy_context or {}).get("inspection_runtime_budget_state") or {}),
-            tick=int(current_tick),
-            requested_cost_units=int(requested_cost_units),
-            max_cost_units_per_tick=int(max_inspection_budget),
-        )
-        if str(reservation.get("result", "")) != "complete":
-            return refusal(
-                "refusal.inspect.budget_exceeded",
-                "inspection budget envelope exceeded for this tick",
-                "Retry next tick, lower inspection cost_units, or select a higher inspection budget envelope.",
-                {
-                    "target_id": target_id,
-                    "requested_cost_units": str(requested_cost_units),
-                    "max_inspection_cost_units_per_tick": str(max_inspection_budget),
-                },
-                "$.intent.inputs.cost_units",
-            )
-        if isinstance(policy_context, dict):
-            policy_context["inspection_runtime_budget_state"] = dict(reservation.get("runtime_budget_state") or {})
-            peer_usage[requester_subject_id] = int(max(0, used_by_peer + requested_cost_units))
-            usage_by_tick_peer[tick_token] = dict(
-                (str(key), int(max(0, _as_int(value, 0))))
-                for key, value in sorted(peer_usage.items(), key=lambda item: str(item[0]))
-                if str(key).strip()
-            )
-            policy_context["inspection_arbitration_state"] = {
-                "used_by_tick_peer": dict(
-                    (str(key), dict(value))
-                    for key, value in sorted(usage_by_tick_peer.items(), key=lambda item: str(item[0]))
-                    if isinstance(value, dict)
-                )
-            }
-
-        cache_policy_registry = _policy_payload(policy_context, "inspection_cache_policy_registry")
-        cache_policy_id = str((policy_context or {}).get("inspection_cache_policy_id", "")).strip()
-        selected_cache_policy = _registry_row_by_id(
-            cache_policy_registry,
-            "policies",
-            "cache_policy_id",
-            cache_policy_id,
-        )
-        if not selected_cache_policy:
-            selected_cache_policy = {
-                "cache_policy_id": "cache.off",
-                "enable_caching": False,
-                "invalidation_rules": [],
-                "max_cache_entries": 0,
-                "eviction_rule_id": "evict.none",
-                "extensions": {},
-            }
-        truth_hash_anchor = canonical_sha256(state)
-        ledger_hash_anchor = str(last_ledger_hash(state))
-        target_payload = _inspection_target_payload(state=state, target_id=target_id)
-        target_payload = _augment_inspection_target_payload_for_maintenance(
+        inspection_result = _execute_inspection_snapshot_process(
             state=state,
+            inputs=dict(inputs or {}),
+            law_profile=dict(law_profile or {}),
+            authority_context=dict(authority_context or {}),
             policy_context=policy_context,
-            authority_context=authority_context,
-            target_payload=target_payload,
         )
-        target_payload = _augment_inspection_target_payload_for_materialization(
-            state=state,
-            policy_context=policy_context,
-            authority_context=authority_context,
-            target_payload=target_payload,
-        )
-        target_payload = _augment_inspection_target_payload_for_commitment_reenactment(
-            authority_context=authority_context,
-            target_payload=target_payload,
-        )
-        desired_fidelity = str(inputs.get("desired_fidelity", "macro")).strip() or "macro"
-        target_kind = str(inputs.get("target_kind", "")).strip()
-        time_range_raw = inputs.get("time_range")
-        normalized_time_range = None
-        if isinstance(time_range_raw, dict):
-            start_tick = max(0, _as_int(time_range_raw.get("start_tick", 0), 0))
-            end_tick = max(start_tick, _as_int(time_range_raw.get("end_tick", start_tick), start_tick))
-            normalized_time_range = {"start_tick": int(start_tick), "end_tick": int(end_tick)}
-        strict_budget = bool((policy_context or {}).get("strict_contracts", False) or bool(inputs.get("strict_budget", False)))
-        inspection_request_row = normalize_inspection_request_row(
-            {
-                "request_id": str(inputs.get("request_id", "")).strip(),
-                "requester_subject_id": requester_subject_id,
-                "target_kind": target_kind,
-                "target_id": target_id,
-                "desired_fidelity": desired_fidelity,
-                "tick": int(current_tick),
-                "time_range": normalized_time_range,
-                "max_cost_units": int(requested_cost_units),
-                "extensions": dict(inputs.get("extensions") or {}),
-            },
-            current_tick=int(current_tick),
-        )
-        try:
-            snapshot, inspection_diag = build_inspection_snapshot_artifact(
-                request_row=inspection_request_row,
-                target_payload=target_payload,
-                state=state,
-                truth_hash_anchor=str(truth_hash_anchor),
-                ledger_hash=str(ledger_hash_anchor),
-                section_registry_payload=_policy_payload(policy_context, "inspection_section_registry"),
-                policy_context=policy_context,
-                law_profile=law_profile,
-                authority_context=authority_context,
-                physics_profile_id=str((policy_context or {}).get("physics_profile_id", "")),
-                pack_lock_hash=str((policy_context or {}).get("pack_lock_hash", "")),
-                cache_policy_id=str(selected_cache_policy.get("cache_policy_id", "")),
-                strict_budget=bool(strict_budget),
-            )
-        except InspectionError as err:
-            refusal_path = "$.intent.inputs.target_id"
-            if str(err.reason_code) == "refusal.inspect.budget_exceeded":
-                refusal_path = "$.intent.inputs.cost_units"
-            elif str(err.reason_code) == "refusal.inspect.forbidden_by_law":
-                refusal_path = "$.authority_context.epistemic_scope"
-            return refusal(
-                str(err.reason_code),
-                str(err),
-                "Adjust target/fidelity inputs or law/authority context and retry.",
-                dict((str(key), str(err.details[key])) for key in sorted(err.details.keys())),
-                refusal_path,
-            )
-        snapshot_extensions = dict(snapshot.get("extensions") or {})
-        cache_key = inspection_build_cache_key(
-            target_id=target_id,
-            truth_hash_anchor=str(truth_hash_anchor),
-            policy_id=str(selected_cache_policy.get("cache_policy_id", "")),
-            physics_profile_id=str((policy_context or {}).get("physics_profile_id", "")),
-            pack_lock_hash=str((policy_context or {}).get("pack_lock_hash", "")),
-            desired_fidelity=str(inspection_request_row.get("desired_fidelity", "")),
-            epistemic_policy_id=str(snapshot_extensions.get("epistemic_policy_id", "")),
-            section_policy_id=str(snapshot_extensions.get("section_policy_id", "")),
-        )
-        cache_result = inspection_cache_lookup_or_store(
-            cache_state=dict((policy_context or {}).get("inspection_cache_state") or {}),
-            cache_policy=selected_cache_policy,
-            cache_key=str(cache_key),
-            snapshot=snapshot,
-            tick=int(current_tick),
-        )
-        if isinstance(policy_context, dict):
-            policy_context["inspection_cache_state"] = dict(cache_result.get("cache_state") or {})
+        if str(inspection_result.get("result", "")) != "complete":
+            return dict(inspection_result)
         skip_state_log = True
-        result_metadata = {
-            "target_id": target_id,
-            "requester_subject_id": requester_subject_id,
-            "cache_policy_id": str(selected_cache_policy.get("cache_policy_id", "")),
-            "cache_key": str(cache_result.get("cache_key", "")),
-            "cache_hit": bool(cache_result.get("cache_hit", False)),
-            "snapshot_id": str((cache_result.get("snapshot") or {}).get("snapshot_id", "")),
-            "snapshot_hash": str(cache_result.get("snapshot_hash", "")),
-            "inspection_snapshot": dict(cache_result.get("snapshot") or {}),
-            "inspection_request": dict(inspection_request_row),
-            "inspection_diagnostics": dict(inspection_diag),
-            "evicted_cache_keys": list(cache_result.get("evicted_keys") or []),
-            "inspection_cost_units": int(requested_cost_units),
-            "inspection_budget_share_per_peer": int(fair_share_cap),
-            "inspection_budget_used_by_peer": int(peer_usage.get(requester_subject_id, used_by_peer)),
-            "desired_fidelity": str(inspection_request_row.get("desired_fidelity", "")),
-            "achieved_fidelity": str((cache_result.get("snapshot") or {}).get("achieved_fidelity", "")),
-            "inspection_degraded": bool((dict((cache_result.get("snapshot") or {}).get("extensions") or {})).get("degraded", False)),
-            "max_inspection_cost_units_per_tick": int(max_inspection_budget),
-        }
+        result_metadata = dict(inspection_result)
     elif process_id in ("process.time_control_set_rate", "process.time_set_rate"):
         ranked_policy_enforced = str((policy_context or {}).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
         if str((policy_context or {}).get("time_control_policy_id", "")).strip() == "time.policy.rank_strict":
