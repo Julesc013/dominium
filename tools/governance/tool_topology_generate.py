@@ -27,6 +27,12 @@ REGISTRY_ROOTS = ("data/registries", "data/governance")
 TOOL_ROOT = "tools"
 PROCESS_RE = re.compile(r"\bprocess\.[A-Za-z0-9_.]+\b")
 TEXT_EXTENSIONS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp", ".json", ".md", ".schema", ".schema.json")
+PLANNED_CTRL_MODULE_PATHS = (
+    "src/control",
+    "src/control/control_plane_engine.py",
+    "src/control/control_ir_validator.py",
+    "src/control/control_decision_log.py",
+)
 
 
 def _norm(path: str) -> str:
@@ -290,6 +296,24 @@ def generate_topology_map(
                 )
             )
             edges.append(_edge(edge_kind="depends_on", from_node_id=child_node_id, to_node_id=root_node_id))
+
+    # Planned control-plane nodes are declared even before module implementation
+    # so governance and semantic-impact tooling can enforce CTRL migration paths.
+    for rel_path in PLANNED_CTRL_MODULE_PATHS:
+        token = _norm(rel_path)
+        node_id = "module:{}".format(token)
+        tags = ["runtime", "planned", "control"]
+        nodes.append(
+            _node(
+                node_id=node_id,
+                node_kind="module",
+                path=token,
+                tags=tags,
+                owner_subsystem="control",
+            )
+        )
+        parent = "module:src" if token == "src/control" else "module:src/control"
+        edges.append(_edge(edge_kind="depends_on", from_node_id=node_id, to_node_id=parent))
 
     schema_nodes: List[dict] = []
     for root in SCHEMA_ROOTS:

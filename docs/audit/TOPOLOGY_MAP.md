@@ -4,17 +4,17 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:60a07a49a4b71e43807ec03c680f03e7921928a6`
+- repository_hash: `HEAD:e93301d831ed302dfd43a9b62460c43d368d8da2`
 - generated_tick: `0`
-- deterministic_fingerprint: `900c1fd6ba212829427f08f2e6433e33ed2329cdca02eb988348f0988eda9592`
+- deterministic_fingerprint: `d0411e4f76c095a987c8ea8b20709a632a9a4a5425d32c1863bc23e4ca214396`
 
 ## Counts
-- node_count: 1998
-- edge_count: 58649
+- node_count: 2002
+- edge_count: 58653
 
 ## Node Kinds
 - contract_set: 4
-- module: 60
+- module: 64
 - policy_set: 76
 - process_family: 129
 - registry: 146
@@ -23,7 +23,7 @@ Version: 1.0.0
 
 ## Edge Kinds
 - consumes: 1845
-- depends_on: 927
+- depends_on: 931
 - enforces: 12560
 - produces: 1
 - validates: 43316
@@ -75,6 +75,10 @@ Version: 1.0.0
 - `module:setup/tui`
 - `module:src`
 - `module:src/client`
+- `module:src/control`
+- `module:src/control/control_decision_log.py`
+- `module:src/control/control_ir_validator.py`
+- `module:src/control/control_plane_engine.py`
 - `module:src/core`
 - `module:src/diegetics`
 - `module:src/epistemics`
