@@ -16,6 +16,7 @@ REFUSAL_INSPECT_TARGET_INVALID = "refusal.inspect.target_invalid"
 _VALID_TARGET_KINDS = {
     "structure",
     "project",
+    "plan",
     "node",
     "manifest",
     "cohort",
@@ -135,6 +136,20 @@ _SECTION_IDS_BY_FIDELITY_MOUNT = {
         "section.events_summary",
     ],
 }
+_SECTION_IDS_BY_FIDELITY_PLAN = {
+    "macro": [
+        "section.plan_summary",
+        "section.plan_resource_requirements",
+    ],
+    "meso": [
+        "section.plan_summary",
+        "section.plan_resource_requirements",
+    ],
+    "micro": [
+        "section.plan_summary",
+        "section.plan_resource_requirements",
+    ],
+}
 _DEFAULT_SECTION_ROWS = {
     "section.material_stocks": {"title": "Material Stocks", "extensions": {"cost_units": 1}},
     "section.batches_summary": {"title": "Batches Summary", "extensions": {"cost_units": 2}},
@@ -148,6 +163,8 @@ _DEFAULT_SECTION_ROWS = {
     },
     "section.pose_slots_summary": {"title": "Pose Slots Summary", "extensions": {"cost_units": 1}},
     "section.mount_points_summary": {"title": "Mount Points Summary", "extensions": {"cost_units": 1}},
+    "section.plan_summary": {"title": "Plan Summary", "extensions": {"cost_units": 1}},
+    "section.plan_resource_requirements": {"title": "Plan Resource Requirements", "extensions": {"cost_units": 2}},
     "section.interior.connectivity_summary": {"title": "Interior Connectivity Summary", "extensions": {"cost_units": 1}},
     "section.interior.portal_state_table": {"title": "Interior Portal State Table", "extensions": {"cost_units": 2}},
     "section.interior.pressure_summary": {"title": "Interior Pressure Summary", "extensions": {"cost_units": 2}},
@@ -207,6 +224,8 @@ def _quantize_map(values: object, *, step: int) -> dict:
 
 def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
+    if token.startswith("plan."):
+        return "plan"
     if token.startswith("pose.slot."):
         return "pose_slot"
     if token.startswith("mount.point."):
@@ -330,6 +349,8 @@ def _section_ids_for_fidelity(*, fidelity: str, target_kind: str) -> List[str]:
     if token not in _VALID_FIDELITY:
         token = "macro"
     kind = str(target_kind).strip()
+    if kind == "plan":
+        return list(_SECTION_IDS_BY_FIDELITY_PLAN[token])
     if kind == "graph":
         return list(_SECTION_IDS_BY_FIDELITY_GRAPH[token])
     if kind == "pose_slot":
@@ -1279,6 +1300,60 @@ def _build_section_data(
             "attached_count": len([item for item in rows if bool(item.get("attached", False))]),
             "rows": sorted(rows, key=lambda item: str(item.get("mount_point_id", "")))[:256],
         }
+    if section_id == "section.plan_summary":
+        target_collection = str(target_payload.get("collection", "")).strip()
+        if target_collection != "plan_artifacts":
+            return {"available": False}
+        plan_row = dict(row)
+        preview = dict(plan_row.get("spatial_preview_data") or {})
+        preview_renderables = [dict(item) for item in list(preview.get("renderables") or []) if isinstance(item, dict)]
+        preview_materials = [dict(item) for item in list(preview.get("materials") or []) if isinstance(item, dict)]
+        extensions = dict(plan_row.get("extensions") or {})
+        history = [dict(item) for item in list(extensions.get("update_history") or []) if isinstance(item, dict)]
+        return {
+            "available": True,
+            "plan_id": str(plan_row.get("plan_id", "")).strip(),
+            "plan_type_id": str(plan_row.get("plan_type_id", "")).strip(),
+            "status": str(plan_row.get("status", "")).strip() or "draft",
+            "compiled_ir_id": str(plan_row.get("compiled_ir_id", "")).strip() or None,
+            "compiled_blueprint_ref": str(plan_row.get("compiled_blueprint_ref", "")).strip() or None,
+            "estimated_bom_ref": str(plan_row.get("estimated_bom_ref", "")).strip() or None,
+            "preview_renderable_count": len(preview_renderables),
+            "preview_material_count": len(preview_materials),
+            "update_count": len(history),
+        }
+    if section_id == "section.plan_resource_requirements":
+        target_collection = str(target_payload.get("collection", "")).strip()
+        if target_collection != "plan_artifacts":
+            return {"available": False}
+        plan_row = dict(row)
+        resources = dict(plan_row.get("required_resources_summary") or {})
+        material_mass_raw = dict(resources.get("material_mass_raw") or {})
+        part_counts = dict(resources.get("part_counts") or {})
+        summary = {
+            "available": True,
+            "plan_id": str(plan_row.get("plan_id", "")).strip(),
+            "total_mass_raw": int(max(0, _as_int(resources.get("total_mass_raw", 0), 0))),
+            "total_part_count": int(max(0, _as_int(resources.get("total_part_count", 0), 0))),
+            "bom_summary_hash": str(resources.get("bom_summary_hash", "")).strip() or None,
+            "material_class_count": len([key for key in material_mass_raw.keys() if str(key).strip()]),
+            "part_class_count": len([key for key in part_counts.keys() if str(key).strip()]),
+        }
+        if not allow_hidden_state:
+            summary["epistemic_redaction"] = "coarse_summary"
+            return summary
+        summary["material_mass_raw"] = dict(
+            (str(key), int(max(0, _as_int(value, 0))))
+            for key, value in sorted(material_mass_raw.items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        )
+        summary["part_counts"] = dict(
+            (str(key), int(max(0, _as_int(value, 0))))
+            for key, value in sorted(part_counts.items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        )
+        summary["epistemic_redaction"] = "none"
+        return summary
     if section_id == "section.ag_progress":
         projects = [dict(item) for item in list((dict(state or {})).get("construction_projects") or []) if isinstance(item, dict)]
         steps = [dict(item) for item in list((dict(state or {})).get("construction_steps") or []) if isinstance(item, dict)]

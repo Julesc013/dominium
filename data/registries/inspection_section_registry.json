@@ -98,6 +98,84 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.interior.connectivity_summary",
+        "title": "Interior Connectivity Summary",
+        "data": {
+          "data_kind": "interior_connectivity_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.interior.portal_state_table",
+        "title": "Interior Portal State Table",
+        "data": {
+          "data_kind": "interior_portal_state_table"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.interior.pressure_summary",
+        "title": "Interior Pressure Summary",
+        "data": {
+          "data_kind": "interior_pressure_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.interior.flood_summary",
+        "title": "Interior Flood Summary",
+        "data": {
+          "data_kind": "interior_flood_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.interior.smoke_summary",
+        "title": "Interior Smoke Summary",
+        "data": {
+          "data_kind": "interior_smoke_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.interior.flow_summary",
+        "title": "Interior Flow Summary",
+        "data": {
+          "data_kind": "interior_flow_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 3
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.interior.layout",
         "title": "Interior Layout",
         "data": {
@@ -158,6 +236,58 @@
         "epistemic_redaction_level": "coarse",
         "extensions": {
           "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.pose_slots_summary",
+        "title": "Pose Slots Summary",
+        "data": {
+          "data_kind": "pose_slots_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.mount_points_summary",
+        "title": "Mount Points Summary",
+        "data": {
+          "data_kind": "mount_points_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.plan_summary",
+        "title": "Plan Summary",
+        "data": {
+          "data_kind": "plan_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.plan_resource_requirements",
+        "title": "Plan Resource Requirements",
+        "data": {
+          "data_kind": "plan_resource_requirements"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
           "cost_units": 2
         }
       },

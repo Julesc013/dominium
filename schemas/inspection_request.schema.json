@@ -37,10 +37,20 @@
       "enum": [
         "structure",
         "project",
+        "plan",
         "node",
         "manifest",
         "cohort",
-        "faction"
+        "faction",
+        "machine",
+        "port",
+        "graph",
+        "interior",
+        "interior_graph",
+        "interior_volume",
+        "interior_portal",
+        "pose_slot",
+        "mount_point"
       ]
     },
     "target_id": {
