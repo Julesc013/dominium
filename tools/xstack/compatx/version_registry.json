@@ -169,10 +169,11 @@
       ]
     },
     "control_decision_log": {
-      "current_version": "0.1.0",
+      "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
-        "0.1.0"
+        "0.1.0",
+        "1.0.0"
       ]
     },
     "control_binding": {
@@ -232,6 +233,13 @@
       ]
     },
     "control_resolution": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "downgrade_entry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2129,6 +2137,20 @@
       ]
     },
     "network_node": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "negotiation_request": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "negotiation_result": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

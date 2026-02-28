@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Negotiation Result Schema",
+  "version": "1.0.0",
+  "description": "Deterministic centralized control negotiation result.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "resolved_vector",
+    "downgrade_entries",
+    "refusal_codes",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "resolved_vector": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "downgrade_entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "downgrade_id",
+          "axis",
+          "from_value",
+          "to_value",
+          "reason_code",
+          "remediation_hint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "downgrade_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "axis": {
+            "type": "string",
+            "enum": [
+              "abstraction",
+              "fidelity",
+              "view",
+              "epistemic",
+              "budget"
+            ]
+          },
+          "from_value": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to_value": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason_code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "remediation_hint": {
+            "type": "string",
+            "minLength": 1
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "refusal_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "resolved_vector": {
+        "abstraction_level_resolved": "AL0",
+        "fidelity_resolved": "meso",
+        "view_resolved": "view.mode.first_person",
+        "epistemic_scope_resolved": "ep.scope.standard",
+        "budget_allocated": 4
+      },
+      "downgrade_entries": [
+        {
+          "schema_version": "1.0.0",
+          "downgrade_id": "downgrade.01",
+          "axis": "fidelity",
+          "from_value": "micro",
+          "to_value": "meso",
+          "reason_code": "downgrade.budget_insufficient",
+          "remediation_hint": "remedy.ctrl.increase_budget_or_reduce_scope",
+          "extensions": {}
+        }
+      ],
+      "refusal_codes": [],
+      "deterministic_fingerprint": "7a9fbc8f0e8eb3989ce4b84be8c913a7b84e4ea05fe3d7e00ba0e585f20450ff",
+      "extensions": {}
+    }
+  ]
+}

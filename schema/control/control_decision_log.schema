@@ -1,25 +1,34 @@
 SCHEMA: control/control_decision_log.schema
 schema_id: dominium.schema.control.control_decision_log
-schema_version: 0.1.0
-stability: evolving
+schema_version: 1.0.0
+stability: core
 
 PURPOSE:
-- Minimal deterministic control-plane decision log artifact.
+- Canonical deterministic control-plane decision log artifact.
 
 REQUIRED SHAPE:
 record control_decision_log
   required:
     - schema_version: semver
-    - log_id: id
+    - decision_id: id
     - tick: u64
     - requester_subject_id: id
-    - control_intent_id: id
-    - control_policy_id: id
+    - policy_ids_applied: list[id]
+    - input_vector: map
     - resolved_vector: map
-    - reasons: map
-    - emitted_ids: list[id]
+    - downgrades: list[id]
+    - refusals: list[id]
+    - budget_allocated: u32
+    - emitted_ids: map
+      required:
+        - intent_ids: list[id]
+        - commitment_ids: list[id]
     - deterministic_fingerprint: sha256
     - extensions: map
+  optional:
+    - control_intent_id: id
+    - control_ir_id: id
 
 INVARIANTS:
 - Each control resolution writes a deterministic decision log row.
+- Any downgrade/refusal outcome must be auditable via this artifact.

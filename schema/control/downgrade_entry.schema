@@ -1,0 +1,24 @@
+SCHEMA: control/downgrade_entry.schema
+schema_id: dominium.schema.control.downgrade_entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic downgrade audit entry for negotiation axes.
+
+REQUIRED SHAPE:
+record downgrade_entry
+  required:
+    - schema_version: semver
+    - downgrade_id: id
+    - axis: enum(abstraction|fidelity|view|epistemic|budget)
+    - from_value: id
+    - to_value: id
+    - reason_code: id
+    - remediation_hint: id
+    - extensions: map
+
+INVARIANTS:
+- Downgrade entries must be deterministic and replay-stable.
+- Each downgrade must include reason_code and remediation_hint.
+
