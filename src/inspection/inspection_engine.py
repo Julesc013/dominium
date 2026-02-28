@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
-from src.control.negotiation import negotiate_request
+from src.control.fidelity import (
+    DEFAULT_FIDELITY_POLICY_ID,
+    NO_DOWNGRADE,
+    REFUSAL_CTRL_FIDELITY_DENIED,
+    arbitrate_fidelity_requests,
+    build_fidelity_request,
+)
 from src.interior import InteriorError, path_exists
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -369,7 +375,11 @@ def _resolve_fidelity(
     micro_allowed: bool,
     micro_available: bool,
     strict_budget: bool,
-) -> Tuple[str, List[str], int, bool]:
+    requester_subject_id: str = "subject.inspect",
+    tick: int = 0,
+    server_profile_id: str = "server.profile.inspect",
+    fidelity_policy_id: str = DEFAULT_FIDELITY_POLICY_ID,
+) -> Tuple[str, List[str], int, bool, dict, dict, dict]:
     desired = str(desired_fidelity).strip() or "macro"
     if desired not in _VALID_FIDELITY:
         desired = "macro"
@@ -379,51 +389,44 @@ def _resolve_fidelity(
         section_ids = _section_ids_for_fidelity(fidelity=token, target_kind=target_kind)
         fidelity_cost_by_level[token] = int(_section_cost(section_rows, section_ids))
 
-    desired_cost = int(fidelity_cost_by_level.get(desired, fidelity_cost_by_level.get("macro", 0)))
-    negotiation_result = negotiate_request(
-        negotiation_request={
-            "schema_version": "1.0.0",
-            "requester_subject_id": "subject.inspect",
-            "request_vector": {
-                "abstraction_level_requested": "AL0",
-                "fidelity_requested": desired,
-                "view_requested": "view.mode.first_person",
-                "epistemic_scope_requested": "ep.scope.default",
-                "budget_requested": int(desired_cost),
-            },
-            "context": {
-                "law_profile_id": "law.inspect",
-                "server_profile_id": "server.profile.inspect",
-            },
-            "extensions": {
-                "micro_allowed": bool(micro_allowed),
-                "micro_available": bool(micro_available),
-                "budget_refuse_on_shortfall": bool(strict_budget),
-                "budget_refusal_code": REFUSAL_INSPECT_BUDGET_EXCEEDED,
-                "budget_zero_means_unbounded": True,
-                "fidelity_cost_by_level": dict(fidelity_cost_by_level),
-            },
+    desired_cost = int(max(0, _as_int(fidelity_cost_by_level.get(desired, fidelity_cost_by_level.get("macro", 0)), 0)))
+    fidelity_request = build_fidelity_request(
+        requester_subject_id=str(requester_subject_id).strip() or "subject.inspect",
+        target_kind=str(target_kind).strip() or "structure",
+        target_id="inspect.target.{}".format(canonical_sha256({"target_kind": str(target_kind), "tick": int(max(0, _as_int(tick, 0)))} )[:16]),
+        requested_level=str(desired),
+        cost_estimate=int(desired_cost),
+        priority=0,
+        created_tick=int(max(0, _as_int(tick, 0))),
+        extensions={
+            "micro_allowed": bool(micro_allowed),
+            "micro_available": bool(micro_available),
+            "allowed_levels": ["micro", "meso", "macro"],
+            "fidelity_cost_by_level": dict(fidelity_cost_by_level),
+            "strict_budget": bool(strict_budget),
         },
+    )
+    arbitration = arbitrate_fidelity_requests(
+        fidelity_requests=[dict(fidelity_request)],
         rs5_budget_state={
-            "tick": 0,
-            "requested_cost_units": int(desired_cost),
-            "max_cost_units_per_tick": int(budget),
+            "tick": int(max(0, _as_int(tick, 0))),
+            "envelope_id": "budget.inspect",
+            "fidelity_policy_id": str(fidelity_policy_id).strip() or DEFAULT_FIDELITY_POLICY_ID,
+            "max_cost_units_per_tick": int(max(0, budget)),
             "runtime_budget_state": {},
             "fairness_state": {},
-            "connected_subject_ids": ["subject.inspect"],
+            "connected_subject_ids": [str(fidelity_request.get("requester_subject_id", ""))],
         },
-        control_policy={
-            "control_policy_id": "ctrl.policy.inspect",
-            "allowed_abstraction_levels": ["AL0"],
-            "allowed_view_policies": ["view.mode.first_person"],
-            "allowed_fidelity_ranges": list(_VALID_FIDELITY),
-            "extensions": {},
-        },
-        authority_context={"entitlements": []},
-        law_profile={"allowed_processes": [], "forbidden_processes": []},
+        server_profile={"server_profile_id": str(server_profile_id).strip() or "server.profile.inspect"},
+        fidelity_policy={"policy_id": str(fidelity_policy_id).strip() or DEFAULT_FIDELITY_POLICY_ID},
     )
-    refusal_codes = _sorted_unique_strings(negotiation_result.get("refusal_codes"))
-    if strict_budget and REFUSAL_INSPECT_BUDGET_EXCEEDED in refusal_codes:
+    allocation_rows = [
+        dict(row) for row in list(arbitration.get("fidelity_allocations") or []) if isinstance(row, dict)
+    ]
+    allocation = dict(allocation_rows[0] if allocation_rows else {})
+    allocation_ext = dict(allocation.get("extensions") or {})
+    refusal_codes = _sorted_unique_strings(list(allocation_ext.get("refusal_codes") or []))
+    if strict_budget and REFUSAL_CTRL_FIDELITY_DENIED in set(refusal_codes):
         raise InspectionError(
             REFUSAL_INSPECT_BUDGET_EXCEEDED,
             "inspection budget cannot satisfy requested fidelity",
@@ -434,14 +437,21 @@ def _resolve_fidelity(
             },
         )
 
-    resolved_vector = dict(negotiation_result.get("resolved_vector") or {})
-    achieved = str(resolved_vector.get("fidelity_resolved", "")).strip()
+    achieved = str(allocation.get("resolved_level", "")).strip()
     if achieved not in _VALID_FIDELITY:
         achieved = "macro"
     section_ids = _section_ids_for_fidelity(fidelity=achieved, target_kind=target_kind)
     section_cost = int(_section_cost(section_rows, section_ids))
-    degraded = bool(achieved != desired or bool(list(negotiation_result.get("downgrade_entries") or [])))
-    return achieved, section_ids, section_cost, degraded
+    degraded = bool(achieved != desired or str(allocation.get("downgrade_reason", NO_DOWNGRADE)).strip() not in ("", NO_DOWNGRADE))
+    return (
+        achieved,
+        section_ids,
+        section_cost,
+        degraded,
+        dict(fidelity_request),
+        dict(allocation),
+        dict(arbitration),
+    )
 
 
 def _target_structure_id(target_payload: Mapping[str, object], target_id: str) -> str:
@@ -1433,7 +1443,7 @@ def build_inspection_snapshot_artifact(
     micro_available = bool(micro_rows if not structure_id else [item for item in micro_rows if str(item.get("parent_structure_id", "")).strip() == structure_id])
 
     section_rows = inspection_section_rows_by_id(section_registry_payload)
-    achieved_fidelity, section_ids, section_cost_units, degraded = _resolve_fidelity(
+    achieved_fidelity, section_ids, section_cost_units, degraded, fidelity_request, fidelity_allocation, fidelity_arbitration = _resolve_fidelity(
         desired_fidelity=str(request.get("desired_fidelity", "macro")),
         target_kind=str(request.get("target_kind", "")),
         max_cost_units=_as_int(request.get("max_cost_units", 0), 0),
@@ -1441,6 +1451,12 @@ def build_inspection_snapshot_artifact(
         micro_allowed=micro_allowed,
         micro_available=micro_available,
         strict_budget=bool(strict_budget),
+        requester_subject_id=str(request.get("requester_subject_id", "")).strip() or "subject.inspect",
+        tick=_as_int(request.get("tick", 0), 0),
+        server_profile_id=str((dict(policy_context or {})).get("server_profile_id", "server.profile.inspect")).strip()
+        or "server.profile.inspect",
+        fidelity_policy_id=str((dict(policy_context or {})).get("fidelity_policy_id", DEFAULT_FIDELITY_POLICY_ID)).strip()
+        or DEFAULT_FIDELITY_POLICY_ID,
     )
 
     quant_step = 100 if visibility_level == "diegetic" else (1 if allow_hidden_state else 10)
@@ -1526,6 +1542,9 @@ def build_inspection_snapshot_artifact(
             "epistemic_policy_id": epistemic_policy_id,
             "section_policy_id": section_policy_id,
             "visibility_level": visibility_level,
+            "fidelity_request": dict(fidelity_request),
+            "fidelity_allocation": dict(fidelity_allocation),
+            "fidelity_arbitration": dict(fidelity_arbitration),
         },
     }
     snapshot["deterministic_fingerprint"] = canonical_sha256(dict(snapshot, deterministic_fingerprint=""))
@@ -1540,5 +1559,8 @@ def build_inspection_snapshot_artifact(
         "micro_available": bool(micro_available),
         "epistemic_policy_id": epistemic_policy_id,
         "section_policy_id": section_policy_id,
+        "fidelity_request": dict(fidelity_request),
+        "fidelity_allocation": dict(fidelity_allocation),
+        "fidelity_arbitration": dict(fidelity_arbitration),
     }
     return snapshot, diagnostics
