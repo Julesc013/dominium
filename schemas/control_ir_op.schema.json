@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control IR Op Schema",
+  "version": "1.0.0",
+  "description": "Deterministic restricted Control IR operation declaration.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "op_id",
+    "op_type",
+    "parameters",
+    "static_requirements",
+    "cost_estimate",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "op_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "op_type": {
+      "type": "string",
+      "enum": [
+        "op.acquire_pose",
+        "op.release_pose",
+        "op.bind_tool",
+        "op.unbind_tool",
+        "op.run_task",
+        "op.emit_commitment",
+        "op.wait_event",
+        "op.check_condition",
+        "op.request_view_change",
+        "op.request_fidelity",
+        "op.noop"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "static_requirements": {
+      "type": "object",
+      "required": [
+        "entitlements",
+        "capabilities"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "entitlements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "cost_estimate": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "op_id": "op.0001",
+      "op_type": "op.run_task",
+      "parameters": {
+        "task_type_id": "task.surface.operate_machine",
+        "target_semantic_id": "machine.alpha"
+      },
+      "static_requirements": {
+        "entitlements": [
+          "entitlement.tool.use"
+        ],
+        "capabilities": [
+          "capability.surface.execute"
+        ]
+      },
+      "cost_estimate": 3,
+      "extensions": {}
+    }
+  ]
+}
