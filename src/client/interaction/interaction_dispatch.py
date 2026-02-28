@@ -26,6 +26,14 @@ def _sorted_unique_strings(values: List[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in (values or []) if str(item).strip()))
 
 
+def _registry_payload(policy_context: dict | None, key: str) -> dict:
+    return dict((dict(policy_context or {})).get(str(key), {}) or {})
+
+
+def _held_tool_tags(policy_context: dict | None) -> List[object]:
+    return list((dict(policy_context or {})).get("held_tool_tags") or [])
+
+
 def _hash64(token: str, fallback_seed: object) -> str:
     value = str(token or "").strip()
     if len(value) == 64 and all(ch in "0123456789abcdefABCDEF" for ch in value):
@@ -570,16 +578,25 @@ def run_interaction_command(
             law_profile=law_profile,
             authority_context=authority_context,
             interaction_action_registry=interaction_action_registry,
+            surface_type_registry=_registry_payload(policy_context, "surface_type_registry"),
+            tool_tag_registry=_registry_payload(policy_context, "tool_tag_registry"),
+            surface_visibility_policy_registry=_registry_payload(policy_context, "surface_visibility_policy_registry"),
+            held_tool_tags=_held_tool_tags(policy_context),
             include_disabled=bool(include_disabled),
             repo_root=repo_root,
         )
         if str(listed.get("result", "")) != "complete":
             return listed
+        listed_payload = dict(listed.get("affordance_list") or {})
+        action_surfaces = list((dict(listed_payload.get("extensions") or {})).get("action_surfaces") or [])
         listed["interaction_panel"] = build_interaction_panel(
-            affordance_list=dict(listed.get("affordance_list") or {}),
+            affordance_list=listed_payload,
             selected_affordance_id="",
         )
-        listed["selection_overlay"] = build_selection_overlay(str(target_semantic_id or ""))
+        listed["selection_overlay"] = build_selection_overlay(
+            str(target_semantic_id or ""),
+            action_surfaces=action_surfaces,
+        )
         return listed
     if token == "interact.preview":
         affordances = build_affordance_list(
@@ -588,6 +605,10 @@ def run_interaction_command(
             law_profile=law_profile,
             authority_context=authority_context,
             interaction_action_registry=interaction_action_registry,
+            surface_type_registry=_registry_payload(policy_context, "surface_type_registry"),
+            tool_tag_registry=_registry_payload(policy_context, "tool_tag_registry"),
+            surface_visibility_policy_registry=_registry_payload(policy_context, "surface_visibility_policy_registry"),
+            held_tool_tags=_held_tool_tags(policy_context),
             include_disabled=bool(include_disabled),
             repo_root=repo_root,
         )
@@ -627,6 +648,10 @@ def run_interaction_command(
                         law_profile=law_profile,
                         authority_context=authority_context,
                         interaction_action_registry=interaction_action_registry,
+                        surface_type_registry=_registry_payload(policy_context, "surface_type_registry"),
+                        tool_tag_registry=_registry_payload(policy_context, "tool_tag_registry"),
+                        surface_visibility_policy_registry=_registry_payload(policy_context, "surface_visibility_policy_registry"),
+                        held_tool_tags=_held_tool_tags(policy_context),
                         include_disabled=bool(include_disabled),
                         repo_root=repo_root,
                     )
@@ -654,6 +679,10 @@ def run_interaction_command(
             law_profile=law_profile,
             authority_context=authority_context,
             interaction_action_registry=interaction_action_registry,
+            surface_type_registry=_registry_payload(policy_context, "surface_type_registry"),
+            tool_tag_registry=_registry_payload(policy_context, "tool_tag_registry"),
+            surface_visibility_policy_registry=_registry_payload(policy_context, "surface_visibility_policy_registry"),
+            held_tool_tags=_held_tool_tags(policy_context),
             include_disabled=bool(include_disabled),
             repo_root=repo_root,
         )
@@ -663,8 +692,14 @@ def run_interaction_command(
                 affordance_list=affordance_list_payload,
                 selected_affordance_id=str(affordance_id or ""),
             )
+            action_surfaces = list((dict(affordance_list_payload.get("extensions") or {})).get("action_surfaces") or [])
+        else:
+            action_surfaces = []
         if "inspection_overlays" not in executed:
-            executed["selection_overlay"] = build_selection_overlay(str(target_semantic_id or ""))
+            executed["selection_overlay"] = build_selection_overlay(
+                str(target_semantic_id or ""),
+                action_surfaces=action_surfaces,
+            )
         return executed
     return _refusal(
         "refusal.interaction.command_unknown",

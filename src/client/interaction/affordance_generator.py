@@ -6,6 +6,7 @@ from typing import Dict, List
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
+from src.interaction import resolve_action_surfaces
 
 
 _KNOWN_TARGET_KINDS = (
@@ -205,6 +206,15 @@ def _action_rows(interaction_action_registry: dict) -> List[dict]:
     return out
 
 
+def _action_rows_by_process(interaction_action_registry: dict) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in _action_rows(interaction_action_registry):
+        process_id = str(row.get("process_id", "")).strip()
+        if process_id and process_id not in out:
+            out[process_id] = dict(row)
+    return out
+
+
 def _allowed_processes(law_profile: dict) -> List[str]:
     return _sorted_unique_strings(list((dict(law_profile or {})).get("allowed_processes") or []))
 
@@ -218,6 +228,103 @@ def _process_entitlement_map(law_profile: dict) -> Dict[str, str]:
         if process_id and entitlement:
             out[process_id] = entitlement
     return out
+
+
+def _surface_affordance_row(
+    *,
+    target_semantic_id: str,
+    target_kind: str,
+    process_id: str,
+    action_row: dict,
+    surface_row: dict,
+    law_profile: dict,
+    authority_context: dict,
+    perceived_model: dict,
+) -> dict:
+    process_id = str(process_id).strip()
+    if not process_id:
+        return {}
+    surface_id = str((dict(surface_row or {})).get("surface_id", "")).strip()
+    if not surface_id:
+        return {}
+
+    allowed_processes = set(_allowed_processes(law_profile))
+    if process_id not in allowed_processes:
+        return {}
+
+    entitlement_map = _process_entitlement_map(law_profile)
+    registry_required = _sorted_unique_strings(list((dict(action_row or {})).get("required_entitlements") or []))
+    mapped_required = str(entitlement_map.get(process_id, "")).strip()
+    required_entitlements = _sorted_unique_strings(list(registry_required) + ([mapped_required] if mapped_required else []))
+    authority_entitlements = set(_sorted_unique_strings(list((dict(authority_context or {})).get("entitlements") or [])))
+    missing_entitlements = [token for token in required_entitlements if token not in authority_entitlements]
+
+    channels = set(_sorted_unique_strings(list((dict(perceived_model or {})).get("channels") or [])))
+    required_lens_channels = _sorted_unique_strings(list((dict(action_row or {})).get("required_lens_channels") or []))
+    missing_lens_channels = [token for token in required_lens_channels if token not in channels]
+
+    surface_extensions = dict((dict(surface_row or {})).get("extensions") or {})
+    tool_compatible = bool(surface_extensions.get("tool_compatible", True))
+    enabled = (not missing_entitlements) and (not missing_lens_channels) and tool_compatible
+    disabled_reason_code = ""
+    if not tool_compatible:
+        disabled_reason_code = "refusal.tool.incompatible"
+    elif missing_entitlements:
+        disabled_reason_code = "ENTITLEMENT_MISSING"
+    elif missing_lens_channels:
+        disabled_reason_code = "refusal.ep.channel_forbidden"
+
+    display_name = str((dict(action_row or {})).get("display_name", "")).strip() or process_id
+    preview_mode = str((dict(action_row or {})).get("preview_mode", "")).strip()
+    if preview_mode not in _KNOWN_PREVIEW_MODES:
+        preview_mode = "none"
+    hints = dict((dict(action_row or {})).get("default_ui_hints") or {})
+    cost_units_estimate = hints.get("cost_units_estimate")
+    parsed_cost_units = None if cost_units_estimate is None else max(0, _to_int(cost_units_estimate, 0))
+    surface_parameter_schema_id = (dict(surface_row or {})).get("parameter_schema_id")
+    row = {
+        "schema_version": "1.0.0",
+        "affordance_id": _stable_id(
+            "affordance",
+            {
+                "target_semantic_id": str(target_semantic_id),
+                "surface_id": surface_id,
+                "process_id": process_id,
+            },
+        ),
+        "target_semantic_id": str(target_semantic_id),
+        "process_id": process_id,
+        "display_name": display_name,
+        "required_entitlements": required_entitlements,
+        "required_lens_channels": required_lens_channels,
+        "parameter_schema_id": (
+            str(surface_parameter_schema_id).strip()
+            if isinstance(surface_parameter_schema_id, str) and str(surface_parameter_schema_id).strip()
+            else (dict(action_row or {}).get("parameter_schema_id"))
+        ),
+        "preview_capability": preview_mode,
+        "cost_units_estimate": parsed_cost_units,
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "action_id": str((dict(action_row or {})).get("action_id", "")).strip(),
+            "target_kind": target_kind,
+            "enabled": bool(enabled),
+            "missing_entitlements": list(missing_entitlements),
+            "missing_lens_channels": list(missing_lens_channels),
+            "default_ui_hints": hints,
+            "registry_extensions": dict((dict(action_row or {})).get("extensions") or {}),
+            "surface_id": surface_id,
+            "surface_type_id": str((dict(surface_row or {})).get("surface_type_id", "")).strip(),
+            "surface_visibility_policy_id": str((dict(surface_row or {})).get("visibility_policy_id", "")).strip(),
+            "compatible_tool_tags": _sorted_unique_strings(list((dict(surface_row or {})).get("compatible_tool_tags") or [])),
+            "tool_compatible": bool(tool_compatible),
+            "disabled_reason_code": disabled_reason_code,
+        },
+    }
+    fingerprint_seed = dict(row)
+    fingerprint_seed["deterministic_fingerprint"] = ""
+    row["deterministic_fingerprint"] = canonical_sha256(fingerprint_seed)
+    return row
 
 
 def _affordance_row(
@@ -306,6 +413,10 @@ def build_affordance_list(
     law_profile: dict,
     authority_context: dict,
     interaction_action_registry: dict,
+    surface_type_registry: dict | None = None,
+    tool_tag_registry: dict | None = None,
+    surface_visibility_policy_registry: dict | None = None,
+    held_tool_tags: list[object] | None = None,
     include_disabled: bool = True,
     repo_root: str = "",
 ) -> Dict[str, object]:
@@ -321,29 +432,73 @@ def build_affordance_list(
         )
 
     target_kind = _target_kind(perceived_model, target_id)
-    rows = []
-    for action_row in _action_rows(interaction_action_registry):
-        row = _affordance_row(
-            target_semantic_id=target_id,
-            target_kind=target_kind,
-            action_row=action_row,
-            law_profile=law_profile,
-            authority_context=authority_context,
-            perceived_model=perceived_model,
-        )
-        if not isinstance(row, dict):
-            continue
-        if (not bool(include_disabled)) and (not bool((dict(row.get("extensions") or {})).get("enabled", False))):
-            continue
-        rows.append(row)
-    rows = sorted(
-        rows,
-        key=lambda row: (
-            str(row.get("display_name", "")).lower(),
-            str(row.get("process_id", "")),
-            str(row.get("affordance_id", "")),
-        ),
+    resolved_surfaces = resolve_action_surfaces(
+        perceived_model=dict(perceived_model or {}),
+        target_semantic_id=target_id,
+        law_profile=dict(law_profile or {}),
+        authority_context=dict(authority_context or {}),
+        surface_type_registry=dict(surface_type_registry or {}),
+        tool_tag_registry=dict(tool_tag_registry or {}),
+        surface_visibility_policy_registry=dict(surface_visibility_policy_registry or {}),
+        held_tool_tags=list(held_tool_tags or []),
     )
+    surface_rows = [
+        dict(row)
+        for row in list(dict(resolved_surfaces or {}).get("surfaces") or [])
+        if isinstance(row, dict)
+    ]
+
+    rows = []
+    if surface_rows:
+        action_rows_by_process = _action_rows_by_process(interaction_action_registry)
+        for surface_row in sorted(surface_rows, key=lambda row: str(row.get("surface_id", ""))):
+            for process_id in _sorted_unique_strings(list(surface_row.get("allowed_process_ids") or [])):
+                row = _surface_affordance_row(
+                    target_semantic_id=target_id,
+                    target_kind=target_kind,
+                    process_id=process_id,
+                    action_row=dict(action_rows_by_process.get(process_id) or {}),
+                    surface_row=surface_row,
+                    law_profile=law_profile,
+                    authority_context=authority_context,
+                    perceived_model=perceived_model,
+                )
+                if not isinstance(row, dict) or not row:
+                    continue
+                if (not bool(include_disabled)) and (not bool((dict(row.get("extensions") or {})).get("enabled", False))):
+                    continue
+                rows.append(row)
+        rows = sorted(
+            rows,
+            key=lambda row: (
+                str((dict(row.get("extensions") or {})).get("surface_id", "")),
+                str(row.get("process_id", "")),
+                str(row.get("affordance_id", "")),
+            ),
+        )
+    else:
+        for action_row in _action_rows(interaction_action_registry):
+            row = _affordance_row(
+                target_semantic_id=target_id,
+                target_kind=target_kind,
+                action_row=action_row,
+                law_profile=law_profile,
+                authority_context=authority_context,
+                perceived_model=perceived_model,
+            )
+            if not isinstance(row, dict):
+                continue
+            if (not bool(include_disabled)) and (not bool((dict(row.get("extensions") or {})).get("enabled", False))):
+                continue
+            rows.append(row)
+        rows = sorted(
+            rows,
+            key=lambda row: (
+                str(row.get("display_name", "")).lower(),
+                str(row.get("process_id", "")),
+                str(row.get("affordance_id", "")),
+            ),
+        )
 
     tick = max(0, _to_int((dict((dict(perceived_model or {})).get("time_state") or {})).get("tick", 0), 0))
     viewpoint_id = str((dict(perceived_model or {})).get("viewpoint_id", "")).strip() or "viewpoint.unknown"
@@ -357,6 +512,16 @@ def build_affordance_list(
         "extensions": {
             "target_kind": target_kind,
             "include_disabled": bool(include_disabled),
+            "surface_driven": bool(surface_rows),
+            "action_surfaces": [
+                {
+                    "surface_id": str(row.get("surface_id", "")).strip(),
+                    "surface_type_id": str(row.get("surface_type_id", "")).strip(),
+                    "local_transform": dict(row.get("local_transform") or {}),
+                    "tool_compatible": bool(dict(row.get("extensions") or {}).get("tool_compatible", True)),
+                }
+                for row in sorted(surface_rows, key=lambda item: str(item.get("surface_id", "")))
+            ],
         },
     }
     hash_seed = dict(payload)
