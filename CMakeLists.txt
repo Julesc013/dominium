@@ -98,6 +98,15 @@ if(NOT _dom_cmake_sanity_res EQUAL 0)
     message(FATAL_ERROR "CMake global include check failed; remove global include directories usage.")
 endif()
 
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_build_target_boundaries.py --repo-root ${CMAKE_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    RESULT_VARIABLE _dom_boundary_build_res
+)
+if(NOT _dom_boundary_build_res EQUAL 0)
+    message(FATAL_ERROR "Build target boundary check failed; resolve boundary violations before configure continues.")
+endif()
+
 set(DOC_RATIO_ENABLE ON CACHE BOOL "Enable documentation ratio quality gate")
 set(DOC_RATIO_ROOTS "engine;game;client;server;launcher;setup;tools;libs;app" CACHE STRING "Roots to scan for documentation ratios")
 if(DOC_RATIO_ROOTS STREQUAL "src;include")
@@ -171,6 +180,12 @@ add_custom_target(check_arch
     COMMENT "Running architecture boundary checks"
 )
 
+add_custom_target(check_build_boundaries
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/verify_build_target_boundaries.py --repo-root ${CMAKE_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Running build boundary blocker checks"
+)
+
 add_test(NAME phase6_audit
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/phase6_audit_checks.py --repo-root ${CMAKE_SOURCE_DIR}
 )
@@ -239,6 +254,7 @@ add_custom_target(check_all)
 add_dependencies(check_all
     all_quality_gates
     check_arch
+    check_build_boundaries
     check_hygiene
     check_comment_density
     check_todo_blockers
