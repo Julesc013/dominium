@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control IR Block Schema",
+  "version": "1.0.0",
+  "description": "Deterministic Control IR block declaration.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "block_id",
+    "op_sequence",
+    "next_block_on_success",
+    "next_block_on_failure",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "block_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "op_sequence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "next_block_on_success": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "next_block_on_failure": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "block_id": "block.main",
+      "op_sequence": [
+        "op.0001",
+        "op.0002"
+      ],
+      "next_block_on_success": null,
+      "next_block_on_failure": "block.fail",
+      "extensions": {}
+    }
+  ]
+}
