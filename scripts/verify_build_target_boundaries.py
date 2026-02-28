@@ -24,6 +24,7 @@ OS_TOKEN_PATTERNS = (
 RUNTIME_ROOTS = ("src", "engine", "game", "client", "server")
 RUNTIME_EXTS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp")
 SKIP_PREFIXES = ("build/", "dist/", "docs/", "legacy/", "tools/xstack/out/")
+QUARANTINE_SKIP_PREFIXES = ("build/", "dist/", "docs/", "tools/xstack/out/")
 
 CORE_REVERSE_IMPORT_PATTERNS = (
     re.compile(r"^\s*from\s+src\.(materials|logistics|interior|interaction|machines|inspection)\b"),
@@ -135,6 +136,36 @@ def _check_cmake_boundary_markers(repo_root: str, failures: List[str]) -> None:
         failures.append("BOUNDARY-CMAKE-002 missing required boundary token '{}'".format(token))
 
 
+def _check_quarantine_policy(repo_root: str, failures: List[str]) -> None:
+    legacy_abs = os.path.join(repo_root, "legacy")
+    quarantine_abs = os.path.join(repo_root, "quarantine")
+    if not os.path.isdir(legacy_abs):
+        failures.append("BOUNDARY-LEGACY-000 missing legacy/ directory")
+    if not os.path.isdir(quarantine_abs):
+        failures.append("BOUNDARY-LEGACY-000 missing quarantine/ directory")
+
+    cmake_lines = _read_lines(repo_root, "CMakeLists.txt")
+    cmake_text = "\n".join(cmake_lines)
+    for token in ("add_subdirectory(legacy", "add_subdirectory(quarantine"):
+        if token in cmake_text:
+            failures.append("BOUNDARY-CMAKE-003 forbidden CMake linkage token '{}'".format(token))
+
+    for root in RUNTIME_ROOTS:
+        for rel_path in _iter_files(repo_root, root, RUNTIME_EXTS):
+            if rel_path.startswith(QUARANTINE_SKIP_PREFIXES):
+                continue
+            for line_no, line in enumerate(_read_lines(repo_root, rel_path), start=1):
+                lowered = str(line).replace("\\", "/")
+                if "legacy/" not in lowered and "quarantine/" not in lowered:
+                    continue
+                failures.append(
+                    "BOUNDARY-LEGACY-001 {}:{} runtime module references legacy/quarantine path".format(
+                        rel_path,
+                        line_no,
+                    )
+                )
+
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Deterministic build boundary scanner.")
@@ -149,6 +180,7 @@ def main() -> int:
     _check_render_truth_isolation(repo_root, failures)
     _check_core_dependency_direction(repo_root, failures)
     _check_cmake_boundary_markers(repo_root, failures)
+    _check_quarantine_policy(repo_root, failures)
 
     if failures:
         for item in sorted(set(failures)):
