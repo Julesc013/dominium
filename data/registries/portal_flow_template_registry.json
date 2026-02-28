@@ -1,0 +1,61 @@
+{
+  "schema_id": "dominium.registry.portal_flow_template_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.portal_flow_template_registry",
+    "registry_version": "1.0.0",
+    "templates": [
+      {
+        "schema_version": "1.0.0",
+        "template_id": "door_basic",
+        "description": "Generic door flow template.",
+        "portal_type_id": "portal.door",
+        "conductance_air": 420,
+        "conductance_water": 120,
+        "conductance_smoke": 360,
+        "sealing_coefficient": 820,
+        "open_state_multiplier": 1000,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "template_id": "hatch_basic",
+        "description": "Hatch with stronger default sealing.",
+        "portal_type_id": "portal.hatch",
+        "conductance_air": 380,
+        "conductance_water": 100,
+        "conductance_smoke": 320,
+        "sealing_coefficient": 900,
+        "open_state_multiplier": 1000,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "template_id": "vent_basic",
+        "description": "Vent conduit with strong smoke and air passage but low water conductance.",
+        "portal_type_id": "portal.vent",
+        "conductance_air": 280,
+        "conductance_water": 40,
+        "conductance_smoke": 300,
+        "sealing_coefficient": 300,
+        "open_state_multiplier": 1000,
+        "extensions": {
+          "default_state_hint": "permeable"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "template_id": "airlock_basic",
+        "description": "Airlock template with high sealing when closed.",
+        "portal_type_id": "portal.airlock",
+        "conductance_air": 240,
+        "conductance_water": 80,
+        "conductance_smoke": 180,
+        "sealing_coefficient": 960,
+        "open_state_multiplier": 1000,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
