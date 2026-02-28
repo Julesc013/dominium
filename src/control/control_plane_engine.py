@@ -8,6 +8,7 @@ from typing import Dict, List, Mapping, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
+from .capability import capability_binding_rows, resolve_missing_capabilities
 from .negotiation import negotiate_request
 
 
@@ -784,6 +785,19 @@ def build_control_resolution(
     process_id = str(produces.get("process_id", "")).strip() or str(params.get("process_id", "")).strip()
     task_type_id = str(produces.get("task_type_id", "")).strip()
     plan_intent_type = str(produces.get("plan_intent_type", "")).strip()
+    required_capabilities = _sorted_unique_strings(action_row.get("required_capabilities"))
+    target_entity_id = str(intent.get("target_id", "")).strip()
+    requester_subject_id = str(intent.get("requester_subject_id", "")).strip()
+    capability_target_candidates = [token for token in (target_entity_id, requester_subject_id) if token]
+    if not capability_target_candidates:
+        capability_target_candidates = ["subject.unknown"]
+    capability_binding_payload: object = {}
+    for key in ("capability_bindings", "capability_binding_registry"):
+        value = policy_context_payload.get(key)
+        if isinstance(value, (dict, list)):
+            capability_binding_payload = value
+            break
+    normalized_capability_bindings = capability_binding_rows(capability_binding_payload)
     required_process_for_law = process_id if (process_id and not task_type_id) else ""
 
     policy_extensions = dict(policy_row.get("extensions") or {})
@@ -898,6 +912,38 @@ def build_control_resolution(
             ),
             "refusal": dict(refusal_payload),
         }
+
+    if required_capabilities and normalized_capability_bindings:
+        capability_satisfied = False
+        missing_by_target: Dict[str, List[str]] = {}
+        for candidate_id in capability_target_candidates:
+            missing = resolve_missing_capabilities(
+                entity_id=str(candidate_id),
+                required_capabilities=required_capabilities,
+                capability_bindings=normalized_capability_bindings,
+            )
+            if not missing:
+                capability_satisfied = True
+                break
+            missing_by_target[str(candidate_id)] = list(missing)
+        if not capability_satisfied:
+            missing_target = sorted(missing_by_target.keys())[0] if missing_by_target else str(target_entity_id or requester_subject_id)
+            missing_caps = list(missing_by_target.get(missing_target) or required_capabilities)
+            refusal_payload = _refusal(
+                CONTROL_REFUSAL_FORBIDDEN_BY_LAW,
+                "target is missing required capabilities for requested action",
+                "Bind required capabilities to the target entity before retrying this action.",
+                {
+                    "requested_action_id": action_id,
+                    "target_id": missing_target,
+                    "required_capabilities": ",".join(missing_caps),
+                },
+                "$.target_id",
+            )
+            return _finalize_refusal(
+                refusal_payload=refusal_payload,
+                negotiation_for_log=_negotiation_with_refusal_code(negotiation_payload, CONTROL_REFUSAL_FORBIDDEN_BY_LAW),
+            )
 
     refusal_codes = [str(item).strip() for item in list(negotiation_payload.get("refusal_codes") or []) if str(item).strip()]
     if refusal_codes:

@@ -31,6 +31,11 @@ _KNOWN_TARGET_KINDS = (
     "event_stream",
     "reenactment_request",
     "reenactment_artifact",
+    "interior_graph",
+    "interior_volume",
+    "interior_portal",
+    "pose_slot",
+    "mount_point",
 )
 _KNOWN_PREVIEW_MODES = ("none", "cheap", "expensive")
 
@@ -82,6 +87,10 @@ def _stable_id(prefix: str, payload: dict) -> str:
 
 def _target_kind_from_prefix(target_semantic_id: str) -> str:
     token = str(target_semantic_id or "").strip()
+    if token.startswith("pose.slot."):
+        return "pose_slot"
+    if token.startswith("mount.point."):
+        return "mount_point"
     if token.startswith("blueprint."):
         return "blueprint"
     if token.startswith("logistics.node.") or token.startswith("node."):
@@ -116,6 +125,12 @@ def _target_kind_from_prefix(target_semantic_id: str) -> str:
         return "reenactment_request"
     if token.startswith("reenactment."):
         return "reenactment_artifact"
+    if token.startswith("interior.graph."):
+        return "interior_graph"
+    if token.startswith("interior.volume."):
+        return "interior_volume"
+    if token.startswith("interior.portal."):
+        return "interior_portal"
     if token.startswith("agent.") or token.startswith("body.") or token.startswith("camera."):
         return "agent"
     if token.startswith("cohort.") or token.startswith("population."):
@@ -184,6 +199,28 @@ def _target_kind(perceived_model: dict, target_semantic_id: str) -> str:
     if fallback in _KNOWN_TARGET_KINDS:
         return fallback
     return "agent"
+
+
+def _target_entity_row(perceived_model: dict, target_semantic_id: str) -> dict:
+    entities = dict((dict(perceived_model or {})).get("entities") or {})
+    rows = list(entities.get("entries") or [])
+    token = str(target_semantic_id).strip()
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("entity_id", ""))):
+        entity_id = str(row.get("semantic_id", "")).strip() or str(row.get("entity_id", "")).strip()
+        if entity_id == token:
+            return dict(row)
+    return {}
+
+
+def _pose_control_grants(entity_row: dict) -> dict:
+    row = dict(entity_row or {})
+    ext = dict(row.get("extensions") or {})
+    return {
+        "control_binding_ids": _sorted_unique_strings(list(ext.get("pose_control_binding_ids") or [])),
+        "granted_process_ids": _sorted_unique_strings(list(ext.get("pose_granted_process_ids") or [])),
+        "granted_surface_ids": _sorted_unique_strings(list(ext.get("pose_granted_surface_ids") or [])),
+        "occupied_pose_slot_ids": _sorted_unique_strings(list(ext.get("occupied_pose_slot_ids") or [])),
+    }
 
 
 def _action_rows(interaction_action_registry: dict) -> List[dict]:
@@ -447,6 +484,11 @@ def build_affordance_list(
         )
 
     target_kind = _target_kind(perceived_model, target_id)
+    target_entity = _target_entity_row(perceived_model, target_id)
+    pose_control_grants = _pose_control_grants(target_entity)
+    granted_process_ids = set(_sorted_unique_strings(list(pose_control_grants.get("granted_process_ids") or [])))
+    granted_surface_ids = set(_sorted_unique_strings(list(pose_control_grants.get("granted_surface_ids") or [])))
+    interaction_payload = dict((dict(perceived_model or {})).get("interaction") or {})
     resolved_surfaces = resolve_action_surfaces(
         perceived_model=dict(perceived_model or {}),
         target_semantic_id=target_id,
@@ -457,6 +499,7 @@ def build_affordance_list(
         tool_type_registry=dict(tool_type_registry or {}),
         tool_effect_model_registry=dict(tool_effect_model_registry or {}),
         surface_visibility_policy_registry=dict(surface_visibility_policy_registry or {}),
+        capability_bindings=interaction_payload.get("capability_bindings"),
         held_tool_tags=list(held_tool_tags or []),
         active_tool=dict(active_tool or {}),
     )
@@ -483,6 +526,11 @@ def build_affordance_list(
                 )
                 if not isinstance(row, dict) or not row:
                     continue
+                row_ext = dict(row.get("extensions") or {})
+                row_surface_id = str(row_ext.get("surface_id", "")).strip()
+                row_ext["pose_control_granted_process"] = process_id in granted_process_ids
+                row_ext["pose_control_granted_surface"] = bool(row_surface_id and row_surface_id in granted_surface_ids)
+                row["extensions"] = row_ext
                 if (not bool(include_disabled)) and (not bool((dict(row.get("extensions") or {})).get("enabled", False))):
                     continue
                 rows.append(row)
@@ -506,6 +554,11 @@ def build_affordance_list(
             )
             if not isinstance(row, dict):
                 continue
+            row_process_id = str(row.get("process_id", "")).strip()
+            row_ext = dict(row.get("extensions") or {})
+            row_ext["pose_control_granted_process"] = row_process_id in granted_process_ids
+            row_ext["pose_control_granted_surface"] = False
+            row["extensions"] = row_ext
             if (not bool(include_disabled)) and (not bool((dict(row.get("extensions") or {})).get("enabled", False))):
                 continue
             rows.append(row)
@@ -531,6 +584,12 @@ def build_affordance_list(
             "target_kind": target_kind,
             "include_disabled": bool(include_disabled),
             "surface_driven": bool(surface_rows),
+            "pose_control_grants": {
+                "control_binding_ids": _sorted_unique_strings(list(pose_control_grants.get("control_binding_ids") or [])),
+                "granted_process_ids": _sorted_unique_strings(list(pose_control_grants.get("granted_process_ids") or [])),
+                "granted_surface_ids": _sorted_unique_strings(list(pose_control_grants.get("granted_surface_ids") or [])),
+                "occupied_pose_slot_ids": _sorted_unique_strings(list(pose_control_grants.get("occupied_pose_slot_ids") or [])),
+            },
             "action_surfaces": [
                 {
                     "surface_id": str(row.get("surface_id", "")).strip(),

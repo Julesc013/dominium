@@ -6188,7 +6188,12 @@ def _compile_control_ir_stub_program(
         registry_rel_path="data/registries/control_policy_registry.json",
         default_payload={"policies": []},
     )
-    capability_registry = _policy_payload(policy_context, "capability_registry")
+    capability_registry = _control_ir_registry_payload(
+        policy_context=policy_context,
+        key="capability_registry",
+        registry_rel_path="data/registries/capability_registry.json",
+        default_payload={"capabilities": []},
+    )
 
     requested_policy_id = str(
         (dict(policy_context or {})).get("control_policy_id", "")
