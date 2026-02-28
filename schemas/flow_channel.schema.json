@@ -15,6 +15,7 @@
     "source_node_id",
     "sink_node_id",
     "solver_policy_id",
+    "priority",
     "extensions"
   ],
   "additionalProperties": false,
@@ -68,6 +69,10 @@
       "type": "string",
       "minLength": 1
     },
+    "priority": {
+      "type": "integer",
+      "minimum": 0
+    },
     "extensions": {
       "type": "object",
       "additionalProperties": true
@@ -85,8 +90,8 @@
       "delay_ticks": 4,
       "loss_fraction": 0,
       "solver_policy_id": "flow.coarse_default",
+      "priority": 0,
       "extensions": {}
     }
   ]
 }
-

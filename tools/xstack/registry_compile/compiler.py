@@ -4693,8 +4693,47 @@ def _core_abstraction_registry_rows(
             )
             continue
         solver_policy_id = str(entry.get("solver_policy_id", "")).strip()
-        solver_kind = str(entry.get("solver_kind", "")).strip()
-        if not solver_policy_id or not solver_kind or not isinstance(entry.get("extensions"), dict):
+        mode = str(entry.get("mode", "")).strip()
+        if (not mode) and str(entry.get("solver_kind", "")).strip():
+            legacy_solver_kind = str(entry.get("solver_kind", "")).strip()
+            if legacy_solver_kind in ("coarse_deterministic", "coarse_batch_tick"):
+                mode = "bulk"
+            elif legacy_solver_kind == "segmented_deterministic":
+                mode = "segmented"
+        if mode not in ("bulk", "segmented"):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_flow_solver_policy_entry",
+                    "message": "core flow solver policy mode must be bulk|segmented",
+                    "path": "$.solver_policies.mode",
+                }
+            )
+            continue
+        allow_partial_transfer = entry.get("allow_partial_transfer")
+        if allow_partial_transfer is None:
+            allow_partial_transfer = True if mode == "bulk" else False
+        if not isinstance(allow_partial_transfer, bool):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_flow_solver_policy_entry",
+                    "message": "core flow solver policy allow_partial_transfer must be bool",
+                    "path": "$.solver_policies.allow_partial_transfer",
+                }
+            )
+            continue
+        overflow_policy = str(entry.get("overflow_policy", "")).strip()
+        if not overflow_policy:
+            overflow_policy = "queue" if bool(allow_partial_transfer) else "refuse"
+        if overflow_policy not in ("refuse", "queue", "spill"):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_core_flow_solver_policy_entry",
+                    "message": "core flow solver policy overflow_policy must be refuse|queue|spill",
+                    "path": "$.solver_policies.overflow_policy",
+                }
+            )
+            continue
+        if not solver_policy_id or not isinstance(entry.get("extensions"), dict):
             errors.append(
                 {
                     "code": "refuse.registry_compile.invalid_core_flow_solver_policy_entry",
@@ -4718,7 +4757,9 @@ def _core_abstraction_registry_rows(
                 "schema_version": "1.0.0",
                 "solver_policy_id": solver_policy_id,
                 "description": str(entry.get("description", "")).strip(),
-                "solver_kind": solver_kind,
+                "mode": mode,
+                "allow_partial_transfer": bool(allow_partial_transfer),
+                "overflow_policy": overflow_policy,
                 "extensions": dict(entry.get("extensions") or {}),
             }
         )

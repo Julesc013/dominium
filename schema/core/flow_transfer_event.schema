@@ -1,0 +1,24 @@
+SCHEMA: core/flow_transfer_event.schema
+schema_id: dominium.schema.core.flow_transfer_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic transfer events emitted by FlowSystem channel execution.
+
+REQUIRED SHAPE:
+record flow_transfer_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - tick: u64
+    - channel_id: id
+    - transferred_amount: fixed_point
+    - lost_amount: fixed_point
+    - ledger_delta_refs: list<string>
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- Transfer event IDs/fingerprints are canonical and replay-stable.
+- Lost amount is explicit; no silent drop is allowed for conserved channels.

@@ -46,6 +46,19 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.flow_utilization",
+        "title": "Flow Utilization",
+        "data": {
+          "data_kind": "flow_utilization"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.networkgraph.summary",
         "title": "NetworkGraph Summary",
         "data": {

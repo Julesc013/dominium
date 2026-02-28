@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Flow Transfer Event Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FlowSystem transfer event payload.",
+  "x-doc-ref": [
+    "docs/architecture/FLOWSYSTEM_STANDARD.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "tick",
+    "channel_id",
+    "transferred_amount",
+    "lost_amount",
+    "ledger_delta_refs",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transferred_amount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lost_amount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ledger_delta_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "event_id": "flow.event.a1",
+      "tick": 42,
+      "channel_id": "flow.channel.a1",
+      "transferred_amount": 1000,
+      "lost_amount": 0,
+      "ledger_delta_refs": [
+        "ledger.delta.debit.a1",
+        "ledger.delta.credit.a1"
+      ],
+      "deterministic_fingerprint": "6f701752ec79ad7e5fe3f4ce822299f30a3599b5bc7fc91a7a9f5fb7df4095f4",
+      "extensions": {}
+    }
+  ]
+}
