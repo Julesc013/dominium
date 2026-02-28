@@ -301,6 +301,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DYNAMIC-EVAL",
     "INV-NO-DOMAIN-DOWNGRADE-LOGIC",
     "INV-DECISION-LOG-MANDATORY",
+    "INV-NO-DOMAIN-FIDELITY-DOWNGRADE",
+    "INV-FIDELITY-USES-ENGINE",
     "INV-NO-DIRECT-STRUCTURE-INSTALL",
     "INV-GHOST-IS-DERIVED",
 )
@@ -9888,15 +9890,6 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
             "negotiate_request(",
             "_decision_log_row(",
         ),
-        "src/materials/materialization/materialization_engine.py": (
-            "negotiate_request(",
-        ),
-        "src/inspection/inspection_engine.py": (
-            "negotiate_request(",
-        ),
-        "tools/xstack/sessionx/process_runtime.py": (
-            "negotiate_request(",
-        ),
     }
     for rel_path, required_tokens in sorted(required_tokens_by_file.items(), key=lambda item: item[0]):
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -9955,6 +9948,116 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
                     rule_id="INV-NO-DOMAIN-DOWNGRADE-LOGIC",
                 )
             ) 
+
+
+def _append_fidelity_engine_enforcement_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    fidelity_core_rel = "src/control/fidelity/fidelity_engine.py"
+    fidelity_core_text = _file_text(repo_root, fidelity_core_rel)
+    if not fidelity_core_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=fidelity_core_rel,
+                line_number=1,
+                snippet="",
+                message="fidelity arbitration core is missing",
+                rule_id="INV-FIDELITY-USES-ENGINE",
+            )
+        )
+        return
+    for token in ("def arbitrate_fidelity_requests(", "RANK_FAIR_POLICY_ID", "REFUSAL_CTRL_FIDELITY_DENIED"):
+        if token in fidelity_core_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=fidelity_core_rel,
+                line_number=1,
+                snippet=token,
+                message="fidelity arbitration engine is missing required deterministic policy/refusal token",
+                rule_id="INV-FIDELITY-USES-ENGINE",
+            )
+        )
+
+    domain_required_tokens = {
+        "src/materials/materialization/materialization_engine.py": (
+            "build_fidelity_request(",
+            "arbitrate_fidelity_requests(",
+        ),
+        "src/inspection/inspection_engine.py": (
+            "build_fidelity_request(",
+            "arbitrate_fidelity_requests(",
+        ),
+        "src/materials/commitments/commitment_engine.py": (
+            "build_fidelity_request(",
+            "arbitrate_fidelity_requests(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "arbitrate_fidelity_requests(",
+            "REFUSAL_CTRL_FIDELITY_DENIED",
+        ),
+    }
+    for rel_path, required_tokens in sorted(domain_required_tokens.items(), key=lambda item: item[0]):
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="domain fidelity integration file is missing",
+                    rule_id="INV-FIDELITY-USES-ENGINE",
+                )
+            )
+            continue
+        for token in required_tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="domain fidelity path must use CTRL-5 fidelity engine APIs",
+                    rule_id="INV-FIDELITY-USES-ENGINE",
+                )
+            )
+
+    # Domain files must not contain inline micro->meso->macro downgrade chains.
+    downgrade_smell_tokens = (
+        "if desired_fidelity == \"micro\" and micro_cost >",
+        "if fidelity_achieved == \"meso\" and meso_cost >",
+        "if desired_fidelity == \"micro\" and not micro_allowed",
+    )
+    for rel_path in (
+        "src/materials/commitments/commitment_engine.py",
+        "src/materials/materialization/materialization_engine.py",
+        "src/inspection/inspection_engine.py",
+    ):
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            continue
+        for token in downgrade_smell_tokens:
+            if token not in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="inline domain fidelity downgrade logic detected; use CTRL-5 fidelity engine decisions",
+                    rule_id="INV-NO-DOMAIN-FIDELITY-DOWNGRADE",
+                )
+            )
 
 
 def _append_plan_execution_enforcement_invariant_findings(
@@ -10193,6 +10296,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_negotiation_kernel_enforcement_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_fidelity_engine_enforcement_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -147,6 +147,8 @@ from analyzers import e118_silent_downgrade_smell
 from analyzers import e119_unlogged_refusal_smell
 from analyzers import e120_direct_assembly_mutation_smell
 from analyzers import e121_plan_bypass_smell
+from analyzers import e122_silent_fidelity_downgrade_smell
+from analyzers import e123_unbounded_cost_smell
 
 
 ANALYZERS = (
@@ -297,6 +299,8 @@ ANALYZERS = (
     e119_unlogged_refusal_smell,
     e120_direct_assembly_mutation_smell,
     e121_plan_bypass_smell,
+    e122_silent_fidelity_downgrade_smell,
+    e123_unbounded_cost_smell,
 )
 
 
