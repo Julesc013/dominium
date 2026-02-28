@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
+from src.control.negotiation import negotiate_request
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -307,6 +308,9 @@ def materialize_structure_roi(
     existing_materialization_states: object,
     strict_budget: bool = False,
     roi_node_ids: List[object] | None = None,
+    law_profile: Mapping[str, object] | None = None,
+    authority_context: Mapping[str, object] | None = None,
+    policy_context: Mapping[str, object] | None = None,
 ) -> dict:
     structure_id = str((dict(structure_row or {})).get("instance_id", "")).strip()
     if not structure_id:
@@ -404,19 +408,81 @@ def materialize_structure_roi(
     desired_count = len(candidates)
     truncated = False
     truncated_count = 0
-    if desired_count > budget:
-        if bool(strict_budget):
-            raise MaterializationError(
-                REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED,
-                "materialization budget exceeded",
-                {
-                    "structure_id": structure_id,
-                    "roi_id": roi_token,
-                    "requested_parts": int(desired_count),
-                    "max_micro_parts": int(budget),
+    authority = dict(authority_context or {})
+    law = dict(law_profile or {})
+    policy = dict(policy_context or {})
+    requester_subject_id = (
+        str(authority.get("subject_id", "")).strip()
+        or str(authority.get("agent_id", "")).strip()
+        or str(authority.get("peer_id", "")).strip()
+        or "subject.system"
+    )
+    materialization_negotiation = negotiate_request(
+        negotiation_request={
+            "schema_version": "1.0.0",
+            "requester_subject_id": requester_subject_id,
+            "request_vector": {
+                "abstraction_level_requested": "AL1",
+                "fidelity_requested": "micro",
+                "view_requested": "view.mode.first_person",
+                "epistemic_scope_requested": str((dict(authority.get("epistemic_scope") or {})).get("scope_id", "ep.scope.default")).strip() or "ep.scope.default",
+                "budget_requested": int(desired_count),
+            },
+            "context": {
+                "law_profile_id": str(law.get("law_profile_id", "law.unknown")).strip() or "law.unknown",
+                "server_profile_id": str(policy.get("server_profile_id", "server.profile.unknown")).strip() or "server.profile.unknown",
+            },
+            "extensions": {
+                "required_process_id": "process.materialize_structure_roi",
+                "budget_refuse_on_shortfall": bool(strict_budget),
+                "budget_refusal_code": REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED,
+                "budget_zero_means_unbounded": False,
+                "fidelity_cost_by_level": {
+                    "micro": int(desired_count),
+                    "meso": int(max(1, int(desired_count // 2))),
+                    "macro": 1,
                 },
-            )
-        candidates = list(candidates[:budget])
+            },
+        },
+        rs5_budget_state={
+            "tick": int(max(0, int(current_tick))),
+            "requested_cost_units": int(desired_count),
+            "max_cost_units_per_tick": int(budget),
+            "runtime_budget_state": {},
+            "fairness_state": {},
+            "connected_subject_ids": [requester_subject_id],
+        },
+        control_policy={
+            "control_policy_id": "ctrl.policy.materialization",
+            "allowed_abstraction_levels": ["AL1", "AL2", "AL3", "AL4"],
+            "allowed_view_policies": ["view.mode.first_person"],
+            "allowed_fidelity_ranges": ["macro", "meso", "micro"],
+            "extensions": {},
+        },
+        authority_context=authority,
+        law_profile=law,
+    )
+    refusal_codes = _sorted_unique_strings(materialization_negotiation.get("refusal_codes"))
+    if REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED in refusal_codes:
+        raise MaterializationError(
+            REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED,
+            "materialization budget exceeded",
+            {
+                "structure_id": structure_id,
+                "roi_id": roi_token,
+                "requested_parts": int(desired_count),
+                "max_micro_parts": int(budget),
+            },
+        )
+    negotiated_budget = int(
+        max(
+            0,
+            _as_int((dict(materialization_negotiation.get("resolved_vector") or {})).get("budget_allocated", budget), budget),
+        )
+    )
+    effective_budget = int(min(max(0, int(budget)), int(negotiated_budget)))
+    if desired_count > effective_budget:
+        candidates = list(candidates[:effective_budget])
         truncated = True
         truncated_count = int(desired_count - len(candidates))
 
@@ -478,6 +544,7 @@ def materialize_structure_roi(
                 "requested_parts": int(desired_count),
                 "materialized_parts": int(len(micro_rows)),
                 "truncated_count": int(truncated_count),
+                "negotiation_result": dict(materialization_negotiation),
             },
         }
     )
@@ -523,6 +590,7 @@ def materialize_structure_roi(
         "invariant_delta": int(invariant_delta),
         "truncated": bool(truncated),
         "truncated_count": int(truncated_count),
+        "negotiation_result": dict(materialization_negotiation),
         "remaining_micro_parts": list(remaining_micro_parts),
         "remaining_materialization_states": list(remaining_states),
         "reenactment_descriptor": descriptors,
