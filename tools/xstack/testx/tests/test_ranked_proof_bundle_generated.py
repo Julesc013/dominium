@@ -181,4 +181,6 @@ def run(repo_root: str):
         return {"status": "fail", "message": "ranked proof bundle securex_policy_id mismatch"}
     if not isinstance(bundle_payload.get("control_ir_verification_report_hashes"), list):
         return {"status": "fail", "message": "ranked proof bundle missing control_ir_verification_report_hashes list"}
+    if not isinstance(bundle_payload.get("control_decision_log_hashes"), list):
+        return {"status": "fail", "message": "ranked proof bundle missing control_decision_log_hashes list"}
     return {"status": "pass", "message": "ranked proof bundle export is deterministic and complete"}
