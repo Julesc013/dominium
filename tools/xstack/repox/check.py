@@ -301,6 +301,7 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-TOOLS-IN-RUNTIME",
     "INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION",
     "INV-CONTROL-PLANE-ONLY-DISPATCH",
+    "INV-CONTROL-INTENT-REQUIRED",
     "INV-NO-PRODUCTION-LEGACY-IMPORT",
     "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR",
     "INV-NO-DYNAMIC-EVAL",
@@ -355,6 +356,34 @@ INTERACTION_UI_SURFACE_FILES = (
     "src/client/interaction/interaction_panel.py",
     "tools/xstack/sessionx/interaction.py",
     "tools/interaction/interaction_cli.py",
+)
+
+PUBLIC_INTERACTION_ENTRYPOINT_REQUIREMENTS = {
+    "src/client/interaction/interaction_dispatch.py": (
+        "def run_interaction_command(",
+        "def build_interaction_control_intent(",
+        "build_control_intent(",
+        "build_control_resolution(",
+    ),
+    "tools/interaction/interaction_cli.py": (
+        "run_interaction_command(",
+    ),
+    "tools/xstack/sessionx/interaction.py": (
+        "run_interaction_command(",
+    ),
+}
+
+UI_DIRECT_PROCESS_SCAN_ROOTS = (
+    "src/client/interaction/",
+    "tools/interaction/",
+    "tools/xstack/sessionx/interaction.py",
+)
+
+UI_DIRECT_PROCESS_ALLOWED_FILES = (
+    "src/client/interaction/interaction_dispatch.py",
+    "tools/xstack/sessionx/process_runtime.py",
+    "tools/xstack/testx/tests/",
+    "tools/auditx/analyzers/",
 )
 
 INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "src/client/interaction/interaction_dispatch.py"
@@ -3020,12 +3049,10 @@ def _append_forbidden_identifier_findings(
     if rel_path == "tools/xstack/repox/check.py":
         return
     lower = line.lower()
+    severity = _invariant_severity(profile)
     for token in FORBIDDEN_IDENTIFIERS:
         pattern = r"\b{}\b".format(re.escape(token))
         if re.search(pattern, lower):
-            severity = "refusal"
-            if token == "sandbox" and profile == "FAST":
-                severity = "warn"
             findings.append(
                 _finding(
                     severity=severity,
@@ -3055,7 +3082,7 @@ def _append_mode_flag_findings(
     is_toggle = any(flag in lower for flag in ("= true", "= false", ": true", ": false", "=0", "=1", ":0", ":1"))
     if not is_toggle:
         return
-    severity = "warn" if profile == "FAST" else "refusal"
+    severity = _invariant_severity(profile)
     findings.append(
         _finding(
             severity=severity,
@@ -7831,6 +7858,111 @@ def _append_boundary_blocker_invariant_findings(
                 rule_id="INV-CONTROL-PLANE-ONLY-DISPATCH",
             )
         )
+
+    for rel_path, required_tokens in sorted(
+        PUBLIC_INTERACTION_ENTRYPOINT_REQUIREMENTS.items(),
+        key=lambda item: str(item[0]),
+    ):
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            key = (
+                "INV-CONTROL-INTENT-REQUIRED",
+                rel_path,
+                1,
+                "",
+                "public interaction entrypoint file is missing",
+            )
+            if key not in existing_keys:
+                existing_keys.add(key)
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="public interaction entrypoint file is missing",
+                        rule_id="INV-CONTROL-INTENT-REQUIRED",
+                    )
+                )
+            continue
+        for token in list(required_tokens or []):
+            if str(token) in text:
+                continue
+            key = (
+                "INV-CONTROL-INTENT-REQUIRED",
+                rel_path,
+                1,
+                str(token),
+                "public-facing interaction entrypoints must route through ControlIntent and control-plane resolution",
+            )
+            if key in existing_keys:
+                continue
+            existing_keys.add(key)
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=str(token),
+                    message="public-facing interaction entrypoints must route through ControlIntent and control-plane resolution",
+                    rule_id="INV-CONTROL-INTENT-REQUIRED",
+                )
+            )
+
+    direct_process_call_pattern = re.compile(r"\b(?:run_process|execute_process|execute_intent|runtime_execute_intent)\s*\(")
+    process_literal_pattern = re.compile(r"[\"']process\.[a-zA-Z0-9_.-]+[\"']")
+    process_id_literal_pattern = re.compile(r"[\"']process_id[\"']\s*:\s*[\"']process\.[a-zA-Z0-9_.-]+[\"']")
+    ui_scan_paths: List[str] = []
+    for root in UI_DIRECT_PROCESS_SCAN_ROOTS:
+        abs_root = os.path.join(repo_root, str(root).replace("/", os.sep))
+        if os.path.isfile(abs_root):
+            ui_scan_paths.append(_norm(os.path.relpath(abs_root, repo_root)))
+            continue
+        if not os.path.isdir(abs_root):
+            continue
+        for walk_root, dirs, files in os.walk(abs_root):
+            dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
+            for name in sorted(files):
+                if not name.endswith(".py"):
+                    continue
+                ui_scan_paths.append(_norm(os.path.relpath(os.path.join(walk_root, name), repo_root)))
+    for rel_norm in sorted(set(ui_scan_paths)):
+        if not rel_norm.endswith(".py"):
+            continue
+        if any(
+            rel_norm.startswith(prefix) if prefix.endswith("/") else rel_norm == prefix
+            for prefix in UI_DIRECT_PROCESS_ALLOWED_FILES
+        ):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            direct_call = bool(direct_process_call_pattern.search(snippet) and process_literal_pattern.search(snippet))
+            direct_process_id_literal = bool(process_id_literal_pattern.search(snippet))
+            if (not direct_call) and (not direct_process_id_literal):
+                continue
+            key = (
+                "INV-CONTROL-INTENT-REQUIRED",
+                rel_norm,
+                int(line_no),
+                snippet[:140],
+                "UI interaction modules must not invoke process.* directly; build ControlIntent and route through control-plane dispatch",
+            )
+            if key in existing_keys:
+                continue
+            existing_keys.add(key)
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=int(line_no),
+                    snippet=snippet[:140],
+                    message="UI interaction modules must not invoke process.* directly; build ControlIntent and route through control-plane dispatch",
+                    rule_id="INV-CONTROL-INTENT-REQUIRED",
+                )
+            )
+            break
 
 
 def _append_deprecation_framework_invariant_findings(
