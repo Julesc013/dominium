@@ -4,29 +4,29 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:bb7f9b1bbc5158db44261102c9183588c4cf1687`
+- repository_hash: `HEAD:7416ad21bf23bbe5080d382c165fcd714ef054bc`
 - generated_tick: `0`
-- deterministic_fingerprint: `a692511f521ba15b137e0a2585850768195e5d8f0588a00fa91d42e7a27d3f00`
+- deterministic_fingerprint: `d95bbb8bd639db261fc39fdd5d25561440571a87706942e9e6055aefffcc7717`
 
 ## Counts
-- node_count: 2150
-- edge_count: 78691
+- node_count: 2154
+- edge_count: 78906
 
 ## Node Kinds
 - contract_set: 4
-- module: 64
+- module: 67
 - policy_set: 99
 - process_family: 138
 - registry: 152
 - schema: 749
-- tool: 944
+- tool: 945
 
 ## Edge Kinds
-- consumes: 2099
-- depends_on: 1009
+- consumes: 2196
+- depends_on: 1024
 - enforces: 17510
 - produces: 1
-- validates: 58072
+- validates: 58175
 
 ## Major Runtime Modules
 - `module:client`
@@ -76,9 +76,12 @@ Version: 1.0.0
 - `module:src`
 - `module:src/client`
 - `module:src/control`
-- `module:src/control/control_decision_log.py`
-- `module:src/control/control_ir_validator.py`
 - `module:src/control/control_plane_engine.py`
+- `module:src/control/effects/effect_engine.py`
+- `module:src/control/fidelity/fidelity_engine.py`
+- `module:src/control/ir/control_ir_compiler.py`
+- `module:src/control/negotiation/negotiation_kernel.py`
+- `module:src/control/view/view_engine.py`
 - `module:src/core`
 - `module:src/diegetics`
 - `module:src/epistemics`
@@ -90,10 +93,16 @@ Version: 1.0.0
 - `module:src/materials`
 - `module:src/net`
 - `module:src/performance`
-- `module:src/platform`
-- `module:src/reality`
-- `module:src/time`
+
+## Control Subsystem Nodes
+- `module:src/control/control_plane_engine.py`
+- `module:src/control/effects/effect_engine.py`
+- `module:src/control/fidelity/fidelity_engine.py`
+- `module:src/control/ir/control_ir_compiler.py`
+- `module:src/control/negotiation/negotiation_kernel.py`
+- `module:src/control/view/view_engine.py`
 
 ## Notes
 - Process-family discovery is best-effort via deterministic process token scanning.
+- Control dependency edges are synthesized for modules that reference control-plane APIs.
 - Artifact is governance-only and not loaded by runtime simulation code.
