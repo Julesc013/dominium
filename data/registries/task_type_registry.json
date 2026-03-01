@@ -23,6 +23,38 @@
       },
       {
         "schema_version": "1.0.0",
+        "task_type_id": "task.cut_joint",
+        "description": "Deterministic structural joint cutting task.",
+        "default_progress_units_total": 16777216,
+        "required_tool_tags": [
+          "tool_tag.cutting"
+        ],
+        "allowed_surface_types": [
+          "surface.seam",
+          "surface.fastener"
+        ],
+        "completion_process_id": "process.cut_joint",
+        "progress_model_id": "progress.heavy_work_default",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.drill_hole",
+        "description": "Deterministic structural drilling task.",
+        "default_progress_units_total": 12582912,
+        "required_tool_tags": [
+          "tool_tag.drilling"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.seam"
+        ],
+        "completion_process_id": "process.drill_hole",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "task_type_id": "task.loosen_fastener",
         "description": "Stub deterministic fastener loosening task.",
         "default_progress_units_total": 16777216,
@@ -106,6 +138,22 @@
         "extensions": {
           "direction": "tighten"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.weld_joint",
+        "description": "Deterministic structural joint welding task.",
+        "default_progress_units_total": 14680064,
+        "required_tool_tags": [
+          "tool_tag.welding"
+        ],
+        "allowed_surface_types": [
+          "surface.seam",
+          "surface.fastener"
+        ],
+        "completion_process_id": "process.weld_joint",
+        "progress_model_id": "progress.heavy_work_default",
+        "extensions": {}
       }
     ],
     "extensions": {}
