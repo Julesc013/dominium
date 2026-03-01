@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Effect Type Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-8 effect type declaration.",
+  "x-doc-ref": [
+    "docs/audit/EFFECT_SYSTEM_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "effect_type_id",
+    "description",
+    "applies_to",
+    "modifies",
+    "default_visibility_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "effect_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "modifies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "default_visibility_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "effect_type_id": "effect.access_restricted",
+      "description": "Temporarily restricts access operations for a target.",
+      "applies_to": [
+        "capability.has_interior",
+        "structure"
+      ],
+      "modifies": [
+        "access_restricted"
+      ],
+      "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+      "extensions": {}
+    }
+  ]
+}

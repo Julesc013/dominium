@@ -1,0 +1,39 @@
+{
+  "schema_id": "dominium.registry.stacking_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.stacking_policy_registry",
+    "registry_version": "1.0.0",
+    "stacking_policies": [
+      {
+        "schema_version": "1.0.0",
+        "stacking_policy_id": "stack.add",
+        "mode": "add",
+        "tie_break_rule": "order.effect_type_applied_tick_effect_id",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "stacking_policy_id": "stack.min",
+        "mode": "min",
+        "tie_break_rule": "order.effect_type_applied_tick_effect_id",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "stacking_policy_id": "stack.multiply",
+        "mode": "multiply",
+        "tie_break_rule": "order.effect_type_applied_tick_effect_id",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "stacking_policy_id": "stack.replace_latest",
+        "mode": "replace",
+        "tie_break_rule": "order.effect_type_applied_tick_effect_id",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

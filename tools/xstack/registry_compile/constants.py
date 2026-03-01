@@ -71,6 +71,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "control_action_registry": "control_action.registry.json",
     "capability_registry": "capability.registry.json",
     "control_policy_registry": "control_policy.registry.json",
+    "effect_type_registry": "effect_type.registry.json",
+    "stacking_policy_registry": "stacking_policy.registry.json",
     "interaction_action_registry": "interaction_action.registry.json",
     "surface_type_registry": "surface_type.registry.json",
     "posture_registry": "posture.registry.json",

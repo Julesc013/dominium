@@ -111,6 +111,8 @@
         "control_action_registry_hash",
         "capability_registry_hash",
         "control_policy_registry_hash",
+        "effect_type_registry_hash",
+        "stacking_policy_registry_hash",
         "interaction_action_registry_hash",
         "surface_type_registry_hash",
         "posture_registry_hash",
@@ -392,6 +394,14 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "control_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "effect_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "stacking_policy_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },

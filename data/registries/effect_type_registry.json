@@ -1,0 +1,115 @@
+{
+  "schema_id": "dominium.registry.effect_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.effect_type_registry",
+    "registry_version": "1.0.0",
+    "effect_types": [
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.access_restricted",
+        "description": "Temporarily restricts interaction/control access for a target.",
+        "applies_to": [
+          "capability.has_interior",
+          "structure",
+          "assembly"
+        ],
+        "modifies": [
+          "access_restricted"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.machine_degraded",
+        "description": "Temporarily degrades machine effectiveness.",
+        "applies_to": [
+          "machine",
+          "assembly"
+        ],
+        "modifies": [
+          "machine_output_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.pressure_hazard_warning",
+        "description": "Interior hazard warning signal for pressure-risk conditions.",
+        "applies_to": [
+          "capability.has_interior",
+          "volume",
+          "structure"
+        ],
+        "modifies": [
+          "pressure_hazard_warning"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.speed_cap",
+        "description": "Caps effective speed output for controllable entities.",
+        "applies_to": [
+          "capability.can_be_driven",
+          "vehicle",
+          "assembly"
+        ],
+        "modifies": [
+          "max_speed_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.tool_efficiency_modifier",
+        "description": "Adjusts tool efficiency for task progression and process throughput.",
+        "applies_to": [
+          "capability.can_attach",
+          "assembly",
+          "agent"
+        ],
+        "modifies": [
+          "tool_efficiency_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.admin_numeric",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.traction_reduction",
+        "description": "Reduces effective traction under temporary adverse conditions.",
+        "applies_to": [
+          "capability.can_be_driven",
+          "vehicle",
+          "assembly"
+        ],
+        "modifies": [
+          "traction_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.visibility_reduction",
+        "description": "Reduces observation/inspection visibility quality for a target.",
+        "applies_to": [
+          "capability.has_interior",
+          "region",
+          "structure"
+        ],
+        "modifies": [
+          "visibility_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
