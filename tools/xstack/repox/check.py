@@ -321,6 +321,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-SPECSHEET-OPTIONAL",
     "INV-INFERENCE-DERIVED-ONLY",
     "INV-FORMALIZATION-THROUGH-CONTROL",
+    "INV-NO-ADHOC-LOAD-CHECK",
+    "INV-STRUCTURAL-FAILURE-THROUGH-MECH",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -11358,6 +11360,119 @@ def _append_formalization_invariant_findings(
             break
 
 
+def _append_mechanics_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    mechanics_engine_rel = "src/mechanics/structural_graph_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    engine_text = _file_text(repo_root, mechanics_engine_rel)
+    runtime_text = _file_text(repo_root, runtime_rel)
+    if (not engine_text) or (not runtime_text):
+        missing = mechanics_engine_rel if not engine_text else runtime_rel
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=missing,
+                line_number=1,
+                snippet="",
+                message="mechanics enforcement requires canonical engine and runtime integration files",
+                rule_id="INV-STRUCTURAL-FAILURE-THROUGH-MECH",
+            )
+        )
+        return
+
+    for token in (
+        "def evaluate_structural_graphs(",
+        "degrade.mechanics.budget",
+        "stress_ratio_permille",
+    ):
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=mechanics_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="mechanics engine is missing required deterministic load/stress token",
+                rule_id="INV-NO-ADHOC-LOAD-CHECK",
+            )
+        )
+
+    for token in (
+        'elif process_id == "process.mechanics_tick":',
+        'elif process_id == "process.mechanics_fracture":',
+        'elif process_id == "process.weld_joint":',
+        'elif process_id == "process.cut_joint":',
+        'elif process_id == "process.drill_hole":',
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="structural load/failure behavior must route through mechanics processes",
+                rule_id="INV-STRUCTURAL-FAILURE-THROUGH-MECH",
+            )
+        )
+
+    ad_hoc_load_patterns = (
+        re.compile(r"\bif\b[^\n]*(?:load|stress_ratio)[^\n]*[><=]{1,2}[^\n]*(?:break|fracture|fail)", re.IGNORECASE),
+        re.compile(r"\b(?:max_load|load_rating|stress_ratio)\b\s*[*+/=-]+\s*(?:0?\.\d+|\d+\s*/\s*\d+|\d+)", re.IGNORECASE),
+    )
+    structural_failure_pattern = re.compile(r"failure_state[^\\n=]*=\s*[\"']failed[\"']", re.IGNORECASE)
+    skip_prefixes = (
+        "src/mechanics/",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+        "docs/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/")):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            if any(pattern.search(snippet) for pattern in ad_hoc_load_patterns):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="load/stress checks must use structural_graph_engine outputs, not ad-hoc inline conditions",
+                        rule_id="INV-NO-ADHOC-LOAD-CHECK",
+                    )
+                )
+                break
+            if structural_failure_pattern.search(snippet) and "structural" in snippet.lower():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="structural failure state transitions must route through process.mechanics_fracture",
+                        rule_id="INV-STRUCTURAL-FAILURE-THROUGH-MECH",
+                    )
+                )
+                break
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -11534,6 +11649,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_formalization_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_mechanics_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
