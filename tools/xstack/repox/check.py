@@ -317,6 +317,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-TYPE-BRANCHING",
     "INV-CAPABILITY-REGISTRY-REQUIRED",
     "INV-DOMAIN-CONTROL-REGISTERED",
+    "INV-NO-HARDCODED-GAUGE-WIDTH-SPECS",
+    "INV-SPECSHEET-OPTIONAL",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -11025,6 +11027,106 @@ def _append_effect_system_invariant_findings(
             break
 
 
+def _append_specsheet_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    spec_engine_rel = "src/specs/spec_engine.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    spec_engine_text = _file_text(repo_root, spec_engine_rel)
+    if not runtime_text or not spec_engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel if not runtime_text else spec_engine_rel,
+                line_number=1,
+                snippet="",
+                message="specsheet enforcement requires runtime and spec engine integration files",
+                rule_id="INV-SPECSHEET-OPTIONAL",
+            )
+        )
+        return
+
+    for token in (
+        "def _spec_pack_payload_rows(",
+        "if os.path.isfile(default_pack_abs):",
+        "load_spec_sheet_rows(",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="specsheet runtime integration is missing deterministic optional-pack token",
+                rule_id="INV-SPECSHEET-OPTIONAL",
+            )
+        )
+
+    for rel_path in (
+        "tools/xstack/session_boot.py",
+        "tools/xstack/session_create.py",
+        "tools/xstack/sessionx/creator.py",
+    ):
+        text = _file_text(repo_root, rel_path)
+        if (not text) or ("specs.default.realistic.m1" not in text):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="specs.default.realistic.m1",
+                message="runtime/session boot must not require default SpecSheet pack",
+                rule_id="INV-SPECSHEET-OPTIONAL",
+            )
+        )
+
+    hardcoded_spec_patterns = (
+        re.compile(r"\b(?:gauge_mm|track_gauge_mm|road_width_mm|width_mm|max_speed_kph|min_clearance_mm|min_curvature_radius_mm)\b\s*[:=]\s*\d{2,6}\b"),
+        re.compile(r"[\"'](?:gauge_mm|track_gauge_mm|road_width_mm|width_mm|max_speed_kph|min_clearance_mm|min_curvature_radius_mm)[\"']\s*:\s*\d{2,6}\b"),
+    )
+    skip_prefixes = (
+        "src/specs/",
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+        "docs/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm == "tools/xstack/repox/check.py":
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in hardcoded_spec_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="infrastructure spec constants must be declared in SpecSheets/registries, not hardcoded inline",
+                    rule_id="INV-NO-HARDCODED-GAUGE-WIDTH-SPECS",
+                )
+            )
+            break
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -11191,6 +11293,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_effect_system_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_specsheet_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
