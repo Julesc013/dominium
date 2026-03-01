@@ -1,0 +1,25 @@
+SCHEMA: specs/compliance_result.schema
+schema_id: dominium.schema.specs.compliance_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic, derived compliance output artifact emitted by spec compliance processes.
+
+REQUIRED SHAPE:
+record compliance_result
+  required:
+    - schema_version: semver
+    - result_id: id
+    - tick: u64
+    - target_kind: enum(structure|ag|geometry|vehicle|network_edge)
+    - target_id: id
+    - spec_id: id
+    - check_results: [map]
+    - overall_grade: enum(pass|warn|fail)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Compliance results are derived and deterministic.
+- Artifact fingerprints must be stable for identical inputs.

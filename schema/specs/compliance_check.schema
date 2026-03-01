@@ -1,0 +1,24 @@
+SCHEMA: specs/compliance_check.schema
+schema_id: dominium.schema.specs.compliance_check
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declares deterministic compliance checks that evaluate SpecSheet acceptance criteria.
+
+REQUIRED SHAPE:
+record compliance_check
+  required:
+    - schema_version: semver
+    - check_id: id
+    - description: string
+    - applies_to_target_kinds: [enum(structure|ag|geometry|vehicle|network_edge)]
+    - required_inputs: [id]
+    - output_grade: enum(pass|warn|fail)
+    - extensions: map
+  optional:
+    - failure_refusal_code: id
+
+INVARIANTS:
+- Checks are deterministic and replay-safe.
+- Check declarations are constraints/contracts, not solver implementations.

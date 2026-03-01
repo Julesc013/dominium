@@ -329,6 +329,41 @@
         "1.0.0"
       ]
     },
+    "spec_sheet": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "spec_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "spec_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tolerance_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tolerance_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "camera_binding": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -400,6 +435,27 @@
       ]
     },
     "compaction_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compliance_check": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compliance_check_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compliance_result": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

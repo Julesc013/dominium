@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tolerance Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SPEC-1 tolerance policy declaration.",
+  "x-doc-ref": [
+    "docs/specs/SPECSHEET_CONSTITUTION.md",
+    "docs/audit/SPECSHEET_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tolerance_policy_id",
+    "description",
+    "numeric_tolerances",
+    "rounding_rules",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tolerance_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "numeric_tolerances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "integer",
+          "number"
+        ]
+      }
+    },
+    "rounding_rules": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "tolerance_policy_id": "tol.default",
+      "description": "Default deterministic tolerance policy.",
+      "numeric_tolerances": {
+        "gauge_mm": 2,
+        "clearance_mm": 10
+      },
+      "rounding_rules": {
+        "default_mode": "nearest_even",
+        "scale": 1
+      },
+      "extensions": {}
+    }
+  ]
+}

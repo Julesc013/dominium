@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Compliance Result Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SPEC-1 derived compliance result artifact.",
+  "x-doc-ref": [
+    "docs/specs/SPECSHEET_CONSTITUTION.md",
+    "docs/audit/SPECSHEET_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "result_id",
+    "tick",
+    "target_kind",
+    "target_id",
+    "spec_id",
+    "check_results",
+    "overall_grade",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "target_kind": {
+      "type": "string",
+      "enum": [
+        "structure",
+        "ag",
+        "geometry",
+        "vehicle",
+        "network_edge"
+      ]
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spec_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "check_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "overall_grade": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "warn",
+        "fail"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "result_id": "compliance.result.4b6674f4f4f9f5d2",
+      "tick": 120,
+      "target_kind": "structure",
+      "target_id": "assembly.structure_instance.rail.001",
+      "spec_id": "spec.track.standard_gauge.v1",
+      "check_results": [
+        {
+          "check_id": "check.geometry.clearance",
+          "grade": "pass",
+          "details": {}
+        }
+      ],
+      "overall_grade": "pass",
+      "deterministic_fingerprint": "f2f14f12b1a9135111bb6d12e4f8f086a79ad62d46d458f4b19463e4c57771f9",
+      "extensions": {}
+    }
+  ]
+}
