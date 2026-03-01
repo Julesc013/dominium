@@ -755,6 +755,13 @@ def _as_int(value: object, default_value: int = 0) -> int:
         return int(default_value)
 
 
+def _mechanics_failure_state(value: object) -> str:
+    token = str(value or "").strip()
+    if token in {"none", "yielded", "failed"}:
+        return token
+    return "none"
+
+
 def _sorted_tokens(items: List[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in (items or []) if str(item).strip()))
 
@@ -18372,7 +18379,7 @@ def execute_intent(
         fatigue_state["weld_repairs"] = int(max(0, _as_int(fatigue_state.get("weld_repairs", 0), 0)) + 1)
         edge_ext = dict(edge_row.get("extensions") or {})
         edge_ext["last_weld_intent_id"] = str(intent_id)
-        if _failure_state(edge_row.get("failure_state")) == "failed":
+        if _mechanics_failure_state(edge_row.get("failure_state")) == "failed":
             edge_ext["restored_from_failed"] = True
         updated_edge = build_structural_edge(
             edge_id=structural_edge_id,
@@ -18383,7 +18390,7 @@ def execute_intent(
             max_load=int(max(0, next_max_load)),
             fatigue_state=fatigue_state,
             extensions=edge_ext,
-            failure_state="yielded" if _failure_state(edge_row.get("failure_state")) == "failed" else _failure_state(edge_row.get("failure_state")),
+            failure_state="yielded" if _mechanics_failure_state(edge_row.get("failure_state")) == "failed" else _mechanics_failure_state(edge_row.get("failure_state")),
             stress_ratio_permille=int(max(0, _as_int(edge_row.get("stress_ratio_permille", 0), 0))),
             applied_load=int(max(0, _as_int(edge_row.get("applied_load", 0), 0))),
             effective_max_load=int(max(0, _as_int(edge_row.get("effective_max_load", next_max_load), next_max_load))),
@@ -18468,7 +18475,7 @@ def execute_intent(
             max_load=int(max(0, next_max_load)),
             fatigue_state=fatigue_state,
             extensions=edge_ext,
-            failure_state="failed" if fractured else _failure_state(edge_row.get("failure_state")),
+            failure_state="failed" if fractured else _mechanics_failure_state(edge_row.get("failure_state")),
             stress_ratio_permille=(
                 int(max(1001, _as_int(edge_row.get("stress_ratio_permille", 0), 0)))
                 if fractured
