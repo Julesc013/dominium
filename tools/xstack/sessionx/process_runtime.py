@@ -242,6 +242,8 @@ from src.infrastructure.formalization import (
 )
 from src.mechanics import (
     build_structural_edge,
+    build_structural_node,
+    evaluate_structural_graphs,
     normalize_structural_edge_rows,
     normalize_structural_graph_rows,
     normalize_structural_node_rows,
@@ -348,6 +350,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.formalization_promote_networked": "entitlement.control.admin",
     "process.formalization_revert": "entitlement.control.admin",
     "process.mechanics_fracture": "session.boot",
+    "process.weld_joint": "entitlement.tool.use",
+    "process.cut_joint": "entitlement.tool.use",
+    "process.drill_hole": "entitlement.tool.use",
+    "process.mechanics_tick": "session.boot",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -459,6 +465,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.formalization_promote_networked": "operator",
     "process.formalization_revert": "operator",
     "process.mechanics_fracture": "observer",
+    "process.weld_joint": "operator",
+    "process.cut_joint": "operator",
+    "process.drill_hole": "operator",
+    "process.mechanics_tick": "observer",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -584,6 +594,10 @@ TASK_PROCESS_IDS = {
 }
 MECHANICS_PROCESS_IDS = {
     "process.mechanics_fracture",
+    "process.mechanics_tick",
+    "process.weld_joint",
+    "process.cut_joint",
+    "process.drill_hole",
 }
 POSE_PROCESS_IDS = {
     "process.pose_enter",
@@ -653,6 +667,7 @@ DEFAULT_RENDER_PROXY_ID = "render.proxy.pill_default"
 REFUSAL_FORMALIZATION_FORBIDDEN_BY_POLICY = "refusal.formalization.forbidden_by_policy"
 REFUSAL_FORMALIZATION_SPEC_NONCOMPLIANT = "refusal.formalization.spec_noncompliant"
 REFUSAL_MECHANICS_INVALID_EDGE = "refusal.mechanics.invalid_edge"
+REFUSAL_MECHANICS_INVALID_NODE = "refusal.mechanics.invalid_node"
 CONTROLLER_ACTIONS_BY_TYPE = {
     "admin": [
         "control.action.bind_camera",
@@ -7087,6 +7102,23 @@ def _formalization_registry_payload(
     )
 
 
+def _mechanics_registry_payload(
+    *,
+    policy_context: dict | None,
+    key: str,
+    registry_rel_path: str,
+    entry_key: str,
+) -> dict:
+    payload = _policy_payload(policy_context, key)
+    if payload:
+        return dict(payload)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path=registry_rel_path,
+        default_payload={entry_key: []},
+    )
+
+
 def _spec_pack_payload_rows(policy_context: dict | None) -> List[dict]:
     rows: List[dict] = []
     if isinstance(policy_context, dict):
@@ -8484,6 +8516,50 @@ def _augment_inspection_target_payload_for_specs(
     return payload
 
 
+def _augment_inspection_target_payload_for_mechanics(
+    *,
+    state: dict,
+    target_payload: dict,
+) -> dict:
+    payload = dict(target_payload or {})
+    if not bool(payload.get("exists", False)):
+        return payload
+    target_id = str(payload.get("target_id", "")).strip()
+    if not target_id:
+        return payload
+    summary = summarize_stress_for_target(
+        target_id=target_id,
+        structural_graph_rows=state.get("structural_graphs"),
+        structural_edge_rows=state.get("structural_edges"),
+    )
+    if int(_as_int(summary.get("edge_count", 0), 0)) <= 0:
+        return payload
+    extensions = dict(payload.get("extensions") or {})
+    extensions["mechanics_stress_summary"] = dict(summary)
+    extensions["failure_risk_summary"] = {
+        "risk_rows": [
+            {
+                "target_id": target_id,
+                "max_stress_ratio_permille": int(_as_int(summary.get("max_stress_ratio_permille", 0), 0)),
+                "near_fracture_edge_count": int(_as_int(summary.get("near_fracture_edge_count", 0), 0)),
+                "failed_edge_count": int(_as_int(summary.get("failed_edge_count", 0), 0)),
+                "derailment_risk_permille": int(_as_int(summary.get("derailment_risk_permille", 0), 0)),
+                "high_risk": bool(
+                    int(_as_int(summary.get("max_stress_ratio_permille", 0), 0)) > 1000
+                    or int(_as_int(summary.get("derailment_risk_permille", 0), 0)) >= 900
+                ),
+            }
+        ]
+    }
+    extensions["derived_structure_load_summary"] = {
+        "load_rating_kg": int(max(0, _as_int(summary.get("min_effective_max_load", 0), 0))),
+        "max_stress_ratio_permille": int(max(0, _as_int(summary.get("max_stress_ratio_permille", 0), 0))),
+        "derailment_risk_permille": int(max(0, _as_int(summary.get("derailment_risk_permille", 0), 0))),
+    }
+    payload["extensions"] = extensions
+    return payload
+
+
 def _inspection_target_payload(state: dict, target_id: str) -> dict:
     token = str(target_id).strip()
     if not token:
@@ -8948,6 +9024,10 @@ def _execute_inspection_snapshot_process(
         target_payload=target_payload,
     )
     target_payload = _augment_inspection_target_payload_for_specs(
+        state=state,
+        target_payload=target_payload,
+    )
+    target_payload = _augment_inspection_target_payload_for_mechanics(
         state=state,
         target_payload=target_payload,
     )
@@ -18138,6 +18218,415 @@ def execute_intent(
             "removed_network_graph_ref": network_graph_ref or None,
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mechanics_tick":
+        effect_type_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="effect_type_registry",
+            registry_rel_path="data/registries/effect_type_registry.json",
+            entry_key="effect_types",
+        )
+        stacking_policy_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="stacking_policy_registry",
+            registry_rel_path="data/registries/stacking_policy_registry.json",
+            entry_key="stacking_policies",
+        )
+        connection_type_registry = _mechanics_registry_payload(
+            policy_context=policy_context,
+            key="connection_type_registry",
+            registry_rel_path="data/registries/connection_type_registry.json",
+            entry_key="connection_types",
+        )
+        mechanics_eval = evaluate_structural_graphs(
+            structural_graph_rows=structural_graphs,
+            structural_node_rows=structural_nodes,
+            structural_edge_rows=structural_edges,
+            current_tick=int(current_tick),
+            max_cost_units=max(
+                0,
+                _as_int(
+                    inputs.get(
+                        "max_cost_units",
+                        (dict(policy_context or {})).get("mechanics_max_cost_units_per_tick", 64),
+                    ),
+                    64,
+                ),
+            ),
+            cost_units_per_graph=max(1, _as_int(inputs.get("cost_units_per_graph", 1), 1)),
+            connection_type_registry=connection_type_registry,
+            effect_rows=effect_rows,
+            effect_type_registry=effect_type_registry,
+            stacking_policy_registry=stacking_policy_registry,
+            plastic_threshold_permille=max(0, _as_int(inputs.get("plastic_threshold_permille", 850), 850)),
+            failure_threshold_permille=max(1, _as_int(inputs.get("failure_threshold_permille", 1000), 1000)),
+        )
+        structural_graphs = normalize_structural_graph_rows(mechanics_eval.get("structural_graph_rows"))
+        structural_nodes = normalize_structural_node_rows(mechanics_eval.get("structural_node_rows"))
+        structural_edges = normalize_structural_edge_rows(mechanics_eval.get("structural_edge_rows"))
+        fracture_edge_ids = _sorted_tokens(list(mechanics_eval.get("fracture_edge_ids") or []))
+
+        pending_rows = [
+            dict(row)
+            for row in list(state.get("pending_mechanics_fracture_intents") or [])
+            if isinstance(row, dict)
+        ]
+        pending_by_id = dict(
+            (str(row.get("intent_id", "")).strip(), dict(row))
+            for row in pending_rows
+            if str(row.get("intent_id", "")).strip()
+        )
+        for edge_id in fracture_edge_ids:
+            pending_seed = {
+                "process_id": "process.mechanics_fracture",
+                "structural_edge_id": edge_id,
+                "tick": int(current_tick),
+            }
+            fracture_intent_id = "intent.mechanics.auto.fracture.{}".format(canonical_sha256(pending_seed)[:20])
+            pending_by_id[fracture_intent_id] = {
+                "intent_id": fracture_intent_id,
+                "process_id": "process.mechanics_fracture",
+                "inputs": {"structural_edge_id": edge_id},
+                "created_tick": int(current_tick),
+                "extensions": {
+                    "source_process_id": process_id,
+                    "auto_generated": True,
+                },
+            }
+        state["pending_mechanics_fracture_intents"] = [
+            dict(pending_by_id[key]) for key in sorted(pending_by_id.keys())
+        ]
+
+        provenance_row = _mechanics_provenance_row(
+            event_type="mechanics_tick",
+            tick=int(current_tick),
+            process_id=process_id,
+            intent_id=intent_id,
+            structural_edge_id=(fracture_edge_ids[0] if fracture_edge_ids else ""),
+            target_id=None,
+            extensions={
+                "evaluated_graph_ids": list(mechanics_eval.get("evaluated_graph_ids") or []),
+                "skipped_graph_ids": list(mechanics_eval.get("skipped_graph_ids") or []),
+                "fracture_edge_ids": list(fracture_edge_ids),
+                "cost_units_used": int(_as_int(mechanics_eval.get("cost_units_used", 0), 0)),
+                "degraded": bool(mechanics_eval.get("degraded", False)),
+                "degrade_reason": (
+                    None
+                    if mechanics_eval.get("degrade_reason") is None
+                    else str(mechanics_eval.get("degrade_reason", "")).strip() or None
+                ),
+            },
+        )
+        mechanics_provenance_events = sorted(
+            [dict(row) for row in list(mechanics_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_mechanics_state(
+            state,
+            structural_graphs=structural_graphs,
+            structural_nodes=structural_nodes,
+            structural_edges=structural_edges,
+            mechanics_provenance_events=mechanics_provenance_events,
+        )
+        result_metadata = {
+            "evaluated_graph_ids": list(mechanics_eval.get("evaluated_graph_ids") or []),
+            "skipped_graph_ids": list(mechanics_eval.get("skipped_graph_ids") or []),
+            "fracture_edge_ids": list(fracture_edge_ids),
+            "pending_fracture_intent_ids": [str(row.get("intent_id", "")).strip() for row in list(state.get("pending_mechanics_fracture_intents") or []) if isinstance(row, dict)],
+            "cost_units_used": int(_as_int(mechanics_eval.get("cost_units_used", 0), 0)),
+            "degraded": bool(mechanics_eval.get("degraded", False)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.weld_joint":
+        structural_edge_id = str(inputs.get("structural_edge_id", "")).strip() or str(inputs.get("edge_id", "")).strip()
+        if not structural_edge_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.weld_joint requires structural_edge_id",
+                "Provide structural_edge_id for deterministic weld target.",
+                {"process_id": process_id},
+                "$.intent.inputs.structural_edge_id",
+            )
+        edge_by_id = dict(
+            (str(row.get("edge_id", "")).strip(), dict(row))
+            for row in list(structural_edges or [])
+            if isinstance(row, dict) and str(row.get("edge_id", "")).strip()
+        )
+        edge_row = dict(edge_by_id.get(structural_edge_id) or {})
+        if not edge_row:
+            return refusal(
+                REFUSAL_MECHANICS_INVALID_EDGE,
+                "structural edge '{}' was not found".format(structural_edge_id),
+                "Use existing structural edge id.",
+                {"structural_edge_id": structural_edge_id},
+                "$.intent.inputs.structural_edge_id",
+            )
+        gain_permille = max(1000, _as_int(inputs.get("weld_gain_permille", 1250), 1250))
+        added_load = max(0, _as_int(inputs.get("added_max_load", 0), 0))
+        prev_max_load = int(max(0, _as_int(edge_row.get("max_load", 0), 0)))
+        next_max_load = max(
+            prev_max_load + int(added_load),
+            int((int(prev_max_load) * int(gain_permille)) // 1000),
+        )
+        fatigue_state = dict(edge_row.get("fatigue_state") or {})
+        fatigue_state["last_weld_tick"] = int(current_tick)
+        fatigue_state["weld_repairs"] = int(max(0, _as_int(fatigue_state.get("weld_repairs", 0), 0)) + 1)
+        edge_ext = dict(edge_row.get("extensions") or {})
+        edge_ext["last_weld_intent_id"] = str(intent_id)
+        if _failure_state(edge_row.get("failure_state")) == "failed":
+            edge_ext["restored_from_failed"] = True
+        updated_edge = build_structural_edge(
+            edge_id=structural_edge_id,
+            node_a_id=str(edge_row.get("node_a_id", "")).strip(),
+            node_b_id=str(edge_row.get("node_b_id", "")).strip(),
+            connection_type_id=str(edge_row.get("connection_type_id", "")).strip() or "conn.weld",
+            stiffness=int(max(0, _as_int(edge_row.get("stiffness", 0), 0))),
+            max_load=int(max(0, next_max_load)),
+            fatigue_state=fatigue_state,
+            extensions=edge_ext,
+            failure_state="yielded" if _failure_state(edge_row.get("failure_state")) == "failed" else _failure_state(edge_row.get("failure_state")),
+            stress_ratio_permille=int(max(0, _as_int(edge_row.get("stress_ratio_permille", 0), 0))),
+            applied_load=int(max(0, _as_int(edge_row.get("applied_load", 0), 0))),
+            effective_max_load=int(max(0, _as_int(edge_row.get("effective_max_load", next_max_load), next_max_load))),
+            last_evaluated_tick=int(current_tick),
+        )
+        edge_by_id[structural_edge_id] = dict(updated_edge)
+        structural_edges = normalize_structural_edge_rows([dict(edge_by_id[key]) for key in sorted(edge_by_id.keys())])
+        provenance_row = _mechanics_provenance_row(
+            event_type="mechanics_weld_joint",
+            tick=int(current_tick),
+            process_id=process_id,
+            intent_id=intent_id,
+            structural_edge_id=structural_edge_id,
+            extensions={
+                "previous_max_load": int(prev_max_load),
+                "next_max_load": int(next_max_load),
+                "weld_gain_permille": int(gain_permille),
+            },
+        )
+        mechanics_provenance_events = sorted(
+            [dict(row) for row in list(mechanics_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_mechanics_state(
+            state,
+            structural_graphs=structural_graphs,
+            structural_nodes=structural_nodes,
+            structural_edges=structural_edges,
+            mechanics_provenance_events=mechanics_provenance_events,
+        )
+        result_metadata = {
+            "structural_edge_id": structural_edge_id,
+            "previous_max_load": int(prev_max_load),
+            "next_max_load": int(next_max_load),
+            "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.cut_joint":
+        structural_edge_id = str(inputs.get("structural_edge_id", "")).strip() or str(inputs.get("edge_id", "")).strip()
+        if not structural_edge_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.cut_joint requires structural_edge_id",
+                "Provide structural_edge_id for deterministic cut target.",
+                {"process_id": process_id},
+                "$.intent.inputs.structural_edge_id",
+            )
+        edge_by_id = dict(
+            (str(row.get("edge_id", "")).strip(), dict(row))
+            for row in list(structural_edges or [])
+            if isinstance(row, dict) and str(row.get("edge_id", "")).strip()
+        )
+        edge_row = dict(edge_by_id.get(structural_edge_id) or {})
+        if not edge_row:
+            return refusal(
+                REFUSAL_MECHANICS_INVALID_EDGE,
+                "structural edge '{}' was not found".format(structural_edge_id),
+                "Use existing structural edge id.",
+                {"structural_edge_id": structural_edge_id},
+                "$.intent.inputs.structural_edge_id",
+            )
+        direct_fracture = bool(inputs.get("direct_fracture", False))
+        reduction_permille = max(0, min(1000, _as_int(inputs.get("cut_reduction_permille", 600), 600)))
+        previous_max_load = int(max(0, _as_int(edge_row.get("max_load", 0), 0)))
+        reduced_max_load = int((int(previous_max_load) * int(max(0, 1000 - reduction_permille))) // 1000)
+        next_max_load = 0 if direct_fracture else reduced_max_load
+        fractured = bool(direct_fracture or next_max_load <= 0)
+        fatigue_state = dict(edge_row.get("fatigue_state") or {})
+        fatigue_state["last_cut_tick"] = int(current_tick)
+        fatigue_state["cut_events"] = int(max(0, _as_int(fatigue_state.get("cut_events", 0), 0)) + 1)
+        edge_ext = dict(edge_row.get("extensions") or {})
+        edge_ext["last_cut_intent_id"] = str(intent_id)
+        if fractured:
+            edge_ext["detached"] = True
+            edge_ext["fractured_tick"] = int(current_tick)
+        updated_edge = build_structural_edge(
+            edge_id=structural_edge_id,
+            node_a_id=str(edge_row.get("node_a_id", "")).strip(),
+            node_b_id=str(edge_row.get("node_b_id", "")).strip(),
+            connection_type_id=str(edge_row.get("connection_type_id", "")).strip() or "conn.rigid_joint",
+            stiffness=int(max(0, _as_int(edge_row.get("stiffness", 0), 0))),
+            max_load=int(max(0, next_max_load)),
+            fatigue_state=fatigue_state,
+            extensions=edge_ext,
+            failure_state="failed" if fractured else _failure_state(edge_row.get("failure_state")),
+            stress_ratio_permille=(
+                int(max(1001, _as_int(edge_row.get("stress_ratio_permille", 0), 0)))
+                if fractured
+                else int(max(0, _as_int(edge_row.get("stress_ratio_permille", 0), 0)))
+            ),
+            applied_load=int(max(0, _as_int(edge_row.get("applied_load", 0), 0))),
+            effective_max_load=int(max(0, _as_int(edge_row.get("effective_max_load", next_max_load), next_max_load))),
+            last_evaluated_tick=int(current_tick),
+        )
+        edge_by_id[structural_edge_id] = dict(updated_edge)
+        structural_edges = normalize_structural_edge_rows([dict(edge_by_id[key]) for key in sorted(edge_by_id.keys())])
+        if fractured:
+            detached_rows = [dict(row) for row in list(state.get("assembly_graph_detached_edges") or []) if isinstance(row, dict)]
+            detached_seed = {
+                "structural_edge_id": structural_edge_id,
+                "tick": int(current_tick),
+                "process_id": process_id,
+            }
+            detached_id = "assembly.detach.{}".format(canonical_sha256(detached_seed)[:16])
+            detached_by_id = dict(
+                (str(row.get("detached_id", "")).strip(), dict(row))
+                for row in detached_rows
+                if str(row.get("detached_id", "")).strip()
+            )
+            detached_by_id[detached_id] = {
+                "schema_version": "1.0.0",
+                "detached_id": detached_id,
+                "tick": int(current_tick),
+                "structural_edge_id": structural_edge_id,
+                "process_id": process_id,
+                "intent_id": str(intent_id),
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    "node_a_id": str(edge_row.get("node_a_id", "")).strip(),
+                    "node_b_id": str(edge_row.get("node_b_id", "")).strip(),
+                },
+            }
+            state["assembly_graph_detached_edges"] = [dict(detached_by_id[key]) for key in sorted(detached_by_id.keys())]
+            for row in list(state.get("assembly_graph_detached_edges") or []):
+                if not isinstance(row, dict):
+                    continue
+                row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+        provenance_row = _mechanics_provenance_row(
+            event_type="mechanics_cut_joint",
+            tick=int(current_tick),
+            process_id=process_id,
+            intent_id=intent_id,
+            structural_edge_id=structural_edge_id,
+            extensions={
+                "previous_max_load": int(previous_max_load),
+                "next_max_load": int(next_max_load),
+                "fractured": bool(fractured),
+                "cut_reduction_permille": int(reduction_permille),
+            },
+        )
+        mechanics_provenance_events = sorted(
+            [dict(row) for row in list(mechanics_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_mechanics_state(
+            state,
+            structural_graphs=structural_graphs,
+            structural_nodes=structural_nodes,
+            structural_edges=structural_edges,
+            mechanics_provenance_events=mechanics_provenance_events,
+        )
+        result_metadata = {
+            "structural_edge_id": structural_edge_id,
+            "previous_max_load": int(previous_max_load),
+            "next_max_load": int(next_max_load),
+            "fractured": bool(fractured),
+            "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.drill_hole":
+        structural_node_id = str(inputs.get("structural_node_id", "")).strip() or str(inputs.get("node_id", "")).strip()
+        if not structural_node_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.drill_hole requires structural_node_id",
+                "Provide structural_node_id for deterministic drill target.",
+                {"process_id": process_id},
+                "$.intent.inputs.structural_node_id",
+            )
+        node_by_id = dict(
+            (str(row.get("node_id", "")).strip(), dict(row))
+            for row in list(structural_nodes or [])
+            if isinstance(row, dict) and str(row.get("node_id", "")).strip()
+        )
+        node_row = dict(node_by_id.get(structural_node_id) or {})
+        if not node_row:
+            return refusal(
+                REFUSAL_MECHANICS_INVALID_NODE,
+                "structural node '{}' was not found".format(structural_node_id),
+                "Use existing structural node id.",
+                {"structural_node_id": structural_node_id},
+                "$.intent.inputs.structural_node_id",
+            )
+        integrity_loss_permille = max(1, min(1000, _as_int(inputs.get("integrity_loss_permille", 120), 120)))
+        node_ext = dict(node_row.get("extensions") or {})
+        previous_integrity = int(max(0, min(1000, _as_int(node_ext.get("integrity_permille", 1000), 1000))))
+        next_integrity = int(max(0, previous_integrity - integrity_loss_permille))
+        node_ext["integrity_permille"] = int(next_integrity)
+        node_ext["last_drill_tick"] = int(current_tick)
+        node_ext["last_drill_intent_id"] = str(intent_id)
+        previous_plastic = int(max(0, _as_int(node_row.get("plastic_strain", 0), 0)))
+        plastic_increment = int(max(1, integrity_loss_permille // 8))
+        next_plastic = int(max(0, previous_plastic + plastic_increment))
+        next_failure = "none"
+        if next_integrity <= 0:
+            next_failure = "failed"
+        elif next_integrity < 700:
+            next_failure = "yielded"
+        updated_node = build_structural_node(
+            node_id=structural_node_id,
+            assembly_part_id=str(node_row.get("assembly_part_id", "")).strip(),
+            applied_force=int(_as_int(node_row.get("applied_force", 0), 0)),
+            applied_torque=int(_as_int(node_row.get("applied_torque", 0), 0)),
+            elastic_strain=int(max(0, _as_int(node_row.get("elastic_strain", 0), 0))),
+            plastic_strain=int(next_plastic),
+            failure_state=next_failure,
+            extensions=node_ext,
+        )
+        node_by_id[structural_node_id] = dict(updated_node)
+        structural_nodes = normalize_structural_node_rows([dict(node_by_id[key]) for key in sorted(node_by_id.keys())])
+        provenance_row = _mechanics_provenance_row(
+            event_type="mechanics_drill_hole",
+            tick=int(current_tick),
+            process_id=process_id,
+            intent_id=intent_id,
+            structural_edge_id="",
+            target_id=structural_node_id,
+            extensions={
+                "previous_integrity_permille": int(previous_integrity),
+                "next_integrity_permille": int(next_integrity),
+                "plastic_increment": int(plastic_increment),
+                "previous_plastic_strain": int(previous_plastic),
+                "next_plastic_strain": int(next_plastic),
+            },
+        )
+        mechanics_provenance_events = sorted(
+            [dict(row) for row in list(mechanics_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_mechanics_state(
+            state,
+            structural_graphs=structural_graphs,
+            structural_nodes=structural_nodes,
+            structural_edges=structural_edges,
+            mechanics_provenance_events=mechanics_provenance_events,
+        )
+        result_metadata = {
+            "structural_node_id": structural_node_id,
+            "previous_integrity_permille": int(previous_integrity),
+            "next_integrity_permille": int(next_integrity),
+            "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mechanics_fracture":
         structural_edge_id = str(inputs.get("structural_edge_id", "")).strip() or str(inputs.get("edge_id", "")).strip()
         if not structural_edge_id:
@@ -18562,6 +19051,28 @@ def execute_intent(
                 continue
             input_catalog[token] = dict(section_row.get("data") or {})
 
+        mechanics_summary = summarize_stress_for_target(
+            target_id=target_id,
+            structural_graph_rows=structural_graphs,
+            structural_edge_rows=structural_edges,
+        )
+        if (
+            "derived.structure.load_summary" not in input_catalog
+            and int(_as_int(mechanics_summary.get("edge_count", 0), 0)) > 0
+        ):
+            input_catalog["derived.structure.load_summary"] = {
+                "load_rating_kg": int(max(0, _as_int(mechanics_summary.get("min_effective_max_load", 0), 0))),
+                "max_stress_ratio_permille": int(max(0, _as_int(mechanics_summary.get("max_stress_ratio_permille", 0), 0))),
+                "derailment_risk_permille": int(max(0, _as_int(mechanics_summary.get("derailment_risk_permille", 0), 0))),
+            }
+        if "derived.mob.track_stress_summary" not in input_catalog:
+            input_catalog["derived.mob.track_stress_summary"] = {
+                "max_stress_ratio_permille": int(max(0, _as_int(mechanics_summary.get("max_stress_ratio_permille", 0), 0))),
+                "max_alignment_error_permille": int(max(0, _as_int(mechanics_summary.get("max_alignment_error_permille", 0), 0))),
+                "derailment_risk_permille": int(max(0, _as_int(mechanics_summary.get("derailment_risk_permille", 0), 0))),
+                "recommended_speed_cap_permille": int(max(0, _as_int(mechanics_summary.get("recommended_speed_cap_permille", 1000), 1000))),
+            }
+
         # Deterministic synthetic derived summaries from inspection sections.
         section_layout = dict(input_catalog.get("section.interior.layout") or {})
         if "derived.geometry.clearance_summary" not in input_catalog:
@@ -18587,6 +19098,8 @@ def execute_intent(
         if "derived.structure.load_summary" not in input_catalog:
             input_catalog["derived.structure.load_summary"] = {
                 "load_rating_kg": _as_int(section_ag.get("load_rating_kg", 0), 0),
+                "max_stress_ratio_permille": int(max(0, _as_int(mechanics_summary.get("max_stress_ratio_permille", 0), 0))),
+                "derailment_risk_permille": int(max(0, _as_int(mechanics_summary.get("derailment_risk_permille", 0), 0))),
             }
 
         strict_spec = bool((policy_context or {}).get("strict_contracts", False) or bool(inputs.get("strict", False)))
@@ -18602,6 +19115,110 @@ def execute_intent(
             input_catalog=dict(input_catalog),
             strict=bool(strict_spec),
         )
+        spec_type_id = str(spec_row.get("spec_type_id", "")).strip()
+        compliance_ext = dict(compliance_result.get("extensions") or {})
+        compliance_ext["mechanics_stress_summary"] = dict(mechanics_summary)
+        compliance_result["extensions"] = compliance_ext
+        compliance_result["deterministic_fingerprint"] = canonical_sha256(
+            dict(compliance_result, deterministic_fingerprint="")
+        )
+
+        track_speed_cap_effect_id = None
+        removed_track_speed_cap_effect_ids: List[str] = []
+        if spec_type_id == "spec.track":
+            recommended_speed_cap_permille = int(
+                max(
+                    200,
+                    min(
+                        1000,
+                        _as_int(
+                            dict(input_catalog.get("derived.mob.track_stress_summary") or {}).get(
+                                "recommended_speed_cap_permille",
+                                mechanics_summary.get("recommended_speed_cap_permille", 1000),
+                            ),
+                            1000,
+                        ),
+                    ),
+                )
+            )
+            compliance_ext["recommended_speed_cap_permille"] = int(recommended_speed_cap_permille)
+            compliance_result["extensions"] = compliance_ext
+            compliance_result["deterministic_fingerprint"] = canonical_sha256(
+                dict(compliance_result, deterministic_fingerprint="")
+            )
+            effect_by_id = dict(
+                (str(row.get("effect_id", "")).strip(), dict(row))
+                for row in list(effect_rows or [])
+                if isinstance(row, dict) and str(row.get("effect_id", "")).strip()
+            )
+            existing_auto_ids = [
+                effect_id
+                for effect_id, row in sorted(effect_by_id.items(), key=lambda item: item[0])
+                if str(row.get("effect_type_id", "")).strip() == "effect.speed_cap"
+                and str(row.get("target_id", "")).strip() == target_id
+                and bool(dict(row.get("extensions") or {}).get("auto_spec_track_speed_cap", False))
+            ]
+            for effect_id in existing_auto_ids:
+                removed_row = dict(effect_by_id.pop(effect_id))
+                removed_track_speed_cap_effect_ids.append(effect_id)
+                provenance_row = _effect_provenance_row(
+                    event_type="effect_removed",
+                    tick=int(current_tick),
+                    intent_id=intent_id,
+                    process_id=process_id,
+                    target_id=str(removed_row.get("target_id", "")).strip(),
+                    effect_id=effect_id,
+                    effect_type_id=str(removed_row.get("effect_type_id", "")).strip(),
+                    extensions={"auto_spec_track_speed_cap": True},
+                )
+                effect_provenance_events = sorted(
+                    [dict(row) for row in list(effect_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+                    key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+                )
+            if int(recommended_speed_cap_permille) < 1000:
+                auto_effect_id = "effect.auto.track_speed_cap.{}".format(
+                    canonical_sha256({"target_id": target_id, "spec_id": spec_id})[:16]
+                )
+                auto_effect_row = build_effect(
+                    effect_id=auto_effect_id,
+                    effect_type_id="effect.speed_cap",
+                    target_id=target_id,
+                    applied_tick=int(current_tick),
+                    magnitude={"max_speed_permille": int(recommended_speed_cap_permille)},
+                    stacking_policy_id="stack.min",
+                    source_event_id=str(compliance_result.get("result_id", "")).strip() or None,
+                    extensions={
+                        "auto_spec_track_speed_cap": True,
+                        "source_process_id": process_id,
+                        "spec_id": spec_id,
+                    },
+                )
+                effect_by_id[auto_effect_id] = dict(auto_effect_row)
+                track_speed_cap_effect_id = auto_effect_id
+                provenance_row = _effect_provenance_row(
+                    event_type="effect_applied",
+                    tick=int(current_tick),
+                    intent_id=intent_id,
+                    process_id=process_id,
+                    target_id=target_id,
+                    effect_id=auto_effect_id,
+                    effect_type_id="effect.speed_cap",
+                    extensions={
+                        "auto_spec_track_speed_cap": True,
+                        "stacking_policy_id": "stack.min",
+                        "recommended_speed_cap_permille": int(recommended_speed_cap_permille),
+                    },
+                )
+                effect_provenance_events = sorted(
+                    [dict(row) for row in list(effect_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+                    key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+                )
+            effect_rows = normalize_effect_rows([dict(effect_by_id[key]) for key in sorted(effect_by_id.keys())])
+            _persist_effect_state(
+                state,
+                effect_rows=effect_rows,
+                provenance_events=effect_provenance_events,
+            )
         compliance_by_id = dict(
             (str(row.get("result_id", "")).strip(), dict(row))
             for row in list(spec_compliance_results or [])
@@ -18654,6 +19271,8 @@ def execute_intent(
             "target_kind": target_kind,
             "target_id": target_id,
             "compliance_result": dict(compliance_result),
+            "recommended_speed_cap_effect_id": track_speed_cap_effect_id,
+            "removed_speed_cap_effect_ids": list(removed_track_speed_cap_effect_ids),
             "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
