@@ -177,7 +177,13 @@
     },
     "control_decision_log": {
       "current_version": "1.0.0",
-      "migrations": {},
+      "migrations": {
+        "0.1.0->1.0.0": {
+          "migration_id": "migration.control_decision_log.0_1_0_to_1_0_0",
+          "status": "stub",
+          "notes": "CTRL-10 migration stub; explicit mapping required before non-stub promotion."
+        }
+      },
       "supported_versions": [
         "0.1.0",
         "1.0.0"
@@ -220,8 +226,15 @@
     },
     "control_ir": {
       "current_version": "1.0.0",
-      "migrations": {},
+      "migrations": {
+        "0.9.0->1.0.0": {
+          "migration_id": "migration.control_ir.0_9_0_to_1_0_0",
+          "status": "stub",
+          "notes": "CTRL-10 migration stub; explicit mapping required before non-stub promotion."
+        }
+      },
       "supported_versions": [
+        "0.9.0",
         "1.0.0"
       ]
     },
@@ -240,6 +253,13 @@
       ]
     },
     "control_ir_verification_report": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_proof_bundle": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
