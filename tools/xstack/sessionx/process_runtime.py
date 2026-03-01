@@ -219,6 +219,17 @@ from src.control.effects import (
     normalize_effect_rows,
     prune_expired_effect_rows,
 )
+from src.specs import (
+    REFUSAL_SPEC_NONCOMPLIANT,
+    build_spec_binding,
+    compliance_check_rows_by_id,
+    evaluate_compliance,
+    load_spec_sheet_rows,
+    normalize_spec_binding_rows,
+    spec_sheet_rows_by_id,
+    spec_type_rows_by_id,
+    tolerance_policy_rows_by_id,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -313,6 +324,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.plan_execute": "entitlement.control.admin",
     "process.effect_apply": "entitlement.control.admin",
     "process.effect_remove": "entitlement.control.admin",
+    "process.spec_apply_to_target": "entitlement.control.admin",
+    "process.spec_check_compliance": "entitlement.inspect",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -417,6 +430,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.plan_execute": "operator",
     "process.effect_apply": "operator",
     "process.effect_remove": "operator",
+    "process.spec_apply_to_target": "operator",
+    "process.spec_check_compliance": "observer",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -468,6 +483,8 @@ CONTROL_PROCESS_IDS = {
     "process.plan_execute",
     "process.effect_apply",
     "process.effect_remove",
+    "process.spec_apply_to_target",
+    "process.spec_check_compliance",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -977,6 +994,136 @@ def _persist_effect_state(
     state["effect_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
     _ensure_effect_rows(state)
     _ensure_effect_provenance_events(state)
+
+
+def _ensure_spec_binding_rows(state: dict) -> List[dict]:
+    rows = normalize_spec_binding_rows(state.get("spec_bindings"))
+    state["spec_bindings"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_spec_compliance_results(state: dict) -> List[dict]:
+    rows = state.get("spec_compliance_results")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("result_id", ""))),
+    ):
+        result_id = str(row.get("result_id", "")).strip()
+        target_kind = str(row.get("target_kind", "")).strip()
+        target_id = str(row.get("target_id", "")).strip()
+        spec_id = str(row.get("spec_id", "")).strip()
+        overall_grade = str(row.get("overall_grade", "")).strip()
+        if (
+            (not result_id)
+            or (target_kind not in {"structure", "ag", "geometry", "vehicle", "network_edge"})
+            or (not target_id)
+            or (not spec_id)
+            or (overall_grade not in {"pass", "warn", "fail"})
+        ):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "result_id": result_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "target_kind": target_kind,
+            "target_id": target_id,
+            "spec_id": spec_id,
+            "check_results": [dict(item) for item in list(row.get("check_results") or []) if isinstance(item, dict)],
+            "overall_grade": overall_grade,
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["spec_compliance_results"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_spec_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("spec_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "event_type": str(row.get("event_type", "")).strip() or "spec_event",
+            "target_kind": str(row.get("target_kind", "")).strip(),
+            "target_id": str(row.get("target_id", "")).strip(),
+            "spec_id": str(row.get("spec_id", "")).strip() or None,
+            "result_id": str(row.get("result_id", "")).strip() or None,
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["spec_provenance_events"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _persist_spec_state(
+    state: dict,
+    *,
+    spec_bindings: List[dict],
+    compliance_results: List[dict],
+    provenance_events: List[dict],
+) -> None:
+    state["spec_bindings"] = [dict(row) for row in list(spec_bindings or []) if isinstance(row, dict)]
+    state["spec_compliance_results"] = [dict(row) for row in list(compliance_results or []) if isinstance(row, dict)]
+    state["spec_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
+    _ensure_spec_binding_rows(state)
+    _ensure_spec_compliance_results(state)
+    _ensure_spec_provenance_events(state)
+
+
+def _spec_provenance_row(
+    *,
+    event_type: str,
+    tick: int,
+    intent_id: str,
+    process_id: str,
+    target_kind: str,
+    target_id: str,
+    spec_id: str,
+    result_id: str | None = None,
+    extensions: dict | None = None,
+) -> dict:
+    event_seed = {
+        "event_type": str(event_type),
+        "tick": int(max(0, _as_int(tick, 0))),
+        "intent_id": str(intent_id),
+        "process_id": str(process_id),
+        "target_kind": str(target_kind),
+        "target_id": str(target_id),
+        "spec_id": str(spec_id),
+        "result_id": None if result_id is None else str(result_id),
+    }
+    event_id = "provenance.spec.{}".format(canonical_sha256(event_seed)[:24])
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": event_id,
+        "tick": int(max(0, _as_int(tick, 0))),
+        "event_type": str(event_type).strip() or "spec_event",
+        "target_kind": str(target_kind).strip(),
+        "target_id": str(target_id).strip(),
+        "spec_id": str(spec_id).strip() or None,
+        "result_id": None if result_id is None else str(result_id).strip() or None,
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
 
 
 def _effect_target_ids(state: dict) -> List[str]:
@@ -6363,6 +6510,69 @@ def _effect_registry_payload(
     )
 
 
+def _spec_registry_payload(
+    *,
+    policy_context: dict | None,
+    key: str,
+    registry_rel_path: str,
+    entry_key: str,
+) -> dict:
+    payload = _policy_payload(policy_context, key)
+    if payload:
+        return dict(payload)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path=registry_rel_path,
+        default_payload={entry_key: []},
+    )
+
+
+def _spec_pack_payload_rows(policy_context: dict | None) -> List[dict]:
+    rows: List[dict] = []
+    if isinstance(policy_context, dict):
+        inline = policy_context.get("spec_sheet_payloads")
+        if isinstance(inline, list):
+            rows.extend(dict(item) for item in inline if isinstance(item, dict))
+    default_pack_rel = "packs/specs/specs.default.realistic.m1/data/spec_sheets.json"
+    default_pack_abs = os.path.join(REPO_ROOT_HINT, default_pack_rel.replace("/", os.sep))
+    if os.path.isfile(default_pack_abs):
+        try:
+            payload = json.load(open(default_pack_abs, "r", encoding="utf-8"))
+        except (OSError, ValueError):
+            payload = {}
+        if isinstance(payload, dict):
+            rows.append(
+                {
+                    "pack_id": "specs.default.realistic.m1",
+                    "spec_sheets": list(payload.get("spec_sheets") or []),
+                    "payload": dict(payload),
+                }
+            )
+    return sorted(
+        (dict(item) for item in rows if isinstance(item, dict)),
+        key=lambda item: str(item.get("pack_id", "")),
+    )
+
+
+def _spec_sheet_rows(
+    *,
+    policy_context: dict | None,
+    spec_type_registry: dict,
+    tolerance_policy_registry: dict,
+    compliance_check_registry: dict,
+) -> Tuple[List[dict], List[dict]]:
+    inline_rows = None
+    if isinstance(policy_context, dict):
+        inline_rows = policy_context.get("spec_sheet_rows")
+    return load_spec_sheet_rows(
+        inline_rows=inline_rows,
+        pack_payloads=_spec_pack_payload_rows(policy_context),
+        spec_type_registry=spec_type_registry,
+        tolerance_policy_registry=tolerance_policy_registry,
+        compliance_check_registry=compliance_check_registry,
+    )
+
+
 def _resolve_control_policy_row_for_ir(
     *,
     control_policy_registry: dict,
@@ -10505,6 +10715,9 @@ def execute_intent(
     pose_mount_provenance_events = _ensure_pose_mount_provenance_events(state)
     effect_rows = _ensure_effect_rows(state)
     effect_provenance_events = _ensure_effect_provenance_events(state)
+    spec_bindings = _ensure_spec_binding_rows(state)
+    spec_compliance_results = _ensure_spec_compliance_results(state)
+    spec_provenance_events = _ensure_spec_provenance_events(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     effect_rows = prune_expired_effect_rows(
@@ -16649,6 +16862,326 @@ def execute_intent(
             "effect_id": effect_id,
             "effect_type_id": str(removed_row.get("effect_type_id", "")).strip(),
             "target_id": str(removed_row.get("target_id", "")).strip(),
+            "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.spec_apply_to_target":
+        spec_id = str(inputs.get("spec_id", "")).strip()
+        target_kind = str(inputs.get("target_kind", "")).strip()
+        target_id = str(inputs.get("target_id", "")).strip()
+        if (not spec_id) or (not target_kind) or (not target_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.spec_apply_to_target requires spec_id, target_kind, and target_id",
+                "Provide deterministic spec_id/target_kind/target_id inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if target_kind not in {"structure", "ag", "geometry", "vehicle", "network_edge"}:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "target_kind '{}' is not supported for spec binding".format(target_kind),
+                "Use one of structure|ag|geometry|vehicle|network_edge.",
+                {"target_kind": target_kind},
+                "$.intent.inputs.target_kind",
+            )
+        target_exists = bool(_inspection_target_payload(state=state, target_id=target_id).get("exists", False))
+        if (not target_exists) and (target_id not in set(_effect_target_ids(state))):
+            return refusal(
+                "refusal.spec.invalid_target",
+                "spec target '{}' is not recognized in current state".format(target_id),
+                "Use a deterministic target currently present in authoritative state.",
+                {"target_id": target_id, "target_kind": target_kind},
+                "$.intent.inputs.target_id",
+            )
+
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        compliance_check_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="compliance_check_registry",
+            registry_rel_path="data/registries/compliance_check_registry.json",
+            entry_key="compliance_checks",
+        )
+        spec_rows, spec_load_errors = _spec_sheet_rows(
+            policy_context=policy_context,
+            spec_type_registry=spec_type_registry,
+            tolerance_policy_registry=tolerance_policy_registry,
+            compliance_check_registry=compliance_check_registry,
+        )
+        if spec_load_errors:
+            first_error = dict(spec_load_errors[0] if spec_load_errors else {})
+            return refusal(
+                "refusal.spec.invalid_sheet",
+                str(first_error.get("message", "spec sheet validation failed")),
+                "Fix spec sheet pack data or registries and retry process.spec_apply_to_target.",
+                {"spec_id": spec_id},
+                str(first_error.get("path", "$.spec_sheets")),
+            )
+        spec_row = dict(spec_sheet_rows_by_id(spec_rows).get(spec_id) or {})
+        if not spec_row:
+            return refusal(
+                "refusal.spec.unknown_spec_id",
+                "spec_id '{}' is not available from loaded SpecSheets".format(spec_id),
+                "Declare spec in optional spec pack payload and retry.",
+                {"spec_id": spec_id},
+                "$.intent.inputs.spec_id",
+            )
+
+        binding_row = build_spec_binding(
+            binding_id=str(inputs.get("binding_id", "")).strip(),
+            spec_id=spec_id,
+            target_kind=target_kind,
+            target_id=target_id,
+            applied_tick=int(current_tick),
+            source_event_id=None,
+            extensions={
+                "source_process_id": process_id,
+                "intent_id": str(intent_id),
+                "authority_subject_id": str(authority_context.get("subject_id", "")).strip(),
+            },
+        )
+        binding_by_id = dict(
+            (str(row.get("binding_id", "")).strip(), dict(row))
+            for row in list(spec_bindings or [])
+            if isinstance(row, dict) and str(row.get("binding_id", "")).strip()
+        )
+        binding_by_id[str(binding_row.get("binding_id", "")).strip()] = dict(binding_row)
+        spec_bindings = normalize_spec_binding_rows([dict(binding_by_id[key]) for key in sorted(binding_by_id.keys())])
+        provenance_row = _spec_provenance_row(
+            event_type="spec_applied",
+            tick=int(current_tick),
+            intent_id=intent_id,
+            process_id=process_id,
+            target_kind=target_kind,
+            target_id=target_id,
+            spec_id=spec_id,
+            extensions={
+                "binding_id": str(binding_row.get("binding_id", "")).strip(),
+            },
+        )
+        spec_provenance_events = sorted(
+            [dict(row) for row in list(spec_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_spec_state(
+            state,
+            spec_bindings=spec_bindings,
+            compliance_results=spec_compliance_results,
+            provenance_events=spec_provenance_events,
+        )
+        result_metadata = {
+            "binding_id": str(binding_row.get("binding_id", "")).strip(),
+            "spec_id": spec_id,
+            "target_kind": target_kind,
+            "target_id": target_id,
+            "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.spec_check_compliance":
+        spec_id = str(inputs.get("spec_id", "")).strip()
+        target_kind = str(inputs.get("target_kind", "")).strip()
+        target_id = str(inputs.get("target_id", "")).strip()
+        if (not spec_id) or (not target_kind) or (not target_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.spec_check_compliance requires spec_id, target_kind, and target_id",
+                "Provide deterministic spec_id/target_kind/target_id inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if target_kind not in {"structure", "ag", "geometry", "vehicle", "network_edge"}:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "target_kind '{}' is not supported for compliance".format(target_kind),
+                "Use one of structure|ag|geometry|vehicle|network_edge.",
+                {"target_kind": target_kind},
+                "$.intent.inputs.target_kind",
+            )
+
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        compliance_check_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="compliance_check_registry",
+            registry_rel_path="data/registries/compliance_check_registry.json",
+            entry_key="compliance_checks",
+        )
+        spec_rows, spec_load_errors = _spec_sheet_rows(
+            policy_context=policy_context,
+            spec_type_registry=spec_type_registry,
+            tolerance_policy_registry=tolerance_policy_registry,
+            compliance_check_registry=compliance_check_registry,
+        )
+        if spec_load_errors:
+            first_error = dict(spec_load_errors[0] if spec_load_errors else {})
+            return refusal(
+                "refusal.spec.invalid_sheet",
+                str(first_error.get("message", "spec sheet validation failed")),
+                "Fix spec sheet pack data or registries and retry process.spec_check_compliance.",
+                {"spec_id": spec_id},
+                str(first_error.get("path", "$.spec_sheets")),
+            )
+        spec_row = dict(spec_sheet_rows_by_id(spec_rows).get(spec_id) or {})
+        if not spec_row:
+            return refusal(
+                "refusal.spec.unknown_spec_id",
+                "spec_id '{}' is not available from loaded SpecSheets".format(spec_id),
+                "Declare spec in optional spec pack payload and retry.",
+                {"spec_id": spec_id},
+                "$.intent.inputs.spec_id",
+            )
+
+        # Prefer inspection snapshots, then cached/inline derived summaries for deterministic input collection.
+        inspection_snapshot = dict(inputs.get("inspection_snapshot") or {})
+        if not inspection_snapshot:
+            cache_state = dict((policy_context or {}).get("inspection_cache_state") or {})
+            entries = dict(cache_state.get("entries_by_key") or {})
+            snapshots = []
+            for row in entries.values():
+                if not isinstance(row, dict):
+                    continue
+                snapshot = dict(row.get("snapshot") or {})
+                if str(snapshot.get("target_id", "")).strip() != target_id:
+                    continue
+                snapshots.append(snapshot)
+            if snapshots:
+                inspection_snapshot = sorted(
+                    snapshots,
+                    key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("snapshot_id", ""))),
+                )[-1]
+
+        input_catalog = {}
+        if isinstance(inputs.get("derived_summaries"), dict):
+            for key, value in sorted(dict(inputs.get("derived_summaries") or {}).items(), key=lambda item: str(item[0])):
+                token = str(key).strip()
+                if token:
+                    input_catalog[token] = value
+        cached_derived = dict((dict(state or {})).get("spec_derived_summaries") or {})
+        if isinstance(cached_derived.get(target_id), dict):
+            for key, value in sorted(dict(cached_derived.get(target_id) or {}).items(), key=lambda item: str(item[0])):
+                token = str(key).strip()
+                if token and token not in input_catalog:
+                    input_catalog[token] = value
+        summary_sections = dict(inspection_snapshot.get("summary_sections") or {})
+        for section_id, section_row in sorted(summary_sections.items(), key=lambda item: str(item[0])):
+            token = str(section_id).strip()
+            if not token or not isinstance(section_row, dict):
+                continue
+            input_catalog[token] = dict(section_row.get("data") or {})
+
+        # Deterministic synthetic derived summaries from inspection sections.
+        section_layout = dict(input_catalog.get("section.interior.layout") or {})
+        if "derived.geometry.clearance_summary" not in input_catalog:
+            input_catalog["derived.geometry.clearance_summary"] = {
+                "min_clearance_mm": _as_int(section_layout.get("min_clearance_mm", 0), 0),
+            }
+        section_curve = dict(input_catalog.get("section.interior.connectivity_summary") or {})
+        if "derived.geometry.curvature_summary" not in input_catalog:
+            input_catalog["derived.geometry.curvature_summary"] = {
+                "min_curvature_radius_mm": _as_int(section_curve.get("min_curvature_radius_mm", 0), 0),
+            }
+        section_fail = dict(input_catalog.get("section.failure_risk_summary") or {})
+        if "derived.operation.speed_policy_context" not in input_catalog:
+            input_catalog["derived.operation.speed_policy_context"] = {
+                "max_speed_kph": _as_int(section_fail.get("max_speed_kph", 0), 0),
+            }
+        section_caps = dict(input_catalog.get("section.capabilities_summary") or {})
+        if "derived.interface.compatibility_summary" not in input_catalog:
+            input_catalog["derived.interface.compatibility_summary"] = {
+                "interface_profile_id": str(section_caps.get("interface_profile_id", "")).strip(),
+            }
+        section_ag = dict(input_catalog.get("section.ag_progress") or {})
+        if "derived.structure.load_summary" not in input_catalog:
+            input_catalog["derived.structure.load_summary"] = {
+                "load_rating_kg": _as_int(section_ag.get("load_rating_kg", 0), 0),
+            }
+
+        strict_spec = bool((policy_context or {}).get("strict_contracts", False) or bool(inputs.get("strict", False)))
+        compliance_rows = compliance_check_rows_by_id(compliance_check_registry)
+        tolerance_rows = tolerance_policy_rows_by_id(tolerance_policy_registry)
+        compliance_result, strict_refusal_code = evaluate_compliance(
+            spec_row=spec_row,
+            target_kind=target_kind,
+            target_id=target_id,
+            tick=int(current_tick),
+            tolerance_policy_rows=tolerance_rows,
+            compliance_check_rows=compliance_rows,
+            input_catalog=dict(input_catalog),
+            strict=bool(strict_spec),
+        )
+        compliance_by_id = dict(
+            (str(row.get("result_id", "")).strip(), dict(row))
+            for row in list(spec_compliance_results or [])
+            if isinstance(row, dict) and str(row.get("result_id", "")).strip()
+        )
+        compliance_by_id[str(compliance_result.get("result_id", "")).strip()] = dict(compliance_result)
+        spec_compliance_results = _ensure_spec_compliance_results(
+            {"spec_compliance_results": [dict(compliance_by_id[key]) for key in sorted(compliance_by_id.keys())]}
+        )
+        provenance_row = _spec_provenance_row(
+            event_type="spec_compliance_checked",
+            tick=int(current_tick),
+            intent_id=intent_id,
+            process_id=process_id,
+            target_kind=target_kind,
+            target_id=target_id,
+            spec_id=spec_id,
+            result_id=str(compliance_result.get("result_id", "")).strip(),
+            extensions={
+                "overall_grade": str(compliance_result.get("overall_grade", "")),
+                "strict": bool(strict_spec),
+            },
+        )
+        spec_provenance_events = sorted(
+            [dict(row) for row in list(spec_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_spec_state(
+            state,
+            spec_bindings=spec_bindings,
+            compliance_results=spec_compliance_results,
+            provenance_events=spec_provenance_events,
+        )
+        if bool(strict_spec) and str(compliance_result.get("overall_grade", "")).strip() == "fail":
+            refusal_code = str(strict_refusal_code or REFUSAL_SPEC_NONCOMPLIANT).strip() or REFUSAL_SPEC_NONCOMPLIANT
+            return refusal(
+                refusal_code,
+                "spec compliance failed under strict policy",
+                "Inspect compliance_result details and adjust target/spec before retrying strict execution.",
+                {
+                    "spec_id": spec_id,
+                    "target_id": target_id,
+                    "target_kind": target_kind,
+                    "result_id": str(compliance_result.get("result_id", "")).strip(),
+                },
+                "$.intent.inputs",
+            )
+        result_metadata = {
+            "spec_id": spec_id,
+            "target_kind": target_kind,
+            "target_id": target_id,
+            "compliance_result": dict(compliance_result),
             "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
