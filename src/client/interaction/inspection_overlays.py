@@ -388,6 +388,145 @@ def _network_graph_overlay_payload(
     }
 
 
+def _mechanics_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    payload = dict((dict(inspection_snapshot or {})).get("target_payload") or {})
+    target_row = dict(payload.get("row") or {})
+    target_id = str(payload.get("target_id", "")).strip() or str(target_semantic_id).strip()
+    ext = dict(payload.get("extensions") or {})
+    stress_summary = dict(ext.get("mechanics_stress_summary") or {})
+    failure_summary = dict(ext.get("failure_risk_summary") or {})
+    risk_rows = [dict(row) for row in list(failure_summary.get("risk_rows") or []) if isinstance(row, dict)]
+    max_stress = int(max(0, _to_int(stress_summary.get("max_stress_ratio_permille", 0), 0)))
+    near_fracture = int(max(0, _to_int(stress_summary.get("near_fracture_edge_count", 0), 0)))
+    failed_edges = int(max(0, _to_int(stress_summary.get("failed_edge_count", 0), 0)))
+    derailment_risk = int(max(0, _to_int(stress_summary.get("derailment_risk_permille", 0), 0)))
+
+    bucket = "ok"
+    if max_stress >= 1000 or failed_edges > 0:
+        bucket = "fracture"
+    elif max_stress >= 800 or near_fracture > 0:
+        bucket = "warn"
+    colors = {
+        "ok": {"r": 88, "g": 184, "b": 96},
+        "warn": {"r": 231, "g": 188, "b": 68},
+        "fracture": {"r": 221, "g": 84, "b": 84},
+    }
+    bucket_color = dict(colors[bucket])
+    material_id = "mat.inspect.mechanics.{}".format(canonical_sha256({"target": target_id, "bucket": bucket})[:12])
+    crack_material_id = "mat.inspect.mechanics.crack.{}".format(canonical_sha256({"target": target_id, "crack": True})[:12])
+    materials = sorted(
+        [
+            {
+                "schema_version": "1.0.0",
+                "material_id": material_id,
+                "base_color": dict(bucket_color),
+                "roughness": 260,
+                "metallic": 0,
+                "emission": {"r": bucket_color["r"], "g": bucket_color["g"], "b": bucket_color["b"], "strength": 220},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "mechanics_stress_bucket"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": crack_material_id,
+                "base_color": {"r": 244, "g": 240, "b": 232},
+                "roughness": 320,
+                "metallic": 0,
+                "emission": {"r": 244, "g": 240, "b": 232, "strength": 300},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "mechanics_crack_glyph"},
+            },
+        ],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+    renderables = _overlay_renderables(
+        target_semantic_id=target_id,
+        summary_label="stress={} risk={}".format(max_stress, derailment_risk),
+        mode="mechanics_overlay",
+    )
+    renderables.append(
+        {
+            "schema_version": "1.0.0",
+            "renderable_id": "overlay.inspect.mechanics.stress.{}".format(canonical_sha256({"target": target_id, "stress": True})[:16]),
+            "semantic_id": "overlay.inspect.mechanics.stress.{}".format(target_id),
+            "primitive_id": "prim.glyph.label",
+            "transform": {
+                "position_mm": {"x": 0, "y": 180, "z": 0},
+                "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                "scale_permille": 920,
+            },
+            "material_id": material_id,
+            "layer_tags": ["overlay", "ui"],
+            "label": "STRESS {:>4}".format(max_stress),
+            "lod_hint": "lod.band.near",
+            "flags": {"selectable": False, "highlighted": bucket != "ok"},
+            "extensions": {
+                "interaction_overlay": True,
+                "overlay_kind": "mechanics_stress",
+                "max_stress_ratio_permille": max_stress,
+                "derailment_risk_permille": derailment_risk,
+            },
+        }
+    )
+    if near_fracture > 0 or failed_edges > 0:
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.mechanics.crack.{}".format(canonical_sha256({"target": target_id, "crack": near_fracture, "failed": failed_edges})[:16]),
+                "semantic_id": "overlay.inspect.mechanics.crack.{}".format(target_id),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 320, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": crack_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": "CRACK x{}".format(max(near_fracture, failed_edges)),
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": True},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "mechanics_crack",
+                    "near_fracture_edge_count": near_fracture,
+                    "failed_edge_count": failed_edges,
+                },
+            }
+        )
+    summary = "mechanics:{} stress={} near_fracture={} failed={}".format(
+        target_id or str(target_semantic_id),
+        max_stress,
+        near_fracture,
+        failed_edges,
+    )
+    return {
+        "mode": "mechanics_overlay",
+        "summary": summary,
+        "target_semantic_id": target_id,
+        "inspection_snapshot": dict(inspection_snapshot or {}),
+        "renderables": sorted(renderables, key=lambda row: str(row.get("renderable_id", ""))),
+        "materials": materials,
+        "degraded": bool(not stress_summary),
+        "extensions": {
+            "overlay_kind": "mechanics",
+            "bucket": bucket,
+            "max_stress_ratio_permille": max_stress,
+            "near_fracture_edge_count": near_fracture,
+            "failed_edge_count": failed_edges,
+            "derailment_risk_permille": derailment_risk,
+            "risk_rows": risk_rows[:8],
+            "collection": str(payload.get("collection", "")).strip(),
+            "row_kind": str(target_row.get("schema_version", "")).strip() or None,
+        },
+    }
+
+
 def _logistics_graph_for_target(graph_rows: list[dict], target_row: dict, target_semantic_id: str) -> dict:
     graph_id = str((dict(target_row or {})).get("graph_id", "")).strip()
     if graph_id:
@@ -2548,6 +2687,21 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": pose_mount_overlay,
+            "overlay_runtime": runtime,
+        }
+    if (
+        target_id.startswith("structural.graph.")
+        or target_id.startswith("structural.node.")
+        or target_id.startswith("structural.edge.")
+        or snapshot_collection in ("structural_graphs", "structural_nodes", "structural_edges")
+    ):
+        mechanics_overlay = _mechanics_overlay_payload(
+            target_semantic_id=target_id,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": mechanics_overlay,
             "overlay_runtime": runtime,
         }
     if (
