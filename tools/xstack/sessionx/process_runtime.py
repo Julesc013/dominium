@@ -30,6 +30,11 @@ from src.inspection.inspection_engine import (
     build_inspection_snapshot_artifact,
     normalize_inspection_request_row,
 )
+from src.core.graph.network_graph_engine import (
+    NetworkGraphError,
+    REFUSAL_CORE_GRAPH_INVALID,
+    normalize_network_graph,
+)
 from src.logistics.logistics_engine import (
     LogisticsError,
     build_inventory_index,
@@ -231,6 +236,10 @@ from src.specs import (
     spec_type_rows_by_id,
     tolerance_policy_rows_by_id,
 )
+from src.infrastructure.formalization import (
+    infer_candidates,
+    normalize_inference_candidate_rows,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -327,6 +336,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.effect_remove": "entitlement.control.admin",
     "process.spec_apply_to_target": "entitlement.control.admin",
     "process.spec_check_compliance": "entitlement.inspect",
+    "process.formalization_infer": "entitlement.inspect",
+    "process.formalization_accept_candidate": "entitlement.control.admin",
+    "process.formalization_promote_networked": "entitlement.control.admin",
+    "process.formalization_revert": "entitlement.control.admin",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -433,6 +446,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.effect_remove": "operator",
     "process.spec_apply_to_target": "operator",
     "process.spec_check_compliance": "observer",
+    "process.formalization_infer": "observer",
+    "process.formalization_accept_candidate": "operator",
+    "process.formalization_promote_networked": "operator",
+    "process.formalization_revert": "operator",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -486,6 +503,10 @@ CONTROL_PROCESS_IDS = {
     "process.effect_remove",
     "process.spec_apply_to_target",
     "process.spec_check_compliance",
+    "process.formalization_infer",
+    "process.formalization_accept_candidate",
+    "process.formalization_promote_networked",
+    "process.formalization_revert",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -611,6 +632,8 @@ CIV_GATE_REASON_MAP = {
 }
 DEFAULT_COSMETIC_ID = "cosmetic.default.pill"
 DEFAULT_RENDER_PROXY_ID = "render.proxy.pill_default"
+REFUSAL_FORMALIZATION_FORBIDDEN_BY_POLICY = "refusal.formalization.forbidden_by_policy"
+REFUSAL_FORMALIZATION_SPEC_NONCOMPLIANT = "refusal.formalization.spec_noncompliant"
 CONTROLLER_ACTIONS_BY_TYPE = {
     "admin": [
         "control.action.bind_camera",
@@ -1086,6 +1109,212 @@ def _persist_spec_state(
     _ensure_spec_binding_rows(state)
     _ensure_spec_compliance_results(state)
     _ensure_spec_provenance_events(state)
+
+
+def _ensure_formalization_states(state: dict) -> List[dict]:
+    rows = state.get("formalization_states")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (str(item.get("formalization_id", "")), _as_int(item.get("created_tick", 0), 0)),
+    ):
+        formalization_id = str(row.get("formalization_id", "")).strip()
+        target_kind = str(row.get("target_kind", "")).strip()
+        target_context_id = str(row.get("target_context_id", "")).strip()
+        lifecycle_state = str(row.get("state", "")).strip()
+        if (
+            (not formalization_id)
+            or (target_kind not in {"track", "road", "path", "canal", "tunnel", "custom"})
+            or (not target_context_id)
+            or (lifecycle_state not in {"raw", "inferred", "formal", "networked"})
+        ):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "formalization_id": formalization_id,
+            "target_kind": target_kind,
+            "target_context_id": target_context_id,
+            "state": lifecycle_state,
+            "raw_sources": _sorted_tokens(list(row.get("raw_sources") or [])),
+            "inferred_artifact_ref": (
+                None
+                if row.get("inferred_artifact_ref") is None
+                else str(row.get("inferred_artifact_ref", "")).strip() or None
+            ),
+            "formal_artifact_ref": (
+                None
+                if row.get("formal_artifact_ref") is None
+                else str(row.get("formal_artifact_ref", "")).strip() or None
+            ),
+            "network_graph_ref": (
+                None
+                if row.get("network_graph_ref") is None
+                else str(row.get("network_graph_ref", "")).strip() or None
+            ),
+            "spec_id": (
+                None
+                if row.get("spec_id") is None
+                else str(row.get("spec_id", "")).strip() or None
+            ),
+            "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["formalization_states"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_formalization_inference_candidates(state: dict) -> List[dict]:
+    rows = normalize_inference_candidate_rows(state.get("formalization_inference_candidates"))
+    state["formalization_inference_candidates"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_formalization_events(state: dict) -> List[dict]:
+    rows = state.get("formalization_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        formalization_id = str(row.get("formalization_id", "")).strip()
+        transition = str(row.get("transition", "")).strip()
+        actor_subject_id = str(row.get("actor_subject_id", "")).strip()
+        if (not event_id) or (not formalization_id) or (not transition) or (not actor_subject_id):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "formalization_id": formalization_id,
+            "transition": transition,
+            "actor_subject_id": actor_subject_id,
+            "provenance_event_id": (
+                None
+                if row.get("provenance_event_id") is None
+                else str(row.get("provenance_event_id", "")).strip() or None
+            ),
+            "decision_log_ref": (
+                None
+                if row.get("decision_log_ref") is None
+                else str(row.get("decision_log_ref", "")).strip() or None
+            ),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["formalization_events"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _persist_formalization_state(
+    state: dict,
+    *,
+    formalization_states: List[dict],
+    inference_candidates: List[dict],
+    formalization_events: List[dict],
+) -> None:
+    state["formalization_states"] = [dict(row) for row in list(formalization_states or []) if isinstance(row, dict)]
+    state["formalization_inference_candidates"] = [
+        dict(row) for row in list(inference_candidates or []) if isinstance(row, dict)
+    ]
+    state["formalization_events"] = [dict(row) for row in list(formalization_events or []) if isinstance(row, dict)]
+    _ensure_formalization_states(state)
+    _ensure_formalization_inference_candidates(state)
+    _ensure_formalization_events(state)
+
+
+def _formalization_event_row(
+    *,
+    formalization_id: str,
+    transition: str,
+    tick: int,
+    actor_subject_id: str,
+    process_id: str,
+    intent_id: str,
+    decision_log_ref: str | None = None,
+    provenance_event_id: str | None = None,
+    extensions: dict | None = None,
+) -> dict:
+    event_seed = {
+        "formalization_id": str(formalization_id),
+        "transition": str(transition),
+        "tick": int(max(0, _as_int(tick, 0))),
+        "actor_subject_id": str(actor_subject_id),
+        "process_id": str(process_id),
+        "intent_id": str(intent_id),
+    }
+    event_id = "formalization.event.{}".format(canonical_sha256(event_seed)[:24])
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": event_id,
+        "tick": int(max(0, _as_int(tick, 0))),
+        "formalization_id": str(formalization_id).strip(),
+        "transition": str(transition).strip(),
+        "actor_subject_id": str(actor_subject_id).strip() or "subject.system",
+        "provenance_event_id": None if provenance_event_id is None else str(provenance_event_id).strip() or None,
+        "decision_log_ref": None if decision_log_ref is None else str(decision_log_ref).strip() or None,
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _formalization_state_by_id(rows: object) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in list(rows or []):
+        if not isinstance(row, dict):
+            continue
+        formalization_id = str(row.get("formalization_id", "")).strip()
+        if not formalization_id:
+            continue
+        out[formalization_id] = dict(row)
+    return out
+
+
+def _formalization_policy_row(
+    *,
+    policy_context: dict | None,
+    inputs: dict,
+) -> dict:
+    registry = _formalization_registry_payload(
+        policy_context=policy_context,
+        key="formalization_policy_registry",
+        registry_rel_path="data/registries/formalization_policy_registry.json",
+        entry_key="policies",
+    )
+    policy_id = str(inputs.get("formalization_policy_id", "")).strip() or str(
+        (dict(policy_context or {})).get("formalization_policy_id", "")
+    ).strip()
+    if not policy_id:
+        policy_id = "policy.assisted"
+    rows = list((dict(registry or {})).get("policies") or [])
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("formalization_policy_id", ""))):
+        if str(row.get("formalization_policy_id", "")).strip() == policy_id:
+            return dict(row)
+    for fallback in ("policy.assisted", "policy.diegetic_strict", "policy.admin_instant"):
+        for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("formalization_policy_id", ""))):
+            if str(row.get("formalization_policy_id", "")).strip() == fallback:
+                return dict(row)
+    return {
+        "schema_version": "1.0.0",
+        "formalization_policy_id": policy_id,
+        "description": "",
+        "allow_auto_accept": False,
+        "allow_auto_network": False,
+        "require_confirmation": True,
+        "admin_instant_allowed": False,
+        "extensions": {},
+    }
 
 
 def _spec_provenance_row(
@@ -6720,6 +6949,23 @@ def _spec_registry_payload(
     )
 
 
+def _formalization_registry_payload(
+    *,
+    policy_context: dict | None,
+    key: str,
+    registry_rel_path: str,
+    entry_key: str,
+) -> dict:
+    payload = _policy_payload(policy_context, key)
+    if payload:
+        return dict(payload)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path=registry_rel_path,
+        default_payload={entry_key: []},
+    )
+
+
 def _spec_pack_payload_rows(policy_context: dict | None) -> List[dict]:
     rows: List[dict] = []
     if isinstance(policy_context, dict):
@@ -10942,6 +11188,9 @@ def execute_intent(
     spec_bindings = _ensure_spec_binding_rows(state)
     spec_compliance_results = _ensure_spec_compliance_results(state)
     spec_provenance_events = _ensure_spec_provenance_events(state)
+    formalization_states = _ensure_formalization_states(state)
+    formalization_inference_candidates = _ensure_formalization_inference_candidates(state)
+    formalization_events = _ensure_formalization_events(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     effect_rows = prune_expired_effect_rows(
@@ -17200,6 +17449,519 @@ def execute_intent(
             "effect_type_id": str(removed_row.get("effect_type_id", "")).strip(),
             "target_id": str(removed_row.get("target_id", "")).strip(),
             "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.formalization_infer":
+        formalization_id = str(inputs.get("formalization_id", "")).strip()
+        target_kind = str(inputs.get("target_kind", "")).strip() or "custom"
+        target_context_id = str(inputs.get("target_context_id", "")).strip()
+        raw_sources_input = _sorted_tokens(list(inputs.get("raw_sources") or []))
+        if (not target_context_id) and formalization_id:
+            row = dict(_formalization_state_by_id(formalization_states).get(formalization_id) or {})
+            target_context_id = str(row.get("target_context_id", "")).strip()
+            target_kind = str(row.get("target_kind", "")).strip() or target_kind
+            if not raw_sources_input:
+                raw_sources_input = _sorted_tokens(list(row.get("raw_sources") or []))
+        if not formalization_id:
+            if (not target_context_id) or (not raw_sources_input):
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.formalization_infer requires formalization_id or target_context_id with raw_sources",
+                    "Provide deterministic formalization_id or target_context_id/raw_sources.",
+                    {"process_id": process_id},
+                    "$.intent.inputs",
+                )
+            formalization_id = "formalization.{}".format(
+                canonical_sha256(
+                    {
+                        "target_kind": target_kind,
+                        "target_context_id": target_context_id,
+                        "raw_sources": list(raw_sources_input),
+                    }
+                )[:16]
+            )
+
+        state_by_id = _formalization_state_by_id(formalization_states)
+        state_row = dict(state_by_id.get(formalization_id) or {})
+        if not state_row:
+            state_row = {
+                "schema_version": "1.0.0",
+                "formalization_id": formalization_id,
+                "target_kind": target_kind if target_kind in {"track", "road", "path", "canal", "tunnel", "custom"} else "custom",
+                "target_context_id": target_context_id,
+                "state": "raw",
+                "raw_sources": list(raw_sources_input),
+                "inferred_artifact_ref": None,
+                "formal_artifact_ref": None,
+                "network_graph_ref": None,
+                "spec_id": None,
+                "created_tick": int(current_tick),
+                "deterministic_fingerprint": "",
+                "extensions": {},
+            }
+        if raw_sources_input:
+            state_row["raw_sources"] = _sorted_tokens(
+                list(state_row.get("raw_sources") or []) + list(raw_sources_input)
+            )
+        search_budget = max(0, _as_int(inputs.get("max_search_cost_units", 8), 8))
+        inference = infer_candidates(
+            formalization_id=formalization_id,
+            target_kind=str(state_row.get("target_kind", "custom")).strip() or "custom",
+            target_context_id=str(state_row.get("target_context_id", "")).strip() or target_context_id,
+            raw_sources=list(state_row.get("raw_sources") or []),
+            current_tick=int(current_tick),
+            max_search_cost_units=int(search_budget),
+            cost_units_per_candidate=max(1, _as_int(inputs.get("cost_units_per_candidate", 1), 1)),
+            max_candidates_cap=max(1, _as_int(inputs.get("max_candidates_cap", 64), 64)),
+            suggested_spec_ids=inputs.get("suggested_spec_ids"),
+            extensions={
+                "inference_process_id": process_id,
+                "intent_id": str(intent_id),
+            },
+        )
+        produced_candidates = normalize_inference_candidate_rows(inference.get("candidates"))
+        candidate_map = dict(
+            (str(row.get("candidate_id", "")).strip(), dict(row))
+            for row in list(formalization_inference_candidates or [])
+            if isinstance(row, dict) and str(row.get("candidate_id", "")).strip()
+        )
+        for row in list(produced_candidates or []):
+            candidate_id = str(row.get("candidate_id", "")).strip()
+            if candidate_id:
+                candidate_map[candidate_id] = dict(row)
+        formalization_inference_candidates = normalize_inference_candidate_rows(
+            [dict(candidate_map[key]) for key in sorted(candidate_map.keys())]
+        )
+        previous_state = str(state_row.get("state", "raw")).strip() or "raw"
+        state_row["inferred_artifact_ref"] = (
+            "inference.candidate_set.{}".format(
+                canonical_sha256(
+                    {
+                        "formalization_id": formalization_id,
+                        "candidate_ids": [
+                            str(row.get("candidate_id", "")).strip()
+                            for row in list(produced_candidates or [])
+                            if str(row.get("candidate_id", "")).strip()
+                        ],
+                    }
+                )[:16]
+            )
+            if produced_candidates
+            else None
+        )
+        if produced_candidates:
+            state_row["state"] = "inferred"
+        state_by_id[formalization_id] = dict(state_row)
+        formalization_states = _ensure_formalization_states(
+            {"formalization_states": [dict(state_by_id[key]) for key in sorted(state_by_id.keys())]}
+        )
+        formalization_states = [dict(row) for row in list(formalization_states or []) if isinstance(row, dict)]
+        transition = "{}->{}".format(previous_state, str(state_row.get("state", previous_state)).strip() or previous_state)
+        if transition != "inferred->inferred":
+            event_row = _formalization_event_row(
+                formalization_id=formalization_id,
+                transition=transition,
+                tick=int(current_tick),
+                actor_subject_id=str(authority_context.get("subject_id", "")).strip() or "subject.system",
+                process_id=process_id,
+                intent_id=intent_id,
+                extensions={
+                    "candidate_count": int(len(produced_candidates)),
+                    "degraded": bool(inference.get("degraded", False)),
+                },
+            )
+            formalization_events = sorted(
+                [dict(row) for row in list(formalization_events or []) if isinstance(row, dict)] + [event_row],
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+            )
+        _persist_formalization_state(
+            state,
+            formalization_states=formalization_states,
+            inference_candidates=formalization_inference_candidates,
+            formalization_events=formalization_events,
+        )
+        result_metadata = {
+            "formalization_id": formalization_id,
+            "target_kind": str(state_row.get("target_kind", "")).strip(),
+            "target_context_id": str(state_row.get("target_context_id", "")).strip(),
+            "state": str(state_row.get("state", "")).strip(),
+            "candidate_count": int(len(produced_candidates)),
+            "degraded": bool(inference.get("degraded", False)),
+            "query_cost_units": int(max(0, _as_int(inference.get("query_cost_units", 0), 0))),
+            "candidates": [dict(row) for row in list(produced_candidates or [])],
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.formalization_accept_candidate":
+        formalization_id = str(inputs.get("formalization_id", "")).strip()
+        candidate_id = str(inputs.get("candidate_id", "")).strip()
+        spec_id = str(inputs.get("spec_id", "")).strip() or None
+        if (not formalization_id) or (not candidate_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.formalization_accept_candidate requires formalization_id and candidate_id",
+                "Provide deterministic formalization_id and candidate_id from inference results.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        policy_row = _formalization_policy_row(policy_context=policy_context, inputs=inputs)
+        require_confirmation = bool(policy_row.get("require_confirmation", True))
+        if require_confirmation and not bool(inputs.get("confirmed", False)):
+            return refusal(
+                REFUSAL_FORMALIZATION_FORBIDDEN_BY_POLICY,
+                "formalization policy '{}' requires explicit confirmation".format(
+                    str(policy_row.get("formalization_policy_id", "policy.assisted")).strip()
+                ),
+                "Set confirmed=true after reviewing inferred candidate.",
+                {"formalization_policy_id": str(policy_row.get("formalization_policy_id", "")).strip()},
+                "$.intent.inputs.confirmed",
+            )
+        state_by_id = _formalization_state_by_id(formalization_states)
+        state_row = dict(state_by_id.get(formalization_id) or {})
+        if not state_row:
+            return refusal(
+                REFUSAL_EFFECT_INVALID_TARGET,
+                "formalization_id '{}' is not present".format(formalization_id),
+                "Run process.formalization_infer first or provide an existing formalization_id.",
+                {"formalization_id": formalization_id},
+                "$.intent.inputs.formalization_id",
+            )
+        candidate_row = {}
+        for row in list(formalization_inference_candidates or []):
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("formalization_id", "")).strip() != formalization_id:
+                continue
+            if str(row.get("candidate_id", "")).strip() != candidate_id:
+                continue
+            candidate_row = dict(row)
+            break
+        if not candidate_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "candidate_id '{}' does not belong to formalization_id '{}'".format(candidate_id, formalization_id),
+                "Use candidate_id returned by process.formalization_infer.",
+                {"formalization_id": formalization_id, "candidate_id": candidate_id},
+                "$.intent.inputs.candidate_id",
+            )
+        if bool(inputs.get("require_spec_compliance", False)) and spec_id:
+            spec_target_kind = str(inputs.get("spec_target_kind", "structure")).strip() or "structure"
+            spec_target_id = str(inputs.get("spec_target_id", "")).strip() or str(state_row.get("target_context_id", "")).strip()
+            compliance_row = _latest_spec_compliance_result_for_target(
+                compliance_rows=spec_compliance_results,
+                target_kind=spec_target_kind,
+                target_id=spec_target_id,
+                spec_id=spec_id,
+            )
+            if (not compliance_row) or str(compliance_row.get("overall_grade", "")).strip() == "fail":
+                return refusal(
+                    REFUSAL_FORMALIZATION_SPEC_NONCOMPLIANT,
+                    "formalization candidate failed required spec compliance gate",
+                    "Run process.spec_check_compliance and satisfy required checks before accepting candidate.",
+                    {
+                        "formalization_id": formalization_id,
+                        "candidate_id": candidate_id,
+                        "spec_id": spec_id,
+                        "spec_target_kind": spec_target_kind,
+                        "spec_target_id": spec_target_id,
+                    },
+                    "$.intent.inputs.spec_id",
+                )
+
+        formal_artifact_ref = "formal.artifact.{}".format(
+            canonical_sha256(
+                {
+                    "formalization_id": formalization_id,
+                    "candidate_id": candidate_id,
+                    "target_kind": str(state_row.get("target_kind", "")).strip(),
+                    "target_context_id": str(state_row.get("target_context_id", "")).strip(),
+                }
+            )[:16]
+        )
+        previous_state = str(state_row.get("state", "raw")).strip() or "raw"
+        state_row["state"] = "formal"
+        state_row["formal_artifact_ref"] = formal_artifact_ref
+        state_row["spec_id"] = spec_id
+        state_by_id[formalization_id] = dict(state_row)
+        formalization_states = _ensure_formalization_states(
+            {"formalization_states": [dict(state_by_id[key]) for key in sorted(state_by_id.keys())]}
+        )
+        formalization_states = [dict(row) for row in list(formalization_states or []) if isinstance(row, dict)]
+
+        commitment_row = create_commitment_row(
+            commitment_type_id=(
+                "commit.formalization.construction"
+                if bool(inputs.get("requires_physical_upgrade", False))
+                else "commit.formalization.constraint"
+            ),
+            actor_subject_id=str(authority_context.get("subject_id", "")).strip() or "subject.system",
+            target_kind="structure",
+            target_id=formalization_id,
+            created_tick=int(max(0, _as_int(current_tick, 0))),
+            scheduled_start_tick=int(max(0, _as_int(current_tick, 0))),
+            status="planned",
+            extensions={
+                "formalization_id": formalization_id,
+                "candidate_id": candidate_id,
+                "formal_artifact_ref": formal_artifact_ref,
+                "target_kind": str(state_row.get("target_kind", "")).strip(),
+                "target_context_id": str(state_row.get("target_context_id", "")).strip(),
+            },
+        )
+        material_commitments = _upsert_material_commitment(material_commitments, commitment_row)
+        event_row = _formalization_event_row(
+            formalization_id=formalization_id,
+            transition="{}->formal".format(previous_state),
+            tick=int(current_tick),
+            actor_subject_id=str(authority_context.get("subject_id", "")).strip() or "subject.system",
+            process_id=process_id,
+            intent_id=intent_id,
+            decision_log_ref=(str(inputs.get("decision_log_ref", "")).strip() or None),
+            extensions={
+                "candidate_id": candidate_id,
+                "formal_artifact_ref": formal_artifact_ref,
+                "spec_id": spec_id,
+                "commitment_id": str(commitment_row.get("commitment_id", "")).strip(),
+            },
+        )
+        formalization_events = sorted(
+            [dict(row) for row in list(formalization_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_formalization_state(
+            state,
+            formalization_states=formalization_states,
+            inference_candidates=formalization_inference_candidates,
+            formalization_events=formalization_events,
+        )
+        result_metadata = {
+            "formalization_id": formalization_id,
+            "candidate_id": candidate_id,
+            "formal_artifact_ref": formal_artifact_ref,
+            "spec_id": spec_id,
+            "commitment_id": str(commitment_row.get("commitment_id", "")).strip(),
+            "formalization_event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.formalization_promote_networked":
+        formalization_id = str(inputs.get("formalization_id", "")).strip()
+        if not formalization_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.formalization_promote_networked requires formalization_id",
+                "Provide deterministic formalization_id currently in formal state.",
+                {"process_id": process_id},
+                "$.intent.inputs.formalization_id",
+            )
+        policy_row = _formalization_policy_row(policy_context=policy_context, inputs=inputs)
+        if not bool(policy_row.get("allow_auto_network", False)) and not bool(inputs.get("allow_network_override", False)):
+            return refusal(
+                REFUSAL_FORMALIZATION_FORBIDDEN_BY_POLICY,
+                "formalization policy '{}' does not permit network promotion".format(
+                    str(policy_row.get("formalization_policy_id", "policy.assisted")).strip()
+                ),
+                "Use policy that permits network promotion or provide admin override.",
+                {"formalization_policy_id": str(policy_row.get("formalization_policy_id", "")).strip()},
+                "$.intent.inputs.formalization_policy_id",
+            )
+        state_by_id = _formalization_state_by_id(formalization_states)
+        state_row = dict(state_by_id.get(formalization_id) or {})
+        if not state_row:
+            return refusal(
+                REFUSAL_EFFECT_INVALID_TARGET,
+                "formalization_id '{}' is not present".format(formalization_id),
+                "Run process.formalization_accept_candidate first.",
+                {"formalization_id": formalization_id},
+                "$.intent.inputs.formalization_id",
+            )
+        previous_state = str(state_row.get("state", "raw")).strip() or "raw"
+        if previous_state not in {"formal", "networked"}:
+            return refusal(
+                REFUSAL_FORMALIZATION_FORBIDDEN_BY_POLICY,
+                "formalization_id '{}' must be in formal state before network promotion".format(formalization_id),
+                "Accept a candidate first to create a formal artifact.",
+                {"formalization_id": formalization_id, "state": previous_state},
+                "$.intent.inputs.formalization_id",
+            )
+        graph_id = str(state_row.get("network_graph_ref", "")).strip()
+        if not graph_id:
+            graph_id = "graph.formalization.{}".format(
+                canonical_sha256({"formalization_id": formalization_id})[:16]
+            )
+        existing_graph_rows = [
+            dict(row)
+            for row in list(state.get("network_graphs") or [])
+            if isinstance(row, dict) and str(row.get("graph_id", "")).strip()
+        ]
+        graph_exists = any(str(row.get("graph_id", "")).strip() == graph_id for row in existing_graph_rows)
+        if not graph_exists:
+            graph_seed = {
+                "schema_version": "1.0.0",
+                "graph_id": graph_id,
+                "node_type_schema_id": "dominium.schema.core.node_payload.v1",
+                "edge_type_schema_id": "dominium.schema.core.edge_payload.v1",
+                "payload_schema_versions": {
+                    "dominium.schema.core.node_payload.v1": "1.0.0",
+                    "dominium.schema.core.edge_payload.v1": "1.0.0",
+                },
+                "validation_mode": "warn",
+                "graph_partition_id": None,
+                "nodes": [
+                    {
+                        "schema_version": "1.0.0",
+                        "node_id": "{}.node.a".format(graph_id),
+                        "node_type_id": "node.formalization.endpoint",
+                        "payload": {
+                            "target_context_id": str(state_row.get("target_context_id", "")).strip(),
+                        },
+                        "tags": [],
+                        "extensions": {},
+                    },
+                    {
+                        "schema_version": "1.0.0",
+                        "node_id": "{}.node.b".format(graph_id),
+                        "node_type_id": "node.formalization.endpoint",
+                        "payload": {
+                            "target_context_id": str(state_row.get("target_context_id", "")).strip(),
+                        },
+                        "tags": [],
+                        "extensions": {},
+                    },
+                ],
+                "edges": [
+                    {
+                        "schema_version": "1.0.0",
+                        "edge_id": "{}.edge.ab".format(graph_id),
+                        "from_node_id": "{}.node.a".format(graph_id),
+                        "to_node_id": "{}.node.b".format(graph_id),
+                        "edge_type_id": "edge.formalization.link",
+                        "capacity": None,
+                        "delay_ticks": 1,
+                        "loss_fraction": 0,
+                        "cost_units": 1,
+                        "payload": {"formalization_id": formalization_id},
+                        "extensions": {},
+                    }
+                ],
+                "deterministic_routing_policy_id": "route.shortest_delay",
+                "extensions": {
+                    "formalization_id": formalization_id,
+                    "state_source": "process.formalization_promote_networked",
+                },
+            }
+            try:
+                normalized_graph = normalize_network_graph(graph_seed)
+            except NetworkGraphError as exc:
+                return refusal(
+                    REFUSAL_CORE_GRAPH_INVALID,
+                    str(exc),
+                    "Fix generated network graph schema payload for formalization promotion.",
+                    dict(exc.details),
+                    "$.intent.inputs.formalization_id",
+                )
+            existing_graph_rows.append(dict(normalized_graph))
+            state["network_graphs"] = sorted(
+                existing_graph_rows,
+                key=lambda row: str(row.get("graph_id", "")),
+            )
+        state_row["state"] = "networked"
+        state_row["network_graph_ref"] = graph_id
+        state_by_id[formalization_id] = dict(state_row)
+        formalization_states = _ensure_formalization_states(
+            {"formalization_states": [dict(state_by_id[key]) for key in sorted(state_by_id.keys())]}
+        )
+        formalization_states = [dict(row) for row in list(formalization_states or []) if isinstance(row, dict)]
+        event_row = _formalization_event_row(
+            formalization_id=formalization_id,
+            transition="{}->networked".format(previous_state),
+            tick=int(current_tick),
+            actor_subject_id=str(authority_context.get("subject_id", "")).strip() or "subject.system",
+            process_id=process_id,
+            intent_id=intent_id,
+            decision_log_ref=(str(inputs.get("decision_log_ref", "")).strip() or None),
+            extensions={"network_graph_ref": graph_id},
+        )
+        formalization_events = sorted(
+            [dict(row) for row in list(formalization_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_formalization_state(
+            state,
+            formalization_states=formalization_states,
+            inference_candidates=formalization_inference_candidates,
+            formalization_events=formalization_events,
+        )
+        result_metadata = {
+            "formalization_id": formalization_id,
+            "network_graph_ref": graph_id,
+            "formalization_event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.formalization_revert":
+        formalization_id = str(inputs.get("formalization_id", "")).strip()
+        if not formalization_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.formalization_revert requires formalization_id",
+                "Provide deterministic formalization_id to revert.",
+                {"process_id": process_id},
+                "$.intent.inputs.formalization_id",
+            )
+        state_by_id = _formalization_state_by_id(formalization_states)
+        state_row = dict(state_by_id.get(formalization_id) or {})
+        if not state_row:
+            return refusal(
+                REFUSAL_EFFECT_INVALID_TARGET,
+                "formalization_id '{}' is not present".format(formalization_id),
+                "Use formalization_id from formalization state listings.",
+                {"formalization_id": formalization_id},
+                "$.intent.inputs.formalization_id",
+            )
+        previous_state = str(state_row.get("state", "raw")).strip() or "raw"
+        network_graph_ref = str(state_row.get("network_graph_ref", "")).strip()
+        if network_graph_ref and bool(inputs.get("remove_network_graph", True)):
+            state["network_graphs"] = sorted(
+                [
+                    dict(row)
+                    for row in list(state.get("network_graphs") or [])
+                    if isinstance(row, dict) and str(row.get("graph_id", "")).strip() != network_graph_ref
+                ],
+                key=lambda row: str(row.get("graph_id", "")),
+            )
+        state_row["state"] = "raw"
+        state_row["inferred_artifact_ref"] = None
+        state_row["formal_artifact_ref"] = None
+        state_row["network_graph_ref"] = None
+        state_row["spec_id"] = None
+        state_by_id[formalization_id] = dict(state_row)
+        formalization_states = _ensure_formalization_states(
+            {"formalization_states": [dict(state_by_id[key]) for key in sorted(state_by_id.keys())]}
+        )
+        formalization_states = [dict(row) for row in list(formalization_states or []) if isinstance(row, dict)]
+        event_row = _formalization_event_row(
+            formalization_id=formalization_id,
+            transition="{}->raw".format(previous_state),
+            tick=int(current_tick),
+            actor_subject_id=str(authority_context.get("subject_id", "")).strip() or "subject.system",
+            process_id=process_id,
+            intent_id=intent_id,
+            decision_log_ref=(str(inputs.get("decision_log_ref", "")).strip() or None),
+            extensions={"removed_network_graph_ref": network_graph_ref or None},
+        )
+        formalization_events = sorted(
+            [dict(row) for row in list(formalization_events or []) if isinstance(row, dict)] + [event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_formalization_state(
+            state,
+            formalization_states=formalization_states,
+            inference_candidates=formalization_inference_candidates,
+            formalization_events=formalization_events,
+        )
+        result_metadata = {
+            "formalization_id": formalization_id,
+            "state": "raw",
+            "formalization_event_id": str(event_row.get("event_id", "")).strip(),
+            "removed_network_graph_ref": network_graph_ref or None,
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.spec_apply_to_target":
