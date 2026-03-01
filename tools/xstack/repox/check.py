@@ -319,6 +319,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-DOMAIN-CONTROL-REGISTERED",
     "INV-NO-HARDCODED-GAUGE-WIDTH-SPECS",
     "INV-SPECSHEET-OPTIONAL",
+    "INV-INFERENCE-DERIVED-ONLY",
+    "INV-FORMALIZATION-THROUGH-CONTROL",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -11127,6 +11129,231 @@ def _append_specsheet_invariant_findings(
             break
 
 
+def _append_formalization_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    inference_rel = "src/infrastructure/formalization/inference_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    control_action_registry_rel = "data/registries/control_action_registry.json"
+    control_policy_registry_rel = "data/registries/control_policy_registry.json"
+
+    inference_text = _file_text(repo_root, inference_rel)
+    runtime_text = _file_text(repo_root, runtime_rel)
+    if not inference_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inference_rel,
+                line_number=1,
+                snippet="",
+                message="formalization inference engine is missing",
+                rule_id="INV-INFERENCE-DERIVED-ONLY",
+            )
+        )
+    else:
+        required_inference_tokens = (
+            "def infer_candidates(",
+            "degrade.formalization.inference_budget",
+            "normalize_inference_candidate_rows(",
+        )
+        for token in required_inference_tokens:
+            if token in inference_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=inference_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="formalization inference engine missing required deterministic token",
+                    rule_id="INV-INFERENCE-DERIVED-ONLY",
+                )
+            )
+
+        forbidden_inference_patterns = (
+            re.compile(r"\bstate\s*\["),
+            re.compile(r"\bnetwork_graphs\b"),
+            re.compile(r"\bformalization_states\b"),
+            re.compile(r"\bcreate_commitment_row\s*\("),
+            re.compile(r"\bexecute_intent\s*\("),
+        )
+        for line_no, line in _iter_lines(repo_root, inference_rel):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in forbidden_inference_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=inference_rel,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="inference engine must remain derived-only and must not mutate truth/network/process state",
+                    rule_id="INV-INFERENCE-DERIVED-ONLY",
+                )
+            )
+            break
+
+    if not runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet="",
+                message="formalization process runtime integration is missing",
+                rule_id="INV-FORMALIZATION-THROUGH-CONTROL",
+            )
+        )
+    else:
+        for token in (
+            'elif process_id == "process.formalization_infer":',
+            'elif process_id == "process.formalization_accept_candidate":',
+            'elif process_id == "process.formalization_promote_networked":',
+            'elif process_id == "process.formalization_revert":',
+        ):
+            if token in runtime_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=runtime_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="formalization runtime process handler is missing",
+                    rule_id="INV-FORMALIZATION-THROUGH-CONTROL",
+                )
+            )
+
+    control_action_abs = os.path.join(repo_root, control_action_registry_rel.replace("/", os.sep))
+    control_action_payload = _read_json_object(control_action_abs)
+    action_rows = []
+    if isinstance(control_action_payload.get("record"), dict):
+        action_rows = list((dict(control_action_payload.get("record") or {})).get("actions") or [])
+    if (not action_rows) and isinstance(control_action_payload.get("actions"), list):
+        action_rows = list(control_action_payload.get("actions") or [])
+    action_process_map = {}
+    for row in sorted((item for item in action_rows if isinstance(item, dict)), key=lambda item: str(item.get("action_id", ""))):
+        action_id = str(row.get("action_id", "")).strip()
+        produces = dict(row.get("produces") or {})
+        process_id = str(produces.get("process_id", "")).strip()
+        if action_id and process_id:
+            action_process_map[action_id] = process_id
+    required_action_map = {
+        "action.formalize.infer": "process.formalization_infer",
+        "action.formalize.accept": "process.formalization_accept_candidate",
+        "action.formalize.promote_network": "process.formalization_promote_networked",
+        "action.formalize.revert": "process.formalization_revert",
+    }
+    for action_id, process_id in sorted(required_action_map.items(), key=lambda item: item[0]):
+        actual = str(action_process_map.get(action_id, "")).strip()
+        if actual == process_id:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=control_action_registry_rel,
+                line_number=1,
+                snippet="{} -> {}".format(action_id, process_id),
+                message="formalization user-facing action must be registered through control action registry",
+                rule_id="INV-FORMALIZATION-THROUGH-CONTROL",
+            )
+        )
+
+    control_policy_abs = os.path.join(repo_root, control_policy_registry_rel.replace("/", os.sep))
+    control_policy_payload = _read_json_object(control_policy_abs)
+    policy_rows = []
+    if isinstance(control_policy_payload.get("record"), dict):
+        policy_rows = list((dict(control_policy_payload.get("record") or {})).get("policies") or [])
+    if (not policy_rows) and isinstance(control_policy_payload.get("policies"), list):
+        policy_rows = list(control_policy_payload.get("policies") or [])
+    has_formalize_pattern = False
+    for row in policy_rows:
+        if not isinstance(row, dict):
+            continue
+        allowed_actions = _sorted_unique_strings(list(row.get("allowed_actions") or []))
+        if "action.formalize.*" in set(allowed_actions):
+            has_formalize_pattern = True
+            break
+    if not has_formalize_pattern:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=control_policy_registry_rel,
+                line_number=1,
+                snippet="action.formalize.*",
+                message="control policy registry should include action.formalize.* where formalization is allowed",
+                rule_id="INV-FORMALIZATION-THROUGH-CONTROL",
+            )
+        )
+
+    formalization_process_literal = re.compile(r"[\"']process\.formalization_[A-Za-z0-9_.-]+[\"']")
+    direct_dispatch_call = re.compile(r"\b(?:run_process|execute_process|runtime_execute_intent|execute_intent)\s*\(")
+    allowed_literal_prefixes = (
+        "tools/xstack/sessionx/process_runtime.py",
+        "data/registries/control_action_registry.json",
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+        "docs/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith((".py", ".json")):
+            continue
+        if rel_norm.startswith(allowed_literal_prefixes):
+            continue
+        if rel_norm.startswith(("build/", "dist/", ".xstack_cache/")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not formalization_process_literal.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="formalization process ids must be surfaced through control action registry only",
+                    rule_id="INV-FORMALIZATION-THROUGH-CONTROL",
+                )
+            )
+            break
+
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.startswith(("src/client/", "src/interaction/")):
+            continue
+        if not rel_norm.endswith(".py"):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not direct_dispatch_call.search(snippet):
+                continue
+            if not formalization_process_literal.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="formalization accept/promote/revert must route through control plane intents, not direct process calls",
+                    rule_id="INV-FORMALIZATION-THROUGH-CONTROL",
+                )
+            )
+            break
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -11298,6 +11525,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_specsheet_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_formalization_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
