@@ -20,6 +20,10 @@ from src.net.anti_cheat import (
     export_proof_artifacts,
     refusal_reason_from_action,
 )
+from src.control.proof import (
+    build_control_proof_bundle_from_markers,
+    collect_control_decision_markers,
+)
 from src.reality.ledger import finalize_noop_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -651,6 +655,67 @@ def _write_runtime_artifact(runtime: dict, rel_path: str, payload: dict) -> str:
     return norm(os.path.relpath(abs_path, repo_root))
 
 
+def _emit_control_proof_bundle(
+    *,
+    repo_root: str,
+    runtime: dict,
+    tick: int,
+    envelope_rows: List[dict],
+) -> Dict[str, object]:
+    markers = collect_control_decision_markers(list(envelope_rows or []))
+    bundle = build_control_proof_bundle_from_markers(
+        tick_start=int(tick),
+        tick_end=int(tick),
+        decision_markers=markers,
+        extensions={
+            "network_policy_id": "policy.net.srz_hybrid",
+            "source": "srz_hybrid.queued_envelopes",
+        },
+    )
+    checked = validate_instance(
+        repo_root=repo_root,
+        schema_name="control_proof_bundle",
+        payload=bundle,
+        strict_top_level=True,
+    )
+    if not bool(checked.get("valid", False)):
+        return refusal(
+            "refusal.net.envelope_invalid",
+            "control proof bundle failed schema validation",
+            "Fix control proof bundle payload generation before retrying SRZ tick advance.",
+            {"schema_id": "control_proof_bundle", "tick": str(int(tick))},
+            "$.control_proof_bundle",
+        )
+    bundle_rel = norm(os.path.join("control_proofs", "control.proof.tick.{}.json".format(int(tick))))
+    bundle_ref = _write_runtime_artifact(runtime=runtime, rel_path=bundle_rel, payload=bundle)
+    server = _runtime_server(runtime)
+    rows = list(server.get("control_proof_bundles") or [])
+    rows.append(
+        {
+            "tick": int(tick),
+            "proof_id": str(bundle.get("proof_id", "")),
+            "deterministic_fingerprint": str(bundle.get("deterministic_fingerprint", "")),
+            "decision_log_count": len(list(bundle.get("decision_log_hashes") or [])),
+            "bundle_ref": str(bundle_ref),
+        }
+    )
+    server["control_proof_bundles"] = sorted(
+        (dict(row) for row in rows if isinstance(row, dict)),
+        key=lambda row: (
+            int(_as_int(row.get("tick", 0), 0)),
+            str(row.get("proof_id", "")),
+        ),
+    )
+    server["last_control_proof_hash"] = str(bundle.get("deterministic_fingerprint", ""))
+    server["last_control_proof_bundle_ref"] = str(bundle_ref)
+    runtime["server"] = server
+    return {
+        "result": "complete",
+        "bundle": bundle,
+        "bundle_ref": str(bundle_ref),
+    }
+
+
 def _apply_enforcement_result(
     action: str,
     fallback_reason_code: str,
@@ -1275,7 +1340,10 @@ def initialize_hybrid_runtime(
             "last_ledger_hash": "",
             "last_ledger_by_shard": {},
             "last_composite_hash": "0" * 64,
+            "last_control_proof_hash": "",
+            "last_control_proof_bundle_ref": "",
             "hash_anchor_frames": [],
+            "control_proof_bundles": [],
             "snapshots": [],
             "snapshot_peer_models": {},
             "snapshot_peer_memory": {},
@@ -1840,6 +1908,9 @@ def _state_tick_hash(runtime: dict, tick: int) -> str:
         "transition_event_hash": str(transition_event_hash),
         "previous_composite_hash": str(server.get("last_composite_hash", "0" * 64)),
     }
+    control_proof_hash = str(server.get("last_control_proof_hash", "")).strip()
+    if control_proof_hash:
+        payload["control_proof_hash"] = control_proof_hash
     return canonical_sha256(payload)
 
 
@@ -1890,6 +1961,8 @@ def _build_anchor_frame(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
                     ),
                 )
             ),
+            "control_proof_hash": str(server.get("last_control_proof_hash", "")),
+            "control_proof_bundle_ref": str(server.get("last_control_proof_bundle_ref", "")),
         },
     }
     checked = validate_instance(
@@ -2401,6 +2474,15 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
     server["queued_envelopes"] = sorted(pending, key=_queue_sort_key)
     runtime["server"] = server
 
+    proof_result = _emit_control_proof_bundle(
+        repo_root=repo_root,
+        runtime=runtime,
+        tick=int(tick),
+        envelope_rows=[dict(row) for row in list(ready or []) if isinstance(row, dict)],
+    )
+    if str(proof_result.get("result", "")) != "complete":
+        return proof_result
+
     anchor = _build_anchor_frame(repo_root=repo_root, runtime=runtime, tick=int(tick))
     if str(anchor.get("result", "")) != "complete":
         return anchor
@@ -2418,6 +2500,7 @@ def advance_hybrid_tick(repo_root: str, runtime: dict) -> Dict[str, object]:
         "resolved_proposals": resolved,
         "demography_ticks": demography_ticks,
         "hash_anchor_frame": frame,
+        "control_proof_bundle": dict(proof_result.get("bundle") or {}),
         "perceived_deltas": list(deltas.get("perceived_deltas") or []),
         "client_memory_hashes": dict(
             sorted(
@@ -2480,6 +2563,8 @@ def run_hybrid_simulation(repo_root: str, runtime: dict, envelopes: List[dict], 
         "steps": steps,
         "final_tick": int(server.get("network_tick", 0) or 0),
         "final_composite_hash": str((frames[-1] if frames else {}).get("composite_hash", "")),
+        "control_proof_bundle_ref": str(server.get("last_control_proof_bundle_ref", "")),
+        "control_proof_hash": str(server.get("last_control_proof_hash", "")),
         "anti_cheat_proof": dict(proof),
     }
 
@@ -2487,6 +2572,14 @@ def run_hybrid_simulation(repo_root: str, runtime: dict, envelopes: List[dict], 
 def prepare_hybrid_baseline(repo_root: str, runtime: dict) -> Dict[str, object]:
     server = _runtime_server(runtime)
     tick = _as_int(server.get("network_tick", 0), 0)
+    baseline_proof = _emit_control_proof_bundle(
+        repo_root=repo_root,
+        runtime=runtime,
+        tick=int(tick),
+        envelope_rows=[],
+    )
+    if str(baseline_proof.get("result", "")) != "complete":
+        return baseline_proof
     frames = list(server.get("hash_anchor_frames") or [])
     if not frames:
         built = _build_anchor_frame(repo_root=repo_root, runtime=runtime, tick=int(tick))
@@ -2531,7 +2624,10 @@ def prepare_hybrid_baseline(repo_root: str, runtime: dict) -> Dict[str, object]:
         "snapshot_ids": snapshot_ids,
         "hash_anchor_frame": latest_frame,
         "peer_ids": sorted((_runtime_clients(runtime)).keys()),
-        "extensions": {},
+        "extensions": {
+            "control_proof_bundle_ref": str((_runtime_server(runtime).get("last_control_proof_bundle_ref", ""))),
+            "control_proof_hash": str((_runtime_server(runtime).get("last_control_proof_hash", ""))),
+        },
     }
     baseline_path = _write_runtime_artifact(
         runtime=runtime,

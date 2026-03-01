@@ -23,6 +23,10 @@ from src.net.anti_cheat import (
     module_enabled as anti_cheat_module_enabled,
     refusal_reason_from_action,
 )
+from src.control.proof import (
+    build_control_proof_bundle_from_markers,
+    collect_control_decision_markers,
+)
 from src.reality.ledger import finalize_noop_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -540,6 +544,67 @@ def _write_runtime_artifact(runtime: dict, rel_path: str, payload: dict) -> str:
     return norm(os.path.relpath(abs_path, repo_root))
 
 
+def _emit_control_proof_bundle(
+    *,
+    repo_root: str,
+    runtime: dict,
+    tick: int,
+    envelope_rows: List[dict],
+) -> Dict[str, object]:
+    markers = collect_control_decision_markers(list(envelope_rows or []))
+    bundle = build_control_proof_bundle_from_markers(
+        tick_start=int(tick),
+        tick_end=int(tick),
+        decision_markers=markers,
+        extensions={
+            "network_policy_id": POLICY_ID_SERVER_AUTHORITATIVE,
+            "source": "server_authoritative.intent_queue",
+        },
+    )
+    checked = validate_instance(
+        repo_root=repo_root,
+        schema_name="control_proof_bundle",
+        payload=bundle,
+        strict_top_level=True,
+    )
+    if not bool(checked.get("valid", False)):
+        return refusal(
+            "refusal.net.envelope_invalid",
+            "control proof bundle failed schema validation",
+            "Fix control proof bundle payload generation before retrying tick advance.",
+            {"schema_id": "control_proof_bundle", "tick": str(int(tick))},
+            "$.control_proof_bundle",
+        )
+    bundle_rel = norm(os.path.join("control_proofs", "control.proof.tick.{}.json".format(int(tick))))
+    bundle_ref = _write_runtime_artifact(runtime=runtime, rel_path=bundle_rel, payload=bundle)
+    server = dict(runtime.get("server") or {})
+    rows = list(server.get("control_proof_bundles") or [])
+    rows.append(
+        {
+            "tick": int(tick),
+            "proof_id": str(bundle.get("proof_id", "")),
+            "deterministic_fingerprint": str(bundle.get("deterministic_fingerprint", "")),
+            "decision_log_count": len(list(bundle.get("decision_log_hashes") or [])),
+            "bundle_ref": str(bundle_ref),
+        }
+    )
+    server["control_proof_bundles"] = sorted(
+        (dict(row) for row in rows if isinstance(row, dict)),
+        key=lambda row: (
+            int(_as_int(row.get("tick", 0), 0)),
+            str(row.get("proof_id", "")),
+        ),
+    )
+    server["last_control_proof_hash"] = str(bundle.get("deterministic_fingerprint", ""))
+    server["last_control_proof_bundle_ref"] = str(bundle_ref)
+    runtime["server"] = server
+    return {
+        "result": "complete",
+        "bundle": bundle,
+        "bundle_ref": str(bundle_ref),
+    }
+
+
 def _module_enabled(runtime: dict, module_id: str) -> bool:
     return bool(anti_cheat_module_enabled(runtime=runtime, module_id=module_id))
 
@@ -825,7 +890,10 @@ def initialize_authoritative_runtime(
             "last_tick_hash": "",
             "last_ledger_hash": "",
             "last_composite_hash": _zero_hash(),
+            "last_control_proof_hash": "",
+            "last_control_proof_bundle_ref": "",
             "hash_anchor_frames": [],
+            "control_proof_bundles": [],
             "snapshots": [],
             "snapshot_peer_models": {},
             "snapshot_peer_memory": {},
@@ -1245,6 +1313,7 @@ def _build_anchor_frame(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
         last_tick_hash=str(server.get("last_tick_hash", "")),
         ledger_hash=str(ledger_hash),
         transition_event_hash=str(transition_event_hash),
+        control_decision_hash=str(server.get("last_control_proof_hash", "")),
     )
     shard["last_hash_anchor"] = tick_hash
     composite = composite_hash([shard])
@@ -1268,6 +1337,8 @@ def _build_anchor_frame(repo_root: str, runtime: dict, tick: int) -> Dict[str, o
         "extensions": {
             "ledger_hash": str(ledger_hash),
             "transition_event_hash": str(transition_event_hash),
+            "control_proof_hash": str(server.get("last_control_proof_hash", "")),
+            "control_proof_bundle_ref": str(server.get("last_control_proof_bundle_ref", "")),
         },
     }
     checked = validate_instance(
@@ -1386,6 +1457,15 @@ def prepare_server_authoritative_baseline(repo_root: str, runtime: dict) -> Dict
         clients[peer_id] = client
     runtime["clients"] = dict((key, clients[key]) for key in sorted(clients.keys()))
 
+    baseline_proof = _emit_control_proof_bundle(
+        repo_root=repo_root,
+        runtime=runtime,
+        tick=int(tick),
+        envelope_rows=[],
+    )
+    if str(baseline_proof.get("result", "")) != "complete":
+        return baseline_proof
+
     if not list(server.get("hash_anchor_frames") or []):
         anchor_result = _build_anchor_frame(repo_root=repo_root, runtime=runtime, tick=int(tick))
         if str(anchor_result.get("result", "")) != "complete":
@@ -1409,7 +1489,10 @@ def prepare_server_authoritative_baseline(repo_root: str, runtime: dict) -> Dict
         "snapshot_ref": str(snapshot.get("payload_ref", "")),
         "hash_anchor_frame": dict(((runtime.get("server") or {}).get("hash_anchor_frames") or [{}])[-1] or {}),
         "peer_ids": sorted((runtime.get("clients") or {}).keys()),
-        "extensions": {},
+        "extensions": {
+            "control_proof_bundle_ref": str(((runtime.get("server") or {}).get("last_control_proof_bundle_ref", ""))),
+            "control_proof_hash": str(((runtime.get("server") or {}).get("last_control_proof_hash", ""))),
+        },
     }
     baseline_rel = norm(os.path.join("baseline", "baseline.tick.{}.json".format(int(tick))))
     baseline_path = _write_runtime_artifact(runtime=runtime, rel_path=baseline_rel, payload=summary)
@@ -1729,6 +1812,15 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
     server["last_ledger_hash"] = str(tick_ledger_hash or server.get("last_ledger_hash", ""))
     runtime["server"] = server
 
+    proof_result = _emit_control_proof_bundle(
+        repo_root=repo_root,
+        runtime=runtime,
+        tick=int(server_tick),
+        envelope_rows=[dict(row) for row in list(ready or []) if isinstance(row, dict)],
+    )
+    if str(proof_result.get("result", "")) != "complete":
+        return proof_result
+
     anchor_result = _build_anchor_frame(repo_root=repo_root, runtime=runtime, tick=int(server_tick))
     if str(anchor_result.get("result", "")) != "complete":
         return anchor_result
@@ -1865,6 +1957,7 @@ def advance_authoritative_tick(repo_root: str, runtime: dict) -> Dict[str, objec
         "processed_envelopes": processed_rows,
         "demography_tick": demography_tick_summary,
         "hash_anchor_frame": frame,
+        "control_proof_bundle": dict(proof_result.get("bundle") or {}),
         "perceived_deltas": delta_rows,
         "client_memory_hashes": dict(
             sorted(
@@ -1933,6 +2026,8 @@ def run_authoritative_simulation(
         "steps": steps,
         "final_tick": int(server.get("network_tick", 0) or 0),
         "final_composite_hash": str((frames[-1] if frames else {}).get("composite_hash", "")),
+        "control_proof_bundle_ref": str(server.get("last_control_proof_bundle_ref", "")),
+        "control_proof_hash": str(server.get("last_control_proof_hash", "")),
         "anti_cheat_proof": dict(proof),
     }
 

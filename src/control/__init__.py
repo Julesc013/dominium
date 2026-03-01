@@ -82,6 +82,11 @@ from .view import (
     resolve_view_policy_id,
     view_policy_rows_by_id,
 )
+from .proof import (
+    build_control_proof_bundle_from_decision_logs,
+    build_control_proof_bundle_from_markers,
+    collect_control_decision_markers,
+)
 from .effects import (
     REFUSAL_EFFECT_FORBIDDEN,
     REFUSAL_EFFECT_INVALID_TARGET,
@@ -183,4 +188,7 @@ __all__ = [
     "verify_and_compile_control_ir",
     "view_policy_rows_by_id",
     "stacking_policy_rows_by_id",
+    "build_control_proof_bundle_from_decision_logs",
+    "build_control_proof_bundle_from_markers",
+    "collect_control_decision_markers",
 ]

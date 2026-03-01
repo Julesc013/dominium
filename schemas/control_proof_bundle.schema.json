@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control Proof Bundle Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-10 proof bundle for control-plane replay/proof integration.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_EXTENSION_CONTRACT.md",
+    "docs/audit/CONTROL_PLANE_FINAL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "proof_id",
+    "tick_range",
+    "decision_log_hashes",
+    "fidelity_allocations_hash",
+    "abstraction_downgrade_hash",
+    "view_policy_changes_hash",
+    "meta_override_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "proof_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick_range": {
+      "type": "object",
+      "required": [
+        "start_tick",
+        "end_tick"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_tick": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "decision_log_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{64}$"
+      }
+    },
+    "fidelity_allocations_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "abstraction_downgrade_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "view_policy_changes_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "meta_override_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "proof_id": "control.proof.0190bd9f19025d0d",
+      "tick_range": {
+        "start_tick": 80,
+        "end_tick": 80
+      },
+      "decision_log_hashes": [
+        "39baf5f36d9f36df2704327858c775a88dc53d8fd72d6a8394335d5f822ca2ce"
+      ],
+      "fidelity_allocations_hash": "c6d618ec18b68f113533ce37611413e8ed516f696f83440c2ec4329ea93f4f87",
+      "abstraction_downgrade_hash": "6151a9fd0fd6f4c2996d2e67f4b7406f34ecab95e36c8efcd3be2dce21472be6",
+      "view_policy_changes_hash": "89d1162efddf60e9bb57f59cb92e0fcf737f68b956b6f2fd32f6a8a7828e3768",
+      "meta_override_hash": "5caea08ec8ce7be3140fe6fd5141b52dceaa2ef96f03ec4cfda8f811fef3d649",
+      "deterministic_fingerprint": "f1fcbca386d927f736ebfef0643ebf821d13d8da38f8e3f1360ab2164ec22e6a",
+      "extensions": {
+        "network_policy_id": "policy.net.server_authoritative",
+        "decision_marker_count": 1
+      }
+    }
+  ]
+}
