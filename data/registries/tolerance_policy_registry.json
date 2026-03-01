@@ -1,0 +1,62 @@
+{
+  "schema_id": "dominium.registry.tolerance_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.tolerance_policy_registry",
+    "registry_version": "1.0.0",
+    "tolerance_policies": [
+      {
+        "schema_version": "1.0.0",
+        "tolerance_policy_id": "tol.default",
+        "description": "Balanced deterministic tolerance defaults for general engineering builds.",
+        "numeric_tolerances": {
+          "clearance_mm": 10,
+          "curvature_radius_mm": 500,
+          "gauge_mm": 3,
+          "interface_offset_mm": 5,
+          "lane_width_mm": 40
+        },
+        "rounding_rules": {
+          "default_mode": "nearest_even",
+          "scale": 1
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "tolerance_policy_id": "tol.relaxed",
+        "description": "Relaxed deterministic tolerance policy for rough-field assembly workflows.",
+        "numeric_tolerances": {
+          "clearance_mm": 20,
+          "curvature_radius_mm": 1000,
+          "gauge_mm": 8,
+          "interface_offset_mm": 12,
+          "lane_width_mm": 100
+        },
+        "rounding_rules": {
+          "default_mode": "toward_zero",
+          "scale": 5
+        },
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "tolerance_policy_id": "tol.strict",
+        "description": "Strict deterministic tolerance policy for ranked/regulated compliance checks.",
+        "numeric_tolerances": {
+          "clearance_mm": 5,
+          "curvature_radius_mm": 250,
+          "gauge_mm": 1,
+          "interface_offset_mm": 2,
+          "lane_width_mm": 20
+        },
+        "rounding_rules": {
+          "default_mode": "nearest_even",
+          "scale": 1
+        },
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

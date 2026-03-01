@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "spec_sheets": [
+    {
+      "schema_version": "1.0.0",
+      "spec_id": "spec.track.standard_gauge.v1",
+      "spec_type_id": "spec.track",
+      "description": "Example default standard-gauge profile.",
+      "parameters": {
+        "gauge_mm": 1435,
+        "max_speed_kph": 160,
+        "min_clearance_mm": 4500,
+        "min_curvature_radius_mm": 200000
+      },
+      "tolerance_policy_id": "tol.default",
+      "compliance_check_ids": [
+        "check.geometry.clearance",
+        "check.geometry.curvature_limit",
+        "check.operation.max_speed_policy"
+      ],
+      "version_introduced": "1.0.0",
+      "deprecated": false,
+      "extensions": {}
+    },
+    {
+      "schema_version": "1.0.0",
+      "spec_id": "spec.track.narrow_gauge_example.v1",
+      "spec_type_id": "spec.track",
+      "description": "Example narrow-gauge profile for constrained routes.",
+      "parameters": {
+        "gauge_mm": 1000,
+        "max_speed_kph": 120,
+        "min_clearance_mm": 4000,
+        "min_curvature_radius_mm": 120000
+      },
+      "tolerance_policy_id": "tol.relaxed",
+      "compliance_check_ids": [
+        "check.geometry.clearance",
+        "check.geometry.curvature_limit"
+      ],
+      "version_introduced": "1.0.0",
+      "deprecated": false,
+      "extensions": {}
+    },
+    {
+      "schema_version": "1.0.0",
+      "spec_id": "spec.road.basic_lane_width.v1",
+      "spec_type_id": "spec.road",
+      "description": "Example basic road width profile.",
+      "parameters": {
+        "lane_width_mm": 3500,
+        "lane_count": 2,
+        "max_speed_kph": 90,
+        "shoulder_width_mm": 500
+      },
+      "tolerance_policy_id": "tol.default",
+      "compliance_check_ids": [
+        "check.geometry.clearance",
+        "check.operation.max_speed_policy"
+      ],
+      "version_introduced": "1.0.0",
+      "deprecated": false,
+      "extensions": {}
+    },
+    {
+      "schema_version": "1.0.0",
+      "spec_id": "spec.tunnel.basic_clearance.v1",
+      "spec_type_id": "spec.tunnel",
+      "description": "Example tunnel clearance and interface profile.",
+      "parameters": {
+        "inner_width_mm": 8000,
+        "inner_height_mm": 6000,
+        "emergency_walkway_width_mm": 800,
+        "max_speed_kph": 120
+      },
+      "tolerance_policy_id": "tol.strict",
+      "compliance_check_ids": [
+        "check.geometry.clearance",
+        "check.interface.compatibility"
+      ],
+      "version_introduced": "1.0.0",
+      "deprecated": false,
+      "extensions": {}
+    }
+  ],
+  "astronomy_entries": []
+}

@@ -1,0 +1,53 @@
+{
+  "schema_id": "dominium.registry.spec_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.spec_type_registry",
+    "registry_version": "1.0.0",
+    "spec_types": [
+      {
+        "schema_version": "1.0.0",
+        "spec_type_id": "spec.bridge",
+        "description": "Structural and operational constraints for bridge-like infrastructure interfaces.",
+        "parameter_schema_id": "dominium.schema.spec.params.bridge.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "spec_type_id": "spec.docking_interface",
+        "description": "Mechanical and geometric constraints for docking compatibility surfaces.",
+        "parameter_schema_id": "dominium.schema.spec.params.docking_interface.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "spec_type_id": "spec.road",
+        "description": "Roadway geometry and operational constraints.",
+        "parameter_schema_id": "dominium.schema.spec.params.road.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "spec_type_id": "spec.track",
+        "description": "Track geometry and operational constraints across arbitrary gauge systems.",
+        "parameter_schema_id": "dominium.schema.spec.params.track.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "spec_type_id": "spec.tunnel",
+        "description": "Tunnel envelope, clearance, and allowable operation constraints.",
+        "parameter_schema_id": "dominium.schema.spec.params.tunnel.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "spec_type_id": "spec.vehicle_interface",
+        "description": "Vehicle-facing compatibility contract for infrastructure interfaces.",
+        "parameter_schema_id": "dominium.schema.spec.params.vehicle_interface.v1",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
