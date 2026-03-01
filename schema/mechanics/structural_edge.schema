@@ -1,0 +1,25 @@
+SCHEMA: mechanics/structural_edge.schema
+schema_id: dominium.schema.mechanics.structural_edge
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic structural connection row for mechanics propagation and fracture.
+
+REQUIRED SHAPE:
+record structural_edge
+  required:
+    - schema_version: semver
+    - edge_id: id
+    - node_a_id: id
+    - node_b_id: id
+    - connection_type_id: id
+    - stiffness: fixed
+    - max_load: fixed
+    - fatigue_state: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Edge identity and ordering are deterministic by edge_id.
+- max_load and stiffness must be non-negative deterministic fixed-point values.

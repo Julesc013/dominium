@@ -7,8 +7,12 @@
     "connection_types": [
       {
         "schema_version": "1.0.0",
-        "connection_type_id": "conn.bolted",
-        "description": "Bolted connection tag.",
+        "connection_type_id": "conn.bolt",
+        "description": "Bolted structural joint profile.",
+        "default_stiffness": 820,
+        "default_max_load": 120000,
+        "supports_rotation": false,
+        "supports_translation": false,
         "requires_part_classes": [
           "partclass.bolt.generic"
         ],
@@ -16,31 +20,140 @@
       },
       {
         "schema_version": "1.0.0",
-        "connection_type_id": "conn.welded",
-        "description": "Welded connection tag.",
+        "connection_type_id": "conn.bolted",
+        "description": "Legacy alias for bolted structural joint profile.",
+        "default_stiffness": 820,
+        "default_max_load": 120000,
+        "supports_rotation": false,
+        "supports_translation": false,
+        "requires_part_classes": [
+          "partclass.bolt.generic"
+        ],
+        "extensions": {
+          "alias_of": "conn.bolt"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.cable",
+        "description": "Cable linkage with tension-dominant behavior.",
+        "default_stiffness": 540,
+        "default_max_load": 90000,
+        "supports_rotation": true,
+        "supports_translation": true,
+        "requires_part_classes": [],
+        "extensions": {
+          "tension_only": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.glue",
+        "description": "Adhesive bonded joint profile.",
+        "default_stiffness": 460,
+        "default_max_load": 45000,
+        "supports_rotation": false,
+        "supports_translation": false,
         "requires_part_classes": [],
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
-        "connection_type_id": "conn.riveted",
-        "description": "Riveted connection tag.",
-        "requires_part_classes": [],
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
-        "connection_type_id": "conn.press_fit",
-        "description": "Press-fit connection tag.",
+        "connection_type_id": "conn.hinge",
+        "description": "Hinged joint allowing rotation with constrained translation.",
+        "default_stiffness": 520,
+        "default_max_load": 70000,
+        "supports_rotation": true,
+        "supports_translation": false,
         "requires_part_classes": [],
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "connection_type_id": "conn.mortar",
-        "description": "Mortar connection tag for masonry assemblies.",
+        "description": "Legacy masonry mortar connection profile.",
+        "default_stiffness": 380,
+        "default_max_load": 60000,
+        "supports_rotation": false,
+        "supports_translation": false,
+        "requires_part_classes": [],
+        "extensions": {
+          "legacy": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.press_fit",
+        "description": "Legacy press-fit connection profile.",
+        "default_stiffness": 640,
+        "default_max_load": 80000,
+        "supports_rotation": false,
+        "supports_translation": false,
+        "requires_part_classes": [],
+        "extensions": {
+          "legacy": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.rigid_joint",
+        "description": "Rigid joint with high stiffness and no relative motion support.",
+        "default_stiffness": 1000,
+        "default_max_load": 160000,
+        "supports_rotation": false,
+        "supports_translation": false,
         "requires_part_classes": [],
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.riveted",
+        "description": "Legacy riveted structural joint profile.",
+        "default_stiffness": 700,
+        "default_max_load": 100000,
+        "supports_rotation": false,
+        "supports_translation": false,
+        "requires_part_classes": [],
+        "extensions": {
+          "legacy": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.rope",
+        "description": "Rope linkage with flexible tension-dominant support.",
+        "default_stiffness": 220,
+        "default_max_load": 50000,
+        "supports_rotation": true,
+        "supports_translation": true,
+        "requires_part_classes": [],
+        "extensions": {
+          "tension_only": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.weld",
+        "description": "Welded structural joint profile.",
+        "default_stiffness": 960,
+        "default_max_load": 140000,
+        "supports_rotation": false,
+        "supports_translation": false,
+        "requires_part_classes": [],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "connection_type_id": "conn.welded",
+        "description": "Legacy alias for welded structural joint profile.",
+        "default_stiffness": 960,
+        "default_max_load": 140000,
+        "supports_rotation": false,
+        "supports_translation": false,
+        "requires_part_classes": [],
+        "extensions": {
+          "alias_of": "conn.weld"
+        }
       }
     ],
     "extensions": {}
