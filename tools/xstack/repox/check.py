@@ -294,6 +294,7 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DUPLICATE-GRAPH-SUBSTRATE",
     "INV-NO-DUPLICATE-FLOW-SUBSTRATE",
     "INV-NO-ADHOC-STATE-FLAG",
+    "INV-NO-ADHOC-TEMP-MODIFIERS",
     "INV-NO-ADHOC-SCHEDULER",
     "INV-PLATFORM-ISOLATION",
     "INV-RENDER-TRUTH-ISOLATION",
@@ -10456,6 +10457,97 @@ def _append_capability_enforcement_invariant_findings(
                 break
 
 
+def _append_effect_system_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    required_tokens_by_file = {
+        "src/control/effects/effect_engine.py": (
+            "def build_effect(",
+            "def prune_expired_effect_rows(",
+            "def get_effective_modifier(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            'elif process_id == "process.effect_apply":',
+            'elif process_id == "process.effect_remove":',
+            "normalize_effect_rows(",
+            "prune_expired_effect_rows(",
+        ),
+        "src/control/control_plane_engine.py": (
+            "def _effect_influence(",
+            "REFUSAL_EFFECT_FORBIDDEN",
+            "get_effective_modifier_map(",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens_by_file.items(), key=lambda item: item[0]):
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="effect system enforcement requires canonical effect integration file",
+                    rule_id="INV-EFFECT-USES-ENGINE",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="effect system integration is missing required deterministic token",
+                    rule_id="INV-EFFECT-USES-ENGINE",
+                )
+            )
+
+    temp_modifier_patterns = (
+        re.compile(r"state\[[\"'](?:interior_movement_constraints|temporary_[^\"']+|temp_[^\"']+)[\"']\]\s*="),
+        re.compile(r"\b(speed|traction|visibility)\b\s*\*=\s*(?:0?\.\d+|\d+\s*/\s*\d+)"),
+        re.compile(r"\bif\b[^\n]*(damag|smoke|flood)[^\n]*\b(speed|traction|visibility)\b"),
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(
+            (
+                "tools/xstack/testx/tests/",
+                "tools/auditx/analyzers/",
+                "docs/",
+            )
+        ):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in temp_modifier_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="temporary modifiers must use CTRL-8 effect rows instead of ad-hoc inline flags/multipliers",
+                    rule_id="INV-NO-ADHOC-TEMP-MODIFIERS",
+                )
+            )
+            break
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -10612,6 +10704,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_capability_enforcement_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_effect_system_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
