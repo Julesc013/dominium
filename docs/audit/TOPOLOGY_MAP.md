@@ -4,29 +4,29 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:e54d04c0be10bb5f289c0515053f34457cdb9549`
+- repository_hash: `HEAD:6b03702eb14431c570a5ef77f9c770bd4d39cc64`
 - generated_tick: `0`
-- deterministic_fingerprint: `2031084878625de0d88a77c6f13a666b10d35c42a706db85da52ab80af8e8bd7`
+- deterministic_fingerprint: `19c54892845397b129c021bb8357818c8f9ea9e869051ded8303c75a5b9f1a2a`
 
 ## Counts
-- node_count: 2198
-- edge_count: 82880
+- node_count: 2229
+- edge_count: 86560
 
 ## Node Kinds
 - contract_set: 4
-- module: 68
-- policy_set: 102
-- process_family: 140
-- registry: 155
-- schema: 764
-- tool: 965
+- module: 69
+- policy_set: 106
+- process_family: 144
+- registry: 157
+- schema: 776
+- tool: 973
 
 ## Edge Kinds
-- consumes: 2234
-- depends_on: 1049
-- enforces: 18656
+- consumes: 2253
+- depends_on: 1062
+- enforces: 19580
 - produces: 1
-- validates: 60940
+- validates: 63664
 
 ## Major Runtime Modules
 - `module:client`
@@ -85,6 +85,7 @@ Version: 1.0.0
 - `module:src/core`
 - `module:src/diegetics`
 - `module:src/epistemics`
+- `module:src/infrastructure`
 - `module:src/inspection`
 - `module:src/interaction`
 - `module:src/interior`
@@ -92,7 +93,6 @@ Version: 1.0.0
 - `module:src/machines`
 - `module:src/materials`
 - `module:src/net`
-- `module:src/performance`
 
 ## Control Subsystem Nodes
 - `module:src/control/control_plane_engine.py`

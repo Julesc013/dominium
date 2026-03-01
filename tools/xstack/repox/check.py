@@ -11276,7 +11276,9 @@ def _append_formalization_invariant_findings(
     for row in policy_rows:
         if not isinstance(row, dict):
             continue
-        allowed_actions = _sorted_unique_strings(list(row.get("allowed_actions") or []))
+        allowed_actions = sorted(
+            set(str(item).strip() for item in list(row.get("allowed_actions") or []) if str(item).strip())
+        )
         if "action.formalize.*" in set(allowed_actions):
             has_formalize_pattern = True
             break
@@ -11304,6 +11306,8 @@ def _append_formalization_invariant_findings(
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
         if not rel_norm.endswith((".py", ".json")):
+            continue
+        if rel_norm == "tools/xstack/repox/check.py":
             continue
         if rel_norm.startswith(allowed_literal_prefixes):
             continue
