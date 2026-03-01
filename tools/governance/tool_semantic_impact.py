@@ -34,6 +34,14 @@ CONTROL_PLANE_PREFIXES = (
 CTRL_MODULE_PREFIXES = (
     "src/control/",
 )
+CONTROL_PLANE_MODULE_NODE_ID = "module:src/control/control_plane_engine.py"
+CONTROL_DEPENDENCY_SCAN_TOKENS = (
+    "from src.control",
+    "import src.control",
+    "src.control.",
+    "build_control_intent(",
+    "build_control_resolution(",
+)
 NETWORKGRAPH_FLOW_PREFIXES = (
     "src/core/graph/",
     "src/core/flow/",
@@ -92,6 +100,11 @@ SUITE_TO_TEST_IDS = {
         "testx.srz.hash_anchor_replay",
         "testx.time.compaction_preserves_replay",
     ),
+    "suite.fidelity.regression": (
+        "test_fidelity_deterministic_allocation",
+        "test_fidelity_downgrade_micro_to_meso",
+        "test_cost_envelope_never_exceeded",
+    ),
 }
 
 
@@ -105,6 +118,13 @@ def _read_json(path: str) -> dict:
     except (OSError, ValueError):
         return {}
     return payload if isinstance(payload, dict) else {}
+
+
+def _read_text(path: str) -> str:
+    try:
+        return open(path, "r", encoding="utf-8", errors="ignore").read()
+    except OSError:
+        return ""
 
 
 def _run_git(repo_root: str, argv: List[str]) -> Tuple[int, str]:
@@ -180,6 +200,7 @@ def _suite_required_for_path(path: str) -> Set[str]:
     if rel.startswith(CTRL_MODULE_PREFIXES):
         out.add("suite.rs5.arbitration")
         out.add("suite.replay.reenactment")
+        out.add("suite.fidelity.regression")
     if rel.startswith(NETWORKGRAPH_FLOW_PREFIXES):
         out.add("suite.networkgraph_flow.regression")
     if rel.startswith(EPISTEMIC_PREFIXES):
@@ -245,6 +266,45 @@ def _subsystems_for_paths(paths: Iterable[str], topology_payload: dict) -> List[
     return sorted(out)
 
 
+def _control_dependency_node_ids(topology_payload: dict) -> Set[str]:
+    edges = list(topology_payload.get("edges") or [])
+    out: Set[str] = set()
+    for row in edges:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("edge_kind", "")).strip() not in ("depends_on", "consumes"):
+            continue
+        if str(row.get("to_node_id", "")).strip() != CONTROL_PLANE_MODULE_NODE_ID:
+            continue
+        from_node_id = str(row.get("from_node_id", "")).strip()
+        if from_node_id:
+            out.add(from_node_id)
+    return out
+
+
+def _module_node_id_for_path(path: str, topology_payload: dict) -> str:
+    rel = _norm(path)
+    if not rel:
+        return ""
+    nodes = list(topology_payload.get("nodes") or [])
+    module_rows: List[Tuple[str, str]] = []
+    for row in nodes:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("node_kind", "")).strip() != "module":
+            continue
+        node_id = str(row.get("node_id", "")).strip()
+        module_path = _norm(str(row.get("path") or ""))
+        if not node_id or not module_path:
+            continue
+        module_rows.append((module_path, node_id))
+    module_rows = sorted(module_rows, key=lambda item: len(str(item[0])), reverse=True)
+    for module_path, node_id in module_rows:
+        if rel == module_path or rel.startswith(module_path + "/"):
+            return str(node_id)
+    return ""
+
+
 def compute_semantic_impact(
     *,
     repo_root: str,
@@ -266,6 +326,7 @@ def compute_semantic_impact(
     declarations = _topology_declarations(topology_map_payload) if topology_ok else {}
     declared_schema_paths = set((declarations.get("schema") or {}).keys())
     declared_registry_paths = set((declarations.get("registry") or {}).keys())
+    declared_control_dependency_nodes = _control_dependency_node_ids(topology_map_payload) if topology_ok else set()
 
     impacted_subsystems = _subsystems_for_paths(changed, topology_map_payload if topology_ok else {})
     required_test_suites: Set[str] = set()
@@ -285,6 +346,16 @@ def compute_semantic_impact(
         if rel.startswith(REGISTRY_ROOT_PREFIXES):
             if topology_ok and rel not in declared_registry_paths:
                 uncertainty_reasons.append("undeclared_registry:{}".format(rel))
+        if rel.startswith("src/") and not rel.startswith("src/control/"):
+            rel_abs = os.path.join(repo_root, rel.replace("/", os.sep))
+            lowered_text = _read_text(rel_abs).lower()
+            if lowered_text and any(token in lowered_text for token in CONTROL_DEPENDENCY_SCAN_TOKENS):
+                required_migration_checks.add("check.topology.control_dependency_declaration")
+                module_node_id = _module_node_id_for_path(rel, topology_map_payload if topology_ok else {})
+                if not module_node_id:
+                    uncertainty_reasons.append("control_dependency_module_undeclared:{}".format(rel))
+                elif module_node_id not in declared_control_dependency_nodes:
+                    uncertainty_reasons.append("missing_control_dependency_declaration:{}".format(rel))
 
     required_test_ids: Set[str] = set()
     for suite_id in sorted(required_test_suites):

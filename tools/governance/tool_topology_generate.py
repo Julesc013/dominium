@@ -27,11 +27,21 @@ REGISTRY_ROOTS = ("data/registries", "data/governance")
 TOOL_ROOT = "tools"
 PROCESS_RE = re.compile(r"\bprocess\.[A-Za-z0-9_.]+\b")
 TEXT_EXTENSIONS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp", ".json", ".md", ".schema", ".schema.json")
-PLANNED_CTRL_MODULE_PATHS = (
-    "src/control",
-    "src/control/control_plane_engine.py",
-    "src/control/control_ir_validator.py",
-    "src/control/control_decision_log.py",
+CONTROL_PLANE_MODULE_ID = "module:src/control/control_plane_engine.py"
+CONTROL_SUBSYSTEM_MODULES = (
+    ("control_plane_engine", "src/control/control_plane_engine.py"),
+    ("negotiation_kernel", "src/control/negotiation/negotiation_kernel.py"),
+    ("control_ir_engine", "src/control/ir/control_ir_compiler.py"),
+    ("view_engine", "src/control/view/view_engine.py"),
+    ("fidelity_engine", "src/control/fidelity/fidelity_engine.py"),
+    ("effect_engine", "src/control/effects/effect_engine.py"),
+)
+CONTROL_DEPENDENCY_TOKENS = (
+    "from src.control",
+    "import src.control",
+    "src.control.",
+    "build_control_intent(",
+    "build_control_resolution(",
 )
 
 
@@ -297,12 +307,14 @@ def generate_topology_map(
             )
             edges.append(_edge(edge_kind="depends_on", from_node_id=child_node_id, to_node_id=root_node_id))
 
-    # Planned control-plane nodes are declared even before module implementation
-    # so governance and semantic-impact tooling can enforce CTRL migration paths.
-    for rel_path in PLANNED_CTRL_MODULE_PATHS:
+    # CTRL-9 control subsystem declarations.
+    for subsystem_id, rel_path in CONTROL_SUBSYSTEM_MODULES:
         token = _norm(rel_path)
+        abs_path = os.path.join(repo_root, token.replace("/", os.sep))
+        tags = ["runtime", "control", "control_subsystem", str(subsystem_id)]
+        if not os.path.isfile(abs_path):
+            tags.append("planned")
         node_id = "module:{}".format(token)
-        tags = ["runtime", "planned", "control"]
         nodes.append(
             _node(
                 node_id=node_id,
@@ -310,10 +322,32 @@ def generate_topology_map(
                 path=token,
                 tags=tags,
                 owner_subsystem="control",
+                extensions={"control_subsystem_id": str(subsystem_id)},
             )
         )
-        parent = "module:src" if token == "src/control" else "module:src/control"
-        edges.append(_edge(edge_kind="depends_on", from_node_id=node_id, to_node_id=parent))
+        edges.append(_edge(edge_kind="depends_on", from_node_id=node_id, to_node_id="module:src/control"))
+
+    control_subsystem_node_ids = [
+        "module:{}".format(_norm(path))
+        for _, path in CONTROL_SUBSYSTEM_MODULES
+    ]
+    for dep_node_id in control_subsystem_node_ids:
+        if dep_node_id == CONTROL_PLANE_MODULE_ID:
+            continue
+        edges.append(
+            _edge(
+                edge_kind="depends_on",
+                from_node_id=CONTROL_PLANE_MODULE_ID,
+                to_node_id=dep_node_id,
+            )
+        )
+        edges.append(
+            _edge(
+                edge_kind="consumes",
+                from_node_id=CONTROL_PLANE_MODULE_ID,
+                to_node_id=dep_node_id,
+            )
+        )
 
     schema_nodes: List[dict] = []
     for root in SCHEMA_ROOTS:
@@ -535,6 +569,22 @@ def generate_topology_map(
         lowered = module_text.lower()
         if not lowered:
             continue
+        if module_id != CONTROL_PLANE_MODULE_ID and (not str(module_path).startswith("src/control/")):
+            if any(token in lowered for token in CONTROL_DEPENDENCY_TOKENS):
+                edges.append(
+                    _edge(
+                        edge_kind="depends_on",
+                        from_node_id=module_id,
+                        to_node_id=CONTROL_PLANE_MODULE_ID,
+                    )
+                )
+                edges.append(
+                    _edge(
+                        edge_kind="consumes",
+                        from_node_id=module_id,
+                        to_node_id=CONTROL_PLANE_MODULE_ID,
+                    )
+                )
         for token, schema_node_id in sorted(schema_tokens.items(), key=lambda item: str(item[0])):
             if token and token in lowered:
                 edges.append(_edge(edge_kind="consumes", from_node_id=module_id, to_node_id=schema_node_id))
@@ -615,8 +665,19 @@ def _write_markdown(path: str, payload: dict) -> None:
     for token in sorted(set(runtime_modules))[:64]:
         lines.append("- `{}`".format(token))
     lines.append("")
+    lines.append("## Control Subsystem Nodes")
+    control_nodes = [
+        str(node.get("node_id", ""))
+        for node in nodes
+        if str(node.get("node_kind", "")) == "module"
+        and str((dict(node.get("extensions") or {})).get("control_subsystem_id", "")).strip()
+    ]
+    for token in sorted(set(control_nodes)):
+        lines.append("- `{}`".format(token))
+    lines.append("")
     lines.append("## Notes")
     lines.append("- Process-family discovery is best-effort via deterministic process token scanning.")
+    lines.append("- Control dependency edges are synthesized for modules that reference control-plane APIs.")
     lines.append("- Artifact is governance-only and not loaded by runtime simulation code.")
     _ensure_dir(os.path.dirname(path))
     with open(path, "w", encoding="utf-8", newline="\n") as handle:
