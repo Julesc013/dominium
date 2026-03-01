@@ -209,6 +209,16 @@ from src.control.view import (
     resolve_view_policy_id as resolve_view_policy_id_from_registry,
     view_policy_rows_by_id,
 )
+from src.control.effects import (
+    REFUSAL_EFFECT_FORBIDDEN,
+    REFUSAL_EFFECT_INVALID_TARGET,
+    active_effect_rows_by_target,
+    build_effect,
+    get_effective_modifier,
+    get_effective_modifier_map,
+    normalize_effect_rows,
+    prune_expired_effect_rows,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -301,6 +311,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.plan_create": "entitlement.inspect",
     "process.plan_update_incremental": "entitlement.inspect",
     "process.plan_execute": "entitlement.control.admin",
+    "process.effect_apply": "entitlement.control.admin",
+    "process.effect_remove": "entitlement.control.admin",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -403,6 +415,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.plan_create": "operator",
     "process.plan_update_incremental": "operator",
     "process.plan_execute": "operator",
+    "process.effect_apply": "operator",
+    "process.effect_remove": "operator",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -452,6 +466,8 @@ CONTROL_PROCESS_IDS = {
     "process.plan_create",
     "process.plan_update_incremental",
     "process.plan_execute",
+    "process.effect_apply",
+    "process.effect_remove",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -625,7 +641,11 @@ INSTRUMENT_TYPE_ID_BY_TYPE = {
     "gauge.oxygen": "instr.gauge.oxygen",
     "alarm.smoke": "instr.alarm.smoke",
     "alarm.flood": "instr.alarm.flood",
+    "alarm.general": "instr.interior.alarm",
     "panel.portal_state": "instr.panel.portal_state",
+    "warning.speed_cap": "instr.warning.speed_cap",
+    "warning.low_visibility": "instr.warning.low_visibility",
+    "warning.restricted_access": "instr.warning.restricted_access",
 }
 INSTRUMENT_TYPE_BY_ID = dict((value, key) for key, value in INSTRUMENT_TYPE_ID_BY_TYPE.items())
 
@@ -910,6 +930,155 @@ def _ensure_tool_bindings(state: dict) -> List[dict]:
         )
     state["tool_bindings"] = normalized
     return normalized
+
+
+def _ensure_effect_rows(state: dict) -> List[dict]:
+    rows = normalize_effect_rows(state.get("effect_rows"))
+    state["effect_rows"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_effect_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("effect_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "event_type": str(row.get("event_type", "")).strip() or "effect_event",
+            "target_id": str(row.get("target_id", "")).strip(),
+            "effect_id": str(row.get("effect_id", "")).strip() or None,
+            "effect_type_id": str(row.get("effect_type_id", "")).strip() or None,
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["effect_provenance_events"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _persist_effect_state(
+    state: dict,
+    *,
+    effect_rows: List[dict],
+    provenance_events: List[dict],
+) -> None:
+    state["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, dict)]
+    state["effect_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
+    _ensure_effect_rows(state)
+    _ensure_effect_provenance_events(state)
+
+
+def _effect_target_ids(state: dict) -> List[str]:
+    def _collect(rows: object, field: str) -> List[str]:
+        if not isinstance(rows, list):
+            return []
+        out = []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            token = str(row.get(field, "")).strip()
+            if token:
+                out.append(token)
+        return out
+
+    candidates = []
+    for key, field in (
+        ("agent_states", "agent_id"),
+        ("controller_assemblies", "assembly_id"),
+        ("camera_assemblies", "assembly_id"),
+        ("tool_assemblies", "tool_id"),
+        ("machine_assemblies", "machine_id"),
+        ("machine_ports", "port_id"),
+        ("interior_graphs", "graph_id"),
+        ("interior_volumes", "volume_id"),
+        ("interior_portals", "portal_id"),
+        ("asset_health_states", "asset_id"),
+        ("cohort_assemblies", "cohort_id"),
+        ("body_assemblies", "assembly_id"),
+        ("plan_artifacts", "plan_id"),
+    ):
+        candidates.extend(_collect(state.get(key), field))
+    return _sorted_tokens(candidates)
+
+
+def _effect_provenance_row(
+    *,
+    event_type: str,
+    tick: int,
+    intent_id: str,
+    process_id: str,
+    target_id: str,
+    effect_id: str,
+    effect_type_id: str,
+    extensions: dict | None = None,
+) -> dict:
+    event_seed = {
+        "event_type": str(event_type),
+        "tick": int(max(0, _as_int(tick, 0))),
+        "intent_id": str(intent_id),
+        "process_id": str(process_id),
+        "target_id": str(target_id),
+        "effect_id": str(effect_id),
+        "effect_type_id": str(effect_type_id),
+    }
+    event_id = "provenance.effect.{}".format(canonical_sha256(event_seed)[:24])
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": event_id,
+        "tick": int(max(0, _as_int(tick, 0))),
+        "event_type": str(event_type).strip() or "effect_event",
+        "target_id": str(target_id).strip(),
+        "effect_id": str(effect_id).strip() or None,
+        "effect_type_id": str(effect_type_id).strip() or None,
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _is_auto_interior_effect(row: dict, *, graph_id: str) -> bool:
+    if not isinstance(row, dict):
+        return False
+    extensions = dict(row.get("extensions") or {})
+    return (
+        str(extensions.get("source_process_id", "")).strip() == "process.compartment_flow_tick"
+        and str(extensions.get("effect_auto_key", "")).strip() == "interior_hazard"
+        and str(extensions.get("graph_id", "")).strip() == str(graph_id).strip()
+    )
+
+
+def _is_auto_maintenance_effect(row: dict) -> bool:
+    if not isinstance(row, dict):
+        return False
+    extensions = dict(row.get("extensions") or {})
+    return (
+        str(extensions.get("source_process_id", "")).strip() == "process.decay_tick"
+        and str(extensions.get("effect_auto_key", "")).strip() == "maintenance_degradation"
+    )
+
+
+def _portal_volume_ids(portal_row: dict) -> List[str]:
+    if not isinstance(portal_row, dict):
+        return []
+    candidates = [
+        str(portal_row.get("from_volume_id", "")).strip(),
+        str(portal_row.get("to_volume_id", "")).strip(),
+        str(portal_row.get("volume_a_id", "")).strip(),
+        str(portal_row.get("volume_b_id", "")).strip(),
+    ]
+    return [token for token in _sorted_tokens(candidates) if token]
 
 
 def _tool_type_rows(policy_context: dict | None) -> Dict[str, dict]:
@@ -6177,6 +6346,23 @@ def _control_ir_registry_payload(
     )
 
 
+def _effect_registry_payload(
+    *,
+    policy_context: dict | None,
+    key: str,
+    registry_rel_path: str,
+    entry_key: str,
+) -> dict:
+    payload = _policy_payload(policy_context, key)
+    if payload:
+        return dict(payload)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path=registry_rel_path,
+        default_payload={entry_key: []},
+    )
+
+
 def _resolve_control_policy_row_for_ir(
     *,
     control_policy_registry: dict,
@@ -10317,8 +10503,15 @@ def execute_intent(
     pose_slots = _ensure_pose_slots(state)
     mount_points = _ensure_mount_points(state)
     pose_mount_provenance_events = _ensure_pose_mount_provenance_events(state)
+    effect_rows = _ensure_effect_rows(state)
+    effect_provenance_events = _ensure_effect_provenance_events(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+    effect_rows = prune_expired_effect_rows(
+        effect_rows=effect_rows,
+        current_tick=int(current_tick),
+    )
+    state["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, dict)]
     strictness_row = resolve_causality_strictness_row(
         policy_context=policy_context,
         strictness_registry_payload=_policy_payload(policy_context, "causality_strictness_registry"),
@@ -16046,6 +16239,22 @@ def execute_intent(
             registry_rel_path="data/registries/control_policy_registry.json",
             default_payload={"policies": []},
         )
+        effect_type_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="effect_type_registry",
+            registry_rel_path="data/registries/effect_type_registry.json",
+            entry_key="effect_types",
+        )
+        stacking_policy_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="stacking_policy_registry",
+            registry_rel_path="data/registries/stacking_policy_registry.json",
+            entry_key="stacking_policies",
+        )
+        execution_policy_context = dict(policy_context or {})
+        execution_policy_context["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, dict)]
+        execution_policy_context["effect_type_registry"] = dict(effect_type_registry)
+        execution_policy_context["stacking_policy_registry"] = dict(stacking_policy_registry)
         execution_control_intent = build_control_intent(
             requester_subject_id=str(authority_context.get("subject_id", "")).strip()
             or str(authority_context.get("peer_id", "")).strip()
@@ -16070,7 +16279,7 @@ def execute_intent(
             control_intent=execution_control_intent,
             law_profile=law_profile,
             authority_context=authority_context,
-            policy_context=policy_context,
+            policy_context=execution_policy_context,
             control_action_registry=control_action_registry,
             control_policy_registry=control_policy_registry,
             repo_root=REPO_ROOT_HINT,
@@ -16269,6 +16478,178 @@ def execute_intent(
             "control_ir_execution": _control_ir_stub_result_metadata(compiled_ir),
             "emitted_commitment_count": len(emitted_commitments),
             "emitted_event_count": len(emitted_events),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.effect_apply":
+        target_id = str(inputs.get("target_id", "")).strip()
+        effect_type_id = str(inputs.get("effect_type_id", "")).strip()
+        if not target_id or not effect_type_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.effect_apply requires target_id and effect_type_id",
+                "Provide deterministic target_id and effect_type_id.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        known_target_ids = set(_effect_target_ids(state))
+        if target_id not in known_target_ids:
+            return refusal(
+                REFUSAL_EFFECT_INVALID_TARGET,
+                "effect target '{}' is not recognized in current universe state".format(target_id),
+                "Use a known entity/assembly/portal/volume target id.",
+                {"target_id": target_id},
+                "$.intent.inputs.target_id",
+            )
+
+        effect_type_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="effect_type_registry",
+            registry_rel_path="data/registries/effect_type_registry.json",
+            entry_key="effect_types",
+        )
+        stacking_policy_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="stacking_policy_registry",
+            registry_rel_path="data/registries/stacking_policy_registry.json",
+            entry_key="stacking_policies",
+        )
+        effect_type_rows = effect_type_rows_by_id(effect_type_registry)
+        if effect_type_id not in effect_type_rows:
+            return refusal(
+                REFUSAL_EFFECT_FORBIDDEN,
+                "effect_type_id '{}' is not declared in effect_type_registry".format(effect_type_id),
+                "Declare effect_type_id in registry or use a registered effect type.",
+                {"effect_type_id": effect_type_id},
+                "$.intent.inputs.effect_type_id",
+            )
+        stacking_policy_id = str(inputs.get("stacking_policy_id", "")).strip()
+        if not stacking_policy_id:
+            type_row = dict(effect_type_rows.get(effect_type_id) or {})
+            type_ext = dict(type_row.get("extensions") or {})
+            stacking_policy_id = str(type_ext.get("default_stacking_policy_id", "stack.replace_latest")).strip() or "stack.replace_latest"
+        stack_rows = stacking_policy_rows_by_id(stacking_policy_registry)
+        if stacking_policy_id not in stack_rows:
+            return refusal(
+                REFUSAL_EFFECT_FORBIDDEN,
+                "stacking_policy_id '{}' is not declared".format(stacking_policy_id),
+                "Use stacking_policy_id from stacking_policy_registry.",
+                {"stacking_policy_id": stacking_policy_id},
+                "$.intent.inputs.stacking_policy_id",
+            )
+
+        duration_ticks = inputs.get("duration_ticks")
+        expires_tick = inputs.get("expires_tick")
+        normalized_duration = None if duration_ticks is None else max(0, _as_int(duration_ticks, 0))
+        normalized_expires = None if expires_tick is None else max(0, _as_int(expires_tick, 0))
+        effect_row = build_effect(
+            effect_id=str(inputs.get("effect_id", "")).strip(),
+            effect_type_id=effect_type_id,
+            target_id=target_id,
+            applied_tick=int(current_tick),
+            duration_ticks=normalized_duration,
+            expires_tick=normalized_expires,
+            magnitude=inputs.get("magnitude", {}),
+            stacking_policy_id=stacking_policy_id,
+            source_event_id=(str(inputs.get("source_event_id", "")).strip() or None),
+            extensions={
+                "source_process_id": process_id,
+                "intent_id": str(intent_id),
+                "authority_subject_id": str(authority_context.get("subject_id", "")).strip(),
+            },
+        )
+        effect_by_id = dict(
+            (str(row.get("effect_id", "")).strip(), dict(row))
+            for row in list(effect_rows or [])
+            if isinstance(row, dict) and str(row.get("effect_id", "")).strip()
+        )
+        effect_by_id[str(effect_row.get("effect_id", "")).strip()] = dict(effect_row)
+        effect_rows = normalize_effect_rows([dict(effect_by_id[key]) for key in sorted(effect_by_id.keys())])
+
+        provenance_row = _effect_provenance_row(
+            event_type="effect_applied",
+            tick=int(current_tick),
+            intent_id=intent_id,
+            process_id=process_id,
+            target_id=target_id,
+            effect_id=str(effect_row.get("effect_id", "")).strip(),
+            effect_type_id=effect_type_id,
+            extensions={
+                "stacking_policy_id": stacking_policy_id,
+                "duration_ticks": normalized_duration,
+                "expires_tick": normalized_expires,
+            },
+        )
+        effect_provenance_events = sorted(
+            [dict(row) for row in list(effect_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_effect_state(
+            state,
+            effect_rows=effect_rows,
+            provenance_events=effect_provenance_events,
+        )
+        result_metadata = {
+            "effect_id": str(effect_row.get("effect_id", "")).strip(),
+            "effect_type_id": effect_type_id,
+            "target_id": target_id,
+            "stacking_policy_id": stacking_policy_id,
+            "expires_tick": effect_row.get("expires_tick"),
+            "duration_ticks": effect_row.get("duration_ticks"),
+            "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.effect_remove":
+        effect_id = str(inputs.get("effect_id", "")).strip()
+        if not effect_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.effect_remove requires effect_id",
+                "Provide deterministic effect_id of an active effect row.",
+                {"process_id": process_id},
+                "$.intent.inputs.effect_id",
+            )
+        effect_by_id = dict(
+            (str(row.get("effect_id", "")).strip(), dict(row))
+            for row in list(effect_rows or [])
+            if isinstance(row, dict) and str(row.get("effect_id", "")).strip()
+        )
+        removed_row = dict(effect_by_id.get(effect_id) or {})
+        if not removed_row:
+            return refusal(
+                REFUSAL_EFFECT_INVALID_TARGET,
+                "effect_id '{}' was not found".format(effect_id),
+                "Use an active effect_id returned by process.effect_apply or effect inspection.",
+                {"effect_id": effect_id},
+                "$.intent.inputs.effect_id",
+            )
+        del effect_by_id[effect_id]
+        effect_rows = normalize_effect_rows([dict(effect_by_id[key]) for key in sorted(effect_by_id.keys())])
+        provenance_row = _effect_provenance_row(
+            event_type="effect_removed",
+            tick=int(current_tick),
+            intent_id=intent_id,
+            process_id=process_id,
+            target_id=str(removed_row.get("target_id", "")).strip(),
+            effect_id=effect_id,
+            effect_type_id=str(removed_row.get("effect_type_id", "")).strip(),
+            extensions={
+                "removed_by_subject_id": str(authority_context.get("subject_id", "")).strip(),
+            },
+        )
+        effect_provenance_events = sorted(
+            [dict(row) for row in list(effect_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_effect_state(
+            state,
+            effect_rows=effect_rows,
+            provenance_events=effect_provenance_events,
+        )
+        result_metadata = {
+            "effect_id": effect_id,
+            "effect_type_id": str(removed_row.get("effect_type_id", "")).strip(),
+            "target_id": str(removed_row.get("target_id", "")).strip(),
+            "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.construction_project_create":
@@ -16788,6 +17169,64 @@ def execute_intent(
                         "failure_mode_id={}".format(str(failure_row.get("failure_mode_id", ""))),
                     ],
                 )
+        existing_effect_rows = [
+            dict(row)
+            for row in list(effect_rows or [])
+            if isinstance(row, dict) and not _is_auto_maintenance_effect(row)
+        ]
+        auto_maintenance_effect_rows: List[dict] = []
+        for asset_row in sorted(
+            (row for row in list(asset_health_states or []) if isinstance(row, dict)),
+            key=lambda row: str(row.get("asset_id", "")),
+        ):
+            asset_id = str(asset_row.get("asset_id", "")).strip()
+            if not asset_id:
+                continue
+            maintenance_backlog = int(max(0, _as_int(asset_row.get("maintenance_backlog", 0), 0)))
+            if maintenance_backlog <= 0:
+                continue
+            wear_values = [
+                int(max(0, _as_int(value, 0)))
+                for value in list((dict(asset_row.get("accumulated_wear") or {})).values())
+            ]
+            wear_peak = max(wear_values) if wear_values else 0
+            backlog_penalty = min(700, int(maintenance_backlog) * 25)
+            wear_penalty = min(200, int(wear_peak) // 5000)
+            machine_output_permille = max(100, 1000 - min(900, int(backlog_penalty + wear_penalty)))
+            asset_ext = dict(asset_row.get("extensions") or {})
+            target_ids = _sorted_tokens(
+                [
+                    asset_id,
+                    str(asset_row.get("machine_id", "")).strip(),
+                    str(asset_row.get("assembly_id", "")).strip(),
+                    str(asset_ext.get("machine_id", "")).strip(),
+                    str(asset_ext.get("assembly_id", "")).strip(),
+                ]
+            )
+            for target_id in target_ids:
+                auto_maintenance_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.machine_degraded",
+                        target_id=str(target_id),
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(max(1, int(dt_ticks))),
+                        magnitude={"machine_output_permille": int(machine_output_permille)},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "maintenance_degradation",
+                            "asset_id": asset_id,
+                            "maintenance_backlog": int(maintenance_backlog),
+                            "wear_peak": int(wear_peak),
+                        },
+                    )
+                )
+        effect_rows = normalize_effect_rows(existing_effect_rows + auto_maintenance_effect_rows)
+        _persist_effect_state(
+            state,
+            effect_rows=effect_rows,
+            provenance_events=effect_provenance_events,
+        )
         maintenance_runtime_state["next_event_sequence"] = max(
             0,
             _as_int(
@@ -16811,6 +17250,7 @@ def execute_intent(
             "tracked_asset_count": len(asset_health_states),
             "new_failure_count": len(new_failure_rows),
             "total_failure_count": len(failure_events),
+            "machine_degraded_effect_count": len(auto_maintenance_effect_rows),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.maintenance_schedule":
@@ -17284,13 +17724,18 @@ def execute_intent(
                 key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
             )
 
-            state["interior_movement_constraints"] = sorted(
+            movement_constraints = sorted(
                 [
                     dict(row)
                     for row in list(ticked.get("movement_constraints") or [])
                     if isinstance(row, dict)
                 ],
                 key=lambda row: str(row.get("volume_id", "")),
+            )
+            movement_by_volume_id = dict(
+                (str(row.get("volume_id", "")).strip(), dict(row))
+                for row in movement_constraints
+                if str(row.get("volume_id", "")).strip()
             )
 
             alarms = [
@@ -17373,6 +17818,139 @@ def execute_intent(
                         "portal_type_id": str(portal_row.get("portal_type_id", "")).strip(),
                     }
                 )
+
+            smoke_by_volume = dict(
+                (str(row.get("volume_id", "")).strip(), int(max(0, _as_int(row.get("smoke_density", 0), 0))))
+                for row in smoke_rows
+                if str(row.get("volume_id", "")).strip()
+            )
+            pressure_hazard_by_volume = dict(
+                (
+                    str(row.get("volume_id", "")).strip(),
+                    bool(row.get("pressure_exposure_low", False)),
+                )
+                for row in movement_constraints
+                if str(row.get("volume_id", "")).strip()
+            )
+            existing_effect_rows = [
+                dict(row)
+                for row in list(effect_rows or [])
+                if isinstance(row, dict) and not _is_auto_interior_effect(row, graph_id=str(selected_graph.get("graph_id", "")).strip())
+            ]
+            auto_effect_rows: List[dict] = []
+            graph_has_restricted_access = False
+            graph_visibility_permille = 1000
+            for portal_id in sorted(set(str(item).strip() for item in list(selected_graph.get("portals") or []) if str(item).strip())):
+                portal_row = dict(portal_rows_by_id.get(portal_id) or {})
+                if not portal_row:
+                    continue
+                volume_ids = _portal_volume_ids(portal_row)
+                movement_states = [
+                    str((dict(movement_by_volume_id.get(volume_id) or {})).get("movement_state", "")).strip()
+                    for volume_id in volume_ids
+                ]
+                smoke_levels = [
+                    int(max(0, _as_int(smoke_by_volume.get(volume_id, 0), 0)))
+                    for volume_id in volume_ids
+                ]
+                pressure_hazard = any(bool(pressure_hazard_by_volume.get(volume_id, False)) for volume_id in volume_ids)
+                blocked = "blocked" in set(movement_states)
+                max_smoke = max(smoke_levels) if smoke_levels else 0
+                visibility_permille = int(max(100, 1000 - min(900, max_smoke)))
+                if blocked:
+                    graph_has_restricted_access = True
+                    auto_effect_rows.append(
+                        build_effect(
+                            effect_type_id="effect.access_restricted",
+                            target_id=portal_id,
+                            applied_tick=int(current_tick),
+                            duration_ticks=int(max(1, int(dt_ticks))),
+                            magnitude={"access_restricted": 1000},
+                            stacking_policy_id="stack.replace_latest",
+                            extensions={
+                                "source_process_id": process_id,
+                                "effect_auto_key": "interior_hazard",
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                                "reason": "movement_blocked",
+                            },
+                        )
+                    )
+                if max_smoke > 0:
+                    graph_visibility_permille = min(graph_visibility_permille, int(visibility_permille))
+                    auto_effect_rows.append(
+                        build_effect(
+                            effect_type_id="effect.visibility_reduction",
+                            target_id=portal_id,
+                            applied_tick=int(current_tick),
+                            duration_ticks=int(max(1, int(dt_ticks))),
+                            magnitude={"visibility_permille": int(visibility_permille)},
+                            stacking_policy_id="stack.min",
+                            extensions={
+                                "source_process_id": process_id,
+                                "effect_auto_key": "interior_hazard",
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                                "reason": "smoke_density",
+                            },
+                        )
+                    )
+                if pressure_hazard:
+                    auto_effect_rows.append(
+                        build_effect(
+                            effect_type_id="effect.pressure_hazard_warning",
+                            target_id=portal_id,
+                            applied_tick=int(current_tick),
+                            duration_ticks=int(max(1, int(dt_ticks))),
+                            magnitude={"pressure_hazard_warning": 1000},
+                            stacking_policy_id="stack.replace_latest",
+                            extensions={
+                                "source_process_id": process_id,
+                                "effect_auto_key": "interior_hazard",
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                            },
+                        )
+                    )
+
+            selected_graph_id = str(selected_graph.get("graph_id", "")).strip()
+            if selected_graph_id and graph_has_restricted_access:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.access_restricted",
+                        target_id=selected_graph_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(max(1, int(dt_ticks))),
+                        magnitude={"access_restricted": 1000},
+                        stacking_policy_id="stack.replace_latest",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "interior_hazard",
+                            "graph_id": selected_graph_id,
+                            "reason": "movement_blocked",
+                        },
+                    )
+                )
+            if selected_graph_id and graph_visibility_permille < 1000:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.visibility_reduction",
+                        target_id=selected_graph_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(max(1, int(dt_ticks))),
+                        magnitude={"visibility_permille": int(graph_visibility_permille)},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "interior_hazard",
+                            "graph_id": selected_graph_id,
+                            "reason": "smoke_density",
+                        },
+                    )
+                )
+            effect_rows = normalize_effect_rows(existing_effect_rows + auto_effect_rows)
+            _persist_effect_state(
+                state,
+                effect_rows=effect_rows,
+                provenance_events=effect_provenance_events,
+            )
             interior_epistemic_resolution = _resolve_effective_epistemic_policy(
                 state=state,
                 authority_context=authority_context,
@@ -17487,6 +18065,47 @@ def execute_intent(
                     "reading": "{} portals".format(len(portal_indicator_rows)),
                     "state": {"status": "OK" if portal_indicator_rows else "WARN"},
                     "outputs": {"rows": portal_indicator_rows[:max_row_count]},
+                },
+                "instrument.warning.low_visibility": {
+                    "assembly_id": "instrument.warning.low_visibility",
+                    "instrument_type": "warning.low_visibility",
+                    "instrument_type_id": "instr.warning.low_visibility",
+                    "quality": "coarse",
+                    "quality_value": gauge_quality,
+                    "reading": "WARN" if int(graph_visibility_permille) < 1000 else "OK",
+                    "state": {
+                        "status": "WARN" if int(graph_visibility_permille) < 1000 else "OK",
+                        "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                    },
+                    "outputs": {
+                        "rows": [
+                            {
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                                "visibility_status": "WARN" if int(graph_visibility_permille) < 1000 else "OK",
+                                "visibility_band": "LOW" if int(graph_visibility_permille) < 500 else ("MEDIUM" if int(graph_visibility_permille) < 900 else "HIGH"),
+                            }
+                        ]
+                    },
+                },
+                "instrument.warning.restricted_access": {
+                    "assembly_id": "instrument.warning.restricted_access",
+                    "instrument_type": "warning.restricted_access",
+                    "instrument_type_id": "instr.warning.restricted_access",
+                    "quality": "coarse",
+                    "quality_value": gauge_quality,
+                    "reading": "WARN" if bool(graph_has_restricted_access) else "OK",
+                    "state": {
+                        "status": "WARN" if bool(graph_has_restricted_access) else "OK",
+                        "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                    },
+                    "outputs": {
+                        "rows": [
+                            {
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                                "restricted_access": bool(graph_has_restricted_access),
+                            }
+                        ]
+                    },
                 },
             }
             instrument_by_id = dict(
@@ -19233,6 +19852,109 @@ def execute_intent(
             row["quality"] = "nominal"
             row["quality_value"] = max(0, _as_int(row.get("quality_value", 1000), 1000))
             row["last_update_tick"] = current_tick
+
+        effect_type_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="effect_type_registry",
+            registry_rel_path="data/registries/effect_type_registry.json",
+            entry_key="effect_types",
+        )
+        stacking_policy_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="stacking_policy_registry",
+            registry_rel_path="data/registries/stacking_policy_registry.json",
+            entry_key="stacking_policies",
+        )
+        effect_rows = prune_expired_effect_rows(
+            effect_rows=effect_rows,
+            current_tick=int(current_tick),
+        )
+        state["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, dict)]
+        target_candidates = _sorted_tokens(
+            [
+                str(authority_context.get("subject_id", "")).strip(),
+                str(authority_context.get("agent_id", "")).strip(),
+                str(authority_context.get("controller_id", "")).strip(),
+                str(camera.get("target_id", "")).strip(),
+            ]
+        )
+        speed_values: List[int] = []
+        visibility_values: List[int] = []
+        access_values: List[int] = []
+        for target_id in target_candidates:
+            speed_row = get_effective_modifier(
+                target_id=target_id,
+                key="max_speed_permille",
+                effect_rows=effect_rows,
+                current_tick=int(current_tick),
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            if bool(speed_row.get("present", False)):
+                speed_values.append(int(max(0, _as_int(speed_row.get("value", 0), 0))))
+            visibility_row = get_effective_modifier(
+                target_id=target_id,
+                key="visibility_permille",
+                effect_rows=effect_rows,
+                current_tick=int(current_tick),
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            if bool(visibility_row.get("present", False)):
+                visibility_values.append(int(max(0, _as_int(visibility_row.get("value", 0), 0))))
+            access_row = get_effective_modifier(
+                target_id=target_id,
+                key="access_restricted",
+                effect_rows=effect_rows,
+                current_tick=int(current_tick),
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            if bool(access_row.get("present", False)):
+                access_values.append(int(max(0, _as_int(access_row.get("value", 0), 0))))
+
+        min_speed_permille = min(speed_values) if speed_values else 1000
+        min_visibility_permille = min(visibility_values) if visibility_values else 1000
+        restricted_access_active = any(value > 0 for value in access_values)
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.warning.speed_cap",
+            instrument_type="warning.speed_cap",
+            instrument_type_id="instr.warning.speed_cap",
+            channel_id="ch.diegetic.warning.speed_cap",
+            reading_payload={
+                "status": "WARN" if int(min_speed_permille) < 1000 else "OK",
+                "speed_band": "LOW" if int(min_speed_permille) < 750 else ("MEDIUM" if int(min_speed_permille) < 1000 else "NORMAL"),
+                "tick": int(current_tick),
+            },
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.warning.low_visibility",
+            instrument_type="warning.low_visibility",
+            instrument_type_id="instr.warning.low_visibility",
+            channel_id="ch.diegetic.warning.low_visibility",
+            reading_payload={
+                "status": "WARN" if int(min_visibility_permille) < 900 else "OK",
+                "visibility_band": "LOW" if int(min_visibility_permille) < 500 else ("MEDIUM" if int(min_visibility_permille) < 900 else "HIGH"),
+                "tick": int(current_tick),
+            },
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.warning.restricted_access",
+            instrument_type="warning.restricted_access",
+            instrument_type_id="instr.warning.restricted_access",
+            channel_id="ch.diegetic.warning.restricted_access",
+            reading_payload={
+                "status": "WARN" if bool(restricted_access_active) else "OK",
+                "restricted_access": bool(restricted_access_active),
+                "tick": int(current_tick),
+            },
+            tick=int(current_tick),
+        )
         state["instrument_assemblies"] = sorted(
             (dict(item) for item in rows if isinstance(item, dict)),
             key=lambda item: str(item.get("assembly_id", "")),
