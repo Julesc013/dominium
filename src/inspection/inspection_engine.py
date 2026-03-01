@@ -51,6 +51,7 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.interior.smoke_summary",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
+        "section.spec_compliance_summary",
         "section.commitments_summary",
         "section.events_summary",
     ],
@@ -74,6 +75,7 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.ag_progress",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
+        "section.spec_compliance_summary",
         "section.commitments_summary",
         "section.events_summary",
         "section.reenactment_link",
@@ -98,6 +100,7 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.ag_progress",
         "section.maintenance_backlog",
         "section.failure_risk_summary",
+        "section.spec_compliance_summary",
         "section.commitments_summary",
         "section.events_summary",
         "section.reenactment_link",
@@ -201,6 +204,7 @@ _DEFAULT_SECTION_ROWS = {
     "section.ag_progress": {"title": "Assembly Progress", "extensions": {"cost_units": 2}},
     "section.maintenance_backlog": {"title": "Maintenance Backlog", "extensions": {"cost_units": 1}},
     "section.failure_risk_summary": {"title": "Failure Risk Summary", "extensions": {"cost_units": 1}},
+    "section.spec_compliance_summary": {"title": "Spec Compliance Summary", "extensions": {"cost_units": 1}},
     "section.commitments_summary": {"title": "Commitments", "extensions": {"cost_units": 2}},
     "section.events_summary": {"title": "Events", "extensions": {"cost_units": 2}},
     "section.reenactment_link": {"title": "Reenactment", "extensions": {"cost_units": 1}},
@@ -1425,6 +1429,45 @@ def _build_section_data(
         if explicit:
             return {"risk_rows": [dict(item) for item in list(explicit.get("risk_rows") or [])[:16] if isinstance(item, dict)]}
         return {"risk_rows": []}
+    if section_id == "section.spec_compliance_summary":
+        payload_ext = dict(target_payload.get("extensions") or {})
+        summary = dict(payload_ext.get("spec_compliance_summary") or {})
+        if not summary:
+            return {"available": False}
+        target_id = str(summary.get("target_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        bound_spec_id = str(summary.get("bound_spec_id", "")).strip() or None
+        result_id = str(summary.get("result_id", "")).strip() or None
+        overall_grade = str(summary.get("overall_grade", "")).strip()
+        check_grade_counts = {
+            "pass": int(max(0, _as_int((dict(summary.get("check_grade_counts") or {})).get("pass", 0), 0))),
+            "warn": int(max(0, _as_int((dict(summary.get("check_grade_counts") or {})).get("warn", 0), 0))),
+            "fail": int(max(0, _as_int((dict(summary.get("check_grade_counts") or {})).get("fail", 0), 0))),
+        }
+        payload = {
+            "available": bool(summary.get("available", True)),
+            "target_kind": str(summary.get("target_kind", "")).strip() or None,
+            "target_id": target_id,
+            "bound_spec_id": bound_spec_id,
+            "has_compliance_result": bool(result_id),
+            "overall_grade": overall_grade or None,
+            "status": (
+                overall_grade
+                if overall_grade in {"pass", "warn", "fail"}
+                else ("bound" if bound_spec_id else "unbound")
+            ),
+            "check_count": int(max(0, _as_int(summary.get("check_count", 0), 0))),
+            "check_grade_counts": dict(check_grade_counts),
+        }
+        if not allow_hidden_state:
+            payload["epistemic_redaction"] = "coarse_summary"
+            return payload
+        payload["binding_id"] = str(summary.get("binding_id", "")).strip() or None
+        payload["binding_tick"] = int(max(0, _as_int(summary.get("binding_tick", 0), 0)))
+        payload["result_id"] = result_id
+        payload["result_tick"] = int(max(0, _as_int(summary.get("result_tick", 0), 0)))
+        payload["failure_refusal_codes"] = _sorted_unique_strings(summary.get("failure_refusal_codes"))
+        payload["strict_noncompliant"] = bool(summary.get("strict_noncompliant", False))
+        return payload
     if section_id == "section.commitments_summary":
         rows = []
         for key in ("material_commitments", "construction_commitments", "shipment_commitments", "maintenance_commitments"):

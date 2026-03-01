@@ -224,6 +224,7 @@ from src.specs import (
     build_spec_binding,
     compliance_check_rows_by_id,
     evaluate_compliance,
+    latest_spec_binding_for_target,
     load_spec_sheet_rows,
     normalize_spec_binding_rows,
     spec_sheet_rows_by_id,
@@ -1124,6 +1125,198 @@ def _spec_provenance_row(
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
     return payload
+
+
+def _latest_spec_compliance_result_for_target(
+    *,
+    compliance_rows: object,
+    target_kind: str,
+    target_id: str,
+    spec_id: str | None = None,
+) -> dict:
+    token_kind = str(target_kind or "").strip()
+    token_target = str(target_id or "").strip()
+    token_spec = str(spec_id or "").strip()
+    rows = [
+        dict(item)
+        for item in list(compliance_rows or [])
+        if isinstance(item, dict)
+    ]
+    candidates = []
+    for row in rows:
+        if str(row.get("target_kind", "")).strip() != token_kind:
+            continue
+        if str(row.get("target_id", "")).strip() != token_target:
+            continue
+        if token_spec and str(row.get("spec_id", "")).strip() != token_spec:
+            continue
+        candidates.append(dict(row))
+    if not candidates:
+        return {}
+    return sorted(
+        candidates,
+        key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("result_id", ""))),
+    )[-1]
+
+
+def _spec_target_for_inspection_payload(
+    *,
+    target_payload: dict,
+    target_id: str,
+) -> Tuple[str, str]:
+    payload = dict(target_payload or {})
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    token_target = str(target_id or "").strip()
+    if collection == "installed_structure_instances":
+        token = str(row.get("instance_id", "")).strip() or token_target
+        return "structure", token
+    if collection == "construction_steps":
+        token = str(row.get("ag_node_id", "")).strip() or str(row.get("step_id", "")).strip()
+        if token:
+            return "ag", token
+    if collection == "construction_projects":
+        token = str(row.get("project_id", "")).strip()
+        if token:
+            return "ag", token
+    if collection == "machine_assemblies":
+        token = str(row.get("machine_id", "")).strip() or token_target
+        return "vehicle", token
+    if token_target.startswith("network.edge."):
+        return "network_edge", token_target
+    if token_target.startswith("vehicle."):
+        return "vehicle", token_target
+    if token_target.startswith("geometry."):
+        return "geometry", token_target
+    if token_target.startswith("ag."):
+        return "ag", token_target
+    if token_target.startswith("structure."):
+        return "structure", token_target
+    return "", ""
+
+
+def _spec_compliance_summary_for_target(
+    *,
+    state: dict,
+    target_kind: str,
+    target_id: str,
+) -> dict:
+    token_kind = str(target_kind or "").strip()
+    token_target = str(target_id or "").strip()
+    if (not token_kind) or (not token_target):
+        return {}
+    binding_row = latest_spec_binding_for_target(
+        binding_rows=state.get("spec_bindings"),
+        target_kind=token_kind,
+        target_id=token_target,
+    )
+    bound_spec_id = str(binding_row.get("spec_id", "")).strip()
+    compliance_row = _latest_spec_compliance_result_for_target(
+        compliance_rows=state.get("spec_compliance_results"),
+        target_kind=token_kind,
+        target_id=token_target,
+        spec_id=bound_spec_id or None,
+    )
+    if (not compliance_row) and bound_spec_id:
+        compliance_row = _latest_spec_compliance_result_for_target(
+            compliance_rows=state.get("spec_compliance_results"),
+            target_kind=token_kind,
+            target_id=token_target,
+            spec_id=None,
+        )
+    if (not binding_row) and (not compliance_row):
+        return {}
+    check_rows = [
+        dict(item)
+        for item in list(compliance_row.get("check_results") or [])
+        if isinstance(item, dict)
+    ]
+    grade_counts = {"pass": 0, "warn": 0, "fail": 0}
+    refusal_codes = set()
+    for row in check_rows:
+        grade = str(row.get("grade", "")).strip()
+        if grade in grade_counts:
+            grade_counts[grade] = int(_as_int(grade_counts.get(grade, 0), 0) + 1)
+        refusal_code = str(row.get("failure_refusal_code", "")).strip()
+        if refusal_code:
+            refusal_codes.add(refusal_code)
+    overall_grade = str(compliance_row.get("overall_grade", "")).strip()
+    summary = {
+        "available": True,
+        "target_kind": token_kind,
+        "target_id": token_target,
+        "bound_spec_id": bound_spec_id or str(compliance_row.get("spec_id", "")).strip() or None,
+        "binding_id": str(binding_row.get("binding_id", "")).strip() or None,
+        "binding_tick": int(max(0, _as_int(binding_row.get("applied_tick", 0), 0))),
+        "result_id": str(compliance_row.get("result_id", "")).strip() or None,
+        "result_tick": int(max(0, _as_int(compliance_row.get("tick", 0), 0))),
+        "overall_grade": overall_grade or None,
+        "check_count": int(len(check_rows)),
+        "check_grade_counts": dict(grade_counts),
+        "failure_refusal_codes": sorted(refusal_codes),
+        "strict_noncompliant": bool(overall_grade == "fail"),
+    }
+    return summary
+
+
+def _annotate_spec_binding_on_targets(
+    *,
+    state: dict,
+    target_kind: str,
+    target_id: str,
+    spec_id: str,
+    binding_id: str,
+    applied_tick: int,
+) -> dict:
+    token_kind = str(target_kind or "").strip()
+    token_target = str(target_id or "").strip()
+    token_spec = str(spec_id or "").strip()
+    token_binding = str(binding_id or "").strip()
+    tick = int(max(0, _as_int(applied_tick, 0)))
+    if (not token_kind) or (not token_target) or (not token_spec):
+        return {"updated_count": 0}
+    update_count = 0
+    if token_kind == "structure":
+        rows = [dict(item) for item in list(state.get("installed_structure_instances") or []) if isinstance(item, dict)]
+        for row in rows:
+            if str(row.get("instance_id", "")).strip() != token_target:
+                continue
+            ext = dict(row.get("extensions") or {})
+            ext["spec_id"] = token_spec
+            ext["spec_binding_id"] = token_binding or None
+            ext["spec_applied_tick"] = int(tick)
+            row["extensions"] = ext
+            update_count += 1
+        if rows:
+            state["installed_structure_instances"] = rows
+    elif token_kind == "ag":
+        rows = [dict(item) for item in list(state.get("construction_steps") or []) if isinstance(item, dict)]
+        for row in rows:
+            row_step_id = str(row.get("step_id", "")).strip()
+            row_node_id = str(row.get("ag_node_id", "")).strip()
+            if token_target not in {row_step_id, row_node_id}:
+                continue
+            ext = dict(row.get("extensions") or {})
+            ext["spec_id"] = token_spec
+            ext["spec_binding_id"] = token_binding or None
+            ext["spec_applied_tick"] = int(tick)
+            row["extensions"] = ext
+            update_count += 1
+        if rows:
+            state["construction_steps"] = rows
+        project_rows = [dict(item) for item in list(state.get("construction_projects") or []) if isinstance(item, dict)]
+        for row in project_rows:
+            if str(row.get("project_id", "")).strip() != token_target:
+                continue
+            ext = dict(row.get("extensions") or {})
+            ext["spec_id"] = token_spec
+            ext["spec_binding_id"] = token_binding or None
+            ext["spec_applied_tick"] = int(tick)
+            row["extensions"] = ext
+            update_count += 1
+        if project_rows:
+            state["construction_projects"] = project_rows
+    return {"updated_count": int(update_count)}
 
 
 def _effect_target_ids(state: dict) -> List[str]:
@@ -7897,6 +8090,33 @@ def _augment_inspection_target_payload_for_capabilities(
     return payload
 
 
+def _augment_inspection_target_payload_for_specs(
+    *,
+    state: dict,
+    target_payload: dict,
+) -> dict:
+    payload = dict(target_payload or {})
+    if not bool(payload.get("exists", False)):
+        return payload
+    target_kind, target_ref = _spec_target_for_inspection_payload(
+        target_payload=payload,
+        target_id=str(payload.get("target_id", "")).strip(),
+    )
+    if target_kind not in {"structure", "ag", "geometry", "vehicle", "network_edge"}:
+        return payload
+    summary = _spec_compliance_summary_for_target(
+        state=state,
+        target_kind=target_kind,
+        target_id=target_ref,
+    )
+    if not summary:
+        return payload
+    extensions = dict(payload.get("extensions") or {})
+    extensions["spec_compliance_summary"] = dict(summary)
+    payload["extensions"] = extensions
+    return payload
+
+
 def _inspection_target_payload(state: dict, target_id: str) -> dict:
     token = str(target_id).strip()
     if not token:
@@ -8311,6 +8531,10 @@ def _execute_inspection_snapshot_process(
         state=state,
         policy_context=policy_context,
         authority_context=authority_context,
+        target_payload=target_payload,
+    )
+    target_payload = _augment_inspection_target_payload_for_specs(
+        state=state,
         target_payload=target_payload,
     )
     target_kind = str(inputs.get("target_kind", "")).strip()
@@ -16468,6 +16692,118 @@ def execute_intent(
         execution_policy_context["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, dict)]
         execution_policy_context["effect_type_registry"] = dict(effect_type_registry)
         execution_policy_context["stacking_policy_registry"] = dict(stacking_policy_registry)
+        plan_extensions = dict(current_plan.get("extensions") or {})
+        server_profile_id = str(execution_policy_context.get("server_profile_id", "")).strip().lower()
+        ranked_server = bool(execution_policy_context.get("ranked_server", False)) or ("rank" in server_profile_id)
+        enforce_spec_policy = bool(ranked_server)
+        policy_enforce_value = execution_policy_context.get("plan_execute_enforce_spec_compliance")
+        if policy_enforce_value is not None:
+            if isinstance(policy_enforce_value, str):
+                enforce_spec_policy = str(policy_enforce_value).strip().lower() in {"1", "true", "yes", "on"}
+            else:
+                enforce_spec_policy = bool(policy_enforce_value)
+        policy_spec_mode = str(execution_policy_context.get("plan_execute_spec_mode", "")).strip().lower()
+        if policy_spec_mode == "enforce":
+            enforce_spec_policy = True
+        elif policy_spec_mode == "ignore":
+            enforce_spec_policy = False
+        if "enforce_spec_compliance" in inputs:
+            enforce_input_value = inputs.get("enforce_spec_compliance")
+            if isinstance(enforce_input_value, str):
+                enforce_spec_policy = str(enforce_input_value).strip().lower() in {"1", "true", "yes", "on"}
+            else:
+                enforce_spec_policy = bool(enforce_input_value)
+        spec_binding_candidates: List[Tuple[str, str]] = []
+
+        def _append_spec_binding_candidate(kind: object, target: object) -> None:
+            token_kind = str(kind or "").strip()
+            token_target = str(target or "").strip()
+            if token_kind not in {"structure", "ag", "geometry", "vehicle", "network_edge"}:
+                return
+            if not token_target:
+                return
+            candidate = (token_kind, token_target)
+            if candidate in spec_binding_candidates:
+                return
+            spec_binding_candidates.append(candidate)
+
+        _append_spec_binding_candidate(
+            execute_payload.get("spec_target_kind", inputs.get("spec_target_kind")),
+            execute_payload.get("spec_target_id", inputs.get("spec_target_id")),
+        )
+        _append_spec_binding_candidate(plan_extensions.get("spec_target_kind"), plan_extensions.get("spec_target_id"))
+        for field in ("target_entity_id", "structure_id", "instance_id"):
+            _append_spec_binding_candidate("structure", plan_extensions.get(field))
+        _append_spec_binding_candidate("ag", plan_extensions.get("project_id"))
+        _append_spec_binding_candidate("ag", plan_id)
+        _append_spec_binding_candidate("structure", plan_id)
+
+        spec_binding_row = {}
+        for candidate_kind, candidate_target in spec_binding_candidates:
+            candidate_binding = latest_spec_binding_for_target(
+                binding_rows=spec_bindings,
+                target_kind=candidate_kind,
+                target_id=candidate_target,
+            )
+            if candidate_binding:
+                spec_binding_row = dict(candidate_binding)
+                break
+        spec_target_kind = str(spec_binding_row.get("target_kind", "")).strip()
+        spec_target_id = str(spec_binding_row.get("target_id", "")).strip()
+        bound_spec_id = str(spec_binding_row.get("spec_id", "")).strip()
+        if (not spec_target_kind) and spec_binding_candidates:
+            spec_target_kind = str(spec_binding_candidates[0][0]).strip()
+        if (not spec_target_id) and spec_binding_candidates:
+            spec_target_id = str(spec_binding_candidates[0][1]).strip()
+        spec_compliance_row = {}
+        if spec_target_kind and spec_target_id:
+            spec_compliance_row = _latest_spec_compliance_result_for_target(
+                compliance_rows=spec_compliance_results,
+                target_kind=spec_target_kind,
+                target_id=spec_target_id,
+                spec_id=bound_spec_id or None,
+            )
+            if (not spec_compliance_row) and bound_spec_id:
+                spec_compliance_row = _latest_spec_compliance_result_for_target(
+                    compliance_rows=spec_compliance_results,
+                    target_kind=spec_target_kind,
+                    target_id=spec_target_id,
+                    spec_id=None,
+                )
+        check_rows = [
+            dict(item)
+            for item in list(spec_compliance_row.get("check_results") or [])
+            if isinstance(item, dict)
+        ]
+        check_grade_counts = {"pass": 0, "warn": 0, "fail": 0}
+        failure_refusal_codes = set()
+        for row in check_rows:
+            grade = str(row.get("grade", "")).strip()
+            if grade in check_grade_counts:
+                check_grade_counts[grade] = int(_as_int(check_grade_counts.get(grade, 0), 0) + 1)
+            refusal_code = str(row.get("failure_refusal_code", "")).strip()
+            if refusal_code:
+                failure_refusal_codes.add(refusal_code)
+        enforce_spec_for_control = bool(enforce_spec_policy and bound_spec_id)
+        spec_compliance_context = {
+            "target_kind": spec_target_kind or None,
+            "target_id": spec_target_id or None,
+            "bound_spec_id": bound_spec_id or None,
+            "binding_id": str(spec_binding_row.get("binding_id", "")).strip() or None,
+            "binding_tick": int(max(0, _as_int(spec_binding_row.get("applied_tick", 0), 0))),
+            "result_id": str(spec_compliance_row.get("result_id", "")).strip() or None,
+            "result_tick": int(max(0, _as_int(spec_compliance_row.get("tick", 0), 0))),
+            "overall_grade": str(spec_compliance_row.get("overall_grade", "")).strip() or None,
+            "check_count": int(len(check_rows)),
+            "check_grade_counts": dict(check_grade_counts),
+            "failure_refusal_codes": sorted(failure_refusal_codes),
+            "policy_requires_compliance": bool(enforce_spec_policy),
+            "enforce": bool(enforce_spec_for_control),
+            "ranked_server": bool(ranked_server),
+            "compliance_available": bool(spec_compliance_row),
+        }
+        if spec_binding_row or spec_compliance_row or enforce_spec_policy:
+            execution_policy_context["spec_compliance"] = dict(spec_compliance_context)
         execution_control_intent = build_control_intent(
             requester_subject_id=str(authority_context.get("subject_id", "")).strip()
             or str(authority_context.get("peer_id", "")).strip()
@@ -16689,6 +17025,7 @@ def execute_intent(
             "execution_decision_log_ref": str(execution_resolution.get("decision_log_ref", "")).strip(),
             "control_ir_program": dict(ir_program),
             "control_ir_execution": _control_ir_stub_result_metadata(compiled_ir),
+            "spec_compliance": dict(execution_policy_context.get("spec_compliance") or {}),
             "emitted_commitment_count": len(emitted_commitments),
             "emitted_event_count": len(emitted_events),
         }
@@ -16958,6 +17295,14 @@ def execute_intent(
         )
         binding_by_id[str(binding_row.get("binding_id", "")).strip()] = dict(binding_row)
         spec_bindings = normalize_spec_binding_rows([dict(binding_by_id[key]) for key in sorted(binding_by_id.keys())])
+        annotation_result = _annotate_spec_binding_on_targets(
+            state=state,
+            target_kind=target_kind,
+            target_id=target_id,
+            spec_id=spec_id,
+            binding_id=str(binding_row.get("binding_id", "")).strip(),
+            applied_tick=int(current_tick),
+        )
         provenance_row = _spec_provenance_row(
             event_type="spec_applied",
             tick=int(current_tick),
@@ -16985,6 +17330,7 @@ def execute_intent(
             "spec_id": spec_id,
             "target_kind": target_kind,
             "target_id": target_id,
+            "annotated_target_rows": int(max(0, _as_int(annotation_result.get("updated_count", 0), 0))),
             "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
