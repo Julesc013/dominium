@@ -314,6 +314,7 @@ def evaluate_structural_graphs(
 
     for graph in selected_graphs:
         graph_id = str(graph.get("structural_graph_id", "")).strip()
+        assembly_id = str(graph.get("assembly_id", "")).strip()
         if not graph_id:
             continue
         evaluated_graph_ids.append(graph_id)
@@ -355,6 +356,11 @@ def evaluate_structural_graphs(
             if tension_only and int(force_a + force_b) < 0:
                 computed_load = 0
 
+            # MOB hook: track/corridor misalignment increases effective edge load.
+            alignment_error_permille = int(max(0, _as_int(edge_ext.get("track_alignment_error_permille", 0), 0)))
+            if alignment_error_permille > 0:
+                computed_load = int((int(computed_load) * int(1000 + alignment_error_permille)) // 1000)
+
             base_max_load = int(max(0, _as_int(row.get("max_load", 0), 0)))
             effective_max_load = int(base_max_load)
             effect_modifier = get_effective_modifier(
@@ -365,11 +371,35 @@ def evaluate_structural_graphs(
                 effect_type_registry=effect_type_registry,
                 stacking_policy_registry=stacking_policy_registry,
             )
+            if (not bool(effect_modifier.get("present", False))) and graph_id:
+                effect_modifier = get_effective_modifier(
+                    target_id=graph_id,
+                    key="machine_output_permille",
+                    effect_rows=effect_rows,
+                    current_tick=tick,
+                    effect_type_registry=effect_type_registry,
+                    stacking_policy_registry=stacking_policy_registry,
+                )
+            if (not bool(effect_modifier.get("present", False))) and assembly_id:
+                effect_modifier = get_effective_modifier(
+                    target_id=assembly_id,
+                    key="machine_output_permille",
+                    effect_rows=effect_rows,
+                    current_tick=tick,
+                    effect_type_registry=effect_type_registry,
+                    stacking_policy_registry=stacking_policy_registry,
+                )
             if bool(effect_modifier.get("present", False)):
                 modifier_permille = int(max(1, _as_int(effect_modifier.get("value", 1000), 1000)))
                 effective_max_load = int((int(effective_max_load) * int(modifier_permille)) // 1000)
 
             stress_ratio_permille = _ratio_permille(computed_load, effective_max_load)
+            derailment_risk_permille = int(
+                min(
+                    1000,
+                    max(0, int(stress_ratio_permille) - 700) * 2 + int(max(0, alignment_error_permille)),
+                )
+            )
             current_failure_state = _failure_state(row.get("failure_state"))
             next_failure_state = current_failure_state
             if current_failure_state != "failed":
@@ -393,6 +423,8 @@ def evaluate_structural_graphs(
                 if bool(effect_modifier.get("present", False))
                 else None
             )
+            updated_ext["track_alignment_error_permille"] = int(max(0, alignment_error_permille))
+            updated_ext["derailment_risk_permille"] = int(max(0, derailment_risk_permille))
             updated_ext["connection_supports_rotation"] = bool(
                 (dict(connection_rows.get(str(row.get("connection_type_id", "")).strip()) or {})).get("supports_rotation", False)
             )
@@ -508,23 +540,55 @@ def summarize_stress_for_target(
                 matching_edges.append(edge_row)
 
     max_ratio = 0
+    total_ratio = 0
     near_fracture = 0
     failed_count = 0
+    min_effective_max_load = None
+    max_alignment_error = 0
+    max_derailment_risk = 0
     for row in matching_edges:
         ratio = int(max(0, _as_int(row.get("stress_ratio_permille", 0), 0)))
         max_ratio = max(max_ratio, ratio)
+        total_ratio += int(ratio)
         if ratio >= 900:
             near_fracture += 1
         if _failure_state(row.get("failure_state")) == "failed":
             failed_count += 1
+        effective_max = int(max(0, _as_int(row.get("effective_max_load", row.get("max_load", 0)), 0)))
+        if min_effective_max_load is None:
+            min_effective_max_load = effective_max
+        else:
+            min_effective_max_load = min(int(min_effective_max_load), int(effective_max))
+        ext = _as_map(row.get("extensions"))
+        max_alignment_error = max(max_alignment_error, int(max(0, _as_int(ext.get("track_alignment_error_permille", 0), 0))))
+        max_derailment_risk = max(max_derailment_risk, int(max(0, _as_int(ext.get("derailment_risk_permille", 0), 0))))
+
+    edge_count = int(len(matching_edges))
+    average_ratio = int((int(total_ratio) // int(edge_count))) if edge_count > 0 else 0
+    recommended_speed_cap_permille = 1000
+    if edge_count > 0:
+        recommended_speed_cap_permille = int(
+            max(
+                200,
+                min(
+                    1000,
+                    1000 - max(0, int(max_ratio) - 700) - int(max_alignment_error // 2),
+                ),
+            )
+        )
 
     payload = {
         "target_id": token,
         "matching_graph_ids": sorted(candidate_graph_ids),
-        "edge_count": int(len(matching_edges)),
+        "edge_count": edge_count,
         "max_stress_ratio_permille": int(max_ratio),
+        "average_stress_ratio_permille": int(max(0, average_ratio)),
         "near_fracture_edge_count": int(near_fracture),
         "failed_edge_count": int(failed_count),
+        "min_effective_max_load": int(max(0, _as_int(min_effective_max_load, 0),)),
+        "max_alignment_error_permille": int(max(0, max_alignment_error)),
+        "derailment_risk_permille": int(max(0, max_derailment_risk)),
+        "recommended_speed_cap_permille": int(max(0, recommended_speed_cap_permille)),
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
