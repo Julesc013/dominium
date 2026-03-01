@@ -709,6 +709,8 @@ _NULL_REGISTRY_LIST_KEYS = {
     "control_action_registry": "actions",
     "capability_registry": "capabilities",
     "control_policy_registry": "policies",
+    "effect_type_registry": "effect_types",
+    "stacking_policy_registry": "stacking_policies",
     "interaction_action_registry": "actions",
     "surface_type_registry": "surface_types",
     "port_type_registry": "port_types",

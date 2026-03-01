@@ -1723,6 +1723,161 @@ def _capability_registry_rows(
     return capability_rows, errors
 
 
+def _effect_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    effect_record, effect_rows_raw, effect_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/effect_type_registry.json",
+        expected_schema_id="dominium.registry.effect_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="effect_types",
+    )
+    if effect_load_errors:
+        return [], [], effect_load_errors
+
+    stack_record, stack_rows_raw, stack_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/stacking_policy_registry.json",
+        expected_schema_id="dominium.registry.stacking_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="stacking_policies",
+    )
+    if stack_load_errors:
+        return [], [], stack_load_errors
+
+    del effect_record
+    del stack_record
+    errors: List[dict] = []
+
+    effect_type_rows: List[dict] = []
+    seen_effect_type_ids = set()
+    for entry in sorted(effect_rows_raw, key=lambda row: str((row or {}).get("effect_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_effect_type_entry",
+                    "message": "effect type entry must be object",
+                    "path": "$.effect_types",
+                }
+            )
+            continue
+        effect_type_id = str(entry.get("effect_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        applies_to = entry.get("applies_to")
+        modifies = entry.get("modifies")
+        default_visibility_policy_id = str(entry.get("default_visibility_policy_id", "")).strip()
+        extensions = entry.get("extensions")
+        if (
+            (not effect_type_id)
+            or (not isinstance(applies_to, list))
+            or (not isinstance(modifies, list))
+            or (not default_visibility_policy_id)
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_effect_type_entry",
+                    "message": "effect type entry missing required fields",
+                    "path": "$.effect_types",
+                }
+            )
+            continue
+        if effect_type_id in seen_effect_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_effect_type_id",
+                    "message": "duplicate effect_type_id '{}'".format(effect_type_id),
+                    "path": "$.effect_types.effect_type_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "effect_type_id": effect_type_id,
+            "description": description,
+            "applies_to": _sorted_unique_strings(applies_to),
+            "modifies": _sorted_unique_strings(modifies),
+            "default_visibility_policy_id": default_visibility_policy_id,
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="effect_type",
+            payload=schema_payload,
+            path="data/registries/effect_type_registry.json#{}".format(effect_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_effect_type_ids.add(effect_type_id)
+        effect_type_rows.append(schema_payload)
+    effect_type_rows = sorted(effect_type_rows, key=lambda row: str(row.get("effect_type_id", "")))
+
+    stack_mode_set = {"replace", "max", "min", "add", "multiply"}
+    stacking_policy_rows: List[dict] = []
+    seen_stacking_policy_ids = set()
+    for entry in sorted(stack_rows_raw, key=lambda row: str((row or {}).get("stacking_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_stacking_policy_entry",
+                    "message": "stacking policy entry must be object",
+                    "path": "$.stacking_policies",
+                }
+            )
+            continue
+        stacking_policy_id = str(entry.get("stacking_policy_id", "")).strip()
+        mode = str(entry.get("mode", "")).strip()
+        tie_break_rule = str(entry.get("tie_break_rule", "")).strip()
+        extensions = entry.get("extensions")
+        if (
+            (not stacking_policy_id)
+            or (mode not in stack_mode_set)
+            or (not tie_break_rule)
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_stacking_policy_entry",
+                    "message": "stacking policy entry missing required fields",
+                    "path": "$.stacking_policies",
+                }
+            )
+            continue
+        if stacking_policy_id in seen_stacking_policy_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_stacking_policy_id",
+                    "message": "duplicate stacking_policy_id '{}'".format(stacking_policy_id),
+                    "path": "$.stacking_policies.stacking_policy_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "stacking_policy_id": stacking_policy_id,
+            "mode": mode,
+            "tie_break_rule": tie_break_rule,
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="stacking_policy",
+            payload=schema_payload,
+            path="data/registries/stacking_policy_registry.json#{}".format(stacking_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_stacking_policy_ids.add(stacking_policy_id)
+        stacking_policy_rows.append(schema_payload)
+    stacking_policy_rows = sorted(stacking_policy_rows, key=lambda row: str(row.get("stacking_policy_id", "")))
+
+    return effect_type_rows, stacking_policy_rows, errors
+
+
 def _interaction_registry_rows(
     repo_root: str,
 ) -> Tuple[List[dict], List[dict]]:
@@ -10147,6 +10302,10 @@ def compile_bundle(
         repo_root=repo_root,
         schema_root=schema_root,
     )
+    effect_type_rows, stacking_policy_rows, effect_registry_errors = _effect_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
     interaction_action_rows, interaction_registry_errors = _interaction_registry_rows(
         repo_root=repo_root,
     )
@@ -10534,6 +10693,7 @@ def compile_bundle(
         + worldgen_constraints_errors
         + control_registry_errors
         + capability_registry_errors
+        + effect_registry_errors
         + interaction_registry_errors
         + action_surface_registry_errors
         + pose_registry_errors
@@ -10958,6 +11118,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "policies": control_policy_rows,
+        }
+    )
+    effect_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "effect_types": effect_type_rows,
+        }
+    )
+    stacking_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "stacking_policies": stacking_policy_rows,
         }
     )
     interaction_action_payload = _finalize_registry_payload(
@@ -11471,6 +11645,8 @@ def compile_bundle(
         "control_action_registry": ("control_action_registry", control_action_payload),
         "capability_registry": ("capability_registry", capability_payload),
         "control_policy_registry": ("control_policy_registry", control_policy_payload),
+        "effect_type_registry": ("effect_type_registry", effect_type_payload),
+        "stacking_policy_registry": ("stacking_policy_registry", stacking_policy_payload),
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "surface_type_registry": ("surface_type_registry", surface_type_payload),
         "posture_registry": ("posture_registry", posture_payload),
@@ -11603,6 +11779,8 @@ def compile_bundle(
         "control_action_registry",
         "capability_registry",
         "control_policy_registry",
+        "effect_type_registry",
+        "stacking_policy_registry",
         "interaction_action_registry",
         "surface_type_registry",
         "posture_registry",
@@ -11746,6 +11924,8 @@ def compile_bundle(
             "control_action_registry_hash": registry_hashes["control_action_registry_hash"],
             "capability_registry_hash": registry_hashes["capability_registry_hash"],
             "control_policy_registry_hash": registry_hashes["control_policy_registry_hash"],
+            "effect_type_registry_hash": registry_hashes["effect_type_registry_hash"],
+            "stacking_policy_registry_hash": registry_hashes["stacking_policy_registry_hash"],
             "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
             "surface_type_registry_hash": registry_hashes["surface_type_registry_hash"],
             "posture_registry_hash": registry_hashes["posture_registry_hash"],

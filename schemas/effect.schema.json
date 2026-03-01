@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Effect Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-8 temporary effect contract.",
+  "x-doc-ref": [
+    "docs/audit/EFFECT_SYSTEM_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "effect_id",
+    "effect_type_id",
+    "target_id",
+    "applied_tick",
+    "magnitude",
+    "stacking_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "effect_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effect_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "applied_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expires_tick": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "duration_ticks": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "magnitude": {
+      "type": [
+        "object",
+        "integer",
+        "number",
+        "string"
+      ]
+    },
+    "stacking_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_event_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "effect_id": "effect.instance.0f5a139e260cb85b",
+      "effect_type_id": "effect.visibility_reduction",
+      "target_id": "assembly.structure_instance.alpha",
+      "applied_tick": 120,
+      "expires_tick": 180,
+      "duration_ticks": 60,
+      "magnitude": {
+        "visibility_permille": 600
+      },
+      "stacking_policy_id": "stack.min",
+      "source_event_id": "provenance.event.demo",
+      "deterministic_fingerprint": "e3f08d75c4e59e8f2d4ac88cfbe6d7ec94f8c2a03aa6c57d2dcd1dcc4a4b1c3f",
+      "extensions": {}
+    }
+  ]
+}
