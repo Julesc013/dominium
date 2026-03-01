@@ -36,6 +36,7 @@ _VALID_TARGET_KINDS = {
     "interior_portal",
     "pose_slot",
     "mount_point",
+    "formalization",
 }
 _VALID_FIDELITY = ("macro", "meso", "micro")
 _SECTION_IDS_BY_FIDELITY = {
@@ -174,6 +175,33 @@ _SECTION_IDS_BY_FIDELITY_PLAN = {
         "section.plan_resource_requirements",
     ],
 }
+_SECTION_IDS_BY_FIDELITY_FORMALIZATION = {
+    "macro": [
+        "section.capabilities_summary",
+        "section.formalization_summary",
+        "section.spec_compliance_summary",
+        "section.commitments_summary",
+        "section.events_summary",
+    ],
+    "meso": [
+        "section.capabilities_summary",
+        "section.formalization_summary",
+        "section.formalization_candidates",
+        "section.spec_compliance_summary",
+        "section.commitments_summary",
+        "section.events_summary",
+        "section.reenactment_link",
+    ],
+    "micro": [
+        "section.capabilities_summary",
+        "section.formalization_summary",
+        "section.formalization_candidates",
+        "section.spec_compliance_summary",
+        "section.commitments_summary",
+        "section.events_summary",
+        "section.reenactment_link",
+    ],
+}
 _DEFAULT_SECTION_ROWS = {
     "section.capabilities_summary": {"title": "Capabilities Summary", "extensions": {"cost_units": 1}},
     "section.material_stocks": {"title": "Material Stocks", "extensions": {"cost_units": 1}},
@@ -190,6 +218,8 @@ _DEFAULT_SECTION_ROWS = {
     "section.mount_points_summary": {"title": "Mount Points Summary", "extensions": {"cost_units": 1}},
     "section.plan_summary": {"title": "Plan Summary", "extensions": {"cost_units": 1}},
     "section.plan_resource_requirements": {"title": "Plan Resource Requirements", "extensions": {"cost_units": 2}},
+    "section.formalization_summary": {"title": "Formalization Summary", "extensions": {"cost_units": 1}},
+    "section.formalization_candidates": {"title": "Formalization Candidates", "extensions": {"cost_units": 2}},
     "section.interior.connectivity_summary": {"title": "Interior Connectivity Summary", "extensions": {"cost_units": 1}},
     "section.interior.portal_state_table": {"title": "Interior Portal State Table", "extensions": {"cost_units": 2}},
     "section.interior.pressure_summary": {"title": "Interior Pressure Summary", "extensions": {"cost_units": 2}},
@@ -250,6 +280,8 @@ def _quantize_map(values: object, *, step: int) -> dict:
 
 def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
+    if token.startswith("formalization.") or token.startswith("candidate.") or token.startswith("formalization.event."):
+        return "formalization"
     if token.startswith("plan."):
         return "plan"
     if token.startswith("pose.slot."):
@@ -383,6 +415,8 @@ def _section_ids_for_fidelity(*, fidelity: str, target_kind: str) -> List[str]:
         return list(_SECTION_IDS_BY_FIDELITY_POSE[token])
     if kind == "mount_point":
         return list(_SECTION_IDS_BY_FIDELITY_MOUNT[token])
+    if kind == "formalization":
+        return list(_SECTION_IDS_BY_FIDELITY_FORMALIZATION[token])
     return list(_SECTION_IDS_BY_FIDELITY[token])
 
 
@@ -498,6 +532,7 @@ def _events_for_target(state: Mapping[str, object], target_id: str, time_range: 
         "construction_provenance_events",
         "maintenance_provenance_events",
         "machine_provenance_events",
+        "formalization_events",
     ):
         for row in list((dict(state or {})).get(key) or []):
             if not isinstance(row, dict):
@@ -510,6 +545,7 @@ def _events_for_target(state: Mapping[str, object], target_id: str, time_range: 
                 str(row.get("linked_project_id", "")).strip(),
                 str(row.get("linked_step_id", "")).strip(),
                 str(row.get("asset_id", "")).strip(),
+                str(row.get("formalization_id", "")).strip(),
                 str(ext.get("asset_id", "")).strip(),
                 str(ext.get("project_id", "")).strip(),
                 str(ext.get("manifest_id", "")).strip(),
@@ -517,6 +553,9 @@ def _events_for_target(state: Mapping[str, object], target_id: str, time_range: 
                 str(ext.get("port_id", "")).strip(),
                 str(ext.get("operation_id", "")).strip(),
                 str(ext.get("connection_id", "")).strip(),
+                str(ext.get("formalization_id", "")).strip(),
+                str(ext.get("candidate_id", "")).strip(),
+                str(ext.get("network_graph_ref", "")).strip(),
             }
             if token not in candidates:
                 continue
@@ -763,6 +802,44 @@ def _build_section_data(
 ) -> dict:
     row = dict(target_payload.get("row") or {})
     payload_extensions = dict(target_payload.get("extensions") or {})
+    collection = str(target_payload.get("collection", "")).strip()
+
+    def _formalization_id_from_payload() -> str:
+        if collection == "formalization_states":
+            return str(row.get("formalization_id", "")).strip()
+        if collection == "formalization_inference_candidates":
+            return str(row.get("formalization_id", "")).strip()
+        if collection == "formalization_events":
+            return str(row.get("formalization_id", "")).strip()
+        token = str(request.get("target_id", "")).strip()
+        if token.startswith("formalization."):
+            return token
+        if token.startswith("candidate."):
+            for candidate in list((dict(state or {})).get("formalization_inference_candidates") or []):
+                if not isinstance(candidate, dict):
+                    continue
+                if str(candidate.get("candidate_id", "")).strip() != token:
+                    continue
+                return str(candidate.get("formalization_id", "")).strip()
+        if token.startswith("formalization.event."):
+            for event_row in list((dict(state or {})).get("formalization_events") or []):
+                if not isinstance(event_row, dict):
+                    continue
+                if str(event_row.get("event_id", "")).strip() != token:
+                    continue
+                return str(event_row.get("formalization_id", "")).strip()
+        return ""
+
+    def _formalization_state_row() -> dict:
+        formalization_id = _formalization_id_from_payload()
+        if not formalization_id:
+            return {}
+        for state_row in list((dict(state or {})).get("formalization_states") or []):
+            if not isinstance(state_row, dict):
+                continue
+            if str(state_row.get("formalization_id", "")).strip() == formalization_id:
+                return dict(state_row)
+        return {}
 
     def _graph_row() -> dict:
         graph_id = str(row.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip()
@@ -774,6 +851,110 @@ def _build_section_data(
             if str(candidate.get("graph_id", "")).strip() == graph_id:
                 return dict(candidate)
         return dict(row)
+
+    if section_id == "section.formalization_summary":
+        formalization_row = _formalization_state_row()
+        formalization_id = str(formalization_row.get("formalization_id", "")).strip()
+        if not formalization_row:
+            return {"available": False}
+        state_token = str(formalization_row.get("state", "raw")).strip() or "raw"
+        target_context_id = str(formalization_row.get("target_context_id", "")).strip() or None
+        raw_sources = _sorted_unique_strings(formalization_row.get("raw_sources"))
+        candidate_count = len(
+            [
+                candidate
+                for candidate in list((dict(state or {})).get("formalization_inference_candidates") or [])
+                if isinstance(candidate, dict)
+                and str(candidate.get("formalization_id", "")).strip() == formalization_id
+            ]
+        )
+        event_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("formalization_events") or [])
+            if isinstance(item, dict) and str(item.get("formalization_id", "")).strip() == formalization_id
+        ]
+        latest_event = (
+            sorted(
+                event_rows,
+                key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+            )[-1]
+            if event_rows
+            else {}
+        )
+        payload = {
+            "available": True,
+            "formalization_id": formalization_id,
+            "target_kind": str(formalization_row.get("target_kind", "")).strip() or "custom",
+            "state": state_token,
+            "state_rank": {"raw": 0, "inferred": 1, "formal": 2, "networked": 3}.get(state_token, 0),
+            "raw_source_count": len(raw_sources),
+            "candidate_count": int(candidate_count),
+            "event_count": int(len(event_rows)),
+            "spec_id": str(formalization_row.get("spec_id", "")).strip() or None,
+            "has_formal_artifact": bool(str(formalization_row.get("formal_artifact_ref", "")).strip()),
+            "has_network_graph_ref": bool(str(formalization_row.get("network_graph_ref", "")).strip()),
+            "latest_transition": str(latest_event.get("transition", "")).strip() or None,
+            "latest_event_id": str(latest_event.get("event_id", "")).strip() or None,
+        }
+        if not allow_hidden_state:
+            payload["epistemic_redaction"] = "coarse_summary"
+            return payload
+        payload["target_context_id"] = target_context_id
+        payload["raw_sources"] = list(raw_sources)
+        payload["inferred_artifact_ref"] = str(formalization_row.get("inferred_artifact_ref", "")).strip() or None
+        payload["formal_artifact_ref"] = str(formalization_row.get("formal_artifact_ref", "")).strip() or None
+        payload["network_graph_ref"] = str(formalization_row.get("network_graph_ref", "")).strip() or None
+        payload["created_tick"] = int(max(0, _as_int(formalization_row.get("created_tick", 0), 0)))
+        payload["epistemic_redaction"] = "none"
+        return payload
+
+    if section_id == "section.formalization_candidates":
+        formalization_id = _formalization_id_from_payload()
+        if not formalization_id:
+            return {"available": False}
+        candidate_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("formalization_inference_candidates") or [])
+            if isinstance(item, dict) and str(item.get("formalization_id", "")).strip() == formalization_id
+        ]
+        candidate_rows = sorted(
+            candidate_rows,
+            key=lambda item: (
+                str(item.get("candidate_kind", "")),
+                -_as_int(item.get("confidence_score", 0), 0),
+                str(item.get("candidate_id", "")),
+            ),
+        )
+        payload = {
+            "available": True,
+            "formalization_id": formalization_id,
+            "candidate_count": int(len(candidate_rows)),
+            "candidate_kind_counts": {},
+            "max_confidence_score": int(
+                max([_as_int(item.get("confidence_score", 0), 0) for item in candidate_rows], default=0)
+            ),
+        }
+        counts: Dict[str, int] = {}
+        for candidate in candidate_rows:
+            candidate_kind = str(candidate.get("candidate_kind", "")).strip() or "corridor"
+            counts[candidate_kind] = _as_int(counts.get(candidate_kind, 0), 0) + 1
+        payload["candidate_kind_counts"] = dict((key, counts[key]) for key in sorted(counts.keys()))
+        if not allow_hidden_state:
+            payload["epistemic_redaction"] = "coarse_summary"
+            return payload
+        payload["rows"] = [
+            {
+                "candidate_id": str(candidate.get("candidate_id", "")).strip(),
+                "candidate_kind": str(candidate.get("candidate_kind", "")).strip() or "corridor",
+                "confidence_score": int(max(0, _as_int(candidate.get("confidence_score", 0), 0))),
+                "geometry_preview_ref": str(candidate.get("geometry_preview_ref", "")).strip() or None,
+                "suggested_spec_ids": _sorted_unique_strings(candidate.get("suggested_spec_ids")),
+            }
+            for candidate in candidate_rows[:128]
+            if str(candidate.get("candidate_id", "")).strip()
+        ]
+        payload["epistemic_redaction"] = "none"
+        return payload
 
     if section_id == "section.material_stocks":
         port_contents = list(row.get("current_contents") or [])
@@ -1432,6 +1613,45 @@ def _build_section_data(
     if section_id == "section.spec_compliance_summary":
         payload_ext = dict(target_payload.get("extensions") or {})
         summary = dict(payload_ext.get("spec_compliance_summary") or {})
+        if not summary and collection == "formalization_states":
+            formalization_row = dict(row)
+            formalization_spec_id = str(formalization_row.get("spec_id", "")).strip()
+            if formalization_spec_id:
+                target_context_id = str(formalization_row.get("target_context_id", "")).strip()
+                compliance_rows = [
+                    dict(item)
+                    for item in list((dict(state or {})).get("spec_compliance_results") or [])
+                    if isinstance(item, dict)
+                    and str(item.get("spec_id", "")).strip() == formalization_spec_id
+                    and str(item.get("target_id", "")).strip() == target_context_id
+                ]
+                compliance_rows = sorted(
+                    compliance_rows,
+                    key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("result_id", ""))),
+                )
+                latest = dict(compliance_rows[-1] if compliance_rows else {})
+                check_counts = {"pass": 0, "warn": 0, "fail": 0}
+                for check_row in list(latest.get("check_results") or []):
+                    if not isinstance(check_row, dict):
+                        continue
+                    grade = str(check_row.get("grade", "")).strip()
+                    if grade in check_counts:
+                        check_counts[grade] = _as_int(check_counts.get(grade, 0), 0) + 1
+                summary = {
+                    "available": True,
+                    "target_kind": "structure",
+                    "target_id": target_context_id,
+                    "bound_spec_id": formalization_spec_id,
+                    "binding_id": None,
+                    "binding_tick": int(max(0, _as_int(formalization_row.get("created_tick", 0), 0))),
+                    "result_id": str(latest.get("result_id", "")).strip() or None,
+                    "result_tick": int(max(0, _as_int(latest.get("tick", 0), 0))),
+                    "overall_grade": str(latest.get("overall_grade", "")).strip() or "",
+                    "check_count": int(len(list(latest.get("check_results") or []))),
+                    "check_grade_counts": dict(check_counts),
+                    "failure_refusal_codes": [],
+                    "strict_noncompliant": False,
+                }
         if not summary:
             return {"available": False}
         target_id = str(summary.get("target_id", "")).strip() or str(request.get("target_id", "")).strip() or None
@@ -1472,6 +1692,14 @@ def _build_section_data(
         rows = []
         for key in ("material_commitments", "construction_commitments", "shipment_commitments", "maintenance_commitments"):
             rows.extend([dict(item) for item in list((dict(state or {})).get(key) or []) if isinstance(item, dict)])
+        formalization_id = _formalization_id_from_payload()
+        if formalization_id:
+            rows = [
+                item
+                for item in rows
+                if str(item.get("target_id", "")).strip() == formalization_id
+                or str((dict(item.get("extensions") or {})).get("formalization_id", "")).strip() == formalization_id
+            ]
         status_counts: Dict[str, int] = {}
         for item in rows:
             status = str(item.get("status", "planned")).strip() or "planned"

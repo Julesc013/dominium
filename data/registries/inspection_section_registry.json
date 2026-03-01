@@ -306,6 +306,32 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.formalization_summary",
+        "title": "Formalization Summary",
+        "data": {
+          "data_kind": "formalization_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.formalization_candidates",
+        "title": "Formalization Candidates",
+        "data": {
+          "data_kind": "formalization_candidates"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.ag_progress",
         "title": "Assembly Progress",
         "data": {

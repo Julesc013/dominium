@@ -8490,6 +8490,16 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
                 "collection": "mount_points",
                 "row": row,
             }
+    if token.startswith("formalization."):
+        formalization_id = str(token).strip()
+        row = _row_by_id_value(state.get("formalization_states"), "formalization_id", formalization_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "formalization_states",
+                "row": row,
+            }
 
     id_table = (
         ("cohort_assemblies", "cohort_id"),
@@ -8519,6 +8529,9 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("pose_slots", "pose_slot_id"),
         ("mount_points", "mount_point_id"),
         ("pose_mount_provenance_events", "event_id"),
+        ("formalization_states", "formalization_id"),
+        ("formalization_inference_candidates", "candidate_id"),
+        ("formalization_events", "event_id"),
         ("machine_assemblies", "machine_id"),
         ("machine_ports", "port_id"),
         ("machine_port_connections", "connection_id"),

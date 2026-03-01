@@ -1269,6 +1269,179 @@ def _plan_overlay_payload(
     }
 
 
+def _formalization_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    snapshot = dict(inspection_snapshot or {})
+    payload = dict(snapshot.get("target_payload") or {})
+    row = dict(payload.get("row") or {})
+    sections = dict(snapshot.get("summary_sections") or {})
+    formalization_section = dict(sections.get("section.formalization_summary") or {})
+    formalization_data = dict(formalization_section.get("data") or {})
+    candidate_section = dict(sections.get("section.formalization_candidates") or {})
+    candidate_data = dict(candidate_section.get("data") or {})
+
+    formalization_id = (
+        str(formalization_data.get("formalization_id", "")).strip()
+        or str(row.get("formalization_id", "")).strip()
+        or str(target_semantic_id).strip()
+    )
+    state_token = str(formalization_data.get("state", "")).strip() or str(row.get("state", "")).strip() or "raw"
+    candidate_count = int(max(0, _to_int(candidate_data.get("candidate_count", formalization_data.get("candidate_count", 0)), 0)))
+    spec_id = str(formalization_data.get("spec_id", "")).strip() or str(row.get("spec_id", "")).strip() or None
+    network_graph_ref = str(formalization_data.get("network_graph_ref", "")).strip() or str(row.get("network_graph_ref", "")).strip() or None
+    inferred_rows = [dict(item) for item in list(candidate_data.get("rows") or []) if isinstance(item, dict)]
+    redaction = str(candidate_data.get("epistemic_redaction", "")).strip() or str(formalization_data.get("epistemic_redaction", "")).strip() or "unknown"
+
+    if not formalization_id:
+        return {
+            "mode": "formalization_overlay",
+            "summary": "formalization:unavailable",
+            "target_semantic_id": str(target_semantic_id),
+            "inspection_snapshot": dict(snapshot),
+            "renderables": _overlay_renderables(
+                target_semantic_id=str(target_semantic_id),
+                summary_label="formalization unavailable",
+                mode="formalization_overlay",
+            ),
+            "materials": _overlay_materials(target_semantic_id=str(target_semantic_id)),
+            "degraded": True,
+            "extensions": {"overlay_kind": "formalization", "state": "missing"},
+        }
+
+    state_material_id = "mat.inspect.formalization.state.{}".format(canonical_sha256({"formalization_id": formalization_id})[:12])
+    candidate_material_id = "mat.inspect.formalization.inferred.{}".format(
+        canonical_sha256({"formalization_id": formalization_id, "candidate": True})[:12]
+    )
+    state_color = _color_from_seed({"formalization_id": formalization_id, "state": state_token}, floor=72)
+    candidate_color = _color_from_seed({"formalization_id": formalization_id, "candidate_count": candidate_count}, floor=58)
+    materials = sorted(
+        _overlay_materials(target_semantic_id=formalization_id)
+        + [
+            {
+                "schema_version": "1.0.0",
+                "material_id": state_material_id,
+                "base_color": dict(state_color),
+                "roughness": 260,
+                "metallic": 0,
+                "emission": None,
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "formalization_state"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": candidate_material_id,
+                "base_color": dict(candidate_color),
+                "roughness": 180,
+                "metallic": 0,
+                "emission": {
+                    "r": candidate_color["r"],
+                    "g": candidate_color["g"],
+                    "b": candidate_color["b"],
+                    "strength": 240,
+                },
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "formalization_candidate"},
+            },
+        ],
+        key=lambda item: str(item.get("material_id", "")),
+    )
+
+    summary_bits = ["state={}".format(state_token), "candidates={}".format(candidate_count)]
+    if spec_id:
+        summary_bits.append("spec=bound")
+    if network_graph_ref:
+        summary_bits.append("networked")
+    summary_label = "formalize:{} {}".format(formalization_id, " ".join(summary_bits))
+    renderables = _overlay_renderables(
+        target_semantic_id=formalization_id,
+        summary_label=summary_label,
+        mode="formalization_overlay",
+    )
+    renderables.append(
+        {
+            "schema_version": "1.0.0",
+            "renderable_id": "overlay.inspect.formalization.state.{}".format(
+                canonical_sha256({"formalization_id": formalization_id, "state": state_token})[:16]
+            ),
+            "semantic_id": "overlay.inspect.formalization.state.{}".format(formalization_id),
+            "primitive_id": "prim.glyph.node",
+            "transform": {
+                "position_mm": {"x": 0, "y": 0, "z": 0},
+                "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                "scale_permille": 1100,
+            },
+            "material_id": state_material_id,
+            "layer_tags": ["overlay", "ui"],
+            "label": None,
+            "lod_hint": "lod.band.near",
+            "flags": {"selectable": False, "highlighted": state_token in {"formal", "networked"}},
+            "extensions": {
+                "interaction_overlay": True,
+                "overlay_kind": "formalization_state",
+                "formalization_id": formalization_id,
+                "state": state_token,
+            },
+        }
+    )
+
+    if state_token == "inferred":
+        for index, candidate in enumerate(inferred_rows[:16]):
+            candidate_id = str(candidate.get("candidate_id", "")).strip()
+            if not candidate_id:
+                continue
+            renderables.append(
+                {
+                    "schema_version": "1.0.0",
+                    "renderable_id": "overlay.inspect.formalization.candidate.{}".format(
+                        canonical_sha256({"formalization_id": formalization_id, "candidate_id": candidate_id})[:16]
+                    ),
+                    "semantic_id": "overlay.inspect.formalization.candidate.{}".format(candidate_id),
+                    "primitive_id": "prim.line.debug",
+                    "transform": {
+                        "position_mm": {"x": int(index) * 120, "y": 160, "z": 0},
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 1000,
+                    },
+                    "material_id": candidate_material_id,
+                    "layer_tags": ["overlay", "ui"],
+                    "label": None,
+                    "lod_hint": "lod.band.mid",
+                    "flags": {"selectable": False, "highlighted": True},
+                    "extensions": {
+                        "interaction_overlay": True,
+                        "overlay_kind": "formalization_candidate",
+                        "formalization_id": formalization_id,
+                        "candidate_id": candidate_id,
+                        "geometry_preview_ref": str(candidate.get("geometry_preview_ref", "")).strip() or None,
+                    },
+                }
+            )
+
+    return {
+        "mode": "formalization_overlay",
+        "summary": summary_label,
+        "target_semantic_id": formalization_id,
+        "inspection_snapshot": dict(snapshot),
+        "renderables": sorted(renderables, key=lambda item: str(item.get("renderable_id", ""))),
+        "materials": list(materials),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "formalization",
+            "formalization_id": formalization_id,
+            "state": state_token,
+            "candidate_count": int(candidate_count),
+            "spec_id": spec_id,
+            "network_graph_ref": network_graph_ref,
+            "epistemic_redaction": redaction,
+        },
+    }
+
+
 def _runtime_rows(runtime: dict, key: str) -> list[dict]:
     rows = list((dict(runtime or {})).get(key) or [])
     return sorted(
@@ -2333,6 +2506,25 @@ def build_inspection_overlays(
     snapshot_payload = dict(inspection_snapshot or {})
     snapshot_target = dict(snapshot_payload.get("target_payload") or {})
     snapshot_collection = str(snapshot_target.get("collection", "")).strip()
+    if (
+        target_id.startswith("formalization.")
+        or target_id.startswith("candidate.")
+        or target_id.startswith("formalization.event.")
+        or snapshot_collection in (
+            "formalization_states",
+            "formalization_inference_candidates",
+            "formalization_events",
+        )
+    ):
+        formalization_overlay = _formalization_overlay_payload(
+            target_semantic_id=target_id,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": formalization_overlay,
+            "overlay_runtime": runtime,
+        }
     if target_id.startswith("graph.") or snapshot_collection == "network_graphs":
         graph_overlay = _network_graph_overlay_payload(
             target_semantic_id=target_id,

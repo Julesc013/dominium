@@ -241,6 +241,79 @@
       },
       {
         "schema_version": "1.0.0",
+        "action_id": "action.formalize.infer",
+        "display_name": "Infer Formalization",
+        "produces": {
+          "process_id": "process.formalization_infer",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.inspect"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "structure"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.formalize.accept",
+        "display_name": "Accept Formalization",
+        "produces": {
+          "process_id": "process.formalization_accept_candidate",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "structure"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.formalize.promote_network",
+        "display_name": "Promote Networked",
+        "produces": {
+          "process_id": "process.formalization_promote_networked",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "graph",
+          "structure"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.formalize.revert",
+        "display_name": "Revert Formalization",
+        "produces": {
+          "process_id": "process.formalization_revert",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "structure"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "action_id": "action.pose.enter",
         "display_name": "Enter Pose Slot",
         "produces": {
