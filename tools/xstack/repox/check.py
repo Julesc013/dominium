@@ -585,6 +585,13 @@ AUDITX_FINDINGS_PATH = "docs/audit/auditx/FINDINGS.json"
 AUDITX_RUNTIME_PROBE_OUTPUT_ROOT = ".xstack_cache/auditx/repox_probe"
 AUDITX_HIGH_RISK_CONFIDENCE = 0.85
 AUDITX_HIGH_RISK_THRESHOLD = 15
+AUDITX_HARD_FAIL_CONFIDENCE = 0.8
+AUDITX_HARD_FAIL_ANALYZER_RULES = {
+    "E129_CONTROL_PLANE_BYPASS_SMELL": "INV-CONTROL-PLANE-ONLY-DISPATCH",
+    "E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL": "INV-CONTROL-INTENT-REQUIRED",
+    "E131_SILENT_DOWNGRADE_SMELL": "INV-NO-DOMAIN-DOWNGRADE-LOGIC",
+    "E132_MISSING_DECISION_LOG_SMELL": "INV-DECISION-LOG-MANDATORY",
+}
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
 CI_LANE_REQUIRED_JOBS = (
@@ -2524,6 +2531,47 @@ def _append_auditx_invariant_findings(
                         confidence = 0.0
                     if confidence >= AUDITX_HIGH_RISK_CONFIDENCE:
                         high_risk += 1
+
+                hard_fail_rows = 0
+                for row in records:
+                    if not isinstance(row, dict):
+                        continue
+                    analyzer_id = str(row.get("analyzer_id", "")).strip()
+                    rule_id = str(AUDITX_HARD_FAIL_ANALYZER_RULES.get(analyzer_id, "")).strip()
+                    if not rule_id:
+                        continue
+                    severity_token = str(row.get("severity", "")).strip().upper()
+                    if severity_token not in ("RISK", "VIOLATION"):
+                        continue
+                    try:
+                        confidence = float(row.get("confidence", 0.0))
+                    except (TypeError, ValueError):
+                        confidence = 0.0
+                    if confidence < AUDITX_HARD_FAIL_CONFIDENCE:
+                        continue
+                    location = dict(row.get("location") or {})
+                    file_path = str(location.get("file_path", "")).strip() or AUDITX_FINDINGS_PATH
+                    line_number = int(location.get("line_start", 1) or 1)
+                    evidence_rows = [str(item).strip() for item in list(row.get("evidence") or []) if str(item).strip()]
+                    snippet = str((evidence_rows[0] if evidence_rows else "")).strip()[:140]
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=file_path,
+                            line_number=max(1, line_number),
+                            snippet=snippet,
+                            message="AuditX hard-fail analyzer {} reported {} (confidence={:.2f})".format(
+                                analyzer_id,
+                                severity_token.lower(),
+                                confidence,
+                            ),
+                            rule_id=rule_id,
+                        )
+                    )
+                    hard_fail_rows += 1
+                    if hard_fail_rows >= 50:
+                        break
+
                 if high_risk >= AUDITX_HIGH_RISK_THRESHOLD:
                     findings.append(
                         _finding(
