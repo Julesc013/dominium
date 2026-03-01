@@ -345,6 +345,19 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.spec_compliance_summary",
+        "title": "Spec Compliance Summary",
+        "data": {
+          "data_kind": "spec_compliance_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.commitments_summary",
         "title": "Commitments",
         "data": {

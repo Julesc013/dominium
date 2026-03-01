@@ -1661,6 +1661,9 @@ def _construction_overlay_payload(
     commitments = _runtime_rows(runtime, "construction_commitments")
     structures = _runtime_rows(runtime, "installed_structure_instances")
     events = _runtime_rows(runtime, "construction_provenance_events")
+    summary_sections = dict((dict(inspection_snapshot or {})).get("summary_sections") or {})
+    spec_section = dict(summary_sections.get("section.spec_compliance_summary") or {})
+    spec_data = dict(spec_section.get("data") or {})
 
     project_row = {}
     if project_id:
@@ -1730,6 +1733,9 @@ def _construction_overlay_payload(
     planned_material_id = "mat.inspect.construction.planned.{}".format(canonical_sha256({"project_id": project_id, "kind": "planned"})[:12])
     completed_material_id = "mat.inspect.construction.completed.{}".format(canonical_sha256({"project_id": project_id, "kind": "completed"})[:12])
     label_material_id = "mat.inspect.construction.label.{}".format(canonical_sha256({"project_id": project_id, "kind": "label"})[:12])
+    spec_pass_material_id = "mat.inspect.construction.spec.pass.{}".format(canonical_sha256({"project_id": project_id, "kind": "spec_pass"})[:12])
+    spec_warn_material_id = "mat.inspect.construction.spec.warn.{}".format(canonical_sha256({"project_id": project_id, "kind": "spec_warn"})[:12])
+    spec_fail_material_id = "mat.inspect.construction.spec.fail.{}".format(canonical_sha256({"project_id": project_id, "kind": "spec_fail"})[:12])
     materials = sorted(
         [
             {
@@ -1764,6 +1770,39 @@ def _construction_overlay_payload(
                 "transparency": None,
                 "pattern_id": None,
                 "extensions": {"interaction_overlay": True, "overlay_kind": "construction_label"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": spec_pass_material_id,
+                "base_color": {"r": 120, "g": 208, "b": 128},
+                "roughness": 300,
+                "metallic": 0,
+                "emission": {"r": 120, "g": 208, "b": 128, "strength": 110},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "construction_spec_pass"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": spec_warn_material_id,
+                "base_color": {"r": 236, "g": 196, "b": 92},
+                "roughness": 280,
+                "metallic": 0,
+                "emission": {"r": 236, "g": 196, "b": 92, "strength": 120},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "construction_spec_warn"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": spec_fail_material_id,
+                "base_color": {"r": 224, "g": 112, "b": 104},
+                "roughness": 260,
+                "metallic": 0,
+                "emission": {"r": 224, "g": 112, "b": 104, "strength": 140},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "construction_spec_fail"},
             },
         ],
         key=lambda row: str(row.get("material_id", "")),
@@ -1808,6 +1847,9 @@ def _construction_overlay_payload(
         int(total_nodes),
         int(materials_consumed_mass),
     )
+    spec_grade = str(spec_data.get("overall_grade", "")).strip()
+    if spec_grade in {"pass", "warn", "fail"}:
+        summary_label = "{} spec={}".format(summary_label, spec_grade)
     renderables.append(
         {
             "schema_version": "1.0.0",
@@ -1831,6 +1873,44 @@ def _construction_overlay_payload(
             },
         }
     )
+    if bool(spec_data.get("available", False)):
+        spec_status = spec_grade if spec_grade in {"pass", "warn", "fail"} else "unknown"
+        spec_material_id = {
+            "pass": spec_pass_material_id,
+            "warn": spec_warn_material_id,
+            "fail": spec_fail_material_id,
+        }.get(spec_status, label_material_id)
+        spec_label = "spec:{} {}".format(
+            str(spec_data.get("bound_spec_id", "unbound")).strip() or "unbound",
+            spec_status,
+        )
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.construction.spec.{}".format(
+                    canonical_sha256({"project_id": project_id, "target_id": target_id, "spec": spec_status})[:16]
+                ),
+                "semantic_id": "overlay.inspect.construction.spec.{}".format(project_id or target_id or "unknown"),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 180, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 850,
+                },
+                "material_id": spec_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": spec_label,
+                "lod_hint": "lod.band.near",
+                "flags": {"selectable": False, "highlighted": spec_status in {"warn", "fail"}},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "construction_spec_compliance",
+                    "overall_grade": spec_status,
+                    "spec_id": str(spec_data.get("bound_spec_id", "")).strip() or None,
+                    "result_id": str(spec_data.get("result_id", "")).strip() or None,
+                },
+            }
+        )
     return {
         "mode": "construction_overlay",
         "summary": summary_label,

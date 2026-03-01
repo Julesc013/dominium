@@ -21,6 +21,7 @@ CONTROL_REFUSAL_DEGRADED = "refusal.ctrl.degraded"
 CONTROL_REFUSAL_PLANNING_ONLY = "refusal.ctrl.planning_only"
 CONTROL_REFUSAL_META_FORBIDDEN = "refusal.ctrl.meta_forbidden"
 CONTROL_REFUSAL_REPLAY_MUTATION_FORBIDDEN = "refusal.ctrl.replay_mutation_forbidden"
+CONTROL_REFUSAL_SPEC_NONCOMPLIANT = "refusal.spec.noncompliant"
 
 DOWNGRADE_BUDGET = "downgrade.budget_insufficient"
 DOWNGRADE_RANK_FAIRNESS = "downgrade.rank_fairness"
@@ -28,6 +29,7 @@ DOWNGRADE_EPISTEMIC = "downgrade.epistemic_limits"
 DOWNGRADE_POLICY = "downgrade.policy_disallows"
 DOWNGRADE_TARGET_NOT_AVAILABLE = "downgrade.target_not_available"
 DOWNGRADE_EFFECT_VISIBILITY = "downgrade.effect.visibility_reduction"
+DOWNGRADE_SPEC_NONCOMPLIANT = "downgrade.spec.noncompliant"
 
 _ABSTRACTION_LEVELS = ("AL0", "AL1", "AL2", "AL3", "AL4")
 _FIDELITY_LEVELS = ("macro", "meso", "micro")
@@ -525,6 +527,9 @@ def _decision_log_extensions(policy_context: Mapping[str, object] | None) -> dic
     effect_context = _normalize_decision_extension_payload(payload.get("effect_influence"))
     if effect_context:
         out["effect_influence"] = dict(effect_context)
+    spec_context = _normalize_decision_extension_payload(payload.get("spec_compliance"))
+    if spec_context:
+        out["spec_compliance"] = dict(spec_context)
     return out
 
 
@@ -877,6 +882,7 @@ def build_control_resolution(
     policy_context_payload = dict(policy_context or {})
     decision_log_extensions = _decision_log_extensions(policy_context_payload)
     effect_influence_payload: dict = {}
+    spec_compliance_payload: dict = {}
 
     control_intent_id = str(intent.get("control_intent_id", "")).strip()
     if not control_intent_id:
@@ -972,6 +978,10 @@ def build_control_resolution(
     if effect_influence_payload:
         decision_log_extensions = dict(decision_log_extensions)
         decision_log_extensions["effect_influence"] = dict(effect_influence_payload)
+    spec_compliance_payload = _normalize_decision_extension_payload(policy_context_payload.get("spec_compliance"))
+    if spec_compliance_payload:
+        decision_log_extensions = dict(decision_log_extensions)
+        decision_log_extensions["spec_compliance"] = dict(spec_compliance_payload)
     requester_subject_id = str(intent.get("requester_subject_id", "")).strip()
     capability_target_candidates = [token for token in (target_entity_id, requester_subject_id) if token]
     if not capability_target_candidates:
@@ -1116,10 +1126,56 @@ def build_control_resolution(
                 if previous_view != fallback_view:
                     resolved_vector_full["view_resolved"] = str(fallback_view)
     negotiation_payload["resolved_vector"] = resolved_vector_full
+    payload_extensions = dict(negotiation_payload.get("extensions") or {})
     if effect_influence_payload:
-        payload_extensions = dict(negotiation_payload.get("extensions") or {})
         payload_extensions["effect_influence"] = dict(effect_influence_payload)
+    if spec_compliance_payload:
+        payload_extensions["spec_compliance"] = dict(spec_compliance_payload)
+    if payload_extensions:
         negotiation_payload["extensions"] = payload_extensions
+    spec_bound_id = str(spec_compliance_payload.get("bound_spec_id", "")).strip()
+    spec_overall_grade = str(spec_compliance_payload.get("overall_grade", "")).strip()
+    spec_enforced = bool(spec_compliance_payload.get("enforce", False))
+    if spec_compliance_payload and (not spec_enforced) and spec_bound_id and spec_overall_grade in {"warn", "fail"}:
+        downgrade_entries = [
+            dict(row)
+            for row in list(negotiation_payload.get("downgrade_entries") or [])
+            if isinstance(row, Mapping)
+        ]
+        downgrade_seed = {
+            "control_intent_id": control_intent_id,
+            "axis": "spec_compliance",
+            "from_value": spec_overall_grade,
+            "to_value": "allowed_with_warning",
+            "reason_code": DOWNGRADE_SPEC_NONCOMPLIANT,
+            "spec_compliance": spec_compliance_payload,
+        }
+        downgrade_entry = {
+            "schema_version": "1.0.0",
+            "downgrade_id": "downgrade.spec.{}".format(canonical_sha256(downgrade_seed)[:16]),
+            "axis": "spec_compliance",
+            "from_value": spec_overall_grade,
+            "to_value": "allowed_with_warning",
+            "reason_code": DOWNGRADE_SPEC_NONCOMPLIANT,
+            "remediation_hint": "hint.spec.run_compliance_or_update_spec",
+            "extensions": {
+                "spec_id": spec_bound_id or None,
+                "target_kind": str(spec_compliance_payload.get("target_kind", "")).strip() or None,
+                "target_id": str(spec_compliance_payload.get("target_id", "")).strip() or None,
+                "result_id": str(spec_compliance_payload.get("result_id", "")).strip() or None,
+            },
+        }
+        existing_ids = set(
+            str(row.get("downgrade_id", "")).strip()
+            for row in downgrade_entries
+            if str(row.get("downgrade_id", "")).strip()
+        )
+        if str(downgrade_entry.get("downgrade_id", "")).strip() not in existing_ids:
+            downgrade_entries.append(downgrade_entry)
+            negotiation_payload["downgrade_entries"] = sorted(
+                downgrade_entries,
+                key=lambda row: str(row.get("downgrade_id", "")),
+            )
     seed = dict(negotiation_payload)
     seed["deterministic_fingerprint"] = ""
     negotiation_payload["deterministic_fingerprint"] = canonical_sha256(seed)
@@ -1166,6 +1222,48 @@ def build_control_resolution(
             ),
             "refusal": dict(refusal_payload),
         }
+
+    if spec_compliance_payload and spec_enforced and spec_bound_id:
+        spec_compliance_available = bool(spec_compliance_payload.get("compliance_available", False))
+        if not spec_compliance_available:
+            refusal_payload = _refusal(
+                CONTROL_REFUSAL_SPEC_NONCOMPLIANT,
+                "spec compliance evidence is required by policy before execution",
+                "Run process.spec_check_compliance for the bound spec target, then retry execution.",
+                {
+                    "spec_id": spec_bound_id,
+                    "target_kind": str(spec_compliance_payload.get("target_kind", "")).strip(),
+                    "target_id": str(spec_compliance_payload.get("target_id", "")).strip(),
+                },
+                "$.target_id",
+            )
+            return _finalize_refusal(
+                refusal_payload=refusal_payload,
+                negotiation_for_log=_negotiation_with_refusal_code(
+                    negotiation_payload,
+                    CONTROL_REFUSAL_SPEC_NONCOMPLIANT,
+                ),
+            )
+        if spec_overall_grade == "fail":
+            refusal_payload = _refusal(
+                CONTROL_REFUSAL_SPEC_NONCOMPLIANT,
+                "target is noncompliant with enforced bound spec",
+                "Adjust the target/spec and rerun compliance checks before retrying execution.",
+                {
+                    "spec_id": spec_bound_id,
+                    "target_kind": str(spec_compliance_payload.get("target_kind", "")).strip(),
+                    "target_id": str(spec_compliance_payload.get("target_id", "")).strip(),
+                    "result_id": str(spec_compliance_payload.get("result_id", "")).strip(),
+                },
+                "$.target_id",
+            )
+            return _finalize_refusal(
+                refusal_payload=refusal_payload,
+                negotiation_for_log=_negotiation_with_refusal_code(
+                    negotiation_payload,
+                    CONTROL_REFUSAL_SPEC_NONCOMPLIANT,
+                ),
+            )
 
     if required_capabilities and normalized_capability_bindings:
         capability_satisfied = False
