@@ -9,6 +9,7 @@ from typing import Dict, List, Mapping, Tuple
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 from .capability import capability_binding_rows, resolve_missing_capabilities
+from .effects import REFUSAL_EFFECT_FORBIDDEN, get_effective_modifier_map
 from .negotiation import negotiate_request
 
 
@@ -26,6 +27,7 @@ DOWNGRADE_RANK_FAIRNESS = "downgrade.rank_fairness"
 DOWNGRADE_EPISTEMIC = "downgrade.epistemic_limits"
 DOWNGRADE_POLICY = "downgrade.policy_disallows"
 DOWNGRADE_TARGET_NOT_AVAILABLE = "downgrade.target_not_available"
+DOWNGRADE_EFFECT_VISIBILITY = "downgrade.effect.visibility_reduction"
 
 _ABSTRACTION_LEVELS = ("AL0", "AL1", "AL2", "AL3", "AL4")
 _FIDELITY_LEVELS = ("macro", "meso", "micro")
@@ -411,30 +413,119 @@ def _build_envelope(
     }
 
 
-def _decision_log_extensions(policy_context: Mapping[str, object] | None) -> dict:
-    payload = dict(policy_context or {})
-    ir_context = dict(payload.get("control_ir_execution") or {})
-    if not ir_context:
+def _policy_dict(payload: Mapping[str, object] | None, key: str) -> dict:
+    if not isinstance(payload, Mapping):
         return {}
-    normalized = {}
-    for key in sorted(ir_context.keys()):
+    row = payload.get(key)
+    if not isinstance(row, Mapping):
+        return {}
+    return dict(row)
+
+
+def _policy_rows(payload: Mapping[str, object] | None, key: str) -> List[dict]:
+    if not isinstance(payload, Mapping):
+        return []
+    rows = payload.get(key)
+    if not isinstance(rows, list):
+        return []
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _normalize_decision_extension_payload(payload: Mapping[str, object] | None) -> dict:
+    out = {}
+    for key in sorted((dict(payload or {})).keys()):
         token = str(key).strip()
         if not token:
             continue
-        value = ir_context.get(key)
+        value = (dict(payload or {})).get(key)
         if isinstance(value, (str, int, float, bool)) or value is None:
             if isinstance(value, str):
                 stripped = str(value).strip()
                 if not stripped:
                     continue
-                normalized[token] = stripped
+                out[token] = stripped
             elif value is not None:
-                normalized[token] = value
+                out[token] = value
             continue
-        normalized[token] = _canon_params(value)
-    if not normalized:
+        out[token] = _canon_params(value)
+    return out
+
+
+def _effect_influence(
+    *,
+    control_intent: Mapping[str, object],
+    policy_context: Mapping[str, object] | None,
+    process_id: str,
+) -> dict:
+    payload = dict(policy_context or {})
+    target_id = str((dict(control_intent or {})).get("target_id", "")).strip()
+    if not target_id:
         return {}
-    return {"control_ir_execution": normalized}
+    effect_rows = _policy_rows(payload, "effect_rows")
+    if not effect_rows:
+        return {}
+    current_tick = int(
+        max(
+            0,
+            _to_int(
+                payload.get("submission_tick", (dict(control_intent or {})).get("created_tick", 0)),
+                0,
+            ),
+        )
+    )
+    modifier_map = get_effective_modifier_map(
+        target_id=target_id,
+        keys=[
+            "access_restricted",
+            "visibility_permille",
+            "max_speed_permille",
+            "tool_efficiency_permille",
+            "machine_output_permille",
+            "pressure_hazard_warning",
+        ],
+        effect_rows=effect_rows,
+        current_tick=current_tick,
+        effect_type_registry=_policy_dict(payload, "effect_type_registry"),
+        stacking_policy_registry=_policy_dict(payload, "stacking_policy_registry"),
+    )
+    modifiers = dict(modifier_map.get("modifiers") or {})
+    filtered_modifiers = {}
+    for key in sorted(modifiers.keys()):
+        row = dict(modifiers.get(key) or {})
+        if (not bool(row.get("present", False))) and int(_to_int(row.get("value", 0), 0)) == 0:
+            continue
+        filtered_modifiers[str(key)] = {
+            "present": bool(row.get("present", False)),
+            "value": int(_to_int(row.get("value", 0), 0)),
+            "applied_effect_ids": _sorted_unique_strings(row.get("applied_effect_ids")),
+            "stacking_modes": _sorted_unique_strings(row.get("stacking_modes")),
+        }
+    if not filtered_modifiers:
+        return {}
+    out = {
+        "target_id": target_id,
+        "process_id": str(process_id or "").strip(),
+        "query_tick": int(current_tick),
+        "query_cost_units": int(max(0, _to_int(modifier_map.get("query_cost_units", 0), 0))),
+        "modifiers": dict((key, filtered_modifiers[key]) for key in sorted(filtered_modifiers.keys())),
+        "deterministic_fingerprint": "",
+    }
+    seed = dict(out)
+    seed["deterministic_fingerprint"] = ""
+    out["deterministic_fingerprint"] = canonical_sha256(seed)
+    return out
+
+
+def _decision_log_extensions(policy_context: Mapping[str, object] | None) -> dict:
+    payload = dict(policy_context or {})
+    out = {}
+    ir_context = _normalize_decision_extension_payload(payload.get("control_ir_execution"))
+    if ir_context:
+        out["control_ir_execution"] = dict(ir_context)
+    effect_context = _normalize_decision_extension_payload(payload.get("effect_influence"))
+    if effect_context:
+        out["effect_influence"] = dict(effect_context)
+    return out
 
 
 def _negotiation_downgrade_reasons(negotiation_result: Mapping[str, object]) -> List[str]:
@@ -700,6 +791,7 @@ def build_control_resolution(
     law = dict(law_profile or {})
     policy_context_payload = dict(policy_context or {})
     decision_log_extensions = _decision_log_extensions(policy_context_payload)
+    effect_influence_payload: dict = {}
 
     control_intent_id = str(intent.get("control_intent_id", "")).strip()
     if not control_intent_id:
@@ -787,6 +879,14 @@ def build_control_resolution(
     plan_intent_type = str(produces.get("plan_intent_type", "")).strip()
     required_capabilities = _sorted_unique_strings(action_row.get("required_capabilities"))
     target_entity_id = str(intent.get("target_id", "")).strip()
+    effect_influence_payload = _effect_influence(
+        control_intent=intent,
+        policy_context=policy_context_payload,
+        process_id=process_id,
+    )
+    if effect_influence_payload:
+        decision_log_extensions = dict(decision_log_extensions)
+        decision_log_extensions["effect_influence"] = dict(effect_influence_payload)
     requester_subject_id = str(intent.get("requester_subject_id", "")).strip()
     capability_target_candidates = [token for token in (target_entity_id, requester_subject_id) if token]
     if not capability_target_candidates:
@@ -875,7 +975,69 @@ def build_control_resolution(
     resolved_vector_full["view_resolved"] = str(resolved_vector_full.get("view_resolved", requested_view)).strip() or DEFAULT_VIEW_POLICY_ID
     if "budget_allocated" not in resolved_vector_full:
         resolved_vector_full["budget_allocated"] = int(max(0, _to_int(input_vector.get("budget_requested", 0), 0)))
+    if effect_influence_payload:
+        modifiers = dict(effect_influence_payload.get("modifiers") or {})
+        visibility_modifier = dict(modifiers.get("visibility_permille") or {})
+        visibility_value = int(max(0, _to_int(visibility_modifier.get("value", 0), 0)))
+        if bool(visibility_modifier.get("present", False)) and visibility_value > 0:
+            previous_fidelity = str(resolved_vector_full.get("fidelity_resolved", requested_fidelity)).strip() or DEFAULT_FIDELITY
+            next_fidelity = previous_fidelity
+            if visibility_value < 350:
+                next_fidelity = "macro"
+            elif visibility_value < 750 and previous_fidelity == "micro":
+                next_fidelity = "meso"
+            if next_fidelity != previous_fidelity:
+                resolved_vector_full["fidelity_resolved"] = next_fidelity
+                downgrade_entries = [
+                    dict(row)
+                    for row in list(negotiation_payload.get("downgrade_entries") or [])
+                    if isinstance(row, Mapping)
+                ]
+                downgrade_seed = {
+                    "control_intent_id": control_intent_id,
+                    "axis": "fidelity",
+                    "from_value": previous_fidelity,
+                    "to_value": next_fidelity,
+                    "reason_code": DOWNGRADE_EFFECT_VISIBILITY,
+                    "effect_influence": effect_influence_payload,
+                }
+                downgrade_entry = {
+                    "schema_version": "1.0.0",
+                    "downgrade_id": "downgrade.effect.{}".format(canonical_sha256(downgrade_seed)[:16]),
+                    "axis": "fidelity",
+                    "from_value": previous_fidelity,
+                    "to_value": next_fidelity,
+                    "reason_code": DOWNGRADE_EFFECT_VISIBILITY,
+                    "remediation_hint": "hint.effect.reduce_visibility_or_wait",
+                    "extensions": {
+                        "effect_ids": _sorted_unique_strings(visibility_modifier.get("applied_effect_ids")),
+                        "visibility_permille": int(visibility_value),
+                    },
+                }
+                downgrade_entries.append(downgrade_entry)
+                negotiation_payload["downgrade_entries"] = sorted(
+                    downgrade_entries,
+                    key=lambda row: str(row.get("downgrade_id", "")),
+                )
+            previous_view = str(resolved_vector_full.get("view_resolved", requested_view)).strip() or DEFAULT_VIEW_POLICY_ID
+            if ("freecam" in previous_view) and visibility_value < 500:
+                allowed_views = _sorted_unique_strings(policy_row.get("allowed_view_policies"))
+                fallback_view = DEFAULT_VIEW_POLICY_ID
+                for candidate in allowed_views:
+                    if "freecam" in str(candidate):
+                        continue
+                    fallback_view = str(candidate)
+                    break
+                if previous_view != fallback_view:
+                    resolved_vector_full["view_resolved"] = str(fallback_view)
     negotiation_payload["resolved_vector"] = resolved_vector_full
+    if effect_influence_payload:
+        payload_extensions = dict(negotiation_payload.get("extensions") or {})
+        payload_extensions["effect_influence"] = dict(effect_influence_payload)
+        negotiation_payload["extensions"] = payload_extensions
+    seed = dict(negotiation_payload)
+    seed["deterministic_fingerprint"] = ""
+    negotiation_payload["deterministic_fingerprint"] = canonical_sha256(seed)
 
     policy_ids_applied = _policy_ids_applied(negotiation_payload, control_policy_id=control_policy_id)
     resolved_vector = {
@@ -953,6 +1115,41 @@ def build_control_resolution(
             requested_action_id=action_id,
         )
         return _finalize_refusal(refusal_payload=refusal_payload, negotiation_for_log=negotiation_payload)
+
+    if effect_influence_payload:
+        modifiers = dict(effect_influence_payload.get("modifiers") or {})
+        access_modifier = dict(modifiers.get("access_restricted") or {})
+        restricted_process_ids = {
+            "process.portal_open",
+            "process.portal_close",
+            "process.portal_lock",
+            "process.portal_unlock",
+            "process.portal_seal_breach",
+            "process.hatch_open",
+            "process.hatch_close",
+            "process.vent_open",
+            "process.vent_close",
+            "process.vent_activate",
+        }
+        access_restricted = bool(access_modifier.get("present", False)) and int(
+            max(0, _to_int(access_modifier.get("value", 0), 0))
+        ) > 0
+        if access_restricted and process_id in restricted_process_ids:
+            refusal_payload = _refusal(
+                REFUSAL_EFFECT_FORBIDDEN,
+                "target is currently access restricted by active effects",
+                "Wait for effect expiration or remove effect through process.effect_remove with lawful authority.",
+                {
+                    "requested_action_id": action_id,
+                    "target_id": target_entity_id,
+                    "effect_ids": ",".join(_sorted_unique_strings(access_modifier.get("applied_effect_ids"))),
+                },
+                "$.target_id",
+            )
+            return _finalize_refusal(
+                refusal_payload=refusal_payload,
+                negotiation_for_log=_negotiation_with_refusal_code(negotiation_payload, REFUSAL_EFFECT_FORBIDDEN),
+            )
 
     if allowed_action_patterns and (not _path_allowed(action_id, allowed_action_patterns)):
         refusal_payload = _refusal(
@@ -1081,6 +1278,7 @@ def build_control_resolution(
             "strictness": str(policy_row.get("strictness", "C0")),
             "policy_ids_applied": policy_ids_applied,
             "negotiation_fingerprint": str(negotiation_payload.get("deterministic_fingerprint", "")).strip(),
+            "effect_influence_fingerprint": str(effect_influence_payload.get("deterministic_fingerprint", "")).strip(),
         },
     }
     seed = dict(resolution)

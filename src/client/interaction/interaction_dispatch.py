@@ -120,6 +120,29 @@ def _registry_payload(policy_context: dict | None, key: str) -> dict:
     return dict((dict(policy_context or {})).get(str(key), {}) or {})
 
 
+def _registry_payload_with_fallback(
+    *,
+    policy_context: dict | None,
+    key: str,
+    repo_root: str,
+    registry_rel_path: str,
+) -> dict:
+    payload = _registry_payload(policy_context, key)
+    if payload:
+        return payload
+    root = str(repo_root or "").strip()
+    if not root:
+        return {}
+    abs_path = os.path.join(root, str(registry_rel_path).replace("/", os.sep))
+    try:
+        loaded = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(loaded, dict):
+        return {}
+    return dict(loaded.get("record") or loaded)
+
+
 def _held_tool_tags(policy_context: dict | None) -> List[object]:
     return list((dict(policy_context or {})).get("held_tool_tags") or [])
 
@@ -679,6 +702,23 @@ def execute_affordance(
     )
     control_policy_context["source_shard_id"] = source_shard
     control_policy_context["target_shard_id"] = target_shard
+    control_policy_context["effect_rows"] = [
+        dict(row)
+        for row in list((dict(state or {})).get("effect_rows") or [])
+        if isinstance(row, dict)
+    ]
+    control_policy_context["effect_type_registry"] = _registry_payload_with_fallback(
+        policy_context=policy_context,
+        key="effect_type_registry",
+        repo_root=repo_root,
+        registry_rel_path="data/registries/effect_type_registry.json",
+    )
+    control_policy_context["stacking_policy_registry"] = _registry_payload_with_fallback(
+        policy_context=policy_context,
+        key="stacking_policy_registry",
+        repo_root=repo_root,
+        registry_rel_path="data/registries/stacking_policy_registry.json",
+    )
     control_resolution = build_control_resolution(
         control_intent=dict(control_intent),
         law_profile=dict(law_profile or {}),
