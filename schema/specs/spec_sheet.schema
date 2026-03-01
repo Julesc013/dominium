@@ -1,0 +1,28 @@
+SCHEMA: specs/spec_sheet.schema
+schema_id: dominium.schema.specs.spec_sheet
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical SpecSheet contract for deterministic engineering constraints and acceptance criteria.
+- Defines data-driven spec parameters and compliance check bindings.
+
+REQUIRED SHAPE:
+record spec_sheet
+  required:
+    - schema_version: semver
+    - spec_id: id
+    - spec_type_id: id
+    - description: string
+    - parameters: map
+    - compliance_check_ids: [id]
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+  optional:
+    - tolerance_policy_id: id
+
+INVARIANTS:
+- SpecSheets define constraints; they do not execute heavy solvers.
+- SpecSheets are pack-defined and optional at runtime.
+- Unknown extension keys are preserved.
