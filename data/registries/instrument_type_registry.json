@@ -166,6 +166,19 @@
         "extensions": {}
       },
       {
+        "instrument_type_id": "instr.gauge.pressure",
+        "description": "Diegetic coarse pressure status gauge for interior compartments.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.pressure_status"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
         "instrument_type_id": "instr.interior.oxygen",
         "description": "Diegetic interior oxygen gauge emitted from compartment flow states.",
         "required_channels_in": [
@@ -173,6 +186,19 @@
         ],
         "produced_channels_out": [
           "ch.diegetic.interior.oxygen"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.gauge.oxygen",
+        "description": "Diegetic coarse oxygen status gauge for interior compartments.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.oxygen_status"
         ],
         "update_process_id": "process.compartment_flow_tick",
         "calibration_model_id": "calib.none",
@@ -192,6 +218,19 @@
         "extensions": {}
       },
       {
+        "instrument_type_id": "instr.alarm.smoke",
+        "description": "Diegetic smoke alarm status for interior compartments.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.smoke_alarm"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
         "instrument_type_id": "instr.interior.flood_alarm",
         "description": "Diegetic flood alarm emitted from compartment flow states.",
         "required_channels_in": [
@@ -199,6 +238,19 @@
         ],
         "produced_channels_out": [
           "ch.diegetic.interior.flood_alarm"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.alarm.flood",
+        "description": "Diegetic flood alarm status for interior compartments.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.flood_alarm"
         ],
         "update_process_id": "process.compartment_flow_tick",
         "calibration_model_id": "calib.none",
@@ -214,6 +266,58 @@
           "ch.diegetic.interior.alarm"
         ],
         "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.panel.portal_state",
+        "description": "Diegetic panel indicator for local portal open/closed/locked/damaged status.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.door_indicator"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.warning.speed_cap",
+        "description": "Diegetic coarse warning when active effects cap mobility speed output.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.warning.speed_cap"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.warning.low_visibility",
+        "description": "Diegetic coarse warning when active effects reduce visibility.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.warning.low_visibility"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.warning.restricted_access",
+        "description": "Diegetic coarse warning when active effects restrict access interactions.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.warning.restricted_access"
+        ],
+        "update_process_id": "process.instrument_tick",
         "calibration_model_id": "calib.none",
         "extensions": {}
       },

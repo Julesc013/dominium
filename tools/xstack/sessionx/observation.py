@@ -556,6 +556,9 @@ def _default_lens_channels(lens_type: str) -> List[str]:
         "ch.diegetic.smoke_alarm",
         "ch.diegetic.flood_alarm",
         "ch.diegetic.door_indicator",
+        "ch.diegetic.warning.speed_cap",
+        "ch.diegetic.warning.low_visibility",
+        "ch.diegetic.warning.restricted_access",
     ]
 
 
@@ -739,6 +742,14 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.interior.flood": dict(instruments.get("instrument.interior.flood") or {})}
     if channel_id == "ch.diegetic.door_indicator":
         return {"instrument.interior.portal_state": dict(instruments.get("instrument.interior.portal_state") or {})}
+    if channel_id == "ch.diegetic.warning.speed_cap":
+        return {"instrument.warning.speed_cap": dict(instruments.get("instrument.warning.speed_cap") or {})}
+    if channel_id == "ch.diegetic.warning.low_visibility":
+        return {"instrument.warning.low_visibility": dict(instruments.get("instrument.warning.low_visibility") or {})}
+    if channel_id == "ch.diegetic.warning.restricted_access":
+        return {
+            "instrument.warning.restricted_access": dict(instruments.get("instrument.warning.restricted_access") or {})
+        }
     if channel_id == "ch.diegetic.interior.alarm":
         return {"instrument.interior.alarm": dict(instruments.get("instrument.interior.alarm") or {})}
     if channel_id == "ch.diegetic.interior.pressure":
@@ -948,6 +959,9 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
         "instrument.interior.smoke": {},
         "instrument.interior.flood": {},
         "instrument.interior.alarm": {},
+        "instrument.warning.speed_cap": {},
+        "instrument.warning.low_visibility": {},
+        "instrument.warning.restricted_access": {},
     }
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
         assembly_id = str(row.get("assembly_id", "")).strip()
@@ -1530,7 +1544,12 @@ def _population_view(
     }
 
 
-def _control_view(truth: dict, *, allow_order_visibility: bool = False) -> dict:
+def _control_view(
+    truth: dict,
+    *,
+    allow_order_visibility: bool = False,
+    allow_effect_visibility: bool = False,
+) -> dict:
     state = truth.get("universe_state")
     if not isinstance(state, dict):
         return {
@@ -1541,6 +1560,7 @@ def _control_view(truth: dict, *, allow_order_visibility: bool = False) -> dict:
             "order_queues": [],
             "institutions": [],
             "role_assignments": [],
+            "effects": [],
             "summary": "",
         }
 
@@ -1614,6 +1634,7 @@ def _control_view(truth: dict, *, allow_order_visibility: bool = False) -> dict:
     visible_queues: List[dict] = []
     visible_institutions: List[dict] = []
     visible_role_assignments: List[dict] = []
+    visible_effects: List[dict] = []
     if bool(allow_order_visibility):
         order_rows = state.get("order_assemblies")
         if isinstance(order_rows, list):
@@ -1696,6 +1717,39 @@ def _control_view(truth: dict, *, allow_order_visibility: bool = False) -> dict:
             len(visible_orders),
             len(visible_role_assignments),
         )
+    if bool(allow_effect_visibility):
+        effect_rows = state.get("effect_rows")
+        if isinstance(effect_rows, list):
+            for row in sorted(
+                (item for item in effect_rows if isinstance(item, dict)),
+                key=lambda item: (
+                    str(item.get("target_id", "")),
+                    str(item.get("effect_type_id", "")),
+                    int(item.get("applied_tick", 0) or 0),
+                    str(item.get("effect_id", "")),
+                ),
+            ):
+                effect_id = str(row.get("effect_id", "")).strip()
+                effect_type_id = str(row.get("effect_type_id", "")).strip()
+                target_id = str(row.get("target_id", "")).strip()
+                if not effect_id or not effect_type_id or not target_id:
+                    continue
+                visible_effects.append(
+                    {
+                        "effect_id": effect_id,
+                        "effect_type_id": effect_type_id,
+                        "target_id": target_id,
+                        "applied_tick": int(row.get("applied_tick", 0) or 0),
+                        "expires_tick": row.get("expires_tick"),
+                        "duration_ticks": row.get("duration_ticks"),
+                        "magnitude": copy.deepcopy(row.get("magnitude")),
+                        "stacking_policy_id": str(row.get("stacking_policy_id", "")).strip(),
+                        "source_event_id": row.get("source_event_id"),
+                        "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                        "extensions": copy.deepcopy(row.get("extensions") if isinstance(row.get("extensions"), dict) else {}),
+                    }
+                )
+        summary = "{} visible_effects={}".format(summary, len(visible_effects))
     return {
         "controllers": normalized_controllers,
         "bindings": normalized_bindings,
@@ -1704,6 +1758,7 @@ def _control_view(truth: dict, *, allow_order_visibility: bool = False) -> dict:
         "order_queues": visible_queues,
         "institutions": visible_institutions,
         "role_assignments": visible_role_assignments,
+        "effects": visible_effects,
         "summary": summary,
     }
 
@@ -2156,6 +2211,7 @@ def observe_truth(
     control = _control_view(
         truth_model,
         allow_order_visibility=("entitlement.civ.view_orders" in set(entitlements)),
+        allow_effect_visibility=bool(allow_hidden),
     )
     performance = _performance_view(truth_model, allow_hidden=allow_hidden)
     diegetic_instruments = _instrument_channel_view(truth=truth_model, simulation_tick=simulation_tick)
