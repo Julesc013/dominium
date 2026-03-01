@@ -621,6 +621,15 @@ MULTIPLAYER_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
+CONTROL_DECISION_REGRESSION_LOCK_PATH = "data/regression/control_decision_baseline.json"
+CONTROL_DECISION_REGRESSION_LOCK_REQUIRED_FIELDS = (
+    "baseline_id",
+    "sequence_id",
+    "fingerprint_cases",
+    "sequence_fingerprint",
+    "update_policy",
+)
+
 MAT_SCALE_REGRESSION_LOCK_PATH = "data/regression/mat_scale_baseline.json"
 MAT_SCALE_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "baseline_id",
@@ -2929,6 +2938,109 @@ def _append_regression_lock_findings(
                 snippet=mp_subject[:140],
                 message="latest multiplayer baseline commit message must include '{}'".format(mp_required_tag),
                 rule_id="INV-MULTIPLAYER-REGRESSION-LOCK-PRESENT",
+            )
+        )
+
+    ctrl_payload, ctrl_err = _load_json_object(repo_root, CONTROL_DECISION_REGRESSION_LOCK_PATH)
+    if ctrl_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONTROL_DECISION_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="",
+                message="control decision regression baseline lock file is missing or invalid",
+                rule_id="INV-CONTROL-DECISION-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+
+    for field in CONTROL_DECISION_REGRESSION_LOCK_REQUIRED_FIELDS:
+        value = ctrl_payload.get(field)
+        if value is None or (isinstance(value, str) and not str(value).strip()):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=CONTROL_DECISION_REGRESSION_LOCK_PATH,
+                    line_number=1,
+                    snippet=str(field),
+                    message="control decision regression lock missing required field '{}'".format(field),
+                    rule_id="INV-CONTROL-DECISION-REGRESSION-LOCK-PRESENT",
+                )
+            )
+
+    fingerprint_cases = ctrl_payload.get("fingerprint_cases")
+    if not isinstance(fingerprint_cases, list) or not fingerprint_cases:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONTROL_DECISION_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="fingerprint_cases",
+                message="control decision regression lock requires non-empty fingerprint_cases list",
+                rule_id="INV-CONTROL-DECISION-REGRESSION-LOCK-PRESENT",
+            )
+        )
+    else:
+        for row in (item for item in fingerprint_cases if isinstance(item, dict)):
+            case_id = str(row.get("case_id", "")).strip()
+            has_decision_fp = bool(str(row.get("decision_log_fingerprint", "")).strip())
+            has_sequence_fp = bool(str(row.get("sequence_fingerprint", "")).strip())
+            if case_id and (has_decision_fp or has_sequence_fp):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=CONTROL_DECISION_REGRESSION_LOCK_PATH,
+                    line_number=1,
+                    snippet=case_id or "fingerprint_case",
+                    message="each fingerprint case must declare case_id and decision or sequence fingerprint",
+                    rule_id="INV-CONTROL-DECISION-REGRESSION-LOCK-PRESENT",
+                )
+            )
+            break
+
+    ctrl_update_policy = ctrl_payload.get("update_policy")
+    ctrl_required_tag = ""
+    if isinstance(ctrl_update_policy, dict):
+        ctrl_required_tag = str(ctrl_update_policy.get("required_commit_tag", "")).strip()
+    if not ctrl_required_tag:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONTROL_DECISION_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="update_policy.required_commit_tag",
+                message="control decision regression lock must declare update_policy.required_commit_tag",
+                rule_id="INV-CONTROL-DECISION-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+
+    try:
+        ctrl_proc = subprocess.run(
+            ["git", "log", "-1", "--pretty=%s", "--", CONTROL_DECISION_REGRESSION_LOCK_PATH],
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            check=False,
+        )
+    except OSError:
+        return
+    if int(ctrl_proc.returncode) != 0:
+        return
+    ctrl_subject = str(ctrl_proc.stdout or "").strip()
+    if ctrl_subject and ctrl_required_tag not in ctrl_subject:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONTROL_DECISION_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet=ctrl_subject[:140],
+                message="latest control decision baseline commit message must include '{}'".format(ctrl_required_tag),
+                rule_id="INV-CONTROL-DECISION-REGRESSION-LOCK-PRESENT",
             )
         )
 
