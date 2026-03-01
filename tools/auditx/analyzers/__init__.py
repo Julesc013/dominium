@@ -160,6 +160,8 @@ from analyzers import e131_silent_downgrade_smell
 from analyzers import e132_missing_decision_log_smell
 from analyzers import e133_spec_hardcode_smell
 from analyzers import e134_spec_bypass_smell
+from analyzers import e135_hidden_auto_formalize_smell
+from analyzers import e136_inference_truth_mutation_smell
 
 
 ANALYZERS = (
@@ -323,6 +325,8 @@ ANALYZERS = (
     e132_missing_decision_log_smell,
     e133_spec_hardcode_smell,
     e134_spec_bypass_smell,
+    e135_hidden_auto_formalize_smell,
+    e136_inference_truth_mutation_smell,
 )
 
 
