@@ -11,6 +11,7 @@ PACK_CATEGORIES = (
     "law",
     "physics",
     "representation",
+    "specs",
     "source",
     "tool",
 )

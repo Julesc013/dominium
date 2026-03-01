@@ -1878,6 +1878,256 @@ def _effect_registry_rows(
     return effect_type_rows, stacking_policy_rows, errors
 
 
+def _spec_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    spec_type_record, spec_type_rows_raw, spec_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/spec_type_registry.json",
+        expected_schema_id="dominium.registry.spec_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="spec_types",
+    )
+    if spec_type_load_errors:
+        return [], [], [], spec_type_load_errors
+
+    tolerance_record, tolerance_rows_raw, tolerance_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/tolerance_policy_registry.json",
+        expected_schema_id="dominium.registry.tolerance_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="tolerance_policies",
+    )
+    if tolerance_load_errors:
+        return [], [], [], tolerance_load_errors
+
+    compliance_record, compliance_rows_raw, compliance_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/compliance_check_registry.json",
+        expected_schema_id="dominium.registry.compliance_check_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="compliance_checks",
+    )
+    if compliance_load_errors:
+        return [], [], [], compliance_load_errors
+
+    del spec_type_record
+    del tolerance_record
+    del compliance_record
+    errors: List[dict] = []
+
+    spec_type_rows: List[dict] = []
+    seen_spec_type_ids = set()
+    for entry in sorted(spec_type_rows_raw, key=lambda row: str((row or {}).get("spec_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_spec_type_entry",
+                    "message": "spec type entry must be object",
+                    "path": "$.spec_types",
+                }
+            )
+            continue
+        spec_type_id = str(entry.get("spec_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        parameter_schema_id = str(entry.get("parameter_schema_id", "")).strip()
+        extensions = entry.get("extensions")
+        if (
+            (not spec_type_id)
+            or (not parameter_schema_id)
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_spec_type_entry",
+                    "message": "spec type entry missing required fields",
+                    "path": "$.spec_types",
+                }
+            )
+            continue
+        if spec_type_id in seen_spec_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_spec_type_id",
+                    "message": "duplicate spec_type_id '{}'".format(spec_type_id),
+                    "path": "$.spec_types.spec_type_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "spec_type_id": spec_type_id,
+            "description": description,
+            "parameter_schema_id": parameter_schema_id,
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="spec_type",
+            payload=schema_payload,
+            path="data/registries/spec_type_registry.json#{}".format(spec_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_spec_type_ids.add(spec_type_id)
+        spec_type_rows.append(schema_payload)
+    spec_type_rows = sorted(spec_type_rows, key=lambda row: str(row.get("spec_type_id", "")))
+
+    tolerance_policy_rows: List[dict] = []
+    seen_tolerance_policy_ids = set()
+    for entry in sorted(tolerance_rows_raw, key=lambda row: str((row or {}).get("tolerance_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tolerance_policy_entry",
+                    "message": "tolerance policy entry must be object",
+                    "path": "$.tolerance_policies",
+                }
+            )
+            continue
+        tolerance_policy_id = str(entry.get("tolerance_policy_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        numeric_tolerances = entry.get("numeric_tolerances")
+        rounding_rules = entry.get("rounding_rules")
+        extensions = entry.get("extensions")
+        if (
+            (not tolerance_policy_id)
+            or (not isinstance(numeric_tolerances, dict))
+            or (not isinstance(rounding_rules, dict))
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_tolerance_policy_entry",
+                    "message": "tolerance policy entry missing required fields",
+                    "path": "$.tolerance_policies",
+                }
+            )
+            continue
+        if tolerance_policy_id in seen_tolerance_policy_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_tolerance_policy_id",
+                    "message": "duplicate tolerance_policy_id '{}'".format(tolerance_policy_id),
+                    "path": "$.tolerance_policies.tolerance_policy_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "tolerance_policy_id": tolerance_policy_id,
+            "description": description,
+            "numeric_tolerances": dict(numeric_tolerances),
+            "rounding_rules": dict(rounding_rules),
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="tolerance_policy",
+            payload=schema_payload,
+            path="data/registries/tolerance_policy_registry.json#{}".format(tolerance_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_tolerance_policy_ids.add(tolerance_policy_id)
+        tolerance_policy_rows.append(schema_payload)
+    tolerance_policy_rows = sorted(
+        tolerance_policy_rows,
+        key=lambda row: str(row.get("tolerance_policy_id", "")),
+    )
+
+    allowed_grades = {"pass", "warn", "fail"}
+    allowed_target_kinds = {"structure", "ag", "geometry", "vehicle", "network_edge"}
+    compliance_check_rows: List[dict] = []
+    seen_check_ids = set()
+    for entry in sorted(compliance_rows_raw, key=lambda row: str((row or {}).get("check_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compliance_check_entry",
+                    "message": "compliance check entry must be object",
+                    "path": "$.compliance_checks",
+                }
+            )
+            continue
+        check_id = str(entry.get("check_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        applies_to_target_kinds = entry.get("applies_to_target_kinds")
+        required_inputs = entry.get("required_inputs")
+        output_grade = str(entry.get("output_grade", "")).strip()
+        failure_refusal_code = entry.get("failure_refusal_code")
+        extensions = entry.get("extensions")
+        if (
+            (not check_id)
+            or (not isinstance(applies_to_target_kinds, list))
+            or (not isinstance(required_inputs, list))
+            or (output_grade not in allowed_grades)
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compliance_check_entry",
+                    "message": "compliance check entry missing required fields",
+                    "path": "$.compliance_checks",
+                }
+            )
+            continue
+        if check_id in seen_check_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_compliance_check_id",
+                    "message": "duplicate check_id '{}'".format(check_id),
+                    "path": "$.compliance_checks.check_id",
+                }
+            )
+            continue
+        kind_tokens = _sorted_unique_strings(applies_to_target_kinds)
+        invalid_kinds = [token for token in kind_tokens if token not in allowed_target_kinds]
+        if invalid_kinds:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_compliance_check_target_kind",
+                    "message": "compliance check '{}' includes invalid applies_to_target_kinds: {}".format(
+                        check_id,
+                        ",".join(sorted(invalid_kinds)),
+                    ),
+                    "path": "$.compliance_checks.applies_to_target_kinds",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "check_id": check_id,
+            "description": description,
+            "applies_to_target_kinds": list(kind_tokens),
+            "required_inputs": _sorted_unique_strings(required_inputs),
+            "output_grade": output_grade,
+            "failure_refusal_code": (
+                None
+                if failure_refusal_code is None
+                else str(failure_refusal_code).strip() or None
+            ),
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="compliance_check",
+            payload=schema_payload,
+            path="data/registries/compliance_check_registry.json#{}".format(check_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_check_ids.add(check_id)
+        compliance_check_rows.append(schema_payload)
+    compliance_check_rows = sorted(compliance_check_rows, key=lambda row: str(row.get("check_id", "")))
+
+    return spec_type_rows, tolerance_policy_rows, compliance_check_rows, errors
+
+
 def _interaction_registry_rows(
     repo_root: str,
 ) -> Tuple[List[dict], List[dict]]:
@@ -10306,6 +10556,15 @@ def compile_bundle(
         repo_root=repo_root,
         schema_root=schema_root,
     )
+    (
+        spec_type_rows,
+        tolerance_policy_rows,
+        compliance_check_rows,
+        spec_registry_errors,
+    ) = _spec_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
     interaction_action_rows, interaction_registry_errors = _interaction_registry_rows(
         repo_root=repo_root,
     )
@@ -10694,6 +10953,7 @@ def compile_bundle(
         + control_registry_errors
         + capability_registry_errors
         + effect_registry_errors
+        + spec_registry_errors
         + interaction_registry_errors
         + action_surface_registry_errors
         + pose_registry_errors
@@ -11132,6 +11392,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "stacking_policies": stacking_policy_rows,
+        }
+    )
+    spec_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "spec_types": spec_type_rows,
+        }
+    )
+    tolerance_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "tolerance_policies": tolerance_policy_rows,
+        }
+    )
+    compliance_check_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "compliance_checks": compliance_check_rows,
         }
     )
     interaction_action_payload = _finalize_registry_payload(
@@ -11647,6 +11928,9 @@ def compile_bundle(
         "control_policy_registry": ("control_policy_registry", control_policy_payload),
         "effect_type_registry": ("effect_type_registry", effect_type_payload),
         "stacking_policy_registry": ("stacking_policy_registry", stacking_policy_payload),
+        "spec_type_registry": ("spec_type_registry", spec_type_payload),
+        "tolerance_policy_registry": ("tolerance_policy_registry", tolerance_policy_payload),
+        "compliance_check_registry": ("compliance_check_registry", compliance_check_payload),
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "surface_type_registry": ("surface_type_registry", surface_type_payload),
         "posture_registry": ("posture_registry", posture_payload),
@@ -11781,6 +12065,9 @@ def compile_bundle(
         "control_policy_registry",
         "effect_type_registry",
         "stacking_policy_registry",
+        "spec_type_registry",
+        "tolerance_policy_registry",
+        "compliance_check_registry",
         "interaction_action_registry",
         "surface_type_registry",
         "posture_registry",
@@ -11926,6 +12213,9 @@ def compile_bundle(
             "control_policy_registry_hash": registry_hashes["control_policy_registry_hash"],
             "effect_type_registry_hash": registry_hashes["effect_type_registry_hash"],
             "stacking_policy_registry_hash": registry_hashes["stacking_policy_registry_hash"],
+            "spec_type_registry_hash": registry_hashes["spec_type_registry_hash"],
+            "tolerance_policy_registry_hash": registry_hashes["tolerance_policy_registry_hash"],
+            "compliance_check_registry_hash": registry_hashes["compliance_check_registry_hash"],
             "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
             "surface_type_registry_hash": registry_hashes["surface_type_registry_hash"],
             "posture_registry_hash": registry_hashes["posture_registry_hash"],

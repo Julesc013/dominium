@@ -1,0 +1,96 @@
+{
+  "schema_id": "dominium.registry.compliance_check_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compliance_check_registry",
+    "registry_version": "1.0.0",
+    "compliance_checks": [
+      {
+        "schema_version": "1.0.0",
+        "check_id": "check.geometry.clearance",
+        "description": "Verifies required clearance values against summarized geometry/inspection evidence.",
+        "applies_to_target_kinds": [
+          "ag",
+          "geometry",
+          "structure"
+        ],
+        "required_inputs": [
+          "section.interior.layout",
+          "section.interior.portal_state_table",
+          "derived.geometry.clearance_summary"
+        ],
+        "output_grade": "warn",
+        "failure_refusal_code": "refusal.spec.noncompliant",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "check_id": "check.geometry.curvature_limit",
+        "description": "Verifies curvature constraints from derived geometry summaries.",
+        "applies_to_target_kinds": [
+          "geometry",
+          "network_edge",
+          "structure"
+        ],
+        "required_inputs": [
+          "derived.geometry.curvature_summary"
+        ],
+        "output_grade": "warn",
+        "failure_refusal_code": "refusal.spec.noncompliant",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "check_id": "check.interface.compatibility",
+        "description": "Checks interface dimensions/ports for declared compatibility at coupling boundaries.",
+        "applies_to_target_kinds": [
+          "network_edge",
+          "structure",
+          "vehicle"
+        ],
+        "required_inputs": [
+          "section.capabilities_summary",
+          "derived.interface.compatibility_summary"
+        ],
+        "output_grade": "fail",
+        "failure_refusal_code": "refusal.spec.noncompliant",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "check_id": "check.operation.max_speed_policy",
+        "description": "Evaluates declared operating speed policy against inspection and hazard summaries.",
+        "applies_to_target_kinds": [
+          "network_edge",
+          "structure",
+          "vehicle"
+        ],
+        "required_inputs": [
+          "section.failure_risk_summary",
+          "derived.operation.speed_policy_context"
+        ],
+        "output_grade": "warn",
+        "failure_refusal_code": "refusal.spec.noncompliant",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "check_id": "check.structure.load_rating_stub",
+        "description": "Stub deterministic load-rating conformance check using summarized structural metadata.",
+        "applies_to_target_kinds": [
+          "ag",
+          "structure"
+        ],
+        "required_inputs": [
+          "section.ag_progress",
+          "section.maintenance_backlog",
+          "derived.structure.load_summary"
+        ],
+        "output_grade": "warn",
+        "failure_refusal_code": "refusal.spec.noncompliant",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

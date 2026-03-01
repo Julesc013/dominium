@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "specs.default.realistic.m1",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0"
+  ],
+  "contribution_types": [
+    "assets"
+  ],
+  "contributions": [
+    {
+      "type": "assets",
+      "id": "assets.specs.default.realistic.m1",
+      "path": "data/spec_sheets.json"
+    }
+  ],
+  "canonical_hash": "placeholder.specs.default.realistic.m1.v1",
+  "signature_status": "signed"
+}
