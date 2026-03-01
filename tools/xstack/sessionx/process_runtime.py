@@ -240,6 +240,13 @@ from src.infrastructure.formalization import (
     infer_candidates,
     normalize_inference_candidate_rows,
 )
+from src.mechanics import (
+    build_structural_edge,
+    normalize_structural_edge_rows,
+    normalize_structural_graph_rows,
+    normalize_structural_node_rows,
+    summarize_stress_for_target,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -340,6 +347,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.formalization_accept_candidate": "entitlement.control.admin",
     "process.formalization_promote_networked": "entitlement.control.admin",
     "process.formalization_revert": "entitlement.control.admin",
+    "process.mechanics_fracture": "session.boot",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -450,6 +458,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.formalization_accept_candidate": "operator",
     "process.formalization_promote_networked": "operator",
     "process.formalization_revert": "operator",
+    "process.mechanics_fracture": "observer",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -507,6 +516,7 @@ CONTROL_PROCESS_IDS = {
     "process.formalization_accept_candidate",
     "process.formalization_promote_networked",
     "process.formalization_revert",
+    "process.mechanics_fracture",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -572,6 +582,9 @@ TASK_PROCESS_IDS = {
     "process.task_resume",
     "process.task_cancel",
 }
+MECHANICS_PROCESS_IDS = {
+    "process.mechanics_fracture",
+}
 POSE_PROCESS_IDS = {
     "process.pose_enter",
     "process.pose_exit",
@@ -612,6 +625,11 @@ TASK_GATE_REASON_MAP = {
     "ENTITLEMENT_MISSING": REFUSAL_TASK_FORBIDDEN_BY_LAW,
     "PRIVILEGE_INSUFFICIENT": REFUSAL_TASK_FORBIDDEN_BY_LAW,
 }
+MECHANICS_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": "refusal.mechanics.forbidden_by_law",
+    "ENTITLEMENT_MISSING": "refusal.mechanics.forbidden_by_law",
+    "PRIVILEGE_INSUFFICIENT": "refusal.mechanics.forbidden_by_law",
+}
 POSE_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": REFUSAL_POSE_FORBIDDEN_BY_LAW,
     "ENTITLEMENT_MISSING": REFUSAL_POSE_FORBIDDEN_BY_LAW,
@@ -634,6 +652,7 @@ DEFAULT_COSMETIC_ID = "cosmetic.default.pill"
 DEFAULT_RENDER_PROXY_ID = "render.proxy.pill_default"
 REFUSAL_FORMALIZATION_FORBIDDEN_BY_POLICY = "refusal.formalization.forbidden_by_policy"
 REFUSAL_FORMALIZATION_SPEC_NONCOMPLIANT = "refusal.formalization.spec_noncompliant"
+REFUSAL_MECHANICS_INVALID_EDGE = "refusal.mechanics.invalid_edge"
 CONTROLLER_ACTIONS_BY_TYPE = {
     "admin": [
         "control.action.bind_camera",
@@ -1232,6 +1251,105 @@ def _persist_formalization_state(
     _ensure_formalization_events(state)
 
 
+def _ensure_structural_graph_rows(state: dict) -> List[dict]:
+    rows = normalize_structural_graph_rows(state.get("structural_graphs"))
+    state["structural_graphs"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_structural_node_rows(state: dict) -> List[dict]:
+    rows = normalize_structural_node_rows(state.get("structural_nodes"))
+    state["structural_nodes"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_structural_edge_rows(state: dict) -> List[dict]:
+    rows = normalize_structural_edge_rows(state.get("structural_edges"))
+    state["structural_edges"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_mechanics_provenance_events(state: dict) -> List[dict]:
+    rows = state.get("mechanics_provenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "event_type": str(row.get("event_type", "")).strip() or "mechanics_event",
+            "structural_edge_id": str(row.get("structural_edge_id", "")).strip() or None,
+            "target_id": str(row.get("target_id", "")).strip() or None,
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["mechanics_provenance_events"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _persist_mechanics_state(
+    state: dict,
+    *,
+    structural_graphs: List[dict],
+    structural_nodes: List[dict],
+    structural_edges: List[dict],
+    mechanics_provenance_events: List[dict],
+) -> None:
+    state["structural_graphs"] = [dict(row) for row in list(structural_graphs or []) if isinstance(row, dict)]
+    state["structural_nodes"] = [dict(row) for row in list(structural_nodes or []) if isinstance(row, dict)]
+    state["structural_edges"] = [dict(row) for row in list(structural_edges or []) if isinstance(row, dict)]
+    state["mechanics_provenance_events"] = [
+        dict(row) for row in list(mechanics_provenance_events or []) if isinstance(row, dict)
+    ]
+    _ensure_structural_graph_rows(state)
+    _ensure_structural_node_rows(state)
+    _ensure_structural_edge_rows(state)
+    _ensure_mechanics_provenance_events(state)
+
+
+def _mechanics_provenance_row(
+    *,
+    event_type: str,
+    tick: int,
+    process_id: str,
+    intent_id: str,
+    structural_edge_id: str,
+    target_id: str | None = None,
+    extensions: dict | None = None,
+) -> dict:
+    event_seed = {
+        "event_type": str(event_type),
+        "tick": int(max(0, _as_int(tick, 0))),
+        "process_id": str(process_id),
+        "intent_id": str(intent_id),
+        "structural_edge_id": str(structural_edge_id),
+        "target_id": None if target_id is None else str(target_id),
+    }
+    event_id = "provenance.mechanics.{}".format(canonical_sha256(event_seed)[:24])
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": event_id,
+        "tick": int(max(0, _as_int(tick, 0))),
+        "event_type": str(event_type).strip() or "mechanics_event",
+        "structural_edge_id": str(structural_edge_id).strip() or None,
+        "target_id": None if target_id is None else str(target_id).strip() or None,
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
 def _formalization_event_row(
     *,
     formalization_id: str,
@@ -1576,6 +1694,9 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("cohort_assemblies", "cohort_id"),
         ("body_assemblies", "assembly_id"),
         ("plan_artifacts", "plan_id"),
+        ("structural_graphs", "structural_graph_id"),
+        ("structural_nodes", "node_id"),
+        ("structural_edges", "edge_id"),
     ):
         candidates.extend(_collect(state.get(key), field))
     return _sorted_tokens(candidates)
@@ -8500,6 +8621,36 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
                 "collection": "formalization_states",
                 "row": row,
             }
+    if token.startswith("structural.graph."):
+        graph_id = str(token).strip()
+        row = _row_by_id_value(state.get("structural_graphs"), "structural_graph_id", graph_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "structural_graphs",
+                "row": row,
+            }
+    if token.startswith("structural.node."):
+        node_id = str(token).strip()
+        row = _row_by_id_value(state.get("structural_nodes"), "node_id", node_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "structural_nodes",
+                "row": row,
+            }
+    if token.startswith("structural.edge."):
+        edge_id = str(token).strip()
+        row = _row_by_id_value(state.get("structural_edges"), "edge_id", edge_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "structural_edges",
+                "row": row,
+            }
 
     id_table = (
         ("cohort_assemblies", "cohort_id"),
@@ -8532,6 +8683,10 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("formalization_states", "formalization_id"),
         ("formalization_inference_candidates", "candidate_id"),
         ("formalization_events", "event_id"),
+        ("structural_graphs", "structural_graph_id"),
+        ("structural_nodes", "node_id"),
+        ("structural_edges", "edge_id"),
+        ("mechanics_provenance_events", "event_id"),
         ("machine_assemblies", "machine_id"),
         ("machine_ports", "port_id"),
         ("machine_port_connections", "connection_id"),
@@ -11065,6 +11220,8 @@ def execute_intent(
             return _control_gate_refusal(gate, reason_map=COSMETIC_GATE_REASON_MAP)
         if process_id in TASK_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=TASK_GATE_REASON_MAP)
+        if process_id in MECHANICS_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=MECHANICS_GATE_REASON_MAP)
         if process_id in TOOL_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=TOOL_GATE_REASON_MAP)
         if process_id in POSE_PROCESS_IDS:
@@ -11204,6 +11361,10 @@ def execute_intent(
     formalization_states = _ensure_formalization_states(state)
     formalization_inference_candidates = _ensure_formalization_inference_candidates(state)
     formalization_events = _ensure_formalization_events(state)
+    structural_graphs = _ensure_structural_graph_rows(state)
+    structural_nodes = _ensure_structural_node_rows(state)
+    structural_edges = _ensure_structural_edge_rows(state)
+    mechanics_provenance_events = _ensure_mechanics_provenance_events(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
     effect_rows = prune_expired_effect_rows(
@@ -17975,6 +18136,196 @@ def execute_intent(
             "state": "raw",
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
             "removed_network_graph_ref": network_graph_ref or None,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mechanics_fracture":
+        structural_edge_id = str(inputs.get("structural_edge_id", "")).strip() or str(inputs.get("edge_id", "")).strip()
+        if not structural_edge_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.mechanics_fracture requires structural_edge_id",
+                "Provide structural_edge_id for the fractured connection edge.",
+                {"process_id": process_id},
+                "$.intent.inputs.structural_edge_id",
+            )
+        edge_by_id = dict(
+            (str(row.get("edge_id", "")).strip(), dict(row))
+            for row in list(structural_edges or [])
+            if isinstance(row, dict) and str(row.get("edge_id", "")).strip()
+        )
+        edge_row = dict(edge_by_id.get(structural_edge_id) or {})
+        if not edge_row:
+            return refusal(
+                REFUSAL_MECHANICS_INVALID_EDGE,
+                "structural edge '{}' was not found".format(structural_edge_id),
+                "Use an existing structural edge id from mechanics state.",
+                {"structural_edge_id": structural_edge_id},
+                "$.intent.inputs.structural_edge_id",
+            )
+
+        edge_ext = dict(edge_row.get("extensions") or {})
+        edge_ext["fractured_tick"] = int(current_tick)
+        edge_ext["fractured_process_id"] = process_id
+        edge_ext["fractured_intent_id"] = str(intent_id)
+        edge_ext["detached"] = True
+        fatigue_state = dict(edge_row.get("fatigue_state") or {})
+        fatigue_state["fractured"] = True
+        fatigue_state["fracture_tick"] = int(current_tick)
+        stress_ratio_permille = int(max(1001, _as_int(edge_row.get("stress_ratio_permille", 0), 0)))
+        applied_load = int(max(0, _as_int(edge_row.get("applied_load", 0), 0)))
+        updated_edge = build_structural_edge(
+            edge_id=structural_edge_id,
+            node_a_id=str(edge_row.get("node_a_id", "")).strip(),
+            node_b_id=str(edge_row.get("node_b_id", "")).strip(),
+            connection_type_id=str(edge_row.get("connection_type_id", "")).strip() or "conn.rigid_joint",
+            stiffness=int(max(0, _as_int(edge_row.get("stiffness", 0), 0))),
+            max_load=0 if bool(inputs.get("zero_max_load_on_fracture", True)) else int(max(0, _as_int(edge_row.get("max_load", 0), 0))),
+            fatigue_state=fatigue_state,
+            extensions=edge_ext,
+            failure_state="failed",
+            stress_ratio_permille=stress_ratio_permille,
+            applied_load=applied_load,
+            effective_max_load=int(max(0, _as_int(edge_row.get("effective_max_load", edge_row.get("max_load", 0)), 0))),
+            last_evaluated_tick=int(current_tick),
+        )
+        edge_by_id[structural_edge_id] = dict(updated_edge)
+        structural_edges = normalize_structural_edge_rows([dict(edge_by_id[key]) for key in sorted(edge_by_id.keys())])
+
+        detached_rows = [dict(row) for row in list(state.get("assembly_graph_detached_edges") or []) if isinstance(row, dict)]
+        detached_seed = {
+            "structural_edge_id": structural_edge_id,
+            "tick": int(current_tick),
+            "process_id": process_id,
+        }
+        detached_id = "assembly.detach.{}".format(canonical_sha256(detached_seed)[:16])
+        detached_by_id = dict(
+            (str(row.get("detached_id", "")).strip(), dict(row))
+            for row in detached_rows
+            if str(row.get("detached_id", "")).strip()
+        )
+        detached_by_id[detached_id] = {
+            "schema_version": "1.0.0",
+            "detached_id": detached_id,
+            "tick": int(current_tick),
+            "structural_edge_id": structural_edge_id,
+            "process_id": process_id,
+            "intent_id": str(intent_id),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "node_a_id": str(edge_row.get("node_a_id", "")).strip(),
+                "node_b_id": str(edge_row.get("node_b_id", "")).strip(),
+            },
+        }
+        state["assembly_graph_detached_edges"] = [
+            dict(detached_by_id[key]) for key in sorted(detached_by_id.keys())
+        ]
+        for row in list(state.get("assembly_graph_detached_edges") or []):
+            if not isinstance(row, dict):
+                continue
+            row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+
+        linked_portal_id = (
+            str(edge_ext.get("linked_portal_id", "")).strip()
+            or str(inputs.get("linked_portal_id", "")).strip()
+        )
+        portal_seal_updated = False
+        if linked_portal_id:
+            updated_portals: List[dict] = []
+            for row in list(interior_portal_rows or []):
+                portal_row = dict(row) if isinstance(row, dict) else {}
+                if str(portal_row.get("portal_id", "")).strip() != linked_portal_id:
+                    updated_portals.append(portal_row)
+                    continue
+                portal_ext = dict(portal_row.get("extensions") or {})
+                portal_ext["seal_state"] = "breached"
+                portal_ext["mechanics_fracture_edge_id"] = structural_edge_id
+                portal_ext["last_mechanics_fracture_tick"] = int(current_tick)
+                portal_row["extensions"] = portal_ext
+                updated_portals.append(portal_row)
+                portal_seal_updated = True
+                leak_id = "leak.mechanics.{}".format(canonical_sha256({"portal_id": linked_portal_id, "edge_id": structural_edge_id})[:16])
+                leak_by_id = dict(
+                    (str(item.get("leak_id", "")).strip(), dict(item))
+                    for item in list(interior_leak_hazards or [])
+                    if isinstance(item, dict) and str(item.get("leak_id", "")).strip()
+                )
+                leak_by_id[leak_id] = normalize_leak_hazard(
+                    {
+                        "leak_id": leak_id,
+                        "volume_id": str(portal_row.get("volume_a_id", "")).strip()
+                        or str(portal_row.get("volume_b_id", "")).strip()
+                        or "volume.unknown",
+                        "leak_rate_air": int(max(1, _as_int(inputs.get("leak_rate_air", 240), 240))),
+                        "leak_rate_water": int(max(0, _as_int(inputs.get("leak_rate_water", 0), 0))),
+                        "hazard_model_id": "hazard.flow.portal_leak",
+                        "extensions": {
+                            "portal_id": linked_portal_id,
+                            "source_edge_id": structural_edge_id,
+                            "source_process_id": process_id,
+                        },
+                    }
+                )
+                interior_leak_hazards = [
+                    dict(leak_by_id[key]) for key in sorted(leak_by_id.keys())
+                ]
+            interior_portal_rows = _ensure_interior_portal_rows({"interior_portals": updated_portals})
+            state["interior_portals"] = [dict(row) for row in list(interior_portal_rows or []) if isinstance(row, dict)]
+            state["interior_leak_hazards"] = [dict(row) for row in list(interior_leak_hazards or []) if isinstance(row, dict)]
+
+        if bool(inputs.get("spawn_debris", False)):
+            debris_rows = [dict(row) for row in list(state.get("mechanics_debris_batches") or []) if isinstance(row, dict)]
+            debris_seed = {
+                "edge_id": structural_edge_id,
+                "tick": int(current_tick),
+                "intent_id": str(intent_id),
+            }
+            debris_id = "debris.batch.{}".format(canonical_sha256(debris_seed)[:16])
+            debris_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "debris_batch_id": debris_id,
+                    "source_edge_id": structural_edge_id,
+                    "tick": int(current_tick),
+                    "mass_units": int(max(1, _as_int(inputs.get("debris_mass_units", 10), 10))),
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "source_process_id": process_id,
+                    },
+                }
+            )
+            debris_rows = sorted(debris_rows, key=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("debris_batch_id", ""))))
+            for row in debris_rows:
+                row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+            state["mechanics_debris_batches"] = debris_rows
+
+        provenance_row = _mechanics_provenance_row(
+            event_type="mechanics_fracture",
+            tick=int(current_tick),
+            process_id=process_id,
+            intent_id=intent_id,
+            structural_edge_id=structural_edge_id,
+            target_id=linked_portal_id or None,
+            extensions={
+                "portal_seal_updated": bool(portal_seal_updated),
+                "spawn_debris": bool(inputs.get("spawn_debris", False)),
+            },
+        )
+        mechanics_provenance_events = sorted(
+            [dict(row) for row in list(mechanics_provenance_events or []) if isinstance(row, dict)] + [provenance_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        _persist_mechanics_state(
+            state,
+            structural_graphs=structural_graphs,
+            structural_nodes=structural_nodes,
+            structural_edges=structural_edges,
+            mechanics_provenance_events=mechanics_provenance_events,
+        )
+        result_metadata = {
+            "structural_edge_id": structural_edge_id,
+            "fracture_event_id": str(provenance_row.get("event_id", "")).strip(),
+            "portal_seal_updated": bool(portal_seal_updated),
+            "spawn_debris": bool(inputs.get("spawn_debris", False)),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.spec_apply_to_target":
