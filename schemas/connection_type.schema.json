@@ -11,6 +11,10 @@
     "schema_version",
     "connection_type_id",
     "description",
+    "default_stiffness",
+    "default_max_load",
+    "supports_rotation",
+    "supports_translation",
     "extensions"
   ],
   "additionalProperties": false,
@@ -25,6 +29,20 @@
     },
     "description": {
       "type": "string"
+    },
+    "default_stiffness": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "default_max_load": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "supports_rotation": {
+      "type": "boolean"
+    },
+    "supports_translation": {
+      "type": "boolean"
     },
     "requires_part_classes": {
       "type": "array",
@@ -42,6 +60,10 @@
       "schema_version": "1.0.0",
       "connection_type_id": "conn.example",
       "description": "Example connection type.",
+      "default_stiffness": 1000,
+      "default_max_load": 100000,
+      "supports_rotation": false,
+      "supports_translation": false,
       "requires_part_classes": [
         "partclass.bolt.generic"
       ],

@@ -5413,6 +5413,10 @@ def _materials_structure_registry_rows(
                 "schema_version": "1.0.0",
                 "connection_type_id": connection_type_id,
                 "description": str(entry.get("description", "")).strip(),
+                "default_stiffness": int(max(0, _as_int(entry.get("default_stiffness", 0), 0))),
+                "default_max_load": int(max(0, _as_int(entry.get("default_max_load", 0), 0))),
+                "supports_rotation": bool(entry.get("supports_rotation", False)),
+                "supports_translation": bool(entry.get("supports_translation", False)),
                 "requires_part_classes": list(requires_part_classes),
                 "extensions": dict(entry.get("extensions") or {}),
             }
