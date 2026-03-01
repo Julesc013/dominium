@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "control.plane.full.baseline.v1",
+  "scenario_id": "ctrl10.representative.envelope",
+  "description": "CTRL-10 full regression lock for control-plane composite anchor and proof surfaces.",
+  "composite_control_plane_hash_anchor": "b9e424935ac7bf603f2fc41cac5b0cc2b86cdef1c00da6ddc0ed94eba22ba5d3",
+  "proof_bundle_fingerprint": "00324c5fac3562f00febff85963aad681b04a1898ae43552de53229d4fef2b54",
+  "fidelity_allocation_fingerprint": "e2913b2e8762170d005fbdaafca136cc8a27f271f58ed80a7ae9e74ddeeedae5",
+  "view_negotiation_fingerprint": "5f30ad4655bde93ec72ea5afaa41128e0bea5b0bf3a707a16624e297c3cff24a",
+  "update_policy": {
+    "required_commit_tag": "CTRL-PLANE-REGRESSION-UPDATE",
+    "notes": "Baseline updates require explicit control-plane regression review and deterministic revalidation. Updated under CTRL-PLANE-REGRESSION-UPDATE on 2026-03-01."
+  },
+  "extensions": {
+    "proof_schema_id": "dominium.schema.control.control_proof_bundle",
+    "lock_scope": "control_plane_full_envelope",
+    "generated_from": {
+      "determinism_compare_report": "build/control/control_determinism_compare.json",
+      "global_stress_report": "build/control/control_global_stress_report.json"
+    }
+  }
+}
