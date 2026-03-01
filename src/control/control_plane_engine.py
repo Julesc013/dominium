@@ -744,14 +744,93 @@ def _write_decision_log(repo_root: str, log_row: Mapping[str, object]) -> str:
     return rel.replace("\\", "/")
 
 
+def _control_proof_markers_for_decision(
+    *,
+    log_row: Mapping[str, object],
+    control_action_id: str,
+    control_policy_id: str,
+) -> dict:
+    payload = dict(log_row or {})
+    decision_id = str(payload.get("decision_id", "")).strip()
+    decision_hash = _hash64(
+        payload.get("deterministic_fingerprint", ""),
+        {"decision_id": decision_id, "log_row": payload},
+    )
+    input_vector = dict(payload.get("input_vector") or {})
+    resolved_vector = dict(payload.get("resolved_vector") or {})
+    ext = dict(payload.get("extensions") or {})
+    downgrade_entries = [
+        dict(item)
+        for item in list(ext.get("downgrade_entries") or [])
+        if isinstance(item, Mapping)
+    ]
+    abstraction_entries = sorted(
+        (
+            {
+                "downgrade_id": str(item.get("downgrade_id", "")).strip(),
+                "from_value": str(item.get("from_value", "")).strip(),
+                "to_value": str(item.get("to_value", "")).strip(),
+                "reason_code": str(item.get("reason_code", "")).strip(),
+            }
+            for item in downgrade_entries
+            if str(item.get("axis", "")).strip() == "abstraction"
+        ),
+        key=lambda item: (
+            str(item.get("downgrade_id", "")),
+            str(item.get("from_value", "")),
+            str(item.get("to_value", "")),
+            str(item.get("reason_code", "")),
+        ),
+    )
+    view_payload = {
+        "decision_id": decision_id,
+        "requested_view": str(input_vector.get("view_requested", "")).strip(),
+        "resolved_view": str(resolved_vector.get("view_resolved", "")).strip(),
+        "downgrade_ids": sorted(
+            str(item.get("downgrade_id", "")).strip()
+            for item in downgrade_entries
+            if str(item.get("axis", "")).strip() == "view" and str(item.get("downgrade_id", "")).strip()
+        ),
+    }
+    fidelity_payload = {
+        "decision_id": decision_id,
+        "fidelity_resolved": str(resolved_vector.get("fidelity_resolved", "")).strip(),
+        "budget_allocated": int(max(0, _to_int(payload.get("budget_allocated", 0), 0))),
+    }
+    policy_ids = _sorted_unique_strings(payload.get("policy_ids_applied"))
+    action_token = str(control_action_id or "").strip()
+    policy_token = str(control_policy_id or "").strip()
+    meta_payload = {
+        "decision_id": decision_id,
+        "is_meta_override": bool(
+            action_token == "action.admin.meta_override"
+            or policy_token == "ctrl.policy.admin.meta"
+            or "ctrl.policy.admin.meta" in set(policy_ids)
+        ),
+        "control_action_id": action_token,
+        "control_policy_id": policy_token,
+        "policy_ids_applied": policy_ids,
+    }
+    return {
+        "control_decision_id": decision_id,
+        "control_decision_log_hash": decision_hash,
+        "control_fidelity_allocation_hash": canonical_sha256(fidelity_payload),
+        "control_abstraction_downgrade_hash": canonical_sha256(abstraction_entries),
+        "control_view_policy_changes_hash": canonical_sha256(view_payload),
+        "control_meta_override_hash": canonical_sha256(meta_payload),
+    }
+
+
 def _build_refused_resolution(
     *,
     control_intent_id: str,
     control_policy_id: str,
+    control_action_id: str,
     resolved_vector: Mapping[str, object],
     refusal_payload: Mapping[str, object],
     downgrade_reasons: List[str],
     log_ref: str,
+    proof_markers: Mapping[str, object] | None = None,
 ) -> dict:
     resolution = {
         "schema_version": "1.0.0",
@@ -766,8 +845,14 @@ def _build_refused_resolution(
         "downgrade_reasons": sorted(set(str(item).strip() for item in list(downgrade_reasons or []) if str(item).strip())),
         "decision_log_ref": str(log_ref),
         "deterministic_fingerprint": "",
-        "extensions": {"control_policy_id": str(control_policy_id)},
+        "extensions": {
+            "control_policy_id": str(control_policy_id),
+            "control_action_id": str(control_action_id),
+        },
     }
+    for key, value in sorted((dict(proof_markers or {})).items(), key=lambda row: str(row[0])):
+        if str(value).strip():
+            resolution["extensions"][str(key)] = str(value).strip()
     seed = dict(resolution)
     seed["deterministic_fingerprint"] = ""
     resolution["deterministic_fingerprint"] = canonical_sha256(seed)
@@ -1062,15 +1147,22 @@ def build_control_resolution(
             decision_extensions=decision_log_extensions,
         )
         log_ref = _write_decision_log(repo_root, log_row)
+        proof_markers = _control_proof_markers_for_decision(
+            log_row=log_row,
+            control_action_id=action_id,
+            control_policy_id=control_policy_id,
+        )
         return {
             "result": "refused",
             "resolution": _build_refused_resolution(
                 control_intent_id=control_intent_id,
                 control_policy_id=control_policy_id,
+                control_action_id=action_id,
                 resolved_vector=resolved_vector,
                 refusal_payload=refusal_payload,
                 downgrade_reasons=_negotiation_downgrade_reasons(negotiation_for_log),
                 log_ref=log_ref,
+                proof_markers=proof_markers,
             ),
             "refusal": dict(refusal_payload),
         }
@@ -1251,6 +1343,22 @@ def build_control_resolution(
         decision_extensions=decision_log_extensions,
     )
     log_ref = _write_decision_log(repo_root, log_row)
+    proof_markers = _control_proof_markers_for_decision(
+        log_row=log_row,
+        control_action_id=action_id,
+        control_policy_id=control_policy_id,
+    )
+    emitted_envelopes = [
+        dict(row)
+        for row in list(emitted_envelopes or [])
+        if isinstance(row, Mapping)
+    ]
+    for envelope_row in emitted_envelopes:
+        ext = dict(envelope_row.get("extensions") or {})
+        for key, value in sorted(proof_markers.items(), key=lambda row: str(row[0])):
+            if str(value).strip():
+                ext[str(key)] = str(value).strip()
+        envelope_row["extensions"] = ext
     downgrade_reasons = _negotiation_downgrade_reasons(negotiation_payload)
 
     resolution = {
@@ -1279,7 +1387,8 @@ def build_control_resolution(
             "policy_ids_applied": policy_ids_applied,
             "negotiation_fingerprint": str(negotiation_payload.get("deterministic_fingerprint", "")).strip(),
             "effect_influence_fingerprint": str(effect_influence_payload.get("deterministic_fingerprint", "")).strip(),
-        },
+        }
+        | dict((str(key), str(value).strip()) for key, value in sorted(proof_markers.items(), key=lambda row: str(row[0])) if str(value).strip()),
     }
     seed = dict(resolution)
     seed["deterministic_fingerprint"] = ""

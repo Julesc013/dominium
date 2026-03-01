@@ -619,6 +619,28 @@ def replay_intent_script_srz(
                 ),
             )
         )
+        control_decision_hash = canonical_sha256(
+            {
+                "submission_tick": int(submission_tick),
+                "accepted": sorted(
+                    (dict(item) for item in list(accepted_envelopes or []) if isinstance(item, dict)),
+                    key=lambda item: (
+                        str(item.get("envelope_id", "")),
+                        str(item.get("intent_id", "")),
+                        str(item.get("process_id", "")),
+                    ),
+                ),
+                "dropped": sorted(
+                    (dict(item) for item in list(dropped or []) if isinstance(item, dict)),
+                    key=lambda item: (
+                        str(item.get("scope_key", "")),
+                        str(item.get("intent_id", "")),
+                        str(item.get("process_id", "")),
+                        str(item.get("envelope_id", "")),
+                    ),
+                ),
+            }
+        )
         tick_hash = per_tick_hash(
             universe_state=state,
             shards=[shard],
@@ -627,6 +649,7 @@ def replay_intent_script_srz(
             last_tick_hash=str(last_tick_hash),
             ledger_hash=str(tick_ledger_hash),
             transition_event_hash=str(transition_event_hash),
+            control_decision_hash=str(control_decision_hash),
         )
         shard["last_hash_anchor"] = tick_hash
         current_composite = composite_hash([shard])
@@ -637,6 +660,7 @@ def replay_intent_script_srz(
             "ledger_hash": str(tick_ledger_hash),
             "tick_hash": str(tick_hash),
             "composite_hash": str(current_composite),
+            "control_decision_hash": str(control_decision_hash),
         }
         tick_hash_anchors.append(tick_hash_row)
         last_tick_hash = str(tick_hash)

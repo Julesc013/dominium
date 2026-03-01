@@ -1,0 +1,29 @@
+SCHEMA: control/control_proof_bundle.schema
+schema_id: dominium.schema.control.control_proof_bundle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic control-plane proof bundle for replay/proof artifacts.
+
+REQUIRED SHAPE:
+record control_proof_bundle
+  required:
+    - schema_version: semver
+    - proof_id: id
+    - tick_range: map
+      required:
+        - start_tick: u64
+        - end_tick: u64
+    - decision_log_hashes: list[sha256]
+    - fidelity_allocations_hash: sha256
+    - abstraction_downgrade_hash: sha256
+    - view_policy_changes_hash: sha256
+    - meta_override_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Proof bundle fields must be derived deterministically from control decisions.
+- Bundle generation must be tick-driven and wall-clock independent.
+- Extensions remain open-map for forward-compatible domain augmentation.
