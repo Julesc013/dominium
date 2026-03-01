@@ -521,16 +521,29 @@ def _evaluate_check(
         required_min = _as_number(params.get("min_load_rating_kg"))
         measured_row = _as_map(_input_value(input_catalog, "derived.structure.load_summary"))
         measured_rating = _as_number(measured_row.get("load_rating_kg"))
+        measured_stress = _as_number(measured_row.get("max_stress_ratio_permille"))
+        measured_derailment = _as_number(measured_row.get("derailment_risk_permille"))
         details = {
             "required_min_load_rating_kg": required_min,
             "measured_load_rating_kg": measured_rating,
+            "measured_max_stress_ratio_permille": measured_stress,
+            "stress_limit_permille": 1000,
+            "measured_derailment_risk_permille": measured_derailment,
         }
-        if required_min is None or measured_rating is None:
+        if required_min is None and measured_rating is None and measured_stress is None:
+            grade = "warn"
+        elif measured_stress is not None and int(measured_stress) > 1000:
+            grade = "fail"
+        elif required_min is None:
+            grade = "pass" if measured_rating is not None else "warn"
+        elif measured_rating is None:
             grade = "warn"
         elif int(measured_rating) >= int(required_min):
-            grade = "pass"
+            grade = "pass" if measured_stress is None or int(measured_stress) <= 1000 else "fail"
         else:
             grade = "fail"
+        if measured_derailment is not None and int(measured_derailment) >= 900 and grade == "pass":
+            grade = "warn"
     elif check_id == "check.interface.compatibility":
         required_profile = str(params.get("interface_profile_id", "")).strip()
         measured_row = _as_map(_input_value(input_catalog, "derived.interface.compatibility_summary"))
