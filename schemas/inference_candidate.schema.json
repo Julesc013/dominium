@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Inference Candidate Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FORM-1 derived inference candidate artifact.",
+  "x-doc-ref": [
+    "docs/infrastructure/FORMALIZATION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "formalization_id",
+    "candidate_kind",
+    "geometry_preview_ref",
+    "confidence_score",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "formalization_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_kind": {
+      "type": "string",
+      "enum": [
+        "spline",
+        "corridor",
+        "volume",
+        "graph_stub"
+      ]
+    },
+    "geometry_preview_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidence_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "required_resources_estimate": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "suggested_spec_ids": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "candidate_id": "candidate.f0ddcd3187f1",
+      "formalization_id": "formalization.23f8e53ac8d9",
+      "candidate_kind": "corridor",
+      "geometry_preview_ref": "preview.geom.corridor.f0ddcd31",
+      "confidence_score": 860,
+      "required_resources_estimate": {
+        "labor_units": 12,
+        "steel_kg": 420
+      },
+      "suggested_spec_ids": [
+        "spec.track.standard_gauge.v1"
+      ],
+      "deterministic_fingerprint": "8b8582ca2dcb684ca2cc588f18262f0d57eb8ff65f4517df5e5a352013a48f1c",
+      "extensions": {}
+    }
+  ]
+}

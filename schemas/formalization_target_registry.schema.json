@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formalization Target Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic FORM-1 formalization target registry output.",
+  "x-doc-ref": [
+    "docs/infrastructure/FORMALIZATION_MODEL.md",
+    "docs/architecture/registry_compile.md",
+    "schemas/formalization_target.schema.json"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "targets",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "target_id",
+          "description",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "target_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "targets": [],
+      "registry_hash": "6f9a3367cfcd4ac1b97795fdb4f9c583f44f6c57a2ad161337f8f39a9289b2ba"
+    }
+  ]
+}

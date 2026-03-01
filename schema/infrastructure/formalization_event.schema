@@ -1,0 +1,28 @@
+SCHEMA: infrastructure/formalization_event.schema
+schema_id: dominium.schema.infrastructure.formalization_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical FORM-1 event-sourced transition artifact.
+- Records lifecycle transitions with provenance and decision-log linkage.
+
+REQUIRED SHAPE:
+record formalization_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - tick: u64
+    - formalization_id: id
+    - transition: string
+    - actor_subject_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - provenance_event_id: id
+    - decision_log_ref: id
+
+INVARIANTS:
+- Transition stream is deterministic and replayable.
+- Event rows are append-only lifecycle evidence.
+- Cross-links to provenance/decision artifacts are stable references only.
