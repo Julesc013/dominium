@@ -162,6 +162,8 @@ from analyzers import e133_spec_hardcode_smell
 from analyzers import e134_spec_bypass_smell
 from analyzers import e135_hidden_auto_formalize_smell
 from analyzers import e136_inference_truth_mutation_smell
+from analyzers import e137_structural_bypass_smell
+from analyzers import e138_inline_strength_check_smell
 
 
 ANALYZERS = (
@@ -327,6 +329,8 @@ ANALYZERS = (
     e134_spec_bypass_smell,
     e135_hidden_auto_formalize_smell,
     e136_inference_truth_mutation_smell,
+    e137_structural_bypass_smell,
+    e138_inline_strength_check_smell,
 )
 
 
