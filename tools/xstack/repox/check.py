@@ -316,6 +316,7 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-TRUTH-ACCESS-IN-RENDER",
     "INV-NO-TYPE-BRANCHING",
     "INV-CAPABILITY-REGISTRY-REQUIRED",
+    "INV-DOMAIN-CONTROL-REGISTERED",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -631,6 +632,17 @@ CONTROL_DECISION_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "sequence_id",
     "fingerprint_cases",
     "sequence_fingerprint",
+    "update_policy",
+)
+
+CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH = "data/regression/control_plane_full_baseline.json"
+CONTROL_PLANE_FULL_REGRESSION_LOCK_REQUIRED_FIELDS = (
+    "baseline_id",
+    "scenario_id",
+    "composite_control_plane_hash_anchor",
+    "proof_bundle_fingerprint",
+    "fidelity_allocation_fingerprint",
+    "view_negotiation_fingerprint",
     "update_policy",
 )
 
@@ -3086,6 +3098,88 @@ def _append_regression_lock_findings(
                 snippet=ctrl_subject[:140],
                 message="latest control decision baseline commit message must include '{}'".format(ctrl_required_tag),
                 rule_id="INV-CONTROL-DECISION-REGRESSION-LOCK-PRESENT",
+            )
+        )
+
+    full_payload, full_err = _load_json_object(repo_root, CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH)
+    if full_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="",
+                message="control-plane full regression baseline lock file is missing or invalid",
+                rule_id="INV-CONTROL-PLANE-FULL-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+    for field in CONTROL_PLANE_FULL_REGRESSION_LOCK_REQUIRED_FIELDS:
+        value = full_payload.get(field)
+        if value is None or (isinstance(value, str) and not str(value).strip()):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH,
+                    line_number=1,
+                    snippet=str(field),
+                    message="control-plane full regression lock missing required field '{}'".format(field),
+                    rule_id="INV-CONTROL-PLANE-FULL-REGRESSION-LOCK-PRESENT",
+                )
+            )
+
+    full_update_policy = full_payload.get("update_policy")
+    full_required_tag = ""
+    if isinstance(full_update_policy, dict):
+        full_required_tag = str(full_update_policy.get("required_commit_tag", "")).strip()
+    if not full_required_tag:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet="update_policy.required_commit_tag",
+                message="control-plane full regression lock must declare update_policy.required_commit_tag",
+                rule_id="INV-CONTROL-PLANE-FULL-REGRESSION-LOCK-PRESENT",
+            )
+        )
+        return
+    if full_required_tag != "CTRL-PLANE-REGRESSION-UPDATE":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet=full_required_tag,
+                message="control-plane full regression lock required_commit_tag must be CTRL-PLANE-REGRESSION-UPDATE",
+                rule_id="INV-CONTROL-PLANE-FULL-REGRESSION-LOCK-PRESENT",
+            )
+        )
+
+    try:
+        full_proc = subprocess.run(
+            ["git", "log", "-1", "--pretty=%s", "--", CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH],
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            check=False,
+        )
+    except OSError:
+        return
+    if int(full_proc.returncode) != 0:
+        return
+    full_subject = str(full_proc.stdout or "").strip()
+    if full_subject and full_required_tag not in full_subject:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH,
+                line_number=1,
+                snippet=full_subject[:140],
+                message="latest control-plane full baseline commit message must include '{}'".format(full_required_tag),
+                rule_id="INV-CONTROL-PLANE-FULL-REGRESSION-LOCK-PRESENT",
             )
         )
 
@@ -10045,6 +10139,100 @@ def _append_interaction_invariant_findings(
             )
 
 
+def _append_domain_control_registered_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    control_rel = "data/registries/control_action_registry.json"
+    interaction_rel = "data/registries/interaction_action_registry.json"
+    control_payload, control_err = _load_json_object(repo_root, control_rel)
+    interaction_payload, interaction_err = _load_json_object(repo_root, interaction_rel)
+    if control_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=control_rel,
+                line_number=1,
+                snippet="",
+                message="control action registry is missing or invalid; cannot verify user-facing control registration",
+                rule_id="INV-DOMAIN-CONTROL-REGISTERED",
+            )
+        )
+        return
+    if interaction_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=interaction_rel,
+                line_number=1,
+                snippet="",
+                message="interaction action registry is missing or invalid; cannot verify user-facing process families",
+                rule_id="INV-DOMAIN-CONTROL-REGISTERED",
+            )
+        )
+        return
+
+    control_actions = list((dict(control_payload.get("record") or {})).get("actions") or [])
+    interaction_actions = list((dict(interaction_payload.get("record") or {})).get("actions") or [])
+    produced_process_ids: Set[str] = set()
+    produced_families: Set[str] = set()
+    adapter_allows_dynamic_process = False
+    for row in control_actions:
+        if not isinstance(row, dict):
+            continue
+        action_id = str(row.get("action_id", "")).strip()
+        produces = dict(row.get("produces") or {})
+        process_id = str(produces.get("process_id", "")).strip()
+        if process_id.startswith("process."):
+            produced_process_ids.add(process_id)
+            parts = process_id.split(".")
+            if len(parts) >= 2 and str(parts[1]).strip():
+                produced_families.add(str(parts[1]).strip())
+        ext = dict(row.get("extensions") or {})
+        if (
+            action_id == "action.interaction.execute_process"
+            and str(ext.get("adapter", "")).strip() == "legacy.process_id"
+        ):
+            adapter_allows_dynamic_process = True
+
+    missing_families: Dict[str, Set[str]] = {}
+    for row in interaction_actions:
+        if not isinstance(row, dict):
+            continue
+        process_id = str(row.get("process_id", "")).strip()
+        if not process_id.startswith("process."):
+            continue
+        parts = process_id.split(".")
+        family = str(parts[1]).strip() if len(parts) >= 2 else ""
+        if not family:
+            continue
+        if process_id in produced_process_ids:
+            continue
+        if family in produced_families:
+            continue
+        if adapter_allows_dynamic_process:
+            continue
+        missing_families.setdefault(family, set()).add(process_id)
+
+    for family in sorted(missing_families.keys()):
+        process_ids = sorted(missing_families[family])
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=control_rel,
+                line_number=1,
+                snippet=family,
+                message=(
+                    "user-facing process family '{}' is not represented in control_action_registry and no adapter action is declared "
+                    "(examples: {})"
+                ).format(family, ",".join(process_ids[:4])),
+                rule_id="INV-DOMAIN-CONTROL-REGISTERED",
+            )
+        )
+
+
 def _append_platform_renderer_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -10963,6 +11151,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_interaction_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_domain_control_registered_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
