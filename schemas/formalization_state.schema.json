@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formalization State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FORM-1 infrastructure formalization lifecycle state row.",
+  "x-doc-ref": [
+    "docs/infrastructure/FORMALIZATION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "formalization_id",
+    "target_kind",
+    "target_context_id",
+    "state",
+    "raw_sources",
+    "created_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "formalization_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_kind": {
+      "type": "string",
+      "enum": [
+        "track",
+        "road",
+        "path",
+        "canal",
+        "tunnel",
+        "custom"
+      ]
+    },
+    "target_context_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "raw",
+        "inferred",
+        "formal",
+        "networked"
+      ]
+    },
+    "raw_sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "inferred_artifact_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "formal_artifact_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "network_graph_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "formalization_id": "formalization.23f8e53ac8d9",
+      "target_kind": "track",
+      "target_context_id": "site.main.yard",
+      "state": "inferred",
+      "raw_sources": [
+        "part.placement.001",
+        "part.placement.002"
+      ],
+      "inferred_artifact_ref": "inference.candidate.set.a1",
+      "formal_artifact_ref": null,
+      "network_graph_ref": null,
+      "spec_id": "spec.track.standard_gauge.v1",
+      "created_tick": 100,
+      "deterministic_fingerprint": "f61067c19ca67f0d7aebf6b98f6f7113044c0eef9fcbfd5156d3a4cb0f7ea11a",
+      "extensions": {}
+    }
+  ]
+}

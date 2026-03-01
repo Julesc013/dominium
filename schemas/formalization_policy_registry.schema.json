@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formalization Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic FORM-1 formalization policy registry output.",
+  "x-doc-ref": [
+    "docs/infrastructure/FORMALIZATION_MODEL.md",
+    "docs/architecture/registry_compile.md",
+    "schemas/formalization_policy.schema.json"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "formalization_policy_id",
+          "description",
+          "allow_auto_accept",
+          "allow_auto_network",
+          "require_confirmation",
+          "admin_instant_allowed",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "formalization_policy_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "allow_auto_accept": {
+            "type": "boolean"
+          },
+          "allow_auto_network": {
+            "type": "boolean"
+          },
+          "require_confirmation": {
+            "type": "boolean"
+          },
+          "admin_instant_allowed": {
+            "type": "boolean"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "policies": [],
+      "registry_hash": "3b8277cbf35f7f231c34f6d699167da5f214ed22ac4916aaee67b001f6773dd3"
+    }
+  ]
+}

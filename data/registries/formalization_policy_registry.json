@@ -1,0 +1,57 @@
+{
+  "schema_id": "dominium.registry.formalization_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.formalization_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "formalization_policy_id": "policy.diegetic_strict",
+        "description": "No automatic acceptance. Inference suggestions require explicit confirmation.",
+        "allow_auto_accept": false,
+        "allow_auto_network": false,
+        "require_confirmation": true,
+        "admin_instant_allowed": false,
+        "extensions": {
+          "epistemic": "diegetic"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "formalization_policy_id": "policy.assisted",
+        "description": "Allow deterministic suggestions with mandatory explicit acceptance.",
+        "allow_auto_accept": false,
+        "allow_auto_network": false,
+        "require_confirmation": true,
+        "admin_instant_allowed": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "formalization_policy_id": "policy.auto_network",
+        "description": "Procedural profile permitting deterministic auto acceptance and network promotion.",
+        "allow_auto_accept": true,
+        "allow_auto_network": true,
+        "require_confirmation": false,
+        "admin_instant_allowed": false,
+        "extensions": {
+          "procedural_only": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "formalization_policy_id": "policy.admin_instant",
+        "description": "Administrative policy allowing instant formalization with full logging.",
+        "allow_auto_accept": true,
+        "allow_auto_network": true,
+        "require_confirmation": false,
+        "admin_instant_allowed": true,
+        "extensions": {
+          "meta_allowed": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

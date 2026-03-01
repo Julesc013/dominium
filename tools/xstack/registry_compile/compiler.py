@@ -2128,6 +2128,156 @@ def _spec_registry_rows(
     return spec_type_rows, tolerance_policy_rows, compliance_check_rows, errors
 
 
+def _formalization_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    target_record, target_rows_raw, target_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/formalization_target_registry.json",
+        expected_schema_id="dominium.registry.formalization_target_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="targets",
+    )
+    if target_load_errors:
+        return [], [], target_load_errors
+
+    policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/formalization_policy_registry.json",
+        expected_schema_id="dominium.registry.formalization_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], policy_load_errors
+
+    del target_record
+    del policy_record
+    errors: List[dict] = []
+
+    target_rows: List[dict] = []
+    seen_target_ids = set()
+    for entry in sorted(target_rows_raw, key=lambda row: str((row or {}).get("target_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_formalization_target_entry",
+                    "message": "formalization target entry must be object",
+                    "path": "$.targets",
+                }
+            )
+            continue
+        target_id = str(entry.get("target_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if (not target_id) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_formalization_target_entry",
+                    "message": "formalization target entry missing required fields",
+                    "path": "$.targets",
+                }
+            )
+            continue
+        if target_id in seen_target_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_formalization_target_id",
+                    "message": "duplicate target_id '{}'".format(target_id),
+                    "path": "$.targets.target_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "target_id": target_id,
+            "description": description,
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="formalization_target",
+            payload=schema_payload,
+            path="data/registries/formalization_target_registry.json#{}".format(target_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_target_ids.add(target_id)
+        target_rows.append(schema_payload)
+    target_rows = sorted(target_rows, key=lambda row: str(row.get("target_id", "")))
+
+    policy_rows: List[dict] = []
+    seen_policy_ids = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("formalization_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_formalization_policy_entry",
+                    "message": "formalization policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        policy_id = str(entry.get("formalization_policy_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        allow_auto_accept = entry.get("allow_auto_accept")
+        allow_auto_network = entry.get("allow_auto_network")
+        require_confirmation = entry.get("require_confirmation")
+        admin_instant_allowed = entry.get("admin_instant_allowed")
+        extensions = entry.get("extensions")
+        if (
+            (not policy_id)
+            or (not isinstance(allow_auto_accept, bool))
+            or (not isinstance(allow_auto_network, bool))
+            or (not isinstance(require_confirmation, bool))
+            or (not isinstance(admin_instant_allowed, bool))
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_formalization_policy_entry",
+                    "message": "formalization policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if policy_id in seen_policy_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_formalization_policy_id",
+                    "message": "duplicate formalization_policy_id '{}'".format(policy_id),
+                    "path": "$.policies.formalization_policy_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "formalization_policy_id": policy_id,
+            "description": description,
+            "allow_auto_accept": bool(allow_auto_accept),
+            "allow_auto_network": bool(allow_auto_network),
+            "require_confirmation": bool(require_confirmation),
+            "admin_instant_allowed": bool(admin_instant_allowed),
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="formalization_policy",
+            payload=schema_payload,
+            path="data/registries/formalization_policy_registry.json#{}".format(policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_policy_ids.add(policy_id)
+        policy_rows.append(schema_payload)
+    policy_rows = sorted(policy_rows, key=lambda row: str(row.get("formalization_policy_id", "")))
+
+    return target_rows, policy_rows, errors
+
+
 def _interaction_registry_rows(
     repo_root: str,
 ) -> Tuple[List[dict], List[dict]]:
@@ -10565,6 +10715,14 @@ def compile_bundle(
         repo_root=repo_root,
         schema_root=schema_root,
     )
+    (
+        formalization_target_rows,
+        formalization_policy_rows,
+        formalization_registry_errors,
+    ) = _formalization_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
     interaction_action_rows, interaction_registry_errors = _interaction_registry_rows(
         repo_root=repo_root,
     )
@@ -10954,6 +11112,7 @@ def compile_bundle(
         + capability_registry_errors
         + effect_registry_errors
         + spec_registry_errors
+        + formalization_registry_errors
         + interaction_registry_errors
         + action_surface_registry_errors
         + pose_registry_errors
@@ -11413,6 +11572,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "compliance_checks": compliance_check_rows,
+        }
+    )
+    formalization_target_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "targets": formalization_target_rows,
+        }
+    )
+    formalization_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": formalization_policy_rows,
         }
     )
     interaction_action_payload = _finalize_registry_payload(
@@ -11931,6 +12104,8 @@ def compile_bundle(
         "spec_type_registry": ("spec_type_registry", spec_type_payload),
         "tolerance_policy_registry": ("tolerance_policy_registry", tolerance_policy_payload),
         "compliance_check_registry": ("compliance_check_registry", compliance_check_payload),
+        "formalization_target_registry": ("formalization_target_registry", formalization_target_payload),
+        "formalization_policy_registry": ("formalization_policy_registry", formalization_policy_payload),
         "interaction_action_registry": ("interaction_action_registry", interaction_action_payload),
         "surface_type_registry": ("surface_type_registry", surface_type_payload),
         "posture_registry": ("posture_registry", posture_payload),
@@ -12068,6 +12243,8 @@ def compile_bundle(
         "spec_type_registry",
         "tolerance_policy_registry",
         "compliance_check_registry",
+        "formalization_target_registry",
+        "formalization_policy_registry",
         "interaction_action_registry",
         "surface_type_registry",
         "posture_registry",
@@ -12216,6 +12393,8 @@ def compile_bundle(
             "spec_type_registry_hash": registry_hashes["spec_type_registry_hash"],
             "tolerance_policy_registry_hash": registry_hashes["tolerance_policy_registry_hash"],
             "compliance_check_registry_hash": registry_hashes["compliance_check_registry_hash"],
+            "formalization_target_registry_hash": registry_hashes["formalization_target_registry_hash"],
+            "formalization_policy_registry_hash": registry_hashes["formalization_policy_registry_hash"],
             "interaction_action_registry_hash": registry_hashes["interaction_action_registry_hash"],
             "surface_type_registry_hash": registry_hashes["surface_type_registry_hash"],
             "posture_registry_hash": registry_hashes["posture_registry_hash"],

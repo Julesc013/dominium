@@ -73,6 +73,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "control_policy_registry": "control_policy.registry.json",
     "effect_type_registry": "effect_type.registry.json",
     "stacking_policy_registry": "stacking_policy.registry.json",
+    "formalization_target_registry": "formalization_target.registry.json",
+    "formalization_policy_registry": "formalization_policy.registry.json",
     "spec_type_registry": "spec_type.registry.json",
     "tolerance_policy_registry": "tolerance_policy.registry.json",
     "compliance_check_registry": "compliance_check.registry.json",

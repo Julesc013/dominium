@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.formalization_target_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.formalization_target_registry",
+    "registry_version": "1.0.0",
+    "targets": [
+      {
+        "schema_version": "1.0.0",
+        "target_id": "target.track",
+        "description": "Linear guide/path infrastructure target for track-like systems.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "target_id": "target.road",
+        "description": "Surface corridor infrastructure target for road-like systems.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "target_id": "target.path",
+        "description": "Generic path corridor infrastructure target.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "target_id": "target.canal",
+        "description": "Water corridor infrastructure target.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "target_id": "target.tunnel",
+        "description": "Subsurface corridor infrastructure target.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -1,0 +1,28 @@
+SCHEMA: infrastructure/inference_candidate.schema
+schema_id: dominium.schema.infrastructure.inference_candidate
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical FORM-1 derived candidate artifact emitted by inference.
+- Represents deterministic proposal previews without mutating authoritative truth.
+
+REQUIRED SHAPE:
+record inference_candidate
+  required:
+    - schema_version: semver
+    - candidate_id: id
+    - formalization_id: id
+    - candidate_kind: enum(spline|corridor|volume|graph_stub)
+    - geometry_preview_ref: id
+    - confidence_score: fixed_point
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - required_resources_estimate: map
+    - suggested_spec_ids: [id]
+
+INVARIANTS:
+- Candidate generation is deterministic for identical raw sources and policy inputs.
+- Candidate artifact is derived-only and never mutates authoritative state by itself.
+- Confidence score is deterministic and not probabilistic runtime randomness.

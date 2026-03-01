@@ -1,0 +1,22 @@
+SCHEMA: infrastructure/formalization_policy.schema
+schema_id: dominium.schema.infrastructure.formalization_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Registry entry for FORM-1 policy behavior controls.
+
+REQUIRED SHAPE:
+record formalization_policy
+  required:
+    - schema_version: semver
+    - formalization_policy_id: id
+    - description: string
+    - allow_auto_accept: bool
+    - allow_auto_network: bool
+    - require_confirmation: bool
+    - admin_instant_allowed: bool
+    - extensions: map
+
+INVARIANTS:
+- Policies define lifecycle gating and UX posture, not direct mutation bypass.

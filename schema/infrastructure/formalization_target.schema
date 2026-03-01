@@ -1,0 +1,18 @@
+SCHEMA: infrastructure/formalization_target.schema
+schema_id: dominium.schema.infrastructure.formalization_target
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Registry entry for infrastructure formalization target kinds.
+
+REQUIRED SHAPE:
+record formalization_target
+  required:
+    - schema_version: semver
+    - target_id: id
+    - description: string
+    - extensions: map
+
+INVARIANTS:
+- Targets are registry-driven and domain-agnostic.
