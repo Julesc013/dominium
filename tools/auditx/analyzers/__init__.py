@@ -154,6 +154,10 @@ from analyzers import e125_type_branch_smell
 from analyzers import e126_hidden_feature_flag_smell
 from analyzers import e127_temp_modifier_smell
 from analyzers import e128_effect_bypass_smell
+from analyzers import e129_control_plane_bypass_smell
+from analyzers import e130_hidden_privilege_escalation_smell
+from analyzers import e131_silent_downgrade_smell
+from analyzers import e132_missing_decision_log_smell
 
 
 ANALYZERS = (
@@ -311,6 +315,10 @@ ANALYZERS = (
     e126_hidden_feature_flag_smell,
     e127_temp_modifier_smell,
     e128_effect_bypass_smell,
+    e129_control_plane_bypass_smell,
+    e130_hidden_privilege_escalation_smell,
+    e131_silent_downgrade_smell,
+    e132_missing_decision_log_smell,
 )
 
 
