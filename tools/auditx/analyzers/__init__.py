@@ -158,6 +158,8 @@ from analyzers import e129_control_plane_bypass_smell
 from analyzers import e130_hidden_privilege_escalation_smell
 from analyzers import e131_silent_downgrade_smell
 from analyzers import e132_missing_decision_log_smell
+from analyzers import e133_spec_hardcode_smell
+from analyzers import e134_spec_bypass_smell
 
 
 ANALYZERS = (
@@ -319,6 +321,8 @@ ANALYZERS = (
     e130_hidden_privilege_escalation_smell,
     e131_silent_downgrade_smell,
     e132_missing_decision_log_smell,
+    e133_spec_hardcode_smell,
+    e134_spec_bypass_smell,
 )
 
 
