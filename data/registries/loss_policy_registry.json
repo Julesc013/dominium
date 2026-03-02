@@ -1,0 +1,47 @@
+{
+  "schema_id": "dominium.registry.loss_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.loss_policy_registry",
+    "registry_version": "1.0.0",
+    "loss_policies": [
+      {
+        "schema_version": "1.0.0",
+        "loss_policy_id": "loss.none",
+        "description": "No transport loss; all eligible envelopes are delivered.",
+        "deterministic_function_id": "loss.none",
+        "parameters": {},
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "loss_policy_id": "loss.linear_attenuation",
+        "description": "Deterministic attenuation-based loss threshold function.",
+        "deterministic_function_id": "loss.linear_attenuation.v1",
+        "parameters": {
+          "base_loss_permille": 0,
+          "distance_loss_permille": 25,
+          "field_visibility_weight_permille": 250
+        },
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "loss_policy_id": "loss.deterministic_rng",
+        "description": "Named-stream deterministic stochastic loss policy.",
+        "deterministic_function_id": "loss.named_rng.v1",
+        "parameters": {
+          "loss_permille": 50
+        },
+        "uses_rng_stream": true,
+        "rng_stream_name": "rng.signals.loss.default",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

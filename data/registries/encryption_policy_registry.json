@@ -1,0 +1,27 @@
+{
+  "schema_id": "dominium.registry.encryption_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.encryption_policy_registry",
+    "registry_version": "1.0.0",
+    "encryption_policies": [
+      {
+        "schema_version": "1.0.0",
+        "encryption_policy_id": "enc.none",
+        "description": "No encryption applied to transport envelope payload references.",
+        "deterministic_function_id": "enc.none",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "encryption_policy_id": "enc.basic_stub",
+        "description": "Deterministic placeholder encryption policy; canonical content-preserving stub.",
+        "deterministic_function_id": "enc.basic_stub.v1",
+        "extensions": {
+          "notes": "SIG-0 stub only; cryptographic security semantics deferred to SIG-3+."
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
