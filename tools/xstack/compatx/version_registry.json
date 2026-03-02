@@ -1134,6 +1134,27 @@
         "1.0.0"
       ]
     },
+    "edge_occupancy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reservation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "congestion_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "pose_slot": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1205,6 +1226,13 @@
       ]
     },
     "mobility_speed_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "congestion_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

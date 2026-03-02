@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Edge Occupancy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-5 meso occupancy row for mobility edge capacity usage.",
+  "x-doc-ref": [
+    "docs/mobility/MESO_TRAFFIC_MODEL.md",
+    "docs/audit/MESO_TRAFFIC_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_id",
+    "capacity_units",
+    "current_occupancy",
+    "congestion_ratio",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capacity_units": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "current_occupancy": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "congestion_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_id": "edge.mob.alpha.001",
+      "capacity_units": 2,
+      "current_occupancy": 3,
+      "congestion_ratio": 1.5,
+      "deterministic_fingerprint": "f80d75ff65da90da3fcfe314e8fcb11c806ecdb451db4864c2c1248ef5138e9f",
+      "extensions": {}
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reservation Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-5 edge reservation row for meso traffic capacity claims.",
+  "x-doc-ref": [
+    "docs/mobility/MESO_TRAFFIC_MODEL.md",
+    "docs/audit/MESO_TRAFFIC_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "reservation_id",
+    "vehicle_id",
+    "edge_id",
+    "start_tick",
+    "end_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "reservation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "start_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "end_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "reservation_id": "reservation.mob.alpha.001",
+      "vehicle_id": "vehicle.mob.alpha.001",
+      "edge_id": "edge.mob.alpha.001",
+      "start_tick": 400,
+      "end_tick": 420,
+      "deterministic_fingerprint": "4642c8ba464f91d65b4fd95d53f85330a3ab3f17fece5220deef0950f16fc6db",
+      "extensions": {}
+    }
+  ]
+}
