@@ -241,6 +241,17 @@ def _audience_to_recipient_address(audience_row: Mapping[str, object]) -> dict:
     return {"kind": "group", "group_id": target_id, "to_node_id": str(row.get("to_node_id", "node.unknown")).strip() or "node.unknown"}
 
 
+def _institution_sender_subject_id(*, institution_id: str, explicit_sender_subject_id: str) -> str:
+    explicit = str(explicit_sender_subject_id or "").strip()
+    if explicit:
+        return explicit
+    token = str(institution_id or "").strip()
+    if token.startswith("institution."):
+        token = token[len("institution.") :]
+    token = token.strip() or "unknown"
+    return "subject.institution.{}".format(token)
+
+
 def process_institution_bulletin_tick(
     *,
     current_tick: int,
@@ -377,8 +388,10 @@ def process_institution_bulletin_tick(
             channel_id=channel_id,
             from_node_id=str(policy_ext.get("dispatch_from_node_id", "node.unknown")).strip() or "node.unknown",
             artifact_id=artifact_id,
-            sender_subject_id=str(policy_ext.get("dispatch_sender_subject_id", "subject.system.institution")).strip()
-            or "subject.system.institution",
+            sender_subject_id=_institution_sender_subject_id(
+                institution_id=institution_id,
+                explicit_sender_subject_id=str(policy_ext.get("dispatch_sender_subject_id", "")).strip(),
+            ),
             recipient_address=recipient_address,
             signal_channel_rows=signal_channel_rows,
             signal_message_envelope_rows=next_envelopes,
