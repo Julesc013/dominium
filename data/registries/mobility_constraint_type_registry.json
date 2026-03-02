@@ -19,6 +19,12 @@
       },
       {
         "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.follow_volume",
+        "schema_ref": "dominium.schema.mobility.constraint_type.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "constraint_type_id": "constraint.follow_orbit",
         "schema_ref": "dominium.schema.mobility.constraint_type.stub@1.0.0",
         "extensions": {}
