@@ -199,6 +199,8 @@ from analyzers import e170_adhoc_loss_smell
 from analyzers import e171_silent_corruption_smell
 from analyzers import e172_truth_based_trust_smell
 from analyzers import e173_unlogged_trust_change_smell
+from analyzers import e174_direct_schedule_mutation_smell
+from analyzers import e175_institutional_bypass_smell
 
 
 ANALYZERS = (
@@ -401,6 +403,8 @@ ANALYZERS = (
     e171_silent_corruption_smell,
     e172_truth_based_trust_smell,
     e173_unlogged_trust_change_smell,
+    e174_direct_schedule_mutation_smell,
+    e175_institutional_bypass_smell,
 )
 
 
