@@ -110,6 +110,8 @@ Inference candidates remain derived-only until accepted; promotion never mutates
   - cache hit reuse first
   - bounded query count next
   - explicit refusal when limits are exceeded
+- Network edit operations are budgeted by deterministic operation caps per tick.
+- Budget-driven downgrades/refusals are recorded in decision logs.
 
 ## 10) Integration Boundaries
 
@@ -117,6 +119,9 @@ Inference candidates remain derived-only until accepted; promotion never mutates
 - FORM: promotion to networked emits formalization events and provenance.
 - SPEC: edge payload stores spec references and max-speed policy ids.
 - RND/Inspection: overlays and sections expose nodes/edges/switch state/route result without truth mutation.
+- MP:
+  - server-authoritative/hybrid configurations validate network creation and switch changes.
+  - lockstep configurations rely on deterministic graph/switch/route query behavior.
 
 ## 11) Non-Goals (MOB-2)
 

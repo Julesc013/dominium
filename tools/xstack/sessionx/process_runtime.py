@@ -19931,6 +19931,26 @@ def execute_intent(
             query_count = 0
         max_queries = int(max(1, _as_int(inputs.get("max_queries_per_tick", (dict(policy_context or {})).get("mobility_route_max_queries_per_tick", 64)), 64)))
         if query_count >= max_queries:
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id="mobility.route.{}".format(graph_id or "unknown"),
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.route_query_budget",
+                        resolved_level="macro",
+                        cost_allocated=0,
+                        extensions={
+                            "requested_query_index": int(query_count + 1),
+                            "max_queries_per_tick": int(max_queries),
+                        },
+                    )
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
             return refusal(
                 "refusal.mob.fidelity_denied",
                 "mobility route query budget exceeded for current tick",
