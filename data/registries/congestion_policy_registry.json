@@ -1,0 +1,44 @@
+{
+  "schema_id": "dominium.registry.congestion_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.congestion_policy_registry",
+    "registry_version": "1.0.0",
+    "congestion_policies": [
+      {
+        "schema_version": "1.0.0",
+        "congestion_policy_id": "cong.default_linear",
+        "schema_ref": "dominium.schema.mobility.congestion_policy@1.0.0",
+        "extensions": {
+          "multiplier_formula_id": "formula.linear_over_capacity",
+          "parameters": {
+            "k_per_over_ratio_permille": 500
+          }
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "congestion_policy_id": "cong.spec_based",
+        "schema_ref": "dominium.schema.mobility.congestion_policy@1.0.0",
+        "extensions": {
+          "multiplier_formula_id": "formula.spec_weighted_linear",
+          "parameters": {
+            "k_per_over_ratio_permille": 600
+          }
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "congestion_policy_id": "cong.rank_strict_fair",
+        "schema_ref": "dominium.schema.mobility.congestion_policy@1.0.0",
+        "extensions": {
+          "multiplier_formula_id": "formula.rank_fair_linear",
+          "parameters": {
+            "k_per_over_ratio_permille": 700
+          }
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

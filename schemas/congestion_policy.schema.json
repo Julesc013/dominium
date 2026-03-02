@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Congestion Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-5 congestion policy row for meso multiplier evaluation.",
+  "x-doc-ref": [
+    "docs/mobility/MESO_TRAFFIC_MODEL.md",
+    "docs/audit/MESO_TRAFFIC_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "congestion_policy_id",
+    "multiplier_formula_id",
+    "parameters",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "congestion_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "multiplier_formula_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "congestion_policy_id": "cong.default_linear",
+      "multiplier_formula_id": "formula.linear_over_capacity",
+      "parameters": {
+        "k_per_over_ratio_permille": 500
+      },
+      "extensions": {}
+    }
+  ]
+}

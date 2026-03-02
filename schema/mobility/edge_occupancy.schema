@@ -1,0 +1,24 @@
+SCHEMA: mobility/edge_occupancy.schema
+schema_id: dominium.schema.mobility.edge_occupancy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic meso occupancy state for a mobility network edge.
+
+REQUIRED SHAPE:
+record edge_occupancy
+  required:
+    - schema_version: semver
+    - edge_id: id
+    - capacity_units: int
+    - current_occupancy: int
+    - congestion_ratio: number
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Occupancy rows mutate only through deterministic process execution.
+- `current_occupancy >= 0`.
+- `capacity_units >= 1`.
+- `congestion_ratio` is a deterministic function of occupancy and capacity.

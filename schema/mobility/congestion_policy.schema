@@ -1,0 +1,21 @@
+SCHEMA: mobility/congestion_policy.schema
+schema_id: dominium.schema.mobility.congestion_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic congestion multiplier policy for meso traffic.
+
+REQUIRED SHAPE:
+record congestion_policy
+  required:
+    - schema_version: semver
+    - congestion_policy_id: id
+    - multiplier_formula_id: id
+    - parameters: map
+    - extensions: map
+
+INVARIANTS:
+- Congestion formula must be deterministic and side-effect free.
+- Policy selection is explicit and inspectable.
+- Unknown policy ids must refuse, never silently fallback.
