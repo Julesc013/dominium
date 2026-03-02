@@ -118,6 +118,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.mob.congestion_summary",
         "section.signal.network_summary",
         "section.signal.quality_summary",
+        "section.safety.instances",
+        "section.safety.events",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -137,6 +139,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.trust.edges_summary",
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
+        "section.safety.instances",
+        "section.safety.events",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -156,6 +160,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.trust.edges_summary",
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
+        "section.safety.instances",
+        "section.safety.events",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -311,6 +317,8 @@ _DEFAULT_SECTION_ROWS = {
     "section.trust.edges_summary": {"title": "Trust Edge Summary", "extensions": {"cost_units": 2}},
     "section.signal.sent_messages": {"title": "Signal Sent Messages", "extensions": {"cost_units": 2}},
     "section.signal.aggregation_status": {"title": "Signal Aggregation Status", "extensions": {"cost_units": 2}},
+    "section.safety.instances": {"title": "Safety Instances", "extensions": {"cost_units": 1}},
+    "section.safety.events": {"title": "Safety Events", "extensions": {"cost_units": 2}},
     "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
     "section.institution.dispatch_state": {"title": "Institution Dispatch State", "extensions": {"cost_units": 2}},
     "section.institution.compliance_reports": {"title": "Institution Compliance Reports", "extensions": {"cost_units": 2}},
@@ -2007,6 +2015,67 @@ def _build_section_data(
                     "aggregation_policy_id": str(dict(row.get("extensions") or {}).get("aggregation_policy_id", "")).strip() or None,
                 }
                 for row in list(agg_artifacts[-128:])
+            ]
+        return payload
+    if section_id == "section.safety.instances":
+        rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("safety_instances") or [])
+            if isinstance(item, dict)
+        ]
+        rows = sorted(rows, key=lambda item: str(item.get("instance_id", "")))
+        active_rows = [row for row in rows if bool(row.get("active", True))]
+        by_pattern: Dict[str, int] = {}
+        for row in active_rows:
+            pattern_id = str(row.get("pattern_id", "")).strip() or "safety.unknown"
+            by_pattern[pattern_id] = _as_int(by_pattern.get(pattern_id, 0), 0) + 1
+        payload = {
+            "instance_count": int(len(rows)),
+            "active_instance_count": int(len(active_rows)),
+            "pattern_counts": dict((key, int(by_pattern[key])) for key in sorted(by_pattern.keys())),
+        }
+        if allow_hidden_state:
+            payload["instances"] = [
+                {
+                    "instance_id": str(row.get("instance_id", "")).strip(),
+                    "pattern_id": str(row.get("pattern_id", "")).strip() or None,
+                    "active": bool(row.get("active", True)),
+                    "target_count": int(len(_sorted_unique_strings(list(row.get("target_ids") or [])))),
+                    "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+                }
+                for row in list(rows[:256])
+            ]
+        return payload
+    if section_id == "section.safety.events":
+        rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("safety_events") or [])
+            if isinstance(item, dict)
+        ]
+        rows = sorted(
+            rows,
+            key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+        )
+        status_counts: Dict[str, int] = {}
+        for row in rows:
+            status = str(row.get("status", "")).strip().lower() or "unknown"
+            status_counts[status] = _as_int(status_counts.get(status, 0), 0) + 1
+        payload = {
+            "event_count": int(len(rows)),
+            "status_counts": dict((key, int(status_counts[key])) for key in sorted(status_counts.keys())),
+            "latest_tick": int(max([0] + [int(max(0, _as_int(row.get("tick", 0), 0))) for row in rows])),
+        }
+        if allow_hidden_state:
+            payload["recent_events"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "pattern_id": str(row.get("pattern_id", "")).strip() or None,
+                    "pattern_type": str(row.get("pattern_type", "")).strip() or None,
+                    "status": str(row.get("status", "")).strip() or "unknown",
+                    "action_count": int(max(0, _as_int(row.get("action_count", 0), 0))),
+                }
+                for row in list(rows[-256:])
             ]
         return payload
     if section_id == "section.institution.bulletins":

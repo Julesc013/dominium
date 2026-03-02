@@ -419,6 +419,15 @@ from src.signals import (
     process_signal_jam_stop,
     tick_signal_transport,
 )
+from src.safety import (
+    REFUSAL_SAFETY_INSTANCE_INVALID,
+    REFUSAL_SAFETY_PATTERN_INVALID,
+    SafetyEngineError,
+    evaluate_safety_instances,
+    normalize_safety_event_rows,
+    normalize_safety_instance_rows,
+    safety_pattern_rows_by_id,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -560,6 +569,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.drill_hole": "entitlement.tool.use",
     "process.mechanics_tick": "session.boot",
     "process.field_tick": "session.boot",
+    "process.safety_tick": "session.boot",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -711,6 +721,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.drill_hole": "operator",
     "process.mechanics_tick": "observer",
     "process.field_tick": "observer",
+    "process.safety_tick": "observer",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -804,6 +815,7 @@ CONTROL_PROCESS_IDS = {
     "process.vehicle_check_compatibility",
     "process.vehicle_apply_environment_hooks",
     "process.mechanics_fracture",
+    "process.safety_tick",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -883,6 +895,9 @@ MECHANICS_PROCESS_IDS = {
 }
 FIELD_PROCESS_IDS = {
     "process.field_tick",
+}
+SAFETY_PROCESS_IDS = {
+    "process.safety_tick",
 }
 POSE_PROCESS_IDS = {
     "process.pose_enter",
@@ -2042,6 +2057,83 @@ def _ensure_mobility_signal_maintenance_event_rows(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_safety_instance_rows(state: dict) -> List[dict]:
+    rows = normalize_safety_instance_rows(state.get("safety_instances"))
+    state["safety_instances"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_safety_event_rows(state: dict) -> List[dict]:
+    rows = normalize_safety_event_rows(state.get("safety_events"))
+    state["safety_events"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_safety_runtime_state(state: dict) -> dict:
+    row = dict(state.get("safety_runtime_state") or {}) if isinstance(state.get("safety_runtime_state"), Mapping) else {}
+    heartbeat_rows = []
+    for heartbeat_row in sorted(
+        (
+            dict(item)
+            for item in list(row.get("heartbeat_rows") or [])
+            if isinstance(item, Mapping) and str(item.get("target_id", "")).strip()
+        ),
+        key=lambda item: str(item.get("target_id", "")),
+    ):
+        heartbeat_rows.append(
+            {
+                "target_id": str(heartbeat_row.get("target_id", "")).strip(),
+                "last_heartbeat_tick": int(max(0, _as_int(heartbeat_row.get("last_heartbeat_tick", 0), 0))),
+                "timeout_ticks": int(max(1, _as_int(heartbeat_row.get("timeout_ticks", 1), 1))),
+            }
+        )
+    last_action_outcomes = [
+        dict(item)
+        for item in list(row.get("last_action_outcomes") or [])
+        if isinstance(item, Mapping)
+    ][:128]
+    payload = {
+        "schema_version": "1.0.0",
+        "last_tick": int(max(0, _as_int(row.get("last_tick", 0), 0))),
+        "last_budget_outcome": str(row.get("last_budget_outcome", "complete")).strip() or "complete",
+        "last_processed_instance_count": int(max(0, _as_int(row.get("last_processed_instance_count", 0), 0))),
+        "last_deferred_instance_count": int(max(0, _as_int(row.get("last_deferred_instance_count", 0), 0))),
+        "last_triggered_instance_count": int(max(0, _as_int(row.get("last_triggered_instance_count", 0), 0))),
+        "last_event_count": int(max(0, _as_int(row.get("last_event_count", 0), 0))),
+        "heartbeat_rows": heartbeat_rows,
+        "last_action_outcomes": last_action_outcomes,
+        "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+    }
+    state["safety_runtime_state"] = payload
+    return dict(payload)
+
+
+def _append_safety_hook_event(
+    state: dict,
+    *,
+    pattern_id: str,
+    pattern_type: str,
+    target_ids: object,
+    tick: int,
+    process_id: str,
+    details: Mapping[str, object] | None = None,
+) -> None:
+    events = [dict(row) for row in list(state.get("safety_events") or []) if isinstance(row, Mapping)]
+    event_row = build_safety_event(
+        event_id="",
+        tick=int(max(0, _as_int(tick, 0))),
+        instance_id="instance.hook.{}".format(canonical_sha256({"pattern_id": pattern_id, "process_id": process_id})[:12]),
+        pattern_id=str(pattern_id or "").strip(),
+        pattern_type=str(pattern_type or "").strip() or "interlock",
+        status="hook",
+        target_ids=target_ids,
+        action_count=0,
+        details=dict(details or {}),
+        extensions={"source_process_id": str(process_id)},
+    )
+    state["safety_events"] = normalize_safety_event_rows(events + [event_row])
+
+
 def _ensure_micro_motion_state_rows(state: dict) -> List[dict]:
     rows = normalize_micro_motion_state_rows(state.get("micro_motion_states"))
     state["micro_motion_states"] = [dict(row) for row in rows if isinstance(row, dict)]
@@ -2350,6 +2442,17 @@ def _load_mobility_wear_registries(*, policy_context: dict | None) -> Tuple[dict
             default_payload={"record": {"accumulation_policies": []}},
         )
     return dict(wear_type_registry), dict(accumulation_policy_registry)
+
+
+def _load_safety_pattern_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "safety_pattern_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/safety_pattern_registry.json",
+        default_payload={"record": {"safety_patterns": []}},
+    )
 
 
 def _load_maintenance_policy_registry(*, policy_context: dict | None) -> dict:
@@ -3345,6 +3448,388 @@ def _upsert_row_by_id(rows: object, id_key: str, row_payload: Mapping[str, objec
     return [dict(out[key]) for key in sorted(out.keys())]
 
 
+def _set_nested_context_value(context_row: dict, dotted_key: str, value: object) -> None:
+    token = str(dotted_key or "").strip()
+    if not token:
+        return
+    parts = [part for part in token.split(".") if part]
+    if not parts:
+        return
+    cursor = context_row
+    for part in parts[:-1]:
+        next_row = cursor.get(part)
+        if not isinstance(next_row, dict):
+            next_row = {}
+            cursor[part] = next_row
+        cursor = next_row
+    cursor[parts[-1]] = value
+
+
+def _safety_context_rows_by_target_id(
+    *,
+    state: Mapping[str, object],
+    inputs: Mapping[str, object],
+    target_ids: List[str],
+    current_tick: int,
+    safety_runtime_state: Mapping[str, object] | None,
+) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    edge_occupancy_by_id = dict(
+        (
+            str(row.get("edge_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("edge_occupancies") or [])
+        if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+    )
+    signal_hazard_by_id = dict(
+        (
+            str(row.get("signal_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("mobility_signal_hazards") or [])
+        if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+    )
+    signal_rows_by_id = dict(
+        (
+            str(row.get("signal_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("mobility_signals") or [])
+        if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+    )
+    signal_machine_by_id = dict(
+        (
+            str(row.get("machine_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("mobility_signal_state_machines") or [])
+        if isinstance(row, Mapping) and str(row.get("machine_id", "")).strip()
+    )
+    wear_rows_by_target = dict(
+        (
+            str(row.get("target_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("mobility_wear_states") or [])
+        if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+    )
+    channel_rows_by_id = dict(
+        (
+            str(row.get("channel_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("signal_channel_rows") or (dict(state or {})).get("signal_channels") or [])
+        if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+    )
+    heartbeat_rows_by_target = dict(
+        (
+            str(row.get("target_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("safety_heartbeats") or [])
+        if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+    )
+    lockout_rows_by_target = dict(
+        (
+            str(row.get("target_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("safety_lockouts") or [])
+        if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+    )
+    runtime_heartbeat_index = dict(
+        (
+            str(row.get("target_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(dict(safety_runtime_state or {}).get("heartbeat_rows") or [])
+        if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+    )
+
+    for target_id in list(target_ids or []):
+        token = str(target_id or "").strip()
+        if not token:
+            continue
+        context_row = {"tick": int(max(0, _as_int(current_tick, 0)))}
+        edge_row = dict(edge_occupancy_by_id.get(token) or {})
+        if edge_row:
+            capacity_units = int(max(1, _as_int(edge_row.get("capacity_units", 1), 1)))
+            occupancy = int(max(0, _as_int(edge_row.get("current_occupancy", 0), 0)))
+            _set_nested_context_value(context_row, "mob.edge.capacity_units", int(capacity_units))
+            _set_nested_context_value(context_row, "mob.edge.current_occupancy", int(occupancy))
+            _set_nested_context_value(
+                context_row,
+                "mob.edge.congestion_ratio",
+                float(occupancy) / float(max(1, capacity_units)),
+            )
+        signal_hazard_row = dict(signal_hazard_by_id.get(token) or {})
+        if signal_hazard_row:
+            _set_nested_context_value(context_row, "hazard.active", bool(signal_hazard_row.get("active", False)))
+            _set_nested_context_value(context_row, "hazard.severity", str(signal_hazard_row.get("severity", "")).strip() or None)
+        signal_row = dict(signal_rows_by_id.get(token) or {})
+        if signal_row:
+            machine_id = str(signal_row.get("state_machine_id", "")).strip()
+            machine_row = dict(signal_machine_by_id.get(machine_id) or {})
+            if machine_row:
+                _set_nested_context_value(context_row, "state.current", str(machine_row.get("state_id", "")).strip())
+        machine_row = dict(signal_machine_by_id.get(token) or {})
+        if machine_row:
+            _set_nested_context_value(context_row, "state.current", str(machine_row.get("state_id", "")).strip())
+        channel_row = dict(channel_rows_by_id.get(token) or {})
+        if channel_row:
+            ext = dict(channel_row.get("extensions") or {}) if isinstance(channel_row.get("extensions"), Mapping) else {}
+            _set_nested_context_value(context_row, "flow.capacity_units", int(max(0, _as_int(channel_row.get("capacity_per_tick", 0), 0))))
+            _set_nested_context_value(context_row, "flow.load_units", int(max(0, _as_int(ext.get("queue_depth", 0), 0))))
+            _set_nested_context_value(context_row, "flow.pressure_kpa", int(max(0, _as_int(ext.get("pressure_kpa", 0), 0))))
+        wear_row = dict(wear_rows_by_target.get(token) or {})
+        if wear_row:
+            _set_nested_context_value(context_row, "risk.score_permille", int(max(0, _as_int(wear_row.get("accumulated_value", 0), 0))))
+        heartbeat_row = dict(runtime_heartbeat_index.get(token) or heartbeat_rows_by_target.get(token) or {})
+        if heartbeat_row:
+            last_heartbeat_tick = int(max(0, _as_int(heartbeat_row.get("last_heartbeat_tick", 0), 0)))
+            timeout_ticks = int(max(1, _as_int(heartbeat_row.get("timeout_ticks", 1), 1)))
+            _set_nested_context_value(
+                context_row,
+                "safety.heartbeat_age_ticks",
+                int(max(0, int(current_tick) - int(last_heartbeat_tick))),
+            )
+            _set_nested_context_value(context_row, "safety.timeout_ticks", int(timeout_ticks))
+        lockout_row = dict(lockout_rows_by_target.get(token) or {})
+        if lockout_row:
+            _set_nested_context_value(context_row, "maintenance.lock_tag", str(lockout_row.get("lock_tag", "")).strip() or None)
+            _set_nested_context_value(context_row, "maintenance.lock_active", bool(lockout_row.get("active", True)))
+        out[token] = context_row
+
+    override_rows = dict(inputs.get("condition_overrides") or {}) if isinstance(inputs.get("condition_overrides"), Mapping) else {}
+    for target_id in sorted(override_rows.keys(), key=lambda token: str(token)):
+        target_token = str(target_id).strip()
+        if not target_token:
+            continue
+        payload = dict(override_rows.get(target_id) or {}) if isinstance(override_rows.get(target_id), Mapping) else {}
+        context_row = dict(out.get(target_token) or {"tick": int(max(0, _as_int(current_tick, 0)))})
+        for key, value in sorted(payload.items(), key=lambda item: str(item[0])):
+            _set_nested_context_value(context_row, str(key), value)
+        out[target_token] = context_row
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _select_transition_id_for_target_state(machine_row: Mapping[str, object], *, target_state: str) -> str:
+    current_state = str(machine_row.get("state_id", "")).strip()
+    transition_rows = [dict(row) for row in list(machine_row.get("transition_rows") or []) if isinstance(row, Mapping)]
+    for row in sorted(
+        transition_rows,
+        key=lambda item: (
+            int(max(0, _as_int(item.get("priority", 0), 0))),
+            str(item.get("transition_id", "")),
+        ),
+    ):
+        if str(row.get("to_state", "")).strip() != str(target_state or "").strip():
+            continue
+        from_state = str(row.get("from_state", "")).strip()
+        if from_state and from_state != current_state:
+            continue
+        transition_id = str(row.get("transition_id", "")).strip()
+        if transition_id:
+            return transition_id
+    return ""
+
+
+def _apply_safety_actions(
+    *,
+    state: dict,
+    actions: List[dict],
+    current_tick: int,
+    process_id: str,
+    intent_id: str,
+    mobility_signals: List[dict],
+    mobility_signal_state_machines: List[dict],
+    mobility_switch_locks: List[dict],
+    effect_rows: List[dict],
+) -> dict:
+    signal_rows_by_id = dict(
+        (
+            str(row.get("signal_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(mobility_signals or [])
+        if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+    )
+    machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
+    lock_rows_by_machine = switch_lock_rows_by_machine_id(mobility_switch_locks)
+    effect_by_id = dict(
+        (
+            str(row.get("effect_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(effect_rows or [])
+        if isinstance(row, Mapping) and str(row.get("effect_id", "")).strip()
+    )
+    channel_rows = [dict(row) for row in list(state.get("signal_channel_rows") or state.get("signal_channels") or []) if isinstance(row, Mapping)]
+    channel_rows_by_id = dict(
+        (
+            str(row.get("channel_id", "")).strip(),
+            dict(row),
+        )
+        for row in channel_rows
+        if str(row.get("channel_id", "")).strip()
+    )
+    known_effect_targets = set(_effect_target_ids(state))
+    action_outcomes: List[dict] = []
+
+    for action in sorted(
+        (dict(row) for row in list(actions or []) if isinstance(row, Mapping)),
+        key=lambda row: (
+            str(row.get("instance_id", "")),
+            int(max(0, _as_int(row.get("action_sequence", 0), 0))),
+            str(row.get("action_id", "")),
+        ),
+    ):
+        action_type = str(action.get("action_type", "")).strip().lower()
+        parameters = dict(action.get("parameters") or {}) if isinstance(action.get("parameters"), Mapping) else {}
+        target_ids = _sorted_tokens(list(action.get("target_ids") or []))
+        applied_targets: List[str] = []
+        status = "ignored"
+        if action_type == "constraint_lock":
+            for target_id in target_ids:
+                machine_id = target_id
+                if target_id.startswith("signal."):
+                    machine_id = str((dict(signal_rows_by_id.get(target_id) or {})).get("state_machine_id", "")).strip()
+                if not machine_id:
+                    continue
+                switch_node_id = _switch_node_id_for_machine(state=state, machine_id=machine_id)
+                lock_rows_by_machine[machine_id] = {
+                    "schema_version": "1.0.0",
+                    "switch_lock_id": deterministic_switch_lock_id(
+                        machine_id=machine_id,
+                        switch_node_id=switch_node_id,
+                    ),
+                    "machine_id": machine_id,
+                    "switch_node_id": switch_node_id,
+                    "status": "locked",
+                    "locked_tick": int(max(0, _as_int(current_tick, 0))),
+                    "reason_code": "safety_interlock",
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "source_intent_id": str(intent_id),
+                        "source_instance_id": str(action.get("instance_id", "")).strip(),
+                    },
+                }
+                applied_targets.append(machine_id)
+            status = "applied" if applied_targets else "ignored"
+        elif action_type == "state_transition":
+            target_state = str(parameters.get("target_state", "")).strip()
+            for target_id in target_ids:
+                machine_id = target_id
+                if target_id.startswith("signal."):
+                    machine_id = str((dict(signal_rows_by_id.get(target_id) or {})).get("state_machine_id", "")).strip()
+                machine_row = dict(machine_rows_by_id.get(machine_id) or {})
+                if (not machine_id) or (not machine_row) or (not target_state):
+                    continue
+                transition_id = _select_transition_id_for_target_state(machine_row, target_state=target_state)
+                if not transition_id:
+                    continue
+                try:
+                    transitioned = apply_transition(
+                        machine_row,
+                        trigger_process_id=str(action.get("process_id", "")).strip() or process_id,
+                        transition_id=transition_id,
+                        current_tick=int(current_tick),
+                    )
+                except StateMachineError:
+                    continue
+                machine_rows_by_id[machine_id] = dict(transitioned.get("machine") or machine_row)
+                applied_targets.append(machine_id)
+            status = "applied" if applied_targets else "ignored"
+        elif action_type == "apply_effect":
+            effect_type_id = str(parameters.get("effect_type_id", "")).strip()
+            for target_id in target_ids:
+                if (not effect_type_id) or (target_id not in known_effect_targets):
+                    continue
+                effect_row = build_effect(
+                    effect_id="",
+                    effect_type_id=effect_type_id,
+                    target_id=target_id,
+                    applied_tick=int(current_tick),
+                    duration_ticks=(
+                        None
+                        if parameters.get("duration_ticks") is None
+                        else int(max(0, _as_int(parameters.get("duration_ticks", 0), 0)))
+                    ),
+                    expires_tick=(
+                        None
+                        if parameters.get("expires_tick") is None
+                        else int(max(0, _as_int(parameters.get("expires_tick", 0), 0)))
+                    ),
+                    magnitude=dict(
+                        (
+                            str(key),
+                            parameters[key],
+                        )
+                        for key in sorted(parameters.keys())
+                        if str(key) not in {"effect_type_id", "duration_ticks", "expires_tick"}
+                    ),
+                    stacking_policy_id=str(parameters.get("stacking_policy_id", "stack.replace_latest")).strip()
+                    or "stack.replace_latest",
+                    source_event_id=None,
+                    extensions={
+                        "source_process_id": process_id,
+                        "source_intent_id": str(intent_id),
+                        "source_instance_id": str(action.get("instance_id", "")).strip(),
+                    },
+                )
+                effect_by_id[str(effect_row.get("effect_id", "")).strip()] = dict(effect_row)
+                applied_targets.append(target_id)
+            status = "applied" if applied_targets else "ignored"
+        elif action_type == "flow_disconnect":
+            for target_id in target_ids:
+                row = dict(channel_rows_by_id.get(target_id) or {})
+                if not row:
+                    continue
+                ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+                ext["safety_disconnected"] = True
+                ext["safety_disconnect_tick"] = int(current_tick)
+                ext["source_instance_id"] = str(action.get("instance_id", "")).strip()
+                row["extensions"] = ext
+                row["capacity_per_tick"] = 0
+                channel_rows_by_id[target_id] = row
+                applied_targets.append(target_id)
+            status = "applied" if applied_targets else "ignored"
+        elif action_type == "emit_refusal":
+            status = "recorded"
+            applied_targets = list(target_ids)
+
+        action_outcomes.append(
+            {
+                "instance_id": str(action.get("instance_id", "")).strip(),
+                "pattern_id": str(action.get("pattern_id", "")).strip(),
+                "action_id": str(action.get("action_id", "")).strip(),
+                "action_type": action_type,
+                "status": status,
+                "applied_targets": list(applied_targets),
+            }
+        )
+
+    normalized_switch_locks = normalize_switch_lock_rows([dict(lock_rows_by_machine[key]) for key in sorted(lock_rows_by_machine.keys())])
+    normalized_signal_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
+    normalized_effect_rows = normalize_effect_rows([dict(effect_by_id[key]) for key in sorted(effect_by_id.keys())])
+    normalized_channel_rows = normalize_signal_channel_rows([dict(channel_rows_by_id[key]) for key in sorted(channel_rows_by_id.keys())])
+    if normalized_channel_rows:
+        state["signal_channel_rows"] = [dict(row) for row in normalized_channel_rows]
+        state["signal_channels"] = [dict(row) for row in normalized_channel_rows]
+
+    return {
+        "mobility_switch_locks": normalized_switch_locks,
+        "mobility_signal_state_machines": normalized_signal_state_machines,
+        "effect_rows": normalized_effect_rows,
+        "action_outcomes": sorted(
+            [dict(row) for row in action_outcomes],
+            key=lambda row: (str(row.get("instance_id", "")), str(row.get("action_id", ""))),
+        ),
+    }
+
+
 def _geometry_metric_budget_inputs(
     *,
     policy_context: dict | None,
@@ -4052,6 +4537,26 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("structural_edges", "edge_id"),
     ):
         candidates.extend(_collect(state.get(key), field))
+    for instance_row in list(state.get("safety_instances") or []):
+        if not isinstance(instance_row, Mapping):
+            continue
+        for target_id in list(instance_row.get("target_ids") or []):
+            token = str(target_id).strip()
+            if token:
+                candidates.append(token)
+    runtime_state = dict(state.get("safety_runtime_state") or {})
+    for heartbeat_row in list(runtime_state.get("heartbeat_rows") or []):
+        if not isinstance(heartbeat_row, Mapping):
+            continue
+        token = str(heartbeat_row.get("target_id", "")).strip()
+        if token:
+            candidates.append(token)
+    for lockout_row in list(state.get("safety_lockouts") or []):
+        if not isinstance(lockout_row, Mapping):
+            continue
+        token = str(lockout_row.get("target_id", "")).strip()
+        if token:
+            candidates.append(token)
     return _sorted_tokens(candidates)
 
 
@@ -14528,6 +15033,9 @@ def execute_intent(
     mobility_signal_hazards = _ensure_mobility_signal_hazard_rows(state)
     mobility_signal_maintenance_schedules = _ensure_mobility_signal_maintenance_schedule_rows(state)
     mobility_signal_maintenance_events = _ensure_mobility_signal_maintenance_event_rows(state)
+    safety_instances = _ensure_safety_instance_rows(state)
+    safety_events = _ensure_safety_event_rows(state)
+    safety_runtime_state = _ensure_safety_runtime_state(state)
     signal_jamming_effect_rows = normalize_jamming_effect_rows(
         state.get("signal_jamming_effect_rows") or state.get("signal_jamming_effects") or []
     )
@@ -21795,6 +22303,15 @@ def execute_intent(
             "strength_modifier": _as_int(inputs.get("strength_modifier", 0), 0),
             "duration_ticks": max(0, _as_int(inputs.get("duration_ticks", 0), 0)),
         }
+        _append_safety_hook_event(
+            state,
+            pattern_id="safety.deadman_basic",
+            pattern_type="deadman",
+            target_ids=[channel_id],
+            tick=int(current_tick),
+            process_id=process_id,
+            details={"source": "signals.jam_start"},
+        )
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.signal_jam_stop":
         channel_id = str(inputs.get("channel_id", "")).strip()
@@ -22166,6 +22683,23 @@ def execute_intent(
                 "extensions": {"occupied": occupied, "reserved": reserved},
             }
         mobility_switch_locks = normalize_switch_lock_rows([dict(lock_rows_by_machine[key]) for key in sorted(lock_rows_by_machine.keys())])
+        locked_machine_ids = _sorted_tokens(
+            [
+                str(row.get("machine_id", "")).strip()
+                for row in list(mobility_switch_locks or [])
+                if isinstance(row, Mapping) and str(row.get("status", "")).strip() == "locked"
+            ]
+        )
+        if locked_machine_ids:
+            _append_safety_hook_event(
+                state,
+                pattern_id="safety.interlock_block",
+                pattern_type="interlock",
+                target_ids=list(locked_machine_ids),
+                tick=int(current_tick),
+                process_id=process_id,
+                details={"source": "mobility.signal_tick", "locked_count": int(len(locked_machine_ids))},
+            )
         wear_type_registry, wear_accumulation_policy_registry = _load_mobility_wear_registries(
             policy_context=policy_context
         )
@@ -26152,6 +26686,15 @@ def execute_intent(
         )
         state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
         _ensure_travel_event_rows(state)
+        _append_safety_hook_event(
+            state,
+            pattern_id="safety.fail_safe_stop",
+            pattern_type="failsafe",
+            target_ids=[vehicle_id],
+            tick=int(current_tick),
+            process_id=process_id,
+            details={"source": "mobility.derailment", "reason_code": str(inputs.get("reason_code", "")).strip() or None},
+        )
         result_metadata = {
             "vehicle_id": vehicle_id,
             "incident_event_id": str((dict(derail_result.get("incident_event") or {})).get("event_id", "")).strip(),
@@ -30185,6 +30728,15 @@ def execute_intent(
             structural_edges=structural_edges,
             mechanics_provenance_events=mechanics_provenance_events,
         )
+        _append_safety_hook_event(
+            state,
+            pattern_id="safety.graceful_degrade_basic",
+            pattern_type="graceful_degradation",
+            target_ids=[structural_edge_id],
+            tick=int(current_tick),
+            process_id=process_id,
+            details={"source": "mechanics.fracture", "portal_seal_updated": bool(portal_seal_updated)},
+        )
         result_metadata = {
             "structural_edge_id": structural_edge_id,
             "fracture_event_id": str(provenance_row.get("event_id", "")).strip(),
@@ -31695,6 +32247,172 @@ def execute_intent(
             "backlog_after": int(maintained.get("backlog_after", 0)),
             "logistics_node_id": logistics_node_id,
             "required_materials": dict(required_materials),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.safety_tick":
+        safety_pattern_registry = _load_safety_pattern_registry(policy_context=policy_context)
+        pattern_rows_by_id = safety_pattern_rows_by_id(safety_pattern_registry)
+        if not pattern_rows_by_id:
+            return refusal(
+                REFUSAL_SAFETY_PATTERN_INVALID,
+                "safety_pattern_registry is empty",
+                "Register at least one safety pattern before process.safety_tick.",
+                {"registry": "safety_pattern_registry"},
+                "$.policy_context.safety_pattern_registry",
+            )
+
+        incoming_instances = [dict(row) for row in list(inputs.get("safety_instances") or []) if isinstance(row, Mapping)]
+        if incoming_instances:
+            instance_rows = list(safety_instances or [])
+            for row in list(incoming_instances):
+                instance_rows = _upsert_row_by_id(instance_rows, "instance_id", row)
+            safety_instances = normalize_safety_instance_rows(instance_rows)
+
+        max_instance_updates = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_instance_updates_per_tick",
+                        (dict(policy_context or {})).get("safety_max_instances_per_tick", 256),
+                    ),
+                    256,
+                ),
+            )
+        )
+        heartbeat_rows = [
+            dict(row)
+            for row in list(dict(safety_runtime_state or {}).get("heartbeat_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+        ]
+        heartbeat_by_target = dict(
+            (
+                str(row.get("target_id", "")).strip(),
+                dict(row),
+            )
+            for row in heartbeat_rows
+        )
+        for update_row in sorted(
+            (dict(row) for row in list(inputs.get("heartbeat_updates") or []) if isinstance(row, Mapping)),
+            key=lambda row: str(row.get("target_id", "")),
+        ):
+            target_id = str(update_row.get("target_id", "")).strip()
+            if not target_id:
+                continue
+            timeout_ticks = int(max(1, _as_int(update_row.get("timeout_ticks", 1), 1)))
+            heartbeat_by_target[target_id] = {
+                "target_id": target_id,
+                "last_heartbeat_tick": int(
+                    max(
+                        0,
+                        _as_int(update_row.get("last_heartbeat_tick", current_tick), current_tick),
+                    )
+                ),
+                "timeout_ticks": int(timeout_ticks),
+            }
+        heartbeat_rows = [dict(heartbeat_by_target[key]) for key in sorted(heartbeat_by_target.keys())]
+        safety_runtime_state = dict(safety_runtime_state or {})
+        safety_runtime_state["heartbeat_rows"] = heartbeat_rows
+
+        context_target_ids = _sorted_tokens(
+            [
+                target_id
+                for row in list(safety_instances or [])
+                if isinstance(row, Mapping)
+                for target_id in list(row.get("target_ids") or [])
+            ]
+            + list(
+                str(token).strip()
+                for token in list((dict(inputs.get("condition_overrides") or {})).keys())
+                if str(token).strip()
+            )
+        )
+        context_rows_by_target_id = _safety_context_rows_by_target_id(
+            state=state,
+            inputs=inputs,
+            target_ids=list(context_target_ids),
+            current_tick=int(current_tick),
+            safety_runtime_state=safety_runtime_state,
+        )
+        evaluation = evaluate_safety_instances(
+            instance_rows=safety_instances,
+            pattern_rows_by_id=pattern_rows_by_id,
+            context_rows_by_target_id=context_rows_by_target_id,
+            current_tick=int(current_tick),
+            max_instance_updates=int(max_instance_updates),
+        )
+        action_result = _apply_safety_actions(
+            state=state,
+            actions=[dict(row) for row in list(evaluation.get("actions") or []) if isinstance(row, Mapping)],
+            current_tick=int(current_tick),
+            process_id=process_id,
+            intent_id=str(intent_id),
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_switch_locks=mobility_switch_locks,
+            effect_rows=effect_rows,
+        )
+        mobility_switch_locks = normalize_switch_lock_rows(list(action_result.get("mobility_switch_locks") or []))
+        mobility_signal_state_machines = [
+            dict(row)
+            for row in list(action_result.get("mobility_signal_state_machines") or [])
+            if isinstance(row, Mapping)
+        ]
+        effect_rows = normalize_effect_rows(list(action_result.get("effect_rows") or []))
+
+        new_events = [dict(row) for row in list(evaluation.get("events") or []) if isinstance(row, Mapping)]
+        safety_events = normalize_safety_event_rows(
+            [dict(row) for row in list(safety_events or []) if isinstance(row, Mapping)] + new_events
+        )
+        safety_runtime_state["last_tick"] = int(current_tick)
+        safety_runtime_state["last_budget_outcome"] = str(evaluation.get("budget_outcome", "complete")).strip() or "complete"
+        safety_runtime_state["last_processed_instance_count"] = int(
+            len(list(evaluation.get("evaluated_instance_ids") or []))
+        )
+        safety_runtime_state["last_deferred_instance_count"] = int(
+            len(list(evaluation.get("deferred_instance_ids") or []))
+        )
+        safety_runtime_state["last_triggered_instance_count"] = int(
+            len(list(evaluation.get("triggered_instance_ids") or []))
+        )
+        safety_runtime_state["last_event_count"] = int(len(new_events))
+        safety_runtime_state["last_action_outcomes"] = [
+            dict(row) for row in list(action_result.get("action_outcomes") or []) if isinstance(row, Mapping)
+        ][:128]
+
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        _persist_effect_state(
+            state,
+            effect_rows=effect_rows,
+            provenance_events=effect_provenance_events,
+        )
+        state["safety_instances"] = [dict(row) for row in list(safety_instances or []) if isinstance(row, Mapping)]
+        state["safety_events"] = [dict(row) for row in list(safety_events or []) if isinstance(row, Mapping)]
+        state["safety_runtime_state"] = dict(safety_runtime_state or {})
+        _ensure_safety_instance_rows(state)
+        _ensure_safety_event_rows(state)
+        _ensure_safety_runtime_state(state)
+        result_metadata = {
+            "processed_instance_ids": list(_sorted_tokens(evaluation.get("evaluated_instance_ids"))),
+            "deferred_instance_ids": list(_sorted_tokens(evaluation.get("deferred_instance_ids"))),
+            "triggered_instance_ids": list(_sorted_tokens(evaluation.get("triggered_instance_ids"))),
+            "missing_pattern_ids": list(_sorted_tokens(evaluation.get("missing_pattern_ids"))),
+            "action_outcomes": [dict(row) for row in list(action_result.get("action_outcomes") or []) if isinstance(row, Mapping)][
+                :128
+            ],
+            "budget_outcome": str(evaluation.get("budget_outcome", "complete")).strip() or "complete",
+            "cost_units": int(max(0, _as_int(evaluation.get("cost_units", 0), 0))),
+            "event_count": int(len(new_events)),
+            "max_instance_updates_per_tick": int(max_instance_updates),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.field_tick":

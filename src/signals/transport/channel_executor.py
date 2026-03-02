@@ -63,8 +63,9 @@ def _edge_capacity_per_tick(edge_row: Mapping[str, object]) -> int:
         if token is None:
             continue
         value = _as_int(token, 0)
-        if value > 0:
-            return int(value)
+        if value <= 0:
+            return 0
+        return int(value)
     return int(LARGE_CAPACITY_PER_TICK)
 
 
@@ -264,7 +265,7 @@ def execute_channel_transport_tick(
 
     for channel_id in sorted(grouped.keys()):
         channel_row = dict(channels_by_id.get(channel_id) or {})
-        channel_cap = int(max(1, _as_int(channel_row.get("capacity_per_tick", 1), 1)))
+        channel_cap = int(max(0, _as_int(channel_row.get("capacity_per_tick", 1), 1)))
         for queue_row in sorted(grouped.get(channel_id) or [], key=_queue_sort_key):
             queue_key = str(queue_row.get("queue_key", "")).strip()
             envelope_id = str(queue_row.get("envelope_id", "")).strip()
