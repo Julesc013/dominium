@@ -137,6 +137,22 @@ Tool payload wrapper:
 - `refusal.ctrl.ir_invalid`
 - `refusal.ctrl.ir_forbidden_op`
 - `refusal.ctrl.ir_cost_exceeded`
+- `refusal.mob.no_route`
+- `refusal.mob.spec_noncompliant`
+- `refusal.mob.control_not_granted`
+- `refusal.mob.fidelity_denied`
+- `refusal.mob.speed_cap_exceeded`
+- `refusal.mob.signal_violation`
+- `refusal.mob.coupling_incompatible`
+- `refusal.mob.cross_shard_motion_forbidden`
+
+## Canonical Mobility Incident Reason Codes (MOB-0)
+- `incident.derailment.curvature`
+- `incident.derailment.track_wear`
+- `incident.collision`
+- `incident.breakdown.engine`
+- `incident.visibility_low`
+- `incident.wind_exceeded`
 
 ## Multiplayer Refusal Remediation Hints (MP-1)
 - `refusal.net.handshake_pack_lock_mismatch`: reconnect using identical bundle + lockfile; regenerate client dist if needed.
