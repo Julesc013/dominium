@@ -176,6 +176,19 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.signal.quality_summary",
+        "title": "Signal Quality Summary",
+        "data": {
+          "data_kind": "signal_quality_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.signal.inbox_summary",
         "title": "Signal Inbox Summary",
         "data": {
