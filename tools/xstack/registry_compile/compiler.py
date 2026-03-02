@@ -2029,6 +2029,166 @@ def _field_registry_rows(
     return field_type_rows, policy_rows, errors
 
 
+def _safety_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict]]:
+    record, rows_raw, load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/safety_pattern_registry.json",
+        expected_schema_id="dominium.registry.safety_pattern_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="safety_patterns",
+    )
+    if load_errors:
+        return [], load_errors
+    del record
+
+    errors: List[dict] = []
+    rows: List[dict] = []
+    seen_pattern_ids = set()
+    allowed_pattern_types = {
+        "interlock",
+        "failsafe",
+        "relief",
+        "breaker",
+        "redundancy",
+        "deadman",
+        "loto",
+        "graceful_degradation",
+    }
+    allowed_substrates = {
+        "StateMachineComponent",
+        "ConstraintComponent",
+        "HazardModel",
+        "ScheduleComponent",
+        "Effect",
+        "SpecSheet",
+        "ActionGrammar",
+    }
+
+    for entry in sorted(rows_raw, key=lambda row: str((row or {}).get("pattern_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_safety_pattern_entry",
+                    "message": "safety pattern entry must be object",
+                    "path": "$.safety_patterns",
+                }
+            )
+            continue
+        pattern_id = str(entry.get("pattern_id", "")).strip()
+        pattern_type = str(entry.get("pattern_type", "")).strip()
+        if (not pattern_id) or (pattern_type not in allowed_pattern_types):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_safety_pattern_entry",
+                    "message": "safety pattern entry missing required fields",
+                    "path": "$.safety_patterns",
+                }
+            )
+            continue
+        if pattern_id in seen_pattern_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_safety_pattern_id",
+                    "message": "duplicate pattern_id '{}'".format(pattern_id),
+                    "path": "$.safety_patterns.pattern_id",
+                }
+            )
+            continue
+        extensions = dict(entry.get("extensions") or {})
+        if not isinstance(extensions, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_safety_pattern_extensions",
+                    "message": "safety pattern extensions must be object",
+                    "path": "$.safety_patterns.extensions",
+                }
+            )
+            continue
+        triggering_conditions = entry.get("triggering_conditions")
+        if not isinstance(triggering_conditions, list):
+            triggering_conditions = extensions.get("triggering_conditions")
+        if not isinstance(triggering_conditions, list):
+            triggering_conditions = []
+        enforced_actions = entry.get("enforced_actions")
+        if not isinstance(enforced_actions, list):
+            enforced_actions = extensions.get("enforced_actions")
+        if not isinstance(enforced_actions, list):
+            enforced_actions = []
+        required_substrates = entry.get("required_substrates")
+        if not isinstance(required_substrates, list):
+            required_substrates = extensions.get("required_substrates")
+        if not isinstance(required_substrates, list):
+            required_substrates = []
+
+        substrate_tokens = sorted(
+            set(str(item).strip() for item in list(required_substrates) if str(item).strip())
+        )
+        if not triggering_conditions or not enforced_actions or not substrate_tokens:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_safety_pattern_entry",
+                    "message": "safety pattern '{}' must declare triggering_conditions, enforced_actions, and required_substrates".format(
+                        pattern_id
+                    ),
+                    "path": "$.safety_patterns",
+                }
+            )
+            continue
+        invalid_substrates = [
+            token for token in substrate_tokens if token not in allowed_substrates
+        ]
+        if invalid_substrates:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_safety_pattern_substrate",
+                    "message": "safety pattern '{}' has unsupported required_substrates: {}".format(
+                        pattern_id,
+                        ",".join(invalid_substrates),
+                    ),
+                    "path": "$.safety_patterns.required_substrates",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "pattern_id": pattern_id,
+            "pattern_type": pattern_type,
+            "triggering_conditions": [
+                dict(item) for item in list(triggering_conditions) if isinstance(item, dict)
+            ],
+            "enforced_actions": [
+                dict(item) for item in list(enforced_actions) if isinstance(item, dict)
+            ],
+            "required_substrates": substrate_tokens,
+            "deterministic_fingerprint": "",
+            "extensions": dict(extensions),
+        }
+        schema_payload["extensions"].setdefault(
+            "schema_ref",
+            str(entry.get("schema_ref", "")).strip() or "dominium.schema.safety.safety_pattern@1.0.0",
+        )
+        schema_payload["deterministic_fingerprint"] = canonical_sha256(
+            dict(schema_payload, deterministic_fingerprint="")
+        )
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="safety_pattern",
+            payload=schema_payload,
+            path="data/registries/safety_pattern_registry.json#{}".format(pattern_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_pattern_ids.add(pattern_id)
+        rows.append(schema_payload)
+
+    rows = sorted(rows, key=lambda row: str(row.get("pattern_id", "")))
+    return rows, errors
+
+
 def _spec_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -11561,6 +11721,13 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        safety_pattern_rows,
+        safety_registry_errors,
+    ) = _safety_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         spec_type_rows,
         tolerance_policy_rows,
         compliance_check_rows,
@@ -11993,6 +12160,7 @@ def compile_bundle(
         + capability_registry_errors
         + effect_registry_errors
         + field_registry_errors
+        + safety_registry_errors
         + spec_registry_errors
         + formalization_registry_errors
         + interaction_registry_errors
@@ -12450,6 +12618,13 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "policies": field_update_policy_rows,
+        }
+    )
+    safety_pattern_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "safety_patterns": safety_pattern_rows,
         }
     )
     spec_type_payload = _finalize_registry_payload(
@@ -13086,6 +13261,7 @@ def compile_bundle(
         "stacking_policy_registry": ("stacking_policy_registry", stacking_policy_payload),
         "field_type_registry": ("field_type_registry", field_type_payload),
         "field_update_policy_registry": ("field_update_policy_registry", field_update_policy_payload),
+        "safety_pattern_registry": ("safety_pattern_registry", safety_pattern_payload),
         "spec_type_registry": ("spec_type_registry", spec_type_payload),
         "tolerance_policy_registry": ("tolerance_policy_registry", tolerance_policy_payload),
         "compliance_check_registry": ("compliance_check_registry", compliance_check_payload),
@@ -13248,6 +13424,7 @@ def compile_bundle(
         "stacking_policy_registry",
         "field_type_registry",
         "field_update_policy_registry",
+        "safety_pattern_registry",
         "spec_type_registry",
         "tolerance_policy_registry",
         "compliance_check_registry",
@@ -13430,6 +13607,7 @@ def compile_bundle(
             "stacking_policy_registry_hash": registry_hashes["stacking_policy_registry_hash"],
             "field_type_registry_hash": registry_hashes["field_type_registry_hash"],
             "field_update_policy_registry_hash": registry_hashes["field_update_policy_registry_hash"],
+            "safety_pattern_registry_hash": registry_hashes["safety_pattern_registry_hash"],
             "spec_type_registry_hash": registry_hashes["spec_type_registry_hash"],
             "tolerance_policy_registry_hash": registry_hashes["tolerance_policy_registry_hash"],
             "compliance_check_registry_hash": registry_hashes["compliance_check_registry_hash"],

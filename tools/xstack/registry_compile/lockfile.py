@@ -176,6 +176,7 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "stacking_policy_registry_hash",
             "field_type_registry_hash",
             "field_update_policy_registry_hash",
+            "safety_pattern_registry_hash",
             "spec_type_registry_hash",
             "tolerance_policy_registry_hash",
             "compliance_check_registry_hash",

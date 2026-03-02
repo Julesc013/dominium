@@ -1,0 +1,24 @@
+SCHEMA: safety/safety_instance.schema
+schema_id: dominium.schema.safety.safety_instance
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical SAFETY-0 instantiated safety pattern binding for deterministic evaluation.
+
+REQUIRED SHAPE:
+record safety_instance
+  required:
+    - schema_version: semver
+    - instance_id: id
+    - pattern_id: id
+    - target_ids: list[id]
+    - active: bool
+    - created_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Safety instances evaluate in deterministic `instance_id` ordering.
+- Instances are process-mediated and replayable.
+- Budget defer/degrade outcomes must be explicit and logged.

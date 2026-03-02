@@ -1,0 +1,392 @@
+{
+  "schema_id": "dominium.registry.safety_pattern_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.safety_pattern_registry",
+    "registry_version": "1.0.0",
+    "safety_patterns": [
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.interlock_block",
+        "pattern_type": "interlock",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Prevent conflicting switch/signal transitions while block occupancy predicates are active.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.block_occupied",
+              "operator": "gt",
+              "left_operand": "mob.edge.current_occupancy",
+              "right_operand": 0
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.switch_lock",
+              "action_type": "constraint_lock",
+              "process_id": "process.switch_lock",
+              "target_ref": "mob.switch",
+              "parameters": {}
+            },
+            {
+              "action_id": "act.refuse_conflict",
+              "action_type": "emit_refusal",
+              "process_id": "process.switch_set_state",
+              "target_ref": "mob.switch",
+              "parameters": {
+                "refusal_code": "refusal.mob.signal_violation"
+              }
+            }
+          ],
+          "required_substrates": [
+            "StateMachineComponent",
+            "ConstraintComponent"
+          ],
+          "hazards": [
+            "hazard.interlock_active"
+          ],
+          "effects": [
+            "effect.warning.interlock_active"
+          ],
+          "logging_requirements": [
+            "blocked_action",
+            "conflict_predicates",
+            "target_ids"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.fail_safe_stop",
+        "pattern_type": "failsafe",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "On fault, force a safe stop/default state.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.fault_active",
+              "operator": "eq",
+              "left_operand": "hazard.active",
+              "right_operand": true
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.transition_safe_state",
+              "action_type": "state_transition",
+              "process_id": "process.signal_set_aspect",
+              "target_ref": "state_machine",
+              "parameters": {
+                "target_state": "stop"
+              }
+            },
+            {
+              "action_id": "act.apply_zero_cap",
+              "action_type": "apply_effect",
+              "process_id": "process.effect_apply",
+              "target_ref": "mob.target",
+              "parameters": {
+                "effect_type_id": "effect.speed_cap",
+                "speed_cap_mm_per_tick": 0
+              }
+            }
+          ],
+          "required_substrates": [
+            "StateMachineComponent",
+            "Effect",
+            "HazardModel"
+          ],
+          "hazards": [
+            "hazard.fail_safe_applied"
+          ],
+          "effects": [
+            "effect.speed_cap"
+          ],
+          "logging_requirements": [
+            "fault_source",
+            "safe_state",
+            "target_ids"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.relief_pressure",
+        "pattern_type": "relief",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Open deterministic relief action on threshold exceedance.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.pressure_above_limit",
+              "operator": "gt",
+              "left_operand": "flow.pressure_kpa",
+              "right_operand": 0
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.relief_open",
+              "action_type": "state_transition",
+              "process_id": "process.state_transition",
+              "target_ref": "relief.valve",
+              "parameters": {
+                "target_state": "open"
+              }
+            },
+            {
+              "action_id": "act.apply_relief_effect",
+              "action_type": "apply_effect",
+              "process_id": "process.effect_apply",
+              "target_ref": "flow.channel",
+              "parameters": {
+                "effect_type_id": "effect.pressure_relief"
+              }
+            }
+          ],
+          "required_substrates": [
+            "StateMachineComponent",
+            "HazardModel",
+            "Effect"
+          ],
+          "hazards": [
+            "hazard.overpressure"
+          ],
+          "effects": [
+            "effect.pressure_relief"
+          ],
+          "logging_requirements": [
+            "threshold_value",
+            "observed_value",
+            "relief_action"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.breaker_trip",
+        "pattern_type": "breaker",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Trip and disconnect flow when capacity is exceeded.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.capacity_exceeded",
+              "operator": "gt",
+              "left_operand": "flow.load_units",
+              "right_operand": 0
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.breaker_trip",
+              "action_type": "state_transition",
+              "process_id": "process.state_transition",
+              "target_ref": "breaker",
+              "parameters": {
+                "target_state": "tripped"
+              }
+            },
+            {
+              "action_id": "act.disconnect_flow",
+              "action_type": "flow_disconnect",
+              "process_id": "process.flow_disconnect",
+              "target_ref": "flow.channel",
+              "parameters": {}
+            }
+          ],
+          "required_substrates": [
+            "StateMachineComponent",
+            "HazardModel"
+          ],
+          "hazards": [
+            "hazard.breaker_tripped"
+          ],
+          "effects": [
+            "effect.warning.breaker_tripped"
+          ],
+          "logging_requirements": [
+            "capacity_limit",
+            "observed_load",
+            "disconnect_target"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.redundant_pair",
+        "pattern_type": "redundancy",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Deterministically fall back to paired redundant path/component.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.primary_unavailable",
+              "operator": "eq",
+              "left_operand": "primary.available",
+              "right_operand": false
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.activate_fallback",
+              "action_type": "state_transition",
+              "process_id": "process.state_transition",
+              "target_ref": "redundancy.controller",
+              "parameters": {
+                "target_state": "fallback_active"
+              }
+            }
+          ],
+          "required_substrates": [
+            "StateMachineComponent",
+            "ConstraintComponent"
+          ],
+          "hazards": [
+            "hazard.redundancy_degraded"
+          ],
+          "effects": [
+            "effect.graceful_degradation"
+          ],
+          "logging_requirements": [
+            "primary_target",
+            "fallback_target",
+            "reason_predicate"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.deadman_basic",
+        "pattern_type": "deadman",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Require deterministic heartbeat; force safe stop when timeout is exceeded.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.deadman_timeout",
+              "operator": "gte",
+              "left_operand": "safety.heartbeat_age_ticks",
+              "right_operand": 1
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.deadman_stop",
+              "action_type": "apply_effect",
+              "process_id": "process.effect_apply",
+              "target_ref": "controlled_target",
+              "parameters": {
+                "effect_type_id": "effect.speed_cap",
+                "speed_cap_mm_per_tick": 0
+              }
+            }
+          ],
+          "required_substrates": [
+            "ScheduleComponent",
+            "Effect",
+            "HazardModel"
+          ],
+          "hazards": [
+            "hazard.deadman_timeout"
+          ],
+          "effects": [
+            "effect.speed_cap"
+          ],
+          "logging_requirements": [
+            "last_heartbeat_tick",
+            "timeout_ticks",
+            "auto_action"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.loto_basic",
+        "pattern_type": "loto",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Maintenance lockout/tagout gate preventing operation while lock is active.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.maintenance_lock_present",
+              "operator": "present",
+              "left_operand": "maintenance.lock_tag"
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.loto_refuse_operation",
+              "action_type": "emit_refusal",
+              "process_id": "process.operation_request",
+              "target_ref": "operation.target",
+              "parameters": {
+                "refusal_code": "refusal.maintenance.lockout_active"
+              }
+            }
+          ],
+          "required_substrates": [
+            "ConstraintComponent",
+            "ScheduleComponent"
+          ],
+          "hazards": [
+            "hazard.maintenance_lockout"
+          ],
+          "effects": [
+            "effect.warning.lockout_active"
+          ],
+          "logging_requirements": [
+            "lock_owner",
+            "lock_tag",
+            "blocked_operation"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.graceful_degrade_basic",
+        "pattern_type": "graceful_degradation",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Apply deterministic reduced-capacity profile in elevated risk bands.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.degrade_band_entered",
+              "operator": "gte",
+              "left_operand": "risk.score_permille",
+              "right_operand": 1
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.apply_degrade_profile",
+              "action_type": "apply_effect",
+              "process_id": "process.effect_apply",
+              "target_ref": "degrade.target",
+              "parameters": {
+                "effect_type_id": "effect.graceful_degradation"
+              }
+            }
+          ],
+          "required_substrates": [
+            "Effect",
+            "HazardModel",
+            "SpecSheet"
+          ],
+          "hazards": [
+            "hazard.degraded_operation"
+          ],
+          "effects": [
+            "effect.graceful_degradation"
+          ],
+          "logging_requirements": [
+            "risk_band",
+            "degrade_profile_id",
+            "resulting_caps"
+          ]
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

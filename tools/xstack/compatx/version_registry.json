@@ -357,6 +357,27 @@
         "1.0.0"
       ]
     },
+    "safety_pattern": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "safety_instance": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "safety_pattern_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "geometry_candidate": {
       "current_version": "1.0.0",
       "migrations": {},
