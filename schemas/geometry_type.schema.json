@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Geometry Type Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-1 geometry type descriptor.",
+  "x-doc-ref": [
+    "docs/mobility/GUIDE_GEOMETRY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "geometry_type_id",
+    "parameter_schema_id",
+    "supported_constraint_type_ids",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "geometry_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameter_schema_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "supported_constraint_type_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "geometry_type_id": "geo.spline1D",
+      "parameter_schema_id": "dominium.schema.mobility.parameters.spline1d.v1",
+      "supported_constraint_type_ids": [
+        "constraint.follow_spline"
+      ],
+      "extensions": {}
+    }
+  ]
+}

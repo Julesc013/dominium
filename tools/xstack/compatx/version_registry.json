@@ -357,6 +357,27 @@
         "1.0.0"
       ]
     },
+    "geometry_candidate": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "geometry_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "guide_geometry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "formalization_event": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -897,6 +918,13 @@
       ]
     },
     "instrument_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "junction": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Guide Geometry Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-1 GuideGeometry artifact row.",
+  "x-doc-ref": [
+    "docs/mobility/GUIDE_GEOMETRY.md",
+    "docs/audit/GUIDE_GEOMETRY_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "geometry_id",
+    "geometry_type_id",
+    "parent_spatial_id",
+    "parameters",
+    "junction_refs",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "geometry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "geometry_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_spatial_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spec_id": {
+      "type": ["string", "null"]
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "bounds": {
+      "type": ["object", "null"],
+      "additionalProperties": true
+    },
+    "junction_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "geometry_id": "geometry.demo.0001",
+      "geometry_type_id": "geo.spline1D",
+      "parent_spatial_id": "spatial.world.0",
+      "spec_id": "spec.track.standard_gauge.v1",
+      "parameters": {
+        "control_points": [
+          {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "x": 10000,
+            "y": 0,
+            "z": 0
+          }
+        ]
+      },
+      "bounds": null,
+      "junction_refs": [
+        "junc.endpoint.demo.a",
+        "junc.endpoint.demo.b"
+      ],
+      "deterministic_fingerprint": "f9007b5e100659ab4eebc2f5458082f8eb651b6f833eca2d52ee8fa7eb906047",
+      "extensions": {}
+    }
+  ]
+}

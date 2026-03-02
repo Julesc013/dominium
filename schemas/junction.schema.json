@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mobility Junction Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-1 junction descriptor.",
+  "x-doc-ref": [
+    "docs/mobility/GUIDE_GEOMETRY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "junction_id",
+    "parent_spatial_id",
+    "connected_geometry_ids",
+    "junction_type_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "junction_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_spatial_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "connected_geometry_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "junction_type_id": {
+      "type": "string",
+      "enum": ["endpoint", "switch", "merge", "split", "station"]
+    },
+    "state_machine_id": {
+      "type": ["string", "null"]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "junction_id": "junc.endpoint.demo.a",
+      "parent_spatial_id": "spatial.world.0",
+      "connected_geometry_ids": [
+        "geometry.demo.0001"
+      ],
+      "junction_type_id": "endpoint",
+      "state_machine_id": null,
+      "deterministic_fingerprint": "cd5b7f7fcb5e03ccb44994a6f4bc4be72ce72e3337410f9cbf1134fc6dc14e10",
+      "extensions": {}
+    }
+  ]
+}
