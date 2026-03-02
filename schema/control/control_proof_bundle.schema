@@ -20,10 +20,15 @@ record control_proof_bundle
     - abstraction_downgrade_hash: sha256
     - view_policy_changes_hash: sha256
     - meta_override_hash: sha256
+    - mobility_event_hash: sha256
+    - congestion_hash: sha256
+    - signal_state_hash: sha256
+    - derailment_hash: sha256
     - deterministic_fingerprint: sha256
     - extensions: map
 
 INVARIANTS:
 - Proof bundle fields must be derived deterministically from control decisions.
+- Mobility proof hashes must be derived deterministically from authoritative mobility event/state surfaces.
 - Bundle generation must be tick-driven and wall-clock independent.
 - Extensions remain open-map for forward-compatible domain augmentation.

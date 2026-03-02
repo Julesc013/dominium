@@ -183,4 +183,12 @@ def run(repo_root: str):
         return {"status": "fail", "message": "ranked proof bundle missing control_ir_verification_report_hashes list"}
     if not isinstance(bundle_payload.get("control_decision_log_hashes"), list):
         return {"status": "fail", "message": "ranked proof bundle missing control_decision_log_hashes list"}
+    for key in (
+        "mobility_event_hashes",
+        "congestion_hashes",
+        "signal_state_hashes",
+        "derailment_hashes",
+    ):
+        if not isinstance(bundle_payload.get(key), list):
+            return {"status": "fail", "message": "ranked proof bundle missing {} list".format(key)}
     return {"status": "pass", "message": "ranked proof bundle export is deterministic and complete"}

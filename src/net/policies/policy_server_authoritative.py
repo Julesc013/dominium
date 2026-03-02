@@ -27,6 +27,7 @@ from src.control.proof import (
     build_control_proof_bundle_from_markers,
     collect_control_decision_markers,
 )
+from src.mobility import compute_mobility_proof_hashes
 from src.reality.ledger import finalize_noop_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -552,10 +553,17 @@ def _emit_control_proof_bundle(
     envelope_rows: List[dict],
 ) -> Dict[str, object]:
     markers = collect_control_decision_markers(list(envelope_rows or []))
+    universe_state = dict((_runtime_server(runtime).get("universe_state") or {}))
+    mobility_surface = compute_mobility_proof_hashes(
+        travel_event_rows=list(universe_state.get("travel_events") or []),
+        edge_occupancy_rows=list(universe_state.get("edge_occupancies") or []),
+        signal_state_rows=list(universe_state.get("mobility_signals") or []),
+    )
     bundle = build_control_proof_bundle_from_markers(
         tick_start=int(tick),
         tick_end=int(tick),
         decision_markers=markers,
+        mobility_proof_surface=mobility_surface,
         extensions={
             "network_policy_id": POLICY_ID_SERVER_AUTHORITATIVE,
             "source": "server_authoritative.intent_queue",
