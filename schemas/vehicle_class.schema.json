@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vehicle Class Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-3 vehicle class declaration.",
+  "x-doc-ref": [
+    "docs/mobility/VEHICLE_MODEL.md",
+    "docs/audit/VEHICLE_MODEL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "vehicle_class_id",
+    "description",
+    "supported_motion_modes",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "vehicle_class_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "supported_motion_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "rail_constrained",
+          "corridor",
+          "free",
+          "orbit"
+        ]
+      }
+    },
+    "required_specs": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "default_ports": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "default_pose_bindings": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "default_hazard_modes": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "vehicle_class_id": "veh.drone_stub",
+      "description": "Placeholder drone class.",
+      "supported_motion_modes": [
+        "free"
+      ],
+      "required_specs": null,
+      "default_ports": null,
+      "default_pose_bindings": null,
+      "default_hazard_modes": null,
+      "extensions": {}
+    }
+  ]
+}

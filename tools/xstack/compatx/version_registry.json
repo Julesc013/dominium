@@ -1106,6 +1106,13 @@
         "1.0.0"
       ]
     },
+    "motion_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "pose_slot": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1219,6 +1226,27 @@
       ]
     },
     "mobility_max_speed_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "vehicle": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "vehicle_class": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "vehicle_class_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Motion State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-3 tiered vehicle motion state row.",
+  "x-doc-ref": [
+    "docs/mobility/VEHICLE_MODEL.md",
+    "docs/audit/VEHICLE_MODEL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "vehicle_id",
+    "tier",
+    "macro_state",
+    "meso_state",
+    "micro_state",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "macro_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "meso_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "micro_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "vehicle.demo.001",
+      "tier": "macro",
+      "macro_state": {
+        "itinerary_id": "itinerary.demo.001",
+        "eta_tick": 640
+      },
+      "meso_state": {
+        "current_edge_id": null,
+        "occupancy_token_id": null
+      },
+      "micro_state": {
+        "geometry_id": null,
+        "s_param": null
+      },
+      "last_update_tick": 128,
+      "deterministic_fingerprint": "7356c49ead9033e1f4f13f16a6703754a8ea42e0c3f3bf27c7b954001e922f53",
+      "extensions": {}
+    }
+  ]
+}
