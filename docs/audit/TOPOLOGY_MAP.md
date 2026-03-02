@@ -4,29 +4,29 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:862ea1d2deb267b6eae16bc9fe0078e86cbc0800`
+- repository_hash: `HEAD:5fc266dcc7cbcee67ce37b1784b2dafd1876bb5e`
 - generated_tick: `0`
-- deterministic_fingerprint: `b23bedc5c6de7720df71ab987ef468c86d315ef21b775e01280266b6967e81e2`
+- deterministic_fingerprint: `df36912b9a97c926f542b28a73c54a4bf0808ca6b76a65ef04d5a56ae74554ae`
 
 ## Counts
-- node_count: 2585
-- edge_count: 140438
+- node_count: 2605
+- edge_count: 146510
 
 ## Node Kinds
 - contract_set: 4
 - module: 73
-- policy_set: 155
-- process_family: 185
-- registry: 191
-- schema: 877
-- tool: 1100
+- policy_set: 161
+- process_family: 187
+- registry: 193
+- schema: 879
+- tool: 1108
 
 ## Edge Kinds
-- consumes: 2575
-- depends_on: 1246
-- enforces: 33549
+- consumes: 2590
+- depends_on: 1263
+- enforces: 35145
 - produces: 1
-- validates: 103067
+- validates: 107511
 
 ## Major Runtime Modules
 - `module:client`
