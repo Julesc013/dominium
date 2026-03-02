@@ -185,6 +185,8 @@ from analyzers import e156_signal_bypass_smell
 from analyzers import e157_adhoc_interlocking_smell
 from analyzers import e158_inline_wear_smell
 from analyzers import e159_maintenance_bypass_smell
+from analyzers import e160_vehicle_interior_special_case_smell
+from analyzers import e161_instrument_truth_leak_smell
 
 
 ANALYZERS = (
@@ -373,6 +375,8 @@ ANALYZERS = (
     e157_adhoc_interlocking_smell,
     e158_inline_wear_smell,
     e159_maintenance_bypass_smell,
+    e160_vehicle_interior_special_case_smell,
+    e161_instrument_truth_leak_smell,
 )
 
 

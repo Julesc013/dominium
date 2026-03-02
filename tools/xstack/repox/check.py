@@ -12268,6 +12268,60 @@ def _append_mobility_invariant_findings(
                 )
             )
             break
+    if (
+        'elif process_id == "process.compartment_flow_tick":' not in runtime_text
+        or "_sync_vehicle_interior_spatial_frame(" not in runtime_text
+        or "_vehicle_row_for_interior_graph(" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.compartment_flow_tick/_sync_vehicle_interior_spatial_frame",
+                message="vehicle interiors must stay integrated with INT substrate flow + spatial frame process hooks",
+                rule_id="INV-INTERIORS-USE-INT-SUBSTRATE",
+            )
+        )
+    adhoc_vehicle_cabin_patterns = (
+        re.compile(r"\bvehicle_cabin_(?:pressure|oxygen|smoke|flood|leak)\b", re.IGNORECASE),
+        re.compile(r"\bcabin_(?:pressure|oxygen|smoke|flood|leak)\b", re.IGNORECASE),
+        re.compile(r"\bif\b[^\n]*(?:vehicle|cabin)[^\n]*(?:pressure|oxygen|smoke|flood|leak)\b", re.IGNORECASE),
+    )
+    adhoc_vehicle_cabin_allowed = {
+        process_runtime_rel,
+        "src/interior/compartment_flow_engine.py",
+        "src/interior/compartment_flow_builder.py",
+        "src/inspection/inspection_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in adhoc_vehicle_cabin_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in adhoc_vehicle_cabin_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="ad-hoc vehicle cabin logic is forbidden; route through INT compartment flow/instrument process layers",
+                    rule_id="INV-NO-ADHOC-VEHICLE-CABIN-LOGIC",
+                )
+            )
+            break
     if "edge_occupancies" not in runtime_text:
         findings.append(
             _finding(
