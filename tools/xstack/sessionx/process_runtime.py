@@ -39,6 +39,12 @@ from src.core.graph.routing_engine import (
     RoutingError,
     query_route_result,
 )
+from src.core.schedule.schedule_engine import (
+    REFUSAL_CORE_SCHEDULE_INVALID,
+    ScheduleError,
+    normalize_schedule,
+    tick_schedules,
+)
 from src.core.state.state_machine_engine import (
     StateMachineError,
     apply_transition,
@@ -296,6 +302,8 @@ from src.mobility.vehicle import (
 from src.mobility.travel import (
     ItineraryError,
     TravelEngineError,
+    build_travel_event,
+    deterministic_travel_event_id,
     normalize_itinerary_rows,
     normalize_travel_commitment_rows,
     normalize_travel_event_rows,
@@ -430,6 +438,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.switch_set_state": "entitlement.control.admin",
     "process.mobility_route_query": "entitlement.inspect",
     "process.itinerary_create": "entitlement.control.admin",
+    "process.travel_schedule_set": "entitlement.control.admin",
     "process.travel_start": "entitlement.control.admin",
     "process.travel_tick": "session.boot",
     "process.vehicle_register_from_structure": "entitlement.control.admin",
@@ -559,6 +568,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.switch_set_state": "operator",
     "process.mobility_route_query": "observer",
     "process.itinerary_create": "operator",
+    "process.travel_schedule_set": "operator",
     "process.travel_start": "operator",
     "process.travel_tick": "observer",
     "process.vehicle_register_from_structure": "operator",
@@ -635,6 +645,7 @@ CONTROL_PROCESS_IDS = {
     "process.switch_set_state",
     "process.mobility_route_query",
     "process.itinerary_create",
+    "process.travel_schedule_set",
     "process.travel_start",
     "process.travel_tick",
     "process.vehicle_register_from_structure",
@@ -1626,6 +1637,24 @@ def _ensure_itinerary_rows(state: dict) -> List[dict]:
     rows = normalize_itinerary_rows(state.get("itineraries"))
     state["itineraries"] = [dict(row) for row in rows if isinstance(row, dict)]
     return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_travel_schedule_rows(state: dict) -> List[dict]:
+    rows = state.get("travel_schedules")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("schedule_id", ""))):
+        try:
+            normalized = normalize_schedule(row)
+        except ScheduleError:
+            continue
+        schedule_id = str(normalized.get("schedule_id", "")).strip()
+        if not schedule_id:
+            continue
+        out[schedule_id] = dict(normalized)
+    state["travel_schedules"] = [dict(out[key]) for key in sorted(out.keys())]
+    return [dict(out[key]) for key in sorted(out.keys())]
 
 
 def _ensure_travel_commitment_rows(state: dict) -> List[dict]:
@@ -2806,6 +2835,7 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("mobility_switch_state_machines", "machine_id"),
         ("mobility_route_results", "query_id"),
         ("itineraries", "itinerary_id"),
+        ("travel_schedules", "schedule_id"),
         ("travel_commitments", "commitment_id"),
         ("travel_events", "event_id"),
         ("structural_graphs", "structural_graph_id"),
@@ -10148,6 +10178,7 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("mobility_switch_state_machines", "machine_id"),
         ("mobility_route_results", "query_id"),
         ("itineraries", "itinerary_id"),
+        ("travel_schedules", "schedule_id"),
         ("travel_commitments", "commitment_id"),
         ("travel_events", "event_id"),
         ("vehicles", "vehicle_id"),
@@ -12852,6 +12883,7 @@ def execute_intent(
     mobility_route_cache_state = _ensure_mobility_route_cache_state(state)
     mobility_route_results = _ensure_mobility_route_result_rows(state)
     itineraries = _ensure_itinerary_rows(state)
+    travel_schedules = _ensure_travel_schedule_rows(state)
     travel_commitments = _ensure_travel_commitment_rows(state)
     travel_events = _ensure_travel_event_rows(state)
     vehicles = _ensure_vehicle_rows(state)
@@ -20626,6 +20658,94 @@ def execute_intent(
             "decision_log_ref": str(decision_entry.get("decision_log_ref", "")).strip() or None,
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.travel_schedule_set":
+        schedule_id = str(inputs.get("schedule_id", "")).strip()
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        itinerary_id = str(inputs.get("itinerary_id", "")).strip()
+        if (not schedule_id) or (not vehicle_id) or (not itinerary_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.travel_schedule_set requires schedule_id, vehicle_id, itinerary_id",
+                "Provide deterministic schedule_id plus vehicle and itinerary references.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        itinerary_rows_by_id = dict(
+            (
+                str(row.get("itinerary_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(itineraries or [])
+            if isinstance(row, Mapping) and str(row.get("itinerary_id", "")).strip()
+        )
+        itinerary_row = dict(itinerary_rows_by_id.get(itinerary_id) or {})
+        if not itinerary_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "itinerary_id '{}' is not present".format(itinerary_id),
+                "Run process.itinerary_create first.",
+                {"itinerary_id": itinerary_id},
+                "$.intent.inputs.itinerary_id",
+            )
+        if str(itinerary_row.get("vehicle_id", "")).strip() != vehicle_id:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "itinerary_id '{}' does not belong to vehicle_id '{}'".format(itinerary_id, vehicle_id),
+                "Use itinerary_id associated with vehicle_id.",
+                {
+                    "itinerary_vehicle_id": str(itinerary_row.get("vehicle_id", "")).strip(),
+                    "vehicle_id": vehicle_id,
+                },
+                "$.intent.inputs",
+            )
+        start_tick = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get("start_tick", itinerary_row.get("departure_tick", current_tick)),
+                    itinerary_row.get("departure_tick", current_tick),
+                ),
+            )
+        )
+        recurrence_rule = dict(inputs.get("recurrence_rule") or {})
+        if not recurrence_rule:
+            recurrence_rule = {"rule_type": "none", "interval_ticks": 0, "trigger_process_id": "process.travel_start"}
+        candidate_schedule = {
+            "schema_version": "1.0.0",
+            "schedule_id": schedule_id,
+            "target_id": vehicle_id,
+            "start_tick": int(start_tick),
+            "recurrence_rule": dict(recurrence_rule),
+            "next_due_tick": int(max(0, _as_int(inputs.get("next_due_tick", start_tick), start_tick))),
+            "cancellation_policy": str(inputs.get("cancellation_policy", "keep")).strip() or "keep",
+            "active": bool(inputs.get("active", True)),
+            "extensions": {
+                "itinerary_id": itinerary_id,
+                "source_process_id": process_id,
+                "intent_id": str(intent_id),
+                "schedule_kind": str(inputs.get("schedule_kind", "mobility.timetable")).strip() or "mobility.timetable",
+            },
+        }
+        try:
+            schedule_row = normalize_schedule(candidate_schedule)
+        except ScheduleError as exc:
+            return refusal(
+                str(getattr(exc, "reason_code", REFUSAL_CORE_SCHEDULE_INVALID)),
+                str(exc),
+                "Fix schedule_id/target_id/recurrence_rule payload and retry.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.intent.inputs",
+            )
+        travel_schedules = _upsert_row_by_id(travel_schedules, "schedule_id", schedule_row)
+        travel_schedules = _ensure_travel_schedule_rows({"travel_schedules": travel_schedules})
+        state["travel_schedules"] = [dict(row) for row in list(travel_schedules or []) if isinstance(row, Mapping)]
+        result_metadata = {
+            "schedule_id": schedule_id,
+            "vehicle_id": vehicle_id,
+            "itinerary_id": itinerary_id,
+            "schedule": dict(schedule_row),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.travel_start":
         vehicle_id = str(inputs.get("vehicle_id", "")).strip()
         itinerary_id = str(inputs.get("itinerary_id", "")).strip()
@@ -20779,6 +20899,303 @@ def execute_intent(
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.travel_tick":
+        max_schedule_updates = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_schedule_updates_per_tick",
+                        (dict(policy_context or {})).get("travel_schedule_max_updates", 256),
+                    ),
+                    256,
+                ),
+            )
+        )
+        schedule_tick = tick_schedules(
+            schedule_rows=travel_schedules,
+            current_tick=int(current_tick),
+            max_schedules=int(max_schedule_updates),
+            cost_units_per_schedule=1,
+        )
+        travel_schedules = _ensure_travel_schedule_rows(
+            {"travel_schedules": list(schedule_tick.get("schedules") or [])}
+        )
+        schedule_rows_by_id = dict(
+            (
+                str(row.get("schedule_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(travel_schedules or [])
+            if isinstance(row, Mapping) and str(row.get("schedule_id", "")).strip()
+        )
+        vehicle_rows_by_id = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicles or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        itinerary_rows_by_id = dict(
+            (
+                str(row.get("itinerary_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(itineraries or [])
+            if isinstance(row, Mapping) and str(row.get("itinerary_id", "")).strip()
+        )
+        motion_rows_by_vehicle = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicle_motion_states or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        schedule_start_count = 0
+        schedule_skip_rows: List[dict] = []
+        event_seq = int(len(list(travel_events or [])))
+        due_schedule_events = [
+            dict(row)
+            for row in list(schedule_tick.get("due_events") or [])
+            if isinstance(row, Mapping)
+        ]
+        for due_row in due_schedule_events:
+            schedule_id = str(due_row.get("schedule_id", "")).strip()
+            schedule_row = dict(schedule_rows_by_id.get(schedule_id) or {})
+            if not schedule_row:
+                continue
+            vehicle_id = str(schedule_row.get("target_id", "")).strip()
+            ext = dict(schedule_row.get("extensions") or {})
+            itinerary_id = str(ext.get("itinerary_id", "")).strip()
+            if (not vehicle_id) or (not itinerary_id):
+                skip_reason = "schedule_missing_vehicle_or_itinerary"
+                schedule_skip_rows.append(
+                    {
+                        "schedule_id": schedule_id,
+                        "vehicle_id": vehicle_id or None,
+                        "itinerary_id": itinerary_id or None,
+                        "reason": skip_reason,
+                    }
+                )
+                travel_events = _upsert_row_by_id(
+                    travel_events,
+                    "event_id",
+                    build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=vehicle_id or "vehicle.unknown",
+                            itinerary_id=itinerary_id or "itinerary.none",
+                            kind="delay",
+                            tick=int(current_tick),
+                            sequence=int(event_seq),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=vehicle_id or "vehicle.unknown",
+                        itinerary_id=itinerary_id or "itinerary.none",
+                        kind="delay",
+                        details={
+                            "schedule_id": schedule_id,
+                            "reason": skip_reason,
+                        },
+                        extensions={"source_process_id": process_id},
+                    ),
+                )
+                event_seq += 1
+                continue
+            motion_row = dict(motion_rows_by_vehicle.get(vehicle_id) or {})
+            active_itinerary = str(_as_map(motion_row.get("macro_state")).get("itinerary_id", "")).strip()
+            if active_itinerary:
+                schedule_skip_rows.append(
+                    {
+                        "schedule_id": schedule_id,
+                        "vehicle_id": vehicle_id,
+                        "itinerary_id": itinerary_id,
+                        "reason": "vehicle_busy",
+                    }
+                )
+                travel_events = _upsert_row_by_id(
+                    travel_events,
+                    "event_id",
+                    build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=vehicle_id,
+                            itinerary_id=itinerary_id,
+                            kind="delay",
+                            tick=int(current_tick),
+                            sequence=int(event_seq),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=vehicle_id,
+                        itinerary_id=itinerary_id,
+                        kind="delay",
+                        details={
+                            "schedule_id": schedule_id,
+                            "reason": "vehicle_busy",
+                            "active_itinerary_id": active_itinerary,
+                        },
+                        extensions={"source_process_id": process_id},
+                    ),
+                )
+                event_seq += 1
+                continue
+            vehicle_row = dict(vehicle_rows_by_id.get(vehicle_id) or {})
+            itinerary_row = dict(itinerary_rows_by_id.get(itinerary_id) or {})
+            if (not vehicle_row) or (not itinerary_row):
+                schedule_skip_rows.append(
+                    {
+                        "schedule_id": schedule_id,
+                        "vehicle_id": vehicle_id,
+                        "itinerary_id": itinerary_id,
+                        "reason": "schedule_target_missing",
+                    }
+                )
+                travel_events = _upsert_row_by_id(
+                    travel_events,
+                    "event_id",
+                    build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=vehicle_id,
+                            itinerary_id=itinerary_id,
+                            kind="delay",
+                            tick=int(current_tick),
+                            sequence=int(event_seq),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=vehicle_id,
+                        itinerary_id=itinerary_id,
+                        kind="delay",
+                        details={
+                            "schedule_id": schedule_id,
+                            "reason": "schedule_target_missing",
+                        },
+                        extensions={"source_process_id": process_id},
+                    ),
+                )
+                event_seq += 1
+                continue
+            if str(itinerary_row.get("vehicle_id", "")).strip() != vehicle_id:
+                schedule_skip_rows.append(
+                    {
+                        "schedule_id": schedule_id,
+                        "vehicle_id": vehicle_id,
+                        "itinerary_id": itinerary_id,
+                        "reason": "itinerary_vehicle_mismatch",
+                    }
+                )
+                travel_events = _upsert_row_by_id(
+                    travel_events,
+                    "event_id",
+                    build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=vehicle_id,
+                            itinerary_id=itinerary_id,
+                            kind="delay",
+                            tick=int(current_tick),
+                            sequence=int(event_seq),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=vehicle_id,
+                        itinerary_id=itinerary_id,
+                        kind="delay",
+                        details={
+                            "schedule_id": schedule_id,
+                            "reason": "itinerary_vehicle_mismatch",
+                        },
+                        extensions={"source_process_id": process_id},
+                    ),
+                )
+                event_seq += 1
+                continue
+            try:
+                start_result = start_macro_travel(
+                    vehicle_row=vehicle_row,
+                    motion_state_row=motion_row
+                    if motion_row
+                    else build_motion_state(
+                        vehicle_id=vehicle_id,
+                        tier="macro",
+                        macro_state={},
+                        meso_state={},
+                        micro_state={},
+                        last_update_tick=int(current_tick),
+                        extensions={},
+                    ),
+                    itinerary_row=itinerary_row,
+                    current_tick=int(current_tick),
+                    process_id=process_id,
+                    intent_id="{}.schedule.{}".format(str(intent_id), schedule_id),
+                    decision_log_ref=(str(ext.get("decision_log_ref", "")).strip() or None),
+                )
+            except TravelEngineError as exc:
+                schedule_skip_rows.append(
+                    {
+                        "schedule_id": schedule_id,
+                        "vehicle_id": vehicle_id,
+                        "itinerary_id": itinerary_id,
+                        "reason": str(exc.reason_code),
+                    }
+                )
+                travel_events = _upsert_row_by_id(
+                    travel_events,
+                    "event_id",
+                    build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=vehicle_id,
+                            itinerary_id=itinerary_id,
+                            kind="delay",
+                            tick=int(current_tick),
+                            sequence=int(event_seq),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=vehicle_id,
+                        itinerary_id=itinerary_id,
+                        kind="delay",
+                        details={
+                            "schedule_id": schedule_id,
+                            "reason": str(exc.reason_code),
+                        },
+                        extensions={"source_process_id": process_id},
+                    ),
+                )
+                event_seq += 1
+                continue
+            schedule_start_count += 1
+            next_motion_state = dict(start_result.get("motion_state") or {})
+            motion_rows_by_vehicle[vehicle_id] = dict(next_motion_state)
+            for row in list(start_result.get("travel_commitments") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                travel_commitments = _upsert_row_by_id(
+                    travel_commitments,
+                    "commitment_id",
+                    dict(row),
+                )
+            for row in list(start_result.get("travel_events") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                travel_events = _upsert_row_by_id(
+                    travel_events,
+                    "event_id",
+                    dict(row),
+                )
+            itinerary_ext = dict(itinerary_row.get("extensions") or {})
+            itinerary_ext["status"] = "executing"
+            itinerary_ext["started_tick"] = int(max(0, _as_int(current_tick, 0)))
+            itinerary_ext["last_schedule_id"] = schedule_id
+            itinerary_row["extensions"] = itinerary_ext
+            itinerary_row["deterministic_fingerprint"] = canonical_sha256(
+                dict(itinerary_row, deterministic_fingerprint="")
+            )
+            itinerary_rows_by_id[itinerary_id] = itinerary_row
+        vehicle_motion_states = normalize_motion_state_rows(
+            [dict(motion_rows_by_vehicle[key]) for key in sorted(motion_rows_by_vehicle.keys())]
+        )
+        itineraries = normalize_itinerary_rows(
+            [dict(itinerary_rows_by_id[key]) for key in sorted(itinerary_rows_by_id.keys())]
+        )
+        travel_commitments = normalize_travel_commitment_rows(travel_commitments)
+        travel_events = normalize_travel_event_rows(travel_events)
+
         max_updates = int(
             max(
                 1,
@@ -20874,10 +21291,34 @@ def execute_intent(
                 process_id=process_id,
                 tick=int(current_tick),
             )
+        deferred_schedule_ids = _sorted_tokens(list(schedule_tick.get("deferred_schedule_ids") or []))
+        if deferred_schedule_ids:
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id="schedule.{}".format(schedule_id),
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.travel_schedule_budget",
+                        resolved_level="macro",
+                        cost_allocated=0,
+                        extensions={
+                            "max_schedule_updates_per_tick": int(max_schedule_updates),
+                        },
+                    )
+                    for schedule_id in list(deferred_schedule_ids)[:128]
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
         state["itineraries"] = [dict(row) for row in list(itineraries or []) if isinstance(row, Mapping)]
+        state["travel_schedules"] = [dict(row) for row in list(travel_schedules or []) if isinstance(row, Mapping)]
         state["travel_commitments"] = [dict(row) for row in list(travel_commitments or []) if isinstance(row, Mapping)]
         state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
         _ensure_itinerary_rows(state)
+        _ensure_travel_schedule_rows(state)
         _ensure_travel_commitment_rows(state)
         _ensure_travel_event_rows(state)
         _persist_vehicle_state(
@@ -20892,12 +21333,22 @@ def execute_intent(
             "max_vehicle_updates_per_tick": int(max_updates),
             "processed_vehicle_ids": _sorted_tokens(list(tick_result.get("processed_vehicle_ids") or [])),
             "deferred_vehicle_ids": list(deferred_vehicle_ids),
+            "max_schedule_updates_per_tick": int(max_schedule_updates),
+            "deferred_schedule_ids": list(deferred_schedule_ids),
             "budget_outcome": str(tick_result.get("budget_outcome", "complete")),
         }
         result_metadata = {
+            "schedule_due_count": int(len(due_schedule_events)),
+            "schedule_started_count": int(schedule_start_count),
+            "schedule_skipped": list(schedule_skip_rows),
+            "deferred_schedule_ids": list(deferred_schedule_ids),
             "processed_vehicle_ids": _sorted_tokens(list(tick_result.get("processed_vehicle_ids") or [])),
             "deferred_vehicle_ids": list(deferred_vehicle_ids),
-            "budget_outcome": str(tick_result.get("budget_outcome", "complete")),
+            "budget_outcome": (
+                "degraded"
+                if deferred_schedule_ids or str(tick_result.get("budget_outcome", "complete")) == "degraded"
+                else "complete"
+            ),
             "travel_event_count": int(len(travel_events)),
             "travel_commitment_count": int(len(travel_commitments)),
         }
