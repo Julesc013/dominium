@@ -77,11 +77,17 @@ from .trust import (
     trust_weight_for_pair,
 )
 from .institutions import (
+    REFUSAL_DISPATCH_POLICY_FORBIDDEN,
+    build_dispatch_update,
     build_institution_profile,
     bulletin_policy_rows_by_id,
+    deterministic_dispatch_update_id,
+    dispatch_policy_rows_by_id,
     institution_profile_rows_by_id,
+    normalize_dispatch_update_rows,
     normalize_institution_profile_rows,
     process_institution_bulletin_tick,
+    process_dispatch_issue_updates,
 )
 
 __all__ = [
@@ -153,9 +159,15 @@ __all__ = [
     "trust_edge_rows_by_pair",
     "trust_update_rule_rows_by_id",
     "trust_weight_for_pair",
+    "REFUSAL_DISPATCH_POLICY_FORBIDDEN",
+    "build_dispatch_update",
     "build_institution_profile",
     "bulletin_policy_rows_by_id",
+    "deterministic_dispatch_update_id",
+    "dispatch_policy_rows_by_id",
     "institution_profile_rows_by_id",
+    "normalize_dispatch_update_rows",
     "normalize_institution_profile_rows",
     "process_institution_bulletin_tick",
+    "process_dispatch_issue_updates",
 ]
