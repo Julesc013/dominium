@@ -1,0 +1,22 @@
+SCHEMA: signals/verification_result.schema
+schema_id: dominium.schema.signals.verification_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic verification result row used to update trust edges.
+
+REQUIRED SHAPE:
+record verification_result
+  required:
+    - schema_version: semver
+    - result_id: id
+    - artifact_id: id
+    - verifier_subject_id: id
+    - verification_state: enum(verified|disputed|failed|unverified)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Verification results are explicit process outputs.
+- Trust updates consume verification results; no hidden truth comparison path.

@@ -1,0 +1,20 @@
+SCHEMA: signals/trust_graph.schema
+schema_id: dominium.schema.signals.trust_graph
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic trust graph container for SIG subject-to-subject belief trust.
+
+REQUIRED SHAPE:
+record trust_graph
+  required:
+    - schema_version: semver
+    - graph_id: id
+    - edges: list[trust_edge]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Edge list ordering is deterministic by (from_subject_id, to_subject_id).
+- Graph rows remain data-only and process-mutated.
