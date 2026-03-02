@@ -109,7 +109,9 @@ Last Updated: 2026-03-02
 - TestX (MOB-7 subset):
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset ...` => `status=pass` for all six MOB-7 tests.
 - Strict pipeline:
-- `python tools/xstack/run.py strict` => timed out in this workspace (`424s` timeout envelope) before completion; pre-existing non-MOB7 strict baseline issues remain expected.
+- `python tools/xstack/run.py strict --cache on` => `result=refusal` in this workspace baseline:
+- `compatx` findings, `repox` findings, global `testx` failures, and `packagingx` lab build refusal.
+- MOB-7 subset tests passed independently under FAST profile.
 
 ## Extension Points
 - Aerodynamics domain:
