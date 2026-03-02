@@ -260,15 +260,32 @@ def _network_graph_overlay_payload(
         key=lambda item: (str(item.get("from_node_id", "")), str(item.get("to_node_id", "")), str(item.get("edge_id", ""))),
     )
     sections = dict((dict(inspection_snapshot or {})).get("summary_sections") or {})
-    route_section = dict(sections.get("section.networkgraph.route") or {})
+    route_section = dict(sections.get("section.mob.route_result") or sections.get("section.networkgraph.route") or {})
     route_data = dict(route_section.get("data") or {})
+    network_summary_section = dict(
+        sections.get("section.mob.network_summary") or sections.get("section.networkgraph.summary") or {}
+    )
+    network_summary_data = dict(network_summary_section.get("data") or {})
+    switch_state_rows = sorted(
+        [dict(item) for item in list(network_summary_data.get("switch_states") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("node_id", "")),
+    )
+    switch_state_by_node = dict(
+        (str(item.get("node_id", "")).strip(), dict(item))
+        for item in switch_state_rows
+        if str(item.get("node_id", "")).strip()
+    )
     route_edge_ids = set(_sorted_unique_strings(route_data.get("path_edge_ids")))
     edge_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_edge"}, floor=60)
     node_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_node"}, floor=72)
     route_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_route"}, floor=68)
+    switch_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_switch"}, floor=70)
+    spec_warn_color = {"r": 220, "g": 86, "b": 84}
     edge_material_id = "mat.inspect.networkgraph.edge.{}".format(canonical_sha256({"graph_id": graph_id})[:12])
     node_material_id = "mat.inspect.networkgraph.node.{}".format(canonical_sha256({"graph_id": graph_id, "node": True})[:12])
     route_material_id = "mat.inspect.networkgraph.route.{}".format(canonical_sha256({"graph_id": graph_id, "route": True})[:12])
+    switch_material_id = "mat.inspect.networkgraph.switch.{}".format(canonical_sha256({"graph_id": graph_id, "switch": True})[:12])
+    spec_warn_material_id = "mat.inspect.networkgraph.specwarn.{}".format(canonical_sha256({"graph_id": graph_id, "specwarn": True})[:12])
     materials = sorted(
         [
             {
@@ -304,15 +321,43 @@ def _network_graph_overlay_payload(
                 "pattern_id": None,
                 "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_route"},
             },
+            {
+                "schema_version": "1.0.0",
+                "material_id": switch_material_id,
+                "base_color": dict(switch_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": switch_color["r"], "g": switch_color["g"], "b": switch_color["b"], "strength": 260},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_switch"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": spec_warn_material_id,
+                "base_color": dict(spec_warn_color),
+                "roughness": 240,
+                "metallic": 0,
+                "emission": {"r": spec_warn_color["r"], "g": spec_warn_color["g"], "b": spec_warn_color["b"], "strength": 280},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_spec_missing"},
+            },
         ],
         key=lambda row: str(row.get("material_id", "")),
     )
     renderables: list[dict] = []
+    spec_missing_edge_count = 0
     for edge in edge_rows:
         edge_id = str(edge.get("edge_id", "")).strip()
         if not edge_id:
             continue
         is_route = edge_id in route_edge_ids
+        payload = dict(edge.get("payload") or {})
+        spec_id = str(payload.get("spec_id", "")).strip() or None
+        spec_missing = not bool(spec_id)
+        if spec_missing:
+            spec_missing_edge_count += 1
         renderables.append(
             {
                 "schema_version": "1.0.0",
@@ -324,11 +369,15 @@ def _network_graph_overlay_payload(
                     "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
                     "scale_permille": 1000,
                 },
-                "material_id": route_material_id if is_route else edge_material_id,
+                "material_id": (
+                    route_material_id
+                    if is_route
+                    else (spec_warn_material_id if spec_missing else edge_material_id)
+                ),
                 "layer_tags": ["overlay", "ui"],
                 "label": None,
                 "lod_hint": "lod.band.mid",
-                "flags": {"selectable": False, "highlighted": bool(is_route)},
+                "flags": {"selectable": False, "highlighted": bool(is_route or spec_missing)},
                 "extensions": {
                     "interaction_overlay": True,
                     "overlay_kind": "networkgraph_edge",
@@ -336,6 +385,8 @@ def _network_graph_overlay_payload(
                     "from_node_id": str(edge.get("from_node_id", "")).strip(),
                     "to_node_id": str(edge.get("to_node_id", "")).strip(),
                     "directional": True,
+                    "spec_id": spec_id,
+                    "spec_missing": bool(spec_missing),
                 },
             }
         )
@@ -350,11 +401,15 @@ def _network_graph_overlay_payload(
                     "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
                     "scale_permille": 1000,
                 },
-                "material_id": route_material_id if is_route else edge_material_id,
+                "material_id": (
+                    route_material_id
+                    if is_route
+                    else (spec_warn_material_id if spec_missing else edge_material_id)
+                ),
                 "layer_tags": ["overlay", "ui"],
                 "label": ">",
                 "lod_hint": "lod.band.mid",
-                "flags": {"selectable": False, "highlighted": bool(is_route)},
+                "flags": {"selectable": False, "highlighted": bool(is_route or spec_missing)},
                 "extensions": {
                     "interaction_overlay": True,
                     "overlay_kind": "networkgraph_direction",
@@ -362,10 +417,43 @@ def _network_graph_overlay_payload(
                 },
             }
         )
+        if spec_missing:
+            renderables.append(
+                {
+                    "schema_version": "1.0.0",
+                    "renderable_id": "overlay.inspect.networkgraph.specwarn.{}".format(
+                        canonical_sha256({"graph_id": graph_id, "edge_id": edge_id, "specwarn": True})[:16]
+                    ),
+                    "semantic_id": "overlay.inspect.networkgraph.specwarn.{}".format(edge_id),
+                    "primitive_id": "prim.glyph.label",
+                    "transform": {
+                        "position_mm": {"x": 0, "y": 0, "z": 0},
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 900,
+                    },
+                    "material_id": spec_warn_material_id,
+                    "layer_tags": ["overlay", "ui"],
+                    "label": "SPEC?",
+                    "lod_hint": "lod.band.mid",
+                    "flags": {"selectable": False, "highlighted": True},
+                    "extensions": {
+                        "interaction_overlay": True,
+                        "overlay_kind": "networkgraph_spec_missing",
+                        "edge_id": edge_id,
+                    },
+                }
+            )
     for node in node_rows:
         node_id = str(node.get("node_id", "")).strip()
         if not node_id:
             continue
+        payload = dict(node.get("payload") or {})
+        node_kind = str(payload.get("node_kind", "")).strip() or "node"
+        switch_state = dict(switch_state_by_node.get(node_id) or {})
+        active_edge_id = str(switch_state.get("active_edge_id", "")).strip() or None
+        node_label = node_id
+        if node_kind == "switch":
+            node_label = "SW {}".format(active_edge_id or node_id)
         renderables.append(
             {
                 "schema_version": "1.0.0",
@@ -377,15 +465,17 @@ def _network_graph_overlay_payload(
                     "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
                     "scale_permille": 1000,
                 },
-                "material_id": node_material_id,
+                "material_id": switch_material_id if node_kind == "switch" else node_material_id,
                 "layer_tags": ["overlay", "ui"],
-                "label": node_id,
+                "label": node_label,
                 "lod_hint": "lod.band.mid",
-                "flags": {"selectable": False, "highlighted": False},
+                "flags": {"selectable": False, "highlighted": bool(node_kind == "switch")},
                 "extensions": {
                     "interaction_overlay": True,
                     "overlay_kind": "networkgraph_node",
                     "node_id": node_id,
+                    "node_kind": node_kind,
+                    "active_edge_id": active_edge_id,
                 },
             }
         )
@@ -409,6 +499,8 @@ def _network_graph_overlay_payload(
             "node_count": len(node_rows),
             "edge_count": len(edge_rows),
             "route_edge_ids": sorted(route_edge_ids),
+            "switch_count": int(len(switch_state_rows)),
+            "spec_missing_edge_count": int(spec_missing_edge_count),
         },
     }
 

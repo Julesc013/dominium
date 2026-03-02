@@ -85,6 +85,32 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.mob.network_summary",
+        "title": "Mobility Network Summary",
+        "data": {
+          "data_kind": "mobility_network_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.mob.route_result",
+        "title": "Mobility Route Result",
+        "data": {
+          "data_kind": "mobility_route_result"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.networkgraph.capacity_utilization",
         "title": "NetworkGraph Capacity Utilization",
         "data": {
