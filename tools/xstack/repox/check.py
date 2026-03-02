@@ -10246,6 +10246,196 @@ def _append_domain_control_registered_invariant_findings(
         )
 
 
+def _append_action_grammar_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    control_rel = "data/registries/control_action_registry.json"
+    interaction_rel = "data/registries/interaction_action_registry.json"
+    task_rel = "data/registries/task_type_registry.json"
+    process_rel = "data/registries/process_registry.json"
+    family_rel = "data/registries/action_family_registry.json"
+    template_rel = "data/registries/action_template_registry.json"
+
+    control_payload, control_err = _load_json_object(repo_root, control_rel)
+    interaction_payload, interaction_err = _load_json_object(repo_root, interaction_rel)
+    task_payload, task_err = _load_json_object(repo_root, task_rel)
+    process_payload, process_err = _load_json_object(repo_root, process_rel)
+    template_payload, template_err = _load_json_object(repo_root, template_rel)
+    family_payload, _family_err = _load_json_object(repo_root, family_rel)
+
+    if template_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=template_rel,
+                line_number=1,
+                snippet="",
+                message="action_template_registry is missing or invalid; cannot verify action-family coverage",
+                rule_id="INV-ACTION-MUST-HAVE-FAMILY",
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=template_rel,
+                line_number=1,
+                snippet="",
+                message="action_template_registry is missing or invalid; cannot verify unregistered action templates",
+                rule_id="INV-NO-UNREGISTERED-ACTION",
+            )
+        )
+        return
+
+    source_errors = [
+        (control_rel, control_err),
+        (interaction_rel, interaction_err),
+        (task_rel, task_err),
+        (process_rel, process_err),
+    ]
+    for file_path, err in source_errors:
+        if not err:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=file_path,
+                line_number=1,
+                snippet="",
+                message="required source registry is missing or invalid; cannot fully verify action-template coverage",
+                rule_id="INV-ACTION-MUST-HAVE-FAMILY",
+            )
+        )
+        return
+
+    family_rows = list((dict(family_payload.get("record") or {})).get("families") or [])
+    family_ids = set()
+    for row in family_rows:
+        if not isinstance(row, dict):
+            continue
+        family_id = str(row.get("action_family_id", "")).strip()
+        if family_id:
+            family_ids.add(family_id)
+
+    control_action_ids: Set[str] = set()
+    for row in list((dict(control_payload.get("record") or {})).get("actions") or []):
+        if not isinstance(row, dict):
+            continue
+        action_id = str(row.get("action_id", "")).strip()
+        if action_id:
+            control_action_ids.add(action_id)
+    interaction_action_ids: Set[str] = set()
+    for row in list((dict(interaction_payload.get("record") or {})).get("actions") or []):
+        if not isinstance(row, dict):
+            continue
+        action_id = str(row.get("action_id", "")).strip()
+        if action_id:
+            interaction_action_ids.add(action_id)
+    task_type_ids: Set[str] = set()
+    for row in list((dict(task_payload.get("record") or {})).get("task_types") or []):
+        if not isinstance(row, dict):
+            continue
+        task_type_id = str(row.get("task_type_id", "")).strip()
+        if task_type_id:
+            task_type_ids.add(task_type_id)
+    process_ids: Set[str] = set()
+    for row in list((dict(process_payload.get("record") or {})).get("processes") or []):
+        if not isinstance(row, dict):
+            continue
+        process_id = str(row.get("process_id", "")).strip()
+        if process_id:
+            process_ids.add(process_id)
+
+    source_action_ids: Set[str] = set(control_action_ids) | set(interaction_action_ids) | set(task_type_ids) | set(process_ids)
+
+    template_rows = list((dict(template_payload.get("record") or {})).get("templates") or [])
+    template_by_id: Dict[str, dict] = {}
+    for row in sorted((item for item in template_rows if isinstance(item, dict)), key=lambda item: str(item.get("action_template_id", ""))):
+        template_id = str(row.get("action_template_id", "")).strip()
+        if not template_id:
+            continue
+        template_by_id.setdefault(template_id, dict(row))
+
+    for action_id in sorted(source_action_ids):
+        template_row = dict(template_by_id.get(action_id) or {})
+        if not template_row:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=template_rel,
+                    line_number=1,
+                    snippet=action_id,
+                    message="source action/process/task is missing action_template mapping",
+                    rule_id="INV-ACTION-MUST-HAVE-FAMILY",
+                )
+            )
+            continue
+        action_family_id = str(template_row.get("action_family_id", "")).strip()
+        if not action_family_id:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=template_rel,
+                    line_number=1,
+                    snippet=action_id,
+                    message="action_template mapping is missing action_family_id",
+                    rule_id="INV-ACTION-MUST-HAVE-FAMILY",
+                )
+            )
+            continue
+        if family_ids and action_family_id not in family_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=template_rel,
+                    line_number=1,
+                    snippet=action_family_id,
+                    message="action_template references unknown action_family_id",
+                    rule_id="INV-ACTION-MUST-HAVE-FAMILY",
+                )
+            )
+
+    for template_id in sorted(template_by_id.keys()):
+        template_row = dict(template_by_id.get(template_id) or {})
+        ext = dict(template_row.get("extensions") or {})
+        template_kind = str(ext.get("template_kind", "")).strip()
+        if template_kind == "control_action" and template_id not in control_action_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=template_rel,
+                    line_number=1,
+                    snippet=template_id,
+                    message="control_action template is not registered in control_action_registry",
+                    rule_id="INV-NO-UNREGISTERED-ACTION",
+                )
+            )
+        elif template_kind == "interaction_action" and template_id not in interaction_action_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=template_rel,
+                    line_number=1,
+                    snippet=template_id,
+                    message="interaction_action template is not registered in interaction_action_registry",
+                    rule_id="INV-NO-UNREGISTERED-ACTION",
+                )
+            )
+        elif template_kind == "task_type" and template_id not in task_type_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=template_rel,
+                    line_number=1,
+                    snippet=template_id,
+                    message="task_type template is not registered in task_type_registry",
+                    rule_id="INV-NO-UNREGISTERED-ACTION",
+                )
+            )
+
+
 def _append_platform_renderer_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -12695,6 +12885,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_domain_control_registered_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_action_grammar_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
