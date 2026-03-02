@@ -288,6 +288,17 @@ def _build_compliance_report_artifact_row(
     )
 
 
+def _institution_sender_subject_id(*, institution_id: str, explicit_sender_subject_id: str) -> str:
+    explicit = str(explicit_sender_subject_id or "").strip()
+    if explicit:
+        return explicit
+    token = str(institution_id or "").strip()
+    if token.startswith("institution."):
+        token = token[len("institution.") :]
+    token = token.strip() or "unknown"
+    return "subject.institution.{}".format(token)
+
+
 def process_standards_issue_and_report(
     *,
     current_tick: int,
@@ -425,8 +436,10 @@ def process_standards_issue_and_report(
         channel_id=channel_id,
         from_node_id=str(policy_ext.get("report_from_node_id", "node.unknown")).strip() or "node.unknown",
         artifact_id=str(compliance_report.get("artifact_id", "")).strip(),
-        sender_subject_id=str(policy_ext.get("report_sender_subject_id", "subject.system.standards")).strip()
-        or "subject.system.standards",
+        sender_subject_id=_institution_sender_subject_id(
+            institution_id=institution_id,
+            explicit_sender_subject_id=str(policy_ext.get("report_sender_subject_id", "")).strip(),
+        ),
         recipient_address=recipient_address,
         signal_channel_rows=signal_channel_rows,
         signal_message_envelope_rows=next_envelopes,
