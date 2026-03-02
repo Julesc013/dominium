@@ -21,6 +21,7 @@ REFUSAL_INSPECT_TARGET_INVALID = "refusal.inspect.target_invalid"
 
 _VALID_TARGET_KINDS = {
     "structure",
+    "vehicle",
     "project",
     "plan",
     "node",
@@ -207,6 +208,33 @@ _SECTION_IDS_BY_FIDELITY_FORMALIZATION = {
         "section.reenactment_link",
     ],
 }
+_SECTION_IDS_BY_FIDELITY_VEHICLE = {
+    "macro": [
+        "section.capabilities_summary",
+        "section.vehicle.summary",
+        "section.vehicle.specs",
+        "section.vehicle.ports",
+        "section.vehicle.wear_risk",
+    ],
+    "meso": [
+        "section.capabilities_summary",
+        "section.vehicle.summary",
+        "section.vehicle.specs",
+        "section.vehicle.ports",
+        "section.vehicle.pose_slots",
+        "section.vehicle.wear_risk",
+        "section.events_summary",
+    ],
+    "micro": [
+        "section.capabilities_summary",
+        "section.vehicle.summary",
+        "section.vehicle.specs",
+        "section.vehicle.ports",
+        "section.vehicle.pose_slots",
+        "section.vehicle.wear_risk",
+        "section.events_summary",
+    ],
+}
 _DEFAULT_SECTION_ROWS = {
     "section.capabilities_summary": {"title": "Capabilities Summary", "extensions": {"cost_units": 1}},
     "section.material_stocks": {"title": "Material Stocks", "extensions": {"cost_units": 1}},
@@ -227,6 +255,11 @@ _DEFAULT_SECTION_ROWS = {
     "section.plan_resource_requirements": {"title": "Plan Resource Requirements", "extensions": {"cost_units": 2}},
     "section.formalization_summary": {"title": "Formalization Summary", "extensions": {"cost_units": 1}},
     "section.formalization_candidates": {"title": "Formalization Candidates", "extensions": {"cost_units": 2}},
+    "section.vehicle.summary": {"title": "Vehicle Summary", "extensions": {"cost_units": 1}},
+    "section.vehicle.specs": {"title": "Vehicle Specs", "extensions": {"cost_units": 1}},
+    "section.vehicle.ports": {"title": "Vehicle Ports", "extensions": {"cost_units": 1}},
+    "section.vehicle.pose_slots": {"title": "Vehicle Pose Slots", "extensions": {"cost_units": 2}},
+    "section.vehicle.wear_risk": {"title": "Vehicle Wear Risk", "extensions": {"cost_units": 1}},
     "section.interior.connectivity_summary": {"title": "Interior Connectivity Summary", "extensions": {"cost_units": 1}},
     "section.interior.portal_state_table": {"title": "Interior Portal State Table", "extensions": {"cost_units": 2}},
     "section.interior.pressure_summary": {"title": "Interior Pressure Summary", "extensions": {"cost_units": 2}},
@@ -287,6 +320,8 @@ def _quantize_map(values: object, *, step: int) -> dict:
 
 def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
+    if token.startswith("vehicle."):
+        return "vehicle"
     if token.startswith("formalization.") or token.startswith("candidate.") or token.startswith("formalization.event."):
         return "formalization"
     if token.startswith("plan."):
@@ -414,6 +449,8 @@ def _section_ids_for_fidelity(*, fidelity: str, target_kind: str) -> List[str]:
     if token not in _VALID_FIDELITY:
         token = "macro"
     kind = str(target_kind).strip()
+    if kind == "vehicle":
+        return list(_SECTION_IDS_BY_FIDELITY_VEHICLE[token])
     if kind == "plan":
         return list(_SECTION_IDS_BY_FIDELITY_PLAN[token])
     if kind == "graph":
@@ -539,6 +576,7 @@ def _events_for_target(state: Mapping[str, object], target_id: str, time_range: 
         "construction_provenance_events",
         "maintenance_provenance_events",
         "machine_provenance_events",
+        "vehicle_events",
         "formalization_events",
     ):
         for row in list((dict(state or {})).get(key) or []):
@@ -1581,6 +1619,153 @@ def _build_section_data(
             "visible_capability_ids": list(visible_capability_ids),
             "epistemic_redaction": str(summary.get("epistemic_redaction", "diegetic_filtered")).strip() or "diegetic_filtered",
         }
+    if section_id == "section.vehicle.summary":
+        if collection != "vehicles":
+            return {"available": False}
+        vehicle_row = dict(row)
+        vehicle_id = str(vehicle_row.get("vehicle_id", "")).strip()
+        motion_row = dict(_row_index((dict(state or {})).get("vehicle_motion_states"), "vehicle_id").get(vehicle_id) or {})
+        payload = {
+            "available": bool(vehicle_id),
+            "vehicle_id": vehicle_id or None,
+            "vehicle_class_id": str(vehicle_row.get("vehicle_class_id", "")).strip() or None,
+            "spatial_id": str(vehicle_row.get("spatial_id", "")).strip() or None,
+            "motion_tier": str(motion_row.get("tier", "")).strip() or None,
+            "has_interior_graph": bool(str(vehicle_row.get("interior_graph_id", "")).strip()),
+            "port_count": int(len(_sorted_unique_strings(vehicle_row.get("port_ids")))),
+            "pose_slot_count": int(len(_sorted_unique_strings(vehicle_row.get("pose_slot_ids")))),
+            "mount_point_count": int(len(_sorted_unique_strings(vehicle_row.get("mount_point_ids")))),
+        }
+        if not allow_hidden_state:
+            payload["epistemic_redaction"] = "coarse_summary"
+            return payload
+        payload["parent_structure_instance_id"] = (
+            str(vehicle_row.get("parent_structure_instance_id", "")).strip() or None
+        )
+        payload["maintenance_policy_id"] = str(vehicle_row.get("maintenance_policy_id", "")).strip() or None
+        payload["motion_state"] = dict(motion_row)
+        payload["hazard_ids"] = _sorted_unique_strings(vehicle_row.get("hazard_ids"))
+        payload["epistemic_redaction"] = "none"
+        return payload
+    if section_id == "section.vehicle.specs":
+        if collection != "vehicles":
+            return {"available": False}
+        vehicle_row = dict(row)
+        payload_ext = dict(target_payload.get("extensions") or {})
+        compliance_summary = dict(payload_ext.get("spec_compliance_summary") or {})
+        spec_ids = _sorted_unique_strings(vehicle_row.get("spec_ids"))
+        payload = {
+            "available": True,
+            "vehicle_id": str(vehicle_row.get("vehicle_id", "")).strip() or None,
+            "spec_ids": list(spec_ids),
+            "spec_count": int(len(spec_ids)),
+            "compliance_available": bool(compliance_summary),
+            "overall_grade": str(compliance_summary.get("overall_grade", "")).strip() or None,
+        }
+        if not allow_hidden_state:
+            payload["epistemic_redaction"] = "coarse_summary"
+            return payload
+        payload["spec_compliance_summary"] = dict(compliance_summary)
+        payload["epistemic_redaction"] = "none"
+        return payload
+    if section_id == "section.vehicle.ports":
+        if collection != "vehicles":
+            return {"available": False}
+        vehicle_row = dict(row)
+        declared_port_ids = _sorted_unique_strings(vehicle_row.get("port_ids"))
+        port_index = _row_index((dict(state or {})).get("machine_ports"), "port_id")
+        rows = []
+        for port_id in declared_port_ids:
+            port_row = dict(port_index.get(port_id) or {})
+            if not port_row:
+                rows.append(
+                    {
+                        "port_id": port_id,
+                        "available": False,
+                    }
+                )
+                continue
+            ext = dict(port_row.get("extensions") or {}) if isinstance(port_row.get("extensions"), dict) else {}
+            rows.append(
+                {
+                    "port_id": port_id,
+                    "available": True,
+                    "port_type_id": str(port_row.get("port_type_id", "")).strip() or None,
+                    "machine_id": str(port_row.get("machine_id", "")).strip() or None,
+                    "capacity_mass": int(max(0, _as_int(port_row.get("capacity_mass", 0), 0))),
+                    "stored_mass": int(max(0, _as_int(port_row.get("stored_mass", 0), 0))),
+                    "accepted_tags": _sorted_unique_strings(ext.get("accepted_tags")),
+                }
+            )
+        return {
+            "available": True,
+            "vehicle_id": str(vehicle_row.get("vehicle_id", "")).strip() or None,
+            "port_count": int(len(rows)),
+            "rows": sorted(rows, key=lambda item: str(item.get("port_id", "")))[:256],
+        }
+    if section_id == "section.vehicle.pose_slots":
+        if collection != "vehicles":
+            return {"available": False}
+        vehicle_row = dict(row)
+        declared_pose_slot_ids = _sorted_unique_strings(vehicle_row.get("pose_slot_ids"))
+        slot_index = _row_index((dict(state or {})).get("pose_slots"), "pose_slot_id")
+        rows = []
+        for pose_slot_id in declared_pose_slot_ids:
+            slot_row = dict(slot_index.get(pose_slot_id) or {})
+            if not slot_row:
+                rows.append({"pose_slot_id": pose_slot_id, "available": False})
+                continue
+            ext = dict(slot_row.get("extensions") or {}) if isinstance(slot_row.get("extensions"), dict) else {}
+            current_occupant_id = str(slot_row.get("current_occupant_id", "")).strip() or None
+            row_payload = {
+                "pose_slot_id": pose_slot_id,
+                "available": True,
+                "parent_assembly_id": str(slot_row.get("parent_assembly_id", "")).strip() or None,
+                "control_binding_id": str(slot_row.get("control_binding_id", "")).strip() or None,
+                "allowed_postures": _sorted_unique_strings(slot_row.get("allowed_postures")),
+                "driver_station": bool(ext.get("driver_station", False)),
+                "occupied": bool(current_occupant_id),
+                "current_occupant_id": current_occupant_id if allow_hidden_state else None,
+            }
+            rows.append(row_payload)
+        return {
+            "available": True,
+            "vehicle_id": str(vehicle_row.get("vehicle_id", "")).strip() or None,
+            "pose_slot_count": int(len(rows)),
+            "rows": sorted(rows, key=lambda item: str(item.get("pose_slot_id", "")))[:256],
+        }
+    if section_id == "section.vehicle.wear_risk":
+        if collection != "vehicles":
+            return {"available": False}
+        payload_ext = dict(target_payload.get("extensions") or {})
+        explicit = dict(payload_ext.get("failure_risk_summary") or {})
+        stress_summary = dict(payload_ext.get("mechanics_stress_summary") or {})
+        risk_rows = [dict(item) for item in list(explicit.get("risk_rows") or []) if isinstance(item, dict)]
+        if not risk_rows and stress_summary:
+            risk_rows = [
+                {
+                    "target_id": str(stress_summary.get("target_id", "")).strip() or str(row.get("vehicle_id", "")).strip(),
+                    "max_stress_ratio_permille": int(max(0, _as_int(stress_summary.get("max_stress_ratio_permille", 0), 0))),
+                    "near_fracture_edge_count": int(max(0, _as_int(stress_summary.get("near_fracture_edge_count", 0), 0))),
+                    "failed_edge_count": int(max(0, _as_int(stress_summary.get("failed_edge_count", 0), 0))),
+                    "derailment_risk_permille": int(max(0, _as_int(stress_summary.get("derailment_risk_permille", 0), 0))),
+                    "high_risk": bool(
+                        int(max(0, _as_int(stress_summary.get("max_stress_ratio_permille", 0), 0))) > 1000
+                        or int(max(0, _as_int(stress_summary.get("derailment_risk_permille", 0), 0))) >= 900
+                    ),
+                }
+            ]
+        payload = {
+            "available": bool(risk_rows),
+            "vehicle_id": str(row.get("vehicle_id", "")).strip() or None,
+            "risk_rows": [dict(item) for item in list(risk_rows)[:16] if isinstance(item, dict)],
+        }
+        if not allow_hidden_state:
+            payload["epistemic_redaction"] = "coarse_summary"
+            return payload
+        payload["mechanics_stress_summary"] = dict(stress_summary)
+        payload["epistemic_redaction"] = "none"
+        return payload
     if section_id == "section.plan_summary":
         target_collection = str(target_payload.get("collection", "")).strip()
         if target_collection != "plan_artifacts":
