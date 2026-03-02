@@ -323,6 +323,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FORMALIZATION-THROUGH-CONTROL",
     "INV-NO-ADHOC-LOAD-CHECK",
     "INV-STRUCTURAL-FAILURE-THROUGH-MECH",
+    "INV-NO-ADHOC-WEATHER-FLAGS",
+    "INV-FIELD-QUERIES-ONLY",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -11473,6 +11475,127 @@ def _append_mechanics_invariant_findings(
                 break
 
 
+def _append_field_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    field_engine_rel = "src/fields/field_engine.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    field_text = _file_text(repo_root, field_engine_rel)
+    if (not runtime_text) or (not field_text):
+        missing = runtime_rel if not runtime_text else field_engine_rel
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=missing,
+                line_number=1,
+                snippet="",
+                message="FIELD integration requires canonical runtime and field engine modules",
+                rule_id="INV-FIELD-QUERIES-ONLY",
+            )
+        )
+        return
+
+    required_runtime_tokens = (
+        'elif process_id == "process.field_tick":',
+        "field_modifier_snapshot(",
+        "get_field_value(",
+    )
+    for token in required_runtime_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="field behavior must be sourced via deterministic FieldLayer query/runtime hooks",
+                rule_id="INV-FIELD-QUERIES-ONLY",
+            )
+        )
+
+    required_engine_tokens = (
+        "def get_field_value(",
+        "def update_field_layers(",
+        "field_id",
+    )
+    for token in required_engine_tokens:
+        if token in field_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=field_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="field engine must expose deterministic query/update entrypoints",
+                rule_id="INV-FIELD-QUERIES-ONLY",
+            )
+        )
+
+    weather_flag_pattern = re.compile(
+        r"\b(?:is_|has_)?(?:rain|raining|weather|fog|snow|ice|storm)_(?:mode|flag|state)\b",
+        re.IGNORECASE,
+    )
+    inline_weather_logic_pattern = re.compile(
+        r"\bif\b[^\n]*(?:rain|raining|weather|fog|snow|ice|storm)[^\n]*(?:traction|friction|visibility|wind|speed)\b",
+        re.IGNORECASE,
+    )
+    inline_multiplier_pattern = re.compile(
+        r"\b(?:traction|friction|visibility|wind)\b\s*[*+\-\/]=\s*(?:0?\.\d+|\d+\s*/\s*\d+|\d+)",
+        re.IGNORECASE,
+    )
+    allowed_prefixes = (
+        "src/fields/",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+        "docs/",
+        "data/",
+        "schema/",
+        "schemas/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if rel_norm.startswith(allowed_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if weather_flag_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="ad-hoc weather mode/flag tokens are forbidden; use FieldLayer query/effect paths",
+                        rule_id="INV-NO-ADHOC-WEATHER-FLAGS",
+                    )
+                )
+                break
+            if inline_weather_logic_pattern.search(snippet) or inline_multiplier_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="weather/traction/visibility logic must route through FieldLayer queries only",
+                        rule_id="INV-FIELD-QUERIES-ONLY",
+                    )
+                )
+                break
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -11654,6 +11777,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_mechanics_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_field_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

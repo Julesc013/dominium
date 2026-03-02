@@ -164,6 +164,9 @@ from analyzers import e135_hidden_auto_formalize_smell
 from analyzers import e136_inference_truth_mutation_smell
 from analyzers import e137_structural_bypass_smell
 from analyzers import e138_inline_strength_check_smell
+from analyzers import e139_inline_friction_smell
+from analyzers import e140_inline_temperature_smell
+from analyzers import e141_weather_hack_smell
 
 
 ANALYZERS = (
@@ -331,6 +334,9 @@ ANALYZERS = (
     e136_inference_truth_mutation_smell,
     e137_structural_bypass_smell,
     e138_inline_strength_check_smell,
+    e139_inline_friction_smell,
+    e140_inline_temperature_smell,
+    e141_weather_hack_smell,
 )
 
 
