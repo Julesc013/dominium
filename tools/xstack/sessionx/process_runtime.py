@@ -398,6 +398,27 @@ from src.fields import (
     normalize_field_layer_rows,
     update_field_layers,
 )
+from src.signals import (
+    SignalTransportError,
+    build_jamming_effect,
+    build_knowledge_receipt,
+    build_signal_channel,
+    build_signal_message_envelope,
+    deterministic_jamming_effect_id,
+    deterministic_knowledge_receipt_id,
+    deterministic_signal_message_envelope_id,
+    enqueue_signal_envelope,
+    normalize_jamming_effect_rows,
+    loss_policy_rows_by_id,
+    normalize_knowledge_receipt_rows,
+    normalize_message_delivery_event_rows,
+    normalize_signal_channel_rows,
+    normalize_signal_message_envelope_rows,
+    normalize_transport_queue_rows,
+    process_signal_jam_start,
+    process_signal_jam_stop,
+    tick_signal_transport,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -508,6 +529,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.switch_unlock": "entitlement.control.admin",
     "process.signal_set_aspect": "entitlement.control.admin",
     "process.signal_tick": "session.boot",
+    "process.signal_jam_start": "entitlement.control.admin",
+    "process.signal_jam_stop": "entitlement.control.admin",
     "process.route_reserve_blocks": "entitlement.control.admin",
     "process.signal_hazard_set": "entitlement.control.admin",
     "process.signal_maintenance_tick": "session.boot",
@@ -657,6 +680,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.switch_unlock": "operator",
     "process.signal_set_aspect": "operator",
     "process.signal_tick": "observer",
+    "process.signal_jam_start": "operator",
+    "process.signal_jam_stop": "operator",
     "process.route_reserve_blocks": "operator",
     "process.signal_hazard_set": "operator",
     "process.signal_maintenance_tick": "observer",
@@ -753,6 +778,8 @@ CONTROL_PROCESS_IDS = {
     "process.switch_unlock",
     "process.signal_set_aspect",
     "process.signal_tick",
+    "process.signal_jam_start",
+    "process.signal_jam_stop",
     "process.route_reserve_blocks",
     "process.signal_hazard_set",
     "process.signal_maintenance_tick",
@@ -14501,6 +14528,9 @@ def execute_intent(
     mobility_signal_hazards = _ensure_mobility_signal_hazard_rows(state)
     mobility_signal_maintenance_schedules = _ensure_mobility_signal_maintenance_schedule_rows(state)
     mobility_signal_maintenance_events = _ensure_mobility_signal_maintenance_event_rows(state)
+    signal_jamming_effect_rows = normalize_jamming_effect_rows(
+        state.get("signal_jamming_effect_rows") or state.get("signal_jamming_effects") or []
+    )
     micro_motion_states = _ensure_micro_motion_state_rows(state)
     free_motion_states = _ensure_free_motion_state_rows(state)
     coupling_constraints = _ensure_coupling_constraint_rows(state)
@@ -21718,6 +21748,87 @@ def execute_intent(
                 "applied_ops": apply_rows,
             }
             _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.signal_jam_start":
+        channel_id = str(inputs.get("channel_id", "")).strip()
+        if not channel_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.signal_jam_start requires channel_id",
+                "Provide channel_id plus strength_modifier and duration_ticks.",
+                {"process_id": process_id},
+                "$.intent.inputs.channel_id",
+            )
+        try:
+            current_decision_log_rows = [
+                dict(item)
+                for item in list(state.get("control_decision_log") or [])
+                if isinstance(item, Mapping)
+            ]
+            jammed = process_signal_jam_start(
+                current_tick=int(current_tick),
+                channel_id=channel_id,
+                strength_modifier=_as_int(inputs.get("strength_modifier", 0), 0),
+                duration_ticks=max(0, _as_int(inputs.get("duration_ticks", 0), 0)),
+                signal_channel_rows=state.get("signal_channel_rows") or state.get("signal_channels") or [],
+                jamming_effect_rows=signal_jamming_effect_rows,
+                decision_log_rows=current_decision_log_rows,
+            )
+        except SignalTransportError as exc:
+            return refusal(
+                str(getattr(exc, "reason_code", "PROCESS_INPUT_INVALID")),
+                str(exc),
+                "Provide a valid signal channel and deterministic jamming parameters.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.intent.inputs",
+            )
+        signal_jamming_effect_rows = normalize_jamming_effect_rows(jammed.get("jamming_effect_rows"))
+        state["signal_jamming_effect_rows"] = list(signal_jamming_effect_rows)
+        state["signal_jamming_effects"] = list(signal_jamming_effect_rows)
+        state["control_decision_log"] = [
+            dict(item)
+            for item in list(jammed.get("decision_log_rows") or [])
+            if isinstance(item, Mapping)
+        ]
+        result_metadata = {
+            "channel_id": channel_id,
+            "effect_id": str((dict(jammed.get("effect_row") or {})).get("effect_id", "")).strip() or None,
+            "strength_modifier": _as_int(inputs.get("strength_modifier", 0), 0),
+            "duration_ticks": max(0, _as_int(inputs.get("duration_ticks", 0), 0)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.signal_jam_stop":
+        channel_id = str(inputs.get("channel_id", "")).strip()
+        if not channel_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.signal_jam_stop requires channel_id",
+                "Provide channel_id for the channel to unjam.",
+                {"process_id": process_id},
+                "$.intent.inputs.channel_id",
+            )
+        jammed = process_signal_jam_stop(
+            current_tick=int(current_tick),
+            channel_id=channel_id,
+            jamming_effect_rows=signal_jamming_effect_rows,
+            decision_log_rows=[
+                dict(item)
+                for item in list(state.get("control_decision_log") or [])
+                if isinstance(item, Mapping)
+            ],
+        )
+        signal_jamming_effect_rows = normalize_jamming_effect_rows(jammed.get("jamming_effect_rows"))
+        state["signal_jamming_effect_rows"] = list(signal_jamming_effect_rows)
+        state["signal_jamming_effects"] = list(signal_jamming_effect_rows)
+        state["control_decision_log"] = [
+            dict(item)
+            for item in list(jammed.get("decision_log_rows") or [])
+            if isinstance(item, Mapping)
+        ]
+        result_metadata = {
+            "channel_id": channel_id,
+            "stopped_effect_ids": _sorted_tokens(jammed.get("stopped_effect_ids")),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.signal_set_aspect":
         signal_id = str(inputs.get("signal_id", "")).strip()
         machine_id = str(inputs.get("state_machine_id", "")).strip()
