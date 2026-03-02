@@ -328,6 +328,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-VEHICLE-SPECIALCASE",
     "INV-VEHICLES-AS-ASSEMBLIES",
     "INV-SPEC-COMPATIBILITY-REQUIRED",
+    "INV-TRAVEL-THROUGH-COMMITMENTS",
+    "INV-NO-SILENT-POSITION-UPDATES",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -11818,6 +11820,23 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-NO-ADHOC-ROUTING",
             )
         )
+    if (
+        'elif process_id == "process.itinerary_create":' not in runtime_text
+        or 'elif process_id == "process.travel_start":' not in runtime_text
+        or 'elif process_id == "process.travel_tick":' not in runtime_text
+        or "build_travel_commitment(" not in runtime_text
+        or "build_travel_event(" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.travel_start/process.travel_tick",
+                message="macro travel must route through itinerary + travel commitments/events process paths",
+                rule_id="INV-TRAVEL-THROUGH-COMMITMENTS",
+            )
+        )
     if not any(token in runtime_text for token in guide_geometry_tokens):
         findings.append(
             _finding(
@@ -11829,6 +11848,42 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-MOB-USES-GUIDEGEOMETRY",
             )
         )
+    silent_position_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']vehicle_motion_states[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']itineraries[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']travel_commitments[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']travel_events[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    silent_position_allowed = {
+        process_runtime_rel,
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in silent_position_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in silent_position_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="silent vehicle position/progress mutation outside process runtime is forbidden",
+                    rule_id="INV-NO-SILENT-POSITION-UPDATES",
+                )
+            )
+            break
     adhoc_routing_patterns = (
         re.compile(r"\b(?:dijkstra|a[_-]?star|bellman[_-]?ford|floyd[_-]?warshall)\b", re.IGNORECASE),
         re.compile(r"\broute\b[^\n]*(?:for\s+\w+\s+in\s+\w+)", re.IGNORECASE),
