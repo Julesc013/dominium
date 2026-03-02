@@ -370,6 +370,16 @@ from src.mobility.signals.signal_engine import (
     signal_type_rows_by_id,
     switch_lock_rows_by_machine_id,
 )
+from src.mobility.maintenance import (
+    apply_wear_updates,
+    normalize_wear_state_rows,
+    service_wear_rows,
+    track_wear_modifier_permille,
+    wear_accumulation_policy_rows_by_id,
+    wear_rows_by_target_and_type,
+    wear_summary_for_target,
+    wear_type_rows_by_id,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -509,6 +519,13 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.travel_tick": "session.boot",
     "process.mobility_micro_tick": "session.boot",
     "process.mobility_free_tick": "session.boot",
+    "process.mobility_wear_tick": "session.boot",
+    "process.mob_failure": "session.boot",
+    "process.mob_track_failure": "session.boot",
+    "process.inspect_track": "entitlement.control.admin",
+    "process.service_track": "entitlement.control.admin",
+    "process.inspect_vehicle": "entitlement.control.admin",
+    "process.service_vehicle": "entitlement.control.admin",
     "process.mob_derail": "entitlement.control.admin",
     "process.coupler_attach": "entitlement.tool.operating",
     "process.vehicle_register_from_structure": "entitlement.control.admin",
@@ -651,6 +668,13 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.travel_tick": "observer",
     "process.mobility_micro_tick": "observer",
     "process.mobility_free_tick": "observer",
+    "process.mobility_wear_tick": "observer",
+    "process.mob_failure": "observer",
+    "process.mob_track_failure": "observer",
+    "process.inspect_track": "operator",
+    "process.service_track": "operator",
+    "process.inspect_vehicle": "operator",
+    "process.service_vehicle": "operator",
     "process.mob_derail": "operator",
     "process.coupler_attach": "operator",
     "process.vehicle_register_from_structure": "operator",
@@ -740,6 +764,13 @@ CONTROL_PROCESS_IDS = {
     "process.travel_tick",
     "process.mobility_micro_tick",
     "process.mobility_free_tick",
+    "process.mobility_wear_tick",
+    "process.mob_failure",
+    "process.mob_track_failure",
+    "process.inspect_track",
+    "process.service_track",
+    "process.inspect_vehicle",
+    "process.service_vehicle",
     "process.mob_derail",
     "process.coupler_attach",
     "process.vehicle_register_from_structure",
@@ -784,6 +815,11 @@ MAINTENANCE_PROCESS_IDS = {
     "process.maintenance_schedule",
     "process.inspection_perform",
     "process.maintenance_perform",
+    "process.mobility_wear_tick",
+    "process.inspect_track",
+    "process.service_track",
+    "process.inspect_vehicle",
+    "process.service_vehicle",
 }
 INTERIOR_PROCESS_IDS = {
     "process.compartment_flow_tick",
@@ -1775,6 +1811,113 @@ def _ensure_mobility_reservation_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows if isinstance(row, dict)]
 
 
+def _ensure_mobility_wear_state_rows(state: dict) -> List[dict]:
+    rows = normalize_wear_state_rows(state.get("mobility_wear_states"))
+    state["mobility_wear_states"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_mobility_wear_pending_update_rows(state: dict) -> List[dict]:
+    rows = state.get("mobility_wear_pending_updates")
+    if not isinstance(rows, list):
+        rows = []
+    out: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            str(item.get("target_id", "")),
+            str(item.get("wear_type_id", "")),
+            str(canonical_sha256(dict(item))),
+        ),
+    ):
+        target_id = str(row.get("target_id", "")).strip()
+        wear_type_id = str(row.get("wear_type_id", "")).strip()
+        if (not target_id) or (not wear_type_id):
+            continue
+        payload = {
+            "target_id": target_id,
+            "wear_type_id": wear_type_id,
+            "increment": None if row.get("increment") is None else int(max(0, _as_int(row.get("increment", 0), 0))),
+            "cycles": int(max(0, _as_int(row.get("cycles", 0), 0))),
+            "dt_ticks": int(max(1, _as_int(row.get("dt_ticks", 1), 1))),
+            "environment_scale_permille": int(
+                max(100, min(3000, _as_int(row.get("environment_scale_permille", 1000), 1000)))
+            ),
+            "load_scale_permille": int(max(100, min(3000, _as_int(row.get("load_scale_permille", 1000), 1000)))),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        out.append(payload)
+    state["mobility_wear_pending_updates"] = [dict(row) for row in out]
+    return [dict(row) for row in out]
+
+
+def _ensure_mobility_maintenance_schedule_rows(state: dict) -> List[dict]:
+    rows = state.get("mobility_maintenance_schedules")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("schedule_id", ""))):
+        try:
+            normalized = normalize_schedule(row)
+        except ScheduleError:
+            continue
+        schedule_id = str(normalized.get("schedule_id", "")).strip()
+        if not schedule_id:
+            continue
+        out[schedule_id] = dict(normalized)
+    normalized_rows = [dict(out[key]) for key in sorted(out.keys())]
+    state["mobility_maintenance_schedules"] = normalized_rows
+    return [dict(row) for row in normalized_rows]
+
+
+def _ensure_mobility_maintenance_due_event_rows(state: dict) -> List[dict]:
+    rows = state.get("mobility_maintenance_due_events")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        schedule_id = str(row.get("schedule_id", "")).strip()
+        target_id = str(row.get("target_id", "")).strip()
+        if (not event_id) or (not schedule_id) or (not target_id):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "schedule_id": schedule_id,
+            "target_id": target_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "kind": str(row.get("kind", "inspection_due")).strip() or "inspection_due",
+            "trigger_process_id": str(row.get("trigger_process_id", "")).strip() or None,
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[event_id] = payload
+    normalized_rows = [dict(out[key]) for key in sorted(out.keys(), key=lambda key: (_as_int(out[key].get("tick", 0), 0), key))]
+    state["mobility_maintenance_due_events"] = normalized_rows
+    return [dict(row) for row in normalized_rows]
+
+
+def _ensure_mobility_wear_runtime_state(state: dict) -> dict:
+    row = dict(state.get("mobility_wear_runtime_state") or {}) if isinstance(state.get("mobility_wear_runtime_state"), Mapping) else {}
+    payload = {
+        "schema_version": "1.0.0",
+        "last_tick": int(max(0, _as_int(row.get("last_tick", 0), 0))),
+        "last_budget_outcome": str(row.get("last_budget_outcome", "complete")).strip() or "complete",
+        "last_processed_update_count": int(max(0, _as_int(row.get("last_processed_update_count", 0), 0))),
+        "last_deferred_update_count": int(max(0, _as_int(row.get("last_deferred_update_count", 0), 0))),
+        "last_threshold_crossing_count": int(max(0, _as_int(row.get("last_threshold_crossing_count", 0), 0))),
+        "next_event_sequence": int(max(0, _as_int(row.get("next_event_sequence", 0), 0))),
+        "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+    }
+    state["mobility_wear_runtime_state"] = payload
+    return dict(payload)
+
+
 def _ensure_mobility_signal_rows(state: dict) -> List[dict]:
     rows = normalize_signal_rows(state.get("mobility_signals"))
     state["mobility_signals"] = [dict(row) for row in rows if isinstance(row, dict)]
@@ -2067,6 +2210,37 @@ def _persist_mobility_signal_state(
     _ensure_mobility_signal_maintenance_event_rows(state)
 
 
+def _persist_mobility_wear_state(
+    state: dict,
+    *,
+    mobility_wear_states: List[dict],
+    mobility_wear_pending_updates: List[dict] | None = None,
+    mobility_maintenance_schedules: List[dict] | None = None,
+    mobility_maintenance_due_events: List[dict] | None = None,
+    mobility_wear_runtime_state: Mapping[str, object] | None = None,
+) -> None:
+    state["mobility_wear_states"] = [dict(row) for row in list(mobility_wear_states or []) if isinstance(row, Mapping)]
+    if mobility_wear_pending_updates is not None:
+        state["mobility_wear_pending_updates"] = [
+            dict(row) for row in list(mobility_wear_pending_updates or []) if isinstance(row, Mapping)
+        ]
+    if mobility_maintenance_schedules is not None:
+        state["mobility_maintenance_schedules"] = [
+            dict(row) for row in list(mobility_maintenance_schedules or []) if isinstance(row, Mapping)
+        ]
+    if mobility_maintenance_due_events is not None:
+        state["mobility_maintenance_due_events"] = [
+            dict(row) for row in list(mobility_maintenance_due_events or []) if isinstance(row, Mapping)
+        ]
+    if mobility_wear_runtime_state is not None:
+        state["mobility_wear_runtime_state"] = dict(mobility_wear_runtime_state or {})
+    _ensure_mobility_wear_state_rows(state)
+    _ensure_mobility_wear_pending_update_rows(state)
+    _ensure_mobility_maintenance_schedule_rows(state)
+    _ensure_mobility_maintenance_due_event_rows(state)
+    _ensure_mobility_wear_runtime_state(state)
+
+
 def _load_mobility_network_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
     node_kind_registry = dict(_policy_payload(policy_context, "mobility_node_kind_registry") or {})
     if not node_kind_registry:
@@ -2131,6 +2305,126 @@ def _load_vehicle_class_registry(*, policy_context: dict | None) -> dict:
         default_payload={"record": {"vehicle_classes": []}},
     )
     return dict(fallback_registry)
+
+
+def _load_mobility_wear_registries(*, policy_context: dict | None) -> Tuple[dict, dict]:
+    wear_type_registry = dict(_policy_payload(policy_context, "wear_type_registry") or {})
+    if not wear_type_registry:
+        wear_type_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/wear_type_registry.json",
+            default_payload={"record": {"wear_types": []}},
+        )
+    accumulation_policy_registry = dict(_policy_payload(policy_context, "wear_accumulation_policy_registry") or {})
+    if not accumulation_policy_registry:
+        accumulation_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/wear_accumulation_policy_registry.json",
+            default_payload={"record": {"accumulation_policies": []}},
+        )
+    return dict(wear_type_registry), dict(accumulation_policy_registry)
+
+
+def _load_maintenance_policy_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "maintenance_policy_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/maintenance_policy_registry.json",
+        default_payload={"record": {"policies": []}},
+    )
+
+
+def _maintenance_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("policies")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("policies")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("maintenance_policy_id", ""))):
+        policy_id = str(row.get("maintenance_policy_id", "")).strip()
+        if not policy_id:
+            continue
+        ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+        out[policy_id] = {
+            "maintenance_policy_id": policy_id,
+            "description": str(row.get("description", "")).strip(),
+            "inspection_interval_ticks": int(max(0, _as_int(row.get("inspection_interval_ticks", 0), 0))),
+            "maintenance_interval_ticks": int(max(0, _as_int(row.get("maintenance_interval_ticks", 0), 0))),
+            "target_kind": str(ext.get("target_kind", "")).strip() or None,
+            "service_action_id": str(ext.get("service_action_id", "")).strip() or None,
+            "extensions": ext,
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _wear_environment_scale_permille(field_row: Mapping[str, object] | None) -> int:
+    row = dict(field_row or {})
+    moisture = int(max(0, _as_int(row.get("moisture", 0), 0)))
+    temperature = int(_as_int(row.get("temperature", 20), 20))
+    scale = 1000 + int(moisture // 4)
+    if temperature <= 0:
+        scale += 100
+    elif temperature >= 70:
+        scale += 150
+    return int(max(100, min(3000, scale)))
+
+
+def _wear_load_scale_permille_for_target(*, state: dict, target_id: str) -> int:
+    summary = summarize_stress_for_target(
+        target_id=str(target_id or "").strip(),
+        structural_graph_rows=state.get("structural_graphs"),
+        structural_edge_rows=state.get("structural_edges"),
+    )
+    stress_permille = int(max(0, _as_int(summary.get("max_stress_ratio_permille", 0), 0)))
+    if stress_permille <= 0:
+        return 1000
+    if stress_permille >= 1000:
+        return int(max(100, min(3000, 1000 + ((stress_permille - 1000) // 2))))
+    return int(max(100, min(3000, 1000 - ((1000 - stress_permille) // 4))))
+
+
+def _mobility_maintenance_schedule_id(*, target_id: str, policy_id: str, schedule_kind: str) -> str:
+    digest = canonical_sha256(
+        {
+            "scope": "mobility_maintenance_schedule",
+            "target_id": str(target_id or "").strip(),
+            "policy_id": str(policy_id or "").strip(),
+            "schedule_kind": str(schedule_kind or "").strip(),
+        }
+    )
+    return "schedule.mob.maint.{}".format(digest[:16])
+
+
+def _mobility_due_event_id(*, schedule_id: str, target_id: str, tick: int, kind: str) -> str:
+    digest = canonical_sha256(
+        {
+            "scope": "mobility_maintenance_due_event",
+            "schedule_id": str(schedule_id or "").strip(),
+            "target_id": str(target_id or "").strip(),
+            "tick": int(max(0, _as_int(tick, 0))),
+            "kind": str(kind or "").strip(),
+        }
+    )
+    return "event.mob.maint.{}".format(digest[:16])
+
+
+def _failure_reason_for_wear_type(wear_type_id: str) -> str:
+    token = str(wear_type_id or "").strip()
+    if token == "wear.track":
+        return "incident.derailment.track_wear"
+    if token == "wear.signal":
+        return "incident.visibility_low"
+    if token == "wear.switch":
+        return "incident.derailment.track_wear"
+    if token == "wear.brake":
+        return "incident.breakdown.engine"
+    if token == "wear.wheel":
+        return "incident.derailment.track_wear"
+    return "incident.breakdown.engine"
 
 
 def _vehicle_event_row(
@@ -10857,6 +11151,62 @@ def _augment_inspection_target_payload_for_mechanics(
     return payload
 
 
+def _augment_inspection_target_payload_for_mobility_wear(
+    *,
+    state: dict,
+    policy_context: dict | None,
+    target_payload: dict,
+) -> dict:
+    payload = dict(target_payload or {})
+    if not bool(payload.get("exists", False)):
+        return payload
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    target_id = str(payload.get("target_id", "")).strip()
+    target_ids: List[str] = []
+    if collection == "vehicles":
+        target_ids = _sorted_tokens([str(row.get("vehicle_id", "")).strip(), target_id])
+    elif collection == "guide_geometries":
+        geometry_id = str(row.get("geometry_id", "")).strip()
+        edge_by_geometry = _edge_id_by_geometry_id(state)
+        target_ids = _sorted_tokens([geometry_id, str(edge_by_geometry.get(geometry_id, "")).strip(), target_id])
+    elif collection in {"edge_occupancies", "network_edges"}:
+        target_ids = _sorted_tokens([str(row.get("edge_id", "")).strip(), target_id])
+    elif collection == "mobility_signals":
+        target_ids = _sorted_tokens([str(row.get("signal_id", "")).strip(), target_id])
+    elif collection == "mobility_switch_state_machines":
+        target_ids = _sorted_tokens([str(row.get("machine_id", "")).strip(), target_id])
+    elif collection == "mobility_junctions":
+        target_ids = _sorted_tokens([str(row.get("junction_id", "")).strip(), target_id])
+    else:
+        target_ids = _sorted_tokens([target_id])
+    if not target_ids:
+        return payload
+    wear_type_registry = dict(_policy_payload(policy_context, "wear_type_registry") or {})
+    if not wear_type_registry:
+        wear_type_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/wear_type_registry.json",
+            default_payload={"record": {"wear_types": []}},
+        )
+    wear_type_rows = wear_type_rows_by_id(wear_type_registry)
+    summary = wear_summary_for_target(
+        wear_rows=state.get("mobility_wear_states"),
+        target_ids=target_ids,
+        wear_type_rows=wear_type_rows,
+    )
+    summary_rows = [dict(item) for item in list(summary.get("rows") or []) if isinstance(item, Mapping)]
+    if not summary_rows:
+        return payload
+    extensions = dict(payload.get("extensions") or {})
+    extensions["mobility_wear_summary"] = {
+        "rows": [dict(item) for item in summary_rows[:24]],
+        "critical_count": int(max(0, _as_int(summary.get("critical_count", 0), 0))),
+    }
+    payload["extensions"] = extensions
+    return payload
+
+
 def _inspection_target_payload(state: dict, target_id: str) -> dict:
     token = str(target_id).strip()
     if not token:
@@ -11387,6 +11737,11 @@ def _execute_inspection_snapshot_process(
     )
     target_payload = _augment_inspection_target_payload_for_mechanics(
         state=state,
+        target_payload=target_payload,
+    )
+    target_payload = _augment_inspection_target_payload_for_mobility_wear(
+        state=state,
+        policy_context=policy_context,
         target_payload=target_payload,
     )
     target_kind = str(inputs.get("target_kind", "")).strip()
@@ -13818,6 +14173,11 @@ def execute_intent(
     travel_events = _ensure_travel_event_rows(state)
     edge_occupancies = _ensure_edge_occupancy_rows(state)
     mobility_reservations = _ensure_mobility_reservation_rows(state)
+    mobility_wear_states = _ensure_mobility_wear_state_rows(state)
+    mobility_wear_pending_updates = _ensure_mobility_wear_pending_update_rows(state)
+    mobility_maintenance_schedules = _ensure_mobility_maintenance_schedule_rows(state)
+    mobility_maintenance_due_events = _ensure_mobility_maintenance_due_event_rows(state)
+    mobility_wear_runtime_state = _ensure_mobility_wear_runtime_state(state)
     mobility_signals = _ensure_mobility_signal_rows(state)
     mobility_signal_state_machines = _ensure_mobility_signal_state_machine_rows(state)
     mobility_block_reservations = _ensure_mobility_block_reservation_rows(state)
@@ -21339,6 +21699,186 @@ def execute_intent(
                 "extensions": {"occupied": occupied, "reserved": reserved},
             }
         mobility_switch_locks = normalize_switch_lock_rows([dict(lock_rows_by_machine[key]) for key in sorted(lock_rows_by_machine.keys())])
+        wear_type_registry, wear_accumulation_policy_registry = _load_mobility_wear_registries(
+            policy_context=policy_context
+        )
+        wear_type_rows = wear_type_rows_by_id(wear_type_registry)
+        wear_policy_rows = wear_accumulation_policy_rows_by_id(wear_accumulation_policy_registry)
+        processed_signal_ids = _sorted_tokens(eval_result.get("processed_signal_ids"))
+        signal_wear_updates: List[dict] = []
+        if processed_signal_ids:
+            field_type_registry = _field_registry_payload(
+                policy_context=policy_context,
+                key="field_type_registry",
+                registry_rel_path="data/registries/field_type_registry.json",
+                entry_key="field_types",
+            )
+            field_snapshot = field_modifier_snapshot(
+                field_layer_rows=field_layers,
+                field_cell_rows=field_cells,
+                field_type_registry=field_type_registry,
+                sample_rows=[
+                    {"target_id": signal_id, "spatial_position": _target_spatial_position(state, signal_id)}
+                    for signal_id in list(processed_signal_ids)
+                ],
+            )
+            field_rows_by_signal = dict(
+                (
+                    str(row.get("target_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(dict(field_snapshot).get("rows") or [])
+                if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+            )
+            for signal_id in list(processed_signal_ids):
+                signal_row = dict(signal_rows_by_id.get(signal_id) or {})
+                field_row = dict(field_rows_by_signal.get(signal_id) or {})
+                environment_scale_permille = int(_wear_environment_scale_permille(field_row))
+                load_scale_permille = int(_wear_load_scale_permille_for_target(state=state, target_id=signal_id))
+                signal_wear_updates.append(
+                    {
+                        "target_id": signal_id,
+                        "wear_type_id": "wear.signal",
+                        "increment": None,
+                        "cycles": 0,
+                        "dt_ticks": 1,
+                        "environment_scale_permille": int(environment_scale_permille),
+                        "load_scale_permille": int(load_scale_permille),
+                        "extensions": {
+                            "source_process_id": process_id,
+                            "signal_id": signal_id,
+                            "source": "signal_tick",
+                        },
+                    }
+                )
+                machine_id = str(signal_row.get("state_machine_id", "")).strip()
+                if machine_id:
+                    signal_wear_updates.append(
+                        {
+                            "target_id": machine_id,
+                            "wear_type_id": "wear.switch",
+                            "increment": 1,
+                            "cycles": 1,
+                            "dt_ticks": 1,
+                            "environment_scale_permille": int(environment_scale_permille),
+                            "load_scale_permille": int(load_scale_permille),
+                            "extensions": {
+                                "source_process_id": process_id,
+                                "signal_id": signal_id,
+                                "state_machine_id": machine_id,
+                                "source": "signal_tick.switch",
+                            },
+                        }
+                    )
+        if signal_wear_updates:
+            max_wear_updates_per_tick = int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_wear_updates_per_tick",
+                            (dict(policy_context or {})).get("mobility_wear_max_updates_per_tick", 256),
+                        ),
+                        256,
+                    ),
+                )
+            )
+            applied_wear = apply_wear_updates(
+                wear_rows=mobility_wear_states,
+                update_rows=signal_wear_updates,
+                wear_type_rows=wear_type_rows,
+                accumulation_policy_rows=wear_policy_rows,
+                current_tick=int(current_tick),
+                max_updates=int(max_wear_updates_per_tick),
+            )
+            mobility_wear_states = normalize_wear_state_rows(list(applied_wear.get("wear_rows") or []))
+            sorted_updates = sorted(
+                (dict(row) for row in list(signal_wear_updates or []) if isinstance(row, Mapping)),
+                key=lambda row: (str(row.get("target_id", "")), str(row.get("wear_type_id", ""))),
+            )
+            if len(sorted_updates) > int(max_wear_updates_per_tick):
+                mobility_wear_pending_updates = list(mobility_wear_pending_updates or []) + list(
+                    sorted_updates[int(max_wear_updates_per_tick):]
+                )
+            threshold_crossings = [
+                dict(row)
+                for row in list(applied_wear.get("threshold_crossings") or [])
+                if isinstance(row, Mapping)
+            ]
+            if threshold_crossings:
+                signal_by_machine = dict(
+                    (
+                        str(row.get("state_machine_id", "")).strip(),
+                        str(row.get("signal_id", "")).strip(),
+                    )
+                    for row in list(mobility_signals or [])
+                    if isinstance(row, Mapping)
+                    and str(row.get("state_machine_id", "")).strip()
+                    and str(row.get("signal_id", "")).strip()
+                )
+                for crossing in list(threshold_crossings):
+                    wear_type_id = str(crossing.get("wear_type_id", "")).strip()
+                    target_id = str(crossing.get("target_id", "")).strip()
+                    if wear_type_id not in {"wear.signal", "wear.switch"}:
+                        continue
+                    signal_id = target_id if wear_type_id == "wear.signal" else str(signal_by_machine.get(target_id, "")).strip()
+                    if not signal_id:
+                        continue
+                    hazard_row = dict(hazard_rows_by_signal.get(signal_id) or {})
+                    hazard_row["signal_id"] = signal_id
+                    hazard_row["hazard_type_id"] = "hazard.mob.signal_failure"
+                    hazard_row["active"] = True
+                    hazard_row["severity"] = "critical"
+                    hazard_row["updated_tick"] = int(current_tick)
+                    hazard_ext = dict(hazard_row.get("extensions") or {})
+                    hazard_ext["source_process_id"] = process_id
+                    hazard_ext["wear_type_id"] = wear_type_id
+                    hazard_ext["wear_ratio_permille"] = int(max(0, _as_int(crossing.get("wear_ratio_permille", 0), 0)))
+                    hazard_row["extensions"] = hazard_ext
+                    hazard_rows_by_signal[signal_id] = hazard_row
+            mobility_signal_hazards = _ensure_mobility_signal_hazard_rows(
+                {"mobility_signal_hazards": [dict(hazard_rows_by_signal[key]) for key in sorted(hazard_rows_by_signal.keys())]}
+            )
+            if str(applied_wear.get("budget_outcome", "complete")) == "degraded":
+                _append_fidelity_decision_entries(
+                    state,
+                    entries=[
+                        _geometry_decision_entry(
+                            geometry_id=str(row.get("target_id", "")).strip() or "wear.unknown",
+                            intent_id=str(intent_id),
+                            process_id=process_id,
+                            tick=int(current_tick),
+                            reason="degrade.mob.wear_budget",
+                            resolved_level="meso",
+                            cost_allocated=0,
+                            extensions={
+                                "wear_type_id": str(row.get("wear_type_id", "")).strip() or None,
+                                "max_wear_updates_per_tick": int(max_wear_updates_per_tick),
+                            },
+                        )
+                        for row in list(sorted_updates[int(max_wear_updates_per_tick):])[:128]
+                    ],
+                    process_id=process_id,
+                    tick=int(current_tick),
+                )
+            mobility_wear_runtime_state = dict(mobility_wear_runtime_state or {})
+            mobility_wear_runtime_state["last_tick"] = int(current_tick)
+            mobility_wear_runtime_state["last_budget_outcome"] = str(applied_wear.get("budget_outcome", "complete"))
+            mobility_wear_runtime_state["last_processed_update_count"] = int(
+                len(list(applied_wear.get("processed_update_keys") or []))
+            )
+            mobility_wear_runtime_state["last_deferred_update_count"] = int(
+                len(list(applied_wear.get("deferred_update_keys") or []))
+            )
+            mobility_wear_runtime_state["last_threshold_crossing_count"] = int(
+                len(
+                    [
+                        row
+                        for row in list(applied_wear.get("threshold_crossings") or [])
+                        if isinstance(row, Mapping)
+                    ]
+                )
+            )
         _persist_mobility_signal_state(
             state,
             mobility_signals=mobility_signals,
@@ -21348,6 +21888,14 @@ def execute_intent(
             mobility_signal_hazards=mobility_signal_hazards,
             mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
             mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        _persist_mobility_wear_state(
+            state,
+            mobility_wear_states=mobility_wear_states,
+            mobility_wear_pending_updates=mobility_wear_pending_updates,
+            mobility_maintenance_schedules=mobility_maintenance_schedules,
+            mobility_maintenance_due_events=mobility_maintenance_due_events,
+            mobility_wear_runtime_state=mobility_wear_runtime_state,
         )
         state["mobility_signal_events"] = sorted(
             [dict(row) for row in list(signal_events or []) if isinstance(row, Mapping)],
@@ -21360,6 +21908,9 @@ def execute_intent(
             "budget_outcome": str(eval_result.get("budget_outcome", "complete")).strip() or "complete",
             "cost_units": int(max(0, _as_int(eval_result.get("cost_units", 0), 0))),
             "max_signal_updates_per_tick": int(max_signal_updates),
+            "wear_update_count": int(len(signal_wear_updates)),
+            "wear_row_count": int(len(mobility_wear_states)),
+            "wear_pending_update_count": int(len(mobility_wear_pending_updates)),
         }
         if str(eval_result.get("budget_outcome", "complete")).strip() == "degraded":
             _append_fidelity_decision_entries(
@@ -21388,6 +21939,11 @@ def execute_intent(
             "signal_event_count": int(len(state.get("mobility_signal_events") or [])),
             "switch_lock_count": int(len(mobility_switch_locks)),
             "max_signal_updates_per_tick": int(max_signal_updates),
+            "mobility_wear_row_count": int(len(mobility_wear_states)),
+            "mobility_wear_pending_update_count": int(len(mobility_wear_pending_updates)),
+            "mobility_wear_threshold_crossing_count": int(
+                max(0, _as_int((dict(mobility_wear_runtime_state or {})).get("last_threshold_crossing_count", 0), 0))
+            ),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.switch_set_state":
@@ -22828,6 +23384,24 @@ def execute_intent(
             vehicle_compatibility_results=vehicle_compatibility_results,
             vehicle_events=vehicle_events,
         )
+        _persist_mobility_wear_state(
+            state,
+            mobility_wear_states=mobility_wear_states,
+            mobility_wear_pending_updates=mobility_wear_pending_updates,
+            mobility_maintenance_schedules=mobility_maintenance_schedules,
+            mobility_maintenance_due_events=mobility_maintenance_due_events,
+            mobility_wear_runtime_state=mobility_wear_runtime_state,
+        )
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
         _persist_commitment_reenactment_state(
             state,
             commitments=material_commitments,
@@ -23289,6 +23863,366 @@ def execute_intent(
             for row in list(tick_result.get("congestion_delay_rows") or [])
             if isinstance(row, Mapping)
         ]
+        processed_vehicle_ids = _sorted_tokens(list(tick_result.get("processed_vehicle_ids") or []))
+        if processed_vehicle_ids:
+            wear_type_registry, wear_accumulation_policy_registry = _load_mobility_wear_registries(
+                policy_context=policy_context
+            )
+            wear_type_rows = wear_type_rows_by_id(wear_type_registry)
+            wear_policy_rows = wear_accumulation_policy_rows_by_id(wear_accumulation_policy_registry)
+            vehicle_rows_by_id = dict(
+                (
+                    str(row.get("vehicle_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(vehicles or [])
+                if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+            )
+            motion_rows_by_vehicle_after = dict(
+                (
+                    str(row.get("vehicle_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(vehicle_motion_states or [])
+                if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+            )
+            field_type_registry = _field_registry_payload(
+                policy_context=policy_context,
+                key="field_type_registry",
+                registry_rel_path="data/registries/field_type_registry.json",
+                entry_key="field_types",
+            )
+            field_snapshot = field_modifier_snapshot(
+                field_layer_rows=field_layers,
+                field_cell_rows=field_cells,
+                field_type_registry=field_type_registry,
+                sample_rows=[
+                    {"target_id": vehicle_id, "spatial_position": _target_spatial_position(state, vehicle_id)}
+                    for vehicle_id in list(processed_vehicle_ids)
+                ],
+            )
+            field_rows_by_vehicle = dict(
+                (
+                    str(row.get("target_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(dict(field_snapshot).get("rows") or [])
+                if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+            )
+            congestion_rows_by_vehicle: Dict[str, int] = {}
+            for row in list(congestion_delay_rows):
+                if not isinstance(row, Mapping):
+                    continue
+                vehicle_id = str(row.get("vehicle_id", "")).strip()
+                if not vehicle_id:
+                    continue
+                congestion_rows_by_vehicle[vehicle_id] = int(
+                    max(
+                        int(congestion_rows_by_vehicle.get(vehicle_id, 0)),
+                        _as_int(row.get("delta_ticks", 0), 0),
+                    )
+                )
+            wear_updates: List[dict] = []
+            for vehicle_id in list(processed_vehicle_ids):
+                motion_row = dict(motion_rows_by_vehicle_after.get(vehicle_id) or {})
+                macro = dict(motion_row.get("macro_state") or {}) if isinstance(motion_row.get("macro_state"), Mapping) else {}
+                edge_id = str(macro.get("current_edge_id", "")).strip()
+                planned_speed = int(max(0, _as_int(macro.get("planned_speed_mm_per_tick", 0), 0)))
+                field_row = dict(field_rows_by_vehicle.get(vehicle_id) or {})
+                environment_scale_permille = int(_wear_environment_scale_permille(field_row))
+                vehicle_row = dict(vehicle_rows_by_id.get(vehicle_id) or {})
+                load_target_id = (
+                    str(vehicle_row.get("parent_structure_instance_id", "")).strip()
+                    or str(vehicle_id)
+                )
+                load_scale_permille = int(_wear_load_scale_permille_for_target(state=state, target_id=load_target_id))
+                if edge_id:
+                    wear_updates.append(
+                        {
+                            "target_id": edge_id,
+                            "wear_type_id": "wear.track",
+                            "increment": int(max(1, planned_speed // 220)) if planned_speed > 0 else None,
+                            "cycles": 1,
+                            "dt_ticks": 1,
+                            "environment_scale_permille": int(environment_scale_permille),
+                            "load_scale_permille": int(load_scale_permille),
+                            "extensions": {
+                                "source_process_id": process_id,
+                                "vehicle_id": vehicle_id,
+                                "edge_id": edge_id,
+                                "source": "travel_tick",
+                            },
+                        }
+                    )
+                wear_updates.append(
+                    {
+                        "target_id": vehicle_id,
+                        "wear_type_id": "wear.wheel",
+                        "increment": int(max(1, planned_speed // 260)) if planned_speed > 0 else None,
+                        "cycles": 1,
+                        "dt_ticks": 1,
+                        "environment_scale_permille": int(environment_scale_permille),
+                        "load_scale_permille": int(load_scale_permille),
+                        "extensions": {
+                            "source_process_id": process_id,
+                            "vehicle_id": vehicle_id,
+                            "source": "travel_tick",
+                        },
+                    }
+                )
+                wear_updates.append(
+                    {
+                        "target_id": vehicle_id,
+                        "wear_type_id": "wear.engine",
+                        "increment": None,
+                        "cycles": 0,
+                        "dt_ticks": 1,
+                        "environment_scale_permille": int(environment_scale_permille),
+                        "load_scale_permille": int(load_scale_permille),
+                        "extensions": {
+                            "source_process_id": process_id,
+                            "vehicle_id": vehicle_id,
+                            "source": "travel_tick",
+                        },
+                    }
+                )
+                congestion_delta = int(max(0, _as_int(congestion_rows_by_vehicle.get(vehicle_id, 0), 0)))
+                if congestion_delta > 0:
+                    wear_updates.append(
+                        {
+                            "target_id": vehicle_id,
+                            "wear_type_id": "wear.brake",
+                            "increment": int(max(1, congestion_delta * 4)),
+                            "cycles": int(max(1, congestion_delta)),
+                            "dt_ticks": 1,
+                            "environment_scale_permille": int(environment_scale_permille),
+                            "load_scale_permille": int(load_scale_permille),
+                            "extensions": {
+                                "source_process_id": process_id,
+                                "vehicle_id": vehicle_id,
+                                "source": "travel_tick.congestion",
+                            },
+                        }
+                    )
+            max_wear_updates_per_tick = int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_wear_updates_per_tick",
+                            (dict(policy_context or {})).get("mobility_wear_max_updates_per_tick", 512),
+                        ),
+                        512,
+                    ),
+                )
+            )
+            applied_wear = apply_wear_updates(
+                wear_rows=mobility_wear_states,
+                update_rows=wear_updates,
+                wear_type_rows=wear_type_rows,
+                accumulation_policy_rows=wear_policy_rows,
+                current_tick=int(current_tick),
+                max_updates=int(max_wear_updates_per_tick),
+            )
+            mobility_wear_states = normalize_wear_state_rows(list(applied_wear.get("wear_rows") or []))
+            sorted_updates = sorted(
+                (dict(row) for row in list(wear_updates or []) if isinstance(row, Mapping)),
+                key=lambda row: (str(row.get("target_id", "")), str(row.get("wear_type_id", ""))),
+            )
+            if len(sorted_updates) > int(max_wear_updates_per_tick):
+                mobility_wear_pending_updates = list(mobility_wear_pending_updates or []) + list(
+                    sorted_updates[int(max_wear_updates_per_tick):]
+                )
+            threshold_crossings = [
+                dict(row)
+                for row in list(applied_wear.get("threshold_crossings") or [])
+                if isinstance(row, Mapping)
+            ]
+            if threshold_crossings:
+                wear_event_seq = int(len(list(travel_events or [])))
+                signal_rows_by_id = dict(
+                    (
+                        str(row.get("signal_id", "")).strip(),
+                        dict(row),
+                    )
+                    for row in list(mobility_signals or [])
+                    if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+                )
+                signal_by_machine = dict(
+                    (
+                        str(row.get("state_machine_id", "")).strip(),
+                        str(row.get("signal_id", "")).strip(),
+                    )
+                    for row in list(mobility_signals or [])
+                    if isinstance(row, Mapping)
+                    and str(row.get("state_machine_id", "")).strip()
+                    and str(row.get("signal_id", "")).strip()
+                )
+                hazard_rows_by_signal = dict(
+                    (
+                        str(row.get("signal_id", "")).strip(),
+                        dict(row),
+                    )
+                    for row in list(mobility_signal_hazards or [])
+                    if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+                )
+                for crossing in list(threshold_crossings):
+                    target_id = str(crossing.get("target_id", "")).strip()
+                    wear_type_id = str(crossing.get("wear_type_id", "")).strip()
+                    if (not target_id) or (not wear_type_id):
+                        continue
+                    if wear_type_id in {"wear.engine", "wear.wheel", "wear.brake"}:
+                        motion_row = dict(motion_rows_by_vehicle_after.get(target_id) or {})
+                        itinerary_id = str((dict(motion_row.get("macro_state") or {})).get("itinerary_id", "")).strip() or "itinerary.none"
+                        reason_code = _failure_reason_for_wear_type(wear_type_id)
+                        failure_event = build_travel_event(
+                            event_id=deterministic_travel_event_id(
+                                vehicle_id=target_id,
+                                itinerary_id=itinerary_id,
+                                kind="incident_stub",
+                                tick=int(current_tick),
+                                sequence=int(wear_event_seq),
+                            ),
+                            tick=int(current_tick),
+                            vehicle_id=target_id,
+                            itinerary_id=itinerary_id,
+                            kind="incident_stub",
+                            details={
+                                "reason_code": reason_code,
+                                "wear_type_id": wear_type_id,
+                                "target_id": target_id,
+                                "wear_ratio_permille": int(max(0, _as_int(crossing.get("wear_ratio_permille", 0), 0))),
+                            },
+                            extensions={"source_process_id": process_id},
+                        )
+                        travel_events = _upsert_row_by_id(travel_events, "event_id", failure_event)
+                        wear_event_seq += 1
+                        vehicle_events = _upsert_row_by_id(
+                            vehicle_events,
+                            "event_id",
+                            _vehicle_event_row(
+                                vehicle_id=target_id,
+                                event_kind="mob_failure",
+                                tick=int(current_tick),
+                                process_id=process_id,
+                                intent_id=str(intent_id),
+                                extensions={
+                                    "reason_code": reason_code,
+                                    "wear_type_id": wear_type_id,
+                                    "target_id": target_id,
+                                },
+                            ),
+                        )
+                    elif wear_type_id == "wear.track":
+                        culprit_vehicle_id = "vehicle.unknown"
+                        culprit_itinerary_id = "itinerary.none"
+                        for motion_vehicle_id, motion_row in sorted(motion_rows_by_vehicle_after.items(), key=lambda item: str(item[0])):
+                            macro = dict(motion_row.get("macro_state") or {}) if isinstance(motion_row.get("macro_state"), Mapping) else {}
+                            if str(macro.get("current_edge_id", "")).strip() != target_id:
+                                continue
+                            culprit_vehicle_id = str(motion_vehicle_id)
+                            culprit_itinerary_id = str(macro.get("itinerary_id", "")).strip() or "itinerary.none"
+                            break
+                        track_event = build_travel_event(
+                            event_id=deterministic_travel_event_id(
+                                vehicle_id=culprit_vehicle_id,
+                                itinerary_id=culprit_itinerary_id,
+                                kind="incident_stub",
+                                tick=int(current_tick),
+                                sequence=int(wear_event_seq),
+                            ),
+                            tick=int(current_tick),
+                            vehicle_id=culprit_vehicle_id,
+                            itinerary_id=culprit_itinerary_id,
+                            kind="incident_stub",
+                            details={
+                                "reason_code": "incident.derailment.track_wear",
+                                "wear_type_id": wear_type_id,
+                                "edge_id": target_id,
+                                "wear_ratio_permille": int(max(0, _as_int(crossing.get("wear_ratio_permille", 0), 0))),
+                            },
+                            extensions={"source_process_id": process_id},
+                        )
+                        travel_events = _upsert_row_by_id(travel_events, "event_id", track_event)
+                        wear_event_seq += 1
+                        occupancy_rows_by_edge = dict(
+                            (
+                                str(row.get("edge_id", "")).strip(),
+                                dict(row),
+                            )
+                            for row in list(edge_occupancies or [])
+                            if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+                        )
+                        edge_row = dict(occupancy_rows_by_edge.get(target_id) or {})
+                        if edge_row:
+                            edge_ext = dict(edge_row.get("extensions") or {})
+                            edge_ext["track_failure_active"] = True
+                            edge_ext["track_failure_tick"] = int(current_tick)
+                            edge_row["extensions"] = edge_ext
+                            occupancy_rows_by_edge[target_id] = edge_row
+                            edge_occupancies = normalize_edge_occupancy_rows(
+                                [dict(occupancy_rows_by_edge[key]) for key in sorted(occupancy_rows_by_edge.keys())]
+                            )
+                    elif wear_type_id in {"wear.signal", "wear.switch"}:
+                        signal_id = target_id
+                        if signal_id not in signal_rows_by_id:
+                            signal_id = str(signal_by_machine.get(target_id, "")).strip()
+                        if signal_id and signal_id in signal_rows_by_id:
+                            hazard_row = dict(hazard_rows_by_signal.get(signal_id) or {})
+                            hazard_row["signal_id"] = signal_id
+                            hazard_row["hazard_type_id"] = "hazard.mob.signal_failure"
+                            hazard_row["active"] = True
+                            hazard_row["severity"] = "critical"
+                            hazard_row["updated_tick"] = int(current_tick)
+                            hazard_ext = dict(hazard_row.get("extensions") or {})
+                            hazard_ext["source_process_id"] = process_id
+                            hazard_ext["wear_type_id"] = wear_type_id
+                            hazard_ext["wear_ratio_permille"] = int(max(0, _as_int(crossing.get("wear_ratio_permille", 0), 0)))
+                            hazard_row["extensions"] = hazard_ext
+                            hazard_rows_by_signal[signal_id] = hazard_row
+                mobility_signal_hazards = _ensure_mobility_signal_hazard_rows(
+                    {"mobility_signal_hazards": [dict(hazard_rows_by_signal[key]) for key in sorted(hazard_rows_by_signal.keys())]}
+                )
+            if str(applied_wear.get("budget_outcome", "complete")) == "degraded":
+                _append_fidelity_decision_entries(
+                    state,
+                    entries=[
+                        _geometry_decision_entry(
+                            geometry_id=str(row.get("target_id", "")).strip() or "wear.unknown",
+                            intent_id=str(intent_id),
+                            process_id=process_id,
+                            tick=int(current_tick),
+                            reason="degrade.mob.wear_budget",
+                            resolved_level="meso",
+                            cost_allocated=0,
+                            extensions={
+                                "wear_type_id": str(row.get("wear_type_id", "")).strip() or None,
+                                "max_wear_updates_per_tick": int(max_wear_updates_per_tick),
+                            },
+                        )
+                        for row in list(sorted_updates[int(max_wear_updates_per_tick):])[:128]
+                    ],
+                    process_id=process_id,
+                    tick=int(current_tick),
+                )
+            mobility_wear_runtime_state = dict(mobility_wear_runtime_state or {})
+            mobility_wear_runtime_state["last_tick"] = int(current_tick)
+            mobility_wear_runtime_state["last_budget_outcome"] = str(applied_wear.get("budget_outcome", "complete"))
+            mobility_wear_runtime_state["last_processed_update_count"] = int(
+                len(list(applied_wear.get("processed_update_keys") or []))
+            )
+            mobility_wear_runtime_state["last_deferred_update_count"] = int(
+                len(list(applied_wear.get("deferred_update_keys") or []))
+            )
+            mobility_wear_runtime_state["last_threshold_crossing_count"] = int(
+                len(
+                    [
+                        row
+                        for row in list(applied_wear.get("threshold_crossings") or [])
+                        if isinstance(row, Mapping)
+                    ]
+                )
+            )
         active_itinerary_ids = _sorted_tokens(
             [
                 str(itinerary_token).strip()
@@ -23602,6 +24536,846 @@ def execute_intent(
             ),
             "travel_event_count": int(len(travel_events)),
             "travel_commitment_count": int(len(travel_commitments)),
+            "mobility_wear_row_count": int(len(mobility_wear_states)),
+            "mobility_wear_pending_update_count": int(len(mobility_wear_pending_updates)),
+            "mobility_wear_threshold_crossing_count": int(
+                max(0, _as_int((dict(mobility_wear_runtime_state or {})).get("last_threshold_crossing_count", 0), 0))
+            ),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mobility_wear_tick":
+        wear_type_registry, wear_accumulation_policy_registry = _load_mobility_wear_registries(
+            policy_context=policy_context
+        )
+        wear_type_rows = wear_type_rows_by_id(wear_type_registry)
+        wear_policy_rows = wear_accumulation_policy_rows_by_id(wear_accumulation_policy_registry)
+        if not wear_type_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "wear_type_registry is empty",
+                "Register wear types before running process.mobility_wear_tick.",
+                {"registry": "wear_type_registry"},
+                "$.policy_context.wear_type_registry",
+            )
+        pending_updates = [dict(row) for row in list(mobility_wear_pending_updates or []) if isinstance(row, Mapping)]
+        explicit_updates = [dict(row) for row in list(inputs.get("wear_updates") or []) if isinstance(row, Mapping)]
+        include_auto_updates = bool(inputs.get("include_auto_updates", True))
+        auto_updates: List[dict] = []
+        if include_auto_updates:
+            motion_rows_by_vehicle = dict(
+                (
+                    str(row.get("vehicle_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(vehicle_motion_states or [])
+                if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+            )
+            for vehicle_id, motion_row in sorted(motion_rows_by_vehicle.items(), key=lambda item: str(item[0])):
+                macro = dict(motion_row.get("macro_state") or {}) if isinstance(motion_row.get("macro_state"), Mapping) else {}
+                planned_speed = int(max(0, _as_int(macro.get("planned_speed_mm_per_tick", 0), 0)))
+                if planned_speed <= 0 and not str(macro.get("itinerary_id", "")).strip():
+                    continue
+                auto_updates.append(
+                    {
+                        "target_id": vehicle_id,
+                        "wear_type_id": "wear.engine",
+                        "increment": int(max(1, planned_speed // 300)) if planned_speed > 0 else None,
+                        "cycles": 0,
+                        "dt_ticks": 1,
+                        "environment_scale_permille": 1000,
+                        "load_scale_permille": 1000,
+                        "extensions": {"source_process_id": process_id, "source": "wear_tick.auto.vehicle"},
+                    }
+                )
+                auto_updates.append(
+                    {
+                        "target_id": vehicle_id,
+                        "wear_type_id": "wear.wheel",
+                        "increment": int(max(1, planned_speed // 260)) if planned_speed > 0 else None,
+                        "cycles": 1,
+                        "dt_ticks": 1,
+                        "environment_scale_permille": 1000,
+                        "load_scale_permille": 1000,
+                        "extensions": {"source_process_id": process_id, "source": "wear_tick.auto.vehicle"},
+                    }
+                )
+            for row in sorted(
+                (dict(item) for item in list(edge_occupancies or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("edge_id", "")),
+            ):
+                edge_id = str(row.get("edge_id", "")).strip()
+                occupancy = int(max(0, _as_int(row.get("current_occupancy", 0), 0)))
+                if edge_id and occupancy > 0:
+                    auto_updates.append(
+                        {
+                            "target_id": edge_id,
+                            "wear_type_id": "wear.track",
+                            "increment": int(max(1, occupancy * 2)),
+                            "cycles": int(occupancy),
+                            "dt_ticks": 1,
+                            "environment_scale_permille": 1000,
+                            "load_scale_permille": 1000,
+                            "extensions": {"source_process_id": process_id, "source": "wear_tick.auto.edge"},
+                        }
+                    )
+            for row in sorted(
+                (dict(item) for item in list(mobility_signals or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("signal_id", "")),
+            ):
+                signal_id = str(row.get("signal_id", "")).strip()
+                if not signal_id:
+                    continue
+                auto_updates.append(
+                    {
+                        "target_id": signal_id,
+                        "wear_type_id": "wear.signal",
+                        "increment": None,
+                        "cycles": 0,
+                        "dt_ticks": 1,
+                        "environment_scale_permille": 1000,
+                        "load_scale_permille": 1000,
+                        "extensions": {"source_process_id": process_id, "source": "wear_tick.auto.signal"},
+                    }
+                )
+                machine_id = str(row.get("state_machine_id", "")).strip()
+                if machine_id:
+                    auto_updates.append(
+                        {
+                            "target_id": machine_id,
+                            "wear_type_id": "wear.switch",
+                            "increment": 1,
+                            "cycles": 1,
+                            "dt_ticks": 1,
+                            "environment_scale_permille": 1000,
+                            "load_scale_permille": 1000,
+                            "extensions": {"source_process_id": process_id, "source": "wear_tick.auto.switch"},
+                        }
+                    )
+
+        update_rows = list(pending_updates) + list(explicit_updates) + list(auto_updates)
+        max_wear_updates_per_tick = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_wear_updates_per_tick",
+                        (dict(policy_context or {})).get("mobility_wear_max_updates_per_tick", 512),
+                    ),
+                    512,
+                ),
+            )
+        )
+        applied_wear = apply_wear_updates(
+            wear_rows=mobility_wear_states,
+            update_rows=update_rows,
+            wear_type_rows=wear_type_rows,
+            accumulation_policy_rows=wear_policy_rows,
+            current_tick=int(current_tick),
+            max_updates=int(max_wear_updates_per_tick),
+        )
+        mobility_wear_states = normalize_wear_state_rows(list(applied_wear.get("wear_rows") or []))
+        sorted_updates = sorted(
+            (dict(row) for row in list(update_rows or []) if isinstance(row, Mapping)),
+            key=lambda row: (str(row.get("target_id", "")), str(row.get("wear_type_id", ""))),
+        )
+        mobility_wear_pending_updates = list(
+            sorted_updates[int(max_wear_updates_per_tick):] if len(sorted_updates) > int(max_wear_updates_per_tick) else []
+        )
+        threshold_crossings = [
+            dict(row)
+            for row in list(applied_wear.get("threshold_crossings") or [])
+            if isinstance(row, Mapping)
+        ]
+        motion_rows_by_vehicle = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicle_motion_states or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        signal_by_machine = dict(
+            (
+                str(row.get("state_machine_id", "")).strip(),
+                str(row.get("signal_id", "")).strip(),
+            )
+            for row in list(mobility_signals or [])
+            if isinstance(row, Mapping)
+            and str(row.get("state_machine_id", "")).strip()
+            and str(row.get("signal_id", "")).strip()
+        )
+        hazard_rows_by_signal = dict(
+            (
+                str(row.get("signal_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(mobility_signal_hazards or [])
+            if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+        )
+        occupancy_rows_by_edge = dict(
+            (
+                str(row.get("edge_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(edge_occupancies or [])
+            if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+        )
+        wear_event_seq = int(len(list(travel_events or [])))
+        vehicle_events_rows = [dict(row) for row in list(vehicle_events or []) if isinstance(row, Mapping)]
+        for crossing in list(threshold_crossings):
+            target_id = str(crossing.get("target_id", "")).strip()
+            wear_type_id = str(crossing.get("wear_type_id", "")).strip()
+            if wear_type_id in {"wear.engine", "wear.wheel", "wear.brake"}:
+                motion_row = dict(motion_rows_by_vehicle.get(target_id) or {})
+                itinerary_id = str((dict(motion_row.get("macro_state") or {})).get("itinerary_id", "")).strip() or "itinerary.none"
+                reason_code = _failure_reason_for_wear_type(wear_type_id)
+                travel_events = _upsert_row_by_id(
+                    travel_events,
+                    "event_id",
+                    build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=target_id,
+                            itinerary_id=itinerary_id,
+                            kind="incident_stub",
+                            tick=int(current_tick),
+                            sequence=int(wear_event_seq),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=target_id,
+                        itinerary_id=itinerary_id,
+                        kind="incident_stub",
+                        details={
+                            "reason_code": reason_code,
+                            "wear_type_id": wear_type_id,
+                            "target_id": target_id,
+                        },
+                        extensions={"source_process_id": process_id},
+                    ),
+                )
+                wear_event_seq += 1
+                vehicle_events_rows = _upsert_row_by_id(
+                    vehicle_events_rows,
+                    "event_id",
+                    _vehicle_event_row(
+                        vehicle_id=target_id,
+                        event_kind="mob_failure",
+                        tick=int(current_tick),
+                        process_id=process_id,
+                        intent_id=str(intent_id),
+                        extensions={"reason_code": reason_code, "wear_type_id": wear_type_id},
+                    ),
+                )
+            elif wear_type_id == "wear.track" and target_id in occupancy_rows_by_edge:
+                row = dict(occupancy_rows_by_edge.get(target_id) or {})
+                ext = dict(row.get("extensions") or {})
+                ext["track_failure_active"] = True
+                ext["track_failure_tick"] = int(current_tick)
+                row["extensions"] = ext
+                occupancy_rows_by_edge[target_id] = row
+            elif wear_type_id in {"wear.signal", "wear.switch"}:
+                signal_id = target_id if wear_type_id == "wear.signal" else str(signal_by_machine.get(target_id, "")).strip()
+                if signal_id:
+                    hazard_row = dict(hazard_rows_by_signal.get(signal_id) or {})
+                    hazard_row["signal_id"] = signal_id
+                    hazard_row["hazard_type_id"] = "hazard.mob.signal_failure"
+                    hazard_row["active"] = True
+                    hazard_row["severity"] = "critical"
+                    hazard_row["updated_tick"] = int(current_tick)
+                    hazard_row["extensions"] = {
+                        **dict(hazard_row.get("extensions") or {}),
+                        "source_process_id": process_id,
+                        "wear_type_id": wear_type_id,
+                    }
+                    hazard_rows_by_signal[signal_id] = hazard_row
+
+        edge_occupancies = normalize_edge_occupancy_rows([dict(occupancy_rows_by_edge[key]) for key in sorted(occupancy_rows_by_edge.keys())])
+        mobility_signal_hazards = _ensure_mobility_signal_hazard_rows(
+            {"mobility_signal_hazards": [dict(hazard_rows_by_signal[key]) for key in sorted(hazard_rows_by_signal.keys())]}
+        )
+        travel_events = normalize_travel_event_rows(travel_events)
+        vehicle_events = _ensure_vehicle_events({"vehicle_events": vehicle_events_rows})
+        mobility_wear_runtime_state = dict(mobility_wear_runtime_state or {})
+        mobility_wear_runtime_state["last_tick"] = int(current_tick)
+        mobility_wear_runtime_state["last_budget_outcome"] = str(applied_wear.get("budget_outcome", "complete"))
+        mobility_wear_runtime_state["last_processed_update_count"] = int(len(list(applied_wear.get("processed_update_keys") or [])))
+        mobility_wear_runtime_state["last_deferred_update_count"] = int(len(list(applied_wear.get("deferred_update_keys") or [])))
+        mobility_wear_runtime_state["last_threshold_crossing_count"] = int(len(threshold_crossings))
+        maintenance_policy_rows = _maintenance_policy_rows_by_id(
+            _load_maintenance_policy_registry(policy_context=policy_context)
+        )
+        schedules_by_id = dict(
+            (
+                str(row.get("schedule_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(mobility_maintenance_schedules or [])
+            if isinstance(row, Mapping) and str(row.get("schedule_id", "")).strip()
+        )
+        for edge_id in sorted(occupancy_rows_by_edge.keys()):
+            if "maint.track_standard" not in maintenance_policy_rows:
+                break
+            interval = int(max(0, _as_int(dict(maintenance_policy_rows.get("maint.track_standard") or {}).get("inspection_interval_ticks", 0), 0)))
+            if interval <= 0:
+                break
+            schedule_id = _mobility_maintenance_schedule_id(target_id=edge_id, policy_id="maint.track_standard", schedule_kind="inspection")
+            if schedule_id not in schedules_by_id:
+                schedules_by_id[schedule_id] = normalize_schedule(
+                    {
+                        "schedule_id": schedule_id,
+                        "target_id": edge_id,
+                        "start_tick": int(current_tick),
+                        "next_due_tick": int(current_tick),
+                        "recurrence_rule": {
+                            "rule_type": "interval",
+                            "interval_ticks": int(interval),
+                            "trigger_process_id": "process.inspect_track",
+                            "extensions": {},
+                        },
+                        "cancellation_policy": "keep",
+                        "active": True,
+                        "extensions": {"policy_id": "maint.track_standard", "source_process_id": process_id},
+                    }
+                )
+        for row in list(vehicles or []):
+            if not isinstance(row, Mapping):
+                continue
+            vehicle_id = str(row.get("vehicle_id", "")).strip()
+            if not vehicle_id:
+                continue
+            policy_id = str(row.get("maintenance_policy_id", "")).strip() or "maint.vehicle_standard"
+            if policy_id not in maintenance_policy_rows:
+                policy_id = "maint.vehicle_standard"
+            policy_row = dict(maintenance_policy_rows.get(policy_id) or {})
+            interval = int(max(0, _as_int(policy_row.get("inspection_interval_ticks", 0), 0)))
+            if interval <= 0:
+                continue
+            schedule_id = _mobility_maintenance_schedule_id(target_id=vehicle_id, policy_id=policy_id, schedule_kind="inspection")
+            if schedule_id in schedules_by_id:
+                continue
+            schedules_by_id[schedule_id] = normalize_schedule(
+                {
+                    "schedule_id": schedule_id,
+                    "target_id": vehicle_id,
+                    "start_tick": int(current_tick),
+                    "next_due_tick": int(current_tick),
+                    "recurrence_rule": {
+                        "rule_type": "interval",
+                        "interval_ticks": int(interval),
+                        "trigger_process_id": "process.inspect_vehicle",
+                        "extensions": {},
+                    },
+                    "cancellation_policy": "keep",
+                    "active": True,
+                    "extensions": {"policy_id": policy_id, "source_process_id": process_id},
+                }
+            )
+        for signal_id in sorted(
+            str(row.get("signal_id", "")).strip()
+            for row in list(mobility_signals or [])
+            if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+        ):
+            if "maint.signal_standard" not in maintenance_policy_rows:
+                break
+            interval = int(max(0, _as_int(dict(maintenance_policy_rows.get("maint.signal_standard") or {}).get("inspection_interval_ticks", 0), 0)))
+            if interval <= 0:
+                break
+            schedule_id = _mobility_maintenance_schedule_id(target_id=signal_id, policy_id="maint.signal_standard", schedule_kind="inspection")
+            if schedule_id in schedules_by_id:
+                continue
+            schedules_by_id[schedule_id] = normalize_schedule(
+                {
+                    "schedule_id": schedule_id,
+                    "target_id": signal_id,
+                    "start_tick": int(current_tick),
+                    "next_due_tick": int(current_tick),
+                    "recurrence_rule": {
+                        "rule_type": "interval",
+                        "interval_ticks": int(interval),
+                        "trigger_process_id": "process.inspect_track",
+                        "extensions": {},
+                    },
+                    "cancellation_policy": "keep",
+                    "active": True,
+                    "extensions": {"policy_id": "maint.signal_standard", "source_process_id": process_id},
+                }
+            )
+        schedule_tick = tick_schedules(
+            schedule_rows=[dict(schedules_by_id[key]) for key in sorted(schedules_by_id.keys())],
+            current_tick=int(current_tick),
+            max_schedules=int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_schedule_updates_per_tick",
+                            (dict(policy_context or {})).get("mobility_maintenance_schedule_max_updates", 256),
+                        ),
+                        256,
+                    ),
+                )
+            ),
+            cost_units_per_schedule=1,
+        )
+        mobility_maintenance_schedules = _ensure_mobility_maintenance_schedule_rows(
+            {"mobility_maintenance_schedules": list(schedule_tick.get("schedules") or [])}
+        )
+        due_rows = []
+        for due in list(schedule_tick.get("due_events") or []):
+            if not isinstance(due, Mapping):
+                continue
+            schedule_id = str(due.get("schedule_id", "")).strip()
+            target_id = str(due.get("target_id", "")).strip()
+            if (not schedule_id) or (not target_id):
+                continue
+            due_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "event_id": _mobility_due_event_id(
+                        schedule_id=schedule_id,
+                        target_id=target_id,
+                        tick=int(current_tick),
+                        kind="inspection_due",
+                    ),
+                    "schedule_id": schedule_id,
+                    "target_id": target_id,
+                    "tick": int(current_tick),
+                    "kind": "inspection_due",
+                    "trigger_process_id": str(due.get("trigger_process_id", "")).strip() or None,
+                    "extensions": {
+                        "due_tick": int(max(0, _as_int(due.get("due_tick", current_tick), current_tick))),
+                        "next_due_tick": int(max(0, _as_int(due.get("next_due_tick", current_tick), current_tick))),
+                        "source_process_id": process_id,
+                    },
+                }
+            )
+        mobility_maintenance_due_events = _ensure_mobility_maintenance_due_event_rows(
+            {"mobility_maintenance_due_events": [dict(row) for row in list(mobility_maintenance_due_events or []) if isinstance(row, Mapping)] + due_rows}
+        )
+        runtime_ext = dict(mobility_wear_runtime_state.get("extensions") or {})
+        runtime_ext["schedule_budget_outcome"] = str(schedule_tick.get("budget_outcome", "complete")).strip() or "complete"
+        runtime_ext["schedule_due_count"] = int(len(due_rows))
+        runtime_ext["schedule_deferred_count"] = int(len(list(schedule_tick.get("deferred_schedule_ids") or [])))
+        mobility_wear_runtime_state["extensions"] = runtime_ext
+
+        _persist_vehicle_state(
+            state,
+            vehicles=vehicles,
+            vehicle_motion_states=vehicle_motion_states,
+            vehicle_compatibility_results=vehicle_compatibility_results,
+            vehicle_events=vehicle_events,
+        )
+        state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
+        _ensure_travel_event_rows(state)
+        state["edge_occupancies"] = [dict(row) for row in list(edge_occupancies or []) if isinstance(row, Mapping)]
+        _ensure_edge_occupancy_rows(state)
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        _persist_mobility_wear_state(
+            state,
+            mobility_wear_states=mobility_wear_states,
+            mobility_wear_pending_updates=mobility_wear_pending_updates,
+            mobility_maintenance_schedules=mobility_maintenance_schedules,
+            mobility_maintenance_due_events=mobility_maintenance_due_events,
+            mobility_wear_runtime_state=mobility_wear_runtime_state,
+        )
+        result_metadata = {
+            "processed_update_count": int(len(list(applied_wear.get("processed_update_keys") or []))),
+            "deferred_update_count": int(len(list(applied_wear.get("deferred_update_keys") or []))),
+            "threshold_crossing_count": int(len(threshold_crossings)),
+            "wear_row_count": int(len(mobility_wear_states)),
+            "pending_update_count": int(len(mobility_wear_pending_updates)),
+            "auto_update_count": int(len(auto_updates)),
+            "explicit_update_count": int(len(explicit_updates)),
+            "budget_outcome": str(applied_wear.get("budget_outcome", "complete")),
+            "maintenance_schedule_count": int(len(mobility_maintenance_schedules)),
+            "maintenance_due_event_count": int(len(mobility_maintenance_due_events)),
+            "maintenance_schedule_budget_outcome": str(
+                (dict(mobility_wear_runtime_state.get("extensions") or {})).get("schedule_budget_outcome", "complete")
+            ),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mob_failure":
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        if not vehicle_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.mob_failure requires vehicle_id",
+                "Provide deterministic vehicle_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.vehicle_id",
+            )
+        reason_code = str(inputs.get("reason_code", "incident.breakdown.engine")).strip() or "incident.breakdown.engine"
+        motion_rows_by_vehicle = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicle_motion_states or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        motion_row = dict(motion_rows_by_vehicle.get(vehicle_id) or {})
+        itinerary_id = str((dict(motion_row.get("macro_state") or {})).get("itinerary_id", "")).strip() or "itinerary.none"
+        event_seq = int(len(list(travel_events or [])))
+        failure_event = build_travel_event(
+            event_id=deterministic_travel_event_id(
+                vehicle_id=vehicle_id,
+                itinerary_id=itinerary_id,
+                kind="incident_stub",
+                tick=int(current_tick),
+                sequence=int(event_seq),
+            ),
+            tick=int(current_tick),
+            vehicle_id=vehicle_id,
+            itinerary_id=itinerary_id,
+            kind="incident_stub",
+            details={"reason_code": reason_code, "vehicle_id": vehicle_id},
+            extensions={"source_process_id": process_id},
+        )
+        travel_events = normalize_travel_event_rows(_upsert_row_by_id(travel_events, "event_id", failure_event))
+        vehicle_events = _ensure_vehicle_events(
+            {
+                "vehicle_events": _upsert_row_by_id(
+                    vehicle_events,
+                    "event_id",
+                    _vehicle_event_row(
+                        vehicle_id=vehicle_id,
+                        event_kind="mob_failure",
+                        tick=int(current_tick),
+                        process_id=process_id,
+                        intent_id=str(intent_id),
+                        extensions={"reason_code": reason_code},
+                    ),
+                )
+            }
+        )
+        effect_rows = normalize_effect_rows(
+            _upsert_row_by_id(
+                effect_rows,
+                "effect_id",
+                build_effect(
+                    effect_type_id="effect.speed_cap",
+                    target_id=vehicle_id,
+                    applied_tick=int(current_tick),
+                    magnitude={"max_speed_permille": 0},
+                    stacking_policy_id="stack.min",
+                    duration_ticks=int(max(1, _as_int(inputs.get("duration_ticks", 240), 240))),
+                    expires_tick=None,
+                    source_event_id=str(failure_event.get("event_id", "")).strip() or None,
+                    extensions={"source_process_id": process_id, "reason_code": reason_code},
+                ),
+            )
+        )
+        state["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, Mapping)]
+        _ensure_effect_rows(state)
+        state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
+        _ensure_travel_event_rows(state)
+        _persist_vehicle_state(
+            state,
+            vehicles=vehicles,
+            vehicle_motion_states=vehicle_motion_states,
+            vehicle_compatibility_results=vehicle_compatibility_results,
+            vehicle_events=vehicle_events,
+        )
+        result_metadata = {
+            "vehicle_id": vehicle_id,
+            "reason_code": reason_code,
+            "incident_event_id": str(failure_event.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mob_track_failure":
+        edge_id = str(inputs.get("edge_id", "")).strip()
+        geometry_id = str(inputs.get("geometry_id", "")).strip()
+        if (not edge_id) and geometry_id:
+            edge_id = str(_edge_id_by_geometry_id(state).get(geometry_id, "")).strip()
+        if not edge_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.mob_track_failure requires edge_id or geometry_id",
+                "Provide deterministic edge_id or geometry_id.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        reason_code = str(inputs.get("reason_code", "incident.derailment.track_wear")).strip() or "incident.derailment.track_wear"
+        occupancy_rows_by_edge = dict(
+            (
+                str(row.get("edge_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(edge_occupancies or [])
+            if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+        )
+        row = dict(occupancy_rows_by_edge.get(edge_id) or {})
+        ext = dict(row.get("extensions") or {})
+        ext["track_failure_active"] = True
+        ext["track_failure_tick"] = int(current_tick)
+        ext["reason_code"] = reason_code
+        row["extensions"] = ext
+        if row:
+            occupancy_rows_by_edge[edge_id] = row
+        edge_occupancies = normalize_edge_occupancy_rows([dict(occupancy_rows_by_edge[key]) for key in sorted(occupancy_rows_by_edge.keys())])
+        event_seq = int(len(list(travel_events or [])))
+        failure_event = build_travel_event(
+            event_id=deterministic_travel_event_id(
+                vehicle_id=str(inputs.get("vehicle_id", "")).strip() or "vehicle.unknown",
+                itinerary_id=str(inputs.get("itinerary_id", "")).strip() or "itinerary.none",
+                kind="incident_stub",
+                tick=int(current_tick),
+                sequence=int(event_seq),
+            ),
+            tick=int(current_tick),
+            vehicle_id=str(inputs.get("vehicle_id", "")).strip() or "vehicle.unknown",
+            itinerary_id=str(inputs.get("itinerary_id", "")).strip() or "itinerary.none",
+            kind="incident_stub",
+            details={"reason_code": reason_code, "edge_id": edge_id, "geometry_id": geometry_id or None},
+            extensions={"source_process_id": process_id},
+        )
+        travel_events = normalize_travel_event_rows(_upsert_row_by_id(travel_events, "event_id", failure_event))
+        state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
+        _ensure_travel_event_rows(state)
+        state["edge_occupancies"] = [dict(row) for row in list(edge_occupancies or []) if isinstance(row, Mapping)]
+        _ensure_edge_occupancy_rows(state)
+        result_metadata = {
+            "edge_id": edge_id,
+            "geometry_id": geometry_id or None,
+            "reason_code": reason_code,
+            "incident_event_id": str(failure_event.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.inspect_track":
+        target_id = str(inputs.get("edge_id", "")).strip() or str(inputs.get("geometry_id", "")).strip()
+        if not target_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.inspect_track requires edge_id or geometry_id",
+                "Provide deterministic edge_id or geometry_id.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        wear_type_registry, _ = _load_mobility_wear_registries(policy_context=policy_context)
+        wear_type_rows = wear_type_rows_by_id(wear_type_registry)
+        target_ids = _sorted_tokens([target_id])
+        geometry_id = str(inputs.get("geometry_id", "")).strip()
+        if geometry_id:
+            target_ids = _sorted_tokens([target_id, geometry_id, str(_edge_id_by_geometry_id(state).get(geometry_id, "")).strip()])
+        summary = wear_summary_for_target(
+            wear_rows=mobility_wear_states,
+            target_ids=target_ids,
+            wear_type_rows=wear_type_rows,
+        )
+        mechanics_summary = summarize_stress_for_target(
+            target_id=str(target_id),
+            structural_graph_rows=structural_graphs,
+            structural_edge_rows=structural_edges,
+        )
+        snapshot_id = "inspection.mob.track.{}".format(
+            canonical_sha256({"target_id": target_id, "tick": int(current_tick), "intent_id": str(intent_id)})[:16]
+        )
+        snapshot_row = {
+            "schema_version": "1.0.0",
+            "snapshot_id": snapshot_id,
+            "tick": int(current_tick),
+            "target_id": target_id,
+            "kind": "track",
+            "summary": dict(summary),
+            "mechanics_summary": dict(mechanics_summary),
+            "deterministic_fingerprint": "",
+            "extensions": {"source_process_id": process_id},
+        }
+        snapshot_row["deterministic_fingerprint"] = canonical_sha256(dict(snapshot_row, deterministic_fingerprint=""))
+        state["mobility_inspection_snapshots"] = sorted(
+            [dict(row) for row in list(state.get("mobility_inspection_snapshots") or []) if isinstance(row, Mapping)]
+            + [snapshot_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("snapshot_id", ""))),
+        )
+        result_metadata = {
+            "snapshot_id": snapshot_id,
+            "target_id": target_id,
+            "critical_count": int(max(0, _as_int(summary.get("critical_count", 0), 0))),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.service_track":
+        target_id = str(inputs.get("edge_id", "")).strip() or str(inputs.get("geometry_id", "")).strip()
+        if not target_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.service_track requires edge_id or geometry_id",
+                "Provide deterministic edge_id or geometry_id.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        service_result = service_wear_rows(
+            wear_rows=mobility_wear_states,
+            target_id=target_id,
+            wear_type_ids=list(inputs.get("wear_type_ids") or ["wear.track", "wear.switch", "wear.signal"]),
+            reset_fraction_numerator=max(0, _as_int(inputs.get("reset_fraction_numerator", 1), 1)),
+            reset_fraction_denominator=max(1, _as_int(inputs.get("reset_fraction_denominator", 2), 2)),
+            current_tick=int(current_tick),
+        )
+        mobility_wear_states = normalize_wear_state_rows(list(service_result.get("wear_rows") or []))
+        required_materials = dict(
+            (str(key).strip(), max(0, _as_int(value, 0)))
+            for key, value in sorted((dict(inputs.get("required_materials") or {})).items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        )
+        logistics_node_id = str(inputs.get("logistics_node_id", "")).strip()
+        consumed_materials: Dict[str, int] = {}
+        if logistics_node_id and required_materials:
+            inventory_index = build_inventory_index(logistics_inventory_rows)
+            node_entry = dict(inventory_index.get(logistics_node_id) or {})
+            stocks = dict(node_entry.get("material_stocks") or {})
+            for material_id, requested in sorted(required_materials.items(), key=lambda item: str(item[0])):
+                current_mass = int(max(0, _as_int(stocks.get(material_id, 0), 0)))
+                consumed = int(min(current_mass, int(requested)))
+                consumed_materials[material_id] = int(consumed)
+                stocks[material_id] = int(max(0, current_mass - consumed))
+            node_entry["material_stocks"] = dict((key, int(stocks[key])) for key in sorted(stocks.keys()))
+            inventory_index[logistics_node_id] = node_entry
+            logistics_inventory_rows = inventory_rows_from_index(inventory_index)
+            _persist_logistics_state(
+                state,
+                manifests=logistics_manifests,
+                commitments=shipment_commitment_rows,
+                inventories=logistics_inventory_rows,
+                events=logistics_provenance_events,
+                runtime_state=logistics_runtime_state,
+            )
+        _persist_mobility_wear_state(
+            state,
+            mobility_wear_states=mobility_wear_states,
+            mobility_wear_pending_updates=mobility_wear_pending_updates,
+            mobility_maintenance_schedules=mobility_maintenance_schedules,
+            mobility_maintenance_due_events=mobility_maintenance_due_events,
+            mobility_wear_runtime_state=mobility_wear_runtime_state,
+        )
+        result_metadata = {
+            "target_id": target_id,
+            "serviced_rows": [dict(row) for row in list(service_result.get("serviced_rows") or []) if isinstance(row, Mapping)],
+            "consumed_materials": dict(consumed_materials),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.inspect_vehicle":
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        if not vehicle_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.inspect_vehicle requires vehicle_id",
+                "Provide deterministic vehicle_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.vehicle_id",
+            )
+        wear_type_registry, _ = _load_mobility_wear_registries(policy_context=policy_context)
+        wear_type_rows = wear_type_rows_by_id(wear_type_registry)
+        summary = wear_summary_for_target(
+            wear_rows=mobility_wear_states,
+            target_ids=[vehicle_id],
+            wear_type_rows=wear_type_rows,
+        )
+        vehicle_row = {}
+        for row in list(vehicles or []):
+            if not isinstance(row, Mapping):
+                continue
+            if str(row.get("vehicle_id", "")).strip() != vehicle_id:
+                continue
+            vehicle_row = dict(row)
+            break
+        structure_target_id = str(vehicle_row.get("parent_structure_instance_id", "")).strip() or vehicle_id
+        mechanics_summary = summarize_stress_for_target(
+            target_id=structure_target_id,
+            structural_graph_rows=structural_graphs,
+            structural_edge_rows=structural_edges,
+        )
+        snapshot_id = "inspection.mob.vehicle.{}".format(
+            canonical_sha256({"vehicle_id": vehicle_id, "tick": int(current_tick), "intent_id": str(intent_id)})[:16]
+        )
+        snapshot_row = {
+            "schema_version": "1.0.0",
+            "snapshot_id": snapshot_id,
+            "tick": int(current_tick),
+            "target_id": vehicle_id,
+            "kind": "vehicle",
+            "summary": dict(summary),
+            "mechanics_summary": dict(mechanics_summary),
+            "deterministic_fingerprint": "",
+            "extensions": {"source_process_id": process_id},
+        }
+        snapshot_row["deterministic_fingerprint"] = canonical_sha256(dict(snapshot_row, deterministic_fingerprint=""))
+        state["mobility_inspection_snapshots"] = sorted(
+            [dict(row) for row in list(state.get("mobility_inspection_snapshots") or []) if isinstance(row, Mapping)]
+            + [snapshot_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("snapshot_id", ""))),
+        )
+        result_metadata = {
+            "snapshot_id": snapshot_id,
+            "vehicle_id": vehicle_id,
+            "critical_count": int(max(0, _as_int(summary.get("critical_count", 0), 0))),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.service_vehicle":
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        if not vehicle_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.service_vehicle requires vehicle_id",
+                "Provide deterministic vehicle_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.vehicle_id",
+            )
+        service_result = service_wear_rows(
+            wear_rows=mobility_wear_states,
+            target_id=vehicle_id,
+            wear_type_ids=list(inputs.get("wear_type_ids") or ["wear.wheel", "wear.brake", "wear.engine"]),
+            reset_fraction_numerator=max(0, _as_int(inputs.get("reset_fraction_numerator", 1), 1)),
+            reset_fraction_denominator=max(1, _as_int(inputs.get("reset_fraction_denominator", 2), 2)),
+            current_tick=int(current_tick),
+        )
+        mobility_wear_states = normalize_wear_state_rows(list(service_result.get("wear_rows") or []))
+        required_materials = dict(
+            (str(key).strip(), max(0, _as_int(value, 0)))
+            for key, value in sorted((dict(inputs.get("required_materials") or {})).items(), key=lambda item: str(item[0]))
+            if str(key).strip()
+        )
+        logistics_node_id = str(inputs.get("logistics_node_id", "")).strip()
+        consumed_materials: Dict[str, int] = {}
+        if logistics_node_id and required_materials:
+            inventory_index = build_inventory_index(logistics_inventory_rows)
+            node_entry = dict(inventory_index.get(logistics_node_id) or {})
+            stocks = dict(node_entry.get("material_stocks") or {})
+            for material_id, requested in sorted(required_materials.items(), key=lambda item: str(item[0])):
+                current_mass = int(max(0, _as_int(stocks.get(material_id, 0), 0)))
+                consumed = int(min(current_mass, int(requested)))
+                consumed_materials[material_id] = int(consumed)
+                stocks[material_id] = int(max(0, current_mass - consumed))
+            node_entry["material_stocks"] = dict((key, int(stocks[key])) for key in sorted(stocks.keys()))
+            inventory_index[logistics_node_id] = node_entry
+            logistics_inventory_rows = inventory_rows_from_index(inventory_index)
+            _persist_logistics_state(
+                state,
+                manifests=logistics_manifests,
+                commitments=shipment_commitment_rows,
+                inventories=logistics_inventory_rows,
+                events=logistics_provenance_events,
+                runtime_state=logistics_runtime_state,
+            )
+        _persist_mobility_wear_state(
+            state,
+            mobility_wear_states=mobility_wear_states,
+            mobility_wear_pending_updates=mobility_wear_pending_updates,
+            mobility_maintenance_schedules=mobility_maintenance_schedules,
+            mobility_maintenance_due_events=mobility_maintenance_due_events,
+            mobility_wear_runtime_state=mobility_wear_runtime_state,
+        )
+        result_metadata = {
+            "vehicle_id": vehicle_id,
+            "serviced_rows": [dict(row) for row in list(service_result.get("serviced_rows") or []) if isinstance(row, Mapping)],
+            "consumed_materials": dict(consumed_materials),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.coupler_attach":
@@ -23901,6 +25675,14 @@ def execute_intent(
             vehicle_compatibility_results=vehicle_compatibility_results,
             vehicle_events=vehicle_events,
         )
+        _persist_mobility_wear_state(
+            state,
+            mobility_wear_states=mobility_wear_states,
+            mobility_wear_pending_updates=mobility_wear_pending_updates,
+            mobility_maintenance_schedules=mobility_maintenance_schedules,
+            mobility_maintenance_due_events=mobility_maintenance_due_events,
+            mobility_wear_runtime_state=mobility_wear_runtime_state,
+        )
         state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
         _ensure_travel_event_rows(state)
         result_metadata = {
@@ -24047,6 +25829,12 @@ def execute_intent(
             for row in list(vehicles or [])
             if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
         )
+        wear_type_registry, wear_accumulation_policy_registry = _load_mobility_wear_registries(
+            policy_context=policy_context
+        )
+        wear_type_rows = wear_type_rows_by_id(wear_type_registry)
+        wear_accumulation_policy_rows = wear_accumulation_policy_rows_by_id(wear_accumulation_policy_registry)
+        wear_rows_by_key = wear_rows_by_target_and_type(mobility_wear_states)
         edge_id_by_geometry = _edge_id_by_geometry_id(state)
         signal_caution_speed_cap_mm_per_tick = int(
             max(1, _as_int(inputs.get("signal_caution_speed_cap_mm_per_tick", max(1, default_speed_cap_mm_per_tick // 2)), max(1, default_speed_cap_mm_per_tick // 2)))
@@ -24057,6 +25845,7 @@ def execute_intent(
         deferred_vehicle_ids: List[str] = []
         derailed_vehicle_ids: List[str] = []
         stochastic_derail_rows: List[dict] = []
+        micro_wear_updates: List[dict] = []
         instrument_rows_by_vehicle: Dict[str, dict] = {}
         event_seq = int(len(list(travel_events or [])))
         for vehicle_id in sorted(candidate_vehicle_ids):
@@ -24172,8 +25961,106 @@ def execute_intent(
                     event_seq += 1
 
             radius_mm = int(max(1, curvature_radius_mm(metric_row)))
-            track_wear_permille = int(max(100, _as_int((dict(metric_row.get("extensions") or {})).get("track_wear_permille", 1000), 1000)))
-            maintenance_permille = int(max(100, _as_int((dict(vehicle_rows_by_id.get(vehicle_id, {}) or {}).get("extensions") or {}).get("maintenance_permille", 1000), 1000)))
+            edge_id = str(edge_id_by_geometry.get(str(next_micro_row.get("geometry_id", "")).strip(), "")).strip()
+            wear_target_id = edge_id or str(next_micro_row.get("geometry_id", "")).strip()
+            track_wear_permille = int(
+                max(
+                    100,
+                    track_wear_modifier_permille(
+                        target_id=wear_target_id,
+                        wear_rows=mobility_wear_states,
+                        wear_type_rows=wear_type_rows,
+                    ),
+                )
+            )
+            engine_wear_row = dict(wear_rows_by_key.get((vehicle_id, "wear.engine")) or {})
+            engine_wear_type = dict(wear_type_rows.get("wear.engine") or {})
+            engine_ratio_permille = int(
+                max(
+                    0,
+                    (int(max(0, _as_int(engine_wear_row.get("accumulated_value", 0), 0))) * 1000)
+                    // int(max(1, _as_int(engine_wear_type.get("hazard_threshold", 90000), 90000))),
+                )
+            )
+            maintenance_permille = int(max(200, 1000 - min(800, (int(engine_ratio_permille) * 400) // 1000)))
+            environment_scale_permille = int(_wear_environment_scale_permille(field_row))
+            vehicle_row = dict(vehicle_rows_by_id.get(vehicle_id) or {})
+            load_target_id = (
+                str(vehicle_row.get("parent_structure_instance_id", "")).strip()
+                or str(vehicle_id)
+            )
+            load_scale_permille = int(_wear_load_scale_permille_for_target(state=state, target_id=load_target_id))
+            speed_abs = int(abs(_as_int(next_micro_row.get("velocity", 0), 0)))
+            accel_value = int(_as_int(next_micro_row.get("acceleration", 0), 0))
+            brake_permille = int(max(0, _as_int(control_input.get("brake_permille", 0), 0)))
+            if wear_target_id:
+                micro_wear_updates.append(
+                    {
+                        "target_id": wear_target_id,
+                        "wear_type_id": "wear.track",
+                        "increment": int(max(1, speed_abs // 120)) if speed_abs > 0 else None,
+                        "cycles": 1,
+                        "dt_ticks": int(dt_ticks),
+                        "environment_scale_permille": int(environment_scale_permille),
+                        "load_scale_permille": int(load_scale_permille),
+                        "extensions": {
+                            "source_process_id": process_id,
+                            "vehicle_id": vehicle_id,
+                            "edge_id": edge_id or None,
+                            "geometry_id": str(next_micro_row.get("geometry_id", "")).strip() or None,
+                            "source": "mobility_micro_tick",
+                        },
+                    }
+                )
+            micro_wear_updates.append(
+                {
+                    "target_id": vehicle_id,
+                    "wear_type_id": "wear.wheel",
+                    "increment": int(max(1, speed_abs // 150)) if speed_abs > 0 else None,
+                    "cycles": 1,
+                    "dt_ticks": int(dt_ticks),
+                    "environment_scale_permille": int(environment_scale_permille),
+                    "load_scale_permille": int(load_scale_permille),
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "vehicle_id": vehicle_id,
+                        "source": "mobility_micro_tick",
+                    },
+                }
+            )
+            micro_wear_updates.append(
+                {
+                    "target_id": vehicle_id,
+                    "wear_type_id": "wear.engine",
+                    "increment": int(max(1, abs(accel_value) // 12)) if accel_value != 0 else None,
+                    "cycles": 0,
+                    "dt_ticks": int(dt_ticks),
+                    "environment_scale_permille": int(environment_scale_permille),
+                    "load_scale_permille": int(load_scale_permille),
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "vehicle_id": vehicle_id,
+                        "source": "mobility_micro_tick",
+                    },
+                }
+            )
+            if brake_permille > 0 or accel_value < 0:
+                micro_wear_updates.append(
+                    {
+                        "target_id": vehicle_id,
+                        "wear_type_id": "wear.brake",
+                        "increment": int(max(1, (brake_permille // 120) + (abs(min(0, accel_value)) // 10))),
+                        "cycles": 1,
+                        "dt_ticks": int(dt_ticks),
+                        "environment_scale_permille": int(environment_scale_permille),
+                        "load_scale_permille": int(load_scale_permille),
+                        "extensions": {
+                            "source_process_id": process_id,
+                            "vehicle_id": vehicle_id,
+                            "source": "mobility_micro_tick.brake",
+                        },
+                    }
+                )
             derail_eval = evaluate_derailment(
                 velocity_mm_per_tick=int(_as_int(next_micro_row.get("velocity", 0), 0)),
                 radius_mm=int(radius_mm),
@@ -24389,6 +26276,163 @@ def execute_intent(
                 tick=int(current_tick),
             )
 
+        if micro_wear_updates:
+            max_wear_updates_per_tick = int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_wear_updates_per_tick",
+                            (dict(policy_context or {})).get("mobility_wear_max_updates_per_tick", 256),
+                        ),
+                        256,
+                    ),
+                )
+            )
+            applied_wear = apply_wear_updates(
+                wear_rows=mobility_wear_states,
+                update_rows=micro_wear_updates,
+                wear_type_rows=wear_type_rows,
+                accumulation_policy_rows=wear_accumulation_policy_rows,
+                current_tick=int(current_tick),
+                max_updates=int(max_wear_updates_per_tick),
+            )
+            mobility_wear_states = normalize_wear_state_rows(list(applied_wear.get("wear_rows") or []))
+            sorted_updates = sorted(
+                (dict(row) for row in list(micro_wear_updates or []) if isinstance(row, Mapping)),
+                key=lambda row: (str(row.get("target_id", "")), str(row.get("wear_type_id", ""))),
+            )
+            if len(sorted_updates) > int(max_wear_updates_per_tick):
+                mobility_wear_pending_updates = list(mobility_wear_pending_updates or []) + list(
+                    sorted_updates[int(max_wear_updates_per_tick):]
+                )
+            threshold_crossings = [
+                dict(row)
+                for row in list(applied_wear.get("threshold_crossings") or [])
+                if isinstance(row, Mapping)
+            ]
+            if threshold_crossings:
+                wear_event_seq = int(len(list(travel_events or [])))
+                for crossing in list(threshold_crossings):
+                    target_id = str(crossing.get("target_id", "")).strip()
+                    wear_type_id = str(crossing.get("wear_type_id", "")).strip()
+                    if (not target_id) or (not wear_type_id):
+                        continue
+                    if wear_type_id in {"wear.engine", "wear.wheel", "wear.brake"}:
+                        motion_row = dict(motion_rows_by_vehicle.get(target_id) or {})
+                        itinerary_id = str((dict(motion_row.get("macro_state") or {})).get("itinerary_id", "")).strip() or "itinerary.none"
+                        reason_code = _failure_reason_for_wear_type(wear_type_id)
+                        failure_event = build_travel_event(
+                            event_id=deterministic_travel_event_id(
+                                vehicle_id=target_id,
+                                itinerary_id=itinerary_id,
+                                kind="incident_stub",
+                                tick=int(current_tick),
+                                sequence=int(wear_event_seq),
+                            ),
+                            tick=int(current_tick),
+                            vehicle_id=target_id,
+                            itinerary_id=itinerary_id,
+                            kind="incident_stub",
+                            details={
+                                "reason_code": reason_code,
+                                "wear_type_id": wear_type_id,
+                                "target_id": target_id,
+                                "wear_ratio_permille": int(max(0, _as_int(crossing.get("wear_ratio_permille", 0), 0))),
+                            },
+                            extensions={"source_process_id": process_id},
+                        )
+                        travel_events = _upsert_row_by_id(travel_events, "event_id", failure_event)
+                        wear_event_seq += 1
+                        vehicle_events = _upsert_row_by_id(
+                            vehicle_events,
+                            "event_id",
+                            _vehicle_event_row(
+                                vehicle_id=target_id,
+                                event_kind="mob_failure",
+                                tick=int(current_tick),
+                                process_id=process_id,
+                                intent_id=str(intent_id),
+                                extensions={
+                                    "reason_code": reason_code,
+                                    "wear_type_id": wear_type_id,
+                                    "target_id": target_id,
+                                },
+                            ),
+                        )
+                    elif wear_type_id == "wear.track":
+                        culprit_vehicle_id = "vehicle.unknown"
+                        culprit_itinerary_id = "itinerary.none"
+                        for motion_vehicle_id, motion_row in sorted(motion_rows_by_vehicle.items(), key=lambda item: str(item[0])):
+                            macro = dict(motion_row.get("macro_state") or {}) if isinstance(motion_row.get("macro_state"), Mapping) else {}
+                            if str(macro.get("current_edge_id", "")).strip() != target_id:
+                                continue
+                            culprit_vehicle_id = str(motion_vehicle_id)
+                            culprit_itinerary_id = str(macro.get("itinerary_id", "")).strip() or "itinerary.none"
+                            break
+                        track_event = build_travel_event(
+                            event_id=deterministic_travel_event_id(
+                                vehicle_id=culprit_vehicle_id,
+                                itinerary_id=culprit_itinerary_id,
+                                kind="incident_stub",
+                                tick=int(current_tick),
+                                sequence=int(wear_event_seq),
+                            ),
+                            tick=int(current_tick),
+                            vehicle_id=culprit_vehicle_id,
+                            itinerary_id=culprit_itinerary_id,
+                            kind="incident_stub",
+                            details={
+                                "reason_code": "incident.derailment.track_wear",
+                                "wear_type_id": wear_type_id,
+                                "edge_id": target_id,
+                                "wear_ratio_permille": int(max(0, _as_int(crossing.get("wear_ratio_permille", 0), 0))),
+                            },
+                            extensions={"source_process_id": process_id},
+                        )
+                        travel_events = _upsert_row_by_id(travel_events, "event_id", track_event)
+                        wear_event_seq += 1
+            if str(applied_wear.get("budget_outcome", "complete")) == "degraded":
+                _append_fidelity_decision_entries(
+                    state,
+                    entries=[
+                        _geometry_decision_entry(
+                            geometry_id=str(row.get("target_id", "")).strip() or "wear.unknown",
+                            intent_id=str(intent_id),
+                            process_id=process_id,
+                            tick=int(current_tick),
+                            reason="degrade.mob.wear_budget",
+                            resolved_level="micro",
+                            cost_allocated=0,
+                            extensions={
+                                "wear_type_id": str(row.get("wear_type_id", "")).strip() or None,
+                                "max_wear_updates_per_tick": int(max_wear_updates_per_tick),
+                            },
+                        )
+                        for row in list(sorted_updates[int(max_wear_updates_per_tick):])[:128]
+                    ],
+                    process_id=process_id,
+                    tick=int(current_tick),
+                )
+            mobility_wear_runtime_state = dict(mobility_wear_runtime_state or {})
+            mobility_wear_runtime_state["last_tick"] = int(current_tick)
+            mobility_wear_runtime_state["last_budget_outcome"] = str(applied_wear.get("budget_outcome", "complete"))
+            mobility_wear_runtime_state["last_processed_update_count"] = int(
+                len(list(applied_wear.get("processed_update_keys") or []))
+            )
+            mobility_wear_runtime_state["last_deferred_update_count"] = int(
+                len(list(applied_wear.get("deferred_update_keys") or []))
+            )
+            mobility_wear_runtime_state["last_threshold_crossing_count"] = int(
+                len(
+                    [
+                        row
+                        for row in list(applied_wear.get("threshold_crossings") or [])
+                        if isinstance(row, Mapping)
+                    ]
+                )
+            )
+
         vehicle_motion_states = normalize_motion_state_rows(
             [dict(motion_rows_by_vehicle[key]) for key in sorted(motion_rows_by_vehicle.keys())]
         )
@@ -24460,6 +26504,9 @@ def execute_intent(
             or "derail.strict_threshold",
             "active_consist_vehicle_count": int(len(coupling_rows_by_vehicle)),
             "signal_override_count": int(len(signal_decision_rows)),
+            "wear_update_count": int(len(micro_wear_updates)),
+            "wear_row_count": int(len(mobility_wear_states)),
+            "wear_pending_update_count": int(len(mobility_wear_pending_updates)),
         }
         result_metadata = {
             "processed_vehicle_ids": list(_sorted_tokens(processed_vehicle_ids)),
@@ -24477,6 +26524,11 @@ def execute_intent(
             "derail_policy_id": str(derail_policy.get("derail_policy_id", "derail.strict_threshold")).strip()
             or "derail.strict_threshold",
             "signal_override_count": int(len(signal_decision_rows)),
+            "mobility_wear_row_count": int(len(mobility_wear_states)),
+            "mobility_wear_pending_update_count": int(len(mobility_wear_pending_updates)),
+            "mobility_wear_threshold_crossing_count": int(
+                max(0, _as_int((dict(mobility_wear_runtime_state or {})).get("last_threshold_crossing_count", 0), 0))
+            ),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mobility_free_tick":
