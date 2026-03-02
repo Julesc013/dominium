@@ -3298,6 +3298,176 @@ def _mobility_registry_rows(
     return vehicle_class_rows, constraint_type_rows, signal_type_rows, speed_policy_rows, errors
 
 
+def _guide_geometry_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _geometry_type_record, geometry_type_rows_raw, geometry_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/geometry_type_registry.json",
+        expected_schema_id="dominium.registry.geometry_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="geometry_types",
+    )
+    if geometry_type_load_errors:
+        return [], [], [], geometry_type_load_errors
+
+    _junction_type_record, junction_type_rows_raw, junction_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/junction_type_registry.json",
+        expected_schema_id="dominium.registry.junction_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="junction_types",
+    )
+    if junction_type_load_errors:
+        return [], [], [], junction_type_load_errors
+
+    _snap_policy_record, snap_policy_rows_raw, snap_policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/geometry_snap_policy_registry.json",
+        expected_schema_id="dominium.registry.geometry_snap_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="snap_policies",
+    )
+    if snap_policy_load_errors:
+        return [], [], [], snap_policy_load_errors
+
+    geometry_type_rows: List[dict] = []
+    geometry_type_seen = set()
+    for entry in sorted(geometry_type_rows_raw, key=lambda row: str((row or {}).get("geometry_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_geometry_type_entry",
+                    "message": "geometry type entry must be object",
+                    "path": "$.geometry_types",
+                }
+            )
+            continue
+        geometry_type_id = str(entry.get("geometry_type_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not geometry_type_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_geometry_type_entry",
+                    "message": "geometry type entry missing required fields",
+                    "path": "$.geometry_types",
+                }
+            )
+            continue
+        if geometry_type_id in geometry_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_geometry_type_id",
+                    "message": "duplicate geometry_type_id '{}'".format(geometry_type_id),
+                    "path": "$.geometry_types.geometry_type_id",
+                }
+            )
+            continue
+        geometry_type_seen.add(geometry_type_id)
+        geometry_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "geometry_type_id": geometry_type_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    geometry_type_rows = sorted(geometry_type_rows, key=lambda row: str(row.get("geometry_type_id", "")))
+
+    junction_type_rows: List[dict] = []
+    junction_type_seen = set()
+    for entry in sorted(junction_type_rows_raw, key=lambda row: str((row or {}).get("junction_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_junction_type_entry",
+                    "message": "junction type entry must be object",
+                    "path": "$.junction_types",
+                }
+            )
+            continue
+        junction_type_id = str(entry.get("junction_type_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not junction_type_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_junction_type_entry",
+                    "message": "junction type entry missing required fields",
+                    "path": "$.junction_types",
+                }
+            )
+            continue
+        if junction_type_id in junction_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_junction_type_id",
+                    "message": "duplicate junction_type_id '{}'".format(junction_type_id),
+                    "path": "$.junction_types.junction_type_id",
+                }
+            )
+            continue
+        junction_type_seen.add(junction_type_id)
+        junction_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "junction_type_id": junction_type_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    junction_type_rows = sorted(junction_type_rows, key=lambda row: str(row.get("junction_type_id", "")))
+
+    snap_policy_rows: List[dict] = []
+    snap_policy_seen = set()
+    for entry in sorted(snap_policy_rows_raw, key=lambda row: str((row or {}).get("snap_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_geometry_snap_policy_entry",
+                    "message": "geometry snap policy entry must be object",
+                    "path": "$.snap_policies",
+                }
+            )
+            continue
+        snap_policy_id = str(entry.get("snap_policy_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not snap_policy_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_geometry_snap_policy_entry",
+                    "message": "geometry snap policy entry missing required fields",
+                    "path": "$.snap_policies",
+                }
+            )
+            continue
+        if snap_policy_id in snap_policy_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_geometry_snap_policy_id",
+                    "message": "duplicate snap_policy_id '{}'".format(snap_policy_id),
+                    "path": "$.snap_policies.snap_policy_id",
+                }
+            )
+            continue
+        snap_policy_seen.add(snap_policy_id)
+        snap_policy_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "snap_policy_id": snap_policy_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    snap_policy_rows = sorted(snap_policy_rows, key=lambda row: str(row.get("snap_policy_id", "")))
+
+    return geometry_type_rows, junction_type_rows, snap_policy_rows, errors
+
+
 def _task_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -11141,6 +11311,14 @@ def compile_bundle(
         repo_root=repo_root,
     )
     (
+        geometry_type_rows,
+        junction_type_rows,
+        geometry_snap_policy_rows,
+        geometry_registry_errors,
+    ) = _guide_geometry_registry_rows(
+        repo_root=repo_root,
+    )
+    (
         task_type_rows,
         progress_model_rows,
         task_registry_errors,
@@ -11514,6 +11692,7 @@ def compile_bundle(
         + action_surface_registry_errors
         + pose_registry_errors
         + mobility_registry_errors
+        + geometry_registry_errors
         + task_registry_errors
         + machine_registry_errors
         + civilisation_registry_errors
@@ -12035,6 +12214,27 @@ def compile_bundle(
             "control_bindings": control_binding_rows,
         }
     )
+    geometry_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "geometry_types": geometry_type_rows,
+        }
+    )
+    junction_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "junction_types": junction_type_rows,
+        }
+    )
+    geometry_snap_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "snap_policies": geometry_snap_policy_rows,
+        }
+    )
     mobility_vehicle_class_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -12553,6 +12753,12 @@ def compile_bundle(
         "posture_registry": ("posture_registry", posture_payload),
         "mount_tag_registry": ("mount_tag_registry", mount_tag_payload),
         "control_binding_registry": ("control_binding_registry", control_binding_payload),
+        "geometry_type_registry": ("geometry_type_registry", geometry_type_payload),
+        "junction_type_registry": ("junction_type_registry", junction_type_payload),
+        "geometry_snap_policy_registry": (
+            "geometry_snap_policy_registry",
+            geometry_snap_policy_payload,
+        ),
         "mobility_vehicle_class_registry": ("mobility_vehicle_class_registry", mobility_vehicle_class_payload),
         "mobility_constraint_type_registry": (
             "mobility_constraint_type_registry",
@@ -12701,6 +12907,9 @@ def compile_bundle(
         "posture_registry",
         "mount_tag_registry",
         "control_binding_registry",
+        "geometry_type_registry",
+        "junction_type_registry",
+        "geometry_snap_policy_registry",
         "mobility_vehicle_class_registry",
         "mobility_constraint_type_registry",
         "mobility_signal_type_registry",
@@ -12857,6 +13066,9 @@ def compile_bundle(
             "posture_registry_hash": registry_hashes["posture_registry_hash"],
             "mount_tag_registry_hash": registry_hashes["mount_tag_registry_hash"],
             "control_binding_registry_hash": registry_hashes["control_binding_registry_hash"],
+            "geometry_type_registry_hash": registry_hashes["geometry_type_registry_hash"],
+            "junction_type_registry_hash": registry_hashes["junction_type_registry_hash"],
+            "geometry_snap_policy_registry_hash": registry_hashes["geometry_snap_policy_registry_hash"],
             "mobility_vehicle_class_registry_hash": registry_hashes["mobility_vehicle_class_registry_hash"],
             "mobility_constraint_type_registry_hash": registry_hashes["mobility_constraint_type_registry_hash"],
             "mobility_signal_type_registry_hash": registry_hashes["mobility_signal_type_registry_hash"],

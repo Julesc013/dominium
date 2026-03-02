@@ -96,6 +96,9 @@ REGISTRY_HASH_KEY_MAP = {
     "posture_registry_hash": "posture_registry",
     "mount_tag_registry_hash": "mount_tag_registry",
     "control_binding_registry_hash": "control_binding_registry",
+    "geometry_type_registry_hash": "geometry_type_registry",
+    "junction_type_registry_hash": "junction_type_registry",
+    "geometry_snap_policy_registry_hash": "geometry_snap_policy_registry",
     "mobility_vehicle_class_registry_hash": "mobility_vehicle_class_registry",
     "mobility_constraint_type_registry_hash": "mobility_constraint_type_registry",
     "mobility_signal_type_registry_hash": "mobility_signal_type_registry",
@@ -218,6 +221,9 @@ REGISTRY_FILE_MAP = {
     "posture_registry_hash": "posture.registry.json",
     "mount_tag_registry_hash": "mount_tag.registry.json",
     "control_binding_registry_hash": "control_binding.registry.json",
+    "geometry_type_registry_hash": "geometry_type.registry.json",
+    "junction_type_registry_hash": "junction_type.registry.json",
+    "geometry_snap_policy_registry_hash": "geometry_snap_policy.registry.json",
     "mobility_vehicle_class_registry_hash": "mobility_vehicle_class.registry.json",
     "mobility_constraint_type_registry_hash": "mobility_constraint_type.registry.json",
     "mobility_signal_type_registry_hash": "mobility_signal_type.registry.json",
@@ -1440,6 +1446,30 @@ def boot_session_spec(
     )
     if control_binding_registry_error:
         return control_binding_registry_error
+    geometry_type_registry, geometry_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["geometry_type_registry_hash"],
+        expected_hash=str(registries.get("geometry_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if geometry_type_registry_error:
+        return geometry_type_registry_error
+    junction_type_registry, junction_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["junction_type_registry_hash"],
+        expected_hash=str(registries.get("junction_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if junction_type_registry_error:
+        return junction_type_registry_error
+    geometry_snap_policy_registry, geometry_snap_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["geometry_snap_policy_registry_hash"],
+        expected_hash=str(registries.get("geometry_snap_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if geometry_snap_policy_registry_error:
+        return geometry_snap_policy_registry_error
     mobility_vehicle_class_registry, mobility_vehicle_class_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["mobility_vehicle_class_registry_hash"],
@@ -2155,6 +2185,9 @@ def boot_session_spec(
                 "posture_registry": posture_registry,
                 "mount_tag_registry": mount_tag_registry,
                 "control_binding_registry": control_binding_registry,
+                "geometry_type_registry": geometry_type_registry,
+                "junction_type_registry": junction_type_registry,
+                "geometry_snap_policy_registry": geometry_snap_policy_registry,
                 "mobility_vehicle_class_registry": mobility_vehicle_class_registry,
                 "mobility_constraint_type_registry": mobility_constraint_type_registry,
                 "mobility_signal_type_registry": mobility_signal_type_registry,
@@ -2288,6 +2321,9 @@ def boot_session_spec(
                 "posture_registry": posture_registry,
                 "mount_tag_registry": mount_tag_registry,
                 "control_binding_registry": control_binding_registry,
+                "geometry_type_registry": geometry_type_registry,
+                "junction_type_registry": junction_type_registry,
+                "geometry_snap_policy_registry": geometry_snap_policy_registry,
                 "mobility_vehicle_class_registry": mobility_vehicle_class_registry,
                 "mobility_constraint_type_registry": mobility_constraint_type_registry,
                 "mobility_signal_type_registry": mobility_signal_type_registry,
@@ -2692,6 +2728,9 @@ def boot_session_spec(
             "posture_registry": posture_registry,
             "mount_tag_registry": mount_tag_registry,
             "control_binding_registry": control_binding_registry,
+            "geometry_type_registry": geometry_type_registry,
+            "junction_type_registry": junction_type_registry,
+            "geometry_snap_policy_registry": geometry_snap_policy_registry,
             "mobility_vehicle_class_registry": mobility_vehicle_class_registry,
             "mobility_constraint_type_registry": mobility_constraint_type_registry,
             "mobility_signal_type_registry": mobility_signal_type_registry,
