@@ -15,6 +15,7 @@ from .aggregation import (
 )
 from .transport import (
     execute_channel_transport_tick,
+    REFUSAL_SIG_NONESSENTIAL_SEND,
     REFUSAL_SIGNAL_ARTIFACT_INVALID,
     REFUSAL_SIGNAL_INVALID,
     REFUSAL_SIGNAL_ROUTE_UNAVAILABLE,
@@ -33,6 +34,7 @@ from .transport import (
     deterministic_message_queue_entry_id,
     deterministic_message_delivery_event_id,
     deterministic_signal_message_envelope_id,
+    apply_sig_budget_degradation,
     encryption_policy_rows_by_id,
     enqueue_signal_envelope,
     loss_policy_rows_by_id,
@@ -100,6 +102,7 @@ __all__ = [
     "address_from_recipient_address",
     "active_jamming_rows_by_channel_id",
     "attenuation_policy_rows_by_id",
+    "apply_sig_budget_degradation",
     "addressing_policy_rows_by_id",
     "aggregation_policy_rows_by_id",
     "build_address",
@@ -108,6 +111,7 @@ __all__ = [
     "deterministic_address_id",
     "deterministic_message_queue_entry_id",
     "execute_channel_transport_tick",
+    "REFUSAL_SIG_NONESSENTIAL_SEND",
     "REFUSAL_SIGNAL_ARTIFACT_INVALID",
     "normalize_address_rows",
     "normalize_schedule_rows",

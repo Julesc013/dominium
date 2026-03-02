@@ -1,6 +1,10 @@
 """SIG-0 transport exports."""
 
 from .channel_executor import execute_channel_transport_tick
+from .degradation_policy import (
+    REFUSAL_SIG_NONESSENTIAL_SEND,
+    apply_sig_budget_degradation,
+)
 from .transport_engine import (
     REFUSAL_SIGNAL_ARTIFACT_INVALID,
     REFUSAL_SIGNAL_INVALID,
@@ -44,6 +48,8 @@ from .transport_engine import (
 
 __all__ = [
     "execute_channel_transport_tick",
+    "REFUSAL_SIG_NONESSENTIAL_SEND",
+    "apply_sig_budget_degradation",
     "REFUSAL_SIGNAL_ARTIFACT_INVALID",
     "REFUSAL_SIGNAL_INVALID",
     "REFUSAL_SIGNAL_ROUTE_UNAVAILABLE",
