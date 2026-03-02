@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Real World Affordance Matrix Schema",
+  "version": "1.0.0",
+  "description": "Governance metadata for canonical affordance coverage across series and substrates.",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "affordances",
+    "series_affordance_coverage"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.meta.real_world_affordance_matrix"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "affordances": {
+      "type": "array",
+      "minItems": 9,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "substrates",
+          "series_implemented",
+          "series_planned",
+          "tiers",
+          "gaps"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "matter_transformation",
+              "motion_force_transmission",
+              "containment_interfaces",
+              "measurement_verification",
+              "communication_coordination",
+              "institutions_contracts",
+              "environment_living_systems",
+              "time_synchronization",
+              "safety_protection"
+            ]
+          },
+          "substrates": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "series_implemented": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "series_planned": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "tiers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "macro",
+                "meso",
+                "micro"
+              ]
+            }
+          },
+          "gaps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "series_affordance_coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "series_id",
+          "affordance_ids",
+          "tiers"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "series_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "affordance_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "matter_transformation",
+                "motion_force_transmission",
+                "containment_interfaces",
+                "measurement_verification",
+                "communication_coordination",
+                "institutions_contracts",
+                "environment_living_systems",
+                "time_synchronization",
+                "safety_protection"
+              ]
+            }
+          },
+          "tiers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "macro",
+                "meso",
+                "micro"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

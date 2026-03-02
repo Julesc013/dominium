@@ -1071,6 +1071,13 @@
         "1.0.0"
       ]
     },
+    "real_world_affordance_matrix": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "action_surface": {
       "current_version": "1.0.0",
       "migrations": {},
