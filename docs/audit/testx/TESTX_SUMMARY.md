@@ -1,11 +1,13 @@
 Status: DERIVED
-Last Reviewed: 2026-02-14
+Last Reviewed: 2026-03-01
 Supersedes: none
 Superseded By: none
 
-# XStack Test Group Summary
+# TestX Suite Summary
 
-- group_id: `testx.group.core.invariants`
-- returncode: `0`
-- selected_test_count: `22`
-- suite_passed: `true`
+- suite_id: `testx_verify`
+- result: `fail`
+- selected_tests: `10`
+- required_test_tags: `determinism, docs, identity, invariant, performance, regression, security, workspace`
+- warnings:
+  - `required_tests_missing`
