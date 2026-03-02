@@ -11839,6 +11839,31 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-TRAVEL-THROUGH-COMMITMENTS",
             )
         )
+    if (
+        'elif process_id == "process.mobility_micro_tick":' not in runtime_text
+        or "roi_vehicle_ids" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.mobility_micro_tick",
+                message="micro constrained motion must run through process.mobility_micro_tick with explicit ROI gating",
+                rule_id="INV-MICRO-MOTION-ROI-ONLY",
+            )
+        )
+    if 'elif process_id == "process.mob_derail":' not in runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.mob_derail",
+                message="derailment transitions must route through process.mob_derail",
+                rule_id="INV-DERAILMENT-PROCESS-ONLY",
+            )
+        )
     if not any(token in runtime_text for token in guide_geometry_tokens):
         findings.append(
             _finding(
@@ -11883,6 +11908,105 @@ def _append_mobility_invariant_findings(
                     snippet=snippet[:140],
                     message="silent vehicle position/progress mutation outside process runtime is forbidden",
                     rule_id="INV-NO-SILENT-POSITION-UPDATES",
+                )
+            )
+            break
+
+    micro_mutation_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']micro_motion_states[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']coupling_constraints[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    micro_mutation_allowed = {
+        process_runtime_rel,
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in micro_mutation_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in micro_mutation_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="micro motion truth writes must happen through mobility micro process paths only",
+                    rule_id="INV-MICRO-MOTION-ROI-ONLY",
+                )
+            )
+            break
+
+    derail_bypass_pattern = re.compile(r"\b(?:incident\.derailment|vehicle_derailed)\b", re.IGNORECASE)
+    derail_allowed_files = {
+        process_runtime_rel,
+        "src/mobility/micro/constrained_motion_solver.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in derail_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not derail_bypass_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="derailment signaling outside process.mob_derail runtime path is forbidden",
+                    rule_id="INV-DERAILMENT-PROCESS-ONLY",
+                )
+            )
+            break
+
+    wallclock_motion_pattern = re.compile(r"\b(?:time\.time|datetime\.now|perf_counter|monotonic)\s*\(", re.IGNORECASE)
+    wallclock_scan_prefixes = (
+        "src/mobility/",
+        "tools/xstack/sessionx/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(wallclock_scan_prefixes):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not wallclock_motion_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="wall-clock APIs are forbidden in mobility motion paths; use tick inputs only",
+                    rule_id="INV-NO-WALLCLOCK-IN-MOTION",
                 )
             )
             break
