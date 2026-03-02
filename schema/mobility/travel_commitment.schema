@@ -1,0 +1,25 @@
+SCHEMA: mobility/travel_commitment.schema
+schema_id: dominium.schema.mobility.travel_commitment
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic commitment row for MOB-4 macro travel lifecycle.
+
+REQUIRED SHAPE:
+record travel_commitment
+  required:
+    - schema_version: semver
+    - commitment_id: id
+    - vehicle_id: id
+    - itinerary_id: id
+    - kind: enum(depart|arrive|waypoint)
+    - scheduled_tick: int
+    - status: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Travel execution mutates through commitment lifecycle transitions.
+- Commitment identity and ordering are deterministic.
+- No silent vehicle motion updates outside commitment/event surfaces.

@@ -13,6 +13,12 @@
       },
       {
         "schema_version": "1.0.0",
+        "speed_policy_id": "speed_policy.conservative",
+        "schema_ref": "dominium.schema.mobility.speed_policy.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "speed_policy_id": "speed_policy.spec_based",
         "schema_ref": "dominium.schema.mobility.speed_policy.stub@1.0.0",
         "extensions": {}

@@ -1,0 +1,25 @@
+SCHEMA: mobility/travel_event.schema
+schema_id: dominium.schema.mobility.travel_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic event stream row for MOB-4 macro travel watchability and reenactment.
+
+REQUIRED SHAPE:
+record travel_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - tick: int
+    - vehicle_id: id
+    - itinerary_id: id
+    - kind: enum(depart|arrive|edge_enter|edge_exit|delay|incident_stub)
+    - details: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Event ordering is deterministic (`tick`, then `event_id`).
+- Travel event records are append-only provenance artifacts.
+- Details payload remains bounded and inspectable.

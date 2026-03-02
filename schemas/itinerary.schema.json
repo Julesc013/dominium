@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Itinerary Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-4 macro travel itinerary row.",
+  "x-doc-ref": [
+    "docs/mobility/MACRO_TRAVEL_MODEL.md",
+    "docs/audit/MACRO_TRAVEL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "itinerary_id",
+    "vehicle_id",
+    "route_edge_ids",
+    "route_node_ids",
+    "departure_tick",
+    "estimated_arrival_tick",
+    "speed_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "itinerary_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "route_edge_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "route_node_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "departure_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "estimated_arrival_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "speed_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "itinerary_id": "itinerary.vehicle.demo.001",
+      "vehicle_id": "vehicle.demo.001",
+      "route_edge_ids": [
+        "edge.mob.demo.001",
+        "edge.mob.demo.002"
+      ],
+      "route_node_ids": [
+        "node.mob.demo.a",
+        "node.mob.demo.b",
+        "node.mob.demo.c"
+      ],
+      "departure_tick": 100,
+      "estimated_arrival_tick": 164,
+      "speed_policy_id": "speed_policy.spec_based",
+      "deterministic_fingerprint": "42f0f808ce3de2a29f7c2f81e12020f16f2df248f9a38373cf44bb3f01793b2e",
+      "extensions": {}
+    }
+  ]
+}

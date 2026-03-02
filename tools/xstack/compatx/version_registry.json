@@ -1113,6 +1113,27 @@
         "1.0.0"
       ]
     },
+    "itinerary": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "travel_commitment": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "travel_event": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "pose_slot": {
       "current_version": "1.0.0",
       "migrations": {},
