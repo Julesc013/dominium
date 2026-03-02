@@ -1,6 +1,7 @@
 """SIG-0 signal substrate exports."""
 
 from .transport import (
+    execute_channel_transport_tick,
     REFUSAL_SIGNAL_INVALID,
     REFUSAL_SIGNAL_ROUTE_UNAVAILABLE,
     SignalTransportError,
@@ -28,6 +29,7 @@ from .transport import (
 )
 
 __all__ = [
+    "execute_channel_transport_tick",
     "REFUSAL_SIGNAL_INVALID",
     "REFUSAL_SIGNAL_ROUTE_UNAVAILABLE",
     "SignalTransportError",

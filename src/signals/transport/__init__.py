@@ -1,5 +1,6 @@
 """SIG-0 transport exports."""
 
+from .channel_executor import execute_channel_transport_tick
 from .transport_engine import (
     REFUSAL_SIGNAL_INVALID,
     REFUSAL_SIGNAL_ROUTE_UNAVAILABLE,
@@ -28,6 +29,7 @@ from .transport_engine import (
 )
 
 __all__ = [
+    "execute_channel_transport_tick",
     "REFUSAL_SIGNAL_INVALID",
     "REFUSAL_SIGNAL_ROUTE_UNAVAILABLE",
     "SignalTransportError",
