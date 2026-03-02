@@ -16,6 +16,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from src.signals import (  # noqa: E402
+    REFUSAL_SIG_NONESSENTIAL_SEND,
+    apply_sig_budget_degradation,
     process_message_verify_claim,
     process_signal_aggregation_tick,
     process_signal_jam_start,
@@ -277,6 +279,47 @@ def _run_scenario(
                 jamming_effect_rows = [dict(row) for row in list(stopped.get("jamming_effect_rows") or [])]
                 decision_log_rows = [dict(row) for row in list(stopped.get("decision_log_rows") or [])]
 
+        envelope_by_id = dict(
+            (str(row.get("envelope_id", "")).strip(), dict(row))
+            for row in list(envelope_rows or [])
+            if isinstance(row, Mapping) and str(row.get("envelope_id", "")).strip()
+        )
+        pending_low_priority_count = 0
+        pending_broadcast_count = 0
+        for queue_row in list(queue_rows or []):
+            if not isinstance(queue_row, Mapping):
+                continue
+            env = dict(envelope_by_id.get(str(queue_row.get("envelope_id", "")).strip()) or {})
+            env_ext = _as_map(env.get("extensions"))
+            if str(env_ext.get("priority", "")).strip().lower() == "low":
+                pending_low_priority_count += 1
+            recipient = _as_map(env.get("recipient_address"))
+            if str(recipient.get("address_type", "")).strip().lower() == "broadcast":
+                pending_broadcast_count += 1
+        degrade_plan = apply_sig_budget_degradation(
+            current_tick=int(tick),
+            budget_envelope_id=str(budget_envelope_id),
+            queue_depth=int(len(queue_rows)),
+            base_message_cap=int(policy.get("max_cost_units", 64)),
+            base_aggregation_section_cap=128,
+            pending_broadcast_count=int(pending_broadcast_count),
+            pending_low_priority_count=int(pending_low_priority_count),
+            nonessential_send_candidate_count=int(pending_low_priority_count),
+            ranked_mode=bool(str(budget_envelope_id).strip().lower() == "sig.envelope.rank_strict"),
+            allow_broadcast_fanout_degrade=True,
+        )
+        decision_log_rows.extend([dict(row) for row in list(degrade_plan.get("decision_log_rows") or []) if isinstance(row, Mapping)])
+        if bool(degrade_plan.get("delay_low_priority", False)):
+            delayed_rows: List[dict] = []
+            for queue_row in list(queue_rows or []):
+                row = dict(queue_row)
+                env = dict(envelope_by_id.get(str(row.get("envelope_id", "")).strip()) or {})
+                env_ext = _as_map(env.get("extensions"))
+                if str(env_ext.get("priority", "")).strip().lower() == "low":
+                    row["remaining_delay_ticks"] = int(max(0, _as_int(row.get("remaining_delay_ticks", 0), 0)) + 1)
+                delayed_rows.append(row)
+            queue_rows = delayed_rows
+
         schedule_by_id = dict((key, dict(schedule_rows[key])) for key in sorted(schedule_rows.keys()))
         for emit in sorted(
             bulletin_emit_rows,
@@ -369,6 +412,28 @@ def _run_scenario(
             request_index = int(canonical_sha256({"request_id": str(request.get("request_id", ""))})[:4], 16)
             if (request_index % max(1, int(tick_horizon))) != int(tick):
                 continue
+            if bool(degrade_plan.get("refuse_nonessential", False)):
+                decision_log_rows.append(
+                    {
+                        "decision_id": "decision.sig7.refusal.nonessential.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(tick),
+                                    "request_id": str(request.get("request_id", "")).strip(),
+                                    "reason_code": REFUSAL_SIG_NONESSENTIAL_SEND,
+                                }
+                            )[:16]
+                        ),
+                        "tick": int(tick),
+                        "process_id": "process.signal_send",
+                        "result": "refused",
+                        "reason_code": REFUSAL_SIG_NONESSENTIAL_SEND,
+                        "extensions": {
+                            "request_id": str(request.get("request_id", "")).strip(),
+                        },
+                    }
+                )
+                continue
             artifact_id = "artifact.report.sig7.standard.{}".format(
                 str(request.get("request_id", "")).strip() or canonical_sha256(request)[:16]
             )
@@ -393,7 +458,16 @@ def _run_scenario(
                 signal_transport_queue_rows=queue_rows,
                 info_artifact_rows=info_artifact_rows,
                 group_membership_rows=membership_rows,
-                broadcast_scope_rows=[{"broadcast_scope_id": "all", "subject_ids": _sorted_tokens(scenario.get("subject_ids"))}],
+                broadcast_scope_rows=[
+                    {
+                        "broadcast_scope_id": "all",
+                        "subject_ids": (
+                            _sorted_tokens(scenario.get("subject_ids"))[: int(max(1, _as_int(degrade_plan.get("broadcast_fanout_cap", 0), 0)))]
+                            if degrade_plan.get("broadcast_fanout_cap") is not None
+                            else _sorted_tokens(scenario.get("subject_ids"))
+                        ),
+                    }
+                ],
                 decision_log_rows=decision_log_rows,
                 envelope_extensions={"priority": "low"},
             )
@@ -403,7 +477,19 @@ def _run_scenario(
 
         agg_result = process_signal_aggregation_tick(
             current_tick=int(tick),
-            aggregation_policy_registry=aggregation_policy_registry,
+            aggregation_policy_registry={
+                "aggregation_policies": [
+                    {
+                        **dict((aggregation_policy_registry.get("aggregation_policies") or [{}])[0]),
+                        "summarization_rules": {
+                            **_as_map(
+                                _as_map((aggregation_policy_registry.get("aggregation_policies") or [{}])[0]).get("summarization_rules")
+                            ),
+                            "max_source_refs": int(max(4, _as_int(degrade_plan.get("aggregation_section_cap", 128), 128))),
+                        },
+                    }
+                ]
+            },
             schedule_rows=aggregation_schedule_rows,
             info_artifact_rows=info_artifact_rows,
             signal_channel_rows=channel_rows,
@@ -431,7 +517,7 @@ def _run_scenario(
             network_graph_rows=graph_rows,
             loss_policy_registry={},
             routing_policy_registry={},
-            max_cost_units=int(policy.get("max_cost_units", 64)),
+            max_cost_units=int(max(1, _as_int(degrade_plan.get("message_cap", policy.get("max_cost_units", 64)), policy.get("max_cost_units", 64)))),
             cost_units_per_delivery=int(policy.get("cost_units_per_delivery", 1)),
             attenuation_policy_registry={},
             jamming_effect_rows=jamming_effect_rows,
