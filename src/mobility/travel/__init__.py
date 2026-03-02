@@ -19,6 +19,11 @@ from .travel_engine import (
     start_macro_travel,
     tick_macro_travel,
 )
+from .reenactment import (
+    build_mobility_reenactment_descriptor,
+    compute_mobility_proof_hashes,
+    normalize_mobility_reenactment_descriptor_rows,
+)
 
 __all__ = [
     "ItineraryError",
@@ -36,4 +41,7 @@ __all__ = [
     "normalize_travel_event_rows",
     "start_macro_travel",
     "tick_macro_travel",
+    "build_mobility_reenactment_descriptor",
+    "compute_mobility_proof_hashes",
+    "normalize_mobility_reenactment_descriptor_rows",
 ]

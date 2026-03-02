@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mobility Reenactment Descriptor Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-11 mobility reenactment descriptor and proof surface.",
+  "x-doc-ref": [
+    "docs/audit/MOB11_RETRO_AUDIT.md",
+    "docs/audit/MOBILITY_FINAL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "descriptor_id",
+    "target_id",
+    "tick_range",
+    "event_ids",
+    "event_kind_counts",
+    "available_fidelity_levels",
+    "default_fidelity_level",
+    "requested_fidelity_level",
+    "resolved_fidelity_level",
+    "event_stream_hash",
+    "mobility_event_hash",
+    "congestion_hash",
+    "signal_state_hash",
+    "derailment_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "descriptor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick_range": {
+      "type": "object",
+      "required": [
+        "start_tick",
+        "end_tick"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_tick": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "event_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "event_kind_counts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "available_fidelity_levels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "macro",
+          "meso",
+          "micro"
+        ]
+      }
+    },
+    "default_fidelity_level": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "requested_fidelity_level": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "resolved_fidelity_level": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    "event_stream_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mobility_event_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "congestion_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "signal_state_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "derailment_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "descriptor_id": "mob.reenactment.0781d3b63cf3c15f",
+      "target_id": "itinerary.mobility.demo.001",
+      "tick_range": {
+        "start_tick": 100,
+        "end_tick": 180
+      },
+      "event_ids": [
+        "event.travel.demo.001",
+        "event.travel.demo.002"
+      ],
+      "event_kind_counts": {
+        "depart": 1,
+        "edge_enter": 1,
+        "arrive": 1
+      },
+      "available_fidelity_levels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "default_fidelity_level": "macro",
+      "requested_fidelity_level": "micro",
+      "resolved_fidelity_level": "meso",
+      "event_stream_hash": "ccde2dfc260f4ea58549a6bd5ad7b64a589298f43820d4c56c87545d5d724ca6",
+      "mobility_event_hash": "21187883f3b381f95ba53653dfca470b49f0160cc0e75450db76f99079c78749",
+      "congestion_hash": "9c8a365f6e5cc3d0f9b5aba43bc2f74f4bc5004d7f2776e3ca94eeb9f6f18f0f",
+      "signal_state_hash": "5d1fd77456f68f3decc6f40c2a7249fd6607bce8502d9cd42cc8f1fdb98d7e5d",
+      "derailment_hash": "369a6ff6f2e250dc5693cbf1d6a3172217c37ef8f4ef8454b0613cdf96367460",
+      "deterministic_fingerprint": "d91d2f0ea55848ef154f853cfdce7a8078cb5f8b58e2d1f8847b407db95f5ef2",
+      "extensions": {}
+    }
+  ]
+}
