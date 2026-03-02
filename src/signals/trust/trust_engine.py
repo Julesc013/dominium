@@ -502,6 +502,183 @@ def process_trust_decay_tick(
     }
 
 
+def _upsert_row_by_id(rows: object, id_key: str, row: Mapping[str, object]) -> List[dict]:
+    row_id = str(dict(row or {}).get(id_key, "")).strip()
+    out: Dict[str, dict] = {}
+    for item in list(rows or []):
+        if not isinstance(item, Mapping):
+            continue
+        token = str(item.get(id_key, "")).strip()
+        if token:
+            out[token] = dict(item)
+    if row_id:
+        out[row_id] = dict(row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def process_message_verify_claim(
+    *,
+    current_tick: int,
+    artifact_id: str,
+    verifier_subject_id: str,
+    claimed_sender_subject_id: str | None = None,
+    evidence_artifact_rows: object = None,
+    certificate_rows: object = None,
+    allow_truth_observer: bool = False,
+    truth_verification_state: str | None = None,
+    verification_result_rows: object = None,
+    trust_edge_rows: object = None,
+    belief_policy_registry: Mapping[str, object] | None = None,
+    trust_update_rule_registry: Mapping[str, object] | None = None,
+    belief_policy_id: str = "belief.default",
+    decision_log_rows: object = None,
+) -> dict:
+    tick = int(max(0, _as_int(current_tick, 0)))
+    artifact_token = str(artifact_id or "").strip()
+    verifier_token = str(verifier_subject_id or "").strip()
+    sender_token = str(claimed_sender_subject_id or "").strip()
+    next_results = normalize_verification_result_rows(verification_result_rows)
+    next_decisions = [dict(item) for item in list(decision_log_rows or []) if isinstance(item, Mapping)]
+
+    if (not artifact_token) or (not verifier_token):
+        return {
+            "verification_result_rows": next_results,
+            "verification_result_row": None,
+            "trust_edge_rows": normalize_trust_edge_rows(trust_edge_rows),
+            "updated_trust_edge_row": None,
+            "decision_log_rows": next_decisions,
+            "decision_log_entry": None,
+            "verification_state": VERIFICATION_STATE_UNVERIFIED,
+        }
+
+    evidence_rows = [dict(item) for item in list(evidence_artifact_rows or []) if isinstance(item, Mapping)]
+    certificate_list = [dict(item) for item in list(certificate_rows or []) if isinstance(item, Mapping)]
+    matching_evidence = []
+    disputed_evidence = []
+    derived_sender_ids: List[str] = []
+    for row in sorted(evidence_rows, key=lambda item: str(item.get("artifact_id", ""))):
+        ext = _as_map(row.get("extensions"))
+        claimed_artifact_id = str(ext.get("claim_artifact_id", "")).strip() or str(row.get("artifact_id", "")).strip()
+        if claimed_artifact_id != artifact_token:
+            continue
+        matching_evidence.append(row)
+        if bool(ext.get("disputed", False)):
+            disputed_evidence.append(row)
+        evidence_sender = str(ext.get("sender_subject_id", "")).strip()
+        if evidence_sender:
+            derived_sender_ids.append(evidence_sender)
+
+    matching_certificates = []
+    for row in sorted(certificate_list, key=lambda item: str(item.get("certificate_id", ""))):
+        ext = _as_map(row.get("extensions"))
+        claimed_artifact_id = str(ext.get("artifact_id", "")).strip()
+        if claimed_artifact_id and claimed_artifact_id != artifact_token:
+            continue
+        matching_certificates.append(row)
+        cert_sender = str(ext.get("subject_id", "")).strip()
+        if cert_sender:
+            derived_sender_ids.append(cert_sender)
+
+    if (not sender_token) and derived_sender_ids:
+        sender_token = sorted(set(derived_sender_ids))[0]
+
+    verification_source = "evidence"
+    if bool(allow_truth_observer):
+        verification_state = _verification_state(truth_verification_state)
+        verification_source = "observer_entitlement"
+    elif matching_certificates:
+        verification_state = VERIFICATION_STATE_VERIFIED
+        verification_source = "certificate"
+    elif disputed_evidence:
+        verification_state = VERIFICATION_STATE_DISPUTED
+        verification_source = "evidence_dispute"
+    elif matching_evidence:
+        verification_state = VERIFICATION_STATE_VERIFIED
+        verification_source = "evidence_observation"
+    else:
+        verification_state = VERIFICATION_STATE_FAILED
+        verification_source = "insufficient_evidence"
+
+    result_id = deterministic_verification_result_id(
+        artifact_id=artifact_token,
+        verifier_subject_id=verifier_token,
+        verification_state=verification_state,
+        tick=tick,
+    )
+    verification_row = build_verification_result(
+        result_id=result_id,
+        artifact_id=artifact_token,
+        verifier_subject_id=verifier_token,
+        verification_state=verification_state,
+        extensions={
+            "verification_source": verification_source,
+            "evidence_count": int(len(matching_evidence)),
+            "certificate_count": int(len(matching_certificates)),
+            "claimed_sender_subject_id": sender_token or None,
+        },
+    )
+    next_results = normalize_verification_result_rows(_upsert_row_by_id(next_results, "result_id", verification_row))
+
+    trust_update_result = {
+        "trust_edge_rows": normalize_trust_edge_rows(trust_edge_rows),
+        "updated_edge_row": None,
+        "decision_log_rows": next_decisions,
+        "decision_log_entry": None,
+    }
+    if sender_token:
+        trust_update_result = process_trust_update(
+            current_tick=tick,
+            from_subject_id=verifier_token,
+            to_subject_id=sender_token,
+            verification_result_row=verification_row,
+            trust_edge_rows=trust_edge_rows,
+            belief_policy_registry=belief_policy_registry,
+            trust_update_rule_registry=trust_update_rule_registry,
+            belief_policy_id=belief_policy_id,
+            decision_log_rows=next_decisions,
+        )
+        next_decisions = [dict(item) for item in list(trust_update_result.get("decision_log_rows") or []) if isinstance(item, Mapping)]
+
+    decision_entry = {
+        "decision_id": "decision.message_verify_claim.{}".format(
+            canonical_sha256(
+                {
+                    "tick": tick,
+                    "artifact_id": artifact_token,
+                    "verifier_subject_id": verifier_token,
+                    "verification_state": verification_state,
+                    "sender_subject_id": sender_token,
+                }
+            )[:16]
+        ),
+        "tick": tick,
+        "process_id": "process.message_verify_claim",
+        "artifact_id": artifact_token,
+        "verifier_subject_id": verifier_token,
+        "claimed_sender_subject_id": sender_token or None,
+        "verification_result_id": str(verification_row.get("result_id", "")).strip(),
+        "verification_state": verification_state,
+        "verification_source": verification_source,
+        "evidence_count": int(len(matching_evidence)),
+        "certificate_count": int(len(matching_certificates)),
+        "extensions": {},
+    }
+    next_decisions = _upsert_row_by_id(next_decisions, "decision_id", decision_entry)
+    return {
+        "verification_result_rows": next_results,
+        "verification_result_row": dict(verification_row),
+        "trust_edge_rows": normalize_trust_edge_rows(trust_update_result.get("trust_edge_rows")),
+        "updated_trust_edge_row": (
+            dict(trust_update_result.get("updated_edge_row"))
+            if isinstance(trust_update_result.get("updated_edge_row"), Mapping)
+            else None
+        ),
+        "decision_log_rows": [dict(item) for item in list(next_decisions or []) if isinstance(item, Mapping)],
+        "decision_log_entry": dict(decision_entry),
+        "verification_state": verification_state,
+    }
+
+
 __all__ = [
     "VERIFICATION_STATE_DISPUTED",
     "VERIFICATION_STATE_FAILED",
@@ -517,6 +694,7 @@ __all__ = [
     "normalize_trust_graph_rows",
     "normalize_verification_result_rows",
     "process_trust_decay_tick",
+    "process_message_verify_claim",
     "process_trust_update",
     "trust_delta_from_verification",
     "trust_edge_rows_by_pair",
