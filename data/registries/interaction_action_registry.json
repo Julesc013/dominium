@@ -686,6 +686,95 @@
         "extensions": {}
       },
       {
+        "action_id": "interaction.promote_to_network",
+        "process_id": "process.mobility_network_create_from_formalization",
+        "display_name": "Promote To Network",
+        "target_kinds": [
+          "formalization",
+          "geometry"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "expensive",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.promote_network",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_route",
+        "process_id": "process.mobility_route_query",
+        "display_name": "Inspect Route",
+        "target_kinds": [
+          "graph",
+          "network_binding"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.inspect_route",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.toggle_switch",
+        "process_id": "process.switch_set_state",
+        "display_name": "Toggle Switch",
+        "target_kinds": [
+          "network_switch"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.toggle_switch",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_mobility_node",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Mobility Node",
+        "target_kinds": [
+          "network_node",
+          "graph"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.inspect_node",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_mobility_edge",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Mobility Edge",
+        "target_kinds": [
+          "network_edge",
+          "graph"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.inspect_edge",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
         "action_id": "interaction.move_agent",
         "process_id": "process.agent_move",
         "display_name": "Move",
