@@ -1309,6 +1309,20 @@
         "1.0.0"
       ]
     },
+    "wear_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_accumulation_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "derailment_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2003,6 +2017,34 @@
       ]
     },
     "maintenance_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "mobility_maintenance_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_accumulation_policy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

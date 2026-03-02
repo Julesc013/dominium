@@ -1,0 +1,42 @@
+{
+  "schema_id": "dominium.registry.wear_accumulation_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.wear_accumulation_policy_registry",
+    "registry_version": "1.0.0",
+    "accumulation_policies": [
+      {
+        "schema_version": "1.0.0",
+        "accumulation_policy_id": "accum.per_load_cycle",
+        "description": "Wear scales by deterministic traversed distance and load cycles.",
+        "schema_ref": "dominium.schema.mobility.wear_accumulation_policy@1.0.0",
+        "extensions": {
+          "base_rate_per_cycle": 10
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "accumulation_policy_id": "accum.per_tick",
+        "description": "Wear scales by deterministic active tick duration.",
+        "schema_ref": "dominium.schema.mobility.wear_accumulation_policy@1.0.0",
+        "extensions": {
+          "base_rate_per_tick": 4
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "accumulation_policy_id": "accum.environment_scaled",
+        "description": "Wear scales with deterministic environmental multipliers from FieldLayer.",
+        "schema_ref": "dominium.schema.mobility.wear_accumulation_policy@1.0.0",
+        "extensions": {
+          "base_rate_per_tick": 3,
+          "field_scalars": {
+            "field.moisture": 250,
+            "field.temperature": 100
+          }
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

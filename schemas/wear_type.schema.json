@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mobility Wear Type Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-9 wear type policy row.",
+  "x-doc-ref": [
+    "docs/mobility/MAINTENANCE_AND_WEAR.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "wear_type_id",
+    "description",
+    "accumulation_policy_id",
+    "hazard_threshold",
+    "effect_modifier_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "wear_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "accumulation_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hazard_threshold": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "effect_modifier_id": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "wear_type_id": "wear.track",
+      "description": "Track and fixed guide wear.",
+      "accumulation_policy_id": "accum.per_load_cycle",
+      "hazard_threshold": 100000,
+      "effect_modifier_id": "effect.track_wear_modifier",
+      "extensions": {}
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "schema_id": "dominium.registry.wear_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.wear_type_registry",
+    "registry_version": "1.0.0",
+    "wear_types": [
+      {
+        "schema_version": "1.0.0",
+        "wear_type_id": "wear.track",
+        "description": "Track and guide-geometry infrastructure wear.",
+        "accumulation_policy_id": "accum.per_load_cycle",
+        "hazard_threshold": 100000,
+        "effect_modifier_id": "effect.track_wear_modifier",
+        "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
+        "extensions": {
+          "target_kinds": ["edge", "geometry"]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "wear_type_id": "wear.wheel",
+        "description": "Wheelset or rolling contact wear.",
+        "accumulation_policy_id": "accum.per_load_cycle",
+        "hazard_threshold": 80000,
+        "effect_modifier_id": "effect.wheel_wear_modifier",
+        "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
+        "extensions": {
+          "target_kinds": ["vehicle"]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "wear_type_id": "wear.brake",
+        "description": "Brake wear accumulation from braking cycles.",
+        "accumulation_policy_id": "accum.per_tick",
+        "hazard_threshold": 70000,
+        "effect_modifier_id": "effect.brake_wear_modifier",
+        "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
+        "extensions": {
+          "target_kinds": ["vehicle"]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "wear_type_id": "wear.engine",
+        "description": "Propulsion/engine wear accumulation.",
+        "accumulation_policy_id": "accum.per_tick",
+        "hazard_threshold": 90000,
+        "effect_modifier_id": "effect.engine_wear_modifier",
+        "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
+        "extensions": {
+          "target_kinds": ["vehicle"]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "wear_type_id": "wear.signal",
+        "description": "Signal hardware wear accumulation.",
+        "accumulation_policy_id": "accum.environment_scaled",
+        "hazard_threshold": 60000,
+        "effect_modifier_id": "effect.signal_wear_modifier",
+        "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
+        "extensions": {
+          "target_kinds": ["node", "signal"]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "wear_type_id": "wear.switch",
+        "description": "Switch mechanism wear accumulation.",
+        "accumulation_policy_id": "accum.per_load_cycle",
+        "hazard_threshold": 65000,
+        "effect_modifier_id": "effect.switch_wear_modifier",
+        "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
+        "extensions": {
+          "target_kinds": ["node", "switch"]
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
