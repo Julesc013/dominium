@@ -325,6 +325,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-STRUCTURAL-FAILURE-THROUGH-MECH",
     "INV-NO-ADHOC-WEATHER-FLAGS",
     "INV-FIELD-QUERIES-ONLY",
+    "INV-NO-VEHICLE-SPECIALCASE",
+    "INV-VEHICLES-AS-ASSEMBLIES",
+    "INV-SPEC-COMPATIBILITY-REQUIRED",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -11664,6 +11667,10 @@ def _append_mobility_invariant_findings(
         r"\b(?:spec\.track|movement_surface\b[^\n]*(?:track|rail|road)|if\b[^\n]*(?:train|rail|track|road)[^\n]*(?:speed|traction|signal|derail|curve|curvature))\b",
         re.IGNORECASE,
     )
+    vehicle_special_case_pattern = re.compile(
+        r"\bif\b[^\n]*(?:vehicle_class_id|vehicle_type_id|vehicle_type)\b[^\n]*(?:==|!=)\s*[\"'](?:veh\.|vehicle\.)",
+        re.IGNORECASE,
+    )
     global_micro_motion_pattern = re.compile(
         r"\bfor\b[^\n]*(?:body_assemblies|vehicle|agent|entity)[^\n]*(?:in|range)\b",
         re.IGNORECASE,
@@ -11707,6 +11714,18 @@ def _append_mobility_invariant_findings(
                     )
                 )
                 break
+            if vehicle_special_case_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="vehicle type/class hardcoded branching is forbidden; vehicle behavior must be spec/capability driven",
+                        rule_id="INV-NO-VEHICLE-SPECIALCASE",
+                    )
+                )
+                break
             if global_micro_motion_pattern.search(snippet) and global_micro_effect_pattern.search(snippet):
                 findings.append(
                     _finding(
@@ -11743,6 +11762,35 @@ def _append_mobility_invariant_findings(
                 snippet="process.mobility_network_create_from_formalization",
                 message="mobility network promotion must create graph topology through NetworkGraph payload mapping",
                 rule_id="INV-MOB-NETWORK-USES-NETWORKGRAPH",
+            )
+        )
+    if (
+        'elif process_id == "process.vehicle_register_from_structure":' not in runtime_text
+        or "build_vehicle(" not in runtime_text
+        or "build_motion_state(" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.vehicle_register_from_structure",
+                message="vehicle truth rows must be authored as assembly-backed records through process.vehicle_register_from_structure",
+                rule_id="INV-VEHICLES-AS-ASSEMBLIES",
+            )
+        )
+    if (
+        'elif process_id == "process.vehicle_check_compatibility":' not in runtime_text
+        or "evaluate_vehicle_edge_compatibility(" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.vehicle_check_compatibility",
+                message="vehicle movement eligibility must run deterministic spec compatibility checks before routing/itinerary use",
+                rule_id="INV-SPEC-COMPATIBILITY-REQUIRED",
             )
         )
     if (
