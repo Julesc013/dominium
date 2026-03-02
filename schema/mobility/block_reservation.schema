@@ -1,0 +1,25 @@
+SCHEMA: mobility/block_reservation.schema
+schema_id: dominium.schema.mobility.block_reservation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic block reservation row for MOB-8 interlocking.
+
+REQUIRED SHAPE:
+record block_reservation
+  required:
+    - schema_version: semver
+    - reservation_id: id
+    - vehicle_id: id
+    - edge_id: id
+    - start_tick: int
+    - end_tick: int
+    - status: enum(pending|active|released|expired|conflict)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Reservation writes are process-only and deterministic.
+- `start_tick <= end_tick`.
+- Conflict outcomes are explicit and auditable.

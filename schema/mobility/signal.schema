@@ -1,0 +1,24 @@
+SCHEMA: mobility/signal.schema
+schema_id: dominium.schema.mobility.signal
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic MOB-8 signal row bound to a mobility node/edge and state machine.
+
+REQUIRED SHAPE:
+record signal
+  required:
+    - schema_version: semver
+    - signal_id: id
+    - attached_to: map (one of {node_id}|{edge_id})
+    - signal_type_id: id
+    - state_machine_id: id
+    - rule_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Signal state mutates only through process-mediated state-machine transitions.
+- `attached_to` must reference exactly one mobility attachment target (`node_id` xor `edge_id`).
+- Rule evaluation is deterministic and policy-driven.

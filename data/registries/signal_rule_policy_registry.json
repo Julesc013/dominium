@@ -1,0 +1,99 @@
+{
+  "schema_id": "dominium.registry.signal_rule_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.signal_rule_policy_registry",
+    "registry_version": "1.0.0",
+    "signal_rule_policies": [
+      {
+        "schema_version": "1.0.0",
+        "rule_policy_id": "policy.rail_basic_interlocking",
+        "schema_ref": "dominium.schema.mobility.signal_rule_policy@1.0.0",
+        "extensions": {
+          "description": "Basic deterministic interlocking; occupied blocks force STOP and conflicting reservations force CAUTION.",
+          "aspects": [
+            "stop",
+            "caution",
+            "clear"
+          ],
+          "transition_rules": [
+            {
+              "rule_id": "rule.signal.block_occupied.stop",
+              "when": "block_occupied",
+              "set_aspect": "stop",
+              "priority": 100
+            },
+            {
+              "rule_id": "rule.signal.reservation_conflict.caution",
+              "when": "reservation_conflict",
+              "set_aspect": "caution",
+              "priority": 80
+            },
+            {
+              "rule_id": "rule.signal.default.clear",
+              "when": "default",
+              "set_aspect": "clear",
+              "priority": 0
+            }
+          ],
+          "interlocking_rules": [
+            {
+              "rule_id": "rule.interlocking.block_prevents_switch_throw",
+              "requires_unoccupied": true,
+              "requires_unreserved": false
+            },
+            {
+              "rule_id": "rule.interlocking.lock_prevents_switch_throw",
+              "requires_unlocked": true
+            }
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "rule_policy_id": "policy.rail_strict_interlocking",
+        "schema_ref": "dominium.schema.mobility.signal_rule_policy@1.0.0",
+        "extensions": {
+          "description": "Strict deterministic interlocking; occupancy or reservation conflict force STOP.",
+          "aspects": [
+            "stop",
+            "caution",
+            "clear"
+          ],
+          "transition_rules": [
+            {
+              "rule_id": "rule.signal.block_occupied.stop",
+              "when": "block_occupied",
+              "set_aspect": "stop",
+              "priority": 100
+            },
+            {
+              "rule_id": "rule.signal.reservation_conflict.stop",
+              "when": "reservation_conflict",
+              "set_aspect": "stop",
+              "priority": 90
+            },
+            {
+              "rule_id": "rule.signal.default.clear",
+              "when": "default",
+              "set_aspect": "clear",
+              "priority": 0
+            }
+          ],
+          "interlocking_rules": [
+            {
+              "rule_id": "rule.interlocking.block_prevents_switch_throw",
+              "requires_unoccupied": true,
+              "requires_unreserved": true
+            },
+            {
+              "rule_id": "rule.interlocking.lock_prevents_switch_throw",
+              "requires_unlocked": true
+            }
+          ]
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
