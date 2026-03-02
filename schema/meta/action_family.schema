@@ -1,0 +1,21 @@
+SCHEMA: meta/action_family.schema
+schema_id: dominium.schema.meta.action_family
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical META-ACTION-0 action family row.
+
+REQUIRED SHAPE:
+record action_family
+  required:
+    - schema_version: semver
+    - action_family_id: id
+    - description: string
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Every action family row is deterministic and data-driven.
+- Family identifiers are ontology-neutral and reusable across domains.
+- Runtime behavior must not branch by ad-hoc domain-specific family flags.

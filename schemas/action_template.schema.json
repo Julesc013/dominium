@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Action Template Schema",
+  "version": "1.0.0",
+  "description": "META-ACTION-0 action template row for deterministic action validation.",
+  "x-doc-ref": [
+    "docs/meta/ACTION_GRAMMAR_CONSTITUTION.md",
+    "docs/audit/ACTION_GRAMMAR_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "action_template_id",
+    "action_family_id",
+    "required_tool_tags",
+    "required_surface_types",
+    "required_capabilities",
+    "produced_artifact_types",
+    "produced_hazard_types",
+    "affected_substrates",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "action_template_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action_family_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_tool_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required_surface_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "produced_artifact_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "produced_hazard_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "affected_substrates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Flow",
+          "Field",
+          "Mechanics",
+          "Schedule",
+          "Spec",
+          "Interior",
+          "Network"
+        ]
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "action_template_id": "action.surface.execute_task",
+      "action_family_id": "action_family.transform",
+      "required_tool_tags": [],
+      "required_surface_types": [],
+      "required_capabilities": [],
+      "produced_artifact_types": [
+        "artifact.task"
+      ],
+      "produced_hazard_types": [],
+      "affected_substrates": [
+        "Mechanics"
+      ],
+      "deterministic_fingerprint": "17dff1ab7094258af6f6807a8ad0f6d3a34f85687df9324bc42e3a713176af6b",
+      "extensions": {
+        "template_kind": "control_action"
+      }
+    }
+  ]
+}
