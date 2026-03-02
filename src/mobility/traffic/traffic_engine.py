@@ -400,6 +400,7 @@ def reserve_edge_capacity(
     edge_id: str,
     start_tick: int,
     end_tick: int,
+    fairness_policy_id: str | None = None,
 ) -> dict:
     reservations = normalize_reservation_rows(reservation_rows)
     edge_token = str(edge_id or "").strip()
@@ -412,6 +413,8 @@ def reserve_edge_capacity(
         )
     start_value = int(max(0, _as_int(start_tick, 0)))
     end_value = int(max(start_value, _as_int(end_tick, start_value)))
+    fairness_policy_token = str(fairness_policy_id or "").strip()
+    strict_fair = fairness_policy_token == "cong.rank_strict_fair"
     occupancy_by_edge = edge_occupancy_rows_by_edge_id(edge_occupancy_rows)
     capacity_units = int(max(1, _as_int((dict(occupancy_by_edge.get(edge_token) or {})).get("capacity_units", 1), 1)))
     conflicting = []
@@ -427,7 +430,7 @@ def reserve_edge_capacity(
             continue
         conflicting.append(dict(row))
     conflicting = sorted(conflicting, key=lambda row: (str(row.get("vehicle_id", "")), str(row.get("reservation_id", ""))))
-    if int(len(conflicting)) >= int(capacity_units):
+    if (not strict_fair) and int(len(conflicting)) >= int(capacity_units):
         raise TrafficEngineError(
             REFUSAL_MOBILITY_RESERVATION_CONFLICT,
             "reservation conflicts with deterministic edge capacity",
@@ -435,6 +438,7 @@ def reserve_edge_capacity(
                 "vehicle_id": vehicle_token,
                 "edge_id": edge_token,
                 "capacity_units": int(capacity_units),
+                "fairness_policy_id": fairness_policy_token or None,
                 "conflicting_reservation_ids": _sorted_tokens([row.get("reservation_id") for row in conflicting]),
             },
         )
@@ -444,6 +448,58 @@ def reserve_edge_capacity(
         start_tick=int(start_value),
         end_tick=int(end_value),
     )
+    displaced_reservation_ids: List[str] = []
+    if strict_fair and conflicting:
+        candidate_stub = {
+            "reservation_id": reservation_id,
+            "vehicle_id": vehicle_token,
+            "edge_id": edge_token,
+            "start_tick": int(start_value),
+            "end_tick": int(end_value),
+        }
+        ordered = sorted(
+            [dict(row) for row in list(conflicting)] + [candidate_stub],
+            key=lambda row: (str(row.get("vehicle_id", "")), str(row.get("reservation_id", ""))),
+        )
+        winners = ordered[: int(capacity_units)]
+        winner_ids = set(str(row.get("reservation_id", "")).strip() for row in winners if str(row.get("reservation_id", "")).strip())
+        if reservation_id not in winner_ids:
+            raise TrafficEngineError(
+                REFUSAL_MOBILITY_RESERVATION_CONFLICT,
+                "reservation rejected by strict fair ranking for overlapping edge window",
+                {
+                    "vehicle_id": vehicle_token,
+                    "edge_id": edge_token,
+                    "capacity_units": int(capacity_units),
+                    "fairness_policy_id": fairness_policy_token,
+                    "winning_reservation_ids": _sorted_tokens(list(winner_ids)),
+                    "winning_vehicle_ids": _sorted_tokens([row.get("vehicle_id") for row in winners]),
+                },
+            )
+        displaced_reservation_ids = _sorted_tokens(
+            [
+                row.get("reservation_id")
+                for row in conflicting
+                if str(row.get("reservation_id", "")).strip() not in winner_ids
+            ]
+        )
+        kept_rows: List[dict] = []
+        for row in reservations:
+            row_edge_id = str(row.get("edge_id", "")).strip()
+            if row_edge_id != edge_token:
+                kept_rows.append(dict(row))
+                continue
+            row_reservation_id = str(row.get("reservation_id", "")).strip()
+            row_overlaps = _overlap(
+                start_tick=start_value,
+                end_tick=end_value,
+                other_start_tick=int(max(0, _as_int(row.get("start_tick", 0), 0))),
+                other_end_tick=int(max(0, _as_int(row.get("end_tick", 0), 0))),
+            )
+            if (not row_overlaps) or (row_reservation_id in winner_ids):
+                kept_rows.append(dict(row))
+        reservations = normalize_reservation_rows(kept_rows)
+
     new_row = build_reservation(
         reservation_id=reservation_id,
         vehicle_id=vehicle_token,
@@ -458,6 +514,9 @@ def reserve_edge_capacity(
         "reservation": dict(new_row),
         "capacity_units": int(capacity_units),
         "conflicting_count": int(len(conflicting)),
+        "fairness_policy_id": fairness_policy_token or None,
+        "strict_fair": bool(strict_fair),
+        "displaced_reservation_ids": list(displaced_reservation_ids),
     }
 
 
