@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "mobility.full.baseline.v1",
+  "description": "MOB-11 final hardening baseline for deterministic mobility behavior across macro/meso/micro tiers.",
+  "composite_mobility_hash_anchor": "3baf78d5ea87a5750a676146be338b99dd923ffc809286ed0ba88243dec76bef",
+  "stress_report_fingerprint": "ba5e18781949a8c759bf3e3ac4bbb12e5db06a25aa99212452c6e097916cc62b",
+  "determinism_compare_fingerprint": "b45ce01ebabc3a7c71b850c6cf6feaa6b4e1bd3470f21413fc76ee2d0b7a07c7",
+  "scenario_hashes": {
+    "scenario.01.dense_rail": {
+      "event_stream_hash": "4c455b5ba6b45040d5a7984ed324074dd6ee7546496955bd244a25076da4c083",
+      "motion_state_hash": "f51456bdc569c46001428a23a5ca6c6f687183e49dd857c9869acc58da9e9d45",
+      "occupancy_hash": "3df253f0abd4c6de502b9f835d050c28633ebc31cf21a7c54ab82e66a4da5804",
+      "proof_bundle_hash": "4060d42b7ac433e0400f6efa89b4b70d3ab91aff000e3c6b38aab2a2f8345e9e",
+      "scenario_fingerprint": "c509c9fbfce610025552b1bba16e314f16c2524ec541e64a41bfde245dee82ad"
+    },
+    "scenario.03.multi_roi": {
+      "event_stream_hash": "ab900c96d05e97c7b0b589c09388d0cc3c13b1745a9a3a9f0fd3470fb3a9d65b",
+      "motion_state_hash": "85bd96e69f6e24362d7fe7c93cd1d64efb27691f661531acbad4e185495324d3",
+      "occupancy_hash": "314f1e15c12989bda700f9c53643174aad7e0c0d56a34186cfc3afab9275c082",
+      "proof_bundle_hash": "cafc8075ab5962f49dde22ded34f742ccf4d8f9a94446db842c95cfdc1f2abd8",
+      "scenario_fingerprint": "0cc9214ca35626f0f47928ae6e94de3ddb58766d30cd0ff960e028558b521445"
+    },
+    "scenario.04.hub_congestion": {
+      "event_stream_hash": "d653ddfcaf1a586fc2b15dfa747a187fcf16db347b7528e5147d8502ae93a635",
+      "motion_state_hash": "3f1256dd4bb9c7b0a020126bc959bcc086e57e9c30ff6dd111242b1caf8f17de",
+      "occupancy_hash": "db01c7dd029b8bd66418dafd7f0f515e24a79dd12e0cc8375e51831966e053d6",
+      "proof_bundle_hash": "936db9a0415339ea6a8305cd9e4d717ad3919e40f3e095a3322c1671b3889d28",
+      "scenario_fingerprint": "80b61338adeefedcf7695576857b7a5ec50729584a26d5a72c30eb9023cd8297"
+    },
+    "scenario.05.signal_maintenance_failures": {
+      "event_stream_hash": "8f566e3253e2507c0a060998525514c283679981894c17c10e92a43d30dacced",
+      "motion_state_hash": "207d71131082803bd7a4d02bcd41aca5b5e3f5fc9067f956a262f6244d33d340",
+      "occupancy_hash": "8744bf87b0b4f07512ac03bf5b8896fe0578bd10576730f83d77ee25dc9ac0de",
+      "proof_bundle_hash": "6dd40db5d37f7c4e639efc302e64f1e43f3afa9bf15a7bd4461325adafed5b44",
+      "scenario_fingerprint": "b310958a1c39601cf2696ce612d2c50f29e49bda3fd7af085955e8d80b5c5bac"
+    },
+    "scenario.06.mixed_fidelity_requests": {
+      "event_stream_hash": "63a476750f3263fd47c08308a4ba7f578d744ab2c324ee293020817231430bd0",
+      "motion_state_hash": "919a7b5312229a2da1b8543b80319d6f7498d3613902b7888d189e55d8a6b0e7",
+      "occupancy_hash": "03269d60c1600a9e8fed8a03bb1c9a997cf6e486f061dd43c7909b0baa87dc39",
+      "proof_bundle_hash": "a588d2589d2761842a13829b7fef2e5ca9e86803f2995fb4ec53bce3aee9cdde",
+      "scenario_fingerprint": "08ddfe39f11235d076dd96b7e308f870e54e6a5595429355cf8bb3172d223e59"
+    }
+  },
+  "update_policy": {
+    "required_commit_tag": "MOB-REGRESSION-UPDATE",
+    "notes": "Baseline updates require explicit mobility regression review and deterministic revalidation. Updated under MOB-REGRESSION-UPDATE on 2026-03-03."
+  },
+  "extensions": {
+    "generated_from": {
+      "determinism_compare_report": "build/mobility/mobility_determinism_compare.json",
+      "stress_report": "build/mobility/mobility_stress_report.json"
+    },
+    "lock_scope": "mobility_full_hardening"
+  }
+}
