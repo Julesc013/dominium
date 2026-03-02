@@ -12813,6 +12813,30 @@ def _append_signal_transport_invariant_findings(
                 rule_id="INV-NO-ADHOC-CAPACITY-LOGIC",
             )
         )
+    if "loss_policy_rows_by_id(" not in transport_text or "attenuation_policy_rows_by_id(" not in transport_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transport_rel,
+                line_number=1,
+                snippet="loss_policy_rows_by_id/attenuation_policy_rows_by_id",
+                message="signal quality must resolve loss and attenuation from registered policy registries",
+                rule_id="INV-LOSS-POLICY-REGISTERED",
+            )
+        )
+    channel_executor_rel = "src/signals/transport/channel_executor.py"
+    channel_executor_text = _file_text(repo_root, channel_executor_rel)
+    if "loss_rows_by_id.get(loss_policy_id" not in channel_executor_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=channel_executor_rel,
+                line_number=1,
+                snippet="loss_rows_by_id.get(loss_policy_id",
+                message="channel executor must evaluate delivery outcomes from registered loss policies only",
+                rule_id="INV-LOSS-POLICY-REGISTERED",
+            )
+        )
     if "process_knowledge_acquire(" not in transport_text:
         findings.append(
             _finding(
@@ -12985,6 +13009,44 @@ def _append_signal_transport_invariant_findings(
                     snippet=snippet[:140],
                     message="knowledge changes must be coupled to SIG receipt process path",
                     rule_id="INV-RECEIPT-REQUIRED-FOR-KNOWLEDGE",
+                )
+            )
+            break
+
+    direct_drop_patterns = (
+        re.compile(r"\bdelivery_state\s*=\s*[\"']lost[\"']", re.IGNORECASE),
+        re.compile(r"\breturn\s+[\"']lost[\"']", re.IGNORECASE),
+        re.compile(r"\bstatus\s*=\s*[\"']lost[\"']", re.IGNORECASE),
+    )
+    direct_drop_allow = {
+        transport_rel,
+        channel_executor_rel,
+        "tools/xstack/repox/check.py",
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith("src/"):
+            continue
+        if any(rel_norm == allow or rel_norm.startswith(allow) for allow in direct_drop_allow):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in direct_drop_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="message drop/lost transitions must be centralized in SIG transport quality policies",
+                    rule_id="INV-NO-DIRECT-MESSAGE-DROP",
                 )
             )
             break
