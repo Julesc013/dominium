@@ -110,6 +110,11 @@ Performance:
 - macro updates only
 - no global micro physics
 - budget decisions logged in DecisionLog/Fidelity pathways
+- server-authoritative travel tick in hybrid/networked sessions
+- lockstep-safe deterministic advancement in synchronized sessions
+- optional deterministic far-vehicle cadence buckets:
+  non-ROI vehicles may update every `N` ticks by stable vehicle-id hash bucket
+  while ROI vehicles keep full cadence
 
 ## 10) Non-Goals (MOB-4)
 
