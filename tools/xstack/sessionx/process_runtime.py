@@ -19559,6 +19559,12 @@ def execute_intent(
             "junction_ids": list(created_junction_ids),
             "resolution_degraded": bool(resolution_diag.get("degraded", False)),
             "metrics_degraded": bool(metric_row.get("degraded", False)),
+            "authoritative_validation": (
+                "server"
+                if str(authority_context.get("authority_origin", "")).strip() == "server"
+                else "runtime"
+            ),
+            "lockstep_safe": True,
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.geometry_edit":
@@ -19740,6 +19746,12 @@ def execute_intent(
                 "stage": stage,
                 "preview_renderable_count": int(len(list(preview_data.get("renderables") or []))),
                 "resolution_degraded": bool(resolution_diag.get("degraded", False)),
+                "authoritative_validation": (
+                    "server"
+                    if str(authority_context.get("authority_origin", "")).strip() == "server"
+                    else "runtime"
+                ),
+                "lockstep_safe": True,
             }
             _advance_time(state, steps=1, policy_context=policy_context)
         else:
@@ -19800,6 +19812,12 @@ def execute_intent(
                 "metric_row": dict(metric_row),
                 "resolution_degraded": bool(resolution_diag.get("degraded", False)),
                 "metrics_degraded": bool(metric_row.get("degraded", False)),
+                "authoritative_validation": (
+                    "server"
+                    if str(authority_context.get("authority_origin", "")).strip() == "server"
+                    else "runtime"
+                ),
+                "lockstep_safe": True,
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.geometry_finalize":
@@ -19970,6 +19988,12 @@ def execute_intent(
             "spec_id": target_spec_id,
             "metric_row": dict(metric_row),
             "metrics_degraded": bool(metric_row.get("degraded", False)),
+            "authoritative_validation": (
+                "server"
+                if str(authority_context.get("authority_origin", "")).strip() == "server"
+                else "runtime"
+            ),
+            "lockstep_safe": True,
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mechanics_tick":
