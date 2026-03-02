@@ -1797,6 +1797,52 @@ def _geometry_preview_data(
     }
 
 
+def _geometry_type_for_candidate(candidate_kind: str) -> str:
+    token = str(candidate_kind or "").strip()
+    mapping = {
+        "spline": "geo.spline1D",
+        "corridor": "geo.corridor2D",
+        "volume": "geo.volume3D",
+        "graph_stub": "geo.spline1D",
+    }
+    return str(mapping.get(token, "geo.spline1D"))
+
+
+def _candidate_default_geometry_parameters(
+    *,
+    formalization_id: str,
+    candidate_id: str,
+    target_context_id: str,
+    geometry_type_id: str,
+) -> dict:
+    seed = canonical_sha256(
+        {
+            "formalization_id": str(formalization_id or "").strip(),
+            "candidate_id": str(candidate_id or "").strip(),
+            "target_context_id": str(target_context_id or "").strip(),
+            "geometry_type_id": str(geometry_type_id or "").strip(),
+        }
+    )
+    base_x = int(int(seed[0:6], 16) % 100000)
+    base_y = int(int(seed[6:12], 16) % 100000)
+    delta_x = 4000 + int(int(seed[12:16], 16) % 12000)
+    delta_y = 300 + int(int(seed[16:20], 16) % 4800)
+    points = [
+        {"x": int(base_x), "y": int(base_y), "z": 0},
+        {"x": int(base_x + delta_x), "y": int(base_y + delta_y), "z": 0},
+    ]
+    if geometry_type_id == "geo.spline1D":
+        mid_x = int(base_x + (delta_x // 2))
+        mid_y = int(base_y + (delta_y // 2) + int(int(seed[20:24], 16) % 1800) - 900)
+        points.insert(1, {"x": int(mid_x), "y": int(mid_y), "z": 0})
+    out = {"control_points_mm": points}
+    if geometry_type_id == "geo.corridor2D":
+        out["width_mm"] = int(3000 + int(int(seed[24:28], 16) % 2500))
+    if geometry_type_id == "geo.volume3D":
+        out["height_mm"] = int(3000 + int(int(seed[28:32], 16) % 4000))
+    return out
+
+
 def _ensure_structural_graph_rows(state: dict) -> List[dict]:
     rows = normalize_structural_graph_rows(state.get("structural_graphs"))
     state["structural_graphs"] = [dict(row) for row in rows if isinstance(row, dict)]
@@ -18710,6 +18756,13 @@ def execute_intent(
                 {"formalization_id": formalization_id, "candidate_id": candidate_id},
                 "$.intent.inputs.candidate_id",
             )
+        if not spec_id:
+            candidate_spec_ids = _sorted_tokens(list(candidate_row.get("suggested_spec_ids") or []))
+            if candidate_spec_ids:
+                spec_id = str(candidate_spec_ids[0]).strip() or None
+        if not spec_id:
+            state_spec_id = str(state_row.get("spec_id", "")).strip()
+            spec_id = state_spec_id or None
         if bool(inputs.get("require_spec_compliance", False)) and spec_id:
             spec_target_kind = str(inputs.get("spec_target_kind", "structure")).strip() or "structure"
             spec_target_id = str(inputs.get("spec_target_id", "")).strip() or str(state_row.get("target_context_id", "")).strip()
@@ -18734,16 +18787,165 @@ def execute_intent(
                     "$.intent.inputs.spec_id",
                 )
 
-        formal_artifact_ref = "formal.artifact.{}".format(
-            canonical_sha256(
-                {
-                    "formalization_id": formalization_id,
-                    "candidate_id": candidate_id,
-                    "target_kind": str(state_row.get("target_kind", "")).strip(),
-                    "target_context_id": str(state_row.get("target_context_id", "")).strip(),
-                }
-            )[:16]
+        candidate_kind = str(candidate_row.get("candidate_kind", "")).strip()
+        geometry_type_id = str(inputs.get("geometry_type_id", "")).strip() or _geometry_type_for_candidate(candidate_kind)
+        parent_spatial_id = (
+            str(inputs.get("parent_spatial_id", "")).strip()
+            or str(state_row.get("target_context_id", "")).strip()
+            or "spatial.root"
         )
+        created_tick_bucket = int(max(0, _as_int(inputs.get("created_tick_bucket", current_tick), int(current_tick))))
+        geometry_id = deterministic_geometry_id(
+            formalization_id=formalization_id,
+            candidate_id=candidate_id,
+            spec_id=spec_id,
+            created_tick_bucket=int(created_tick_bucket),
+        )
+
+        geometry_type_registry = dict(_policy_payload(policy_context, "geometry_type_registry") or {})
+        if not geometry_type_registry:
+            geometry_type_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/geometry_type_registry.json",
+                default_payload={"geometry_types": []},
+            )
+        geometry_type_rows = geometry_type_rows_by_id(geometry_type_registry)
+        if geometry_type_id not in geometry_type_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "candidate geometry_type_id '{}' is not declared".format(geometry_type_id),
+                "Use geometry_type_id from data/registries/geometry_type_registry.json.",
+                {"geometry_type_id": geometry_type_id},
+                "$.intent.inputs.geometry_type_id",
+            )
+        snap_policy_registry = dict(_policy_payload(policy_context, "geometry_snap_policy_registry") or {})
+        if not snap_policy_registry:
+            snap_policy_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/geometry_snap_policy_registry.json",
+                default_payload={"snap_policies": []},
+            )
+        snap_policy_rows = geometry_snap_policy_rows_by_id(snap_policy_registry)
+        snap_policy_id = str(inputs.get("snap_policy_id", "snap.none")).strip() or "snap.none"
+        if snap_policy_id not in snap_policy_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "snap_policy_id '{}' is not declared".format(snap_policy_id),
+                "Use snap_policy_id from data/registries/geometry_snap_policy_registry.json.",
+                {"snap_policy_id": snap_policy_id},
+                "$.intent.inputs.snap_policy_id",
+            )
+
+        raw_geometry_parameters = dict(inputs.get("geometry_parameters") or {})
+        if not raw_geometry_parameters:
+            raw_geometry_parameters = _candidate_default_geometry_parameters(
+                formalization_id=formalization_id,
+                candidate_id=candidate_id,
+                target_context_id=str(state_row.get("target_context_id", "")).strip(),
+                geometry_type_id=geometry_type_id,
+            )
+        max_edit_points = int(
+            max(
+                2,
+                _as_int(
+                    inputs.get("max_edit_points", (dict(policy_context or {})).get("geometry_max_edit_points", 64)),
+                    64,
+                ),
+            )
+        )
+        limited_parameters, resolution_diag = _limit_geometry_resolution(raw_geometry_parameters, max_edit_points)
+        snapped_parameters = snap_geometry_parameters(
+            parameters=limited_parameters,
+            snap_policy_id=snap_policy_id,
+            existing_geometry_rows=guide_geometries,
+            snap_policy_registry=snap_policy_registry,
+            spec_tolerance_mm=int(max(0, _as_int(inputs.get("spec_tolerance_mm", 0), 0))),
+        )
+        geometry_row = build_guide_geometry(
+            geometry_id=geometry_id,
+            geometry_type_id=geometry_type_id,
+            parent_spatial_id=parent_spatial_id,
+            spec_id=spec_id,
+            parameters=snapped_parameters,
+            bounds=dict(inputs.get("bounds") or {}),
+            junction_refs=inputs.get("junction_refs"),
+            extensions={
+                "source_process_id": process_id,
+                "intent_id": str(intent_id),
+                "formalization_id": formalization_id,
+                "candidate_id": candidate_id,
+                "created_tick_bucket": int(created_tick_bucket),
+                "snap_policy_id": snap_policy_id,
+                "accepted_from_inference": True,
+            },
+        )
+        guide_geometries = normalize_guide_geometry_rows(_upsert_row_by_id(guide_geometries, "geometry_id", geometry_row))
+        metric_budget_units, metric_cost_per = _geometry_metric_budget_inputs(
+            policy_context=policy_context,
+            inputs=inputs,
+        )
+        metric_row = _geometry_metric_with_cache(
+            geometry_row=geometry_row,
+            metric_rows=geometry_derived_metrics,
+            current_tick=int(current_tick),
+            max_cost_units=int(metric_budget_units),
+            cost_units_per_metric=int(metric_cost_per),
+        )
+        geometry_derived_metrics = normalize_geometry_metric_rows(
+            _upsert_geometry_metric_row(geometry_derived_metrics, metric_row)
+        )
+        geometry_candidate_row = build_geometry_candidate(
+            candidate_id=candidate_id,
+            formalization_id=formalization_id,
+            geometry_preview_ref=str(candidate_row.get("geometry_preview_ref", "")).strip() or "preview.geometry.{}".format(
+                canonical_sha256({"geometry_id": geometry_id, "candidate_id": candidate_id})[:16]
+            ),
+            proposed_spec_id=spec_id,
+            extensions={
+                "source_process_id": process_id,
+                "intent_id": str(intent_id),
+                "geometry_id": geometry_id,
+            },
+        )
+        geometry_candidates = normalize_geometry_candidate_rows(
+            _upsert_row_by_id(geometry_candidates, "candidate_id", geometry_candidate_row)
+        )
+        _persist_guide_geometry_state(
+            state,
+            guide_geometries=guide_geometries,
+            mobility_junctions=mobility_junctions,
+            geometry_candidates=geometry_candidates,
+            geometry_derived_metrics=geometry_derived_metrics,
+        )
+        degrade_reasons = []
+        if bool(resolution_diag.get("degraded", False)):
+            degrade_reasons.append(str(resolution_diag.get("degrade_reason", "degrade.geometry.edit_resolution")))
+        if bool(metric_row.get("degraded", False)):
+            degrade_reasons.append(str(metric_row.get("degrade_reason", "degrade.geometry.metrics_budget")))
+        if degrade_reasons:
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id=geometry_id,
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason=reason,
+                        resolved_level="meso",
+                        cost_allocated=int(metric_row.get("cost_units_used", 0)),
+                        extensions={
+                            "source_point_count": int(resolution_diag.get("source_point_count", 0)),
+                            "resolved_point_count": int(resolution_diag.get("resolved_point_count", 0)),
+                        },
+                    )
+                    for reason in _sorted_tokens(degrade_reasons)
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+
+        formal_artifact_ref = geometry_id
         previous_state = str(state_row.get("state", "raw")).strip() or "raw"
         state_row["state"] = "formal"
         state_row["formal_artifact_ref"] = formal_artifact_ref
@@ -18770,6 +18972,7 @@ def execute_intent(
                 "formalization_id": formalization_id,
                 "candidate_id": candidate_id,
                 "formal_artifact_ref": formal_artifact_ref,
+                "geometry_id": geometry_id,
                 "target_kind": str(state_row.get("target_kind", "")).strip(),
                 "target_context_id": str(state_row.get("target_context_id", "")).strip(),
             },
@@ -18804,6 +19007,10 @@ def execute_intent(
             "formalization_id": formalization_id,
             "candidate_id": candidate_id,
             "formal_artifact_ref": formal_artifact_ref,
+            "geometry_id": geometry_id,
+            "metric_row": dict(metric_row),
+            "resolution_degraded": bool(resolution_diag.get("degraded", False)),
+            "metrics_degraded": bool(metric_row.get("degraded", False)),
             "spec_id": spec_id,
             "commitment_id": str(commitment_row.get("commitment_id", "")).strip(),
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
