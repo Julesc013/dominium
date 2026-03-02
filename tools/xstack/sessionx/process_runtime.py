@@ -20619,6 +20619,80 @@ def execute_intent(
                 "derailment_risk_permille": int(max(0, _as_int(mechanics_summary.get("derailment_risk_permille", 0), 0))),
                 "recommended_speed_cap_permille": int(max(0, _as_int(mechanics_summary.get("recommended_speed_cap_permille", 1000), 1000))),
             }
+        geometry_row_for_compliance = {}
+        geometry_metric_for_compliance = {}
+        if target_kind == "geometry":
+            for row in sorted(
+                (item for item in list(guide_geometries or []) if isinstance(item, dict)),
+                key=lambda item: str(item.get("geometry_id", "")),
+            ):
+                if str(row.get("geometry_id", "")).strip() != target_id:
+                    continue
+                geometry_row_for_compliance = dict(row)
+                break
+            geometry_metric_rows = sorted(
+                (
+                    item
+                    for item in list(geometry_derived_metrics or [])
+                    if isinstance(item, dict) and str(item.get("geometry_id", "")).strip() == target_id
+                ),
+                key=lambda item: (_as_int(item.get("computed_tick", 0), 0), str(item.get("geometry_hash", ""))),
+            )
+            if geometry_metric_rows:
+                geometry_metric_for_compliance = dict(geometry_metric_rows[-1])
+
+        if geometry_metric_for_compliance:
+            clearance_row = dict(geometry_metric_for_compliance.get("clearance_envelope") or {})
+            if "derived.geometry.clearance_summary" not in input_catalog:
+                clearance_width = int(max(0, _as_int(clearance_row.get("width_mm", 0), 0)))
+                clearance_height = int(max(0, _as_int(clearance_row.get("height_mm", 0), 0)))
+                input_catalog["derived.geometry.clearance_summary"] = {
+                    "min_clearance_mm": int(min(clearance_width, clearance_height)) if (clearance_width and clearance_height) else int(max(clearance_width, clearance_height)),
+                    "clearance_width_mm": int(clearance_width),
+                    "clearance_height_mm": int(clearance_height),
+                }
+            if "derived.geometry.curvature_summary" not in input_catalog:
+                input_catalog["derived.geometry.curvature_summary"] = {
+                    "min_curvature_radius_mm": int(max(0, _as_int(geometry_metric_for_compliance.get("min_curvature_radius_mm", 0), 0))),
+                }
+
+        if geometry_row_for_compliance:
+            geometry_params = dict(geometry_row_for_compliance.get("parameters") or {})
+            if "derived.geometry.gauge_summary" not in input_catalog:
+                measured_gauge = int(
+                    max(
+                        0,
+                        _as_int(
+                            geometry_params.get(
+                                "gauge_mm",
+                                geometry_params.get("track_gauge_mm", geometry_params.get("lane_width_mm", 0)),
+                            ),
+                            0,
+                        ),
+                    )
+                )
+                input_catalog["derived.geometry.gauge_summary"] = {
+                    "measured_gauge_mm": int(measured_gauge),
+                }
+            if "derived.operation.speed_policy_context" not in input_catalog:
+                requested_speed_kph = int(
+                    max(
+                        0,
+                        _as_int(
+                            inputs.get(
+                                "requested_speed_kph",
+                                dict(geometry_row_for_compliance.get("extensions") or {}).get("requested_speed_kph", 0),
+                            ),
+                            0,
+                        ),
+                    )
+                )
+                declared_spec_max_speed = int(
+                    max(0, _as_int(dict(spec_row.get("parameters") or {}).get("max_speed_kph", 0), 0))
+                )
+                input_catalog["derived.operation.speed_policy_context"] = {
+                    "max_speed_kph": int(requested_speed_kph or declared_spec_max_speed),
+                }
 
         # Deterministic synthetic derived summaries from inspection sections.
         section_layout = dict(input_catalog.get("section.interior.layout") or {})
@@ -20662,6 +20736,56 @@ def execute_intent(
             input_catalog=dict(input_catalog),
             strict=bool(strict_spec),
         )
+        if target_kind == "geometry":
+            tolerance_rows_for_gauge = tolerance_policy_rows_by_id(tolerance_policy_registry)
+            tolerance_row = dict(
+                tolerance_rows_for_gauge.get(str(spec_row.get("tolerance_policy_id", "")).strip() or "tol.default") or {}
+            )
+            tolerance_values = dict(tolerance_row.get("numeric_tolerances") or {})
+            gauge_tolerance_mm = int(max(0, _as_int(tolerance_values.get("gauge_mm", 0), 0)))
+            spec_parameters = dict(spec_row.get("parameters") or {})
+            required_gauge_mm = _as_int(spec_parameters.get("gauge_mm", spec_parameters.get("lane_width_mm", 0)), 0)
+            measured_gauge_mm = _as_int(
+                dict(input_catalog.get("derived.geometry.gauge_summary") or {}).get("measured_gauge_mm", 0),
+                0,
+            )
+            gauge_grade = "warn"
+            if required_gauge_mm > 0 and measured_gauge_mm > 0:
+                if abs(int(required_gauge_mm) - int(measured_gauge_mm)) <= int(gauge_tolerance_mm):
+                    gauge_grade = "pass"
+                else:
+                    gauge_grade = "fail"
+            gauge_check = {
+                "check_id": "check.geometry.gauge_width_stub",
+                "grade": gauge_grade,
+                "required_inputs": ["derived.geometry.gauge_summary"],
+                "missing_inputs": [] if measured_gauge_mm > 0 else ["derived.geometry.gauge_summary"],
+                "details": {
+                    "required_gauge_mm": int(max(0, _as_int(required_gauge_mm, 0))),
+                    "measured_gauge_mm": int(max(0, _as_int(measured_gauge_mm, 0))),
+                    "tolerance_mm": int(gauge_tolerance_mm),
+                },
+                "declared_output_grade": "warn",
+                "failure_refusal_code": REFUSAL_SPEC_NONCOMPLIANT,
+                "deterministic_fingerprint": "",
+            }
+            gauge_check["deterministic_fingerprint"] = canonical_sha256(
+                dict(gauge_check, deterministic_fingerprint="")
+            )
+            compliance_checks = [
+                dict(item) for item in list(compliance_result.get("check_results") or []) if isinstance(item, dict)
+            ]
+            compliance_checks = sorted(
+                compliance_checks + [gauge_check],
+                key=lambda item: (str(item.get("check_id", "")), str(item.get("deterministic_fingerprint", ""))),
+            )
+            overall_grade = "pass"
+            for row in compliance_checks:
+                overall_grade = _best_grade(overall_grade, str(row.get("grade", "warn")).strip() or "warn")
+            compliance_result["check_results"] = compliance_checks
+            compliance_result["overall_grade"] = overall_grade
+            if bool(strict_spec) and gauge_grade == "fail" and not strict_refusal_code:
+                strict_refusal_code = REFUSAL_SPEC_NONCOMPLIANT
         spec_type_id = str(spec_row.get("spec_type_id", "")).strip()
         compliance_ext = dict(compliance_result.get("extensions") or {})
         compliance_ext["mechanics_stress_summary"] = dict(mechanics_summary)
@@ -20688,6 +20812,40 @@ def execute_intent(
                     ),
                 )
             )
+            if target_kind == "geometry":
+                spec_params = dict(spec_row.get("parameters") or {})
+                curvature_summary = dict(input_catalog.get("derived.geometry.curvature_summary") or {})
+                required_radius_mm = int(max(0, _as_int(spec_params.get("min_curvature_radius_mm", 0), 0)))
+                measured_radius_mm = int(max(0, _as_int(curvature_summary.get("min_curvature_radius_mm", 0), 0)))
+                requested_speed_kph = int(
+                    max(
+                        0,
+                        _as_int(
+                            inputs.get(
+                                "requested_speed_kph",
+                                dict(input_catalog.get("derived.operation.speed_policy_context") or {}).get(
+                                    "max_speed_kph",
+                                    0,
+                                ),
+                            ),
+                            0,
+                        ),
+                    )
+                )
+                if (
+                    requested_speed_kph > 0
+                    and required_radius_mm > 0
+                    and measured_radius_mm > 0
+                    and measured_radius_mm < required_radius_mm
+                ):
+                    curvature_speed_cap = int(
+                        max(200, min(1000, (int(measured_radius_mm) * 1000) // int(max(1, required_radius_mm))))
+                    )
+                    recommended_speed_cap_permille = int(
+                        max(200, min(1000, min(int(recommended_speed_cap_permille), int(curvature_speed_cap))))
+                    )
+                    compliance_ext["curvature_speed_cap_permille"] = int(curvature_speed_cap)
+                    compliance_ext["curvature_speed_cap_requested_kph"] = int(requested_speed_kph)
             compliance_ext["recommended_speed_cap_permille"] = int(recommended_speed_cap_permille)
             compliance_result["extensions"] = compliance_ext
             compliance_result["deterministic_fingerprint"] = canonical_sha256(
