@@ -20388,6 +20388,14 @@ def execute_intent(
             str(inputs.get("maintenance_policy_id", "")).strip()
             or "maintenance.policy.default"
         )
+        capability_bindings_payload = (
+            dict(inputs.get("capability_bindings") or {})
+            if isinstance(inputs.get("capability_bindings"), Mapping)
+            else {}
+        )
+        default_pose_bindings = _sorted_tokens(list(vehicle_class_row.get("default_pose_bindings") or []))
+        if default_pose_bindings and "default_pose_bindings" not in capability_bindings_payload:
+            capability_bindings_payload["default_pose_bindings"] = list(default_pose_bindings)
         created_tick_bucket = int(
             max(
                 0,
@@ -20421,7 +20429,7 @@ def execute_intent(
             vehicle_class_id=vehicle_class_id,
             spatial_id=spatial_id,
             spec_ids=spec_ids,
-            capability_bindings=dict(inputs.get("capability_bindings") or {}) if isinstance(inputs.get("capability_bindings"), Mapping) else None,
+            capability_bindings=capability_bindings_payload if capability_bindings_payload else None,
             port_ids=port_ids,
             interior_graph_id=interior_graph_id,
             pose_slot_ids=pose_slot_ids,
@@ -20470,6 +20478,14 @@ def execute_intent(
             "capabilities": get_vehicle_capabilities(
                 vehicle_rows=vehicles,
                 vehicle_class_registry_payload=vehicle_class_registry,
+                vehicle_id=vehicle_id,
+            ),
+            "vehicle_ports": get_vehicle_ports(
+                vehicle_rows=vehicles,
+                vehicle_id=vehicle_id,
+            ),
+            "interior_graph_id": get_vehicle_interior(
+                vehicle_rows=vehicles,
                 vehicle_id=vehicle_id,
             ),
             "driver_pose_slot_ids": get_vehicle_driver_pose_slots(
