@@ -1050,6 +1050,20 @@
         "1.0.0"
       ]
     },
+    "action_family": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "action_template": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "action_surface": {
       "current_version": "1.0.0",
       "migrations": {},

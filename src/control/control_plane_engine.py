@@ -1370,7 +1370,24 @@ def build_control_resolution(
                 ),
             )
 
-    if required_capabilities and normalized_capability_bindings:
+    if required_capabilities:
+        if not normalized_capability_bindings:
+            missing_target = str(target_entity_id or requester_subject_id)
+            refusal_payload = _refusal(
+                CONTROL_REFUSAL_FORBIDDEN_BY_LAW,
+                "required capabilities cannot be validated because capability bindings are unavailable",
+                "Provide capability_bindings in policy context and bind required capabilities before retrying.",
+                {
+                    "requested_action_id": action_id,
+                    "target_id": missing_target,
+                    "required_capabilities": ",".join(required_capabilities),
+                },
+                "$.policy_context.capability_bindings",
+            )
+            return _finalize_refusal(
+                refusal_payload=refusal_payload,
+                negotiation_for_log=_negotiation_with_refusal_code(negotiation_payload, CONTROL_REFUSAL_FORBIDDEN_BY_LAW),
+            )
         capability_satisfied = False
         missing_by_target: Dict[str, List[str]] = {}
         for candidate_id in capability_target_candidates:
