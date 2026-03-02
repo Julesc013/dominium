@@ -13,6 +13,12 @@
       },
       {
         "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.reservation_conflict",
+        "description": "Requested deterministic edge reservation conflicts with available capacity.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "reason_code": "refusal.mob.network_invalid",
         "description": "Mobility network creation or edit request is invalid for the current graph/binding state.",
         "extensions": {}
