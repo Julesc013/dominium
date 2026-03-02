@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.registry.mobility_vehicle_class_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.mobility_vehicle_class_registry",
+    "registry_version": "1.0.0",
+    "vehicle_classes": [
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "vehicle.rail_cart",
+        "schema_ref": "dominium.schema.mobility.vehicle_class.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "vehicle.rail_loco",
+        "schema_ref": "dominium.schema.mobility.vehicle_class.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "vehicle.car",
+        "schema_ref": "dominium.schema.mobility.vehicle_class.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "vehicle.truck",
+        "schema_ref": "dominium.schema.mobility.vehicle_class.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "vehicle.boat",
+        "schema_ref": "dominium.schema.mobility.vehicle_class.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "vehicle.plane",
+        "schema_ref": "dominium.schema.mobility.vehicle_class.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "vehicle.drone",
+        "schema_ref": "dominium.schema.mobility.vehicle_class.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "vehicle.spacecraft",
+        "schema_ref": "dominium.schema.mobility.vehicle_class.stub@1.0.0",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.mobility_constraint_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.mobility_constraint_type_registry",
+    "registry_version": "1.0.0",
+    "constraint_types": [
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.follow_spline",
+        "schema_ref": "dominium.schema.mobility.constraint_type.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.follow_corridor",
+        "schema_ref": "dominium.schema.mobility.constraint_type.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.follow_orbit",
+        "schema_ref": "dominium.schema.mobility.constraint_type.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.coupling",
+        "schema_ref": "dominium.schema.mobility.constraint_type.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "constraint_type_id": "constraint.docking",
+        "schema_ref": "dominium.schema.mobility.constraint_type.stub@1.0.0",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
