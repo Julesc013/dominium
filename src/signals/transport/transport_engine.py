@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
+from src.core.graph.routing_engine import RoutingError, query_route_result
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -47,6 +48,30 @@ def _clamp_trust_weight(value: object) -> float:
     if token > 1.0:
         return 1.0
     return float(token)
+
+
+def _routing_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = _as_map(registry_payload)
+    rows = payload.get("routing_policies")
+    if not isinstance(rows, list):
+        rows = _as_map(payload.get("record")).get("routing_policies")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("policy_id", ""))):
+        policy_id = str(row.get("policy_id", "")).strip()
+        if not policy_id:
+            continue
+        out[policy_id] = {
+            "schema_version": "1.0.0",
+            "policy_id": policy_id,
+            "description": str(row.get("description", "")).strip(),
+            "tie_break_policy": str(row.get("tie_break_policy", "")).strip() or "edge_id_lexicographic",
+            "allow_multi_hop": bool(row.get("allow_multi_hop", True)),
+            "optimization_metric": str(row.get("optimization_metric", "")).strip() or "delay_ticks",
+            "extensions": _as_map(row.get("extensions")),
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
 def _with_fingerprint(row: Mapping[str, object]) -> dict:
@@ -556,6 +581,7 @@ def process_signal_transport_tick(
     routing_policy_registry: Mapping[str, object] | None,
     max_cost_units: int,
     cost_units_per_delivery: int,
+    route_cache_state: Mapping[str, object] | None = None,
     default_trust_weight: float = 1.0,
     trust_weight_by_subject_id: Mapping[str, object] | None = None,
 ) -> dict:
@@ -570,6 +596,7 @@ def process_signal_transport_tick(
         routing_policy_registry=routing_policy_registry,
         max_cost_units=int(max(0, _as_int(max_cost_units, 0))),
         cost_units_per_delivery=int(max(1, _as_int(cost_units_per_delivery, 1))),
+        route_cache_state=route_cache_state,
     )
     next_receipts = normalize_knowledge_receipt_rows(knowledge_receipt_rows)
     created_receipts = []
@@ -604,19 +631,129 @@ def process_signal_transport_tick(
     return out
 
 
-def _has_direct_route(*, channel_row: Mapping[str, object], queue_row: Mapping[str, object], graph_rows_by_id: Mapping[str, dict]) -> bool:
+def _default_routing_policy_row() -> dict:
+    return {
+        "schema_version": "1.0.0",
+        "policy_id": "route.shortest_delay",
+        "description": "default signals routing policy",
+        "tie_break_policy": "edge_id_lexicographic",
+        "allow_multi_hop": True,
+        "optimization_metric": "delay_ticks",
+        "extensions": {},
+    }
+
+
+def _resolve_route_query(
+    *,
+    channel_row: Mapping[str, object],
+    queue_row: Mapping[str, object],
+    graph_rows_by_id: Mapping[str, dict],
+    routing_policy_rows: Mapping[str, dict],
+    route_cache_state: Mapping[str, object] | None,
+) -> dict:
     from_node = str(queue_row.get("from_node_id", "")).strip()
     to_node = str(queue_row.get("to_node_id", "")).strip()
-    if not from_node or not to_node:
-        return False
-    if from_node == to_node:
-        return True
+    if (not from_node) or (not to_node):
+        raise SignalTransportError(
+            REFUSAL_SIGNAL_ROUTE_UNAVAILABLE,
+            "signal route requires from_node_id and to_node_id",
+            {"queue_key": str(queue_row.get("queue_key", "")).strip()},
+        )
     graph_id = str(channel_row.get("network_graph_id", "")).strip()
     graph_row = dict(graph_rows_by_id.get(graph_id) or {})
-    for edge in sorted((dict(item) for item in list(graph_row.get("edges") or []) if isinstance(item, Mapping)), key=lambda item: str(item.get("edge_id", ""))):
-        if str(edge.get("from_node_id", "")).strip() == from_node and str(edge.get("to_node_id", "")).strip() == to_node:
-            return True
-    return False
+    if not graph_row:
+        raise SignalTransportError(
+            REFUSAL_SIGNAL_ROUTE_UNAVAILABLE,
+            "signal route graph '{}' is unavailable".format(graph_id),
+            {"graph_id": graph_id},
+        )
+    channel_extensions = _as_map(channel_row.get("extensions"))
+    policy_id = str(channel_extensions.get("routing_policy_id", "")).strip() or "route.shortest_delay"
+    routing_policy_row = dict(routing_policy_rows.get(policy_id) or _default_routing_policy_row())
+    if (not str(routing_policy_row.get("policy_id", "")).strip()) or (
+        str(routing_policy_row.get("policy_id", "")).strip() != policy_id and policy_id in routing_policy_rows
+    ):
+        routing_policy_row = dict(_default_routing_policy_row())
+    graph_row = _routing_compatible_graph_row(
+        graph_row=graph_row,
+        default_policy_id=str(routing_policy_row.get("policy_id", "")).strip() or "route.shortest_delay",
+    )
+    try:
+        route_result = query_route_result(
+            graph_row=graph_row,
+            routing_policy_row=routing_policy_row,
+            from_node_id=from_node,
+            to_node_id=to_node,
+            constraints_row=_as_map(channel_extensions.get("route_constraints")),
+            cache_state=_as_map(route_cache_state),
+            max_cache_entries=max(1, _as_int(channel_extensions.get("route_cache_max_entries", 512), 512)),
+            cost_units_per_query=max(1, _as_int(channel_extensions.get("route_cost_units", 1), 1)),
+        )
+    except RoutingError as exc:
+        raise SignalTransportError(
+            REFUSAL_SIGNAL_ROUTE_UNAVAILABLE,
+            "signal route unavailable",
+            {
+                "reason_code": str(getattr(exc, "reason_code", "")),
+                "details": dict(getattr(exc, "details", {}) or {}),
+                "channel_id": str(channel_row.get("channel_id", "")).strip(),
+                "from_node_id": from_node,
+                "to_node_id": to_node,
+            },
+        ) from exc
+    route_row = dict(route_result.get("route_result") or {})
+    return {
+        "route_result": route_result,
+        "route_row": route_row,
+        "path_edge_ids": [str(item).strip() for item in list(route_row.get("path_edge_ids") or []) if str(item).strip()],
+        "path_node_ids": [str(item).strip() for item in list(route_row.get("path_node_ids") or []) if str(item).strip()],
+        "cache_state": _as_map(route_result.get("cache_state")),
+        "cache_key": str(route_result.get("cache_key", "")).strip() or None,
+        "policy_id": str(routing_policy_row.get("policy_id", "")).strip() or "route.shortest_delay",
+    }
+
+
+def _routing_compatible_graph_row(*, graph_row: Mapping[str, object], default_policy_id: str) -> dict:
+    row = dict(graph_row or {})
+    row["schema_version"] = "1.0.0"
+    row["graph_id"] = str(row.get("graph_id", "")).strip()
+    row["deterministic_routing_policy_id"] = str(row.get("deterministic_routing_policy_id", "")).strip() or str(default_policy_id or "route.shortest_delay")
+    row["validation_mode"] = str(row.get("validation_mode", "")).strip() or "warn"
+    row["node_type_schema_id"] = str(row.get("node_type_schema_id", "")).strip() or "dominium.schema.signals.signal_node_payload"
+    row["edge_type_schema_id"] = str(row.get("edge_type_schema_id", "")).strip() or "dominium.schema.signals.signal_edge_payload"
+    payload_schema_versions = _as_map(row.get("payload_schema_versions"))
+    payload_schema_versions.setdefault("dominium.schema.signals.signal_node_payload", "1.0.0")
+    payload_schema_versions.setdefault("dominium.schema.signals.signal_edge_payload", "1.0.0")
+    row["payload_schema_versions"] = payload_schema_versions
+    normalized_nodes: List[dict] = []
+    for node in list(row.get("nodes") or []):
+        if not isinstance(node, Mapping):
+            continue
+        node_row = dict(node)
+        node_row["schema_version"] = "1.0.0"
+        node_row["node_id"] = str(node_row.get("node_id", "")).strip()
+        node_row["node_type_id"] = str(node_row.get("node_type_id", "")).strip() or "signal_node"
+        node_row["tags"] = _sorted_tokens(node_row.get("tags"))
+        if ("payload" not in node_row) and ("payload_ref" not in node_row):
+            node_row["payload_ref"] = {"node_kind": "relay"}
+        normalized_nodes.append(node_row)
+    normalized_edges: List[dict] = []
+    for edge in list(row.get("edges") or []):
+        if not isinstance(edge, Mapping):
+            continue
+        edge_row = dict(edge)
+        edge_row["schema_version"] = "1.0.0"
+        edge_row["edge_id"] = str(edge_row.get("edge_id", "")).strip()
+        edge_row["from_node_id"] = str(edge_row.get("from_node_id", "")).strip()
+        edge_row["to_node_id"] = str(edge_row.get("to_node_id", "")).strip()
+        edge_row["edge_type_id"] = str(edge_row.get("edge_type_id", "")).strip() or "signal_edge"
+        edge_row["tags"] = _sorted_tokens(edge_row.get("tags"))
+        if ("payload" not in edge_row) and ("payload_ref" not in edge_row):
+            edge_row["payload_ref"] = {"edge_kind": "relay_link"}
+        normalized_edges.append(edge_row)
+    row["nodes"] = list(normalized_nodes)
+    row["edges"] = list(normalized_edges)
+    return row
 
 
 def _delivery_state(*, policy_row: Mapping[str, object], queue_row: Mapping[str, object], current_tick: int) -> str:
@@ -635,8 +772,21 @@ def _delivery_state(*, policy_row: Mapping[str, object], queue_row: Mapping[str,
     return "delivered"
 
 
-def tick_signal_transport(*, current_tick: int, signal_channel_rows: object, signal_transport_queue_rows: object, envelope_rows: object, existing_delivery_event_rows: object, network_graph_rows: object, loss_policy_registry: Mapping[str, object] | None, routing_policy_registry: Mapping[str, object] | None, max_cost_units: int, cost_units_per_delivery: int, field_visibility_by_channel_id: Mapping[str, object] | None = None) -> dict:
-    del routing_policy_registry
+def tick_signal_transport(
+    *,
+    current_tick: int,
+    signal_channel_rows: object,
+    signal_transport_queue_rows: object,
+    envelope_rows: object,
+    existing_delivery_event_rows: object,
+    network_graph_rows: object,
+    loss_policy_registry: Mapping[str, object] | None,
+    routing_policy_registry: Mapping[str, object] | None,
+    max_cost_units: int,
+    cost_units_per_delivery: int,
+    route_cache_state: Mapping[str, object] | None = None,
+    field_visibility_by_channel_id: Mapping[str, object] | None = None,
+) -> dict:
     del field_visibility_by_channel_id
     tick = int(max(0, _as_int(current_tick, 0)))
     channels = signal_channel_rows_by_id(signal_channel_rows)
@@ -646,6 +796,8 @@ def tick_signal_transport(*, current_tick: int, signal_channel_rows: object, sig
     event_sequence = int(len(event_rows))
     graphs = dict((str(row.get("graph_id", "")).strip(), dict(row)) for row in list(network_graph_rows or []) if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip())
     loss_rows = loss_policy_rows_by_id(loss_policy_registry)
+    routing_policy_rows = _routing_policy_rows_by_id(routing_policy_registry)
+    next_route_cache_state = _as_map(route_cache_state)
 
     cost_unit = int(max(1, _as_int(cost_units_per_delivery, 1)))
     max_attempts = int(max(0, _as_int(max_cost_units, 0)) // cost_unit)
@@ -680,8 +832,30 @@ def tick_signal_transport(*, current_tick: int, signal_channel_rows: object, sig
 
         loss_policy_id = str(channel_row.get("loss_policy_id", "loss.none")).strip() or "loss.none"
         loss_row = dict(loss_rows.get(loss_policy_id) or {"loss_policy_id": loss_policy_id, "parameters": {}, "rng_stream_name": None})
+        route_details = {
+            "route_policy_id": str(_as_map(channel_row.get("extensions")).get("routing_policy_id", "")).strip() or "route.shortest_delay",
+            "route_cache_key": None,
+            "path_edge_ids": [],
+            "path_node_ids": [],
+            "route_unavailable": False,
+        }
+        try:
+            route_query = _resolve_route_query(
+                channel_row=channel_row,
+                queue_row=queue_row,
+                graph_rows_by_id=graphs,
+                routing_policy_rows=routing_policy_rows,
+                route_cache_state=next_route_cache_state,
+            )
+            next_route_cache_state = _as_map(route_query.get("cache_state"))
+            route_details["route_policy_id"] = str(route_query.get("policy_id", "")).strip() or route_details["route_policy_id"]
+            route_details["route_cache_key"] = route_query.get("cache_key")
+            route_details["path_edge_ids"] = list(route_query.get("path_edge_ids") or [])
+            route_details["path_node_ids"] = list(route_query.get("path_node_ids") or [])
+        except SignalTransportError:
+            route_details["route_unavailable"] = True
         state = _delivery_state(policy_row=loss_row, queue_row=queue_row, current_tick=tick)
-        if state == "delivered" and not _has_direct_route(channel_row=channel_row, queue_row=queue_row, graph_rows_by_id=graphs):
+        if state == "delivered" and bool(route_details.get("route_unavailable")):
             state = "lost"
 
         event_id = deterministic_message_delivery_event_id(
@@ -701,7 +875,15 @@ def tick_signal_transport(*, current_tick: int, signal_channel_rows: object, sig
                 to_node_id=str(queue_row.get("to_node_id", "")).strip(),
                 delivered_tick=tick,
                 delivery_state=state,
-                extensions={"channel_id": channel_id, "loss_policy_id": loss_policy_id, "recipient_subject_id": queue_row.get("recipient_subject_id")},
+                extensions={
+                    "channel_id": channel_id,
+                    "loss_policy_id": loss_policy_id,
+                    "recipient_subject_id": queue_row.get("recipient_subject_id"),
+                    "route_policy_id": route_details.get("route_policy_id"),
+                    "route_cache_key": route_details.get("route_cache_key"),
+                    "path_edge_ids": list(route_details.get("path_edge_ids") or []),
+                    "path_node_ids": list(route_details.get("path_node_ids") or []),
+                },
             )
         )
         attempts += 1
@@ -718,6 +900,7 @@ def tick_signal_transport(*, current_tick: int, signal_channel_rows: object, sig
         "delivered_rows": sorted((dict(row) for row in delivered), key=lambda row: (str(row.get("envelope_id", "")), str(row.get("recipient_subject_id", "")), str(row.get("delivery_event_id", "")))),
         "budget_outcome": "degraded" if deferred else "complete",
         "cost_units": int(max(0, attempts * cost_unit)),
+        "route_cache_state": dict(next_route_cache_state),
     }
 
 
