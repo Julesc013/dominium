@@ -1,0 +1,24 @@
+SCHEMA: mobility/mobility_node_payload.schema
+schema_id: dominium.schema.mobility.mobility_node_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for MobilityNetworkGraph nodes.
+
+REQUIRED SHAPE:
+record mobility_node_payload
+  required:
+    - schema_version: semver
+    - node_kind: enum(endpoint|junction|station|switch|waypoint)
+    - parent_spatial_id: id
+    - tags: list[id]
+    - extensions: map
+  optional:
+    - position_ref: id|map
+    - junction_id: id
+    - state_machine_id: id
+
+INVARIANTS:
+- Switch nodes reference explicit state_machine_id when switchable behavior is declared.
+- Payload fields remain deterministic and process-authored only.

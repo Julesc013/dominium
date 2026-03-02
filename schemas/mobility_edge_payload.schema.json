@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mobility Edge Payload Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-2 MobilityNetworkGraph edge payload.",
+  "x-doc-ref": [
+    "docs/mobility/MOBILITY_NETWORKGRAPH.md",
+    "docs/audit/MOBILITY_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_kind",
+    "guide_geometry_id",
+    "tags",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_kind": {
+      "type": "string",
+      "enum": [
+        "track",
+        "road",
+        "lane",
+        "corridor",
+        "orbit_link",
+        "custom"
+      ]
+    },
+    "guide_geometry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "capacity_units": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "max_speed_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_kind": "track",
+      "guide_geometry_id": "geometry.demo.0001",
+      "spec_id": "spec.track.standard_gauge.v1",
+      "capacity_units": 1,
+      "max_speed_policy_id": "speed_policy.spec_based",
+      "tags": [
+        "mobility",
+        "track"
+      ],
+      "extensions": {}
+    }
+  ]
+}

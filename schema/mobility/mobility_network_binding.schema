@@ -1,0 +1,23 @@
+SCHEMA: mobility/mobility_network_binding.schema
+schema_id: dominium.schema.mobility.mobility_network_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic binding between formalization and MobilityNetworkGraph artifacts.
+
+REQUIRED SHAPE:
+record mobility_network_binding
+  required:
+    - schema_version: semver
+    - binding_id: id
+    - formalization_id: id
+    - graph_id: id
+    - node_ids: list[id]
+    - edge_ids: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Binding ids and fingerprints are deterministic for equivalent formalization/geometry inputs.
+- node_ids/edge_ids ordering is canonicalized.
