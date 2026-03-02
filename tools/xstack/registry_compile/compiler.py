@@ -3074,6 +3074,230 @@ def _pose_registry_rows(
     return posture_rows, mount_tag_rows, control_binding_rows, errors
 
 
+def _mobility_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _vehicle_record, vehicle_rows_raw, vehicle_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mobility_vehicle_class_registry.json",
+        expected_schema_id="dominium.registry.mobility_vehicle_class_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="vehicle_classes",
+    )
+    if vehicle_load_errors:
+        return [], [], [], [], vehicle_load_errors
+
+    _constraint_record, constraint_rows_raw, constraint_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mobility_constraint_type_registry.json",
+        expected_schema_id="dominium.registry.mobility_constraint_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="constraint_types",
+    )
+    if constraint_load_errors:
+        return [], [], [], [], constraint_load_errors
+
+    _signal_record, signal_rows_raw, signal_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mobility_signal_type_registry.json",
+        expected_schema_id="dominium.registry.mobility_signal_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="signal_types",
+    )
+    if signal_load_errors:
+        return [], [], [], [], signal_load_errors
+
+    _speed_policy_record, speed_policy_rows_raw, speed_policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mobility_speed_policy_registry.json",
+        expected_schema_id="dominium.registry.mobility_speed_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="speed_policies",
+    )
+    if speed_policy_load_errors:
+        return [], [], [], [], speed_policy_load_errors
+
+    vehicle_class_rows: List[dict] = []
+    vehicle_class_seen = set()
+    for entry in sorted(vehicle_rows_raw, key=lambda row: str((row or {}).get("vehicle_class_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_vehicle_class_entry",
+                    "message": "mobility vehicle class entry must be object",
+                    "path": "$.vehicle_classes",
+                }
+            )
+            continue
+        vehicle_class_id = str(entry.get("vehicle_class_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not vehicle_class_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_vehicle_class_entry",
+                    "message": "mobility vehicle class entry missing required fields",
+                    "path": "$.vehicle_classes",
+                }
+            )
+            continue
+        if vehicle_class_id in vehicle_class_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mobility_vehicle_class_id",
+                    "message": "duplicate mobility vehicle_class_id '{}'".format(vehicle_class_id),
+                    "path": "$.vehicle_classes.vehicle_class_id",
+                }
+            )
+            continue
+        vehicle_class_seen.add(vehicle_class_id)
+        vehicle_class_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "vehicle_class_id": vehicle_class_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    vehicle_class_rows = sorted(vehicle_class_rows, key=lambda row: str(row.get("vehicle_class_id", "")))
+
+    constraint_type_rows: List[dict] = []
+    constraint_type_seen = set()
+    for entry in sorted(constraint_rows_raw, key=lambda row: str((row or {}).get("constraint_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_constraint_type_entry",
+                    "message": "mobility constraint type entry must be object",
+                    "path": "$.constraint_types",
+                }
+            )
+            continue
+        constraint_type_id = str(entry.get("constraint_type_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not constraint_type_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_constraint_type_entry",
+                    "message": "mobility constraint type entry missing required fields",
+                    "path": "$.constraint_types",
+                }
+            )
+            continue
+        if constraint_type_id in constraint_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mobility_constraint_type_id",
+                    "message": "duplicate mobility constraint_type_id '{}'".format(constraint_type_id),
+                    "path": "$.constraint_types.constraint_type_id",
+                }
+            )
+            continue
+        constraint_type_seen.add(constraint_type_id)
+        constraint_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "constraint_type_id": constraint_type_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    constraint_type_rows = sorted(constraint_type_rows, key=lambda row: str(row.get("constraint_type_id", "")))
+
+    signal_type_rows: List[dict] = []
+    signal_type_seen = set()
+    for entry in sorted(signal_rows_raw, key=lambda row: str((row or {}).get("signal_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_signal_type_entry",
+                    "message": "mobility signal type entry must be object",
+                    "path": "$.signal_types",
+                }
+            )
+            continue
+        signal_type_id = str(entry.get("signal_type_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not signal_type_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_signal_type_entry",
+                    "message": "mobility signal type entry missing required fields",
+                    "path": "$.signal_types",
+                }
+            )
+            continue
+        if signal_type_id in signal_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mobility_signal_type_id",
+                    "message": "duplicate mobility signal_type_id '{}'".format(signal_type_id),
+                    "path": "$.signal_types.signal_type_id",
+                }
+            )
+            continue
+        signal_type_seen.add(signal_type_id)
+        signal_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "signal_type_id": signal_type_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    signal_type_rows = sorted(signal_type_rows, key=lambda row: str(row.get("signal_type_id", "")))
+
+    speed_policy_rows: List[dict] = []
+    speed_policy_seen = set()
+    for entry in sorted(speed_policy_rows_raw, key=lambda row: str((row or {}).get("speed_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_speed_policy_entry",
+                    "message": "mobility speed policy entry must be object",
+                    "path": "$.speed_policies",
+                }
+            )
+            continue
+        speed_policy_id = str(entry.get("speed_policy_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not speed_policy_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_speed_policy_entry",
+                    "message": "mobility speed policy entry missing required fields",
+                    "path": "$.speed_policies",
+                }
+            )
+            continue
+        if speed_policy_id in speed_policy_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mobility_speed_policy_id",
+                    "message": "duplicate mobility speed_policy_id '{}'".format(speed_policy_id),
+                    "path": "$.speed_policies.speed_policy_id",
+                }
+            )
+            continue
+        speed_policy_seen.add(speed_policy_id)
+        speed_policy_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "speed_policy_id": speed_policy_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    speed_policy_rows = sorted(speed_policy_rows, key=lambda row: str(row.get("speed_policy_id", "")))
+
+    return vehicle_class_rows, constraint_type_rows, signal_type_rows, speed_policy_rows, errors
+
+
 def _task_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -10908,6 +11132,15 @@ def compile_bundle(
         repo_root=repo_root,
     )
     (
+        mobility_vehicle_class_rows,
+        mobility_constraint_type_rows,
+        mobility_signal_type_rows,
+        mobility_speed_policy_rows,
+        mobility_registry_errors,
+    ) = _mobility_registry_rows(
+        repo_root=repo_root,
+    )
+    (
         task_type_rows,
         progress_model_rows,
         task_registry_errors,
@@ -11280,6 +11513,7 @@ def compile_bundle(
         + interaction_registry_errors
         + action_surface_registry_errors
         + pose_registry_errors
+        + mobility_registry_errors
         + task_registry_errors
         + machine_registry_errors
         + civilisation_registry_errors
@@ -11801,6 +12035,34 @@ def compile_bundle(
             "control_bindings": control_binding_rows,
         }
     )
+    mobility_vehicle_class_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "vehicle_classes": mobility_vehicle_class_rows,
+        }
+    )
+    mobility_constraint_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "constraint_types": mobility_constraint_type_rows,
+        }
+    )
+    mobility_signal_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "signal_types": mobility_signal_type_rows,
+        }
+    )
+    mobility_speed_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "speed_policies": mobility_speed_policy_rows,
+        }
+    )
     machine_port_type_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -12291,6 +12553,13 @@ def compile_bundle(
         "posture_registry": ("posture_registry", posture_payload),
         "mount_tag_registry": ("mount_tag_registry", mount_tag_payload),
         "control_binding_registry": ("control_binding_registry", control_binding_payload),
+        "mobility_vehicle_class_registry": ("mobility_vehicle_class_registry", mobility_vehicle_class_payload),
+        "mobility_constraint_type_registry": (
+            "mobility_constraint_type_registry",
+            mobility_constraint_type_payload,
+        ),
+        "mobility_signal_type_registry": ("mobility_signal_type_registry", mobility_signal_type_payload),
+        "mobility_speed_policy_registry": ("mobility_speed_policy_registry", mobility_speed_policy_payload),
         "port_type_registry": ("port_type_registry", machine_port_type_payload),
         "tool_tag_registry": ("tool_tag_registry", tool_tag_payload),
         "tool_type_registry": ("tool_type_registry", tool_type_payload),
@@ -12432,6 +12701,10 @@ def compile_bundle(
         "posture_registry",
         "mount_tag_registry",
         "control_binding_registry",
+        "mobility_vehicle_class_registry",
+        "mobility_constraint_type_registry",
+        "mobility_signal_type_registry",
+        "mobility_speed_policy_registry",
         "port_type_registry",
         "tool_tag_registry",
         "tool_type_registry",
@@ -12584,6 +12857,10 @@ def compile_bundle(
             "posture_registry_hash": registry_hashes["posture_registry_hash"],
             "mount_tag_registry_hash": registry_hashes["mount_tag_registry_hash"],
             "control_binding_registry_hash": registry_hashes["control_binding_registry_hash"],
+            "mobility_vehicle_class_registry_hash": registry_hashes["mobility_vehicle_class_registry_hash"],
+            "mobility_constraint_type_registry_hash": registry_hashes["mobility_constraint_type_registry_hash"],
+            "mobility_signal_type_registry_hash": registry_hashes["mobility_signal_type_registry_hash"],
+            "mobility_speed_policy_registry_hash": registry_hashes["mobility_speed_policy_registry_hash"],
             "port_type_registry_hash": registry_hashes["port_type_registry_hash"],
             "tool_tag_registry_hash": registry_hashes["tool_tag_registry_hash"],
             "tool_type_registry_hash": registry_hashes["tool_type_registry_hash"],
