@@ -101,6 +101,36 @@ SpecSheet integration points:
 
 Violations produce deterministic warnings/refusals/incidents, not silent correction.
 
+## UX and Diegetics
+
+`process.mobility_free_tick` produces deterministic instrument payloads for diegetic presentation:
+- `speed_mm_per_tick`
+- `wind_vector`
+- `visibility_permille`
+- `corridor_status` / `volume_status`
+
+These outputs are stored in `state.mobility_free_instruments` and can be rendered as speedometer/wind/visibility warnings without introducing a second truth path.
+
+Planning/admin overlays use GuideGeometry and free-motion runtime metadata:
+- corridor and volume boundary wireframes from `guide_geometries`
+- subject-level warning state from `mobility_free_incidents`
+
+## Multiplayer and Reenactment
+
+Authoritative/hybrid behavior:
+- free-motion mutation runs on the authoritative process path only
+- clients consume redacted state and instrument channels
+
+Lockstep behavior:
+- sorted `subject_id` update order
+- integer tick integration
+- deterministic budget deferral order
+
+Reenactment hooks:
+- incidents are emitted to deterministic `travel_events` as `incident_stub` with reason codes
+- summarized rows are persisted in `state.mobility_free_incidents`
+- runtime budget/ROI outcomes are persisted in `state.mobility_free_runtime_state`
+
 ## Invariants
 
 - A1 Determinism: stable ordering + integer integration + tick-only updates.
