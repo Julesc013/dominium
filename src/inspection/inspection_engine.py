@@ -115,6 +115,7 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.networkgraph.summary",
         "section.mob.network_summary",
         "section.mob.congestion_summary",
+        "section.signal.network_summary",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -125,6 +126,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.mob.congestion_summary",
         "section.mob.edge_occupancy",
         "section.networkgraph.capacity_utilization",
+        "section.signal.network_summary",
+        "section.signal.channel_queue_depth",
+        "section.signal.delivery_status",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -135,6 +139,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.mob.congestion_summary",
         "section.mob.edge_occupancy",
         "section.networkgraph.capacity_utilization",
+        "section.signal.network_summary",
+        "section.signal.channel_queue_depth",
+        "section.signal.delivery_status",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -259,6 +266,9 @@ _DEFAULT_SECTION_ROWS = {
     "section.mob.route_result": {"title": "Mobility Route Result", "extensions": {"cost_units": 2}},
     "section.mob.edge_occupancy": {"title": "Mobility Edge Occupancy", "extensions": {"cost_units": 2}},
     "section.mob.congestion_summary": {"title": "Mobility Congestion Summary", "extensions": {"cost_units": 1}},
+    "section.signal.network_summary": {"title": "Signal Network Summary", "extensions": {"cost_units": 1}},
+    "section.signal.channel_queue_depth": {"title": "Signal Channel Queue Depth", "extensions": {"cost_units": 2}},
+    "section.signal.delivery_status": {"title": "Signal Delivery Status", "extensions": {"cost_units": 2}},
     "section.networkgraph.capacity_utilization": {
         "title": "NetworkGraph Capacity Utilization",
         "extensions": {"cost_units": 2},
@@ -1436,6 +1446,164 @@ def _build_section_data(
             "delayed_vehicle_ids": list(delayed_vehicle_ids)[:256],
             "delay_status": "delayed" if latest_delay_events else "on_time",
         }
+    if section_id == "section.signal.network_summary":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        signal_channels = [
+            dict(item)
+            for item in list((dict(state or {})).get("signal_channels") or (dict(state or {})).get("signal_channel_rows") or [])
+            if isinstance(item, dict)
+        ]
+        signal_queues = [
+            dict(item)
+            for item in list((dict(state or {})).get("signal_transport_queue") or (dict(state or {})).get("signal_transport_queue_rows") or [])
+            if isinstance(item, dict)
+        ]
+        signal_events = [
+            dict(item)
+            for item in list((dict(state or {})).get("message_delivery_events") or (dict(state or {})).get("message_delivery_event_rows") or [])
+            if isinstance(item, dict)
+        ]
+        channel_rows = [
+            row
+            for row in list(signal_channels)
+            if (not graph_id) or str(row.get("network_graph_id", "")).strip() == str(graph_id)
+        ]
+        channel_ids = set(str(row.get("channel_id", "")).strip() for row in channel_rows if str(row.get("channel_id", "")).strip())
+        queue_rows = [row for row in signal_queues if str(row.get("channel_id", "")).strip() in channel_ids]
+        event_rows = [
+            row
+            for row in signal_events
+            if str((dict(row.get("extensions") or {})).get("channel_id", "")).strip() in channel_ids
+        ]
+        channel_type_counts: Dict[str, int] = {}
+        for row in sorted(channel_rows, key=lambda item: str(item.get("channel_id", ""))):
+            channel_type_id = str(row.get("channel_type_id", "")).strip() or "channel.unknown"
+            channel_type_counts[channel_type_id] = _as_int(channel_type_counts.get(channel_type_id, 0), 0) + 1
+        return {
+            "graph_id": graph_id,
+            "channel_count": int(len(channel_rows)),
+            "queue_depth_total": int(len(queue_rows)),
+            "delivery_event_count": int(len(event_rows)),
+            "channel_type_counts": dict((key, channel_type_counts[key]) for key in sorted(channel_type_counts.keys())),
+            "status": "degraded" if queue_rows else "stable",
+        }
+    if section_id == "section.signal.channel_queue_depth":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        signal_channels = [
+            dict(item)
+            for item in list((dict(state or {})).get("signal_channels") or (dict(state or {})).get("signal_channel_rows") or [])
+            if isinstance(item, dict)
+        ]
+        signal_queues = [
+            dict(item)
+            for item in list((dict(state or {})).get("signal_transport_queue") or (dict(state or {})).get("signal_transport_queue_rows") or [])
+            if isinstance(item, dict)
+        ]
+        channel_rows = [
+            row
+            for row in list(signal_channels)
+            if (not graph_id) or str(row.get("network_graph_id", "")).strip() == str(graph_id)
+        ]
+        channel_ids = set(str(row.get("channel_id", "")).strip() for row in channel_rows if str(row.get("channel_id", "")).strip())
+        queue_rows = [row for row in signal_queues if str(row.get("channel_id", "")).strip() in channel_ids]
+        queue_by_channel: Dict[str, int] = {}
+        queue_by_edge: Dict[str, int] = {}
+        for row in sorted(queue_rows, key=lambda item: (str(item.get("channel_id", "")), str(item.get("envelope_id", "")), str(item.get("queue_key", "")))):
+            channel_id = str(row.get("channel_id", "")).strip()
+            if not channel_id:
+                continue
+            queue_by_channel[channel_id] = _as_int(queue_by_channel.get(channel_id, 0), 0) + 1
+            extensions = dict(row.get("extensions") or {})
+            edge_ids = _sorted_unique_strings(list(extensions.get("path_edge_ids") or []))
+            if not edge_ids:
+                edge_ids = [str(extensions.get("from_edge_id", "")).strip()] if str(extensions.get("from_edge_id", "")).strip() else []
+            for edge_id in edge_ids:
+                queue_by_edge[edge_id] = _as_int(queue_by_edge.get(edge_id, 0), 0) + 1
+        edge_rows = []
+        for edge_id in sorted(queue_by_edge.keys()):
+            depth = int(max(0, _as_int(queue_by_edge.get(edge_id, 0), 0)))
+            heat_bucket = "low"
+            if depth >= 6:
+                heat_bucket = "high"
+            elif depth >= 3:
+                heat_bucket = "medium"
+            edge_rows.append(
+                {
+                    "edge_id": edge_id,
+                    "queue_depth": int(depth),
+                    "heat_bucket": heat_bucket,
+                }
+            )
+        return {
+            "graph_id": graph_id,
+            "channel_count": int(len(channel_rows)),
+            "queue_depth_total": int(len(queue_rows)),
+            "channel_queue_depth_rows": sorted(
+                [
+                    {
+                        "channel_id": channel_id,
+                        "queue_depth": int(max(0, _as_int(queue_by_channel.get(channel_id, 0), 0))),
+                    }
+                    for channel_id in sorted(queue_by_channel.keys())
+                ],
+                key=lambda item: (str(item.get("channel_id", "")), int(max(0, _as_int(item.get("queue_depth", 0), 0)))),
+            ),
+            "edge_queue_depth_rows": list(edge_rows)[:512],
+            "max_queue_depth": int(max([0] + [int(max(0, _as_int(value, 0))) for value in queue_by_channel.values()])),
+        }
+    if section_id == "section.signal.delivery_status":
+        signal_events = [
+            dict(item)
+            for item in list((dict(state or {})).get("message_delivery_events") or (dict(state or {})).get("message_delivery_event_rows") or [])
+            if isinstance(item, dict)
+        ]
+        sorted_events = sorted(
+            signal_events,
+            key=lambda row: (
+                _as_int(row.get("delivered_tick", row.get("tick", 0)), 0),
+                str(row.get("event_id", "")),
+            ),
+        )
+        delivered_count = 0
+        lost_count = 0
+        corrupted_count = 0
+        for row in sorted_events:
+            state_token = str(row.get("delivery_state", "")).strip().lower()
+            if state_token == "delivered":
+                delivered_count += 1
+            elif state_token == "corrupted":
+                corrupted_count += 1
+            else:
+                lost_count += 1
+        total = int(delivered_count + lost_count + corrupted_count)
+        delivered_ratio_permille = int((1000 * delivered_count) // total) if total > 0 else 1000
+        status = "ok"
+        if delivered_ratio_permille < 700:
+            status = "poor"
+        elif delivered_ratio_permille < 900:
+            status = "degraded"
+        payload = {
+            "event_count": int(total),
+            "delivered_count": int(delivered_count),
+            "lost_count": int(lost_count),
+            "corrupted_count": int(corrupted_count),
+            "delivered_ratio_permille": int(delivered_ratio_permille),
+            "delivery_status": status,
+        }
+        if allow_hidden_state:
+            payload["recent_events"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "envelope_id": str(row.get("envelope_id", "")).strip() or None,
+                    "channel_id": str((dict(row.get("extensions") or {})).get("channel_id", "")).strip() or None,
+                    "delivery_state": str(row.get("delivery_state", "")).strip() or "lost",
+                    "delivered_tick": int(max(0, _as_int(row.get("delivered_tick", row.get("tick", 0)), 0))),
+                }
+                for row in list(sorted_events[-128:])
+            ]
+        return payload
     if section_id == "section.networkgraph.capacity_utilization":
         graph = _graph_row()
         edge_rows = [dict(item) for item in list(graph.get("edges") or []) if isinstance(item, dict)]
