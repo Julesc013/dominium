@@ -367,6 +367,325 @@
         "extensions": {}
       },
       {
+        "action_id": "interaction.inspect_interior",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Interior",
+        "target_kinds": [
+          "interior_graph",
+          "interior_volume",
+          "interior_portal",
+          "installed_structure"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "interior",
+          "icon": "glyph.interior.inspect",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.open_door",
+        "process_id": "process.portal_open",
+        "display_name": "Open Door",
+        "target_kinds": [
+          "interior_portal"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "interior",
+          "icon": "glyph.portal.open",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.close_door",
+        "process_id": "process.portal_close",
+        "display_name": "Close Door",
+        "target_kinds": [
+          "interior_portal"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "interior",
+          "icon": "glyph.portal.close",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.lock_door",
+        "process_id": "process.portal_lock",
+        "display_name": "Lock Door",
+        "target_kinds": [
+          "interior_portal"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "interior",
+          "icon": "glyph.portal.lock",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.unlock_door",
+        "process_id": "process.portal_unlock",
+        "display_name": "Unlock Door",
+        "target_kinds": [
+          "interior_portal"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "interior",
+          "icon": "glyph.portal.unlock",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.seal_breach",
+        "process_id": "process.portal_seal_breach",
+        "display_name": "Seal Breach",
+        "target_kinds": [
+          "interior_portal"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "interior",
+          "icon": "glyph.portal.seal",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.activate_vent",
+        "process_id": "process.vent_activate",
+        "display_name": "Activate Vent",
+        "target_kinds": [
+          "interior_portal"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "interior",
+          "icon": "glyph.portal.vent",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.inspect_pose_mount",
+        "process_id": "process.inspect_generate_snapshot",
+        "display_name": "Inspect Pose/Mount",
+        "target_kinds": [
+          "pose_slot",
+          "mount_point"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "pose",
+          "icon": "glyph.pose.inspect",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.pose_enter",
+        "process_id": "process.pose_enter",
+        "display_name": "Enter Pose Slot",
+        "target_kinds": [
+          "pose_slot"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "pose",
+          "icon": "glyph.pose.enter",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.pose_exit",
+        "process_id": "process.pose_exit",
+        "display_name": "Exit Pose Slot",
+        "target_kinds": [
+          "pose_slot"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "pose",
+          "icon": "glyph.pose.exit",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.mount_attach",
+        "process_id": "process.mount_attach",
+        "display_name": "Attach Mount",
+        "target_kinds": [
+          "mount_point"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mount",
+          "icon": "glyph.mount.attach",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.mount_detach",
+        "process_id": "process.mount_detach",
+        "display_name": "Detach Mount",
+        "target_kinds": [
+          "mount_point"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mount",
+          "icon": "glyph.mount.detach",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.meta_pose_override",
+        "process_id": "process.meta_pose_override",
+        "display_name": "Meta Pose Override",
+        "target_kinds": [
+          "pose_slot"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "pose",
+          "icon": "glyph.pose.override",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {
+          "admin_only": true
+        }
+      },
+      {
+        "action_id": "interaction.draw_guide",
+        "process_id": "process.geometry_create",
+        "display_name": "Draw Guide",
+        "target_kinds": [
+          "spatial_node",
+          "formalization_candidate",
+          "geometry"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "expensive",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.draw_guide",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.snap_endpoint",
+        "process_id": "process.geometry_edit",
+        "display_name": "Snap Endpoint",
+        "target_kinds": [
+          "geometry"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.snap_endpoint",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.attach_spec",
+        "process_id": "process.spec_apply_to_target",
+        "display_name": "Attach Spec",
+        "target_kinds": [
+          "geometry",
+          "network_edge",
+          "installed_structure"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.attach_spec",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.validate_spec",
+        "process_id": "process.spec_check_compliance",
+        "display_name": "Validate Spec",
+        "target_kinds": [
+          "geometry",
+          "network_edge",
+          "installed_structure"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.validate_spec",
+          "confirm": false
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
+        "action_id": "interaction.accept_inferred_candidate",
+        "process_id": "process.formalization_accept_candidate",
+        "display_name": "Accept Inferred Candidate",
+        "target_kinds": [
+          "formalization",
+          "formalization_candidate"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "mobility",
+          "icon": "glyph.mobility.accept_candidate",
+          "confirm": true
+        },
+        "required_lens_channels": [],
+        "extensions": {}
+      },
+      {
         "action_id": "interaction.move_agent",
         "process_id": "process.agent_move",
         "display_name": "Move",
