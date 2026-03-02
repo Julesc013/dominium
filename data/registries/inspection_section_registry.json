@@ -202,6 +202,32 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.inbox.acceptance_summary",
+        "title": "Inbox Acceptance Summary",
+        "data": {
+          "data_kind": "inbox_acceptance_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.trust.edges_summary",
+        "title": "Trust Edge Summary",
+        "data": {
+          "data_kind": "trust_edges_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.signal.sent_messages",
         "title": "Signal Sent Messages",
         "data": {

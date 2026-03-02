@@ -132,6 +132,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.delivery_status",
         "section.signal.quality_summary",
         "section.signal.inbox_summary",
+        "section.inbox.acceptance_summary",
+        "section.trust.edges_summary",
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
     ],
@@ -149,6 +151,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.delivery_status",
         "section.signal.quality_summary",
         "section.signal.inbox_summary",
+        "section.inbox.acceptance_summary",
+        "section.trust.edges_summary",
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
     ],
@@ -280,6 +284,8 @@ _DEFAULT_SECTION_ROWS = {
     "section.signal.delivery_status": {"title": "Signal Delivery Status", "extensions": {"cost_units": 2}},
     "section.signal.quality_summary": {"title": "Signal Quality Summary", "extensions": {"cost_units": 2}},
     "section.signal.inbox_summary": {"title": "Signal Inbox Summary", "extensions": {"cost_units": 1}},
+    "section.inbox.acceptance_summary": {"title": "Inbox Acceptance Summary", "extensions": {"cost_units": 1}},
+    "section.trust.edges_summary": {"title": "Trust Edge Summary", "extensions": {"cost_units": 2}},
     "section.signal.sent_messages": {"title": "Signal Sent Messages", "extensions": {"cost_units": 2}},
     "section.signal.aggregation_status": {"title": "Signal Aggregation Status", "extensions": {"cost_units": 2}},
     "section.networkgraph.capacity_utilization": {
@@ -1766,6 +1772,119 @@ def _build_section_data(
                         str(item.get("receipt_id", "")),
                     ),
                 )[-128:]
+            ]
+        return payload
+    if section_id == "section.inbox.acceptance_summary":
+        receipts = [
+            dict(item)
+            for item in list((dict(state or {})).get("knowledge_receipts") or (dict(state or {})).get("knowledge_receipt_rows") or [])
+            if isinstance(item, dict)
+        ]
+        target_subject_id = str(request.get("subject_id", "")).strip() or str(request.get("target_id", "")).strip()
+        filtered = [
+            row
+            for row in receipts
+            if (not target_subject_id) or str(row.get("subject_id", "")).strip() == target_subject_id
+        ]
+        accepted_count = 0
+        untrusted_count = 0
+        unknown_count = 0
+        confidence_counts: Dict[str, int] = {}
+        for row in sorted(filtered, key=lambda item: (_as_int(item.get("acquired_tick", 0), 0), str(item.get("receipt_id", "")))):
+            ext = dict(row.get("extensions") or {})
+            trust_weight = float(row.get("trust_weight", 1.0))
+            threshold = float(ext.get("acceptance_threshold", 0.5))
+            accepted = bool(ext.get("accepted", trust_weight >= threshold))
+            confidence_tag = str(ext.get("confidence_tag", "")).strip().lower()
+            if not confidence_tag:
+                confidence_tag = "accepted" if accepted else "untrusted"
+            confidence_counts[confidence_tag] = _as_int(confidence_counts.get(confidence_tag, 0), 0) + 1
+            if accepted:
+                accepted_count += 1
+            elif confidence_tag == "untrusted":
+                untrusted_count += 1
+            else:
+                unknown_count += 1
+        total = int(len(filtered))
+        payload = {
+            "subject_id": target_subject_id or None,
+            "receipt_count": int(total),
+            "accepted_count": int(accepted_count),
+            "untrusted_count": int(untrusted_count),
+            "unknown_count": int(unknown_count),
+            "accepted_ratio_permille": int((1000 * accepted_count) // total) if total > 0 else 0,
+            "confidence_counts": dict((key, int(confidence_counts[key])) for key in sorted(confidence_counts.keys())),
+        }
+        if allow_hidden_state:
+            payload["recent_acceptance"] = [
+                {
+                    "receipt_id": str(row.get("receipt_id", "")).strip(),
+                    "artifact_id": str(row.get("artifact_id", "")).strip() or None,
+                    "acquired_tick": int(max(0, _as_int(row.get("acquired_tick", 0), 0))),
+                    "trust_weight": float(row.get("trust_weight", 1.0)),
+                    "accepted": bool(dict(row.get("extensions") or {}).get("accepted", False)),
+                    "confidence_tag": str(dict(row.get("extensions") or {}).get("confidence_tag", "")).strip() or None,
+                    "belief_policy_id": str(dict(row.get("extensions") or {}).get("belief_policy_id", "")).strip() or None,
+                }
+                for row in sorted(
+                    filtered,
+                    key=lambda item: (
+                        _as_int(item.get("acquired_tick", 0), 0),
+                        str(item.get("receipt_id", "")),
+                    ),
+                )[-128:]
+            ]
+        return payload
+    if section_id == "section.trust.edges_summary":
+        trust_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("trust_edge_rows") or (dict(state or {})).get("signal_trust_edge_rows") or [])
+            if isinstance(item, dict)
+        ]
+        subject_id = str(request.get("subject_id", "")).strip() or str(request.get("target_id", "")).strip()
+        filtered = []
+        for row in sorted(
+            trust_rows,
+            key=lambda item: (
+                str(item.get("from_subject_id", "")),
+                str(item.get("to_subject_id", "")),
+            ),
+        ):
+            from_subject_id = str(row.get("from_subject_id", "")).strip()
+            to_subject_id = str(row.get("to_subject_id", "")).strip()
+            if not from_subject_id or not to_subject_id:
+                continue
+            if subject_id and subject_id not in {from_subject_id, to_subject_id}:
+                continue
+            filtered.append(row)
+        trust_permille = [
+            int(max(0, min(1000, int(float(dict(row).get("trust_weight", 0.5)) * 1000))))
+            for row in filtered
+        ]
+        avg_trust_permille = int(sum(trust_permille) // max(1, len(trust_permille))) if trust_permille else 500
+        outgoing_count = int(
+            len([row for row in filtered if str(dict(row).get("from_subject_id", "")).strip() == subject_id])
+        ) if subject_id else 0
+        incoming_count = int(
+            len([row for row in filtered if str(dict(row).get("to_subject_id", "")).strip() == subject_id])
+        ) if subject_id else 0
+        payload = {
+            "subject_id": subject_id or None,
+            "edge_count": int(len(filtered)),
+            "avg_trust_permille": int(avg_trust_permille),
+            "outgoing_edge_count": int(outgoing_count),
+            "incoming_edge_count": int(incoming_count),
+        }
+        if allow_hidden_state:
+            payload["edges"] = [
+                {
+                    "from_subject_id": str(row.get("from_subject_id", "")).strip() or None,
+                    "to_subject_id": str(row.get("to_subject_id", "")).strip() or None,
+                    "trust_weight": float(row.get("trust_weight", 0.5)),
+                    "evidence_count": int(max(0, _as_int(row.get("evidence_count", 0), 0))),
+                    "last_updated_tick": int(max(0, _as_int(row.get("last_updated_tick", 0), 0))),
+                }
+                for row in list(filtered[:256])
             ]
         return payload
     if section_id == "section.signal.sent_messages":
