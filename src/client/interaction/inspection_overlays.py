@@ -33,6 +33,31 @@ def _sorted_unique_strings(values: list[object]) -> list[str]:
 )
 
 
+def _point_mm(value: object) -> dict | None:
+    if not isinstance(value, dict):
+        return None
+    return {
+        "x": int(_to_int(value.get("x", 0), 0)),
+        "y": int(_to_int(value.get("y", 0), 0)),
+        "z": int(_to_int(value.get("z", 0), 0)),
+    }
+
+
+def _geometry_points_mm(geometry_row: dict) -> list[dict]:
+    parameters = dict((dict(geometry_row or {})).get("parameters") or {})
+    for key in ("control_points_mm", "points_mm", "path_points_mm"):
+        rows = list(parameters.get(key) or [])
+        points = [_point_mm(item) for item in rows if isinstance(item, dict)]
+        points = [dict(point) for point in points if isinstance(point, dict)]
+        if points:
+            return points
+    start_mm = _point_mm(parameters.get("start_mm"))
+    end_mm = _point_mm(parameters.get("end_mm"))
+    if start_mm and end_mm:
+        return [start_mm, end_mm]
+    return []
+
+
 def _read_json_payload(path: str) -> dict:
     try:
         payload = json.load(open(path, "r", encoding="utf-8"))
@@ -1581,6 +1606,266 @@ def _formalization_overlay_payload(
     }
 
 
+def _guide_geometry_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    snapshot = dict(inspection_snapshot or {})
+    payload = dict(snapshot.get("target_payload") or {})
+    row = dict(payload.get("row") or {})
+    collection = str(payload.get("collection", "")).strip()
+    target_id = str(target_semantic_id).strip()
+
+    if collection == "mobility_junctions":
+        junction_id = str(row.get("junction_id", "")).strip() or target_id
+        connected_ids = _sorted_unique_strings(row.get("connected_geometry_ids"))
+        point = _point_mm(dict(row.get("extensions") or {}).get("position_mm")) or {"x": 0, "y": 0, "z": 0}
+        material_id = "mat.inspect.geometry.junction.{}".format(canonical_sha256({"junction_id": junction_id})[:12])
+        summary = "junction:{} links={}".format(junction_id or "unknown", int(len(connected_ids)))
+        return {
+            "mode": "guide_geometry_overlay",
+            "summary": summary,
+            "target_semantic_id": target_id,
+            "inspection_snapshot": dict(snapshot),
+            "renderables": [
+                {
+                    "schema_version": "1.0.0",
+                    "renderable_id": "overlay.inspect.geometry.junction.{}".format(
+                        canonical_sha256({"junction_id": junction_id})[:16]
+                    ),
+                    "semantic_id": "overlay.inspect.geometry.junction.{}".format(junction_id),
+                    "primitive_id": "prim.glyph.node",
+                    "transform": {
+                        "position_mm": dict(point),
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 1100,
+                    },
+                    "material_id": material_id,
+                    "layer_tags": ["overlay", "ui"],
+                    "label": None,
+                    "lod_hint": "lod.band.near",
+                    "flags": {"selectable": False, "highlighted": True},
+                    "extensions": {
+                        "interaction_overlay": True,
+                        "overlay_kind": "guide_junction",
+                        "junction_id": junction_id or None,
+                        "connected_geometry_ids": list(connected_ids),
+                    },
+                }
+            ],
+            "materials": [
+                {
+                    "schema_version": "1.0.0",
+                    "material_id": material_id,
+                    "base_color": _color_from_seed({"junction_id": junction_id, "kind": "junction"}, floor=70),
+                    "roughness": 200,
+                    "metallic": 0,
+                    "emission": {"r": 206, "g": 236, "b": 122, "strength": 220},
+                    "transparency": None,
+                    "pattern_id": None,
+                    "extensions": {"interaction_overlay": True, "overlay_kind": "guide_junction"},
+                }
+            ],
+            "degraded": False,
+            "extensions": {
+                "overlay_kind": "guide_geometry",
+                "collection": collection,
+                "junction_id": junction_id or None,
+                "connected_geometry_ids": list(connected_ids),
+            },
+        }
+
+    geometry_row = {}
+    if collection == "guide_geometries":
+        geometry_row = dict(row)
+    elif target_id.startswith("geometry.") and str(row.get("geometry_id", "")).strip():
+        geometry_row = dict(row)
+    geometry_id = str(geometry_row.get("geometry_id", "")).strip() or target_id
+    if not geometry_row:
+        return {
+            "mode": "guide_geometry_overlay",
+            "summary": "guide:{} unavailable".format(target_id or "unknown"),
+            "target_semantic_id": target_id,
+            "inspection_snapshot": dict(snapshot),
+            "renderables": _overlay_renderables(
+                target_semantic_id=target_id,
+                summary_label="guide geometry unavailable",
+                mode="guide_geometry_overlay",
+            ),
+            "materials": _overlay_materials(target_semantic_id=target_id),
+            "degraded": True,
+            "extensions": {"overlay_kind": "guide_geometry", "available": False},
+        }
+
+    geometry_type_id = str(geometry_row.get("geometry_type_id", "")).strip() or "geo.spline1D"
+    points = _geometry_points_mm(geometry_row)
+    bounds = dict(geometry_row.get("bounds") or {})
+    min_mm = _point_mm(bounds.get("min_mm")) or {"x": 0, "y": 0, "z": 0}
+    max_mm = _point_mm(bounds.get("max_mm")) or {"x": 0, "y": 0, "z": 0}
+    junction_refs = _sorted_unique_strings(geometry_row.get("junction_refs"))
+
+    line_material_id = "mat.inspect.geometry.line.{}".format(canonical_sha256({"geometry_id": geometry_id})[:12])
+    shell_material_id = "mat.inspect.geometry.shell.{}".format(
+        canonical_sha256({"geometry_id": geometry_id, "shell": True})[:12]
+    )
+    junction_material_id = "mat.inspect.geometry.junction_ref.{}".format(
+        canonical_sha256({"geometry_id": geometry_id, "junction_ref": True})[:12]
+    )
+    materials = sorted(
+        [
+            {
+                "schema_version": "1.0.0",
+                "material_id": line_material_id,
+                "base_color": _color_from_seed({"geometry_id": geometry_id, "kind": "line"}, floor=72),
+                "roughness": 260,
+                "metallic": 0,
+                "emission": {"r": 104, "g": 236, "b": 180, "strength": 160},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "guide_geometry_line"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": shell_material_id,
+                "base_color": _color_from_seed({"geometry_id": geometry_id, "kind": "shell"}, floor=62),
+                "roughness": 320,
+                "metallic": 0,
+                "emission": None,
+                "transparency": {"mode": "alpha", "value_permille": 680},
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "guide_geometry_shell"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": junction_material_id,
+                "base_color": _color_from_seed({"geometry_id": geometry_id, "kind": "junction_ref"}, floor=76),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": 230, "g": 238, "b": 118, "strength": 220},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "guide_geometry_junction"},
+            },
+        ],
+        key=lambda item: str(item.get("material_id", "")),
+    )
+
+    renderables = _overlay_renderables(
+        target_semantic_id=geometry_id,
+        summary_label="guide:{} type={} points={}".format(geometry_id, geometry_type_id, int(len(points))),
+        mode="guide_geometry_overlay",
+    )
+    for index in range(max(0, len(points) - 1)):
+        point_a = dict(points[index])
+        point_b = dict(points[index + 1])
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.geometry.segment.{}".format(
+                    canonical_sha256({"geometry_id": geometry_id, "segment": int(index)})[:16]
+                ),
+                "semantic_id": "overlay.inspect.geometry.segment.{}.{}".format(geometry_id, str(index).zfill(3)),
+                "primitive_id": "prim.line.debug",
+                "transform": {
+                    "position_mm": dict(point_a),
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": line_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": True},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "guide_geometry_segment",
+                    "geometry_id": geometry_id,
+                    "geometry_type_id": geometry_type_id,
+                    "segment_index": int(index),
+                    "point_a_mm": dict(point_a),
+                    "point_b_mm": dict(point_b),
+                },
+            }
+        )
+    if geometry_type_id in {"geo.corridor2D", "geo.volume3D"}:
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.geometry.shell.{}".format(
+                    canonical_sha256({"geometry_id": geometry_id, "shell": True})[:16]
+                ),
+                "semantic_id": "overlay.inspect.geometry.shell.{}".format(geometry_id),
+                "primitive_id": "prim.box.wire",
+                "transform": {
+                    "position_mm": {
+                        "x": int((int(min_mm["x"]) + int(max_mm["x"])) // 2),
+                        "y": int((int(min_mm["y"]) + int(max_mm["y"])) // 2),
+                        "z": int((int(min_mm["z"]) + int(max_mm["z"])) // 2),
+                    },
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": shell_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "guide_geometry_shell",
+                    "geometry_id": geometry_id,
+                    "bounds": {"min_mm": dict(min_mm), "max_mm": dict(max_mm)},
+                },
+            }
+        )
+    for index, junction_id in enumerate(junction_refs):
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.geometry.junction_ref.{}".format(
+                    canonical_sha256({"geometry_id": geometry_id, "junction_id": junction_id})[:16]
+                ),
+                "semantic_id": "overlay.inspect.geometry.junction_ref.{}".format(junction_id),
+                "primitive_id": "prim.glyph.node",
+                "transform": {
+                    "position_mm": {"x": int(index) * 120, "y": 160, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 900,
+                },
+                "material_id": junction_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "guide_geometry_junction_ref",
+                    "geometry_id": geometry_id,
+                    "junction_id": junction_id,
+                },
+            }
+        )
+
+    return {
+        "mode": "guide_geometry_overlay",
+        "summary": "guide:{} type={} points={}".format(geometry_id, geometry_type_id, int(len(points))),
+        "target_semantic_id": geometry_id,
+        "inspection_snapshot": dict(snapshot),
+        "renderables": sorted(renderables, key=lambda item: str(item.get("renderable_id", ""))),
+        "materials": list(materials),
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "guide_geometry",
+            "available": True,
+            "geometry_id": geometry_id,
+            "geometry_type_id": geometry_type_id,
+            "point_count": int(len(points)),
+            "junction_ref_count": int(len(junction_refs)),
+        },
+    }
+
+
 def _runtime_rows(runtime: dict, key: str) -> list[dict]:
     rows = list((dict(runtime or {})).get(key) or [])
     return sorted(
@@ -2662,6 +2947,25 @@ def build_inspection_overlays(
         return {
             "result": "complete",
             "inspection_overlays": formalization_overlay,
+            "overlay_runtime": runtime,
+        }
+    if (
+        target_id.startswith("geometry.")
+        or target_id.startswith("junction.")
+        or snapshot_collection in (
+            "guide_geometries",
+            "mobility_junctions",
+            "geometry_candidates",
+            "geometry_derived_metrics",
+        )
+    ):
+        guide_overlay = _guide_geometry_overlay_payload(
+            target_semantic_id=target_id,
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": guide_overlay,
             "overlay_runtime": runtime,
         }
     if target_id.startswith("graph.") or snapshot_collection == "network_graphs":
