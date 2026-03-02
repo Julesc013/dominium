@@ -129,6 +129,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.network_summary",
         "section.signal.channel_queue_depth",
         "section.signal.delivery_status",
+        "section.signal.inbox_summary",
+        "section.signal.sent_messages",
+        "section.signal.aggregation_status",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -142,6 +145,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.network_summary",
         "section.signal.channel_queue_depth",
         "section.signal.delivery_status",
+        "section.signal.inbox_summary",
+        "section.signal.sent_messages",
+        "section.signal.aggregation_status",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -269,6 +275,9 @@ _DEFAULT_SECTION_ROWS = {
     "section.signal.network_summary": {"title": "Signal Network Summary", "extensions": {"cost_units": 1}},
     "section.signal.channel_queue_depth": {"title": "Signal Channel Queue Depth", "extensions": {"cost_units": 2}},
     "section.signal.delivery_status": {"title": "Signal Delivery Status", "extensions": {"cost_units": 2}},
+    "section.signal.inbox_summary": {"title": "Signal Inbox Summary", "extensions": {"cost_units": 1}},
+    "section.signal.sent_messages": {"title": "Signal Sent Messages", "extensions": {"cost_units": 2}},
+    "section.signal.aggregation_status": {"title": "Signal Aggregation Status", "extensions": {"cost_units": 2}},
     "section.networkgraph.capacity_utilization": {
         "title": "NetworkGraph Capacity Utilization",
         "extensions": {"cost_units": 2},
@@ -1602,6 +1611,146 @@ def _build_section_data(
                     "delivered_tick": int(max(0, _as_int(row.get("delivered_tick", row.get("tick", 0)), 0))),
                 }
                 for row in list(sorted_events[-128:])
+            ]
+        return payload
+    if section_id == "section.signal.inbox_summary":
+        receipts = [
+            dict(item)
+            for item in list((dict(state or {})).get("knowledge_receipts") or (dict(state or {})).get("knowledge_receipt_rows") or [])
+            if isinstance(item, dict)
+        ]
+        target_subject_id = str(request.get("subject_id", "")).strip() or str(request.get("target_id", "")).strip()
+        filtered = [
+            row
+            for row in receipts
+            if (not target_subject_id) or str(row.get("subject_id", "")).strip() == target_subject_id
+        ]
+        artifact_ids = _sorted_unique_strings([row.get("artifact_id") for row in filtered])
+        trust_values = [float(dict(row).get("trust_weight", 1.0)) for row in filtered]
+        avg_trust_permille = int(
+            sum(int(max(0, min(1000, int(float(value) * 1000)))) for value in trust_values) // max(1, len(trust_values))
+        ) if trust_values else 1000
+        payload = {
+            "subject_id": target_subject_id or None,
+            "receipt_count": int(len(filtered)),
+            "artifact_count": int(len(artifact_ids)),
+            "avg_trust_permille": int(avg_trust_permille),
+            "verification_state_counts": {},
+        }
+        by_verification: Dict[str, int] = {}
+        for row in sorted(filtered, key=lambda item: (_as_int(item.get("acquired_tick", 0), 0), str(item.get("receipt_id", "")))):
+            verification_state = str(row.get("verification_state", "unverified")).strip() or "unverified"
+            by_verification[verification_state] = _as_int(by_verification.get(verification_state, 0), 0) + 1
+        payload["verification_state_counts"] = dict((key, int(by_verification[key])) for key in sorted(by_verification.keys()))
+        if allow_hidden_state:
+            payload["recent_receipts"] = [
+                {
+                    "receipt_id": str(row.get("receipt_id", "")).strip(),
+                    "subject_id": str(row.get("subject_id", "")).strip() or None,
+                    "artifact_id": str(row.get("artifact_id", "")).strip() or None,
+                    "acquired_tick": int(max(0, _as_int(row.get("acquired_tick", 0), 0))),
+                    "trust_weight": float(row.get("trust_weight", 1.0)),
+                    "verification_state": str(row.get("verification_state", "unverified")).strip() or "unverified",
+                }
+                for row in sorted(
+                    filtered,
+                    key=lambda item: (
+                        _as_int(item.get("acquired_tick", 0), 0),
+                        str(item.get("receipt_id", "")),
+                    ),
+                )[-128:]
+            ]
+        return payload
+    if section_id == "section.signal.sent_messages":
+        envelopes = [
+            dict(item)
+            for item in list((dict(state or {})).get("signal_message_envelopes") or (dict(state or {})).get("signal_message_envelope_rows") or [])
+            if isinstance(item, dict)
+        ]
+        sender_subject_id = str(request.get("subject_id", "")).strip() or str(request.get("target_id", "")).strip()
+        filtered = [
+            row
+            for row in envelopes
+            if (not sender_subject_id) or str(row.get("sender_subject_id", "")).strip() == sender_subject_id
+        ]
+        by_address_type: Dict[str, int] = {}
+        for row in sorted(filtered, key=lambda item: (_as_int(item.get("created_tick", 0), 0), str(item.get("envelope_id", "")))):
+            addr = dict(row.get("recipient_address") or {})
+            address_type = str(addr.get("address_type", "")).strip().lower() or str(addr.get("kind", "")).strip().lower() or "subject"
+            if address_type == "single":
+                address_type = "subject"
+            by_address_type[address_type] = _as_int(by_address_type.get(address_type, 0), 0) + 1
+        payload = {
+            "sender_subject_id": sender_subject_id or None,
+            "sent_count": int(len(filtered)),
+            "address_type_counts": dict((key, int(by_address_type[key])) for key in sorted(by_address_type.keys())),
+        }
+        if allow_hidden_state:
+            payload["recent_sent"] = [
+                {
+                    "envelope_id": str(row.get("envelope_id", "")).strip(),
+                    "artifact_id": str(row.get("artifact_id", "")).strip() or None,
+                    "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+                    "address_type": str(dict(row.get("recipient_address") or {}).get("address_type", "")).strip()
+                    or str(dict(row.get("recipient_address") or {}).get("kind", "")).strip()
+                    or "subject",
+                }
+                for row in sorted(
+                    filtered,
+                    key=lambda item: (
+                        _as_int(item.get("created_tick", 0), 0),
+                        str(item.get("envelope_id", "")),
+                    ),
+                )[-128:]
+            ]
+        return payload
+    if section_id == "section.signal.aggregation_status":
+        artifacts = [
+            dict(item)
+            for item in list((dict(state or {})).get("info_artifact_rows") or (dict(state or {})).get("knowledge_artifacts") or [])
+            if isinstance(item, dict)
+        ]
+        agg_artifacts = []
+        by_policy: Dict[str, int] = {}
+        latest_tick_by_policy: Dict[str, int] = {}
+        for row in sorted(artifacts, key=lambda item: (_as_int(item.get("created_tick", 0), 0), str(item.get("artifact_id", "")))):
+            ext = dict(row.get("extensions") or {})
+            policy_id = str(ext.get("aggregation_policy_id", "")).strip()
+            if not policy_id:
+                continue
+            agg_artifacts.append(row)
+            by_policy[policy_id] = _as_int(by_policy.get(policy_id, 0), 0) + 1
+            latest_tick_by_policy[policy_id] = max(
+                _as_int(latest_tick_by_policy.get(policy_id, 0), 0),
+                _as_int(row.get("created_tick", 0), 0),
+            )
+        schedule_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("signal_aggregation_schedules") or (dict(state or {})).get("aggregation_schedule_rows") or [])
+            if isinstance(item, dict)
+        ]
+        payload = {
+            "aggregated_report_count": int(len(agg_artifacts)),
+            "policy_count": int(len(by_policy.keys())),
+            "policy_counts": dict((key, int(by_policy[key])) for key in sorted(by_policy.keys())),
+            "next_due_by_schedule_id": dict(
+                (
+                    str(row.get("schedule_id", "")).strip(),
+                    int(max(0, _as_int(row.get("next_due_tick", 0), 0))),
+                )
+                for row in sorted(schedule_rows, key=lambda item: str(item.get("schedule_id", "")))
+                if str(row.get("schedule_id", "")).strip()
+            ),
+        }
+        if allow_hidden_state:
+            payload["latest_tick_by_policy"] = dict((key, int(latest_tick_by_policy[key])) for key in sorted(latest_tick_by_policy.keys()))
+            payload["recent_reports"] = [
+                {
+                    "artifact_id": str(row.get("artifact_id", "")).strip(),
+                    "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+                    "aggregation_policy_id": str(dict(row.get("extensions") or {}).get("aggregation_policy_id", "")).strip() or None,
+                }
+                for row in list(agg_artifacts[-128:])
             ]
         return payload
     if section_id == "section.networkgraph.capacity_utilization":

@@ -176,6 +176,45 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.signal.inbox_summary",
+        "title": "Signal Inbox Summary",
+        "data": {
+          "data_kind": "signal_inbox_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.signal.sent_messages",
+        "title": "Signal Sent Messages",
+        "data": {
+          "data_kind": "signal_sent_messages"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.signal.aggregation_status",
+        "title": "Signal Aggregation Status",
+        "data": {
+          "data_kind": "signal_aggregation_status"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.vehicle.summary",
         "title": "Vehicle Summary",
         "data": {
