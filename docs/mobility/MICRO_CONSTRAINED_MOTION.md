@@ -72,6 +72,12 @@ If threshold exceeded:
   - `radius`
   - `track_condition`
 
+Derailment transition process contract:
+- authoritative transition path is `process.mob_derail` only
+- updates both vehicle motion rows and micro constrained rows in one deterministic process application
+- disables active coupling constraints touching the derailed vehicle
+- creates/updates an EB body reference for post-derail collision participation
+
 ### Optional stochastic policy
 
 Stochastic derail path is optional and only lawful when policy explicitly allows it.
