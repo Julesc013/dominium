@@ -1,0 +1,20 @@
+{
+  "schema_id": "dominium.registry.wind_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.wind_model_registry",
+    "registry_version": "1.0.0",
+    "wind_models": [
+      {
+        "schema_version": "1.0.0",
+        "wind_model_id": "wind.basic_drift",
+        "schema_ref": "dominium.schema.mobility.free_motion_policy@1.0.0",
+        "extensions": {
+          "description": "Adds deterministic drift acceleration from sampled wind vector and policy scale.",
+          "max_drift_mm_per_tick2": 512
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
