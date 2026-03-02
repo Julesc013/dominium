@@ -13051,6 +13051,97 @@ def _append_signal_transport_invariant_findings(
             )
             break
 
+    trust_engine_rel = "src/signals/trust/trust_engine.py"
+    trust_engine_text = _file_text(repo_root, trust_engine_rel)
+    if "def process_trust_update(" not in trust_engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=trust_engine_rel,
+                line_number=1,
+                snippet="def process_trust_update(",
+                message="trust updates must be process-mediated through process.trust_update",
+                rule_id="INV-VERIFICATION-PROCESS-ONLY",
+            )
+        )
+    if "def process_message_verify_claim(" not in trust_engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=trust_engine_rel,
+                line_number=1,
+                snippet="def process_message_verify_claim(",
+                message="verification must run through process.message_verify_claim before trust mutation",
+                rule_id="INV-VERIFICATION-PROCESS-ONLY",
+            )
+        )
+
+    if ("truth_verification_state" in trust_engine_text) and ("allow_truth_observer" not in trust_engine_text):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=trust_engine_rel,
+                line_number=1,
+                snippet="truth_verification_state",
+                message="truth-linked verification inputs require explicit entitlement gate",
+                rule_id="INV-NO-OMNISCIENT-TRUST-UPDATES",
+            )
+        )
+
+    omniscient_truth_patterns = (
+        re.compile(r"\btruth_model\b", re.IGNORECASE),
+        re.compile(r"\buniverse_state\b", re.IGNORECASE),
+        re.compile(r"\bground_truth\b", re.IGNORECASE),
+    )
+    verification_process_patterns = (
+        re.compile(r"\bprocess_message_verify_claim\s*\(", re.IGNORECASE),
+        re.compile(r"\bprocess_trust_update\s*\(", re.IGNORECASE),
+        re.compile(r"\bbuild_verification_result\s*\(", re.IGNORECASE),
+    )
+    verification_allow_prefixes = (
+        "src/signals/trust/",
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm == "tools/xstack/repox/check.py":
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if any(pattern.search(snippet) for pattern in omniscient_truth_patterns):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="trust/belief updates must not depend on omniscient truth symbols",
+                        rule_id="INV-NO-OMNISCIENT-TRUST-UPDATES",
+                    )
+                )
+                break
+            if any(pattern.search(snippet) for pattern in verification_process_patterns):
+                if any(rel_norm.startswith(prefix) for prefix in verification_allow_prefixes):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="verification/trust transitions must be centralized in SIG trust process helpers",
+                        rule_id="INV-VERIFICATION-PROCESS-ONLY",
+                    )
+                )
+                break
+
 
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
