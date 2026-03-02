@@ -93,6 +93,8 @@ Coupling baseline uses mount/constraint integration:
 - `process.coupler_attach` validates mount compatibility
 - creates coupling constraint rows
 - consist ordering is deterministic (`vehicle_id` ordering)
+- optional mount-point ids must resolve and pass mount compatibility before coupling activation
+- coupling rows persist deterministic offset metadata for trailing consist propagation
 
 Consist propagation model (MOB-6 baseline):
 - lead vehicle drives trailing `s_param` with fixed offsets
