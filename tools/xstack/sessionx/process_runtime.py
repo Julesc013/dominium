@@ -1651,7 +1651,7 @@ def _create_or_update_mobility_network(
             for row in list(guide_geometries or [])
             if isinstance(row, Mapping)
             and str(row.get("geometry_id", "")).strip()
-            and not str(row.get("spec_id", "")).strip()
+            and not ("" if row.get("spec_id") is None else str(row.get("spec_id", "")).strip())
         )
         if missing_spec:
             raise MobilityNetworkError(
