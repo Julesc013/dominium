@@ -293,6 +293,12 @@ from src.mobility.vehicle import (
     normalize_vehicle_rows,
     vehicle_class_rows_by_id,
 )
+from src.mobility.travel import (
+    ItineraryError,
+    normalize_itinerary_rows,
+    plan_itinerary,
+    speed_policy_rows_by_id,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -418,6 +424,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.mobility_network_edit": "entitlement.control.admin",
     "process.switch_set_state": "entitlement.control.admin",
     "process.mobility_route_query": "entitlement.inspect",
+    "process.itinerary_create": "entitlement.control.admin",
     "process.vehicle_register_from_structure": "entitlement.control.admin",
     "process.vehicle_check_compatibility": "entitlement.inspect",
     "process.vehicle_apply_environment_hooks": "session.boot",
@@ -544,6 +551,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.mobility_network_edit": "operator",
     "process.switch_set_state": "operator",
     "process.mobility_route_query": "observer",
+    "process.itinerary_create": "operator",
     "process.vehicle_register_from_structure": "operator",
     "process.vehicle_check_compatibility": "observer",
     "process.vehicle_apply_environment_hooks": "observer",
@@ -617,6 +625,7 @@ CONTROL_PROCESS_IDS = {
     "process.mobility_network_edit",
     "process.switch_set_state",
     "process.mobility_route_query",
+    "process.itinerary_create",
     "process.vehicle_register_from_structure",
     "process.vehicle_check_compatibility",
     "process.vehicle_apply_environment_hooks",
@@ -1600,6 +1609,12 @@ def _ensure_mobility_route_result_rows(state: dict) -> List[dict]:
     normalized = [dict(out[key]) for key in sorted(out.keys())]
     state["mobility_route_results"] = normalized
     return [dict(row) for row in normalized]
+
+
+def _ensure_itinerary_rows(state: dict) -> List[dict]:
+    rows = normalize_itinerary_rows(state.get("itineraries"))
+    state["itineraries"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
 
 
 def _ensure_vehicle_rows(state: dict) -> List[dict]:
@@ -2767,6 +2782,7 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("mobility_network_bindings", "binding_id"),
         ("mobility_switch_state_machines", "machine_id"),
         ("mobility_route_results", "query_id"),
+        ("itineraries", "itinerary_id"),
         ("structural_graphs", "structural_graph_id"),
         ("structural_nodes", "node_id"),
         ("structural_edges", "edge_id"),
@@ -10106,6 +10122,7 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("mobility_network_bindings", "binding_id"),
         ("mobility_switch_state_machines", "machine_id"),
         ("mobility_route_results", "query_id"),
+        ("itineraries", "itinerary_id"),
         ("vehicles", "vehicle_id"),
         ("vehicle_motion_states", "vehicle_id"),
         ("vehicle_compatibility_results", "result_id"),
@@ -12807,6 +12824,7 @@ def execute_intent(
     mobility_switch_state_machines = _ensure_mobility_switch_state_machines(state)
     mobility_route_cache_state = _ensure_mobility_route_cache_state(state)
     mobility_route_results = _ensure_mobility_route_result_rows(state)
+    itineraries = _ensure_itinerary_rows(state)
     vehicles = _ensure_vehicle_rows(state)
     vehicle_motion_states = _ensure_vehicle_motion_state_rows(state)
     vehicle_compatibility_results = _ensure_vehicle_compatibility_rows(state)
@@ -20263,6 +20281,320 @@ def execute_intent(
             "cache_hit": bool(route_runtime_payload.get("cache_hit", False)),
             "route_cost_units": int(max(0, _as_int(route_runtime_payload.get("route_cost_units", 0), 0))),
             "route_result": route_result,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.itinerary_create":
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        from_node_id = str(inputs.get("from_node_id", "")).strip()
+        to_node_id = str(inputs.get("to_node_id", "")).strip()
+        speed_policy_id = str(inputs.get("speed_policy_id", "speed_policy.spec_based")).strip() or "speed_policy.spec_based"
+        if (not vehicle_id) or (not from_node_id) or (not to_node_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.itinerary_create requires vehicle_id, from_node_id, to_node_id",
+                "Provide deterministic itinerary route endpoints and vehicle id.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+
+        itinerary_runtime = dict(state.get("mobility_itinerary_runtime_state") or {})
+        runtime_tick = int(max(0, _as_int(itinerary_runtime.get("tick", current_tick), current_tick)))
+        plan_count = int(max(0, _as_int(itinerary_runtime.get("plan_count", 0), 0)))
+        if runtime_tick != int(current_tick):
+            runtime_tick = int(current_tick)
+            plan_count = 0
+        max_itineraries_per_tick = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_itineraries_per_tick",
+                        (dict(policy_context or {})).get("itinerary_max_plans_per_tick", 64),
+                    ),
+                    64,
+                ),
+            )
+        )
+        if int(plan_count) >= int(max_itineraries_per_tick):
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id="mobility.itinerary.{}".format(vehicle_id or "unknown"),
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.itinerary_budget",
+                        resolved_level="macro",
+                        cost_allocated=0,
+                        extensions={
+                            "max_itineraries_per_tick": int(max_itineraries_per_tick),
+                            "requested_plan_index": int(plan_count + 1),
+                        },
+                    )
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+            return refusal(
+                "refusal.mob.fidelity_denied",
+                "itinerary planning budget exceeded for current tick",
+                "Retry on next tick or increase deterministic itinerary budget policy.",
+                {
+                    "tick": int(current_tick),
+                    "max_itineraries_per_tick": int(max_itineraries_per_tick),
+                },
+                "$.intent.inputs",
+            )
+
+        vehicle_rows_by_id = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicles or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        vehicle_row = dict(vehicle_rows_by_id.get(vehicle_id) or {})
+        if not vehicle_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "vehicle_id '{}' is not registered".format(vehicle_id),
+                "Register vehicle first via process.vehicle_register_from_structure.",
+                {"vehicle_id": vehicle_id},
+                "$.intent.inputs.vehicle_id",
+            )
+
+        graph_id = str(inputs.get("graph_id", "")).strip()
+        if not graph_id:
+            formalization_id = str(inputs.get("formalization_id", "")).strip()
+            if formalization_id:
+                formalization_row = dict(_formalization_state_by_id(formalization_states).get(formalization_id) or {})
+                graph_id = str(formalization_row.get("network_graph_ref", "")).strip()
+        if not graph_id:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "process.itinerary_create requires graph_id or formalization_id with network_graph_ref",
+                "Provide graph_id directly or pass formalization_id already promoted to networked.",
+                {"process_id": process_id},
+                "$.intent.inputs.graph_id",
+            )
+        graph_row = next(
+            (
+                dict(row)
+                for row in list(state.get("network_graphs") or [])
+                if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip() == graph_id
+            ),
+            {},
+        )
+        if not graph_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "mobility graph '{}' is not present".format(graph_id),
+                "Create mobility network first.",
+                {"graph_id": graph_id},
+                "$.intent.inputs.graph_id",
+            )
+
+        speed_policy_registry = dict(_policy_payload(policy_context, "mobility_speed_policy_registry") or {})
+        if not speed_policy_registry:
+            speed_policy_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/mobility_speed_policy_registry.json",
+                default_payload={"record": {"speed_policies": []}},
+            )
+        speed_policy_rows = speed_policy_rows_by_id(speed_policy_registry)
+        if speed_policy_rows and speed_policy_id not in speed_policy_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "speed_policy_id '{}' is not declared".format(speed_policy_id),
+                "Use speed_policy_id from mobility speed policy registry.",
+                {"speed_policy_id": speed_policy_id},
+                "$.intent.inputs.speed_policy_id",
+            )
+
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        compliance_check_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="compliance_check_registry",
+            registry_rel_path="data/registries/compliance_check_registry.json",
+            entry_key="compliance_checks",
+        )
+        spec_rows, spec_load_errors = _spec_sheet_rows(
+            policy_context=policy_context,
+            spec_type_registry=spec_type_registry,
+            tolerance_policy_registry=tolerance_policy_registry,
+            compliance_check_registry=compliance_check_registry,
+        )
+        if spec_load_errors:
+            first_error = dict(spec_load_errors[0] if spec_load_errors else {})
+            return refusal(
+                "refusal.spec.invalid_sheet",
+                str(first_error.get("message", "spec sheet validation failed")),
+                "Fix spec sheet pack data and retry itinerary planning.",
+                {"vehicle_id": vehicle_id},
+                str(first_error.get("path", "$.spec_sheets")),
+            )
+        spec_rows_by_id = spec_sheet_rows_by_id(spec_rows)
+
+        guide_geometry_rows_by_id = dict(
+            (
+                str(row.get("geometry_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(guide_geometries or [])
+            if isinstance(row, Mapping) and str(row.get("geometry_id", "")).strip()
+        )
+        geometry_metric_rows_by_geometry_id: Dict[str, dict] = {}
+        for row in sorted(
+            (item for item in list(geometry_derived_metrics or []) if isinstance(item, Mapping)),
+            key=lambda item: (
+                str(item.get("geometry_id", "")),
+                _as_int(item.get("computed_tick", 0), 0),
+                str(item.get("geometry_hash", "")),
+            ),
+        ):
+            geometry_id = str(row.get("geometry_id", "")).strip()
+            if not geometry_id:
+                continue
+            geometry_metric_rows_by_geometry_id[geometry_id] = dict(row)
+
+        try:
+            itinerary_result = plan_itinerary(
+                vehicle_row=vehicle_row,
+                graph_row=graph_row,
+                from_node_id=from_node_id,
+                to_node_id=to_node_id,
+                current_tick=int(current_tick),
+                departure_tick=(
+                    None
+                    if inputs.get("departure_tick") is None
+                    else int(max(0, _as_int(inputs.get("departure_tick", current_tick), current_tick)))
+                ),
+                speed_policy_id=speed_policy_id,
+                route_policy_id=str(inputs.get("route_policy_id", "route.shortest_delay")).strip() or "route.shortest_delay",
+                constraints_row=dict(inputs.get("constraints") or {}),
+                partition_row=dict(inputs.get("partition") or {}),
+                switch_state_machine_rows=mobility_switch_state_machines,
+                guide_geometry_rows_by_id=guide_geometry_rows_by_id,
+                geometry_metric_rows_by_geometry_id=geometry_metric_rows_by_geometry_id,
+                spec_rows_by_id=spec_rows_by_id,
+                cache_state=mobility_route_cache_state,
+                max_cache_entries=int(
+                    max(
+                        0,
+                        _as_int(
+                            inputs.get(
+                                "max_cache_entries",
+                                (dict(policy_context or {})).get("mobility_route_max_cache_entries", 128),
+                            ),
+                            128,
+                        ),
+                    )
+                ),
+                cost_units_per_query=int(
+                    max(
+                        1,
+                        _as_int(
+                            inputs.get(
+                                "cost_units_per_query",
+                                (dict(policy_context or {})).get("mobility_route_cost_units_per_query", 1),
+                            ),
+                            1,
+                        ),
+                    )
+                ),
+            )
+        except ItineraryError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Adjust itinerary endpoints, switch states, or vehicle/spec compatibility.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+
+        itinerary_row = dict(itinerary_result.get("itinerary") or {})
+        itinerary_id = str(itinerary_row.get("itinerary_id", "")).strip()
+        itineraries = normalize_itinerary_rows(
+            _upsert_row_by_id(itineraries, "itinerary_id", itinerary_row)
+        )
+        state["itineraries"] = [dict(row) for row in list(itineraries or []) if isinstance(row, Mapping)]
+        _ensure_itinerary_rows(state)
+        mobility_route_cache_state = dict(itinerary_result.get("cache_state") or {})
+        _persist_mobility_network_state(
+            state,
+            mobility_network_bindings=mobility_network_bindings,
+            mobility_switch_state_machines=mobility_switch_state_machines,
+            mobility_route_cache_state=mobility_route_cache_state,
+            mobility_route_results=mobility_route_results,
+        )
+
+        decision_entry = {
+            "schema_version": "1.0.0",
+            "decision_id": "decision.mob.itinerary.{}".format(
+                canonical_sha256(
+                    {
+                        "vehicle_id": vehicle_id,
+                        "itinerary_id": itinerary_id,
+                        "tick": int(current_tick),
+                        "intent_id": str(intent_id),
+                    }
+                )[:16]
+            ),
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "process_id": process_id,
+            "intent_id": str(intent_id),
+            "vehicle_id": vehicle_id,
+            "itinerary_id": itinerary_id,
+            "decision_log_ref": str(inputs.get("decision_log_ref", "")).strip() or None,
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "graph_id": str(itinerary_row.get("extensions", {}).get("graph_id", "")).strip() or graph_id,
+                "route_edge_ids": [str(item).strip() for item in list(itinerary_row.get("route_edge_ids") or []) if str(item).strip()],
+                "speed_policy_id": str(itinerary_row.get("speed_policy_id", "")).strip(),
+            },
+        }
+        decision_entry["deterministic_fingerprint"] = canonical_sha256(
+            dict(decision_entry, deterministic_fingerprint="")
+        )
+        state["mobility_itinerary_decision_logs"] = sorted(
+            [
+                dict(row)
+                for row in list(state.get("mobility_itinerary_decision_logs") or [])
+                if isinstance(row, Mapping)
+            ]
+            + [decision_entry],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("decision_id", ""))),
+        )
+
+        state["mobility_itinerary_runtime_state"] = {
+            "tick": int(current_tick),
+            "plan_count": int(plan_count + 1),
+            "max_itineraries_per_tick": int(max_itineraries_per_tick),
+            "last_itinerary_id": itinerary_id,
+        }
+        result_metadata = {
+            "vehicle_id": vehicle_id,
+            "itinerary_id": itinerary_id,
+            "itinerary": dict(itinerary_row),
+            "route_result": dict(itinerary_result.get("route_result") or {}),
+            "cache_hit": bool(itinerary_result.get("cache_hit", False)),
+            "route_cost_units": int(max(0, _as_int(itinerary_result.get("route_cost_units", 0), 0))),
+            "cross_shard_route_plan": dict(itinerary_result.get("cross_shard_route_plan") or {}),
+            "decision_id": str(decision_entry.get("decision_id", "")).strip(),
+            "decision_log_ref": str(decision_entry.get("decision_log_ref", "")).strip() or None,
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_register_from_structure":
