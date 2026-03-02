@@ -41,6 +41,13 @@
     "geometry_type_registry_hash",
     "junction_type_registry_hash",
     "geometry_snap_policy_registry_hash",
+    "mobility_vehicle_class_registry_hash",
+    "mobility_constraint_type_registry_hash",
+    "mobility_signal_type_registry_hash",
+    "mobility_speed_policy_registry_hash",
+    "mobility_node_kind_registry_hash",
+    "mobility_edge_kind_registry_hash",
+    "mobility_max_speed_policy_registry_hash",
     "governance_type_registry_hash",
     "diplomatic_state_registry_hash",
     "cohort_mapping_policy_registry_hash",
@@ -206,6 +213,34 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "geometry_snap_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mobility_vehicle_class_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mobility_constraint_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mobility_signal_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mobility_speed_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mobility_node_kind_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mobility_edge_kind_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mobility_max_speed_policy_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
@@ -413,6 +448,13 @@
       "experience_registry_hash": "f353b7d70f60f286784f8e4fd31af8754e0766a93835f4dc8a5192dbf375fd22",
       "lens_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "control_action_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "mobility_vehicle_class_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "mobility_constraint_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "mobility_signal_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "mobility_speed_policy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "mobility_node_kind_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "mobility_edge_kind_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
+      "mobility_max_speed_policy_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "controller_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "governance_type_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",
       "diplomatic_state_registry_hash": "6386d8e1e4b9ad497f137ec30fbc9d7a88c168d06742a53eb30f1d76581f98f3",

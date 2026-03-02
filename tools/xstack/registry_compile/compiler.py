@@ -3082,7 +3082,7 @@ def _pose_registry_rows(
 
 def _mobility_registry_rows(
     repo_root: str,
-) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict]]:
+) -> Tuple[List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict], List[dict]]:
     errors: List[dict] = []
 
     _vehicle_record, vehicle_rows_raw, vehicle_load_errors = _load_registry_record(
@@ -3093,7 +3093,7 @@ def _mobility_registry_rows(
         expected_entry_key="vehicle_classes",
     )
     if vehicle_load_errors:
-        return [], [], [], [], vehicle_load_errors
+        return [], [], [], [], [], [], [], vehicle_load_errors
 
     _constraint_record, constraint_rows_raw, constraint_load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -3103,7 +3103,7 @@ def _mobility_registry_rows(
         expected_entry_key="constraint_types",
     )
     if constraint_load_errors:
-        return [], [], [], [], constraint_load_errors
+        return [], [], [], [], [], [], [], constraint_load_errors
 
     _signal_record, signal_rows_raw, signal_load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -3113,7 +3113,7 @@ def _mobility_registry_rows(
         expected_entry_key="signal_types",
     )
     if signal_load_errors:
-        return [], [], [], [], signal_load_errors
+        return [], [], [], [], [], [], [], signal_load_errors
 
     _speed_policy_record, speed_policy_rows_raw, speed_policy_load_errors = _load_registry_record(
         repo_root=repo_root,
@@ -3123,7 +3123,37 @@ def _mobility_registry_rows(
         expected_entry_key="speed_policies",
     )
     if speed_policy_load_errors:
-        return [], [], [], [], speed_policy_load_errors
+        return [], [], [], [], [], [], [], speed_policy_load_errors
+
+    _node_kind_record, node_kind_rows_raw, node_kind_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mobility_node_kind_registry.json",
+        expected_schema_id="dominium.registry.mobility_node_kind_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="node_kinds",
+    )
+    if node_kind_load_errors:
+        return [], [], [], [], [], [], [], node_kind_load_errors
+
+    _edge_kind_record, edge_kind_rows_raw, edge_kind_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mobility_edge_kind_registry.json",
+        expected_schema_id="dominium.registry.mobility_edge_kind_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="edge_kinds",
+    )
+    if edge_kind_load_errors:
+        return [], [], [], [], [], [], [], edge_kind_load_errors
+
+    _max_speed_record, max_speed_rows_raw, max_speed_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/mobility_max_speed_policy_registry.json",
+        expected_schema_id="dominium.registry.mobility_max_speed_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="max_speed_policies",
+    )
+    if max_speed_load_errors:
+        return [], [], [], [], [], [], [], max_speed_load_errors
 
     vehicle_class_rows: List[dict] = []
     vehicle_class_seen = set()
@@ -3301,7 +3331,148 @@ def _mobility_registry_rows(
         )
     speed_policy_rows = sorted(speed_policy_rows, key=lambda row: str(row.get("speed_policy_id", "")))
 
-    return vehicle_class_rows, constraint_type_rows, signal_type_rows, speed_policy_rows, errors
+    node_kind_rows: List[dict] = []
+    node_kind_seen = set()
+    for entry in sorted(node_kind_rows_raw, key=lambda row: str((row or {}).get("node_kind_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_node_kind_entry",
+                    "message": "mobility node kind entry must be object",
+                    "path": "$.node_kinds",
+                }
+            )
+            continue
+        node_kind_id = str(entry.get("node_kind_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not node_kind_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_node_kind_entry",
+                    "message": "mobility node kind entry missing required fields",
+                    "path": "$.node_kinds",
+                }
+            )
+            continue
+        if node_kind_id in node_kind_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mobility_node_kind_id",
+                    "message": "duplicate mobility node_kind_id '{}'".format(node_kind_id),
+                    "path": "$.node_kinds.node_kind_id",
+                }
+            )
+            continue
+        node_kind_seen.add(node_kind_id)
+        node_kind_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "node_kind_id": node_kind_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    node_kind_rows = sorted(node_kind_rows, key=lambda row: str(row.get("node_kind_id", "")))
+
+    edge_kind_rows: List[dict] = []
+    edge_kind_seen = set()
+    for entry in sorted(edge_kind_rows_raw, key=lambda row: str((row or {}).get("edge_kind_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_edge_kind_entry",
+                    "message": "mobility edge kind entry must be object",
+                    "path": "$.edge_kinds",
+                }
+            )
+            continue
+        edge_kind_id = str(entry.get("edge_kind_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not edge_kind_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_edge_kind_entry",
+                    "message": "mobility edge kind entry missing required fields",
+                    "path": "$.edge_kinds",
+                }
+            )
+            continue
+        if edge_kind_id in edge_kind_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mobility_edge_kind_id",
+                    "message": "duplicate mobility edge_kind_id '{}'".format(edge_kind_id),
+                    "path": "$.edge_kinds.edge_kind_id",
+                }
+            )
+            continue
+        edge_kind_seen.add(edge_kind_id)
+        edge_kind_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "edge_kind_id": edge_kind_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    edge_kind_rows = sorted(edge_kind_rows, key=lambda row: str(row.get("edge_kind_id", "")))
+
+    max_speed_policy_rows: List[dict] = []
+    max_speed_policy_seen = set()
+    for entry in sorted(max_speed_rows_raw, key=lambda row: str((row or {}).get("max_speed_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_max_speed_policy_entry",
+                    "message": "mobility max speed policy entry must be object",
+                    "path": "$.max_speed_policies",
+                }
+            )
+            continue
+        max_speed_policy_id = str(entry.get("max_speed_policy_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not max_speed_policy_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_mobility_max_speed_policy_entry",
+                    "message": "mobility max speed policy entry missing required fields",
+                    "path": "$.max_speed_policies",
+                }
+            )
+            continue
+        if max_speed_policy_id in max_speed_policy_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_mobility_max_speed_policy_id",
+                    "message": "duplicate mobility max_speed_policy_id '{}'".format(max_speed_policy_id),
+                    "path": "$.max_speed_policies.max_speed_policy_id",
+                }
+            )
+            continue
+        max_speed_policy_seen.add(max_speed_policy_id)
+        max_speed_policy_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "max_speed_policy_id": max_speed_policy_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    max_speed_policy_rows = sorted(max_speed_policy_rows, key=lambda row: str(row.get("max_speed_policy_id", "")))
+
+    return (
+        vehicle_class_rows,
+        constraint_type_rows,
+        signal_type_rows,
+        speed_policy_rows,
+        node_kind_rows,
+        edge_kind_rows,
+        max_speed_policy_rows,
+        errors,
+    )
 
 
 def _guide_geometry_registry_rows(
@@ -11312,6 +11483,9 @@ def compile_bundle(
         mobility_constraint_type_rows,
         mobility_signal_type_rows,
         mobility_speed_policy_rows,
+        mobility_node_kind_rows,
+        mobility_edge_kind_rows,
+        mobility_max_speed_policy_rows,
         mobility_registry_errors,
     ) = _mobility_registry_rows(
         repo_root=repo_root,
@@ -12269,6 +12443,27 @@ def compile_bundle(
             "speed_policies": mobility_speed_policy_rows,
         }
     )
+    mobility_node_kind_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "node_kinds": mobility_node_kind_rows,
+        }
+    )
+    mobility_edge_kind_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "edge_kinds": mobility_edge_kind_rows,
+        }
+    )
+    mobility_max_speed_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "max_speed_policies": mobility_max_speed_policy_rows,
+        }
+    )
     machine_port_type_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -12772,6 +12967,12 @@ def compile_bundle(
         ),
         "mobility_signal_type_registry": ("mobility_signal_type_registry", mobility_signal_type_payload),
         "mobility_speed_policy_registry": ("mobility_speed_policy_registry", mobility_speed_policy_payload),
+        "mobility_node_kind_registry": ("mobility_node_kind_registry", mobility_node_kind_payload),
+        "mobility_edge_kind_registry": ("mobility_edge_kind_registry", mobility_edge_kind_payload),
+        "mobility_max_speed_policy_registry": (
+            "mobility_max_speed_policy_registry",
+            mobility_max_speed_policy_payload,
+        ),
         "port_type_registry": ("port_type_registry", machine_port_type_payload),
         "tool_tag_registry": ("tool_tag_registry", tool_tag_payload),
         "tool_type_registry": ("tool_type_registry", tool_type_payload),
@@ -12920,6 +13121,9 @@ def compile_bundle(
         "mobility_constraint_type_registry",
         "mobility_signal_type_registry",
         "mobility_speed_policy_registry",
+        "mobility_node_kind_registry",
+        "mobility_edge_kind_registry",
+        "mobility_max_speed_policy_registry",
         "port_type_registry",
         "tool_tag_registry",
         "tool_type_registry",
@@ -13079,6 +13283,9 @@ def compile_bundle(
             "mobility_constraint_type_registry_hash": registry_hashes["mobility_constraint_type_registry_hash"],
             "mobility_signal_type_registry_hash": registry_hashes["mobility_signal_type_registry_hash"],
             "mobility_speed_policy_registry_hash": registry_hashes["mobility_speed_policy_registry_hash"],
+            "mobility_node_kind_registry_hash": registry_hashes["mobility_node_kind_registry_hash"],
+            "mobility_edge_kind_registry_hash": registry_hashes["mobility_edge_kind_registry_hash"],
+            "mobility_max_speed_policy_registry_hash": registry_hashes["mobility_max_speed_policy_registry_hash"],
             "port_type_registry_hash": registry_hashes["port_type_registry_hash"],
             "tool_tag_registry_hash": registry_hashes["tool_tag_registry_hash"],
             "tool_type_registry_hash": registry_hashes["tool_type_registry_hash"],
