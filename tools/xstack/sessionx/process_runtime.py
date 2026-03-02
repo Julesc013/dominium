@@ -29844,6 +29844,120 @@ def execute_intent(
             interior_portal_rows = _ensure_interior_portal_rows({"interior_portals": updated_portals})
             state["interior_portals"] = [dict(row) for row in list(interior_portal_rows or []) if isinstance(row, dict)]
             state["interior_leak_hazards"] = [dict(row) for row in list(interior_leak_hazards or []) if isinstance(row, dict)]
+            incident_graph_id = None
+            incident_owner_vehicle_id = None
+            incident_reason_codes = ["incident.breach"]
+            incident_portal_row = {}
+            for candidate in list(interior_portal_rows or []):
+                if not isinstance(candidate, Mapping):
+                    continue
+                if str(candidate.get("portal_id", "")).strip() != linked_portal_id:
+                    continue
+                incident_portal_row = dict(candidate)
+                break
+            portal_volume_ids = _portal_volume_ids(incident_portal_row)
+            compartment_by_volume = dict(
+                (
+                    str(item.get("volume_id", "")).strip(),
+                    dict(item),
+                )
+                for item in list(compartment_states or [])
+                if isinstance(item, Mapping) and str(item.get("volume_id", "")).strip()
+            )
+            pressure_values = [
+                int(max(0, _as_int((dict(compartment_by_volume.get(volume_id) or {})).get("derived_pressure", 0), 0)))
+                for volume_id in portal_volume_ids
+            ]
+            if len(pressure_values) >= 2 and abs(int(pressure_values[0]) - int(pressure_values[1])) >= int(
+                max(100, _as_int(inputs.get("decompression_threshold", 200), 200))
+            ):
+                incident_reason_codes.append("incident.decompression")
+            if any(
+                int(max(0, _as_int((dict(compartment_by_volume.get(volume_id) or {})).get("water_volume", 0), 0))) > 0
+                for volume_id in portal_volume_ids
+            ):
+                incident_reason_codes.append("incident.flooding_started")
+
+            for graph_row in sorted(
+                (item for item in list(state.get("interior_graphs") or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("graph_id", "")),
+            ):
+                if linked_portal_id not in set(_sorted_tokens(list(dict(graph_row).get("portals") or []))):
+                    continue
+                incident_graph_id = str(graph_row.get("graph_id", "")).strip()
+                break
+            owner_vehicle_row = _vehicle_row_for_interior_graph(state, incident_graph_id or "")
+            incident_owner_vehicle_id = str(owner_vehicle_row.get("vehicle_id", "")).strip() or None
+            if incident_owner_vehicle_id:
+                motion_rows_by_vehicle_id = _vehicle_motion_rows_by_id(state)
+                owner_motion_row = dict(motion_rows_by_vehicle_id.get(incident_owner_vehicle_id) or {})
+                owner_itinerary_id = (
+                    str((dict(owner_motion_row.get("macro_state") or {})).get("itinerary_id", "")).strip()
+                    or "itinerary.none"
+                )
+                event_sequence_base = int(len(list(travel_events or [])))
+                for index, reason_code in enumerate(incident_reason_codes):
+                    incident_event = build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=incident_owner_vehicle_id,
+                            itinerary_id=owner_itinerary_id,
+                            kind="incident_stub",
+                            tick=int(current_tick),
+                            sequence=int(event_sequence_base + index),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=incident_owner_vehicle_id,
+                        itinerary_id=owner_itinerary_id,
+                        kind="incident_stub",
+                        details={
+                            "reason_code": str(reason_code),
+                            "portal_id": linked_portal_id,
+                            "graph_id": incident_graph_id,
+                            "source_edge_id": structural_edge_id,
+                        },
+                        extensions={
+                            "source_process_id": process_id,
+                            "intent_id": str(intent_id),
+                            "triggered_process_id": "process.mech_fracture_resolve",
+                        },
+                    )
+                    travel_events = normalize_travel_event_rows(
+                        _upsert_row_by_id(travel_events, "event_id", incident_event)
+                    )
+                interior_incident_event = _vehicle_event_row(
+                    vehicle_id=incident_owner_vehicle_id,
+                    event_kind="vehicle_interior_incident",
+                    tick=int(current_tick),
+                    process_id=process_id,
+                    intent_id=str(intent_id),
+                    extensions={
+                        "portal_id": linked_portal_id,
+                        "graph_id": incident_graph_id,
+                        "source_edge_id": structural_edge_id,
+                        "incident_reason_codes": list(_sorted_tokens(incident_reason_codes)),
+                    },
+                )
+                vehicle_events = _ensure_vehicle_events(
+                    {
+                        "vehicle_events": _upsert_row_by_id(
+                            vehicle_events,
+                            "event_id",
+                            interior_incident_event,
+                        )
+                    }
+                )
+                state["travel_events"] = [
+                    dict(item)
+                    for item in list(travel_events or [])
+                    if isinstance(item, Mapping)
+                ]
+                _persist_vehicle_state(
+                    state,
+                    vehicles=vehicles,
+                    vehicle_motion_states=vehicle_motion_states,
+                    vehicle_compatibility_results=vehicle_compatibility_results,
+                    vehicle_events=vehicle_events,
+                )
 
         if bool(inputs.get("spawn_debris", False)):
             debris_rows = [dict(row) for row in list(state.get("mechanics_debris_batches") or []) if isinstance(row, dict)]
@@ -32687,6 +32801,41 @@ def execute_intent(
                     dict(portal_flow_by_id[key])
                     for key in sorted(portal_flow_by_id.keys())
                 ]
+                leak_by_id = dict(
+                    (str(item.get("leak_id", "")).strip(), dict(item))
+                    for item in list(interior_leak_hazards or [])
+                    if isinstance(item, Mapping) and str(item.get("leak_id", "")).strip()
+                )
+                portal_volume_ids = _portal_volume_ids(portal_row)
+                primary_volume_id = portal_volume_ids[0] if portal_volume_ids else "volume.unknown"
+                leak_id = "leak.portal.{}".format(
+                    canonical_sha256(
+                        {
+                            "portal_id": portal_id,
+                            "tick_bucket": int(current_tick) // 16,
+                        }
+                    )[:16]
+                )
+                leak_by_id[leak_id] = normalize_leak_hazard(
+                    {
+                        "schema_version": "1.0.0",
+                        "leak_id": leak_id,
+                        "volume_id": primary_volume_id,
+                        "leak_rate_air": int(max(1, _as_int(inputs.get("leak_rate_air", breach_magnitude * 2), breach_magnitude * 2))),
+                        "leak_rate_water": int(max(0, _as_int(inputs.get("leak_rate_water", breach_magnitude // 4), breach_magnitude // 4))),
+                        "hazard_model_id": "hazard.flow.portal_leak",
+                        "extensions": {
+                            "portal_id": portal_id,
+                            "source_process_id": process_id,
+                            "source_tick": int(current_tick),
+                            "breach_magnitude": int(breach_magnitude),
+                        },
+                    }
+                )
+                interior_leak_hazards = [
+                    dict(leak_by_id[key])
+                    for key in sorted(leak_by_id.keys())
+                ]
             elif process_id == "process.vent_activate":
                 portal_ext["vent_active"] = bool(inputs.get("active", True))
             if machine_id:
@@ -32746,6 +32895,118 @@ def execute_intent(
                 "state_id": str(transitioned_machine.get("state_id", "")).strip(),
             },
         }
+        incident_reason_codes: List[str] = []
+        incident_owner_vehicle_id = None
+        incident_graph_id = None
+        if process_id == "process.portal_seal_breach":
+            incident_reason_codes.append("incident.breach")
+            compartment_by_volume = dict(
+                (
+                    str(item.get("volume_id", "")).strip(),
+                    dict(item),
+                )
+                for item in list(compartment_states or [])
+                if isinstance(item, Mapping) and str(item.get("volume_id", "")).strip()
+            )
+            portal_volume_ids = _portal_volume_ids(portal_row)
+            pressure_values = [
+                int(max(0, _as_int((dict(compartment_by_volume.get(volume_id) or {})).get("derived_pressure", 0), 0)))
+                for volume_id in portal_volume_ids
+            ]
+            if len(pressure_values) >= 2 and abs(int(pressure_values[0]) - int(pressure_values[1])) >= int(
+                max(100, _as_int(inputs.get("decompression_threshold", 200), 200))
+            ):
+                incident_reason_codes.append("incident.decompression")
+            if any(
+                int(max(0, _as_int((dict(compartment_by_volume.get(volume_id) or {})).get("water_volume", 0), 0))) > 0
+                for volume_id in portal_volume_ids
+            ):
+                incident_reason_codes.append("incident.flooding_started")
+
+            for graph_row in sorted(
+                (item for item in list(state.get("interior_graphs") or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("graph_id", "")),
+            ):
+                portal_ids = set(_sorted_tokens(list(dict(graph_row).get("portals") or []))
+                )
+                if portal_id not in portal_ids:
+                    continue
+                incident_graph_id = str(graph_row.get("graph_id", "")).strip()
+                break
+            owner_vehicle_row = _vehicle_row_for_interior_graph(state, incident_graph_id or "")
+            incident_owner_vehicle_id = str(owner_vehicle_row.get("vehicle_id", "")).strip() or None
+            if incident_owner_vehicle_id:
+                motion_rows_by_vehicle_id = _vehicle_motion_rows_by_id(state)
+                owner_motion_row = dict(motion_rows_by_vehicle_id.get(incident_owner_vehicle_id) or {})
+                owner_itinerary_id = (
+                    str((dict(owner_motion_row.get("macro_state") or {})).get("itinerary_id", "")).strip()
+                    or "itinerary.none"
+                )
+                event_sequence_base = int(len(list(travel_events or [])))
+                for index, reason_code in enumerate(incident_reason_codes):
+                    incident_event = build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=incident_owner_vehicle_id,
+                            itinerary_id=owner_itinerary_id,
+                            kind="incident_stub",
+                            tick=int(current_tick),
+                            sequence=int(event_sequence_base + index),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=incident_owner_vehicle_id,
+                        itinerary_id=owner_itinerary_id,
+                        kind="incident_stub",
+                        details={
+                            "reason_code": str(reason_code),
+                            "portal_id": portal_id,
+                            "graph_id": incident_graph_id,
+                            "breach_magnitude": int(max(1, _as_int(inputs.get("breach_magnitude", 100), 100))),
+                        },
+                        extensions={
+                            "source_process_id": process_id,
+                            "intent_id": str(intent_id),
+                            "triggered_process_id": "process.portal_seal_breach",
+                        },
+                    )
+                    travel_events = normalize_travel_event_rows(
+                        _upsert_row_by_id(travel_events, "event_id", incident_event)
+                    )
+                interior_incident_event = _vehicle_event_row(
+                    vehicle_id=incident_owner_vehicle_id,
+                    event_kind="vehicle_interior_incident",
+                    tick=int(current_tick),
+                    process_id=process_id,
+                    intent_id=str(intent_id),
+                    extensions={
+                        "portal_id": portal_id,
+                        "graph_id": incident_graph_id,
+                        "incident_reason_codes": list(incident_reason_codes),
+                    },
+                )
+                vehicle_events = _ensure_vehicle_events(
+                    {
+                        "vehicle_events": _upsert_row_by_id(
+                            vehicle_events,
+                            "event_id",
+                            interior_incident_event,
+                        )
+                    }
+                )
+                state["travel_events"] = [
+                    dict(item)
+                    for item in list(travel_events or [])
+                    if isinstance(item, Mapping)
+                ]
+                _persist_vehicle_state(
+                    state,
+                    vehicles=vehicles,
+                    vehicle_motion_states=vehicle_motion_states,
+                    vehicle_compatibility_results=vehicle_compatibility_results,
+                    vehicle_events=vehicle_events,
+                )
+        event_payload["extensions"]["incident_reason_codes"] = list(_sorted_tokens(incident_reason_codes))
+        event_payload["extensions"]["owner_vehicle_id"] = incident_owner_vehicle_id
+        event_payload["extensions"]["graph_id"] = incident_graph_id
         event_payload["deterministic_fingerprint"] = canonical_sha256(
             dict(event_payload, deterministic_fingerprint="")
         )
@@ -32774,6 +33035,9 @@ def execute_intent(
             "trigger_process_id": transition_trigger,
             "state_machine_id": transitioned_machine_id,
             "state_id": str(transitioned_machine.get("state_id", "")).strip(),
+            "incident_reason_codes": list(_sorted_tokens(incident_reason_codes)),
+            "owner_vehicle_id": incident_owner_vehicle_id,
+            "graph_id": incident_graph_id,
             "event_id": str(event_payload.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
