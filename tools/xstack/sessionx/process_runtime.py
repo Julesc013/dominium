@@ -315,10 +315,12 @@ from src.mobility.travel import (
 from src.mobility.traffic import (
     REFUSAL_MOBILITY_RESERVATION_CONFLICT,
     TrafficEngineError,
+    congestion_policy_rows_by_id,
     ensure_edge_occupancy_rows,
     normalize_edge_occupancy_rows,
     normalize_reservation_rows,
     reserve_edge_capacity,
+    resolve_congestion_policy,
 )
 from src.mechanics import (
     build_structural_edge,
@@ -21518,6 +21520,36 @@ def execute_intent(
                 if int(current_tick) % int(far_vehicle_cadence_ticks) != int(bucket):
                     cadence_deferred_vehicle_ids.append(vehicle_id)
         cadence_deferred_vehicle_ids = _sorted_tokens(cadence_deferred_vehicle_ids)
+        for graph in sorted(
+            [dict(item) for item in list(state.get("network_graphs") or []) if isinstance(item, Mapping)],
+            key=lambda item: str(item.get("graph_id", "")),
+        ):
+            edge_occupancies = ensure_edge_occupancy_rows(
+                edge_occupancy_rows=edge_occupancies,
+                graph_row=graph,
+            )
+        edge_occupancies = normalize_edge_occupancy_rows(edge_occupancies)
+        congestion_policy_registry = dict(_policy_payload(policy_context, "congestion_policy_registry") or {})
+        if not congestion_policy_registry:
+            congestion_policy_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/congestion_policy_registry.json",
+                default_payload={"record": {"congestion_policies": []}},
+            )
+        congestion_policy_rows = congestion_policy_rows_by_id(congestion_policy_registry)
+        requested_congestion_policy_id = (
+            str(
+                inputs.get(
+                    "congestion_policy_id",
+                    (dict(policy_context or {})).get("mobility_congestion_policy_id", "cong.default_linear"),
+                )
+            ).strip()
+            or "cong.default_linear"
+        )
+        congestion_policy = resolve_congestion_policy(
+            requested_policy_id=requested_congestion_policy_id,
+            policy_rows_by_id=congestion_policy_rows,
+        )
         tick_result = tick_macro_travel(
             itinerary_rows=itineraries,
             motion_state_rows=vehicle_motion_states,
@@ -21526,6 +21558,8 @@ def execute_intent(
             current_tick=int(current_tick),
             max_updates=int(max_updates),
             forced_deferred_vehicle_ids=list(cadence_deferred_vehicle_ids),
+            edge_occupancy_rows=edge_occupancies,
+            congestion_policy_row=congestion_policy,
         )
         vehicle_motion_states = normalize_motion_state_rows(
             list(tick_result.get("motion_state_rows") or [])
@@ -21536,6 +21570,14 @@ def execute_intent(
         travel_events = normalize_travel_event_rows(
             list(tick_result.get("travel_events") or [])
         )
+        edge_occupancies = normalize_edge_occupancy_rows(
+            list(tick_result.get("edge_occupancy_rows") or edge_occupancies or [])
+        )
+        congestion_delay_rows = [
+            dict(row)
+            for row in list(tick_result.get("congestion_delay_rows") or [])
+            if isinstance(row, Mapping)
+        ]
         active_itinerary_ids = _sorted_tokens(
             [
                 str(itinerary_token).strip()
@@ -21684,6 +21726,69 @@ def execute_intent(
                 process_id=process_id,
                 tick=int(current_tick),
             )
+        if congestion_delay_rows:
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id=str(row.get("edge_id", "")).strip() or "edge.unknown",
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.congestion_delay",
+                        resolved_level="meso",
+                        cost_allocated=0,
+                        extensions={
+                            "vehicle_id": str(row.get("vehicle_id", "")).strip() or None,
+                            "itinerary_id": str(row.get("itinerary_id", "")).strip() or None,
+                            "delta_ticks": int(max(0, _as_int(row.get("delta_ticks", 0), 0))),
+                            "congestion_ratio_permille": int(max(0, _as_int(row.get("congestion_ratio_permille", 0), 0))),
+                            "multiplier_permille": int(max(1, _as_int(row.get("multiplier_permille", 1000), 1000))),
+                            "congestion_policy_id": str(row.get("congestion_policy_id", "")).strip() or None,
+                        },
+                    )
+                    for row in list(congestion_delay_rows)[:128]
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+            state["mobility_traffic_decision_logs"] = sorted(
+                [
+                    dict(row)
+                    for row in list(state.get("mobility_traffic_decision_logs") or [])
+                    if isinstance(row, Mapping)
+                ]
+                + [
+                    {
+                        "schema_version": "1.0.0",
+                        "decision_id": "decision.mob.congestion.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(current_tick),
+                                    "edge_id": str(row.get("edge_id", "")).strip(),
+                                    "vehicle_id": str(row.get("vehicle_id", "")).strip(),
+                                    "delta_ticks": int(max(0, _as_int(row.get("delta_ticks", 0), 0))),
+                                }
+                            )[:16]
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "process_id": process_id,
+                        "intent_id": str(intent_id),
+                        "decision_log_ref": str(inputs.get("decision_log_ref", "")).strip() or None,
+                        "vehicle_id": str(row.get("vehicle_id", "")).strip() or None,
+                        "itinerary_id": str(row.get("itinerary_id", "")).strip() or None,
+                        "edge_id": str(row.get("edge_id", "")).strip() or None,
+                        "delta_ticks": int(max(0, _as_int(row.get("delta_ticks", 0), 0))),
+                        "congestion_ratio_permille": int(max(0, _as_int(row.get("congestion_ratio_permille", 0), 0))),
+                        "multiplier_permille": int(max(1, _as_int(row.get("multiplier_permille", 1000), 1000))),
+                        "congestion_policy_id": str(row.get("congestion_policy_id", "")).strip()
+                        or str(congestion_policy.get("congestion_policy_id", "")).strip()
+                        or None,
+                    }
+                    for row in list(congestion_delay_rows)[:256]
+                ],
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("decision_id", ""))),
+            )
         deferred_schedule_ids = _sorted_tokens(list(schedule_tick.get("deferred_schedule_ids") or []))
         if deferred_schedule_ids:
             _append_fidelity_decision_entries(
@@ -21710,10 +21815,12 @@ def execute_intent(
         state["travel_schedules"] = [dict(row) for row in list(travel_schedules or []) if isinstance(row, Mapping)]
         state["travel_commitments"] = [dict(row) for row in list(travel_commitments or []) if isinstance(row, Mapping)]
         state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
+        state["edge_occupancies"] = [dict(row) for row in list(edge_occupancies or []) if isinstance(row, Mapping)]
         _ensure_itinerary_rows(state)
         _ensure_travel_schedule_rows(state)
         _ensure_travel_commitment_rows(state)
         _ensure_travel_event_rows(state)
+        _ensure_edge_occupancy_rows(state)
         _persist_vehicle_state(
             state,
             vehicles=vehicles,
@@ -21739,6 +21846,20 @@ def execute_intent(
             "far_vehicle_update_cadence_ticks": int(far_vehicle_cadence_ticks),
             "max_schedule_updates_per_tick": int(max_schedule_updates),
             "deferred_schedule_ids": list(deferred_schedule_ids),
+            "congestion_policy_id": str(congestion_policy.get("congestion_policy_id", "")).strip()
+            or "cong.default_linear",
+            "congestion_delay_count": int(len(congestion_delay_rows)),
+            "edge_occupancy_count": int(len(edge_occupancies)),
+            "edge_over_capacity_count": int(
+                len(
+                    [
+                        row
+                        for row in list(edge_occupancies or [])
+                        if isinstance(row, Mapping)
+                        and float(_as_float((dict(row.get("extensions") or {})).get("congestion_ratio_permille", 0), 0.0)) > 1000.0
+                    ]
+                )
+            ),
             "budget_outcome": str(tick_result.get("budget_outcome", "complete")),
         }
         result_metadata = {
@@ -21754,6 +21875,11 @@ def execute_intent(
             "far_vehicle_update_cadence_ticks": int(far_vehicle_cadence_ticks),
             "travel_event_stream_update_count": int(len(touched_itinerary_ids)),
             "travel_event_stream_itinerary_ids": list(touched_itinerary_ids),
+            "congestion_policy_id": str(congestion_policy.get("congestion_policy_id", "")).strip()
+            or "cong.default_linear",
+            "congestion_delay_count": int(len(congestion_delay_rows)),
+            "congestion_delay_rows": [dict(row) for row in list(congestion_delay_rows)[:64]],
+            "edge_occupancy_count": int(len(edge_occupancies)),
             "budget_outcome": (
                 "degraded"
                 if deferred_schedule_ids or str(tick_result.get("budget_outcome", "complete")) == "degraded"

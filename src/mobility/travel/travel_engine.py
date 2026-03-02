@@ -5,6 +5,13 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from src.mobility.travel.itinerary_engine import normalize_itinerary_rows
+from src.mobility.traffic import (
+    apply_congestion_to_speed,
+    build_edge_occupancy,
+    compute_congestion_ratio_permille,
+    edge_occupancy_rows_by_edge_id,
+    normalize_edge_occupancy_rows,
+)
 from src.mobility.vehicle.vehicle_engine import build_motion_state, normalize_motion_state_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -221,6 +228,20 @@ def _profile_row_for_edge(*, itinerary_row: Mapping[str, object], edge_id: str) 
         if str(row.get("edge_id", "")).strip() == str(edge_id).strip():
             return dict(row)
     return {}
+
+
+def _profile_rows_by_edge_id(itinerary_row: Mapping[str, object]) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in _profile_rows(itinerary_row):
+        edge_id = str(row.get("edge_id", "")).strip()
+        if not edge_id:
+            continue
+        out[edge_id] = dict(row)
+    return out
+
+
+def _profile_eta_ticks(profile_row: Mapping[str, object], default_value: int = 1) -> int:
+    return int(max(1, _as_int(profile_row.get("eta_ticks", default_value), default_value)))
 
 
 def _build_waypoint_commitments(*, vehicle_id: str, itinerary_row: Mapping[str, object]) -> List[dict]:
@@ -462,12 +483,51 @@ def tick_macro_travel(
     current_tick: int,
     max_updates: int,
     forced_deferred_vehicle_ids: object = None,
+    edge_occupancy_rows: object = None,
+    congestion_policy_row: Mapping[str, object] | None = None,
 ) -> dict:
     itinerary_by_id = _itinerary_rows_by_id(itinerary_rows)
     motion_by_vehicle = _motion_state_rows_by_vehicle_id(motion_state_rows)
     commitments = normalize_travel_commitment_rows(travel_commitment_rows)
     events = normalize_travel_event_rows(travel_event_rows)
     event_index = int(len(events))
+    congestion_policy = dict(congestion_policy_row or {})
+    congestion_policy_id = str(congestion_policy.get("congestion_policy_id", "cong.default_linear")).strip() or "cong.default_linear"
+
+    occupancy_by_edge = edge_occupancy_rows_by_edge_id(edge_occupancy_rows)
+    for edge_id in list(occupancy_by_edge.keys()):
+        row = dict(occupancy_by_edge.get(edge_id) or {})
+        occupancy_by_edge[edge_id] = build_edge_occupancy(
+            edge_id=edge_id,
+            capacity_units=int(max(1, _as_int(row.get("capacity_units", 1), 1))),
+            current_occupancy=0,
+            extensions=_as_map(row.get("extensions")),
+        )
+
+    def _ensure_occupancy_row(edge_id: str) -> dict:
+        edge_token = str(edge_id or "").strip()
+        if not edge_token:
+            return build_edge_occupancy(edge_id="", capacity_units=1, current_occupancy=0, extensions={})
+        row = dict(occupancy_by_edge.get(edge_token) or {})
+        if not row:
+            row = build_edge_occupancy(
+                edge_id=edge_token,
+                capacity_units=1,
+                current_occupancy=0,
+                extensions={},
+            )
+            occupancy_by_edge[edge_token] = dict(row)
+            return dict(row)
+        return dict(row)
+
+    def _remaining_base_eta_ticks(*, route_edge_ids: List[str], profile_by_edge: Mapping[str, dict], start_index: int) -> int:
+        total = 0
+        for idx in range(int(max(0, _as_int(start_index, 0))), len(route_edge_ids)):
+            edge_id = str(route_edge_ids[idx]).strip()
+            if not edge_id:
+                continue
+            total += _profile_eta_ticks(dict(profile_by_edge.get(edge_id) or {}), 1)
+        return int(max(0, total))
 
     active_vehicle_ids = []
     for vehicle_id, row in sorted(motion_by_vehicle.items(), key=lambda item: str(item[0])):
@@ -476,9 +536,34 @@ def tick_macro_travel(
         if itinerary_token:
             active_vehicle_ids.append(vehicle_id)
 
+    # Rehydrate occupancy from current active macro travel rows so depart/start transitions are reflected.
+    for vehicle_id in active_vehicle_ids:
+        motion_row = dict(motion_by_vehicle.get(vehicle_id) or {})
+        macro = _as_map(motion_row.get("macro_state"))
+        itinerary_value = macro.get("itinerary_id")
+        itinerary_id = str(itinerary_value).strip() if itinerary_value is not None else ""
+        itinerary_row = dict(itinerary_by_id.get(itinerary_id) or {})
+        route_edge_ids = [str(item).strip() for item in list(itinerary_row.get("route_edge_ids") or []) if str(item).strip()]
+        if not route_edge_ids:
+            continue
+        edge_index = int(max(0, _as_int(macro.get("current_edge_index", 0), 0)))
+        if edge_index >= len(route_edge_ids):
+            edge_index = len(route_edge_ids) - 1
+        current_edge_id = str(macro.get("current_edge_id", "")).strip() or str(route_edge_ids[edge_index]).strip()
+        if not current_edge_id:
+            continue
+        occupancy_row = _ensure_occupancy_row(current_edge_id)
+        occupancy_by_edge[current_edge_id] = build_edge_occupancy(
+            edge_id=current_edge_id,
+            capacity_units=int(max(1, _as_int(occupancy_row.get("capacity_units", 1), 1))),
+            current_occupancy=int(max(0, _as_int(occupancy_row.get("current_occupancy", 0), 0)) + 1),
+            extensions=_as_map(occupancy_row.get("extensions")),
+        )
+
     forced_deferred = set(_sorted_tokens(forced_deferred_vehicle_ids))
     processed: List[str] = []
     deferred: List[str] = []
+    congestion_delay_rows: List[dict] = []
     for vehicle_id in active_vehicle_ids:
         if vehicle_id in forced_deferred:
             deferred.append(vehicle_id)
@@ -494,6 +579,15 @@ def tick_macro_travel(
         itinerary_row = dict(itinerary_by_id.get(itinerary_id) or {})
         route_edge_ids = [str(item).strip() for item in list(itinerary_row.get("route_edge_ids") or []) if str(item).strip()]
         if not itinerary_row or not route_edge_ids:
+            current_edge_token = str(macro.get("current_edge_id", "")).strip()
+            if current_edge_token:
+                current_edge_row = _ensure_occupancy_row(current_edge_token)
+                occupancy_by_edge[current_edge_token] = build_edge_occupancy(
+                    edge_id=current_edge_token,
+                    capacity_units=int(max(1, _as_int(current_edge_row.get("capacity_units", 1), 1))),
+                    current_occupancy=int(max(0, _as_int(current_edge_row.get("current_occupancy", 0), 0) - 1)),
+                    extensions=_as_map(current_edge_row.get("extensions")),
+                )
             motion_by_vehicle[vehicle_id] = _idle_macro_state(
                 vehicle_id=vehicle_id,
                 motion_state_row=motion_row,
@@ -505,9 +599,79 @@ def tick_macro_travel(
         if edge_index >= len(route_edge_ids):
             edge_index = len(route_edge_ids) - 1
         current_edge_id = str(route_edge_ids[edge_index]).strip()
-        profile_row = _profile_row_for_edge(itinerary_row=itinerary_row, edge_id=current_edge_id)
-        edge_eta_ticks = int(max(1, _as_int(macro.get("edge_eta_ticks", _as_int(profile_row.get("eta_ticks", 1), 1)), 1)))
+        profile_by_edge = _profile_rows_by_edge_id(itinerary_row)
+        profile_row = dict(profile_by_edge.get(current_edge_id) or _profile_row_for_edge(itinerary_row=itinerary_row, edge_id=current_edge_id))
+        base_edge_eta_ticks = _profile_eta_ticks(
+            profile_row,
+            int(max(1, _as_int(macro.get("base_edge_eta_ticks", 1), 1))),
+        )
+        planned_speed_mm_per_tick = int(max(1, _as_int(profile_row.get("allowed_speed_mm_per_tick", 1), 1)))
+        occupancy_row = _ensure_occupancy_row(current_edge_id)
+        capacity_units = int(max(1, _as_int(occupancy_row.get("capacity_units", 1), 1)))
+        current_occupancy = int(max(0, _as_int(occupancy_row.get("current_occupancy", 0), 0)))
+        congestion_ratio_permille = compute_congestion_ratio_permille(
+            current_occupancy=current_occupancy,
+            capacity_units=capacity_units,
+        )
+        speed_eval = apply_congestion_to_speed(
+            base_speed_mm_per_tick=int(planned_speed_mm_per_tick),
+            congestion_ratio_permille=int(congestion_ratio_permille),
+            congestion_policy_row=congestion_policy,
+        )
+        multiplier_permille = int(max(1, _as_int(speed_eval.get("multiplier_permille", 1000), 1000)))
+        edge_eta_ticks = int(max(1, (int(base_edge_eta_ticks) * int(multiplier_permille) + 999) // 1000))
+        congestion_delay_ticks = int(max(0, int(edge_eta_ticks) - int(base_edge_eta_ticks)))
+        logged_edge_index = int(_as_int(macro.get("congestion_logged_edge_index", -1), -1))
         edge_elapsed_ticks = int(max(0, _as_int(macro.get("edge_elapsed_ticks", 0), 0))) + 1
+        if int(congestion_delay_ticks) > 0 and int(logged_edge_index) != int(edge_index):
+            events.append(
+                build_travel_event(
+                    event_id=deterministic_travel_event_id(
+                        vehicle_id=vehicle_id,
+                        itinerary_id=itinerary_id,
+                        kind="delay",
+                        tick=int(current_tick),
+                        sequence=int(event_index),
+                    ),
+                    tick=int(current_tick),
+                    vehicle_id=vehicle_id,
+                    itinerary_id=itinerary_id,
+                    kind="delay",
+                    details={
+                        "reason": "event.delay.congestion",
+                        "edge_id": current_edge_id,
+                        "edge_index": int(edge_index),
+                        "delta_ticks": int(congestion_delay_ticks),
+                        "congestion_ratio_permille": int(congestion_ratio_permille),
+                        "multiplier_permille": int(multiplier_permille),
+                        "capacity_units": int(capacity_units),
+                        "current_occupancy": int(current_occupancy),
+                    },
+                    extensions={
+                        "target_semantic_id": itinerary_id,
+                        "vehicle_id": vehicle_id,
+                        "congestion_policy_id": congestion_policy_id,
+                    },
+                )
+            )
+            congestion_delay_rows.append(
+                {
+                    "vehicle_id": vehicle_id,
+                    "itinerary_id": itinerary_id,
+                    "edge_id": current_edge_id,
+                    "edge_index": int(edge_index),
+                    "delta_ticks": int(congestion_delay_ticks),
+                    "congestion_ratio_permille": int(congestion_ratio_permille),
+                    "multiplier_permille": int(multiplier_permille),
+                    "capacity_units": int(capacity_units),
+                    "current_occupancy": int(current_occupancy),
+                    "congestion_policy_id": congestion_policy_id,
+                }
+            )
+            event_index += 1
+            logged_edge_index = int(edge_index)
+        elif int(congestion_delay_ticks) <= 0:
+            logged_edge_index = -1
 
         if edge_elapsed_ticks >= edge_eta_ticks:
             # Close current edge and transition.
@@ -528,15 +692,27 @@ def tick_macro_travel(
                         "edge_id": current_edge_id,
                         "edge_index": int(edge_index),
                         "guide_geometry_id": str(profile_row.get("guide_geometry_id", "")).strip() or None,
-                        "planned_speed_mm_per_tick": int(max(0, _as_int(profile_row.get("allowed_speed_mm_per_tick", 0), 0))),
+                        "planned_speed_mm_per_tick": int(planned_speed_mm_per_tick),
+                        "congestion_ratio_permille": int(congestion_ratio_permille),
+                        "multiplier_permille": int(multiplier_permille),
+                        "capacity_units": int(capacity_units),
+                        "current_occupancy": int(current_occupancy),
                     },
                     extensions={
                         "target_semantic_id": itinerary_id,
                         "vehicle_id": vehicle_id,
+                        "congestion_policy_id": congestion_policy_id,
                     },
                 )
             )
             event_index += 1
+            occupancy_row = _ensure_occupancy_row(current_edge_id)
+            occupancy_by_edge[current_edge_id] = build_edge_occupancy(
+                edge_id=current_edge_id,
+                capacity_units=int(max(1, _as_int(occupancy_row.get("capacity_units", 1), 1))),
+                current_occupancy=int(max(0, _as_int(occupancy_row.get("current_occupancy", 0), 0) - 1)),
+                extensions=_as_map(occupancy_row.get("extensions")),
+            )
             commitments = _update_commitment_status(
                 commitment_rows=commitments,
                 vehicle_id=vehicle_id,
@@ -573,11 +749,14 @@ def tick_macro_travel(
                             "route_edge_count": int(len(route_edge_ids)),
                             "edge_id": current_edge_id,
                             "guide_geometry_id": str(profile_row.get("guide_geometry_id", "")).strip() or None,
-                            "planned_speed_mm_per_tick": int(max(0, _as_int(profile_row.get("allowed_speed_mm_per_tick", 0), 0))),
+                            "planned_speed_mm_per_tick": int(planned_speed_mm_per_tick),
+                            "congestion_ratio_permille": int(congestion_ratio_permille),
+                            "multiplier_permille": int(multiplier_permille),
                         },
                         extensions={
                             "target_semantic_id": itinerary_id,
                             "vehicle_id": vehicle_id,
+                            "congestion_policy_id": congestion_policy_id,
                         },
                     )
                 )
@@ -590,8 +769,30 @@ def tick_macro_travel(
                 continue
 
             next_edge_id = str(route_edge_ids[next_edge_index]).strip()
-            next_profile = _profile_row_for_edge(itinerary_row=itinerary_row, edge_id=next_edge_id)
-            next_eta_ticks = int(max(1, _as_int(next_profile.get("eta_ticks", 1), 1)))
+            next_profile = dict(profile_by_edge.get(next_edge_id) or _profile_row_for_edge(itinerary_row=itinerary_row, edge_id=next_edge_id))
+            next_base_edge_eta_ticks = _profile_eta_ticks(next_profile, 1)
+            next_planned_speed_mm_per_tick = int(max(1, _as_int(next_profile.get("allowed_speed_mm_per_tick", 1), 1)))
+            next_occupancy_row = _ensure_occupancy_row(next_edge_id)
+            next_capacity_units = int(max(1, _as_int(next_occupancy_row.get("capacity_units", 1), 1)))
+            next_current_occupancy = int(max(0, _as_int(next_occupancy_row.get("current_occupancy", 0), 0) + 1))
+            occupancy_by_edge[next_edge_id] = build_edge_occupancy(
+                edge_id=next_edge_id,
+                capacity_units=int(next_capacity_units),
+                current_occupancy=int(next_current_occupancy),
+                extensions=_as_map(next_occupancy_row.get("extensions")),
+            )
+            next_congestion_ratio_permille = compute_congestion_ratio_permille(
+                current_occupancy=int(next_current_occupancy),
+                capacity_units=int(next_capacity_units),
+            )
+            next_speed_eval = apply_congestion_to_speed(
+                base_speed_mm_per_tick=int(next_planned_speed_mm_per_tick),
+                congestion_ratio_permille=int(next_congestion_ratio_permille),
+                congestion_policy_row=congestion_policy,
+            )
+            next_multiplier_permille = int(max(1, _as_int(next_speed_eval.get("multiplier_permille", 1000), 1000)))
+            next_eta_ticks = int(max(1, (int(next_base_edge_eta_ticks) * int(next_multiplier_permille) + 999) // 1000))
+            next_congestion_delay_ticks = int(max(0, int(next_eta_ticks) - int(next_base_edge_eta_ticks)))
             events.append(
                 build_travel_event(
                     event_id=deterministic_travel_event_id(
@@ -609,29 +810,97 @@ def tick_macro_travel(
                         "edge_id": next_edge_id,
                         "edge_index": int(next_edge_index),
                         "guide_geometry_id": str(next_profile.get("guide_geometry_id", "")).strip() or None,
-                        "planned_speed_mm_per_tick": int(max(0, _as_int(next_profile.get("allowed_speed_mm_per_tick", 0), 0))),
+                        "planned_speed_mm_per_tick": int(next_planned_speed_mm_per_tick),
+                        "congestion_ratio_permille": int(next_congestion_ratio_permille),
+                        "multiplier_permille": int(next_multiplier_permille),
+                        "capacity_units": int(next_capacity_units),
+                        "current_occupancy": int(next_current_occupancy),
                     },
                     extensions={
                         "target_semantic_id": itinerary_id,
                         "vehicle_id": vehicle_id,
+                        "congestion_policy_id": congestion_policy_id,
                     },
                 )
             )
             event_index += 1
+            if int(next_congestion_delay_ticks) > 0:
+                events.append(
+                    build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=vehicle_id,
+                            itinerary_id=itinerary_id,
+                            kind="delay",
+                            tick=int(current_tick),
+                            sequence=int(event_index),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=vehicle_id,
+                        itinerary_id=itinerary_id,
+                        kind="delay",
+                        details={
+                            "reason": "event.delay.congestion",
+                            "edge_id": next_edge_id,
+                            "edge_index": int(next_edge_index),
+                            "delta_ticks": int(next_congestion_delay_ticks),
+                            "congestion_ratio_permille": int(next_congestion_ratio_permille),
+                            "multiplier_permille": int(next_multiplier_permille),
+                            "capacity_units": int(next_capacity_units),
+                            "current_occupancy": int(next_current_occupancy),
+                        },
+                        extensions={
+                            "target_semantic_id": itinerary_id,
+                            "vehicle_id": vehicle_id,
+                            "congestion_policy_id": congestion_policy_id,
+                        },
+                    )
+                )
+                congestion_delay_rows.append(
+                    {
+                        "vehicle_id": vehicle_id,
+                        "itinerary_id": itinerary_id,
+                        "edge_id": next_edge_id,
+                        "edge_index": int(next_edge_index),
+                        "delta_ticks": int(next_congestion_delay_ticks),
+                        "congestion_ratio_permille": int(next_congestion_ratio_permille),
+                        "multiplier_permille": int(next_multiplier_permille),
+                        "capacity_units": int(next_capacity_units),
+                        "current_occupancy": int(next_current_occupancy),
+                        "congestion_policy_id": congestion_policy_id,
+                    }
+                )
+                event_index += 1
+                logged_edge_index = int(next_edge_index)
+            else:
+                logged_edge_index = -1
+            eta_tick = int(
+                int(current_tick)
+                + int(next_eta_ticks)
+                + int(_remaining_base_eta_ticks(route_edge_ids=route_edge_ids, profile_by_edge=profile_by_edge, start_index=int(next_edge_index + 1)))
+            )
             motion_by_vehicle[vehicle_id] = build_motion_state(
                 vehicle_id=vehicle_id,
                 tier="macro",
                 macro_state={
                     "itinerary_id": itinerary_id,
-                    "eta_tick": _as_int(itinerary_row.get("estimated_arrival_tick", current_tick), current_tick),
+                    "eta_tick": int(max(int(current_tick), int(eta_tick))),
                     "current_edge_id": next_edge_id,
                     "current_edge_index": int(next_edge_index),
                     "current_node_id": None,
                     "progress_fraction_q16": 0,
                     "edge_elapsed_ticks": 0,
                     "edge_eta_ticks": int(next_eta_ticks),
+                    "base_edge_eta_ticks": int(next_base_edge_eta_ticks),
                     "started_tick": _as_int(macro.get("started_tick", current_tick), current_tick),
                     "last_progress_tick": int(current_tick),
+                    "planned_speed_mm_per_tick": int(next_planned_speed_mm_per_tick),
+                    "congestion_policy_id": congestion_policy_id,
+                    "congestion_ratio_permille": int(next_congestion_ratio_permille),
+                    "congestion_multiplier_permille": int(next_multiplier_permille),
+                    "congestion_delay_ticks": int(next_congestion_delay_ticks),
+                    "edge_capacity_units": int(next_capacity_units),
+                    "edge_current_occupancy": int(next_current_occupancy),
+                    "congestion_logged_edge_index": int(logged_edge_index),
                 },
                 meso_state=_as_map(motion_row.get("meso_state")),
                 micro_state=_as_map(motion_row.get("micro_state")),
@@ -641,20 +910,34 @@ def tick_macro_travel(
             continue
 
         progress_fraction_q16 = int((int(edge_elapsed_ticks) * 65535) // int(max(1, edge_eta_ticks)))
+        eta_tick = int(
+            int(current_tick)
+            + int(max(0, int(edge_eta_ticks) - int(edge_elapsed_ticks)))
+            + int(_remaining_base_eta_ticks(route_edge_ids=route_edge_ids, profile_by_edge=profile_by_edge, start_index=int(edge_index + 1)))
+        )
         motion_by_vehicle[vehicle_id] = build_motion_state(
             vehicle_id=vehicle_id,
             tier="macro",
             macro_state={
                 "itinerary_id": itinerary_id,
-                "eta_tick": _as_int(itinerary_row.get("estimated_arrival_tick", current_tick), current_tick),
+                "eta_tick": int(max(int(current_tick), int(eta_tick))),
                 "current_edge_id": current_edge_id,
                 "current_edge_index": int(edge_index),
                 "current_node_id": None,
                 "progress_fraction_q16": int(max(0, min(65535, progress_fraction_q16))),
                 "edge_elapsed_ticks": int(edge_elapsed_ticks),
                 "edge_eta_ticks": int(edge_eta_ticks),
+                "base_edge_eta_ticks": int(base_edge_eta_ticks),
                 "started_tick": _as_int(macro.get("started_tick", current_tick), current_tick),
                 "last_progress_tick": int(current_tick),
+                "planned_speed_mm_per_tick": int(planned_speed_mm_per_tick),
+                "congestion_policy_id": congestion_policy_id,
+                "congestion_ratio_permille": int(congestion_ratio_permille),
+                "congestion_multiplier_permille": int(multiplier_permille),
+                "congestion_delay_ticks": int(congestion_delay_ticks),
+                "edge_capacity_units": int(capacity_units),
+                "edge_current_occupancy": int(current_occupancy),
+                "congestion_logged_edge_index": int(logged_edge_index),
             },
             meso_state=_as_map(motion_row.get("meso_state")),
             micro_state=_as_map(motion_row.get("micro_state")),
@@ -667,6 +950,21 @@ def tick_macro_travel(
         "motion_state_rows": motion_rows_out,
         "travel_commitments": normalize_travel_commitment_rows(commitments),
         "travel_events": normalize_travel_event_rows(events),
+        "edge_occupancy_rows": normalize_edge_occupancy_rows(
+            [dict(occupancy_by_edge[key]) for key in sorted(occupancy_by_edge.keys())]
+        ),
+        "congestion_delay_rows": [
+            dict(row)
+            for row in sorted(
+                congestion_delay_rows,
+                key=lambda row: (
+                    str(row.get("vehicle_id", "")),
+                    str(row.get("itinerary_id", "")),
+                    str(row.get("edge_id", "")),
+                    _as_int(row.get("edge_index", 0), 0),
+                ),
+            )
+        ],
         "processed_vehicle_ids": _sorted_tokens(processed),
         "deferred_vehicle_ids": _sorted_tokens(deferred),
         "budget_outcome": "degraded" if deferred else "complete",
