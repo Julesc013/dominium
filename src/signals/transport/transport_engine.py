@@ -37,6 +37,18 @@ def _sorted_tokens(values: object) -> List[str]:
     return sorted(set(str(item).strip() for item in values if str(item).strip()))
 
 
+def _clamp_trust_weight(value: object) -> float:
+    try:
+        token = float(value)
+    except (TypeError, ValueError):
+        token = 1.0
+    if token < 0.0:
+        return 0.0
+    if token > 1.0:
+        return 1.0
+    return float(token)
+
+
 def _with_fingerprint(row: Mapping[str, object]) -> dict:
     payload = dict(row or {})
     payload["deterministic_fingerprint"] = ""
@@ -544,6 +556,8 @@ def process_signal_transport_tick(
     routing_policy_registry: Mapping[str, object] | None,
     max_cost_units: int,
     cost_units_per_delivery: int,
+    default_trust_weight: float = 1.0,
+    trust_weight_by_subject_id: Mapping[str, object] | None = None,
 ) -> dict:
     transport = tick_signal_transport(
         current_tick=int(max(0, _as_int(current_tick, 0))),
@@ -559,11 +573,17 @@ def process_signal_transport_tick(
     )
     next_receipts = normalize_knowledge_receipt_rows(knowledge_receipt_rows)
     created_receipts = []
+    trust_rows = dict((str(key).strip(), value) for key, value in dict(trust_weight_by_subject_id or {}).items() if str(key).strip())
     for delivered_row in list(dict(transport).get("delivered_rows") or []):
+        recipient_subject_id = str(dict(delivered_row or {}).get("recipient_subject_id", "")).strip()
+        subject_trust = _clamp_trust_weight(default_trust_weight)
+        if recipient_subject_id in trust_rows:
+            subject_trust = _clamp_trust_weight(trust_rows.get(recipient_subject_id))
         acquire_result = process_knowledge_acquire(
             current_tick=int(max(0, _as_int(current_tick, 0))),
             delivered_row=dict(delivered_row or {}),
             knowledge_receipt_rows=next_receipts,
+            trust_weight=float(subject_trust),
         )
         next_receipts = normalize_knowledge_receipt_rows(acquire_result.get("knowledge_receipt_rows"))
         if bool(acquire_result.get("acquired", False)):
