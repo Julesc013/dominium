@@ -5855,6 +5855,42 @@ def _material_provenance_events_for_reenactment(state: dict) -> List[dict]:
     )
 
 
+def _travel_provenance_events_for_reenactment(travel_event_rows: object) -> List[dict]:
+    out = []
+    for row in normalize_travel_event_rows(travel_event_rows):
+        itinerary_id = str(row.get("itinerary_id", "")).strip()
+        vehicle_id = str(row.get("vehicle_id", "")).strip()
+        kind = str(row.get("kind", "")).strip() or "incident_stub"
+        details = dict(row.get("details") or {}) if isinstance(row.get("details"), dict) else {}
+        extensions = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+        target_semantic_id = str(extensions.get("target_semantic_id", "")).strip() or itinerary_id
+        event_extensions = dict(extensions)
+        if target_semantic_id:
+            event_extensions["target_semantic_id"] = target_semantic_id
+        if itinerary_id:
+            event_extensions["itinerary_id"] = itinerary_id
+        if vehicle_id:
+            event_extensions["vehicle_id"] = vehicle_id
+        out.append(
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": max(0, _as_int(row.get("tick", 0), 0)),
+                "event_type": "travel.{}".format(kind),
+                "event_type_id": "travel.{}".format(kind),
+                "itinerary_id": itinerary_id,
+                "vehicle_id": vehicle_id,
+                "edge_id": str(details.get("edge_id", "")).strip(),
+                "guide_geometry_id": str(details.get("guide_geometry_id", "")).strip(),
+                "planned_speed_mm_per_tick": max(0, _as_int(details.get("planned_speed_mm_per_tick", 0), 0)),
+                "extensions": event_extensions,
+            }
+        )
+    return sorted(
+        [dict(row) for row in out if str(row.get("event_id", "")).strip()],
+        key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+    )
+
+
 def _reenactment_micro_detail_allowed(
     *,
     authority_context: dict,
@@ -20862,10 +20898,30 @@ def execute_intent(
             )
         travel_events = normalize_travel_event_rows(travel_events)
         itinerary_ext = dict(itinerary_row.get("extensions") or {})
+        travel_provenance_events = _travel_provenance_events_for_reenactment(travel_events)
+        stream_row = build_event_stream_index(
+            target_id=itinerary_id,
+            events=travel_provenance_events,
+            start_tick=int(max(0, _as_int(itinerary_row.get("departure_tick", 0), 0))),
+            end_tick=int(max(0, _as_int(current_tick, 0))),
+        )
+        stream_extensions = dict(stream_row.get("extensions") or {})
+        stream_extensions["stream_kind"] = "mobility.travel"
+        stream_extensions["itinerary_id"] = itinerary_id
+        stream_extensions["vehicle_id"] = vehicle_id
+        stream_extensions["planned_speed_profile"] = [
+            dict(item)
+            for item in list((dict(itinerary_row.get("extensions") or {})).get("per_edge_profile") or [])
+            if isinstance(item, Mapping)
+        ]
+        stream_row["extensions"] = stream_extensions
+        event_stream_indices = _upsert_event_stream_index(event_stream_indices, stream_row)
         itinerary_ext["status"] = "executing"
         itinerary_ext["started_tick"] = int(max(0, _as_int(current_tick, 0)))
         itinerary_ext["last_travel_start_intent_id"] = str(intent_id)
         itinerary_ext["active_vehicle_id"] = vehicle_id
+        itinerary_ext["travel_event_stream_id"] = str(stream_row.get("stream_id", "")).strip() or None
+        itinerary_ext["travel_event_stream_hash"] = str(stream_row.get("stream_hash", "")).strip() or None
         itinerary_row["extensions"] = itinerary_ext
         itinerary_row["deterministic_fingerprint"] = canonical_sha256(
             dict(itinerary_row, deterministic_fingerprint="")
@@ -20886,6 +20942,13 @@ def execute_intent(
             vehicle_compatibility_results=vehicle_compatibility_results,
             vehicle_events=vehicle_events,
         )
+        _persist_commitment_reenactment_state(
+            state,
+            commitments=material_commitments,
+            event_stream_indices=event_stream_indices,
+            reenactment_requests=reenactment_requests,
+            reenactment_artifacts=reenactment_artifacts,
+        )
         result_metadata = {
             "vehicle_id": vehicle_id,
             "itinerary_id": itinerary_id,
@@ -20896,6 +20959,8 @@ def execute_intent(
             "created_event_ids": _sorted_tokens(
                 [row.get("event_id") for row in list(start_result.get("travel_events") or [])]
             ),
+            "travel_event_stream_id": str(stream_row.get("stream_id", "")).strip(),
+            "travel_event_stream_hash": str(stream_row.get("stream_hash", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.travel_tick":
@@ -21003,7 +21068,9 @@ def execute_intent(
                 event_seq += 1
                 continue
             motion_row = dict(motion_rows_by_vehicle.get(vehicle_id) or {})
-            active_itinerary = str(_as_map(motion_row.get("macro_state")).get("itinerary_id", "")).strip()
+            macro_state = dict(motion_row.get("macro_state") or {}) if isinstance(motion_row.get("macro_state"), Mapping) else {}
+            active_itinerary_value = macro_state.get("itinerary_id")
+            active_itinerary = str(active_itinerary_value).strip() if active_itinerary_value is not None else ""
             if active_itinerary:
                 schedule_skip_rows.append(
                     {
@@ -21208,6 +21275,52 @@ def execute_intent(
                 ),
             )
         )
+        roi_vehicle_ids = set(
+            _sorted_tokens(
+                list(
+                    inputs.get(
+                        "roi_vehicle_ids",
+                        (dict(policy_context or {})).get("travel_tick_roi_vehicle_ids", []),
+                    )
+                    or []
+                )
+            )
+        )
+        far_vehicle_cadence_ticks = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "far_vehicle_update_cadence_ticks",
+                        (dict(policy_context or {})).get("travel_far_vehicle_update_cadence_ticks", 1),
+                    ),
+                    1,
+                ),
+            )
+        )
+        cadence_deferred_vehicle_ids: List[str] = []
+        if int(far_vehicle_cadence_ticks) > 1:
+            for row in list(vehicle_motion_states or []):
+                if not isinstance(row, Mapping):
+                    continue
+                vehicle_id = str(row.get("vehicle_id", "")).strip()
+                if (not vehicle_id) or vehicle_id in roi_vehicle_ids:
+                    continue
+                macro_state = dict(row.get("macro_state") or {}) if isinstance(row.get("macro_state"), Mapping) else {}
+                itinerary_value = macro_state.get("itinerary_id")
+                itinerary_token = str(itinerary_value).strip() if itinerary_value is not None else ""
+                if not itinerary_token:
+                    continue
+                bucket_token = canonical_sha256(
+                    {
+                        "scope": "mobility.travel_tick.cadence",
+                        "vehicle_id": vehicle_id,
+                    }
+                )[:8]
+                bucket = int(bucket_token, 16) % int(far_vehicle_cadence_ticks)
+                if int(current_tick) % int(far_vehicle_cadence_ticks) != int(bucket):
+                    cadence_deferred_vehicle_ids.append(vehicle_id)
+        cadence_deferred_vehicle_ids = _sorted_tokens(cadence_deferred_vehicle_ids)
         tick_result = tick_macro_travel(
             itinerary_rows=itineraries,
             motion_state_rows=vehicle_motion_states,
@@ -21215,6 +21328,7 @@ def execute_intent(
             travel_event_rows=travel_events,
             current_tick=int(current_tick),
             max_updates=int(max_updates),
+            forced_deferred_vehicle_ids=list(cadence_deferred_vehicle_ids),
         )
         vehicle_motion_states = normalize_motion_state_rows(
             list(tick_result.get("motion_state_rows") or [])
@@ -21227,9 +21341,11 @@ def execute_intent(
         )
         active_itinerary_ids = _sorted_tokens(
             [
-                _as_map(row.get("macro_state")).get("itinerary_id")
+                str(itinerary_token).strip()
                 for row in list(vehicle_motion_states or [])
                 if isinstance(row, Mapping)
+                for itinerary_token in [dict(row.get("macro_state") or {}).get("itinerary_id") if isinstance(row.get("macro_state"), Mapping) else None]
+                if itinerary_token is not None and str(itinerary_token).strip()
             ]
         )
         commitment_rows_by_itinerary: Dict[str, List[dict]] = {}
@@ -21268,9 +21384,67 @@ def execute_intent(
             )
             next_itineraries.append(itinerary_row)
         itineraries = normalize_itinerary_rows(next_itineraries)
+        itinerary_rows_by_id = dict(
+            (str(row.get("itinerary_id", "")).strip(), dict(row))
+            for row in list(itineraries or [])
+            if isinstance(row, Mapping) and str(row.get("itinerary_id", "")).strip()
+        )
+        touched_itinerary_ids = _sorted_tokens(
+            list(active_itinerary_ids)
+            + [
+                row.get("itinerary_id")
+                for row in list(travel_events or [])
+                if isinstance(row, Mapping) and _as_int(row.get("tick", -1), -1) == int(current_tick)
+            ]
+        )
+        travel_provenance_events = _travel_provenance_events_for_reenactment(travel_events)
+        for stream_itinerary_id in list(touched_itinerary_ids):
+            itinerary_row = dict(itinerary_rows_by_id.get(stream_itinerary_id) or {})
+            if not itinerary_row:
+                continue
+            stream_row = build_event_stream_index(
+                target_id=stream_itinerary_id,
+                events=travel_provenance_events,
+                start_tick=int(max(0, _as_int(itinerary_row.get("departure_tick", 0), 0))),
+                end_tick=int(max(0, _as_int(current_tick, 0))),
+            )
+            stream_extensions = dict(stream_row.get("extensions") or {})
+            stream_extensions["stream_kind"] = "mobility.travel"
+            stream_extensions["itinerary_id"] = stream_itinerary_id
+            stream_extensions["vehicle_id"] = str(itinerary_row.get("vehicle_id", "")).strip()
+            stream_extensions["planned_speed_profile"] = [
+                dict(item)
+                for item in list((dict(itinerary_row.get("extensions") or {})).get("per_edge_profile") or [])
+                if isinstance(item, Mapping)
+            ]
+            stream_row["extensions"] = stream_extensions
+            event_stream_indices = _upsert_event_stream_index(event_stream_indices, stream_row)
+            ext = dict(itinerary_row.get("extensions") or {})
+            ext["travel_event_stream_id"] = str(stream_row.get("stream_id", "")).strip() or None
+            ext["travel_event_stream_hash"] = str(stream_row.get("stream_hash", "")).strip() or None
+            ext["last_travel_event_tick"] = int(max(0, _as_int(current_tick, 0)))
+            itinerary_row["extensions"] = ext
+            itinerary_row["deterministic_fingerprint"] = canonical_sha256(
+                dict(itinerary_row, deterministic_fingerprint="")
+            )
+            itinerary_rows_by_id[stream_itinerary_id] = itinerary_row
+        itineraries = normalize_itinerary_rows(
+            [dict(itinerary_rows_by_id[key]) for key in sorted(itinerary_rows_by_id.keys())]
+        )
 
         deferred_vehicle_ids = _sorted_tokens(list(tick_result.get("deferred_vehicle_ids") or []))
-        if deferred_vehicle_ids:
+        cadence_deferred_set = set(cadence_deferred_vehicle_ids)
+        cadence_deferred_vehicle_ids = [
+            vehicle_id
+            for vehicle_id in list(deferred_vehicle_ids)
+            if vehicle_id in cadence_deferred_set
+        ]
+        budget_deferred_vehicle_ids = [
+            vehicle_id
+            for vehicle_id in list(deferred_vehicle_ids)
+            if vehicle_id not in cadence_deferred_set
+        ]
+        if budget_deferred_vehicle_ids:
             _append_fidelity_decision_entries(
                 state,
                 entries=[
@@ -21286,7 +21460,29 @@ def execute_intent(
                             "max_vehicle_updates_per_tick": int(max_updates),
                         },
                     )
-                    for vehicle_id in list(deferred_vehicle_ids)[:128]
+                    for vehicle_id in list(budget_deferred_vehicle_ids)[:128]
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+        if cadence_deferred_vehicle_ids:
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id=vehicle_id,
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.travel_far_vehicle_cadence",
+                        resolved_level="macro",
+                        cost_allocated=0,
+                        extensions={
+                            "far_vehicle_update_cadence_ticks": int(far_vehicle_cadence_ticks),
+                            "roi_vehicle_count": int(len(roi_vehicle_ids)),
+                        },
+                    )
+                    for vehicle_id in list(cadence_deferred_vehicle_ids)[:128]
                 ],
                 process_id=process_id,
                 tick=int(current_tick),
@@ -21328,11 +21524,22 @@ def execute_intent(
             vehicle_compatibility_results=vehicle_compatibility_results,
             vehicle_events=vehicle_events,
         )
+        _persist_commitment_reenactment_state(
+            state,
+            commitments=material_commitments,
+            event_stream_indices=event_stream_indices,
+            reenactment_requests=reenactment_requests,
+            reenactment_artifacts=reenactment_artifacts,
+        )
         state["mobility_travel_runtime_state"] = {
             "tick": int(current_tick),
             "max_vehicle_updates_per_tick": int(max_updates),
             "processed_vehicle_ids": _sorted_tokens(list(tick_result.get("processed_vehicle_ids") or [])),
             "deferred_vehicle_ids": list(deferred_vehicle_ids),
+            "budget_deferred_vehicle_ids": list(budget_deferred_vehicle_ids),
+            "cadence_deferred_vehicle_ids": list(cadence_deferred_vehicle_ids),
+            "roi_vehicle_ids": sorted(roi_vehicle_ids),
+            "far_vehicle_update_cadence_ticks": int(far_vehicle_cadence_ticks),
             "max_schedule_updates_per_tick": int(max_schedule_updates),
             "deferred_schedule_ids": list(deferred_schedule_ids),
             "budget_outcome": str(tick_result.get("budget_outcome", "complete")),
@@ -21344,6 +21551,12 @@ def execute_intent(
             "deferred_schedule_ids": list(deferred_schedule_ids),
             "processed_vehicle_ids": _sorted_tokens(list(tick_result.get("processed_vehicle_ids") or [])),
             "deferred_vehicle_ids": list(deferred_vehicle_ids),
+            "budget_deferred_vehicle_ids": list(budget_deferred_vehicle_ids),
+            "cadence_deferred_vehicle_ids": list(cadence_deferred_vehicle_ids),
+            "roi_vehicle_ids": sorted(roi_vehicle_ids),
+            "far_vehicle_update_cadence_ticks": int(far_vehicle_cadence_ticks),
+            "travel_event_stream_update_count": int(len(touched_itinerary_ids)),
+            "travel_event_stream_itinerary_ids": list(touched_itinerary_ids),
             "budget_outcome": (
                 "degraded"
                 if deferred_schedule_ids or str(tick_result.get("budget_outcome", "complete")) == "degraded"
