@@ -4064,12 +4064,287 @@ def _geometry_anchor_position(geometry_row: Mapping[str, object]) -> dict:
     return {"position_mm": {"x": 0, "y": 0, "z": 0}}
 
 
+def _vehicle_rows_by_id(state: dict) -> Dict[str, dict]:
+    return dict(
+        (
+            str(row.get("vehicle_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(state.get("vehicles") or [])
+        if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+    )
+
+
+def _vehicle_motion_rows_by_id(state: dict) -> Dict[str, dict]:
+    return dict(
+        (
+            str(row.get("vehicle_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(state.get("vehicle_motion_states") or [])
+        if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+    )
+
+
+def _body_rows_by_id(state: dict) -> Dict[str, dict]:
+    return dict(
+        (
+            str(row.get("assembly_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(state.get("body_assemblies") or [])
+        if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+    )
+
+
+def _guide_geometry_row_by_id(state: dict, geometry_id: str) -> dict:
+    token = str(geometry_id or "").strip()
+    if not token:
+        return {}
+    for row in sorted(
+        (item for item in list(state.get("guide_geometries") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("geometry_id", "")),
+    ):
+        if str(row.get("geometry_id", "")).strip() == token:
+            return dict(row)
+    return {}
+
+
+def _edge_geometry_id(state: dict, edge_id: str) -> str:
+    token = str(edge_id or "").strip()
+    if not token:
+        return ""
+    for graph_row in sorted(
+        (item for item in list(state.get("network_graphs") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("graph_id", "")),
+    ):
+        for edge_row in sorted(
+            (item for item in list(dict(graph_row).get("edges") or []) if isinstance(item, Mapping)),
+            key=lambda item: (
+                str(item.get("from_node_id", "")),
+                str(item.get("to_node_id", "")),
+                str(item.get("edge_id", "")),
+            ),
+        ):
+            if str(edge_row.get("edge_id", "")).strip() != token:
+                continue
+            payload = dict(edge_row.get("payload") or {})
+            return str(payload.get("guide_geometry_id", "")).strip()
+    return ""
+
+
+def _interpolate_between_points(start_mm: Mapping[str, object], end_mm: Mapping[str, object], ratio_q16: int) -> dict:
+    a = _vector3_int(start_mm, "start_mm") or {"x": 0, "y": 0, "z": 0}
+    b = _vector3_int(end_mm, "end_mm") or {"x": 0, "y": 0, "z": 0}
+    t = int(max(0, min(65535, _as_int(ratio_q16, 0))))
+    return {
+        "x": int(a["x"] + ((int(b["x"]) - int(a["x"])) * int(t)) // 65535),
+        "y": int(a["y"] + ((int(b["y"]) - int(a["y"])) * int(t)) // 65535),
+        "z": int(a["z"] + ((int(b["z"]) - int(a["z"])) * int(t)) // 65535),
+    }
+
+
+def _vehicle_speed_mm_per_tick(state: dict, vehicle_id: str) -> int:
+    token = str(vehicle_id or "").strip()
+    if not token:
+        return 0
+    motion_row = dict(_vehicle_motion_rows_by_id(state).get(token) or {})
+    micro = dict(motion_row.get("micro_state") or {})
+    velocity_payload = micro.get("velocity_mm_per_tick")
+    if isinstance(velocity_payload, Mapping):
+        return int(
+            abs(_as_int(dict(velocity_payload).get("x", 0), 0))
+            + abs(_as_int(dict(velocity_payload).get("y", 0), 0))
+            + abs(_as_int(dict(velocity_payload).get("z", 0), 0))
+        )
+    micro_row = dict(micro_motion_rows_by_vehicle_id(state.get("micro_motion_states")).get(token) or {})
+    if micro_row:
+        return int(abs(_as_int(micro_row.get("velocity", 0), 0)))
+    free_rows = free_motion_rows_by_subject_id(state.get("free_motion_states"))
+    free_row = dict(free_rows.get(token) or {})
+    velocity = _vector3_int(free_row.get("velocity"), "velocity") or {"x": 0, "y": 0, "z": 0}
+    return int(abs(_as_int(velocity.get("x", 0), 0)) + abs(_as_int(velocity.get("y", 0), 0)) + abs(_as_int(velocity.get("z", 0), 0)))
+
+
+def _vehicle_is_in_motion(state: dict, vehicle_id: str) -> bool:
+    token = str(vehicle_id or "").strip()
+    if not token:
+        return False
+    motion_row = dict(_vehicle_motion_rows_by_id(state).get(token) or {})
+    tier = str(motion_row.get("tier", "")).strip() or "macro"
+    if tier == "micro":
+        return bool(_vehicle_speed_mm_per_tick(state, token) > 0)
+    if tier == "meso":
+        meso = dict(motion_row.get("meso_state") or {})
+        if str(meso.get("current_edge_id", "")).strip():
+            return True
+    macro = dict(motion_row.get("macro_state") or {})
+    if str(macro.get("itinerary_id", "")).strip():
+        return True
+    return bool(_vehicle_speed_mm_per_tick(state, token) > 0)
+
+
+def _vehicle_world_position(state: dict, vehicle_id: str) -> dict:
+    token = str(vehicle_id or "").strip()
+    if not token:
+        return {}
+    vehicle_row = dict(_vehicle_rows_by_id(state).get(token) or {})
+    motion_row = dict(_vehicle_motion_rows_by_id(state).get(token) or {})
+    micro = dict(motion_row.get("micro_state") or {})
+    micro_pos = _vector3_int(micro.get("position_mm"), "position_mm")
+    if isinstance(micro_pos, dict):
+        return {"position_mm": dict(micro_pos)}
+    body_ref = str(micro.get("body_ref", "")).strip()
+    if body_ref:
+        body_row = dict(_body_rows_by_id(state).get(body_ref) or {})
+        body_pos = _vector3_int(body_row.get("transform_mm"), "transform_mm")
+        if isinstance(body_pos, dict):
+            return {"position_mm": dict(body_pos)}
+    free_row = dict(free_motion_rows_by_subject_id(state.get("free_motion_states")).get(token) or {})
+    if free_row:
+        free_body_id = str(free_row.get("body_id", "")).strip()
+        if free_body_id:
+            body_row = dict(_body_rows_by_id(state).get(free_body_id) or {})
+            body_pos = _vector3_int(body_row.get("transform_mm"), "transform_mm")
+            if isinstance(body_pos, dict):
+                return {"position_mm": dict(body_pos)}
+    macro = dict(motion_row.get("macro_state") or {})
+    current_edge_id = str(macro.get("current_edge_id", "")).strip()
+    if current_edge_id:
+        geometry_id = _edge_geometry_id(state, current_edge_id)
+        geometry_row = _guide_geometry_row_by_id(state, geometry_id)
+        if geometry_row:
+            points = _geometry_points_from_parameters(dict(geometry_row.get("parameters") or {}))
+            if len(points) >= 2:
+                ratio_q16 = int(max(0, min(65535, _as_int(macro.get("progress_fraction_q16", 0), 0))))
+                return {
+                    "position_mm": _interpolate_between_points(
+                        points[0],
+                        points[-1],
+                        ratio_q16,
+                    )
+                }
+            anchor = _geometry_anchor_position(geometry_row)
+            if anchor:
+                return anchor
+    direct_pos = _vector3_int(vehicle_row.get("position_mm"), "position_mm")
+    if isinstance(direct_pos, dict):
+        return {"position_mm": dict(direct_pos)}
+    vehicle_ext = dict(vehicle_row.get("extensions") or {})
+    ext_pos = _vector3_int(vehicle_ext.get("position_mm"), "position_mm")
+    if isinstance(ext_pos, dict):
+        return {"position_mm": dict(ext_pos)}
+    spatial_id = str(vehicle_row.get("spatial_id", "")).strip()
+    if spatial_id:
+        for node in sorted(
+            (item for item in list(state.get("spatial_nodes") or []) if isinstance(item, Mapping)),
+            key=lambda item: str(item.get("spatial_id", "")),
+        ):
+            if str(node.get("spatial_id", "")).strip() != spatial_id:
+                continue
+            node_transform = dict(node.get("transform") or {})
+            node_translation = _vector3_int(node_transform.get("translation_mm"), "translation_mm")
+            if isinstance(node_translation, dict):
+                return {"position_mm": dict(node_translation)}
+            break
+    cell_id = str(vehicle_row.get("field_cell_id", "")).strip() or str(vehicle_ext.get("field_cell_id", "")).strip()
+    if cell_id:
+        return {"cell_id": cell_id}
+    return {}
+
+
+def _sync_vehicle_interior_spatial_frame(
+    *,
+    state: dict,
+    vehicle_row: Mapping[str, object],
+    source_process_id: str,
+    current_tick: int,
+) -> dict:
+    row = dict(vehicle_row or {})
+    vehicle_id = str(row.get("vehicle_id", "")).strip()
+    interior_graph_id = str(row.get("interior_graph_id", "")).strip()
+    spatial_id = str(row.get("spatial_id", "")).strip()
+    if (not vehicle_id) or (not interior_graph_id) or (not spatial_id):
+        return {
+            "updated_volume_count": 0,
+            "updated_pose_slot_count": 0,
+        }
+    graph_row = {}
+    for candidate in sorted(
+        (item for item in list(state.get("interior_graphs") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("graph_id", "")),
+    ):
+        if str(candidate.get("graph_id", "")).strip() != interior_graph_id:
+            continue
+        graph_row = dict(candidate)
+        break
+    if not graph_row:
+        return {
+            "updated_volume_count": 0,
+            "updated_pose_slot_count": 0,
+        }
+    volume_ids = set(_sorted_tokens(list(graph_row.get("volumes") or [])))
+    pose_slot_ids = set(_sorted_tokens(list(row.get("pose_slot_ids") or [])))
+    updated_volumes = []
+    updated_volume_count = 0
+    for volume_row in sorted(
+        (item for item in list(state.get("interior_volumes") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("volume_id", "")),
+    ):
+        item = dict(volume_row)
+        volume_id = str(item.get("volume_id", "")).strip()
+        if volume_id not in volume_ids:
+            updated_volumes.append(item)
+            continue
+        if str(item.get("parent_spatial_id", "")).strip() != spatial_id:
+            item["parent_spatial_id"] = spatial_id
+            updated_volume_count += 1
+        ext = dict(item.get("extensions") or {})
+        ext["vehicle_id"] = vehicle_id
+        ext["vehicle_spatial_id"] = spatial_id
+        ext["source_process_id"] = source_process_id
+        ext["source_tick"] = int(max(0, int(current_tick)))
+        item["extensions"] = ext
+        updated_volumes.append(item)
+    state["interior_volumes"] = [dict(item) for item in updated_volumes if isinstance(item, Mapping)]
+    updated_pose_slots = []
+    updated_pose_slot_count = 0
+    for pose_row in sorted(
+        (item for item in list(state.get("pose_slots") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("pose_slot_id", "")),
+    ):
+        item = dict(pose_row)
+        pose_slot_id = str(item.get("pose_slot_id", "")).strip()
+        if pose_slot_id not in pose_slot_ids:
+            updated_pose_slots.append(item)
+            continue
+        ext = dict(item.get("extensions") or {})
+        if str(ext.get("interior_graph_id", "")).strip() != interior_graph_id:
+            ext["interior_graph_id"] = interior_graph_id
+            updated_pose_slot_count += 1
+        ext["parent_spatial_id"] = spatial_id
+        ext["vehicle_id"] = vehicle_id
+        ext["source_process_id"] = source_process_id
+        ext["source_tick"] = int(max(0, int(current_tick)))
+        item["extensions"] = ext
+        if not str(item.get("parent_assembly_id", "")).strip():
+            item["parent_assembly_id"] = vehicle_id
+        updated_pose_slots.append(item)
+    state["pose_slots"] = [dict(item) for item in updated_pose_slots if isinstance(item, Mapping)]
+    return {
+        "updated_volume_count": int(updated_volume_count),
+        "updated_pose_slot_count": int(updated_pose_slot_count),
+    }
+
+
 def _target_spatial_position(state: dict, target_id: str) -> dict:
     token = str(target_id or "").strip()
     if not token:
         return {"position_mm": {"x": 0, "y": 0, "z": 0}}
+    vehicle_position = _vehicle_world_position(state, token)
+    if vehicle_position:
+        return dict(vehicle_position)
     id_table = (
-        ("vehicles", "vehicle_id"),
         ("body_assemblies", "assembly_id"),
         ("camera_assemblies", "assembly_id"),
         ("agent_states", "agent_id"),
@@ -27613,6 +27888,13 @@ def execute_intent(
         vehicle_motion_states = normalize_motion_state_rows(
             _upsert_row_by_id(vehicle_motion_states, "vehicle_id", motion_state_row)
         )
+        frame_sync = _sync_vehicle_interior_spatial_frame(
+            state=state,
+            vehicle_row=vehicle_row,
+            source_process_id=process_id,
+            current_tick=int(current_tick),
+        )
+        pose_slots = [dict(item) for item in list(state.get("pose_slots") or []) if isinstance(item, Mapping)]
         event_row = _vehicle_event_row(
             vehicle_id=vehicle_id,
             event_kind="vehicle_registered",
@@ -27663,6 +27945,7 @@ def execute_intent(
                 "inspect vehicle ports",
                 "inspect vehicle wear",
             ],
+            "interior_frame_sync": dict(frame_sync),
             "event_id": str(event_row.get("event_id", "")).strip(),
         }
         state["vehicle_runtime_state"] = {
@@ -28003,10 +28286,26 @@ def execute_intent(
                 _as_int(inputs.get("stress_threshold_permille", 900), 900),
             )
         )
+        interior_frame_updates = {
+            "updated_volume_count": 0,
+            "updated_pose_slot_count": 0,
+        }
         for vehicle_id in sampled_vehicle_ids:
             vehicle_row = dict(vehicles_by_id.get(vehicle_id) or {})
             if not vehicle_row:
                 continue
+            frame_sync = _sync_vehicle_interior_spatial_frame(
+                state=state,
+                vehicle_row=vehicle_row,
+                source_process_id=process_id,
+                current_tick=int(current_tick),
+            )
+            interior_frame_updates["updated_volume_count"] += int(
+                max(0, _as_int(frame_sync.get("updated_volume_count", 0), 0))
+            )
+            interior_frame_updates["updated_pose_slot_count"] += int(
+                max(0, _as_int(frame_sync.get("updated_pose_slot_count", 0), 0))
+            )
             modifier_row = next(
                 (
                     dict(row)
@@ -28137,6 +28436,7 @@ def execute_intent(
                         "visibility_permille": int(visibility_permille),
                         "wind_drift_permille": int(wind_drift_permille),
                         "max_stress_ratio_permille": int(max_stress_ratio_permille),
+                        "interior_frame_updates": dict(frame_sync),
                     },
                 )
             )
@@ -28199,6 +28499,10 @@ def execute_intent(
             "updated_vehicle_count": int(len(vehicle_event_rows)),
             "auto_effect_count": int(len(auto_effect_rows)),
             "field_modifier_count": int(len(modifier_rows)),
+            "interior_frame_updates": {
+                "updated_volume_count": int(max(0, _as_int(interior_frame_updates.get("updated_volume_count", 0), 0))),
+                "updated_pose_slot_count": int(max(0, _as_int(interior_frame_updates.get("updated_pose_slot_count", 0), 0))),
+            },
             "degraded": bool(degraded),
             "degrade_reason": "degrade.vehicle.environment_hook_budget" if degraded else None,
             "dropped_vehicle_ids": list(dropped_vehicle_ids),
