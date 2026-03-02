@@ -106,6 +106,7 @@ At guide endpoints:
 - choose outgoing geometry by switch state machine (MOB-2)
 - itinerary hint may filter candidates
 - deterministic tie-break uses sorted edge/geometry ids
+- handoff occurs only on blocked endpoint conditions; transferred vehicles restart at the next geometry entry point
 
 No valid outgoing path:
 - vehicle is deterministically stopped (`velocity -> 0`)
