@@ -5,12 +5,14 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from src.core.graph.routing_engine import RoutingError, query_route_result
+from src.signals.addressing import address_from_recipient_address, resolve_address_recipients
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from .channel_executor import execute_channel_transport_tick
 
 
 REFUSAL_SIGNAL_INVALID = "refusal.signal.invalid"
 REFUSAL_SIGNAL_ROUTE_UNAVAILABLE = "refusal.signal.route_unavailable"
+REFUSAL_SIGNAL_ARTIFACT_INVALID = "refusal.signal.artifact_invalid"
 
 
 class SignalTransportError(ValueError):
@@ -416,6 +418,111 @@ def normalize_knowledge_receipt_rows(rows: object) -> List[dict]:
     return [dict(out[key]) for key in sorted(out.keys(), key=lambda key: (_as_int(out[key].get("acquired_tick", 0), 0), str(key)))]
 
 
+def normalize_info_artifact_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("artifact_id", ""))):
+        artifact_id = str(row.get("artifact_id", "")).strip()
+        if not artifact_id:
+            continue
+        family_id = str(
+            row.get("artifact_family_id", "")
+            or row.get("family_id", "")
+            or row.get("subject_domain", "")
+        ).strip()
+        out[artifact_id] = {
+            "artifact_id": artifact_id,
+            "artifact_family_id": family_id,
+            "extensions": _as_map(row.get("extensions")),
+        }
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def deterministic_message_queue_entry_id(
+    *,
+    channel_id: str,
+    envelope_id: str,
+    recipient_subject_id: str | None,
+    next_hop_node_id: str,
+    scheduled_tick: int,
+) -> str:
+    digest = canonical_sha256(
+        {
+            "channel_id": str(channel_id or "").strip(),
+            "envelope_id": str(envelope_id or "").strip(),
+            "recipient_subject_id": None if recipient_subject_id is None else str(recipient_subject_id).strip() or None,
+            "next_hop_node_id": str(next_hop_node_id or "").strip() or "node.unknown",
+            "scheduled_tick": int(max(0, _as_int(scheduled_tick, 0))),
+        }
+    )
+    return "queue.signal.{}".format(digest[:16])
+
+
+def build_message_queue_entry(
+    *,
+    queue_entry_id: str,
+    channel_id: str,
+    envelope_id: str,
+    next_hop_node_id: str,
+    scheduled_tick: int,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "queue_entry_id": str(queue_entry_id or "").strip(),
+        "channel_id": str(channel_id or "").strip(),
+        "envelope_id": str(envelope_id or "").strip(),
+        "next_hop_node_id": str(next_hop_node_id or "").strip() or "node.unknown",
+        "scheduled_tick": int(max(0, _as_int(scheduled_tick, 0))),
+        "deterministic_fingerprint": "",
+        "extensions": _as_map(extensions),
+    }
+    if (not payload["queue_entry_id"]) or (not payload["channel_id"]) or (not payload["envelope_id"]):
+        return {}
+    return _with_fingerprint(payload)
+
+
+def normalize_message_queue_entry_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            _as_int(item.get("scheduled_tick", 0), 0),
+            str(item.get("channel_id", "")),
+            str(item.get("envelope_id", "")),
+            str(item.get("queue_entry_id", "")),
+        ),
+    ):
+        queue_entry_id = str(row.get("queue_entry_id", "")).strip()
+        if not queue_entry_id:
+            continue
+        built = build_message_queue_entry(
+            queue_entry_id=queue_entry_id,
+            channel_id=str(row.get("channel_id", "")).strip(),
+            envelope_id=str(row.get("envelope_id", "")).strip(),
+            next_hop_node_id=str(row.get("next_hop_node_id", "")).strip() or "node.unknown",
+            scheduled_tick=_as_int(row.get("scheduled_tick", 0), 0),
+            extensions=_as_map(row.get("extensions")),
+        )
+        if built:
+            out[queue_entry_id] = built
+    return [
+        dict(out[key])
+        for key in sorted(
+            out.keys(),
+            key=lambda key: (
+                _as_int(out[key].get("scheduled_tick", 0), 0),
+                str(out[key].get("channel_id", "")),
+                str(out[key].get("envelope_id", "")),
+                str(key),
+            ),
+        )
+    ]
+
+
 def normalize_transport_queue_rows(rows: object) -> List[dict]:
     if not isinstance(rows, list):
         return []
@@ -423,17 +530,34 @@ def normalize_transport_queue_rows(rows: object) -> List[dict]:
     for row in rows:
         if not isinstance(row, Mapping):
             continue
+        queue_entry_id = str(row.get("queue_entry_id", "")).strip() or str(row.get("queue_key", "")).strip()
+        channel_id = str(row.get("channel_id", "")).strip()
+        envelope_id = str(row.get("envelope_id", "")).strip()
+        recipient_subject_id = None if row.get("recipient_subject_id") is None else str(row.get("recipient_subject_id", "")).strip() or None
+        next_hop_node_id = str(row.get("next_hop_node_id", "")).strip() or str(row.get("to_node_id", "")).strip() or "node.unknown"
+        scheduled_tick = _as_int(row.get("scheduled_tick", 0), 0)
+        if not queue_entry_id:
+            queue_entry_id = deterministic_message_queue_entry_id(
+                channel_id=channel_id,
+                envelope_id=envelope_id,
+                recipient_subject_id=recipient_subject_id,
+                next_hop_node_id=next_hop_node_id,
+                scheduled_tick=scheduled_tick,
+            )
         out.append(
             {
                 "schema_version": "1.0.0",
-                "queue_key": str(row.get("queue_key", "")).strip(),
-                "channel_id": str(row.get("channel_id", "")).strip(),
-                "envelope_id": str(row.get("envelope_id", "")).strip(),
+                "queue_entry_id": queue_entry_id,
+                "queue_key": queue_entry_id,
+                "channel_id": channel_id,
+                "envelope_id": envelope_id,
                 "artifact_id": str(row.get("artifact_id", "")).strip(),
                 "sender_subject_id": str(row.get("sender_subject_id", "")).strip(),
-                "recipient_subject_id": None if row.get("recipient_subject_id") is None else str(row.get("recipient_subject_id", "")).strip() or None,
+                "recipient_subject_id": recipient_subject_id,
                 "from_node_id": str(row.get("from_node_id", "")).strip() or "node.unknown",
                 "to_node_id": str(row.get("to_node_id", "")).strip() or "node.unknown",
+                "next_hop_node_id": next_hop_node_id,
+                "scheduled_tick": int(max(0, scheduled_tick)),
                 "remaining_delay_ticks": int(max(0, _as_int(row.get("remaining_delay_ticks", 0), 0))),
                 "attempt_index": int(max(0, _as_int(row.get("attempt_index", 0), 0))),
                 "deterministic_fingerprint": "",
@@ -442,41 +566,82 @@ def normalize_transport_queue_rows(rows: object) -> List[dict]:
         )
     for row in out:
         if not row["queue_key"]:
-            row["queue_key"] = "queue.signal.{}".format(canonical_sha256({"channel_id": row["channel_id"], "envelope_id": row["envelope_id"], "recipient_subject_id": row["recipient_subject_id"]})[:16])
+            row["queue_key"] = deterministic_message_queue_entry_id(
+                channel_id=str(row.get("channel_id", "")),
+                envelope_id=str(row.get("envelope_id", "")),
+                recipient_subject_id=row.get("recipient_subject_id"),
+                next_hop_node_id=str(row.get("next_hop_node_id", "")),
+                scheduled_tick=_as_int(row.get("scheduled_tick", 0), 0),
+            )
+        row["queue_entry_id"] = str(row.get("queue_entry_id", "")).strip() or str(row.get("queue_key", "")).strip()
+        row["next_hop_node_id"] = str(row.get("next_hop_node_id", "")).strip() or str(row.get("to_node_id", "")).strip() or "node.unknown"
         row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
-    return sorted(out, key=lambda row: (str(row.get("channel_id", "")), str(row.get("envelope_id", "")), str(row.get("recipient_subject_id", "")), str(row.get("queue_key", ""))))
+    return sorted(
+        out,
+        key=lambda row: (
+            str(row.get("channel_id", "")),
+            str(row.get("envelope_id", "")),
+            str(row.get("recipient_subject_id", "")),
+            str(row.get("queue_entry_id", "")),
+        ),
+    )
 
-def _recipient_rows(envelope_row: Mapping[str, object]) -> List[dict]:
-    addr = _as_map(envelope_row.get("recipient_address"))
-    kind = str(addr.get("kind", "single")).strip().lower() or "single"
-    to_node_id = str(addr.get("to_node_id", "")).strip() or "node.unknown"
-    if kind == "single":
-        return [{"recipient_subject_id": str(addr.get("subject_id", "")).strip() or None, "to_node_id": to_node_id}]
-    if kind == "group":
-        return [{"recipient_subject_id": token, "to_node_id": to_node_id} for token in _sorted_tokens(addr.get("subject_ids"))]
-    targets = _sorted_tokens(addr.get("broadcast_subject_ids"))
-    if targets:
-        return [{"recipient_subject_id": token, "to_node_id": to_node_id} for token in targets]
-    return [{"recipient_subject_id": None, "to_node_id": to_node_id}]
-
-
-def enqueue_signal_envelope(*, channel_row: Mapping[str, object], envelope_row: Mapping[str, object], from_node_id: str) -> List[dict]:
+def enqueue_signal_envelope(
+    *,
+    channel_row: Mapping[str, object],
+    envelope_row: Mapping[str, object],
+    from_node_id: str,
+    recipient_rows: object = None,
+    current_tick: int = 0,
+) -> List[dict]:
     out = []
-    for recipient in _recipient_rows(envelope_row):
+    base_delay_ticks = int(max(0, _as_int(channel_row.get("base_delay_ticks", 0), 0)))
+    if not isinstance(recipient_rows, list):
+        recipient_rows = []
+    for recipient in sorted(
+        (dict(item) for item in recipient_rows if isinstance(item, Mapping)),
+        key=lambda item: (str(item.get("recipient_subject_id", "")), str(item.get("to_node_id", ""))),
+    ):
+        recipient_subject_id = str(recipient.get("recipient_subject_id", "")).strip() or None
+        to_node_id = str(recipient.get("to_node_id", "")).strip() or "node.unknown"
+        scheduled_tick = int(max(0, _as_int(current_tick, 0)) + base_delay_ticks)
+        queue_entry_id = deterministic_message_queue_entry_id(
+            channel_id=str(channel_row.get("channel_id", "")).strip(),
+            envelope_id=str(envelope_row.get("envelope_id", "")).strip(),
+            recipient_subject_id=recipient_subject_id,
+            next_hop_node_id=to_node_id,
+            scheduled_tick=scheduled_tick,
+        )
+        queue_entry = build_message_queue_entry(
+            queue_entry_id=queue_entry_id,
+            channel_id=str(channel_row.get("channel_id", "")).strip(),
+            envelope_id=str(envelope_row.get("envelope_id", "")).strip(),
+            next_hop_node_id=to_node_id,
+            scheduled_tick=scheduled_tick,
+            extensions={
+                "recipient_subject_id": recipient_subject_id,
+                "from_node_id": str(from_node_id or "").strip() or "node.unknown",
+            },
+        )
         out.append(
             {
                 "schema_version": "1.0.0",
-                "queue_key": "queue.signal.{}".format(canonical_sha256({"channel_id": str(channel_row.get("channel_id", "")).strip(), "envelope_id": str(envelope_row.get("envelope_id", "")).strip(), "recipient_subject_id": recipient.get("recipient_subject_id"), "from_node_id": str(from_node_id or "").strip(), "to_node_id": str(recipient.get("to_node_id", "")).strip()})[:16]),
+                "queue_entry_id": str(queue_entry.get("queue_entry_id", "")).strip() or queue_entry_id,
+                "queue_key": str(queue_entry.get("queue_entry_id", "")).strip() or queue_entry_id,
                 "channel_id": str(channel_row.get("channel_id", "")).strip(),
                 "envelope_id": str(envelope_row.get("envelope_id", "")).strip(),
                 "artifact_id": str(envelope_row.get("artifact_id", "")).strip(),
                 "sender_subject_id": str(envelope_row.get("sender_subject_id", "")).strip(),
-                "recipient_subject_id": recipient.get("recipient_subject_id"),
+                "recipient_subject_id": recipient_subject_id,
                 "from_node_id": str(from_node_id or "").strip() or "node.unknown",
-                "to_node_id": str(recipient.get("to_node_id", "")).strip() or "node.unknown",
-                "remaining_delay_ticks": int(max(0, _as_int(channel_row.get("base_delay_ticks", 0), 0))),
+                "to_node_id": to_node_id,
+                "next_hop_node_id": to_node_id,
+                "scheduled_tick": scheduled_tick,
+                "remaining_delay_ticks": base_delay_ticks,
                 "attempt_index": 0,
-                "extensions": {},
+                "extensions": {
+                    "message_queue_entry": queue_entry,
+                },
             }
         )
     return normalize_transport_queue_rows(out)
@@ -509,6 +674,10 @@ def process_signal_send(
     signal_channel_rows: object,
     signal_message_envelope_rows: object,
     signal_transport_queue_rows: object,
+    info_artifact_rows: object = None,
+    group_membership_rows: object = None,
+    broadcast_scope_rows: object = None,
+    decision_log_rows: object = None,
     envelope_id: str | None = None,
     envelope_extensions: Mapping[str, object] | None = None,
 ) -> dict:
@@ -521,19 +690,62 @@ def process_signal_send(
             "signal_send requires a valid channel_id",
             {"channel_id": channel_token},
         )
+    artifact_token = str(artifact_id or "").strip()
+    if not artifact_token:
+        raise SignalTransportError(
+            REFUSAL_SIGNAL_ARTIFACT_INVALID,
+            "signal_send requires artifact_id",
+            {"artifact_id": artifact_id},
+        )
+    artifact_rows = normalize_info_artifact_rows(info_artifact_rows)
+    artifact_by_id = dict((str(row.get("artifact_id", "")).strip(), dict(row)) for row in artifact_rows if str(row.get("artifact_id", "")).strip())
+    artifact_row = dict(artifact_by_id.get(artifact_token) or {})
+    if artifact_by_id and (not artifact_row):
+        raise SignalTransportError(
+            REFUSAL_SIGNAL_ARTIFACT_INVALID,
+            "signal_send artifact_id '{}' does not exist in artifact catalog".format(artifact_token),
+            {"artifact_id": artifact_token},
+        )
+    artifact_family_id = str(artifact_row.get("artifact_family_id", "")).strip()
+    if artifact_row and (not artifact_family_id):
+        raise SignalTransportError(
+            REFUSAL_SIGNAL_ARTIFACT_INVALID,
+            "signal_send artifact '{}' missing artifact family".format(artifact_token),
+            {"artifact_id": artifact_token},
+        )
+
+    address_row = address_from_recipient_address(_as_map(recipient_address))
+    resolved = resolve_address_recipients(
+        address_row=address_row,
+        group_membership_rows=group_membership_rows,
+        broadcast_scope_rows=broadcast_scope_rows,
+    )
+    recipient_rows = list(resolved.get("recipient_rows") or [])
+
+    envelope_recipient_address = {
+        "address_id": str(address_row.get("address_id", "")).strip() or None,
+        "address_type": str(address_row.get("address_type", "")).strip() or "subject",
+        "target_id": str(address_row.get("target_id", "")).strip() or None,
+        "to_node_id": str(dict(address_row.get("extensions") or {}).get("to_node_id", "")).strip() or "node.unknown",
+        "subject_ids": [str(item.get("recipient_subject_id", "")).strip() for item in recipient_rows if str(item.get("recipient_subject_id", "")).strip()],
+    }
     envelope_token = str(envelope_id or "").strip() or deterministic_signal_message_envelope_id(
-        artifact_id=str(artifact_id or "").strip(),
+        artifact_id=artifact_token,
         sender_subject_id=str(sender_subject_id or "").strip(),
-        recipient_address=_as_map(recipient_address),
+        recipient_address=envelope_recipient_address,
         created_tick=int(max(0, _as_int(current_tick, 0))),
     )
     envelope_row = build_signal_message_envelope(
         envelope_id=envelope_token,
-        artifact_id=str(artifact_id or "").strip(),
+        artifact_id=artifact_token,
         sender_subject_id=str(sender_subject_id or "").strip(),
-        recipient_address=_as_map(recipient_address),
+        recipient_address=envelope_recipient_address,
         created_tick=int(max(0, _as_int(current_tick, 0))),
-        extensions=_as_map(envelope_extensions),
+        extensions=dict(
+            _as_map(envelope_extensions),
+            address_row=dict(address_row),
+            artifact_family_id=artifact_family_id or None,
+        ),
     )
     next_envelope_rows = _upsert_row_by_id(
         normalize_signal_message_envelope_rows(signal_message_envelope_rows),
@@ -544,13 +756,54 @@ def process_signal_send(
         channel_row=channel_row,
         envelope_row=envelope_row,
         from_node_id=str(from_node_id or "").strip() or "node.unknown",
+        recipient_rows=recipient_rows,
+        current_tick=int(max(0, _as_int(current_tick, 0))),
     )
     next_queue_rows = normalize_transport_queue_rows(
         list(normalize_transport_queue_rows(signal_transport_queue_rows)) + list(queued_rows)
     )
+    decision_entry = {
+        "decision_id": "decision.signal_send.{}".format(
+            canonical_sha256(
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "channel_id": channel_token,
+                    "envelope_id": str(envelope_row.get("envelope_id", "")).strip(),
+                    "artifact_id": artifact_token,
+                    "recipient_count": int(len(recipient_rows)),
+                }
+            )[:16]
+        ),
+        "tick": int(max(0, _as_int(current_tick, 0))),
+        "process_id": "process.signal_send",
+        "channel_id": channel_token,
+        "envelope_id": str(envelope_row.get("envelope_id", "")).strip(),
+        "artifact_id": artifact_token,
+        "artifact_family_id": artifact_family_id or None,
+        "address_id": str(address_row.get("address_id", "")).strip() or None,
+        "address_type": str(address_row.get("address_type", "")).strip() or "subject",
+        "target_id": str(address_row.get("target_id", "")).strip() or None,
+        "queued_count": int(len(queued_rows)),
+        "outcome": "queued" if queued_rows else "no_recipients",
+        "extensions": {},
+    }
+    next_decision_rows = list(
+        _upsert_row_by_id(
+            [dict(item) for item in list(decision_log_rows or []) if isinstance(item, Mapping)],
+            "decision_id",
+            decision_entry,
+        )
+    )
     return {
         "signal_message_envelope_rows": next_envelope_rows,
         "signal_transport_queue_rows": next_queue_rows,
+        "decision_log_rows": next_decision_rows,
+        "decision_log_entry": dict(decision_entry),
+        "resolved_recipient_subject_ids": [
+            str(item.get("recipient_subject_id", "")).strip()
+            for item in recipient_rows
+            if str(item.get("recipient_subject_id", "")).strip()
+        ],
         "envelope_row": dict(envelope_row),
         "queued_count": int(len(queued_rows)),
     }
@@ -912,21 +1165,26 @@ def tick_signal_transport(
 
 
 __all__ = [
+    "REFUSAL_SIGNAL_ARTIFACT_INVALID",
     "REFUSAL_SIGNAL_INVALID",
     "REFUSAL_SIGNAL_ROUTE_UNAVAILABLE",
     "SignalTransportError",
+    "build_message_queue_entry",
     "build_knowledge_receipt",
     "build_message_delivery_event",
     "build_signal_channel",
     "build_signal_message_envelope",
     "deterministic_courier_commitment_id",
     "deterministic_knowledge_receipt_id",
+    "deterministic_message_queue_entry_id",
     "deterministic_message_delivery_event_id",
     "deterministic_signal_message_envelope_id",
     "encryption_policy_rows_by_id",
     "enqueue_signal_envelope",
     "loss_policy_rows_by_id",
+    "normalize_info_artifact_rows",
     "normalize_knowledge_receipt_rows",
+    "normalize_message_queue_entry_rows",
     "normalize_message_delivery_event_rows",
     "normalize_signal_channel_rows",
     "normalize_signal_message_envelope_rows",
