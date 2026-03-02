@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.registry.free_motion_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.free_motion_policy_registry",
+    "registry_version": "1.0.0",
+    "free_motion_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "free.default_ground",
+        "schema_ref": "dominium.schema.mobility.free_motion_policy@1.0.0",
+        "extensions": {
+          "max_speed": 1200,
+          "max_accel": 96,
+          "traction_model_id": "traction.basic_friction",
+          "wind_model_id": "wind.basic_drift",
+          "wind_scale_permille": 300,
+          "corridor_enforcement_mode": "clamp"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "free.default_air_stub",
+        "schema_ref": "dominium.schema.mobility.free_motion_policy@1.0.0",
+        "extensions": {
+          "max_speed": 2400,
+          "max_accel": 128,
+          "traction_model_id": "traction.basic_friction",
+          "wind_model_id": "wind.basic_drift",
+          "wind_scale_permille": 700,
+          "corridor_enforcement_mode": "warn"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "free.default_space_stub",
+        "schema_ref": "dominium.schema.mobility.free_motion_policy@1.0.0",
+        "extensions": {
+          "max_speed": 3600,
+          "max_accel": 96,
+          "traction_model_id": "traction.basic_friction",
+          "wind_model_id": "wind.basic_drift",
+          "wind_scale_permille": 0,
+          "corridor_enforcement_mode": "refuse"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

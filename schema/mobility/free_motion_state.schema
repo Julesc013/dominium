@@ -1,0 +1,28 @@
+SCHEMA: mobility/free_motion_state.schema
+schema_id: dominium.schema.mobility.free_motion_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic micro free-motion state row for MOB-7 ROI simulation.
+
+REQUIRED SHAPE:
+record free_motion_state
+  required:
+    - schema_version: semver
+    - subject_id: id (derived canonical key from vehicle_id|agent_id)
+    - vehicle_id: id? (optional)
+    - agent_id: id? (optional)
+    - body_id: id
+    - velocity: vector3_int
+    - acceleration: vector3_int
+    - corridor_geometry_id: id? (optional)
+    - volume_geometry_id: id? (optional)
+    - last_update_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Exactly one of `vehicle_id` or `agent_id` must be present.
+- Micro free motion executes only through process-mediated ROI paths.
+- Body transform/orientation mutation remains authoritative in EB body rows.

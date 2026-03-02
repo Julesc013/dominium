@@ -1,0 +1,24 @@
+SCHEMA: mobility/free_motion_policy.schema
+schema_id: dominium.schema.mobility.free_motion_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic policy contract for MOB-7 micro free-motion integration.
+
+REQUIRED SHAPE:
+record free_motion_policy
+  required:
+    - schema_version: semver
+    - policy_id: id
+    - max_speed: int
+    - max_accel: int
+    - traction_model_id: id
+    - wind_model_id: id
+    - corridor_enforcement_mode: enum(clamp|refuse|warn)
+    - extensions: map
+
+INVARIANTS:
+- Motion caps must be deterministic numeric limits.
+- Traction and wind behavior is model-id driven and registry declared.
+- Corridor enforcement is explicit and deterministic (`clamp|refuse|warn`).
