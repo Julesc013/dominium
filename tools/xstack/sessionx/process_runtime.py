@@ -20266,6 +20266,36 @@ def execute_intent(
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_register_from_structure":
+        vehicle_runtime_state = dict(state.get("vehicle_runtime_state") or {})
+        runtime_tick = int(max(0, _as_int(vehicle_runtime_state.get("tick", current_tick), current_tick)))
+        registration_count = int(max(0, _as_int(vehicle_runtime_state.get("registration_count", 0), 0)))
+        if runtime_tick != int(current_tick):
+            registration_count = 0
+            runtime_tick = int(current_tick)
+        max_registrations_per_tick = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_registrations_per_tick",
+                        (dict(policy_context or {})).get("vehicle_max_registrations_per_tick", 64),
+                    ),
+                    64,
+                ),
+            )
+        )
+        if int(registration_count) >= int(max_registrations_per_tick):
+            return refusal(
+                "refusal.mob.fidelity_denied",
+                "vehicle registration budget exceeded for current tick",
+                "Retry on the next tick or increase deterministic vehicle registration budget.",
+                {
+                    "tick": int(current_tick),
+                    "max_registrations_per_tick": int(max_registrations_per_tick),
+                },
+                "$.intent.inputs",
+            )
+
         vehicle_class_id = str(inputs.get("vehicle_class_id", "")).strip()
         if not vehicle_class_id:
             return refusal(
@@ -20529,6 +20559,12 @@ def execute_intent(
             ],
             "event_id": str(event_row.get("event_id", "")).strip(),
         }
+        state["vehicle_runtime_state"] = {
+            "tick": int(current_tick),
+            "registration_count": int(registration_count + 1),
+            "max_registrations_per_tick": int(max_registrations_per_tick),
+            "last_registration_vehicle_id": vehicle_id,
+        }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_check_compatibility":
         vehicle_id = str(inputs.get("vehicle_id", "")).strip()
@@ -20768,6 +20804,45 @@ def execute_intent(
         sampled_vehicle_ids = [
             vehicle_id for vehicle_id in list(requested_vehicle_ids or []) if vehicle_id in vehicles_by_id
         ]
+        max_vehicle_hooks_per_tick = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_vehicle_hooks_per_tick",
+                        (dict(policy_context or {})).get("vehicle_max_hooks_per_tick", 128),
+                    ),
+                    128,
+                ),
+            )
+        )
+        degraded = False
+        dropped_vehicle_ids: List[str] = []
+        if len(sampled_vehicle_ids) > max_vehicle_hooks_per_tick:
+            degraded = True
+            dropped_vehicle_ids = list(sampled_vehicle_ids[max_vehicle_hooks_per_tick:])
+            sampled_vehicle_ids = list(sampled_vehicle_ids[:max_vehicle_hooks_per_tick])
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id=vehicle_id,
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.vehicle.environment_hook_budget",
+                        resolved_level="macro",
+                        cost_allocated=0,
+                        extensions={
+                            "max_vehicle_hooks_per_tick": int(max_vehicle_hooks_per_tick),
+                            "dropped_vehicle_count": int(len(dropped_vehicle_ids)),
+                        },
+                    )
+                    for vehicle_id in list(dropped_vehicle_ids)[:64]
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
         sample_rows = [
             {
                 "target_id": vehicle_id,
@@ -21018,6 +21093,30 @@ def execute_intent(
             "updated_vehicle_count": int(len(vehicle_event_rows)),
             "auto_effect_count": int(len(auto_effect_rows)),
             "field_modifier_count": int(len(modifier_rows)),
+            "degraded": bool(degraded),
+            "degrade_reason": "degrade.vehicle.environment_hook_budget" if degraded else None,
+            "dropped_vehicle_ids": list(dropped_vehicle_ids),
+        }
+        state["vehicle_runtime_state"] = {
+            "tick": int(current_tick),
+            "registration_count": int(
+                max(0, _as_int((dict(state.get("vehicle_runtime_state") or {})).get("registration_count", 0), 0))
+            ),
+            "max_registrations_per_tick": int(
+                max(
+                    1,
+                    _as_int(
+                        (dict(state.get("vehicle_runtime_state") or {})).get(
+                            "max_registrations_per_tick",
+                            (dict(policy_context or {})).get("vehicle_max_registrations_per_tick", 64),
+                        ),
+                        (dict(policy_context or {})).get("vehicle_max_registrations_per_tick", 64),
+                    ),
+                )
+            ),
+            "last_environment_hook_vehicle_count": int(len(sampled_vehicle_ids)),
+            "max_vehicle_hooks_per_tick": int(max_vehicle_hooks_per_tick),
+            "degraded": bool(degraded),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.geometry_create":
