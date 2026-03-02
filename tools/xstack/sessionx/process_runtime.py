@@ -32827,6 +32827,25 @@ def execute_intent(
                     "warning_glyph_count": int(len([row for row in list(alarms or []) if isinstance(row, Mapping) and str(row.get("overall", "")).strip() in {"warn", "danger"}])),
                 },
             }
+            state["vehicle_interior_runtime_state"] = {
+                "schema_version": "1.0.0",
+                "tick": int(max(0, int(current_tick))),
+                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                "owner_vehicle_id": owner_vehicle_id or None,
+                "owner_vehicle_motion_tier": owner_motion_tier if owner_vehicle_id else None,
+                "owner_vehicle_speed_mm_per_tick": int(owner_vehicle_speed) if owner_vehicle_id else None,
+                "budget_outcome": str(ticked.get("budget_outcome", "complete")).strip() or "complete",
+                "cost_units": int(_as_int(ticked.get("cost_units", 0), 0)),
+                "deferred_channel_count": int(_as_int(ticked.get("remaining_channel_count", 0), 0)),
+                "deferred_hazard_count": int(_as_int(ticked.get("deferred_hazard_count", 0), 0)),
+                "authoritative_mode": str((dict(policy_context or {})).get("net_policy_id", "policy.net.server_authoritative")).strip()
+                or "policy.net.server_authoritative",
+                "extensions": {
+                    "source_process_id": process_id,
+                    "epistemic_redaction": bool(interior_redaction),
+                    "flow_update_resolution": "roi_micro" if owner_motion_tier == "micro" else "macro_meso",
+                },
+            }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id in (
         "process.portal_open",
