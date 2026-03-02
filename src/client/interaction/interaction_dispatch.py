@@ -726,6 +726,7 @@ def execute_affordance(
         policy_context=control_policy_context,
         control_action_registry=_registry_payload(policy_context, "control_action_registry"),
         control_policy_registry=_registry_payload(policy_context, "control_policy_registry"),
+        action_template_registry=_registry_payload(policy_context, "action_template_registry"),
         repo_root=repo_root,
     )
     resolution = dict(control_resolution.get("resolution") or {})

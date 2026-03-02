@@ -2,6 +2,7 @@
 
 from .control_plane_engine import (
     CONTROL_REFUSAL_DEGRADED,
+    action_template_rows_by_id,
     build_control_intent,
     build_control_resolution,
     control_action_rows_by_id,
@@ -165,6 +166,7 @@ __all__ = [
     "capability_rows_by_id",
     "compile_control_ir",
     "compile_ir_program",
+    "action_template_rows_by_id",
     "control_action_rows_by_id",
     "control_policy_rows_by_id",
     "create_plan_artifact",

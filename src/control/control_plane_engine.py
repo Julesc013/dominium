@@ -55,6 +55,15 @@ def _sorted_unique_strings(values: object) -> List[str]:
     return sorted(set(str(item).strip() for item in values if str(item).strip()))
 
 
+def _coerce_string_list(values: object) -> List[str]:
+    if isinstance(values, list):
+        return _sorted_unique_strings(values)
+    token = str(values or "").strip()
+    if token:
+        return [token]
+    return []
+
+
 def _canon_params(payload: object):
     if isinstance(payload, dict):
         return dict((str(key), _canon_params(payload[key])) for key in sorted(payload.keys()))
@@ -162,6 +171,31 @@ def control_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> 
             "allowed_fidelity_ranges": _sorted_unique_strings(row.get("allowed_fidelity_ranges")),
             "downgrade_rules": dict(row.get("downgrade_rules") or {}) if isinstance(row.get("downgrade_rules"), dict) else {},
             "strictness": str(row.get("strictness", "")).strip() or "C0",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+    return out
+
+
+def action_template_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    rows = _registry_rows(registry_payload, "templates")
+    for row in sorted(rows, key=lambda item: str(item.get("action_template_id", ""))):
+        action_template_id = str(row.get("action_template_id", "")).strip()
+        if not action_template_id:
+            continue
+        action_family_id = str(row.get("action_family_id", "")).strip()
+        if not action_family_id:
+            continue
+        out[action_template_id] = {
+            "schema_version": "1.0.0",
+            "action_template_id": action_template_id,
+            "action_family_id": action_family_id,
+            "required_tool_tags": _sorted_unique_strings(row.get("required_tool_tags")),
+            "required_surface_types": _sorted_unique_strings(row.get("required_surface_types")),
+            "required_capabilities": _sorted_unique_strings(row.get("required_capabilities")),
+            "produced_artifact_types": _sorted_unique_strings(row.get("produced_artifact_types")),
+            "produced_hazard_types": _sorted_unique_strings(row.get("produced_hazard_types")),
+            "affected_substrates": _sorted_unique_strings(row.get("affected_substrates")),
             "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
         }
     return out
@@ -872,6 +906,7 @@ def build_control_resolution(
     policy_context: Mapping[str, object] | None = None,
     control_action_registry: Mapping[str, object] | None = None,
     control_policy_registry: Mapping[str, object] | None = None,
+    action_template_registry: Mapping[str, object] | None = None,
     repo_root: str = "",
 ) -> dict:
     intent = dict(control_intent or {})
@@ -933,6 +968,29 @@ def build_control_resolution(
             "extensions": {"adapter": "legacy.process_id"},
         }
 
+    template_registry_payload = dict(action_template_registry or {})
+    if not template_registry_payload:
+        template_from_context = policy_context_payload.get("action_template_registry")
+        if isinstance(template_from_context, Mapping):
+            template_registry_payload = dict(template_from_context)
+    action_template_rows = action_template_rows_by_id(template_registry_payload)
+    action_template_row = dict(action_template_rows.get(action_id) or {})
+    if template_registry_payload and (not action_template_row):
+        refusal_payload = _refusal(
+            CONTROL_REFUSAL_FORBIDDEN_BY_LAW,
+            "requested action is missing action_template mapping",
+            "Register requested_action_id in action_template_registry before execution.",
+            {"requested_action_id": action_id},
+            "$.requested_action_id",
+        )
+        return {"result": "refused", "refusal": refusal_payload}
+
+    action_family_id = str(action_template_row.get("action_family_id", "")).strip()
+    if action_family_id:
+        decision_log_extensions = dict(decision_log_extensions)
+        decision_log_extensions["action_family_id"] = action_family_id
+        decision_log_extensions["action_template_id"] = str(action_template_row.get("action_template_id", "")).strip() or action_id
+
     policy_rows = control_policy_rows_by_id(control_policy_registry)
     control_policy_id = _resolve_policy_id(intent, policy_context_payload)
     policy_row = dict(policy_rows.get(control_policy_id) or {})
@@ -969,6 +1027,11 @@ def build_control_resolution(
     task_type_id = str(produces.get("task_type_id", "")).strip()
     plan_intent_type = str(produces.get("plan_intent_type", "")).strip()
     required_capabilities = _sorted_unique_strings(action_row.get("required_capabilities"))
+    required_capabilities = _sorted_unique_strings(
+        list(required_capabilities) + list(_sorted_unique_strings(action_template_row.get("required_capabilities")))
+    )
+    required_surface_types = _sorted_unique_strings(action_template_row.get("required_surface_types"))
+    required_tool_tags = _sorted_unique_strings(action_template_row.get("required_tool_tags"))
     target_entity_id = str(intent.get("target_id", "")).strip()
     effect_influence_payload = _effect_influence(
         control_intent=intent,
@@ -994,6 +1057,48 @@ def build_control_resolution(
             break
     normalized_capability_bindings = capability_binding_rows(capability_binding_payload)
     required_process_for_law = process_id if (process_id and not task_type_id) else ""
+
+    intent_extensions = dict(intent.get("extensions") or {})
+    resolved_surface_type = str(
+        intent_extensions.get("surface_type_id")
+        or params.get("surface_type_id")
+        or params.get("target_surface_type_id")
+        or ""
+    ).strip()
+    if required_surface_types and (resolved_surface_type not in set(required_surface_types)):
+        refusal_payload = _refusal(
+            CONTROL_REFUSAL_FORBIDDEN_BY_LAW,
+            "action requires surface_type incompatible with current intent",
+            "Use an affordance/surface matching required_surface_types before execution.",
+            {
+                "requested_action_id": action_id,
+                "required_surface_types": ",".join(required_surface_types),
+                "surface_type_id": resolved_surface_type,
+            },
+            "$.extensions.surface_type_id",
+        )
+        return {"result": "refused", "refusal": refusal_payload}
+
+    active_tool_tags = _sorted_unique_strings(
+        list(_coerce_string_list(intent_extensions.get("active_tool_tags")))
+        + list(_coerce_string_list(params.get("active_tool_tags")))
+        + list(_coerce_string_list((dict(authority.get("extensions") or {})).get("held_tool_tags")))
+        + list(_coerce_string_list(authority.get("held_tool_tags")))
+    )
+    missing_tool_tags = [tag for tag in required_tool_tags if tag not in set(active_tool_tags)]
+    if missing_tool_tags:
+        refusal_payload = _refusal(
+            CONTROL_REFUSAL_FORBIDDEN_BY_LAW,
+            "action requires tool tags not present on active tool bindings",
+            "Bind/select tools that satisfy required_tool_tags before execution.",
+            {
+                "requested_action_id": action_id,
+                "required_tool_tags": ",".join(required_tool_tags),
+                "active_tool_tags": ",".join(active_tool_tags),
+            },
+            "$.extensions.active_tool_tags",
+        )
+        return {"result": "refused", "refusal": refusal_payload}
 
     policy_extensions = dict(policy_row.get("extensions") or {})
     negotiation_extensions = {
