@@ -254,6 +254,45 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.institution.bulletins",
+        "title": "Institution Bulletins",
+        "data": {
+          "data_kind": "institution_bulletins"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.institution.dispatch_state",
+        "title": "Institution Dispatch State",
+        "data": {
+          "data_kind": "institution_dispatch_state"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.institution.compliance_reports",
+        "title": "Institution Compliance Reports",
+        "data": {
+          "data_kind": "institution_compliance_reports"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.vehicle.summary",
         "title": "Vehicle Summary",
         "data": {

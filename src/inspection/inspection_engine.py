@@ -24,6 +24,7 @@ _VALID_TARGET_KINDS = {
     "vehicle",
     "project",
     "plan",
+    "institution",
     "node",
     "manifest",
     "cohort",
@@ -233,6 +234,28 @@ _SECTION_IDS_BY_FIDELITY_FORMALIZATION = {
         "section.reenactment_link",
     ],
 }
+_SECTION_IDS_BY_FIDELITY_INSTITUTION = {
+    "macro": [
+        "section.capabilities_summary",
+        "section.institution.bulletins",
+        "section.institution.dispatch_state",
+        "section.institution.compliance_reports",
+    ],
+    "meso": [
+        "section.capabilities_summary",
+        "section.institution.bulletins",
+        "section.institution.dispatch_state",
+        "section.institution.compliance_reports",
+        "section.events_summary",
+    ],
+    "micro": [
+        "section.capabilities_summary",
+        "section.institution.bulletins",
+        "section.institution.dispatch_state",
+        "section.institution.compliance_reports",
+        "section.events_summary",
+    ],
+}
 _SECTION_IDS_BY_FIDELITY_VEHICLE = {
     "macro": [
         "section.capabilities_summary",
@@ -288,6 +311,9 @@ _DEFAULT_SECTION_ROWS = {
     "section.trust.edges_summary": {"title": "Trust Edge Summary", "extensions": {"cost_units": 2}},
     "section.signal.sent_messages": {"title": "Signal Sent Messages", "extensions": {"cost_units": 2}},
     "section.signal.aggregation_status": {"title": "Signal Aggregation Status", "extensions": {"cost_units": 2}},
+    "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
+    "section.institution.dispatch_state": {"title": "Institution Dispatch State", "extensions": {"cost_units": 2}},
+    "section.institution.compliance_reports": {"title": "Institution Compliance Reports", "extensions": {"cost_units": 2}},
     "section.networkgraph.capacity_utilization": {
         "title": "NetworkGraph Capacity Utilization",
         "extensions": {"cost_units": 2},
@@ -367,6 +393,8 @@ def _quantize_map(values: object, *, step: int) -> dict:
 
 def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
+    if token.startswith("institution."):
+        return "institution"
     if token.startswith("vehicle."):
         return "vehicle"
     if token.startswith("formalization.") or token.startswith("candidate.") or token.startswith("formalization.event."):
@@ -508,6 +536,8 @@ def _section_ids_for_fidelity(*, fidelity: str, target_kind: str) -> List[str]:
         return list(_SECTION_IDS_BY_FIDELITY_MOUNT[token])
     if kind == "formalization":
         return list(_SECTION_IDS_BY_FIDELITY_FORMALIZATION[token])
+    if kind == "institution":
+        return list(_SECTION_IDS_BY_FIDELITY_INSTITUTION[token])
     return list(_SECTION_IDS_BY_FIDELITY[token])
 
 
@@ -1977,6 +2007,162 @@ def _build_section_data(
                     "aggregation_policy_id": str(dict(row.get("extensions") or {}).get("aggregation_policy_id", "")).strip() or None,
                 }
                 for row in list(agg_artifacts[-128:])
+            ]
+        return payload
+    if section_id == "section.institution.bulletins":
+        institution_id = str(request.get("target_id", "")).strip() or str(request.get("institution_id", "")).strip()
+        artifacts = [
+            dict(item)
+            for item in list((dict(state or {})).get("info_artifact_rows") or (dict(state or {})).get("knowledge_artifacts") or [])
+            if isinstance(item, dict)
+        ]
+        bulletin_rows = []
+        for row in sorted(artifacts, key=lambda item: (_as_int(item.get("created_tick", 0), 0), str(item.get("artifact_id", "")))):
+            if str(row.get("artifact_family_id", "")).strip() != "REPORT":
+                continue
+            ext = dict(row.get("extensions") or {})
+            row_institution_id = str(ext.get("institution_id", "")).strip()
+            if institution_id and row_institution_id != institution_id:
+                continue
+            if (not row_institution_id) and institution_id:
+                continue
+            if institution_id and not row_institution_id:
+                continue
+            if (not institution_id) and (not row_institution_id):
+                continue
+            if (not ext.get("bulletin_policy_id")) and ("headline" not in dict(row.get("summary") or {})):
+                continue
+            bulletin_rows.append(row)
+        latest_tick = int(
+            max([0] + [int(max(0, _as_int(row.get("created_tick", 0), 0))) for row in bulletin_rows])
+        )
+        payload = {
+            "institution_id": institution_id or None,
+            "bulletin_count": int(len(bulletin_rows)),
+            "latest_bulletin_tick": int(latest_tick),
+            "status": "new" if latest_tick >= int(max(0, _as_int(request.get("tick", 0), 0)) - 64) else "stable",
+        }
+        if allow_hidden_state:
+            payload["recent_bulletins"] = [
+                {
+                    "artifact_id": str(row.get("artifact_id", "")).strip(),
+                    "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+                    "bulletin_policy_id": str(dict(row.get("extensions") or {}).get("bulletin_policy_id", "")).strip() or None,
+                    "coarse_summary": bool(dict(row.get("extensions") or {}).get("coarse_summary", False)),
+                }
+                for row in bulletin_rows[-128:]
+            ]
+        return payload
+    if section_id == "section.institution.dispatch_state":
+        institution_id = str(request.get("target_id", "")).strip() or str(request.get("institution_id", "")).strip()
+        control_intent_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("control_intent_rows") or (dict(state or {})).get("control_intents") or [])
+            if isinstance(item, dict)
+        ]
+        dispatch_intents = []
+        for row in sorted(control_intent_rows, key=lambda item: (_as_int(item.get("created_tick", 0), 0), str(item.get("control_intent_id", "")))):
+            params = dict(row.get("parameters") or {})
+            inputs = dict(params.get("inputs") or {})
+            process_id = str(params.get("process_id", "")).strip() or str(inputs.get("process_id", "")).strip()
+            if process_id != "process.travel_schedule_set":
+                continue
+            row_institution_id = str(inputs.get("institution_id", "")).strip() or str(dict(row.get("extensions") or {}).get("institution_id", "")).strip()
+            if institution_id and row_institution_id != institution_id:
+                continue
+            dispatch_intents.append(row)
+        schedule_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("travel_schedules") or [])
+            if isinstance(item, dict)
+        ]
+        institution_schedule_rows = []
+        for row in sorted(schedule_rows, key=lambda item: (str(item.get("schedule_id", "")), _as_int(item.get("next_due_tick", 0), 0))):
+            row_inst = str((dict(row.get("extensions") or {})).get("institution_id", "")).strip()
+            if institution_id and row_inst and row_inst != institution_id:
+                continue
+            institution_schedule_rows.append(row)
+        payload = {
+            "institution_id": institution_id or None,
+            "dispatch_intent_count": int(len(dispatch_intents)),
+            "schedule_count": int(len(institution_schedule_rows)),
+            "next_due_tick": int(
+                min(
+                    [int(max(0, _as_int(row.get("next_due_tick", 0), 0))) for row in institution_schedule_rows]
+                    or [0]
+                )
+            ),
+            "delayed_service_indicator": bool(
+                len(
+                    [
+                        row
+                        for row in list((dict(state or {})).get("travel_events") or [])
+                        if isinstance(row, dict)
+                        and str(row.get("kind", "")).strip() == "delay"
+                    ]
+                )
+                > 0
+            ),
+        }
+        if allow_hidden_state:
+            payload["recent_dispatch_intents"] = [
+                {
+                    "control_intent_id": str(row.get("control_intent_id", "")).strip(),
+                    "target_id": str(row.get("target_id", "")).strip() or None,
+                    "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+                }
+                for row in dispatch_intents[-128:]
+            ]
+            payload["schedule_rows"] = [
+                {
+                    "schedule_id": str(row.get("schedule_id", "")).strip(),
+                    "next_due_tick": int(max(0, _as_int(row.get("next_due_tick", 0), 0))),
+                    "interval_ticks": int(max(1, _as_int(row.get("interval_ticks", 1), 1))),
+                }
+                for row in institution_schedule_rows[:128]
+            ]
+        return payload
+    if section_id == "section.institution.compliance_reports":
+        institution_id = str(request.get("target_id", "")).strip() or str(request.get("institution_id", "")).strip()
+        report_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("info_artifact_rows") or (dict(state or {})).get("knowledge_artifacts") or [])
+            if isinstance(item, dict)
+            and str(item.get("artifact_family_id", "")).strip() == "REPORT"
+            and str((dict(item.get("extensions") or {})).get("standards_policy_id", "")).strip()
+        ]
+        report_rows = [
+            row
+            for row in sorted(report_rows, key=lambda item: (_as_int(item.get("created_tick", 0), 0), str(item.get("artifact_id", ""))))
+            if (not institution_id) or str((dict(row.get("extensions") or {})).get("institution_id", "")).strip() == institution_id
+        ]
+        compliance_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("spec_compliance_results") or [])
+            if isinstance(item, dict)
+        ]
+        pass_count = len([row for row in compliance_rows if str(row.get("overall_grade", "")).strip() == "pass"])
+        warn_count = len([row for row in compliance_rows if str(row.get("overall_grade", "")).strip() == "warn"])
+        fail_count = len([row for row in compliance_rows if str(row.get("overall_grade", "")).strip() == "fail"])
+        payload = {
+            "institution_id": institution_id or None,
+            "compliance_report_count": int(len(report_rows)),
+            "spec_result_count": int(len(compliance_rows)),
+            "grade_counts": {
+                "pass": int(pass_count),
+                "warn": int(warn_count),
+                "fail": int(fail_count),
+            },
+            "status": "attention" if fail_count > 0 else "ok",
+        }
+        if allow_hidden_state:
+            payload["recent_compliance_reports"] = [
+                {
+                    "artifact_id": str(row.get("artifact_id", "")).strip(),
+                    "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+                    "standards_policy_id": str((dict(row.get("extensions") or {})).get("standards_policy_id", "")).strip() or None,
+                }
+                for row in report_rows[-128:]
             ]
         return payload
     if section_id == "section.networkgraph.capacity_utilization":
