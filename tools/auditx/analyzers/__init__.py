@@ -172,6 +172,8 @@ from analyzers import e143_direct_position_mutation_smell
 from analyzers import e144_adhoc_speed_limit_smell
 from analyzers import e145_geometry_mutation_bypass_smell
 from analyzers import e146_hardcoded_track_spec_smell
+from analyzers import e147_mobility_graph_duplication_smell
+from analyzers import e148_switch_bypass_smell
 
 
 ANALYZERS = (
@@ -347,6 +349,8 @@ ANALYZERS = (
     e144_adhoc_speed_limit_smell,
     e145_geometry_mutation_bypass_smell,
     e146_hardcoded_track_spec_smell,
+    e147_mobility_graph_duplication_smell,
+    e148_switch_bypass_smell,
 )
 
 
