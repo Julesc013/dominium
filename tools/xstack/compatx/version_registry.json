@@ -1281,6 +1281,20 @@
         "1.0.0"
       ]
     },
+    "signal_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_rule_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "mobility_speed_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},

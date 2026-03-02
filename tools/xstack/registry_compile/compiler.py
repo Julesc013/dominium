@@ -3475,6 +3475,126 @@ def _mobility_registry_rows(
     )
 
 
+def _signal_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+
+    _signal_type_record, signal_type_rows_raw, signal_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/signal_type_registry.json",
+        expected_schema_id="dominium.registry.signal_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="signal_types",
+    )
+    if signal_type_load_errors:
+        return [], [], signal_type_load_errors
+
+    _signal_rule_record, signal_rule_rows_raw, signal_rule_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/signal_rule_policy_registry.json",
+        expected_schema_id="dominium.registry.signal_rule_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="signal_rule_policies",
+    )
+    if signal_rule_load_errors:
+        return [], [], signal_rule_load_errors
+
+    signal_type_rows: List[dict] = []
+    signal_type_seen = set()
+    for entry in sorted(signal_type_rows_raw, key=lambda row: str((row or {}).get("signal_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_signal_type_entry",
+                    "message": "signal type entry must be object",
+                    "path": "$.signal_types",
+                }
+            )
+            continue
+        signal_type_id = str(entry.get("signal_type_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not signal_type_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_signal_type_entry",
+                    "message": "signal type entry missing required fields",
+                    "path": "$.signal_types",
+                }
+            )
+            continue
+        if signal_type_id in signal_type_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_signal_type_id",
+                    "message": "duplicate signal_type_id '{}'".format(signal_type_id),
+                    "path": "$.signal_types.signal_type_id",
+                }
+            )
+            continue
+        signal_type_seen.add(signal_type_id)
+        signal_type_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "signal_type_id": signal_type_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    signal_type_rows = sorted(signal_type_rows, key=lambda row: str(row.get("signal_type_id", "")))
+
+    signal_rule_policy_rows: List[dict] = []
+    signal_rule_seen = set()
+    for entry in sorted(signal_rule_rows_raw, key=lambda row: str((row or {}).get("rule_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_signal_rule_policy_entry",
+                    "message": "signal rule policy entry must be object",
+                    "path": "$.signal_rule_policies",
+                }
+            )
+            continue
+        rule_policy_id = str(entry.get("rule_policy_id", "")).strip()
+        schema_ref = str(entry.get("schema_ref", "")).strip()
+        extensions = entry.get("extensions")
+        if (not rule_policy_id) or (not schema_ref) or (not isinstance(extensions, dict)):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_signal_rule_policy_entry",
+                    "message": "signal rule policy entry missing required fields",
+                    "path": "$.signal_rule_policies",
+                }
+            )
+            continue
+        if rule_policy_id in signal_rule_seen:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_signal_rule_policy_id",
+                    "message": "duplicate rule_policy_id '{}'".format(rule_policy_id),
+                    "path": "$.signal_rule_policies.rule_policy_id",
+                }
+            )
+            continue
+        signal_rule_seen.add(rule_policy_id)
+        signal_rule_policy_rows.append(
+            {
+                "schema_version": "1.0.0",
+                "rule_policy_id": rule_policy_id,
+                "schema_ref": schema_ref,
+                "extensions": dict(extensions),
+            }
+        )
+    signal_rule_policy_rows = sorted(signal_rule_policy_rows, key=lambda row: str(row.get("rule_policy_id", "")))
+
+    return (
+        signal_type_rows,
+        signal_rule_policy_rows,
+        errors,
+    )
+
+
 def _guide_geometry_registry_rows(
     repo_root: str,
 ) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
@@ -11491,6 +11611,13 @@ def compile_bundle(
         repo_root=repo_root,
     )
     (
+        signal_type_rows,
+        signal_rule_policy_rows,
+        signal_registry_errors,
+    ) = _signal_registry_rows(
+        repo_root=repo_root,
+    )
+    (
         geometry_type_rows,
         junction_type_rows,
         geometry_snap_policy_rows,
@@ -11872,6 +11999,7 @@ def compile_bundle(
         + action_surface_registry_errors
         + pose_registry_errors
         + mobility_registry_errors
+        + signal_registry_errors
         + geometry_registry_errors
         + task_registry_errors
         + machine_registry_errors
@@ -12436,6 +12564,20 @@ def compile_bundle(
             "signal_types": mobility_signal_type_rows,
         }
     )
+    signal_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "signal_types": signal_type_rows,
+        }
+    )
+    signal_rule_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "signal_rule_policies": signal_rule_policy_rows,
+        }
+    )
     mobility_speed_policy_payload = _finalize_registry_payload(
         {
             "format_version": REGISTRY_FORMAT_VERSION,
@@ -12966,6 +13108,8 @@ def compile_bundle(
             mobility_constraint_type_payload,
         ),
         "mobility_signal_type_registry": ("mobility_signal_type_registry", mobility_signal_type_payload),
+        "signal_type_registry": ("signal_type_registry", signal_type_payload),
+        "signal_rule_policy_registry": ("signal_rule_policy_registry", signal_rule_policy_payload),
         "mobility_speed_policy_registry": ("mobility_speed_policy_registry", mobility_speed_policy_payload),
         "mobility_node_kind_registry": ("mobility_node_kind_registry", mobility_node_kind_payload),
         "mobility_edge_kind_registry": ("mobility_edge_kind_registry", mobility_edge_kind_payload),
@@ -13120,6 +13264,8 @@ def compile_bundle(
         "mobility_vehicle_class_registry",
         "mobility_constraint_type_registry",
         "mobility_signal_type_registry",
+        "signal_type_registry",
+        "signal_rule_policy_registry",
         "mobility_speed_policy_registry",
         "mobility_node_kind_registry",
         "mobility_edge_kind_registry",
@@ -13282,6 +13428,8 @@ def compile_bundle(
             "mobility_vehicle_class_registry_hash": registry_hashes["mobility_vehicle_class_registry_hash"],
             "mobility_constraint_type_registry_hash": registry_hashes["mobility_constraint_type_registry_hash"],
             "mobility_signal_type_registry_hash": registry_hashes["mobility_signal_type_registry_hash"],
+            "signal_type_registry_hash": registry_hashes["signal_type_registry_hash"],
+            "signal_rule_policy_registry_hash": registry_hashes["signal_rule_policy_registry_hash"],
             "mobility_speed_policy_registry_hash": registry_hashes["mobility_speed_policy_registry_hash"],
             "mobility_node_kind_registry_hash": registry_hashes["mobility_node_kind_registry_hash"],
             "mobility_edge_kind_registry_hash": registry_hashes["mobility_edge_kind_registry_hash"],
