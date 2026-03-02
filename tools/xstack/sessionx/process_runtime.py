@@ -4337,6 +4337,21 @@ def _sync_vehicle_interior_spatial_frame(
     }
 
 
+def _vehicle_row_for_interior_graph(state: dict, graph_id: str) -> dict:
+    token = str(graph_id or "").strip()
+    if not token:
+        return {}
+    candidates = [
+        dict(row)
+        for row in list(state.get("vehicles") or [])
+        if isinstance(row, Mapping) and str(row.get("interior_graph_id", "")).strip() == token
+    ]
+    candidates = sorted(candidates, key=lambda row: str(row.get("vehicle_id", "")))
+    if not candidates:
+        return {}
+    return dict(candidates[0])
+
+
 def _target_spatial_position(state: dict, target_id: str) -> dict:
     token = str(target_id or "").strip()
     if not token:
@@ -31761,6 +31776,23 @@ def execute_intent(
                 policy_id=policy_id,
                 policy_registry_payload=_policy_payload(policy_context, "compartment_flow_policy_registry"),
             )
+            owner_vehicle_row = _vehicle_row_for_interior_graph(
+                state=state,
+                graph_id=str(selected_graph.get("graph_id", "")).strip(),
+            )
+            owner_vehicle_id = str(owner_vehicle_row.get("vehicle_id", "")).strip()
+            owner_vehicle_world = _vehicle_world_position(state, owner_vehicle_id) if owner_vehicle_id else {}
+            owner_vehicle_position_mm = _vector3_int(
+                dict(owner_vehicle_world).get("position_mm"),
+                "position_mm",
+            )
+            owner_motion_row = dict(_vehicle_motion_rows_by_id(state).get(owner_vehicle_id) or {})
+            owner_motion_tier = str(owner_motion_row.get("tier", "")).strip() or "macro"
+            owner_vehicle_speed = (
+                _vehicle_speed_mm_per_tick(state, owner_vehicle_id)
+                if owner_vehicle_id
+                else 0
+            )
             runtime_extensions = dict(compartment_flow_runtime_state.get("extensions") or {})
             selected_partition = {}
             for row in sorted(
@@ -31813,7 +31845,19 @@ def execute_intent(
                     sample_position["cell_id"] = field_cell_id
                 position_mm = _vector3_int(portal_ext.get("position_mm"), "position_mm")
                 if position_mm:
-                    sample_position["position_mm"] = dict(position_mm)
+                    if isinstance(owner_vehicle_position_mm, dict):
+                        sample_position["position_mm"] = {
+                            "x": int(_as_int(owner_vehicle_position_mm.get("x", 0), 0))
+                            + int(_as_int(position_mm.get("x", 0), 0)),
+                            "y": int(_as_int(owner_vehicle_position_mm.get("y", 0), 0))
+                            + int(_as_int(position_mm.get("y", 0), 0)),
+                            "z": int(_as_int(owner_vehicle_position_mm.get("z", 0), 0))
+                            + int(_as_int(position_mm.get("z", 0), 0)),
+                        }
+                    else:
+                        sample_position["position_mm"] = dict(position_mm)
+                elif isinstance(owner_vehicle_position_mm, dict):
+                    sample_position["position_mm"] = dict(owner_vehicle_position_mm)
 
                 temperature_sample = get_field_value(
                     spatial_position=sample_position,
@@ -31853,7 +31897,10 @@ def execute_intent(
                     + abs(int(_as_int(wind_vector.get("y", 0), 0)))
                     + abs(int(_as_int(wind_vector.get("z", 0), 0)))
                 )
-                wind_boost = int(min(2000, max(0, wind_magnitude // 2)))
+                ram_air_boost = 0
+                if owner_vehicle_id and owner_motion_tier == "micro":
+                    ram_air_boost = int(min(2000, max(0, int(owner_vehicle_speed) // 4)))
+                wind_boost = int(min(2000, max(0, (wind_magnitude // 2) + int(ram_air_boost))))
 
                 base_row = dict(
                     portal_param_by_id.get(portal_id)
@@ -31891,6 +31938,15 @@ def execute_intent(
                     },
                     "wind_magnitude": int(wind_magnitude),
                     "wind_boost_air_conductance": int(wind_boost),
+                    "ram_air_boost_air_conductance": int(ram_air_boost),
+                    "vehicle_id": owner_vehicle_id or None,
+                    "vehicle_motion_tier": owner_motion_tier if owner_vehicle_id else None,
+                    "vehicle_speed_mm_per_tick": int(owner_vehicle_speed) if owner_vehicle_id else None,
+                    "sample_position_mm": (
+                        dict(sample_position.get("position_mm") or {})
+                        if isinstance(sample_position.get("position_mm"), Mapping)
+                        else None
+                    ),
                     "base_conductance_air": int(base_conductance_air),
                     "source_process_id": process_id,
                     "source_tick": int(current_tick),
@@ -32463,6 +32519,9 @@ def execute_intent(
                 "alarm_state": alarm_state,
                 "epistemic_policy_id": str(interior_epistemic_resolution.get("epistemic_policy_id", "")).strip(),
                 "epistemic_redaction": bool(interior_redaction),
+                "owner_vehicle_id": owner_vehicle_id or None,
+                "owner_vehicle_motion_tier": owner_motion_tier if owner_vehicle_id else None,
+                "owner_vehicle_speed_mm_per_tick": int(owner_vehicle_speed) if owner_vehicle_id else None,
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id in (
