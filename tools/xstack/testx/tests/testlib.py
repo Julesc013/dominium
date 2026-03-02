@@ -81,6 +81,10 @@ def make_temp_repo_with_test_packs(source_repo_root: str) -> str:
     src_registries = os.path.join(source_repo_root, "data", "registries")
     dst_registries = os.path.join(temp_root, "data", "registries")
     shutil.copytree(src_registries, dst_registries)
+    src_meta = os.path.join(source_repo_root, "data", "meta")
+    if os.path.isdir(src_meta):
+        dst_meta = os.path.join(temp_root, "data", "meta")
+        shutil.copytree(src_meta, dst_meta)
     for src_rel_path, dst_rel_path in FIXTURE_SOURCE_REGISTRY_FILES:
         _copy_rel_file(
             source_repo_root=source_repo_root,

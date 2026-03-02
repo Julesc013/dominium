@@ -1,0 +1,405 @@
+{
+  "affordances": [
+    {
+      "gaps": [
+        "chemistry domain solvers are not yet specialized"
+      ],
+      "id": "matter_transformation",
+      "series_implemented": [
+        "MAT",
+        "MECH",
+        "SPEC"
+      ],
+      "series_planned": [
+        "DOM",
+        "ELEC",
+        "SCI"
+      ],
+      "substrates": [
+        "MAT",
+        "MECH",
+        "SPEC",
+        "ACTION_GRAMMAR"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "gaps": [
+        "advanced orbital/propulsion domains are not yet implemented"
+      ],
+      "id": "motion_force_transmission",
+      "series_implemented": [
+        "MOB",
+        "MECH",
+        "FIELD"
+      ],
+      "series_planned": [
+        "ADV"
+      ],
+      "substrates": [
+        "MOB",
+        "MECH",
+        "ABS",
+        "FIELD"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "gaps": [
+        "full connector machine simulation remains future ELEC/DOM work"
+      ],
+      "id": "containment_interfaces",
+      "series_implemented": [
+        "INT",
+        "ACT",
+        "SPEC"
+      ],
+      "series_planned": [
+        "ELEC",
+        "DOM"
+      ],
+      "substrates": [
+        "INT",
+        "ACT",
+        "SPEC",
+        "ABS"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "gaps": [
+        "specialized science instruments remain future SCI work"
+      ],
+      "id": "measurement_verification",
+      "series_implemented": [
+        "SPEC",
+        "SIG",
+        "MOB",
+        "MAT"
+      ],
+      "series_planned": [
+        "SCI"
+      ],
+      "substrates": [
+        "INFO_GRAMMAR",
+        "CTRL",
+        "SPEC",
+        "ACT"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "gaps": [
+        "domain-specific military/economic communication overlays are future work"
+      ],
+      "id": "communication_coordination",
+      "series_implemented": [
+        "SIG"
+      ],
+      "series_planned": [
+        "MIL",
+        "ECO",
+        "SCI"
+      ],
+      "substrates": [
+        "SIG",
+        "INFO_GRAMMAR",
+        "CTRL",
+        "ABS",
+        "FIELD"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "gaps": [
+        "insurance/procurement market dynamics remain future ECO work"
+      ],
+      "id": "institutions_contracts",
+      "series_implemented": [
+        "SIG",
+        "SPEC",
+        "MAT",
+        "CTRL"
+      ],
+      "series_planned": [
+        "ECO",
+        "CIV"
+      ],
+      "substrates": [
+        "CTRL",
+        "SPEC",
+        "SIG",
+        "MAT"
+      ],
+      "tiers": [
+        "macro",
+        "meso"
+      ]
+    },
+    {
+      "gaps": [
+        "biology and disease ecology domains are not implemented yet"
+      ],
+      "id": "environment_living_systems",
+      "series_implemented": [
+        "FIELD",
+        "MAT"
+      ],
+      "series_planned": [
+        "DOM",
+        "BIO"
+      ],
+      "substrates": [
+        "FIELD",
+        "INT",
+        "MAT",
+        "MECH"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "gaps": [],
+      "id": "time_synchronization",
+      "series_implemented": [
+        "RS",
+        "ABS",
+        "MAT",
+        "CTRL"
+      ],
+      "series_planned": [
+        "ECO",
+        "SCI"
+      ],
+      "substrates": [
+        "RS",
+        "ABS",
+        "MAT",
+        "CTRL"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "gaps": [
+        "generalized power breaker logic is future ELEC/LOGIC work"
+      ],
+      "id": "safety_protection",
+      "series_implemented": [
+        "MOB",
+        "MECH",
+        "MAT",
+        "CTRL"
+      ],
+      "series_planned": [
+        "ELEC",
+        "LOGIC",
+        "MIL"
+      ],
+      "substrates": [
+        "MOB",
+        "MECH",
+        "MAT",
+        "CTRL"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    }
+  ],
+  "schema_id": "dominium.meta.real_world_affordance_matrix",
+  "schema_version": "1.0.0",
+  "series_affordance_coverage": [
+    {
+      "affordance_ids": [
+        "motion_force_transmission",
+        "containment_interfaces",
+        "time_synchronization"
+      ],
+      "series_id": "ABS",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "containment_interfaces",
+        "measurement_verification"
+      ],
+      "series_id": "ACT",
+      "tiers": [
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "institutions_contracts",
+        "time_synchronization",
+        "safety_protection",
+        "measurement_verification"
+      ],
+      "series_id": "CTRL",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "environment_living_systems",
+        "motion_force_transmission",
+        "communication_coordination"
+      ],
+      "series_id": "FIELD",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "measurement_verification"
+      ],
+      "series_id": "FORM",
+      "tiers": [
+        "macro",
+        "meso"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "containment_interfaces",
+        "environment_living_systems"
+      ],
+      "series_id": "INT",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "matter_transformation",
+        "institutions_contracts",
+        "time_synchronization",
+        "safety_protection"
+      ],
+      "series_id": "MAT",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "matter_transformation",
+        "motion_force_transmission",
+        "safety_protection",
+        "environment_living_systems"
+      ],
+      "series_id": "MECH",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "motion_force_transmission",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "series_id": "MOB",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "containment_interfaces",
+        "motion_force_transmission"
+      ],
+      "series_id": "POSE",
+      "tiers": [
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "time_synchronization",
+        "measurement_verification"
+      ],
+      "series_id": "RS",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "communication_coordination",
+        "measurement_verification",
+        "institutions_contracts"
+      ],
+      "series_id": "SIG",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "containment_interfaces",
+        "measurement_verification",
+        "institutions_contracts",
+        "safety_protection"
+      ],
+      "series_id": "SPEC",
+      "tiers": [
+        "macro",
+        "meso"
+      ]
+    }
+  ]
+}
