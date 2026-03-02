@@ -308,7 +308,7 @@
         ],
         "required_capabilities": [],
         "target_kinds": [
-          "formalization",
+          "structure",
           "graph"
         ],
         "extensions": {}
@@ -327,7 +327,6 @@
         ],
         "required_capabilities": [],
         "target_kinds": [
-          "network_switch",
           "graph"
         ],
         "extensions": {}
@@ -346,8 +345,7 @@
         ],
         "required_capabilities": [],
         "target_kinds": [
-          "graph",
-          "network_binding"
+          "graph"
         ],
         "extensions": {}
       },
