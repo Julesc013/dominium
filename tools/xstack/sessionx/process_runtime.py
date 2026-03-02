@@ -240,6 +240,21 @@ from src.infrastructure.formalization import (
     infer_candidates,
     normalize_inference_candidate_rows,
 )
+from src.mobility.geometry import (
+    build_geometry_candidate,
+    build_geometry_metric_row,
+    build_guide_geometry,
+    build_junction,
+    deterministic_geometry_id,
+    geometry_snap_policy_rows_by_id,
+    geometry_type_rows_by_id,
+    junction_type_rows_by_id,
+    normalize_geometry_candidate_rows,
+    normalize_geometry_metric_rows,
+    normalize_guide_geometry_rows,
+    normalize_junction_rows,
+    snap_geometry_parameters,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -358,6 +373,9 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.formalization_accept_candidate": "entitlement.control.admin",
     "process.formalization_promote_networked": "entitlement.control.admin",
     "process.formalization_revert": "entitlement.control.admin",
+    "process.geometry_create": "entitlement.control.admin",
+    "process.geometry_edit": "entitlement.control.admin",
+    "process.geometry_finalize": "entitlement.control.admin",
     "process.mechanics_fracture": "session.boot",
     "process.weld_joint": "entitlement.tool.use",
     "process.cut_joint": "entitlement.tool.use",
@@ -474,6 +492,9 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.formalization_accept_candidate": "operator",
     "process.formalization_promote_networked": "operator",
     "process.formalization_revert": "operator",
+    "process.geometry_create": "operator",
+    "process.geometry_edit": "operator",
+    "process.geometry_finalize": "operator",
     "process.mechanics_fracture": "observer",
     "process.weld_joint": "operator",
     "process.cut_joint": "operator",
@@ -537,6 +558,9 @@ CONTROL_PROCESS_IDS = {
     "process.formalization_accept_candidate",
     "process.formalization_promote_networked",
     "process.formalization_revert",
+    "process.geometry_create",
+    "process.geometry_edit",
+    "process.geometry_finalize",
     "process.mechanics_fracture",
 }
 CIV_PROCESS_IDS = {
@@ -1397,6 +1421,382 @@ def _persist_formalization_state(
     _ensure_formalization_events(state)
 
 
+def _ensure_guide_geometry_rows(state: dict) -> List[dict]:
+    rows = normalize_guide_geometry_rows(state.get("guide_geometries"))
+    state["guide_geometries"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_mobility_junction_rows(state: dict) -> List[dict]:
+    rows = normalize_junction_rows(state.get("mobility_junctions"))
+    state["mobility_junctions"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_geometry_candidate_rows(state: dict) -> List[dict]:
+    rows = normalize_geometry_candidate_rows(state.get("geometry_candidates"))
+    state["geometry_candidates"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_geometry_metric_rows(state: dict) -> List[dict]:
+    rows = normalize_geometry_metric_rows(state.get("geometry_derived_metrics"))
+    state["geometry_derived_metrics"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _persist_guide_geometry_state(
+    state: dict,
+    *,
+    guide_geometries: List[dict],
+    mobility_junctions: List[dict],
+    geometry_candidates: List[dict],
+    geometry_derived_metrics: List[dict],
+) -> None:
+    state["guide_geometries"] = [dict(row) for row in list(guide_geometries or []) if isinstance(row, dict)]
+    state["mobility_junctions"] = [dict(row) for row in list(mobility_junctions or []) if isinstance(row, dict)]
+    state["geometry_candidates"] = [dict(row) for row in list(geometry_candidates or []) if isinstance(row, dict)]
+    state["geometry_derived_metrics"] = [
+        dict(row) for row in list(geometry_derived_metrics or []) if isinstance(row, dict)
+    ]
+    _ensure_guide_geometry_rows(state)
+    _ensure_mobility_junction_rows(state)
+    _ensure_geometry_candidate_rows(state)
+    _ensure_geometry_metric_rows(state)
+
+
+def _geometry_hash_for_row(geometry_row: Mapping[str, object]) -> str:
+    normalized = build_guide_geometry(
+        geometry_id=str(geometry_row.get("geometry_id", "")).strip(),
+        geometry_type_id=str(geometry_row.get("geometry_type_id", "")).strip(),
+        parent_spatial_id=str(geometry_row.get("parent_spatial_id", "")).strip(),
+        spec_id=(
+            None
+            if geometry_row.get("spec_id") is None
+            else str(geometry_row.get("spec_id", "")).strip() or None
+        ),
+        parameters=dict(geometry_row.get("parameters") or {}),
+        bounds=dict(geometry_row.get("bounds") or {}),
+        junction_refs=geometry_row.get("junction_refs"),
+        extensions=dict(geometry_row.get("extensions") or {}),
+    )
+    return canonical_sha256(dict(normalized, deterministic_fingerprint=""))
+
+
+def _cached_geometry_metric_row(metric_rows: object, geometry_hash: str) -> dict:
+    token = str(geometry_hash or "").strip()
+    if not token:
+        return {}
+    rows = [
+        dict(row)
+        for row in list(metric_rows or [])
+        if isinstance(row, dict) and str(row.get("geometry_hash", "")).strip() == token
+    ]
+    if not rows:
+        return {}
+    return sorted(
+        rows,
+        key=lambda row: (_as_int(row.get("computed_tick", 0), 0), str(row.get("geometry_id", ""))),
+    )[-1]
+
+
+def _upsert_geometry_metric_row(metric_rows: object, metric_row: Mapping[str, object]) -> List[dict]:
+    out = dict(
+        (str(row.get("geometry_id", "")).strip(), dict(row))
+        for row in list(metric_rows or [])
+        if isinstance(row, dict) and str(row.get("geometry_id", "")).strip()
+    )
+    geometry_id = str(metric_row.get("geometry_id", "")).strip()
+    if geometry_id:
+        out[geometry_id] = dict(metric_row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _geometry_metric_with_cache(
+    *,
+    geometry_row: Mapping[str, object],
+    metric_rows: object,
+    current_tick: int,
+    max_cost_units: int,
+    cost_units_per_metric: int,
+) -> dict:
+    geometry_hash = _geometry_hash_for_row(geometry_row)
+    cached = _cached_geometry_metric_row(metric_rows, geometry_hash)
+    if cached:
+        return dict(cached)
+    return build_geometry_metric_row(
+        geometry_row=dict(geometry_row),
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        max_cost_units=int(max(0, _as_int(max_cost_units, 0))),
+        cost_units_per_metric=int(max(1, _as_int(cost_units_per_metric, 1))),
+    )
+
+
+def _geometry_control_points(parameters: Mapping[str, object] | None) -> List[dict]:
+    payload = dict(parameters or {}) if isinstance(parameters, Mapping) else {}
+    rows = payload.get("control_points_mm")
+    if not isinstance(rows, list):
+        rows = payload.get("points_mm")
+    if not isinstance(rows, list):
+        rows = payload.get("path_points_mm")
+    out: List[dict] = []
+    if isinstance(rows, list):
+        for row in rows:
+            point = _vector3_int(row, "point_mm")
+            if isinstance(point, dict):
+                out.append(dict(point))
+    if out:
+        return out
+    start = _vector3_int(payload.get("start_mm"), "start_mm")
+    end = _vector3_int(payload.get("end_mm"), "end_mm")
+    if isinstance(start, dict) and isinstance(end, dict):
+        return [dict(start), dict(end)]
+    return []
+
+
+def _set_geometry_control_points(parameters: Mapping[str, object] | None, points_mm: object) -> dict:
+    payload = dict(parameters or {}) if isinstance(parameters, Mapping) else {}
+    points = [
+        dict(point)
+        for point in list(points_mm or [])
+        if isinstance(point, dict) and _vector3_int(point, "point_mm") is not None
+    ]
+    if "control_points_mm" in payload or ("points_mm" not in payload and "path_points_mm" not in payload):
+        payload["control_points_mm"] = [dict(_vector3_int(point, "point_mm")) for point in points]
+    elif "points_mm" in payload:
+        payload["points_mm"] = [dict(_vector3_int(point, "point_mm")) for point in points]
+    else:
+        payload["path_points_mm"] = [dict(_vector3_int(point, "point_mm")) for point in points]
+    if len(points) >= 2:
+        payload["start_mm"] = dict(points[0])
+        payload["end_mm"] = dict(points[-1])
+    return payload
+
+
+def _limit_geometry_resolution(parameters: Mapping[str, object] | None, max_points: int) -> Tuple[dict, dict]:
+    points = _geometry_control_points(parameters)
+    limit = int(max(2, _as_int(max_points, 2)))
+    if len(points) <= limit:
+        return dict(parameters or {}), {
+            "degraded": False,
+            "source_point_count": int(len(points)),
+            "resolved_point_count": int(len(points)),
+            "degrade_reason": None,
+        }
+    if limit <= 2:
+        selected = [dict(points[0]), dict(points[-1])]
+    else:
+        selected: List[dict] = []
+        used = set()
+        source_count = len(points)
+        for index in range(limit):
+            source_index = int(round(float(index * (source_count - 1)) / float(limit - 1)))
+            source_index = int(max(0, min(source_count - 1, source_index)))
+            if source_index in used:
+                continue
+            used.add(source_index)
+            selected.append(dict(points[source_index]))
+        if len(selected) < 2:
+            selected = [dict(points[0]), dict(points[-1])]
+    return _set_geometry_control_points(parameters, selected), {
+        "degraded": True,
+        "source_point_count": int(len(points)),
+        "resolved_point_count": int(len(selected)),
+        "degrade_reason": "degrade.geometry.edit_resolution",
+    }
+
+
+def _upsert_row_by_id(rows: object, id_key: str, row_payload: Mapping[str, object]) -> List[dict]:
+    token_id_key = str(id_key or "").strip()
+    token_id = str(dict(row_payload or {}).get(token_id_key, "")).strip()
+    out = dict(
+        (str(row.get(token_id_key, "")).strip(), dict(row))
+        for row in list(rows or [])
+        if isinstance(row, dict) and str(row.get(token_id_key, "")).strip()
+    )
+    if token_id:
+        out[token_id] = dict(row_payload or {})
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _geometry_metric_budget_inputs(
+    *,
+    policy_context: dict | None,
+    inputs: Mapping[str, object] | None,
+) -> Tuple[int, int]:
+    policy = dict(policy_context or {})
+    payload = dict(inputs or {})
+    max_metric_cost_units = int(
+        max(
+            0,
+            _as_int(
+                payload.get("max_metric_cost_units", policy.get("geometry_metric_max_cost_units", 8)),
+                8,
+            ),
+        )
+    )
+    cost_units_per_metric = int(
+        max(
+            1,
+            _as_int(
+                payload.get("cost_units_per_metric", policy.get("geometry_metric_cost_units_per_metric", 1)),
+                1,
+            ),
+        )
+    )
+    return int(max_metric_cost_units), int(cost_units_per_metric)
+
+
+def _geometry_decision_entry(
+    *,
+    geometry_id: str,
+    intent_id: str,
+    process_id: str,
+    tick: int,
+    reason: str,
+    resolved_level: str = "meso",
+    cost_allocated: int = 0,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    token_geometry_id = str(geometry_id or "").strip()
+    token_reason = str(reason or "").strip() or "none"
+    payload_extensions = dict(extensions or {})
+    payload_extensions["geometry_id"] = token_geometry_id
+    payload_extensions["intent_id"] = str(intent_id or "").strip()
+    payload_extensions["process_id"] = str(process_id or "").strip()
+    payload_extensions["tick"] = int(max(0, _as_int(tick, 0)))
+    return {
+        "schema_version": "1.0.0",
+        "fidelity_request_id": "fidelity.request.geometry.{}".format(
+            canonical_sha256(
+                {
+                    "geometry_id": token_geometry_id,
+                    "intent_id": str(intent_id or "").strip(),
+                    "process_id": str(process_id or "").strip(),
+                    "tick": int(max(0, _as_int(tick, 0))),
+                }
+            )[:16]
+        ),
+        "allocation_id": "fidelity.alloc.geometry.{}".format(
+            canonical_sha256(
+                {
+                    "geometry_id": token_geometry_id,
+                    "reason": token_reason,
+                    "tick": int(max(0, _as_int(tick, 0))),
+                }
+            )[:16]
+        ),
+        "resolved_level": str(resolved_level or "meso").strip() or "meso",
+        "cost_allocated": int(max(0, _as_int(cost_allocated, 0))),
+        "downgrade_reason": token_reason,
+        "envelope_id": "budget.geometry",
+        "policy_id": DEFAULT_FIDELITY_POLICY_ID,
+        "refusal_codes": [],
+        "deterministic_fingerprint": "",
+        "extensions": dict((str(key), payload_extensions[key]) for key in sorted(payload_extensions.keys())),
+    }
+
+
+def _geometry_preview_data(
+    *,
+    geometry_row: Mapping[str, object],
+    mode: str,
+) -> dict:
+    row = dict(geometry_row or {})
+    geometry_id = str(row.get("geometry_id", "")).strip() or "geometry.unknown"
+    geometry_type_id = str(row.get("geometry_type_id", "")).strip() or "geo.spline1D"
+    points = _geometry_control_points(dict(row.get("parameters") or {}))
+    bounds = dict(row.get("bounds") or {})
+    min_mm = _vector3_int(bounds.get("min_mm"), "min_mm") or {"x": 0, "y": 0, "z": 0}
+    max_mm = _vector3_int(bounds.get("max_mm"), "max_mm") or {"x": 0, "y": 0, "z": 0}
+    material_id = "mat.plan.geometry.{}".format(canonical_sha256({"geometry_id": geometry_id})[:12])
+    renderables: List[dict] = []
+    for index in range(max(0, len(points) - 1)):
+        a = dict(points[index])
+        b = dict(points[index + 1])
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.plan.geometry.segment.{}".format(
+                    canonical_sha256({"geometry_id": geometry_id, "segment": int(index)})[:16]
+                ),
+                "semantic_id": "overlay.plan.geometry.segment.{}.{}".format(geometry_id, str(index).zfill(3)),
+                "primitive_id": "prim.line.debug",
+                "transform": {
+                    "position_mm": dict(a),
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": material_id,
+                "layer_tags": ["overlay", "ui", "ghost"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": True},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "plan_ghost",
+                    "geometry_id": geometry_id,
+                    "geometry_type_id": geometry_type_id,
+                    "point_a_mm": dict(a),
+                    "point_b_mm": dict(b),
+                },
+            }
+        )
+    if geometry_type_id in {"geo.corridor2D", "geo.volume3D"}:
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.plan.geometry.bounds.{}".format(
+                    canonical_sha256({"geometry_id": geometry_id, "bounds": True})[:16]
+                ),
+                "semantic_id": "overlay.plan.geometry.bounds.{}".format(geometry_id),
+                "primitive_id": "prim.box.wire",
+                "transform": {
+                    "position_mm": {
+                        "x": int((int(min_mm["x"]) + int(max_mm["x"])) // 2),
+                        "y": int((int(min_mm["y"]) + int(max_mm["y"])) // 2),
+                        "z": int((int(min_mm["z"]) + int(max_mm["z"])) // 2),
+                    },
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 1000,
+                },
+                "material_id": material_id,
+                "layer_tags": ["overlay", "ui", "ghost"],
+                "label": None,
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": False},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "plan_ghost",
+                    "geometry_id": geometry_id,
+                    "geometry_type_id": geometry_type_id,
+                    "bounds": {"min_mm": dict(min_mm), "max_mm": dict(max_mm)},
+                },
+            }
+        )
+    material = {
+        "schema_version": "1.0.0",
+        "material_id": material_id,
+        "base_color": {"r": 124, "g": 208, "b": 160},
+        "roughness": 220,
+        "metallic": 0,
+        "emission": {"r": 124, "g": 208, "b": 160, "strength": 160},
+        "transparency": {"mode": "alpha", "value_permille": 680},
+        "pattern_id": None,
+        "extensions": {"interaction_overlay": True, "overlay_kind": "plan_ghost_material", "derived_only": True},
+    }
+    return {
+        "renderables": sorted(renderables, key=lambda item: str(item.get("renderable_id", ""))),
+        "materials": [material],
+        "metadata": {
+            "source": str(mode or "geometry_preview"),
+            "geometry_id": geometry_id,
+            "geometry_type_id": geometry_type_id,
+            "point_count": int(len(points)),
+        },
+    }
+
+
 def _ensure_structural_graph_rows(state: dict) -> List[dict]:
     rows = normalize_structural_graph_rows(state.get("structural_graphs"))
     state["structural_graphs"] = [dict(row) for row in rows if isinstance(row, dict)]
@@ -1675,6 +2075,9 @@ def _spec_target_for_inspection_payload(
     if collection == "machine_assemblies":
         token = str(row.get("machine_id", "")).strip() or token_target
         return "vehicle", token
+    if collection == "guide_geometries":
+        token = str(row.get("geometry_id", "")).strip() or token_target
+        return "geometry", token
     if token_target.startswith("network.edge."):
         return "network_edge", token_target
     if token_target.startswith("vehicle."):
@@ -1809,6 +2212,19 @@ def _annotate_spec_binding_on_targets(
             update_count += 1
         if project_rows:
             state["construction_projects"] = project_rows
+    elif token_kind == "geometry":
+        rows = [dict(item) for item in list(state.get("guide_geometries") or []) if isinstance(item, dict)]
+        for row in rows:
+            if str(row.get("geometry_id", "")).strip() != token_target:
+                continue
+            row["spec_id"] = token_spec
+            ext = dict(row.get("extensions") or {})
+            ext["spec_binding_id"] = token_binding or None
+            ext["spec_applied_tick"] = int(tick)
+            row["extensions"] = ext
+            update_count += 1
+        if rows:
+            state["guide_geometries"] = rows
     return {"updated_count": int(update_count)}
 
 
@@ -1840,12 +2256,50 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("cohort_assemblies", "cohort_id"),
         ("body_assemblies", "assembly_id"),
         ("plan_artifacts", "plan_id"),
+        ("guide_geometries", "geometry_id"),
+        ("mobility_junctions", "junction_id"),
         ("structural_graphs", "structural_graph_id"),
         ("structural_nodes", "node_id"),
         ("structural_edges", "edge_id"),
     ):
         candidates.extend(_collect(state.get(key), field))
     return _sorted_tokens(candidates)
+
+
+def _geometry_points_from_parameters(parameters: Mapping[str, object] | None) -> List[dict]:
+    payload = dict(parameters or {}) if isinstance(parameters, Mapping) else {}
+    rows = payload.get("control_points_mm")
+    if not isinstance(rows, list):
+        rows = payload.get("points_mm")
+    if not isinstance(rows, list):
+        rows = payload.get("path_points_mm")
+    if not isinstance(rows, list):
+        rows = []
+    out: List[dict] = []
+    for row in rows:
+        point = _vector3_int(row, "point_mm")
+        if isinstance(point, dict):
+            out.append(dict(point))
+    return out
+
+
+def _geometry_anchor_position(geometry_row: Mapping[str, object]) -> dict:
+    row = dict(geometry_row or {})
+    points = _geometry_points_from_parameters(dict(row.get("parameters") or {}))
+    if points:
+        return {"position_mm": dict(points[0])}
+    bounds = dict(row.get("bounds") or {})
+    min_mm = _vector3_int(bounds.get("min_mm"), "min_mm")
+    max_mm = _vector3_int(bounds.get("max_mm"), "max_mm")
+    if isinstance(min_mm, dict) and isinstance(max_mm, dict):
+        return {
+            "position_mm": {
+                "x": int((int(min_mm["x"]) + int(max_mm["x"])) // 2),
+                "y": int((int(min_mm["y"]) + int(max_mm["y"])) // 2),
+                "z": int((int(min_mm["z"]) + int(max_mm["z"])) // 2),
+            }
+        }
+    return {"position_mm": {"x": 0, "y": 0, "z": 0}}
 
 
 def _target_spatial_position(state: dict, target_id: str) -> dict:
@@ -1880,6 +2334,22 @@ def _target_spatial_position(state: dict, target_id: str) -> dict:
             if cell_id:
                 return {"cell_id": cell_id}
             break
+    if token.startswith("geometry."):
+        rows = [dict(item) for item in list(state.get("guide_geometries") or []) if isinstance(item, dict)]
+        for row in sorted(rows, key=lambda item: str(item.get("geometry_id", ""))):
+            if str(row.get("geometry_id", "")).strip() != token:
+                continue
+            return _geometry_anchor_position(row)
+    if token.startswith("junction."):
+        rows = [dict(item) for item in list(state.get("mobility_junctions") or []) if isinstance(item, dict)]
+        for row in sorted(rows, key=lambda item: str(item.get("junction_id", ""))):
+            if str(row.get("junction_id", "")).strip() != token:
+                continue
+            ext = dict(row.get("extensions") or {})
+            pos = _vector3_int(ext.get("position_mm"), "position_mm")
+            if isinstance(pos, dict):
+                return {"position_mm": dict(pos)}
+            return {"position_mm": {"x": 0, "y": 0, "z": 0}}
     return {"position_mm": {"x": 0, "y": 0, "z": 0}}
 
 
@@ -9037,6 +9507,26 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
                 "collection": "structural_edges",
                 "row": row,
             }
+    if token.startswith("geometry."):
+        geometry_id = str(token).strip()
+        row = _row_by_id_value(state.get("guide_geometries"), "geometry_id", geometry_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "guide_geometries",
+                "row": row,
+            }
+    if token.startswith("junction."):
+        junction_id = str(token).strip()
+        row = _row_by_id_value(state.get("mobility_junctions"), "junction_id", junction_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "mobility_junctions",
+                "row": row,
+            }
 
     id_table = (
         ("cohort_assemblies", "cohort_id"),
@@ -9069,6 +9559,10 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("formalization_states", "formalization_id"),
         ("formalization_inference_candidates", "candidate_id"),
         ("formalization_events", "event_id"),
+        ("guide_geometries", "geometry_id"),
+        ("mobility_junctions", "junction_id"),
+        ("geometry_candidates", "candidate_id"),
+        ("geometry_derived_metrics", "geometry_id"),
         ("structural_graphs", "structural_graph_id"),
         ("structural_nodes", "node_id"),
         ("structural_edges", "edge_id"),
@@ -11756,6 +12250,10 @@ def execute_intent(
     formalization_states = _ensure_formalization_states(state)
     formalization_inference_candidates = _ensure_formalization_inference_candidates(state)
     formalization_events = _ensure_formalization_events(state)
+    guide_geometries = _ensure_guide_geometry_rows(state)
+    mobility_junctions = _ensure_mobility_junction_rows(state)
+    geometry_candidates = _ensure_geometry_candidate_rows(state)
+    geometry_derived_metrics = _ensure_geometry_metric_rows(state)
     structural_graphs = _ensure_structural_graph_rows(state)
     structural_nodes = _ensure_structural_node_rows(state)
     structural_edges = _ensure_structural_edge_rows(state)
@@ -18531,6 +19029,740 @@ def execute_intent(
             "state": "raw",
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
             "removed_network_graph_ref": network_graph_ref or None,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.geometry_create":
+        geometry_type_registry = dict(_policy_payload(policy_context, "geometry_type_registry") or {})
+        if not geometry_type_registry:
+            geometry_type_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/geometry_type_registry.json",
+                default_payload={"geometry_types": []},
+            )
+        junction_type_registry = dict(_policy_payload(policy_context, "junction_type_registry") or {})
+        if not junction_type_registry:
+            junction_type_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/junction_type_registry.json",
+                default_payload={"junction_types": []},
+            )
+        snap_policy_registry = dict(_policy_payload(policy_context, "geometry_snap_policy_registry") or {})
+        if not snap_policy_registry:
+            snap_policy_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/geometry_snap_policy_registry.json",
+                default_payload={"snap_policies": []},
+            )
+        geometry_type_rows = geometry_type_rows_by_id(geometry_type_registry)
+        junction_type_rows = junction_type_rows_by_id(junction_type_registry)
+        snap_policy_rows = geometry_snap_policy_rows_by_id(snap_policy_registry)
+
+        geometry_type_id = str(inputs.get("geometry_type_id", "")).strip()
+        parent_spatial_id = str(inputs.get("parent_spatial_id", "")).strip()
+        if (not geometry_type_id) or (not parent_spatial_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.geometry_create requires geometry_type_id and parent_spatial_id",
+                "Provide geometry_type_id from registry and parent_spatial_id for SpatialNode scope.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if geometry_type_id not in geometry_type_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "geometry_type_id '{}' is not declared in geometry_type_registry".format(geometry_type_id),
+                "Use geometry_type_id from data/registries/geometry_type_registry.json.",
+                {"geometry_type_id": geometry_type_id},
+                "$.intent.inputs.geometry_type_id",
+            )
+        snap_policy_id = str(inputs.get("snap_policy_id", "snap.none")).strip() or "snap.none"
+        if snap_policy_id not in snap_policy_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "snap_policy_id '{}' is not declared".format(snap_policy_id),
+                "Use snap_policy_id from data/registries/geometry_snap_policy_registry.json.",
+                {"snap_policy_id": snap_policy_id},
+                "$.intent.inputs.snap_policy_id",
+            )
+
+        spec_id = str(inputs.get("spec_id", "")).strip() or None
+        formalization_id = str(inputs.get("formalization_id", "")).strip() or "formalization.manual"
+        candidate_id = str(inputs.get("candidate_id", "")).strip() or "candidate.manual.{}".format(
+            canonical_sha256({"intent_id": str(intent_id), "tick": int(current_tick)})[:12]
+        )
+        created_tick_bucket = int(max(0, _as_int(inputs.get("created_tick_bucket", current_tick), int(current_tick))))
+        geometry_id = str(inputs.get("geometry_id", "")).strip() or deterministic_geometry_id(
+            formalization_id=formalization_id,
+            candidate_id=candidate_id,
+            spec_id=spec_id,
+            created_tick_bucket=int(created_tick_bucket),
+        )
+        existing_row = {}
+        for row in list(guide_geometries or []):
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("geometry_id", "")).strip() == geometry_id:
+                existing_row = dict(row)
+                break
+        if existing_row and not bool(inputs.get("allow_overwrite", False)):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "geometry_id '{}' already exists".format(geometry_id),
+                "Set allow_overwrite=true to replace this geometry deterministically.",
+                {"geometry_id": geometry_id},
+                "$.intent.inputs.geometry_id",
+            )
+
+        raw_parameters = dict(inputs.get("parameters") or {})
+        max_edit_points = int(
+            max(
+                2,
+                _as_int(
+                    inputs.get("max_edit_points", (dict(policy_context or {})).get("geometry_max_edit_points", 64)),
+                    64,
+                ),
+            )
+        )
+        limited_parameters, resolution_diag = _limit_geometry_resolution(raw_parameters, max_edit_points)
+        spec_tolerance_mm = int(max(0, _as_int(inputs.get("spec_tolerance_mm", 0), 0)))
+        if (snap_policy_id == "snap.spec_compliant") and (spec_tolerance_mm <= 0) and spec_id:
+            spec_type_registry = _spec_registry_payload(
+                policy_context=policy_context,
+                key="spec_type_registry",
+                registry_rel_path="data/registries/spec_type_registry.json",
+                entry_key="spec_types",
+            )
+            tolerance_policy_registry = _spec_registry_payload(
+                policy_context=policy_context,
+                key="tolerance_policy_registry",
+                registry_rel_path="data/registries/tolerance_policy_registry.json",
+                entry_key="tolerance_policies",
+            )
+            compliance_check_registry = _spec_registry_payload(
+                policy_context=policy_context,
+                key="compliance_check_registry",
+                registry_rel_path="data/registries/compliance_check_registry.json",
+                entry_key="compliance_checks",
+            )
+            spec_rows, _spec_load_errors = _spec_sheet_rows(
+                policy_context=policy_context,
+                spec_type_registry=spec_type_registry,
+                tolerance_policy_registry=tolerance_policy_registry,
+                compliance_check_registry=compliance_check_registry,
+            )
+            spec_row = dict(spec_sheet_rows_by_id(spec_rows).get(spec_id) or {})
+            tolerance_policy_id = str(spec_row.get("tolerance_policy_id", "")).strip()
+            tolerance_row = dict(tolerance_policy_rows_by_id(tolerance_policy_registry).get(tolerance_policy_id) or {})
+            numeric_tolerances = dict(tolerance_row.get("numeric_tolerances") or {})
+            spec_tolerance_mm = int(
+                max(
+                    0,
+                    _as_int(
+                        numeric_tolerances.get("endpoint_snap_mm", numeric_tolerances.get("clearance_mm", 0)),
+                        0,
+                    ),
+                )
+            )
+        snapped_parameters = snap_geometry_parameters(
+            parameters=limited_parameters,
+            snap_policy_id=snap_policy_id,
+            existing_geometry_rows=guide_geometries,
+            snap_policy_registry=snap_policy_registry,
+            spec_tolerance_mm=int(spec_tolerance_mm),
+        )
+        geometry_row = build_guide_geometry(
+            geometry_id=geometry_id,
+            geometry_type_id=geometry_type_id,
+            parent_spatial_id=parent_spatial_id,
+            spec_id=spec_id,
+            parameters=snapped_parameters,
+            bounds=dict(inputs.get("bounds") or {}),
+            junction_refs=inputs.get("junction_refs"),
+            extensions={
+                "source_process_id": process_id,
+                "intent_id": str(intent_id),
+                "formalization_id": formalization_id,
+                "candidate_id": candidate_id,
+                "created_tick_bucket": int(created_tick_bucket),
+                "snap_policy_id": snap_policy_id,
+                "spec_tolerance_mm": int(spec_tolerance_mm),
+                **dict(inputs.get("extensions") or {}),
+            },
+        )
+
+        points = _geometry_control_points(dict(geometry_row.get("parameters") or {}))
+        add_junction_rows: List[dict] = []
+        requested_junction_rows = [dict(item) for item in list(inputs.get("junction_rows") or []) if isinstance(item, dict)]
+        for row in sorted(
+            requested_junction_rows,
+            key=lambda item: (
+                str(item.get("junction_id", "")),
+                str(item.get("junction_type_id", "")),
+            ),
+        ):
+            junction_type_id = str(row.get("junction_type_id", "")).strip() or "junc.endpoint"
+            if junction_type_id not in junction_type_rows:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "junction_type_id '{}' is not declared".format(junction_type_id),
+                    "Use junction_type_id from data/registries/junction_type_registry.json.",
+                    {"junction_type_id": junction_type_id},
+                    "$.intent.inputs.junction_rows",
+                )
+            connected_geometry_ids = _sorted_tokens(list(row.get("connected_geometry_ids") or []) + [geometry_id])
+            junction_id = str(row.get("junction_id", "")).strip()
+            if not junction_id:
+                junction_id = "junction.{}".format(
+                    canonical_sha256(
+                        {
+                            "geometry_id": geometry_id,
+                            "junction_type_id": junction_type_id,
+                            "connected_geometry_ids": list(connected_geometry_ids),
+                            "parent_spatial_id": parent_spatial_id,
+                        }
+                    )[:16]
+                )
+            add_junction_rows.append(
+                build_junction(
+                    junction_id=junction_id,
+                    parent_spatial_id=parent_spatial_id,
+                    connected_geometry_ids=connected_geometry_ids,
+                    junction_type_id=junction_type_id,
+                    state_machine_id=(
+                        None
+                        if row.get("state_machine_id") is None
+                        else str(row.get("state_machine_id", "")).strip() or None
+                    ),
+                    extensions=dict(row.get("extensions") or {}),
+                )
+            )
+        if bool(inputs.get("auto_endpoint_junctions", False)) and points:
+            endpoint_indices = sorted(set([0, max(0, len(points) - 1)]))
+            for endpoint_index in endpoint_indices:
+                point = dict(points[endpoint_index])
+                junction_id = "junction.{}".format(
+                    canonical_sha256(
+                        {
+                            "geometry_id": geometry_id,
+                            "endpoint_index": int(endpoint_index),
+                            "parent_spatial_id": parent_spatial_id,
+                        }
+                    )[:16]
+                )
+                add_junction_rows.append(
+                    build_junction(
+                        junction_id=junction_id,
+                        parent_spatial_id=parent_spatial_id,
+                        connected_geometry_ids=[geometry_id],
+                        junction_type_id="junc.endpoint",
+                        state_machine_id=None,
+                        extensions={"position_mm": dict(point), "endpoint_index": int(endpoint_index)},
+                    )
+                )
+        for row in add_junction_rows:
+            mobility_junctions = normalize_junction_rows(_upsert_row_by_id(mobility_junctions, "junction_id", row))
+        created_junction_ids = _sorted_tokens([row.get("junction_id") for row in add_junction_rows])
+        if created_junction_ids:
+            merged_refs = _sorted_tokens(list(geometry_row.get("junction_refs") or []) + list(created_junction_ids))
+            geometry_row = build_guide_geometry(
+                geometry_id=geometry_id,
+                geometry_type_id=geometry_type_id,
+                parent_spatial_id=parent_spatial_id,
+                spec_id=spec_id,
+                parameters=dict(geometry_row.get("parameters") or {}),
+                bounds=dict(geometry_row.get("bounds") or {}),
+                junction_refs=merged_refs,
+                extensions=dict(geometry_row.get("extensions") or {}),
+            )
+
+        guide_geometries = normalize_guide_geometry_rows(_upsert_row_by_id(guide_geometries, "geometry_id", geometry_row))
+        metric_budget_units, metric_cost_per = _geometry_metric_budget_inputs(
+            policy_context=policy_context,
+            inputs=inputs,
+        )
+        metric_row = _geometry_metric_with_cache(
+            geometry_row=geometry_row,
+            metric_rows=geometry_derived_metrics,
+            current_tick=int(current_tick),
+            max_cost_units=int(metric_budget_units),
+            cost_units_per_metric=int(metric_cost_per),
+        )
+        geometry_derived_metrics = normalize_geometry_metric_rows(_upsert_geometry_metric_row(geometry_derived_metrics, metric_row))
+        geometry_candidate_row = build_geometry_candidate(
+            candidate_id=candidate_id,
+            formalization_id=formalization_id,
+            geometry_preview_ref=str(inputs.get("geometry_preview_ref", "")).strip() or "preview.geometry.{}".format(
+                canonical_sha256({"geometry_id": geometry_id, "candidate_id": candidate_id})[:16]
+            ),
+            proposed_spec_id=spec_id,
+            extensions={
+                "source_process_id": process_id,
+                "intent_id": str(intent_id),
+                "geometry_id": geometry_id,
+            },
+        )
+        geometry_candidates = normalize_geometry_candidate_rows(
+            _upsert_row_by_id(geometry_candidates, "candidate_id", geometry_candidate_row)
+        )
+        _persist_guide_geometry_state(
+            state,
+            guide_geometries=guide_geometries,
+            mobility_junctions=mobility_junctions,
+            geometry_candidates=geometry_candidates,
+            geometry_derived_metrics=geometry_derived_metrics,
+        )
+        degrade_reasons = []
+        if bool(resolution_diag.get("degraded", False)):
+            degrade_reasons.append(str(resolution_diag.get("degrade_reason", "degrade.geometry.edit_resolution")))
+        if bool(metric_row.get("degraded", False)):
+            degrade_reasons.append(str(metric_row.get("degrade_reason", "degrade.geometry.metrics_budget")))
+        decision_entries = [
+            _geometry_decision_entry(
+                geometry_id=geometry_id,
+                intent_id=str(intent_id),
+                process_id=process_id,
+                tick=int(current_tick),
+                reason=reason,
+                resolved_level="meso",
+                cost_allocated=int(metric_row.get("cost_units_used", 0)),
+                extensions={
+                    "metric_cost_units": int(metric_row.get("cost_units_used", 0)),
+                    "source_point_count": int(resolution_diag.get("source_point_count", 0)),
+                    "resolved_point_count": int(resolution_diag.get("resolved_point_count", 0)),
+                },
+            )
+            for reason in _sorted_tokens(degrade_reasons)
+        ]
+        if decision_entries:
+            _append_fidelity_decision_entries(
+                state,
+                entries=decision_entries,
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+        result_metadata = {
+            "geometry_id": geometry_id,
+            "geometry_type_id": geometry_type_id,
+            "parent_spatial_id": parent_spatial_id,
+            "spec_id": spec_id,
+            "candidate_id": candidate_id,
+            "formalization_id": formalization_id,
+            "snap_policy_id": snap_policy_id,
+            "metric_row": dict(metric_row),
+            "junction_ids": list(created_junction_ids),
+            "resolution_degraded": bool(resolution_diag.get("degraded", False)),
+            "metrics_degraded": bool(metric_row.get("degraded", False)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.geometry_edit":
+        geometry_id = str(inputs.get("geometry_id", "")).strip()
+        if not geometry_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.geometry_edit requires geometry_id",
+                "Provide geometry_id for deterministic edit/update.",
+                {"process_id": process_id},
+                "$.intent.inputs.geometry_id",
+            )
+        geometry_row = {}
+        for row in list(guide_geometries or []):
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("geometry_id", "")).strip() == geometry_id:
+                geometry_row = dict(row)
+                break
+        if not geometry_row:
+            return refusal(
+                REFUSAL_EFFECT_INVALID_TARGET,
+                "geometry_id '{}' is not present".format(geometry_id),
+                "Create geometry via process.geometry_create before editing.",
+                {"geometry_id": geometry_id},
+                "$.intent.inputs.geometry_id",
+            )
+
+        geometry_type_registry = dict(_policy_payload(policy_context, "geometry_type_registry") or {})
+        if not geometry_type_registry:
+            geometry_type_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/geometry_type_registry.json",
+                default_payload={"geometry_types": []},
+            )
+        snap_policy_registry = dict(_policy_payload(policy_context, "geometry_snap_policy_registry") or {})
+        if not snap_policy_registry:
+            snap_policy_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/geometry_snap_policy_registry.json",
+                default_payload={"snap_policies": []},
+            )
+        geometry_type_rows = geometry_type_rows_by_id(geometry_type_registry)
+        snap_policy_rows = geometry_snap_policy_rows_by_id(snap_policy_registry)
+
+        stage = str(inputs.get("stage", "commit")).strip() or "commit"
+        current_parameters = dict(geometry_row.get("parameters") or {})
+        if bool(inputs.get("replace_parameters", False)):
+            desired_parameters = dict(inputs.get("parameters") or {})
+        else:
+            desired_parameters = dict(current_parameters)
+            desired_parameters.update(dict(inputs.get("parameters") or {}))
+            desired_parameters.update(dict(inputs.get("parameters_patch") or {}))
+        max_edit_points = int(
+            max(
+                2,
+                _as_int(
+                    inputs.get("max_edit_points", (dict(policy_context or {})).get("geometry_max_edit_points", 64)),
+                    64,
+                ),
+            )
+        )
+        limited_parameters, resolution_diag = _limit_geometry_resolution(desired_parameters, max_edit_points)
+        snap_policy_id = str(
+            inputs.get("snap_policy_id", dict(geometry_row.get("extensions") or {}).get("snap_policy_id", "snap.none"))
+        ).strip() or "snap.none"
+        if snap_policy_id not in snap_policy_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "snap_policy_id '{}' is not declared".format(snap_policy_id),
+                "Use snap_policy_id from data/registries/geometry_snap_policy_registry.json.",
+                {"snap_policy_id": snap_policy_id},
+                "$.intent.inputs.snap_policy_id",
+            )
+        spec_tolerance_mm = int(max(0, _as_int(inputs.get("spec_tolerance_mm", 0), 0)))
+        snapped_parameters = snap_geometry_parameters(
+            parameters=limited_parameters,
+            snap_policy_id=snap_policy_id,
+            existing_geometry_rows=guide_geometries,
+            snap_policy_registry=snap_policy_registry,
+            spec_tolerance_mm=int(spec_tolerance_mm),
+        )
+
+        updated_row = build_guide_geometry(
+            geometry_id=geometry_id,
+            geometry_type_id=str(inputs.get("geometry_type_id", geometry_row.get("geometry_type_id", ""))).strip()
+            or str(geometry_row.get("geometry_type_id", "geo.spline1D")).strip()
+            or "geo.spline1D",
+            parent_spatial_id=str(inputs.get("parent_spatial_id", geometry_row.get("parent_spatial_id", ""))).strip()
+            or str(geometry_row.get("parent_spatial_id", "")).strip(),
+            spec_id=(
+                None
+                if inputs.get("spec_id", geometry_row.get("spec_id")) is None
+                else str(inputs.get("spec_id", geometry_row.get("spec_id", ""))).strip() or None
+            ),
+            parameters=snapped_parameters,
+            bounds=dict(inputs.get("bounds") or dict(geometry_row.get("bounds") or {})),
+            junction_refs=(
+                inputs.get("junction_refs")
+                if isinstance(inputs.get("junction_refs"), list)
+                else geometry_row.get("junction_refs")
+            ),
+            extensions={
+                **dict(geometry_row.get("extensions") or {}),
+                **dict(inputs.get("extensions") or {}),
+                "source_process_id": process_id,
+                "intent_id": str(intent_id),
+                "snap_policy_id": snap_policy_id,
+            },
+        )
+        if str(updated_row.get("geometry_type_id", "")).strip() not in geometry_type_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "geometry_type_id '{}' is not declared in registry".format(
+                    str(updated_row.get("geometry_type_id", "")).strip()
+                ),
+                "Use geometry_type_id from data/registries/geometry_type_registry.json.",
+                {"geometry_type_id": str(updated_row.get("geometry_type_id", "")).strip()},
+                "$.intent.inputs.geometry_type_id",
+            )
+
+        if stage in {"plan", "preview", "ghost"}:
+            plan_id = str(inputs.get("plan_id", "")).strip()
+            if not plan_id:
+                return refusal(
+                    REFUSAL_PLAN_INVALID,
+                    "process.geometry_edit in preview stage requires plan_id",
+                    "Provide plan_id to store derived spatial_preview_data.",
+                    {"process_id": process_id},
+                    "$.intent.inputs.plan_id",
+                )
+            current_plan = _find_plan_artifact(plan_artifacts, plan_id)
+            if not current_plan:
+                return refusal(
+                    REFUSAL_PLAN_NOT_FOUND,
+                    "plan artifact '{}' was not found".format(plan_id),
+                    "Create plan via process.plan_create before preview geometry edits.",
+                    {"plan_id": plan_id},
+                    "$.intent.inputs.plan_id",
+                )
+            preview_data = _geometry_preview_data(geometry_row=updated_row, mode="geometry_preview")
+            plan_row = dict(current_plan)
+            plan_row["spatial_preview_data"] = dict(preview_data)
+            ext = dict(plan_row.get("extensions") or {})
+            ext["last_geometry_preview_id"] = geometry_id
+            ext["last_geometry_preview_tick"] = int(max(0, int(current_tick)))
+            ext["last_geometry_preview_mode"] = stage
+            plan_row["extensions"] = ext
+            seed = dict(plan_row)
+            seed["deterministic_fingerprint"] = ""
+            plan_row["deterministic_fingerprint"] = canonical_sha256(seed)
+            plan_artifacts = _upsert_plan_artifact(plan_artifacts, plan_row)
+            state["plan_artifacts"] = [dict(row) for row in list(plan_artifacts or []) if isinstance(row, dict)]
+            if bool(resolution_diag.get("degraded", False)):
+                _append_fidelity_decision_entries(
+                    state,
+                    entries=[
+                        _geometry_decision_entry(
+                            geometry_id=geometry_id,
+                            intent_id=str(intent_id),
+                            process_id=process_id,
+                            tick=int(current_tick),
+                            reason=str(resolution_diag.get("degrade_reason", "degrade.geometry.edit_resolution")),
+                            resolved_level="meso",
+                            cost_allocated=0,
+                            extensions={
+                                "source_point_count": int(resolution_diag.get("source_point_count", 0)),
+                                "resolved_point_count": int(resolution_diag.get("resolved_point_count", 0)),
+                            },
+                        )
+                    ],
+                    process_id=process_id,
+                    tick=int(current_tick),
+                )
+            result_metadata = {
+                "geometry_id": geometry_id,
+                "plan_id": plan_id,
+                "derived_only": True,
+                "stage": stage,
+                "preview_renderable_count": int(len(list(preview_data.get("renderables") or []))),
+                "resolution_degraded": bool(resolution_diag.get("degraded", False)),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            metric_budget_units, metric_cost_per = _geometry_metric_budget_inputs(
+                policy_context=policy_context,
+                inputs=inputs,
+            )
+            metric_row = _geometry_metric_with_cache(
+                geometry_row=updated_row,
+                metric_rows=geometry_derived_metrics,
+                current_tick=int(current_tick),
+                max_cost_units=int(metric_budget_units),
+                cost_units_per_metric=int(metric_cost_per),
+            )
+            guide_geometries = normalize_guide_geometry_rows(
+                _upsert_row_by_id(guide_geometries, "geometry_id", updated_row)
+            )
+            geometry_derived_metrics = normalize_geometry_metric_rows(
+                _upsert_geometry_metric_row(geometry_derived_metrics, metric_row)
+            )
+            _persist_guide_geometry_state(
+                state,
+                guide_geometries=guide_geometries,
+                mobility_junctions=mobility_junctions,
+                geometry_candidates=geometry_candidates,
+                geometry_derived_metrics=geometry_derived_metrics,
+            )
+            degrade_reasons = []
+            if bool(resolution_diag.get("degraded", False)):
+                degrade_reasons.append(str(resolution_diag.get("degrade_reason", "degrade.geometry.edit_resolution")))
+            if bool(metric_row.get("degraded", False)):
+                degrade_reasons.append(str(metric_row.get("degrade_reason", "degrade.geometry.metrics_budget")))
+            if degrade_reasons:
+                _append_fidelity_decision_entries(
+                    state,
+                    entries=[
+                        _geometry_decision_entry(
+                            geometry_id=geometry_id,
+                            intent_id=str(intent_id),
+                            process_id=process_id,
+                            tick=int(current_tick),
+                            reason=reason,
+                            resolved_level="meso",
+                            cost_allocated=int(metric_row.get("cost_units_used", 0)),
+                            extensions={
+                                "source_point_count": int(resolution_diag.get("source_point_count", 0)),
+                                "resolved_point_count": int(resolution_diag.get("resolved_point_count", 0)),
+                            },
+                        )
+                        for reason in _sorted_tokens(degrade_reasons)
+                    ],
+                    process_id=process_id,
+                    tick=int(current_tick),
+                )
+            result_metadata = {
+                "geometry_id": geometry_id,
+                "stage": stage,
+                "metric_row": dict(metric_row),
+                "resolution_degraded": bool(resolution_diag.get("degraded", False)),
+                "metrics_degraded": bool(metric_row.get("degraded", False)),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.geometry_finalize":
+        formalization_id = str(inputs.get("formalization_id", "")).strip()
+        candidate_id = str(inputs.get("candidate_id", "")).strip()
+        spec_id = str(inputs.get("spec_id", "")).strip() or None
+        created_tick_bucket = int(max(0, _as_int(inputs.get("created_tick_bucket", current_tick), int(current_tick))))
+        geometry_id = str(inputs.get("geometry_id", "")).strip()
+        if not geometry_id and formalization_id and candidate_id:
+            geometry_id = deterministic_geometry_id(
+                formalization_id=formalization_id,
+                candidate_id=candidate_id,
+                spec_id=spec_id,
+                created_tick_bucket=int(created_tick_bucket),
+            )
+        if not geometry_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.geometry_finalize requires geometry_id or (formalization_id,candidate_id)",
+                "Provide geometry_id or deterministic formalization/candidate identifiers.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        geometry_row = {}
+        for row in list(guide_geometries or []):
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("geometry_id", "")).strip() == geometry_id:
+                geometry_row = dict(row)
+                break
+        if not geometry_row:
+            return refusal(
+                REFUSAL_EFFECT_INVALID_TARGET,
+                "geometry_id '{}' is not present".format(geometry_id),
+                "Create geometry before finalize.",
+                {"geometry_id": geometry_id},
+                "$.intent.inputs.geometry_id",
+            )
+
+        enforce_spec = bool(inputs.get("require_spec_compliance", False))
+        target_spec_id = spec_id or str(geometry_row.get("spec_id", "")).strip() or None
+        if enforce_spec and target_spec_id:
+            compliance_row = _latest_spec_compliance_result_for_target(
+                compliance_rows=spec_compliance_results,
+                target_kind="geometry",
+                target_id=geometry_id,
+                spec_id=target_spec_id,
+            )
+            if (not compliance_row) or str(compliance_row.get("overall_grade", "")).strip() == "fail":
+                return refusal(
+                    "refusal.mob.spec_noncompliant",
+                    "geometry finalize requires passing spec compliance",
+                    "Run process.spec_check_compliance for this geometry and resolve failures.",
+                    {
+                        "geometry_id": geometry_id,
+                        "spec_id": target_spec_id,
+                    },
+                    "$.intent.inputs.require_spec_compliance",
+                )
+
+        finalized_extensions = dict(geometry_row.get("extensions") or {})
+        finalized_extensions["finalized"] = True
+        finalized_extensions["finalized_tick"] = int(max(0, int(current_tick)))
+        finalized_extensions["finalized_by_subject"] = str(authority_context.get("subject_id", "")).strip() or "subject.system"
+        if formalization_id:
+            finalized_extensions["formalization_id"] = formalization_id
+        if candidate_id:
+            finalized_extensions["candidate_id"] = candidate_id
+        geometry_row = build_guide_geometry(
+            geometry_id=str(geometry_row.get("geometry_id", "")).strip(),
+            geometry_type_id=str(geometry_row.get("geometry_type_id", "")).strip(),
+            parent_spatial_id=str(geometry_row.get("parent_spatial_id", "")).strip(),
+            spec_id=(
+                target_spec_id
+                if target_spec_id is not None
+                else (
+                    None
+                    if geometry_row.get("spec_id") is None
+                    else str(geometry_row.get("spec_id", "")).strip() or None
+                )
+            ),
+            parameters=dict(geometry_row.get("parameters") or {}),
+            bounds=dict(geometry_row.get("bounds") or {}),
+            junction_refs=geometry_row.get("junction_refs"),
+            extensions=finalized_extensions,
+        )
+        guide_geometries = normalize_guide_geometry_rows(
+            _upsert_row_by_id(guide_geometries, "geometry_id", geometry_row)
+        )
+
+        metric_budget_units, metric_cost_per = _geometry_metric_budget_inputs(
+            policy_context=policy_context,
+            inputs=inputs,
+        )
+        metric_row = _geometry_metric_with_cache(
+            geometry_row=geometry_row,
+            metric_rows=geometry_derived_metrics,
+            current_tick=int(current_tick),
+            max_cost_units=int(metric_budget_units),
+            cost_units_per_metric=int(metric_cost_per),
+        )
+        geometry_derived_metrics = normalize_geometry_metric_rows(
+            _upsert_geometry_metric_row(geometry_derived_metrics, metric_row)
+        )
+        if formalization_id and candidate_id:
+            geometry_candidate_row = build_geometry_candidate(
+                candidate_id=candidate_id,
+                formalization_id=formalization_id,
+                geometry_preview_ref=str(inputs.get("geometry_preview_ref", "")).strip() or "preview.geometry.{}".format(
+                    canonical_sha256({"geometry_id": geometry_id, "candidate_id": candidate_id})[:16]
+                ),
+                proposed_spec_id=target_spec_id,
+                extensions={
+                    "source_process_id": process_id,
+                    "intent_id": str(intent_id),
+                    "geometry_id": geometry_id,
+                },
+            )
+            geometry_candidates = normalize_geometry_candidate_rows(
+                _upsert_row_by_id(geometry_candidates, "candidate_id", geometry_candidate_row)
+            )
+        if formalization_id:
+            state_by_id = _formalization_state_by_id(formalization_states)
+            state_row = dict(state_by_id.get(formalization_id) or {})
+            if state_row:
+                state_row["state"] = "formal"
+                state_row["formal_artifact_ref"] = geometry_id
+                if target_spec_id:
+                    state_row["spec_id"] = target_spec_id
+                state_by_id[formalization_id] = dict(state_row)
+                formalization_states = _ensure_formalization_states(
+                    {"formalization_states": [dict(state_by_id[key]) for key in sorted(state_by_id.keys())]}
+                )
+                _persist_formalization_state(
+                    state,
+                    formalization_states=formalization_states,
+                    inference_candidates=formalization_inference_candidates,
+                    formalization_events=formalization_events,
+                )
+        _persist_guide_geometry_state(
+            state,
+            guide_geometries=guide_geometries,
+            mobility_junctions=mobility_junctions,
+            geometry_candidates=geometry_candidates,
+            geometry_derived_metrics=geometry_derived_metrics,
+        )
+        if bool(metric_row.get("degraded", False)):
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id=geometry_id,
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason=str(metric_row.get("degrade_reason", "degrade.geometry.metrics_budget")),
+                        resolved_level="meso",
+                        cost_allocated=int(metric_row.get("cost_units_used", 0)),
+                    )
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+        result_metadata = {
+            "geometry_id": geometry_id,
+            "formalization_id": formalization_id or None,
+            "candidate_id": candidate_id or None,
+            "spec_id": target_spec_id,
+            "metric_row": dict(metric_row),
+            "metrics_degraded": bool(metric_row.get("degraded", False)),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mechanics_tick":
