@@ -170,6 +170,8 @@ from analyzers import e141_weather_hack_smell
 from analyzers import e142_mobility_special_case_smell
 from analyzers import e143_direct_position_mutation_smell
 from analyzers import e144_adhoc_speed_limit_smell
+from analyzers import e145_geometry_mutation_bypass_smell
+from analyzers import e146_hardcoded_track_spec_smell
 
 
 ANALYZERS = (
@@ -343,6 +345,8 @@ ANALYZERS = (
     e142_mobility_special_case_smell,
     e143_direct_position_mutation_smell,
     e144_adhoc_speed_limit_smell,
+    e145_geometry_mutation_bypass_smell,
+    e146_hardcoded_track_spec_smell,
 )
 
 

@@ -11742,6 +11742,100 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-MOB-USES-GUIDEGEOMETRY",
             )
         )
+    for token in (
+        'elif process_id == "process.geometry_create":',
+        'elif process_id == "process.geometry_edit":',
+        'elif process_id == "process.geometry_finalize":',
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="guide geometry authoritative writes must route through geometry process handlers",
+                rule_id="INV-GEOMETRY-CREATION-PROCESS-ONLY",
+            )
+        )
+
+    geometry_mutation_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']guide_geometries[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']mobility_junctions[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']geometry_derived_metrics[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']geometry_candidates[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    geometry_allowed_files = {
+        process_runtime_rel,
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(mobility_scan_prefixes):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in geometry_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in geometry_mutation_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="guide geometry truth writes must happen through process.geometry_* handlers only",
+                    rule_id="INV-GEOMETRY-CREATION-PROCESS-ONLY",
+                )
+            )
+            break
+
+    hardcoded_gauge_pattern = re.compile(
+        r"\b(?:gauge_mm|track_gauge_mm)\b\s*[:=]\s*\d{2,6}\b|[\"'](?:gauge_mm|track_gauge_mm)[\"']\s*:\s*\d{2,6}\b",
+        re.IGNORECASE,
+    )
+    gauge_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+        "src/specs/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(mobility_scan_prefixes):
+            continue
+        if rel_norm.startswith(gauge_skip_prefixes):
+            continue
+        if rel_norm == "tools/xstack/repox/check.py":
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not hardcoded_gauge_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="hardcoded gauge constants are forbidden in mobility runtime; use SpecSheets/registries",
+                    rule_id="INV-NO-HARDCODED-GAUGE",
+                )
+            )
+            break
 
 
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
