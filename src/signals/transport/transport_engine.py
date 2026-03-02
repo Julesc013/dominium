@@ -1621,6 +1621,8 @@ def tick_signal_transport(
         "cost_units": int(max(0, _as_int(execution.get("cost_units", 0), 0))),
         "route_cache_state": _as_map(execution.get("route_cache_state")),
         "field_sample_cache_state": dict(execution.get("field_sample_cache_state") or {}),
+        "field_sample_cache_entry_count": int(len(dict(execution.get("field_sample_cache_state") or {}))),
+        "field_sampling_mode": "node_cache",
         "active_jamming_rows_by_channel_id": dict((key, dict(value)) for key, value in active_jamming_rows.items()),
         "created_courier_commitment_rows": sorted(
             (dict(row) for row in list(execution.get("created_courier_commitment_rows") or []) if isinstance(row, Mapping)),
