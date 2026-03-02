@@ -250,6 +250,7 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "site_registry_index_hash",
             "ephemeris_registry_hash",
             "terrain_tile_registry_hash",
+            "real_world_affordance_matrix_hash",
             "ui_registry_hash",
         )
         for key in expected_keys:

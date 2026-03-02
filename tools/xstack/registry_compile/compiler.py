@@ -13338,6 +13338,24 @@ def compile_bundle(
         registry_hashes[registry_key + "_hash"] = digest
         output_files.append(out_path)
 
+    rwam_rel_path = "data/meta/real_world_affordance_matrix.json"
+    rwam_abs_path = os.path.join(repo_root, rwam_rel_path.replace("/", os.sep))
+    rwam_payload, rwam_err = _read_json_payload(rwam_abs_path)
+    if rwam_err:
+        return _refusal(
+            "refuse.registry_compile.real_world_affordance_matrix_missing_or_invalid",
+            "failed to parse {}: {}".format(rwam_rel_path, rwam_err),
+            "$.registries.real_world_affordance_matrix_hash",
+        )
+    affordance_rows = list(rwam_payload.get("affordances") or [])
+    if len(affordance_rows) < 9:
+        return _refusal(
+            "refuse.registry_compile.real_world_affordance_matrix_incomplete",
+            "{} must declare all nine canonical affordance categories".format(rwam_rel_path),
+            "$.affordances",
+        )
+    registry_hashes["real_world_affordance_matrix_hash"] = canonical_sha256(rwam_payload)
+
     resolved_packs = [
         {
             "pack_id": str(row.get("pack_id", "")),
@@ -13493,6 +13511,7 @@ def compile_bundle(
             "site_registry_index_hash": registry_hashes["site_registry_index_hash"],
             "ephemeris_registry_hash": registry_hashes["ephemeris_registry_hash"],
             "terrain_tile_registry_hash": registry_hashes["terrain_tile_registry_hash"],
+            "real_world_affordance_matrix_hash": registry_hashes["real_world_affordance_matrix_hash"],
             "ui_registry_hash": registry_hashes["ui_registry_hash"],
         },
         "compatibility_version": DEFAULT_COMPATIBILITY_VERSION,
