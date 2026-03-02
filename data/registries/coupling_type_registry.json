@@ -1,0 +1,25 @@
+{
+  "schema_id": "dominium.registry.coupling_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.coupling_type_registry",
+    "registry_version": "1.0.0",
+    "coupling_types": [
+      {
+        "schema_version": "1.0.0",
+        "coupling_type_id": "coupler.basic",
+        "schema_ref": "dominium.schema.mobility.coupling_constraint@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "coupling_type_id": "coupler.buffer_chain",
+        "schema_ref": "dominium.schema.mobility.coupling_constraint@1.0.0",
+        "extensions": {
+          "status": "stub"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

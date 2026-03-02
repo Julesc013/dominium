@@ -1,0 +1,22 @@
+SCHEMA: mobility/derailment_policy.schema
+schema_id: dominium.schema.mobility.derailment_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic policy contract for MOB-6 derailment threshold/stochastic gating.
+
+REQUIRED SHAPE:
+record derailment_policy
+  required:
+    - schema_version: semver
+    - derail_policy_id: id
+    - threshold_model_id: id
+    - allow_stochastic: bool
+    - rng_stream_name: id? (optional)
+    - extensions: map
+
+INVARIANTS:
+- Stochastic derailment is forbidden unless `allow_stochastic=true`.
+- Named RNG stream is required when stochastic policy is enabled.
+- Threshold model selection remains data-driven.

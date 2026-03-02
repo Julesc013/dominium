@@ -1113,6 +1113,13 @@
         "1.0.0"
       ]
     },
+    "micro_motion_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "itinerary": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1149,6 +1156,20 @@
       ]
     },
     "congestion_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "derailment_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "coupling_constraint": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1233,6 +1254,20 @@
       ]
     },
     "congestion_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "derailment_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "coupling_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

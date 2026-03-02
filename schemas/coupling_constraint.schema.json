@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Coupling Constraint Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-6 coupling constraint row for consists.",
+  "x-doc-ref": [
+    "docs/mobility/MICRO_CONSTRAINED_MOTION.md",
+    "docs/audit/MICRO_CONSTRAINED_MOTION_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "constraint_id",
+    "vehicle_a_id",
+    "vehicle_b_id",
+    "coupling_type_id",
+    "active",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "constraint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vehicle_a_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vehicle_b_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "coupling_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "constraint_id": "constraint.coupling.6a92aa76d6bd66ff",
+      "vehicle_a_id": "vehicle.demo.alpha",
+      "vehicle_b_id": "vehicle.demo.beta",
+      "coupling_type_id": "coupler.basic",
+      "active": true,
+      "deterministic_fingerprint": "634a4db8ec6ff740ca5f8e13b64d3f4e7ebe0adf8f63f9fc4dd9a82ad215f790",
+      "extensions": {}
+    }
+  ]
+}

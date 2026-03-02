@@ -1,0 +1,26 @@
+SCHEMA: mobility/micro_motion_state.schema
+schema_id: dominium.schema.mobility.micro_motion_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic micro constrained motion state row for MOB-6 ROI simulation.
+
+REQUIRED SHAPE:
+record micro_motion_state
+  required:
+    - schema_version: semver
+    - vehicle_id: id
+    - geometry_id: id
+    - s_param: int
+    - velocity: int
+    - acceleration: int
+    - direction: enum(forward|back)
+    - last_update_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Updates are process-mediated only.
+- `s_param` is deterministic fixed-point/integer progress along guide.
+- Micro motion execution is ROI-budgeted and deterministic.
