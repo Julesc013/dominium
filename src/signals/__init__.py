@@ -76,6 +76,13 @@ from .trust import (
     trust_update_rule_rows_by_id,
     trust_weight_for_pair,
 )
+from .institutions import (
+    build_institution_profile,
+    bulletin_policy_rows_by_id,
+    institution_profile_rows_by_id,
+    normalize_institution_profile_rows,
+    process_institution_bulletin_tick,
+)
 
 __all__ = [
     "address_from_recipient_address",
@@ -146,4 +153,9 @@ __all__ = [
     "trust_edge_rows_by_pair",
     "trust_update_rule_rows_by_id",
     "trust_weight_for_pair",
+    "build_institution_profile",
+    "bulletin_policy_rows_by_id",
+    "institution_profile_rows_by_id",
+    "normalize_institution_profile_rows",
+    "process_institution_bulletin_tick",
 ]
