@@ -1,0 +1,31 @@
+{
+  "schema_id": "dominium.registry.derailment_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.derailment_policy_registry",
+    "registry_version": "1.0.0",
+    "derailment_policies": [
+      {
+        "schema_version": "1.0.0",
+        "derail_policy_id": "derail.strict_threshold",
+        "schema_ref": "dominium.schema.mobility.derailment_policy@1.0.0",
+        "extensions": {
+          "threshold_model_id": "threshold.lateral_accel.v1",
+          "allow_stochastic": false,
+          "rng_stream_name": null
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "derail_policy_id": "derail.stochastic_named_rng",
+        "schema_ref": "dominium.schema.mobility.derailment_policy@1.0.0",
+        "extensions": {
+          "threshold_model_id": "threshold.lateral_accel.v1",
+          "allow_stochastic": true,
+          "rng_stream_name": "rng.mobility.derailment"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
