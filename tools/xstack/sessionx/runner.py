@@ -102,6 +102,8 @@ REGISTRY_HASH_KEY_MAP = {
     "mobility_vehicle_class_registry_hash": "mobility_vehicle_class_registry",
     "mobility_constraint_type_registry_hash": "mobility_constraint_type_registry",
     "mobility_signal_type_registry_hash": "mobility_signal_type_registry",
+    "signal_type_registry_hash": "signal_type_registry",
+    "signal_rule_policy_registry_hash": "signal_rule_policy_registry",
     "mobility_speed_policy_registry_hash": "mobility_speed_policy_registry",
     "port_type_registry_hash": "port_type_registry",
     "tool_tag_registry_hash": "tool_tag_registry",
@@ -227,6 +229,8 @@ REGISTRY_FILE_MAP = {
     "mobility_vehicle_class_registry_hash": "mobility_vehicle_class.registry.json",
     "mobility_constraint_type_registry_hash": "mobility_constraint_type.registry.json",
     "mobility_signal_type_registry_hash": "mobility_signal_type.registry.json",
+    "signal_type_registry_hash": "signal_type.registry.json",
+    "signal_rule_policy_registry_hash": "signal_rule_policy.registry.json",
     "mobility_speed_policy_registry_hash": "mobility_speed_policy.registry.json",
     "port_type_registry_hash": "port_type.registry.json",
     "tool_tag_registry_hash": "tool_tag.registry.json",
@@ -1494,6 +1498,22 @@ def boot_session_spec(
     )
     if mobility_signal_type_registry_error:
         return mobility_signal_type_registry_error
+    signal_type_registry, signal_type_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["signal_type_registry_hash"],
+        expected_hash=str(registries.get("signal_type_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if signal_type_registry_error:
+        return signal_type_registry_error
+    signal_rule_policy_registry, signal_rule_policy_registry_error = _load_registry_payload(
+        repo_root=repo_root,
+        file_name=REGISTRY_FILE_MAP["signal_rule_policy_registry_hash"],
+        expected_hash=str(registries.get("signal_rule_policy_registry_hash", "")),
+        registries_dir=registries_dir,
+    )
+    if signal_rule_policy_registry_error:
+        return signal_rule_policy_registry_error
     mobility_speed_policy_registry, mobility_speed_policy_registry_error = _load_registry_payload(
         repo_root=repo_root,
         file_name=REGISTRY_FILE_MAP["mobility_speed_policy_registry_hash"],
@@ -2191,6 +2211,8 @@ def boot_session_spec(
                 "mobility_vehicle_class_registry": mobility_vehicle_class_registry,
                 "mobility_constraint_type_registry": mobility_constraint_type_registry,
                 "mobility_signal_type_registry": mobility_signal_type_registry,
+                "signal_type_registry": signal_type_registry,
+                "signal_rule_policy_registry": signal_rule_policy_registry,
                 "mobility_speed_policy_registry": mobility_speed_policy_registry,
                 "port_type_registry": port_type_registry,
                 "tool_tag_registry": tool_tag_registry,
@@ -2327,6 +2349,8 @@ def boot_session_spec(
                 "mobility_vehicle_class_registry": mobility_vehicle_class_registry,
                 "mobility_constraint_type_registry": mobility_constraint_type_registry,
                 "mobility_signal_type_registry": mobility_signal_type_registry,
+                "signal_type_registry": signal_type_registry,
+                "signal_rule_policy_registry": signal_rule_policy_registry,
                 "mobility_speed_policy_registry": mobility_speed_policy_registry,
                 "port_type_registry": port_type_registry,
                 "tool_tag_registry": tool_tag_registry,
@@ -2734,6 +2758,8 @@ def boot_session_spec(
             "mobility_vehicle_class_registry": mobility_vehicle_class_registry,
             "mobility_constraint_type_registry": mobility_constraint_type_registry,
             "mobility_signal_type_registry": mobility_signal_type_registry,
+            "signal_type_registry": signal_type_registry,
+            "signal_rule_policy_registry": signal_rule_policy_registry,
             "mobility_speed_policy_registry": mobility_speed_policy_registry,
             "port_type_registry": port_type_registry,
             "tool_tag_registry": tool_tag_registry,

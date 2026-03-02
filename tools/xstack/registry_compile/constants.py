@@ -91,6 +91,8 @@ REGISTRY_OUTPUT_FILENAMES = {
     "mobility_vehicle_class_registry": "mobility_vehicle_class.registry.json",
     "mobility_constraint_type_registry": "mobility_constraint_type.registry.json",
     "mobility_signal_type_registry": "mobility_signal_type.registry.json",
+    "signal_type_registry": "signal_type.registry.json",
+    "signal_rule_policy_registry": "signal_rule_policy.registry.json",
     "mobility_speed_policy_registry": "mobility_speed_policy.registry.json",
     "mobility_node_kind_registry": "mobility_node_kind.registry.json",
     "mobility_edge_kind_registry": "mobility_edge_kind.registry.json",

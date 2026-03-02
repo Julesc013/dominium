@@ -192,6 +192,8 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
             "mobility_vehicle_class_registry_hash",
             "mobility_constraint_type_registry_hash",
             "mobility_signal_type_registry_hash",
+            "signal_type_registry_hash",
+            "signal_rule_policy_registry_hash",
             "mobility_speed_policy_registry_hash",
             "port_type_registry_hash",
             "tool_tag_registry_hash",
