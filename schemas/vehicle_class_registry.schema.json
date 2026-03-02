@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vehicle Class Registry Schema",
+  "version": "1.0.0",
+  "description": "MOB-3 source registry for data-driven vehicle classes.",
+  "x-doc-ref": [
+    "docs/mobility/VEHICLE_MODEL.md",
+    "docs/audit/VEHICLE_MODEL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "record"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.registry.vehicle_class_registry"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "record": {
+      "type": "object",
+      "required": [
+        "registry_id",
+        "registry_version",
+        "vehicle_classes",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "registry_id": {
+          "type": "string",
+          "const": "dominium.registry.vehicle_class_registry"
+        },
+        "registry_version": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "vehicle_classes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "schema_version",
+              "vehicle_class_id",
+              "description",
+              "supported_motion_modes",
+              "extensions"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "type": "string",
+                "const": "1.0.0"
+              },
+              "vehicle_class_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string"
+              },
+              "supported_motion_modes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "rail_constrained",
+                    "corridor",
+                    "free",
+                    "orbit"
+                  ]
+                }
+              },
+              "required_specs": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "default_ports": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "default_pose_bindings": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "default_hazard_modes": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "extensions": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_id": "dominium.registry.vehicle_class_registry",
+      "schema_version": "1.0.0",
+      "record": {
+        "registry_id": "dominium.registry.vehicle_class_registry",
+        "registry_version": "1.0.0",
+        "vehicle_classes": [],
+        "extensions": {}
+      }
+    }
+  ]
+}
