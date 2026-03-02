@@ -108,6 +108,21 @@
         ],
         "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.wind_drift",
+        "description": "Applies deterministic wind drift for aircraft-capable mobility targets.",
+        "applies_to": [
+          "capability.can_be_driven",
+          "vehicle",
+          "assembly"
+        ],
+        "modifies": [
+          "wind_drift_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
       }
     ],
     "extensions": {}
