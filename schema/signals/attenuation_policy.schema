@@ -1,0 +1,24 @@
+SCHEMA: signals/attenuation_policy.schema
+schema_id: dominium.schema.signals.attenuation_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic attenuation policy contract for signal quality evaluation.
+
+REQUIRED SHAPE:
+record attenuation_policy
+  required:
+    - schema_version: semver
+    - attenuation_policy_id: id
+    - base_loss_rate: int
+    - field_modifier_ids: list<id>
+    - deterministic_function_id: id
+    - uses_rng_stream: bool
+    - rng_stream_name: id|null
+    - extensions: map
+
+INVARIANTS:
+- Attenuation evaluation is deterministic for identical policy+input tuples.
+- RNG-enabled attenuation policies must use named RNG streams only.
+- Policies must not reference wall-clock or platform entropy.

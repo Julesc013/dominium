@@ -1,0 +1,68 @@
+{
+  "schema_id": "dominium.registry.attenuation_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.attenuation_policy_registry",
+    "registry_version": "1.0.0",
+    "attenuation_policies": [
+      {
+        "schema_version": "1.0.0",
+        "attenuation_policy_id": "att.none",
+        "description": "No attenuation contribution.",
+        "base_loss_rate": 0,
+        "field_modifier_ids": [],
+        "deterministic_function_id": "att.none.v1",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "attenuation_policy_id": "att.linear_distance",
+        "description": "Loss scales linearly by route distance/hop count.",
+        "base_loss_rate": 25,
+        "field_modifier_ids": [],
+        "deterministic_function_id": "att.linear_distance.v1",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "distance_loss_permille": 25
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "attenuation_policy_id": "att.field_scaled",
+        "description": "Distance attenuation with deterministic FieldLayer modifiers.",
+        "base_loss_rate": 25,
+        "field_modifier_ids": [
+          "field.visibility",
+          "field.radiation",
+          "field.wind"
+        ],
+        "deterministic_function_id": "att.field_scaled.v1",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "distance_loss_permille": 20,
+          "field_visibility_weight_permille": 250,
+          "field_radiation_weight_permille": 200,
+          "field_wind_weight_permille": 100
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "attenuation_policy_id": "att.deterministic_rng",
+        "description": "Named RNG attenuation jitter policy for approved channels.",
+        "base_loss_rate": 50,
+        "field_modifier_ids": [],
+        "deterministic_function_id": "att.named_rng.v1",
+        "uses_rng_stream": true,
+        "rng_stream_name": "rng.signals.attenuation.default",
+        "extensions": {
+          "loss_permille": 50
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
