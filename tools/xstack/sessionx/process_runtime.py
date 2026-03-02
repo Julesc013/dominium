@@ -249,6 +249,15 @@ from src.mechanics import (
     normalize_structural_node_rows,
     summarize_stress_for_target,
 )
+from src.fields import (
+    field_modifier_snapshot,
+    field_type_rows_by_id,
+    field_update_policy_rows_by_id,
+    get_field_value,
+    normalize_field_cell_rows,
+    normalize_field_layer_rows,
+    update_field_layers,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -354,6 +363,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.cut_joint": "entitlement.tool.use",
     "process.drill_hole": "entitlement.tool.use",
     "process.mechanics_tick": "session.boot",
+    "process.field_tick": "session.boot",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -469,6 +479,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.cut_joint": "operator",
     "process.drill_hole": "operator",
     "process.mechanics_tick": "observer",
+    "process.field_tick": "observer",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -599,6 +610,9 @@ MECHANICS_PROCESS_IDS = {
     "process.cut_joint",
     "process.drill_hole",
 }
+FIELD_PROCESS_IDS = {
+    "process.field_tick",
+}
 POSE_PROCESS_IDS = {
     "process.pose_enter",
     "process.pose_exit",
@@ -643,6 +657,11 @@ MECHANICS_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": "refusal.mechanics.forbidden_by_law",
     "ENTITLEMENT_MISSING": "refusal.mechanics.forbidden_by_law",
     "PRIVILEGE_INSUFFICIENT": "refusal.mechanics.forbidden_by_law",
+}
+FIELD_GATE_REASON_MAP = {
+    "PROCESS_FORBIDDEN": "refusal.field.forbidden_by_law",
+    "ENTITLEMENT_MISSING": "refusal.field.forbidden_by_law",
+    "PRIVILEGE_INSUFFICIENT": "refusal.field.forbidden_by_law",
 }
 POSE_GATE_REASON_MAP = {
     "PROCESS_FORBIDDEN": REFUSAL_POSE_FORBIDDEN_BY_LAW,
@@ -721,6 +740,11 @@ INSTRUMENT_TYPE_ID_BY_TYPE = {
     "warning.speed_cap": "instr.warning.speed_cap",
     "warning.low_visibility": "instr.warning.low_visibility",
     "warning.restricted_access": "instr.warning.restricted_access",
+    "meter.thermometer": "instr.meter.thermometer",
+    "meter.hygrometer": "instr.meter.hygrometer",
+    "meter.dosimeter": "instr.meter.dosimeter",
+    "meter.wind_indicator": "instr.meter.wind_indicator",
+    "meter.visibility_indicator": "instr.meter.visibility_indicator",
 }
 INSTRUMENT_TYPE_BY_ID = dict((value, key) for key, value in INSTRUMENT_TYPE_ID_BY_TYPE.items())
 
@@ -1059,6 +1083,106 @@ def _persist_effect_state(
     state["effect_provenance_events"] = [dict(row) for row in list(provenance_events or []) if isinstance(row, dict)]
     _ensure_effect_rows(state)
     _ensure_effect_provenance_events(state)
+
+
+def _normalize_field_cell_value(value: object) -> object:
+    vector = _vector3_int(value, "value")
+    if isinstance(vector, dict):
+        return {
+            "x": int(_as_int(vector.get("x", 0), 0)),
+            "y": int(_as_int(vector.get("y", 0), 0)),
+            "z": int(_as_int(vector.get("z", 0), 0)),
+        }
+    if isinstance(value, bool):
+        return 1 if value else 0
+    return int(_as_int(value, 0))
+
+
+def _ensure_field_layers(state: dict) -> List[dict]:
+    rows = normalize_field_layer_rows(state.get("field_layers"))
+    state["field_layers"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_field_cells(state: dict) -> List[dict]:
+    rows = state.get("field_cells")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, dict)),
+        key=lambda item: (str(item.get("field_id", "")), str(item.get("cell_id", ""))),
+    ):
+        field_id = str(row.get("field_id", "")).strip()
+        cell_id = str(row.get("cell_id", "")).strip()
+        if (not field_id) or (not cell_id):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "field_id": field_id,
+            "cell_id": cell_id,
+            "value": _normalize_field_cell_value(row.get("value")),
+            "last_updated_tick": int(max(0, _as_int(row.get("last_updated_tick", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["field_cells"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_field_modifier_rows(state: dict) -> List[dict]:
+    rows = state.get("field_modifier_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("target_id", ""))):
+        target_id = str(row.get("target_id", "")).strip()
+        if not target_id:
+            continue
+        wind = _vector3_int(row.get("wind"), "wind") or {"x": 0, "y": 0, "z": 0}
+        payload = {
+            "target_id": target_id,
+            "temperature": int(_as_int(row.get("temperature", 20), 20)),
+            "moisture": int(max(0, _as_int(row.get("moisture", 0), 0))),
+            "friction": int(max(0, _as_int(row.get("friction", 1000), 1000))),
+            "radiation": int(max(0, _as_int(row.get("radiation", 0), 0))),
+            "visibility": int(max(0, _as_int(row.get("visibility", 1000), 1000))),
+            "wind": {
+                "x": int(_as_int(wind.get("x", 0), 0)),
+                "y": int(_as_int(wind.get("y", 0), 0)),
+                "z": int(_as_int(wind.get("z", 0), 0)),
+            },
+            "traction_permille": int(max(0, _as_int(row.get("traction_permille", 1000), 1000))),
+            "wind_drift_permille": int(max(0, _as_int(row.get("wind_drift_permille", 0), 0))),
+            "stress_capacity_permille": int(max(0, _as_int(row.get("stress_capacity_permille", 1000), 1000))),
+            "corrosion_risk_permille": int(max(0, _as_int(row.get("corrosion_risk_permille", 0), 0))),
+            "icing_active": bool(row.get("icing_active", False)),
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["field_modifier_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _persist_field_state(
+    state: dict,
+    *,
+    field_layers: List[dict],
+    field_cells: List[dict],
+    field_modifier_rows: List[dict] | None = None,
+) -> None:
+    state["field_layers"] = [dict(row) for row in list(field_layers or []) if isinstance(row, dict)]
+    state["field_cells"] = [dict(row) for row in list(field_cells or []) if isinstance(row, dict)]
+    if field_modifier_rows is not None:
+        state["field_modifier_rows"] = [
+            dict(row) for row in list(field_modifier_rows or []) if isinstance(row, dict)
+        ]
+    _ensure_field_layers(state)
+    _ensure_field_cells(state)
+    _ensure_field_modifier_rows(state)
 
 
 def _ensure_spec_binding_rows(state: dict) -> List[dict]:
@@ -1724,6 +1848,41 @@ def _effect_target_ids(state: dict) -> List[str]:
     return _sorted_tokens(candidates)
 
 
+def _target_spatial_position(state: dict, target_id: str) -> dict:
+    token = str(target_id or "").strip()
+    if not token:
+        return {"position_mm": {"x": 0, "y": 0, "z": 0}}
+    id_table = (
+        ("body_assemblies", "assembly_id"),
+        ("camera_assemblies", "assembly_id"),
+        ("agent_states", "agent_id"),
+        ("interior_graphs", "graph_id"),
+        ("interior_volumes", "volume_id"),
+        ("structural_graphs", "structural_graph_id"),
+        ("structural_nodes", "node_id"),
+        ("structural_edges", "edge_id"),
+    )
+    for list_key, id_key in id_table:
+        rows = state.get(list_key)
+        if not isinstance(rows, list):
+            continue
+        for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get(id_key, ""))):
+            if str(row.get(id_key, "")).strip() != token:
+                continue
+            direct_pos = _vector3_int(row.get("position_mm"), "position_mm")
+            if isinstance(direct_pos, dict):
+                return {"position_mm": dict(direct_pos)}
+            ext = dict(row.get("extensions") or {})
+            ext_pos = _vector3_int(ext.get("position_mm"), "position_mm")
+            if isinstance(ext_pos, dict):
+                return {"position_mm": dict(ext_pos)}
+            cell_id = str(row.get("field_cell_id", "")).strip() or str(ext.get("field_cell_id", "")).strip()
+            if cell_id:
+                return {"cell_id": cell_id}
+            break
+    return {"position_mm": {"x": 0, "y": 0, "z": 0}}
+
+
 def _effect_provenance_row(
     *,
     event_type: str,
@@ -1778,6 +1937,24 @@ def _is_auto_maintenance_effect(row: dict) -> bool:
     return (
         str(extensions.get("source_process_id", "")).strip() == "process.decay_tick"
         and str(extensions.get("effect_auto_key", "")).strip() == "maintenance_degradation"
+    )
+
+
+def _is_auto_field_effect(row: dict) -> bool:
+    if not isinstance(row, dict):
+        return False
+    extensions = dict(row.get("extensions") or {})
+    return (
+        str(extensions.get("source_process_id", "")).strip() == "process.field_tick"
+        and str(extensions.get("effect_auto_key", "")).strip()
+        in {
+            "field_traction",
+            "field_visibility",
+            "field_machine_degraded",
+            "field_speed_cap",
+            "field_wind_drift",
+            "field_corrosion",
+        }
     )
 
 
@@ -6395,18 +6572,123 @@ def _apply_body_move_attempt(
     if ghost_collisions_enabled_override is not None:
         ghost_collisions_enabled = bool(ghost_collisions_enabled_override)
 
+    effect_type_registry = _effect_registry_payload(
+        policy_context=policy_context,
+        key="effect_type_registry",
+        registry_rel_path="data/registries/effect_type_registry.json",
+        entry_key="effect_types",
+    )
+    stacking_policy_registry = _effect_registry_payload(
+        policy_context=policy_context,
+        key="stacking_policy_registry",
+        registry_rel_path="data/registries/stacking_policy_registry.json",
+        entry_key="stacking_policies",
+    )
+    current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+    active_effect_rows = prune_expired_effect_rows(
+        effect_rows=_ensure_effect_rows(state),
+        current_tick=int(current_tick),
+    )
+    state["effect_rows"] = [dict(row) for row in list(active_effect_rows or []) if isinstance(row, dict)]
+    speed_cap_row = get_effective_modifier(
+        target_id=body_id,
+        key="max_speed_permille",
+        effect_rows=active_effect_rows,
+        current_tick=int(current_tick),
+        effect_type_registry=effect_type_registry,
+        stacking_policy_registry=stacking_policy_registry,
+    )
+    traction_row = get_effective_modifier(
+        target_id=body_id,
+        key="traction_permille",
+        effect_rows=active_effect_rows,
+        current_tick=int(current_tick),
+        effect_type_registry=effect_type_registry,
+        stacking_policy_registry=stacking_policy_registry,
+    )
+    wind_drift_row = get_effective_modifier(
+        target_id=body_id,
+        key="wind_drift_permille",
+        effect_rows=active_effect_rows,
+        current_tick=int(current_tick),
+        effect_type_registry=effect_type_registry,
+        stacking_policy_registry=stacking_policy_registry,
+    )
+    speed_cap_permille = 1000
+    traction_permille = 1000
+    wind_drift_permille = 0
+    if bool(speed_cap_row.get("present", False)):
+        speed_cap_permille = int(max(0, min(1000, _as_int(speed_cap_row.get("value", 1000), 1000))))
+    if bool(traction_row.get("present", False)):
+        traction_permille = int(max(100, min(1200, _as_int(traction_row.get("value", 1000), 1000))))
+    if bool(wind_drift_row.get("present", False)):
+        wind_drift_permille = int(max(0, min(1000, _as_int(wind_drift_row.get("value", 0), 0))))
+
+    move_permille = int(max(0, min(1000, min(int(speed_cap_permille), int(traction_permille)))))
+    delta_step = {
+        "x": int((_as_int(delta.get("x", 0), 0) * int(move_permille)) // 1000),
+        "y": int((_as_int(delta.get("y", 0), 0) * int(move_permille)) // 1000),
+        "z": int((_as_int(delta.get("z", 0), 0) * int(move_permille)) // 1000),
+    }
+
+    is_aircraft = bool(
+        bool(inputs.get("is_aircraft", False))
+        or str(inputs.get("mobility_kind", "")).strip() == "aircraft"
+        or "aircraft" in str(body_id).strip().lower()
+        or "aircraft" in str(body.get("owner_assembly_id", "")).strip().lower()
+    )
+    if is_aircraft and int(wind_drift_permille) > 0:
+        wind_vector = {"x": 0, "y": 0, "z": 0}
+        candidate_rows = [
+            dict(row)
+            for row in list(active_effect_rows or [])
+            if isinstance(row, dict)
+            and str(row.get("effect_type_id", "")).strip() == "effect.wind_drift"
+            and str(row.get("target_id", "")).strip() == str(body_id).strip()
+        ]
+        if candidate_rows:
+            selected = sorted(
+                candidate_rows,
+                key=lambda row: (
+                    int(_as_int(row.get("applied_tick", 0), 0)),
+                    str(row.get("effect_id", "")),
+                ),
+            )[-1]
+            magnitude = dict(selected.get("magnitude") or {})
+            wind_vec_payload = magnitude.get("wind_vector")
+            wind_vec = _vector3_int(wind_vec_payload, "wind_vector") if isinstance(wind_vec_payload, dict) else None
+            if not wind_vec:
+                wind_vec = {
+                    "x": int(_as_int(magnitude.get("wind_x", 0), 0)),
+                    "y": int(_as_int(magnitude.get("wind_y", 0), 0)),
+                    "z": int(_as_int(magnitude.get("wind_z", 0), 0)),
+                }
+            wind_vector = {
+                "x": int(_as_int(wind_vec.get("x", 0), 0)),
+                "y": int(_as_int(wind_vec.get("y", 0), 0)),
+                "z": int(_as_int(wind_vec.get("z", 0), 0)),
+            }
+        drift_delta = {
+            "x": int((int(wind_vector.get("x", 0)) * int(wind_drift_permille)) // 1000),
+            "y": int((int(wind_vector.get("y", 0)) * int(wind_drift_permille)) // 1000),
+            "z": int((int(wind_vector.get("z", 0)) * int(wind_drift_permille)) // 1000),
+        }
+        for axis in ("x", "y", "z"):
+            drift_delta[axis] = int(max(-5000, min(5000, int(drift_delta[axis]))))
+            delta_step[axis] = int(delta_step[axis]) + int(drift_delta[axis])
+
     transform = _vector3_int(body.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
     orientation = _angles_int(body.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
     velocity = _vector3_int(body.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}
-    transform["x"] = int(transform["x"]) + int(delta["x"]) * int(dt_ticks)
-    transform["y"] = int(transform["y"]) + int(delta["y"]) * int(dt_ticks)
-    transform["z"] = int(transform["z"]) + int(delta["z"]) * int(dt_ticks)
+    transform["x"] = int(transform["x"]) + int(delta_step["x"]) * int(dt_ticks)
+    transform["y"] = int(transform["y"]) + int(delta_step["y"]) * int(dt_ticks)
+    transform["z"] = int(transform["z"]) + int(delta_step["z"]) * int(dt_ticks)
     orientation["yaw"] = int(orientation["yaw"]) + int(_as_int(orientation_delta.get("yaw", 0), 0))
     orientation["pitch"] = int(orientation["pitch"]) + int(_as_int(orientation_delta.get("pitch", 0), 0))
     orientation["roll"] = int(orientation["roll"]) + int(_as_int(orientation_delta.get("roll", 0), 0))
-    velocity["x"] = int(delta["x"])
-    velocity["y"] = int(delta["y"])
-    velocity["z"] = int(delta["z"])
+    velocity["x"] = int(delta_step["x"])
+    velocity["y"] = int(delta_step["y"])
+    velocity["z"] = int(delta_step["z"])
     body["transform_mm"] = transform
     body["orientation_mdeg"] = orientation
     body["velocity_mm_per_tick"] = velocity
@@ -6442,10 +6724,14 @@ def _apply_body_move_attempt(
         "body_id": body_id,
         "dt_ticks": int(dt_ticks),
         "delta_transform_mm": {
-            "x": int(delta["x"]),
-            "y": int(delta["y"]),
-            "z": int(delta["z"]),
+            "x": int(delta_step["x"]),
+            "y": int(delta_step["y"]),
+            "z": int(delta_step["z"]),
         },
+        "traction_permille": int(traction_permille),
+        "speed_cap_permille": int(speed_cap_permille),
+        "wind_drift_permille": int(wind_drift_permille),
+        "aircraft_wind_applied": bool(is_aircraft and int(wind_drift_permille) > 0),
         "final_transform_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
         "final_orientation_mdeg": dict(body.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0}),
         "final_velocity_mm_per_tick": dict(body.get("velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}),
@@ -7110,6 +7396,23 @@ def _formalization_registry_payload(
 
 
 def _mechanics_registry_payload(
+    *,
+    policy_context: dict | None,
+    key: str,
+    registry_rel_path: str,
+    entry_key: str,
+) -> dict:
+    payload = _policy_payload(policy_context, key)
+    if payload:
+        return dict(payload)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path=registry_rel_path,
+        default_payload={entry_key: []},
+    )
+
+
+def _field_registry_payload(
     *,
     policy_context: dict | None,
     key: str,
@@ -11309,6 +11612,8 @@ def execute_intent(
             return _control_gate_refusal(gate, reason_map=TASK_GATE_REASON_MAP)
         if process_id in MECHANICS_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=MECHANICS_GATE_REASON_MAP)
+        if process_id in FIELD_PROCESS_IDS:
+            return _control_gate_refusal(gate, reason_map=FIELD_GATE_REASON_MAP)
         if process_id in TOOL_PROCESS_IDS:
             return _control_gate_refusal(gate, reason_map=TOOL_GATE_REASON_MAP)
         if process_id in POSE_PROCESS_IDS:
@@ -11440,6 +11745,9 @@ def execute_intent(
     pose_slots = _ensure_pose_slots(state)
     mount_points = _ensure_mount_points(state)
     pose_mount_provenance_events = _ensure_pose_mount_provenance_events(state)
+    field_layers = _ensure_field_layers(state)
+    field_cells = _ensure_field_cells(state)
+    field_modifier_rows = _ensure_field_modifier_rows(state)
     effect_rows = _ensure_effect_rows(state)
     effect_provenance_events = _ensure_effect_provenance_events(state)
     spec_bindings = _ensure_spec_binding_rows(state)
@@ -20168,6 +20476,326 @@ def execute_intent(
             "required_materials": dict(required_materials),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.field_tick":
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        field_update_policy_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_update_policy_registry",
+            registry_rel_path="data/registries/field_update_policy_registry.json",
+            entry_key="policies",
+        )
+        field_type_rows = field_type_rows_by_id(field_type_registry)
+        field_policy_rows = field_update_policy_rows_by_id(field_update_policy_registry)
+        del field_type_rows
+        del field_policy_rows
+
+        incoming_layers = inputs.get("field_layers")
+        incoming_cells = inputs.get("field_cells")
+        if isinstance(incoming_layers, list):
+            field_layers = normalize_field_layer_rows(incoming_layers)
+        else:
+            field_layers = normalize_field_layer_rows(field_layers)
+        if isinstance(incoming_cells, list):
+            field_cells = normalize_field_cell_rows(
+                incoming_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+            )
+        else:
+            field_cells = normalize_field_cell_rows(
+                field_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+            )
+
+        flow_quantities = dict(inputs.get("flow_quantities") or {}) if isinstance(inputs.get("flow_quantities"), dict) else {}
+        if not flow_quantities:
+            compartment_rows = [dict(row) for row in list(compartment_states or []) if isinstance(row, dict)]
+            if compartment_rows:
+                count = max(1, len(compartment_rows))
+                avg_water = int(
+                    sum(max(0, _as_int(row.get("water_volume", 0), 0)) for row in compartment_rows) // int(count)
+                )
+                avg_smoke = int(
+                    sum(max(0, _as_int(row.get("smoke_density", 0), 0)) for row in compartment_rows) // int(count)
+                )
+                temperature_values = [
+                    _as_int(row.get("temperature"), 20)
+                    for row in compartment_rows
+                    if row.get("temperature") is not None
+                ]
+                avg_temperature = int(sum(temperature_values) // max(1, len(temperature_values))) if temperature_values else 20
+                flow_quantities = {
+                    "field.temperature": {"default": int(avg_temperature)},
+                    "field.moisture": {"default": int(min(1000, max(0, avg_water)))},
+                    "field.visibility": {"default": int(max(100, 1000 - min(900, max(0, avg_smoke))))},
+                }
+        hazard_states = dict(inputs.get("hazard_states") or {}) if isinstance(inputs.get("hazard_states"), dict) else {}
+        if not hazard_states:
+            max_leak_rate = 0
+            for row in list(interior_leak_hazards or []):
+                if not isinstance(row, dict):
+                    continue
+                max_leak_rate = max(max_leak_rate, max(0, _as_int(row.get("leak_rate_air", 0), 0)))
+            if max_leak_rate > 0:
+                hazard_states = {
+                    "field.moisture": {"default": int(min(1000, max_leak_rate))},
+                }
+
+        field_budget = max(
+            0,
+            _as_int(
+                inputs.get(
+                    "max_cost_units",
+                    (dict(policy_context or {})).get("field_max_cost_units_per_tick", 128),
+                ),
+                128,
+            ),
+        )
+        field_update = update_field_layers(
+            current_tick=int(current_tick),
+            field_layer_rows=field_layers,
+            field_cell_rows=field_cells,
+            field_update_policy_registry=field_update_policy_registry,
+            field_type_registry=field_type_registry,
+            flow_quantities=flow_quantities,
+            hazard_states=hazard_states,
+            max_cost_units=int(field_budget),
+            cost_units_per_cell=max(1, _as_int(inputs.get("cost_units_per_cell", 1), 1)),
+            critical_field_ids=list(inputs.get("critical_field_ids") or []),
+        )
+        field_layers = normalize_field_layer_rows(field_update.get("field_layer_rows"))
+        field_cells = normalize_field_cell_rows(
+            field_update.get("field_cell_rows"),
+            field_layer_rows=field_layers,
+            field_type_registry=field_type_registry,
+        )
+
+        sample_rows = []
+        sample_input_rows = inputs.get("sample_rows")
+        if isinstance(sample_input_rows, list):
+            for row in sorted((item for item in sample_input_rows if isinstance(item, dict)), key=lambda item: str(item.get("target_id", ""))):
+                target_id = str(row.get("target_id", "")).strip()
+                if not target_id:
+                    continue
+                sample_rows.append(
+                    {
+                        "target_id": target_id,
+                        "spatial_position": dict(row.get("spatial_position") or {}) if isinstance(row.get("spatial_position"), dict) else {},
+                    }
+                )
+        if not sample_rows:
+            target_ids = _sorted_tokens(list(inputs.get("target_ids") or []))
+            if not target_ids:
+                target_ids = _effect_target_ids(state)
+            if not target_ids:
+                target_ids = _sorted_tokens(
+                    [
+                        str(authority_context.get("subject_id", "")).strip(),
+                        str(authority_context.get("agent_id", "")).strip(),
+                        str(camera.get("target_id", "")).strip(),
+                        "world.global",
+                    ]
+                )
+            for target_id in list(target_ids)[:256]:
+                sample_rows.append(
+                    {
+                        "target_id": target_id,
+                        "spatial_position": _target_spatial_position(state, target_id),
+                    }
+                )
+        modifier_snapshot = field_modifier_snapshot(
+            field_layer_rows=field_layers,
+            field_cell_rows=field_cells,
+            field_type_registry=field_type_registry,
+            sample_rows=sample_rows,
+        )
+        field_modifier_rows = [
+            dict(row)
+            for row in list(modifier_snapshot.get("rows") or [])
+            if isinstance(row, dict)
+        ]
+        state["field_modifier_rows"] = [dict(row) for row in field_modifier_rows]
+
+        existing_effect_rows = [
+            dict(row)
+            for row in list(effect_rows or [])
+            if isinstance(row, dict) and not _is_auto_field_effect(row)
+        ]
+        auto_effect_rows: List[dict] = []
+        effect_duration_ticks = max(
+            1,
+            _as_int(inputs.get("effect_duration_ticks", inputs.get("duration_ticks", 1)), 1),
+        )
+        for row in field_modifier_rows:
+            target_id = str(row.get("target_id", "")).strip()
+            if not target_id:
+                continue
+            traction_permille = int(max(0, _as_int(row.get("traction_permille", 1000), 1000)))
+            wind_drift_permille = int(max(0, _as_int(row.get("wind_drift_permille", 0), 0)))
+            visibility_permille = int(max(0, _as_int(row.get("visibility", 1000), 1000)))
+            stress_capacity_permille = int(max(0, _as_int(row.get("stress_capacity_permille", 1000), 1000)))
+            corrosion_risk_permille = int(max(0, _as_int(row.get("corrosion_risk_permille", 0), 0)))
+            wind_vector = _vector3_int(row.get("wind"), "wind") or {"x": 0, "y": 0, "z": 0}
+            icing_active = bool(row.get("icing_active", False))
+            if int(traction_permille) < 1000 or icing_active:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.traction_reduction",
+                        target_id=target_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={"traction_permille": int(max(0, traction_permille))},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "field_traction",
+                            "icing_active": bool(icing_active),
+                        },
+                    )
+                )
+            if int(wind_drift_permille) > 0:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.wind_drift",
+                        target_id=target_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={
+                            "wind_drift_permille": int(max(0, wind_drift_permille)),
+                            "wind_vector": {
+                                "x": int(_as_int(wind_vector.get("x", 0), 0)),
+                                "y": int(_as_int(wind_vector.get("y", 0), 0)),
+                                "z": int(_as_int(wind_vector.get("z", 0), 0)),
+                            },
+                            "wind_x": int(_as_int(wind_vector.get("x", 0), 0)),
+                            "wind_y": int(_as_int(wind_vector.get("y", 0), 0)),
+                            "wind_z": int(_as_int(wind_vector.get("z", 0), 0)),
+                        },
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "field_wind_drift",
+                        },
+                    )
+                )
+            if int(visibility_permille) < 1000:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.visibility_reduction",
+                        target_id=target_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={"visibility_permille": int(max(0, visibility_permille))},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "field_visibility",
+                        },
+                    )
+                )
+                speed_cap_permille = int(max(300, min(1000, visibility_permille + 100)))
+                if speed_cap_permille < 1000:
+                    auto_effect_rows.append(
+                        build_effect(
+                            effect_type_id="effect.speed_cap",
+                            target_id=target_id,
+                            applied_tick=int(current_tick),
+                            duration_ticks=int(effect_duration_ticks),
+                            magnitude={"max_speed_permille": int(speed_cap_permille)},
+                            stacking_policy_id="stack.min",
+                            extensions={
+                                "source_process_id": process_id,
+                                "effect_auto_key": "field_speed_cap",
+                            },
+                        )
+                    )
+            if int(stress_capacity_permille) < 1000:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.machine_degraded",
+                        target_id=target_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={"machine_output_permille": int(max(1, stress_capacity_permille))},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "field_machine_degraded",
+                        },
+                    )
+                )
+            if int(corrosion_risk_permille) > 0:
+                corrosion_output_permille = int(max(100, min(1000, 1000 - (int(corrosion_risk_permille) // 2))))
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.machine_degraded",
+                        target_id=target_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={"machine_output_permille": int(corrosion_output_permille)},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "field_corrosion",
+                            "corrosion_risk_permille": int(corrosion_risk_permille),
+                        },
+                    )
+                )
+
+        effect_rows = normalize_effect_rows(existing_effect_rows + auto_effect_rows)
+        if auto_effect_rows:
+            provenance_rows = [dict(row) for row in list(effect_provenance_events or []) if isinstance(row, dict)]
+            for row in auto_effect_rows:
+                provenance_rows.append(
+                    _effect_provenance_row(
+                        event_type="effect_applied",
+                        tick=int(current_tick),
+                        intent_id=intent_id,
+                        process_id=process_id,
+                        target_id=str(row.get("target_id", "")).strip(),
+                        effect_id=str(row.get("effect_id", "")).strip(),
+                        effect_type_id=str(row.get("effect_type_id", "")).strip(),
+                        extensions={
+                            "effect_auto_key": str((dict(row.get("extensions") or {})).get("effect_auto_key", "")),
+                        },
+                    )
+                )
+            effect_provenance_events = sorted(
+                provenance_rows,
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+            )
+        _persist_effect_state(
+            state,
+            effect_rows=effect_rows,
+            provenance_events=effect_provenance_events,
+        )
+        _persist_field_state(
+            state,
+            field_layers=field_layers,
+            field_cells=field_cells,
+            field_modifier_rows=field_modifier_rows,
+        )
+        result_metadata = {
+            "evaluated_field_ids": list(field_update.get("evaluated_field_ids") or []),
+            "skipped_field_ids": list(field_update.get("skipped_field_ids") or []),
+            "field_modifier_count": int(len(field_modifier_rows)),
+            "auto_effect_count": int(len(auto_effect_rows)),
+            "cost_units_used": int(_as_int(field_update.get("cost_units_used", 0), 0)),
+            "degraded": bool(field_update.get("degraded", False)),
+            "degrade_reason": (
+                None
+                if field_update.get("degrade_reason") is None
+                else str(field_update.get("degrade_reason", "")).strip() or None
+            ),
+            "deterministic_fingerprint": str(field_update.get("deterministic_fingerprint", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.compartment_flow_tick":
         dt_ticks = max(1, _as_int(inputs.get("dt_ticks", 1), 1))
         requested_graph_id = str(
@@ -20227,6 +20855,137 @@ def execute_intent(
                     continue
                 selected_partition = dict(row)
                 break
+            field_type_registry = _field_registry_payload(
+                policy_context=policy_context,
+                key="field_type_registry",
+                registry_rel_path="data/registries/field_type_registry.json",
+                entry_key="field_types",
+            )
+            normalized_field_layers = normalize_field_layer_rows(field_layers)
+            normalized_field_cells = normalize_field_cell_rows(
+                field_cells,
+                field_layer_rows=normalized_field_layers,
+                field_type_registry=field_type_registry,
+            )
+            portal_param_by_id = dict(
+                (
+                    str(row.get("portal_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(portal_flow_params or [])
+                if isinstance(row, dict) and str(row.get("portal_id", "")).strip()
+            )
+            portal_rows_by_id_for_boundary = dict(
+                (
+                    str(row.get("portal_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(interior_portal_rows or [])
+                if isinstance(row, dict) and str(row.get("portal_id", "")).strip()
+            )
+            for portal_id in sorted(
+                set(str(item).strip() for item in list(selected_graph.get("portals") or []) if str(item).strip())
+            ):
+                portal_row = dict(portal_rows_by_id_for_boundary.get(portal_id) or {})
+                portal_ext = dict(portal_row.get("extensions") or {})
+                sample_position = {}
+                field_cell_id = str(
+                    portal_ext.get("field_cell_id", "")
+                    or (dict(inputs.get("field_boundary_by_portal") or {}).get(portal_id) or {}).get("field_cell_id", "")
+                ).strip()
+                if field_cell_id:
+                    sample_position["cell_id"] = field_cell_id
+                position_mm = _vector3_int(portal_ext.get("position_mm"), "position_mm")
+                if position_mm:
+                    sample_position["position_mm"] = dict(position_mm)
+
+                temperature_sample = get_field_value(
+                    spatial_position=sample_position,
+                    field_id="field.temperature",
+                    field_layer_rows=normalized_field_layers,
+                    field_cell_rows=normalized_field_cells,
+                    field_type_registry=field_type_registry,
+                )
+                moisture_sample = get_field_value(
+                    spatial_position=sample_position,
+                    field_id="field.moisture",
+                    field_layer_rows=normalized_field_layers,
+                    field_cell_rows=normalized_field_cells,
+                    field_type_registry=field_type_registry,
+                )
+                wind_sample = get_field_value(
+                    spatial_position=sample_position,
+                    field_id="field.wind",
+                    field_layer_rows=normalized_field_layers,
+                    field_cell_rows=normalized_field_cells,
+                    field_type_registry=field_type_registry,
+                )
+                visibility_sample = get_field_value(
+                    spatial_position=sample_position,
+                    field_id="field.visibility",
+                    field_layer_rows=normalized_field_layers,
+                    field_cell_rows=normalized_field_cells,
+                    field_type_registry=field_type_registry,
+                )
+
+                boundary_temperature = int(_as_int(temperature_sample.get("value", 20), 20))
+                boundary_moisture = int(max(0, _as_int(moisture_sample.get("value", 0), 0)))
+                boundary_visibility = int(max(0, _as_int(visibility_sample.get("value", 1000), 1000)))
+                wind_vector = _vector3_int(wind_sample.get("value"), "wind") or {"x": 0, "y": 0, "z": 0}
+                wind_magnitude = int(
+                    abs(int(_as_int(wind_vector.get("x", 0), 0)))
+                    + abs(int(_as_int(wind_vector.get("y", 0), 0)))
+                    + abs(int(_as_int(wind_vector.get("z", 0), 0)))
+                )
+                wind_boost = int(min(2000, max(0, wind_magnitude // 2)))
+
+                base_row = dict(
+                    portal_param_by_id.get(portal_id)
+                    or {
+                        "schema_version": "1.0.0",
+                        "portal_id": portal_id,
+                        "conductance_air": 0,
+                        "conductance_water": 0,
+                        "conductance_smoke": 0,
+                        "sealing_coefficient": 0,
+                        "open_state_multiplier": 1000,
+                        "extensions": {},
+                    }
+                )
+                base_ext = dict(base_row.get("extensions") or {})
+                existing_boundary = dict(base_ext.get("field_boundary") or {})
+                base_conductance_air = int(
+                    max(
+                        0,
+                        _as_int(
+                            existing_boundary.get("base_conductance_air", base_row.get("conductance_air", 0)),
+                            _as_int(base_row.get("conductance_air", 0), 0),
+                        ),
+                    )
+                )
+                base_row["conductance_air"] = int(base_conductance_air + wind_boost)
+                base_ext["field_boundary"] = {
+                    "temperature": int(boundary_temperature),
+                    "moisture": int(boundary_moisture),
+                    "visibility": int(boundary_visibility),
+                    "wind_vector": {
+                        "x": int(_as_int(wind_vector.get("x", 0), 0)),
+                        "y": int(_as_int(wind_vector.get("y", 0), 0)),
+                        "z": int(_as_int(wind_vector.get("z", 0), 0)),
+                    },
+                    "wind_magnitude": int(wind_magnitude),
+                    "wind_boost_air_conductance": int(wind_boost),
+                    "base_conductance_air": int(base_conductance_air),
+                    "source_process_id": process_id,
+                    "source_tick": int(current_tick),
+                }
+                base_row["extensions"] = base_ext
+                portal_param_by_id[portal_id] = normalize_portal_flow_params(base_row)
+            portal_flow_params = [
+                dict(portal_param_by_id[key])
+                for key in sorted(portal_param_by_id.keys())
+            ]
+            state["portal_flow_params"] = [dict(row) for row in list(portal_flow_params or []) if isinstance(row, dict)]
             try:
                 ticked = tick_compartment_flows(
                     interior_graph_row=selected_graph,
@@ -22584,6 +23343,175 @@ def execute_intent(
                 "restricted_access": bool(restricted_access_active),
                 "tick": int(current_tick),
             },
+            tick=int(current_tick),
+        )
+        field_rows = [dict(row) for row in list(_ensure_field_modifier_rows(state) or []) if isinstance(row, dict)]
+        field_by_target = dict(
+            (
+                str(row.get("target_id", "")).strip(),
+                dict(row),
+            )
+            for row in sorted(field_rows, key=lambda item: str(item.get("target_id", "")))
+            if str(row.get("target_id", "")).strip()
+        )
+        primary_target_id = ""
+        for candidate in target_candidates:
+            if candidate in set(field_by_target.keys()):
+                primary_target_id = candidate
+                break
+        if not primary_target_id and "world.global" in set(field_by_target.keys()):
+            primary_target_id = "world.global"
+        if not primary_target_id and field_by_target:
+            primary_target_id = sorted(field_by_target.keys())[0]
+        primary_field_row = dict(field_by_target.get(primary_target_id) or {})
+        epistemic_resolution = _resolve_effective_epistemic_policy(
+            state=state,
+            authority_context=authority_context,
+            law_profile=law_profile,
+            policy_context=policy_context,
+        )
+        coarse_only = bool(epistemic_resolution.get("inspection_redaction", True))
+        temperature_value = int(_as_int(primary_field_row.get("temperature", 20), 20))
+        moisture_value = int(max(0, _as_int(primary_field_row.get("moisture", 0), 0)))
+        radiation_value = int(max(0, _as_int(primary_field_row.get("radiation", 0), 0)))
+        visibility_value = int(max(0, _as_int(primary_field_row.get("visibility", 1000), 1000)))
+        wind_value = _vector3_int(primary_field_row.get("wind"), "wind") or {"x": 0, "y": 0, "z": 0}
+        wind_magnitude = int(
+            abs(int(_as_int(wind_value.get("x", 0), 0)))
+            + abs(int(_as_int(wind_value.get("y", 0), 0)))
+            + abs(int(_as_int(wind_value.get("z", 0), 0)))
+        )
+
+        if coarse_only:
+            if temperature_value <= 0:
+                temp_band = "FREEZING"
+            elif temperature_value >= 35:
+                temp_band = "HOT"
+            else:
+                temp_band = "MILD"
+            if moisture_value >= 700:
+                moisture_band = "WET"
+            elif moisture_value >= 300:
+                moisture_band = "DAMP"
+            else:
+                moisture_band = "DRY"
+            if radiation_value >= 700:
+                radiation_band = "DANGER"
+            elif radiation_value >= 250:
+                radiation_band = "WARN"
+            else:
+                radiation_band = "SAFE"
+            if wind_magnitude >= 500:
+                wind_band = "GALE"
+            elif wind_magnitude >= 150:
+                wind_band = "BREEZE"
+            else:
+                wind_band = "CALM"
+            if visibility_value < 500:
+                visibility_band = "LOW"
+            elif visibility_value < 900:
+                visibility_band = "MEDIUM"
+            else:
+                visibility_band = "HIGH"
+            thermometer_reading = {
+                "status": "COARSE",
+                "temperature_band": temp_band,
+                "tick": int(current_tick),
+            }
+            hygrometer_reading = {
+                "status": "COARSE",
+                "moisture_band": moisture_band,
+                "tick": int(current_tick),
+            }
+            dosimeter_reading = {
+                "status": "COARSE",
+                "radiation_band": radiation_band,
+                "tick": int(current_tick),
+            }
+            wind_indicator_reading = {
+                "status": "COARSE",
+                "wind_band": wind_band,
+                "tick": int(current_tick),
+            }
+            visibility_indicator_reading = {
+                "status": "COARSE",
+                "visibility_band": visibility_band,
+                "tick": int(current_tick),
+            }
+        else:
+            thermometer_reading = {
+                "status": "PRECISE",
+                "temperature_c": int(temperature_value),
+                "tick": int(current_tick),
+            }
+            hygrometer_reading = {
+                "status": "PRECISE",
+                "moisture_permille": int(moisture_value),
+                "tick": int(current_tick),
+            }
+            dosimeter_reading = {
+                "status": "PRECISE",
+                "radiation_dose_rate_permille": int(radiation_value),
+                "tick": int(current_tick),
+            }
+            wind_indicator_reading = {
+                "status": "PRECISE",
+                "wind_vector": {
+                    "x": int(_as_int(wind_value.get("x", 0), 0)),
+                    "y": int(_as_int(wind_value.get("y", 0), 0)),
+                    "z": int(_as_int(wind_value.get("z", 0), 0)),
+                },
+                "wind_magnitude": int(wind_magnitude),
+                "tick": int(current_tick),
+            }
+            visibility_indicator_reading = {
+                "status": "PRECISE",
+                "visibility_permille": int(visibility_value),
+                "tick": int(current_tick),
+            }
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.meter.thermometer",
+            instrument_type="meter.thermometer",
+            instrument_type_id="instr.meter.thermometer",
+            channel_id="ch.diegetic.meter.thermometer",
+            reading_payload=thermometer_reading,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.meter.hygrometer",
+            instrument_type="meter.hygrometer",
+            instrument_type_id="instr.meter.hygrometer",
+            channel_id="ch.diegetic.meter.hygrometer",
+            reading_payload=hygrometer_reading,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.meter.dosimeter",
+            instrument_type="meter.dosimeter",
+            instrument_type_id="instr.meter.dosimeter",
+            channel_id="ch.diegetic.meter.dosimeter",
+            reading_payload=dosimeter_reading,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.meter.wind_indicator",
+            instrument_type="meter.wind_indicator",
+            instrument_type_id="instr.meter.wind_indicator",
+            channel_id="ch.diegetic.meter.wind_indicator",
+            reading_payload=wind_indicator_reading,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.meter.visibility_indicator",
+            instrument_type="meter.visibility_indicator",
+            instrument_type_id="instr.meter.visibility_indicator",
+            channel_id="ch.diegetic.meter.visibility_indicator",
+            reading_payload=visibility_indicator_reading,
             tick=int(current_tick),
         )
         state["instrument_assemblies"] = sorted(
