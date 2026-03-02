@@ -131,6 +131,7 @@ After derailment/off-guide:
 - Driver controls are routed through control plane inputs/IR.
 - No direct input bypass to truth mutation.
 - Instruments expose speed and derail-risk as diegetic readouts with entitlement-aware detail.
+- runtime emits deterministic micro instrument rows (`speed_mm_per_tick`, `derail_risk_permille`, risk band, curvature radius, wear) for UI/inspection overlays.
 
 ## Reenactment/Provenance
 
