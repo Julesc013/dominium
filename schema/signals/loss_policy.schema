@@ -13,6 +13,7 @@ record loss_policy
     - loss_policy_id: id
     - description: string
     - deterministic_function_id: id
+    - attenuation_policy_id: id
     - parameters: map
     - uses_rng_stream: bool
     - rng_stream_name: id|null
@@ -20,5 +21,6 @@ record loss_policy
 
 INVARIANTS:
 - Loss policy evaluation is deterministic for identical inputs.
+- Loss policies must reference a registered attenuation policy id.
 - RNG-enabled policies must use named streams only.
 - Policies must not reference wall-clock or platform entropy.

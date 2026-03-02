@@ -1225,6 +1225,20 @@
         "1.0.0"
       ]
     },
+    "attenuation_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "jamming_effect": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "signal_rule_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1373,6 +1387,20 @@
       ]
     },
     "signal_channel_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "attenuation_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "jamming_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
