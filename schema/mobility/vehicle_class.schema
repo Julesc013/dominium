@@ -1,0 +1,25 @@
+SCHEMA: mobility/vehicle_class.schema
+schema_id: dominium.schema.mobility.vehicle_class
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Data-driven MOB-3 vehicle class declaration contract.
+
+REQUIRED SHAPE:
+record vehicle_class
+  required:
+    - schema_version: semver
+    - vehicle_class_id: id
+    - description: string
+    - supported_motion_modes: list[enum(rail_constrained|corridor|free|orbit)]
+    - extensions: map
+  optional:
+    - required_specs: list[id]
+    - default_ports: list[id]
+    - default_pose_bindings: list[id]
+    - default_hazard_modes: list[id]
+
+INVARIANTS:
+- Vehicle classes remain declarative and pack-driven.
+- Runtime behavior must not branch on hardcoded class IDs.
