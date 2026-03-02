@@ -24,6 +24,30 @@
       "documentation": "docs/governance/REPOX_RULESETS.md#duplicate_logic_pressure",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-06-01"
+    },
+    {
+      "rule_id": "INV-INSTITUTIONAL-SCHEDULES-THROUGH-CTRL",
+      "severity": "WARN",
+      "scope_paths": ["src/signals", "src/mobility", "tools/xstack/sessionx"],
+      "documentation": "docs/signals/INSTITUTIONAL_COMMS_MODEL.md",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2026-12-31"
+    },
+    {
+      "rule_id": "INV-REPORTS-ARE-ARTIFACTS",
+      "severity": "WARN",
+      "scope_paths": ["src/signals", "src/inspection", "data/registries"],
+      "documentation": "docs/signals/INSTITUTIONAL_COMMS_MODEL.md",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2026-12-31"
+    },
+    {
+      "rule_id": "INV-NO-ADHOC-BULLETINS",
+      "severity": "WARN",
+      "scope_paths": ["src/signals", "tools/xstack/sessionx"],
+      "documentation": "docs/signals/INSTITUTIONAL_COMMS_MODEL.md",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2026-12-31"
     }
   ]
 }
