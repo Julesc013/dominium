@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Signal Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-8 signal row.",
+  "x-doc-ref": [
+    "docs/mobility/SIGNALING_AND_INTERLOCKING.md",
+    "docs/audit/SIGNALING_INTERLOCKING_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "signal_id",
+    "attached_to",
+    "signal_type_id",
+    "state_machine_id",
+    "rule_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "signal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attached_to": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edge_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "node_id"
+          ]
+        },
+        {
+          "required": [
+            "edge_id"
+          ]
+        }
+      ]
+    },
+    "signal_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state_machine_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rule_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "signal_id": "signal.mob.demo.001",
+      "attached_to": {
+        "edge_id": "edge.mob.demo.001"
+      },
+      "signal_type_id": "signal.rail_block_basic",
+      "state_machine_id": "state_machine.mob.signal.001",
+      "rule_policy_id": "policy.rail_basic_interlocking",
+      "deterministic_fingerprint": "e2f028d6683dbd8ffab31784af4ed6e8ce0e112e2c730e441d9f8b1a6f891100",
+      "extensions": {}
+    }
+  ]
+}

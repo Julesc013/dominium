@@ -1,0 +1,44 @@
+{
+  "schema_id": "dominium.registry.signal_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.signal_type_registry",
+    "registry_version": "1.0.0",
+    "signal_types": [
+      {
+        "schema_version": "1.0.0",
+        "signal_type_id": "signal.rail_block_basic",
+        "schema_ref": "dominium.schema.mobility.signal@1.0.0",
+        "extensions": {
+          "domain_tags": [
+            "rail",
+            "block"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "signal_type_id": "signal.road_light_basic",
+        "schema_ref": "dominium.schema.mobility.signal@1.0.0",
+        "extensions": {
+          "domain_tags": [
+            "road",
+            "stub"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "signal_type_id": "signal.air_waypoint_clearance",
+        "schema_ref": "dominium.schema.mobility.signal@1.0.0",
+        "extensions": {
+          "domain_tags": [
+            "air",
+            "stub"
+          ]
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

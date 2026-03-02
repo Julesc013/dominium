@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Signal Rule Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-8 signal rule policy.",
+  "x-doc-ref": [
+    "docs/mobility/SIGNALING_AND_INTERLOCKING.md",
+    "docs/audit/SIGNALING_INTERLOCKING_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "rule_policy_id",
+    "description",
+    "aspects",
+    "transition_rules",
+    "interlocking_rules",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "rule_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "aspects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "transition_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "interlocking_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "rule_policy_id": "policy.rail_basic_interlocking",
+      "description": "Basic interlocking policy.",
+      "aspects": [
+        "stop",
+        "caution",
+        "clear"
+      ],
+      "transition_rules": [],
+      "interlocking_rules": [],
+      "extensions": {}
+    }
+  ]
+}
