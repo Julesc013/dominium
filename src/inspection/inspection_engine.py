@@ -219,6 +219,7 @@ _SECTION_IDS_BY_FIDELITY_VEHICLE = {
         "section.vehicle.summary",
         "section.vehicle.specs",
         "section.vehicle.ports",
+        "section.vehicle.interior_summary",
         "section.vehicle.wear_risk",
     ],
     "meso": [
@@ -227,6 +228,9 @@ _SECTION_IDS_BY_FIDELITY_VEHICLE = {
         "section.vehicle.specs",
         "section.vehicle.ports",
         "section.vehicle.pose_slots",
+        "section.vehicle.interior_summary",
+        "section.vehicle.portal_states",
+        "section.vehicle.pressure_map",
         "section.vehicle.wear_risk",
         "section.events_summary",
     ],
@@ -236,6 +240,9 @@ _SECTION_IDS_BY_FIDELITY_VEHICLE = {
         "section.vehicle.specs",
         "section.vehicle.ports",
         "section.vehicle.pose_slots",
+        "section.vehicle.interior_summary",
+        "section.vehicle.portal_states",
+        "section.vehicle.pressure_map",
         "section.vehicle.wear_risk",
         "section.events_summary",
     ],
@@ -266,6 +273,9 @@ _DEFAULT_SECTION_ROWS = {
     "section.vehicle.specs": {"title": "Vehicle Specs", "extensions": {"cost_units": 1}},
     "section.vehicle.ports": {"title": "Vehicle Ports", "extensions": {"cost_units": 1}},
     "section.vehicle.pose_slots": {"title": "Vehicle Pose Slots", "extensions": {"cost_units": 2}},
+    "section.vehicle.interior_summary": {"title": "Vehicle Interior Summary", "extensions": {"cost_units": 2}},
+    "section.vehicle.portal_states": {"title": "Vehicle Portal States", "extensions": {"cost_units": 2}},
+    "section.vehicle.pressure_map": {"title": "Vehicle Pressure Map", "extensions": {"cost_units": 2}},
     "section.vehicle.wear_risk": {"title": "Vehicle Wear Risk", "extensions": {"cost_units": 1}},
     "section.interior.connectivity_summary": {"title": "Interior Connectivity Summary", "extensions": {"cost_units": 1}},
     "section.interior.portal_state_table": {"title": "Interior Portal State Table", "extensions": {"cost_units": 2}},
@@ -1449,6 +1459,69 @@ def _build_section_data(
             "capacity_used_total": int(_quantize_map({"value": used_total}, step=quant_step).get("value", 0)),
             "utilization_permille": int(utilization_permille),
         }
+    if section_id == "section.vehicle.interior_summary":
+        graph = _graph_for_target(state, target_payload, request)
+        if not graph:
+            return {"available": False}
+        pressure_rows = _compartment_rows_for_graph(state, graph)
+        portal_rows_by_id = _row_index((dict(state or {})).get("interior_portals"), "portal_id")
+        state_machine_rows_by_id = _row_index((dict(state or {})).get("interior_portal_state_machines"), "machine_id")
+        portal_states = []
+        for portal_id in _sorted_unique_strings(graph.get("portals")):
+            portal = dict(portal_rows_by_id.get(portal_id) or {})
+            if not portal:
+                continue
+            state_id = _portal_state_id(portal, state_machine_rows_by_id)
+            portal_states.append(
+                {
+                    "portal_id": portal_id,
+                    "state_id": state_id,
+                }
+            )
+        min_pressure = min(
+            (int(max(0, _as_int(row.get("derived_pressure", 0), 0))) for row in pressure_rows),
+            default=0,
+        )
+        min_oxygen = min(
+            (int(max(0, _as_int(row.get("oxygen_fraction", 0), 0))) for row in pressure_rows),
+            default=0,
+        )
+        max_smoke = max(
+            (int(max(0, _as_int(row.get("smoke_density", 0), 0))) for row in pressure_rows),
+            default=0,
+        )
+        flooded_count = len(
+            [
+                row
+                for row in pressure_rows
+                if int(max(0, _as_int(row.get("water_volume", 0), 0))) > 0
+            ]
+        )
+        return {
+            "available": True,
+            "graph_id": str(graph.get("graph_id", "")).strip(),
+            "volume_count": int(len(pressure_rows)),
+            "portal_count": int(len(portal_states)),
+            "portal_open_count": int(
+                len(
+                    [
+                        row
+                        for row in portal_states
+                        if str(row.get("state_id", "")).strip() in {"open", "unlocked", "permeable", "opening"}
+                    ]
+                )
+            ),
+            "min_pressure": int(_quantize_map({"value": int(min_pressure)}, step=quant_step).get("value", 0)),
+            "min_oxygen_fraction": int(_quantize_map({"value": int(min_oxygen)}, step=quant_step).get("value", 0)),
+            "max_smoke_density": int(_quantize_map({"value": int(max_smoke)}, step=quant_step).get("value", 0)),
+            "flooded_count": int(flooded_count),
+            "alarm_state": (
+                "ALERT"
+                if (int(min_pressure) < 700 or int(min_oxygen) < 160 or int(max_smoke) >= 450 or int(flooded_count) > 0)
+                else ("WARN" if (int(min_pressure) < 900 or int(min_oxygen) < 200 or int(max_smoke) >= 200) else "OK")
+            ),
+            "epistemic_redaction": "none" if allow_hidden_state else "coarse_summary",
+        }
     if section_id in {"section.interior.layout", "section.interior.connectivity_summary"}:
         graph = _graph_for_target(state, target_payload, request)
         if not graph:
@@ -1486,7 +1559,7 @@ def _build_section_data(
             "connectivity_status": "connected" if open_portal_count > 0 else "isolated",
             "volume_type_counts": dict((k, volume_type_counts[k]) for k in sorted(volume_type_counts.keys())),
         }
-    if section_id in {"section.interior.portal_states", "section.interior.portal_state_table"}:
+    if section_id in {"section.interior.portal_states", "section.interior.portal_state_table", "section.vehicle.portal_states"}:
         graph = _graph_for_target(state, target_payload, request)
         if not graph:
             return {"available": False, "portal_count": 0, "portal_states": []}
@@ -1520,7 +1593,7 @@ def _build_section_data(
             "state_counts": dict((k, state_counts[k]) for k in sorted(state_counts.keys())),
             "portal_states": sorted(portal_states, key=lambda item: str(item.get("portal_id", "")))[:256],
         }
-    if section_id in {"section.interior.pressure_map", "section.interior.pressure_summary"}:
+    if section_id in {"section.interior.pressure_map", "section.interior.pressure_summary", "section.vehicle.pressure_map"}:
         graph = _graph_for_target(state, target_payload, request)
         if not graph:
             return {"available": False, "graph_id": "", "rows": []}
