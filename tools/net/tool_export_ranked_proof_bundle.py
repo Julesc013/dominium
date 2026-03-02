@@ -248,6 +248,11 @@ def _load_mobility_proof_hashes(repo_root: str, run_meta: dict, run_meta_abs: st
     congestion_hashes = set()
     signal_state_hashes = set()
     derailment_hashes = set()
+    signal_network_hashes = set()
+    message_delivery_event_hash_chains = set()
+    receipt_hash_chains = set()
+    trust_update_hash_chains = set()
+    jamming_event_hash_chains = set()
     bundle_refs = set()
     scanned_files = 0
     for directory in unique_dirs:
@@ -265,6 +270,11 @@ def _load_mobility_proof_hashes(repo_root: str, run_meta: dict, run_meta_abs: st
                 ("congestion_hash", congestion_hashes),
                 ("signal_state_hash", signal_state_hashes),
                 ("derailment_hash", derailment_hashes),
+                ("signal_network_hash", signal_network_hashes),
+                ("message_delivery_event_hash_chain", message_delivery_event_hash_chains),
+                ("receipt_hash_chain", receipt_hash_chains),
+                ("trust_update_hash_chain", trust_update_hash_chains),
+                ("jamming_event_hash_chain", jamming_event_hash_chains),
             ):
                 token = str(payload.get(key, "")).strip()
                 if token:
@@ -279,6 +289,11 @@ def _load_mobility_proof_hashes(repo_root: str, run_meta: dict, run_meta_abs: st
         "congestion_hashes": sorted(congestion_hashes),
         "signal_state_hashes": sorted(signal_state_hashes),
         "derailment_hashes": sorted(derailment_hashes),
+        "signal_network_hashes": sorted(signal_network_hashes),
+        "message_delivery_event_hash_chains": sorted(message_delivery_event_hash_chains),
+        "receipt_hash_chains": sorted(receipt_hash_chains),
+        "trust_update_hash_chains": sorted(trust_update_hash_chains),
+        "jamming_event_hash_chains": sorted(jamming_event_hash_chains),
         "control_proof_bundle_refs": sorted(bundle_refs),
         "control_proof_bundle_count": int(scanned_files),
         "control_proof_dirs": [
@@ -300,6 +315,11 @@ def _build_markdown(bundle: dict) -> str:
     congestion_hashes = list(bundle.get("congestion_hashes") or [])
     signal_state_hashes = list(bundle.get("signal_state_hashes") or [])
     derailment_hashes = list(bundle.get("derailment_hashes") or [])
+    signal_network_hashes = list(bundle.get("signal_network_hashes") or [])
+    message_delivery_event_hash_chains = list(bundle.get("message_delivery_event_hash_chains") or [])
+    receipt_hash_chains = list(bundle.get("receipt_hash_chains") or [])
+    trust_update_hash_chains = list(bundle.get("trust_update_hash_chains") or [])
+    jamming_event_hash_chains = list(bundle.get("jamming_event_hash_chains") or [])
     lines = [
         "# Ranked Proof Bundle",
         "",
@@ -320,6 +340,11 @@ def _build_markdown(bundle: dict) -> str:
         "- Congestion Hashes: `{}`".format(int(len(congestion_hashes))),
         "- Signal State Hashes: `{}`".format(int(len(signal_state_hashes))),
         "- Derailment Hashes: `{}`".format(int(len(derailment_hashes))),
+        "- Signal Network Hashes: `{}`".format(int(len(signal_network_hashes))),
+        "- Message Delivery Hash Chains: `{}`".format(int(len(message_delivery_event_hash_chains))),
+        "- Receipt Hash Chains: `{}`".format(int(len(receipt_hash_chains))),
+        "- Trust Update Hash Chains: `{}`".format(int(len(trust_update_hash_chains))),
+        "- Jamming Event Hash Chains: `{}`".format(int(len(jamming_event_hash_chains))),
         "",
         "## Registry Hashes",
     ]
@@ -535,6 +560,11 @@ def main() -> int:
     congestion_hashes = list(mobility_hashes.get("congestion_hashes") or [])
     signal_state_hashes = list(mobility_hashes.get("signal_state_hashes") or [])
     derailment_hashes = list(mobility_hashes.get("derailment_hashes") or [])
+    signal_network_hashes = list(mobility_hashes.get("signal_network_hashes") or [])
+    message_delivery_event_hash_chains = list(mobility_hashes.get("message_delivery_event_hash_chains") or [])
+    receipt_hash_chains = list(mobility_hashes.get("receipt_hash_chains") or [])
+    trust_update_hash_chains = list(mobility_hashes.get("trust_update_hash_chains") or [])
+    jamming_event_hash_chains = list(mobility_hashes.get("jamming_event_hash_chains") or [])
 
     deterministic_seed = {
         "pack_lock_hash": pack_lock_hash,
@@ -550,6 +580,11 @@ def main() -> int:
         "congestion_hashes_hash": canonical_sha256(congestion_hashes),
         "signal_state_hashes_hash": canonical_sha256(signal_state_hashes),
         "derailment_hashes_hash": canonical_sha256(derailment_hashes),
+        "signal_network_hashes_hash": canonical_sha256(signal_network_hashes),
+        "message_delivery_event_hash_chains_hash": canonical_sha256(message_delivery_event_hash_chains),
+        "receipt_hash_chains_hash": canonical_sha256(receipt_hash_chains),
+        "trust_update_hash_chains_hash": canonical_sha256(trust_update_hash_chains),
+        "jamming_event_hash_chains_hash": canonical_sha256(jamming_event_hash_chains),
     }
     proof_bundle_hash = canonical_sha256(deterministic_seed)
     proof_bundle_id = "ranked.proof.{}".format(proof_bundle_hash[:16])
@@ -577,6 +612,11 @@ def main() -> int:
         "congestion_hashes": congestion_hashes,
         "signal_state_hashes": signal_state_hashes,
         "derailment_hashes": derailment_hashes,
+        "signal_network_hashes": signal_network_hashes,
+        "message_delivery_event_hash_chains": message_delivery_event_hash_chains,
+        "receipt_hash_chains": receipt_hash_chains,
+        "trust_update_hash_chains": trust_update_hash_chains,
+        "jamming_event_hash_chains": jamming_event_hash_chains,
         "source_artifacts": {
             "run_meta_path": norm(os.path.relpath(run_meta_abs, repo_root)) if run_meta_abs else "",
             "handshake_path": norm(os.path.relpath(handshake_abs, repo_root)),
@@ -605,6 +645,11 @@ def main() -> int:
             "congestion_hash_count": int(len(congestion_hashes)),
             "signal_state_hash_count": int(len(signal_state_hashes)),
             "derailment_hash_count": int(len(derailment_hashes)),
+            "signal_network_hash_count": int(len(signal_network_hashes)),
+            "message_delivery_event_hash_chain_count": int(len(message_delivery_event_hash_chains)),
+            "receipt_hash_chain_count": int(len(receipt_hash_chains)),
+            "trust_update_hash_chain_count": int(len(trust_update_hash_chains)),
+            "jamming_event_hash_chain_count": int(len(jamming_event_hash_chains)),
         },
     }
     bundle["proof_bundle_hash"] = canonical_sha256(bundle)
@@ -636,6 +681,11 @@ def main() -> int:
             "congestion_hashes": len(congestion_hashes),
             "signal_state_hashes": len(signal_state_hashes),
             "derailment_hashes": len(derailment_hashes),
+            "signal_network_hashes": len(signal_network_hashes),
+            "message_delivery_event_hash_chains": len(message_delivery_event_hash_chains),
+            "receipt_hash_chains": len(receipt_hash_chains),
+            "trust_update_hash_chains": len(trust_update_hash_chains),
+            "jamming_event_hash_chains": len(jamming_event_hash_chains),
         },
     }
     print(json.dumps(response, indent=2, sort_keys=True))
