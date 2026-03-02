@@ -137,6 +137,45 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.signal.network_summary",
+        "title": "Signal Network Summary",
+        "data": {
+          "data_kind": "signal_network_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.signal.channel_queue_depth",
+        "title": "Signal Channel Queue Depth",
+        "data": {
+          "data_kind": "signal_channel_queue_depth"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.signal.delivery_status",
+        "title": "Signal Delivery Status",
+        "data": {
+          "data_kind": "signal_delivery_status"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.vehicle.summary",
         "title": "Vehicle Summary",
         "data": {

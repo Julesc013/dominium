@@ -280,8 +280,23 @@ def _network_graph_overlay_payload(
     )
     congestion_section = dict(sections.get("section.mob.congestion_summary") or {})
     congestion_data = dict(congestion_section.get("data") or {})
+    signal_network_section = dict(sections.get("section.signal.network_summary") or {})
+    signal_network_data = dict(signal_network_section.get("data") or {})
+    signal_queue_section = dict(sections.get("section.signal.channel_queue_depth") or {})
+    signal_queue_data = dict(signal_queue_section.get("data") or {})
+    signal_delivery_section = dict(sections.get("section.signal.delivery_status") or {})
+    signal_delivery_data = dict(signal_delivery_section.get("data") or {})
     delayed_vehicle_ids = set(_sorted_unique_strings(list(congestion_data.get("delayed_vehicle_ids") or [])))
     congested_edge_ids = set(_sorted_unique_strings(list(congestion_data.get("congested_edge_ids") or [])))
+    signal_edge_queue_rows = sorted(
+        [dict(item) for item in list(signal_queue_data.get("edge_queue_depth_rows") or []) if isinstance(item, dict)],
+        key=lambda item: (str(item.get("edge_id", "")), _to_int(item.get("queue_depth", 0), 0)),
+    )
+    signal_edge_queue_by_id = dict(
+        (str(item.get("edge_id", "")).strip(), dict(item))
+        for item in signal_edge_queue_rows
+        if str(item.get("edge_id", "")).strip()
+    )
     switch_state_rows = sorted(
         [dict(item) for item in list(network_summary_data.get("switch_states") or []) if isinstance(item, dict)],
         key=lambda item: str(item.get("node_id", "")),
@@ -303,6 +318,9 @@ def _network_graph_overlay_payload(
     congestion_low_color = {"r": 104, "g": 188, "b": 110}
     congestion_med_color = {"r": 236, "g": 168, "b": 78}
     congestion_high_color = {"r": 224, "g": 86, "b": 86}
+    signal_queue_low_color = {"r": 110, "g": 174, "b": 228}
+    signal_queue_med_color = {"r": 92, "g": 128, "b": 222}
+    signal_queue_high_color = {"r": 72, "g": 96, "b": 198}
     delayed_color = {"r": 252, "g": 206, "b": 88}
     edge_material_id = "mat.inspect.networkgraph.edge.{}".format(canonical_sha256({"graph_id": graph_id})[:12])
     node_material_id = "mat.inspect.networkgraph.node.{}".format(canonical_sha256({"graph_id": graph_id, "node": True})[:12])
@@ -318,6 +336,15 @@ def _network_graph_overlay_payload(
     )
     congestion_high_material_id = "mat.inspect.networkgraph.cong.high.{}".format(
         canonical_sha256({"graph_id": graph_id, "congestion": "high"})[:12]
+    )
+    signal_queue_low_material_id = "mat.inspect.networkgraph.signalq.low.{}".format(
+        canonical_sha256({"graph_id": graph_id, "signal_queue": "low"})[:12]
+    )
+    signal_queue_med_material_id = "mat.inspect.networkgraph.signalq.med.{}".format(
+        canonical_sha256({"graph_id": graph_id, "signal_queue": "med"})[:12]
+    )
+    signal_queue_high_material_id = "mat.inspect.networkgraph.signalq.high.{}".format(
+        canonical_sha256({"graph_id": graph_id, "signal_queue": "high"})[:12]
     )
     delayed_material_id = "mat.inspect.networkgraph.delayed.{}".format(
         canonical_sha256({"graph_id": graph_id, "board": "delayed"})[:12]
@@ -425,6 +452,39 @@ def _network_graph_overlay_payload(
             },
             {
                 "schema_version": "1.0.0",
+                "material_id": signal_queue_low_material_id,
+                "base_color": dict(signal_queue_low_color),
+                "roughness": 260,
+                "metallic": 0,
+                "emission": {"r": signal_queue_low_color["r"], "g": signal_queue_low_color["g"], "b": signal_queue_low_color["b"], "strength": 180},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "signal_queue_low"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": signal_queue_med_material_id,
+                "base_color": dict(signal_queue_med_color),
+                "roughness": 250,
+                "metallic": 0,
+                "emission": {"r": signal_queue_med_color["r"], "g": signal_queue_med_color["g"], "b": signal_queue_med_color["b"], "strength": 210},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "signal_queue_medium"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": signal_queue_high_material_id,
+                "base_color": dict(signal_queue_high_color),
+                "roughness": 240,
+                "metallic": 0,
+                "emission": {"r": signal_queue_high_color["r"], "g": signal_queue_high_color["g"], "b": signal_queue_high_color["b"], "strength": 240},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "signal_queue_high"},
+            },
+            {
+                "schema_version": "1.0.0",
                 "material_id": delayed_material_id,
                 "base_color": dict(delayed_color),
                 "roughness": 220,
@@ -472,6 +532,14 @@ def _network_graph_overlay_payload(
             occupancy_heat_material_id = congestion_high_material_id
         elif occupancy_ratio_permille > 1000:
             occupancy_heat_material_id = congestion_med_material_id
+        signal_queue_row = dict(signal_edge_queue_by_id.get(edge_id) or {})
+        signal_queue_depth = int(max(0, _to_int(signal_queue_row.get("queue_depth", 0), 0)))
+        signal_queue_heat_bucket = str(signal_queue_row.get("heat_bucket", "")).strip() or "low"
+        signal_queue_material_id = signal_queue_low_material_id
+        if signal_queue_heat_bucket == "high" or signal_queue_depth >= 6:
+            signal_queue_material_id = signal_queue_high_material_id
+        elif signal_queue_heat_bucket == "medium" or signal_queue_depth >= 3:
+            signal_queue_material_id = signal_queue_med_material_id
         payload = dict(edge.get("payload") or {})
         spec_id = str(payload.get("spec_id", "")).strip() or None
         spec_missing = not bool(spec_id)
@@ -486,6 +554,8 @@ def _network_graph_overlay_payload(
             material_id = route_material_id
         if occupancy_over_capacity:
             material_id = occupancy_heat_material_id
+        if signal_queue_depth > 0:
+            material_id = signal_queue_material_id
         if route_spec_warning or spec_missing:
             material_id = spec_warn_material_id
         if route_curvature_warning:
@@ -521,6 +591,8 @@ def _network_graph_overlay_payload(
                     "current_occupancy": int(occupancy_current),
                     "congestion_ratio_permille": int(occupancy_ratio_permille),
                     "over_capacity": bool(occupancy_over_capacity),
+                    "signal_queue_depth": int(signal_queue_depth),
+                    "signal_queue_heat_bucket": signal_queue_heat_bucket,
                 },
             }
         )
@@ -547,6 +619,34 @@ def _network_graph_overlay_payload(
                 },
             }
         )
+        if signal_queue_depth > 0:
+            renderables.append(
+                {
+                    "schema_version": "1.0.0",
+                    "renderable_id": "overlay.inspect.networkgraph.signalq.{}".format(
+                        canonical_sha256({"graph_id": graph_id, "edge_id": edge_id, "signal_queue": True})[:16]
+                    ),
+                    "semantic_id": "overlay.inspect.networkgraph.signalq.{}".format(edge_id),
+                    "primitive_id": "prim.glyph.label",
+                    "transform": {
+                        "position_mm": {"x": 0, "y": 0, "z": 0},
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 850,
+                    },
+                    "material_id": signal_queue_material_id,
+                    "layer_tags": ["overlay", "ui"],
+                    "label": "SIG-Q {}".format(int(signal_queue_depth)),
+                    "lod_hint": "lod.band.mid",
+                    "flags": {"selectable": False, "highlighted": True},
+                    "extensions": {
+                        "interaction_overlay": True,
+                        "overlay_kind": "signal_queue_depth",
+                        "edge_id": edge_id,
+                        "signal_queue_depth": int(signal_queue_depth),
+                        "heat_bucket": signal_queue_heat_bucket,
+                    },
+                }
+            )
         renderables.append(
             {
                 "schema_version": "1.0.0",
@@ -745,6 +845,14 @@ def _network_graph_overlay_payload(
         int(max(congested_edge_count, len(congested_edge_ids))),
         int(delayed_board_count),
     )
+    signal_queue_total = int(max(0, _to_int(signal_queue_data.get("queue_depth_total", 0), 0)))
+    signal_delivery_status = str(signal_delivery_data.get("delivery_status", "")).strip() or None
+    if signal_queue_total > 0 or signal_delivery_status:
+        summary = "{} signal_queue={} signal_status={}".format(
+            summary,
+            int(signal_queue_total),
+            signal_delivery_status or "n/a",
+        )
     return {
         "mode": "networkgraph_overlay",
         "summary": summary,
@@ -793,6 +901,14 @@ def _network_graph_overlay_payload(
             "delayed_board_count": int(delayed_board_count),
             "congestion_delay_event_count": int(max(0, _to_int(congestion_data.get("delay_event_count", 0), 0))),
             "congestion_policy_id": str(congestion_data.get("congestion_policy_id", "")).strip() or None,
+            "signal_queue_depth_total": int(signal_queue_total),
+            "signal_queue_edge_count": int(len(signal_edge_queue_rows)),
+            "signal_channel_count": int(max(0, _to_int(signal_network_data.get("channel_count", 0), 0))),
+            "signal_delivery_status": signal_delivery_status,
+            "signal_delivery_event_count": int(max(0, _to_int(signal_delivery_data.get("event_count", 0), 0))),
+            "signal_delivery_ratio_permille": int(
+                max(0, _to_int(signal_delivery_data.get("delivered_ratio_permille", 0), 0))
+            ),
         },
     }
 
