@@ -1,0 +1,24 @@
+SCHEMA: signals/institution_profile.schema
+schema_id: dominium.schema.signals.institution_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic institution communication profile binding bulletin, dispatch, and standards policies.
+
+REQUIRED SHAPE:
+record institution_profile
+  required:
+    - schema_version: semver
+    - institution_id: id
+    - bulletin_policy_id: id
+    - dispatch_policy_id: id
+    - standards_policy_id: id
+    - channels_available: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Institutional comm behavior is policy-driven and deterministic.
+- Policy references must resolve through registries.
+- Mutation is process-only and auditable.

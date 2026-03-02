@@ -1,0 +1,22 @@
+SCHEMA: signals/standards_policy.schema
+schema_id: dominium.schema.signals.standards_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic policy for institutional standards issuance, credential linkage, and compliance reporting.
+
+REQUIRED SHAPE:
+record standards_policy
+  required:
+    - schema_version: semver
+    - standards_policy_id: id
+    - allowed_spec_types: list[id]
+    - credential_issuance_rules: map
+    - compliance_reporting_rules: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Spec/credential issuance must be policy-gated and event-sourced.
+- Compliance report generation must be deterministic and inspectable.

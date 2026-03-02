@@ -917,6 +917,13 @@
         "1.0.0"
       ]
     },
+    "institution_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "instrument_instance": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1232,6 +1239,13 @@
         "1.0.0"
       ]
     },
+    "bulletin_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "verification_result": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1240,6 +1254,13 @@
       ]
     },
     "message_delivery_event": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dispatch_policy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1268,6 +1289,13 @@
       ]
     },
     "signal_rule_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "standards_policy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1449,6 +1477,20 @@
         "1.0.0"
       ]
     },
+    "bulletin_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dispatch_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "belief_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1478,6 +1520,13 @@
       ]
     },
     "signal_rule_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "standards_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

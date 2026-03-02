@@ -1,0 +1,21 @@
+SCHEMA: signals/dispatch_policy.schema
+schema_id: dominium.schema.signals.dispatch_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic institution dispatch policy for schedule-control operations.
+
+REQUIRED SHAPE:
+record dispatch_policy
+  required:
+    - schema_version: semver
+    - dispatch_policy_id: id
+    - allowed_schedule_kinds: list[id]
+    - priority_rules: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Dispatch mutations are emitted through control-plane intents, never direct schedule writes.
+- Priority ordering must be deterministic for identical inputs.

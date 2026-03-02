@@ -1,0 +1,45 @@
+{
+  "schema_id": "dominium.registry.bulletin_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.bulletin_policy_registry",
+    "registry_version": "1.0.0",
+    "bulletin_policies": [
+      {
+        "schema_version": "1.0.0",
+        "bulletin_policy_id": "bulletin.daily_local",
+        "schedule_id": "schedule.institution.bulletin.daily_local",
+        "aggregation_policy_id": "agg.daily_summary",
+        "audience_address": {
+          "address_type": "group",
+          "target_id": "group.dispatch.default"
+        },
+        "severity_rules": {
+          "default_severity": "normal",
+          "publish_on_incident": false
+        },
+        "extensions": {
+          "scope": "local"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "bulletin_policy_id": "bulletin.incident_immediate",
+        "schedule_id": "schedule.institution.bulletin.incident_immediate",
+        "aggregation_policy_id": "agg.incident_batch",
+        "audience_address": {
+          "address_type": "broadcast",
+          "target_id": "scope.incident.local"
+        },
+        "severity_rules": {
+          "default_severity": "high",
+          "publish_on_incident": true
+        },
+        "extensions": {
+          "scope": "regional"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
