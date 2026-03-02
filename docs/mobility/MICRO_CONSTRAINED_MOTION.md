@@ -125,6 +125,7 @@ After derailment/off-guide:
 - Micro solver execution is ROI-only and fidelity-gated.
 - Global micro simulation is forbidden.
 - If budget is insufficient, solver degrades deterministically to meso/macro-compatible handling and logs downgrade decisions.
+- Authoritative/hybrid servers own micro tick execution; lockstep peers rely on deterministic vehicle ordering for convergence.
 
 ## Control and Epistemics
 
