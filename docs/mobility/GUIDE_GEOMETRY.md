@@ -124,3 +124,13 @@ GuideGeometry overlays are render-only projections and do not mutate truth.
 - No congestion solver.
 - No signal control solver.
 - No wall-clock dependence.
+
+## 12) Multiplayer and Budget Contract
+
+- Server-authoritative and hybrid paths both validate GuideGeometry creation and compliance through process execution.
+- Lockstep paths remain deterministic because IDs, snap choices, and metric ordering are canonicalized.
+- Large edits consume deterministic metric budget units.
+- Under budget pressure, runtime degrades by:
+  - reducing edit point resolution first
+  - computing fewer derived metrics second
+- All downgrades must emit explicit decision-log/fidelity entries.
