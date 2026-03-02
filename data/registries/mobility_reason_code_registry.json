@@ -13,6 +13,12 @@
       },
       {
         "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.network_invalid",
+        "description": "Mobility network creation or edit request is invalid for the current graph/binding state.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "reason_code": "refusal.mob.spec_noncompliant",
         "description": "Requested mobility action violates applicable mobility SpecSheet constraints.",
         "extensions": {}
@@ -39,6 +45,12 @@
         "schema_version": "1.0.0",
         "reason_code": "refusal.mob.signal_violation",
         "description": "Requested movement violates a governing signal/rule state.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.switch_invalid",
+        "description": "Requested switch transition is invalid for the current switch state machine.",
         "extensions": {}
       },
       {

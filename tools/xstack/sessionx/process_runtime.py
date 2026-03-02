@@ -35,6 +35,15 @@ from src.core.graph.network_graph_engine import (
     REFUSAL_CORE_GRAPH_INVALID,
     normalize_network_graph,
 )
+from src.core.graph.routing_engine import (
+    RoutingError,
+    query_route_result,
+)
+from src.core.state.state_machine_engine import (
+    StateMachineError,
+    apply_transition,
+    normalize_state_machine,
+)
 from src.logistics.logistics_engine import (
     LogisticsError,
     build_inventory_index,
@@ -255,6 +264,19 @@ from src.mobility.geometry import (
     normalize_junction_rows,
     snap_geometry_parameters,
 )
+from src.mobility.network import (
+    MobilityNetworkError,
+    REFUSAL_MOBILITY_NETWORK_INVALID,
+    REFUSAL_MOBILITY_NO_ROUTE,
+    REFUSAL_MOBILITY_SWITCH_INVALID,
+    build_mobility_network_graph,
+    filter_graph_by_switch_state,
+    mobility_edge_kind_rows_by_id,
+    mobility_max_speed_policy_rows_by_id,
+    mobility_node_kind_rows_by_id,
+    normalize_mobility_network_binding_rows,
+    select_switch_transition_id,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -376,6 +398,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.geometry_create": "entitlement.control.admin",
     "process.geometry_edit": "entitlement.control.admin",
     "process.geometry_finalize": "entitlement.control.admin",
+    "process.mobility_network_create_from_formalization": "entitlement.control.admin",
+    "process.mobility_network_edit": "entitlement.control.admin",
+    "process.switch_set_state": "entitlement.control.admin",
+    "process.mobility_route_query": "entitlement.inspect",
     "process.mechanics_fracture": "session.boot",
     "process.weld_joint": "entitlement.tool.use",
     "process.cut_joint": "entitlement.tool.use",
@@ -495,6 +521,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.geometry_create": "operator",
     "process.geometry_edit": "operator",
     "process.geometry_finalize": "operator",
+    "process.mobility_network_create_from_formalization": "operator",
+    "process.mobility_network_edit": "operator",
+    "process.switch_set_state": "operator",
+    "process.mobility_route_query": "observer",
     "process.mechanics_fracture": "observer",
     "process.weld_joint": "operator",
     "process.cut_joint": "operator",
@@ -561,6 +591,10 @@ CONTROL_PROCESS_IDS = {
     "process.geometry_create",
     "process.geometry_edit",
     "process.geometry_finalize",
+    "process.mobility_network_create_from_formalization",
+    "process.mobility_network_edit",
+    "process.switch_set_state",
+    "process.mobility_route_query",
     "process.mechanics_fracture",
 }
 CIV_PROCESS_IDS = {
@@ -1465,6 +1499,265 @@ def _persist_guide_geometry_state(
     _ensure_geometry_metric_rows(state)
 
 
+def _ensure_mobility_network_binding_rows(state: dict) -> List[dict]:
+    rows = normalize_mobility_network_binding_rows(state.get("mobility_network_bindings"))
+    state["mobility_network_bindings"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_mobility_switch_state_machines(state: dict) -> List[dict]:
+    rows = state.get("mobility_switch_state_machines")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("machine_id", ""))):
+        machine_id = str(row.get("machine_id", "")).strip()
+        if not machine_id:
+            continue
+        try:
+            out[machine_id] = normalize_state_machine(row)
+        except StateMachineError:
+            continue
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["mobility_switch_state_machines"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_mobility_route_cache_state(state: dict) -> dict:
+    payload = dict(state.get("mobility_route_cache_state") or {})
+    entries_raw = dict(payload.get("entries_by_key") or {})
+    entries_by_key: Dict[str, dict] = {}
+    for key in sorted(entries_raw.keys(), key=lambda item: str(item)):
+        token = str(key).strip()
+        if not token:
+            continue
+        entry = dict(entries_raw.get(key) or {})
+        route_result = dict(entry.get("route_result") or {})
+        entries_by_key[token] = {
+            "route_result": route_result,
+            "sequence": int(max(0, _as_int(entry.get("sequence", 0), 0))),
+        }
+    normalized = {
+        "entries_by_key": dict((key, dict(entries_by_key[key])) for key in sorted(entries_by_key.keys())),
+        "next_sequence": int(max(0, _as_int(payload.get("next_sequence", 0), 0))),
+    }
+    state["mobility_route_cache_state"] = dict(normalized)
+    return dict(normalized)
+
+
+def _ensure_mobility_route_result_rows(state: dict) -> List[dict]:
+    rows = state.get("mobility_route_results")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("query_id", ""))):
+        query_id = str(row.get("query_id", "")).strip()
+        graph_id = str(row.get("graph_id", "")).strip()
+        from_node_id = str(row.get("from_node_id", "")).strip()
+        to_node_id = str(row.get("to_node_id", "")).strip()
+        if (not query_id) or (not graph_id) or (not from_node_id) or (not to_node_id):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "query_id": query_id,
+            "graph_id": graph_id,
+            "from_node_id": from_node_id,
+            "to_node_id": to_node_id,
+            "route_policy_id": str(row.get("route_policy_id", "")).strip() or "route.shortest_delay",
+            "route_result": dict(row.get("route_result") or {}),
+            "cache_hit": bool(row.get("cache_hit", False)),
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[query_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["mobility_route_results"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _persist_mobility_network_state(
+    state: dict,
+    *,
+    mobility_network_bindings: List[dict],
+    mobility_switch_state_machines: List[dict],
+    mobility_route_cache_state: Mapping[str, object] | None = None,
+    mobility_route_results: List[dict] | None = None,
+) -> None:
+    state["mobility_network_bindings"] = [
+        dict(row) for row in list(mobility_network_bindings or []) if isinstance(row, Mapping)
+    ]
+    state["mobility_switch_state_machines"] = [
+        dict(row) for row in list(mobility_switch_state_machines or []) if isinstance(row, Mapping)
+    ]
+    if mobility_route_cache_state is not None:
+        state["mobility_route_cache_state"] = dict(mobility_route_cache_state or {})
+    if mobility_route_results is not None:
+        state["mobility_route_results"] = [dict(row) for row in list(mobility_route_results or []) if isinstance(row, Mapping)]
+    _ensure_mobility_network_binding_rows(state)
+    _ensure_mobility_switch_state_machines(state)
+    _ensure_mobility_route_cache_state(state)
+    _ensure_mobility_route_result_rows(state)
+
+
+def _load_mobility_network_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
+    node_kind_registry = dict(_policy_payload(policy_context, "mobility_node_kind_registry") or {})
+    if not node_kind_registry:
+        node_kind_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/mobility_node_kind_registry.json",
+            default_payload={"node_kinds": []},
+        )
+    edge_kind_registry = dict(_policy_payload(policy_context, "mobility_edge_kind_registry") or {})
+    if not edge_kind_registry:
+        edge_kind_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/mobility_edge_kind_registry.json",
+            default_payload={"edge_kinds": []},
+        )
+    max_speed_policy_registry = dict(_policy_payload(policy_context, "mobility_max_speed_policy_registry") or {})
+    if not max_speed_policy_registry:
+        max_speed_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/mobility_max_speed_policy_registry.json",
+            default_payload={"max_speed_policies": []},
+        )
+    return dict(node_kind_registry), dict(edge_kind_registry), dict(max_speed_policy_registry)
+
+
+def _create_or_update_mobility_network(
+    *,
+    state: dict,
+    formalization_id: str,
+    state_row: Mapping[str, object],
+    inputs: Mapping[str, object],
+    policy_context: dict | None,
+    guide_geometries: object,
+    mobility_junctions: object,
+    geometry_derived_metrics: object,
+    mobility_network_bindings: object,
+    mobility_switch_state_machines: object,
+    current_tick: int,
+    process_id: str,
+    intent_id: str,
+) -> dict:
+    token_formalization_id = str(formalization_id).strip()
+    token_graph_id = str(inputs.get("graph_id", "")).strip() or str(state_row.get("network_graph_ref", "")).strip() or None
+    require_spec = bool(inputs.get("require_spec", False))
+    if require_spec:
+        missing_spec = sorted(
+            str(row.get("geometry_id", "")).strip()
+            for row in list(guide_geometries or [])
+            if isinstance(row, Mapping)
+            and str(row.get("geometry_id", "")).strip()
+            and not str(row.get("spec_id", "")).strip()
+        )
+        if missing_spec:
+            raise MobilityNetworkError(
+                "refusal.mob.spec_noncompliant",
+                "mobility network creation requires spec-bound guide geometry rows",
+                {"missing_spec_geometry_ids": list(missing_spec)},
+            )
+
+    node_kind_registry, edge_kind_registry, max_speed_policy_registry = _load_mobility_network_registries(
+        policy_context=policy_context
+    )
+    node_kind_rows = mobility_node_kind_rows_by_id(node_kind_registry)
+    edge_kind_rows = mobility_edge_kind_rows_by_id(edge_kind_registry)
+    max_speed_rows = mobility_max_speed_policy_rows_by_id(max_speed_policy_registry)
+    if not node_kind_rows or not edge_kind_rows:
+        raise MobilityNetworkError(
+            REFUSAL_MOBILITY_NETWORK_INVALID,
+            "mobility network registries are missing required rows",
+            {
+                "node_kind_count": int(len(node_kind_rows)),
+                "edge_kind_count": int(len(edge_kind_rows)),
+            },
+        )
+
+    edge_kind_default = str(inputs.get("edge_kind_default", "track")).strip() or "track"
+    if edge_kind_default not in edge_kind_rows:
+        edge_kind_default = sorted(edge_kind_rows.keys())[0]
+    max_speed_policy_id = (
+        None
+        if inputs.get("max_speed_policy_id") is None
+        else str(inputs.get("max_speed_policy_id", "")).strip() or None
+    )
+    if max_speed_policy_id and max_speed_rows and max_speed_policy_id not in max_speed_rows:
+        max_speed_policy_id = sorted(max_speed_rows.keys())[0]
+
+    network_build = build_mobility_network_graph(
+        formalization_id=token_formalization_id,
+        guide_geometry_rows=guide_geometries,
+        junction_rows=mobility_junctions,
+        geometry_metric_rows=geometry_derived_metrics,
+        graph_id=token_graph_id,
+        graph_partition_id=(
+            None
+            if inputs.get("graph_partition_id") is None
+            else str(inputs.get("graph_partition_id", "")).strip() or None
+        ),
+        edge_kind_default=edge_kind_default,
+        max_speed_policy_id=max_speed_policy_id,
+        node_kind_registry=node_kind_registry,
+        edge_kind_registry=edge_kind_registry,
+        max_speed_policy_registry=max_speed_policy_registry,
+    )
+    graph_row = dict(network_build.get("graph") or {})
+    graph_id = str(graph_row.get("graph_id", "")).strip()
+    binding_row = dict(network_build.get("binding") or {})
+    generated_switch_rows = [
+        dict(row)
+        for row in list(network_build.get("switch_state_machines") or [])
+        if isinstance(row, Mapping)
+    ]
+
+    existing_graph_rows = [
+        dict(row)
+        for row in list(state.get("network_graphs") or [])
+        if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip()
+    ]
+    existing_graph_rows = [
+        row for row in existing_graph_rows if str(row.get("graph_id", "")).strip() != graph_id
+    ] + [dict(graph_row)]
+    state["network_graphs"] = sorted(existing_graph_rows, key=lambda row: str(row.get("graph_id", "")))
+
+    merged_binding_rows = normalize_mobility_network_binding_rows(
+        _upsert_row_by_id(mobility_network_bindings, "binding_id", binding_row)
+    )
+    switch_by_id = dict(
+        (
+            str(row.get("machine_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(mobility_switch_state_machines or [])
+        if isinstance(row, Mapping) and str(row.get("machine_id", "")).strip()
+    )
+    for row in generated_switch_rows:
+        switch_by_id[str(row.get("machine_id", "")).strip()] = dict(row)
+    merged_switch_rows = [
+        dict(switch_by_id[key])
+        for key in sorted(switch_by_id.keys())
+        if key
+    ]
+    _persist_mobility_network_state(
+        state,
+        mobility_network_bindings=merged_binding_rows,
+        mobility_switch_state_machines=merged_switch_rows,
+    )
+    return {
+        "graph_id": graph_id,
+        "binding_id": str(binding_row.get("binding_id", "")).strip(),
+        "node_count": int(len(list(graph_row.get("nodes") or []))),
+        "edge_count": int(len(list(graph_row.get("edges") or []))),
+        "switch_machine_count": int(len(generated_switch_rows)),
+        "generated_at_tick": int(max(0, _as_int(current_tick, 0))),
+        "source_process_id": str(process_id),
+        "intent_id": str(intent_id),
+    }
+
+
 def _geometry_hash_for_row(geometry_row: Mapping[str, object]) -> str:
     normalized = build_guide_geometry(
         geometry_id=str(geometry_row.get("geometry_id", "")).strip(),
@@ -2304,6 +2597,9 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("plan_artifacts", "plan_id"),
         ("guide_geometries", "geometry_id"),
         ("mobility_junctions", "junction_id"),
+        ("mobility_network_bindings", "binding_id"),
+        ("mobility_switch_state_machines", "machine_id"),
+        ("mobility_route_results", "query_id"),
         ("structural_graphs", "structural_graph_id"),
         ("structural_nodes", "node_id"),
         ("structural_edges", "edge_id"),
@@ -9573,6 +9869,16 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
                 "collection": "mobility_junctions",
                 "row": row,
             }
+    if token.startswith("binding.mobility."):
+        binding_id = str(token).strip()
+        row = _row_by_id_value(state.get("mobility_network_bindings"), "binding_id", binding_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "mobility_network_bindings",
+                "row": row,
+            }
 
     id_table = (
         ("cohort_assemblies", "cohort_id"),
@@ -9607,6 +9913,9 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("formalization_events", "event_id"),
         ("guide_geometries", "geometry_id"),
         ("mobility_junctions", "junction_id"),
+        ("mobility_network_bindings", "binding_id"),
+        ("mobility_switch_state_machines", "machine_id"),
+        ("mobility_route_results", "query_id"),
         ("geometry_candidates", "candidate_id"),
         ("geometry_derived_metrics", "geometry_id"),
         ("structural_graphs", "structural_graph_id"),
@@ -12300,6 +12609,10 @@ def execute_intent(
     mobility_junctions = _ensure_mobility_junction_rows(state)
     geometry_candidates = _ensure_geometry_candidate_rows(state)
     geometry_derived_metrics = _ensure_geometry_metric_rows(state)
+    mobility_network_bindings = _ensure_mobility_network_binding_rows(state)
+    mobility_switch_state_machines = _ensure_mobility_switch_state_machines(state)
+    mobility_route_cache_state = _ensure_mobility_route_cache_state(state)
+    mobility_route_results = _ensure_mobility_route_result_rows(state)
     structural_graphs = _ensure_structural_graph_rows(state)
     structural_nodes = _ensure_structural_node_rows(state)
     structural_edges = _ensure_structural_edge_rows(state)
@@ -19016,6 +19329,96 @@ def execute_intent(
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mobility_network_create_from_formalization":
+        formalization_id = str(inputs.get("formalization_id", "")).strip()
+        if not formalization_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.mobility_network_create_from_formalization requires formalization_id",
+                "Provide deterministic formalization_id currently in formal state.",
+                {"process_id": process_id},
+                "$.intent.inputs.formalization_id",
+            )
+        state_by_id = _formalization_state_by_id(formalization_states)
+        state_row = dict(state_by_id.get(formalization_id) or {})
+        if not state_row:
+            return refusal(
+                REFUSAL_EFFECT_INVALID_TARGET,
+                "formalization_id '{}' is not present".format(formalization_id),
+                "Run process.formalization_accept_candidate first.",
+                {"formalization_id": formalization_id},
+                "$.intent.inputs.formalization_id",
+            )
+        previous_state = str(state_row.get("state", "raw")).strip() or "raw"
+        if previous_state not in {"formal", "networked"}:
+            return refusal(
+                REFUSAL_FORMALIZATION_FORBIDDEN_BY_POLICY,
+                "formalization_id '{}' must be in formal state before mobility network creation".format(formalization_id),
+                "Accept a candidate first to create a formal artifact.",
+                {"formalization_id": formalization_id, "state": previous_state},
+                "$.intent.inputs.formalization_id",
+            )
+        try:
+            summary = _create_or_update_mobility_network(
+                state=state,
+                formalization_id=formalization_id,
+                state_row=state_row,
+                inputs=inputs,
+                policy_context=policy_context,
+                guide_geometries=guide_geometries,
+                mobility_junctions=mobility_junctions,
+                geometry_derived_metrics=geometry_derived_metrics,
+                mobility_network_bindings=mobility_network_bindings,
+                mobility_switch_state_machines=mobility_switch_state_machines,
+                current_tick=int(current_tick),
+                process_id=process_id,
+                intent_id=str(intent_id),
+            )
+        except MobilityNetworkError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix mobility network formalization inputs and retry through control plane.",
+                dict(exc.details),
+                "$.intent.inputs.formalization_id",
+            )
+        state_row["network_graph_ref"] = str(summary.get("graph_id", "")).strip() or None
+        if bool(inputs.get("promote_state", False)) and previous_state == "formal":
+            state_row["state"] = "networked"
+            event_row = _formalization_event_row(
+                formalization_id=formalization_id,
+                transition="{}->networked".format(previous_state),
+                tick=int(current_tick),
+                actor_subject_id=str(authority_context.get("subject_id", "")).strip() or "subject.system",
+                process_id=process_id,
+                intent_id=intent_id,
+                decision_log_ref=(str(inputs.get("decision_log_ref", "")).strip() or None),
+                extensions={"network_graph_ref": str(summary.get("graph_id", "")).strip()},
+            )
+            formalization_events = sorted(
+                [dict(row) for row in list(formalization_events or []) if isinstance(row, dict)] + [event_row],
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+            )
+        state_by_id[formalization_id] = dict(state_row)
+        formalization_states = _ensure_formalization_states(
+            {"formalization_states": [dict(state_by_id[key]) for key in sorted(state_by_id.keys())]}
+        )
+        formalization_states = [dict(row) for row in list(formalization_states or []) if isinstance(row, dict)]
+        _persist_formalization_state(
+            state,
+            formalization_states=formalization_states,
+            inference_candidates=formalization_inference_candidates,
+            formalization_events=formalization_events,
+        )
+        result_metadata = {
+            "formalization_id": formalization_id,
+            "network_graph_ref": str(summary.get("graph_id", "")).strip(),
+            "binding_id": str(summary.get("binding_id", "")).strip(),
+            "node_count": int(max(0, _as_int(summary.get("node_count", 0), 0))),
+            "edge_count": int(max(0, _as_int(summary.get("edge_count", 0), 0))),
+            "switch_machine_count": int(max(0, _as_int(summary.get("switch_machine_count", 0), 0))),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.formalization_promote_networked":
         formalization_id = str(inputs.get("formalization_id", "")).strip()
         if not formalization_id:
@@ -19056,87 +19459,31 @@ def execute_intent(
                 {"formalization_id": formalization_id, "state": previous_state},
                 "$.intent.inputs.formalization_id",
             )
-        graph_id = str(state_row.get("network_graph_ref", "")).strip()
-        if not graph_id:
-            graph_id = "graph.formalization.{}".format(
-                canonical_sha256({"formalization_id": formalization_id})[:16]
+        try:
+            summary = _create_or_update_mobility_network(
+                state=state,
+                formalization_id=formalization_id,
+                state_row=state_row,
+                inputs=inputs,
+                policy_context=policy_context,
+                guide_geometries=guide_geometries,
+                mobility_junctions=mobility_junctions,
+                geometry_derived_metrics=geometry_derived_metrics,
+                mobility_network_bindings=mobility_network_bindings,
+                mobility_switch_state_machines=mobility_switch_state_machines,
+                current_tick=int(current_tick),
+                process_id=process_id,
+                intent_id=str(intent_id),
             )
-        existing_graph_rows = [
-            dict(row)
-            for row in list(state.get("network_graphs") or [])
-            if isinstance(row, dict) and str(row.get("graph_id", "")).strip()
-        ]
-        graph_exists = any(str(row.get("graph_id", "")).strip() == graph_id for row in existing_graph_rows)
-        if not graph_exists:
-            graph_seed = {
-                "schema_version": "1.0.0",
-                "graph_id": graph_id,
-                "node_type_schema_id": "dominium.schema.core.node_payload.v1",
-                "edge_type_schema_id": "dominium.schema.core.edge_payload.v1",
-                "payload_schema_versions": {
-                    "dominium.schema.core.node_payload.v1": "1.0.0",
-                    "dominium.schema.core.edge_payload.v1": "1.0.0",
-                },
-                "validation_mode": "warn",
-                "graph_partition_id": None,
-                "nodes": [
-                    {
-                        "schema_version": "1.0.0",
-                        "node_id": "{}.node.a".format(graph_id),
-                        "node_type_id": "node.formalization.endpoint",
-                        "payload": {
-                            "target_context_id": str(state_row.get("target_context_id", "")).strip(),
-                        },
-                        "tags": [],
-                        "extensions": {},
-                    },
-                    {
-                        "schema_version": "1.0.0",
-                        "node_id": "{}.node.b".format(graph_id),
-                        "node_type_id": "node.formalization.endpoint",
-                        "payload": {
-                            "target_context_id": str(state_row.get("target_context_id", "")).strip(),
-                        },
-                        "tags": [],
-                        "extensions": {},
-                    },
-                ],
-                "edges": [
-                    {
-                        "schema_version": "1.0.0",
-                        "edge_id": "{}.edge.ab".format(graph_id),
-                        "from_node_id": "{}.node.a".format(graph_id),
-                        "to_node_id": "{}.node.b".format(graph_id),
-                        "edge_type_id": "edge.formalization.link",
-                        "capacity": None,
-                        "delay_ticks": 1,
-                        "loss_fraction": 0,
-                        "cost_units": 1,
-                        "payload": {"formalization_id": formalization_id},
-                        "extensions": {},
-                    }
-                ],
-                "deterministic_routing_policy_id": "route.shortest_delay",
-                "extensions": {
-                    "formalization_id": formalization_id,
-                    "state_source": "process.formalization_promote_networked",
-                },
-            }
-            try:
-                normalized_graph = normalize_network_graph(graph_seed)
-            except NetworkGraphError as exc:
-                return refusal(
-                    REFUSAL_CORE_GRAPH_INVALID,
-                    str(exc),
-                    "Fix generated network graph schema payload for formalization promotion.",
-                    dict(exc.details),
-                    "$.intent.inputs.formalization_id",
-                )
-            existing_graph_rows.append(dict(normalized_graph))
-            state["network_graphs"] = sorted(
-                existing_graph_rows,
-                key=lambda row: str(row.get("graph_id", "")),
+        except MobilityNetworkError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix mobility network creation inputs and retry formalization promotion.",
+                dict(exc.details),
+                "$.intent.inputs.formalization_id",
             )
+        graph_id = str(summary.get("graph_id", "")).strip()
         state_row["state"] = "networked"
         state_row["network_graph_ref"] = graph_id
         state_by_id[formalization_id] = dict(state_row)
@@ -19167,6 +19514,10 @@ def execute_intent(
         result_metadata = {
             "formalization_id": formalization_id,
             "network_graph_ref": graph_id,
+            "binding_id": str(summary.get("binding_id", "")).strip(),
+            "node_count": int(max(0, _as_int(summary.get("node_count", 0), 0))),
+            "edge_count": int(max(0, _as_int(summary.get("edge_count", 0), 0))),
+            "switch_machine_count": int(max(0, _as_int(summary.get("switch_machine_count", 0), 0))),
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
@@ -19236,6 +19587,464 @@ def execute_intent(
             "state": "raw",
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
             "removed_network_graph_ref": network_graph_ref or None,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mobility_network_edit":
+        graph_id = str(inputs.get("graph_id", "")).strip()
+        if not graph_id:
+            formalization_id = str(inputs.get("formalization_id", "")).strip()
+            if formalization_id:
+                state_row = dict(_formalization_state_by_id(formalization_states).get(formalization_id) or {})
+                graph_id = str(state_row.get("network_graph_ref", "")).strip()
+        if not graph_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.mobility_network_edit requires graph_id or formalization_id with network_graph_ref",
+                "Provide graph_id or a formalization_id already linked to a mobility graph.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        graph_row = next(
+            (
+                dict(row)
+                for row in list(state.get("network_graphs") or [])
+                if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip() == graph_id
+            ),
+            {},
+        )
+        if not graph_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "mobility graph '{}' is not present".format(graph_id),
+                "Create the mobility network first.",
+                {"graph_id": graph_id},
+                "$.intent.inputs.graph_id",
+            )
+        operations = inputs.get("operations")
+        if not isinstance(operations, list):
+            operations = []
+        operations_norm = sorted(
+            [dict(row) for row in operations if isinstance(row, Mapping)],
+            key=lambda row: (
+                str(row.get("op", "")),
+                str(row.get("edge_id", "")),
+                str(row.get("node_id", "")),
+            ),
+        )
+        planning_stage = bool(inputs.get("planning_stage", False))
+        max_ops = int(max(0, _as_int(inputs.get("max_ops_per_tick", (dict(policy_context or {})).get("mobility_network_edit_max_ops_per_tick", 64)), 64)))
+        apply_rows = list(operations_norm if max_ops <= 0 else operations_norm[:max_ops])
+        degraded = len(apply_rows) < len(operations_norm)
+        if degraded:
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id="mobility.network.{}".format(graph_id),
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.network_edit_budget",
+                        resolved_level="meso",
+                        cost_allocated=int(len(apply_rows)),
+                        extensions={"requested_ops": int(len(operations_norm)), "applied_ops": int(len(apply_rows))},
+                    )
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+        if planning_stage:
+            result_metadata = {
+                "graph_id": graph_id,
+                "planning_stage": True,
+                "operation_count": int(len(apply_rows)),
+                "degraded": bool(degraded),
+                "preview_hash": canonical_sha256(
+                    {
+                        "graph_id": graph_id,
+                        "operations": apply_rows,
+                    }
+                ),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            edge_rows = [dict(row) for row in list(graph_row.get("edges") or []) if isinstance(row, Mapping)]
+            node_rows = [dict(row) for row in list(graph_row.get("nodes") or []) if isinstance(row, Mapping)]
+            edge_by_id = dict((str(row.get("edge_id", "")).strip(), dict(row)) for row in edge_rows if str(row.get("edge_id", "")).strip())
+            node_by_id = dict((str(row.get("node_id", "")).strip(), dict(row)) for row in node_rows if str(row.get("node_id", "")).strip())
+            max_speed_rows = mobility_max_speed_policy_rows_by_id(
+                _load_mobility_network_registries(policy_context=policy_context)[2]
+            )
+            for operation in apply_rows:
+                op = str(operation.get("op", "")).strip()
+                if op == "set_edge_capacity":
+                    edge_id = str(operation.get("edge_id", "")).strip()
+                    edge = dict(edge_by_id.get(edge_id) or {})
+                    if not edge:
+                        return refusal(
+                            REFUSAL_MOBILITY_NETWORK_INVALID,
+                            "edge_id '{}' is not present".format(edge_id),
+                            "Use an existing mobility edge id from graph inspection.",
+                            {"graph_id": graph_id, "edge_id": edge_id},
+                            "$.intent.inputs.operations",
+                        )
+                    capacity = int(max(0, _as_int(operation.get("capacity", 0), 0)))
+                    edge["capacity"] = int(capacity)
+                    payload = dict(edge.get("payload") or {})
+                    payload["capacity_units"] = int(capacity)
+                    edge["payload"] = payload
+                    edge_by_id[edge_id] = edge
+                elif op == "set_edge_max_speed_policy":
+                    edge_id = str(operation.get("edge_id", "")).strip()
+                    edge = dict(edge_by_id.get(edge_id) or {})
+                    if not edge:
+                        return refusal(
+                            REFUSAL_MOBILITY_NETWORK_INVALID,
+                            "edge_id '{}' is not present".format(edge_id),
+                            "Use an existing mobility edge id from graph inspection.",
+                            {"graph_id": graph_id, "edge_id": edge_id},
+                            "$.intent.inputs.operations",
+                        )
+                    policy_id = str(operation.get("max_speed_policy_id", "")).strip()
+                    if (not policy_id) or (max_speed_rows and policy_id not in max_speed_rows):
+                        return refusal(
+                            REFUSAL_MOBILITY_NETWORK_INVALID,
+                            "max_speed_policy_id '{}' is not declared".format(policy_id),
+                            "Use max_speed_policy_id from mobility_max_speed_policy_registry.",
+                            {"max_speed_policy_id": policy_id},
+                            "$.intent.inputs.operations",
+                        )
+                    payload = dict(edge.get("payload") or {})
+                    payload["max_speed_policy_id"] = policy_id
+                    edge["payload"] = payload
+                    edge_by_id[edge_id] = edge
+                elif op == "set_node_tags":
+                    node_id = str(operation.get("node_id", "")).strip()
+                    node = dict(node_by_id.get(node_id) or {})
+                    if not node:
+                        return refusal(
+                            REFUSAL_MOBILITY_NETWORK_INVALID,
+                            "node_id '{}' is not present".format(node_id),
+                            "Use an existing mobility node id from graph inspection.",
+                            {"graph_id": graph_id, "node_id": node_id},
+                            "$.intent.inputs.operations",
+                        )
+                    tags = _sorted_tokens(operation.get("tags"))
+                    node["tags"] = tags
+                    payload = dict(node.get("payload") or {})
+                    payload["tags"] = tags
+                    node["payload"] = payload
+                    node_by_id[node_id] = node
+                else:
+                    return refusal(
+                        REFUSAL_MOBILITY_NETWORK_INVALID,
+                        "unsupported mobility_network_edit op '{}'".format(op),
+                        "Use supported operations: set_edge_capacity, set_edge_max_speed_policy, set_node_tags.",
+                        {"op": op},
+                        "$.intent.inputs.operations",
+                    )
+            graph_candidate = dict(graph_row)
+            graph_candidate["nodes"] = [dict(node_by_id[key]) for key in sorted(node_by_id.keys())]
+            graph_candidate["edges"] = [
+                dict(edge_by_id[key])
+                for key in sorted(
+                    edge_by_id.keys(),
+                    key=lambda key: (
+                        str(edge_by_id[key].get("from_node_id", "")),
+                        str(edge_by_id[key].get("to_node_id", "")),
+                        str(key),
+                    ),
+                )
+            ]
+            try:
+                graph_next = normalize_network_graph(graph_candidate)
+            except NetworkGraphError as exc:
+                return refusal(
+                    REFUSAL_MOBILITY_NETWORK_INVALID,
+                    str(exc),
+                    "Fix mobility network edit operation payload and retry.",
+                    dict(exc.details),
+                    "$.intent.inputs.operations",
+                )
+            state["network_graphs"] = sorted(
+                [
+                    dict(row)
+                    for row in list(state.get("network_graphs") or [])
+                    if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip() != graph_id
+                ]
+                + [dict(graph_next)],
+                key=lambda row: str(row.get("graph_id", "")),
+            )
+            result_metadata = {
+                "graph_id": graph_id,
+                "planning_stage": False,
+                "operation_count": int(len(apply_rows)),
+                "degraded": bool(degraded),
+                "applied_ops": apply_rows,
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.switch_set_state":
+        target_edge_id = str(inputs.get("target_edge_id", "")).strip()
+        if not target_edge_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.switch_set_state requires target_edge_id",
+                "Provide deterministic target_edge_id for desired outgoing switch edge.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_edge_id",
+            )
+        machine_id = str(inputs.get("machine_id", "")).strip()
+        if not machine_id:
+            switch_node_id = str(inputs.get("switch_node_id", "")).strip()
+            if switch_node_id:
+                for graph_row in list(state.get("network_graphs") or []):
+                    if not isinstance(graph_row, Mapping):
+                        continue
+                    for node in list(dict(graph_row).get("nodes") or []):
+                        if not isinstance(node, Mapping):
+                            continue
+                        if str(node.get("node_id", "")).strip() != switch_node_id:
+                            continue
+                        payload = dict(node.get("payload") or {})
+                        machine_id = str(payload.get("state_machine_id", "")).strip()
+                        if machine_id:
+                            break
+                    if machine_id:
+                        break
+        if not machine_id:
+            return refusal(
+                REFUSAL_MOBILITY_SWITCH_INVALID,
+                "switch machine could not be resolved from inputs",
+                "Provide machine_id or switch_node_id bound to a switch state machine.",
+                {"switch_node_id": str(inputs.get("switch_node_id", "")).strip()},
+                "$.intent.inputs",
+            )
+        machine_rows_by_id = dict(
+            (
+                str(row.get("machine_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(mobility_switch_state_machines or [])
+            if isinstance(row, Mapping) and str(row.get("machine_id", "")).strip()
+        )
+        machine_row = dict(machine_rows_by_id.get(machine_id) or {})
+        if not machine_row:
+            return refusal(
+                REFUSAL_MOBILITY_SWITCH_INVALID,
+                "switch state machine '{}' is not present".format(machine_id),
+                "Create mobility network from formalization first.",
+                {"machine_id": machine_id},
+                "$.intent.inputs.machine_id",
+            )
+        try:
+            transition_id = select_switch_transition_id(
+                machine_row=machine_row,
+                target_edge_id=target_edge_id,
+            )
+            transitioned = apply_transition(
+                machine_row,
+                trigger_process_id=process_id,
+                transition_id=transition_id,
+                current_tick=int(current_tick),
+            )
+        except (MobilityNetworkError, StateMachineError) as exc:
+            reason_code = str(getattr(exc, "reason_code", REFUSAL_MOBILITY_SWITCH_INVALID))
+            details = dict(getattr(exc, "details", {}) or {})
+            return refusal(
+                reason_code,
+                str(exc),
+                "Use a valid switch transition target edge.",
+                details,
+                "$.intent.inputs.target_edge_id",
+            )
+        machine_next = dict(transitioned.get("machine") or {})
+        applied_transition = dict(transitioned.get("applied_transition") or {})
+        machine_rows_by_id[machine_id] = dict(machine_next)
+        mobility_switch_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
+        _persist_mobility_network_state(
+            state,
+            mobility_network_bindings=mobility_network_bindings,
+            mobility_switch_state_machines=mobility_switch_state_machines,
+            mobility_route_cache_state=mobility_route_cache_state,
+            mobility_route_results=mobility_route_results,
+        )
+        switch_event_row = {
+            "schema_version": "1.0.0",
+            "event_id": "event.mob.switch.{}".format(
+                canonical_sha256(
+                    {
+                        "machine_id": machine_id,
+                        "transition_id": str(applied_transition.get("transition_id", "")).strip(),
+                        "tick": int(current_tick),
+                        "intent_id": str(intent_id),
+                    }
+                )[:16]
+            ),
+            "machine_id": machine_id,
+            "transition_id": str(applied_transition.get("transition_id", "")).strip(),
+            "from_state_id": str(applied_transition.get("from_state_id", "")).strip(),
+            "to_state_id": str(applied_transition.get("to_state_id", "")).strip(),
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "process_id": process_id,
+            "intent_id": str(intent_id),
+            "decision_log_ref": str(inputs.get("decision_log_ref", "")).strip() or None,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        }
+        switch_event_row["deterministic_fingerprint"] = canonical_sha256(
+            dict(switch_event_row, deterministic_fingerprint="")
+        )
+        state["mobility_switch_events"] = sorted(
+            [dict(row) for row in list(state.get("mobility_switch_events") or []) if isinstance(row, Mapping)]
+            + [switch_event_row],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        result_metadata = {
+            "machine_id": machine_id,
+            "transition_id": str(applied_transition.get("transition_id", "")).strip(),
+            "from_state_id": str(applied_transition.get("from_state_id", "")).strip(),
+            "to_state_id": str(applied_transition.get("to_state_id", "")).strip(),
+            "switch_event_id": str(switch_event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mobility_route_query":
+        graph_id = str(inputs.get("graph_id", "")).strip()
+        if not graph_id:
+            formalization_id = str(inputs.get("formalization_id", "")).strip()
+            if formalization_id:
+                state_row = dict(_formalization_state_by_id(formalization_states).get(formalization_id) or {})
+                graph_id = str(state_row.get("network_graph_ref", "")).strip()
+        from_node_id = str(inputs.get("from_node_id", "")).strip()
+        to_node_id = str(inputs.get("to_node_id", "")).strip()
+        if (not graph_id) or (not from_node_id) or (not to_node_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.mobility_route_query requires graph_id/formalization_id plus from_node_id and to_node_id",
+                "Provide deterministic route endpoints over an existing mobility graph.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        route_runtime = dict(state.get("mobility_route_runtime_state") or {})
+        last_tick = int(max(0, _as_int(route_runtime.get("tick", current_tick), current_tick)))
+        query_count = int(max(0, _as_int(route_runtime.get("query_count", 0), 0)))
+        if int(last_tick) != int(current_tick):
+            query_count = 0
+        max_queries = int(max(1, _as_int(inputs.get("max_queries_per_tick", (dict(policy_context or {})).get("mobility_route_max_queries_per_tick", 64)), 64)))
+        if query_count >= max_queries:
+            return refusal(
+                "refusal.mob.fidelity_denied",
+                "mobility route query budget exceeded for current tick",
+                "Retry on next tick or increase deterministic route budget policy.",
+                {"tick": int(current_tick), "max_queries_per_tick": int(max_queries)},
+                "$.intent.inputs",
+            )
+        graph_row = next(
+            (
+                dict(row)
+                for row in list(state.get("network_graphs") or [])
+                if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip() == graph_id
+            ),
+            {},
+        )
+        if not graph_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "mobility graph '{}' is not present".format(graph_id),
+                "Create mobility network first.",
+                {"graph_id": graph_id},
+                "$.intent.inputs.graph_id",
+            )
+        filtered_graph = filter_graph_by_switch_state(
+            graph_row=graph_row,
+            switch_state_machine_rows=mobility_switch_state_machines,
+        )
+        route_policy_id = str(inputs.get("route_policy_id", "route.shortest_delay")).strip() or "route.shortest_delay"
+        route_policy_row = {
+            "policy_id": route_policy_id,
+            "allow_multi_hop": False if route_policy_id == "route.direct_only" else True,
+            "optimization_metric": "min_cost_units" if route_policy_id == "route.min_cost_units" else "delay_ticks",
+            "tie_break_policy": "edge_id_lexicographic",
+            "extensions": {},
+        }
+        constraints_row = dict(inputs.get("constraints") or {})
+        max_cache_entries = int(max(0, _as_int(inputs.get("max_cache_entries", (dict(policy_context or {})).get("mobility_route_max_cache_entries", 128)), 128)))
+        cost_units_per_query = int(max(1, _as_int(inputs.get("cost_units_per_query", (dict(policy_context or {})).get("mobility_route_cost_units_per_query", 1)), 1)))
+        try:
+            route_runtime_payload = query_route_result(
+                graph_row=filtered_graph,
+                routing_policy_row=route_policy_row,
+                from_node_id=from_node_id,
+                to_node_id=to_node_id,
+                constraints_row=constraints_row,
+                partition_row=dict(inputs.get("partition") or {}),
+                cache_state=mobility_route_cache_state,
+                max_cache_entries=max_cache_entries,
+                cost_units_per_query=cost_units_per_query,
+            )
+        except RoutingError as exc:
+            return refusal(
+                REFUSAL_MOBILITY_NO_ROUTE,
+                str(exc),
+                "Adjust route endpoints, constraints, or switch states.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.intent.inputs",
+            )
+        query_count += 1
+        state["mobility_route_runtime_state"] = {
+            "tick": int(current_tick),
+            "query_count": int(query_count),
+            "max_queries_per_tick": int(max_queries),
+        }
+        route_result = dict(route_runtime_payload.get("route_result") or {})
+        query_id = "route.mobility.{}".format(
+            canonical_sha256(
+                {
+                    "graph_id": graph_id,
+                    "from_node_id": from_node_id,
+                    "to_node_id": to_node_id,
+                    "route_policy_id": route_policy_id,
+                    "constraints": dict(constraints_row),
+                    "tick": int(current_tick),
+                }
+            )[:16]
+        )
+        route_row = {
+            "schema_version": "1.0.0",
+            "query_id": query_id,
+            "graph_id": graph_id,
+            "from_node_id": from_node_id,
+            "to_node_id": to_node_id,
+            "route_policy_id": route_policy_id,
+            "route_result": route_result,
+            "cache_hit": bool(route_runtime_payload.get("cache_hit", False)),
+            "tick": int(current_tick),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "route_cost_units": int(max(0, _as_int(route_runtime_payload.get("route_cost_units", 0), 0))),
+                "cross_shard_route_plan": dict(route_runtime_payload.get("cross_shard_route_plan") or {}),
+            },
+        }
+        route_row["deterministic_fingerprint"] = canonical_sha256(dict(route_row, deterministic_fingerprint=""))
+        mobility_route_results = _ensure_mobility_route_result_rows(
+            {
+                "mobility_route_results": _upsert_row_by_id(mobility_route_results, "query_id", route_row)
+            }
+        )
+        mobility_route_cache_state = dict(route_runtime_payload.get("cache_state") or {})
+        _persist_mobility_network_state(
+            state,
+            mobility_network_bindings=mobility_network_bindings,
+            mobility_switch_state_machines=mobility_switch_state_machines,
+            mobility_route_cache_state=mobility_route_cache_state,
+            mobility_route_results=mobility_route_results,
+        )
+        result_metadata = {
+            "query_id": query_id,
+            "graph_id": graph_id,
+            "route_policy_id": route_policy_id,
+            "cache_hit": bool(route_runtime_payload.get("cache_hit", False)),
+            "route_cost_units": int(max(0, _as_int(route_runtime_payload.get("route_cost_units", 0), 0))),
+            "route_result": route_result,
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.geometry_create":
